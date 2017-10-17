@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  // FIXME: Convert 'class' to 'type' for consistancy
   groups = [
     {
       title: undefined,
@@ -294,5 +295,42 @@ export class AppComponent {
     }
   ];
 
-  constructor() { }
+  constructor() {
+    let courses = [];
+    let Modules = [];
+    let Micromodules = [];
+    let Nanomodules = [];
+    let noclass = [];
+    for (let g of this.groups) {
+      for (let lo of g.learningObjects) {
+        if (lo.class === 'Course') courses.push(lo);
+        if (lo.class === 'Module') Modules.push(lo);
+        if (lo.class === 'Micromodule') Micromodules.push(lo);
+        if (lo.class === 'Nanomodule') Nanomodules.push(lo);
+        if (lo.class === '') noclass.push(lo);
+      }
+    }
+    this.groups = [
+      {
+        title: undefined,
+        learningObjects: courses
+      },
+      {
+        title: undefined,
+        learningObjects: Modules,
+      },
+      {
+        title: undefined,
+        learningObjects: Micromodules,
+      },
+      {
+        title: undefined,
+        learningObjects: Nanomodules,
+      },
+      {
+        title: undefined,
+        learningObjects: noclass,
+      }
+    ];
+  }
 }
