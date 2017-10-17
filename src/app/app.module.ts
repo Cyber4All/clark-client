@@ -2,11 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent,
+    CurriculumGroupComponent
+],
   imports: [
     BrowserModule
   ],

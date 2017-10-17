@@ -1,0 +1,13 @@
+<div class="container">
+  <h2>{{ group.title }}</h2>
+  <table class="table table-striped table-bordered">
+    <tr>
+      <th>Topic</th>
+      <th>Class</th>
+    </tr>
+    <tr *ngFor="let lo of group.learningObjects">
+      <td>{{ lo.topic }}</td>
+      <td style="width: 15%;">{{ lo.class }}</td>
+    </tr>
+  </table>
+</div>
