@@ -9,6 +9,12 @@ export class AppComponent {
   // FIXME: Convert 'class' to 'type' for consistancy
   groups = [
     {
+      title: 'Towson Additions',
+      learningObjects: [
+        { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: 'https://towson.edu/bloominonion' }
+      ]
+    },
+    {
       title: undefined,
       learningObjects: [
         { topic: 'Adverserial Thinking Module', class: 'Module' },
