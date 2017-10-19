@@ -1,6 +1,7 @@
+import { LearningObjectService } from './learning-object.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 
@@ -10,9 +11,12 @@ import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.co
     CurriculumGroupComponent
 ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpModule,
   ],
-  providers: [],
+  providers: [
+    LearningObjectService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

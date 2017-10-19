@@ -6,7 +6,9 @@
       <th>Type</th>
     </tr>
     <tr *ngFor="let lo of group.learningObjects">
-      <td>{{ lo.topic }}</td>
+      <td>
+        <a (click)="open(lo)">{{ lo.topic }}</a>
+      </td>
       <td style="width: 15%;">{{ lo.class }}</td>
     </tr>
   </table>
