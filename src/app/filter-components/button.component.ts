@@ -20,13 +20,5 @@ export class ButtonComponent {
      new Button(3, 'Define risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of system security' ),
      new Button(4, 'Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of software security'),
      new Button(5, 'Recognize risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of societal security')
-  ];
-
-  constructor()
-{
-  console.log("testingggg")
-  var btn = new Button(1, 'test');
-  console.log(btn);
-}
-
+  ]
 }
