@@ -11,7 +11,7 @@ export class AppComponent {
     {
       title: 'Towson Additions',
       learningObjects: [
-        { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: 'https://towson.edu/bloominonion' }
+        { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: `https://neutrino-44922.firebaseapp.com/view/cyber-security-for-future-presidents` }
       ]
     },
     {
@@ -301,6 +301,8 @@ export class AppComponent {
     }
   ];
 
+  filteredGroups;
+
   constructor() {
     let courses = [];
     let Modules = [];
@@ -344,5 +346,21 @@ export class AppComponent {
     if(a.topic < b.topic) return -1;
     if (a.topic > b.topic) return 1;
     return 0;
+  }
+
+  spoofFilter(value){
+    console.log(value);
+    if(value !== 'all'){
+      this.filteredGroups = [
+      {
+        title: 'Course - 15 weeks',
+        learningObjects: [
+          { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: `https://neutrino-44922.firebaseapp.com/view/cyber-security-for-future-presidents` }
+        ]
+      },
+    ];
+    }else{
+      this.filteredGroups = undefined;
+    }
   }
 }
