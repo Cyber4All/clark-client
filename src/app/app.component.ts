@@ -11,7 +11,7 @@ export class AppComponent {
     {
       title: 'Towson Additions',
       learningObjects: [
-        { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: 'https://towson.edu/bloominonion' },
+        { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: 'https://neutrino-44922.firebaseapp.com/view/cyber-security-for-future-presidents' },
         // tslint:disable-next-line:max-line-length
         { topic: 'Integer Error CS0 C++ Demo', class: 'Nanomodule', url: 'http://cis1.towson.edu/~cyber4all/modules/nanomodules/Integer_Error-CS0_C++_Demo.html' },
       ]
