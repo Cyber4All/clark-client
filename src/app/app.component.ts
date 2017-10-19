@@ -312,25 +312,31 @@ export class AppComponent {
     }
     this.groups = [
       {
-        title: undefined,
-        learningObjects: courses
+        title: 'Course - 15 weeks',
+        learningObjects: courses.sort(this.sortByAlphabet)
       },
       {
-        title: undefined,
-        learningObjects: Modules,
+        title: 'Module - 4 hours < completion time < 2 weeks',
+        learningObjects: Modules.sort(this.sortByAlphabet),
       },
       {
-        title: undefined,
-        learningObjects: Micromodules,
+        title: 'Micro-module – 1 hour < completion time < 4 hours',
+        learningObjects: Micromodules.sort(this.sortByAlphabet),
       },
       {
-        title: undefined,
-        learningObjects: Nanomodules,
+        title: 'Nano-module – completion time < 1 hour',
+        learningObjects: Nanomodules.sort(this.sortByAlphabet),
       },
       {
-        title: undefined,
-        learningObjects: noclass,
+        title: 'No Type',
+        learningObjects: noclass.sort(this.sortByAlphabet),
       }
     ];
+  }
+
+  sortByAlphabet(a, b) {
+    if(a.topic < b.topic) return -1;
+    if (a.topic > b.topic) return 1;
+    return 0;
   }
 }
