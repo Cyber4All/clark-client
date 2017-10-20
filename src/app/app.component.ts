@@ -11,7 +11,9 @@ export class AppComponent {
     {
       title: 'Towson Additions',
       learningObjects: [
-        { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: 'https://towson.edu/bloominonion' }
+        { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: 'https://neutrino-44922.firebaseapp.com/view/cyber-security-for-future-presidents' },
+        // tslint:disable-next-line:max-line-length
+        { topic: 'Integer Error CS0 C++ Demo', class: 'Nanomodule', url: 'http://cis1.towson.edu/~cyber4all/modules/nanomodules/Integer_Error-CS0_C++_Demo.html' },
       ]
     },
     {
@@ -301,6 +303,8 @@ export class AppComponent {
     }
   ];
 
+  filteredGroups;
+
   constructor() {
     let courses = [];
     let Modules = [];
@@ -318,25 +322,47 @@ export class AppComponent {
     }
     this.groups = [
       {
-        title: undefined,
-        learningObjects: courses
+        title: 'Course - 15 weeks',
+        learningObjects: courses.sort(this.sortByAlphabet)
       },
       {
-        title: undefined,
-        learningObjects: Modules,
+        title: 'Module - 4 hours < completion time < 2 weeks',
+        learningObjects: Modules.sort(this.sortByAlphabet),
       },
       {
-        title: undefined,
-        learningObjects: Micromodules,
+        title: 'Micro-module – 1 hour < completion time < 4 hours',
+        learningObjects: Micromodules.sort(this.sortByAlphabet),
       },
       {
-        title: undefined,
-        learningObjects: Nanomodules,
+        title: 'Nano-module – completion time < 1 hour',
+        learningObjects: Nanomodules.sort(this.sortByAlphabet),
       },
       {
-        title: undefined,
-        learningObjects: noclass,
+        title: 'No Type',
+        learningObjects: noclass.sort(this.sortByAlphabet),
       }
     ];
+  }
+
+  sortByAlphabet(a, b) {
+    if(a.topic < b.topic) return -1;
+    if (a.topic > b.topic) return 1;
+    return 0;
+  }
+
+  spoofFilter(value){
+    console.log(value);
+    if(value !== 'all'){
+      this.filteredGroups = [
+      {
+        title: 'Course - 15 weeks',
+        learningObjects: [
+          { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: `https://neutrino-44922.firebaseapp.com/view/cyber-security-for-future-presidents` }
+        ]
+      },
+    ];
+    }else{
+      this.filteredGroups = undefined;
+    }
   }
 }
