@@ -1,0 +1,16 @@
+machine:  
+  node:
+    version: 7.6.0
+dependencies:
+  pre:
+    - npm install
+    - npm install enhanced-resolve@3.3.0
+test: 
+  override: 
+    - echo "done"
+deployment:
+  production:
+    branch: master
+    commands:
+      - yarn ng -- build --prod --aot --no-progress
+      - aws s3 sync ${source} s3://${s3_bucket} --region us-east-2
