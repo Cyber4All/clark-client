@@ -13,4 +13,4 @@ deployment:
     branch: master
     commands:
       - yarn ng -- build --prod --aot --no-progress
-      - aws s3 sync ${source} s3://${s3_bucket} --region us-east-2
+      - aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
