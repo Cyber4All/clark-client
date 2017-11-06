@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+.flex-container {  
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 0;
+  padding-top: 70px;
+}
+nav {
+  border: none !important;
+  border-radius: 0;
+  background-color: #4d37ce;
+  .nav>li.active {
+    border-left: 1px solid #555;
+    border-right: 1px solid #555;
+    background-color: #4d37ce !important;
+    box-shadow: -10px -5px -5px black;
+    a {
+      background-color: transparent;
+      color: white;
+    }
+  }
+  a {
+    color: white;
+  }
+}
+
+.contents {
+  order: 1;
+}
+filter-menu {
+  order: 2;
+  width: 400px;
+  background-color: rgb(153, 166, 177);
+  margin-top: -20px;
+  height: calc(100vh - 50px);
+  position: fixed;
+  right: 0;
+  z-index: 1030;
+}
+.flex-fill {
+  order: 2;
+  width: 400px;
+}

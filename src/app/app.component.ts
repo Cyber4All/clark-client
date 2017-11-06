@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  openMenu = true;
   // FIXME: Convert 'class' to 'type' for consistancy
   groups = [
     {
@@ -350,9 +351,9 @@ export class AppComponent {
     return 0;
   }
 
-  spoofFilter(value){
+  spoofFilter(value) {
     console.log(value);
-    if(value !== 'all'){
+    if (value !== 'all') {
       this.filteredGroups = [
       {
         title: 'Course - 15 weeks',
@@ -361,7 +362,7 @@ export class AppComponent {
         ]
       },
     ];
-    }else{
+    } else {
       this.filteredGroups = undefined;
     }
   }

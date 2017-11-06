@@ -1,0 +1,23 @@
+<div class="container">
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="filter">Filter by</label>
+      <select class="form-control">
+          <option selected>All Types</option>
+          <option *ngFor="let t of types">{{ t }}</option>
+          <option>No Type</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="contain">Author</label>
+      <input class="form-control" type="text" />
+    </div>
+    <div class="form-group">
+      <label for="contain">Contains the words</label>
+      <input class="form-control" type="text" />
+    </div>
+    <div class="btn-wrapper">
+    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+  </div>
+  </form>
+</div>
