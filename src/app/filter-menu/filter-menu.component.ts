@@ -1,3 +1,4 @@
+import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class FilterMenuComponent implements OnInit {
 
   types = [ 'Course', 'Module', 'Micromodule', 'Nanomodule' ];
-  constructor() { }
+
+  constructor(public service: LearningObjectService) { }
 
   ngOnInit() {
+  }
+
+  search() {
+    this.service.search('cyber');
   }
 
 }
