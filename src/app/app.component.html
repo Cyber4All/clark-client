@@ -18,12 +18,13 @@
       </ul>
       <form class="navbar-form navbar-right" style="margin-right: 10px">
           <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search">
+              <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" name="query">
+              <!--
               <span class="input-group-btn">
                   <button (click)="openMenu = !openMenu" class="btn btn-default" style="border-radius: 0">Filter</button>
-              </span>
+              </span> -->
               <span class="input-group-btn">
-                  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                  <button type="button" class="btn btn-default" (click)="search()"><span class="glyphicon glyphicon-search"></span></button>
               </span>
           </div>
       </form>

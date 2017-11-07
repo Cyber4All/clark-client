@@ -7,10 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  openMenu = true;
+  openMenu = false;
   // FIXME: Convert 'class' to 'type' for consistancy
   groups;
   filteredGroups;
+  query = undefined;
 
   constructor(public service: LearningObjectService) {
     this.groups = this.sort(service.groups);
@@ -80,5 +81,9 @@ export class AppComponent {
     } else {
       this.filteredGroups = undefined;
     }
+  }
+
+  search() {
+    this.service.search(this.query);
   }
 }

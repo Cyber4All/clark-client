@@ -8,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilterMenuComponent implements OnInit {
 
-  types = [ 'Course', 'Module', 'Micromodule', 'Nanomodule' ];
+  types = [ 'All Types', 'Course', 'Module', 'Micromodule', 'Nanomodule', 'No Type' ];
+  query = {
+    type: this.types[0],
+    contains: undefined
+  };
 
   constructor(public service: LearningObjectService) { }
 
@@ -16,7 +20,6 @@ export class FilterMenuComponent implements OnInit {
   }
 
   search() {
-    this.service.search('cyber');
+    this.service.search(this.query.contains);
   }
-
 }

@@ -328,7 +328,7 @@ export class LearningObjectService {
     return this.data;
   }
 
-  search(query: string) {
+  search(query) {
     this.filteredResults = [];
     for (const g of this.fuseGroup) {
       this.filteredResults.push({

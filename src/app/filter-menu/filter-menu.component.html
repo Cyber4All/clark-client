@@ -1,20 +1,18 @@
 <div class="container">
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" #filterForm="ngForm">
     <div class="form-group">
-      <label for="filter">Filter by</label>
-      <select class="form-control">
-          <option selected>All Types</option>
-          <option *ngFor="let t of types">{{ t }}</option>
-          <option>No Type</option>
+      <label>Filter by</label>
+      <select class="form-control" [(ngModel)]="query.type" name="type">
+          <option *ngFor="let t of types" [ngValue]="t">{{ t }}</option>
       </select>
     </div>
     <div class="form-group">
-      <label for="contain">Author</label>
+      <label>Author</label>
       <input class="form-control" type="text" />
     </div>
     <div class="form-group">
-      <label for="contain">Contains the words</label>
-      <input class="form-control" type="text" />
+      <label>Contains the words</label>
+      <input class="form-control" type="text" [(ngModel)]="query.contains" name="contains" id="contains" />
     </div>
     <div class="btn-wrapper">
     <button type="submit" class="btn btn-primary" (click)="search()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
@@ -22,3 +20,4 @@
   </div>
   </form>
 </div>
+{{ query | json }}
