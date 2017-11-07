@@ -3,6 +3,11 @@
   padding: 25px;
 }
 .btn-wrapper {
+  margin-top: 40px;
   width: 100%;
-  text-align: center;
+  text-align: right;
+  button {
+    background-color: transparent;
+    border: 2px solid white;
+  }
 }

@@ -19,7 +19,10 @@ export class AppComponent {
     const Nanomodules = [];
     const noclass = [];
     this.groups = service.groups;
-    this.filteredGroups = service.filteredResults;
+    service.observeFiltered().subscribe(filtered => {
+      console.log(filtered);
+      this.filteredGroups = filtered;
+    });
     for (const g of this.groups) {
       for (const lo of g.learningObjects) {
         if (lo.class === 'Course') { courses.push(lo); }

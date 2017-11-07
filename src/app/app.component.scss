@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 html, body {
   margin: 0;
   padding: 0;
@@ -9,21 +10,23 @@ html, body {
   padding-top: 70px;
 }
 nav {
-  border: none !important;
+  font-family: 'Open Sans', sans-serif;
+  border-bottom: 1px solid #555;
   border-radius: 0;
-  background-color: #4d37ce;
+  background: white;  /* fallback for old browsers */
   .nav>li.active {
-    border-left: 1px solid #555;
-    border-right: 1px solid #555;
-    background-color: #4d37ce !important;
+    border-bottom: 2px solid white;
+    background-color: transparent !important;
     box-shadow: -10px -5px -5px black;
     a {
       background-color: transparent;
-      color: white;
+      color: #0575E6;
+      font-weight: 900;
+      text-decoration: underline;
     }
   }
   a {
-    color: white;
+    color: #555;
   }
 }
 
@@ -31,11 +34,14 @@ nav {
   order: 1;
 }
 filter-menu {
+  color: white;
   order: 2;
   width: 400px;
   background-color: rgb(153, 166, 177);
-  margin-top: -20px;
-  height: calc(100vh - 50px);
+  background: #0575E6;  /* fallback for old browsers */
+
+  margin-top: -17px;
+  height: calc(100vh - 17px);
   position: fixed;
   right: 0;
   z-index: 1030;

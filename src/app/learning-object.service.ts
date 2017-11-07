@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -314,21 +314,28 @@ export class LearningObjectService {
   ];
   filteredResults;
 
+  dataObserver;
+  data;
+
   constructor(private http: Http) {
+    this.data = new Observable(observer => this.dataObserver = observer);
     for (const g of this.groups) {
       this.fuseGroup.push(new Fuse(g.learningObjects, this.options));
     }
   }
 
+  observeFiltered(): Observable<{}> {
+    return this.data;
+  }
+
   search(query: string) {
-    console.log(this.groups);
     this.filteredResults = [];
     for (const g of this.fuseGroup) {
       this.filteredResults.push({
         learningObjects: g.search(query)
       });
     }
-    console.log(this.filteredResults);
+    this.dataObserver.next(this.filteredResults);
   }
 
   openLearningObject(url: string) {
