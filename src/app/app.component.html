@@ -40,10 +40,10 @@
         <option value="4">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of software security</option>
         <option value="5">Recognize risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of societal security</option>
     </select>
-    <div *ngIf="!filteredGroups">
+    <div *ngIf="filteredGroups === undefined || filteredGroups.length === 0">
         <app-curriculum-group *ngFor="let g of groups" [group]="g"></app-curriculum-group>
     </div>
-    <div *ngIf="filteredGroups">
+    <div *ngIf="filteredGroups !== undefined && filteredGroups.length > 0">
         <app-curriculum-group *ngFor="let g of filteredGroups" [group]="g"></app-curriculum-group>
     </div>
   </section>

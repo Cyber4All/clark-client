@@ -324,7 +324,7 @@ export class LearningObjectService {
     }
   }
 
-  observeFiltered(): Observable<{}> {
+  observeFiltered(): Observable<{}[]> {
     return this.data;
   }
 
@@ -337,7 +337,10 @@ export class LearningObjectService {
     }
     this.dataObserver.next(this.filteredResults);
   }
-
+  clearSearch() {
+    this.filteredResults = [];
+    this.dataObserver.next(this.filteredResults);
+  }
   openLearningObject(url: string) {
     // location.href = url;
     window.open(url);

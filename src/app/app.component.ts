@@ -13,17 +13,20 @@ export class AppComponent {
   filteredGroups;
 
   constructor(public service: LearningObjectService) {
+    this.groups = this.sort(service.groups);
+    service.observeFiltered().subscribe(filtered => {
+      if (filtered.length > 0) this.filteredGroups = this.sort(filtered);
+      else this.filteredGroups = undefined;
+    });
+  }
+
+  sort(groups) {
     const courses = [];
     const Modules = [];
     const Micromodules = [];
     const Nanomodules = [];
     const noclass = [];
-    this.groups = service.groups;
-    service.observeFiltered().subscribe(filtered => {
-      console.log(filtered);
-      this.filteredGroups = filtered;
-    });
-    for (const g of this.groups) {
+    for (const g of groups) {
       for (const lo of g.learningObjects) {
         if (lo.class === 'Course') { courses.push(lo); }
         if (lo.class === 'Module') { Modules.push(lo); }
@@ -32,7 +35,7 @@ export class AppComponent {
         if (lo.class === '') { noclass.push(lo); }
       }
     }
-    this.groups = [
+    const sortedGroups = [
       {
         title: 'Course - 15 weeks',
         learningObjects: courses.sort(this.sortByAlphabet)
@@ -54,6 +57,7 @@ export class AppComponent {
         learningObjects: noclass.sort(this.sortByAlphabet),
       }
     ];
+    return sortedGroups;
   }
 
   sortByAlphabet(a, b) {
