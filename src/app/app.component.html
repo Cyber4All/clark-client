@@ -7,7 +7,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
       </button>
-      <a href="#" class="navbar-brand">CUBE</a>
+      <a href="#" class="navbar-brand">CLARK</a>
   </div>
   <!-- Collection of nav links, forms, and other content for toggling -->
   <div id="navbarCollapse" class="collapse navbar-collapse">
@@ -15,16 +15,17 @@
           <li class="active"><a href="#">Home</a></li>
           <li><a href="#">Browse</a></li>
           <li><a href="#">Collections</a></li>
+          <li><a href="http://onion.clark.center">Contribute</a></li>
       </ul>
       <form class="navbar-form navbar-right" style="margin-right: 10px">
           <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" name="query">
+              <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" (ngModelChange)="search()" name="query">
               <!--
               <span class="input-group-btn">
                   <button (click)="openMenu = !openMenu" class="btn btn-default" style="border-radius: 0">Filter</button>
               </span> -->
               <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" (click)="search()"><span class="glyphicon glyphicon-search"></span></button>
+                  <button type="submit" class="btn btn-default" (click)="search()"><span class="glyphicon glyphicon-search"></span></button>
               </span>
           </div>
       </form>

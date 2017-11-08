@@ -84,6 +84,11 @@ export class AppComponent {
   }
 
   search() {
-    this.service.search(this.query);
+    // TODO: verify query contains alphanumeric characters
+    if (this.query === '') {
+      this.service.clearSearch();
+    } else if (this.query !== undefined) {
+      this.service.search(this.query);
+    }
   }
 }
