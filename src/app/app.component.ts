@@ -74,7 +74,7 @@ export class AppComponent {
       {
         title: 'Course - 15 weeks',
         learningObjects: [
-          { topic: 'Cybersecurity for Future Presidents', class: 'Course', url: `https://neutrino-44922.firebaseapp.com/view/cyber-security-for-future-presidents` }
+          { topic: 'Cybersecurity for Future Presidents', class: 'Course' }
         ]
       },
     ];
