@@ -34,14 +34,14 @@
 <div class="flex-container">
   <div class="container">
   <section class="contents">
-    <select #outcomeFilter class="form-control" (change)="spoofFilter(outcomeFilter.value)" style="margin-left: 15px">
+    <!-- <select #outcomeFilter class="form-control" style="margin-left: 15px">
         <option value="all">All</option>
         <option value="1">Describe risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of human security</option>
         <option value="2">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of enterprise security</option>
         <option value="3">Define risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of system security</option>
         <option value="4">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of software security</option>
         <option value="5">Recognize risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of societal security</option>
-    </select>
+    </select> -->
     <div *ngIf="filteredGroups === undefined || filteredGroups.length === 0">
         <app-curriculum-group *ngFor="let g of groups" [group]="g"></app-curriculum-group>
     </div>

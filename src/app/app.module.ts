@@ -1,3 +1,4 @@
+import { ConfigService } from './config.service';
 import { LearningObjectService } from './learning-object.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -24,7 +25,14 @@ import { FilterMenuComponent } from './filter-menu/filter-menu.component';
   ],
   providers: [
     LearningObjectService,
+    ConfigService,
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(configService: ConfigService) {
+      const w: any = window;
+      if (w) {
+          Object.assign(configService.env, w.__env);
+      }
+  }}

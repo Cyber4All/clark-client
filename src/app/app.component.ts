@@ -14,10 +14,8 @@ export class AppComponent {
   query = undefined;
 
   constructor(public service: LearningObjectService) {
-    this.groups = this.sort(service.groups);
-    service.observeFiltered().subscribe(filtered => {
-      if (filtered.length > 0) this.filteredGroups = this.sort(filtered);
-      else this.filteredGroups = undefined;
+    service.observeFiltered().subscribe(groups => {
+      this.groups = this.sort(groups);
     });
   }
 
@@ -67,7 +65,10 @@ export class AppComponent {
     return 0;
   }
 
-  spoofFilter(value) {
+  /* TODO: This function is no longer used in the template, however the general spoof functionality will be needed later.
+           Remove comment block when implemented.
+
+   spoofFilter(value) {
     console.log(value);
     if (value !== 'all') {
       this.filteredGroups = [
@@ -82,6 +83,7 @@ export class AppComponent {
       this.filteredGroups = undefined;
     }
   }
+  */
 
   search() {
     // TODO: verify query contains alphanumeric characters
