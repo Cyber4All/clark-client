@@ -8,14 +8,12 @@ import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.co
 
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ButtonComponent } from './filter-components/button.component';
 import { FilterMenuComponent } from './filter-menu/filter-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CurriculumGroupComponent,
-    ButtonComponent,
     FilterMenuComponent
 ],
   imports: [
