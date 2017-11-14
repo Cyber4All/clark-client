@@ -1,0 +1,17 @@
+<form style="margin-left: 15px">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" (ngModelChange)="search()" name="query">
+        <!--
+        <span class="input-group-btn">
+            <button (click)="openMenu = !openMenu" class="btn btn-default" style="border-radius: 0">Filter</button>
+        </span> -->
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-default" (click)="search()"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+    </div>
+</form>
+
+<cube-faces *ngIf="query === undefined || query === ''"></cube-faces>
+<div *ngIf="query !== undefined && query !== ''">
+    <app-curriculum-group *ngFor="let g of groups" [group]="g"></app-curriculum-group>
+</div>

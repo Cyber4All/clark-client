@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectService } from '../../learning-object.service';
 
 @Component({
   selector: 'app-curriculum-group',
-  templateUrl: './curriculum-group.component.html',
-  styleUrls: ['./curriculum-group.component.css']
+  templateUrl: './curriculum-group.component.html'
 })
 export class CurriculumGroupComponent implements OnInit {
   @Input('group') group;

@@ -17,23 +17,12 @@
           <li><a href="#">Collections</a></li> -->
           <li><a href="http://onion.clark.center">Contribute</a></li>
       </ul>
-      <form class="navbar-form navbar-right" style="margin-right: 10px">
-          <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" (ngModelChange)="search()" name="query">
-              <!--
-              <span class="input-group-btn">
-                  <button (click)="openMenu = !openMenu" class="btn btn-default" style="border-radius: 0">Filter</button>
-              </span> -->
-              <span class="input-group-btn">
-                  <button type="submit" class="btn btn-default" (click)="search()"><span class="glyphicon glyphicon-search"></span></button>
-              </span>
-          </div>
-      </form>
   </div>
 </nav>
 <div class="flex-container">
   <div class="container">
   <section class="contents">
+      <router-outlet></router-outlet>
     <!-- <select #outcomeFilter class="form-control" style="margin-left: 15px">
         <option value="all">All</option>
         <option value="1">Describe risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of human security</option>
@@ -42,12 +31,6 @@
         <option value="4">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of software security</option>
         <option value="5">Recognize risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of societal security</option>
     </select> -->
-    <div *ngIf="filteredGroups === undefined || filteredGroups.length === 0">
-        <app-curriculum-group *ngFor="let g of groups" [group]="g"></app-curriculum-group>
-    </div>
-    <div *ngIf="filteredGroups !== undefined && filteredGroups.length > 0">
-        <app-curriculum-group *ngFor="let g of filteredGroups" [group]="g"></app-curriculum-group>
-    </div>
   </section>
 </div>
   <filter-menu *ngIf="openMenu"></filter-menu>
