@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { SharedModule } from './../shared/shared.module';
 import { CurriculumGroupComponent } from '../shared/curriculum-group/curriculum-group.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -8,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 
 @NgModule({
-  imports: [FormsModule, BrowserModule, SharedModule],
+  imports: [FormsModule, BrowserModule, SharedModule, RouterModule],
   exports: [HomeComponent],
   declarations: [
     HomeComponent,

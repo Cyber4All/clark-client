@@ -1,3 +1,4 @@
+import { ModalityModule } from './modality/modality.module';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { HomeComponent } from './home/home.component';
@@ -37,7 +38,6 @@ const appRoutes: Routes = [
     FilterMenuComponent,
     AcademicsComponent,
     MappingComponent,
-    ModalityComponent
 ],
   imports: [
     BrowserModule,
@@ -45,9 +45,10 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      // { enableTracing: true } // <-- debugging purposes only
     ),
-    HomeModule
+    HomeModule,
+    ModalityModule
   ],
   providers: [
     LearningObjectService,
