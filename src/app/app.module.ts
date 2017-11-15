@@ -1,3 +1,4 @@
+import { AcademicsModule } from './academics/academics.module';
 import { ModalityModule } from './modality/modality.module';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
@@ -36,7 +37,6 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     FilterMenuComponent,
-    AcademicsComponent,
     MappingComponent,
 ],
   imports: [
@@ -47,6 +47,7 @@ const appRoutes: Routes = [
       appRoutes,
       // { enableTracing: true } // <-- debugging purposes only
     ),
+    AcademicsModule,
     HomeModule,
     ModalityModule
   ],
