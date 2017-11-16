@@ -7,8 +7,8 @@
     </tr>
     <tr *ngFor="let lo of group.learningObjects">
       <td>
-        <a *ngIf="lo.repository" (click)="open(lo)">{{ lo.topic }}</a>
-        <p *ngIf="!lo.repository">{{ lo.topic }}</p>
+        <a *ngIf="lo.url" (click)="open(lo)">{{ lo.topic }}</a>
+        <p *ngIf="!lo.url">{{ lo.topic }}</p>
       </td>
       <td style="width: 15%;">{{ lo.class }}</td>
     </tr>

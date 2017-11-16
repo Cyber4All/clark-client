@@ -13,8 +13,7 @@ export class CurriculumGroupComponent implements OnInit {
   ngOnInit() { }
 
   public open(learningObject) {
-    var url = `http://neutrino.clark.center/view/${learningObject.id}`;
-    this.service.openLearningObject(url);
+    this.service.openLearningObject(learningObject.url);
   }
 
 }
