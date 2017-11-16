@@ -33,20 +33,3 @@ nav {
 .contents {
   order: 1;
 }
-filter-menu {
-  color: white;
-  order: 2;
-  width: 400px;
-  background-color: rgb(153, 166, 177);
-  background: #0575E6;  /* fallback for old browsers */
-
-  margin-top: -17px;
-  height: calc(100vh - 17px);
-  position: fixed;
-  right: 0;
-  z-index: 1030;
-}
-.flex-fill {
-  order: 2;
-  width: 400px;
-}

@@ -1,0 +1,11 @@
+<div class="panel panel-default" style="margin-top: 10px;">
+    <div class="panel-heading">Learning Outcome Suggestion</div>
+    <div class="panel-body" style="padding: 0;">
+        <ul class="list-group outcome-list" style="margin: 0">
+            <li *ngFor="let s of standardOutcomes; let i = index" class="list-group-item">
+                <input type="checkbox" (change)="updateCheckbox(i, $event)" formControlName="{‌{i}}"> {{ s.author }} - {{ s.name }} - {{ s.outcome }}
+            </li>
+        </ul>
+    </div>
+</div>
+

@@ -7,7 +7,11 @@
   width: 100%;
   text-align: right;
   button {
+    color: black;
     background-color: transparent;
-    border: 2px solid white;
+    border: 2px solid black;
+  }
+  button:nth-child(1) {
+    float: left;
   }
 }

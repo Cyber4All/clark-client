@@ -1,3 +1,5 @@
+import { SuggestionQuery } from './../suggestion/suggestion.component';
+import { taxonomy } from './../../clark_modules/taxonomy/taxonomy-json';
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,18 +10,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilterMenuComponent implements OnInit {
 
-  types = [ 'All Types', 'Course', 'Module', 'Micromodule', 'Nanomodule', 'No Type' ];
-  query = {
-    type: this.types[0],
-    contains: undefined
-  };
+  shouldSearch = false;
+  types;
+  type;
+  sources = ['NCWF', 'NCWF Tasks', 'CAE', 'CS 2013'];
+  query: SuggestionQuery;
 
-  constructor(public service: LearningObjectService) { }
+  constructor(public service: LearningObjectService) {
+    this.types = taxonomy.lengths;
+    this.type = this.types[0];
+    this.query = {
+      text: undefined,
+      filter: {
+        author: this.sources[0],
+        name: undefined,
+        ignoreme: 'foo'
+      }
+    };
+  }
 
   ngOnInit() {
   }
 
   search() {
-    this.service.search(this.query.contains);
+    this.shouldSearch = true;
+  }
+  clearSearch() {
+    this.shouldSearch = false;
   }
 }

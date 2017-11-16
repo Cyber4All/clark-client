@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./mapping.component.scss']
 })
 export class MappingComponent implements OnInit {
+  openMenu = true;
 
   constructor() { }
 

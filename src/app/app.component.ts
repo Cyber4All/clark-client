@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  openMenu = false;
   // FIXME: Convert 'class' to 'type' for consistancy
 
   constructor(public service: LearningObjectService) {

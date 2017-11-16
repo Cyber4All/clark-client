@@ -1,3 +1,4 @@
+import { SuggestionModule } from './suggestion/suggestion.module';
 import { AcademicsModule } from './academics/academics.module';
 import { ModalityModule } from './modality/modality.module';
 import { SharedModule } from './shared/shared.module';
@@ -49,7 +50,8 @@ const appRoutes: Routes = [
     ),
     AcademicsModule,
     HomeModule,
-    ModalityModule
+    ModalityModule,
+    SuggestionModule
   ],
   providers: [
     LearningObjectService,

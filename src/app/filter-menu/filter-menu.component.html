@@ -2,22 +2,25 @@
 <form class="form-horizontal" role="form" #filterForm="ngForm">
     <div class="form-group">
       <label>Filter by</label>
-      <select class="form-control" [(ngModel)]="query.type" name="type">
+      <select class="form-control" [(ngModel)]="type" name="type">
           <option *ngFor="let t of types" [ngValue]="t">{{ t }}</option>
       </select>
     </div>
     <div class="form-group">
-      <label>Author</label>
-      <input class="form-control" type="text" />
+      <label>Source</label>
+      <select class="form-control" [(ngModel)]="query.filter.author" name="author">
+          <option *ngFor="let s of sources" [ngValue]="s">{{ s }}</option>
+      </select>
     </div>
     <div class="form-group">
       <label>Contains the words</label>
-      <input class="form-control" type="text" [(ngModel)]="query.contains" name="contains" id="contains" />
+      <input class="form-control" type="text" [(ngModel)]="query.text" name="text" id="text" />
     </div>
     <div class="btn-wrapper">
     <button type="submit" class="btn btn-primary" (click)="search()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
-    <button class="btn btn-primary" (click)="service.clearSearch()">Cancel</button>
+    <button class="btn btn-primary" (click)="clearSearch()">Cancel</button>
   </div>
   </form>
 </div>
-{{ query | json }}
+<div style="margin-top: 10px;"></div>
+<suggestion-component *ngIf="shouldSearch" [query]="query"></suggestion-component>
