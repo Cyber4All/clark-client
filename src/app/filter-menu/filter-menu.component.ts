@@ -1,5 +1,5 @@
 import { SuggestionQuery } from './../suggestion/suggestion.component';
-import { taxonomy } from './../../clark_modules/taxonomy/taxonomy-json';
+import { taxonomy } from '../../../clark_modules/taxonomy/taxonomy-json';
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 
