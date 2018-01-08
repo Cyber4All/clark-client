@@ -1,5 +1,5 @@
 import { SuggestionQuery } from './../suggestion/suggestion.component';
-import { taxonomy } from '../../../clark_modules/taxonomy/taxonomy-json';
+import { lengths } from 'clark-taxonomy';
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -17,7 +17,7 @@ export class FilterMenuComponent implements OnInit {
   query: SuggestionQuery;
 
   constructor(public service: LearningObjectService) {
-    this.types = taxonomy.lengths;
+    this.types = lengths;
     this.type = this.types[0];
     this.query = {
       text: undefined,

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import * as Fuse from 'fuse.js';
+import { environment } from '../environments/environment';
+import { LearningObject } from 'clark-entity';
 
 @Injectable()
 export class LearningObjectService {
@@ -23,6 +25,8 @@ export class LearningObjectService {
 
   dataObserver;
   data;
+
+  private learningObjectsURL = '/learning-objects'
 
   constructor(private config: ConfigService, private http: Http) {
     this.data = new Observable(observer => this.dataObserver = observer);
@@ -51,9 +55,11 @@ export class LearningObjectService {
     window.open(url);
   }
   getGroups() {
-    console.log(this.config.env.apiUrl);
-    this.http.get(this.config.env.apiUrl).subscribe(res => {
-      this.groups = res.json();
+    console.log(environment.apiURL);
+    let route = environment.apiURL + this.learningObjectsURL;
+    this.http.get(route).subscribe(res => {
+      this.groups = res.json().map((learningObject: string) => { return LearningObject.unserialize(learningObject, null) })
+      console.log(this.groups)
       for (const g of this.groups) {
         this.fuseGroup.push(new Fuse(g.learningObjects, this.options));
       }

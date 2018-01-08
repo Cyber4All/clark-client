@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiURL: 'http://cubeapi-env.m7fcsmupmd.us-east-1.elasticbeanstalk.com/api/learning-objects',
+  apiVersion: 'v1'
 };
