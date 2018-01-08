@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
 import { LearningObjectService } from '../../learning-object.service';
 
 @Component({
