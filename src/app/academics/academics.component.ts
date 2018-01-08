@@ -11,9 +11,10 @@ export class AcademicsComponent implements OnInit {
   groups;
 
   constructor(public service: LearningObjectService) {
-    service.observeFiltered().subscribe(groups => {
-      this.groups = this.sort(groups);
-    });
+    //service.observeFiltered().subscribe(groups => {
+    //this.groups = this.sort(groups);
+    //});
+    this.groups = this.sort(null); //until above is implemented
   }
 
   ngOnInit() {
@@ -28,8 +29,8 @@ export class AcademicsComponent implements OnInit {
         }
       }
     }*/
-    sorted.push({title: 'K-12', learningObjects: [{ topic: 'SPLASH', class: 'Course', url: 'http://cis1.towson.edu/~cyber4all/index.php/splash_home/' }]});
-    sorted.push({title: 'Undergraduate', learningObjects: [{ topic: 'Cybersecurity for Future Presidents', class: 'Course' }]});
+    sorted.push({title: 'K-12', learningObjects: [{ _name: 'SPLASH', _length: 'Course', url: 'http://cis1.towson.edu/~cyber4all/index.php/splash_home/' }]});
+    sorted.push({title: 'Undergraduate', learningObjects: [{ _name: 'Cybersecurity for Future Presidents', _length: 'Course' }]});
     
     return sorted;
   }
