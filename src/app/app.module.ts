@@ -21,8 +21,7 @@ import { AcademicsModule } from './academics/academics.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
 import { ModalityModule } from './modality/modality.module';
-
-
+import { LearningObjectDetailsModule } from './learning-object-details/learning-object-details.module'
 
 //Components
 import { AppComponent } from './app.component';
@@ -48,7 +47,8 @@ import { ModalityComponent } from './modality/modality.component';
     AcademicsModule,
     HomeModule,
     ModalityModule,
-    SuggestionModule
+    SuggestionModule,
+    LearningObjectDetailsModule,
   ],
   providers: [
     LearningObjectService,
