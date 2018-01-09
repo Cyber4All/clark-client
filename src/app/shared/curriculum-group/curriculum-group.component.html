@@ -4,10 +4,9 @@
     <tr>
       <th>Topic</th>
     </tr>
-    <tr *ngFor="let lo of group.learningObjects">
-      <td>
-        <a *ngIf="lo.length === 'course'" (click)="open(lo)">{{ lo.name }}</a>
-        <p *ngIf="lo.length !== 'course'">{{ lo.name }}</p>
+    <tr class="button" *ngFor="let lo of group.learningObjects">
+      <td routerLink="/details/{{ lo.id }}">
+        <span>{{ lo.name }}</span>
       </td>
     </tr>
   </table>
