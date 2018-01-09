@@ -13,7 +13,8 @@ export class HomeComponent implements OnInit {
   groups;
   learningObjects: LearningObject[];
 
-  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService) { }
+  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService) {
+  }
 
   ngOnInit() {
     this.fetchLearningObjects();

@@ -53,6 +53,12 @@ export class LearningObjectService {
     window.open(url);
   }
 
+  /**
+   * Fetches Array of Learning Objects
+   * 
+   * @returns {Promise<LearningObject[]>} 
+   * @memberof LearningObjectService
+   */
   getLearningObjects(): Promise<LearningObject[]> {
     console.log(environment.apiURL);
     let route = environment.apiURL + this.learningObjectsURL;
@@ -63,4 +69,21 @@ export class LearningObjectService {
         return learningObjects.json().map((learningObject: string) => LearningObject.unserialize(learningObject, null));
       });
   }
+
+  /**
+   * Fetches LearningObject by id
+   * 
+   * @param {string} id 
+   * @returns {Promise<LearningObject>} 
+   * @memberof LearningObjectService
+   */
+  getLearningObject(id: string): Promise<LearningObject> {
+    let route = environment.apiURL + this.learningObjectsURL + id;
+    return this.http.get(route)
+      .toPromise()
+      .then((learningObject) => {
+        return LearningObject.unserialize(learningObject.json(), null);
+      });
+  }
+
 }
