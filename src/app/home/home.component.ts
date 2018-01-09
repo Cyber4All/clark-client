@@ -1,5 +1,6 @@
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
+import { LearningObject } from 'clark-entity';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +11,14 @@ export class HomeComponent implements OnInit {
   query: string;
   groups;
 
-  constructor(public service: LearningObjectService) {
-    service.observeFiltered().subscribe(groups => {
-      this.groups = this.sort(groups);
-    });
+  constructor(private service: LearningObjectService) {
+
   }
 
   ngOnInit() {
+    this.service.observeFiltered().subscribe(groups => {
+      this.groups = this.sort(groups);
+    });
   }
 
   search() {
@@ -28,25 +30,23 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  sort(groups) {
-    const courses = [];
+  sort(groups: LearningObject[]) {
+    const Courses = [];
     const Modules = [];
     const Micromodules = [];
     const Nanomodules = [];
     const noclass = [];
-    for (const g of groups) {
-      for (const lo of g.learningObjects) {
-        if (lo.class === 'Course') { courses.push(lo); }
-        if (lo.class === 'Module') { Modules.push(lo); }
-        if (lo.class === 'Micromodule') { Micromodules.push(lo); }
-        if (lo.class === 'Nanomodule') { Nanomodules.push(lo); }
-        if (lo.class === '') { noclass.push(lo); }
-      }
+    for (const learningObject of groups) {
+      if (learningObject.length.toLowerCase() === 'course') { Courses.push(learningObject); }
+      if (learningObject.length.toLowerCase() === 'module') { Modules.push(learningObject); }
+      if (learningObject.length.toLowerCase() === 'micromodule') { Micromodules.push(learningObject); }
+      if (learningObject.length.toLowerCase() === 'nanomodule') { Nanomodules.push(learningObject); }
+      if (learningObject.length.toLowerCase() === '') { noclass.push(learningObject); }
     }
     const sortedGroups = [
       {
         title: 'Course - 15 weeks',
-        learningObjects: courses.sort(this.sortByAlphabet)
+        learningObjects: Courses.sort(this.sortByAlphabet)
       },
       {
         title: 'Module - 4 hours < completion time < 2 weeks',

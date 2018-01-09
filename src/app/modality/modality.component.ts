@@ -1,5 +1,6 @@
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
+import { LearningObject } from 'clark-entity';
 
 @Component({
   selector: 'app-modality',
@@ -10,28 +11,26 @@ export class ModalityComponent implements OnInit {
 
   groups;
 
-  constructor(public service: LearningObjectService) {
-    this.groups = this.sort(service.groups);
+  constructor(private service: LearningObjectService) {
   }
 
   ngOnInit() {
+    this.groups = this.sort(this.service.groups);
   }
 
   // FIXME: DRY (home.component.ts)
-  sort(groups) {
+  sort(groups: LearningObject[]) {
     const courses = [];
     const Modules = [];
     const Micromodules = [];
     const Nanomodules = [];
     const noclass = [];
-    for (const g of groups) {
-      for (const lo of g.learningObjects) {
-        if (lo.class === 'Course') { courses.push(lo); }
-        if (lo.class === 'Module') { Modules.push(lo); }
-        if (lo.class === 'Micromodule') { Micromodules.push(lo); }
-        if (lo.class === 'Nanomodule') { Nanomodules.push(lo); }
-        if (lo.class === '') { noclass.push(lo); }
-      }
+    for (const learningObject of groups) {
+      if (learningObject.length === 'course') { courses.push(learningObject); }
+      if (learningObject.length === 'module') { Modules.push(learningObject); }
+      if (learningObject.length === 'micromodule') { Micromodules.push(learningObject); }
+      if (learningObject.length === 'nanomodule') { Nanomodules.push(learningObject); }
+      if (learningObject.length === '') { noclass.push(learningObject); }
     }
     const sortedGroups = [
       {

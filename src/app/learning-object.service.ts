@@ -33,7 +33,7 @@ export class LearningObjectService {
     this.getGroups();
   }
 
-  observeFiltered(): Observable<{}[]> {
+  observeFiltered(): Observable<LearningObject[]> {
     return this.data;
   }
 

@@ -3,14 +3,12 @@
   <table class="table table-striped table-bordered">
     <tr>
       <th>Topic</th>
-      <th>Type</th>
     </tr>
     <tr *ngFor="let lo of group.learningObjects">
       <td>
-        <a *ngIf="lo.url" (click)="open(lo)">{{ lo.topic }}</a>
-        <p *ngIf="!lo.url">{{ lo.topic }}</p>
+        <a *ngIf="lo.length === 'course'" (click)="open(lo)">{{ lo.name }}</a>
+        <p *ngIf="lo.length !== 'course'">{{ lo.name }}</p>
       </td>
-      <td style="width: 15%;">{{ lo.class }}</td>
     </tr>
   </table>
 </div>
