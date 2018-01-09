@@ -29,8 +29,8 @@ export class AcademicsComponent implements OnInit {
         }
       }
     }*/
-    sorted.push({title: 'K-12', learningObjects: [{ _name: 'SPLASH', _length: 'Course', url: 'http://cis1.towson.edu/~cyber4all/index.php/splash_home/' }]});
-    sorted.push({title: 'Undergraduate', learningObjects: [{ _name: 'Cybersecurity for Future Presidents', _length: 'Course' }]});
+    sorted.push({title: 'K-12', learningObjects: [{ name: 'SPLASH', length: 'Course', url: 'http://cis1.towson.edu/~cyber4all/index.php/splash_home/' }]});
+    sorted.push({title: 'Undergraduate', learningObjects: [{ name: 'Cybersecurity for Future Presidents', length: 'Course' }]});
     
     return sorted;
   }
