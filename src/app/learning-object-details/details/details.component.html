@@ -1,30 +1,52 @@
-<div class="container">
-  <h2>{{ learningObject.name }} - {{learningObject.length}}</h2>
-  <p>Created by: {{ learningObject.author }}</p>
-  <small>Last updated: {{learningObject.date}}</small>
-  <h4>Learning Goals</h4>
-  <ul>
-    <li *ngFor="let goal of learningObject.goals">{{goal.text}}</li>
-  </ul>
-  <h4>Learning Outcomes</h4>
-  <ul>
-    <li *ngFor="let outcome of learningObject.outcomes">
-      <p>{{outcome.bloom}}: {{outcome.verb}} {{outcome.text}}</p> 
-        <div class="assessmentPlans">
-            <h4>Assessment Plans</h4>
-            <blockquote *ngFor="let assess of outcome.assessments">
-              <p>{{assess.plan}}</p>
-              <div [innerHtml]="assess.text "></div>
-            </blockquote>
-        </div>
-        <div class ="instructionalStrategies">
-          <h4>Instructional Strategies</h4>
-          <blockquote *ngFor="let strategy of outcome.instructions">
-            <p>{{strategy.instruction}}</p>
-            <div [innerHtml]="strategy.text "></div>
+<div *ngIf = "learningObject"class="container">
+  <div class="learningHeader">
+    <h2>{{ learningObject.name }} - {{learningObject.length}}</h2>
+    <p *ngIf="learningObject.author">Created by: {{ learningObject.author }}</p>
+    <small>Last updated: {{learningObject.date | date}}</small>
+  </div>
+  <div *ngIf="learningObject.goals" class= "learningGoals">
+    <h4>Learning Goals</h4>
+    <ul>
+      <li *ngFor="let goal of learningObject.goals">{{goal.text}}</li>
+    </ul>
+  </div>
+  <div *ngIf="learningObject.outcomes" class="learningOutcomes">
+    <h4>Learning Outcomes</h4>
+    <ul>
+      <li *ngFor="let outcome of learningObject.outcomes">
+        <p>{{outcome.bloom}}: {{outcome.verb}} {{outcome.text}}</p>
+        <div *ngIf="outcome.assessments" class="assessmentPlans">
+          <h4>Assessment Plans</h4>
+          <blockquote *ngFor="let strategy of outcome.assessments">
+            <learning-object-details-content [strategy]="strategy" [type]="'assessment'"></learning-object-details-content>
           </blockquote>
         </div>
-    </li>
-  </ul>
+        <div *ngIf="outcome.instructions" class="instructionalStrategies">
+          <h4>Instructional Strategies</h4>
+          <blockquote *ngFor="let strategy of outcome.instructions">
+            <learning-object-details-content [strategy]="strategy" [type]="'instruction'"></learning-object-details-content>
+          </blockquote>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class = "repository">
+      <h4>Files</h4>
+      <ul>
+        <li *ngFor="let file of learningObject.repository.files">
+          <a [href]="file.url">{{file.name}}</a>
+        </li>
+      </ul>
+
+      <h4>Urls</h4>
+      <ul>
+        <li *ngFor="let link of learningObject.repository.urls">
+            <a [href]="link.url">{{link.title}}</a>
+        </li>
+      </ul>
+      <h4>Notes</h4>
+      <p>{{learningObject.repository.notes}}</p>
+  </div>
+  
 </div>
 

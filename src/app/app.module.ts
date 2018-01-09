@@ -29,7 +29,9 @@ import { FilterMenuComponent } from './filter-menu/filter-menu.component';
 import { AcademicsComponent } from './academics/academics.component';
 import { MappingComponent } from './mapping/mapping.component';
 import { ModalityComponent } from './modality/modality.component';
-import { DetailsComponent } from './learning-object-details/details/details.component'
+import { DetailsComponent } from './learning-object-details/details/details.component';
+import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
+
 
 
 
@@ -39,7 +41,8 @@ import { DetailsComponent } from './learning-object-details/details/details.comp
     AppComponent,
     FilterMenuComponent,
     MappingComponent,
-    DetailsComponent
+    DetailsComponent,
+    DetailsContentComponent //TODO Create Details module
   ],
   imports: [
     BrowserModule,

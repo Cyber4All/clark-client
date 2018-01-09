@@ -1,13 +1,15 @@
+import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from 'clark-entity';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'learning-object-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit {
-  learningObject = {
+export class DetailsComponent implements OnInit, OnDestroy {
+  /*learningObject = {
     name: 'Sample Nano',
     author: 'thowar4',
     length: 'Nanomodule',
@@ -28,15 +30,25 @@ export class DetailsComponent implements OnInit {
                 instruction: 'Quiz', text: '<ol><li>Option</li></ol>'
               }]
       }],
+  };*/
 
-  };
+  private sub: any;
+  id: string;
+  learningObject: any;
 
-  constructor() {
-    
-  }
-
+  constructor(public service: LearningObjectService, private route: ActivatedRoute) { }
   ngOnInit() {
-    
+    this.sub = this.route.params.subscribe(params => {
+      this.id = params['id'];
+    });
+    this.fetchLearningObject();
+  }
+  async fetchLearningObject() {
+    this.learningObject = await this.service.getLearningObject(this.id);
+    console.log(this.learningObject);
+  }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
 }
