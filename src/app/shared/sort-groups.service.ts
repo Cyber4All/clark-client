@@ -7,21 +7,22 @@ export class SortGroupsService {
 
     }
 
-    sort(groups: LearningObject[]) {
+    sort(learningObjects: LearningObject[]) {
+        console.log(learningObjects)
         const courses: LearningObject[] = [];
         const Modules: LearningObject[] = [];
         const Micromodules: LearningObject[] = [];
         const Nanomodules: LearningObject[] = [];
         const noclass: LearningObject[] = [];
 
-        groups ? groups.forEach((learningObject) => {
+        learningObjects ? learningObjects.forEach((learningObject) => {
             if (learningObject.length === 'course') { courses.push(learningObject); }
             if (learningObject.length === 'module') { Modules.push(learningObject); }
             if (learningObject.length === 'micromodule') { Micromodules.push(learningObject); }
             if (learningObject.length === 'nanomodule') { Nanomodules.push(learningObject); }
             if (learningObject.length === '') { noclass.push(learningObject); }
         })
-            : "No groups to iterate over";
+            : "No learningObjects to iterate over";
 
         const sortedGroups = [
             {

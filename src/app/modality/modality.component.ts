@@ -10,11 +10,17 @@ import { SortGroupsService } from '../shared/sort-groups.service';
 })
 export class ModalityComponent implements OnInit {
 
+  learningObjects: LearningObject[];
   groups;
 
-  constructor(private service: LearningObjectService, private sorter: SortGroupsService) { }
+  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService) { }
 
   ngOnInit() {
-    this.groups = this.sorter.sort(this.service.groups);
+    this.fetchLearningObjects();
+  }
+
+  async fetchLearningObjects() {
+    this.learningObjects = await this.learningObjectService.getLearningObjects();
+    this.groups = this.sorter.sort(this.learningObjects);
   }
 }

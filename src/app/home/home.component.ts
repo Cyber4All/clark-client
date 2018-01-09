@@ -11,21 +11,26 @@ import { SortGroupsService } from '../shared/sort-groups.service';
 export class HomeComponent implements OnInit {
   query: string;
   groups;
+  learningObjects: LearningObject[];
 
-  constructor(private service: LearningObjectService, private sorter: SortGroupsService) { }
+  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService) { }
 
   ngOnInit() {
-    this.service.observeFiltered().subscribe(groups => {
-      this.groups = this.sorter.sort(groups);
-    });
+    this.fetchLearningObjects();
+
+  }
+
+  async fetchLearningObjects() {
+    this.learningObjects = await this.learningObjectService.getLearningObjects();
+    this.groups = this.sorter.sort(this.learningObjects);
   }
 
   search() {
     // TODO: verify query contains alphanumeric characters
     if (this.query === '') {
-      this.service.clearSearch();
+      this.learningObjectService.clearSearch();
     } else if (this.query !== undefined) {
-      this.service.search(this.query);
+      this.learningObjectService.search(this.query);
     }
   }
 
