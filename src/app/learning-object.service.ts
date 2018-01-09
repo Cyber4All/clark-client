@@ -66,7 +66,12 @@ export class LearningObjectService {
     return this.http.get(route)
       .toPromise()
       .then((learningObjects) => {
-        return learningObjects.json().map((learningObject: string) => LearningObject.unserialize(learningObject, null));
+        return learningObjects.json().map((_learningObject: string) => {
+          let object = JSON.parse(_learningObject);
+          let learningObject = LearningObject.unserialize(_learningObject, null);
+          learningObject['id'] = object['id'];
+          return learningObject;
+        });
       });
   }
 
