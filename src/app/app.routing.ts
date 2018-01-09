@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { AcademicsComponent } from './academics/academics.component';
 import { MappingComponent } from './mapping/mapping.component';
 import { ModalityComponent } from './modality/modality.component';
+import { DetailsComponent } from './learning-object-details/details/details.component'
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full', component: HomeComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
     { path: 'academics', component: AcademicsComponent },
     { path: 'mapping', component: MappingComponent },
     { path: 'modality', component: ModalityComponent },
+    { path: "details/:id", component: DetailsComponent },
 
     // Catch All
     { path: '**', redirectTo: '' }

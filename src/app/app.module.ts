@@ -21,7 +21,6 @@ import { AcademicsModule } from './academics/academics.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
 import { ModalityModule } from './modality/modality.module';
-import { LearningObjectDetailsModule } from './learning-object-details/learning-object-details.module'
 
 //Components
 import { AppComponent } from './app.component';
@@ -30,6 +29,8 @@ import { FilterMenuComponent } from './filter-menu/filter-menu.component';
 import { AcademicsComponent } from './academics/academics.component';
 import { MappingComponent } from './mapping/mapping.component';
 import { ModalityComponent } from './modality/modality.component';
+import { DetailsComponent } from './learning-object-details/details/details.component'
+
 
 
 
@@ -38,6 +39,7 @@ import { ModalityComponent } from './modality/modality.component';
     AppComponent,
     FilterMenuComponent,
     MappingComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +50,6 @@ import { ModalityComponent } from './modality/modality.component';
     HomeModule,
     ModalityModule,
     SuggestionModule,
-    LearningObjectDetailsModule,
   ],
   providers: [
     LearningObjectService,
