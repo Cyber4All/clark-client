@@ -1,3 +1,30 @@
-<p>
-  details works!
-</p>
+<div class="container">
+  <h2>{{ learningObject.name }} - {{learningObject.length}}</h2>
+  <p>Created by: {{ learningObject.author }}</p>
+  <small>Last updated: {{learningObject.date}}</small>
+  <h4>Learning Goals</h4>
+  <ul>
+    <li *ngFor="let goal of learningObject.goals">{{goal.text}}</li>
+  </ul>
+  <h4>Learning Outcomes</h4>
+  <ul>
+    <li *ngFor="let outcome of learningObject.outcomes">
+      <p>{{outcome.bloom}}: {{outcome.verb}} {{outcome.text}}</p> 
+        <div class="assessmentPlans">
+            <h4>Assessment Plans</h4>
+            <blockquote *ngFor="let assess of outcome.assessments">
+              <p>{{assess.plan}}</p>
+              <div [innerHtml]="assess.text "></div>
+            </blockquote>
+        </div>
+        <div class ="instructionalStrategies">
+          <h4>Instructional Strategies</h4>
+          <blockquote *ngFor="let strategy of outcome.instructions">
+            <p>{{strategy.instruction}}</p>
+            <div [innerHtml]="strategy.text "></div>
+          </blockquote>
+        </div>
+    </li>
+  </ul>
+</div>
+
