@@ -1,16 +1,16 @@
-<div *ngIf = "learningObject"class="container">
+<div *ngIf="learningObject" class="container">
   <div class="learningHeader">
     <h2>{{ learningObject.name }} - {{learningObject.length}}</h2>
     <p *ngIf="learningObject.author">Created by: {{ learningObject.author }}</p>
     <small>Last updated: {{learningObject.date | date}}</small>
   </div>
-  <div *ngIf="learningObject.goals" class= "learningGoals">
+  <div *ngIf="learningObject.goals.length !== 0" class="learningGoals">
     <h4>Learning Goals</h4>
     <ul>
       <li *ngFor="let goal of learningObject.goals">{{goal.text}}</li>
     </ul>
   </div>
-  <div *ngIf="learningObject.outcomes" class="learningOutcomes">
+  <div *ngIf="learningObject.outcomes.length !== 0" class="learningOutcomes">
     <h4>Learning Outcomes</h4>
     <ul>
       <li *ngFor="let outcome of learningObject.outcomes">
@@ -30,23 +30,26 @@
       </li>
     </ul>
   </div>
-  <div class = "repository">
+  <div class="repository">
+    <div class="files" *ngIf = "learningObject.repository.files.length !== 0">
       <h4>Files</h4>
       <ul>
         <li *ngFor="let file of learningObject.repository.files">
           <a [href]="file.url">{{file.name}}</a>
         </li>
       </ul>
-
+    </div>
+    <div class="links" *ngIf="learningObject.repository.urls.length !== 0">
       <h4>Urls</h4>
       <ul>
         <li *ngFor="let link of learningObject.repository.urls">
-            <a [href]="link.url">{{link.title}}</a>
+          <a [href]="link.url">{{link.title}}</a>
         </li>
       </ul>
+    </div>
+    <div class="notes" *ngIf="learningObject.repository.notes">
       <h4>Notes</h4>
       <p>{{learningObject.repository.notes}}</p>
+    </div>
   </div>
-  
 </div>
-
