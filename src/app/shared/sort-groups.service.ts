@@ -52,8 +52,8 @@ export class SortGroupsService {
     }
 
     sortByAlphabet(a, b) {
-        if (a.topic < b.topic) { return -1; }
-        if (a.topic > b.topic) { return 1; }
+        if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
+        if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
         return 0;
     }
 }
