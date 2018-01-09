@@ -1,4 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
+import { LearningObject } from 'clark-entity';
 
 @Injectable()
 export class SortGroupsService {
@@ -6,23 +7,22 @@ export class SortGroupsService {
 
     }
 
-    sort(groups) {
-        const courses = [];
-        const Modules = [];
-        const Micromodules = [];
-        const Nanomodules = [];
-        const noclass = [];
-        /*for(const g of groups){
-        for(const lo of g.learningObjects){
-        }
-        }*/
-        for (const lo of groups) {
-            if (lo._length === 'course') { courses.push(lo); }
-            if (lo._length === 'module') { Modules.push(lo); }
-            if (lo._length === 'micromodule') { Micromodules.push(lo); }
-            if (lo._length === 'nanomodule') { Nanomodules.push(lo); }
-            if (lo._length === '') { noclass.push(lo); }
-        }
+    sort(groups: LearningObject[]) {
+        const courses: LearningObject[] = [];
+        const Modules: LearningObject[] = [];
+        const Micromodules: LearningObject[] = [];
+        const Nanomodules: LearningObject[] = [];
+        const noclass: LearningObject[] = [];
+
+        groups ? groups.forEach((learningObject) => {
+            if (learningObject.length === 'course') { courses.push(learningObject); }
+            if (learningObject.length === 'module') { Modules.push(learningObject); }
+            if (learningObject.length === 'micromodule') { Micromodules.push(learningObject); }
+            if (learningObject.length === 'nanomodule') { Nanomodules.push(learningObject); }
+            if (learningObject.length === '') { noclass.push(learningObject); }
+        })
+            : "No groups to iterate over";
+
         const sortedGroups = [
             {
                 title: 'Course - 15 weeks',

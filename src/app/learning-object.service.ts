@@ -44,11 +44,12 @@ export class LearningObjectService {
         learningObjects: g.search(query)
       });
     }
-    this.dataObserver.next(this.filteredResults);
+    this.dataObserver ? this.dataObserver.next(this.filteredResults) : "Data Observer is undefined!";
   }
   clearSearch() {
     this.filteredResults = [];
-    this.dataObserver.next(this.groups);
+    this.dataObserver ? this.dataObserver.next(this.groups) : "Data Observer is undefined!";
+
   }
   openLearningObject(url: string) {
     // location.href = url;
@@ -63,7 +64,7 @@ export class LearningObjectService {
       for (const g of this.groups) {
         this.fuseGroup.push(new Fuse(g.learningObjects, this.options));
       }
-      this.dataObserver.next(this.groups);
+      this.dataObserver ? this.dataObserver.next(this.groups) : "Data Observer is undefined!";
     });
   }
 }
