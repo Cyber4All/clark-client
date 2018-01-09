@@ -9,6 +9,9 @@ import { RoutingModule } from '../app.routing';
 //Services
 import { SortGroupsService } from './sort-groups.service';
 
+//Pipes
+import { EscapeHtmlPipe } from './pipes/keep-html.pipe'
+
 //Components
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 
@@ -17,7 +20,10 @@ import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.co
     CommonModule,
     RoutingModule,
   ],
-  declarations: [CurriculumGroupComponent],
+  declarations: [
+    EscapeHtmlPipe,
+    CurriculumGroupComponent
+  ],
   exports: [CurriculumGroupComponent],
   providers: [
     SortGroupsService
