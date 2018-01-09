@@ -28,10 +28,7 @@ export class LearningObjectService {
 
   private learningObjectsURL = '/learning-objects'
 
-  constructor(private config: ConfigService, private http: Http) {
-    this.data = new Observable(observer => this.dataObserver = observer);
-    this.getGroups();
-  }
+  constructor(private config: ConfigService, private http: Http) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -55,16 +52,15 @@ export class LearningObjectService {
     // location.href = url;
     window.open(url);
   }
-  getGroups() {
+
+  getLearningObjects(): Promise<LearningObject[]> {
     console.log(environment.apiURL);
     let route = environment.apiURL + this.learningObjectsURL;
-    this.http.get(route).subscribe(res => {
-      this.groups = res.json().map((learningObject: string) => { return LearningObject.unserialize(learningObject, null) })
-      console.log(this.groups)
-      for (const g of this.groups) {
-        this.fuseGroup.push(new Fuse(g.learningObjects, this.options));
-      }
-      this.dataObserver ? this.dataObserver.next(this.groups) : "Data Observer is undefined!";
-    });
+
+    return this.http.get(route)
+      .toPromise()
+      .then((learningObjects) => {
+        return learningObjects.json().map((learningObject: string) => LearningObject.unserialize(learningObject, null));
+      });
   }
 }
