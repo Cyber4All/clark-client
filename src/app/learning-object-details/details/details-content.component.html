@@ -1,4 +1,4 @@
 <p *ngIf ="type === 'assessment'">{{strategy.plan}}</p>
 <p *ngIf="type === 'instruction'">{{strategy.plan}}</p>
 <button *ngIf="strategy.text"(click)="showContent()">\/</button>
-<div *ngIf="isShown" [innerHtml]="strategy.text "></div>
+<fieldset [disabled]="true" *ngIf="isShown" [innerHtml]="strategy.text | keepHtml"></fieldset>

@@ -8,7 +8,7 @@ export class SortGroupsService {
     }
 
     sort(learningObjects: LearningObject[]) {
-        console.log(learningObjects)
+        console.log(learningObjects);
         const courses: LearningObject[] = [];
         const Modules: LearningObject[] = [];
         const Micromodules: LearningObject[] = [];
@@ -47,13 +47,12 @@ export class SortGroupsService {
             }
         ];
         console.log(sortedGroups);
-
         return sortedGroups;
     }
 
     sortByAlphabet(a, b) {
         if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
-        if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
+        if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1;  }
         return 0;
     }
 }
