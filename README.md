@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Cyber4All/curriculum-listings/tree/production.svg?style=svg)](https://circleci.com/gh/Cyber4All/curriculum-listings/tree/production)
+
 # CurriculumListings
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.7.

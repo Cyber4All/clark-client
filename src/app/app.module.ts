@@ -15,6 +15,10 @@ import { LearningObjectService } from './learning-object.service';
 
 //Other
 
+//Pipes
+import { EscapeHtmlPipe } from './shared/pipes/keep-html.pipe';
+
+
 //Modules
 import { HomeModule } from './home/home.module';
 import { AcademicsModule } from './academics/academics.module';
@@ -41,8 +45,10 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
     AppComponent,
     FilterMenuComponent,
     MappingComponent,
+    EscapeHtmlPipe,
     DetailsComponent,
     DetailsContentComponent //TODO Create Details module
+
   ],
   imports: [
     BrowserModule,

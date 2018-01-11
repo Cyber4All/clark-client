@@ -9,9 +9,6 @@ import { RoutingModule } from '../app.routing';
 //Services
 import { SortGroupsService } from './sort-groups.service';
 
-//Pipes
-import { EscapeHtmlPipe } from './pipes/keep-html.pipe'
-
 //Components
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
@@ -22,6 +19,7 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     RoutingModule,
   ],
   declarations: [
+<<<<<<< HEAD
     EscapeHtmlPipe,
     CurriculumGroupComponent,
     BreadcrumbComponent
@@ -29,6 +27,9 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
   exports: [
     CurriculumGroupComponent,
     BreadcrumbComponent
+=======
+    CurriculumGroupComponent
+>>>>>>> cb1770c603b8ad5bc9fe0b80f1f2085fc8949761
   ],
   providers: [
     SortGroupsService
