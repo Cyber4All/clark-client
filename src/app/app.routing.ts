@@ -9,11 +9,11 @@ import { DetailsComponent } from './learning-object-details/details/details.comp
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full', component: HomeComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'academics', component: AcademicsComponent },
-    { path: 'mapping', component: MappingComponent },
-    { path: 'modality', component: ModalityComponent },
-    { path: "details/:id", component: DetailsComponent },
+    { path: 'home', component: HomeComponent, data: { breadcrumb: "Home" } },
+    { path: 'academics', component: AcademicsComponent, data: { breadcrumb: "Academics" } },
+    { path: 'mapping', component: MappingComponent, data: { breadcrumb: "Mapping" } },
+    { path: 'modality', component: ModalityComponent, data: { breadcrumb: "Modality" } },
+    { path: "details/:id", component: DetailsComponent, data: { breadcrumb: "Details" } },
 
     // Catch All
     { path: '**', redirectTo: '' }

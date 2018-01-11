@@ -14,6 +14,7 @@ import { EscapeHtmlPipe } from './pipes/keep-html.pipe'
 
 //Components
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
   imports: [
@@ -22,9 +23,13 @@ import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.co
   ],
   declarations: [
     EscapeHtmlPipe,
-    CurriculumGroupComponent
+    CurriculumGroupComponent,
+    BreadcrumbComponent
   ],
-  exports: [CurriculumGroupComponent],
+  exports: [
+    CurriculumGroupComponent,
+    BreadcrumbComponent
+  ],
   providers: [
     SortGroupsService
   ]

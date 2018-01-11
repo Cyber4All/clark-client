@@ -53,6 +53,7 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
     HomeModule,
     ModalityModule,
     SuggestionModule,
+    SharedModule,
   ],
   providers: [
     LearningObjectService,
