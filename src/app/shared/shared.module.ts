@@ -19,17 +19,12 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     RoutingModule,
   ],
   declarations: [
-<<<<<<< HEAD
-    EscapeHtmlPipe,
     CurriculumGroupComponent,
     BreadcrumbComponent
   ],
   exports: [
     CurriculumGroupComponent,
     BreadcrumbComponent
-=======
-    CurriculumGroupComponent
->>>>>>> cb1770c603b8ad5bc9fe0b80f1f2085fc8949761
   ],
   providers: [
     SortGroupsService

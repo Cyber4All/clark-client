@@ -11,7 +11,7 @@ const DEFAULT_STATE: Cart = {
 export const CART_STORAGE_LOCATION = 'cart';
 
 /**
- * Adds LearningObject's ID to Cart's items
+ * Adds LearningObject's ID to Cart's items if not already in Cart
  * 
  * @param {Cart} state 
  * @param {string} learningObjectID 
@@ -19,7 +19,7 @@ export const CART_STORAGE_LOCATION = 'cart';
  */
 const addLearningObject = (state: Cart, learningObjectID: string) => {
 
-    state.items.indexOf(learningObjectID) > -1 ? state.items.push(learningObjectID)
+    state.items.indexOf(learningObjectID) === -1 ? state.items.push(learningObjectID)
         : "LearningObject's ID is already in user's cart. Show them a message saying so.";
 
     return state;
