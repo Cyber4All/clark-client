@@ -23,6 +23,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
   async fetchLearningObject() {
     this.learningObject = await this.service.getLearningObject(this.id);
+    
     console.log(this.learningObject);
   }
   ngOnDestroy() {
