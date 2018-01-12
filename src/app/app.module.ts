@@ -12,8 +12,11 @@ import { RoutingModule } from './app.routing';
 // Services
 import { ConfigService } from './config.service';
 import { LearningObjectService } from './learning-object.service';
+import { CartService } from './shared/services/cart.service'
 
-// Other
+// Redux
+import { StoreModule } from '@ngrx/store';
+import { cartReducer } from './shared/redux/reducers/cart.reducer';
 
 // Pipes
 import { EscapeHtmlPipe } from './shared/pipes/keep-html.pipe';
@@ -59,10 +62,12 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
     ModalityModule,
     SuggestionModule,
     SharedModule,
+    StoreModule.forRoot({ cart: cartReducer }),
   ],
   providers: [
     LearningObjectService,
     ConfigService,
+    CartService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,6 @@
 <div *ngIf="learningObject" class="container">
+  <button (click)="addToCart()">ADD TO CART</button>
+  <button (click)="removeFromCart()">REMOVE FROM CART</button>
   <div class="learningHeader">
     <h2>{{ learningObject.name }} - {{learningObject.length}}</h2>
     <p *ngIf="learningObject.author">Created by: {{ learningObject.author }}</p>
@@ -31,7 +33,7 @@
     </ul>
   </div>
   <div class="repository">
-    <div class="files" *ngIf = "learningObject.repository.files.length !== 0">
+    <div class="files" *ngIf="learningObject.repository.files.length !== 0">
       <h4>Files</h4>
       <ul>
         <li *ngFor="let file of learningObject.repository.files">
