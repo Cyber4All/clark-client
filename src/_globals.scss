@@ -1,0 +1,20 @@
+// font
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700');
+
+// Variables 
+$blue-accent: #3789ce ;
+$green: #119E3E ;
+$dark-text: #55595e ;
+$wrapper-background: #f0f4f7 ;
+$blue-gradient: linear-gradient(45deg, #1564a7 , #208dea );
+$error-red: #e74c3c ;
+$placeholder: lighten(#A9A9A9 , 10);
+$max-width: 1200px;
+$popup-z: 9;
+
+// Mixins
+@mixin vert-center {
+    display: inline-flex;
+    flex-direction: column;
+    align-self: center;
+}

@@ -1,17 +1,18 @@
-//Core
+// Core
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-//Modules
+// Modules
 import { RoutingModule } from '../app.routing';
 
-//Services
+// Services
 import { SortGroupsService } from './sort-groups.service';
 
-//Components
+// Components
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { LearningObjectListingComponent } from './learning-object/learning-object.component';
 
 @NgModule({
   imports: [
@@ -19,17 +20,14 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     RoutingModule,
   ],
   declarations: [
-<<<<<<< HEAD
-    EscapeHtmlPipe,
     CurriculumGroupComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    LearningObjectListingComponent
   ],
   exports: [
     CurriculumGroupComponent,
-    BreadcrumbComponent
-=======
-    CurriculumGroupComponent
->>>>>>> cb1770c603b8ad5bc9fe0b80f1f2085fc8949761
+    BreadcrumbComponent,
+    LearningObjectListingComponent
   ],
   providers: [
     SortGroupsService

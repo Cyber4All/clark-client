@@ -13,20 +13,20 @@ import { RoutingModule } from './app.routing';
 import { ConfigService } from './config.service';
 import { LearningObjectService } from './learning-object.service';
 
-//Other
+// Other
 
-//Pipes
+// Pipes
 import { EscapeHtmlPipe } from './shared/pipes/keep-html.pipe';
 
 
-//Modules
+// Modules
 import { HomeModule } from './home/home.module';
 import { AcademicsModule } from './academics/academics.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
 import { ModalityModule } from './modality/modality.module';
 
-//Components
+// Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FilterMenuComponent } from './filter-menu/filter-menu.component';
@@ -47,8 +47,7 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
     MappingComponent,
     EscapeHtmlPipe,
     DetailsComponent,
-    DetailsContentComponent //TODO Create Details module
-
+    DetailsContentComponent // TODO Create Details module
   ],
   imports: [
     BrowserModule,

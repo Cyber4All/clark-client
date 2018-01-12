@@ -1,0 +1,22 @@
+@import '~_globals.scss';
+
+.learning-object-listing-viewport {
+    cursor: pointer;
+    border: 1px solid $placeholder;
+    margin-top: 20px;
+    .text-line {
+        display: inline-flex;
+    }
+    .center-info {
+        display: flex;
+        flex-direction: column;
+
+    }
+    .bottom-info {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: nowrap;
+    }
+}

@@ -1,13 +1,8 @@
 <div *ngIf="group.learningObjects.length !== 0" class="container">
   <h2>{{ group.title }}</h2>
-  <table class="table table-striped table-bordered">
-    <tr>
-      <th>Topic</th>
-    </tr>
-    <tr class="button" *ngFor="let lo of group.learningObjects">
-      <td routerLink="/details/{{ lo.id }}">
-        <span>{{ lo.name }}</span>
-      </td>
-    </tr>
-  </table>
+  <learning-object-component 
+    *ngFor="let lo of group.learningObjects" 
+    routerLink="/details/{{ lo.id }}"
+    [learningObject]="lo"
+  ></learning-object-component>
 </div>

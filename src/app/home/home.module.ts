@@ -13,7 +13,7 @@ import { HomeComponent } from './home.component';
   exports: [HomeComponent],
   declarations: [
     HomeComponent,
-    CubeFacesComponent,
+    CubeFacesComponent
   ],
   providers: [],
 })
