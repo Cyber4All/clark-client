@@ -72,8 +72,8 @@ a:not(.no-link) {
 }
 
 .inner {
-  max-width: $max-width;
-  margin: auto;
+  // max-width: $max-width;
+  // margin: auto;
   position: relative;
 }
 
@@ -140,7 +140,7 @@ a:not(.no-link) {
 }
 
 .content {
-  padding: 20px;
+  // padding: 20px;
   height: calc(100vh - 75px);
   box-sizing: border-box;
   overflow-y: scroll;
@@ -196,6 +196,6 @@ a:not(.no-link) {
   }
 
   .outlet {
-    margin-top: 30px;
+    // margin-top: 30px;
   }
 }

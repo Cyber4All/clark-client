@@ -1,12 +1,9 @@
+@import '~_globals.scss';
+
 $top-height: 500px;
 $banner-height: 90px;
 
 .top {
-    z-index: 1000;
-    position: fixed;
-    top: 75px;
-    left: 0;
-    right: 0;
     height: calc($top-height + $banner-height);
     .img-viewport {
         background: url(/assets/servers.jpg) no-repeat;
@@ -49,11 +46,6 @@ $banner-height: 90px;
         height: $banner-height;
         width: 100%;
     }
-}
-.top-section-padding {
-    position: relative;
-    width: 100vw;
-    height: calc(590px - 50px); // FIXME: The manual factoring of the header w/ margin/padding before content starts should not be doen like this
 }
 .search-results {
     position: relative;
