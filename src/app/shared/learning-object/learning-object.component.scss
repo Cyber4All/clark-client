@@ -4,16 +4,31 @@
     height: 100%;
     cursor: pointer;
     border: 1px solid $placeholder;
-    padding: 2px 16px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
-
-    h1 {
-      font-size: 26px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    position: relative;
+    .title-viewport {
+        background-color: $blue-accent;
+        color: white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        h1 {
+          padding-left: 16px;
+            font-size: 26px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
+
+    .card-lower {
+        margin-top: 80px;
+        padding: 2px 16px;
+    }
+
     .text-line {
         display: inline-flex;
     }
