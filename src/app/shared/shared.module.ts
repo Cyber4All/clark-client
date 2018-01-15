@@ -13,6 +13,7 @@ import { SortGroupsService } from './sort-groups.service';
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
+import { ModalService } from './modal.service';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { LearningObjectListingComponent } from './learning-object/learning-objec
     LearningObjectListingComponent
   ],
   providers: [
-    SortGroupsService
+    SortGroupsService,
+    ModalService
   ]
 })
 export class SharedModule { }

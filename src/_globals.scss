@@ -1,20 +1,692 @@
 // font
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700');
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700");
 
-// Variables 
-$blue-accent: #3789ce ;
-$green: #119E3E ;
-$dark-text: #55595e ;
-$wrapper-background: #f0f4f7 ;
-$blue-gradient: linear-gradient(45deg, #1564a7 , #208dea );
-$error-red: #e74c3c ;
-$placeholder: lighten(#A9A9A9 , 10);
+// functions
+@function gradient($color1, $color2, $angle) {
+  @return linear-gradient($angle, $color1, $color2);
+}
+
+// variables
+$topbarHeight: 75px;
 $max-width: 1200px;
+$blue-accent: #3789ce;
+$green: #119e3e;
+$dark-text: #55595e;
+$wrapper-background: #f0f4f7;
+$blue-gradient: linear-gradient(45deg, #1564a7, #208dea);
+$error-red: #e74c3c;
+$placeholder: lighten(#a9a9a9, 10);
 $popup-z: 9;
+$notification-z: 10;
 
-// Mixins
+// mixins
 @mixin vert-center {
-    display: inline-flex;
+  display: inline-flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+@mixin checkbox {
+  background: white;
+  border: 2px solid lighten($dark-text, 40);
+  position: relative;
+  transition: all 0.1s ease;
+  cursor: pointer;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $blue-accent;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease;
+    border: 1px solid white;
+  }
+
+  &.active {
+    &:after {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+::ng-deep .squares {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .square {
+    min-width: 25%;
+    flex-basis: 1 1 auto;
+    padding: 5px;
+
+    &.active {
+      .square-inner {
+        border-color: $blue-accent;
+      }
+    }
+
+    .square-inner {
+      width: 100%;
+      background: white;
+      box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 2px;
+      border: 3px solid transparent;
+
+      .svg-inline--fa,
+      .icon {
+        width: 60px;
+        height: 60px;
+        margin: auto;
+        color: $blue-accent;
+      }
+
+      .desc {
+        color: $blue-accent;
+        text-align: center;
+        margin-top: 20px;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+// vvv global styles vvv
+.vert-center {
+  @include vert-center;
+}
+
+::ng-deep .select-wrapper {
+  position: relative;
+
+  select {
+    appearance: none;
+    background: transparent;
+    color: $dark-text;
+    padding: 7px;
+    border-radius: 0px;
+    border: 2px solid $placeholder;
+    outline: 0;
+    z-index: 1;
+    position: relative;
+
+    &:focus {
+      border-color: $blue-accent;
+    }
+  }
+
+  &::after {
+    display: none;
+    content: "\f0dc";
+    font-family: "Font Awesome 5 Solid";
+  }
+
+  .svg-inline--fa {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    z-index: 0;
+    color: $dark-text;
+  }
+}
+
+::ng-deep .button {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: white;
+  color: rgba(
+    red(darken($blue-accent, 25)),
+    green(darken($blue-accent, 25)),
+    blue(darken($blue-accent, 25)),
+    0.7
+  );
+  padding: 8px 20px 8px 25px;
+  text-transform: uppercase;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+
+  .svg-inline--fa,
+  .icon {
+    margin-left: 10px;
+  }
+
+  &.icon-only {
+    padding: 8px;
+
+    .svg-inline--fa,
+    .icon {
+      margin-left: 0px;
+    }
+  }
+
+  &.good {
+    color: white;
+    background: $blue-accent;
+    border-color: $blue-accent;
+  }
+
+  &.neutral {
+    $newDarkBlue: rgba(
+      red(darken($blue-accent, 25)),
+      green(darken($blue-accent, 25)),
+      blue(darken($blue-accent, 25)),
+      0.7
+    );
+    color: $newDarkBlue;
+    background: white;
+    border-color: white;
+
+    &.on-white {
+      border-color: $newDarkBlue;
+    }
+
+    &.bright {
+      color: $blue-accent;
+
+      &.on-white {
+        border-color: $blue-accent;
+      }
+    }
+  }
+
+  &.bad {
+    color: white;
+    background: $error-red;
+    border-color: $error-red;
+  }
+
+  &.green {
+    color: white;
+    background: $green;
+    border-color: $green;
+  }
+}
+
+::ng-deep .btn-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+  &.to-right {
+    flex-direction: row-reverse;
+  }
+
+  &.center {
+    justify-content: center;
+  }
+
+  .button:not(:last-child) {
+    margin-left: 15px;
+  }
+}
+
+::ng-deep .notification {
+  background: gradient(darken(white, 5), white, 45deg);
+  border-radius: 3px;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  position: fixed;
+  right: 20px;
+  z-index: $notification-z;
+  height: 90px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  color: $dark-text;
+  transition: all 0.2s ease-out;
+
+  & > div {
+    box-sizing: border-box;
+  }
+
+  .icon {
+    position: relative;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
     flex-direction: column;
-    align-self: center;
+    justify-content: center;
+
+    .svg-inline--fa {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  .note-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & > div {
+      align-self: flex-start;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+
+  &.good {
+    background: gradient($green, lighten($green, 2), 45deg);
+    color: white;
+  }
+
+  &.bad {
+    background: gradient($error-red, lighten($error-red, 2), 45deg);
+    color: white;
+  }
+
+  // this is a blue alert style notification, .alert was taken by bootstrap grr
+  &.alerting {
+    background: gradient(darken($blue-accent, 5), $blue-accent, 45deg);
+    color: white;
+  }
+}
+
+// collection of flexed divs that mimic the appearance of tables but that will scale better on mobile devices
+::ng-deep .faux-table {
+  width: 100%;
+
+  .row {
+    width: 100%;
+    border-radius: 4px;
+    padding: 15px;
+    margin-left: auto !important; // override some garbage from grid-framework.less
+    margin-right: auto !important; // override some garbage from grid-framework.less
+    background: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    &:before {
+      display: none !important; // override some quality bootstrap code :/
+    }
+
+    &:not(.columns) {
+      margin-bottom: 15px;
+    }
+
+    .select {
+      width: 15px;
+      height: 15px;
+      @include checkbox;
+      @include vert-center;
+      margin-right: 15px;
+    }
+
+    .options {
+      @include vert-center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 25px;
+      padding: 5px 0px;
+      cursor: pointer;
+
+      .circle {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: $blue-accent;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+      }
+
+      &:hover,
+      &.active {
+        .circle {
+          background: darken($blue-accent, 40);
+        }
+      }
+
+      &.active {
+        .circle {
+          margin-top: 0px;
+        }
+
+        .circle:nth-child(2) {
+          margin-top: 5px;
+        }
+      }
+    }
+
+    .cells {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .cell {
+        width: 33%;
+      }
+    }
+
+    &.columns {
+      padding: 0px 15px 10px;
+      color: $blue-accent;
+      text-transform: uppercase;
+      background: transparent;
+      font-weight: bold;
+      opacity: 0.7;
+
+      .placeholder {
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+::ng-deep .popup-wrapper {
+  background: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: calc(#{$popup-z - 1});
+}
+
+::ng-deep .popup {
+  position: fixed;
+  z-index: $popup-z;
+  background: white;
+  border-radius: 1px;
+  box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+
+  ul {
+    margin: 0;
+    padding: 10px 0px;
+  }
+
+  li {
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 15px;
+    list-style-type: none;
+
+    .svg-inline--fa,
+    .icon {
+      margin-right: 10px;
+    }
+
+    &.bad {
+      color: $error-red;
+    }
+
+    &:hover {
+      color: white;
+      background: $blue-accent;
+
+      &.bad {
+        background: $error-red;
+      }
+    }
+  }
+
+  // context menus
+  &.small {
+    width: 170px;
+  }
+
+  &.dropdown {
+    width: 200px;
+    box-shadow: 0px 0px 0px 0px transparent;
+    border: 2px solid #c2c2c2;
+
+    &:after,
+    &:before {
+      $t: 7px;
+      content: "";
+      position: absolute;
+      top: calc(#{$t} * -1);
+      right: 10px;
+      margin: auto;
+      width: 0;
+      height: 0;
+      border-left: $t solid transparent;
+      border-right: $t solid transparent;
+      border-bottom: $t solid white;
+    }
+
+    &:before {
+      $t: 7px;
+      right: 8px;
+      top: calc(#{$t} * -1 - 3px);
+      border-left: calc(#{$t} + 2px) solid transparent;
+      border-right: calc(#{$t} + 2px) solid transparent;
+      border-bottom: calc(#{$t} + 2px) solid #c6c6c6;
+    }
+
+    li {
+      font-size: 15px;
+    }
+  }
+
+  // small popups (IE delete confirms) usually with action buttons
+  &.dialog {
+    max-width: 500px;
+    max-height: 150px;
+    padding: 20px;
+    border-radius: 4px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+
+    .title-text {
+      color: $blue-accent;
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .text {
+      color: $dark-text;
+      text-align: center;
+    }
+
+    .btn-group {
+      margin-top: 20px;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+  }
+}
+
+// banners across the page (IE the 'you have no learning objects yet' banner when first loading Onion client
+.banner {
+  width: 100%;
+  padding: 75px;
+  background: $blue-gradient;
+  color: white;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.2);
+
+  .text {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .button {
+    max-width: 300px;
+    margin: auto;
+    box-shadow: 0px 3px 4px 2px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// CLARK STYLES
+// this is the container, holds everything (topbar, content) except for modal components
+.outer-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $wrapper-background;
+  z-index: 1;
+  font-family: "Source Sans Pro", serif;
+}
+
+// use this inside container divs to standardize the max-width and maintain grid structures
+.inner {
+  max-width: $max-width;
+  margin: auto;
+  position: relative;
+}
+
+// fixed postion nav bar
+.topbar {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  background: white;
+  z-index: 2;
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
+  color: $blue-accent;
+
+  .logo {
+    & > div {
+      display: inline-flex;
+      flex-direction: column;
+      align-self: center;
+    }
+
+    .left {
+      font-size: 25px;
+      font-weight: bold;
+      padding-right: 15px;
+      position: relative;
+
+      &:after {
+        width: 3px;
+        height: 35px;
+        content: "";
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        background: $blue-accent;
+        position: absolute;
+      }
+    }
+
+    .right {
+      padding-left: 15px;
+      font-size: 18px;
+
+      a {
+        color: $blue-accent !important;
+      }
+    }
+  }
+
+  .user {
+    font-size: 16px;
+    cursor: pointer;
+
+    & > * {
+      @include vert-center;
+    }
+
+    .fa-user-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin: auto 10px;
+    }
+  }
+}
+
+// this should hold page content (IE not the topbar) and be placed inside the .outer-wrapper
+.content {
+  padding: 20px 20px 0px;
+  height: calc(
+    100vh - #{$topbarHeight}
+  ); // calculates the height of the content div, adjust to add things like a footer
+  box-sizing: border-box;
+  overflow-y: scroll;
+
+  & > .inner {
+    padding-bottom: 20px; // fixes bug in firefox where scrolling would clip the bottom of the content div
+  }
+
+  // styles for the 'switch' used for transitioning between SEARCH and CONTRIBUTE options (IE Onion and Cube)
+  .content-switch {
+    width: 300px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #d7e3ed;
+    position: relative;
+
+    .options {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 2;
+      position: relative;
+
+      & > div {
+        width: 150px;
+        padding: 8px 5px;
+        text-align: center;
+        color: $blue-accent;
+        font-size: 15px;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        text-transform: uppercase;
+      }
+    }
+
+    .highlight {
+      background: $blue-accent;
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 150px;
+      border-radius: 5px;
+      transition: left 0.2s ease;
+      box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    &.left {
+      .options .left {
+        color: white;
+      }
+    }
+
+    &.right {
+      .options .right {
+        color: white;
+      }
+      .highlight {
+        left: 150px;
+      }
+    }
+  }
+
+  // adjusts the spacing between actual page content and the content switcher
+  .sub-content {
+    margin-top: 30px;
+  }
 }
