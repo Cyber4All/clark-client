@@ -33,11 +33,33 @@ $banner-height: 90px;
             }
         }
     }
-    .banner {
-        background-color: #3789ce; // TODO: swap for global
+    .home-banner {
+        background: $blue-gradient;
         height: $banner-height;
         width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 25px;
+        color: white;
     }
+}
+.contribute-invitation {
+  width: 100%;
+  text-align: center;
+  background-color: gainsboro;
+  height: 300px;
+  padding-top: 30px;
+  p {
+    font-size: 18px;
+    margin-top: 30px;
+  }
+  button {
+    margin-top: 30px;
+    font-size: 20px;
+  }
 }
 .search-results {
     position: relative;
