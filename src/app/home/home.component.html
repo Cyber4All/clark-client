@@ -6,7 +6,7 @@
         <form>
           <div class="">
             <input type="text" class="search-input" placeholder="Search" [(ngModel)]="query" (ngModelChange)="search()" name="query">
-            <button type="submit" class="search-button" (click)="search()">Search</button>
+            <button type="submit" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
           </div>
         </form>
       </div>
@@ -16,15 +16,5 @@
 </section>
 
 <section class="featured-viewport">
-  <div class="title">
-    <h1>Featured Learning Objects</h1>
-    <button class="clear-button button">View All</button>
-  </div>
-  <div class="card-container">
-    <learning-object-component 
-      *ngFor="let l of learningObjects"
-      routerLink="/details/{{ l.id }}" 
-      [learningObject]="l">
-    </learning-object-component>
-  </div>
+  <app-featured></app-featured>
 </section>

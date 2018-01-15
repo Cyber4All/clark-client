@@ -38,10 +38,7 @@ import { MappingComponent } from './mapping/mapping.component';
 import { ModalityComponent } from './modality/modality.component';
 import { DetailsComponent } from './learning-object-details/details/details.component';
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
-
-
-
-
+import { BrowseComponent } from './browse/browse.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +47,9 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
     MappingComponent,
     EscapeHtmlPipe,
     DetailsComponent,
-    DetailsContentComponent // TODO Create Details module
-  ],
+    DetailsContentComponent, // TODO Create Details module
+    BrowseComponent
+],
   imports: [
     BrowserModule,
     HttpModule,
