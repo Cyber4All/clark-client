@@ -1,35 +1,63 @@
 <div class="outer-wrapper">
-    <div class="topbar">
-      <div class="inner flex h left-right">
-        <div class="logo flex h left-right">
-          <div class="left">C.L.A.R.K.</div>
-          <div class="right"><a class="no-link" href="http://clark.center">Cybersecurity Labs and Resource Knowledge-base</a></div>
+  <div class="topbar">
+    <div class="inner flex h left-right">
+      <div class="logo flex h left-right">
+        <div class="left">C.L.A.R.K.</div>
+        <div class="right">
+          <a class="no-link" href="http://clark.center">Cybersecurity Labs and Resource Knowledge-base</a>
         </div>
-        <div *ngIf="true" class="user flex h end" (click)="userDropdown($event)">
-          <!-- get just first name -->
-          <span>Howdy, {{name.split(' ')[0]}}!</span>
-          <i class="fas fa-user-circle"></i>
-          <div class="chevron"><i class="fas fa-caret-down"></i></div>
-          <div class="shopping-cart-container"><i class="fas fa-shopping-cart fa-2x"></i></div>
+      </div>
+      <div *ngIf="true" class="user flex h end" (click)="userDropdown($event)">
+        <!-- get just first name -->
+        <span>Howdy, {{name.split(' ')[0]}}!</span>
+        <i class="fas fa-user-circle"></i>
+        <div class="chevron">
+          <i class="fas fa-caret-down"></i>
+        </div>
+        <div class="shopping-cart-container">
+          <i class="fas fa-shopping-cart fa-2x"></i>
         </div>
       </div>
     </div>
-    <div class="content">
-      <div class="inner">
-        <div class="content-switch right">
-          <div class="options">
+  </div>
+  <div class="content">
+    <div class="inner">
+      <div class="toolbar">
+        <div class="content-switch-container">
+          <div class="content-switch right">
+            <div class="options">
               <div class="left contribute" (click)="contentSwitchClick($event)">Contribute</div>
               <div class="right search active" (click)="contentSwitchClick($event)">Search</div>
+            </div>
+            <div class="highlight"></div>
           </div>
-          <div class="highlight"></div>
         </div>
-        <div class="outlet sub-content">
-          <breadcrumb></breadcrumb>
-          <router-outlet></router-outlet>
+        <div class="filter-options">
+          <button class="filter-button button">
+            <i class="fas fa-list"></i>&nbsp;
+            <p>Browse All</p>
+          </button>
+          <button class="filter-button button" routerLink="/academics">
+            <i class="fas fa-book"></i>&nbsp;
+            <p>Browse by Academic Level</p>
+          </button>
+          <button class="filter-button button" routerLink="/modality">
+            <i class="fas fa-clock"></i>&nbsp;
+            <p>Browse by Length</p>
+          </button>
+          <button class="filter-button button" routerLink="/mapping">
+            <i class="fas fa-map-marker"></i>&nbsp;
+            <p>Browse by Mappings</p>
+          </button>
         </div>
       </div>
+      <div class="outlet sub-content">
+        <breadcrumb></breadcrumb>
+        <router-outlet></router-outlet>
+      </div>
     </div>
-    <footer>
-      <p>Intellectual Property</p>
-    </footer>
   </div>
+  <footer>
+    <p>Intellectual Property</p>
+  </footer>
+</div>

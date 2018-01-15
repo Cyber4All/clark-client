@@ -28,7 +28,35 @@ html, body {
   }
 }
 
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  .content-switch-container {
+    flex-grow: 3;
+  }
+  .filter-options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .filter-button {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      line-height: 40px;
+      padding-top:20px;
+      font-size: 16px;
+      height: 100%;
+      svg {      
+        margin-top: 12px;
+        font-size: 16px;
+      }
+      p {
+      }
+    }
+  }
 
+}
 // Global CLARK Style Overrides
 
 .user {
