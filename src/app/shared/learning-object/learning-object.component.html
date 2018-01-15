@@ -1,5 +1,5 @@
 <div class="learning-object-listing-viewport">
-    <h1>{{ name }}</h1>
+    <h1><a>{{ name }}</a></h1>
     <div class="center-info">
         <span class="text-line">
             <label>Author:</label>&nbsp;
@@ -7,13 +7,13 @@
         </span>
         <span class="text-line">
                 <label>Last Updated:</label>&nbsp;
-                <p>{{ lastUpdated }}</p> 
+                <p>{{ lastUpdated | date }}</p> 
         </span>
     </div>
     <div class="bottom-info">
-        <p>{{ type }}</p>
-        <p>Undergraduate</p>
-        <p>1337 Downloads</p>
-        <p>42 Likes</p>
+      <div>{{ type }}</div>
+      <div>Undergraduate</div>
+      <div>1337 Downloads</div>
+      <div>42 Likes</div>
     </div>
 </div>

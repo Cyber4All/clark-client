@@ -1,22 +1,37 @@
-@import '~_globals.scss';
+@import "~_globals.scss";
 
 .learning-object-listing-viewport {
+    height: 100%;
     cursor: pointer;
     border: 1px solid $placeholder;
-    margin-top: 20px;
+    padding: 2px 16px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+
+    h1 {
+      font-size: 26px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .text-line {
         display: inline-flex;
     }
+
     .center-info {
         display: flex;
         flex-direction: column;
-
     }
+
     .bottom-info {
         margin-top: 10px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        flex-wrap: nowrap;
+        display: grid;
+        grid-template-columns: 109px 109px;
+        grid-template-rows: 50px 50px;
+        text-transform: capitalize;
+    }
+
+    &:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
 }

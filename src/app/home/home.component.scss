@@ -50,3 +50,33 @@ $banner-height: 90px;
 .search-results {
     position: relative;
 }
+.featured-viewport {
+  width: 100%;
+  padding: 20px;
+  .title {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    h1 {
+      margin-top: 5px;
+      margin-right: 20px;
+    }
+    .clear-button {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      color: $blue-accent;
+    }
+  }
+  .card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    learning-object-component {
+      width: 250px;
+      height: 350px;
+      margin-right: 25px;
+      margin-top: 10px;
+    }
+  }
+}

@@ -15,8 +15,16 @@
   <div class="banner"></div>
 </section>
 
-<section class="inner-content">
-  <div class="search-results" *ngIf="query !== undefined && query !== ''">
-    <app-curriculum-group *ngFor="let g of groups" [group]="g"></app-curriculum-group>
+<section class="featured-viewport">
+  <div class="title">
+    <h1>Featured Learning Objects</h1>
+    <button class="clear-button button">View All</button>
+  </div>
+  <div class="card-container">
+    <learning-object-component 
+      *ngFor="let l of learningObjects"
+      routerLink="/details/{{ l.id }}" 
+      [learningObject]="l">
+    </learning-object-component>
   </div>
 </section>
