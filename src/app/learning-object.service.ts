@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
-import { LearningObject } from 'clark-entity';
+import { LearningObject, User } from 'clark-entity';
 
 @Injectable()
 export class LearningObjectService {
@@ -68,7 +68,7 @@ export class LearningObjectService {
       .then((learningObjects) => {
         return learningObjects.json().map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);
-          let learningObject = LearningObject.unserialize(_learningObject, null);
+          let learningObject = LearningObject.unserialize(_learningObject, object['author']);
           learningObject['id'] = object['id'];
           return learningObject;
         });
@@ -106,7 +106,7 @@ export class LearningObjectService {
       .then((learningObjects) => {
         return learningObjects.json().map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);
-          let learningObject = LearningObject.unserialize(_learningObject, null);
+          let learningObject = LearningObject.unserialize(_learningObject, object['author']);
           learningObject['id'] = object['id'];
           return learningObject;
         });
