@@ -18,18 +18,18 @@ import { CartService } from './shared/services/cart.service'
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from './shared/redux/reducers/cart.reducer';
 
-//Pipes
+// Pipes
 import { EscapeHtmlPipe } from './shared/pipes/keep-html.pipe';
 
 
-//Modules
+// Modules
 import { HomeModule } from './home/home.module';
 import { AcademicsModule } from './academics/academics.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
 import { ModalityModule } from './modality/modality.module';
 
-//Components
+// Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FilterMenuComponent } from './filter-menu/filter-menu.component';
@@ -39,10 +39,7 @@ import { ModalityComponent } from './modality/modality.component';
 import { DetailsComponent } from './learning-object-details/details/details.component';
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
 import { CartComponent } from './cart/cart.component';
-
-
-
-
+import { BrowseComponent } from './browse/browse.component';
 
 @NgModule({
   declarations: [
@@ -52,8 +49,9 @@ import { CartComponent } from './cart/cart.component';
     EscapeHtmlPipe,
     DetailsComponent,
     DetailsContentComponent,
-    CartComponent //TODO Create Details module
-
+    CartComponent, //TODO Create Details module
+    DetailsContentComponent, // TODO Create Details module
+    BrowseComponent
   ],
   imports: [
     BrowserModule,

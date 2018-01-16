@@ -4,7 +4,8 @@ import { LearningObjectService } from '../../learning-object.service';
 
 @Component({
   selector: 'app-curriculum-group',
-  templateUrl: './curriculum-group.component.html'
+  templateUrl: './curriculum-group.component.html',
+  styleUrls: ['./curriculum-group.component.scss']
 })
 export class CurriculumGroupComponent implements OnInit {
   @Input('group') group;
@@ -12,7 +13,7 @@ export class CurriculumGroupComponent implements OnInit {
   constructor(public service: LearningObjectService) { }
 
   ngOnInit() {
-    console.log(this.group)
+    console.log(this.group);
   }
 
   public open(learningObject) {

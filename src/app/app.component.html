@@ -1,41 +1,67 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a href="#" class="navbar-brand">Cybersecurity Labs and Resource Knowledge-base</a>
+<div class="outer-wrapper">
+  <div class="topbar">
+    <div class="inner flex h left-right">
+      <div class="logo flex h left-right">
+        <div class="left">C.L.A.R.K.</div>
+        <div class="right">
+          <a class="no-link" href="http://clark.center">Cybersecurity Labs and Resource Knowledge-base</a>
+        </div>
+      </div>
+      <div *ngIf="true" class="user flex h end" (click)="userDropdown($event)">
+        <!-- get just first name -->
+        <span>Howdy, {{name.split(' ')[0]}}!</span>
+        <i class="fas fa-user-circle"></i>
+        <div class="chevron">
+          <i class="fas fa-caret-down"></i>
+        </div>
+        <div class="shopping-cart-container">
+          <i class="fas fa-shopping-cart fa-2x"></i>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- Collection of nav links, forms, and other content for toggling -->
-  <div id="navbarCollapse" class="collapse navbar-collapse">
-    <ul class="nav navbar-nav">
-      <li class="active">
-        <a href="#">Search</a>
-      </li>
-      <!-- <li><a href="#">Browse</a></li>
-          <li><a href="#">Collections</a></li> -->
-      <li>
-        <a href="http://onion.clark.center">Contribute</a>
-      </li>
-    </ul>
+  <div class="content">
+    <div class="inner">
+      <div class="toolbar">
+        <div class="content-switch-container">
+          <div class="content-switch right">
+            <div class="options">
+              <div class="left contribute" (click)="contentSwitchClick($event)">Contribute</div>
+              <div class="right search active" (click)="contentSwitchClick($event)">Search</div>
+            </div>
+            <div class="highlight"></div>
+          </div>
+        </div>
+        <div class="filter-options">
+          <button class="filter-button button" routerLink="/home">
+            <i class="fas fa-star"></i>&nbsp;
+            <p>Featured</p>
+          </button>
+          <button class="filter-button button" routerLink="/browse">
+            <i class="fas fa-list"></i>&nbsp;
+            <p>Browse All</p>
+          </button>
+          <button class="filter-button button" routerLink="/academics">
+            <i class="fas fa-book"></i>&nbsp;
+            <p>Browse by Academic Level</p>
+          </button>
+          <button class="filter-button button" routerLink="/modality">
+            <i class="fas fa-clock"></i>&nbsp;
+            <p>Browse by Length</p>
+          </button>
+          <button class="filter-button button" routerLink="/mapping">
+            <i class="fas fa-map-marker"></i>&nbsp;
+            <p>Browse by Mappings</p>
+          </button>
+        </div>
+      </div>
+      <div class="outlet sub-content">
+        <breadcrumb></breadcrumb>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   </div>
-</nav>
-<div class="flex-container">
-  <div class="container">
-    <section class="contents">
-      <breadcrumb></breadcrumb>
-      <router-outlet></router-outlet>
-      <!-- <select #outcomeFilter class="form-control" style="margin-left: 15px">
-        <option value="all">All</option>
-        <option value="1">Describe risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of human security</option>
-        <option value="2">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of enterprise security</option>
-        <option value="3">Define risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of system security</option>
-        <option value="4">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of software security</option>
-        <option value="5">Recognize risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of societal security</option>
-    </select> -->
-    </section>
-  </div>
+  <footer>
+    <p>Intellectual Property</p>
+  </footer>
 </div>

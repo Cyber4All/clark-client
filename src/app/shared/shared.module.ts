@@ -1,17 +1,19 @@
-//Core
+// Core
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-//Modules
+// Modules
 import { RoutingModule } from '../app.routing';
 
-//Services
+// Services
 import { SortGroupsService } from './sort-groups.service';
 
-//Components
+// Components
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { LearningObjectListingComponent } from './learning-object/learning-object.component';
+import { ModalService } from './modal.service';
 
 @NgModule({
   imports: [
@@ -20,14 +22,17 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
   ],
   declarations: [
     CurriculumGroupComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    LearningObjectListingComponent
   ],
   exports: [
     CurriculumGroupComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    LearningObjectListingComponent
   ],
   providers: [
-    SortGroupsService
+    SortGroupsService,
+    ModalService
   ]
 })
 export class SharedModule { }

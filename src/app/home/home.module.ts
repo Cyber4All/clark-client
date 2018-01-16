@@ -7,6 +7,7 @@ import { CubeFacesComponent } from './cube-faces/cube-faces.component';
 import { NgModule } from '@angular/core';
 
 import { HomeComponent } from './home.component';
+import { FeaturedComponent } from './featured/featured.component';
 
 @NgModule({
   imports: [FormsModule, BrowserModule, SharedModule, RouterModule],
@@ -14,6 +15,7 @@ import { HomeComponent } from './home.component';
   declarations: [
     HomeComponent,
     CubeFacesComponent,
+    FeaturedComponent
   ],
   providers: [],
 })

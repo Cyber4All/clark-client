@@ -1,0 +1,71 @@
+@import '~_globals.scss';
+
+$top-height: 500px;
+$banner-height: 90px;
+
+.top {
+    height: calc($top-height + $banner-height);
+    .img-viewport {
+        background: url(/assets/servers.jpg) no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: $top-height;
+        width: 100%;
+        position: relative;
+        .search-viewport {
+            position: absolute;
+            top: 200px;
+            left: 35vw;
+            .search-contents {
+                h1 {
+                    color: white;
+                    margin-left: 5px;
+                }
+                form {
+                    display: inline-block;
+                    text-align: right;
+                    width: 30vw;
+                    .search-input {
+                        height: 50px;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    .home-banner {
+        background: $blue-gradient;
+        height: $banner-height;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 25px;
+        color: white;
+    }
+}
+.contribute-invitation {
+  width: 100%;
+  text-align: center;
+  background-color: gainsboro;
+  height: 300px;
+  padding-top: 30px;
+  p {
+    font-size: 18px;
+    margin-top: 30px;
+  }
+  button {
+    margin-top: 30px;
+    font-size: 20px;
+  }
+}
+.search-results {
+    position: relative;
+}
+.featured-viewport {
+  width: 100%;
+  padding: 20px;
+  
+}
