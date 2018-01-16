@@ -1,6 +1,7 @@
 <div *ngIf="learningObject" class="container">
   <button (click)="addToCart()">ADD TO CART</button>
   <button (click)="removeFromCart()">REMOVE FROM CART</button>
+  <button routerLink="/cart">GO TO CART</button>
   <div class="learningHeader">
     <h2>{{ learningObject.name }} - {{learningObject.length}}</h2>
     <p *ngIf="learningObject.author">Created by: {{ learningObject.author }}</p>

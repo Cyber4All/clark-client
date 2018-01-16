@@ -1,7 +1,7 @@
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from 'clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';
 
 @Component({
@@ -18,7 +18,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   constructor(
     private learningObjectService: LearningObjectService,
     private cartService: CartService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {

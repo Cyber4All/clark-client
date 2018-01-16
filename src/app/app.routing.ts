@@ -6,6 +6,7 @@ import { AcademicsComponent } from './academics/academics.component';
 import { MappingComponent } from './mapping/mapping.component';
 import { ModalityComponent } from './modality/modality.component';
 import { DetailsComponent } from './learning-object-details/details/details.component'
+import { CartComponent } from './cart/cart.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full', component: HomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
     { path: 'mapping', component: MappingComponent, data: { breadcrumb: "Mapping" } },
     { path: 'modality', component: ModalityComponent, data: { breadcrumb: "Modality" } },
     { path: "details/:id", component: DetailsComponent, data: { breadcrumb: "Details" } },
+    { path: "cart", component: CartComponent },
 
     // Catch All
     { path: '**', redirectTo: '' }

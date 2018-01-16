@@ -38,6 +38,7 @@ import { MappingComponent } from './mapping/mapping.component';
 import { ModalityComponent } from './modality/modality.component';
 import { DetailsComponent } from './learning-object-details/details/details.component';
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
+import { CartComponent } from './cart/cart.component';
 
 
 
@@ -50,7 +51,8 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
     MappingComponent,
     EscapeHtmlPipe,
     DetailsComponent,
-    DetailsContentComponent //TODO Create Details module
+    DetailsContentComponent,
+    CartComponent //TODO Create Details module
 
   ],
   imports: [

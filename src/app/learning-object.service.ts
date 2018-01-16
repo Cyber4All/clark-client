@@ -91,4 +91,26 @@ export class LearningObjectService {
       });
   }
 
+  /**
+   * Fetches Array of LearningObjects by their id
+   * 
+   * @param {string[]} ids 
+   * @returns {Promise<LearningObject[]>} 
+   * @memberof LearningObjectService
+   */
+  getLearningObjectsByIDs(ids: string[]): Promise<LearningObject[]> {
+    let route = environment.apiURL + this.learningObjectsURL + '/multiple' + `/${ids}`;
+    console.log(route)
+    return this.http.get(route)
+      .toPromise()
+      .then((learningObjects) => {
+        return learningObjects.json().map((_learningObject: string) => {
+          let object = JSON.parse(_learningObject);
+          let learningObject = LearningObject.unserialize(_learningObject, null);
+          learningObject['id'] = object['id'];
+          return learningObject;
+        });
+      });
+  }
+
 }
