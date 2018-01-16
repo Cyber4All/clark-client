@@ -1,3 +1,5 @@
+<app-contextmenu [content]="modalCtrl.contextMenuContent"></app-contextmenu>
+<app-dialogmenu [content]="modalCtrl.dialogMenuContent"></app-dialogmenu>
 <div class="outer-wrapper">
   <div class="topbar">
     <div class="inner flex h left-right">
@@ -55,13 +57,23 @@
           </button>
         </div>
       </div>
+      <breadcrumb></breadcrumb>
       <div class="outlet sub-content">
-        <breadcrumb></breadcrumb>
         <router-outlet></router-outlet>
       </div>
     </div>
+    <footer>
+      <section class="funding-info">
+        <div class="nsa-wrapper">
+          <img src="https://www.festisite.com/static/partylogo/img/logos/nsa.png" />
+          <p>The CLARK System is supported by the National Science Foundation under grant NSA CNAP Grant H9830-17-1-0405</p>
+        </div>
+      </section>
+      <section class="small-links">
+        <a>Intellectual Property</a>
+        <span class="divider">|</span>
+        <a href="http://cis1.towson.edu/~cyber4all/index.php/project-team/">About the Team</a>
+      </section>
+    </footer>
   </div>
-  <footer>
-    <p>Intellectual Property</p>
-  </footer>
 </div>
