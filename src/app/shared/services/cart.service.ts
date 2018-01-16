@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs/Observable";
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Cart } from '../redux/models/cart.model';
 import { CART_STORAGE_LOCATION } from '../redux/reducers/cart.reducer';
@@ -21,17 +21,17 @@ export class CartService {
     cart$: Observable<Cart>;
 
     constructor(private store: Store<AppState>) {
-        //Set cart to Cart Redux Store
+        // Set cart to Cart Redux Store
         this.cart$ = this.store.select(CART_STORAGE_LOCATION);
-        //Subscribe to Redux Store state
+        // ubscribe to Redux Store state
         this.store.subscribe((state) => {
             sessionStorage.setItem(environment.STATE_STORAGE_LOCATION, JSON.stringify(state));
         });
     }
     /**
      * Adds LearningObject's ID to Cart via Redux Store
-     * 
-     * @param {string} learningObjectID 
+     *
+     * @param {string} learningObjectID
      * @memberof CartService
      */
     addLearningObject(learningObjectID: string): void {
@@ -39,8 +39,8 @@ export class CartService {
     }
     /**
      * Returns Array of LearningObject IDs from Redux Store
-     * 
-     * @returns {Promise<Array<string>>} 
+     *
+     * @returns {Promise<Array<string>>}
      * @memberof CartService
      */
     async getLearningObjects(): Promise<Array<string>> {
@@ -53,8 +53,8 @@ export class CartService {
     }
     /**
      * Removes LearningObject's ID from Cart via Redux Store
-     * 
-     * @param {string} learningObjectID 
+     *
+     * @param {string} learningObjectID
      * @memberof CartService
      */
     removeLearningObject(learningObjectID: string): void {
@@ -62,7 +62,7 @@ export class CartService {
     }
     /**
      * Removes all LearningObject IDs from Cart via Redux Store
-     * 
+     *
      * @memberof CartService
      */
     clearCart(): void {

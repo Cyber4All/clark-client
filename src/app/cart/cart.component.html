@@ -1,3 +1,9 @@
-<ul *ngIf="cartItems">
-  <li *ngFor="let learningObject of cartItems">{{ learningObject.name }}</li>
-</ul>
+<section class="cart-actions">
+  <button class="button good" (click)="download()">Download</button>
+  <button class="button neutral on-white" (click)="saveBundle()">Save Bundle</button>
+  <button class="button bad" (click)="clearCart()">Clear Cart</button>
+</section>
+<section *ngIf="cartItems" class="cart-items">
+  <learning-object-component *ngFor="let learningObject of cartItems" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
+</section>
+
