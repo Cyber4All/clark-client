@@ -1,8 +1,7 @@
 @import '~_globals.scss';
-
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -10,19 +9,15 @@ html, body {
 
 .flex {
   display: flex;
-
   &.h {
     flex-direction: row;
   }
-
   &.v {
     flex-direction: column;
   }
-
   &.left-right {
     justify-content: space-between;
   }
-
   &.end {
     justify-content: flex-end;
   }
@@ -50,21 +45,34 @@ html, body {
       flex-direction: row;
       flex-wrap: nowrap;
       line-height: 40px;
-      padding-top:20px;
+      padding-top: 20px;
       font-size: 16px;
       height: 100%;
-      svg {      
+      svg {
         margin-top: 12px;
         font-size: 16px;
       }
-      p {
-      }
+      p {}
     }
   }
-
 }
-// Global CLARK Style Overrides
 
+.dropdown-item {
+  background: rgb(255, 255, 255);
+  color: #0575E6;
+  display: inline-block;
+  border-radius: 4px;
+  line-height: 2.5em;
+  padding: 0 3em;
+}
+
+.d-inline-block{
+  margin-left: auto;
+  padding-right: 10px;
+}
+
+
+// Global CLARK Style Overrides
 .user {
   .shopping-cart-container {
     margin-left: 50px;
@@ -81,15 +89,13 @@ html, body {
   }
 }
 
-
 .content {
-  padding: 0px;
-  // min-height: calc(100vh - 75px - 150px);  
-
+  padding: 0px; // min-height: calc(100vh - 75px - 150px);  
   .outlet {
     margin-top: 0px;
   }
 }
+
 footer {
   height: 150px;
   background-color: #0575E6;
