@@ -28,6 +28,7 @@ import { AcademicsModule } from './academics/academics.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
 import { ModalityModule } from './modality/modality.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { AppComponent } from './app.component';
@@ -40,6 +41,7 @@ import { DetailsComponent } from './learning-object-details/details/details.comp
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,7 @@ import { BrowseComponent } from './browse/browse.component';
     DetailsContentComponent,
     CartComponent, //TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
-    BrowseComponent
+    BrowseComponent, UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +66,7 @@ import { BrowseComponent } from './browse/browse.component';
     SuggestionModule,
     SharedModule,
     StoreModule.forRoot({ cart: cartReducer }),
+    NgbModule.forRoot(),
   ],
   providers: [
     LearningObjectService,

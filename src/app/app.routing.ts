@@ -8,6 +8,7 @@ import { ModalityComponent } from './modality/modality.component';
 import { DetailsComponent } from './learning-object-details/details/details.component'
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full', component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: 'details/:id', component: DetailsComponent, data: { breadcrumb: 'Details' } },
     { path: "cart", component: CartComponent },
     { path: 'browse', component: BrowseComponent, data: { breadcrumb: 'Browse' } },
+    { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' } },
     // Catch All
     { path: '**', redirectTo: '' }
 ];
