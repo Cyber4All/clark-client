@@ -23,7 +23,9 @@ export class CartComponent implements OnInit {
 
   async loadCart() {
     let learningObjectIDs: string[] = await this.cartService.getLearningObjects();
-    this.cartItems = await this.learningObjectService.getLearningObjectsByIDs(learningObjectIDs);
+    if (learningObjectIDs.length > 0) {
+      this.cartItems = await this.learningObjectService.getLearningObjectsByIDs(learningObjectIDs);
+    }
     console.log(this.cartItems);
   }
 
