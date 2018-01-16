@@ -28,7 +28,6 @@ import { AcademicsModule } from './academics/academics.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
 import { ModalityModule } from './modality/modality.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { AppComponent } from './app.component';
@@ -51,7 +50,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     EscapeHtmlPipe,
     DetailsComponent,
     DetailsContentComponent,
-    CartComponent, //TODO Create Details module
+    CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
     BrowseComponent, UserProfileComponent
   ],
@@ -65,8 +64,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     ModalityModule,
     SuggestionModule,
     SharedModule,
-    StoreModule.forRoot({ cart: cartReducer }),
-    NgbModule.forRoot(),
+    StoreModule.forRoot({ cart: cartReducer })
   ],
   providers: [
     LearningObjectService,

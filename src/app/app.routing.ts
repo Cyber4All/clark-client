@@ -12,12 +12,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full', component: HomeComponent },
-    { path: 'home', component: HomeComponent, data: { breadcrumb: 'Home' } },
+    { path: 'home', component: HomeComponent },
     { path: 'academics', component: AcademicsComponent, data: { breadcrumb: 'Academics' } },
     { path: 'mapping', component: MappingComponent, data: { breadcrumb: 'Mapping' } },
     { path: 'modality', component: ModalityComponent, data: { breadcrumb: 'Modality' } },
     { path: 'details/:id', component: DetailsComponent, data: { breadcrumb: 'Details' } },
-    { path: "cart", component: CartComponent },
+    { path: 'cart', component: CartComponent, data: { breadcrumb: 'Cart'} },
     { path: 'browse', component: BrowseComponent, data: { breadcrumb: 'Browse' } },
     { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' } },
     // Catch All
