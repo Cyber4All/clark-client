@@ -6,7 +6,7 @@ import { EscapeHtmlPipe } from './../../shared/pipes/keep-html.pipe';
 @Component({
     selector: 'learning-object-details-content',
     templateUrl: './details-content.component.html',
-    styleUrls: ['./details.component.css']
+    styleUrls: ['./details-content.component.scss']
 })
 export class DetailsContentComponent implements OnInit {
 
