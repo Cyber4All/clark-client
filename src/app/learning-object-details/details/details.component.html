@@ -1,29 +1,35 @@
 <div *ngIf="learningObject" class="details-wrapper">
-  <button (click)="addToCart()">ADD TO CART</button>
   <!--<button (click)="removeFromCart()">REMOVE FROM CART</button>
   <button (click) = "clearCart()"> Clear cart</button>
   <button routerLink="/cart">GO TO CART</button>-->
   <div class="learningHeader">
     <h1>{{ learningObject.name }} - {{learningObject.length}}</h1>
+    <button (click)="addToCart()">+</button>
+
     <!--<p *ngIf="learningObject.author">Created by: {{ learningObject.author }}</p>-->
     <p>Created by: Author</p>
+    
   </div>
-
+    
   <div class="basicInfo">
     <div class="details-card" id="statistics">
       <div class="card-title">
         <h1>Information</h1>
       </div>
       <div class="card-content">
-        <div class = "updated">
-          <h4>Last updated: {{learningObject.date | date}}</h4>
+        <div>
+          <div class="updated">
+            <h4>Last updated: {{learningObject.date | date}}</h4>
+          </div>
+          <div class="favorites">
+            <h4>Favorited: 1337 times</h4>
+          </div>
+          <div class="downloads">
+            <h4>Downloaded: 42 times</h4>
+          </div>
+          <hr>
         </div>
-        <div class="favorites">
-          <h4>Favorited: 1337 times</h4>
-        </div>
-        <div class="downloads">
-          <h4>Downloaded: 42 times</h4>
-        </div>
+        <div>
         <div class="links" *ngIf="learningObject.length === 'course'">
           <h4>Associated Links</h4>
           <p *ngIf="learningObject.repository.urls.length == 0">None yet</p>
@@ -41,6 +47,9 @@
         <div class="files" *ngIf="learningObject.length === 'course'">
           <h4>Number of Attached Files: {{learningObject.repository.files.length}}</h4>
         </div>
+        </div>
+        
+        
       </div>
     </div>
 
@@ -49,9 +58,7 @@
         <h1>Learning Goals</h1>
       </div>
       <div class="card-content">
-        <ul>
-          <li *ngFor="let goal of learningObject.goals">{{goal.text}}</li>
-        </ul>
+          <div class="details-list" *ngFor="let goal of learningObject.goals">{{goal.text}}</div>
       </div>
     </div>
   </div>
@@ -62,9 +69,8 @@
         <h1>Learning Outcomes</h1>
       </div>
       <div class="card-content">
-        <ul>
-          <li *ngFor="let outcome of learningObject.outcomes">
-            <p>{{outcome.bloom}}: {{outcome.verb}} {{outcome.text}}</p>
+          <div *ngFor="let outcome of learningObject.outcomes">
+            <p class="details-list" >{{outcome.bloom}}: {{outcome.verb}} {{outcome.text}}</p>
             <div *ngIf="outcome.assessments.length !==0" class="details-card" id="assessmentPlans">
               <div class="slim-title">
                 <h4>Assessment Plans</h4>
@@ -87,32 +93,9 @@
               </div>
 
             </div>
-          </li>
-        </ul>
+          </div>
       </div>
     </div>
 
-  </div>
-  <div class="repository">
-    <div class="files" *ngIf="learningObject.repository.files.length !== 0">
-      <h4>Files</h4>
-      <ul>
-        <li *ngFor="let file of learningObject.repository.files">
-          <a [href]="file.url">{{file.name}}</a>
-        </li>
-      </ul>
-    </div>
-    <div class="links" *ngIf="learningObject.repository.urls.length !== 0">
-      <h4>Urls</h4>
-      <ul>
-        <li *ngFor="let link of learningObject.repository.urls">
-          <a [href]="link.url">{{link.title}}</a>
-        </li>
-      </ul>
-    </div>
-    <div class="notes" *ngIf="learningObject.repository.notes">
-      <h4>Notes</h4>
-      <p>{{learningObject.repository.notes}}</p>
-    </div>
   </div>
 </div>

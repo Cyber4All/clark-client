@@ -13,14 +13,18 @@ export class DetailsContentComponent implements OnInit {
     @Input() strategy: any;
     @Input() type: string;
     isShown: boolean;
+    buttonText:string;
 
 
     constructor() { }
     ngOnInit() {
+        this.buttonText = '+';
         this.isShown = false;
     }
 
     showContent() {
         this.isShown = !this.isShown;
+        this.isShown ? this.buttonText = '-' : this.buttonText = '+';
+
     }
 }
