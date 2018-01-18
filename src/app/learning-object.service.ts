@@ -87,7 +87,7 @@ export class LearningObjectService {
     return this.http.get(route)
       .toPromise()
       .then((learningObject) => {
-        return LearningObject.unserialize(learningObject.json(), null);
+        return learningObject ? LearningObject.unserialize(learningObject.json(), null) : null;
       });
   }
 

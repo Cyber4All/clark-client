@@ -6,6 +6,7 @@ import { Cart } from '../redux/models/cart.model';
 import { CART_STORAGE_LOCATION } from '../redux/reducers/cart.reducer';
 import { environment } from '../../../environments/environment';
 import * as CartActions from '../redux/models/actions/cart.actions';
+import { Http, Headers } from '@angular/http';
 
 
 interface AppState {
@@ -19,8 +20,9 @@ interface AppState {
 export class CartService {
 
     cart$: Observable<Cart>;
+    private learningObjectsURL = '/learning-objects'
 
-    constructor(private store: Store<AppState>) {
+    constructor(private store: Store<AppState>, private http: Http) {
         //Set cart to Cart Redux Store
         this.cart$ = this.store.select(CART_STORAGE_LOCATION);
         //Subscribe to Redux Store state
@@ -67,6 +69,14 @@ export class CartService {
      */
     clearCart(): void {
         this.store.dispatch(new CartActions.Clear());
+    }
+
+    checkout(ids: string[]) {
+        let route = environment.apiURL
+            + this.learningObjectsURL
+            + '/checkout'
+            + `/${ids}`;
+        return this.http.get(route);
     }
 
 }

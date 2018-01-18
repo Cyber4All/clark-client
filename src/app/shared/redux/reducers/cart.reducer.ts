@@ -18,7 +18,6 @@ export const CART_STORAGE_LOCATION = 'cart';
  * @returns 
  */
 const addLearningObject = (state: Cart, learningObjectID: string) => {
-
     state.items.indexOf(learningObjectID) === -1 ? state.items.push(learningObjectID)
         : "LearningObject's ID is already in user's cart. Show them a message saying so.";
 
@@ -45,7 +44,7 @@ const retrieveState = () => {
     return localStorage.getItem(environment.STATE_STORAGE_LOCATION);
 }
 
-export function cartReducer(state: Cart, action: Action) {
+export function cartReducer(state: Cart = DEFAULT_STATE, action: Action) {
     console.log(action.type, state);
     switch (action.type) {
         case CartActions.ADD_LEARNING_OBJECT:
@@ -55,7 +54,8 @@ export function cartReducer(state: Cart, action: Action) {
             return removeLearningObject(state, action.payload);
 
         case CartActions.CLEAR:
-            return DEFAULT_STATE;
+            console.log("WRONG WRONG WRONG", DEFAULT_STATE);
+            return { items: [] };
 
         default:
             if (retrieveState()) {
