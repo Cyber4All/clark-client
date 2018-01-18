@@ -1,0 +1,41 @@
+@import '~_globals.scss';
+.details-list{
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-width: 1px;
+    border-style: solid;
+    border-color: whitesmoke;
+    border-left-width: 3px;
+    border-left-style: solid;
+    border-left-color: $green;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 20px;
+
+    button {
+    margin-left:30px;
+    width: 25px;
+    height: 25px;
+    background-color: $error-red;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    }
+}
+.htmlContent{
+    padding: 50px;
+    margin-bottom: 10px;
+    background-color:white;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightgray;
+
+}
+
+
+

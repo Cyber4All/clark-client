@@ -2,8 +2,6 @@ import { ConfigService } from './config.service';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
 import { LearningObject, User } from 'clark-entity';

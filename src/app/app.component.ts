@@ -1,6 +1,6 @@
 import { LearningObjectService } from './learning-object.service';
 import { Component } from '@angular/core';
-import { ModalService } from './shared/modal.service';
+import { ModalService } from './shared/popups/modal.service';
 
 @Component({
   selector: 'app-root',
@@ -24,13 +24,15 @@ export class AppComponent {
    */
   userDropdown(event): void {
     // FIXME: Get modal to display when clicked
+    console.log(event);
     this.modalCtrl.contextMenuContent = {
       name: 'UserContextMenu',
       classes: 'dropdown',
       pos: {
         x: this.modalCtrl.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
-        y: this.modalCtrl.offset(event.currentTarget).top + 50 },
-        list: [{ text: '<i class="far fa-sign-out"></i>Sign out', func: 'logout' }]
+        y: this.modalCtrl.offset(event.currentTarget).top + 50
+      },
+      list: [{ text: '<i class="far fa-sign-out"></i>Sign out', func: 'logout' }]
       };
     this.modalCtrl.listen('UserContextMenu').subscribe(val => {
       if (val === 'logout') {

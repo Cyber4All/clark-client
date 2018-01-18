@@ -6,13 +6,13 @@ export const CLEAR = '[Clear] Clear Cart';
 
 export class AddLearningObject implements Action {
     readonly type = ADD_LEARNING_OBJECT;
-    //Payload is Learning Object's ID
+    // Payload is Learning Object's ID
     constructor(public payload: string) { }
 }
 
 export class RemoveLearningObject implements Action {
     readonly type = REMOVE_LEARNING_OBJECT;
-    //Payload is Learning Object's ID
+    // Payload is Learning Object's ID
     constructor(public payload: string) { }
 }
 

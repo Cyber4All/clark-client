@@ -40,6 +40,7 @@ import { DetailsComponent } from './learning-object-details/details/details.comp
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -49,9 +50,9 @@ import { BrowseComponent } from './browse/browse.component';
     EscapeHtmlPipe,
     DetailsComponent,
     DetailsContentComponent,
-    CartComponent, //TODO Create Details module
+    CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
-    BrowseComponent
+    BrowseComponent, UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +64,7 @@ import { BrowseComponent } from './browse/browse.component';
     ModalityModule,
     SuggestionModule,
     SharedModule,
-    StoreModule.forRoot({ cart: cartReducer }),
+    StoreModule.forRoot({ cart: cartReducer })
   ],
   providers: [
     LearningObjectService,

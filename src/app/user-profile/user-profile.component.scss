@@ -1,0 +1,56 @@
+@import '~_globals.scss';
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+  color: rgb(3, 3, 75);
+  background-color: rgb(204, 204, 204);
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+}
+
+h3 {
+  display: flex;
+  justify-content: center;
+}
+
+// Global CLARK Style Overrides
+.user {
+  .shopping-cart-container {
+    margin-left: 50px;
+    color: $placeholder;
+  }
+}
+
+.inner {
+  max-width: 100vw;
+  .content-switch {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.content {
+  padding: 0px;
+  // min-height: calc(100vh - 75px - 150px);  
+  .outlet {
+    margin-top: 0px;
+  }
+}
+
+footer {
+  height: 150px;
+  background-color: #0575E6;
+}

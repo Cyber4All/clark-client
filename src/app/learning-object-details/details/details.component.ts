@@ -7,7 +7,7 @@ import { CartService } from '../../shared/services/cart.service';
 @Component({
   selector: 'learning-object-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit, OnDestroy {
 
@@ -36,6 +36,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   addToCart() {
     this.cartService.addLearningObject(this.id);
+  }
+  clearCart(){
+    this.cartService.clearCart();
   }
   removeFromCart() {
     this.cartService.removeLearningObject(this.id);
