@@ -6,7 +6,8 @@ import { Cart } from '../redux/models/cart.model';
 import { CART_STORAGE_LOCATION } from '../redux/reducers/cart.reducer';
 import { environment } from '../../../environments/environment';
 import * as CartActions from '../redux/models/actions/cart.actions';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, ResponseContentType } from '@angular/http';
+import { saveAs as importedSaveAs } from "file-saver";
 
 
 interface AppState {
@@ -76,7 +77,12 @@ export class CartService {
             + this.learningObjectsURL
             + '/checkout'
             + `/${ids}`;
-        return this.http.get(route);
+        this.http.get(route, { responseType: ResponseContentType.Blob })
+            .subscribe((res) => {
+                importedSaveAs(res.blob(), `${Date.now()}.zip`);
+            },
+            (err) => console.log,
+            () => { console.log('Downloaded') });
     }
 
 }
