@@ -1,6 +1,8 @@
 import { LearningObjectService } from './learning-object.service';
 import { Component } from '@angular/core';
-import { ModalService } from 'clark-modal';
+import { ModalService, Position, ModalListElement } from 'clark-modal';
+import { RouterModule, Router } from '@angular/router';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @Component({
   selector: 'app-root',
@@ -12,34 +14,53 @@ export class AppComponent {
   activeContentSwitcher = 'search';
   name = 'Sean Donnelly'
 
-  constructor(public service: LearningObjectService, public modalCtrl: ModalService) {
+  constructor(public service: LearningObjectService, public modalCtrl: ModalService, public router: Router) {
   }
 
   logout() {
     throw new Error('logout() not implemented!');
   }
+
+  userprofile() {
+    //throw new Error('userprofile() not implemented!');
+    this.router.navigate(['/userprofile']);
+  }
+
+  preferences() {
+    throw new Error('preferences() not implemented!');
+  }
+
   /**
    * Click events on the user section of the topbar, displays modal
    * @param event
    */
   userDropdown(event): void {
-    // FIXME: Get modal to display when clicked
     console.log(event);
-    // this.modalCtrl.contextMenuContent = {
-    //   name: 'UserContextMenu',
-    //   classes: 'dropdown',
-    //   pos: {
-    //     x: this.modalCtrl.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
-    //     y: this.modalCtrl.offset(event.currentTarget).top + 50
-    //   },
-    //   list: [{ text: '<i class="far fa-sign-out"></i>Sign out', func: 'logout' }]
-    //   };
-    // this.modalCtrl.listen('UserContextMenu').subscribe(val => {
-    //   if (val === 'logout') {
-    //     this.logout();
-    //   }
-    // });
+    this.modalCtrl.makeContextMenu(
+      'UserContextMenu',
+      'dropdown',
+      [
+        new ModalListElement('<i class="fas fa-user-circle fa-fw"></i></i>View profile', 'userprofile'),
+        new ModalListElement('</i>Change preferences', 'preferences'),
+        new ModalListElement('<i class="far fa-sign-out"></i>Sign out', 'logout'),  
+      ],
+      null,
+      new Position(
+        this.modalCtrl.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
+        this.modalCtrl.offset(event.currentTarget).top + 50))
+    .subscribe(val => {
+      if (val === 'logout') {
+        this.logout();
+      }
+      if (val === 'userprofile') {
+        this.userprofile();
+      }
+      if (val === 'preferences') {
+        this.preferences();
+      }
+    });
   }
+
   /**
      * Manages click events for the button for switching between contributing and searching (onion and cube)
      * @param event
