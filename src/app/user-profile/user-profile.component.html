@@ -1,5 +1,23 @@
 <div class="title">
   <h1>User Profile: {{name}}</h1>
-  <h2>Affiliations: {{employer}}</h2>
+  
+  <h3>Affiliations: {{employer}}</h3>
+  
   <h3>Modules Created: {{modulesCreated}}</h3>
+  <div> 
+      <h4>{{name.split(' ')[0]}} hasn't downloaded any learning objects yet!</h4>
+    </div>
+    <!--To be implemented-->
+    <!-- <section *ngIf="objectsDownloaded.length > 0" class="cart-items">
+      <learning-object-component *ngFor="let learningObject of objectsDownloaded" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
+    </section> -->
+
+  <h3>Modules Downloaded: </h3>
+  <div>
+    <h4>{{name.split(' ')[0]}} hasn't downloaded any learning objects yet!</h4>
+  </div>
+  <!--To be implemented-->
+  <!-- <section *ngIf="objectsDownloaded.length > 0" class="cart-items">
+    <learning-object-component *ngFor="let learningObject of objectsDownloaded" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
+  </section> -->
 </div>

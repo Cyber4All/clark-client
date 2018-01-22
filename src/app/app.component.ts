@@ -22,12 +22,11 @@ export class AppComponent {
   }
 
   userprofile() {
-    //throw new Error('userprofile() not implemented!');
     this.router.navigate(['/userprofile']);
   }
 
   preferences() {
-    throw new Error('preferences() not implemented!');
+    this.router.navigate(['/userpreferences']);
   }
 
   /**

@@ -9,6 +9,7 @@ import { DetailsComponent } from './learning-object-details/details/details.comp
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
     { path: 'cart', component: CartComponent, data: { breadcrumb: 'Cart'} },
     { path: 'browse', component: BrowseComponent, data: { breadcrumb: 'Browse' } },
     { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' } },
+    { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' } },
     // Catch All
     { path: '**', redirectTo: '' }
 ];

@@ -44,6 +44,7 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     DetailsContentComponent,
     CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
-    BrowseComponent, UserProfileComponent
+    BrowseComponent, UserProfileComponent, UserPreferencesComponent
   ],
   imports: [
     BrowserModule,
