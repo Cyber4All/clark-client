@@ -28,6 +28,9 @@ import { AcademicsModule } from './academics/academics.module';
 import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
 import { ModalityModule } from './modality/modality.module';
+import { ModalModule } from 'clark-modal';
+import { NotificationModule } from 'clark-notification';
+import { CheckBoxModule } from 'clark-checkbox';
 
 // Components
 import { AppComponent } from './app.component';
@@ -64,7 +67,10 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     ModalityModule,
     SuggestionModule,
     SharedModule,
-    StoreModule.forRoot({ cart: cartReducer })
+    StoreModule.forRoot({ cart: cartReducer }),
+    ModalModule.forRoot(),
+    NotificationModule.forRoot(),
+    CheckBoxModule
   ],
   providers: [
     LearningObjectService,

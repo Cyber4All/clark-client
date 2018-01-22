@@ -13,10 +13,6 @@ import { SortGroupsService } from './sort-groups.service';
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
-import { ModalService } from './popups/modal.service';
-import { DialogMenuComponent } from './popups/dialogmenu.component';
-import { ContextMenuComponent } from './popups/contextmenu.component';
-import { EscapeHtmlPipe } from './popups/pipes/keep-html.pipe';
 
 @NgModule({
   imports: [
@@ -27,20 +23,14 @@ import { EscapeHtmlPipe } from './popups/pipes/keep-html.pipe';
     CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
-    ContextMenuComponent,
-    DialogMenuComponent,
-    EscapeHtmlPipe
   ],
   exports: [
     CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
-    ContextMenuComponent,
-    DialogMenuComponent
   ],
   providers: [
     SortGroupsService,
-    ModalService
   ]
 })
 export class SharedModule { }

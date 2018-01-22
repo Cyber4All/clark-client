@@ -1,3 +1,4 @@
+import { ModalService } from 'clark-modal';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from 'clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -42,6 +43,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
   removeFromCart() {
     this.cartService.removeLearningObject(this.id);
+  }
+  reportThisObject() {
+    alert('test');
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
