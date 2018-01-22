@@ -11,13 +11,16 @@
       </div>
       <div class="user flex h flex-end">
 
-        <!-- get just first name -->
-        <span (click)="userDropdown($event)">Howdy, {{name.split(' ')[0]}}!</span>
-        <i class="fas fa-user-circle"></i>
-        <div class="chevron">
-          <i class="fas fa-caret-down"></i>
+        <div class="left flex h flex-end" (click)="userDropdown($event)">
+          <!-- get just first name -->
+          <span>Howdy, {{name.split(' ')[0]}}!</span>
+          <i class="fas fa-user-circle"></i>
+          <div class="chevron">
+            <i class="fas fa-caret-down"></i>
+          </div>
         </div>
-        <div class="shopping-cart-container" routerLink="/cart">
+
+        <div class="right shopping-cart-container" routerLink="/cart">
           <i class="fas fa-shopping-cart fa-2x"></i>
         </div>
       </div>

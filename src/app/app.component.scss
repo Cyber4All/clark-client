@@ -67,6 +67,18 @@ html, body {
 
 // Global CLARK Style Overrides
 .user {
+  display: flex;
+  flex-direction: row;
+
+  .left {
+    display: flex;
+    flex-direction: row !important;
+
+    & > * {
+      @include vert-center;
+    }
+  }
+
   .shopping-cart-container {
     margin-left: 50px;
     color: $placeholder;
