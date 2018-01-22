@@ -1,4 +1,4 @@
-@import '~_globals.scss';
+@import '~_global-styles.scss';
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 $footer-height: 250px;
@@ -7,6 +7,10 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+}
+
+.dropdown{
+  @include vert-center;
 }
 
 .flex {
@@ -30,6 +34,7 @@ html, body {
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100vw;
+  margin-top: 75px;
   .content-switch-container {
     flex-grow: 3;
     border: 2px solid transparent;
@@ -50,7 +55,7 @@ html, body {
       line-height: 40px;
       padding-top: 20px;
       font-size: 16px;
-      height: 100%;
+      outline: none;
       svg {
         margin-top: 12px;
         font-size: 16px;
@@ -59,13 +64,6 @@ html, body {
     }
   }
 }
-
-
-.d-inline-block{
-  margin-left: auto;
-  padding-right: 10px;
-}
-
 
 // Global CLARK Style Overrides
 .user {
