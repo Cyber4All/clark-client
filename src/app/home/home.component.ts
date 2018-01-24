@@ -24,5 +24,8 @@ export class HomeComponent implements OnInit {
       this.learningObjectService.search(this.query);
     }
   }
+  goToContribute(){
+    window.location.href = 'http://onion.clark.center';
+  }
 
 }

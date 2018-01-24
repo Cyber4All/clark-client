@@ -10,6 +10,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  activeContentSwitcher = 'search';
   hideTopbar: any = false;
   constructor(private router: Router, private route: ActivatedRoute) { }
   ngOnInit() {
@@ -17,5 +18,26 @@ export class AppComponent implements OnInit {
       let root: ActivatedRoute = this.route.root;
       this.hideTopbar = root.children[0].snapshot.data.hideTopbar;
     });
+  }
+  /**
+   * Manages click events for the button for switching between contributing and searching (onion and cube)
+   * @param event
+   */
+  contentSwitchClick(event) {
+    const el = event.target;
+    const h = document.getElementsByClassName('content-switch')[0];
+    if (el.classList.contains('contribute') && this.activeContentSwitcher !== 'contribute') {
+      h.classList.remove('right');
+      h.classList.add('left');
+      this.activeContentSwitcher = 'contribute';
+
+      setTimeout(() => {
+        window.location.href = 'http://onion.clark.center';
+      }, 250);
+    } else if (el.classList.contains('search') && this.activeContentSwitcher !== 'search') {
+      h.classList.remove('left');
+      h.classList.add('right');
+      this.activeContentSwitcher = 'search';
+    }
   }
 }

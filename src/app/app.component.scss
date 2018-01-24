@@ -86,6 +86,7 @@ html, body {
 }
 
 .inner-content {
+  flex: 1 0 auto;
   min-width: 100vw;
   margin-top: 0;
   .content-switch {
@@ -96,9 +97,11 @@ html, body {
 }
 
 .content {
-  padding: 0px;
-  min-height: calc(100vh - 75px - $footer-height);  
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
+  padding: 0px;
   flex-flow: column nowrap;
   align-content: flex-start;
   .outlet {

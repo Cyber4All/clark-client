@@ -16,7 +16,7 @@ import { CheckBoxModule } from 'clark-checkbox';
 export class NavbarComponent implements OnInit {
 
   // FIXME: Convert 'class' to 'type' for consistancy
-  activeContentSwitcher = 'search';
+  
   name = ''
   hideNavbar: boolean = false;
 
@@ -73,27 +73,7 @@ export class NavbarComponent implements OnInit {
       });
   }
 
-  /**
-     * Manages click events for the button for switching between contributing and searching (onion and cube)
-     * @param event
-     */
-  contentSwitchClick(event) {
-    const el = event.target;
-    const h = document.getElementsByClassName('content-switch')[0];
-    if (el.classList.contains('contribute') && this.activeContentSwitcher !== 'contribute') {
-      h.classList.remove('right');
-      h.classList.add('left');
-      this.activeContentSwitcher = 'contribute';
 
-      setTimeout(() => {
-        window.location.href = 'http://onion.clark.center';
-      }, 250);
-    } else if (el.classList.contains('search') && this.activeContentSwitcher !== 'search') {
-      h.classList.remove('left');
-      h.classList.add('right');
-      this.activeContentSwitcher = 'search';
-    }
-  }
 
 
 

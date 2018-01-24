@@ -5,6 +5,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Modules
 import { RoutingModule } from '../app.routing';
+import { ModalModule } from 'clark-modal';
+import { NotificationModule } from 'clark-notification';
+import { CheckBoxModule } from 'clark-checkbox';
 
 // Services
 import { SortGroupsService } from './sort-groups.service';
@@ -20,6 +23,9 @@ import { FooterComponent } from './footer/footer.component';
   imports: [
     CommonModule,
     RoutingModule,
+    CheckBoxModule,
+    NotificationModule,
+    ModalModule
   ],
   declarations: [
     NavbarComponent,
