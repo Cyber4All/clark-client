@@ -1,8 +1,10 @@
-<h2>{{ group.title }}</h2>
-<div *ngIf="group.learningObjects.length !== 0" class="container">
-  <learning-object-component 
-    *ngFor="let lo of group.learningObjects" 
-    routerLink="/details/{{ lo.id }}" 
-    [learningObject]="lo">
-  </learning-object-component>
+<div *ngIf="group.learningObjects.length !== 0">
+  <h2>{{ group.title }}</h2>
+  <div class="container">
+    <learning-object-component 
+      *ngFor="let lo of group.learningObjects" 
+      routerLink="/details/{{ lo.id }}" 
+      [learningObject]="lo">
+    </learning-object-component>
+  </div>
 </div>
