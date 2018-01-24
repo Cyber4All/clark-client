@@ -57,15 +57,17 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>} 
    * @memberof LearningObjectService
    */
-  getLearningObjects(): Promise<LearningObject[]> {
+  getLearningObjects(limit?: number): Promise<LearningObject[]> {
     console.log(environment.apiURL);
     let route = environment.apiURL + this.learningObjectsURL;
-
+    console.log(limit);
     return this.http.get(route)
       .toPromise()
       .then((learningObjects) => {
         console.log(learningObjects.json())
-        return learningObjects.json().map((_learningObject: string) => {
+        let last:number;
+        limit ? last=limit : last = learningObjects.json().length
+        return learningObjects.json().slice(0,last).map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);
           let learningObject = LearningObject.unserialize(_learningObject);
           learningObject['id'] = object['id'];
@@ -73,6 +75,7 @@ export class LearningObjectService {
         });
       });
   }
+
 
   /**
    * Fetches LearningObject by id

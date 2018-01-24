@@ -1,0 +1,13 @@
+.card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    learning-object-component {
+        width: 250px;
+        height: 350px;
+        margin-right: 25px;
+        margin-top: 15px;
+    }
+}

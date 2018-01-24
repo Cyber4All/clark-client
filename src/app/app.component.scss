@@ -33,7 +33,7 @@ html, body {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  width: 100vw;
+  min-width: 100vw;
   margin-top: 75px;
   .content-switch-container {
     flex-grow: 3;
@@ -85,8 +85,8 @@ html, body {
   }
 }
 
-.inner {
-  max-width: 100vw;
+.inner-content {
+  min-width: 100vw;
   margin-top: 0;
   .content-switch {
     margin-top: 20px;

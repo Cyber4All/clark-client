@@ -9,16 +9,17 @@ import { LearningObjectService } from '../../learning-object.service';
 })
 export class FeaturedComponent implements OnInit {
   learningObjects: LearningObject[];
-
+  featuredLimit: number;
   constructor(private learningObjectService: LearningObjectService) {
   }
 
   ngOnInit() {
+    this.featuredLimit = 10;
     this.fetchLearningObjects();
   }
 
   async fetchLearningObjects() {
-    this.learningObjects = await this.learningObjectService.getLearningObjects();
+    this.learningObjects = await this.learningObjectService.getLearningObjects(this.featuredLimit);
   }
 
 }

@@ -13,10 +13,12 @@ $banner-height: 90px;
         width: 100%;
         position: relative;
         .search-viewport {
-            position: absolute;
-            top: 200px;
-            left: 35vw;
+            display:flex;
+            justify-content: center;
+            flex-direction:row;
+            height: 100%;
             .search-contents {
+                margin:auto;
                 h1 {
                     color: white;
                     margin-left: 5px;
