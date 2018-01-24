@@ -1,4 +1,4 @@
-.card-container {
+.content {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -8,6 +8,14 @@
         width: 250px;
         height: 350px;
         margin-right: 25px;
-        margin-top: 15px;
+        margin-top: 10px;
     }
+}
+
+.container {
+    background: white;
+    border: 1px solid#c3c2c2;
+    margin-bottom: 5px;
+    padding-bottom: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
