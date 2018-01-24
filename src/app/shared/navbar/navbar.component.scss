@@ -1,0 +1,47 @@
+@import '~_global-styles.scss';
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+.dropdown {
+  @include vert-center;
+}
+.flex {
+  display: flex;
+  &.h {
+    flex-direction: row;
+  }
+  &.v {
+    flex-direction: column;
+  }
+  &.left-right {
+    justify-content: space-between;
+  }
+  &.end {
+    justify-content: flex-end;
+  }
+}
+
+// Global CLARK Style Overrides
+.user {
+  display: flex;
+  flex-direction: row;
+  .left {
+    display: flex;
+    flex-direction: row !important;
+    &>* {
+      @include vert-center;
+    }
+  }
+  .shopping-cart-container {
+    margin-left: 50px;
+    color: $placeholder;
+  }
+}
+
+.inner {
+  max-width: 100vw;
+  margin-top: 0;
+  .content-switch {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+}

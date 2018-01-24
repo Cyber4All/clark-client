@@ -21,6 +21,6 @@ export class ModalityComponent implements OnInit {
 
   async fetchLearningObjects() {
     this.learningObjects = await this.learningObjectService.getLearningObjects();
-    this.groups = this.sorter.sort(this.learningObjects);
+    this.groups = this.sorter.sortLength(this.learningObjects);
   }
 }

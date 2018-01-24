@@ -6,8 +6,7 @@ export class SortGroupsService {
     constructor() {
 
     }
-
-    sort(learningObjects: LearningObject[]) {
+    sortLength(learningObjects: LearningObject[]) {
         console.log(learningObjects);
         const courses: LearningObject[] = [];
         const Modules: LearningObject[] = [];
@@ -50,9 +49,49 @@ export class SortGroupsService {
         return sortedGroups;
     }
 
+    sortAcademic(learningObjects: LearningObject[]) {
+        console.log(learningObjects);
+        const k12: LearningObject[] = [];
+        const undergraduate: LearningObject[] = [];
+        const graduate: LearningObject[] = [];
+        const other: LearningObject[] = [];
+
+        learningObjects ? learningObjects.forEach((learningObject) => {
+            // TODO: Create a property on learningObject that holds the academic level. Will require database integration as well as an unpdate to entity, etc.
+            /*if (learningObject.academic === 'k12') { k12.push(learningObject); }
+            if (learningObject.academic === 'undergraduate') { undergraduate.push(learningObject); }
+            if (learningObject.academic === 'graduate') { graduate.push(learningObject); }
+            if (learningObject.academic === '') { other.push(learningObject); }*/
+            undergraduate.push(learningObject);
+        })
+            : "No learningObjects to iterate over";
+
+        const sortedGroups = [
+            {
+                 title: 'K-12',
+                 learningObjects: k12.sort(this.sortByAlphabet)
+            },
+            {
+                title: 'Undergraduate',
+                learningObjects: undergraduate.sort(this.sortByAlphabet),
+            },
+            {
+                title: 'Graduate',
+                learningObjects: graduate.sort(this.sortByAlphabet),
+            },
+            {
+                title: 'Other',
+                learningObjects: other.sort(this.sortByAlphabet),
+            }
+        ];
+        console.log(sortedGroups);
+        return sortedGroups;
+    }
+
     sortByAlphabet(a, b) {
         if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
         if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1;  }
         return 0;
     }
+
 }

@@ -1,0 +1,76 @@
+<div class="container gradient">
+  <div>
+    <particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height" id="particles-js"> </particles>
+  </div>
+  <div>
+    <div class="register-wrapper container">
+      <div class="header">
+        <span>Register</span>
+      </div>
+      <div *ngIf="error" class="error-block">
+        <span>{{ error }}</span>
+      </div>
+      <form name="form" (ngSubmit)="register(registerForm)" #registerForm="ngForm">
+        <div class="flex-container">
+          <div class="name">
+            <!--FIRST NAME-->
+            <div class="name-width" style="position: relative">
+              <input type="text" class="box" [ngClass]="{ hasError: registerForm.submitted && !firstname.valid }" name="firstname" placeholder="Firstname"
+                (ngModel)="firstname" #firstname="ngModel" (focus)="error=''" required />
+              <div *ngIf="registerForm.submitted && !firstname.valid" class="error">Firstname is required</div>
+            </div>
+
+            <!--LAST TNAME-->
+            <div class="name-width" style="position: relative">
+              <input type="text" class="box" [ngClass]="{ hasError: registerForm.submitted && !lastname.valid }" name="lastname" placeholder="Lastname"
+                (ngModel)="lastname" #lastname="ngModel" (focus)="error=''" required />
+              <div *ngIf="registerForm.submitted && !lastname.valid" class="error">Lastname is required</div>
+            </div>
+          </div>
+
+          <!--USERNAME-->
+          <div class="box-width" style="position: relative">
+            <input type="text" class="box" [ngClass]="{ hasError: registerForm.submitted && !username.valid }" name="username" placeholder="Username"
+              (ngModel)="username" #username="ngModel" (focus)="error=''" required />
+            <div *ngIf="registerForm.submitted && !username.valid" class="error">Username is required</div>
+          </div>
+
+          <!--EMAIL-->
+          <div class="box-width" style="position: relative">
+            <input type="email" class="box" [ngClass]="{ hasError: registerForm.submitted && !email.valid }" name="email" placeholder="Email"
+              (ngModel)="email" #email="ngModel" (focus)="error=''" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+            />
+            <div *ngIf="registerForm.submitted && email.errors && email.errors.required" class="error">Email is required</div>
+            <div *ngIf="registerForm.submitted && email.errors && email.errors.pattern" class="error">Not a valid email address</div>
+          </div>
+
+          <!--PASSWORD-->
+          <div class="box-width" style="position: relative">
+            <input type="password" class="box" [ngClass]="{ hasError: registerForm.submitted && !password.valid }" name="password" placeholder="Password"
+              (ngModel)="password" #password="ngModel" (focus)="error=''" required />
+            <div *ngIf="registerForm.submitted && !password.valid" class="error">Password is required</div>
+          </div>
+
+          <!--PASSWORD CONFIRMATION-->
+          <div class="box-width" style="position: relative">
+            <input type="password" class="box" [ngClass]="{ hasError: registerForm.submitted && !confirmPassword.valid ||  (confirmPassword.value != password.value)}"
+              name="confirmPassword" placeholder="Confirm Password" (ngModel)="confirmPassword" #confirmPassword="ngModel"
+              (focus)="error=''" required />
+            <div *ngIf="registerForm.submitted && !confirmPassword.valid" class="error">A password confirmation is required</div>
+            <div *ngIf="registerForm.submitted && (confirmPassword.value != password.value)" class="error" style="top: -14px">Passwords do not match</div>
+          </div>
+          <br>
+          <div class=buttons>
+            <!--REGISTER BUTTON-->
+            <input type="submit" class="button-style" value="register" [disabled]="loading" />
+
+            <!--BACK TO LOGIN BUTTON-->
+            <div class="button-style" (click)="login()">
+              <span>Back to login</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

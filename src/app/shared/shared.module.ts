@@ -13,6 +13,8 @@ import { SortGroupsService } from './sort-groups.service';
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   imports: [
@@ -20,11 +22,15 @@ import { LearningObjectListingComponent } from './learning-object/learning-objec
     RoutingModule,
   ],
   declarations: [
+    NavbarComponent,
+    FooterComponent,
     CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
   ],
   exports: [
+    NavbarComponent,
+    FooterComponent,
     CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,

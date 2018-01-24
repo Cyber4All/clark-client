@@ -33,6 +33,8 @@ import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 
 // Components
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FooterComponent } from './shared/footer/footer.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FilterMenuComponent } from './filter-menu/filter-menu.component';
@@ -45,6 +47,7 @@ import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -56,7 +59,7 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
     DetailsContentComponent,
     CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
-    BrowseComponent, UserProfileComponent, UserPreferencesComponent
+    BrowseComponent, UserProfileComponent, UserPreferencesComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +74,8 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
     StoreModule.forRoot({ cart: cartReducer }),
     ModalModule.forRoot(),
     NotificationModule.forRoot(),
-    CheckBoxModule
+    CheckBoxModule,
+    AuthModule.forRoot()
   ],
   providers: [
     LearningObjectService,
