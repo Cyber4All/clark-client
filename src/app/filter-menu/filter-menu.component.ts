@@ -1,5 +1,5 @@
 import { SuggestionQuery } from './../suggestion/suggestion.component';
-import { lengths } from 'clark-taxonomy';
+import { lengths } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 
