@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../shared/services/cart.service';
-import { LearningObject } from 'clark-entity';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
 import { Observable } from 'rxjs/Observable';
 

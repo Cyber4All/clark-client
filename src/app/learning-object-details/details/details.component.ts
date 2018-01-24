@@ -1,6 +1,6 @@
 import { ModalService } from 'clark-modal';
 import { LearningObjectService } from './../../learning-object.service';
-import { LearningObject } from 'clark-entity';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';

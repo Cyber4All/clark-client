@@ -1,6 +1,6 @@
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
-import { LearningObject } from 'clark-entity';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { SortGroupsService } from '../shared/sort-groups.service';
 
 @Component({

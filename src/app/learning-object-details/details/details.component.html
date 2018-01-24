@@ -5,9 +5,8 @@
   <div class="learningHeader">
     <h1>{{ learningObject.name }} - {{learningObject.length}}</h1>
     <button (click)="addToCart()">+</button>
-
     <!--<p *ngIf="learningObject.author">Created by: {{ learningObject.author }}</p>-->
-    <p>Created by: Author</p>
+    <p>Created by: {{learningObject.author._name}}</p>
     
   </div>
     

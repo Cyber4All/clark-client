@@ -11,9 +11,9 @@ export class AcademicsComponent implements OnInit {
   groups;
 
   constructor(public service: LearningObjectService) {
-    //service.observeFiltered().subscribe(groups => {
-    //this.groups = this.sort(groups);
-    //});
+   /* service.observeFiltered().subscribe(groups => {
+    this.groups = this.sort(groups);
+    });*/
     this.groups = this.sort(null); //until above is implemented
   }
 
@@ -22,7 +22,8 @@ export class AcademicsComponent implements OnInit {
 
   sort(groups) {
     const sorted = [];
-    /*for (const g of groups) {
+    /*
+    for (const g of groups) {
       for (const o of g.learningObjects) {
         if (o.institutionLevel) {
           sorted.push(o);

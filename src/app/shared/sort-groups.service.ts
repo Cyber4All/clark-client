@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { LearningObject } from 'clark-entity';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class SortGroupsService {

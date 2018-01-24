@@ -4,7 +4,7 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
-import { LearningObject, User } from 'clark-entity';
+import { LearningObject, User } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class LearningObjectService {
@@ -64,9 +64,10 @@ export class LearningObjectService {
     return this.http.get(route)
       .toPromise()
       .then((learningObjects) => {
+        console.log(learningObjects.json())
         return learningObjects.json().map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);
-          let learningObject = LearningObject.unserialize(_learningObject, object['author']);
+          let learningObject = LearningObject.unserialize(_learningObject);
           learningObject['id'] = object['id'];
           return learningObject;
         });
@@ -85,7 +86,7 @@ export class LearningObjectService {
     return this.http.get(route)
       .toPromise()
       .then((learningObject) => {
-        return learningObject ? LearningObject.unserialize(learningObject.json(), null) : null;
+        return learningObject ? LearningObject.unserialize(learningObject.json()) : null;
       });
   }
 
@@ -104,7 +105,7 @@ export class LearningObjectService {
       .then((learningObjects) => {
         return learningObjects.json().map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);
-          let learningObject = LearningObject.unserialize(_learningObject, object['author']);
+          let learningObject = LearningObject.unserialize(_learningObject);
           learningObject['id'] = object['id'];
           return learningObject;
         });

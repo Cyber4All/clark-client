@@ -1,4 +1,4 @@
-import { LearningObject } from 'clark-entity';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, Input } from '@angular/core';
 import { EscapeHtmlPipe } from './../../shared/pipes/keep-html.pipe';
 
