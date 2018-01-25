@@ -1,16 +1,16 @@
-machine:  
+machine:
   node:
     version: 8.9.3
 dependencies:
   pre:
     - npm install
     - npm install enhanced-resolve@3.3.0
-test: 
-  override: 
+test:
+  override:
     - echo "done"
 deployment:
   production:
     branch: production
     commands:
-      - yarn ng -- build --prod --aot --no-progress
-      - aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
+      - yarn ng -- build --prod --aot=false --no-progress
+      - 'aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}'
