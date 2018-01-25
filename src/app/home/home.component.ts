@@ -16,7 +16,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  keyDownSearch(event) {
+    if (event.keyCode == 13) {
+      this.search();
+    }
+  }
   search() {
     // TODO: verify query contains alphanumeric characters
     if (this.query === '') {
