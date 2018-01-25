@@ -69,8 +69,8 @@ export class AuthenticationService {
                 this.setUser(user);
                 return user;
             }).catch(e => {
-                console.log('an error', e);
-            })
+                throw new Error(e);
+            });
 
     }
 

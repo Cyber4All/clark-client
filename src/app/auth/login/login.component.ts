@@ -173,6 +173,7 @@ export class LoginComponent implements OnInit {
         this.loading = true;
         this.authenticationService.login(username, password)
             .then(user => {
+                console.log(user);
                 this.router.navigate([this.returnUrl]);
             })
             .catch(err => {
