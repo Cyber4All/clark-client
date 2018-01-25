@@ -1,18 +1,83 @@
-.cart-actions {
-    display: flex;
-    flex-flow: row nowrap;
-    margin-left: auto;
-    justify-content: flex-end;
-    padding-right: 35px;
-    margin-bottom: 50px;
-    .button {
-        margin-right: 15px;
-        &.bad {
-            margin-left: 75px;
+@import '~_global-styles.scss';
+
+.wrapper {
+    max-width: 950px;
+    background: white;
+    padding: 20px;
+    border-radius: 3px;
+    margin: auto;
+
+    .title {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+        color: $blue-accent;
+    }
+
+    .count {
+        font-weight: light;
+        color: lighten($dark-text, 20);
+        font-style: italic;
+        text-align: center;
+    }
+
+    .cart {
+        margin-top: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+
+        .object {
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+
+            .name {
+                font-weight: bold;
+                font-size: 16px;
+                color: $blue-accent;
+            }
+
+            .author {
+                font-style: italic;
+                color: lighten($dark-text, 20);
+            }
+
+            &:nth-of-type(even) {
+                background: rgba(0, 0, 0, 0.05);
+                border-top: 1px solid rgba(0, 0, 0, 0.02);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+            }
+
+            .actions {
+                display: flex; flex-direction: row;
+                align-self: center;
+
+                .button {
+                    margin-left: 10px;
+                    max-height: 38px;
+                }
+            }
         }
     }
-}
-.cart-items {
-    max-width: 1080px;
-    margin: auto; 
+
+    .btn-group {
+        margin-top: 25px;
+    }
+
+    .no-objects {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 18px;
+        color: lighten($dark-text, 20);
+
+        span {
+            font-style: italic;
+            color: $blue-accent;
+            text-decoration: underline;
+            outline: none;
+            cursor: pointer;
+        }
+    }
 }

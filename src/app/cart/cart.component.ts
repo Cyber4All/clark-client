@@ -1,6 +1,5 @@
 import { CartV2Service } from './../shared/services/cartv2.service';
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../shared/services/cart.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
 import { Observable } from 'rxjs/Observable';
@@ -24,20 +23,10 @@ export class CartComponent implements OnInit {
   }
 
   async loadCart() {
-    // this.cartService.cart$.subscribe((library) => {
-    //   if (library.items.length > 0) {
-    //     // TODO: Convert return type to Observable
-    //     this.learningObjectService.getLearningObjectsByIDs(library.items)
-    //       .then((learningObjects) => {
-    //         this.cartItems = learningObjects;
-    //       });
-    //   } else {
-    //     this.cartItems = [];
-    //   }
-    // });
     const val = await this.cartService.getCart();
     if (val) {
       this.cartItems = <Array<LearningObject>> val;
+      console.log(this.cartItems);
     } else {
       console.log('not logged in!');
     }
@@ -59,7 +48,9 @@ export class CartComponent implements OnInit {
     }
   }
 
-  async removeItem(author: string, learningObjectName: string) {
+  async removeItem(object) {
+    const author = object._author._username;
+    const learningObjectName = object._name;
     const val = await this.cartService.removeFromCart(author, learningObjectName);
     if (val) {
       this.cartItems = <Array<LearningObject>> val;
