@@ -4,7 +4,7 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
-import { environment } from '../../../environments/environment';
+import { USER_ROUTES } from '../../../environments/routes';
 // import { EmailValidator } from './directives/validators';
 
 /**
@@ -61,15 +61,17 @@ export class AuthenticationService {
      * @param password The provided password
      */
     login(username: string, password: string) {
-        console.log(environment.apiURL + '/authenticate');
-        return this.http.post(environment.apiURL + '/authenticate', { username: username, password: password }, { headers: this.headers })
-        .toPromise()
-        .then(response=>{
-            console.log(response);
-            let user = response.json()
-            this.setUser(user);
-            return user;
-        })
+        const route = USER_ROUTES.LOGIN;
+        return this.http.post(route, { username: username, password: password }, { headers: this.headers })
+            .toPromise()
+            .then(response => {
+                console.log(response);
+                let user = response.json();
+                this.setUser(user);
+                return user;
+            }).catch(e => {
+                console.log('an error', e);
+            })
 
     }
 
@@ -84,8 +86,8 @@ export class AuthenticationService {
      * @param email The provided email 
      */
     register(username: string, password: string, firstname: string, lastname: string, email: string) {
-        
-        return this.http.post(environment.apiURL + '/register', JSON.stringify({
+
+        return this.http.post(USER_ROUTES.REGISTER, JSON.stringify({
             username: username,
             password: password,
             firstname: firstname,
@@ -93,7 +95,7 @@ export class AuthenticationService {
             email: email
         }),
             { headers: this.headers }).toPromise()
-            .then(response=> {
+            .then(response => {
                 let user = response.json();
                 this.setUser(user);
                 return user;
@@ -126,7 +128,7 @@ export class AuthenticationService {
      * @returns {{token: string}} 
      * @memberof AuthenticationService
      */
-    getUser(): { _name: string, token: string } {
+    getUser(): { name: string, token: string } {
         let user = localStorage.getItem("currentUser");
         if (user) {
             return JSON.parse(user);
@@ -139,7 +141,7 @@ export class AuthenticationService {
      * 
      * @param user A JSON object containing the user's data.
      */
-    setUser(user: { _name: string, token: string}) {
+    setUser(user: { name: string, token: string }) {
 
         if (user && user.token) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -154,9 +156,10 @@ export class AuthenticationService {
      */
     getName(): string {
         let user = this.getUser();
+        console.log(user);
         if (user) {
             if (user.token) {
-                return user._name;
+                return user['_username'];
             }
         }
     }
