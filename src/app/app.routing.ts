@@ -23,6 +23,7 @@ const routes: Routes = [
     { path: 'modality', component: ModalityComponent, data: { breadcrumb: 'Modality' } },
     { path: 'details/:username/:learningObjectName', component: DetailsComponent, data: { breadcrumb: 'Details' } },
     { path: 'cart', component: CartComponent, data: { breadcrumb: 'Cart' } },
+    { path: 'browse/:query', component: BrowseComponent, data: { breadcrumb: 'Browse' } },
     { path: 'browse', component: BrowseComponent, data: { breadcrumb: 'Browse' } },
     { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' } },
     { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' } },

@@ -3,12 +3,12 @@
     <div class="search-viewport">
       <div class="search-contents">
         <h1>I'm looking for...</h1>
-        <form>
-          <div class="">
-            <input type="text" class="search-input" placeholder="Search" [(ngModel)]="query" (ngModelChange)="search()" name="query">
-            <button type="submit" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
-          </div>
-        </form>
+          <form>
+            <div>
+              <input type="text" class="search-input" placeholder="Search" [(ngModel)]="query" name ="query">
+              <button type="button" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
+            </div>
+          </form>
       </div>
     </div>
   </div>

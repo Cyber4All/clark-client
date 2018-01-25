@@ -9,46 +9,55 @@ import { LearningObject, User } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class LearningObjectService {
-  options = {
-    shouldSort: true,
-    threshold: 0.6,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 1,
-    keys: ['topic']
-  };
-  fuseGroup = [];
-  groups;
-  filteredResults;
 
+  fuse;
+  filteredResults;
   dataObserver;
   data;
 
-  constructor(private config: ConfigService, private http: Http) { }
+  constructor(private config: ConfigService, private http: Http,) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
   }
 
-  search(query) {
-    this.filteredResults = [];
-    for (const g of this.fuseGroup) {
-      this.filteredResults.push({
-        learningObjects: g.search(query)
-      });
+  async configureFuse(query:String){
+    let fuseGroups = await this.getLearningObjects();
+    let options = {
+      shouldSort: true,
+      threshold: 0.3,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ['name']
+    };
+    this.fuse = new Fuse(fuseGroups, options)
+
+
+
+  }
+
+  async search(query: String): Promise<LearningObject[]>{
+    if(query.length < 4){
+      this.clearSearch() 
+    }else {
+      await this.configureFuse(query);
+      this.filteredResults = this.fuse.search(query);
     }
-    this.dataObserver ? this.dataObserver.next(this.filteredResults) : "Data Observer is undefined!";
+    return this.filteredResults;
+  }
+
+  getFilteredObjects(){
+    console.log(this.filteredResults);
+    return this.filteredResults;
   }
 
   clearSearch() {
     this.filteredResults = [];
-    this.dataObserver ? this.dataObserver.next(this.groups) : "Data Observer is undefined!";
-
   }
 
   openLearningObject(url: string) {
-    // location.href = url;
     window.open(url);
   }
 
@@ -63,7 +72,6 @@ export class LearningObjectService {
     return this.http.get(route)
       .toPromise()
       .then((learningObjects) => {
-        console.log(learningObjects.json());
         let last:number;
         limit ? last = limit : last = learningObjects.json().length
         return learningObjects.json().slice(0, last).map((_learningObject: string) => {
