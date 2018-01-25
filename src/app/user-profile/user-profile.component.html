@@ -1,24 +1,8 @@
-<!-- <div class="title">
-  <div class="card-container">
-    <h1>
-      <div class=title>User Profile: {{name}}</div>
-    </h1>
-    <h3>
-      <strong>Affiliations:</strong> {{employer}}</h3>
-    <h3>
-      <strong>Modules Created:</strong> {{modulesCreated}}</h3>
-    <h4>{{name.split(' ')[0]}} hasn't created any learning objects yet!</h4> -->
-
 <!--To be implemented-->
 <!-- <section *ngIf="objectsDownloaded.length > 0" class="cart-items">
       <h3>{{name.split(' ')[0]}} has created {{objectsCreated.length}} learning objects:</h3>
       <learning-object-component *ngFor="let learningObject of objectsDownloaded" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
     </section> -->
-
-<!-- <h3>
-      <strong>Modules Downloaded:</strong>
-    </h3>
-    <h4>{{name.split(' ')[0]}} hasn't downloaded any learning objects yet!</h4> -->
 
 
 <!--To be implemented-->
@@ -27,14 +11,13 @@
     <learning-object-component *ngFor="let learningObject of objectsDownloaded" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
   </section> -->
 
-<!-- </div>
-</div> -->
 <div class="card-container">
   <div class="column1">
     <img src="https://static.pexels.com/photos/162140/duckling-birds-yellow-fluffy-162140.jpeg" alt="user photo" style="width:100%">
     <h1>{{name}}</h1>
     <p class="title">Masters Student</p>
     <p>{{employer}}</p>
+    <h6>Email:{{email}}</h6>
     <div class="space"></div>
     <button (click)="showContent=1">Modules Created</button>
     <button (click)="showContent=2">Modules Downloaded</button>
