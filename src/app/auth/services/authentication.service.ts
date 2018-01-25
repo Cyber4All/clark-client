@@ -4,7 +4,7 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
-import { USER_ROUTES } from '../../../environments/routes';
+import { USER_ROUTES } from '../../../environments/route';
 // import { EmailValidator } from './directives/validators';
 
 /**

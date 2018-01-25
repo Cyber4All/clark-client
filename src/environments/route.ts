@@ -55,7 +55,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
         return `${environment.apiURL}/learning-objects${query}`;
     },
     GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName) {
-        console.log(author, learningObjectName);
         return `${environment.apiURL}/learning-objects/${author}/${learningObjectName}`;
     }
 };

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { USER_ROUTES } from '../../../environments/routes';
+import { USER_ROUTES } from '../../../environments/route';
 import { AuthenticationService } from './authentication.service';
 
 /**

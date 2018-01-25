@@ -38,11 +38,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
     console.log(this.learningObject);
   }
 
-  addToCart() {
-    this.cartService.addToCart(this.author, this.learningObjectName);
+  async addToCart() {
+
+    let val = await this.cartService.addToCart(this.author, this.learningObjectName);
+    console.log(val);
   }
-  clearCart() {
-    this.cartService.clearCart();
+  async clearCart() {
+    if (await this.cartService.clearCart()) {
+    } else {
+      console.log('not logged in!');
+    }
   }
   removeFromCart() {
     this.cartService.removeFromCart(this.author, this.learningObjectName);

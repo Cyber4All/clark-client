@@ -1,3 +1,5 @@
+import { CartV2Service } from './../services/cartv2.service';
+import { CartService } from './../services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
 import { ModalService, Position, ModalListElement } from '@cyber4all/clark-modal';
@@ -16,10 +18,11 @@ export class NavbarComponent implements OnInit {
 
   // FIXME: Convert 'class' to 'type' for consistancy
 
-  name = ''
+  name = '';
   hideNavbar: boolean = false;
+  loggedin = (JSON.parse(localStorage.getItem('currentUser'))) ? true : false;
 
-  constructor(private modalCtrl: ModalService, private router: Router, private route: ActivatedRoute, private authService: AuthenticationService) {
+  constructor(private modalCtrl: ModalService, private router: Router, private route: ActivatedRoute, private authService: AuthenticationService, private cartService: CartV2Service) {
   }
 
   ngOnInit() {
@@ -28,10 +31,22 @@ export class NavbarComponent implements OnInit {
       let root: ActivatedRoute = this.route.root;
       this.hideNavbar = root.children[0].snapshot.data.hideNavbar;
     });
+    this.cartService.getCart();
+
+    this.authService.isLoggedIn().subscribe(val => {
+      if (val) {
+        this.loggedin = true;
+        this.name = this.authService.getName();
+        this.cartService.udpateUser();
+        this.cartService.getCart();
+      }
+      else this.loggedin = false;
+    });
   }
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['/']);
   }
 
   userprofile() {

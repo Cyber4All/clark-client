@@ -35,7 +35,12 @@ export class CartComponent implements OnInit {
     //     this.cartItems = [];
     //   }
     // });
-    this.cartItems = await this.cartService.getCart();
+    const val = await this.cartService.getCart();
+    if (val) {
+      this.cartItems = <Array<LearningObject>> val;
+    } else {
+      console.log('not logged in!');
+    }
   }
 
   async download() {
@@ -46,12 +51,21 @@ export class CartComponent implements OnInit {
 
   }
 
-  clearCart() {
-    this.cartService.clearCart();
+  async clearCart() {
+    if (await this.cartService.clearCart()) {
+      this.cartItems = [];
+    } else {
+      console.log('not logged in!');
+    }
   }
 
   async removeItem(author: string, learningObjectName: string) {
-    this.cartItems = await this.cartService.removeFromCart(author, learningObjectName);
+    const val = await this.cartService.removeFromCart(author, learningObjectName);
+    if (val) {
+      this.cartItems = <Array<LearningObject>> val;
+    } else {
+      console.log('not logged in!');
+    }
   }
 
 }

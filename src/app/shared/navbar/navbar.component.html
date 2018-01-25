@@ -9,7 +9,7 @@
           <a class="no-link" href="http://clark.center">Cybersecurity Labs and Resource Knowledge-base</a>
         </div>
       </div>
-      <div class="user flex h flex-end">
+      <div class="user flex h flex-end" *ngIf="loggedin">
 
         <div class="left flex h flex-end" (click)="userDropdown($event)">
           <!-- get just first name -->
@@ -21,8 +21,14 @@
         </div>
 
         <div class="right shopping-cart-container" routerLink="/cart">
-          <i class="fas fa-shopping-cart fa-2x"></i>
+          <div class="library-icon"></div>
+          <div *ngIf="cartService.cartItems.length" class="library-badge">{{cartService.cartItems.length}}</div>
         </div>
+      </div>
+
+      <div class="user flex h flex-end" *ngIf="!loggedin">
+        <div class="login flex h flex-end" routerLink="/login"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
+        <div class="register" routerLink="/register"><div>Register</div> <i class="fas fa-sign-in-alt"></i></div>
       </div>
 
     </div>
