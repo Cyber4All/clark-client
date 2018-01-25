@@ -65,7 +65,6 @@ export class AuthenticationService {
         return this.http.post(route, { username: username, password: password }, { headers: this.headers })
             .toPromise()
             .then(response => {
-                console.log(response);
                 let user = response.json();
                 this.setUser(user);
                 return user;
@@ -128,7 +127,7 @@ export class AuthenticationService {
      * @returns {{token: string}} 
      * @memberof AuthenticationService
      */
-    getUser(): { name: string, token: string } {
+    getUser() {
         let user = localStorage.getItem("currentUser");
         if (user) {
             return JSON.parse(user);
@@ -141,7 +140,7 @@ export class AuthenticationService {
      * 
      * @param user A JSON object containing the user's data.
      */
-    setUser(user: { name: string, token: string }) {
+    setUser(user) {
 
         if (user && user.token) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -159,7 +158,7 @@ export class AuthenticationService {
         console.log(user);
         if (user) {
             if (user.token) {
-                return user['_username'];
+                return user['_name'];
             }
         }
     }
