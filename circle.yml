@@ -1,6 +1,6 @@
 machine:  
   node:
-    version: 7.6.0
+    version: 8.9.3
 dependencies:
   pre:
     - npm install
@@ -10,7 +10,7 @@ test:
     - echo "done"
 deployment:
   production:
-    branch: master
+    branch: production
     commands:
       - yarn ng -- build --prod --aot --no-progress
       - aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}

@@ -1,36 +1,45 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-      <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-      </button>
-      <a href="#" class="navbar-brand">CLARK</a>
+<div class="outer-wrapper">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <div class="inner-content">
+      <div *ngIf="!hideTopbar" class="toolbar">
+        <div class="content-switch-container">
+          <div class="content-switch right">
+            <div class="options">
+              <div class="left contribute" (click)="contentSwitchClick($event)">Contribute</div>
+              <div class="right search active" (click)="contentSwitchClick($event)">Search</div>
+            </div>
+            <div class="highlight"></div>
+          </div>
+        </div>
+        <div class="filter-options">
+          <button class="filter-button button" routerLink="/home">
+            <i class="fas fa-star"></i>&nbsp;
+            <p>Featured</p>
+          </button>
+          <button class="filter-button button" routerLink="/browse">
+            <i class="fas fa-list"></i>&nbsp;
+            <p>Browse All</p>
+          </button>
+          <button class="filter-button button" routerLink="/academics">
+            <i class="fas fa-book"></i>&nbsp;
+            <p>Browse by Academic Level</p>
+          </button>
+          <button class="filter-button button" routerLink="/modality">
+            <i class="fas fa-clock"></i>&nbsp;
+            <p>Browse by Length</p>
+          </button>
+          <button class="filter-button button" routerLink="/mapping">
+            <i class="fas fa-map-marker"></i>&nbsp;
+            <p>Browse by Mappings</p>
+          </button>
+        </div>
+      </div>
+      <breadcrumb></breadcrumb>
+      <div class="outlet sub-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <app-footer></app-footer>
   </div>
-  <!-- Collection of nav links, forms, and other content for toggling -->
-  <div id="navbarCollapse" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <!-- <li><a href="#">Browse</a></li>
-          <li><a href="#">Collections</a></li> -->
-          <li><a href="http://onion.clark.center">Contribute</a></li>
-      </ul>
-  </div>
-</nav>
-<div class="flex-container">
-  <div class="container">
-  <section class="contents">
-      <router-outlet></router-outlet>
-    <!-- <select #outcomeFilter class="form-control" style="margin-left: 15px">
-        <option value="all">All</option>
-        <option value="1">Describe risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of human security</option>
-        <option value="2">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of enterprise security</option>
-        <option value="3">Define risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of system security</option>
-        <option value="4">Identify risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of software security</option>
-        <option value="5">Recognize risks, vulnerabilities, and possible solutions to cybersecurity issues in the area of societal security</option>
-    </select> -->
-  </section>
-</div>
 </div>

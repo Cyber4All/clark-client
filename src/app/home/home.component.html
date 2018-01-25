@@ -1,17 +1,28 @@
-<form style="margin-left: 15px">
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" (ngModelChange)="search()" name="query">
-        <!--
-        <span class="input-group-btn">
-            <button (click)="openMenu = !openMenu" class="btn btn-default" style="border-radius: 0">Filter</button>
-        </span> -->
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-default" (click)="search()"><span class="glyphicon glyphicon-search"></span></button>
-        </span>
+<section class="top">
+  <div class="img-viewport">
+    <div class="search-viewport">
+      <div class="search-contents">
+        <h1>I'm looking for...</h1>
+        <form>
+          <div class="">
+            <input type="text" class="search-input" placeholder="Search" [(ngModel)]="query" (ngModelChange)="search()" name="query">
+            <button type="submit" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
+          </div>
+        </form>
+      </div>
     </div>
-</form>
+  </div>
+  <div class="home-banner"></div>
+</section>
 
-<cube-faces *ngIf="query === undefined || query === ''"></cube-faces>
-<div *ngIf="query !== undefined && query !== ''">
-    <app-curriculum-group *ngFor="let g of groups" [group]="g"></app-curriculum-group>
-</div>
+<section class="promo">
+  <div class="contribute-invitation">
+    <h1>Become a Contributor</h1>
+    <p>Share your knowledge with the world. Join the movement and help bring cyber education to the world.</p>
+    <button class="button bad" (click)="goToContribute()">Start Contributing</button>
+  </div>
+</section>
+
+<section class="featured-viewport">
+  <app-featured></app-featured>
+</section>

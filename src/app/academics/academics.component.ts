@@ -1,5 +1,8 @@
+
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
+import { LearningObject } from '@cyber4all/clark-entity';
+import { SortGroupsService } from '../shared/sort-groups.service';
 
 @Component({
   selector: 'app-academics',
@@ -8,29 +11,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AcademicsComponent implements OnInit {
 
+  learningObjects: LearningObject[];
   groups;
 
-  constructor(public service: LearningObjectService) {
-    service.observeFiltered().subscribe(groups => {
-      this.groups = this.sort(groups);
-    });
-  }
+  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService) { }
 
   ngOnInit() {
+    this.fetchLearningObjects();
   }
 
-  sort(groups) {
-    const sorted = [];
-    /*for (const g of groups) {
-      for (const o of g.learningObjects) {
-        if (o.institutionLevel) {
-          sorted.push(o);
-        }
-      }
-    }*/
-    sorted.push({title: 'K-12', learningObjects: [{ topic: 'SPLASH', class: 'Course', url: 'http://cis1.towson.edu/~cyber4all/index.php/splash_home/' }]});
-    sorted.push({title: 'Undergraduate', learningObjects: [{ topic: 'Cybersecurity for Future Presidents', class: 'Course' }]});
-    
-    return sorted;
+  async fetchLearningObjects() {
+    this.learningObjects = await this.learningObjectService.getLearningObjects();
+    this.groups = this.sorter.sortAcademic(this.learningObjects);
   }
 }

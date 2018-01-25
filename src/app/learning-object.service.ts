@@ -2,9 +2,9 @@ import { ConfigService } from './config.service';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 import * as Fuse from 'fuse.js';
+import { environment } from '../environments/environment';
+import { LearningObject, User } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class LearningObjectService {
@@ -24,12 +24,11 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  constructor(private config: ConfigService, private http: Http) {
-    this.data = new Observable(observer => this.dataObserver = observer);
-    this.getGroups();
-  }
+  private learningObjectsURL = '/learning-objects'
 
-  observeFiltered(): Observable<{}[]> {
+  constructor(private config: ConfigService, private http: Http) { }
+
+  observeFiltered(): Observable<LearningObject[]> {
     return this.data;
   }
 
@@ -40,24 +39,80 @@ export class LearningObjectService {
         learningObjects: g.search(query)
       });
     }
-    this.dataObserver.next(this.filteredResults);
+    this.dataObserver ? this.dataObserver.next(this.filteredResults) : "Data Observer is undefined!";
   }
   clearSearch() {
     this.filteredResults = [];
-    this.dataObserver.next(this.groups);
+    this.dataObserver ? this.dataObserver.next(this.groups) : "Data Observer is undefined!";
+
   }
   openLearningObject(url: string) {
     // location.href = url;
     window.open(url);
   }
-  getGroups() {
-    console.log(this.config.env.apiUrl);
-    this.http.get(this.config.env.apiUrl).subscribe(res => {
-      this.groups = res.json();
-      for (const g of this.groups) {
-        this.fuseGroup.push(new Fuse(g.learningObjects, this.options));
-      }
-      this.dataObserver.next(this.groups);
-    });
+
+  /**
+   * Fetches Array of Learning Objects
+   * 
+   * @returns {Promise<LearningObject[]>} 
+   * @memberof LearningObjectService
+   */
+  getLearningObjects(limit?: number): Promise<LearningObject[]> {
+    console.log(environment.apiURL);
+    let route = environment.apiURL + this.learningObjectsURL;
+    console.log(limit);
+    return this.http.get(route)
+      .toPromise()
+      .then((learningObjects) => {
+        console.log(learningObjects.json())
+        let last:number;
+        limit ? last=limit : last = learningObjects.json().length
+        return learningObjects.json().slice(0,last).map((_learningObject: string) => {
+          let object = JSON.parse(_learningObject);
+          let learningObject = LearningObject.unserialize(_learningObject);
+          learningObject['id'] = object['id'];
+          return learningObject;
+        });
+      });
   }
+
+
+  /**
+   * Fetches LearningObject by id
+   * 
+   * @param {string} id 
+   * @returns {Promise<LearningObject>} 
+   * @memberof LearningObjectService
+   */
+  getLearningObject(id: string): Promise<LearningObject> {
+    let route = environment.apiURL + this.learningObjectsURL + id;
+    return this.http.get(route)
+      .toPromise()
+      .then((learningObject) => {
+        return learningObject ? LearningObject.unserialize(learningObject.json()) : null;
+      });
+  }
+
+  /**
+   * Fetches Array of LearningObjects by their id
+   * 
+   * @param {string[]} ids 
+   * @returns {Promise<LearningObject[]>} 
+   * @memberof LearningObjectService
+   */
+  getLearningObjectsByIDs(ids: string[]): Promise<LearningObject[]> {
+    let route = environment.apiURL + this.learningObjectsURL + '/multiple' + `/${ids}`;
+    console.log(route)
+    return this.http.get(route)
+      .toPromise()
+      .then((learningObjects) => {
+        return learningObjects.json().map((_learningObject: string) => {
+          let object = JSON.parse(_learningObject);
+          let learningObject = LearningObject.unserialize(_learningObject);
+          learningObject['id'] = object['id'];
+          return learningObject;
+        });
+      });
+  }
+
 }

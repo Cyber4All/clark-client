@@ -1,0 +1,11 @@
+<div *ngIf="cartItems.length < 1">
+  <h1>Your library is empty</h1>
+</div>
+<section *ngIf="cartItems.length > 0" class="cart-actions">
+  <button class="button good" (click)="download()">Download</button>
+  <button class="button neutral on-white" (click)="saveBundle()">Save Bundle</button>
+  <button class="button bad" (click)="clearCart()">Clear Cart</button>
+</section>
+<section *ngIf="cartItems.length > 0" class="cart-items">
+  <learning-object-component *ngFor="let learningObject of cartItems" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
+</section>

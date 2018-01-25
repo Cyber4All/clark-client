@@ -1,0 +1,55 @@
+<div class="container gradient">
+  <div>
+    <particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height" id="particles-js"> </particles>
+  </div>
+  <div>
+    <div class="login-container">
+      <div class="header">
+        <br>
+        <br>
+        <br>
+        <br>
+        <span class="title"> C.L.A.R.K.</span>
+        <span class="sub-title">
+          <br>
+          <br>Cybersecurity Labs and Resource Knowledge-base</span>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <form name="form" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+        <div>
+          <div>
+            <input type="text" class="form" [ngClass]="{ hasError: loginForm.submitted && !username.valid }" name="username" placeholder="Username"
+              (ngModel)="username" #username="ngModel" (focus)="error=''" required />
+            <div *ngIf="loginForm.submitted && !username.valid" class="error">Username is required</div>
+          </div>
+          <br>
+          <div>
+            <input type="password" class="form" [ngClass]="{ hasError: loginForm.submitted && !password.valid }" name="password" placeholder="Password"
+              (ngModel)="password" #password="ngModel" (focus)="error=''" required />
+            <div *ngIf="loginForm.submitted && !password.valid" class="error">Password is required</div>
+          </div>
+        </div>
+        <div>
+          <p class="links" id="align-left">Forgot password?</p>
+        </div>
+        <br>
+        <div class="submit input-wrapper">
+          <input type="submit" style="font-size: 18px; color:#2b4066" value="Log In" [disabled]="loading" class="button neutral-bright"
+          />
+          <!--Insert link for forgot password ability here-->
+          <div class="links" style="text-align: center" (click)="register()">
+            <span>Create an account</span>
+          </div>
+        </div>
+        <br>
+        <div *ngIf="error" class="error-block">
+          <span>{{ error }}</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

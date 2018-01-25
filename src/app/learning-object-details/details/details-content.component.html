@@ -1,0 +1,6 @@
+<div class="details-list">
+    <p  *ngIf="type === 'assessment'">{{strategy.plan}}</p>
+    <p  *ngIf="type === 'instruction'">{{strategy.plan}}</p>
+    <button *ngIf="strategy.text" (click)="showContent()">{{buttonText}}</button>
+</div>
+<fieldset class = "htmlContent" [disabled]="true" *ngIf="isShown" [innerHtml]="strategy.text | keepHtml"></fieldset>

@@ -1,16 +1,7 @@
-<div class="container">
+<div class="container" *ngIf="group.learningObjects.length !== 0">
   <h2>{{ group.title }}</h2>
-  <table class="table table-striped table-bordered">
-    <tr>
-      <th>Topic</th>
-      <th>Type</th>
-    </tr>
-    <tr *ngFor="let lo of group.learningObjects">
-      <td>
-        <a *ngIf="lo.url" (click)="open(lo)">{{ lo.topic }}</a>
-        <p *ngIf="!lo.url">{{ lo.topic }}</p>
-      </td>
-      <td style="width: 15%;">{{ lo.class }}</td>
-    </tr>
-  </table>
+  <div class="content">
+    <learning-object-component *ngFor="let lo of group.learningObjects" routerLink="/details/{{ lo.id }}" [learningObject]="lo">
+    </learning-object-component>
+  </div>
 </div>

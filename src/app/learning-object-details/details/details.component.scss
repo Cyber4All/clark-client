@@ -1,0 +1,157 @@
+@import "~_globals.scss";
+
+.details-wrapper {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+.details-list {
+  transition: 0.3s;
+  border-width: 1px;
+  border-color: whitesmoke;
+  border-left-width: 3px;
+  border-left-style: solid;
+  border-left-color: $blue-accent;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 20px;
+}
+#author-container{
+  display:flex;
+  flex-direction: row;
+}
+
+.learningHeader {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  button {
+    width: 25px;
+    height: 25px;
+    background-color: $error-red;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 20px;
+  }
+  p {
+    margin-left: 40px;
+  }
+}
+.basicInfo {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  #statistics {
+    width: 49%;
+    margin-right: 2%;
+    height: auto;
+    margin-top: 15px;
+    p {
+      margin-left: 10px;
+    }
+  }
+  #learningGoals {
+    width: 49%;
+    height: auto;
+    margin-top: 15px;
+  }
+}
+.learningOutcomes {
+  width: 100%;
+  margin-top: 25px;
+}
+#assessmentPlans,
+#instructionalStrategies {
+  margin: 25px;
+}
+@mixin details-card{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid $placeholder;
+  transition: 0.3s;
+  position: relative;
+}
+
+.details-card-unbordered{
+  @include details-card;
+}
+.details-card {
+  @include details-card;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  
+  .card-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .slim-title {
+    background-color: $green;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    h4 {
+      padding-left: 16px;
+      font-size: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .card-title {
+    background-color: $blue-accent;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .report {
+      @include vert-center;
+      padding: 5px 20px;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+
+    h1 {
+      padding-left: 16px;
+      font-size: 26px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .slim-content {
+    margin-top: 50px;
+    padding: 2px 16px;
+  }
+
+  .card-content {
+    margin-top: 80px;
+    padding: 2px 16px;
+  }
+  &:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+}

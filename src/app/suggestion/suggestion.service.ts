@@ -2,7 +2,6 @@ import { SuggestionQuery } from './suggestion.component';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 
 import * as io from 'socket.io-client';

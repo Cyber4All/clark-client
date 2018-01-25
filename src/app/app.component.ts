@@ -1,34 +1,43 @@
 import { LearningObjectService } from './learning-object.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ModalService, Position, ModalListElement } from '@cyber4all/clark-modal';
+import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  // FIXME: Convert 'class' to 'type' for consistancy
-
-  constructor(public service: LearningObjectService) {
+export class AppComponent implements OnInit {
+  activeContentSwitcher = 'search';
+  hideTopbar: any = false;
+  constructor(private router: Router, private route: ActivatedRoute) { }
+  ngOnInit() {
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
+      let root: ActivatedRoute = this.route.root;
+      this.hideTopbar = root.children[0].snapshot.data.hideTopbar;
+    });
   }
+  /**
+   * Manages click events for the button for switching between contributing and searching (onion and cube)
+   * @param event
+   */
+  contentSwitchClick(event) {
+    const el = event.target;
+    const h = document.getElementsByClassName('content-switch')[0];
+    if (el.classList.contains('contribute') && this.activeContentSwitcher !== 'contribute') {
+      h.classList.remove('right');
+      h.classList.add('left');
+      this.activeContentSwitcher = 'contribute';
 
-  /* TODO: This function is no longer used in the template, however the general spoof functionality will be needed later.
-           Remove comment block when implemented.
-
-   spoofFilter(value) {
-    console.log(value);
-    if (value !== 'all') {
-      this.filteredGroups = [
-      {
-        title: 'Course - 15 weeks',
-        learningObjects: [
-          { topic: 'Cybersecurity for Future Presidents', class: 'Course' }
-        ]
-      },
-    ];
-    } else {
-      this.filteredGroups = undefined;
+      setTimeout(() => {
+        window.location.href = 'http://onion.clark.center';
+      }, 250);
+    } else if (el.classList.contains('search') && this.activeContentSwitcher !== 'search') {
+      h.classList.remove('left');
+      h.classList.add('right');
+      this.activeContentSwitcher = 'search';
     }
   }
-  */
 }
