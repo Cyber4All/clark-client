@@ -10,6 +10,7 @@ export class UserProfileComponent implements OnInit {
   name = "Sean Donnelly";
   employer = "Towson University";
   contributor = false;
+  modulesCreated: 20;
 
   constructor() {
     /* interface User {

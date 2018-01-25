@@ -1,4 +1,4 @@
-import { ModalService } from 'clark-modal';
+import { ModalService } from '@cyber4all/clark-modal';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';

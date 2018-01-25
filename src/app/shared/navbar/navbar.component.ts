@@ -1,10 +1,8 @@
-import { NgModule } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
-import { ModalService, Position, ModalListElement } from 'clark-modal';
+import { ModalService, Position, ModalListElement } from '@cyber4all/clark-modal';
 import { RouterModule, Router, ActivatedRoute, UrlSegment, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { ModalModule } from 'clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 

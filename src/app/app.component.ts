@@ -1,6 +1,6 @@
 import { LearningObjectService } from './learning-object.service';
 import { Component, OnInit } from '@angular/core';
-import { ModalService, Position, ModalListElement } from 'clark-modal';
+import { ModalService, Position, ModalListElement } from '@cyber4all/clark-modal';
 import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 

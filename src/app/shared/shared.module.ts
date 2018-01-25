@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Modules
 import { RoutingModule } from '../app.routing';
-import { ModalModule } from 'clark-modal';
+import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 
