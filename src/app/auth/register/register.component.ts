@@ -197,7 +197,7 @@ export class RegisterComponent implements OnInit {
    * @memberof RegisterComponent
    */
   login(): void {
-    this.router.navigate(['login'], { queryParams: { returnUrl: this.returnUrl } });
+    this.router.navigate(['login']);
   }
 
 }

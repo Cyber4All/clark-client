@@ -11,10 +11,12 @@ import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full', component: HomeComponent },
     { path: 'login', component: LoginComponent, data: { hideNavbar: true, hideTopbar: true } },
+    { path: 'register', component: RegisterComponent, data: { hideNavbar: true, hideTopbar: true } },
     { path: 'home', component: HomeComponent },
     { path: 'academics', component: AcademicsComponent, data: { breadcrumb: 'Academics' } },
     { path: 'mapping', component: MappingComponent, data: { breadcrumb: 'Mapping' } },
