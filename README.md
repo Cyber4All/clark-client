@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/Cyber4All/curriculum-listings/tree/production.svg?style=svg)](https://circleci.com/gh/Cyber4All/curriculum-listings/tree/production)
+[![CircleCI](https://circleci.com/gh/Cyber4All/cube/tree/production.svg?style=svg)](https://circleci.com/gh/Cyber4All/cube/tree/production)
 
 # CurriculumListings
 
