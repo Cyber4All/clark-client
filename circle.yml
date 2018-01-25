@@ -12,5 +12,5 @@ deployment:
   production:
     branch: production
     commands:
-      - yarn ng -- build --prod --aot=false --no-progress
+      - ng build --prod --aot=false
       - 'aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}'
