@@ -12,7 +12,8 @@ import { RoutingModule } from './app.routing';
 // Services
 import { ConfigService } from './config.service';
 import { LearningObjectService } from './learning-object.service';
-import { CartService } from './shared/services/cart.service'
+import { CartService } from './shared/services/cart.service';
+import { CartV2Service } from './shared/services/cartv2.service';
 
 // Redux
 import { StoreModule } from '@ngrx/store';
@@ -80,7 +81,7 @@ import { AuthModule } from './auth/auth.module';
   providers: [
     LearningObjectService,
     ConfigService,
-    CartService,
+    CartService, CartV2Service
   ],
   bootstrap: [AppComponent]
 })
