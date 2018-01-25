@@ -1,3 +1,4 @@
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from './../environments/route';
 import { ConfigService } from './config.service';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -24,8 +25,6 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  private learningObjectsURL = '/learning-objects'
-
   constructor(private config: ConfigService, private http: Http) { }
 
   observeFiltered(): Observable<LearningObject[]> {
@@ -41,11 +40,13 @@ export class LearningObjectService {
     }
     this.dataObserver ? this.dataObserver.next(this.filteredResults) : "Data Observer is undefined!";
   }
+
   clearSearch() {
     this.filteredResults = [];
     this.dataObserver ? this.dataObserver.next(this.groups) : "Data Observer is undefined!";
 
   }
+
   openLearningObject(url: string) {
     // location.href = url;
     window.open(url);
@@ -58,16 +59,14 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getLearningObjects(limit?: number): Promise<LearningObject[]> {
-    console.log(environment.apiURL);
-    let route = environment.apiURL + this.learningObjectsURL;
-    console.log(limit);
+    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     return this.http.get(route)
       .toPromise()
       .then((learningObjects) => {
-        console.log(learningObjects.json())
+        console.log(learningObjects.json());
         let last:number;
-        limit ? last=limit : last = learningObjects.json().length
-        return learningObjects.json().slice(0,last).map((_learningObject: string) => {
+        limit ? last = limit : last = learningObjects.json().length
+        return learningObjects.json().slice(0, last).map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);
           let learningObject = LearningObject.unserialize(_learningObject);
           learningObject['id'] = object['id'];
@@ -84,35 +83,36 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject>} 
    * @memberof LearningObjectService
    */
-  getLearningObject(id: string): Promise<LearningObject> {
-    let route = environment.apiURL + this.learningObjectsURL + id;
+  getLearningObject(author: string, learningObjectName: string): Promise<LearningObject> {
+    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName);
     return this.http.get(route)
       .toPromise()
       .then((learningObject) => {
-        return learningObject ? LearningObject.unserialize(learningObject.json()) : null;
+        console.log(learningObject);
+        return learningObject ? LearningObject.unserialize(learningObject.json().object) : null;
       });
   }
 
-  /**
-   * Fetches Array of LearningObjects by their id
-   * 
-   * @param {string[]} ids 
-   * @returns {Promise<LearningObject[]>} 
-   * @memberof LearningObjectService
-   */
-  getLearningObjectsByIDs(ids: string[]): Promise<LearningObject[]> {
-    let route = environment.apiURL + this.learningObjectsURL + '/multiple' + `/${ids}`;
-    console.log(route)
-    return this.http.get(route)
-      .toPromise()
-      .then((learningObjects) => {
-        return learningObjects.json().map((_learningObject: string) => {
-          let object = JSON.parse(_learningObject);
-          let learningObject = LearningObject.unserialize(_learningObject);
-          learningObject['id'] = object['id'];
-          return learningObject;
-        });
-      });
-  }
+  // /**
+  //  * Fetches Array of LearningObjects by their id
+  //  * 
+  //  * @param {string[]} ids 
+  //  * @returns {Promise<LearningObject[]>} 
+  //  * @memberof LearningObjectService
+  //  */
+  // getLearningObjectsByIDs(ids: string[]): Promise<LearningObject[]> {
+  //   let route = environment.apiURL + this.learningObjectsURL + '/multiple' + `/${ids}`;
+  //   console.log(route)
+  //   return this.http.get(route)
+  //     .toPromise()
+  //     .then((learningObjects) => {
+  //       return learningObjects.json().map((_learningObject: string) => {
+  //         let object = JSON.parse(_learningObject);
+  //         let learningObject = LearningObject.unserialize(_learningObject);
+  //         learningObject['id'] = object['id'];
+  //         return learningObject;
+  //       });
+  //     });
+  // }
 
 }

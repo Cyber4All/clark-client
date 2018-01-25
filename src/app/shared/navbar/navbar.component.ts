@@ -5,6 +5,7 @@ import { RouterModule, Router, ActivatedRoute, UrlSegment, NavigationEnd } from 
 import { Observable } from 'rxjs/Observable';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
+import { AuthenticationService } from '../../auth/services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,14 +15,15 @@ import { CheckBoxModule } from 'clark-checkbox';
 export class NavbarComponent implements OnInit {
 
   // FIXME: Convert 'class' to 'type' for consistancy
-  
+
   name = ''
   hideNavbar: boolean = false;
 
-  constructor(private modalCtrl: ModalService, private router: Router, private route: ActivatedRoute) {
+  constructor(private modalCtrl: ModalService, private router: Router, private route: ActivatedRoute, private authService: AuthenticationService) {
   }
 
   ngOnInit() {
+    this.name = this.authService.getName() ? this.authService.getName() : '';
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
       let root: ActivatedRoute = this.route.root;
       this.hideNavbar = root.children[0].snapshot.data.hideNavbar;
@@ -29,7 +31,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    throw new Error('logout() not implemented!');
+    this.authService.logout();
   }
 
   userprofile() {

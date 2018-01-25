@@ -1,3 +1,4 @@
+import { CartV2Service } from './../../shared/services/cartv2.service';
 import { ModalService } from '@cyber4all/clark-modal';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -13,36 +14,38 @@ import { CartService } from '../../shared/services/cart.service';
 export class DetailsComponent implements OnInit, OnDestroy {
 
   private sub: any;
-  id: string;
-  learningObject: any;
+  author: string;
+  learningObjectName: string;
+  learningObject: LearningObject;
 
   constructor(
     private learningObjectService: LearningObjectService,
-    private cartService: CartService,
+    private cartService: CartV2Service,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.id = params['id'];
+      this.author = params['username'];
+      this.learningObjectName = params['learningObjectName'];
     });
     this.fetchLearningObject();
   }
   async fetchLearningObject() {
-    this.learningObject = await this.learningObjectService.getLearningObject(this.id);
+    this.learningObject = await this.learningObjectService.getLearningObject(this.author, this.learningObjectName);
 
     console.log(this.learningObject);
   }
 
   addToCart() {
-    this.cartService.addLearningObject(this.id);
+    this.cartService.addToCart(this.author, this.learningObjectName);
   }
-  clearCart(){
+  clearCart() {
     this.cartService.clearCart();
   }
   removeFromCart() {
-    this.cartService.removeLearningObject(this.id);
+    this.cartService.removeFromCart(this.author, this.learningObjectName);
   }
   reportThisObject() {
     alert('test');

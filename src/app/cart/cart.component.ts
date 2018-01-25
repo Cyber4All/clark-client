@@ -1,3 +1,4 @@
+import { CartV2Service } from './../shared/services/cartv2.service';
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../shared/services/cart.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -14,7 +15,7 @@ export class CartComponent implements OnInit {
   cartItems: LearningObject[] = [];
 
   constructor(
-    private cartService: CartService,
+    private cartService: CartV2Service,
     private learningObjectService: LearningObjectService
   ) { }
 
@@ -22,24 +23,23 @@ export class CartComponent implements OnInit {
     this.loadCart();
   }
 
-  loadCart() {
-    this.cartService.cart$.subscribe((library) => {
-      if (library.items.length > 0) {
-        // TODO: Convert return type to Observable
-        this.learningObjectService.getLearningObjectsByIDs(library.items)
-          .then((learningObjects) => {
-            this.cartItems = learningObjects;
-          });
-      } else {
-        this.cartItems = [];
-      }
-    });
+  async loadCart() {
+    // this.cartService.cart$.subscribe((library) => {
+    //   if (library.items.length > 0) {
+    //     // TODO: Convert return type to Observable
+    //     this.learningObjectService.getLearningObjectsByIDs(library.items)
+    //       .then((learningObjects) => {
+    //         this.cartItems = learningObjects;
+    //       });
+    //   } else {
+    //     this.cartItems = [];
+    //   }
+    // });
+    this.cartItems = await this.cartService.getCart();
   }
 
   async download() {
-    let ids = await this.cartService.getLearningObjects();
-    console.log(ids);
-    this.cartService.checkout(ids);
+    this.cartService.checkout();
   }
 
   saveBundle() {
@@ -48,11 +48,10 @@ export class CartComponent implements OnInit {
 
   clearCart() {
     this.cartService.clearCart();
-    this.cartService.clearCart();
   }
 
-  removeItem(id) {
-    this.cartService.removeLearningObject(id);
+  async removeItem(author: string, learningObjectName: string) {
+    this.cartItems = await this.cartService.removeFromCart(author, learningObjectName);
   }
 
 }
