@@ -24,6 +24,7 @@ export class CartV2Service {
     // reset headers with new users auth token
     this.headers = new Headers();
     this.headers.append('Authorization', 'Bearer ' + this.user.token);
+
   }
 
   openLearningObject(url: string) {
