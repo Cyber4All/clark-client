@@ -15,6 +15,9 @@ export class UserProfileComponent implements OnInit {
   title = "Educator";
   email;
 
+  // FIXME: Change to correct Type
+  showContent: any;
+
   constructor(private service: LearningObjectService) {
   }
 

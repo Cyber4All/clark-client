@@ -15,7 +15,7 @@ export class CartComponent implements OnInit {
   cartItems: LearningObject[] = [];
 
   constructor(
-    private cartService: CartV2Service,
+    public cartService: CartV2Service,
     private learningObjectService: LearningObjectService,
     private router: Router
   ) { }
@@ -27,7 +27,7 @@ export class CartComponent implements OnInit {
   async loadCart() {
     const val = await this.cartService.getCart();
     if (val) {
-      this.cartItems = <Array<LearningObject>> val;
+      this.cartItems = <Array<LearningObject>>val;
     } else {
       console.log('not logged in!');
     }
@@ -55,7 +55,7 @@ export class CartComponent implements OnInit {
     const learningObjectName = object._name;
     const val = await this.cartService.removeFromCart(author, learningObjectName);
     if (val) {
-      this.cartItems = <Array<LearningObject>> val;
+      this.cartItems = <Array<LearningObject>>val;
     } else {
       console.log('not logged in!');
     }
