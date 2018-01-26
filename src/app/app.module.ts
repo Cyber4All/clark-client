@@ -32,6 +32,7 @@ import { ModalityModule } from './modality/modality.module';
 import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
+import { AuthModule } from './auth/auth.module';
 
 // Components
 import { NavbarComponent } from './shared/navbar/navbar.component';
@@ -48,7 +49,7 @@ import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
-import { AuthModule } from './auth/auth.module';
+import { RouterComponent } from './shared/breadcrumb/router.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { AuthModule } from './auth/auth.module';
     DetailsContentComponent,
     CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
+    RouterComponent,
     BrowseComponent, UserProfileComponent, UserPreferencesComponent,
   ],
   imports: [

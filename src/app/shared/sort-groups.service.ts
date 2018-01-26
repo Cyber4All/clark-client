@@ -7,7 +7,6 @@ export class SortGroupsService {
 
     }
     sortLength(learningObjects: LearningObject[]) {
-        console.log(learningObjects);
         const courses: LearningObject[] = [];
         const Modules: LearningObject[] = [];
         const Micromodules: LearningObject[] = [];
@@ -45,12 +44,10 @@ export class SortGroupsService {
                 learningObjects: noclass.sort(this.sortByAlphabet),
             }
         ];
-        console.log(sortedGroups);
         return sortedGroups;
     }
 
     sortAcademic(learningObjects: LearningObject[]) {
-        console.log(learningObjects);
         const k12: LearningObject[] = [];
         const undergraduate: LearningObject[] = [];
         const graduate: LearningObject[] = [];
@@ -84,7 +81,6 @@ export class SortGroupsService {
                 learningObjects: other.sort(this.sortByAlphabet),
             }
         ];
-        console.log(sortedGroups);
         return sortedGroups;
     }
 

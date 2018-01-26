@@ -26,7 +26,6 @@ export class SuggestionService {
         ignoreme: ''
       },
       (outcomes) => {
-        console.log(outcomes);
         this.suggestion.next(outcomes);
       }
       );

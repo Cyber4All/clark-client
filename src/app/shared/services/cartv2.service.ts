@@ -1,89 +1,111 @@
-import { USER_ROUTES } from "./../../../environments/route";
-import { Injectable, OnInit } from "@angular/core";
-import { LearningObject, User } from "@cyber4all/clark-entity";
-import { Http, Headers } from "@angular/http";
+import { USER_ROUTES } from './../../../environments/route';
+import { Injectable, OnInit } from '@angular/core';
+import { LearningObject, User } from '@cyber4all/clark-entity';
+import { Http, Headers, ResponseContentType } from '@angular/http';
+import { saveAs as importedSaveAs } from 'file-saver';
 
 @Injectable()
 export class CartV2Service {
-  private username = JSON.parse(localStorage.getItem('currentUser')) ? JSON.parse(localStorage.getItem('currentUser'))['_username'] : '';
-  private headers: Headers = new Headers();
 
+  private user = JSON.parse(localStorage.getItem('currentUser'));
+  private headers = new Headers();
+
+  public cartItems: Array<LearningObject> = [];
 
   constructor(private http: Http) {
-    console.log(this.username);
-    let token = JSON.parse(localStorage.getItem('currentUser')) ? JSON.parse(localStorage.getItem('currentUser')).token : '';
-    this.headers.append('Authorization', 'Bearer ' + token);
-    this.headers.append('Content-Type', 'application/json');
+    this.udpateUser();
+  }
+
+  udpateUser() {
+    // get new user from localStorage
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = this.user ? this.user : false;
+
+    // reset headers with new users auth token
+    this.headers = new Headers();
+    this.headers.append('Authorization', 'Bearer ' + this.user.token);
+
   }
 
   openLearningObject(url: string) {
-    // location.href = url;
     window.open(url);
   }
 
-  getCart(): Promise<Array<LearningObject>> {
-    return this.http
-      .get(USER_ROUTES.GET_CART(this.username), { headers: this.headers })
+   getCart(reloadUser = false): Promise<Array<LearningObject>> | boolean {
+    return (this.user) ? this.http
+      .get(USER_ROUTES.GET_CART(this.user._username), {headers: this.headers})
       .toPromise()
       .then(val => {
-        console.log(val)
-        return <Array<LearningObject>>val.json();
-      });
+        this.cartItems = <Array<LearningObject>> val.json();
+        return this.cartItems;
+      }) : false;
   }
 
   addToCart(
     author: string,
     learningObjectName: string
-  ): Promise<Array<LearningObject>> {
+  ): Promise<Array<LearningObject>> | boolean {
     // tslint:disable-next-line:max-line-length
-    return this.http
+    return (this.user) ? this.http
       .post(
-      USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
-        this.username,
-        author,
-        learningObjectName
-      ), {}, { headers: this.headers }
+        USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
+          this.user._username,
+          author,
+          learningObjectName
+        ),
+        {},
+        {headers: this.headers}
       )
       .toPromise()
       .then(val => {
-        return <Array<LearningObject>>val.json();
-      });
+        this.cartItems = <Array<LearningObject>> val.json();
+        return this.cartItems;
+      }) : false;
   }
 
   removeFromCart(
     author: string,
     learningObjectName: string
-  ): Promise<Array<LearningObject>> {
+  ): Promise<Array<LearningObject>> | boolean {
     // tslint:disable-next-line:max-line-length
-    return this.http
+    return (this.user) ? this.http
       .delete(
-      USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
-        this.username,
-        author,
-        learningObjectName
-      ), { headers: this.headers }
+        USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
+          this.user._username,
+          author,
+          learningObjectName
+        ),
+        {headers: this.headers}
       )
       .toPromise()
       .then(val => {
-        return <Array<LearningObject>>val.json();
-      });
+        this.cartItems = <Array<LearningObject>> val.json();
+        return this.cartItems;
+      }) : false;
   }
 
-  clearCart() {
-    this.http
-      .delete(USER_ROUTES.CLEAR_CART(this.username), { headers: this.headers })
-      .toPromise()
-      .then(val => {
-        console.log(val);
+  clearCart(): Promise<boolean> | boolean {
+    // tslint:disable-next-line:curly
+    if (this.user) {
+      return this.http
+        .delete(USER_ROUTES.CLEAR_CART(this.user._username), {headers: this.headers})
+        .toPromise().then(val => {
+          this.cartItems = [];
+          return true;
       });
+    } else {
+      return false;
+    }
   }
 
   checkout() {
-    this.http
-      .get(USER_ROUTES.GET_CART(this.username) + '?download=true', { headers: this.headers })
-      .toPromise()
-      .then(val => {
-        console.log(val);
-      });
+      // tslint:disable-next-line:max-line-length
+      this.http.get(USER_ROUTES.GET_CART(this.user._username) + '?download=true', { headers: this.headers, responseType: ResponseContentType.Blob })
+            .subscribe((res) => {
+                importedSaveAs(res.blob(), `${Date.now()}.zip`);
+                this.cartItems = [];
+            },
+            (err) => console.log,
+            () => { console.log('Downloaded') });
   }
 }

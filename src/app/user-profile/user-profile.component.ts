@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LearningObjectService } from '../learning-object.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -7,39 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserProfileComponent implements OnInit {
 
-  name = "Sean Donnelly";
+  name;
   employer = "Towson University";
   contributor = false;
   modulesCreated: 20;
+  title = "Educator";
+  email;
 
-  constructor() {
-    /* interface User {
-      String name;
-      String[] affiliations;
-      LearningObject[] objectsCreated;
-      LearningObject[] objectsDownloaded;
-      boolean contributor = false;
-      //BufferedImage profilePic;
-      //String userName; //for url?
-      //String bio;
-    
-      public String getName();
-      public String[] getAffils();
-      public LearningObject[] getCreated();
-      public LearningObject[] getDownloaded();
-      public Boolean isContributor();
-      //public String getBio();
-      //public BufferedImage getPic();
-      public void setName(String newName); //at very least should be able to change last name
-      public void addAffils(String[] newAffils);
-      public void remAffils(String[] badAffils);
-      public void setContrib(); //would only ever need to change false to true
-      //public void setBio(String newBio);
-      //public void setPic(BufferedImage newPic);
-    } */
-   }
+  // FIXME: Change to correct Type
+  showContent: any;
+
+  constructor(private service: LearningObjectService) {
+  }
 
   ngOnInit() {
+    let user = localStorage.getItem("currentUser");
+    user = JSON.parse(user)
+    this.email = user["_email"];
+    this.name = user["_name"];
   }
 
 }
