@@ -23,7 +23,6 @@ export class SuggestionComponent implements OnInit, OnDestroy, OnChanges {
     // this.connection.unsubscribe();
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     const o: string = changes.query.currentValue.text;
     if (o.substr(o.length - 1, o.length) === ' ') {
       this.loader.emit(this.query);
@@ -44,7 +43,6 @@ export class SuggestionComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   updateCheckbox(i, event) {
-    console.log(i, event);
   }
 }
 
