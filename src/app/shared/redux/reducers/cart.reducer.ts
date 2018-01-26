@@ -45,7 +45,6 @@ const retrieveState = () => {
 }
 
 export function cartReducer(state: Cart = DEFAULT_STATE, action: Action) {
-    console.log(action.type, state);
     switch (action.type) {
         case CartActions.ADD_LEARNING_OBJECT:
             return addLearningObject(state, action.payload);
@@ -54,7 +53,6 @@ export function cartReducer(state: Cart = DEFAULT_STATE, action: Action) {
             return removeLearningObject(state, action.payload);
 
         case CartActions.CLEAR:
-            console.log("WRONG WRONG WRONG", DEFAULT_STATE);
             return { items: [] };
 
         default:

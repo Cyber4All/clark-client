@@ -4,7 +4,7 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
-import { USER_ROUTES } from '../../../environments/routes';
+import { USER_ROUTES } from '../../../environments/route';
 // import { EmailValidator } from './directives/validators';
 
 /**
@@ -69,8 +69,8 @@ export class AuthenticationService {
                 this.setUser(user);
                 return user;
             }).catch(e => {
-                console.log('an error', e);
-            })
+                throw new Error(e);
+            });
 
     }
 
@@ -155,7 +155,6 @@ export class AuthenticationService {
      */
     getName(): string {
         let user = this.getUser();
-        console.log(user);
         if (user) {
             if (user.token) {
                 return user['_name'];

@@ -13,7 +13,6 @@ export class CurriculumGroupComponent implements OnInit {
   constructor(public service: LearningObjectService) { }
 
   ngOnInit() {
-    console.log(this.group);
   }
 
   public open(learningObject) {

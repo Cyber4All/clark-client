@@ -34,13 +34,28 @@ export class BreadcrumbComponent implements OnInit {
       //set breadcrumbs
       let root: ActivatedRoute = this.activatedRoute.root;
       this.breadcrumbs = this.getBreadcrumbs(root);
+      this.breadcrumbs = this.cleanBreadcrumbs(this.breadcrumbs);
     });
+  }
+  /**
+   * Strips off duplicate routes and returns array of breadcrumbs
+   * @method cleanBreadcrumbs
+   * @class BreadcrumbComponent
+   * @param crumbs 
+   */
+  private cleanBreadcrumbs(crumbs:Breadcrumb[]):Breadcrumb[]{
+    for (let i=1; i < crumbs.length; i++){
+      if (crumbs[i].label === crumbs[i-1].label){
+        crumbs = crumbs.splice(i);
+      }
+    }
+    return crumbs
   }
 
   /**
   * Returns array of Breadcrumb objects that represent the breadcrumb
   *
-  * @class DetailComponent
+  * @class BreadcrumbComponent
   * @method getBreadcrumbs
   * @param {ActivateRoute} route
   * @param {string} url
