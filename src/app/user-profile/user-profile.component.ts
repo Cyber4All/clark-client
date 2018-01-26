@@ -8,14 +8,14 @@ import { LearningObjectService } from '../learning-object.service';
 })
 export class UserProfileComponent implements OnInit {
 
-  name = "Sean Donnelly";
+  name;
   employer = "Towson University";
   contributor = false;
   modulesCreated: 20;
-  email = "sdonne5@gmail.com"
+  title = "Educator";
+  email;
 
   constructor(private service: LearningObjectService) {
-
   }
 
   ngOnInit() {
