@@ -34,14 +34,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
   async fetchLearningObject() {
     this.learningObject = await this.learningObjectService.getLearningObject(this.author, this.learningObjectName);
-
-    console.log(this.learningObject);
   }
 
   async addToCart() {
-
     let val = await this.cartService.addToCart(this.author, this.learningObjectName);
-    console.log(val);
   }
   async clearCart() {
     if (await this.cartService.clearCart()) {

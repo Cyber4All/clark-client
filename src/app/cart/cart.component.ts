@@ -28,7 +28,6 @@ export class CartComponent implements OnInit {
     const val = await this.cartService.getCart();
     if (val) {
       this.cartItems = <Array<LearningObject>> val;
-      console.log(this.cartItems);
     } else {
       console.log('not logged in!');
     }
@@ -63,7 +62,6 @@ export class CartComponent implements OnInit {
   }
 
   goToItem(object) {
-    console.log(object._author._username, object._name);
     this.router.navigate(['/details/', object._author._username, object._name]);
   }
 

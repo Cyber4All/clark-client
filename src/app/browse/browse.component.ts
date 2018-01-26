@@ -30,7 +30,6 @@ export class BrowseComponent implements OnInit {
   async getFilteredObjects(query: string){
     this.pageTitle = this.searchTitle;
     this.learningObjects = await this.learningObjectService.search(query);
-    console.log(this.learningObjects);
   }
   async fetchLearningObjects() {
     this.pageTitle = this.allTitle;

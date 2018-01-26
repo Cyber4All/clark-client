@@ -31,7 +31,6 @@ export class AuthGuard implements CanActivate {
         );
         this.headers.append('Content-Type', 'text/plain');
         const routei = USER_ROUTES.VALIDATE_TOKEN(this.auth.getName());
-        console.log(routei);
         return this.http.post(routei, { token: parsedUser['token'] }, { headers: this.headers, responseType: 'text' }).toPromise().then(val => {
             return true;
         }).catch(error => {
