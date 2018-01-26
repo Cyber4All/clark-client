@@ -1,3 +1,4 @@
+import { RouterComponent } from './shared/breadcrumb/router.component';
 // Core
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -60,6 +61,7 @@ import { AuthModule } from './auth/auth.module';
     DetailsContentComponent,
     CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
+    RouterComponent,
     BrowseComponent, UserProfileComponent, UserPreferencesComponent,
   ],
   imports: [
