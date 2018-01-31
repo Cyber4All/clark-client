@@ -35,18 +35,45 @@ html, body {
   flex-wrap: nowrap;
   min-width: 100vw;
   margin-top: 75px;
+  justify-content: space-between;
+  padding: 0px 0px 0px 20px;
+  background: white;
+
   .content-switch-container {
-    flex-grow: 3;
-    border: 2px solid transparent;
     border-radius: 4px;
-    background: white;
     color: rgba(26, 70, 107, 0.7);
-    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+    padding-left: 0px;
+
+    .content-switch {
+      margin-left: 0px !important;
+    }
   }
+
+  .filter-options-button {
+    @include vert-center;
+    display: none;
+    margin-right: 30px;
+    transition: all 0.2s ease;
+
+    .svg-inline--fa {
+      transition: inherit;
+    }
+
+    &.active {
+      background: transparent;
+      color: $blue-accent;
+
+      .svg-inline--fa {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
   .filter-options {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+
     .filter-button {
       display: flex;
       flex-direction: row;
@@ -59,7 +86,6 @@ html, body {
         margin-top: 12px;
         font-size: 16px;
       }
-      p {}
     }
   }
 }
@@ -108,3 +134,26 @@ html, body {
   }
 }
 
+@media(max-width: 1370px) {
+  .filter-options-button {
+    display: block !important;
+  }
+
+  .filter-options {
+    position: absolute;
+    top: 110px;
+    right: 20px;
+    flex-direction: column !important;
+    background: white;
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+
+    &.active {
+      top: 150px;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

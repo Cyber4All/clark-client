@@ -45,8 +45,7 @@ export class AuthenticationService {
         if (!token) {
             console.error('Invalid token!');
             this.logout();
-        }
-        else {
+        } else {
             this.loggedIn = true;
             this.logger.next(this.loggedIn);
         }

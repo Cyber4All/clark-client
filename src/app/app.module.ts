@@ -33,6 +33,7 @@ import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 import { AuthModule } from './auth/auth.module';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 // Components
 import { NavbarComponent } from './shared/navbar/navbar.component';
@@ -78,7 +79,8 @@ import { RouterComponent } from './shared/breadcrumb/router.component';
     ModalModule.forRoot(),
     NotificationModule.forRoot(),
     CheckBoxModule,
-    AuthModule.forRoot()
+    AuthModule.forRoot(),
+    ClickOutsideModule
   ],
   providers: [
     LearningObjectService,
