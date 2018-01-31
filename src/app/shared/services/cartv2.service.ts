@@ -24,6 +24,7 @@ export class CartV2Service {
     // reset headers with new users auth token
     this.headers = new Headers();
     this.headers.append('Authorization', 'Bearer ' + this.user.token);
+
   }
 
   openLearningObject(url: string) {
@@ -31,7 +32,6 @@ export class CartV2Service {
   }
 
    getCart(reloadUser = false): Promise<Array<LearningObject>> | boolean {
-     console.log(this.user);
     return (this.user) ? this.http
       .get(USER_ROUTES.GET_CART(this.user._username), {headers: this.headers})
       .toPromise()
@@ -45,7 +45,6 @@ export class CartV2Service {
     author: string,
     learningObjectName: string
   ): Promise<Array<LearningObject>> | boolean {
-    console.log(this.user);
     // tslint:disable-next-line:max-line-length
     return (this.user) ? this.http
       .post(

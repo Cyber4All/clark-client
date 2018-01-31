@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CartV2Service } from './../shared/services/cartv2.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -14,8 +15,9 @@ export class CartComponent implements OnInit {
   cartItems: LearningObject[] = [];
 
   constructor(
-    private cartService: CartV2Service,
-    private learningObjectService: LearningObjectService
+    public cartService: CartV2Service,
+    private learningObjectService: LearningObjectService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -25,8 +27,7 @@ export class CartComponent implements OnInit {
   async loadCart() {
     const val = await this.cartService.getCart();
     if (val) {
-      this.cartItems = <Array<LearningObject>> val;
-      console.log(this.cartItems);
+      this.cartItems = <Array<LearningObject>>val;
     } else {
       console.log('not logged in!');
     }
@@ -48,15 +49,20 @@ export class CartComponent implements OnInit {
     }
   }
 
-  async removeItem(object) {
+  async removeItem(event, object) {
+    event.stopPropagation();
     const author = object._author._username;
     const learningObjectName = object._name;
     const val = await this.cartService.removeFromCart(author, learningObjectName);
     if (val) {
-      this.cartItems = <Array<LearningObject>> val;
+      this.cartItems = <Array<LearningObject>>val;
     } else {
       console.log('not logged in!');
     }
+  }
+
+  goToItem(object) {
+    this.router.navigate(['/details/', object._author._username, object._name]);
   }
 
 }

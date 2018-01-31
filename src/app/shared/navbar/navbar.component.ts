@@ -62,7 +62,6 @@ export class NavbarComponent implements OnInit {
    * @param event
    */
   userDropdown(event): void {
-    console.log(event);
     this.modalCtrl.makeContextMenu(
       'UserContextMenu',
       'dropdown',

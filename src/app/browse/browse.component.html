@@ -4,7 +4,7 @@
   </div>
   <div class="content">
     <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
-    <learning-object-component *ngFor="let l of learningObjects" routerLink="/details/{{ l.id }}" [learningObject]="l">
+    <learning-object-component *ngFor="let l of learningObjects" routerLink="./details/{{ l.author._username }}/{{l.name}}" [learningObject]="l">
     </learning-object-component>
   </div>
 </div>

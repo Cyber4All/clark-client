@@ -1,9 +1,13 @@
 @import '~_globals.scss';
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @mixin column {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     text-align: center;
     background: white;
+}
+.placeholder{
+    height:30vh;
+    width:100%;
+    background-color: gainsboro;
 }
 
 .image-container {

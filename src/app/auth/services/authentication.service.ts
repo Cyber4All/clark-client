@@ -155,7 +155,6 @@ export class AuthenticationService {
      */
     getName(): string {
         let user = this.getUser();
-        console.log(user);
         if (user) {
             if (user.token) {
                 return user['_name'];
