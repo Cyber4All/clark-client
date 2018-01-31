@@ -12,13 +12,17 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 export class AppComponent implements OnInit {
   activeContentSwitcher = 'search';
   hideTopbar: any = false;
+  filterButton = false;
+
   constructor(private router: Router, private route: ActivatedRoute) { }
+
   ngOnInit() {
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
       let root: ActivatedRoute = this.route.root;
       this.hideTopbar = root.children[0].snapshot.data.hideTopbar;
     });
   }
+
   /**
    * Manages click events for the button for switching between contributing and searching (onion and cube)
    * @param event
@@ -38,6 +42,16 @@ export class AppComponent implements OnInit {
       h.classList.remove('left');
       h.classList.add('right');
       this.activeContentSwitcher = 'search';
+    }
+  }
+
+  filterButtonClick() {
+    this.filterButton = !this.filterButton;
+  }
+
+  filterButtonClickAway() {
+    if (this.filterButton) {
+      this.filterButtonClick();
     }
   }
 }
