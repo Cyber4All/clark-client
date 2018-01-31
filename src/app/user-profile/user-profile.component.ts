@@ -21,6 +21,7 @@ export class UserProfileComponent implements OnInit {
   constructor(private service: LearningObjectService) {
   }
 
+  changeName() {    this.name = 'Houssein';  }
   ngOnInit() {
     let user = localStorage.getItem("currentUser");
     user = JSON.parse(user)

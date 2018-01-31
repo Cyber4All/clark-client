@@ -10,6 +10,28 @@
     background-color: gainsboro;
 }
 
+.image-container {
+    background-color: rgb(231, 230, 230);
+    padding: 30px;
+    width: 100%;
+}
+
+.edit {
+    text-decoration: underline;
+    color: $dark-blue;
+    text-align: right;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.cancel {
+    color: $error-red;
+    text-decoration: underline;
+    text-align: left;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
 .card-container {
     display: flex;
     flex-direction: row;
@@ -32,7 +54,7 @@
 }
 
 .space {
-    margin-top: 100px;
+    margin-top: 60px;
 }
 
 .title {
@@ -52,6 +74,14 @@ button {
     width: 100%;
     font-size: 18px;
     margin-bottom: 10px;
+}
+
+#margin-between {
+    margin-bottom: 10px;
+}
+
+#bottom-margin {
+    margin-bottom: 40px;
 }
 
 button:hover,

@@ -13,15 +13,26 @@
 
 <div class="card-container">
   <div class="column1">
-    <!--<img src="https://static.pexels.com/photos/162140/duckling-birds-yellow-fluffy-162140.jpeg" alt="user photo" style="width:100%">-->
-    <div class = "placeholder"></div>
-    <h1>{{name}}</h1>
-    <p class="title">{{title}}</p>
-    <p>{{employer}}</p>
-    <h6>Email:{{email}}</h6>
+    <div class="image-container">
+      <img src="https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-512.png" style="width:100%">
+    </div>
+    <div>
+      <h1>{{name}}</h1>
+      <!--<input type = "text" *ngIf = "editContent === 1" placeholder = "{{name}}">-->
+      Name:
+      <input type="text" *ngIf="editContent === 1" [(ngModel)]="name">
+      <p class="title">Masters Student</p>
+      <p>{{employer}}</p>
+
+      <h6>Email: {{email}}</h6>
+    </div>
     <div class="space"></div>
-    <button (click)="showContent=1">Modules Created</button>
-    <button (click)="showContent=2">Modules Downloaded</button>
+    <div>
+      <p class="edit" (click)="editContent=1">Edit</p>
+      <p class="cancel" *ngIf="editContent === 1">Cancel</p>
+    </div>
+    <button id="margin-between" (click)="showContent=1">Modules Created</button>
+    <button id="bottom-margin" (click)="showContent=2">Modules Downloaded</button>
   </div>
   <div class="column2">
     <div *ngIf="showContent === 1">
