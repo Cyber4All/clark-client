@@ -13,4 +13,5 @@ deployment:
     branch: production
     commands:
       - ng build --prod --aot=false
+      - 'aws cloudfront create-invalidation --distribution-id ${cloudfront_id} \ --paths index.html'
       - 'aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}'
