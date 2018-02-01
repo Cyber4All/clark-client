@@ -11,9 +11,8 @@ import 'rxjs/add/operator/catch';
 
 
 // Application display name and Version information
-const { version: appVersion } = require('../package.json');
-const { displayName: appName } = require('../package.json');
-const VERSION_STORE = 'version';
+const { version: appVersion, name: appName, displayName: appDisplayName } = require('../package.json');
+const VERSION_STORE = `${appName} version`;
 
 if (environment.production) {
   enableProdMode();
@@ -26,7 +25,7 @@ let userVersion = localStorage.getItem(VERSION_STORE);
   localStorage.setItem(VERSION_STORE, appVersion);
   //Check the version of the application the user last ran; If mismatch clear cache via hard reload
   userVersion !== appVersion ? location.reload(true) :
-    console.log(`${appName} running version: ${appVersion} - Up to date.`);
+    console.log(`${appDisplayName} running version: ${appVersion} - Up to date.`);
 })();
 
 //Verify correct version before bootstrapping application
