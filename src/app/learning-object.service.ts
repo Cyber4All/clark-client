@@ -7,6 +7,8 @@ import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { MappingQuery } from './filter-menu/filter-menu.component';
+import { TextQuery } from './home/home.component';
+
 import * as querystring from 'querystring';
 
 @Injectable()
@@ -40,17 +42,8 @@ export class LearningObjectService {
 
   }
 
-  async search(query: String): Promise<LearningObject[]> {
-    if (query.length < 4) {
-      this.clearSearch()
-    } else {
-      await this.configureFuse(query);
-      this.filteredResults = this.fuse.search(query);
-    }
-    return this.filteredResults;
-  }
 
-  searchByMapping(query: MappingQuery): Promise<LearningObject[]> {
+  search(query: MappingQuery | TextQuery): Promise<LearningObject[]> {
     let queryString = querystring.stringify(query);
     console.log(queryString)
     return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString))

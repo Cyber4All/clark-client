@@ -2,6 +2,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
+import { TextQuery } from '../home/home.component';
 
 @Component({
   selector: 'app-browse',
@@ -11,7 +12,9 @@ import { ActivatedRoute } from '@angular/router';
 export class BrowseComponent implements OnInit {
   learningObjects: LearningObject[];
   private sub: any;
-  query: string;
+  query: TextQuery = {
+    text: ''
+  };
   allTitle: string = "All Learning Objects";
   searchTitle: string = "Search Results";
   pageTitle: string;
@@ -22,12 +25,12 @@ export class BrowseComponent implements OnInit {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.query = params['query'];
-      this.query ? this.getFilteredObjects(this.query) : this.fetchLearningObjects();
+      this.query.text = params['query'];
+      this.query.text ? this.getFilteredObjects(this.query) : this.fetchLearningObjects();
     });
   }
 
-  async getFilteredObjects(query: string){
+  async getFilteredObjects(query: TextQuery) {
     this.pageTitle = this.searchTitle;
     this.learningObjects = await this.learningObjectService.search(query);
   }

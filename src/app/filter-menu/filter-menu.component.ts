@@ -32,7 +32,7 @@ export class FilterMenuComponent implements OnInit {
   }
 
   search() {
-    this.learningObjectService.searchByMapping(this.query)
+    this.learningObjectService.search(this.query)
       .then((objects) => {
         // TODO: Display returned Learning Objects somewhere
         console.log(objects);
