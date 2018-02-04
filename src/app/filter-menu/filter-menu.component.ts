@@ -1,7 +1,13 @@
-import { SuggestionQuery } from './../suggestion/suggestion.component';
+// import { SuggestionQuery } from './../suggestion/suggestion.component';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
+
+export interface MappingQuery {
+  length: string;
+  source: string;
+  name: string;
+}
 
 @Component({
   selector: 'filter-menu',
@@ -10,32 +16,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilterMenuComponent implements OnInit {
 
-  shouldSearch = false;
-  types;
-  type;
+  lengths = Array.from(lengths);
   sources = ['NCWF', 'NCWF Tasks', 'CAE', 'CS 2013'];
-  query: SuggestionQuery;
 
-  constructor(public service: LearningObjectService) {
-    this.types = lengths;
-    this.type = this.types[0];
-    this.query = {
-      text: undefined,
-      filter: {
-        author: this.sources[0],
-        name: undefined,
-        ignoreme: 'foo'
-      }
-    };
+  query: MappingQuery = {
+    length: this.lengths[0],
+    source: this.sources[0],
+    name: ''
+  };
+
+  constructor(private learningObjectService: LearningObjectService) {
   }
 
   ngOnInit() {
   }
 
   search() {
-    this.shouldSearch = true;
+    this.learningObjectService.searchByMapping(this.query)
+      .then((objects) => {
+        // TODO: Display returned Learning Objects somewhere
+        console.log(objects);
+      }, (err) => console.log);
   }
   clearSearch() {
-    this.shouldSearch = false;
   }
 }

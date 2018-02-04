@@ -52,7 +52,7 @@ export const USER_ROUTES = {
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     GET_PUBLIC_LEARNING_OBJECTS: `${environment.apiURL}/learning-objects`,
     GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
-        return `${environment.apiURL}/learning-objects${query}`;
+        return `${environment.apiURL}/learning-objects?${query}`;
     },
     GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName) {
         return `${environment.apiURL}/learning-objects/${author}/${learningObjectName}`;

@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
 import { LearningObject, User } from '@cyber4all/clark-entity';
+import { MappingQuery } from './filter-menu/filter-menu.component';
+import * as querystring from 'querystring';
 
 @Injectable()
 export class LearningObjectService {
@@ -15,13 +17,13 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  constructor(private config: ConfigService, private http: Http,) { }
+  constructor(private config: ConfigService, private http: Http, ) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
   }
 
-  async configureFuse(query:String){
+  async configureFuse(query: String) {
     let fuseGroups = await this.getLearningObjects();
     let options = {
       shouldSort: true,
@@ -38,17 +40,27 @@ export class LearningObjectService {
 
   }
 
-  async search(query: String): Promise<LearningObject[]>{
-    if(query.length < 4){
-      this.clearSearch() 
-    }else {
+  async search(query: String): Promise<LearningObject[]> {
+    if (query.length < 4) {
+      this.clearSearch()
+    } else {
       await this.configureFuse(query);
       this.filteredResults = this.fuse.search(query);
     }
     return this.filteredResults;
   }
 
-  getFilteredObjects(){
+  searchByMapping(query: MappingQuery): Promise<LearningObject[]> {
+    let queryString = querystring.stringify(query);
+    console.log(queryString)
+    return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString))
+      .toPromise()
+      .then((response) => {
+        return response.json().map((object) => LearningObject.unserialize(object));
+      });
+  }
+
+  getFilteredObjects() {
     return this.filteredResults;
   }
 
@@ -71,7 +83,7 @@ export class LearningObjectService {
     return this.http.get(route)
       .toPromise()
       .then((learningObjects) => {
-        let last:number;
+        let last: number;
         limit ? last = limit : last = learningObjects.json().length
         return learningObjects.json().slice(0, last).map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);

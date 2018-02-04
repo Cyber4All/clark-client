@@ -1,26 +1,26 @@
 <div class="container">
-<form class="form-horizontal" role="form" #filterForm="ngForm">
+  <form class="form-horizontal" role="form" #filterForm="ngForm">
     <div class="form-group">
       <label>Filter by</label>
-      <select class="form-control" [(ngModel)]="type" name="type">
-          <option *ngFor="let t of types" [ngValue]="t">{{ t }}</option>
+      <select class="form-control" [(ngModel)]="query.length" name="length">
+        <option *ngFor="let length of lengths" [ngValue]="length">{{ length }}</option>
       </select>
     </div>
     <div class="form-group">
       <label>Source</label>
-      <select class="form-control" [(ngModel)]="query.filter.author" name="author">
-          <option *ngFor="let s of sources" [ngValue]="s">{{ s }}</option>
+      <select class="form-control" [(ngModel)]="query.source" name="author">
+        <option *ngFor="let source of sources" [ngValue]="source">{{ source }}</option>
       </select>
     </div>
     <div class="form-group">
       <label>Contains the words</label>
-      <input class="form-control" type="text" [(ngModel)]="query.text" name="text" id="text" />
+      <input class="form-control" type="text" [(ngModel)]="query.name" name="name" id="name" />
     </div>
     <div class="btn-wrapper">
-    <button type="submit" class="btn btn-primary" (click)="search()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
-    <button class="btn btn-primary" (click)="clearSearch()">Cancel</button>
-  </div>
+      <button type="submit" class="btn btn-primary" (click)="search()">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+      <button class="btn btn-primary" (click)="clearSearch()">Cancel</button>
+    </div>
   </form>
 </div>
 <div style="margin-top: 10px;"></div>
-<suggestion-component *ngIf="shouldSearch" [query]="query"></suggestion-component>
