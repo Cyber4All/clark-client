@@ -19,7 +19,7 @@ export class FeaturedComponent implements OnInit {
   }
 
   async fetchLearningObjects() {
-    this.learningObjects = await this.learningObjectService.getLearningObjects(this.featuredLimit);
+    this.learningObjects = await this.learningObjectService.getLearningObjects(null,this.featuredLimit);
   }
 
 }

@@ -25,22 +25,19 @@ export class LearningObjectService {
     return this.data;
   }
 
-  async configureFuse(query: String) {
-    let fuseGroups = await this.getLearningObjects();
-    let options = {
-      shouldSort: true,
-      threshold: 0.3,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys: ['name']
-    };
-    this.fuse = new Fuse(fuseGroups, options)
-
-
-
-  }
+  // async configureFuse(query: String) {
+  //   let fuseGroups = await this.getLearningObjects();
+  //   let options = {
+  //     shouldSort: true,
+  //     threshold: 0.3,
+  //     location: 0,
+  //     distance: 100,
+  //     maxPatternLength: 32,
+  //     minMatchCharLength: 1,
+  //     keys: ['name']
+  //   };
+  //   this.fuse = new Fuse(fuseGroups, options)
+  // }
 
 
   search(query: MappingQuery | TextQuery): Promise<LearningObject[]> {
@@ -71,13 +68,21 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>} 
    * @memberof LearningObjectService
    */
-  getLearningObjects(limit?: number): Promise<LearningObject[]> {
-    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+  // TODO: Remove limit
+  getLearningObjects(query?: TextQuery, featured?: number): Promise<LearningObject[]> {
+    let route = '';
+    if(query){
+      let queryString = querystring.stringify(query);
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString)
+    } else {
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+    }
     return this.http.get(route)
       .toPromise()
       .then((learningObjects) => {
+        console.log(learningObjects.json())
         let last: number;
-        limit ? last = limit : last = learningObjects.json().length
+        featured ? last = featured : last = learningObjects.json().length
         return learningObjects.json().slice(0, last).map((_learningObject: string) => {
           let object = JSON.parse(_learningObject);
           let learningObject = LearningObject.unserialize(_learningObject);

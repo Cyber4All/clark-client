@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 
 export interface TextQuery {
   text: string;
+  currPage?: number;
+  limit?: number;
 }
 
 @Component({
@@ -15,7 +17,9 @@ export interface TextQuery {
 })
 export class HomeComponent implements OnInit {
   query: TextQuery = {
-    text: ''
+    text: '',
+    currPage: 1,
+    limit: 30
   };
 
   constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService, private router: Router) { }
@@ -32,7 +36,7 @@ export class HomeComponent implements OnInit {
     if (this.query.text === '') {
       this.learningObjectService.clearSearch();
     } else if (this.query !== undefined) {
-      this.router.navigate(['/browse', { query: this.query.text }]);
+      this.router.navigate(['/browse', { query: this.query.text, currPage: this.query.currPage, limit: this.query.limit }]);
     }
   }
   goToContribute() {
