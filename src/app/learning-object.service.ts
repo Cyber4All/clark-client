@@ -6,8 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { MappingQuery } from './filter-menu/filter-menu.component';
-import { TextQuery } from './home/home.component';
+import { Query, TextQuery, MappingQuery } from './shared/interfaces/query';
 
 import * as querystring from 'querystring';
 
@@ -19,35 +18,12 @@ export class LearningObjectService {
   dataObserver;
   data;
 
+  public totalLearningObjects: number;
+
   constructor(private config: ConfigService, private http: Http, ) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
-  }
-
-  // async configureFuse(query: String) {
-  //   let fuseGroups = await this.getLearningObjects();
-  //   let options = {
-  //     shouldSort: true,
-  //     threshold: 0.3,
-  //     location: 0,
-  //     distance: 100,
-  //     maxPatternLength: 32,
-  //     minMatchCharLength: 1,
-  //     keys: ['name']
-  //   };
-  //   this.fuse = new Fuse(fuseGroups, options)
-  // }
-
-
-  search(query: MappingQuery | TextQuery): Promise<LearningObject[]> {
-    let queryString = querystring.stringify(query);
-    console.log(queryString)
-    return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString))
-      .toPromise()
-      .then((response) => {
-        return response.json().map((object) => LearningObject.unserialize(object));
-      });
   }
 
   getFilteredObjects() {
@@ -69,9 +45,9 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   // TODO: Remove limit
-  getLearningObjects(query?: TextQuery, featured?: number): Promise<LearningObject[]> {
+  getLearningObjects(query?: Query): Promise<LearningObject[]> {
     let route = '';
-    if(query){
+    if (query) {
       let queryString = querystring.stringify(query);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString)
     } else {
@@ -79,14 +55,12 @@ export class LearningObjectService {
     }
     return this.http.get(route)
       .toPromise()
-      .then((learningObjects) => {
-        console.log(learningObjects.json())
-        let last: number;
-        featured ? last = featured : last = learningObjects.json().length
-        return learningObjects.json().slice(0, last).map((_learningObject: string) => {
-          let object = JSON.parse(_learningObject);
+      .then((response) => {
+        let res = response.json();
+        let objects = res.objects;
+        this.totalLearningObjects = res.total;
+        return objects.map((_learningObject: string) => {
           let learningObject = LearningObject.unserialize(_learningObject);
-          learningObject['id'] = object['id'];
           return learningObject;
         });
       });

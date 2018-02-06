@@ -3,7 +3,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
-import { TextQuery } from '../home/home.component';
+import { TextQuery } from '../shared/interfaces/query';
 
 @Component({
   selector: 'app-browse',
@@ -27,9 +27,9 @@ export class BrowseComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       console.log(params);
       params['query'] ? this.query.text = params['query'] : //do nothing
-      params['currPage'] ? this.query.currPage = params['currPage'] : //do nothing
-      params['limit'] ? this.query.limit = params['limit'] : //do nothing
-      console.log(this.query)
+        params['currPage'] ? this.query.currPage = params['currPage'] : //do nothing
+          params['limit'] ? this.query.limit = params['limit'] : //do nothing
+            console.log(this.query)
       // TODO why is this necessary?
       this.query.text ? this.getFilteredObjects(this.query) : this.fetchLearningObjects(this.query);
     });
@@ -38,15 +38,15 @@ export class BrowseComponent implements OnInit {
   ngOnInit() {
 
   }
-  prevPage(){
+  prevPage() {
     let page = +this.query.currPage - 1
-    if(page>0){
+    if (page > 0) {
       this.router.navigate(['/browse', { query: this.query.text, currPage: page, limit: this.query.limit }]);
       this.fetchLearningObjects(this.query);
     }
 
   }
-  nextPage(){
+  nextPage() {
     let page = +this.query.currPage + 1
     this.router.navigate(['/browse', { query: this.query.text, currPage: page, limit: this.query.limit }]);
     this.fetchLearningObjects(this.query);
@@ -54,7 +54,7 @@ export class BrowseComponent implements OnInit {
 
   async getFilteredObjects(query: TextQuery) {
     this.pageTitle = this.searchTitle;
-    this.learningObjects = await this.learningObjectService.search(query);
+    this.learningObjects = await this.learningObjectService.getLearningObjects(query);
   }
   async fetchLearningObjects(query: TextQuery) {
     this.pageTitle = this.allTitle;

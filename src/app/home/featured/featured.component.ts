@@ -1,6 +1,7 @@
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
+import { Query } from '../../shared/interfaces/query';
 
 @Component({
   selector: 'app-featured',
@@ -9,17 +10,23 @@ import { LearningObjectService } from '../../learning-object.service';
 })
 export class FeaturedComponent implements OnInit {
   learningObjects: LearningObject[];
-  featuredLimit: number;
+  query: Query = {
+    limit: 10
+  };
   constructor(private learningObjectService: LearningObjectService) {
   }
 
   ngOnInit() {
-    this.featuredLimit = 10;
     this.fetchLearningObjects();
   }
 
   async fetchLearningObjects() {
-    this.learningObjects = await this.learningObjectService.getLearningObjects(null,this.featuredLimit);
+    try {
+      this.learningObjects = await this.learningObjectService.getLearningObjects(this.query);
+      console.log(this.learningObjects);
+    } catch (e) {
+      console.log(`Error in ${this}. Error:${e}`);
+    }
   }
 
 }

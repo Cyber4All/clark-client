@@ -2,12 +2,7 @@
 import { lengths } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
-
-export interface MappingQuery {
-  length: string;
-  source: string;
-  name: string;
-}
+import { MappingQuery } from '../shared/interfaces/query';
 
 @Component({
   selector: 'filter-menu',
@@ -32,7 +27,7 @@ export class FilterMenuComponent implements OnInit {
   }
 
   search() {
-    this.learningObjectService.search(this.query)
+    this.learningObjectService.getLearningObjects(this.query)
       .then((objects) => {
         // TODO: Display returned Learning Objects somewhere
         console.log(objects);

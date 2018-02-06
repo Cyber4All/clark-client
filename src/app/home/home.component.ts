@@ -3,12 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { SortGroupsService } from '../shared/sort-groups.service';
 import { Router } from '@angular/router';
+import { TextQuery } from '../shared/interfaces/query';
 
-export interface TextQuery {
-  text: string;
-  currPage?: number;
-  limit?: number;
-}
 
 @Component({
   selector: 'app-home',
