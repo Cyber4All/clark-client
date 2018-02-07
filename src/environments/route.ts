@@ -46,6 +46,9 @@ export const USER_ROUTES = {
     },
     ADD_LEARNING_OBJECT_TO_CART(username, author, learningObjectName) {
         return `${environment.apiURL}/users/${username}/cart/learning-objects/${author}/${learningObjectName}`;
+    },
+    DOWNLOAD_OBJECT(username, author, learningObjectName) {
+        return `${environment.apiURL}/users/${username}/library/learning-objects/${author}/${learningObjectName}`;
     }
 };
 

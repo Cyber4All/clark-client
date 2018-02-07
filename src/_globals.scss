@@ -20,6 +20,12 @@ $placeholder: lighten(#a9a9a9, 10);
 $popup-z: 9;
 $notification-z: 10;
 
+$nanomodule-color: #8b3b3b;
+$micromodule-color: #3b808b;
+$module-color: #783b8b;
+$unit-color: #8b653b;
+$course-color: #3b8b54;
+
 // mixins
 @mixin vert-center {
   display: inline-flex;

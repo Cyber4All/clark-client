@@ -28,6 +28,7 @@ export class CartComponent implements OnInit {
     const val = await this.cartService.getCart();
     if (val) {
       this.cartItems = <Array<LearningObject>>val;
+      console.log(this.cartItems);
     } else {
       console.log('not logged in!');
     }

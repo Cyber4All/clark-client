@@ -108,4 +108,14 @@ export class CartV2Service {
             (err) => console.log,
             () => { console.log('Downloaded') });
   }
+
+  downloadLearningObject(author: string, learningObjectName: string) {
+    this.http.post(USER_ROUTES.DOWNLOAD_OBJECT(this.user._username, author, learningObjectName), {}, { headers: this.headers, responseType: ResponseContentType.Blob })
+      .subscribe((res) => {
+        importedSaveAs(res.blob(), `${Date.now()}.zip`);
+        this.cartItems = [];
+    },
+    (err) => console.log,
+    () => { console.log('Downloaded') });
+  }
 }

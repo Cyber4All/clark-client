@@ -2,156 +2,327 @@
 
 .details-wrapper {
   width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
   padding-bottom: 20px;
-}
-.details-list {
-  transition: 0.3s;
-  border-width: 1px;
-  border-color: whitesmoke;
-  border-left-width: 3px;
-  border-left-style: solid;
-  border-left-color: $blue-accent;
-  margin-bottom: 10px;
-  padding: 5px;
-  font-size: 20px;
-}
-#author-container{
-  display:flex;
-  flex-direction: row;
-}
 
-.learningHeader {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  button {
-    width: 25px;
-    height: 25px;
-    background-color: $error-red;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-left: 20px;
-  }
-  p {
-    margin-left: 40px;
-  }
-}
-.basicInfo {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  $sidebar-width: 350px;
+  $content-width: calc(#{$max-width} - #{$sidebar-width});
 
-  #statistics {
-    width: 49%;
-    margin-right: 2%;
-    height: auto;
-    margin-top: 15px;
-    p {
-      margin-left: 10px;
+  &.nanomodule {
+    .type {
+      background: $nanomodule-color;
     }
   }
-  #learningGoals {
-    width: 49%;
-    height: auto;
-    margin-top: 15px;
-  }
-}
-.learningOutcomes {
-  width: 100%;
-  margin-top: 25px;
-}
-#assessmentPlans,
-#instructionalStrategies {
-  margin: 25px;
-}
-@mixin details-card{
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border: 1px solid $placeholder;
-  transition: 0.3s;
-  position: relative;
-}
 
-.details-card-unbordered{
-  @include details-card;
-}
-.details-card {
-  @include details-card;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  
-  .card-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .slim-title {
-    background-color: $green;
-    color: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 40px;
-    h4 {
-      padding-left: 16px;
-      font-size: 20px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+  &.micrcmodule {
+    .type {
+      background: $micromodule-color;
     }
   }
-  .card-title {
-    background-color: $blue-accent;
-    color: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 
-    .report {
-      @include vert-center;
-      padding: 5px 20px;
-      opacity: 0.8;
+  &.module {
+    .type {
+      background: $module-color;
+    }
+  }
 
-      &:hover {
-        opacity: 1;
-        text-decoration: underline;
-        cursor: pointer;
+  &.unit {
+    .type {
+      background: $unit-color;
+    }
+  }
+
+  &.course {
+    .type {
+      background: $course-color;
+    }
+  }
+
+  .splash {
+    background: linear-gradient(45deg, desaturate(darken($blue-accent, 20), 15), $blue-accent);
+    padding: 50px 0px;
+    position: relative;
+
+    ::ng-deep .particles-container {
+      opacity: 0.3;
+    }
+
+    .inner {
+      max-width: $max-width;
+      margin: auto;
+      padding: 20px;
+      box-sizing: border-box;
+
+      .header {
+        max-width: $content-width;
+        padding-right: 20px;
+      }
+
+      .name {
+        font-size: 40px;
+        color: white;
+        text-shadow: 0px 0px rgba(0, 0, 0, 0.2);
+      }
+
+      .author, .downloads {
+        color: white;
+        font-size: 18px;
+        font-weight: 300;
+      }
+
+      .type {
+        margin-top: 5px;
+        padding: 3px;
+        border-radius: 1px;
+        display: inline-block;
+        position: relative;
+        color: white;
+        text-transform: capitalize;
+        font-size: 14px;
+        font-weight: 300;
+
+        &:before {
+          content: "";
+          border-radius: 50%;
+          width: 10px;
+          height: 10px;
+          left: 0; top: 0; bottom: 0;
+          margin: auto;
+          position: absolute;
+        }
       }
     }
+  }
 
-    h1 {
-      padding-left: 16px;
-      font-size: 26px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+  .flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-shrink: 0;
+    max-width: $max-width;
+    margin: auto;
+
+    .content {
+      max-width: $content-width;
+      padding: 20px;
+      flex-shrink: 1;
+      flex-grow: 1;
+      height: auto;
+  
+      .goals {
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        border-radius: 2px;
+        padding: 20px;
+        background: desaturate(lighten($blue-accent, 55), 20);
+        color: $dark-text;
+
+        .title {
+          color: black;
+          font-size: 22px;
+          margin-bottom: 20px;
+        }
+
+        ul {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+
+        .goal {
+          font-size: 18px;
+          width: 45%;
+          margin-bottom: 10px;
+
+          .svg-inline--fa {
+            margin-top: 3px;
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+  
+    .sidebar {
+      max-width: $sidebar-width;
+      padding: 20px;
+      flex-shrink: 0;
+      flex-grow: 1;
+      margin-top: -100px;
+      z-index: 2;
+
+      .inner {
+        background: white;
+        border-radius: 2px;
+        box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+
+        .button {
+          text-align: center;
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+      }
     }
   }
-  .slim-content {
-    margin-top: 50px;
-    padding: 2px 16px;
-  }
+}
 
-  .card-content {
-    margin-top: 80px;
-    padding: 2px 16px;
-  }
-  &:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+@media(max-width: 800px) {
+
+  .flex {
+    flex-direction: column-reverse !important;
+
+    .sidebar {
+      margin: auto;
+      margin-top: 0px !important;
+    }
   }
 }
+// .details-list {
+//   transition: 0.3s;
+//   border-width: 1px;
+//   border-color: whitesmoke;
+//   border-left-width: 3px;
+//   border-left-style: solid;
+//   border-left-color: $blue-accent;
+//   margin-bottom: 10px;
+//   padding: 5px;
+//   font-size: 20px;
+// }
+// #author-container{
+//   display:flex;
+//   flex-direction: row;
+// }
+
+// .learningHeader {
+//   position: relative;
+//   display: flex;
+//   flex-direction: column;
+//   flex-wrap: nowrap;
+//   button {
+//     width: 25px;
+//     height: 25px;
+//     background-color: $error-red;
+//     border: none;
+//     color: white;
+//     text-align: center;
+//     text-decoration: none;
+//     display: inline-block;
+//     font-size: 16px;
+//     margin-left: 20px;
+//   }
+//   p {
+//     margin-left: 40px;
+//   }
+// }
+// .basicInfo {
+//   display: flex;
+//   flex-direction: row;
+//   flex-wrap: wrap;
+//   justify-content: space-between;
+
+//   #statistics {
+//     width: 49%;
+//     margin-right: 2%;
+//     height: auto;
+//     margin-top: 15px;
+//     p {
+//       margin-left: 10px;
+//     }
+//   }
+//   #learningGoals {
+//     width: 49%;
+//     height: auto;
+//     margin-top: 15px;
+//   }
+// }
+// .learningOutcomes {
+//   width: 100%;
+//   margin-top: 25px;
+// }
+// #assessmentPlans,
+// #instructionalStrategies {
+//   margin: 25px;
+// }
+// @mixin details-card{
+//   display: flex;
+//   flex-direction: column;
+//   height: 100%;
+//   border: 1px solid $placeholder;
+//   transition: 0.3s;
+//   position: relative;
+// }
+
+// .details-card-unbordered{
+//   @include details-card;
+// }
+// .details-card {
+//   @include details-card;
+//   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  
+//   .card-row {
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     justify-content: space-between;
+//   }
+//   .slim-title {
+//     background-color: $green;
+//     color: white;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     height: 40px;
+//     h4 {
+//       padding-left: 16px;
+//       font-size: 20px;
+//       white-space: nowrap;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//     }
+//   }
+//   .card-title {
+//     background-color: $blue-accent;
+//     color: white;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     height: 70px;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: space-between;
+
+//     .report {
+//       @include vert-center;
+//       padding: 5px 20px;
+//       opacity: 0.8;
+
+//       &:hover {
+//         opacity: 1;
+//         text-decoration: underline;
+//         cursor: pointer;
+//       }
+//     }
+
+//     h1 {
+//       padding-left: 16px;
+//       font-size: 26px;
+//       white-space: nowrap;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//     }
+//   }
+//   .slim-content {
+//     margin-top: 50px;
+//     padding: 2px 16px;
+//   }
+
+//   .card-content {
+//     margin-top: 80px;
+//     padding: 2px 16px;
+//   }
+//   &:hover {
+//     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+//   }
+// }

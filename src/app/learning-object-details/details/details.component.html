@@ -1,108 +1,30 @@
-<div *ngIf="learningObject" class="details-wrapper">
-  <!--<button (click)="removeFromCart()">REMOVE FROM CART</button>
-  <button (click) = "clearCart()"> Clear cart</button>
-  <button routerLink="/cart">GO TO CART</button>-->
-  <div class="learningHeader">
-    <h1>{{ learningObject.name }} - {{learningObject.length}}</h1>
-
-
-    <!--<p *ngIf="learningObject.author">Created by: {{ learningObject.author }}</p>-->
-    <div id="author-container">
-      <p>Created by: {{learningObject.author._name}}</p>
-      <button (click)="addToCart()">+</button>
-    </div>
-
-  </div>
-
-  <div class="basicInfo">
-    <div class="details-card" id="statistics">
-      <div class="card-title">
-        <h1>
-          Information
-        </h1>
-        <div class="report" (click)="reportThisObject()">
-          Report this Learning Object
-        </div>
-      </div>
-      <div class="card-content">
-        <div>
-          <div class="updated">
-            <h4>Last updated: {{learningObject.date | date}}</h4>
-          </div>
-          <div class="favorites">
-            <h4>Favorited: 1337 times</h4>
-          </div>
-          <div class="downloads">
-            <h4>Downloaded: 42 times</h4>
-          </div>
-          <hr>
-        </div>
-        <div>
-          <div class="links" *ngIf="learningObject.length === 'course'">
-            <h4>Associated Links</h4>
-            <p *ngIf="learningObject.repository.urls.length == 0">None yet</p>
-            <ul>
-              <li *ngFor="let link of learningObject.repository.urls">
-                <a [href]="link.url">{{link.title}}</a>
-              </li>
-            </ul>
-          </div>
-          <div class="notes" *ngIf="learningObject.length === 'course'">
-            <h4>Notes</h4>
-            <p *ngIf="!learningObject.repository.notes">None yet</p>
-            <p>{{learningObject.repository.notes}}</p>
-          </div>
-          <div class="files" *ngIf="learningObject.length === 'course'">
-            <h4>Number of Attached Files: {{learningObject.repository.files.length}}</h4>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-
-    <div class="details-card" id="learningGoals">
-      <div class="card-title">
-        <h1>Learning Goals</h1>
-      </div>
-      <div class="card-content">
-        <div class="details-list" *ngFor="let goal of learningObject.goals">{{goal.text}}</div>
+<div *ngIf="learningObject" class="details-wrapper" [ngClass]="learningObject.length">
+  <div class="splash">
+    <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
+    <div class="inner">
+      <div class="header">
+        <div class="name">{{ learningObject.name }}</div>
+        <div class="author">Created by {{learningObject.author._name}}, updated {{ date | date:'shortDate' }}</div>
+        <div class="type">{{ learningObject.length }}</div>
       </div>
     </div>
   </div>
-
-  <div class="learningOutcomes">
-    <div class="details-card">
-      <div class="card-title">
-        <h1>Learning Outcomes</h1>
-      </div>
-      <div class="card-content">
-        <div *ngFor="let outcome of learningObject.outcomes">
-          <p class="details-list">{{outcome.bloom}}: {{outcome.verb}} {{outcome.text}}</p>
-          <div *ngIf="outcome.assessments.length !==0" class="details-card-unbordered" id="assessmentPlans">
-            <div class="slim-title">
-              <h4>Assessment Plans</h4>
-            </div>
-            <div class="slim-content">
-              <div *ngFor="let strategy of outcome.assessments">
-                <learning-object-details-content [strategy]="strategy" [type]="'assessment'"></learning-object-details-content>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="outcome.strategies.length !==0" class="details-card-unbordered" id="instructionalStrategies">
-            <div class="slim-title">
-              <h4>Instructional Strategies</h4>
-            </div>
-            <div class="slim-content">
-              <div *ngFor="let strategy of outcome.strategies">
-                <learning-object-details-content [strategy]="strategy" [type]="'instruction'"></learning-object-details-content>
-              </div>
-            </div>
-
-          </div>
-        </div>
+  <div class="flex">
+    <div class="content">
+      <div class="goals">
+        <div class="title">Learning Goals</div>
+        <ul>
+          <li *ngFor="let goal of learningObject.goals" class="goal">
+            {{ goal.text }}
+          </li>
+        </ul>
       </div>
     </div>
-
+    <div class="sidebar">
+      <div class="inner">
+        <div class="button good" (click)="download(learningObject.author._username, learningObject.name)">Download Now</div>
+        <div class="button neutral on-white" (click)="addToCart()">Add to Library</div>
+      </div>
+    </div>
   </div>
 </div>
