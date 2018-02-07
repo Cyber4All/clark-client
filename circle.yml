@@ -4,10 +4,10 @@ machine:
 dependencies:
   pre:
     - npm install
-    - npm install enhanced-resolve@3.3.0
+    - npm install enhanced-resolve@3.3.0    
 test:
   override:
-    - echo "done"
+    - ng build --prod --aot=false
 deployment:
   production:
     branch: production
