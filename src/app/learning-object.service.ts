@@ -44,7 +44,6 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>} 
    * @memberof LearningObjectService
    */
-  // TODO: Remove limit
   getLearningObjects(query?: Query): Promise<LearningObject[]> {
     let route = '';
     if (query) {

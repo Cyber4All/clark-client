@@ -27,9 +27,7 @@ export class BrowseComponent implements OnInit {
   constructor(private learningObjectService: LearningObjectService, private route: ActivatedRoute, private router: Router) {
     this.sub = this.route.params.subscribe(params => {
       console.log(params);
-      params['query'] ? this.query.text = params['query'] : this.query.text = ''
-      params['currPage'] ? this.query.currPage = params['currPage'] : this.query.currPage = 1;
-      params['limit'] ? this.query.limit = params['limit'] : this.query.limit = 30;
+      params['query'] ? this.query.text = params['query'] : this.query.text = '';
       this.fetchLearningObjects(this.query);
     });
   }
@@ -39,14 +37,17 @@ export class BrowseComponent implements OnInit {
   prevPage() {
     let page = +this.query.currPage - 1
     if (page > 0) {
-      this.router.navigate(['/browse', { query: this.query.text, currPage: page, limit: this.query.limit }]);
+      this.query.currPage = page;
+      this.fetchLearningObjects(this.query);
+
     }
 
   }
   nextPage() {
     let page = +this.query.currPage + 1
     if (page <= this.pageCount){
-      this.router.navigate(['/browse', { query: this.query.text, currPage: page, limit: this.query.limit }]);
+      this.query.currPage =page
+      this.fetchLearningObjects(this.query);
     }
   }
 
