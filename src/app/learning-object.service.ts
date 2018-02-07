@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
 import { LearningObject, User } from '@cyber4all/clark-entity';
+import * as querystring from 'querystring';
 
 @Injectable()
 export class LearningObjectService {
@@ -40,7 +41,7 @@ export class LearningObjectService {
 
   async search(query: String): Promise<LearningObject[]>{
     if(query.length < 4){
-      this.clearSearch() 
+      this.clearSearch();
     }else {
       await this.configureFuse(query);
       this.filteredResults = this.fuse.search(query);
@@ -60,23 +61,29 @@ export class LearningObjectService {
     window.open(url);
   }
 
-  /**
+ /**
    * Fetches Array of Learning Objects
    * 
    * @returns {Promise<LearningObject[]>} 
    * @memberof LearningObjectService
    */
-  getLearningObjects(limit?: number): Promise<LearningObject[]> {
-    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+  // TODO: Remove limit
+  getLearningObjects(query?: any, featured?: number): Promise<LearningObject[]> {
+    let route = '';
+    if (query) {
+      let queryString = querystring.stringify(query);
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString)
+    } else {
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+    }
     return this.http.get(route)
       .toPromise()
-      .then((learningObjects) => {
-        let last:number;
-        limit ? last = limit : last = learningObjects.json().length
-        return learningObjects.json().slice(0, last).map((_learningObject: string) => {
-          let object = JSON.parse(_learningObject);
+      .then((response) => {
+        let res = response.json();
+        let objects = res.objects;
+        let total = res.total;
+        return objects.map((_learningObject: string) => {
           let learningObject = LearningObject.unserialize(_learningObject);
-          learningObject['id'] = object['id'];
           return learningObject;
         });
       });

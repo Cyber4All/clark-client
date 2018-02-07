@@ -34,6 +34,7 @@ import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 import { AuthModule } from './auth/auth.module';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { ParticlesModule } from 'angular-particle';
 
 // Components
 import { NavbarComponent } from './shared/navbar/navbar.component';
@@ -80,7 +81,8 @@ import { RouterComponent } from './shared/breadcrumb/router.component';
     NotificationModule.forRoot(),
     CheckBoxModule,
     AuthModule.forRoot(),
-    ClickOutsideModule
+    ClickOutsideModule,
+    ParticlesModule
   ],
   providers: [
     LearningObjectService,
