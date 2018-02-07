@@ -11,6 +11,20 @@
         margin-top: 10px;
     }
 }
+.paginationCtrl{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    a {
+        border: 1px solid black;
+        text-decoration: none;
+    }
+    p{
+        font-size: 12pt;
+        padding:10px;
+    }
+}
 
 .container {
     background: white;

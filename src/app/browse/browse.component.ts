@@ -18,6 +18,7 @@ export class BrowseComponent implements OnInit {
     currPage: 1,
     limit: 30
   };
+  pageCount: number;
   allTitle: string = "All Learning Objects";
   searchTitle: string = "Search Results";
   pageTitle: string;
@@ -26,36 +27,35 @@ export class BrowseComponent implements OnInit {
   constructor(private learningObjectService: LearningObjectService, private route: ActivatedRoute, private router: Router) {
     this.sub = this.route.params.subscribe(params => {
       console.log(params);
-      params['query'] ? this.query.text = params['query'] : //do nothing
-        params['currPage'] ? this.query.currPage = params['currPage'] : //do nothing
-          params['limit'] ? this.query.limit = params['limit'] : //do nothing
-            console.log(this.query)
-      // TODO why is this necessary?
+      params['query'] ? this.query.text = params['query'] : this.query.text = ''
+      params['currPage'] ? this.query.currPage = params['currPage'] : this.query.currPage = 1;
+      params['limit'] ? this.query.limit = params['limit'] : this.query.limit = 30;
       this.fetchLearningObjects(this.query);
     });
   }
 
   ngOnInit() {
-
   }
   prevPage() {
     let page = +this.query.currPage - 1
     if (page > 0) {
       this.router.navigate(['/browse', { query: this.query.text, currPage: page, limit: this.query.limit }]);
-      this.fetchLearningObjects(this.query);
     }
 
   }
   nextPage() {
     let page = +this.query.currPage + 1
-    this.router.navigate(['/browse', { query: this.query.text, currPage: page, limit: this.query.limit }]);
-    this.fetchLearningObjects(this.query);
+    if (page <= this.pageCount){
+      this.router.navigate(['/browse', { query: this.query.text, currPage: page, limit: this.query.limit }]);
+    }
   }
 
   async fetchLearningObjects(query: TextQuery) {
     this.pageTitle = this.allTitle;
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(query);
+      this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
+      console.log(this.pageCount);
     } catch (e) {
       console.log(e);
     }

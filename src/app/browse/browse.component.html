@@ -7,6 +7,9 @@
     <learning-object-component *ngFor="let l of learningObjects" routerLink="./details/{{ l.author.username }}/{{l.name}}" [learningObject]="l">
     </learning-object-component>
   </div>
-  <a (click)="prevPage()">Prev </a>
-  <a (click)="nextPage()">Next</a>
+  <div class = "paginationCtrl">
+      <a class = "button" (click)="prevPage()">Prev </a>
+      <p>Page {{this.query.currPage}} of {{this.pageCount}}</p>
+      <a class = "button" (click)="nextPage()">Next</a>
+  </div>
 </div>
