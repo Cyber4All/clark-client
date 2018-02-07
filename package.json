@@ -23,7 +23,7 @@
     "@angular/router": "^5.0.0",
     "@cyber4all/clark-entity": "^1.1.1",
     "@cyber4all/clark-modal": "^0.1.6",
-    "@cyber4all/clark-taxonomy": "^1.0.16",
+    "@cyber4all/clark-taxonomy": "1.0.16",
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^4.1.1",
     "@types/file-saver": "^1.3.0",

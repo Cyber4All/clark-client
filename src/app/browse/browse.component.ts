@@ -31,7 +31,7 @@ export class BrowseComponent implements OnInit {
           params['limit'] ? this.query.limit = params['limit'] : //do nothing
             console.log(this.query)
       // TODO why is this necessary?
-      this.query.text ? this.getFilteredObjects(this.query) : this.fetchLearningObjects(this.query);
+      this.fetchLearningObjects(this.query);
     });
   }
 
@@ -52,13 +52,13 @@ export class BrowseComponent implements OnInit {
     this.fetchLearningObjects(this.query);
   }
 
-  async getFilteredObjects(query: TextQuery) {
-    this.pageTitle = this.searchTitle;
-    this.learningObjects = await this.learningObjectService.getLearningObjects(query);
-  }
   async fetchLearningObjects(query: TextQuery) {
     this.pageTitle = this.allTitle;
-    this.learningObjects = await this.learningObjectService.getLearningObjects(query);
+    try {
+      this.learningObjects = await this.learningObjectService.getLearningObjects(query);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
 }

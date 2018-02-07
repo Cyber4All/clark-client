@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
     if (this.query.text === '') {
       this.learningObjectService.clearSearch();
     } else if (this.query !== undefined) {
-      this.router.navigate(['/browse', { query: this.query.text, currPage: this.query.currPage, limit: this.query.limit }]);
+      this.router.navigate(['/browse', { query: this.query.text }]);
     }
   }
   goToContribute() {
