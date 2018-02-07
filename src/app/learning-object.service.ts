@@ -6,6 +6,11 @@ import { Observable } from 'rxjs/Observable';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
 import { LearningObject, User } from '@cyber4all/clark-entity';
+<<<<<<< HEAD
+=======
+import { Query, TextQuery, MappingQuery } from './shared/interfaces/query';
+
+>>>>>>> 1e1a6100459b4837e1cbf22802f8ac70ea968fe1
 import * as querystring from 'querystring';
 
 @Injectable()
@@ -16,12 +21,15 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  constructor(private config: ConfigService, private http: Http,) { }
+  public totalLearningObjects: number;
+
+  constructor(private config: ConfigService, private http: Http, ) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
   }
 
+<<<<<<< HEAD
   async configureFuse(query:String){
     let fuseGroups = await this.getLearningObjects();
     let options = {
@@ -50,6 +58,9 @@ export class LearningObjectService {
   }
 
   getFilteredObjects(){
+=======
+  getFilteredObjects() {
+>>>>>>> 1e1a6100459b4837e1cbf22802f8ac70ea968fe1
     return this.filteredResults;
   }
 
@@ -68,7 +79,11 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   // TODO: Remove limit
+<<<<<<< HEAD
   getLearningObjects(query?: any, featured?: number): Promise<LearningObject[]> {
+=======
+  getLearningObjects(query?: Query): Promise<LearningObject[]> {
+>>>>>>> 1e1a6100459b4837e1cbf22802f8ac70ea968fe1
     let route = '';
     if (query) {
       let queryString = querystring.stringify(query);
@@ -81,7 +96,11 @@ export class LearningObjectService {
       .then((response) => {
         let res = response.json();
         let objects = res.objects;
+<<<<<<< HEAD
         let total = res.total;
+=======
+        this.totalLearningObjects = res.total;
+>>>>>>> 1e1a6100459b4837e1cbf22802f8ac70ea968fe1
         return objects.map((_learningObject: string) => {
           let learningObject = LearningObject.unserialize(_learningObject);
           return learningObject;

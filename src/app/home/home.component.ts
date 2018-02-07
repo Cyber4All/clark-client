@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { SortGroupsService } from '../shared/sort-groups.service';
 import { Router } from '@angular/router';
+import { TextQuery } from '../shared/interfaces/query';
+
 
 @Component({
   selector: 'app-home',
@@ -10,9 +12,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  query: string;
+  query: TextQuery = {
+    text: '',
+    currPage: 1,
+    limit: 30
+  };
 
-  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService, private router:Router) { }
+  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,13 +29,13 @@ export class HomeComponent implements OnInit {
   }
   search() {
     // TODO: verify query contains alphanumeric characters
-    if (this.query === '') {
+    if (this.query.text === '') {
       this.learningObjectService.clearSearch();
     } else if (this.query !== undefined) {
-      this.router.navigate(['/browse', { query: this.query }]);
+      this.router.navigate(['/browse', { query: this.query.text, currPage: this.query.currPage, limit: this.query.limit }]);
     }
   }
-  goToContribute(){
+  goToContribute() {
     window.location.href = 'http://onion.clark.center';
   }
 

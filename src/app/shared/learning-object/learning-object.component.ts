@@ -17,9 +17,9 @@ export class LearningObjectListingComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.name = this.learningObject._name;
-        this.author = this.learningObject._author;
-        this.lastUpdated = this.learningObject._date;
-        this.type = this.learningObject._length;
+        this.name = this.learningObject.name;
+        this.author = this.learningObject.author;
+        this.lastUpdated = this.learningObject.date;
+        this.type = this.learningObject.length;
     }
 }
