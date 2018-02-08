@@ -6,7 +6,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
-// import { ParticlesModule } from 'angular-particle';
 
 @Component({
   selector: 'learning-object-details',

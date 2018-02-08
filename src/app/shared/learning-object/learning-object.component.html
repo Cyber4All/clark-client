@@ -1,24 +1,17 @@
-<div class="learning-object-listing-viewport">
-
-  <div class="title-viewport">
-    <h1>{{ name }}</h1>
+<div class="learning-object" [ngClass]="learningObject.length" routerLink="./details/{{ learningObject.author.username }}/{{learningObject.name}}">
+  <div class="image">
+    <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
+    <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
   </div>
-  <div class="card-lower">
-    <div class="center-info">
-      <span class="text-line">
-        <label>Author:</label>&nbsp;
-        <p>{{ author.name }}</p>
-      </span>
-      <span class="text-line">
-        <label>Last Updated:</label>&nbsp;
-        <p>{{ lastUpdated | date }}</p>
-      </span>
+  <div class="learning-object-content">
+    <div class="title">{{ learningObject.name }}</div>
+    <div class="details">
+      <div class="author">
+        By: {{ learningObject.author._name }}, updated {{ date | date:'mediumDate' }}
+      </div>
     </div>
-    <div class="bottom-info">
-      <div>{{ type }}</div>
-      <div>Undergraduate</div>
-      <div>1337 Downloads</div>
-      <div>42 Likes</div>
+    <div class="goals">
+      {{ goals }}
     </div>
   </div>
-</div>
+</div> 

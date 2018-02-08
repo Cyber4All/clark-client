@@ -8,6 +8,7 @@ import { RoutingModule } from '../app.routing';
 import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
+import { ParticlesModule } from 'angular-particle';
 
 // Services
 import { SortGroupsService } from './sort-groups.service';
@@ -25,7 +26,8 @@ import { FooterComponent } from './footer/footer.component';
     RoutingModule,
     CheckBoxModule,
     NotificationModule,
-    ModalModule
+    ModalModule,
+    ParticlesModule
   ],
   declarations: [
     NavbarComponent,

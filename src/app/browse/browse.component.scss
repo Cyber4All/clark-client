@@ -1,35 +1,94 @@
+@import "~_globals.scss";
+
 .content {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 0px;
+
     learning-object-component {
-        width: 250px;
-        height: 350px;
-        margin-right: 25px;
-        margin-top: 10px;
-    }
-}
-.paginationCtrl{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 20px;
-    a {
-        border: 1px solid black;
-        text-decoration: none;
-    }
-    p{
-        font-size: 12pt;
-        padding:10px;
+        width: 100%;
+
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
     }
 }
 
 .container {
-    background: white;
-    border: 1px solid#c3c2c2;
+    max-width: $max-width;
+    width: 100%;
+
+    .title {
+        text-transform: uppercase;
+        color: $blue-accent;
+        font-weight: bold !important;
+        font-size: 24px !important;
+    }
+
+    .subtitle {
+        color: $dark-text;
+        font-size: 16px;
+        margin-bottom: 20px;
+
+        span {
+            font-weight: bold;
+            color: black;
+        }
+    }
+    
+    .content {
+        height: auto !important;
+    }
+}
+
+.paginationCtrl {
+    margin-top: 40px;
     margin-bottom: 30px;
-    padding-bottom: 20px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+
+    ul {
+        margin: 0; padding: 0;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+
+        li {
+            padding: 10px;
+            color: $blue-accent;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            list-style-type: none;
+            min-width: 45px;
+            text-align: center;
+            transition: opacity 0.2s ease;
+            transition: opacity 0.2s ease;
+            opacity: 1;
+
+            &.gone {
+                opacity: 0.4 !important;
+                cursor: default !important;
+            }
+
+            &:not(.active):hover {
+                opacity: 0.6;
+                cursor: pointer;
+            }
+
+            &.active {
+                background: $blue-accent;
+                color: white;
+            }
+
+            &:first-child {
+                border-radius: 3px 0px 0px 3px;
+            }
+
+            &:last-child {
+                border-radius: 0px 3px 3px 0px;
+                border-right: 1px solid rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
 }
