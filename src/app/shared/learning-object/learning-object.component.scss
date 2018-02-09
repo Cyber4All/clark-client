@@ -54,12 +54,14 @@
     .image {
         background: red;
         width: 140px;
-        max-height: 90px;
+        max-height: 100px;
         flex: 0 0 1;
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        flex-grow: 0;
+        flex-shrink: 0;
 
         ::ng-deep canvas {
             opacity: 0.4;
