@@ -62,6 +62,13 @@ export class CartComponent implements OnInit {
     }
   }
 
+  async downloadObject(event, object) {
+    event.stopPropagation();
+    const author = object._author._username;
+    const learningObjectName = object._name;
+    await this.cartService.downloadLearningObject(author, learningObjectName);
+  }
+
   goToItem(object) {
     this.router.navigate(['/details/', object._author._username, object._name]);
   }

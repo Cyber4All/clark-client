@@ -22,17 +22,18 @@ export class BrowseComponent implements OnInit {
   };
 
   pageCount: number;
-  allTitle: string = "All Learning Objects";
-  searchTitle: string = "Results";
+  allTitle = 'All Learning Objects';
+  searchTitle = 'Results';
 
   pageTitle: string;
-  searched: boolean = false;
+  searched = false;
 
-  filtering: boolean = false;
+  filtering = false;
   filters: {} = {};
 
 
-  constructor(private learningObjectService: LearningObjectService, private route: ActivatedRoute, private router: Router, private modalService: ModalService) {
+  constructor(private learningObjectService: LearningObjectService, private route: ActivatedRoute,
+    private router: Router, private modalService: ModalService) {
     this.learningObjects = [];
     this.sub = this.route.params.subscribe(params => {
       console.log(params);
@@ -51,8 +52,7 @@ export class BrowseComponent implements OnInit {
     let count = 1;
     let upCount = 1;
     let downCount = 1;
-    let dir = true;
-    let arr = [cursor];
+    const arr = [cursor];
 
 
     if (this.learningObjects.length) {
@@ -61,7 +61,7 @@ export class BrowseComponent implements OnInit {
           arr.push(cursor + upCount++);
           count++;
         }
-  
+
         if (cursor - downCount > 0) {
           arr.unshift(cursor - downCount++);
           count++;
@@ -75,11 +75,12 @@ export class BrowseComponent implements OnInit {
   }
 
   get sortString() {
-    return (this.query.sort) ? this.query.sort.charAt(0) + this.query.sort.substring(1) + ' (' + ((this.query.sortAscending) ? 'Asc' : 'Desc') + ')' : '';
+    return (this.query.sort) ? this.query.sort.charAt(0) + this.query.sort.substring(1)
+    + ' (' + ((this.query.sortAscending) ? 'Asc' : 'Desc') + ')' : '';
   }
 
   prevPage() {
-    let page = +this.query.currPage - 1
+    const page = +this.query.currPage - 1
     if (page > 0) {
       this.query.currPage = page;
       this.fetchLearningObjects(this.query);
@@ -88,9 +89,9 @@ export class BrowseComponent implements OnInit {
 
   }
   nextPage() {
-    let page = +this.query.currPage + 1
+    const page = +this.query.currPage + 1
     if (page <= this.pageCount){
-      this.query.currPage =page
+      this.query.currPage = page;
       this.fetchLearningObjects(this.query);
     }
   }
@@ -112,13 +113,16 @@ export class BrowseComponent implements OnInit {
       this.filters[key] = [];
     }
 
-    if (!this.filters[key].includes(value)) this.filters[key].push(value);
-    console.log(this.filters);
+    if (!this.filters[key].includes(value)) {
+      this.filters[key].push(value);
+    }
   }
 
   removeFilter(key: string, value: string) {
     if (this.filters[key] && this.filters[key].length) {
-      if (this.filters[key].includes(value)) this.filters[key].splice(this.filters[key].indexOf(value), 1);
+      if (this.filters[key].includes(value)) {
+        this.filters[key].splice(this.filters[key].indexOf(value), 1);
+      }
     }
   }
 
@@ -127,14 +131,18 @@ export class BrowseComponent implements OnInit {
   }
 
   sendFilters() {
-    if (this.filters['length']) this.query.length = this.filters['length'];
-    if (this.filters['level']) this.query.level = this.filters['level'];
+    if (this.filters['length']) {
+      this.query.length = this.filters['length'];
+    }
+    if (this.filters['level']) {
+      this.query.level = this.filters['level'];
+    }
 
     this.fetchLearningObjects(this.query);
   }
 
   showSortMenu(event) {
-    let currSort = (this.query.sort) ? this.query.sort + '-' + ((this.query.sortAscending) ? 'asc' : 'desc') : undefined;
+    const currSort = (this.query.sort) ? this.query.sort + '-' + ((this.query.sortAscending) ? 'asc' : 'desc') : undefined;
     this.modalService.makeContextMenu(
       'SortContextMenue',
       'dropdown',
@@ -148,8 +156,8 @@ export class BrowseComponent implements OnInit {
         this.modalService.offset(event.currentTarget).top + 50))
       .subscribe(val => {
         if (val !== 'null' && val.length) {
-          let dir = val.split('-')[1];
-          let sort = val.split('-')[0];
+          const dir = val.split('-')[1];
+          const sort = val.split('-')[0];
           this.query.sort = sort;
           this.query.sortAscending = (dir === 'asc') ? true : false;
 
