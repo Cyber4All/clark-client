@@ -13,6 +13,7 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
+import { AuthGuard } from './auth/services/auth-guard.service';
 
 const detailRoute = {
     path: 'details/:username/:learningObjectName', component: DetailsComponent, data: { breadcrumb: 'Details' }};
@@ -41,8 +42,8 @@ const routes: Routes = [
     },
     { path: 'login', component: LoginComponent, data: { hideNavbar: true, hideTopbar: true } },
     { path: 'register', component: RegisterComponent, data: { hideNavbar: true, hideTopbar: true } },
-    { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' } },
-    { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' } },
+    { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
+    { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
     // Catch All
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];

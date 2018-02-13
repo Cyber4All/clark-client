@@ -1,6 +1,6 @@
 // Core
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { Component } from '@angular/core';
@@ -53,6 +53,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 
+// Other
+import { RavenErrorHandler } from './error-handler';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,7 +90,9 @@ import { RouterComponent } from './shared/breadcrumb/router.component';
   providers: [
     LearningObjectService,
     ConfigService,
-    CartService, CartV2Service
+    CartService,
+    CartV2Service,
+    { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],
   bootstrap: [AppComponent]
 })
