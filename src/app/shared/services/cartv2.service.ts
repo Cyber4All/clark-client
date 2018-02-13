@@ -106,15 +106,16 @@ export class CartV2Service {
                 importedSaveAs(res.blob(), `${Date.now()}.zip`);
             },
             (err) => console.log,
-            () => { console.log('Downloaded') });
+            () => { console.log('Downloaded'); });
   }
 
   downloadLearningObject(author: string, learningObjectName: string) {
-    this.http.post(USER_ROUTES.DOWNLOAD_OBJECT(this.user._username, author, learningObjectName), {}, { headers: this.headers, responseType: ResponseContentType.Blob })
+    this.http.post(USER_ROUTES.DOWNLOAD_OBJECT(this.user._username, author, learningObjectName), {},
+    { headers: this.headers, responseType: ResponseContentType.Blob })
       .subscribe((res) => {
         importedSaveAs(res.blob(), `${Date.now()}.zip`);
     },
     (err) => console.log,
-    () => { console.log('Downloaded') });
+    () => { console.log('Downloaded'); });
   }
 }

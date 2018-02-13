@@ -7,7 +7,7 @@ import { CART_STORAGE_LOCATION } from '../redux/reducers/cart.reducer';
 import { environment } from '../../../environments/environment';
 import * as CartActions from '../redux/models/actions/cart.actions';
 import { Http, Headers, ResponseContentType } from '@angular/http';
-import { saveAs as importedSaveAs } from "file-saver";
+import { saveAs as importedSaveAs } from 'file-saver';
 
 
 interface AppState {
@@ -21,10 +21,10 @@ interface AppState {
 export class CartService {
 
     cart$: Observable<Cart>;
-    private learningObjectsURL = '/learning-objects'
+    private learningObjectsURL = '/learning-objects';
 
     constructor(private store: Store<AppState>, private http: Http) {
-        //Set cart to Cart Redux Store
+        // Set cart to Cart Redux Store
         this.cart$ = this.store.select(CART_STORAGE_LOCATION);
         // ubscribe to Redux Store state
         this.store.subscribe((state) => {
@@ -73,7 +73,7 @@ export class CartService {
     }
 
     checkout(ids: string[]) {
-        let route = environment.apiURL
+        const route = environment.apiURL
             + this.learningObjectsURL
             + '/checkout'
             + `/${ids}`;
@@ -82,7 +82,7 @@ export class CartService {
                 importedSaveAs(res.blob(), `${Date.now()}.zip`);
             },
             (err) => console.log,
-            () => { console.log('Downloaded') });
+            () => { console.log('Downloaded'); });
     }
 
 }
