@@ -13,10 +13,10 @@ export class CartV2Service {
   public cartItems: Array<LearningObject> = [];
 
   constructor(private http: Http) {
-    this.udpateUser();
+    this.updateUser();
   }
 
-  udpateUser() {
+  updateUser() {
     // get new user from localStorage
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.user = this.user ? this.user : false;
@@ -41,10 +41,11 @@ export class CartV2Service {
       }) : false;
   }
 
-  addToCart(
+  async addToCart(
     author: string,
-    learningObjectName: string
-  ): Promise<Array<LearningObject>> | boolean {
+    learningObjectName: string,
+    download?: boolean
+  ): Promise<Array<LearningObject> | boolean> {
     // tslint:disable-next-line:max-line-length
     return (this.user) ? this.http
       .post(
@@ -57,7 +58,7 @@ export class CartV2Service {
         {headers: this.headers}
       )
       .toPromise()
-      .then(val => {
+      .then(async val => {
         this.cartItems = <Array<LearningObject>> val.json();
         return this.cartItems;
       }) : false;
@@ -103,7 +104,6 @@ export class CartV2Service {
       this.http.get(USER_ROUTES.GET_CART(this.user._username) + '?download=true', { headers: this.headers, responseType: ResponseContentType.Blob })
             .subscribe((res) => {
                 importedSaveAs(res.blob(), `${Date.now()}.zip`);
-                this.cartItems = [];
             },
             (err) => console.log,
             () => { console.log('Downloaded') });
@@ -113,7 +113,6 @@ export class CartV2Service {
     this.http.post(USER_ROUTES.DOWNLOAD_OBJECT(this.user._username, author, learningObjectName), {}, { headers: this.headers, responseType: ResponseContentType.Blob })
       .subscribe((res) => {
         importedSaveAs(res.blob(), `${Date.now()}.zip`);
-        this.cartItems = [];
     },
     (err) => console.log,
     () => { console.log('Downloaded') });

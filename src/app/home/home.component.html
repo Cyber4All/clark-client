@@ -2,10 +2,10 @@
   <div class="img-viewport">
     <div class="search-viewport">
       <div class="search-contents">
-        <h1>I'm looking for...</h1>
+        <!-- <h1>I'm looking for...</h1> -->
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input type="text" class="search-input" placeholder="Search" [(ngModel)]="query.text" name="query">
+            <input type="text" class="search-input" placeholder="Search for cybersecurity curriculum" [(ngModel)]="query.text" name="query">
             <button type="button" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
           </div>
         </form>
@@ -17,9 +17,8 @@
 
 <section class="promo">
   <div class="contribute-invitation">
-    <h1>Become a Contributor</h1>
-    <p>Share your knowledge with the world. Join the movement and help bring cyber education to the world.</p>
-    <button class="button bad" (click)="goToContribute()">Start Contributing</button>
+    <p>Contribute your freely accessible cybersecurity material for others to use.</p>
+    <button class="button bad" (click)="goToContribute()">Contribute to CLARK</button>
   </div>
 </section>
 

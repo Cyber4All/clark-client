@@ -18,17 +18,17 @@
       </div>
     </div>
   </div>
-  <div class="btn-group to-right" *ngIf="cartService.cartItems.length">
+  <!-- <div class="btn-group to-right" *ngIf="cartService.cartItems.length">
     <div class="button good" (click)="download()">Download
       <i class="far fa-download"></i>
     </div>
     <div class="button neutral on-white" (click)="clearCart()">Clear Cart
       <i class="far fa-ban"></i>
     </div>
-  </div>
+  </div> -->
 
   <div *ngIf="!cartService.cartItems.length" class="no-objects">
-    You don't have anything in your cart!
+    You don't have anything in your library!
     <br/>Get started
     <span routerLink="/">browsing some learning objects!</span>
   </div>

@@ -15,29 +15,29 @@ import { RegisterComponent } from './auth/register/register.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 
 const detailRoute = {
-    path: 'details/:username/:learningObjectName', component: DetailsComponent, data: { breadcrumb: 'Details' }}
+    path: 'details/:username/:learningObjectName', component: DetailsComponent, data: { breadcrumb: 'Details' }};
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full'},
     detailRoute,
-    { path: 'home', component: HomeComponent,},
-    { path: 'academics', component: RouterComponent, data: { breadcrumb: 'Academics'  }, 
+    { path: 'home', component: HomeComponent, },
+    { path: 'academics', component: RouterComponent, data: { breadcrumb: 'Academics'  },
         children: [{path: '', component: AcademicsComponent }, detailRoute]
     },
     { path: 'mapping', component: RouterComponent, data: { breadcrumb: 'Mapping' },
-        children: [{path: '', component: MappingComponent }, detailRoute] 
+        children: [{path: '', component: MappingComponent }, detailRoute]
     },
     { path: 'modality', component: RouterComponent, data: { breadcrumb: 'Modality' },
-        children: [{path: '', component: ModalityComponent }, detailRoute] 
+        children: [{path: '', component: ModalityComponent }, detailRoute]
     },
     { path: 'browse/:query', component: RouterComponent, data: { breadcrumb: 'Browse' },
-        children: [{path: '', component: BrowseComponent }, detailRoute] 
+        children: [{path: '', component: BrowseComponent }, detailRoute]
     },
     {
         path: 'browse', component: RouterComponent, data: { breadcrumb: 'Browse' },
-        children: [{ path: '', component: BrowseComponent}, detailRoute] 
+        children: [{ path: '', component: BrowseComponent}, detailRoute]
     },
-    { path: 'cart', component: RouterComponent, data: { breadcrumb: 'Cart' },
-        children: [{path: '', component: CartComponent }, detailRoute] 
+    { path: 'library', component: RouterComponent, data: { breadcrumb: 'Library' },
+        children: [{path: '', component: CartComponent }, detailRoute]
     },
     { path: 'login', component: LoginComponent, data: { hideNavbar: true, hideTopbar: true } },
     { path: 'register', component: RegisterComponent, data: { hideNavbar: true, hideTopbar: true } },

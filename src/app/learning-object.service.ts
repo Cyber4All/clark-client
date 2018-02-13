@@ -48,6 +48,7 @@ export class LearningObjectService {
     let route = '';
     if (query) {
       let queryString = querystring.stringify(query);
+      console.log(queryString);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
       console.log(route);
     } else {

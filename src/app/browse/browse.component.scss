@@ -25,6 +25,51 @@
         color: $blue-accent;
         font-weight: bold !important;
         font-size: 24px !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        max-width: 850px;
+
+        .filtering-controls {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .button {
+                opacity: 1;
+
+                .removeSort {
+                    display: inline-flex;
+                    flex-direction: row;
+                    height: 18px;
+                    width: 18px;
+                    background: white;
+                    border-radius: 50%;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 12px;
+                    margin-right: 10px !important;
+                    color: $error-red;
+
+                    .svg-inline--fa {
+                        margin-left: 0px !important;
+                    }
+
+                    &:hover {
+                        background: $error-red;
+                        color: white;
+                    }
+                }
+
+                &:not(:first-child) {
+                    margin-left: 10px;
+                }
+            }
+
+            .active {
+                border-color: $blue-accent !important;
+            }
+        }
     }
 
     .subtitle {
@@ -37,10 +82,72 @@
             color: black;
         }
     }
+
+    .filters {
+        $reallyDarkBlue: darken($blue-accent, 50);
+        padding: 20px;
+        box-sizing: border-box;
+        background: rgba(red($reallyDarkBlue), green($reallyDarkBlue), blue($reallyDarkBlue), 0.05);
+        max-width: 850px;
+        display: flex; 
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 25px;
+
+        .list {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
+
+        .filter {
+
+            &:not(:first-child) {
+                margin-left: 35px;
+            }
+
+            .filter-title {
+                font-size: 16px;
+                font-weight: bold;
+                color: $blue-accent;
+            }
+            
+            ul {
+                padding-left: 10px;
+
+                li {
+                    list-style-type: none;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    font-size: 16px;
+                    color: $dark-text;
+
+                    checkbox {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+
+        & > .button {
+            align-self: flex-end;
+
+            .svg-inline--fa {
+                align-self: center;
+            }
+        }
+    }
     
     .content {
         height: auto !important;
+        overflow-y: hidden !important;
     }
+}
+
+::ng-deep .popup.dropdown li.active {
+    background: $blue-accent;
+    color: white !important;
 }
 
 .paginationCtrl {

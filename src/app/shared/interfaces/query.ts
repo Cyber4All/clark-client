@@ -1,6 +1,10 @@
 export interface Query {
     currPage?: number;
     limit?: number;
+    length?: string[] | string;
+    level?: string[];
+    sort?: string;
+    sortAscending?: boolean;
 }
 
 export interface TextQuery extends Query {
@@ -8,7 +12,11 @@ export interface TextQuery extends Query {
 }
 
 export interface MappingQuery extends Query {
-    length: string;
     source: string;
     name: string;
+}
+
+export interface FilterQuery extends Query {
+    length: string[];
+    level: string[];
 }

@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
       if (val) {
         this.loggedin = true;
         this.name = this.authService.getName();
-        this.cartService.udpateUser();
+        this.cartService.updateUser();
         this.cartService.getCart();
       }
       else this.loggedin = false;

@@ -1,6 +1,10 @@
 <div class="container">
   <div class="title">
     {{pageTitle}}
+    <div class="filtering-controls">
+      <div class="button neutral" [ngClass]="{'active': filtering}" (click)="toggleFilters()">Filter <i class="far fa-filter"></i></div>
+      <!-- <div class="button neutral" (click)="showSortMenu($event)"><div *ngIf="query.sort" class="removeSort" (click)="clearSort($event);"><i class="fas fa-times"></i></div>{{ (query.sort) ? sortString : 'Sort'}} <i class="far fa-sort"></i></div> -->
+    </div>
   </div>
   <div class="subtitle">
     <ng-container *ngIf="!searched">
@@ -9,6 +13,29 @@
     <ng-container *ngIf="searched">
         <span>{{ this.learningObjectService.totalLearningObjects }}</span> results for "{{ query.text }}"
     </ng-container>
+  </div>
+  <div *ngIf="filtering" class="filters">
+    <div class="list">
+      <div class="filter">
+        <div class="filter-title">Length</div>
+        <ul>
+          <li><checkbox [checked]="checkFilters('length', 'nanomodule')" (checkboxChecked)="addFilter('length', 'nanomodule')" (checkboxUnchecked)="removeFilter('length', 'nanomodule')"></checkbox>Nanomodule</li>
+          <li><checkbox [checked]="checkFilters('length', 'micromodule')"  (checkboxChecked)="addFilter('length', 'micromodule')" (checkboxUnchecked)="removeFilter('length', 'micromodule')"></checkbox>Micromodule</li>
+          <li><checkbox [checked]="checkFilters('length', 'module')" (checkboxChecked)="addFilter('length', 'module')" (checkboxUnchecked)="removeFilter('length', 'module')"></checkbox>Module</li>
+          <li><checkbox [checked]="checkFilters('length', 'unit')" (checkboxChecked)="addFilter('length', 'unit')" (checkboxUnchecked)="removeFilter('length', 'unit')"></checkbox>Unit</li>
+          <li><checkbox [checked]="checkFilters('length', 'course')" (checkboxChecked)="addFilter('length', 'course')" (checkboxUnchecked)="removeFilter('length', 'course')"></checkbox>Course</li>
+        </ul>
+      </div>
+      <div class="filter">
+        <div class="filter-title">Academic Level</div>
+        <ul>
+          <li><checkbox [checked]="checkFilters('level', 'K-12')" (checkboxChecked)="addFilter('level', 'K-12')" (checkboxUnchecked)="removeFilter('level', 'K-12')"></checkbox>K-12</li>
+          <li><checkbox [checked]="checkFilters('level', 'undergraduate')" (checkboxChecked)="addFilter('level', 'undergraduate')" (checkboxUnchecked)="removeFilter('level', 'undergraduate')"></checkbox>Undergraduate</li>
+          <li><checkbox [checked]="checkFilters('level', 'graduate')" (checkboxChecked)="addFilter('level', 'graduate')" (checkboxUnchecked)="removeFilter('level', 'graduate')"></checkbox>Graduate</li>
+        </ul>
+      </div>
+    </div>
+    <div class="button good" (click)="sendFilters()">Refresh <i class="far fa-sync"></i></div>
   </div>
   <div class="content">
     <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
