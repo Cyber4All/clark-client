@@ -18,10 +18,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   author: string;
   learningObjectName: string;
   learningObject: LearningObject;
-  
+
   particleParams: any;
-  height: number = 100;
-  width: number = 100;
+  height = 100;
+  width = 100;
   myStyle: object = {};
 
   constructor(

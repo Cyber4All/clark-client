@@ -19,16 +19,17 @@ export class NavbarComponent implements OnInit {
   // FIXME: Convert 'class' to 'type' for consistancy
 
   name = '';
-  hideNavbar: boolean = false;
+  hideNavbar = false;
   loggedin = (JSON.parse(localStorage.getItem('currentUser'))) ? true : false;
 
-  constructor(private modalCtrl: ModalService, private router: Router, private route: ActivatedRoute, private authService: AuthenticationService, private cartService: CartV2Service) {
+  constructor(private modalCtrl: ModalService, private router: Router,
+    private route: ActivatedRoute, private authService: AuthenticationService, private cartService: CartV2Service) {
   }
 
   ngOnInit() {
     this.name = this.authService.getName() ? this.authService.getName() : '';
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
-      let root: ActivatedRoute = this.route.root;
+      const root: ActivatedRoute = this.route.root;
       this.hideNavbar = root.children[0].snapshot.data.hideNavbar;
     });
     this.cartService.getCart();
@@ -39,8 +40,9 @@ export class NavbarComponent implements OnInit {
         this.name = this.authService.getName();
         this.cartService.updateUser();
         this.cartService.getCart();
+      } else {
+        this.loggedin = false;
       }
-      else this.loggedin = false;
     });
   }
 

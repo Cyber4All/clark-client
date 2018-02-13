@@ -40,28 +40,26 @@ export class LearningObjectService {
 
  /**
    * Fetches Array of Learning Objects
-   * 
-   * @returns {Promise<LearningObject[]>} 
+   *
+   * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
   getLearningObjects(query?: Query): Promise<LearningObject[]> {
     let route = '';
     if (query) {
-      let queryString = querystring.stringify(query);
-      console.log(queryString);
+      const queryString = querystring.stringify(query);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
-      console.log(route);
     } else {
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
     return this.http.get(route)
       .toPromise()
       .then((response) => {
-        let res = response.json();
-        let objects = res.objects;
+        const res = response.json();
+        const objects = res.objects;
         this.totalLearningObjects = res.total;
         return objects.map((_learningObject: string) => {
-          let learningObject = LearningObject.unserialize(_learningObject);
+          const learningObject = LearningObject.unserialize(_learningObject);
           return learningObject;
         });
       });
@@ -70,13 +68,13 @@ export class LearningObjectService {
 
   /**
    * Fetches LearningObject by id
-   * 
-   * @param {string} id 
-   * @returns {Promise<LearningObject>} 
+   *
+   * @param {string} id
+   * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
    */
   getLearningObject(author: string, learningObjectName: string): Promise<LearningObject> {
-    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName);
+    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName);
     return this.http.get(route)
       .toPromise()
       .then((learningObject) => {
