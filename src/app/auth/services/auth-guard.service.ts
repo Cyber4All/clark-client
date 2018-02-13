@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { USER_ROUTES } from '../../../environments/route';
 import { AuthenticationService } from './authentication.service';
 
 /**
@@ -12,32 +9,25 @@ import { AuthenticationService } from './authentication.service';
  */
 @Injectable()
 export class AuthGuard implements CanActivate {
-    private headers: HttpHeaders = new HttpHeaders();
 
-    constructor(private router: Router, private http: HttpClient, private auth: AuthenticationService) {
+  constructor(private router: Router, private auth: AuthenticationService) { }
 
-    }
-
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
-        const u = localStorage.getItem('currentUser');
-        if (!u) {
-            this.router.navigate(['/login']);
-            return false;
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
+    const user = this.auth.getUser();
+    if (user && user.token) {
+      const isLoggedIn = this.auth.validateToken(user.token).then(status => {
+        if (!status) {
+          this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
         }
-
-        let parsedUser = JSON.parse(u);
-        this.headers = new HttpHeaders(
-            { 'Authorization': 'Bearer ' + parsedUser['token'] }
-        );
-        this.headers.append('Content-Type', 'text/plain');
-        const routei = USER_ROUTES.VALIDATE_TOKEN(this.auth.getName());
-        return this.http.post(routei, { token: parsedUser['token'] }, { headers: this.headers, responseType: 'text' }).toPromise().then(val => {
-            return true;
-        }).catch(error => {
-            console.error(error);
-            // not logged in so redirect to login page with the return url
-            this.router.navigate(['/login']);
-            return false;
-        });
+        return status;
+      }).catch(e => {
+        console.log('canActivate: ',e);
+        return false;
+      });
+      return isLoggedIn;
+    } else {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+      return false;
     }
+  }
 }

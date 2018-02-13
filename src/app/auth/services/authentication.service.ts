@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import { USER_ROUTES } from '../../../environments/route';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 // import { EmailValidator } from './directives/validators';
 
 /**
@@ -18,6 +19,7 @@ export class AuthenticationService {
     private logger = new Subject<boolean>();
     private loggedIn: boolean;
     private headers: Headers = new Headers();
+    private httpHeaders: HttpHeaders = new HttpHeaders();
 
     /**
      * Creates an instance of AuthenticationService.
@@ -25,10 +27,10 @@ export class AuthenticationService {
      * @param {Http} http 
      * @memberof AuthenticationService
      */
-    constructor(private http: Http) {
+    constructor(private httpClient: HttpClient, private http: Http) {
         this.headers.append('Content-Type', 'application/json');
         let user = this.getUser();
-        if (user) {
+        if (user && user.token) {
             this.validateToken(user.token);
         }
         else {
@@ -42,14 +44,23 @@ export class AuthenticationService {
      * @param token The user's API token
      */
     validateToken(token: string) {
-        if (!token) {
-            console.error('Invalid token!');
-            this.logout();
-        } else {
+        this.httpHeaders = new HttpHeaders(
+          { 'Authorization': 'Bearer ' + token }
+        );
+        const routei = USER_ROUTES.VALIDATE_TOKEN(this.getUsername());
+        return this.httpClient.post(routei, { token: token }, { headers: this.httpHeaders, responseType: 'text' })
+          .toPromise().then(val => {
             this.loggedIn = true;
             this.logger.next(this.loggedIn);
-        }
-    }
+            return true;
+          }).catch(error => {
+            console.error('AuthenticationService#validateToken: ', error);
+            this.loggedIn = false;
+            this.logger.next(this.loggedIn);
+            this.logout();
+            return false;
+          });
+      }
 
     /**
      * Posts the supplied username and password to the API for authentication.
@@ -105,6 +116,7 @@ export class AuthenticationService {
      */
     logout() {
         // remove user from local storage to log user out
+        console.log('logging out');
         localStorage.removeItem('currentUser');
         this.loggedIn = false;
         this.logger.next(this.loggedIn);
@@ -158,6 +170,16 @@ export class AuthenticationService {
             if (user.token) {
                 return user['_name'];
             }
+        }
+    }
+
+    /**
+     * @returns the user's username
+     */
+    getUsername(): string {
+        let user = this.getUser();
+        if (user) {
+            return user['_username'];
         }
     }
 
