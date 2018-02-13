@@ -44,23 +44,24 @@ export class AuthenticationService {
      * @param token The user's API token
      */
     validateToken(token: string) {
-        this.httpHeaders = new HttpHeaders(
-          { 'Authorization': 'Bearer ' + token }
-        );
+
+        this.headers.has('Authorization') ?
+            this.headers.set('Authorization', 'Bearer ' + token) : this.headers.append('Authorization', 'Bearer ' + token);
+
         const routei = USER_ROUTES.VALIDATE_TOKEN(this.getUsername());
-        return this.httpClient.post(routei, { token: token }, { headers: this.httpHeaders, responseType: 'text' })
-          .toPromise().then(val => {
-            this.loggedIn = true;
-            this.logger.next(this.loggedIn);
-            return true;
-          }).catch(error => {
-            console.error('AuthenticationService#validateToken: ', error);
-            this.loggedIn = false;
-            this.logger.next(this.loggedIn);
-            this.logout();
-            return false;
-          });
-      }
+        return this.http.post(routei, { token: token }, { headers: this.headers })
+            .toPromise().then(val => {
+                this.loggedIn = true;
+                this.logger.next(this.loggedIn);
+                return true;
+            }).catch(error => {
+                console.error(error);
+                this.loggedIn = false;
+                this.logger.next(this.loggedIn);
+                this.logout();
+                return false;
+            });
+    }
 
     /**
      * Posts the supplied username and password to the API for authentication.
