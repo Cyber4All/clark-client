@@ -42,8 +42,8 @@ const routes: Routes = [
     },
     { path: 'login', component: LoginComponent, data: { hideNavbar: true, hideTopbar: true } },
     { path: 'register', component: RegisterComponent, data: { hideNavbar: true, hideTopbar: true } },
-    { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
-    { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
+    // { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
+    // { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
     // Catch All
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
