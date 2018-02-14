@@ -67,8 +67,8 @@ export class NavbarComponent implements OnInit {
       'UserContextMenu',
       'dropdown',
       [
-        new ModalListElement('<i class="fas fa-user-circle fa-fw"></i>View profile', 'userprofile'),
-        new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
+        // new ModalListElement('<i class="fas fa-user-circle fa-fw"></i>View profile', 'userprofile'),
+        // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
         new ModalListElement('<i class="far fa-sign-out"></i>Sign out', 'logout'),
       ],
       null,
