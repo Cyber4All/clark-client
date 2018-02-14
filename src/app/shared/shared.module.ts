@@ -20,6 +20,8 @@ import { LearningObjectListingComponent } from './learning-object/learning-objec
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 
+import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -35,6 +37,7 @@ import { FooterComponent } from './footer/footer.component';
     CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
+    LearningObjectCardDirective
   ],
   exports: [
     NavbarComponent,
@@ -42,6 +45,7 @@ import { FooterComponent } from './footer/footer.component';
     CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
+    LearningObjectCardDirective
   ],
   providers: [
     SortGroupsService,
