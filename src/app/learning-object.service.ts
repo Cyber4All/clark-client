@@ -52,6 +52,8 @@ export class LearningObjectService {
     } else {
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
+
+    console.log(route);
     return this.http.get(route)
       .toPromise()
       .then((response) => {

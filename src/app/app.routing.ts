@@ -37,7 +37,7 @@ const routes: Routes = [
         path: 'browse', component: RouterComponent, data: { breadcrumb: 'Browse' },
         children: [{ path: '', component: BrowseComponent}, detailRoute]
     },
-    { path: 'library', component: RouterComponent, data: { breadcrumb: 'Library' },
+    { path: 'library', component: RouterComponent, data: { breadcrumb: 'Library' }, canActivate: [AuthGuard],
         children: [{path: '', component: CartComponent }, detailRoute]
     },
     { path: 'login', component: LoginComponent, data: { hideNavbar: true, hideTopbar: true } },

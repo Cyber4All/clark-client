@@ -32,7 +32,6 @@ export class NavbarComponent implements OnInit {
       const root: ActivatedRoute = this.route.root;
       this.hideNavbar = root.children[0].snapshot.data.hideNavbar;
     });
-    this.cartService.getCart();
 
     this.authService.isLoggedIn().subscribe(val => {
       if (val) {
