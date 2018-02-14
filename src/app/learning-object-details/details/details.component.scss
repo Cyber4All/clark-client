@@ -160,6 +160,33 @@
           text-align: center;
           font-size: 18px;
           margin-bottom: 10px;
+
+          &.disabled {
+            cursor: default !important;
+            opacity: 0.4 !important;
+            border-color: $dark-text !important;
+            pointer-events: none;
+
+            &.good {
+              background: $dark-text !important;
+            }
+
+            &.neutral {
+              color: $dark-text !important;
+            }
+          }
+        }
+
+        .login-msg {
+          margin-top: 20px;
+          font-size: 16px;
+          color: $dark-text;
+
+          span {
+            color: $blue-accent;
+            text-decoration: underline;
+            cursor: pointer;
+          }
         }
       }
     }

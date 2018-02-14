@@ -3,9 +3,10 @@ import { ModalService } from '@cyber4all/clark-modal';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
+import { AuthenticationService } from '../../auth/services/authentication.service';
 
 @Component({
   selector: 'learning-object-details',
@@ -23,12 +24,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
   height = 100;
   width = 100;
   myStyle: object = {};
+  returnUrl: string;
 
   constructor(
     private learningObjectService: LearningObjectService,
     private cartService: CartV2Service,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private auth: AuthenticationService
   ) { }
 
   ngOnInit() {
@@ -38,6 +41,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
 
     this.fetchLearningObject();
+
+    this.returnUrl = '/browse/details/' + this.route.snapshot.params['username'] + '/' + this.route.snapshot.params['learningObjectName'];
 
     this.myStyle = {
       'position': 'absolute',
