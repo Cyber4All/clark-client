@@ -6,6 +6,8 @@
     <learning-object-component 
       *ngFor="let l of learningObjects"
       routerLink="/details/{{ l.author._username }}/{{l.name}}" 
-      [learningObject]="l">
+      [learningObject]="l"
+      learningObjectCard
+      >
     </learning-object-component>
 </div>
