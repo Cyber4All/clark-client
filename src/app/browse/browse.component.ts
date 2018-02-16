@@ -149,6 +149,8 @@ export class BrowseComponent implements OnInit {
       [
         new ModalListElement('Date (desc)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
         new ModalListElement('Date (asc)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
+        new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
+        new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
       ],
       null,
       new Position(

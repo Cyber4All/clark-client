@@ -3,7 +3,7 @@
     {{pageTitle}}
     <div class="filtering-controls">
       <div class="button neutral" [ngClass]="{'active': filtering}" (click)="toggleFilters()">Filter <i class="far fa-filter"></i></div>
-      <!-- <div class="button neutral" (click)="showSortMenu($event)"><div *ngIf="query.sort" class="removeSort" (click)="clearSort($event);"><i class="fas fa-times"></i></div>{{ (query.sort) ? sortString : 'Sort'}} <i class="far fa-sort"></i></div> -->
+      <div class="button neutral" (click)="showSortMenu($event)"><div *ngIf="query.sort" class="removeSort" (click)="clearSort($event);"><i class="fas fa-times"></i></div>{{ (query.sort) ? sortString : 'Sort'}} <i class="far fa-sort"></i></div>
     </div>
   </div>
   <div class="subtitle">
