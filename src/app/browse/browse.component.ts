@@ -1,11 +1,13 @@
+import { SortType, OrderBy } from './../shared/interfaces/query';
 import { ModalService } from '@cyber4all/clark-modal';
 import { Router } from '@angular/router';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
 import { TextQuery, FilterQuery, MappingQuery } from '../shared/interfaces/query';
 import { ModalListElement, Position } from '@cyber4all/clark-modal';
+import { lengths } from '@cyber4all/clark-taxonomy';
 
 @Component({
   selector: 'app-browse',
@@ -30,6 +32,9 @@ export class BrowseComponent implements OnInit {
 
   filtering = false;
   filters: {} = {};
+  
+  aLevel = Object.values(AcademicLevel);
+  loLength = Array.from(lengths);
 
 
   constructor(private learningObjectService: LearningObjectService, private route: ActivatedRoute,
@@ -75,12 +80,12 @@ export class BrowseComponent implements OnInit {
   }
 
   get sortString() {
-    return (this.query.sort) ? this.query.sort.charAt(0) + this.query.sort.substring(1)
-    + ' (' + ((this.query.sortAscending) ? 'Asc' : 'Desc') + ')' : '';
+    return (this.query.orderBy) ?  this.query.orderBy.replace(/_/g, '')
+    + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
   }
 
   prevPage() {
-    const page = +this.query.currPage - 1
+    const page = +this.query.currPage - 1;
     if (page > 0) {
       this.query.currPage = page;
       this.fetchLearningObjects(this.query);
@@ -90,7 +95,7 @@ export class BrowseComponent implements OnInit {
   }
   nextPage() {
     const page = +this.query.currPage + 1
-    if (page <= this.pageCount){
+    if (page <= this.pageCount) {
       this.query.currPage = page;
       this.fetchLearningObjects(this.query);
     }
@@ -142,7 +147,8 @@ export class BrowseComponent implements OnInit {
   }
 
   showSortMenu(event) {
-    const currSort = (this.query.sort) ? this.query.sort + '-' + ((this.query.sortAscending) ? 'asc' : 'desc') : undefined;
+    const currSort = (this.query.orderBy) ? 
+      this.query.orderBy.replace(/_/g, '') + '-' + ((this.query.sortType > 0) ? 'asc' : 'desc') : undefined;
     this.modalService.makeContextMenu(
       'SortContextMenue',
       'dropdown',
@@ -160,8 +166,8 @@ export class BrowseComponent implements OnInit {
         if (val !== 'null' && val.length) {
           const dir = val.split('-')[1];
           const sort = val.split('-')[0];
-          this.query.sort = sort;
-          this.query.sortAscending = (dir === 'asc') ? true : false;
+          this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+          this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
 
           this.fetchLearningObjects(this.query);
         }
@@ -170,8 +176,9 @@ export class BrowseComponent implements OnInit {
 
   clearSort(event) {
     event.stopPropagation();
-    this.query.sort = undefined;
-    this.query.sortAscending = undefined;
+    this.query.orderBy = undefined;
+    this.query.sortType = undefined;
+    this.fetchLearningObjects(this.query);
   }
 
   async fetchLearningObjects(query: TextQuery) {
