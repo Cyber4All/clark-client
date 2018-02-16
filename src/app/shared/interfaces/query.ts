@@ -1,10 +1,20 @@
+export enum OrderBy {
+    Name = 'name_',
+    Date = 'date'
+}
+
+export enum SortType {
+    Ascending = 1,
+    Descending = -1,
+}
+
 export interface Query {
     currPage?: number;
     limit?: number;
     length?: string[] | string;
     level?: string[];
-    sort?: string;
-    sortAscending?: boolean;
+    sortBy?: OrderBy;
+    sortType?: SortType;
 }
 
 export interface TextQuery extends Query {
