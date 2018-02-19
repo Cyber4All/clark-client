@@ -55,6 +55,7 @@ import { RouterComponent } from './shared/breadcrumb/router.component';
 
 // Other
 import { RavenErrorHandler } from './error-handler';
+import { VirtualScrollModule } from 'angular2-virtual-scroll';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { RavenErrorHandler } from './error-handler';
     CheckBoxModule,
     AuthModule.forRoot(),
     ClickOutsideModule,
-    ParticlesModule
+    ParticlesModule,
+    VirtualScrollModule
   ],
   providers: [
     LearningObjectService,

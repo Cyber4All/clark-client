@@ -8,5 +8,5 @@ export const environment = {
   apiURL: 'http://localhost:3000/api',
   apiVersion: 'v1',
   STATE_STORAGE_LOCATION: 'state',
-  suggestionUrl: 'http://learning-outcome-suggestion-production.us-east-1.elasticbeanstalk.com/api'
+  suggestionUrl: 'http://localhost:3010/api'
 };
