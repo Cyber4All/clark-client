@@ -11,7 +11,7 @@ import { Query } from '../../shared/interfaces/query';
 export class FeaturedComponent implements OnInit {
   learningObjects: LearningObject[];
   query: Query= {
-    limit: 4
+    limit: 5
   };
   constructor(private learningObjectService: LearningObjectService) {
   }

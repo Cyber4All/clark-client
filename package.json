@@ -28,6 +28,7 @@
     "@ngrx/store": "^4.1.1",
     "@types/file-saver": "^1.3.0",
     "angular-particle": "^1.0.4",
+    "angular2-virtual-scroll": "^0.3.2",
     "clark-checkbox": "^1.0.7",
     "clark-notification": "^0.1.4",
     "core-js": "^2.5.3",

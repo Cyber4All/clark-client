@@ -22,6 +22,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 
 import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
+import { VirtualScrollModule } from 'angular2-virtual-scroll';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { LearningObjectCardDirective } from './directives/learning-object-card.d
     CheckBoxModule,
     NotificationModule,
     ModalModule,
-    ParticlesModule
+    ParticlesModule,
+    VirtualScrollModule
   ],
   declarations: [
     NavbarComponent,

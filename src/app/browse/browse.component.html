@@ -80,16 +80,18 @@
           <div class="no-query" *ngIf="mappingsFilters.author !== '' && mappingsFilters.filterText === ''">Now enter some text into the above text box that your standard outcome should include!</div>
           <div class="bad-query" *ngIf="mappingsQueryError && mappingsFilters.author !== '' && mappingsFilters.filterText !== ''">Whoops! We couldn't find any standard outcomes matching that query!</div>
         </div>
-        <div class="map" *ngFor="let m of queriedMappings">
-          <div class="mapping-top">
-            <div class="mapping-name">{{ m.author.toUpperCase() + ' - ' + m.name }}</div>
-            <div class="date">{{ m.date }}</div>
+        <virtual-scroll *ngIf="queriedMappings.length > 0" [items]="queriedMappings" (update)="viewportItems = $event">
+          <div class="map" *ngFor="let m of viewportItems">
+            <div class="mapping-top">
+              <div class="mapping-name">{{ m.author.toUpperCase() + ' - ' + m.name }}</div>
+              <div class="date">{{ m.date }}</div>
+            </div>
+            <div class="mapping-content">
+                <div class="mapping-text">{{ outcomeText(m.outcome, 80) }}</div>
+                <checkbox [checked]="checkOutcomes(m)" (checkboxChecked)="addOutcome(m)" (checkboxUnchecked)="removeOutcome(m)"></checkbox>
+            </div>
           </div>
-          <div class="mapping-content">
-              <div class="mapping-text">{{ outcomeText(m.outcome, 80) }}</div>
-              <checkbox [checked]="checkOutcomes(m)" (checkboxChecked)="addOutcome(m)" (checkboxUnchecked)="removeOutcome(m)"></checkbox>
-          </div>
-        </div>
+        </virtual-scroll>
       </div>
     </div>
   </div>
