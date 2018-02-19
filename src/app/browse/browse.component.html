@@ -1,17 +1,17 @@
 <div class="container">
   <div class="title">
-    {{pageTitle}}
+    {{ (query.text === '') ? 'All Learning Objects' : 'Search Results' }}
     <div class="filtering-controls">
       <div class="button neutral" [ngClass]="{'active': filtering}" (click)="toggleFilters()">Filter <i class="far fa-filter"></i></div>
       <div class="button neutral" (click)="showSortMenu($event)"><div *ngIf="query.orderBy" class="removeSort" (click)="clearSort($event);"><i class="fas fa-times"></i></div>{{ (query.orderBy) ? sortString : 'Sort'}} <i class="far fa-sort"></i></div>
     </div>
   </div>
   <div class="subtitle">
-    <ng-container *ngIf="!searched">
-        Browsing <span>{{ this.learningObjectService.totalLearningObjects }}</span> Learning Objects
+    <ng-container *ngIf="query.text === ''">
+        Browsing <span>{{ learningObjectService.totalLearningObjects }}</span> Learning Objects
     </ng-container>
-    <ng-container *ngIf="searched">
-        <span>{{ this.learningObjectService.totalLearningObjects }}</span> results for "{{ query.text }}"
+    <ng-container *ngIf="query.text !== ''">
+        <span>{{ learningObjectService.totalLearningObjects }}</span> results for "{{ query.text }}"
     </ng-container>
   </div>
   <div *ngIf="filtering" class="filters">
@@ -34,13 +34,15 @@
           </li>
         </ul>
       </div>
+      <div class="button neutral" (click)="toggleMappingsPopup()">Standard Outcomes <i class="far fa-map"></i></div>
     </div>
-    <div class="button good" (click)="sendFilters()">Refresh <i class="far fa-sync"></i></div>
+    <div class="buttons">
+        <div class="button good" (click)="sendFilters()">Refresh <i class="far fa-sync"></i></div>
+    </div>
   </div>
   <div class="content">
     <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
-    <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l">
-    </learning-object-component>
+    <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l"></learning-object-component>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
       <ul>
@@ -48,5 +50,47 @@
         <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (click)="goToPage(p)">{{ p }}</li>
         <li (click)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
       </ul>
+  </div>
+</div>
+<div *ngIf="mappingsPopup" class="mappings-popup">
+  <div class="popup-content">
+    <div class="top">
+        <div class="title">
+          Standard Outcomes
+          <div>Search Learning Objects by their mapped standard outcomes</div>
+        </div>
+        <div class="source">
+          <div class="mappings-spinner" *ngIf="mappingsQueryInProgress"><i class="far fa-spinner-third"></i></div>
+          <div class="button neutral" (click)="showSources($event)">{{(mappingsFilters.author !== '') ? mappingsFilters.author : '- Source -'}} <i class="far fa-sort"></i></div>
+          <div class="button good" (click)="showSources($event)" (click)="toggleMappingsPopup()">Done <i class="far fa-check"></i></div>
+        </div>
+    </div>
+    <div class="mappings">
+      <div class="text-filter">
+        <input type="text" id="mappingsFilter" [(ngModel)]="mappingsFilters.filterText" placeholder="Outcome text includes...">
+        <div class="selected-mappings">
+          <div class="pill" *ngFor="let m of query.standardOutcomes">
+            {{ m.source + ' - ' + m.name }}
+          </div>
+        </div>
+      </div>
+      <div class="list">
+        <div class="none" *ngIf="queriedMappings.length === 0">
+          <div class="empty-source" *ngIf="mappingsFilters.author === ''">Select a source from the dropdown list to get started!</div>
+          <div class="no-query" *ngIf="mappingsFilters.author !== '' && mappingsFilters.filterText === ''">Now enter some text into the above text box that your standard outcome should include!</div>
+          <div class="bad-query" *ngIf="mappingsQueryError && mappingsFilters.author !== '' && mappingsFilters.filterText !== ''">Whoops! We couldn't find any standard outcomes matching that query!</div>
+        </div>
+        <div class="map" *ngFor="let m of queriedMappings">
+          <div class="mapping-top">
+            <div class="mapping-name">{{ m.author.toUpperCase() + ' - ' + m.name }}</div>
+            <div class="date">{{ m.date }}</div>
+          </div>
+          <div class="mapping-content">
+              <div class="mapping-text">{{ outcomeText(m.outcome, 80) }}</div>
+              <checkbox [checked]="checkOutcomes(m)" (checkboxChecked)="addOutcome(m)" (checkboxUnchecked)="removeOutcome(m)"></checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

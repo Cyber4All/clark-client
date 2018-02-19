@@ -54,4 +54,12 @@ export class AppComponent implements OnInit {
       this.filterButtonClick();
     }
   }
+
+  performSearch(el) {
+    let v = el.value;
+
+    if (v.length) {
+      this.router.navigate(['/browse', { query: v }]);
+    }
+  }
 }

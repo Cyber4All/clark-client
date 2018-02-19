@@ -49,6 +49,45 @@ html, body {
     }
   }
 
+  .search-bar {
+    max-width: 350px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 20px;
+
+    form {
+      width: 100%;
+    }
+
+    input {
+      padding: 8px;
+      border-radius: 5px 0px 0px 5px;
+      font-size: 16px;
+      width: 100%;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-right-width: 0px;
+      outline: 0;
+
+      &:focus {
+        border-color: $blue-accent;
+      }
+    }
+
+    .icon {
+      color: white;
+      background: $blue-accent;
+      padding: 9px 12px;
+      font-size: 16px;
+      border-radius: 0px 5px 5px 0px;
+      cursor: pointer;
+    }
+  }
+
   .filter-options-button {
     @include vert-center;
     display: none;
