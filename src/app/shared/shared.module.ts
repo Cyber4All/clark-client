@@ -12,6 +12,7 @@ import { ParticlesModule } from 'angular-particle';
 
 // Services
 import { SortGroupsService } from './sort-groups.service';
+import { OutcomeService } from './services/outcome.service';
 
 // Components
 import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
@@ -48,7 +49,7 @@ import { LearningObjectCardDirective } from './directives/learning-object-card.d
     LearningObjectCardDirective
   ],
   providers: [
-    SortGroupsService,
+    SortGroupsService, OutcomeService
   ]
 })
 export class SharedModule { }

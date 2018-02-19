@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as Fuse from 'fuse.js';
 import { environment } from '../environments/environment';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Query, TextQuery, MappingQuery } from './shared/interfaces/query';
+import { Query } from './shared/interfaces/query';
 
 import * as querystring from 'querystring';
 
@@ -47,13 +47,16 @@ export class LearningObjectService {
   getLearningObjects(query?: Query): Promise<LearningObject[]> {
     let route = '';
     if (query) {
-      const queryString = querystring.stringify(query);
+      const queryClone = Object.assign({}, query);
+      if (queryClone.standardOutcomes && queryClone.standardOutcomes.length) {
+        queryClone.standardOutcomes = (<string[]> queryClone.standardOutcomes).map(o => o['id']);
+      }
+      const queryString = querystring.stringify(queryClone);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
     } else {
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
-    console.log(route);
     return this.http.get(route)
       .toPromise()
       .then((response) => {

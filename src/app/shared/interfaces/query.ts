@@ -15,18 +15,19 @@ export interface Query {
     level?: string[];
     orderBy?: OrderBy;
     sortType?: SortType;
+    text?: string;
+    standardOutcomes?: string[] | {id: string, name: string, date: string, outcome: string}[];
 }
 
 export interface TextQuery extends Query {
-    text: string;
+    
 }
 
 export interface MappingQuery extends Query {
-    source: string;
-    name: string;
+    standardOutcomes?: string[] | {id: string, name: string, date: string, outcome: string}[];
 }
 
 export interface FilterQuery extends Query {
-    length: string[];
-    level: string[];
+    length?: string[];
+    level?: string[];
 }

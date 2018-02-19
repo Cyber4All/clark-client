@@ -10,8 +10,8 @@ import { Query } from '../../shared/interfaces/query';
 })
 export class FeaturedComponent implements OnInit {
   learningObjects: LearningObject[];
-  query: Query = {
-    limit: 10
+  query: Query= {
+    limit: 4
   };
   constructor(private learningObjectService: LearningObjectService) {
   }
@@ -23,9 +23,8 @@ export class FeaturedComponent implements OnInit {
   async fetchLearningObjects() {
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(this.query);
-      console.log(this.learningObjects);
     } catch (e) {
-      console.log(`Error in ${this}. Error:${e}`);
+      // console.log(`Error in ${this}. Error:${e}`);
     }
   }
 

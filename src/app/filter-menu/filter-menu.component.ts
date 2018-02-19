@@ -12,12 +12,9 @@ import { MappingQuery } from '../shared/interfaces/query';
 export class FilterMenuComponent implements OnInit {
 
   lengths = Array.from(lengths);
-  sources = ['NCWF', 'NCWF Tasks', 'CAE', 'CS 2013'];
+  sources = ['NCWF', 'NCWF Tasks', 'CAE', 'CS2013'];
 
   query: MappingQuery = {
-    length: this.lengths[0],
-    source: this.sources[0],
-    name: ''
   };
 
   constructor(private learningObjectService: LearningObjectService) {

@@ -12,29 +12,15 @@
             <div class="highlight"></div>
           </div>
         </div>
-        <div class="filter-options-button button good" [ngClass]="{'active': filterButton}" (click)="filterButtonClick()" (clickOutside)="filterButtonClickAway()">Filtering <i class="far fa-chevron-down"></i></div>
-          <div class="filter-options" [ngClass]="{'active': filterButton}">
-            <div class="filter-button button" routerLink="/home">
-              <i class="fas fa-star"></i>&nbsp;
-              <p>Featured</p>
-            </div>
-            <div class="filter-button button" routerLink="/browse">
-              <i class="fas fa-list"></i>&nbsp;
-              <p>Browse All</p>
-            </div>
-            <!-- <div class="filter-button button" routerLink="/academics">
-              <i class="fas fa-book"></i>&nbsp;
-              <p>Browse by Academic Level</p>
-            </div>
-            <div class="filter-button button" routerLink="/modality">
-              <i class="fas fa-clock"></i>&nbsp;
-              <p>Browse by Length</p>
-            </div>
-            <div class="filter-button button" routerLink="/mapping">
-              <i class="fas fa-map-marker"></i>&nbsp;
-              <p>Browse by Mappings</p>
-            </div> -->
+        <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
+        <div class="search-bar">
+          <form (submit)="performSearch(searchVal)">
+            <input #searchVal type="text" placeholder="Search...">
+          </form>
+          <div class="icon" (click)="performSearch(searchVal)">
+            <i class="far fa-search"></i>
           </div>
+        </div>
       </div>
       <breadcrumb></breadcrumb>
       <div class="outlet sub-content">

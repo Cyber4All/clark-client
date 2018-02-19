@@ -1,5 +1,161 @@
 @import "~_globals.scss";
 
+.mappings-popup {
+    position: fixed;
+    z-index: 8;
+    background: rgba(0, 0, 0, 0.7);
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .popup-content {
+        background: white;
+        max-width: 800px;
+        min-height: 650px;
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        margin: auto;
+
+        .top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+
+            .title {
+                color: $blue-accent;
+                font-size: 22px;
+                text-transform: uppercase;
+                font-weight: bolder;
+
+                & > div {
+                    color: $dark-text;
+                    text-transform: none;
+                    font-weight: normal;
+                    font-size: 16px;
+                }
+            }
+
+            .source {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+
+                & > *:not(:last-child) {
+                    margin-right: 15px;
+                }
+
+                .mappings-spinner {
+
+                    .svg-inline--fa {
+                        animation: fa-spin 0.5s infinite linear;
+                    }
+                }
+            }
+
+            .button {
+                opacity: 1 !important;
+            }
+        }
+
+        .text-filter {
+            margin-bottom: 30px;
+
+            input {
+                width: 100%;
+                padding: 8px;
+                border-radius: 4px;
+                box-sizing: border-box;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                border: 1px solid $placeholder;
+                outline: 0;
+                font-size: 14px;
+
+                &:focus {
+                    border-color: $blue-accent;
+                }
+            }
+
+            .selected-mappings {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                margin: 5px 0;
+                margin-left: -5px;
+                flex-wrap: wrap;
+
+                .pill {
+                    background: $blue-accent;
+                    border-radius: 2px;
+                    font-size: 14px;
+                    color: white;
+                    padding: 3px;
+                    margin: 5px;
+                }
+            }
+        }
+
+        .list {
+            display: flex;
+            flex-direction: row;
+            flex: 0 0 auto;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: -10px;
+
+            .map {
+                position: relative;
+                width: 47%;
+                padding: 15px;
+                box-sizing: border-box;
+                border-radius: 2px;
+                box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+                background: white;
+                border-left: 8px solid $blue-accent;
+                margin-top: 15px;
+                overflow: hidden;
+
+                .mapping-top {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    color: $dark-text;
+
+                    .mapping-name {
+                        color: $blue-accent;
+                    }
+                }
+
+                .mapping-content {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    checkbox {
+                        flex: 0 0 auto;
+                        margin-left: 15px;
+                        @include vert-center;
+                    }
+                }
+            }
+
+            .none {
+                font-size: 20px;
+                opacity: 0.5;
+            }
+        }
+
+    }
+}
+
 .content {
     display: flex;
     flex-direction: column;
@@ -98,6 +254,11 @@
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
+
+            & > .button {
+                margin-left: 35px;
+                align-self: flex-start;
+            }
         }
 
         .filter {
@@ -131,7 +292,8 @@
             }
         }
 
-        & > .button {
+
+        & > .buttons {
             align-self: flex-end;
 
             .svg-inline--fa {

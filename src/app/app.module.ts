@@ -92,7 +92,7 @@ import { RavenErrorHandler } from './error-handler';
     ConfigService,
     CartService,
     CartV2Service,
-    { provide: ErrorHandler, useClass: RavenErrorHandler }
+    // { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],
   bootstrap: [AppComponent]
 })

@@ -142,14 +142,25 @@ export class LearningObjectListingComponent implements OnInit {
     }
 
     get goals() {
+        // convert goals to an array of strings containing the goal text
         let goalsArray = this.learningObject.goals.map(g => g.text);
-        if (goalsArray.length > 1) goalsArray[goalsArray.length - 1] = ' and ' + goalsArray[goalsArray.length - 1];
-        let goalsString = goalsArray.join(', ').toLowerCase();
-        goalsString = goalsString.replace(/\.$/gm, '');
+
+        // insert an 'and' before the last goal if there's more than one
+        if (goalsArray.length > 1) {
+            goalsArray[goalsArray.length - 1] = ' and ' + goalsArray[goalsArray.length - 1];
+        }
+
+        // replace all sentence-ending periods (only remove periods at the end of goals)
+        goalsArray = goalsArray.map(g => g.replace(/\.+\s*$/gm, ''));
+
+        // join all of the formatted goals with a comma and a space and convert to lower case;
+        const goalsString = goalsArray.join(', ').toLowerCase();
+        // return newly formatted string with the first character capitalized and a period at the end
         return goalsString.charAt(0).toUpperCase() + goalsString.substring(1) + '.';
     }
 
     get date() {
+        // tslint:disable-next-line:radix
         return new Date(parseInt(this.learningObject.date));
     }
 }

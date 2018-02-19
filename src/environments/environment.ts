@@ -7,5 +7,6 @@ export const environment = {
   production: false,
   apiURL: 'http://localhost:3000/api',
   apiVersion: 'v1',
-  STATE_STORAGE_LOCATION: 'state'
+  STATE_STORAGE_LOCATION: 'state',
+  suggestionUrl: 'http://learning-outcome-suggestion-production.us-east-1.elasticbeanstalk.com/api'
 };
