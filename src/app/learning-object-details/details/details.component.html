@@ -19,6 +19,14 @@
           </li>
         </ul>
       </div>
+      <div class="outcomes">
+        <div class="title">Learning Outcomes</div>
+        <ul>
+          <li *ngFor="let o of learningObject.outcomes">
+            {{ o.outcome }}
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="sidebar">
       <div class="inner">
