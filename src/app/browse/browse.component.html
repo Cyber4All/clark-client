@@ -69,8 +69,8 @@
       <div class="text-filter">
         <input type="text" id="mappingsFilter" [(ngModel)]="mappingsFilters.filterText" placeholder="Outcome text includes...">
         <div class="selected-mappings">
-          <div class="pill" *ngFor="let m of query.standardOutcomes">
-            {{ m.source + ' - ' + m.name }}
+          <div class="pill" *ngFor="let m of query.standardOutcomes" (click)="removeOutcome(m)">
+            {{ m.source + ' - ' + m.name }} <i class="far fa-times"></i>
           </div>
         </div>
       </div>

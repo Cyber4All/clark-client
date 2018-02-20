@@ -2,26 +2,24 @@
   <div class="img-viewport">
     <div class="search-viewport">
       <div class="search-contents">
-        <!-- <h1>I'm looking for...</h1> -->
+        <div class="feature-text">Cybersecurity knowledge at your fingertips.</div>
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input type="text" class="search-input" placeholder="Search for cybersecurity curriculum" [(ngModel)]="query.text" name="query">
+            <input autofocus type="text" class="search-input" placeholder="Search for cybersecurity curriculum" [(ngModel)]="query.text" name="query">
             <button type="button" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  <div class="home-banner"></div>
+  <!-- <div class="home-banner"></div> -->
 </section>
-
-<section class="promo">
-  <div class="contribute-invitation">
-    <p>Contribute your freely accessible cybersecurity material for others to use.</p>
-    <button class="button bad" (click)="goToContribute()">Contribute to CLARK</button>
-  </div>
-</section>
-
-<section class="featured-viewport">
+<div class="whois">
+  <div class="feature-text">What is C.L.A.R.K.?</div>
+  <span>CLARK is a prototype curriculum management platform that will host a diverse cybersecurity learning objects. It was created because there is a demonstrated need for a high-quality and high-availability repository for curricular and ancillary resources in the cybersecurity education community.</span>
+</div>
+<div class="featured-viewport">
   <app-featured></app-featured>
-</section>
+    <div class="feature-text">Contribute your freely accessible cybersecurity material for others to use.</div>
+    <div class="button bad" (click)="goToContribute()">Contribute to CLARK</div>
+</div>

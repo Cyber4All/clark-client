@@ -21,7 +21,9 @@ export class HomeComponent implements OnInit {
   constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService, private router: Router) { }
 
   ngOnInit() {
+    document.querySelector('.search-bar input')['value'] = '';
   }
+
   keyDownSearch(event) {
     if (event.keyCode == 13) {
       this.search();

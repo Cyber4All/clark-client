@@ -1,71 +1,105 @@
-@import '~_globals.scss';
+@import "~_globals.scss";
 
 $top-height: 500px;
 $banner-height: 90px;
 
+::ng-deep .feature-text {
+  font-weight: 200;
+  font-size: 36px;
+  margin-bottom: 25px;
+}
+
+.whois {
+  display: flex;
+  flex-direction: column;
+  background: $blue-gradient;
+  padding: 100px 20px;
+  justify-content: center;
+  align-items: center;
+  color: white !important;
+
+  span {
+    max-width: $max-width;
+    font-size: 18px;
+    text-align: center;
+  }
+}
+
 .top {
-    height: calc($top-height + $banner-height);
-    .img-viewport {
-        background: url(/assets/servers.jpg) no-repeat;
-        background-size: cover;
-        background-position: center;
-        height: $top-height;
-        width: 100%;
-        position: relative;
-        .search-viewport {
-            display:flex;
-            justify-content: center;
-            flex-direction:row;
-            height: 100%;
-            .search-contents {
-                margin:auto;
-                h1 {
-                    color: white;
-                    margin-left: 5px;
-                }
+  //height: calc($top-height + $banner-height);
 
-                form {
-                    display: inline-block;
-                    text-align: right;
-                    width: 30vw;
+  .img-viewport {
+    background: url(/assets/servers.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    position: relative;
+    padding: 200px 20px;
 
-                    .search-input {
-                        padding: 12px;
-                        width: 100%;
-                        border-radius: 3px;
-                        -webit-appearance: none;
-                        border: 2px solid white;
-                        outline: none;
-                        font-size: 16px;
-                        box-shadow: 0px 0px 0px 0px lighten($blue-accent, 20);
-                        transition: all 0.2s ease;
+    .search-viewport {
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      height: 100%;
 
-                        &:focus {
-                            box-shadow: 0px 0px 12px 3px lighten($blue-accent, 20);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    .home-banner {  
-        background: $blue-gradient;
-        height: $banner-height;
-        width: 100%;
+      .search-contents {
+        margin: auto;
+        max-width: 700px;
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        padding: 0 25px;
-        color: white;
+
+
+        .feature-text {
+          color: white;
+          text-shadow: 0px 1px rgba(0, 0, 0, 0.3);
+          text-align: center;
+        }
+
+        form {
+          display: inline-block;
+          text-align: right;
+          // max-width: 500px;
+            width: 100%;
+
+          .search-input {
+            padding: 12px;
+            width: 100%;
+            border-radius: 3px;
+            -webit-appearance: none;
+            border: 2px solid white;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0px 0px 0px 0px lighten($blue-accent, 20);
+            transition: all 0.2s ease;
+
+            &:focus {
+              box-shadow: 0px 0px 12px 3px lighten($blue-accent, 20);
+            }
+          }
+        }
+      }
     }
+  }
+  .home-banner {
+    background: $blue-gradient;
+    height: $banner-height;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    color: white;
+  }
 }
 .contribute-invitation {
   width: 100%;
   text-align: center;
-  background-color: gainsboro;
-  height: 300px;
+  // background-color: gainsboro;
+  background: white;
   padding-top: 30px;
   p {
     font-size: 18px;
@@ -77,10 +111,42 @@ $banner-height: 90px;
   }
 }
 .search-results {
-    position: relative;
+  position: relative;
 }
+
 .featured-viewport {
+  padding: 100px 20px;
   width: 100%;
-  padding: 20px;
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .feature-text {
+      padding-top: 45px;
+    margin: 65px auto 30px;
+    text-shadow: 0px 2px transparent;
+    color: $dark-text;
+    text-align: center;
+    position: relative;
+
+    &:after {
+        content: "";
+        top: 0px;
+        height: 2px;
+        background: black;
+        opacity: 0.1;
+        width: 50%;
+        margin: auto;
+        left: 0; right: 0;
+        position: absolute;
+    }
+  }
+
+  .button {
+    margin: auto;
+    font-size: 18px;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 }
