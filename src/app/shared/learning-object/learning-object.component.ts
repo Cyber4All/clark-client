@@ -77,15 +77,15 @@ export class LearningObjectListingComponent implements OnInit {
                 }
                 },
                 'line_linked': {
-                'enable': false,
-                'distance': 150,
+                'enable': true,
+                'distance': 100,
                 'color': '#ffffff',
                 'opacity': 0.4,
                 'width': 1
                 },
                 'move': {
-                'enable': false,
-                'speed': 6,
+                'enable': true,
+                'speed': 0,
                 'direction': 'none',
                 'random': false,
                 'straight': false,
