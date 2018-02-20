@@ -1,4 +1,4 @@
-@import '~_global-styles.scss';
+@import '~_globals.scss';
 
 .wrapper {
     max-width: 950px;
@@ -36,8 +36,41 @@
 
             .name {
                 font-weight: bold;
-                font-size: 16px;
+                font-size: 18px;
                 color: $blue-accent;
+
+                .length {
+                    margin-top: 5px;
+                    padding: 3px;
+                    border-radius: 1px;
+                    display: inline-block;
+                    position: relative;
+                    color: white;
+                    text-transform: capitalize;
+                    font-size: 14px;
+                    font-weight: 300;
+                    margin-left: 10px;
+
+                    &.nanomodule {
+                        background: $nanomodule-color;
+                    }
+                
+                    &.micrcmodule {
+                        background: $micromodule-color;
+                    }
+                
+                    &.module {
+                        background: $module-color;
+                    }
+                
+                    &.unit {
+                        background: $unit-color;
+                    }
+                
+                    &.course {
+                        background: $course-color;
+                    }
+                }
             }
 
             .author {

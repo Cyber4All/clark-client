@@ -5,7 +5,7 @@
   <div *ngIf="cartService.cartItems.length" class="cart">
     <div *ngFor="let object of cartService.cartItems" class="object" (click)="goToItem(object)">
       <div>
-        <div class="name">{{object._name}}</div>
+        <div class="name">{{object._name}} <span class="length " [ngClass]="object._length">{{ object._length }}</span></div>
         <div class="author">{{object._author._name}}</div>
       </div>
       <div class="actions">
