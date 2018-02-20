@@ -103,15 +103,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
           }
         },
         "line_linked": {
-          "enable": false,
+          "enable": true,
           "distance": 150,
           "color": "#ffffff",
           "opacity": 0.4,
           "width": 1
         },
         "move": {
-          "enable": false,
-          "speed": 6,
+          "enable": true,
+          "speed": 0,
           "direction": "none",
           "random": false,
           "straight": false,
