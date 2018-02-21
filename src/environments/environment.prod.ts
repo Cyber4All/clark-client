@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  apiURL: 'http://clark-gateway-production.us-east-1.elasticbeanstalk.com/api',
+  apiURL: 'https://api.gateway.clark.center/api',
   apiVersion: 'v1',
   STATE_STORAGE_LOCATION: 'state',
-  suggestionUrl: 'http://learning-outcome-suggestion-production.us-east-1.elasticbeanstalk.com/api'
+  suggestionUrl: 'https://api.learning-outcome.clark.center/api'
 };
