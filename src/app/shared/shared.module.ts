@@ -15,7 +15,6 @@ import { SortGroupsService } from './sort-groups.service';
 import { OutcomeService } from './services/outcome.service';
 
 // Components
-import { CurriculumGroupComponent } from './curriculum-group/curriculum-group.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -37,7 +36,6 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
   declarations: [
     NavbarComponent,
     FooterComponent,
-    CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
     LearningObjectCardDirective
@@ -45,7 +43,6 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
   exports: [
     NavbarComponent,
     FooterComponent,
-    CurriculumGroupComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
     LearningObjectCardDirective

@@ -25,10 +25,7 @@ import { EscapeHtmlPipe } from './shared/pipes/keep-html.pipe';
 
 // Modules
 import { HomeModule } from './home/home.module';
-import { AcademicsModule } from './academics/academics.module';
-import { SuggestionModule } from './suggestion/suggestion.module';
 import { SharedModule } from './shared/shared.module';
-import { ModalityModule } from './modality/modality.module';
 import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
@@ -41,10 +38,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { FilterMenuComponent } from './filter-menu/filter-menu.component';
-import { AcademicsComponent } from './academics/academics.component';
-import { MappingComponent } from './mapping/mapping.component';
-import { ModalityComponent } from './modality/modality.component';
 import { DetailsComponent } from './learning-object-details/details/details.component';
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
 import { CartComponent } from './cart/cart.component';
@@ -60,8 +53,6 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 @NgModule({
   declarations: [
     AppComponent,
-    FilterMenuComponent,
-    MappingComponent,
     EscapeHtmlPipe,
     DetailsComponent,
     DetailsContentComponent,
@@ -75,10 +66,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     HttpModule,
     FormsModule,
     RoutingModule,
-    AcademicsModule,
     HomeModule,
-    ModalityModule,
-    SuggestionModule,
     SharedModule,
     StoreModule.forRoot({ cart: cartReducer }),
     ModalModule.forRoot(),
