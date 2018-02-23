@@ -14,10 +14,10 @@
         </div>
         <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
         <div class="search-bar">
-          <form (submit)="performSearch(searchVal)">
-            <input #searchVal type="text" placeholder="Search...">
+          <form (submit)="performSearch(searchBar)">
+            <input #searchBar type="text" placeholder="Search...">
           </form>
-          <div class="icon" (click)="performSearch(searchVal)">
+          <div class="icon" (click)="performSearch(searchBar)">
             <i class="far fa-search"></i>
           </div>
         </div>

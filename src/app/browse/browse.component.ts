@@ -45,7 +45,7 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
   sources = ['NCWF', 'CAE', 'CS2013'];
   mappingsPopup = false;
   mappingsQueryInProgress = false;
-  mappingsFilters: {filterText: string, author: string, date: string} = {
+  mappingsFilters: { filterText: string, author: string, date: string } = {
     filterText: '',
     author: '',
     date: ''
@@ -95,8 +95,8 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngAfterViewChecked() {
     if (this.mappingsPopup && this.mappingsFilterInput === undefined) {
       this.mappingsFilterInput = Observable
-      .fromEvent(document.getElementById('mappingsFilter'), 'keyup')
-      .map(x => x['currentTarget'].value).debounceTime(650);
+        .fromEvent(document.getElementById('mappingsFilter'), 'keyup')
+        .map(x => x['currentTarget'].value).debounceTime(650);
 
       this.subscriptions.push(this.mappingsFilterInput.subscribe(val => {
         this.mappingsFilters.filterText = val;
@@ -140,8 +140,8 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   get sortString() {
-    return (this.query.orderBy) ?  this.query.orderBy.replace(/_/g, '')
-    + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
+    return (this.query.orderBy) ? this.query.orderBy.replace(/_/g, '')
+      + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
   }
 
   prevPage() {
@@ -209,7 +209,7 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   showSortMenu(event) {
-    const currSort = (this.query.orderBy) ? 
+    const currSort = (this.query.orderBy) ?
       this.query.orderBy.replace(/_/g, '') + '-' + ((this.query.sortType > 0) ? 'asc' : 'desc') : undefined;
     this.modalService.makeContextMenu(
       'SortContextMenu',
@@ -244,19 +244,19 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
       'SourceContextMenu',
       'dropdown',
       this.sources.map(s => new ModalListElement(s, s, (s === this.mappingsFilters.author) ? 'active' : undefined)),
-    null,
-    new Position(
-      this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
-      this.modalService.offset(event.currentTarget).top + 50))
-    .subscribe(val => {
-      if (val !== 'null') {
-        this.mappingsFilters.author = val;
-        this.mappingsQueryInProgress = true;
-        this.getOutcomes().then(() => {
-          this.mappingsQueryInProgress = false;
-        });
-      }
-    });
+      null,
+      new Position(
+        this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
+        this.modalService.offset(event.currentTarget).top + 50))
+      .subscribe(val => {
+        if (val !== 'null') {
+          this.mappingsFilters.author = val;
+          this.mappingsQueryInProgress = true;
+          this.getOutcomes().then(() => {
+            this.mappingsQueryInProgress = false;
+          });
+        }
+      });
   }
 
   clearSort(event) {
@@ -267,17 +267,18 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   async fetchLearningObjects(query: Query): Promise<void> {
+    // Trim leading and trailing whitespace
+    query.text = query.text.trim();
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(query);
       this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
-
-      console.log(this.learningObjects);
 
       return;
 
     } catch (e) {
       console.log(e);
     }
+
   }
 
   getOutcomes(): Promise<void> {
@@ -301,8 +302,8 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   addOutcome(outcome) {
     if (!this.checkOutcomes(outcome)) {
-      let o = {id: outcome.id, name: outcome.name, source: this.mappingsFilters.author, date: outcome.date, outcome: outcome.outcome};
-      (<{id: string, name: string, date: string, outcome: string}[]> this.query.standardOutcomes).push(o);
+      let o = { id: outcome.id, name: outcome.name, source: this.mappingsFilters.author, date: outcome.date, outcome: outcome.outcome };
+      (<{ id: string, name: string, date: string, outcome: string }[]>this.query.standardOutcomes).push(o);
       this.mappingsCheckbox.next();
     }
   }

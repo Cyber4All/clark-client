@@ -55,11 +55,15 @@ export class AppComponent implements OnInit {
     }
   }
 
-  performSearch(el) {
-    let v = el.value;
-
-    if (v.length) {
-      this.router.navigate(['/browse', { query: v }]);
+  /**
+   * Takes a reference to the searchbar input to pass as a query to the browse component.
+   * @param query
+   */
+  performSearch(searchbar) {
+    searchbar.value = searchbar.value.trim();
+    const query = searchbar.value;
+    if (query.length) {
+      this.router.navigate(['/browse', { query }]);
     }
   }
 }

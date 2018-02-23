@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
     }
   }
   search() {
-    // TODO: verify query contains alphanumeric characters
+    this.query.text = this.query.text.trim();
     if (this.query.text === '') {
       this.learningObjectService.clearSearch();
     } else if (this.query !== undefined) {
