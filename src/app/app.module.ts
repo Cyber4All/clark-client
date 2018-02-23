@@ -94,7 +94,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     ConfigService,
     CartService,
     CartV2Service,
-    // { provide: ErrorHandler, useClass: RavenErrorHandler }
+    process.env.NODE_ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler
   ],
   bootstrap: [AppComponent]
 })
@@ -104,5 +104,6 @@ export class AppModule {
     if (w) {
       Object.assign(configService.env, w.__env);
     }
+    console.log(process.env.NODE_ENV);
   }
 }
