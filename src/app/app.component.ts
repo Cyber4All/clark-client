@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
-      let root: ActivatedRoute = this.route.root;
+      const root: ActivatedRoute = this.route.root;
       this.hideTopbar = root.children[0].snapshot.data.hideTopbar;
     });
   }

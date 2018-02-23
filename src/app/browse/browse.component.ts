@@ -42,6 +42,7 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
   aLevel = Object.values(AcademicLevel);
   loLength = Array.from(lengths);
 
+  // TODO: sources should be fetched from an API route to allow dynamic configuration
   sources = ['NCWF', 'CAE', 'CS2013'];
   mappingsPopup = false;
   mappingsQueryInProgress = false;
@@ -302,7 +303,7 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   addOutcome(outcome) {
     if (!this.checkOutcomes(outcome)) {
-      let o = { id: outcome.id, name: outcome.name, source: this.mappingsFilters.author, date: outcome.date, outcome: outcome.outcome };
+      const o = { id: outcome.id, name: outcome.name, source: this.mappingsFilters.author, date: outcome.date, outcome: outcome.outcome };
       (<{ id: string, name: string, date: string, outcome: string }[]>this.query.standardOutcomes).push(o);
       this.mappingsCheckbox.next();
     }
