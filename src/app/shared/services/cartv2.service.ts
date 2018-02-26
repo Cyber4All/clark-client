@@ -31,12 +31,12 @@ export class CartV2Service {
     window.open(url);
   }
 
-   getCart(reloadUser = false): Promise<Array<LearningObject>> | boolean {
+  getCart(reloadUser = false): Promise<Array<LearningObject>> | boolean {
     return (this.user) ? this.http
-      .get(USER_ROUTES.GET_CART(this.user._username), {headers: this.headers})
+      .get(USER_ROUTES.GET_CART(this.user._username), { headers: this.headers, withCredentials: true })
       .toPromise()
       .then(val => {
-        this.cartItems = <Array<LearningObject>> val.json();
+        this.cartItems = <Array<LearningObject>>val.json();
         return this.cartItems;
       }) : false;
   }
@@ -55,11 +55,11 @@ export class CartV2Service {
           learningObjectName
         ),
         {},
-        {headers: this.headers}
+        { headers: this.headers, withCredentials: true }
       )
       .toPromise()
       .then(async val => {
-        this.cartItems = <Array<LearningObject>> val.json();
+        this.cartItems = <Array<LearningObject>>val.json();
         return this.cartItems;
       }) : false;
   }
@@ -76,11 +76,11 @@ export class CartV2Service {
           author,
           learningObjectName
         ),
-        {headers: this.headers}
+        { headers: this.headers, withCredentials: true }
       )
       .toPromise()
       .then(val => {
-        this.cartItems = <Array<LearningObject>> val.json();
+        this.cartItems = <Array<LearningObject>>val.json();
         return this.cartItems;
       }) : false;
   }
@@ -89,33 +89,33 @@ export class CartV2Service {
     // tslint:disable-next-line:curly
     if (this.user) {
       return this.http
-        .delete(USER_ROUTES.CLEAR_CART(this.user._username), {headers: this.headers})
+        .delete(USER_ROUTES.CLEAR_CART(this.user._username), { headers: this.headers, withCredentials: true })
         .toPromise().then(val => {
           this.cartItems = [];
           return true;
-      });
+        });
     } else {
       return false;
     }
   }
 
   checkout() {
-      // tslint:disable-next-line:max-line-length
-      this.http.get(USER_ROUTES.GET_CART(this.user._username) + '?download=true', { headers: this.headers, responseType: ResponseContentType.Blob })
-            .subscribe((res) => {
-                importedSaveAs(res.blob(), `${Date.now()}.zip`);
-            },
-            (err) => console.log,
-            () => { console.log('Downloaded'); });
+    // tslint:disable-next-line:max-line-length
+    this.http.get(USER_ROUTES.GET_CART(this.user._username) + '?download=true', { headers: this.headers, responseType: ResponseContentType.Blob, withCredentials: true })
+      .subscribe((res) => {
+        importedSaveAs(res.blob(), `${Date.now()}.zip`);
+      },
+        (err) => console.log,
+        () => { console.log('Downloaded'); });
   }
 
   downloadLearningObject(author: string, learningObjectName: string) {
     this.http.post(USER_ROUTES.DOWNLOAD_OBJECT(this.user._username, author, learningObjectName), {},
-    { headers: this.headers, responseType: ResponseContentType.Blob })
+      { headers: this.headers, responseType: ResponseContentType.Blob })
       .subscribe((res) => {
         importedSaveAs(res.blob(), `${Date.now()}.zip`);
-    },
-    (err) => console.log,
-    () => { console.log('Downloaded'); });
+      },
+        (err) => console.log,
+        () => { console.log('Downloaded'); });
   }
 }

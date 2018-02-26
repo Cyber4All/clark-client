@@ -49,7 +49,7 @@ export class AuthenticationService {
             this.headers.set('Authorization', 'Bearer ' + token) : this.headers.append('Authorization', 'Bearer ' + token);
 
         const routei = USER_ROUTES.VALIDATE_TOKEN(this.getUsername());
-        return this.http.post(routei, { token: token }, { headers: this.headers })
+        return this.http.post(routei, { token: token }, { headers: this.headers, withCredentials: true })
             .toPromise().then(val => {
                 this.loggedIn = true;
                 this.logger.next(this.loggedIn);
@@ -73,7 +73,7 @@ export class AuthenticationService {
      */
     login(username: string, password: string) {
         const route = USER_ROUTES.LOGIN;
-        return this.http.post(route, { username: username, password: password }, { headers: this.headers })
+        return this.http.post(route, { username: username, password: password }, { headers: this.headers, withCredentials: true })
             .toPromise()
             .then(response => {
                 let user = response.json();
@@ -104,7 +104,7 @@ export class AuthenticationService {
             lastname: lastname,
             email: email
         }),
-            { headers: this.headers }).toPromise()
+            { headers: this.headers, withCredentials: true }).toPromise()
             .then(response => {
                 let user = response.json();
                 this.setUser(user);
