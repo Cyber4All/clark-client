@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { RoutingModule } from './app.routing';
 
 // Services
-import { ConfigService } from './config.service';
 import { LearningObjectService } from './learning-object.service';
 import { CartService } from './shared/services/cart.service';
 import { CartV2Service } from './shared/services/cartv2.service';
@@ -79,19 +78,10 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
   ],
   providers: [
     LearningObjectService,
-    ConfigService,
     CartService,
     CartV2Service,
     process.env.NODE_ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(configService: ConfigService) {
-    const w: any = window;
-    if (w) {
-      Object.assign(configService.env, w.__env);
-    }
-    console.log(process.env.NODE_ENV);
-  }
-}
+export class AppModule { }

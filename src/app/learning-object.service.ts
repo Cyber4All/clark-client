@@ -1,5 +1,4 @@
 import { PUBLIC_LEARNING_OBJECT_ROUTES } from './../environments/route';
-import { ConfigService } from './config.service';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -20,7 +19,7 @@ export class LearningObjectService {
 
   public totalLearningObjects: number;
 
-  constructor(private config: ConfigService, private http: Http, ) { }
+  constructor(private http: Http, ) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
