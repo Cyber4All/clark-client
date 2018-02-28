@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { CartV2Service } from './../shared/services/cartv2.service';
+import { CartV2Service } from '../../shared/services/cartv2.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
@@ -70,7 +70,7 @@ export class CartComponent implements OnInit {
   }
 
   goToItem(object) {
-    this.router.navigate(['/details/', object._author._username, object._name]);
+    this.router.navigate(['./details/', object._author._username, object._name]);
   }
 
 }

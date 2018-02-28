@@ -10,7 +10,6 @@ import { NgModel } from '@angular/forms/src/directives/ng_model';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })
-
 export class LoginComponent implements OnInit {
     loading: boolean = false;
     returnUrl: string;
@@ -34,7 +33,7 @@ export class LoginComponent implements OnInit {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
-        //Particles.js settings
+        // Particles.js settings
         this.myStyle = {
             'position': 'fixed',
             'width': '100%',
@@ -97,72 +96,72 @@ export class LoginComponent implements OnInit {
                     "enable": false,
                     "distance": 150,
                     "color": "#ffffff",
-                    "opacity": 0.4,
-                    "width": 1
+                    'opacity': 0.4,
+                    'width': 1
                 },
-                "move": {
-                    "enable": true,
-                    "speed": 1,
-                    "direction": "none",
-                    "random": true,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 600
+                'move': {
+                    'enable': true,
+                    'speed': 1,
+                    'direction': 'none',
+                    'random': true,
+                    'straight': false,
+                    'out_mode': 'out',
+                    'bounce': false,
+                    'attract': {
+                        'enable': false,
+                        'rotateX': 600,
+                        'rotateY': 600
                     }
                 }
             },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": false,
-                        "mode": "bubble"
+            'interactivity': {
+                'detect_on': 'canvas',
+                'events': {
+                    'onhover': {
+                        'enable': false,
+                        'mode': 'bubble'
                     },
-                    "onclick": {
-                        "enable": false,
-                        "mode": "repulse"
+                    'onclick': {
+                        'enable': false,
+                        'mode': 'repulse'
                     },
-                    "resize": true
+                    'resize': true
                 },
-                "modes": {
-                    "grab": {
-                        "distance": 400,
-                        "line_linked": {
-                            "opacity": 1
+                'modes': {
+                    'grab': {
+                        'distance': 400,
+                        'line_linked': {
+                            'opacity': 1
                         }
                     },
-                    "bubble": {
-                        "distance": 250,
-                        "size": 0,
-                        "duration": 2,
-                        "opacity": 0,
-                        "speed": 3
+                    'bubble': {
+                        'distance': 250,
+                        'size': 0,
+                        'duration': 2,
+                        'opacity': 0,
+                        'speed': 3
                     },
-                    "repulse": {
-                        "distance": 400,
-                        "duration": 0.4
+                    'repulse': {
+                        'distance': 400,
+                        'duration': 0.4
                     },
-                    "push": {
-                        "particles_nb": 4
+                    'push': {
+                        'particles_nb': 4
                     },
-                    "remove": {
-                        "particles_nb": 2
+                    'remove': {
+                        'particles_nb': 2
                     }
                 }
             },
-            "retina_detect": true
+            'retina_detect': true
         }
     };
 
     /**
      * Logs user in if username and password combinatin matches active user and navigates to dashboard
-     * 
-     * @param {NgForm} formData 
-     * @returns 
+     *
+     * @param {NgForm} formData
+     * @returns
      * @memberof LoginComponent
      */
     login(formData: NgForm) {
@@ -177,13 +176,13 @@ export class LoginComponent implements OnInit {
             })
             .catch(err => {
                 this.loading = false;
-                this.error = "Invalid username or password";
+                this.error = 'Invalid username or password';
             });
     }
 
     /**
      * Navigates to registration page
-     * 
+     *
      * @memberof LoginComponent
      */
     register() {

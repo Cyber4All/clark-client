@@ -5,11 +5,11 @@ import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/ro
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'clark-cube',
+  templateUrl: './cube.component.html',
+  styleUrls: ['./cube.component.scss']
 })
-export class AppComponent implements OnInit {
+export class CubeComponent implements OnInit {
   activeContentSwitcher = 'search';
   hideTopbar: any = false;
   filterButton = false;
@@ -63,7 +63,8 @@ export class AppComponent implements OnInit {
     searchbar.value = searchbar.value.trim();
     const query = searchbar.value;
     if (query.length) {
-      this.router.navigate(['/browse', { query }]);
+      // FIXME: Should use a relative route './browse'
+      this.router.navigate(['/cube/browse', { query }]);
     }
   }
 }

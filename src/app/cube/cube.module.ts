@@ -1,5 +1,4 @@
 // Core
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
@@ -7,24 +6,24 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 // Routes
-import { RoutingModule } from './app.routing';
+import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
-import { CartService } from './shared/services/cart.service';
-import { CartV2Service } from './shared/services/cartv2.service';
+import { CartService } from '../shared/services/cart.service';
+import { CartV2Service } from '../shared/services/cartv2.service';
 
 // Redux
 import { StoreModule } from '@ngrx/store';
-import { cartReducer } from './shared/redux/reducers/cart.reducer';
+import { cartReducer } from '../shared/redux/reducers/cart.reducer';
 
 // Pipes
-import { EscapeHtmlPipe } from './shared/pipes/keep-html.pipe';
+import { EscapeHtmlPipe } from '../shared/pipes/keep-html.pipe';
 
 
 // Modules
 import { HomeModule } from './home/home.module';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
@@ -33,9 +32,9 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 
 // Components
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { AppComponent } from './app.component';
+import { NavbarComponent } from '../shared/navbar/navbar.component';
+import { FooterComponent } from '../shared/footer/footer.component';
+import { CubeComponent } from './cube.component';
 import { HomeComponent } from './home/home.component';
 import { DetailsComponent } from './learning-object-details/details/details.component';
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
@@ -43,15 +42,16 @@ import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
-import { RouterComponent } from './shared/breadcrumb/router.component';
+import { RouterComponent } from '../shared/breadcrumb/router.component';
 
 // Other
-import { RavenErrorHandler } from './error-handler';
+import { RavenErrorHandler } from '../error-handler';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    CubeComponent,
     EscapeHtmlPipe,
     DetailsComponent,
     DetailsContentComponent,
@@ -61,10 +61,10 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     BrowseComponent, UserProfileComponent, UserPreferencesComponent,
   ],
   imports: [
-    BrowserModule,
     HttpModule,
     FormsModule,
-    RoutingModule,
+    CubeRoutingModule,
+    CommonModule,
     HomeModule,
     SharedModule,
     StoreModule.forRoot({ cart: cartReducer }),
@@ -82,6 +82,6 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     CartV2Service,
     process.env.NODE_ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler
   ],
-  bootstrap: [AppComponent]
+  // bootstrap: [CubeComponent]
 })
-export class AppModule { }
+export class CubeModule { }

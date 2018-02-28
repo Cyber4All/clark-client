@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Headers, Http, Response } from '@angular/http';
-import { AuthenticationService } from '../../auth/services/authentication.service';
+import { AuthenticationService } from '../../cube/auth/services/authentication.service';
 
 @Injectable()
 export class OutcomeService {

@@ -9,7 +9,6 @@ import { AuthGuard } from './services/auth-guard.service';
 import { RegisterComponent } from './register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ParticlesModule } from 'angular-particle';
-import { RoutingModule } from '../app.routing';
 
 /**
  * Details on how each class in the authentication module is used.

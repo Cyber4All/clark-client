@@ -1,12 +1,12 @@
 <div class="title">
   <div class="feature-text">Featured Collection</div>
-  <div class="view-all" routerLink="/browse">View All <i class="far fa-angle-right"></i></div>
+  <div class="view-all" [routerLink]="['/cube/browse', '']">View All <i class="far fa-angle-right"></i></div>
 </div>
 
 <div class="card-container">
   <learning-object-component 
     *ngFor="let l of learningObjects"
-    routerLink="/details/{{ l.author._username }}/{{l.name}}" 
+    routerLink="./details/{{ l.author._username }}/{{l.name}}" 
     [learningObject]="l"
     learningObjectCard
     >

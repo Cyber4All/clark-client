@@ -20,15 +20,15 @@
           </div>
         </div>
 
-        <div class="right shopping-cart-container" routerLink="/library">
+        <div class="right shopping-cart-container" routerLink="./library">
           <div class="library-icon"></div>
           <div *ngIf="cartService.cartItems.length" class="library-badge">{{cartService.cartItems.length}}</div>
         </div>
       </div>
 
       <div class="user flex h flex-end" *ngIf="!loggedin">
-        <div class="login flex h flex-end" routerLink="/login"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
-        <div class="register" routerLink="/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
+        <div class="login flex h flex-end" routerLink="./login"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
+        <div class="register" routerLink="./register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
       </div>
 
     </div>

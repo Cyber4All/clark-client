@@ -1,10 +1,10 @@
-import { CartV2Service } from './../../shared/services/cartv2.service';
+import { CartV2Service } from '../../../shared/services/cartv2.service';
 import { ModalService } from '@cyber4all/clark-modal';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { CartService } from '../../shared/services/cart.service';
+import { CartService } from '../../../shared/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthenticationService } from '../../auth/services/authentication.service';
 

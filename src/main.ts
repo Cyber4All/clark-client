@@ -1,7 +1,7 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
+import { ClarkModule } from './app/clark.module';
 import { environment } from './environments/environment';
 
 // Global rxjs imports
@@ -18,15 +18,15 @@ if (environment.production) {
   enableProdMode();
 }
 
-//Get the version of the application the user last ran
-let userVersion = localStorage.getItem(VERSION_STORE);
+// Get the version of the application the user last ran
+const userVersion = localStorage.getItem(VERSION_STORE);
 (() => {
-  //Set current version of the application
+  // Set current version of the application
   localStorage.setItem(VERSION_STORE, appVersion);
-  //Check the version of the application the user last ran; If mismatch clear cache via hard reload
+  // Check the version of the application the user last ran; If mismatch clear cache via hard reload
   userVersion !== appVersion ? location.reload(true) :
     console.log(`${appDisplayName} running version: ${appVersion} - Up to date.`);
 })();
 
-//Verify correct version before bootstrapping application
-userVersion === appVersion ? platformBrowserDynamic().bootstrapModule(AppModule) : console.log('Waiting for update...');
+// Verify correct version before bootstrapping application
+userVersion === appVersion ? platformBrowserDynamic().bootstrapModule(ClarkModule) : console.log('Waiting for update...');

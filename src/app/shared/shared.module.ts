@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 // Modules
-import { RoutingModule } from '../app.routing';
+import { CubeRoutingModule } from '../cube/cube.routing';
 import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
@@ -26,7 +26,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 @NgModule({
   imports: [
     CommonModule,
-    RoutingModule,
+    CubeRoutingModule,
     CheckBoxModule,
     NotificationModule,
     ModalModule,

@@ -1,10 +1,10 @@
-import { AppModule } from '../../app.module';
+import { CubeModule } from '../../cube.module';
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
-import { USER_ROUTES } from '../../../environments/route';
+import { USER_ROUTES } from '../../../../environments/route';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 // import { EmailValidator } from './directives/validators';
 

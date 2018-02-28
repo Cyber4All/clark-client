@@ -1,9 +1,9 @@
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { SortGroupsService } from '../shared/sort-groups.service';
+import { SortGroupsService } from '../../shared/sort-groups.service';
 import { Router } from '@angular/router';
-import { TextQuery } from '../shared/interfaces/query';
+import { TextQuery } from '../../shared/interfaces/query';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
     if (this.query.text === '') {
       this.learningObjectService.clearSearch();
     } else if (this.query !== undefined) {
-      this.router.navigate(['/browse', { query: this.query.text }]);
+      this.router.navigate(['/cube/browse', { query: this.query.text }]);
     }
   }
   goToContribute() {
