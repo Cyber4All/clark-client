@@ -1,12 +1,14 @@
 import * as CartActions from '../models/actions/cart.actions';
 import { Cart } from '../models/cart.model';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@env/environment';
 
 export type Action = CartActions.All;
 
+// FIXME: ternary statements do not make an assignment or function call when false
+
 const DEFAULT_STATE: Cart = {
     items: [],
-}
+};
 
 export const CART_STORAGE_LOCATION = 'cart';
 
@@ -22,7 +24,8 @@ const addLearningObject = (state: Cart, learningObjectID: string) => {
         : 'LearningObject\'s ID is already in user\'s cart. Show them a message saying so.';
 
     return state;
-}
+};
+
 /**
  * Removes LearningObject's ID from Cart's items
  *
@@ -31,10 +34,11 @@ const addLearningObject = (state: Cart, learningObjectID: string) => {
  * @returns
  */
 const removeLearningObject = (state: Cart, learningObjectID: string) => {
-    let index = state.items.indexOf(learningObjectID);
+    const index = state.items.indexOf(learningObjectID);
     index > -1 ? state.items.splice(index, 1) : 'LearningObject\'s ID does not exist in cart???'
     return state;
-}
+};
+
 /**
  * Retrieves Cart's current state
  *
@@ -42,7 +46,7 @@ const removeLearningObject = (state: Cart, learningObjectID: string) => {
  */
 const retrieveState = () => {
     return localStorage.getItem(environment.STATE_STORAGE_LOCATION);
-}
+};
 
 export function cartReducer(state: Cart = DEFAULT_STATE, action: Action) {
     switch (action.type) {
@@ -57,10 +61,9 @@ export function cartReducer(state: Cart = DEFAULT_STATE, action: Action) {
 
         default:
             if (retrieveState()) {
-                let sessionState = JSON.parse(retrieveState())[CART_STORAGE_LOCATION];
+                const sessionState = JSON.parse(retrieveState())[CART_STORAGE_LOCATION];
                 return sessionState;
-            }
-            else {
+            } else {
                 return DEFAULT_STATE;
             }
     }

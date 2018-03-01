@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { ModalListElement, Position } from '@cyber4all/clark-modal';
 import { lengths } from '@cyber4all/clark-taxonomy';
-import { OutcomeService } from '../../shared/services/outcome.service';
+import { OutcomeService } from '../cube-core/outcome.service';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
 

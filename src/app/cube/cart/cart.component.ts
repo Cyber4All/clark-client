@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { CartV2Service } from '../../shared/services/cartv2.service';
+import { CartV2Service } from '../cube-core/services/cartv2.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';

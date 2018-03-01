@@ -1,5 +1,5 @@
-import { CartV2Service } from './../services/cartv2.service';
-import { CartService } from './../services/cart.service';
+import { CartV2Service } from '../../cube/cube-core/services/cartv2.service';
+import { CartService } from '../../cube/cube-core/services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../../cube/learning-object.service';
 import { ModalService, Position, ModalListElement } from '@cyber4all/clark-modal';

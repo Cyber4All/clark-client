@@ -1,7 +1,6 @@
 import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { SortGroupsService } from '../../shared/sort-groups.service';
 import { Router } from '@angular/router';
 import { TextQuery } from '../../shared/interfaces/query';
 
@@ -18,7 +17,7 @@ export class HomeComponent implements OnInit {
     limit: 30
   };
 
-  constructor(private learningObjectService: LearningObjectService, private sorter: SortGroupsService, private router: Router) { }
+  constructor(private learningObjectService: LearningObjectService, private router: Router) { }
 
   ngOnInit() {
     document.querySelector('.search-bar input')['value'] = '';

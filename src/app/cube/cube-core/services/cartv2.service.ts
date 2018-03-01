@@ -1,4 +1,4 @@
-import { USER_ROUTES } from './../../../environments/route';
+import { USER_ROUTES } from '@env/route';
 import { Injectable, OnInit } from '@angular/core';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';

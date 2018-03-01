@@ -9,7 +9,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { RouterComponent } from '../shared/breadcrumb/router.component';
+import { RouterComponent } from './cube-shared/breadcrumb/router.component';
 import { AuthGuard } from './auth/services/auth-guard.service';
 import { CubeComponent } from './cube.component';
 

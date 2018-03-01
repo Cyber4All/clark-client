@@ -4,51 +4,38 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 // Modules
-import { CubeRoutingModule } from '../cube/cube.routing';
+import { ClarkRoutingModule } from '../clark.routing';
+
+// Components
+import { NavbarComponent } from './navbar/navbar.component';
+
+// Shared 3rd Party Modules
+import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ParticlesModule } from 'angular-particle';
 
-// Services
-import { SortGroupsService } from './sort-groups.service';
-import { OutcomeService } from './services/outcome.service';
-
-// Components
-import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { LearningObjectListingComponent } from './learning-object/learning-object.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { FooterComponent } from './footer/footer.component';
-
-import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
-import { VirtualScrollModule } from 'angular2-virtual-scroll';
-
+/**
+ * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
+ *
+ * @class SharedModule
+ */
 @NgModule({
   imports: [
     CommonModule,
-    CubeRoutingModule,
     CheckBoxModule,
+    RouterModule,
     NotificationModule,
     ModalModule,
     ParticlesModule,
     VirtualScrollModule
   ],
   declarations: [
-    NavbarComponent,
-    FooterComponent,
-    BreadcrumbComponent,
-    LearningObjectListingComponent,
-    LearningObjectCardDirective
+    NavbarComponent
   ],
   exports: [
-    NavbarComponent,
-    FooterComponent,
-    BreadcrumbComponent,
-    LearningObjectListingComponent,
-    LearningObjectCardDirective
-  ],
-  providers: [
-    SortGroupsService, OutcomeService
+    NavbarComponent
   ]
 })
 export class SharedModule { }

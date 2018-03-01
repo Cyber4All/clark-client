@@ -7,9 +7,10 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { FeaturedComponent } from './featured/featured.component';
 import { CommonModule } from '@angular/common';
+import { CubeSharedModule } from '../cube-shared/cube-shared.module';
 
 @NgModule({
-  imports: [FormsModule, CommonModule, SharedModule, RouterModule],
+  imports: [FormsModule, CommonModule, SharedModule, CubeSharedModule, RouterModule],
   exports: [HomeComponent],
   declarations: [
     HomeComponent,

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Cart } from '../redux/models/cart.model';
 import { CART_STORAGE_LOCATION } from '../redux/reducers/cart.reducer';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 import * as CartActions from '../redux/models/actions/cart.actions';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { saveAs as importedSaveAs } from 'file-saver';
