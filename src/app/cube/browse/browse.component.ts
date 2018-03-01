@@ -1,3 +1,4 @@
+// TODO: is ng-click-outside being used?
 import { ClickOutsideModule } from 'ng-click-outside';
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { SortType, OrderBy } from '../../shared/interfaces/query';

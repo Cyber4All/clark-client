@@ -28,6 +28,7 @@ import { ModalModule } from '@cyber4all/clark-modal';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 import { AuthModule } from './auth/auth.module';
+// TODO: is ng-click-outside being used?
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 

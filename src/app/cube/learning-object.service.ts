@@ -2,7 +2,6 @@ import { PUBLIC_LEARNING_OBJECT_ROUTES } from '../../environments/route';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import * as Fuse from 'fuse.js';
 import { environment } from '../../environments/environment';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
@@ -12,14 +11,13 @@ import * as querystring from 'querystring';
 @Injectable()
 export class LearningObjectService {
 
-  fuse;
   filteredResults;
   dataObserver;
   data;
 
   public totalLearningObjects: number;
 
-  constructor(private http: Http, ) { }
+  constructor(private http: Http) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
