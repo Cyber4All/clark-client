@@ -13,6 +13,7 @@ import { RouterComponent } from '../shared/breadcrumb/router.component';
 import { AuthGuard } from './auth/services/auth-guard.service';
 import { CubeComponent } from './cube.component';
 
+// Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {
   path: 'details/:username/:learningObjectName', component: DetailsComponent, data: { breadcrumb: 'Details' }
 };

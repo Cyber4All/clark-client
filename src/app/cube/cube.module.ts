@@ -1,5 +1,5 @@
 // Core
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { Component } from '@angular/core';
@@ -45,7 +45,6 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
 import { RouterComponent } from '../shared/breadcrumb/router.component';
 
 // Other
-import { RavenErrorHandler } from '../error-handler';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CommonModule } from '@angular/common';
 
@@ -79,8 +78,7 @@ import { CommonModule } from '@angular/common';
   providers: [
     LearningObjectService,
     CartService,
-    CartV2Service,
-    process.env.NODE_ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler
+    CartV2Service
   ],
   // bootstrap: [CubeComponent]
 })
