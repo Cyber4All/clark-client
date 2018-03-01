@@ -8,6 +8,7 @@ import { Query } from '../shared/interfaces/query';
 
 import * as querystring from 'querystring';
 
+// TODO: move to core module
 @Injectable()
 export class LearningObjectService {
 

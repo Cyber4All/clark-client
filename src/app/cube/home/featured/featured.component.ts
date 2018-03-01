@@ -4,7 +4,7 @@ import { LearningObjectService } from '../../learning-object.service';
 import { Query } from '../../../shared/interfaces/query';
 
 @Component({
-  selector: 'app-featured',
+  selector: 'cube-featured',
   templateUrl: './featured.component.html',
   styleUrls: ['./featured.component.scss']
 })

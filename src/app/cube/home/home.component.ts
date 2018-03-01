@@ -6,7 +6,7 @@ import { TextQuery } from '../../shared/interfaces/query';
 
 
 @Component({
-  selector: 'app-home',
+  selector: 'cube-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

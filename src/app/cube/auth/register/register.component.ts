@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
 import { ParticlesModule } from 'angular-particle';
 @Component({
-  selector: 'app-register',
+  selector: 'clark-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })

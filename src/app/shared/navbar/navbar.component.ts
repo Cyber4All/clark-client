@@ -10,7 +10,7 @@ import { CheckBoxModule } from 'clark-checkbox';
 import { AuthenticationService } from '../../cube/auth/services/authentication.service';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'clark-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })

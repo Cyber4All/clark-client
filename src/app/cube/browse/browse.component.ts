@@ -17,7 +17,7 @@ import 'rxjs/add/operator/map';
 
 
 @Component({
-  selector: 'app-browse',
+  selector: 'cube-browse',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss']
 })

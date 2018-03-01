@@ -6,7 +6,7 @@ import { LearningObjectService } from '../learning-object.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'app-cart',
+  selector: 'cube-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })

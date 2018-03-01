@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 
 @Component({
-  selector: 'app-user-profile',
+  selector: 'clark-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
 
   name;
-  employer = "Towson University";
+  employer = 'Towson University';
   contributor = false;
   modulesCreated: 20;
-  title = "Educator";
+  title = 'Educator';
   email;
 
   // FIXME: Change to correct Type
@@ -23,10 +23,10 @@ export class UserProfileComponent implements OnInit {
 
   changeName() {    this.name = 'Houssein';  }
   ngOnInit() {
-    let user = localStorage.getItem("currentUser");
-    user = JSON.parse(user)
-    this.email = user["_email"];
-    this.name = user["_name"];
+    let user = localStorage.getItem('currentUser');
+    user = JSON.parse(user);
+    this.email = user['_email'];
+    this.name = user['_name'];
   }
 
 }
