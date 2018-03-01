@@ -6,7 +6,7 @@ import { ParticlesModule } from 'angular-particle';
 import { NgModel } from '@angular/forms/src/directives/ng_model';
 
 @Component({
-    selector: 'app-login',
+    selector: 'clark-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })
