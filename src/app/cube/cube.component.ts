@@ -64,7 +64,7 @@ export class CubeComponent implements OnInit {
     const query = searchbar.value;
     if (query.length) {
       // FIXME: Should use a relative route './browse'
-      this.router.navigate(['/cube/browse', { query }]);
+      this.router.navigate(['/browse', { query }]);
     }
   }
 }

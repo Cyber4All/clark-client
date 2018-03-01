@@ -14,7 +14,7 @@ const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
   selector: 'breadcrumb',
   template: `
     <ol *ngIf="breadcrumbs.length !== 0" class="breadcrumb">
-      <li><a routerLink="./" class="breadcrumb">Home</a></li>
+      <li><a routerLink="/" class="breadcrumb">Home</a></li>
       <li *ngFor="let breadcrumb of breadcrumbs">
         <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{ breadcrumb.label }}</a>
       </li>
@@ -87,7 +87,7 @@ export class BreadcrumbComponent implements OnInit {
       const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
 
       // append route URL to URL
-      url += `./${routeURL}`;
+      url += `/${routeURL}`;
 
       // add breadcrumb
       const breadcrumb: Breadcrumb = {

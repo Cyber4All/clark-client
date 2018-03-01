@@ -89,7 +89,7 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
       .map(x => x['currentTarget'].value).debounceTime(650);
 
     this.subscriptions.push(this.filterInput.subscribe(val => {
-      this.router.navigate(['/cube/browse', { query: val }]);
+      this.router.navigate(['/browse', { query: val }]);
     }));
   }
 

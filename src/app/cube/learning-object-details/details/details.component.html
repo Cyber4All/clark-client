@@ -33,7 +33,7 @@
         <div [ngClass]="{'disabled': !auth.checkStatus()}" class="button good" (click)="addToCart(true)">Download Now</div>
         <div [ngClass]="{'disabled': !auth.checkStatus()}"  class="button neutral on-white" (click)="addToCart()">Add to Library</div>
         <ng-container *ngIf="!auth.checkStatus()">
-          <div class="login-msg">Please <span [routerLink]="['./login']" [queryParams]="{returnUrl: returnUrl}">log in</span> to add this Learning Object to your library.</div>
+          <div class="login-msg">Please <span [routerLink]="['/login']" [queryParams]="{returnUrl: returnUrl}">log in</span> to add this Learning Object to your library.</div>
         </ng-container>
       </div>
     </div>

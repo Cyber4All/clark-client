@@ -5,8 +5,7 @@ import { CubeComponent } from './cube/cube.component';
 // TODO: Import cube routes to expose
 
 const routes: Routes = [
-  { path: '', redirectTo: 'cube', pathMatch: 'full' },
-  { path: 'cube', loadChildren: 'app/cube/cube.module#CubeModule' },
+  { path: '', loadChildren: 'app/cube/cube.module#CubeModule' },
   { path: '**', redirectTo: 'cube', pathMatch: 'full' }
 ];
 

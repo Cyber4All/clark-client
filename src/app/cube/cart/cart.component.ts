@@ -70,7 +70,7 @@ export class CartComponent implements OnInit {
   }
 
   goToItem(object) {
-    this.router.navigate(['./details/', object._author._username, object._name]);
+    this.router.navigate(['/details/', object._author._username, object._name]);
   }
 
 }
