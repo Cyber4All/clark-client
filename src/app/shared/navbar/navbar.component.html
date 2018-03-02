@@ -13,7 +13,7 @@
 
         <div class="left flex h flex-end" (click)="userDropdown($event)">
           <!-- get just first name -->
-          <span>Howdy, {{name.split(' ')[0]}}!</span>
+          <span>Howdy, {{authService.firstName}}!</span>
           <i class="fas fa-user-circle"></i>
           <div class="chevron">
             <i class="fas fa-caret-down"></i>
@@ -27,8 +27,8 @@
       </div>
 
       <div class="user flex h flex-end" *ngIf="!loggedin">
-        <div class="login flex h flex-end" routerLink="/login"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
-        <div class="register" routerLink="/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
+        <div class="login flex h flex-end" routerLink="/auth/login"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
+        <div class="register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
       </div>
 
     </div>
