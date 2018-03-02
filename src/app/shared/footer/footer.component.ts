@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  hideFooter = false;
+
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
+      const root: ActivatedRoute = this.route.root;
+      this.hideFooter = root.children[0].snapshot.data.hideNavbar;
+    });
   }
 
 }

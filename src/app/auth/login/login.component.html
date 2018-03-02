@@ -1,55 +1,27 @@
-<div class="container gradient">
-  <div>
-    <particles [params]="myParams" [style]="myStyle" [width]="width" [height]="height" id="particles-js"> </particles>
-  </div>
-  <div>
-    <div class="login-container">
-      <div class="header">
-        <br>
-        <br>
-        <br>
-        <br>
-        <span class="title"> C.L.A.R.K.</span>
-        <span class="sub-title">
-          <br>
-          <br>Cybersecurity Labs and Resource Knowledge-base</span>
-      </div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <form name="form" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
-        <div>
-          <div>
-            <input type="text" class="form" [ngClass]="{ hasError: loginForm.submitted && !username.valid }" name="username" placeholder="Username"
-              (ngModel)="username" #username="ngModel" (focus)="error=''" required />
-            <div *ngIf="loginForm.submitted && !username.valid" class="error">Username is required</div>
-          </div>
-          <br>
-          <div>
-            <input type="password" class="form" [ngClass]="{ hasError: loginForm.submitted && !password.valid }" name="password" placeholder="Password"
-              (ngModel)="password" #password="ngModel" (focus)="error=''" required />
-            <div *ngIf="loginForm.submitted && !password.valid" class="error">Password is required</div>
-          </div>
+<div class="wrapper">
+  <div class="content-box" [ngClass]="{'failed': loginFailure}">
+    <div class="top">
+      <div class="error"> {{ loginFailure || '' }} </div>
+      <div class="title">C.L.A.R.K.</div>
+      <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
+      <form (ngSubmit)="submit()">
+        <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
+          <input name="username" type="text" placeholder="Username" [(ngModel)]="authInfo.username" />
+          <i class="far fa-user"></i>
         </div>
-        <div>
-          <p class="links" id="align-left">Forgot password?</p>
+        <div class="input password" [ngClass]="{'active': authInfo.password !== ''}">
+          <input name="password" type="password" placeholder="Password" [(ngModel)]="authInfo.password" />
+          <i class="far fa-key"></i>
         </div>
-        <br>
-        <div class="submit input-wrapper">
-          <input type="submit" style="font-size: 18px; color:#2b4066" value="Log In" [disabled]="loading" class="button neutral-bright"
-          />
-          <!--Insert link for forgot password ability here-->
-          <div class="links" style="text-align: center" (click)="register()">
-            <span>Create an account</span>
-          </div>
-        </div>
-        <br>
-        <div *ngIf="error" class="error-block">
-          <span>{{ error }}</span>
-        </div>
+        <div class="forgot" routerLink="../forgot-password">Forgot password?</div>
+        <button type="type" class="auth-button">
+          <div class="text">Login</div>
+          <div class="mask"></div>
+        </button>
       </form>
+    </div>
+    <div class="bottom-link" routerLink="../register">
+      Don't have an account yet? <span>Register!</span>
     </div>
   </div>
 </div>

@@ -6,7 +6,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
-import { AuthenticationService } from '../../auth/services/authentication.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'learning-object-details',
@@ -31,7 +31,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private cartService: CartV2Service,
     private route: ActivatedRoute,
     private router: Router,
-    private auth: AuthenticationService
+    private auth: AuthService
   ) { }
 
   ngOnInit() {

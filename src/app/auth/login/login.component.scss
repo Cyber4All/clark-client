@@ -1,131 +1,34 @@
-@import '~_global-styles.scss';
-#particles-js {
-    opacity: 0.5;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -1 !important;
+@import '~_globals.scss';
+
+.content-box {
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+
+    & > div {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px 40px;
+    }
+
+    .top {
+        padding-top: 50px;
+    }
 }
 
-.login-container {
+form {
     margin: auto;
-    max-width: 600px;
-    padding: 2em;
-}
-
-.submit.input-wrapper {
-    margin-top: 1.5em;
-    display: flex;
-    flex-direction: column;
-}
-
-.header {
+    margin-top: 40px;
     width: 100%;
-    color: white;
-    text-align: center;
-}
 
-.header {
-    .sub-title {
-        font-size: 25px;
-        font-weight: 300;
-    }
-    .title {
-        font-size: 40px;
-        letter-spacing: 2px;
-        font-weight: 400;
-    }
-}
-
-.error-block {
-    text-align: center;
-    margin-bottom: 2em;
-    background-color: $error-red;
-    color: #FFF;
-    font-weight: 600;
-    padding: .5em;
-}
-
-.hasError {
-    color: $error-red;
-}
-
-.error {
-    color: $error-red;
-    position: absolute;
-}
-
-input.form:focus {
-    outline: none;
-}
-
-.button:hover {
-    cursor: pointer;
-    opacity: .75;
-    transition: opacity .3s ease;
-    -webkit-transition: opacity .3s ease;
-}
-
-.button:active {
-    opacity: .3;
-}
-
-.underline-on-hover:hover {
-    cursor: pointer;
-    text-decoration: underline
-}
-
-.gradient {
-    height: 100%;
-    width: 100% !important;
-    background: linear-gradient(to bottom, $dark-blue 0%, $bright-blue 120%);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: scroll;
-}
-
-.form {
-    display: flex;
-    margin: auto;
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: white;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    padding-bottom: 1.25em;
-    font-size: 18px;
-}
-
-.links {
-    margin-top: 1em;
-    cursor: pointer;
-    text-decoration: underline;
-    color: white;
-    font-size: 16px;
-}
-
-#align-left {
-    text-align: left;
-    margin-top: 25px;
-}
-
-@media screen and (max-width: 900px) {
-    .form {
-        font-size: 14px;
-    }
-    .submit.input-wrapper {
-        margin-top: 1em;
-    }
-    .header {
-        .sub-title {
-            font-size: 20px;
-        }
-        .title {
-            font-size: 35px;
+    .forgot {
+        color: $blue-accent;
+        margin-top: 10px;
+        cursor: pointer;
+        outline: 0;
+        
+        &:hover {
+            text-decoration: underline;
         }
     }
 }

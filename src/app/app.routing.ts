@@ -11,6 +11,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 import { AuthGuard } from './auth/services/auth-guard.service';
+import { AuthResolve } from './auth/auth.resolver';
 
 const detailRoute = {
     path: 'details/:username/:learningObjectName', component: DetailsComponent, data: { breadcrumb: 'Details' }
@@ -31,8 +32,7 @@ const routes: Routes = [
         path: 'library', component: RouterComponent, data: { breadcrumb: 'Library' }, canActivate: [AuthGuard],
         children: [{ path: '', component: CartComponent }, detailRoute]
     },
-    { path: 'login', component: LoginComponent, data: { hideNavbar: true, hideTopbar: true } },
-    { path: 'register', component: RegisterComponent, data: { hideNavbar: true, hideTopbar: true } },
+    { path: 'auth', loadChildren: 'app/auth/auth.module#AuthModule', data: { hideNavbar: true, hideTopbar: true, hideFooter: true }, resolve: { redirect:  AuthResolve} },
     // { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
     // { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
     // Catch All
