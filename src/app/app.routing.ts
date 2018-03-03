@@ -33,8 +33,8 @@ const routes: Routes = [
         children: [{ path: '', component: CartComponent }, detailRoute]
     },
     { path: 'auth', loadChildren: 'app/auth/auth.module#AuthModule', data: { hideNavbar: true, hideTopbar: true, hideFooter: true }, resolve: { redirect:  AuthResolve} },
-    // { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
-    // { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
+    { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
+    { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
     // Catch All
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
