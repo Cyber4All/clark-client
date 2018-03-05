@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="title">My Library</div>
-  <div class="count">{{cartService.cartItems.length}} item{{(cartService.cartItems.length != 1) ? 's' : ''}}</div>
+  <div class="count">{{cartService.cartItems.length || 0}} item{{(cartService.cartItems.length != 1) ? 's' : ''}}</div>
 
   <div *ngIf="cartService.cartItems.length" class="cart">
     <div *ngFor="let object of cartService.cartItems" class="object" (click)="goToItem(object)">
