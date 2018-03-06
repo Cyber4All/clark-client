@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
+import { AuthService } from '../auth/services/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,15 +19,14 @@ export class UserProfileComponent implements OnInit {
   // FIXME: Change to correct Type
   showContent: any;
 
-  constructor(private service: LearningObjectService) {
+  constructor(private service: LearningObjectService, private auth: AuthService) {
   }
 
   changeName() {    this.name = 'Houssein';  }
   ngOnInit() {
-    let user = localStorage.getItem("currentUser");
-    user = JSON.parse(user)
-    this.email = user["_email"];
-    this.name = user["_name"];
+    const user = this.auth.user;
+    this.email = user['email'];
+    this.name = user['name'];
   }
 
 }

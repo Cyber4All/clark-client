@@ -7,7 +7,7 @@ import { RouterModule, Router, ActivatedRoute, UrlSegment, NavigationEnd } from 
 import { Observable } from 'rxjs/Observable';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
-import { AuthenticationService } from '../../auth/services/authentication.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,37 +17,36 @@ import { AuthenticationService } from '../../auth/services/authentication.servic
 export class NavbarComponent implements OnInit {
 
   // FIXME: Convert 'class' to 'type' for consistancy
-
-  name = '';
   hideNavbar = false;
-  loggedin = (JSON.parse(localStorage.getItem('currentUser'))) ? true : false;
+  loggedin = this.authService.user ? true : false;
 
   constructor(private modalCtrl: ModalService, private router: Router,
-    private route: ActivatedRoute, private authService: AuthenticationService, private cartService: CartV2Service) {
+    private route: ActivatedRoute, private authService: AuthService, private cartService: CartV2Service) {
+
+      this.authService.isLoggedIn.subscribe(val => {
+        if (val) {
+          console.log('change', this.authService.user);
+          this.loggedin = true;
+          this.cartService.updateUser();
+          this.cartService.getCart();
+        } else {
+          this.loggedin = false;
+        }
+      });
   }
 
   ngOnInit() {
-    this.name = this.authService.getName() ? this.authService.getName() : '';
+    console.log('init user', this.authService.user);
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
       const root: ActivatedRoute = this.route.root;
       this.hideNavbar = root.children[0].snapshot.data.hideNavbar;
     });
-
-    this.authService.isLoggedIn().subscribe(val => {
-      if (val) {
-        this.loggedin = true;
-        this.name = this.authService.getName();
-        this.cartService.updateUser();
-        this.cartService.getCart();
-      } else {
-        this.loggedin = false;
-      }
-    });
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/']);
+    this.authService.logout().then(() => {
+      window.location.reload();
+    });
   }
 
   userprofile() {

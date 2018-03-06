@@ -1,216 +1,31 @@
-    @import '~_global-styles.scss';
-    #particles-js {
-        opacity: 0.5;
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1 !important;
-    }
-    /** Mixins **/
+@import '~_globals.scss';
 
-    @mixin flex1 {
-        display: flex;
-        justify-content: space-between;
-    }
+form {
+    margin: auto;
+    margin-top: 40px;
+    width: 100%;
+}
 
-    .register-wrapper {
-        padding: 1em; //margin: 1em auto;
-    }
-    /** Styling for buttons**/
+.h-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 15px;
 
-    .buttons {
-        display: flex;
-        justify-content: center;
+    .input {
+        width: 48%;
+        margin-bottom: 0px;
     }
+}
 
-    .button-style {
-        background: white;
-        color: $dark-blue;
-        font-size: 18px;
-        text-transform: uppercase;
-        transition: opacity .3s ease;
-        -webkit-transition: opacity .3s ease;
-        text-align: center;
-        border: none;
-        margin: 30px;
-        border: none;
-        border-radius: 4px;
-        padding: 16px;
-    }
+.input {
+    margin-bottom: 15px;
+}
 
-    .button:hover {
-        cursor: pointer;
-        opacity: .75;
-        transition: opacity .3s ease;
-        -webkit-transition: opacity .3s ease;
-    }
-
-    .button:active {
-        opacity: .3;
-    }
-
-    .flex-container {
-        @include flex1;
-        flex-flow: column nowrap;
-        align-items: stretch;
-        background: none;
-        width: 50%;
-        margin: 0 auto;
-    }
-    /** Styling for the input fields */
-
-    input.box {
-        background: none;
-        width: calc(100% - 50px); //you have to negate the padding of 25 px on each side */
-        color: white;
-        font-size: 18px;
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-        padding: 25px;
-        margin-bottom: 30px;
-        flex-grow: 1;
-        outline: none;
-    }
-
-    .box-width {
-        width: 100%;
-    }
-    /** Styling for the first and last name input fields**/
-
-    .name {
-        @include flex1;
-        flex-direction: row;
-    }
-
-    .name-width {
-        width: 45%;
-    }
-    /****/
-
-    .header {
-        margin: 1em 0;
-        width: 100%;
-        color: white;
-        font-weight: 400;
-        letter-spacing: 2px;
-        font-size: 40px;
-        text-align: center;
-    }
-
-    .error-block {
-        text-align: center;
-        margin-bottom: 2em;
-        background-color: $error-red;
-        color: #FFF;
-        font-weight: 600;
-        padding: .5em;
-    }
-
-    input.form {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-        padding-bottom: 1.25em;
-    }
-
-    .hasError {
-        color: $error-red;
-    }
-
-    .error {
-        color: $error-red;
-        position: absolute;
-        left: 25px;
-        width: 400px;
-        height: 20px;
-    }
-
-    .submit.input-wrapper {
-        margin-top: 2em;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .gradient {
-        height: 100%;
-        width: 100% !important;
-        background: linear-gradient(to bottom, $dark-blue 0%, $bright-blue 120%);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        overflow: scroll;
-    }
-
-    .button.login:hover {
-        text-decoration: underline;
-    }
-    /* Media Queries */
-
-    @media screen and (max-width: 600px) {
-        .submit,
-        .input-wrapper {
-            margin-top: 2em;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .buttons {
-            margin: 0;
-            margin-bottom: 1em;
-            width: 100%;
-        }
-    }
-
-    @mixin display {
-        .button-style {
-            font-size: 18px;
-            text-align: center;
-            border: none;
-            margin: 30px;
-            border: none;
-            border-radius: 4px;
-            padding: 16px;
-        }
-        .header {
-            font-size: 24px;
-        }
-        .flex-container {
-            width: 85%;
-        }
-        input.box {
-            width: calc(100% - 30px);
-            font-size: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-        .button-style {
-            font-size: 12px;
-            margin: 5px;
-        }
-    }
-    /* aimed for landscape */
-
-    @media screen and (max-width: 900px) {
-        @include display;
-        .buttons {
-            flex-direction: row;
-        }
-    }
-    /* aimed for portrait*/
-
-    @media screen and (max-width: 600px) {
-        @include display;
-        .buttons {
-            flex-direction: column;
-        }
-        .name {
-            flex-direction: column;
-        }
-        .name-width {
-            width: 100%;
-        }
-    }
+.line-spacer {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    // border-bottom: 2px dashed darken($placeholder, 0);
+    height: 1px;
+    display: none;
+}

@@ -45,9 +45,13 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 
+// Guards
+import { AuthGuard } from './auth/services/auth-guard.service';
+
 // Other
 import { RavenErrorHandler } from './error-handler';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
+import { AuthService } from './auth/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -80,7 +84,9 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
     LearningObjectService,
     CartService,
     CartV2Service,
-    process.env.NODE_ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler
+    AuthGuard,
+    AuthService,
+    process.env.NODE_ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler,
   ],
   bootstrap: [AppComponent]
 })
