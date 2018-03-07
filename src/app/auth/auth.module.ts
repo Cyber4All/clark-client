@@ -1,23 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { ParticlesModule } from 'angular-particle';
 import { FormsModule } from '@angular/forms';
-import { CookieModule } from 'ngx-cookie';
-
-
-import { LoginComponent } from './login/login.component';
-
-import { AuthRoutingModule } from './auth.routing';
-import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRouteSnapshot } from '@angular/router';
+
+// This module
+import { LoginComponent } from './login/login.component';
+import { AuthRoutingModule } from './auth.routing';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CanResetPasswordGuard } from './can-reset-password.guard';
-import { ActivatedRouteSnapshot } from '@angular/router';
-import { AuthComponent } from './auth/auth.component';
+import { AuthComponent } from './auth.component';
 import { AuthResolve } from './auth.resolver';
 
+// External Modules
+import { SharedModule } from '../shared/shared.module';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [
@@ -33,16 +33,8 @@ import { AuthResolve } from './auth.resolver';
     AuthRoutingModule,
     FormsModule,
     HttpClientModule,
-    CookieModule.forRoot()
+    CoreModule.forRoot()
   ],
   providers: [CanResetPasswordGuard, AuthResolve],
 })
-
-export class AuthModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: AuthModule,
-      providers: [CanResetPasswordGuard]
-    };
-  }
-}
+export class AuthModule { }

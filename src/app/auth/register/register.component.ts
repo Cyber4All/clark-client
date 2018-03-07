@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
+  selector: 'clark-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })

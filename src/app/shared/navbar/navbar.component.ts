@@ -1,16 +1,16 @@
-import { CartV2Service } from './../services/cartv2.service';
-import { CartService } from './../services/cart.service';
+import { CartV2Service } from '../../cube/cube-core/services/cartv2.service';
+import { CartService } from '../../cube/cube-core/services/cart.service';
 import { Component, OnInit } from '@angular/core';
-import { LearningObjectService } from '../../learning-object.service';
+import { LearningObjectService } from '../../cube/learning-object.service';
 import { ModalService, Position, ModalListElement } from '@cyber4all/clark-modal';
 import { RouterModule, Router, ActivatedRoute, UrlSegment, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
-import { AuthService } from '../../auth/services/auth.service';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'clark-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
