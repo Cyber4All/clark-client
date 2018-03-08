@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     }
   }
   goToContribute() {
-    window.location.href = 'http://onion.clark.center';
+    this.router.navigate(['/onion']);
   }
 
 }

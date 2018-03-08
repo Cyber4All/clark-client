@@ -36,6 +36,10 @@ export class AuthService {
     return this.user ? this.user.email : undefined;
   }
 
+  get status(): boolean {
+    return this.user ? true : false;
+  }
+
   validate(): Observable<User> {
     return this.http.get<User>(environment.apiURL + '/users/tokens', {withCredentials: true});
   }

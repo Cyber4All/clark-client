@@ -655,6 +655,11 @@ $course-color: #295948;
 }
 
 // styles for the 'switch' used for transitioning between SEARCH and CONTRIBUTE options (IE Onion and Cube)
+
+.content-switch-container.buffer {
+  margin-top: 95px;
+}
+
 .content-switch {
   width: 300px;
   overflow: hidden;

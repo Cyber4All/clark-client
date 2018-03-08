@@ -17,7 +17,6 @@ import { AuthResolve } from './auth.resolver';
 
 // External Modules
 import { SharedModule } from '../shared/shared.module';
-import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [
@@ -32,8 +31,7 @@ import { CoreModule } from '../core/core.module';
     ParticlesModule,
     AuthRoutingModule,
     FormsModule,
-    HttpClientModule,
-    CoreModule.forRoot()
+    HttpClientModule
   ],
   providers: [CanResetPasswordGuard, AuthResolve],
 })

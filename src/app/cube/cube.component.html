@@ -1,12 +1,11 @@
 <div class="outer-wrapper">
-  <clark-navbar></clark-navbar>
   <div class="content">
     <div class="inner-content">
       <div *ngIf="!hideTopbar" class="toolbar">
         <div class="content-switch-container">
           <div class="content-switch right">
             <div class="options">
-              <div class="left contribute" (click)="contentSwitchClick($event)">Contribute</div>
+              <div class="left contribute" (click)="contentSwitchClick($event)" routerLink="/onion">Contribute</div>
               <div class="right search active" (click)="contentSwitchClick($event)" routerLink="/home">Search</div>
             </div>
             <div class="highlight"></div>

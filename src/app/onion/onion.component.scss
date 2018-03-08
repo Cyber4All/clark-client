@@ -1,0 +1,26 @@
+@import '~_globals.scss';
+
+.flex {
+  display: flex;
+
+  &.h {
+    flex-direction: row;
+  }
+
+  &.v {
+    flex-direction: column;
+  }
+
+  &.left-right {
+    justify-content: space-between;
+  }
+
+  &.end {
+    justify-content: flex-end;
+  }
+}
+
+a:not(.no-link) {
+  text-decoration: underline;
+  color: $blue-accent;
+}

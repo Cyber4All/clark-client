@@ -1,5 +1,5 @@
 // Core
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -11,11 +11,12 @@ import { NavbarComponent } from './navbar/navbar.component';
 
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
-import { ModalModule } from '@cyber4all/clark-modal';
-import { NotificationModule } from 'clark-notification';
+import { NotificationModule } from '../shared/notifications';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ParticlesModule } from 'angular-particle';
 import { CookieModule } from 'ngx-cookie';
+import { ClickOutsideModule } from 'ng-click-outside';
+import { ModalModule } from './modals';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -25,19 +26,34 @@ import { CookieModule } from 'ngx-cookie';
 @NgModule({
   imports: [
     CommonModule,
-    CheckBoxModule,
     RouterModule,
-    NotificationModule,
-    ModalModule,
     ParticlesModule,
     VirtualScrollModule,
-    CookieModule.forRoot()
+    ClickOutsideModule,
+    CheckBoxModule,
+    ModalModule,
+    NotificationModule
   ],
+  providers: [ ],
   declarations: [
     NavbarComponent
   ],
   exports: [
-    NavbarComponent
+    NavbarComponent,
   ]
 })
 export class SharedModule { }
+
+
+/*
+    CommonModule,
+    CheckBoxModule,
+    RouterModule,
+    NotificationModule,
+    ModalModule.forRoot(),
+    ParticlesModule,
+    VirtualScrollModule,
+    CookieModule.forRoot(),
+    NotificationModule.forRoot(),
+    CheckBoxModule,
+*/

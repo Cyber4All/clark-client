@@ -3,7 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { saveAs as importedSaveAs } from 'file-saver';
-import { AuthService } from '../../../core/auth.service';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class CartV2Service {
@@ -18,7 +18,8 @@ export class CartV2Service {
   }
 
   updateUser() {
-    // get new user from localStorage
+    console.log('auth user', this.auth.user);
+    // get new user from auth service
     this.user = this.auth.user || undefined;
 
     // reset headers with new users auth token

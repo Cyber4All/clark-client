@@ -1,0 +1,43 @@
+@import '~_globals.scss';
+.upload-container {
+  max-width: 75%;
+  margin: auto;
+  min-height: 350px;
+  border: 2px dashed $blue-accent;
+  border-radius: 2px;
+}
+
+.upload-container:hover {
+  cursor: pointer;
+}
+
+.dz-preview .dz-image-preview {
+  display: none !important;
+}
+
+.dropzone {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.dropzone-message {
+  margin: auto;
+  align-self: center;
+  font-weight: 200;
+  font-size: 26px;
+  color: #a5a3a3;
+  pointer-events: none;
+}
+
+div.dz-progress,
+div.dz-message,
+div.dz-success-mark,
+div.dz-error-mark {
+  display: none !important;
+}
+
+div.dz-details:hover {
+  cursor: pointer !important;
+}

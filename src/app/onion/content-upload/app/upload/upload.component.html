@@ -1,0 +1,115 @@
+<div class="container">
+  <div class="inner-wrapper padded-bottom">
+    <div class="header">
+      <div class="back" routerLink="/onion/dashboard">
+        <div>
+          <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
+      </div>
+      <div class="title">Manage Materials</div>
+      <div></div>
+    </div>
+    <div class="dropzone upload-container" [dropzone]>
+      <div class="dropzone-message">
+        <div class="file-icons">
+          <i class="fal fa-image fa-2x"></i>
+          <i class="fal fa-file-pdf fa-2x"></i>
+          <i class="fal fa-file-word fa-2x"></i>
+        </div>
+        <span>Click or drop files here to upload.</span>
+      </div>
+    </div>
+  </div>
+  <div class="inner-wrapper">
+    <div class="section inline-flex">
+      <div class="title">Queued Uploads</div>
+      <div *ngIf="dzDirectiveRef.dropzone().files.length > 1" class="button bad" (click)="removeFromDZ(null)">
+        Clear Queue
+        <i class="far fa-times fa-w-12"></i>
+      </div>
+    </div>
+    <div [ngClass]="{'empty-section': dzDirectiveRef.dropzone().files.length == 0}">
+      <div class="text" *ngIf="dzDirectiveRef.dropzone().files.length == 0">No new files added!</div>
+      <div class="section file-listing" *ngFor="let file of dzDirectiveRef.dropzone().files; let i = index;">
+        <div>
+          {{ file.name }}
+        </div>
+        <div class="button bad icon-only" (click)="removeFromDZ(file)">
+          <i class="far fa-times"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inner-wrapper">
+    <div class="section">
+      <div class="title">Files Uploaded</div>
+    </div>
+    <div [ngClass]="{'empty-section': learningObject.repository.files.length == 0}">
+      <div class="text" *ngIf="learningObject.repository.files.length == 0">You don't have any files yet!</div>
+      <div *ngIf="learningObject.repository.files.length > 0" class="faux-table">
+        <div class="row columns file-listing-header">
+          <div class="cells">
+            <div class="cell">Name</div>
+            <div class="cell">Added</div>
+            <div class="placeholder"></div>
+          </div>
+        </div>
+        <div class="row file-listing" *ngFor="let file of learningObject.repository.files; let i = index;">
+          <div class="cells">
+            <div class="cell">
+              {{ file.name }}
+            </div>
+            <div class="cell">
+              {{ TimeFunctions.getTimestampAge(file.date) }}
+            </div>
+          </div>
+          <div class="button bad icon-only" (click)="markForDeletion(file, i)">
+            <i class="far fa-times"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="inner-wrapper">
+    <div class="section">
+      <div class="title">Urls</div>
+    </div>
+    <div [ngClass]="{'empty-section': learningObject.repository.urls.length == 0}">
+      <div class="text" *ngIf="learningObject.repository.urls.length == 0">You don't have any URLs yet!</div>
+      <div class="section url-wrapper" *ngFor="let url of learningObject.repository.urls; let i = index;">
+        <div class="link input-wrapper">
+          <input placeholder="Title" type="text" [(ngModel)]="learningObject.repository.urls[i].title" name="url.title.{{ i }}">
+          <input placeholder="https://example.com" type="text" [(ngModel)]="learningObject.repository.urls[i].url" name="url.url.{{ i }}">
+        </div>
+        <div class="button bad icon-only" (click)="removeURL(i)">
+          <i class="far fa-times"></i>
+        </div>
+      </div>
+      <div class="btn-group to-right">
+        <div (click)="addURL()" class="button good">Add URL
+          <i class="far fa-plus"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inner-wrapper notes">
+    <div class="section">
+      <div class="title">Notes</div>
+    </div>
+    <div class="notes">
+      <textarea rows="8" type="text" [(ngModel)]="learningObject.repository.notes" name="learningObjectNotes" placeholder="Add notes here"></textarea>
+    </div>
+  </div>
+  <div class="btn-group to-right final">
+    <button *ngIf="!uploading" type="button" (click)="save()" class="button good" [disabled]="submitting">Save
+      <i class="far fa-check"></i>
+    </button>
+    <button *ngIf="uploading" type="button" class="button good" [disabled]="submitting">
+      Uploading
+      <i class="far fa-spinner fa-pulse"></i>
+    </button>
+    <div class="button bad" routerLink="/onion/dashboard">Cancel
+      <i class="far fa-times"></i>
+    </div>
+  </div>
+</div>

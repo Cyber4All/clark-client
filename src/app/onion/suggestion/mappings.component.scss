@@ -1,0 +1,26 @@
+@import '~_globals.scss';
+
+ul {
+    list-style-type: none;
+}
+
+.cells {
+    justify-content: flex-start !important;
+
+    .cell {
+        width: 20% !important;
+        @include vert-center;
+    }
+}
+
+.wrapper {
+    background: lighten($blue-accent, 55);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.row:not(.columns) {
+    margin-bottom: 10px;
+    padding: 10px;
+}

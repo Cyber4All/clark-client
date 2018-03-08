@@ -1,0 +1,100 @@
+@import '~_globals.scss';
+ul {
+    list-style-type: none;
+}
+
+.faux-table {
+    $border-color: lighten($blue-accent, 40);
+    border: 1px solid $border-color;
+    max-height: 50000px;
+    transition: max-height 1.6s ease;
+
+
+    .row {
+        padding: 0px !important;
+        border-radius: 0px;
+
+        .cell:not(:last-child) {
+            border-right: 1px solid $border-color;
+        }
+
+         &:not(.columns) {
+            margin-bottom: 0px;
+            transform: scale(1);
+            opacity: 1;
+            transition: all 0.2s ease;
+            display: flex !important;
+            max-height: 1000px;
+
+            &.hide {
+                max-height: 0;
+                overflow: hidden;
+                border-bottom-width: 0px !important;
+                opacity: 0;
+            }
+
+            &:not(:last-child) {
+                border-bottom: 1px solid $border-color;
+            }
+
+        }
+
+        &.columns {
+            border-bottom: 2px solid $border-color;
+        }
+
+       ::ng-deep .placeholder {
+            width: 60px;
+            display: flex;
+            padding-right: 10px;
+            justify-content: flex-end;
+
+            .button {
+                @include vert-center;
+            }
+        }
+
+    }
+
+    .cell {
+        width: 100% !important;
+        padding: 10px;
+        box-sizing: border-box;
+
+        &:not(:last-child) {
+            max-width: 120px;
+        } 
+    }
+}
+
+::ng-deep {
+    .filter-container {
+
+        select {
+            min-width: 180px;
+        }
+    }
+
+    label {
+        @include vert-center;
+    }
+}
+
+::ng-deep .empty {
+    opacity: 0.6;
+    padding: 10px 0px 30px;
+}
+
+::ng-deep .sub-sub-title {
+    color: $blue-accent;
+}
+
+.wrapper {
+  background: lighten($blue-accent, 55);
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  .center {
+    text-align: center;
+  }
+}

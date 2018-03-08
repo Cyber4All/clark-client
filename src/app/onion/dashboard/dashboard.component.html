@@ -1,0 +1,52 @@
+<ng-container *ngIf="this.learningObjects.length > 0">
+  <div class="top">
+    <div class="title vert-center">Learning Objects</div>
+    <div class="actions btn-group to-right">
+      <div class="add button good" (click)="newLearningObject()">Add New
+        <i class="fas fa-plus"></i>
+      </div>
+      <div class="filter button neutral" (click)="filterDropdown($event)">Filter
+        <i class="fa fa-filter"></i>
+      </div>
+      <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected
+        <i class="fa fa-times"></i>
+      </div>
+    </div>
+  </div>
+  <div class="faux-table">
+    <div class="row columns">
+      <div class="select">
+        <checkbox [checked]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></checkbox>
+      </div>
+      <div class="cells">
+        <div class="cell">Name</div>
+        <div class="cell">Type</div>
+        <div class="cell">Last Updated</div>
+      </div>
+      <div class="options placeholder">
+        <!-- this is a placeholder and should remain empty -->
+      </div>
+    </div>
+    <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
+      <div class="row">
+        <checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></checkbox>
+        <div class="cells">
+          <div class="cell">{{l.name}}</div>
+          <div class="cell">{{l.length | titlecase}}</div>
+          <div class="cell">{{l.date | date:'medium'}}</div>
+        </div>
+        <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="this.learningObjects.length === 0">
+  <div class="banner no-lo">
+    <div class="text">You don't have any Learning Objects yet!</div>
+    <div (click)="newLearningObject()" class="button neutral bright">Create a Learning Object</div>
+  </div>
+</ng-container>

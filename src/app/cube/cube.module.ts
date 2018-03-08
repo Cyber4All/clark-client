@@ -11,7 +11,7 @@ import { CubeRoutingModule } from './cube.routing';
 // Services
 import { LearningObjectService } from './learning-object.service';
 import { CartService } from './cube-core/services/cart.service';
-import { CartV2Service } from './cube-core/services/cartv2.service';
+import { CartV2Service } from '../core/cartv2.service';
 
 // Redux
 import { StoreModule } from '@ngrx/store';
@@ -26,8 +26,6 @@ import { CubeCoreModule } from './cube-core/cube-core.module';
 import { CubeSharedModule } from './cube-shared/cube-shared.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from '../shared/shared.module';
-import { ModalModule } from '@cyber4all/clark-modal';
-import { NotificationModule } from 'clark-notification';
 import { CheckBoxModule } from 'clark-checkbox';
 import { AuthModule } from '../auth/auth.module';
 
@@ -35,7 +33,6 @@ import { AuthModule } from '../auth/auth.module';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from './cube-shared/footer/footer.component';
 import { CubeComponent } from './cube.component';
-import { HomeComponent } from './home/home.component';
 import { DetailsComponent } from './learning-object-details/details/details.component';
 import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
 import { CartComponent } from './cart/cart.component';
@@ -54,6 +51,8 @@ import { AuthService } from '../core/auth.service';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 import { RavenErrorHandler } from '../error-handler';
+import { ModalModule } from '../shared/modals';
+import { NotificationComponent, NotificationModule } from '../shared/notifications';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -76,28 +75,24 @@ import { RavenErrorHandler } from '../error-handler';
     HttpModule,
     FormsModule,
     CommonModule,
-    HomeModule,
     // 3rd Party imports
     ClickOutsideModule,
     ParticlesModule,
     VirtualScrollModule,
     // Local module imports
     StoreModule.forRoot({ cart: cartReducer }),
-    ModalModule.forRoot(),
-    NotificationModule.forRoot(),
-    CheckBoxModule,
     CubeCoreModule,
     CubeSharedModule,
     CubeRoutingModule,
     SharedModule,
+    HomeModule,
+    CheckBoxModule,
+    ModalModule,
+    NotificationModule
   ],
   providers: [
     LearningObjectService,
     CartService,
-    CartV2Service,
-    AuthGuard,
-    AuthService,
-    process.env.NODE_ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler,
   ],
   // bootstrap: [CubeComponent]
 })

@@ -43,8 +43,14 @@ const cube_routes: Routes = [
   }
 ];
 
+export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(cube_routes);
+/*
 @NgModule({
   imports: [RouterModule.forChild(cube_routes)],
   exports: [RouterModule]
 })
-export class CubeRoutingModule { }
+export class CubeRoutingModule implements ModuleWithProviders {
+  ngModule: Type<CubeRoutingModule>;
+  providers: []
+}
+*/

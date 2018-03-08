@@ -1,6 +1,6 @@
 import { LearningObjectService } from './learning-object.service';
 import { Component, OnInit } from '@angular/core';
-import { ModalService, Position, ModalListElement } from '@cyber4all/clark-modal';
+import { ModalService, Position, ModalListElement } from '../shared/modals';
 import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
@@ -35,9 +35,7 @@ export class CubeComponent implements OnInit {
       h.classList.add('left');
       this.activeContentSwitcher = 'contribute';
 
-      setTimeout(() => {
-        window.location.href = 'http://onion.clark.center';
-      }, 250);
+      this.router.navigate(['onion']);
     } else if (el.classList.contains('search') && this.activeContentSwitcher !== 'search') {
       h.classList.remove('left');
       h.classList.add('right');

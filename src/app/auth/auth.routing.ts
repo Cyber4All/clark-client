@@ -13,9 +13,9 @@ const auth_routes: Routes = [
     {
         path: '', component: AuthComponent, children: [
             { path: '', redirectTo: 'login', pathMatch: 'full' },
-            { path: 'login', component: LoginComponent, },
-            { path: 'register', component: RegisterComponent, },
-            { path: 'forgot-password', component: ForgotPasswordComponent, },
+            { path: 'login', component: LoginComponent },
+            { path: 'register', component: RegisterComponent },
+            { path: 'forgot-password', component: ForgotPasswordComponent },
             { path: 'reset-password', component: ResetPasswordComponent, canActivate: [CanResetPasswordGuard] },
             // Catch All
             { path: '**', redirectTo: 'login', pathMatch: 'full' }
