@@ -3,39 +3,22 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../auth/services/auth.service';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { UserInformationComponent } from '../user-information/user-information.component'; 
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'], 
 })
+
 export class UserProfileComponent implements OnInit {
-  //User Information 
-  name: String;
-  employer: String;
-  contributor = false;
-  modulesCreated: LearningObject[];
-  modulesDownloaded = 34;
-  title = "Student";
-  email: String;
-  password: String;
-  //Display Variables
-  showContent = 0;
-  editContent = true;
   myStyle;
   particleParams;
-
-
 
   constructor(private service: LearningObjectService, private auth: AuthService) {
   }
 
-  changeName() { this.name = 'Houssein'; }
   ngOnInit() {
-    const user = this.auth.user;
-    this.email = user['email'];
-    this.name = user['name'];
-    this.employer = user['organization'];
 
     this.myStyle = {
       'position': 'absolute',
@@ -54,7 +37,7 @@ export class UserProfileComponent implements OnInit {
           'value': 50,
           'density': {
             'enable': true,
-            'value_area': 450
+            'value_area': 900
           }
         },
         'color': {
@@ -139,7 +122,7 @@ export class UserProfileComponent implements OnInit {
           },
           'bubble': {
             'distance': 50,
-            'size': 20,
+            'size': 10,
             'duration': 2,
             'opacity': 8,
             'speed': 3

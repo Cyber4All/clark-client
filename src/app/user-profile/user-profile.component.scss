@@ -9,16 +9,13 @@
   }
 
 #container-rounded { 
-    border-radius: 25px; 
-    border: 2px solid $blue-accent; 
+    border-radius: 45px; 
+    border: 5px solid $blue-accent; 
     border-top: 0px;
     border-bottom: 0px;
-   // padding: 20px; 
-   // width: 200px; 
-   // height: 100%;
+    border-left-color: #0c2347; 
     min-height: 50px;
     overflow: hidden;
-    //height: 700px; //comment out when finished 
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -32,19 +29,18 @@
   
   .splash {
     background: linear-gradient(45deg, desaturate(darken($blue-accent, 20), 15), $blue-accent);
-    //padding: 50px 0px;
     background-position: center;
     padding-top: 50px;
 	padding-bottom: 50px;
     box-sizing: border-box; /* here */
-    border-radius: 22.5px;
-    border-bottom-right-radius: 0px; 
-    border-bottom-left-radius: 0px; 
+    //border-radius: 22.3px;
+    //border-bottom-right-radius: 0px; 
+    //border-bottom-left-radius: 0px; 
     bottom:0;
     left:0;
     width: 100%; 
     flex-direction: column; 
-    height: 250px; 
+    height: 150px; 
     position: relative;
     
     ::ng-deep .particles-container {
@@ -52,23 +48,19 @@
     }
 
     .image-container {
-        //background-color: rgb(231, 230, 230);
+        //background-color: rgb(231, 230, 230); //for testing and visibility
         display: block;
         margin: 0 auto;
-        margin-top: 10%;
+        margin-top: 1%;
         position: relative;
-        width: 50%;
+        width: 7%;
     }
 }
 
     .container-inner { 
-        //border-radius: 25px; 
-        //background: green;
-        //min-height: 300px;
+        //background: green; //for testing and visibility 
         overflow: hidden;
-        // padding: 20px; 
-        // width: 200px; 
-        height: 45%; //comment out when finished
+        height: 45%; 
         display: flex;
         position: relative;
         flex-direction: column;
@@ -79,8 +71,7 @@
         margin: auto;
         margin-top: 115px; 
         margin-bottom: 0px;
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        //box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
         min-width: 500px;
       }
-
 }

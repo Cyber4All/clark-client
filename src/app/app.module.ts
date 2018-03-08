@@ -53,6 +53,7 @@ import { AuthGuard } from './auth/services/auth-guard.service';
 import { RavenErrorHandler } from './error-handler';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { AuthService } from './auth/services/auth.service';
+import { UserInformationComponent } from './user-information/user-information.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,7 @@ import { AuthService } from './auth/services/auth.service';
     CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
     RouterComponent,
-    BrowseComponent, UserProfileComponent, UserPreferencesComponent,
+    BrowseComponent, UserProfileComponent, UserPreferencesComponent, UserInformationComponent,
   ],
   imports: [
     BrowserModule,
