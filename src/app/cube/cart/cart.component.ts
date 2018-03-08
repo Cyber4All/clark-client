@@ -11,14 +11,13 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-
   cartItems: LearningObject[] = [];
 
   constructor(
     public cartService: CartV2Service,
     private learningObjectService: LearningObjectService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loadCart();
@@ -27,8 +26,10 @@ export class CartComponent implements OnInit {
   async loadCart() {
     const val = await this.cartService.getCart();
     if (val) {
-      this.cartItems = <Array<LearningObject>>val;
-      console.log(this.cartItems);
+      this.cartItems = val.map(object =>
+        LearningObject.instantiate(JSON.parse(JSON.stringify(object)))
+      );
+      console.log('This cart items', this.cartItems);
     } else {
       console.log('not logged in!');
     }
@@ -38,9 +39,7 @@ export class CartComponent implements OnInit {
     this.cartService.checkout();
   }
 
-  saveBundle() {
-
-  }
+  saveBundle() {}
 
   async clearCart() {
     if (await this.cartService.clearCart()) {
@@ -54,7 +53,10 @@ export class CartComponent implements OnInit {
     event.stopPropagation();
     const author = object._author._username;
     const learningObjectName = object._name;
-    const val = await this.cartService.removeFromCart(author, learningObjectName);
+    const val = await this.cartService.removeFromCart(
+      author,
+      learningObjectName
+    );
     if (val) {
       this.cartItems = <Array<LearningObject>>val;
     } else {
@@ -72,5 +74,4 @@ export class CartComponent implements OnInit {
   goToItem(object) {
     this.router.navigate(['/details/', object._author._username, object._name]);
   }
-
 }

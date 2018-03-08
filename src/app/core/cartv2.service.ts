@@ -4,6 +4,7 @@ import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
+import { isArray } from 'util';
 
 @Injectable()
 export class CartV2Service {
@@ -30,21 +31,24 @@ export class CartV2Service {
     window.open(url);
   }
 
-  getCart(reloadUser = false): Promise<Array<LearningObject>> | boolean {
-    return this.user
-      ? this.http
-          .get(USER_ROUTES.GET_CART(this.user.username), {
-            withCredentials: true,
-            headers: this.headers
-          })
-          .toPromise()
-          .then(val => {
-            this.cartItems = val
-              .json()
-              .map(object => LearningObject.instantiate(object));
-            return this.cartItems;
-          })
-      : false;
+  getCart(reloadUser = false): Promise<LearningObject[]> {
+    if (!this.user) return null;
+
+    return this.http
+      .get(USER_ROUTES.GET_CART(this.user.username), {
+        withCredentials: true,
+        headers: this.headers
+      })
+      .toPromise()
+      .then(val => {
+        console.log('Get Cart', val.json());
+        if (isArray(val.json()))
+          this.cartItems = val
+            .json()
+            .map(object => LearningObject.instantiate(object));
+        this.cartItems = val.json();
+        return this.cartItems;
+      });
   }
 
   async addToCart(
@@ -65,9 +69,12 @@ export class CartV2Service {
           )
           .toPromise()
           .then(async val => {
-            this.cartItems = val
-              .json()
-              .map(object => LearningObject.instantiate(object));
+            console.log('Add to Cart', val.json());
+            if (isArray(val.json()))
+              this.cartItems = val
+                .json()
+                .map(object => LearningObject.instantiate(object));
+            this.cartItems = val.json();
             return this.cartItems;
           })
       : false;
@@ -90,9 +97,12 @@ export class CartV2Service {
           )
           .toPromise()
           .then(val => {
-            this.cartItems = val
-              .json()
-              .map(object => LearningObject.instantiate(object));
+            console.log('Remove from Cart', val.json());
+            if (isArray(val.json()))
+              this.cartItems = val
+                .json()
+                .map(object => LearningObject.instantiate(object));
+            this.cartItems = val.json();
             return this.cartItems;
           })
       : false;
