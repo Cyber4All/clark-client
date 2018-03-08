@@ -5,8 +5,10 @@
   <div *ngIf="cartService.cartItems.length" class="cart">
     <div *ngFor="let object of cartService.cartItems" class="object" (click)="goToItem(object)">
       <div>
-        <div class="name">{{object._name}} <span class="length " [ngClass]="object._length">{{ object._length }}</span></div>
-        <div class="author">{{object._author._name}}</div>
+        <div class="name">{{object.name}}
+          <span class="length " [ngClass]="object.length">{{ object.length }}</span>
+        </div>
+        <div class="author">{{object.author.name}}</div>
       </div>
       <div class="actions">
         <div class="button icon-only good" (click)="downloadObject($event, object)">

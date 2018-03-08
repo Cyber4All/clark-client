@@ -5,8 +5,8 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://localhost:3000/api',
+  apiURL: 'http://localhost:3000',
   apiVersion: 'v1',
   STATE_STORAGE_LOCATION: 'state',
-  suggestionUrl: 'http://localhost:3010/api'
+  suggestionUrl: 'http://localhost:3010'
 };

@@ -11,7 +11,6 @@ import * as querystring from 'querystring';
 // TODO: move to core module
 @Injectable()
 export class LearningObjectService {
-
   filteredResults;
   dataObserver;
   data;
@@ -36,7 +35,7 @@ export class LearningObjectService {
     window.open(url);
   }
 
- /**
+  /**
    * Fetches Array of Learning Objects
    *
    * @returns {Promise<LearningObject[]>}
@@ -47,27 +46,28 @@ export class LearningObjectService {
     if (query) {
       const queryClone = Object.assign({}, query);
       if (queryClone.standardOutcomes && queryClone.standardOutcomes.length) {
-        queryClone.standardOutcomes = (<string[]> queryClone.standardOutcomes).map(o => o['id']);
+        queryClone.standardOutcomes = (<string[]>queryClone.standardOutcomes).map(
+          o => o['id']
+        );
       }
       const queryString = querystring.stringify(queryClone);
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+        queryString
+      );
     } else {
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
-    return this.http.get(route)
+    return this.http
+      .get(route)
       .toPromise()
-      .then((response) => {
+      .then(response => {
         const res = response.json();
         const objects = res.objects;
         this.totalLearningObjects = res.total;
-        return objects.map((_learningObject: string) => {
-          const learningObject = LearningObject.unserialize(_learningObject);
-          return learningObject;
-        });
+        return objects.map(object => LearningObject.instantiate(object));
       });
   }
-
 
   /**
    * Fetches LearningObject by id
@@ -76,13 +76,21 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
    */
-  getLearningObject(author: string, learningObjectName: string): Promise<LearningObject> {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName);
-    return this.http.get(route)
+  getLearningObject(
+    author: string,
+    learningObjectName: string
+  ): Promise<LearningObject> {
+    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
+      author,
+      learningObjectName
+    );
+    return this.http
+      .get(route)
       .toPromise()
-      .then((learningObject) => {
-        return learningObject ? LearningObject.unserialize(learningObject.json().object) : null;
+      .then(learningObject => {
+        return learningObject
+          ? LearningObject.instantiate(learningObject.json().object)
+          : null;
       });
   }
-
 }
