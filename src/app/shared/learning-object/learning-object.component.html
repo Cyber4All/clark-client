@@ -7,11 +7,11 @@
     <div class="title">{{ learningObject.name }}</div>
     <div class="details">
       <div class="author">
-        By: {{ learningObject.author._name }}, updated {{ date | date:'mediumDate' }}
+        By: {{ learningObject.author.name }}, updated {{ date | date:'mediumDate' }}
       </div>
     </div>
     <div class="goals">
       {{ goals }}
     </div>
   </div>
-</div> 
+</div>
