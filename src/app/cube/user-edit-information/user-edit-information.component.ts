@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/services/auth.service';
+import { UserService } from '../../core/user.services';
 
 @Component({
   selector: 'app-user-edit-information',
@@ -21,7 +21,7 @@ export class UserEditInformationComponent implements OnInit {
   redirectRoute;
   redirectUrl;
 
-  constructor(private auth: AuthService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     
@@ -31,7 +31,7 @@ export class UserEditInformationComponent implements OnInit {
     this.registerFailure = undefined;
     clearTimeout(this.registerFailureTimer);
 
-    this.auth.updateInfo(this.editInfo).subscribe(val => {
+    this.userService.editUserInfo(this.editInfo).then(val => {
       if (this.redirectRoute) {
         window.location.href = window.location.origin + this.redirectRoute;
         // this.router.navigate([this.redirectRoute]);
