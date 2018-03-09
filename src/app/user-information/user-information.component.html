@@ -1,18 +1,14 @@
 <div>
       <h1 class="title">{{name}}</h1>
-      <input type="text" *ngIf="editContent === 1" [(ngModel)]="name">
       <p class="title">{{email}}</p>
-      <input type="text" *ngIf="editContent === 1" [(ngModel)]="email">
       <p class="title">{{employer}}</p>
-      <input type="text" *ngIf="editContent === 1" [(ngModel)]="employer">
 </div>
 
 <div>
+   <!-- <p *ngIf="modules.length === 0">No modules</p> -->
     <ul>
-        <li>
-          <a routerLink="this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS({{this.username}})">
-            <p>{{modules}}</p>
-          </a>
+        <li *ngFor="let string of array">
+            {{string.name}}
         </li>
       </ul>
 </div>

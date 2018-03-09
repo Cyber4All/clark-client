@@ -5,7 +5,15 @@
       <img class="image-container" src="https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-512.png" style="width:200px">
   </div>
   <div class="container-inner">
-      <app-user-information></app-user-information>          
+      <button id="margin-between" *ngIf="editContent !== 1" (click)="editContent=1">Edit User Information</button>
+      <button id="bottom-margin" *ngIf="editContent === 1" (click)="editContent=0">Cancel</button>
+      <div *ngIf="editContent !== 1">
+        <app-user-information></app-user-information>
+      </div>
+      <div *ngIf="editContent === 1">
+        <app-user-edit-information></app-user-edit-information>
+      </div>
+      <!--<router-outlet></router-outlet>-->
   </div>
 </div>
 

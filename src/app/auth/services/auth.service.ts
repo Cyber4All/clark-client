@@ -90,4 +90,16 @@ export class AuthService {
       return url;
     }
   }
+
+  updateInfo (user: {firstname: string, lastname: string, email: string, organization: string}): Observable<any> {
+    
+    return this.http.patch(
+      environment.apiURL + '/users/name', user.firstname,  
+      {withCredentials: true, responseType: 'text'});
+  }
  }
+
+
+ //${environment.apiURL}/users/${username}/learning-objects/${learningObjectName}/files`;
+
+ ///email/${email}/organization/${organization}', 

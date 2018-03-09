@@ -16,7 +16,9 @@ export class UserInformationComponent implements OnInit {
   name: String;
   employer: String;
   contributor = false;
-  //modulesCreated: LearningObject[];
+  modules: LearningObject[];
+  check:any; 
+  array: any; 
   //modulesCreated: number; 
   email: String;
   password: String;
@@ -26,7 +28,7 @@ export class UserInformationComponent implements OnInit {
   editContent = true;
   private headers = new Headers();
 
-  public modules: Array<LearningObject> = [];
+  //public modules: Array<LearningObject> = [];
 
   constructor(private service: LearningObjectService, private auth: AuthService, private http: Http) { }
 
@@ -37,15 +39,37 @@ export class UserInformationComponent implements OnInit {
     this.name = user['name'];
     this.employer = user['organization'];
     this.username = user['username']; 
-    //console.log(this.modulesCreated); 
+    this.array = [
+      { name:"scott", job:"doctor" }, 
+      { name:"scott", job:"doctor" }, 
+      { name:"rob", job:"doctor" } 
+    ];
+    this.values(); 
+       //console.log(this.modules); 
   }
 
-  getModules(reloadUser = false): Promise<Array<LearningObject>> | boolean {
-    return (this.auth.user) ? this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username), {withCredentials: true,  headers: this.headers })
-      .toPromise()
-      .then(val => {
-        this.modules = <Array<LearningObject>>val.json();
-        return this.modules;
-      }) : false;
+  getModules(reloadUser = true) {
+    return (this.auth.user) ? this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username)).map(
+      (res) => res.json().subscribe((data) => this.modules = data, //console.log(this.modules)
+     ), {withCredentials: true,  headers: this.headers }) : false;
+    }
+
+  async values() {
+    const val = await this.getModules();
+    if (val) {
+      this.check = val;
+      console.log(this.modules);
+    } else {
+      console.log('nothing!');
+    }
   }
+
+/*getModules(reloadUser = false): Promise<Array<LearningObject>> | boolean {
+  return (this.auth.user) ? this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username), {withCredentials: true,  headers: this.headers })
+    .toPromise()
+    .then(val => {
+      this.modules = <Array<LearningObject>>val.json();
+      return this.modules;
+    }) : false;
+}*/
 }
