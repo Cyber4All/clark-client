@@ -4,7 +4,7 @@ import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { CartService } from '../../cube-core/services/cart.service';
+import { CartService } from '../../core/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
 

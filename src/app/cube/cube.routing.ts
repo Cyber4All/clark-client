@@ -9,7 +9,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
-import { RouterComponent } from './cube-shared/breadcrumb/router.component';
+import { RouterComponent } from './shared/breadcrumb/router.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { AuthResolve } from '../auth/auth.resolver';
 import { CubeComponent } from './cube.component';
@@ -44,13 +44,3 @@ const cube_routes: Routes = [
 ];
 
 export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(cube_routes);
-/*
-@NgModule({
-  imports: [RouterModule.forChild(cube_routes)],
-  exports: [RouterModule]
-})
-export class CubeRoutingModule implements ModuleWithProviders {
-  ngModule: Type<CubeRoutingModule>;
-  providers: []
-}
-*/
