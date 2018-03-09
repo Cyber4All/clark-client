@@ -1,0 +1,45 @@
+@import '~_globals.scss';
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+$footer-height: 250px;
+footer {
+  color: whitesmoke;
+  flex-shrink: 0;
+  height: $footer-height;
+  background: $blue-gradient;
+  display: flex;
+  flex-flow: row nowrap;
+  .funding-info {
+    font-size: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    margin-left: 20px;
+    .nsa-wrapper {
+      width: 400px;
+      text-align: center;
+      margin-top: auto;
+      margin-bottom: 20px;
+      p {
+        margin: 0;
+      }
+    }
+    img {
+      width: 150px;
+    }
+  }
+  .small-links {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: auto;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    .divider {
+      padding: 0 8px;
+    }
+  }
+  a,
+  .small-links {
+    color: whitesmoke;
+    font-size: 16px;
+  }
+}

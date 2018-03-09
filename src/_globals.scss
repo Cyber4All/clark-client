@@ -9,6 +9,7 @@
 // variables
 $topbarHeight: 75px;
 $max-width: 1200px;
+$bright-blue: #3789CE;
 $blue-accent: #3B608B;
 $dark-blue: #2b4066;
 $green: #389857;
@@ -554,6 +555,7 @@ $course-color: #295948;
   background: $wrapper-background;
   z-index: 1;
   font-family: "Source Sans Pro", sans-serif;
+  overflow-y: scroll;
 }
 
 // use this inside container divs to standardize the max-width and maintain grid structures
@@ -565,16 +567,18 @@ $course-color: #295948;
 
 // fixed postion nav bar
 .topbar {
-  position: relative;
+  position: fixed;
   width: 100%;
   padding: 20px;
   background: white;
-  z-index: 2;
+  z-index: 3;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
   color: $blue-accent;
+  box-sizing: border-box;
 
   .inner {
     max-width: 100%;
+    box-sizing: border-box;
   }
 
   .logo {
@@ -651,6 +655,11 @@ $course-color: #295948;
 }
 
 // styles for the 'switch' used for transitioning between SEARCH and CONTRIBUTE options (IE Onion and Cube)
+
+.content-switch-container.buffer {
+  margin-top: 95px;
+}
+
 .content-switch {
   width: 300px;
   overflow: hidden;

@@ -1,0 +1,120 @@
+<div>
+  <div class="inner">
+    <form #form="ngForm" (ngSubmit)="form.valid ? save(false) : showFormErrors()">
+      <div class="inner-wrapper">
+        <div class="header">
+          <div class="back" routerLink="/onion/dashboard">
+            <div>
+              <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
+          </div>
+          <div class="title">{{isNew ? 'New' : 'Edit'}} Learning Object</div>
+          <div></div>
+        </div>
+        <div class="section">
+          <div class="faux-table">
+            <div class="row columns">
+              <div class="cells">
+                <div class="cell">Name</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cells">
+                <div class="cell">
+                  <input class="name-field" type="text" name="name" required placeholder="Learning Object Name" [(ngModel)]="learningObject.name"
+                    #name="ngModel" [ngClass]="{'bad': submitted && !name.valid}" />
+                </div>
+              </div>
+            </div>
+            <div class="row columns">
+              <div class="cells">
+                <div class="cell">Type</div>
+                <div class="cell type">Level</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cells">
+                <div class="cell type">
+                  <div class="select-wrapper">
+                    <select [(ngModel)]="learningObject.length" name="type" class="flex-g1 vert-center">
+                      <option value="nanomodule">Nanomodule - up to 1 hour</option>
+                      <option value="micromodule">Micromodule - between 1 and 4 hours</option>
+                      <option value="module">Module - between 4 and 10 hours</option>
+                      <option value="unit">Unit - over 10 hours</option>
+                      <option value="course">Course (15 weeks)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="cell type">
+                  <div class="select-wrapper">
+                    <select [(ngModel)]="learningObject.level" name="level" class="flex-g1 vert-center">
+                      <option value="graduate">Graduate</option>
+                      <option value="undergraduate">Undergraduate</option>
+                      <option value="k-12">K-12</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="inner-wrapper">
+        <div class="section">
+          <div class="title">Learning Goals</div>
+          <div class="goals list" [ngClass]="{'empty-section': learningObject.goals.length == 0}">
+            <ng-container *ngIf="learningObject.goals.length > 0">
+              <ul class="goal-list" dnd-sortable-container [sortableData]="learningObject.goals">
+                <li *ngFor="let goal of learningObject.goals; let i = index" class="">
+                  <input [(ngModel)]="goal.text" [name]="'goal' + i" type="text" placeholder="Learning Goal" />
+                  <div class="grippy-container" dnd-sortable [sortableIndex]="i">
+                    <div class="draganddrop"></div>
+                  </div>
+                  <div class="button bad icon-only" (click)="deleteGoal(i)">
+                    <i class="far fa-times"></i>
+                  </div>
+                </li>
+              </ul>
+            </ng-container>
+            <div class="text" *ngIf="learningObject.goals.length == 0">You don't have any Learning Goals yet!</div>
+            <div class="btn-group to-right">
+              <div (click)="newGoal()" class="button good">Add Learning Goal
+                <i class="far fa-plus"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="inner-wrapper">
+        <div class="section">
+          <div class="title sticky">Learning Outcomes</div>
+          <div class="outcomes list" [ngClass]="{'empty-section': learningObject.outcomes.length == 0}">
+            <ng-container *ngIf="learningObject.outcomes.length > 0">
+              <div class="outcome-list" dnd-sortable-container [sortableData]="learningObject.outcomes" [attr.style]="'cursor: default !important;'">
+                <div *ngFor="let outcome of learningObject.outcomes; let i = index">
+                  <learning-outcome-component [submitted]="submitted" [outcome]="outcome" [index]="i" (deleteIndex)="deleteOutcome(i)"></learning-outcome-component>
+                </div>
+              </div>
+            </ng-container>
+            <div class="text" *ngIf="learningObject.outcomes.length == 0">You don't have any Learning Outcomes yet!</div>
+            <div class="btn-group to-right">
+              <div (click)="newOutcome()" class="button good">Add Learning Outcome
+                <i class="far fa-plus"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-group to-right final">
+        <button type="submit" class="button good">Save
+          <i class="far fa-check"></i>
+        </button>
+        <div class="button bad" routerLink="/onion/dashboard">Cancel
+          <i class="far fa-times"></i>
+        </div>
+        <div class="button neutral" (click)="form.valid ? save(true) : showFormErrors()">Upload Materials
+          <i class="far fa-upload"></i>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<div *ngIf="learningObject" class="lobject-container">
+  <div class="section">
+    <div class="header">
+      <div class="back" routerLink="/onion/dashboard">
+        <div>
+          <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
+      </div>
+      <div class="title">{{ learningObject.name }}</div>
+      <div class="btn-group to-right">
+        <div routerLink="/onion/content/upload/{{learningObjectName}}" class="button good ">Manage Materials
+          <i class="far fa-edit "></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inner-wrapper">
+    <div class="section">
+      <div class="title">Files Uploaded</div>
+    </div>
+    <div [ngClass]="{'empty-section': learningObject.repository.files.length == 0}">
+      <div class="text" *ngIf="learningObject.repository.files.length == 0">You don't have any files yet!</div>
+      <div *ngIf="learningObject.repository.files.length > 0" class="faux-table">
+        <div class="row columns file-listing-header">
+          <div class="cells">
+            <div class="cell">Name</div>
+            <div class="cell">Added</div>
+            <div class="placeholder"></div>
+          </div>
+        </div>
+        <div class="row file-listing" *ngFor="let file of learningObject.repository.files; let i = index;">
+          <div class="cells">
+            <div class="cell">
+              {{ file.name }}
+            </div>
+            <div class="cell">
+              {{ TimeFunctions.getTimestampAge(file.date) }}
+            </div>
+          </div>
+          <a [href]="file.url" class="button good icon-only">
+            <i class="far fa-eye"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inner-wrapper">
+    <div class="section">
+      <div class="title">Links Added</div>
+    </div>
+    <div [ngClass]="{'empty-section': learningObject.repository.urls.length == 0}">
+      <div class="text" *ngIf="learningObject.repository.urls.length == 0">You don't have any links yet!</div>
+      <div *ngIf="learningObject.repository.urls.length > 0" class="faux-table">
+        <div class="row columns">
+          <div class="cells">
+            <div class="cell">Title</div>
+            <div class="cell">Link</div>
+          </div>
+        </div>
+        <div class="row url-listing" *ngFor="let url of learningObject.repository.urls; let i = index;">
+          <div class="cells">
+            <div class="cell">
+              {{ url.title }}
+            </div>
+            <div class="cell trailing-overflow">
+              <a target="_blank" [href]="url.url">{{ url.url }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inner-wrapper">
+    <div class="section">
+      <div class="title">Notes</div>
+    </div>
+    <div [ngClass]="{'empty-section': !learningObject.repository.notes}">
+      <div class="text" *ngIf="!learningObject.repository.notes">You don't have any notes yet!</div>
+      <p class="notes">
+        {{ learningObject.repository.notes }}
+      </p>
+    </div>
+  </div>
+</div>

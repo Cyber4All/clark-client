@@ -1,0 +1,17 @@
+<div class="learning-object" [ngClass]="learningObject.length" routerLink="/details/{{ learningObject.author.username }}/{{learningObject.name}}">
+  <div class="image">
+    <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
+    <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
+  </div>
+  <div class="learning-object-content">
+    <div class="title">{{ learningObject.name }}</div>
+    <div class="details">
+      <div class="author">
+        By: {{ learningObject.author.name }}, updated {{ date | date:'mediumDate' }}
+      </div>
+    </div>
+    <div class="goals">
+      {{ goals }}
+    </div>
+  </div>
+</div>

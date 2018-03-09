@@ -1,0 +1,32 @@
+<mappings-list [mappings]="mappings" (delete)="removeStandardByID($event, m)" *ngIf="opened || mappings.size"></mappings-list>
+<ng-container *ngIf="opened">
+    <div class="sub-title sub-sub-title">Outcomes From Other Sources</div>
+    <suggestion-filter (date)="updateDate($event)" (name)="updateName($event)" (source)="updateSource($event)"></suggestion-filter>
+    <div class="faux-table" *ngIf="standardOutcomes.length > 0">
+      <div class="row columns">
+        <div class="cells">
+          <div class="cell">Author</div>
+          <div class="cell">Date</div>
+          <div class="cell">Name</div>
+          <div class="cell">Outcome</div>
+        </div>
+        <div class="placeholder"></div>
+      </div>
+      <ng-container *ngFor="let s of standardOutcomes; let i = index">
+        <div class="row" [ngClass]="{'hide': mappings.get(s.id)}">
+          <div class="cells">
+            <div class="cell">{{s.author}}</div>
+            <div class="cell">{{s.date}}</div>
+            <div class="cell">{{s.name}}</div>
+            <div class="cell">{{s.outcome}}</div>
+          </div>
+          <div class="placeholder"><div class="button icon-only good" (click)="addStandard(s)"><i class="far fa-plus"></i></div></div>
+        </div>
+      </ng-container>
+    </div>
+    <div *ngIf="standardOutcomes.length < 1" class="wrapper">
+      <div class="empty center">
+          No Outcomes Found
+      </div>
+    </div>
+</ng-container>

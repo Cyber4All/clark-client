@@ -1,0 +1,31 @@
+<div class="outer-wrapper">
+  <div class="content">
+    <div class="inner-content">
+      <div *ngIf="!hideTopbar" class="toolbar">
+        <div class="content-switch-container">
+          <div class="content-switch right">
+            <div class="options">
+              <div class="left contribute" (click)="contentSwitchClick($event)" routerLink="/onion">Contribute</div>
+              <div class="right search active" (click)="contentSwitchClick($event)" routerLink="/home">Search</div>
+            </div>
+            <div class="highlight"></div>
+          </div>
+        </div>
+        <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
+        <div class="search-bar">
+          <form (submit)="performSearch(searchBar)">
+            <input #searchBar type="text" placeholder="Search...">
+          </form>
+          <div class="icon" (click)="performSearch(searchBar)">
+            <i class="far fa-search"></i>
+          </div>
+        </div>
+      </div>
+      <breadcrumb></breadcrumb>
+      <div class="outlet sub-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <cube-footer></cube-footer>
+  </div>
+</div>
