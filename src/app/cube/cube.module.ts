@@ -20,7 +20,6 @@ import { cartReducer } from './cube-core/redux/reducers/cart.reducer';
 // Pipes
 import { EscapeHtmlPipe } from '../shared/pipes/keep-html.pipe';
 
-
 // Modules
 import { CubeCoreModule } from './cube-core/cube-core.module';
 import { CubeSharedModule } from './cube-shared/cube-shared.module';
@@ -52,7 +51,12 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 import { RavenErrorHandler } from '../error-handler';
 import { ModalModule } from '../shared/modals';
-import { NotificationComponent, NotificationModule } from '../shared/notifications';
+import {
+  NotificationComponent,
+  NotificationModule
+} from '../shared/notifications';
+import { UserInformationComponent } from './user-information/user-information.component';
+import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -68,7 +72,11 @@ import { NotificationComponent, NotificationModule } from '../shared/notificatio
     CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
     RouterComponent,
-    BrowseComponent, UserProfileComponent, UserPreferencesComponent,
+    BrowseComponent,
+    UserProfileComponent,
+    UserPreferencesComponent,
+    UserInformationComponent,
+    UserEditInformationComponent
   ],
   imports: [
     // Angular imports
@@ -90,10 +98,7 @@ import { NotificationComponent, NotificationModule } from '../shared/notificatio
     ModalModule,
     NotificationModule
   ],
-  providers: [
-    LearningObjectService,
-    CartService,
-  ],
+  providers: [LearningObjectService, CartService]
   // bootstrap: [CubeComponent]
 })
-export class CubeModule { }
+export class CubeModule {}
