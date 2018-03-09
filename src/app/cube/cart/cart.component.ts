@@ -24,14 +24,10 @@ export class CartComponent implements OnInit {
   }
 
   async loadCart() {
-    const val = await this.cartService.getCart();
-    if (val) {
-      this.cartItems = val.map(object =>
-        LearningObject.instantiate(JSON.parse(JSON.stringify(object)))
-      );
-      console.log('This cart items', this.cartItems);
-    } else {
-      console.log('not logged in!');
+    try {
+      this.cartItems = await this.cartService.getCart();
+    } catch (e) {
+      console.log('not logged in!', e);
     }
   }
 
@@ -51,16 +47,15 @@ export class CartComponent implements OnInit {
 
   async removeItem(event, object) {
     event.stopPropagation();
-    const author = object._author._username;
-    const learningObjectName = object._name;
-    const val = await this.cartService.removeFromCart(
-      author,
-      learningObjectName
-    );
-    if (val) {
-      this.cartItems = <Array<LearningObject>>val;
-    } else {
-      console.log('not logged in!');
+    const author = object.author.username;
+    const learningObjectName = object.name;
+    try {
+      this.cartItems = await this.cartService.removeFromCart(
+        author,
+        learningObjectName
+      );
+    } catch (e) {
+      console.log('not logged in!', e);
     }
   }
 
