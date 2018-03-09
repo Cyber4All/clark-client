@@ -40,6 +40,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { RouterComponent } from './cube-shared/breadcrumb/router.component';
 
+
+
 // Guards
 import { AuthGuard } from '../core/auth-guard.service';
 
@@ -57,6 +59,7 @@ import {
 } from '../shared/notifications';
 import { UserInformationComponent } from './user-information/user-information.component';
 import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
+import { CoreModule } from '../core/core.module';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -93,6 +96,7 @@ import { UserEditInformationComponent } from './user-edit-information/user-edit-
     CubeSharedModule,
     CubeRoutingModule,
     SharedModule,
+    CoreModule,
     HomeModule,
     CheckBoxModule,
     ModalModule,
