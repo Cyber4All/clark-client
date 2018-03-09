@@ -32,7 +32,7 @@ export class CartV2Service {
   }
 
   getCart(reloadUser = false): Promise<LearningObject[]> {
-    if (!this.user) return null;
+    if (!this.user) return Promise.reject('User is undefined');
 
     return this.http
       .get(USER_ROUTES.GET_CART(this.user.username), {
@@ -41,12 +41,9 @@ export class CartV2Service {
       })
       .toPromise()
       .then(val => {
-        console.log('Get Cart', val.json());
-        if (isArray(val.json()))
-          this.cartItems = val
-            .json()
-            .map(object => LearningObject.instantiate(object));
-        this.cartItems = val.json();
+        this.cartItems = val
+          .json()
+          .map(object => LearningObject.instantiate(object));
         return this.cartItems;
       });
   }
@@ -55,57 +52,49 @@ export class CartV2Service {
     author: string,
     learningObjectName: string,
     download?: boolean
-  ): Promise<Array<LearningObject> | boolean> {
-    return this.user
-      ? this.http
-          .post(
-            USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
-              this.user.username,
-              author,
-              learningObjectName
-            ),
-            {},
-            { headers: this.headers, withCredentials: true }
-          )
-          .toPromise()
-          .then(async val => {
-            console.log('Add to Cart', val.json());
-            if (isArray(val.json()))
-              this.cartItems = val
-                .json()
-                .map(object => LearningObject.instantiate(object));
-            this.cartItems = val.json();
-            return this.cartItems;
-          })
-      : false;
+  ): Promise<LearningObject[]> {
+    if (!this.user) return Promise.reject('User is undefined');
+    return this.http
+      .post(
+        USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
+          this.user.username,
+          author,
+          learningObjectName
+        ),
+        {},
+        { headers: this.headers, withCredentials: true }
+      )
+      .toPromise()
+      .then(async val => {
+        this.cartItems = val
+          .json()
+          .map(object => LearningObject.instantiate(object));
+        return this.cartItems;
+      });
   }
 
   removeFromCart(
     author: string,
     learningObjectName: string
-  ): Promise<Array<LearningObject>> | boolean {
+  ): Promise<LearningObject[]> {
     // tslint:disable-next-line:max-line-length
-    return this.user
-      ? this.http
-          .delete(
-            USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
-              this.user.username,
-              author,
-              learningObjectName
-            ),
-            { headers: this.headers, withCredentials: true }
-          )
-          .toPromise()
-          .then(val => {
-            console.log('Remove from Cart', val.json());
-            if (isArray(val.json()))
-              this.cartItems = val
-                .json()
-                .map(object => LearningObject.instantiate(object));
-            this.cartItems = val.json();
-            return this.cartItems;
-          })
-      : false;
+    if (!this.user) return Promise.reject('User is undefined');
+    return this.http
+      .delete(
+        USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
+          this.user.username,
+          author,
+          learningObjectName
+        ),
+        { headers: this.headers, withCredentials: true }
+      )
+      .toPromise()
+      .then(val => {
+        this.cartItems = val
+          .json()
+          .map(object => LearningObject.instantiate(object));
+        return this.cartItems;
+      });
   }
 
   clearCart(): Promise<boolean> | boolean {
