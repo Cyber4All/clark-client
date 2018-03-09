@@ -1,0 +1,14 @@
+<div>
+      <h1 class="title">{{name}}</h1>
+      <p class="title">{{email}}</p>
+      <p class="title">{{employer}}</p>
+</div>
+
+<div>
+   <!-- <p *ngIf="modules.length === 0">No modules</p> -->
+    <ul>
+        <li *ngFor="let string of array">
+            {{string.name}}
+        </li>
+      </ul>
+</div>

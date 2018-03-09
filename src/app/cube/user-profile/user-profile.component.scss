@@ -1,94 +1,77 @@
 @import '~_globals.scss';
-@mixin column {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    text-align: center;
-    background: white;
-}
-.placeholder{
-    height:30vh;
-    width:100%;
-    background-color: gainsboro;
+
+.header { 
+    background: white; 
 }
 
-.image-container {
-    background-color: rgb(231, 230, 230);
-    padding: 30px;
-    width: 100%;
-}
+.bold {
+    font-weight: bold;
+  }
 
-.edit {
-    text-decoration: underline;
-    color: $dark-blue;
-    text-align: right;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-.cancel {
-    color: $error-red;
-    text-decoration: underline;
-    text-align: left;
-    margin-left: 20px;
-    cursor: pointer;
-}
-
-.card-container {
+#container-rounded { 
+    border-radius: 45px; 
+    border: 5px solid $blue-accent; 
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left-color: #0c2347; 
+    min-height: 50px;
+    overflow: hidden;
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 70%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 50%;
     margin: auto;
     margin-bottom: 50px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    border: 1px solid #c3c2c2;
+    min-width: 500px;
+ 
+    //border: 1px solid #c3c2c2;
+  
+  .splash {
+    background: linear-gradient(45deg, desaturate(darken($blue-accent, 20), 15), $blue-accent);
+    background-position: center;
+    padding-top: 50px;
+	padding-bottom: 50px;
+    box-sizing: border-box; /* here */
+    //border-radius: 22.3px;
+    //border-bottom-right-radius: 0px; 
+    //border-bottom-left-radius: 0px; 
+    bottom:0;
+    left:0;
+    width: 100%; 
+    flex-direction: column; 
+    height: 150px; 
+    position: relative;
+    
+    ::ng-deep .particles-container {
+      opacity: 0.3;
+    }
+
+    .image-container {
+        //background-color: rgb(231, 230, 230); //for testing and visibility
+        display: block;
+        margin: 0 auto;
+        margin-top: 1%;
+        position: relative;
+        width: 3%;
+    }
 }
 
-.column1 {
-    @include column;
-    width: 30%;
-}
-
-.column2 {
-    @include column;
-    width: 70%;
-}
-
-.space {
-    margin-top: 60px;
-}
-
-.title {
-    color: grey;
-    font-size: 18px;
-}
-
-button {
-    border: none;
-    outline: 0;
-    display: inline-block;
-    padding: 8px;
-    color: white;
-    background-color: $dark-blue;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-#margin-between {
-    margin-bottom: 10px;
-}
-
-#bottom-margin {
-    margin-bottom: 40px;
-}
-
-button:hover,
-a:hover {
-    opacity: 0.7;
-}
-
-.modules-container {
-    display: flex;
+    .container-inner { 
+        //background: green; //for testing and visibility 
+        overflow: hidden;
+        height: 45%; 
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        left: 0; 
+        bottom:0; 
+        margin: auto;
+        margin-top: 115px; 
+        margin-bottom: 0px;
+        //box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        min-width: 500px;
+      }
 }

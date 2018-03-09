@@ -1,9 +1,56 @@
+
+<div id="container-rounded">
+  <div class="splash">
+      <!--<particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>-->
+      <img class="image-container" src="https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-512.png" style="width:200px">
+  </div>
+  <div class="container-inner">
+      <button id="margin-between" *ngIf="editContent !== 1" (click)="editContent=1">Edit User Information</button>
+      <button id="bottom-margin" *ngIf="editContent === 1" (click)="editContent=0">Cancel</button>
+      <div *ngIf="editContent !== 1">
+        <app-user-information></app-user-information>
+      </div>
+      <div *ngIf="editContent === 1">
+        <app-user-edit-information></app-user-edit-information>
+      </div>
+      <!--<router-outlet></router-outlet>-->
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--To be implemented-->
 <!-- <section *ngIf="objectsDownloaded.length > 0" class="cart-items">
       <h3>{{name.split(' ')[0]}} has created {{objectsCreated.length}} learning objects:</h3>
       <learning-object-component *ngFor="let learningObject of objectsDownloaded" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
     </section> -->
-
 
 <!--To be implemented-->
 <!-- <section *ngIf="objectsDownloaded.length > 0" class="cart-items">
@@ -11,42 +58,39 @@
     <learning-object-component *ngFor="let learningObject of objectsDownloaded" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
   </section> -->
 
-<div class="card-container">
-  <div class="column1">
-    <div class="image-container">
-      <img src="https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-512.png" style="width:100%">
-    </div>
-    <div>
-      <h1>{{name}}</h1>
-      <!--<input type = "text" *ngIf = "editContent === 1" placeholder = "{{name}}">-->
-      Name:
-      <input type="text" *ngIf="editContent === 1" [(ngModel)]="name">
-      <p class="title">Masters Student</p>
-      <p>{{employer}}</p>
 
-      <h6>Email: {{email}}</h6>
-    </div>
-    <div class="space"></div>
-    <div>
-      <p class="edit" (click)="editContent=1">Edit</p>
-      <p class="cancel" *ngIf="editContent === 1">Cancel</p>
-    </div>
-    <button id="margin-between" (click)="showContent=1">Modules Created</button>
-    <button id="bottom-margin" (click)="showContent=2">Modules Downloaded</button>
-  </div>
-  <div class="column2">
-    <div *ngIf="showContent === 1">
+
+    
+    <!--<div>
+      <button id="margin-between"  *ngIf="editContent !== 1" (click)="editContent=1">Edit User Information</button>
+      <button id="margin-between"  *ngIf="editContent === 1" (click)="editContent=0">Save Changes</button>
+      <button id="bottom-margin" *ngIf="editContent === 1" (click)="editContent=0">Cancel</button>
+    </div>-->
+    <!--<button id="margin-between" (click)="showContent=1">View Created Modules </button>
+    <button id="bottom-margin" (click)="showContent=2">View Downloaded Modules</button>-->
+
+
+
+
+
+
+
+   <!-- <div *ngIf="showContent === 1">
       <h3>
-        <strong>Modules Created:</strong> {{modulesCreated}}</h3>
-      <h4>{{name.split(' ')[0]}} hasn't created any learning objects yet!</h4>
+        <strong>Modules Created:</strong> {{modulesCreated}}
+      </h3>
+      <h4 *ngIf="modulesCreated === 0">{{name.split(' ')[0]}} hasn't created any learning objects yet!</h4>
+      <section *ngIf="modulesCreated > 0" class="cart-items">
+        <h3>{{name.split(' ')[0]}} has created {{modulesCreated}} learning objects:</h3>
+        <learning-object-component *ngFor="let learningObject of objectsDownloaded" [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component>
+      </section> 
     </div>
     <div *ngIf="showContent === 2">
       <h3>
-        <strong>Modules Downloaded:</strong>
+        <strong>Modules Downloaded:</strong> {{obj}}
       </h3>
-      <h4>{{name.split(' ')[0]}} hasn't downloaded any learning objects yet!</h4>
-
-    </div>
-
-  </div>
-</div>
+      <h4 *ngIf="modulesDownloaded === 0">{{name.split(' ')[0]}} hasn't downloaded any learning objects yet!</h4>
+      <section *ngIf="modulesCreated > 0" class="cart-items">-->
+        <!--<h3>{{name.split(' ')[0]}} has created {{modulesDownloaded}} learning objects:</h3>-->
+       <!-- <learning-object-component *ngFor="let learningObject of " [learningObject]="learningObject">{{ learningObject.name }}</learning-object-component> 
+      </section> -->

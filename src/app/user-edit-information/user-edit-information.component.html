@@ -1,0 +1,18 @@
+
+<form class="title" (ngSubmit)="submit()">
+    <div class="input firstname" [ngClass]="{'active': editInfo.firstname !== ''}">
+      <input name="firstname" type="text" placeholder="First name" [(ngModel)]="editInfo.firstname" />
+    </div>
+    <div class="input lastname" [ngClass]="{'active': editInfo.lastname !== ''}">
+      <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="editInfo.lastname" />
+    </div>
+    <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
+      <input name="email" type="text" placeholder="Email address" [(ngModel)]="editInfo.email" />
+    </div>
+    <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
+      <input name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
+    </div>
+    <button type="type" class="auth-button">
+        <div class="text">Apply Changes</div>
+    </button>
+</form>

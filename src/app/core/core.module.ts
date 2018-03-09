@@ -11,6 +11,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { CheckBoxModule } from 'clark-checkbox';
 import { NotificationModule } from '../shared/notifications';
 import { ModalModule } from '../shared/modals';
+import { UserService } from './user.services';
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: [AuthGuard, AuthService, CartV2Service]
+      providers: [AuthGuard, AuthService, CartV2Service, UserService]
     };
   }
 }

@@ -2,7 +2,13 @@ import { PUBLIC_LEARNING_OBJECT_ROUTES } from '../../environments/route';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+<<<<<<< HEAD:src/app/cube/learning-object.service.ts
 import { environment } from '../../environments/environment';
+=======
+import { of } from 'rxjs/observable/of';
+import * as Fuse from 'fuse.js';
+import { environment } from '../environments/environment';
+>>>>>>> user-profile:src/app/learning-object.service.ts
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 

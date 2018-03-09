@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '@env/environment';
+import { environment } from './../../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie';
@@ -34,10 +34,6 @@ export class AuthService {
 
   get email(): string {
     return this.user ? this.user.email : undefined;
-  }
-
-  get status(): boolean {
-    return this.user ? true : false;
   }
 
   validate(): Observable<User> {
@@ -97,7 +93,7 @@ export class AuthService {
 
   updateInfo (user: {firstname: string, lastname: string, email: string, organization: string}): Observable<any> {
     
-    return this.http.patch(
+    return this.http.post(
       environment.apiURL + '/users/name', user.firstname,  
       {withCredentials: true, responseType: 'text'});
   }
