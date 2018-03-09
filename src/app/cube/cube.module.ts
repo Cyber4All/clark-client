@@ -41,6 +41,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { RouterComponent } from './cube-shared/breadcrumb/router.component';
 
+
+
 // Guards
 import { AuthGuard } from '../core/auth-guard.service';
 
@@ -53,6 +55,9 @@ import { ParticlesModule } from 'angular-particle';
 import { RavenErrorHandler } from '../error-handler';
 import { ModalModule } from '../shared/modals';
 import { NotificationComponent, NotificationModule } from '../shared/notifications';
+import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
+import { UserInformationComponent } from './user-information/user-information.component';
+import { CoreModule } from '../core/core.module';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -68,7 +73,7 @@ import { NotificationComponent, NotificationModule } from '../shared/notificatio
     CartComponent, // TODO Create Details module
     DetailsContentComponent, // TODO Create Details module
     RouterComponent,
-    BrowseComponent, UserProfileComponent, UserPreferencesComponent,
+    BrowseComponent, UserProfileComponent, UserPreferencesComponent, UserEditInformationComponent, UserInformationComponent
   ],
   imports: [
     // Angular imports
@@ -82,6 +87,7 @@ import { NotificationComponent, NotificationModule } from '../shared/notificatio
     // Local module imports
     StoreModule.forRoot({ cart: cartReducer }),
     CubeCoreModule,
+    CoreModule,
     CubeSharedModule,
     CubeRoutingModule,
     SharedModule,

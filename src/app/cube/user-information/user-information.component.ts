@@ -1,7 +1,7 @@
-import { USER_ROUTES } from '../../environments/route';
+import { USER_ROUTES } from '../../../environments/route';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
-import { AuthService } from '../auth/services/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 
@@ -44,7 +44,7 @@ export class UserInformationComponent implements OnInit {
       { name:"scott", job:"doctor" }, 
       { name:"rob", job:"doctor" } 
     ];
-    this.values(); 
+    //this.values(); 
        //console.log(this.modules); 
   }
 

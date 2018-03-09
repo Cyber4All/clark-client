@@ -30,8 +30,14 @@ export class UserEditInformationComponent implements OnInit {
   submit() {
     this.registerFailure = undefined;
     clearTimeout(this.registerFailureTimer);
+    
+    let concatInfo = { 
+      name: this.editInfo.firstname +  " " + this.editInfo.lastname,
+      email: this.editInfo.email, 
+      organization: this.editInfo.organization
+    }
 
-    this.userService.editUserInfo(this.editInfo).then(val => {
+    this.userService.editUserInfo(concatInfo).then(val => {
       if (this.redirectRoute) {
         window.location.href = window.location.origin + this.redirectRoute;
         // this.router.navigate([this.redirectRoute]);
@@ -39,7 +45,7 @@ export class UserEditInformationComponent implements OnInit {
         window.location.href = this.redirectUrl;
       }
     }, error => {
-      this.error(error.error.message);
+      console.log(error);
     });
   }
 

@@ -1,4 +1,4 @@
-import { USER_ROUTES } from '../../environments/route';
+import { USER_ROUTES } from '../../../environments/route';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../../core/auth.service';
