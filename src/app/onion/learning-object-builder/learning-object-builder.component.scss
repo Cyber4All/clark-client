@@ -1,170 +1,197 @@
 @import '~_globals.scss';
 
 .inner-wrapper {
-    border-radius: 4px;
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1); 
+  border-radius: 4px;
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
 
-    &:not(:first-child) {
-        margin-top: 20px;
-    }
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
 }
 
 ::ng-deep input {
-    border: 2px solid $placeholder;
-    outline: 0;
-    padding: 7px;
+  border: 2px solid $placeholder;
+  outline: 0;
+  padding: 7px;
 
-    &:focus {
-        border-color: $blue-accent;
-    }
+  &:focus {
+    border-color: $blue-accent;
+  }
 
-    &.bad {
-        border-color: $error-red !important;
-    }
+  &.bad {
+    border-color: $error-red !important;
+  }
 }
 
 select {
-    &[name='type'], &[name='level'] {
-        width: 100%;
-    }
+  &[name='type'],
+  &[name='level'] {
+    width: 100%;
+  }
 }
 
 .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
 
-    & > div {
-        width: 33%;
+  & > div {
+    width: 33%;
+  }
+
+  .title {
+    font-size: 28px;
+    color: $blue-accent;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .back {
+    color: $blue-accent;
+    @include vert-center;
+    cursor: pointer;
+    font-size: 15px;
+
+    .svg-inline--fa,
+    .icon {
+      margin-right: 5px;
+      @include vert-center;
     }
 
-    .title {
-        font-size: 28px;
-        color: $blue-accent;
-        font-weight: bold;
-        text-align: center;
-        text-transform: uppercase;
+    &:hover {
+      text-decoration: underline;
     }
-
-    .back {
-        color: $blue-accent;
-        @include vert-center;
-        cursor: pointer;
-        font-size: 15px;
-
-        .svg-inline--fa, .icon {
-            margin-right: 5px;
-            @include vert-center;
-        }
-
-        &:hover {
-            text-decoration: underline;
-        }
-
-    }
-
+  }
 }
 
 .faux-table {
+  .row {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    background: transparent;
+  }
 
-    .row {
-        padding-left: 0px !important;;
-        padding-right: 0px !important;
-        background: transparent;
+  .columns {
+    padding: 0px 0px 0px !important;
+  }
+
+  .cell {
+    width: 49% !important;
+
+    input {
+      width: 100%;
+      &.name-field {
+        width: calc(100% - 18px);
+      }
     }
-
-    .columns {
-        padding: 0px 0px 0px !important;
-    }
-
-    .cell {
-        width: 49% !important;
-
-        input {
-            width: 100%;
-            &.name-field {
-                width: calc(100% - 18px);
-            }
-        }
-    }
-
+  }
 }
 
 ::ng-deep .section {
+  .title {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $blue-accent;
+    font-size: 20px;
+  }
 
-    .title {
-        text-transform: uppercase;
-        font-weight: bold;
-        color: $blue-accent;
-        font-size: 20px;
-    }
+  .list {
+    margin-top: 15px;
 
-    .list {
-        margin-top: 15px;
+    ul {
+      padding-left: 0px;
 
-        ul {
-            padding-left: 0px;
+      li {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-bottom: 10px;
 
-            li {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                margin-bottom: 10px;
-
-                input {
-                    width: 100%;
-                }
-            }
+        input {
+          width: 100%;
         }
+      }
     }
+  }
 
-    .icon-only {
-        max-height: 35px;
-        padding: 6px 8px;
-        @include vert-center;
-    }
+  .icon-only {
+    max-height: 35px;
+    padding: 6px 8px;
+    @include vert-center;
+  }
 }
 
 .empty-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
-    .text {
-        @include vert-center;
-        font-size: 16px;
-        color: lighten($dark-text, 20);
-    }
+  .text {
+    @include vert-center;
+    font-size: 16px;
+    color: lighten($dark-text, 20);
+  }
 }
 
 .btn-group.final {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 ::ng-deep .grippy-container {
-    height: inherit;
-    cursor: move !important;
-    max-width: 50px;
-    min-width: 36px;
-    text-align: center;
-    padding: 5px;
+  height: inherit;
+  cursor: move !important;
+  max-width: 50px;
+  min-width: 36px;
+  text-align: center;
+  padding: 5px;
 
-    .draganddrop {
-        display: inline-block;
-        border-top: 2px solid #ccc;
-        width: 15px;
-        padding-top: 4px;
-        margin-top: 10px;
-    }
+  .draganddrop {
+    display: inline-block;
+    border-top: 2px solid #ccc;
+    width: 15px;
+    padding-top: 4px;
+    margin-top: 10px;
+  }
 
-    .draganddrop:before,
-    .draganddrop:after {
-        display: block;
-        content: "";
-        border-top: 2px solid #ccc;
-        padding-top: 4px;
-    }
+  .draganddrop:before,
+  .draganddrop:after {
+    display: block;
+    content: '';
+    border-top: 2px solid #ccc;
+    padding-top: 4px;
+  }
+}
+
+.level-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  .level {
+    text-transform: none;
+    cursor: pointer;
+    margin-right: 10px;
+    background: #fff;
+    color: $blue-accent;
+    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
+    padding: 5px 10px;
+    border-radius: 2px;
+    border: 3px solid transparent;
+  }
+  .level.selected {
+    background: $blue-accent;
+    color: #fff;
+    box-shadow: none;
+  }
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
 }
