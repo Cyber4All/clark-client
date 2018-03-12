@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
-      <div class="row">
+      <div [ngClass]="{published: l.published, unpublished: !l.published}" class="row">
         <checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></checkbox>
         <div class="cells">
           <div class="cell">{{l.name}}</div>

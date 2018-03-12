@@ -110,11 +110,11 @@
         <button type="submit" class="button good">Save
           <i class="far fa-check"></i>
         </button>
-        <div class="button bad" routerLink="/onion/dashboard">Cancel
-          <i class="far fa-times"></i>
-        </div>
         <div class="button neutral" (click)="form.valid ? save(true) : showFormErrors()">Upload Materials
           <i class="far fa-upload"></i>
+        </div>
+        <div class="button bad" routerLink="/onion/dashboard">Cancel
+          <i class="far fa-times"></i>
         </div>
       </div>
     </form>
