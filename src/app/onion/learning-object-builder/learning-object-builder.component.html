@@ -28,7 +28,7 @@
             <div class="row columns">
               <div class="cells">
                 <div class="cell">Type</div>
-                <div class="cell type">Level</div>
+                <div class="cell type">Levels</div>
               </div>
             </div>
             <div class="row">
@@ -45,12 +45,14 @@
                   </div>
                 </div>
                 <div class="cell type">
-                  <div class="select-wrapper">
-                    <select [(ngModel)]="learningObject.level" name="level" class="flex-g1 vert-center">
-                      <option value="graduate">Graduate</option>
-                      <option value="undergraduate">Undergraduate</option>
-                      <option value="k-12">K-12</option>
-                    </select>
+                  <div class="level-list">
+                    <div class="level button" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let level of academicLevels"
+                      (click)="toggleLevel(level)">
+                      {{ level | titlecase}}
+                      <span *ngIf="learningObject.levels.includes(level)">
+                        <i class="far fa-check-circle"></i>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
