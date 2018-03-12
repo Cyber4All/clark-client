@@ -1,4 +1,4 @@
-import { ModalService } from '../../shared/modals';
+import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
 import { Component, OnInit, Input } from '@angular/core';
 import { ContentEditableDirective } from './contenteditable-model.directive';
@@ -14,12 +14,12 @@ import { verbs, assessments, quizzes, instructions } from 'clark-taxonomy';
   styleUrls: ['./learning-object-builder.component.scss']
 })
 export class LearningObjectBuilderComponent implements OnInit {
-  learningObject: LearningObject;
+  learningObject: LearningObject = new LearningObject();
 
-  classverbs: { [level: string]: Set<string> };
-  testquizstrategies: { [level: string]: Set<string> };
-  classassessmentstrategies: { [level: string]: Set<string> };
-  instructionalstrategies: { [level: string]: Set<string> };
+  classverbs: { [level: string]: Set<string> } = verbs;
+  testquizstrategies: { [level: string]: Set<string> } = quizzes;
+  classassessmentstrategies: { [level: string]: Set<string> } = assessments;
+  instructionalstrategies: { [level: string]: Set<string> } = instructions;
   academicLevels = Object.values(AcademicLevel);
 
   learningObjectName: string;
@@ -32,20 +32,10 @@ export class LearningObjectBuilderComponent implements OnInit {
     private service: LearningObjectService,
     private modalService: ModalService,
     private notificationService: NotificationService
-  ) {
-    this.isNew = false;
-    console.log(this.academicLevels);
-  }
+  ) {}
 
   ngOnInit() {
-    this.learningObject = new LearningObject();
-    this.classverbs = verbs;
-    this.testquizstrategies = quizzes;
-    this.classassessmentstrategies = assessments;
-    this.instructionalstrategies = instructions;
-
     console.log(this.learningObject.level, this.learningObject.length);
-
     this.getRouteParams();
   }
   /**
@@ -98,7 +88,32 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @param {boolean} willUpload
    * @memberof LearningObjectBuilderComponent
    */
-  save(willUpload: boolean): void {
+  async save(willUpload: boolean) {
+    let publish = await this.modalService
+      .makeDialogMenu(
+        'PublishConfirmation',
+        'Publish changes?',
+        '',
+        'title-good',
+        'center',
+        [
+          new ModalListElement(
+            'Save & Publish!<i class="far fa-check-circle"></i>',
+            'accept',
+            'good'
+          ),
+          new ModalListElement(
+            'Save for later<i class="far fa-undo-alt "></i>',
+            'reject',
+            'neutral on-white'
+          )
+        ]
+      )
+      .toPromise();
+    publish === 'accept'
+      ? this.learningObject.publish()
+      : this.learningObject.unpublish();
+
     this.learningObject.date = Date.now().toString();
     if (!this.isNew) {
       this.service
