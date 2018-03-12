@@ -11,10 +11,6 @@
   cursor: pointer;
 }
 
-.dz-preview .dz-image-preview {
-  display: none !important;
-}
-
 .dropzone {
   width: 100%;
   display: flex;
@@ -31,13 +27,10 @@ div.dropzone-message {
   pointer-events: none;
 }
 
-div.dz-progress,
-div.dz-message,
-div.dz-success-mark,
-div.dz-error-mark {
+::ng-deep .dz-progress,
+::ng-deep .dz-message,
+::ng-deep .dz-success-mark,
+::ng-deep .dz-error-mark,
+::ng-deep .dz-preview {
   display: none !important;
-}
-
-div.dz-details:hover {
-  cursor: pointer !important;
 }
