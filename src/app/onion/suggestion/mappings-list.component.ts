@@ -11,12 +11,13 @@ export class MappingsListComponent implements OnInit {
 
   // TODO: Add ability to deselect a mapped outcome
 
-  @Input('mappings') allMappings;
+  @Input('mappings') mappings;
   @Output('delete') delete: EventEmitter<string> = new EventEmitter<string>();
-
+  keys;
   constructor(public service: SuggestionService) { }
 
   ngOnInit() {
+    this.keys = this.mappings.keys();
     // this.service.mappings.subscribe(m => this.allMappings = m);
   }
 

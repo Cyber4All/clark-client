@@ -12,7 +12,7 @@ import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 */
 
 @Component({
-  selector: 'suggestion-component',
+  selector: 'onion-suggestion-component',
   templateUrl: './suggestion.component.html',
   styleUrls: ['suggestion.component.scss']
 })
@@ -21,9 +21,12 @@ export class SuggestionComponent implements OnInit, OnChanges {
   private _differ: any;
 
   @Input('mappingsInput') mappingsInput: Array<OutcomeSuggestion> = [];
+  @Input('outcome') outcome: string;
+  @Input() opened: boolean;
 
   mappings = new Map<string, OutcomeSuggestion>();
   standardAppear: boolean;
+  // TODO: Type the array to LO
   standardOutcomes: Array<object> = [];
   connection;
   filter = {
@@ -32,8 +35,9 @@ export class SuggestionComponent implements OnInit, OnChanges {
     name: undefined
   };
 
-  @Input('outcome') outcome: string;
-  @Input() opened: boolean;
+  constructor(private loader: SuggestionService, private _differs: KeyValueDiffers) {
+    this._differ = _differs.find(this.filter).create();
+  }
 
   ngOnInit() {
     this.standardAppear = false;
@@ -52,20 +56,14 @@ export class SuggestionComponent implements OnInit, OnChanges {
     }
 
     if (changes.mappingsInput) {
-      for (let m of changes.mappingsInput.currentValue) this.addStandard(m);
+      for (const m of changes.mappingsInput.currentValue) {
+        this.addStandard(m);
+      }
     }
-  }
-
-  constructor(private loader: SuggestionService, private _differs: KeyValueDiffers) {
-    this._differ = _differs.find(this.filter).create();
   }
 
   open(content) {
     this.standardAppear = !this.standardAppear;
-  }
-
-  applyStandards() {
-
   }
 
   updateDate(e) {
@@ -103,6 +101,13 @@ export class SuggestionComponent implements OnInit, OnChanges {
     this.removeStandard(this.mappings.get(id));
   }
 
+  // TODO: remove function, it is not being used
+  /**
+   * Returns an array of all elements in the mappings Map that are also in the standard outcomes array.
+   *
+   * @returns {boolean}
+   * @memberof SuggestionComponent
+   */
   allMappingsUsed(): boolean {
     return Array.from(this.mappings.values()).every(elem => this.standardOutcomes.indexOf(elem) > -1);
   }
