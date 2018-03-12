@@ -5,10 +5,9 @@ import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 import { environment } from '@env/environment';
-
+import * as querystring from 'querystring';
 @Injectable()
 export class SuggestionService {
-
   suggestion = new Subject<{}[]>();
   mappedStandards = [];
   @Output() mappedSubject = new Subject<{}[]>();
@@ -29,17 +28,22 @@ export class SuggestionService {
   }
 
   emit(text, filter?) {
-    console.log('url', environment.suggestionUrl + '/suggestOutcomes', text);
-    this.http.post(environment.suggestionUrl + '/suggestOutcomes',
-      { text: text, filter: this.formatFilter(filter) }, { headers: this.headers })
+    console.log('url', environment.suggestionUrl + '/outcomes', text);
+    let query = `text=${text}&${querystring.stringify(
+      this.formatFilter(filter)
+    )}`;
+    this.http
+      .get(`${environment.suggestionUrl}/outcomes?${query}`, {
+        headers: this.headers
+      })
       .toPromise()
       .then(res => {
         const outcomes = res.json();
         // FIXME: If alphabetical sorting by author is the normal use case, this sort function should be implemented at the API layer
-        outcomes.sort(function (a, b) {
+        outcomes.sort(function(a, b) {
           const textA = a.author.toUpperCase();
           const textB = b.author.toUpperCase();
-          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+          return textA < textB ? -1 : textA > textB ? 1 : 0;
         });
         if (res.ok) {
           this.suggestion.next(outcomes);
@@ -49,7 +53,9 @@ export class SuggestionService {
 
   private formatFilter(filter) {
     console.log('filter', filter);
-    if (!filter) { return {}; }
+    if (!filter) {
+      return {};
+    }
 
     return {
       author: filter.author !== 'All' ? filter.author : undefined,
@@ -60,7 +66,13 @@ export class SuggestionService {
 
   addMapping(s) {
     // Filter the array so that any outcomes with ide
-    if (!(this.mappedStandards.filter(outcome => { return outcome.id === s.id; }).length > 0)) {
+    if (
+      !(
+        this.mappedStandards.filter(outcome => {
+          return outcome.id === s.id;
+        }).length > 0
+      )
+    ) {
       // Add standard to the array of mapped standards
       this.mappedStandards.push(s);
       this.mappedSubject.next(this.mappedStandards);
@@ -68,7 +80,11 @@ export class SuggestionService {
   }
 
   removeMapping(s) {
-    const index = this.mappedStandards.map((x) => { return x.id; }).indexOf(s.id);
+    const index = this.mappedStandards
+      .map(x => {
+        return x.id;
+      })
+      .indexOf(s.id);
     this.mappedStandards.splice(index, 1);
     this.mappedSubject.next(this.mappedStandards);
   }
