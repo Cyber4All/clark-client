@@ -1,5 +1,5 @@
 import { CartV2Service } from '../../core/cartv2.service';
-import { CartService } from '../../cube/cube-core/services/cart.service';
+import { CartService } from '../../cube/core/services/cart.service';
 import { Component, OnInit, AfterViewChecked, AfterContentChecked } from '@angular/core';
 import { LearningObjectService } from '../../cube/learning-object.service';
 import { ModalService, Position, ModalListElement } from '../modals';

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 
 import { AuthGuard } from './auth-guard.service';
@@ -12,6 +12,7 @@ import { CheckBoxModule } from 'clark-checkbox';
 import { NotificationModule } from '../shared/notifications';
 import { ModalModule } from '../shared/modals';
 import { UserService } from './user.services';
+import { RavenErrorHandler } from './error-handler';
 
 @NgModule({
   imports: [
@@ -25,7 +26,12 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: [AuthGuard, AuthService, CartV2Service, UserService]
+      providers: [
+        AuthGuard,
+        AuthService,
+        CartV2Service,
+        UserService,
+        process.env.ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler]
     };
   }
 }

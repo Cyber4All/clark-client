@@ -11,10 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { ModalListElement, Position } from '../../shared/modals';
 import { lengths } from '@cyber4all/clark-taxonomy';
-import { OutcomeService } from '../cube-core/outcome.service';
+import { OutcomeService } from '../core/outcome.service';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
-
 
 @Component({
   selector: 'cube-browse',
@@ -61,8 +60,13 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, private outcomeService: OutcomeService) {
+  constructor(
+    public learningObjectService: LearningObjectService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: ModalService,
+    private outcomeService: OutcomeService,
+  ) {
     this.learningObjects = [];
     this.sub = this.route.params.subscribe(params => {
       params['query'] ? this.query.text = params['query'] : this.query.text = '';

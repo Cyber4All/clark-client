@@ -1,49 +1,37 @@
-import { CartV2Service } from '../../../core/cartv2.service';
-import { ModalService } from '../../../shared/modals';
-import { LearningObjectService } from './../../learning-object.service';
-import { LearningObject } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { CartService } from '../../core/services/cart.service';
-import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
-import { AuthService } from '../../../core/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CollectionService } from './collection.service';
 
 @Component({
-  selector: 'learning-object-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  selector: 'cube-collection',
+  templateUrl: 'collection.component.html',
+  styleUrls: ['collection.component.scss']
 })
-export class DetailsComponent implements OnInit, OnDestroy {
-
-  private sub: any;
-  author: string;
-  learningObjectName: string;
-  learningObject: LearningObject;
-
-  particleParams: any;
-  height = 100;
+export class CollectionComponent implements OnInit {
+  name;
+  collection;
+  myStyle;
+  particleParams;
   width = 100;
-  myStyle: object = {};
-  returnUrl: string;
-
+  height = 100;
   constructor(
-    private learningObjectService: LearningObjectService,
-    private cartService: CartV2Service,
     private route: ActivatedRoute,
-    private router: Router,
-    private auth: AuthService
+    private collectionProvider: CollectionService,
   ) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.author = params['username'];
-      this.learningObjectName = params['learningObjectName'];
+    this.initParticles();
+    this.route.params.subscribe(params => {
+      params['name'] ? this.name = params['name'] : this.name = '';
+      this.fetchCollection(this.name);
     });
+  }
 
-    this.fetchLearningObject();
+  fetchCollection(name: string) {
+    this.collection = this.collectionProvider.fetchCollection(name);
+  }
 
-    this.returnUrl = '/browse/details/' + this.route.snapshot.params['username'] + '/' + this.route.snapshot.params['learningObjectName'];
-
+  initParticles() {
     this.myStyle = {
       'position': 'absolute',
       'width': '100%',
@@ -166,45 +154,4 @@ export class DetailsComponent implements OnInit, OnDestroy {
       'retina_detect': true
     };
   }
-
-  get goals(): Array<string> {
-    return this.learningObject.goals.map(m => m.text.charAt(0).toUpperCase() + m.text.substring(1));
-  }
-
-  get date(): Date {
-    return new Date(parseInt(this.learningObject.date));
-  }
-
-  async fetchLearningObject() {
-    this.learningObject = await this.learningObjectService.getLearningObject(this.author, this.learningObjectName);
-  }
-
-  async addToCart(download?: boolean) {
-    let val = await this.cartService.addToCart(this.author, this.learningObjectName);
-    if (download) await this.download(this.author, this.learningObjectName);
-  }
-
-  async clearCart() {
-    if (await this.cartService.clearCart()) {
-    } else {
-      console.log('not logged in!');
-    }
-  }
-
-  async download(author: string, learningObjectName: string) {
-    this.cartService.downloadLearningObject(author, learningObjectName);
-  }
-
-  removeFromCart() {
-    this.cartService.removeFromCart(this.author, this.learningObjectName);
-  }
-
-  reportThisObject() {
-    
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
 }
