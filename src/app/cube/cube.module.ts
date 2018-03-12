@@ -59,6 +59,7 @@ import {
 import { UserInformationComponent } from './user-information/user-information.component';
 import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
 import { CoreModule } from '../core/core.module';
+import { CollectionModule } from './collections/collection.module';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -99,7 +100,8 @@ import { CoreModule } from '../core/core.module';
     HomeModule,
     CheckBoxModule,
     ModalModule,
-    NotificationModule
+    NotificationModule,
+    CollectionModule,
   ],
   providers: [LearningObjectService, CartService]
 })

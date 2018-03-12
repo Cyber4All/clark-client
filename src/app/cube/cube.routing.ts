@@ -13,6 +13,7 @@ import { RouterComponent } from './shared/breadcrumb/router.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { AuthResolve } from '../auth/auth.resolver';
 import { CubeComponent } from './cube.component';
+import { CollectionComponent } from './collections/collection.component';
 
 // Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {
@@ -23,6 +24,7 @@ const cube_routes: Routes = [
     path: '', component: CubeComponent, children: [
       detailRoute,
       { path: 'home', component: HomeComponent },
+      { path: 'c/:name', component: CollectionComponent },
       {
         path: 'browse/:query', component: RouterComponent, data: { breadcrumb: 'Browse' },
         children: [{ path: '', component: BrowseComponent }, detailRoute]
