@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy, ElementRef, SimpleChanges, Input, Output,
 import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
 
 @Component({
-  selector: 'learning-outcome-component',
+  selector: 'onion-learning-outcome-component',
   templateUrl: 'learning-outcome.component.html',
   styleUrls: ['./learning-outcome.component.scss'],
   providers: [SuggestionService],
@@ -147,4 +147,7 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
     this.suggestionService.mappedSubject.unsubscribe();
   }
 
+  openMappingsSearch(index) {
+    console.log('open search');
+  }
 }

@@ -28,23 +28,11 @@
 
     .container-flexer {
         display: flex;
-        flex-direction: row;
+        flex-flow: row wrap;
         justify-content: space-between;
         border-bottom: 1px solid rgba(0, 0, 0, 0.2);
         padding-bottom: 30px;
         margin-bottom: 30px;
-
-        .squares {
-            justify-content: flex-start;
-
-            .square {
-                cursor: pointer;
-            }
-        }
-
-        .left {
-            width: 100%;
-        }
     }
 
     &:before, &:after {
@@ -75,9 +63,10 @@
     margin-top: 15px;
     margin-bottom: 15px;
     display: flex;
-    direction: row;
+    flex-flow: row nowrap;
     justify-content: flex-start;
-
+    flex-grow: 1;
+    width: 100%;
     select {
         width: 150px;
     }
@@ -87,9 +76,8 @@
         margin-left: 10px;
     }
 
-    .suggest-button {
-        margin-top: -2px;
-        margin-left: 10px;
+    input {
+        flex-grow: 1;
     }
 }
 .outcome_bloom {
@@ -97,9 +85,22 @@
     direction: row;
     justify-content: flex-start;
     width: 100%;
-
+    flex-grow: 1;
+    .squares {            
+        justify-content: center;
+        .square {
+            cursor: pointer;
+        }
+    }
     .glyphicon {
         margin-left: 10px;
+    }
+}
+.mappings-toolbar {
+    display: flex;
+    flex-flow: row nowrap;
+    .suggest-button {
+        margin-right: 10px;
     }
 }
 
@@ -158,4 +159,27 @@
 
 .wide{
     width:435px;
+}
+
+.toolbar-inner {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    padding-bottom: 5px;
+
+    .left {
+        width: 100%;
+    }
+    .button.bad:not(:hover) {
+        color: $error-red;
+        background-color: white;
+        border-color: white;
+        box-shadow: none;
+        transition: all .5s ease;
+    }
+    .button.bad:hover {
+        transition: all 1.5s ease;
+    }
 }

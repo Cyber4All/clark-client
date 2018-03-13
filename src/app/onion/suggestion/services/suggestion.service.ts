@@ -6,12 +6,16 @@ import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
+
+/*
+TODO: ensure that the mappedStandards array is never a subset of suggestion array
+*/
 @Injectable()
 export class SuggestionService {
   suggestion = new Subject<{}[]>();
   mappedStandards = [];
-  @Output() mappedSubject = new Subject<{}[]>();
-  @Output() delete: Subject<string> = new Subject<string>();
+  mappedSubject = new Subject<{}[]>();
+  delete: Subject<string> = new Subject<string>();
 
   private headers = new Headers();
 

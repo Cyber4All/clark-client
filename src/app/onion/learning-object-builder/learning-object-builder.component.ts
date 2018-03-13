@@ -272,7 +272,7 @@ export class LearningObjectBuilderComponent implements OnInit {
 
     // check outcomes
     const o: NodeListOf<Element> = document.querySelectorAll(
-      'learning-outcome-component > .container'
+      'onion-learning-outcome-component > .container'
     );
     for (const outcome of Array.from(o)) {
       if (outcome.attributes['valid'].value !== 'true') { return false; }

@@ -19,14 +19,14 @@ export class MappingsListComponent implements OnInit {
   ngOnInit() {
     const m = this.service.mappings;
     this.mappings = m.currentValue;
-    this.showMappings = this.mappings.length > 1;
+    this.showMappings = this.mappings.length >= 1;
     m.observable.subscribe(data => {
       this.mappings = data;
-      this.showMappings = this.mappings.length > 1;
+      this.showMappings = this.mappings.length >= 1;
     });
   }
 
   deleteMapping(m) {
-    this.delete.emit(m.id);
+    this.service.removeMapping(m);
   }
 }

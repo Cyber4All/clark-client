@@ -4,49 +4,55 @@
 -->
 
 <div class="container" [attr.valid]="validate()">
-  <div class="container-flexer">
-    <div class="left">
-      <!-- TODO: .outcome_bloom convert to component due to SRP/CCP -->
-      <div class="outcome_bloom">
-        <div class="squares">
-          <div class="square" [ngClass]="{'active': v === outcome._bloom}" *ngFor="let v of verbKeys" (click)="toggleActiveSquare($event)"
-            [attr.data]="v">
-            <div class="square-inner">
-              <div class="icon">
-                <i *ngIf="v === 'Apply and Analyze'" class="fal fa-bolt"></i>
-                <i *ngIf="v === 'Evaluate and Synthesize'" class="fab fa-connectdevelop"></i>
-                <i *ngIf="v === 'Remember and Understand'" class="fal fa-cloud"></i>
-              </div>
-              <div class="desc">{{v}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="outcome_input">
-        <div class="vert-center">Student will be able to </div>
-        <div class="select-wrapper">
-          <select (change)="logSelect()" style="display: inline" [(ngModel)]="outcome._verb">
-            <option *ngFor="let v of classverbs[outcome._bloom]; let i = index" [attr.value]="v" [attr.selected]="i == 0 ? true : null">{{ v }}</option>
-          </select>
-        </div>
-        <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->
-        <input class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(i);"
-          [(ngModel)]="outcome._text" [ngClass]="{'bad': false && submitted && !outcomeValidate.valid}" required />
-        <div class="button good suggest-button" (click)="suggestionLoad(i)">Suggest
-          <i class="far fa-cloud-download"></i>
-        </div>
-      </div>
-    </div>
+  <div class="toolbar-inner">
+    <div class="left"></div>
     <div class="right">
       <div class="ctrl_buttons">
-        <div class="grippy-container" dnd-sortable [sortableIndex]="i" style="padding: 14px 2px;">
-          <div class="draganddrop"></div>
-        </div>
         <div class="button bad icon-only" (click)="deleteOutcome()">
           <i class="far fa-times"></i>
         </div>
       </div>
     </div>
   </div>
+  <div class="container-flexer">
+    <!-- TODO: .outcome_bloom convert to component due to SRP/CCP -->
+    <div class="outcome_bloom">
+      <div class="squares">
+        <div class="square" [ngClass]="{'active': v === outcome._bloom}" *ngFor="let v of verbKeys" (click)="toggleActiveSquare($event)"
+          [attr.data]="v">
+          <div class="square-inner">
+            <div class="icon">
+              <i *ngIf="v === 'Apply and Analyze'" class="fal fa-bolt"></i>
+              <i *ngIf="v === 'Evaluate and Synthesize'" class="fab fa-connectdevelop"></i>
+              <i *ngIf="v === 'Remember and Understand'" class="fal fa-cloud"></i>
+            </div>
+            <div class="desc">{{v}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="outcome_input">
+      <div class="vert-center">Students will be able to </div>
+      <div class="select-wrapper">
+        <select (change)="logSelect()" style="display: inline" [(ngModel)]="outcome._verb">
+          <option *ngFor="let v of classverbs[outcome._bloom]; let i = index" [attr.value]="v" [attr.selected]="i == 0 ? true : null">{{ v }}</option>
+        </select>
+      </div>
+      <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->
+      <input class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(i);"
+        [(ngModel)]="outcome._text" [ngClass]="{'bad': false && submitted && !outcomeValidate.valid}" required />
+    </div>
+  </div>
+  <onion-mappings-list (delete)="removeStandardByID($event, m)"></onion-mappings-list>
+  <div class="mappings-toolbar">
+    <div class="button good suggest-button" (click)="suggestionLoad(i)">Suggest Outcomes
+      <i class="far fa-cloud-download"></i>
+    </div>
+    <div class="button good suggest-button" (click)="openMappingsSearch(i)">Search for Outcomes
+      <i class="far fa-search"></i>
+    </div>
+  </div>
   <onion-suggestion-component [outcome]="outcome._text" [opened]="suggestOpen && (suggestIndex==i)" [mappingsInput]="outcome._mappings"></onion-suggestion-component>
+
+
 </div>

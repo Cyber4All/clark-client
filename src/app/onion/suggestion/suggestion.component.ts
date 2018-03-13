@@ -98,4 +98,10 @@ export class SuggestionComponent implements OnInit, OnChanges {
   removeStandardByID(id: string) {
     this.removeStandard(this.mappings.get(id));
   }
+
+  standardShouldHide(s) {
+    return this.loader.mappedStandards.filter(outcome => {
+      return outcome.id === s.id;
+    }).length > 0;
+  }
 }

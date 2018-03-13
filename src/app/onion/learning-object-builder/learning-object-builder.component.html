@@ -93,7 +93,7 @@
             <ng-container *ngIf="learningObject.outcomes.length > 0">
               <div class="outcome-list" dnd-sortable-container [sortableData]="learningObject.outcomes" [attr.style]="'cursor: default !important;'">
                 <div *ngFor="let outcome of learningObject.outcomes; let i = index">
-                  <learning-outcome-component [submitted]="submitted" [outcome]="outcome" [index]="i" (deleteIndex)="deleteOutcome(i)"></learning-outcome-component>
+                  <onion-learning-outcome-component [submitted]="submitted" [outcome]="outcome" [index]="i" (deleteIndex)="deleteOutcome(i)"></onion-learning-outcome-component>
                 </div>
               </div>
             </ng-container>
