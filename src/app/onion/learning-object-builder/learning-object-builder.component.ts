@@ -40,6 +40,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.learningObject.addGoal('');
     console.log(this.learningObject.level, this.learningObject.length);
     this.getRouteParams();
   }
