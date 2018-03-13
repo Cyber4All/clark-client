@@ -17,7 +17,7 @@ export class LearningObjectService {
 
   public totalLearningObjects: number;
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {}
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -87,10 +87,8 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .toPromise()
-      .then(learningObject => {
-        return learningObject
-          ? LearningObject.instantiate(learningObject.json().object)
-          : null;
+      .then(res => {
+        return res ? LearningObject.instantiate(res.json()) : null;
       });
   }
 }

@@ -62,8 +62,7 @@ export class LearningObjectService {
       .toPromise()
       .then(response => {
         const object = response.json();
-        const learningObject = LearningObject.instantiate(object['object']);
-        learningObject['id'] = object.id;
+        const learningObject = LearningObject.instantiate(object);
         return learningObject;
       });
   }
@@ -98,7 +97,7 @@ export class LearningObjectService {
   save(learningObject: LearningObject): Promise<{}> {
     const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(
       this.auth.user.username,
-      learningObject['id']
+      learningObject.id
     );
     return this.http
       .patch(

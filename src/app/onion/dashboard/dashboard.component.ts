@@ -10,12 +10,11 @@ import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   learningObjects: Array<LearningObject> = [];
-  // FIXME: Learning Object should have a defined type
-  focusedLearningObject: any; // learning object that has a popup up menu on display for it, used by delete and edit functions
+  focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it, used by delete and edit functions
   selected: Array<string> = []; // array of all learning objects that are currently selected (checkbox in UI)
   hidden: Array<string> = []; // array of Learning Object id's that have been hidden from the view
   filters: Array<string> = []; // list of filters to be applied to the list of Learning Objects
@@ -27,7 +26,7 @@ export class DashboardComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private app: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getLearningObjects();
@@ -59,7 +58,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Deletes the learning object from the focuedLearningObject parameter if selected = false; 
+   * Deletes the learning object from the focuedLearningObject parameter if selected = false;
    * If selected = true, deletes all Learning Objects
    * from the selected array.
    *
@@ -67,7 +66,8 @@ export class DashboardComponent implements OnInit {
    */
   delete(multiple = false) {
     this.modalService
-      .makeDialogMenu('DeleteConfirmation',
+      .makeDialogMenu(
+        'DeleteConfirmation',
         'Are you sure?',
         'You cannot undo this action!',
         'title-bad',
@@ -84,7 +84,8 @@ export class DashboardComponent implements OnInit {
             'neutral on-white'
           )
         ]
-      ).subscribe(val => {
+      )
+      .subscribe(val => {
         if (val === 'accept') {
           if (!multiple) {
             this.learningObjectService
@@ -123,6 +124,18 @@ export class DashboardComponent implements OnInit {
       });
   }
 
+  async togglePublished() {
+    !this.focusedLearningObject.published
+      ? this.focusedLearningObject.publish()
+      : this.focusedLearningObject.unpublish();
+    try {
+      await this.learningObjectService.save(this.focusedLearningObject);
+      this.getLearningObjects();
+    } catch (e) {
+      console.log(`Error on togglePublished. Error: ${e}`);
+    }
+  }
+
   /**
    * Opens the learning object builder component
    */
@@ -130,16 +143,14 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/onion/learning-object-builder']);
   }
 
-  hasRepo(repo): boolean {
-    return false;
-  }
-
   /**
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject) {
-    if (!this.selected.includes(l['name'])) { this.selected.push(l['name']); }
+    if (!this.selected.includes(l['name'])) {
+      this.selected.push(l['name']);
+    }
     this.app.detectChanges();
   }
 
@@ -171,7 +182,9 @@ export class DashboardComponent implements OnInit {
       this.filters.splice(this.filters.indexOf(val.substring(1)), 1);
     } else {
       // we're adding
-      if (!this.filters.includes(val)) { this.filters.push(val); }
+      if (!this.filters.includes(val)) {
+        this.filters.push(val);
+      }
     }
   }
 
@@ -183,7 +196,9 @@ export class DashboardComponent implements OnInit {
   // TODO: Is this still being used?
   checkFilter(l: LearningObject): boolean {
     if (this.filters.includes('courses')) {
-      if (l['length'] !== 'course') { return false; }
+      if (l['length'] !== 'course') {
+        return false;
+      }
     }
     return true;
   }
@@ -195,31 +210,37 @@ export class DashboardComponent implements OnInit {
    * @param {any} learningObject clicked learning object
    * @memberof DashboardComponent
    */
-  makeContextMenu(event, learningObject) {
+  makeContextMenu(event, learningObject: LearningObject) {
     this.focusedLearningObject = learningObject;
-    const list: Array<ModalListElement> = [
+    let list: Array<ModalListElement> = [
       new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit'),
       new ModalListElement(
         '<i class="far fa-trash-alt"></i>Delete',
         'delete',
         'bad'
+      ),
+      new ModalListElement(
+        '<i class="far fa-upload"></i>Manage Materials',
+        'upload'
+      ),
+      new ModalListElement(
+        '<i class="far fa-archive"></i>View Materials',
+        'view materials'
       )
     ];
-    if (true) {
-      list.splice(
-        1,
-        0,
+
+    if (!learningObject.published) {
+      list.push(
         new ModalListElement(
-          '<i class="far fa-upload"></i>Manage Materials',
-          'upload'
+          '<i class="far fa-eye"></i>Publish',
+          'toggle published'
         )
       );
-      list.splice(
-        2,
-        0,
+    } else {
+      list.push(
         new ModalListElement(
-          '<i class="far fa-archive"></i>View Materials',
-          'view materials'
+          '<i class="far fa-eye-slash"></i>Unpublish',
+          'toggle published'
         )
       );
     }
@@ -230,7 +251,8 @@ export class DashboardComponent implements OnInit {
         'small',
         list,
         event.currentTarget
-      ).subscribe(val => {
+      )
+      .subscribe(val => {
         switch (val) {
           case 'edit':
             this.edit();
@@ -247,6 +269,9 @@ export class DashboardComponent implements OnInit {
             this.router.navigate([
               '/onion/content/view/' + this.focusedLearningObject.name
             ]);
+            break;
+          case 'toggle published':
+            this.togglePublished();
             break;
           default:
             break;
@@ -276,10 +301,10 @@ export class DashboardComponent implements OnInit {
     ];
     const pos = new Position(
       this.modalService.offset(event.currentTarget).left -
-      (190 - event.currentTarget.offsetWidth),
+        (190 - event.currentTarget.offsetWidth),
       this.modalService.offset(event.currentTarget).top +
-      event.currentTarget.offsetHeight +
-      15
+        event.currentTarget.offsetHeight +
+        15
     );
     this.modalService
       .makeContextMenu(
@@ -291,7 +316,9 @@ export class DashboardComponent implements OnInit {
         this.filters.slice(0)
       )
       .subscribe(val => {
-        if (val !== 'null') { this.manageFilters(val); }
+        if (val !== 'null') {
+          this.manageFilters(val);
+        }
       });
   }
 }
