@@ -1,173 +1,176 @@
 @import '~_globals.scss';
-
+$border-color: #d8d8d8;
 .magic-label {
-    margin-right: 10px;
-    color: $dark-text;
-    font-size: 16px;
-    font-weight: bold;
+  margin-right: 10px;
+  color: $border-color;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 ::ng-deep .sub-title {
-    color: $green;
-    font-size: 18px;
-    margin-bottom: 10px;
+  color: $green;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 .container {
-    padding: 0px;
-    padding: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-    box-sizing: border-box;
-    width: 100%;
-    margin-bottom: 20px;
-
-    select {
-        min-width: 200px;
-    }
-
-    .container-flexer {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: space-between;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-        padding-bottom: 30px;
-        margin-bottom: 30px;
-    }
-
-    &:before, &:after {
-        display: none;
-    }
-
-    &:not(:last-child) {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-        padding-bottom: 20px;
-        margin-bottom: 30px;
-    }
-
-}
-
-.content{
+  padding: 0px;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 20px;
+  select {
+    min-width: 200px;
+  }
+  .container-flexer {
     display: flex;
-    flex-direction: column;
-    width: 60%;
-    min-width: 225px;
-    margin: auto;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding-bottom: 30px;
+  }
+  &:before,
+  &:after {
+    display: none;
+  }
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
 }
-.counter{
-    display: flex;
-    direction: row;
-    align-items: center;
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  min-width: 225px;
+  margin: auto;
 }
+
+.counter {
+  display: flex;
+  direction: row;
+  align-items: center;
+}
+
 .outcome_input {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  flex-grow: 1;
+  width: 100%;
+  select {
+    width: 150px;
+  }
+  input,
+  select {
+    align-self: flex-start;
+    margin-left: 10px;
+  }
+  input {
     flex-grow: 1;
-    width: 100%;
-    select {
-        width: 150px;
-    }
-
-    input, select {
-        align-self: flex-start;
-        margin-left: 10px;
-    }
-
-    input {
-        flex-grow: 1;
-    }
+  }
 }
+
 .mappings-toolbar {
-    display: flex;
-    flex-flow: row nowrap;
-    .suggest-button {
-        margin-right: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+  .tab {
+    font-size: 16px;
+    opacity: .8;
+    padding: 10px 30px 15px 30px;
+    cursor: pointer;
+    &.active {
+      box-shadow: 1px -1px 1px rgb(233, 233, 233);
+      font-size: 18px;
+      opacity: 1;
+      background: aliceblue;
     }
+  }
 }
 
-.list-group-item{
-    margin-bottom: 10px;
+.list-group-item {
+  margin-bottom: 10px;
 }
 
-.hr_break{
-    background-color: lightgray;
-    height: 1px;
-    width: 100%;
+.hr_break {
+  background-color: lightgray;
+  height: 1px;
+  width: 100%;
 }
 
-.ctrl_buttons{
-    display: flex;
-    direction: row;
-    align-items: center;
+.ctrl_buttons {
+  display: flex;
+  direction: row;
+  align-items: center;
 }
 
 .strat-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  .select-wrapper:not(:first-child) {
+    margin-left: 10px;
+  }
+  .strat-list-left {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 10px;
-
-    .select-wrapper:not(:first-child) {
-        margin-left: 10px;
-    }
-
-    .strat-list-left {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-    }
+  }
 }
 
 .strat-item {
-    padding: 20px;
-    border-radius: 2px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-
-    &:not(:first-child) {
-        margin-top: 20px;
-    }
+  padding: 20px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
 }
 
-.assessment-plan, .instructional-strategies {
-     margin-top: 10px;
+.assessment-plan,
+.instructional-strategies {
+  margin-top: 10px;
 }
 
-.assess-list, .question-list {
-    .btn-group.to-right {
-        margin-top: 20px;
-    }
+.assess-list,
+.question-list {
+  .btn-group.to-right {
+    margin-top: 20px;
+  }
 }
 
-.wide{
-    width:435px;
+.wide {
+  width: 435px;
 }
 
 .toolbar-inner {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 30px;
-    padding-bottom: 5px;
-
-    .left {
-        width: 100%;
-    }
-    .button.bad:not(:hover) {
-        color: $error-red;
-        background-color: white;
-        border-color: white;
-        box-shadow: none;
-        transition: all .5s ease;
-    }
-    .button.bad:hover {
-        transition: all 1.5s ease;
-    }
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+  padding-bottom: 5px;
+  .left {
+    width: 100%;
+  }
+  .button.bad:not(:hover) {
+    color: $error-red;
+    background-color: white;
+    border-color: white;
+    box-shadow: none;
+    transition: all .5s ease;
+  }
+  .button.bad:hover {
+    transition: all 1.5s ease;
+  }
 }
 
 onion-blooms-selector {
-    flex-grow: 1;
+  flex-grow: 1;
 }

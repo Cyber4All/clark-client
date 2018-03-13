@@ -5,6 +5,7 @@ import { verbs, assessments, levels } from 'clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ElementRef, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
+import { ModalService } from '../../../shared/modals';
 
 enum TABS {
   MAPPINGS,
@@ -19,6 +20,8 @@ enum TABS {
 })
 export class LearningOutcomeComponent implements OnInit, OnDestroy {
 
+  tabs = TABS;
+  activeTab: TABS;
   @Input() outcome;
   @Input('index') i;
   @Input() submitted: number;
@@ -35,9 +38,10 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   classassessmentstrategies: { [level: string]: Set<string> };
   instructionalstrategies: { [level: string]: Set<string> };
 
-  constructor(private suggestionService: SuggestionService) {}
+  constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
 
   ngOnInit() {
+    this.activeTab = this.tabs.MAPPINGS;
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
     this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
@@ -54,6 +58,26 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  switchTab(tab: TABS, index?) {
+    switch (tab) {
+      case TABS.MAPPINGS:
+        this.activeTab = tab;
+        console.log('mappings');
+        break;
+      case TABS.SUGGESTIONS:
+        this.activeTab = tab;
+        console.log('suggestions', index);
+        this.suggestionLoad(index);
+        break;
+      case TABS.SEARCH:
+        this.activeTab = tab;
+        console.log('search', index);
+        this.openMappingsSearch(index);
+        break;
+      default:
+      throw new Error('Invalid tab.');
+    }
+  }
   sortVerbs() {
     const sortedVerbs = verbs;
     sortedVerbs['Apply and Analyze'] = new Set(Array.from(sortedVerbs['Apply and Analyze']).sort(function (a, b) {

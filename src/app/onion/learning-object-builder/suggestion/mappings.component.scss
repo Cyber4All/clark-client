@@ -1,26 +1,30 @@
 @import '~_globals.scss';
-
 ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .cells {
-    justify-content: flex-start !important;
+  justify-content: flex-start !important;
+  .cell {
+    width: 20% !important;
+    @include vert-center;
+  }
+}
 
-    .cell {
-        width: 20% !important;
-        @include vert-center;
-    }
+.faux-table .row.columns {
+  color: $dark-text;
 }
 
 .wrapper {
-    background: lighten($blue-accent, 55);
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 20px;
+  background: aliceblue;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-radius: 0;
 }
 
 .row:not(.columns) {
-    margin-bottom: 10px;
-    padding: 10px;
+    padding: 8px;
+  padding-left: 14px;
+  margin-bottom: 2px;
 }
