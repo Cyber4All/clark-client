@@ -5,7 +5,7 @@
       <div class="add button good" (click)="newLearningObject()">Add New
         <i class="fas fa-plus"></i>
       </div>
-      <div class="filter button neutral" (click)="filterDropdown($event)">Filter
+      <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">Filter
         <i class="fa fa-filter"></i>
       </div>
       <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected

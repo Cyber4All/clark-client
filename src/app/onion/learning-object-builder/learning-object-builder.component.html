@@ -62,27 +62,9 @@
       </div>
       <div class="inner-wrapper">
         <div class="section">
-          <div class="title">Learning Goals</div>
-          <div class="goals list" [ngClass]="{'empty-section': learningObject.goals.length == 0}">
-            <ng-container *ngIf="learningObject.goals.length > 0">
-              <ul class="goal-list" dnd-sortable-container [sortableData]="learningObject.goals">
-                <li *ngFor="let goal of learningObject.goals; let i = index" class="">
-                  <input [(ngModel)]="goal.text" [name]="'goal' + i" type="text" placeholder="Learning Goal" />
-                  <div class="grippy-container" dnd-sortable [sortableIndex]="i">
-                    <div class="draganddrop"></div>
-                  </div>
-                  <div class="button bad icon-only" (click)="deleteGoal(i)">
-                    <i class="far fa-times"></i>
-                  </div>
-                </li>
-              </ul>
-            </ng-container>
-            <div class="text" *ngIf="learningObject.goals.length == 0">You don't have any Learning Goals yet!</div>
-            <div class="btn-group to-right">
-              <div (click)="newGoal()" class="button good">Add Learning Goal
-                <i class="far fa-plus"></i>
-              </div>
-            </div>
+          <div class="title">Description</div>
+          <div class="goals list">
+            <textarea class="full-width" rows="2" [(ngModel)]="learningObject.goals[0].text" name="description" type="text" placeholder="Description"></textarea>
           </div>
         </div>
       </div>
