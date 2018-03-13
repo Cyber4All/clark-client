@@ -12,7 +12,6 @@ export class ClarkComponent {
   constructor(private authService: AuthService, private cartService: CartV2Service) {
     this.authService.isLoggedIn.subscribe(val => {
       if (val) {
-        console.log('change', this.authService.user);
         this.cartService.updateUser();
         this.cartService.getCart();
       }

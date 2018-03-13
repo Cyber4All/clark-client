@@ -23,8 +23,8 @@ export class LearningObjectBuilderComponent implements OnInit {
   academicLevels = Object.values(AcademicLevel);
 
   learningObjectName: string;
-  isNew: boolean = false;
-  submitted: number = 0;
+  isNew = false;
+  submitted = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,11 +65,9 @@ export class LearningObjectBuilderComponent implements OnInit {
     this.service
       .getLearningObject(this.learningObjectName)
       .then(learningObject => {
-        console.log(learningObject);
         this.learningObject = learningObject;
       })
       .catch(err => {
-        console.log(err);
         this.isNew = true;
       });
   }
@@ -175,7 +173,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   toggleLevel(level: AcademicLevel) {
-    let index = this.learningObject.levels.indexOf(level);
+    const index = this.learningObject.levels.indexOf(level);
     if (index > -1) {
       this.learningObject.removeLevel(index);
     } else {
@@ -247,8 +245,6 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   bindEditorOutput(event, type, i, s): void {
-    console.log(event);
-    console.log(this.learningObject);
     if (type === 'question') {
       this.learningObject.outcomes[i].assessments[s].text = event;
     } else {
@@ -275,11 +271,11 @@ export class LearningObjectBuilderComponent implements OnInit {
     }
 
     // check outcomes
-    let o: NodeListOf<Element> = document.querySelectorAll(
+    const o: NodeListOf<Element> = document.querySelectorAll(
       'learning-outcome-component > .container'
     );
-    for (let outcome of Array.from(o)) {
-      if (outcome.attributes['valid'].value !== 'true') return false;
+    for (const outcome of Array.from(o)) {
+      if (outcome.attributes['valid'].value !== 'true') { return false; }
     }
 
     return true;

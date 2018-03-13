@@ -5,9 +5,9 @@ import { Modal } from './modal';
 @Component({
     selector: '<app-contextmenu></app-contextmenu>',
     template: `
-    <div *ngIf="show" class="popup " [attr.class]="'popup ' + content.classes" [ngStyle]="{'left': this.x, 'top': this.y}" (clickOutside)="optionClick('null')">
+    <div *ngIf="show" class="popup " [attr.class]="'popup ' + content.classes" [ngStyle]="{'left': this.x, 'top': this.y}" (clickOutside)="tryClose($event)">
         <ul>
-            <li *ngFor="let l of content['list']" (click)="!l.checkbox && optionClick(l.func)" [ngClass]="l.classes ? l.classes : ''">
+            <li *ngFor="let l of content['list']" (click)="!l.checkbox && optionClick($event, l.func)" [ngClass]="l.classes ? l.classes : ''">
                 <checkbox *ngIf="l.checkbox" [func]='l.func' [checked]="content.checked.includes(l.func)" (action)="checkbox($event, val)"></checkbox>
                 <span [innerHTML]="l.text"></span>
             </li>
@@ -22,8 +22,8 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
         super(modalService);
     }
     
-    checkbox(func) {
-        this.optionClick(func, true);
+    checkbox(event, func) {
+        this.optionClick(event, func, true);
     }
 
     ngAfterViewChecked() {
@@ -39,7 +39,6 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
             }
         }
     }
-
 
     /**
      * Takes an x and a y coordinate, checks that they're formatted correctly, and sets Modals x and y parameters to them.

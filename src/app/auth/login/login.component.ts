@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
         window.location.href = this.redirectUrl;
       }
     }).catch(error => {
-      console.log(error);
       this.error(error.error.message);
     });
   }

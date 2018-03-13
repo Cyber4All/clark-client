@@ -24,12 +24,14 @@ export class SuggestionService {
   }
 
   get mappings() {
-    return this.mappedSubject.asObservable();
+    return {
+      observable: this.mappedSubject.asObservable(),
+      currentValue: this.mappedStandards
+    };
   }
 
   emit(text, filter?) {
-    console.log('url', environment.suggestionUrl + '/outcomes', text);
-    let query = `text=${text}&${querystring.stringify(
+    const query = `text=${text}&${querystring.stringify(
       this.formatFilter(filter)
     )}`;
     this.http
@@ -52,7 +54,6 @@ export class SuggestionService {
   }
 
   private formatFilter(filter) {
-    console.log('filter', filter);
     if (!filter) {
       return {};
     }

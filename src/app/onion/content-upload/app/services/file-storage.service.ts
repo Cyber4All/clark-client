@@ -5,16 +5,20 @@ import 'rxjs/add/operator/toPromise';
 import { Http, Headers } from '@angular/http';
 import { AuthService } from '../../../../core/auth.service';
 import { CookieService } from 'ngx-cookie';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class FileStorageService {
-
-  private authHeader: { header: string, value: string };
+  private authHeader: { header: string; value: string };
 
   private token: string;
   private headers: Headers = new Headers();
 
-  constructor(private http: Http, private auth: AuthService, private cookies: CookieService) {
+  constructor(
+    private http: Http,
+    private auth: AuthService,
+    private cookies: CookieService
+  ) {
     this.token = cookies.get('presence');
     this.headers.append('Content-Type', 'application/json');
   }
@@ -27,13 +31,20 @@ export class FileStorageService {
    * @returns {Promise<LearningObjectFile[]>}
    * @memberof FileStorageService
    */
-  upload(learningObject, files: File[]): Promise<LearningObjectFile[]> {
+  upload(
+    learningObject: LearningObject,
+    files: File[]
+  ): Promise<LearningObjectFile[]> {
     return new Promise((resolve, reject) => {
       const formData: FormData = new FormData(),
         xhr: XMLHttpRequest = new XMLHttpRequest();
-      formData.append('learningObjectID', learningObject['id']);
-      for (let i = 0; i < files.length; i++) {
-        formData.append('uploads', files[i], files[i].name);
+      formData.append('learningObjectID', learningObject.id);
+      for (let file of files) {
+        formData.append(
+          'uploads',
+          file,
+          `${file.name}!@!${file['description']}`
+        );
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -43,7 +54,10 @@ export class FileStorageService {
             }
           }
         };
-        const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(this.auth.user.username, learningObject['name']);
+        const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+          this.auth.user.username,
+          learningObject.name
+        );
         xhr.open('POST', route, true);
         xhr.withCredentials = true;
         xhr.send(formData);
@@ -59,14 +73,17 @@ export class FileStorageService {
    * @returns {Promise<{}>}
    * @memberof FileStorageService
    */
-  delete(learningObject, filename: string): Promise<{}> {
-    console.log(filename);
-    const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT(this.auth.user.username, learningObject['id'], filename);
+  delete(learningObject: LearningObject, filename: string): Promise<{}> {
+    const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT(
+      this.auth.user.username,
+      learningObject.id,
+      filename
+    );
 
-    return this.http.delete(route, { headers: this.headers, withCredentials: true })
+    return this.http
+      .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise()
-      .then((success) => success.json())
-      .catch((error) => console.log);
+      .then(success => success.json())
+      .catch(error => console.log);
   }
-
 }

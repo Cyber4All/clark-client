@@ -1,14 +1,16 @@
-<div>
-      <h1 class="title">{{name}}</h1>
-      <p class="title">{{email}}</p>
-      <p class="title">{{employer}}</p>
+<div class="title">{{ name }}</div>
+<div class="info">
+    <div class="organization">
+        {{ organization }}
+    </div>
 </div>
 
-<div>
-   <!-- <p *ngIf="modules.length === 0">No modules</p> -->
-    <ul>
-        <li *ngFor="let string of array">
-            {{string.name}}
-        </li>
-      </ul>
+<div class="section-title">Learning Objects</div>
+<div class="learning-objects">
+    <ng-container *ngIf="objects && objects.length > 0">
+        <div *ngFor="let l of objects">
+            <learning-object-component routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l" [owned]="true">
+            </learning-object-component>
+        </div>
+    </ng-container>
 </div>

@@ -24,7 +24,7 @@ export class FeaturedComponent implements OnInit {
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(this.query);
     } catch (e) {
-      // console.log(`Error in ${this}. Error:${e}`);
+      console.log(`Error in ${this}. Error:${e}`);
     }
   }
 

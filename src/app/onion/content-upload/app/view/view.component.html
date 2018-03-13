@@ -7,7 +7,7 @@
       </div>
       <div class="title">{{ learningObject.name }}</div>
       <div class="btn-group to-right">
-        <div routerLink="/onion/content/upload/{{learningObjectName}}" class="button good ">Manage Materials
+        <div routerLink="/onion/content/upload/{{learningObjectName}}" class="button good med-height">Manage Materials
           <i class="far fa-edit "></i>
         </div>
       </div>
@@ -17,23 +17,27 @@
     <div class="section">
       <div class="title">Files Uploaded</div>
     </div>
-    <div [ngClass]="{'empty-section': learningObject.repository.files.length == 0}">
-      <div class="text" *ngIf="learningObject.repository.files.length == 0">You don't have any files yet!</div>
-      <div *ngIf="learningObject.repository.files.length > 0" class="faux-table">
+    <div [ngClass]="{'empty-section': learningObject.materials.files.length == 0}">
+      <div class="text" *ngIf="learningObject.materials.files.length == 0">You don't have any files yet!</div>
+      <div *ngIf="learningObject.materials.files.length > 0" class="faux-table">
         <div class="row columns file-listing-header">
           <div class="cells">
             <div class="cell">Name</div>
             <div class="cell">Added</div>
+            <div class="cell">Description</div>
             <div class="placeholder"></div>
           </div>
         </div>
-        <div class="row file-listing" *ngFor="let file of learningObject.repository.files; let i = index;">
+        <div class="row file-listing" *ngFor="let file of learningObject.materials.files; let i = index;">
           <div class="cells">
             <div class="cell">
               {{ file.name }}
             </div>
             <div class="cell">
               {{ TimeFunctions.getTimestampAge(file.date) }}
+            </div>
+            <div class="cell">
+              {{ file.description }}
             </div>
           </div>
           <a [href]="file.url" class="button good icon-only">
@@ -47,16 +51,16 @@
     <div class="section">
       <div class="title">Links Added</div>
     </div>
-    <div [ngClass]="{'empty-section': learningObject.repository.urls.length == 0}">
-      <div class="text" *ngIf="learningObject.repository.urls.length == 0">You don't have any links yet!</div>
-      <div *ngIf="learningObject.repository.urls.length > 0" class="faux-table">
+    <div [ngClass]="{'empty-section': learningObject.materials.urls.length == 0}">
+      <div class="text" *ngIf="learningObject.materials.urls.length == 0">You don't have any links yet!</div>
+      <div *ngIf="learningObject.materials.urls.length > 0" class="faux-table">
         <div class="row columns">
           <div class="cells">
             <div class="cell">Title</div>
             <div class="cell">Link</div>
           </div>
         </div>
-        <div class="row url-listing" *ngFor="let url of learningObject.repository.urls; let i = index;">
+        <div class="row url-listing" *ngFor="let url of learningObject.materials.urls; let i = index;">
           <div class="cells">
             <div class="cell">
               {{ url.title }}
@@ -73,10 +77,10 @@
     <div class="section">
       <div class="title">Notes</div>
     </div>
-    <div [ngClass]="{'empty-section': !learningObject.repository.notes}">
-      <div class="text" *ngIf="!learningObject.repository.notes">You don't have any notes yet!</div>
+    <div [ngClass]="{'empty-section': !learningObject.materials.notes}">
+      <div class="text" *ngIf="!learningObject.materials.notes">You don't have any notes yet!</div>
       <p class="notes">
-        {{ learningObject.repository.notes }}
+        {{ learningObject.materials.notes }}
       </p>
     </div>
   </div>

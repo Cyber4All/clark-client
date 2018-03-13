@@ -96,7 +96,6 @@ import { CollectionModule } from './collections/collection.module';
     CubeSharedModule,
     CubeRoutingModule,
     SharedModule,
-    CoreModule,
     HomeModule,
     CheckBoxModule,
     ModalModule,

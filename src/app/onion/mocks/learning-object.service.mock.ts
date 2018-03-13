@@ -31,8 +31,4 @@ export class LearningObjectServiceMock {
     delete(learningObjectName: string) {
         return true;
     }
-
-    generatePDF(id: number) {
-        console.log('pdf');
-    }
 }

@@ -25,7 +25,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
     }
 
   ngOnInit() {
-    console.log('init user', this.authService.user);
     this.authService.isLoggedIn.subscribe(val => {
       this.loggedin = (val) ? true : false;
     });

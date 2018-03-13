@@ -1,6 +1,7 @@
 import { StaticInjector } from '@angular/core/src/di/injector';
 import { ModalService } from './modal.service';
 import { ComponentRef, Output, Input, Injector, EventEmitter } from '@angular/core';
+import { element } from 'protractor';
 
 export abstract class Modal {
     protected name: string;
@@ -25,13 +26,14 @@ export abstract class Modal {
     }
 
     ngAfterViewChecked() {
-        if (!this.show) {
+        if (!this.show && this.type !== 'dialog') {
             this.justCreated = true;
         }
     }
 
-    optionClick(msg: string, checkbox: boolean = false) {
-        if (!this.justCreated) this.sendEvent(msg);
+    optionClick(event, msg: string, checkbox: boolean = false) {
+        event.stopPropagation();
+        this.sendEvent(msg);
 
         if (checkbox && msg !== null) this.preventClose = true;
         if (!this.preventClose) this.close();
@@ -46,13 +48,18 @@ export abstract class Modal {
         this.action.next(JSON.stringify({name: this.name, message: msg}));
     }
 
-    close() {
+    tryClose(event) {
         if (!this.justCreated) {
-            this.sendEvent('closed');
-            this.modalService.close(this.type);
-            this.justCreated = true;
+            this.close();
+        } else {
+            this.justCreated = false;
         }
-        else this.justCreated = false;
+    }
+
+    close() {
+        this.sendEvent('closed');
+        this.modalService.close(this.type);
+        this.justCreated = true;
     }
 
     ngOnDestroy() {
