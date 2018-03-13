@@ -20,6 +20,10 @@
 .faux-table {
   margin-top: 30px;
 
+  .row.columns {
+    padding-left: 21px;
+  }
+
   .row.hide {
     display: none;
   }

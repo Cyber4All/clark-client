@@ -33,11 +33,6 @@ export class UserInformationComponent implements OnInit {
 
   ngOnInit() {
     this.getUsersLearningObjects();
-    const user = this.auth.user;
-    this.email = user['email'];
-    this.name = user['name'];
-    this.organization = user['organization'];
-    this.username = user['username'];
   }
 
   async getUsersLearningObjects(): Promise<void> {

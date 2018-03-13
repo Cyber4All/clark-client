@@ -88,7 +88,7 @@ export class LearningObjectService {
       .get(route)
       .toPromise()
       .then(res => {
-        return res ? LearningObject.instantiate(res.json()) : null;
+        return LearningObject.instantiate(res.json());
       });
   }
 }
