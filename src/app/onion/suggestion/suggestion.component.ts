@@ -4,7 +4,7 @@ import {
   OnChanges, Output, SimpleChanges, SimpleChange, ChangeDetectorRef
 } from '@angular/core';
 import { providers } from 'ng2-dnd';
-import { OutcomeSuggestion } from '@cyber4all/clark-entity';
+import { OutcomeSuggestion, StandardOutcome } from '@cyber4all/clark-entity';
 
 /*
   TODO: Automatically check or hide standards that are currently mapped from the suggestion view
@@ -19,15 +19,13 @@ import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 export class SuggestionComponent implements OnInit, OnChanges {
 
   private _differ: any;
-
   @Input('mappingsInput') mappingsInput: Array<OutcomeSuggestion> = [];
   @Input('outcome') outcome: string;
   @Input() opened: boolean;
 
   mappings = new Map<string, OutcomeSuggestion>();
   standardAppear: boolean;
-  // TODO: Type the array to LO
-  standardOutcomes: Array<object> = [];
+  standardOutcomes: Array<StandardOutcome> = [];
   connection;
   filter = {
     author: undefined,
@@ -42,7 +40,7 @@ export class SuggestionComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.standardAppear = false;
     this.connection = this.loader.observe().subscribe(data => {
-      this.standardOutcomes = data as Array<object>;
+      this.standardOutcomes = data as Array<StandardOutcome>;
     });
     this.loader.emit(this.outcome);
   }
@@ -99,16 +97,5 @@ export class SuggestionComponent implements OnInit, OnChanges {
 
   removeStandardByID(id: string) {
     this.removeStandard(this.mappings.get(id));
-  }
-
-  // TODO: remove function, it is not being used
-  /**
-   * Returns an array of all elements in the mappings Map that are also in the standard outcomes array.
-   *
-   * @returns {boolean}
-   * @memberof SuggestionComponent
-   */
-  allMappingsUsed(): boolean {
-    return Array.from(this.mappings.values()).every(elem => this.standardOutcomes.indexOf(elem) > -1);
   }
 }
