@@ -360,7 +360,6 @@ export class BrowseComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnDestroy() {
     for (let i = 0; i < this.subscriptions.length; i++) {
-      console.log(this.subscriptions[i]);
       this.subscriptions[i].unsubscribe();
     }
 

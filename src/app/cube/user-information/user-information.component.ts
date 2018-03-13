@@ -50,7 +50,6 @@ export class UserInformationComponent implements OnInit {
       { name: 'rob', job: 'doctor' }
     ];
     this.values();
-    //console.log(this.modules);
   }
 
   getModules(reloadUser = true) {
@@ -58,7 +57,7 @@ export class UserInformationComponent implements OnInit {
       ? this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username)).map(
           res =>
             res.json().subscribe(
-              data => (this.modules = data) //console.log(this.modules)
+              data => (this.modules = data)
             ),
           { withCredentials: true, headers: this.headers }
         )
@@ -69,18 +68,6 @@ export class UserInformationComponent implements OnInit {
     const val = await this.getModules();
     if (val) {
       this.check = val;
-      console.log(this.modules);
-    } else {
-      console.log('nothing!');
     }
   }
-
-  /*getModules(reloadUser = false): Promise<Array<LearningObject>> | boolean {
-  return (this.auth.user) ? this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username), {withCredentials: true,  headers: this.headers })
-    .toPromise()
-    .then(val => {
-      this.modules = <Array<LearningObject>>val.json();
-      return this.modules;
-    }) : false;
-}*/
 }

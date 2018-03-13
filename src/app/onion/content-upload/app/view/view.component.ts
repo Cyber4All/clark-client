@@ -5,7 +5,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TimeFunctions } from '../time-functions';
 import 'rxjs/add/operator/switchMap';
 
-
+// FIXME: ternary statements return strings to the void
 @Component({
   selector: 'neutrino-view',
   templateUrl: './view.component.html',
@@ -37,12 +37,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   fetchLearningObject() {
     this.lobjectService.getLearningObject(this.learningObjectName).then(
       (learningObject) => {
-        console.log(learningObject);
         learningObject ? this.learningObject = learningObject : 'Error fetching LearningObject';
       }
     ).catch(
       (error) => {
-        console.log(error);
         alert('Invalid Learning Object.');
       }
     )

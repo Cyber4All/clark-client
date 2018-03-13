@@ -31,7 +31,7 @@ export class CoreModule {
         AuthService,
         CartV2Service,
         UserService,
-        process.env.ENV === 'production' ? { provide: ErrorHandler, useClass: RavenErrorHandler } : ErrorHandler]
+      ]
     };
   }
 }

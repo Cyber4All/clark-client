@@ -3,7 +3,7 @@ import { SuggestionService } from './../../suggestion/services/suggestion.servic
 import { quizzes, instructions } from 'clark-taxonomy/dist/taxonomy';
 import { verbs, assessments, levels } from 'clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ElementRef, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { LearningObjectBuilderComponent } from '../learning-object-builder.compo
   providers: [SuggestionService],
 })
 
-export class LearningOutcomeComponent implements OnInit, OnChanges, OnDestroy {
+export class LearningOutcomeComponent implements OnInit, OnDestroy {
 
   @Input() outcome;
   @Input('index') i;
@@ -66,17 +66,11 @@ export class LearningOutcomeComponent implements OnInit, OnChanges, OnDestroy {
       const textB = b.toUpperCase();
       return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     }));
-    console.log(sortedVerbs);
     return sortedVerbs;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-  }
-
   logSelect() {
-    console.log(this.outcome._bloom);
-    console.log(this.classverbs[this.outcome._bloom]);
+    throw new Error('#logSelect not implemented');
   }
 
   updateFocus(i) {
@@ -103,7 +97,7 @@ export class LearningOutcomeComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleActiveSquare(event) {
     const e = this.el.nativeElement.querySelectorAll('.outcome_bloom .square.active');
-    for (let i = 0; i < e.length; i++) e[i].classList.remove('active');
+    for (let i = 0; i < e.length; i++) { e[i].classList.remove('active'); }
     event.currentTarget.classList.add('active');
 
     this.outcome._bloom = event.currentTarget.attributes.data.value;
@@ -111,16 +105,16 @@ export class LearningOutcomeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   newInstructionalStrategy(i) {
-    let newStrategy = this.outcome.addStrategy();
+    const newStrategy = this.outcome.addStrategy();
     newStrategy.instruction = this.instructionalstrategies[this.outcome._bloom][0];
-    newStrategy.text = "";
-  };
+    newStrategy.text = '';
+  }
 
   newQuestion(i) {
-      let newQuestion = this.outcome.addAssessment();
+      const newQuestion = this.outcome.addAssessment();
       newQuestion.plan = this.classassessmentstrategies[this.outcome._bloom][0];
-      newQuestion.text = "";
-  };
+      newQuestion.text = '';
+  }
 
   deleteStrategy(i, s) {
       this.outcome.removeStrategy(s);
@@ -142,21 +136,13 @@ export class LearningOutcomeComponent implements OnInit, OnChanges, OnDestroy {
 
   validate(): boolean {
     // check bloom, text, and verb
-    if (this.outcome._bloom === '') return false;
-    if (this.outcome._text === '' || this.outcome._verb === '')
+    if (this.outcome._bloom === '') { return false; }
+    if (this.outcome._text === '' || this.outcome._verb === '') {
       return false;
-
-    // check assessments
-    /*for (const a of this.outcome._assessments) {
-      if (a._plan === '' || a._text === '') return false;
     }
-    // check strategies
-    for (const i of this.outcome._strategies)
-      if (i._instruction === '' || i._text === '') return false;
-*/
     return true;
   }
-  
+
   ngOnDestroy() {
     this.suggestionService.mappedSubject.unsubscribe();
   }

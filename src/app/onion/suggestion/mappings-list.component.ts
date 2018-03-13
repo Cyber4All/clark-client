@@ -21,10 +21,8 @@ export class MappingsListComponent implements OnInit {
     this.mappings = m.currentValue;
     this.showMappings = this.mappings.length > 1;
     m.observable.subscribe(data => {
-      console.log(data);
       this.mappings = data;
       this.showMappings = this.mappings.length > 1;
-      console.log(this.showMappings);
     });
   }
 

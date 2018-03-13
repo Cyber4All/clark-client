@@ -12,12 +12,10 @@ export class OutcomeService {
   }
 
   getOutcomes(filter?): Promise<{}[]> {
-    console.log('filter', filter);
     return this.http.post(environment.suggestionUrl + '/suggestOutcomes',
       { text: (filter.filterText) ? filter.filterText : '', filter: this.formatFilter(filter) }, { headers: this.headers })
       .toPromise()
       .then(res => {
-        console.log('results', res.json());
         if (res.ok) {
           return res.json();
         }

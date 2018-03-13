@@ -8,7 +8,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
@@ -42,7 +42,6 @@ export class DashboardComponent implements OnInit {
       .getLearningObjects()
       .then(learningObjects => {
         this.learningObjects = learningObjects;
-        console.log(this.learningObjects);
       })
       .catch(err => {
         console.log(err);
@@ -53,7 +52,6 @@ export class DashboardComponent implements OnInit {
    * Opens the learning object builder component and populates it with the active learning object
    */
   edit() {
-    console.log('test', this.focusedLearningObject);
     this.router.navigate([
       '/onion/learning-object-builder',
       this.focusedLearningObject.name
@@ -102,7 +100,6 @@ export class DashboardComponent implements OnInit {
               })
               .catch(err => {
                 this.getLearningObjects();
-                console.log(err);
               });
           } else {
             this.learningObjectService
@@ -116,7 +113,6 @@ export class DashboardComponent implements OnInit {
                   'good',
                   'far fa-times'
                 );
-                console.log('Deleted Multiple')
                 this.getLearningObjects();
               })
               .catch(err => {
@@ -143,8 +139,7 @@ export class DashboardComponent implements OnInit {
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject) {
-    console.log(l);
-    if (!this.selected.includes(l['name'])) this.selected.push(l['name']);
+    if (!this.selected.includes(l['name'])) { this.selected.push(l['name']); }
     this.app.detectChanges();
   }
 
@@ -153,7 +148,6 @@ export class DashboardComponent implements OnInit {
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
-    console.log('called');
     this.selected.splice(this.selected.indexOf(l['name']), 1);
     this.app.detectChanges();
   }
@@ -177,10 +171,8 @@ export class DashboardComponent implements OnInit {
       this.filters.splice(this.filters.indexOf(val.substring(1)), 1);
     } else {
       // we're adding
-      if (!this.filters.includes(val)) this.filters.push(val);
+      if (!this.filters.includes(val)) { this.filters.push(val); }
     }
-
-    console.log(this.filters);
   }
 
   /**
@@ -188,9 +180,11 @@ export class DashboardComponent implements OnInit {
    *
    * @param l Learning Object to be tested
    */
+  // TODO: Is this still being used?
   checkFilter(l: LearningObject): boolean {
-    if (this.filters.includes('courses'))
-      if (l['length'] !== 'course') return false;
+    if (this.filters.includes('courses')) {
+      if (l['length'] !== 'course') { return false; }
+    }
     return true;
   }
 
@@ -203,8 +197,7 @@ export class DashboardComponent implements OnInit {
    */
   makeContextMenu(event, learningObject) {
     this.focusedLearningObject = learningObject;
-    console.log('focused', this.focusedLearningObject);
-    let list: Array<ModalListElement> = [
+    const list: Array<ModalListElement> = [
       new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit'),
       new ModalListElement(
         '<i class="far fa-trash-alt"></i>Delete',
@@ -267,7 +260,7 @@ export class DashboardComponent implements OnInit {
    * @param event click event
    */
   filterDropdown(event) {
-    let list: Array<ModalListElement> = [
+    const list: Array<ModalListElement> = [
       new ModalListElement(
         '<i class="far fa-check-circle"></i>Published',
         'published',
@@ -298,7 +291,7 @@ export class DashboardComponent implements OnInit {
         this.filters.slice(0)
       )
       .subscribe(val => {
-        if (val !== 'null') this.manageFilters(val);
+        if (val !== 'null') { this.manageFilters(val); }
       });
   }
 }
