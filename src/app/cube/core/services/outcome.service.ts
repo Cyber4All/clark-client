@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { Headers, Http, Response } from '@angular/http';
+import * as querystring from 'query-string';
 
 @Injectable()
 export class OutcomeService {
@@ -12,9 +13,8 @@ export class OutcomeService {
   }
 
   getOutcomes(filter?): Promise<{}[]> {
-    console.log('filter', filter);
-    return this.http.post(environment.suggestionUrl + '/suggestOutcomes',
-      { text: (filter.filterText) ? filter.filterText : '', filter: this.formatFilter(filter) }, { headers: this.headers })
+    const query = querystring.stringify(this.formatFilter(filter));
+    return this.http.get(environment.suggestionUrl + '/outcomes?' + query, { headers: this.headers })
       .toPromise()
       .then(res => {
         console.log('results', res.json());
@@ -30,7 +30,8 @@ export class OutcomeService {
     return {
       author: filter.author !== '' ? filter.author : undefined,
       date: filter.date !== '' ? filter.date : undefined,
-      name: filter.name !== '' ? filter.name : undefined
+      name: filter.name !== '' ? filter.name : undefined,
+      text: filter.filterText,
     };
   }
 

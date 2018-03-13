@@ -5,6 +5,7 @@ import { AuthService } from '../../core/auth.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { UserInformationComponent } from '../user-information/user-information.component';
 import { UserEditInformationComponent } from './../user-edit-information/user-edit-information.component';
+import { ModalService, ModalListElement } from '../../shared/modals';
 
 @Component({
   selector: 'clark-user-profile',
@@ -12,18 +13,15 @@ import { UserEditInformationComponent } from './../user-edit-information/user-ed
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  name;
-  employer = 'Towson University';
-  contributor = false;
-  modulesCreated: 20;
-  title = 'Educator';
-  email;
   myStyle;
   particleParams;
+  height: number = 100;
+  width: number = 100;
 
   constructor(
     private service: LearningObjectService,
-    private auth: AuthService
+    private auth: AuthService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -37,11 +35,11 @@ export class UserProfileComponent implements OnInit {
       right: 0,
       bottom: 0
     };
-
+    
     this.particleParams = {
       particles: {
         number: {
-          value: 50,
+          value: 200,
           density: {
             enable: true,
             value_area: 900
@@ -66,7 +64,7 @@ export class UserProfileComponent implements OnInit {
           }
         },
         opacity: {
-          value: 0.5,
+          value: 0.1,
           random: false,
           anim: {
             enable: false,
@@ -89,7 +87,7 @@ export class UserProfileComponent implements OnInit {
           enable: true,
           distance: 150,
           color: '#ffffff',
-          opacity: 0.4,
+          opacity: 0.1,
           width: 1
         },
         move: {

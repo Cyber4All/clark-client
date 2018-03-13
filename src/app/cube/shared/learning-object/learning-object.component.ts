@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class LearningObjectListingComponent implements OnInit {
     @Input() learningObject;
     @Input() link;
+    @Input() owned? = false;
     
     public particleParams: any;
     myStyle: object = {};
@@ -139,6 +140,8 @@ export class LearningObjectListingComponent implements OnInit {
             },
             'retina_detect': true
         };
+
+        console.log(this.owned);
     }
 
     get goals() {

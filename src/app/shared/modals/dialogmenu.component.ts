@@ -6,11 +6,11 @@ import { Modal } from './modal';
     selector: '<app-dialogmenu></app-dialogmenu>',
     template: `
     <div *ngIf="show" class="popup-wrapper">
-        <div class="popup dialog " [ngClass]="'popup dialog ' + (content.classes) ? content.classes : ''" (clickOutside)="optionClick('reject');">
+        <div class="popup dialog " [ngClass]="'popup dialog ' + (content.classes) ? content.classes : ''" (clickOutside)="tryClose($event);">
             <div class="title-text">{{content.title}}</div>
             <div class="text">{{content.text}}</div>
             <div class="" [ngClass]="'btn-group ' + content.buttonGroupClasses">
-                <div *ngFor="let b of content.buttons" [attr.class]="'button ' + b.classes" [innerHTML]="b.text" (click)="optionClick(b.func)"></div>
+                <div *ngFor="let b of content.buttons" [attr.class]="'button ' + b.classes" [innerHTML]="b.text" (click)="optionClick($event, b.func)"></div>
             </div>
         </div>
     </div>
@@ -18,6 +18,16 @@ import { Modal } from './modal';
 })
 export class DialogMenuComponent extends Modal implements DoCheck, AfterViewChecked {
     type: string = 'dialog';
+
+    tryClose(event) {
+        if (!this.justCreated) {
+            if (event.target.classList.contains('popup-wrapper')) {
+                this.close();
+            }
+        } else {
+            this.justCreated = false;
+        }
+    }
 
     constructor(private elementRef: ElementRef, modalService: ModalService) {
         super(modalService);
