@@ -14,6 +14,8 @@ import { AuthGuard } from '../core/auth-guard.service';
 import { AuthResolve } from '../auth/auth.resolver';
 import { CubeComponent } from './cube.component';
 import { CollectionComponent } from './collections/collection.component';
+import { ProfileGuard } from './core/profile.guard';
+import { UserResolver } from './core/user.resolver';
 
 // Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {
@@ -37,10 +39,14 @@ const cube_routes: Routes = [
         path: 'library', component: RouterComponent, data: { breadcrumb: 'Library' }, canActivate: [AuthGuard],
         children: [{ path: '', component: CartComponent }, detailRoute]
       },
-      { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
-      { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
+      { path: 'users/:username', component: UserProfileComponent, resolve: {
+        user: UserResolver
+      }},
+      { path: 'users/:username/preferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' },
+        canActivate: [AuthGuard]
+      },
       // Catch All
-      { path: '**', redirectTo: '/home', pathMatch: 'full' },
+      { path: '**', component: UserProfileComponent, pathMatch: 'full', canActivate: [ProfileGuard] },
     ]
   }
 ];

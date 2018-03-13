@@ -2,10 +2,11 @@ import { USER_ROUTES } from '../../../environments/route';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../../core/auth.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject, User } from '@cyber4all/clark-entity';
 import { UserInformationComponent } from '../user-information/user-information.component';
 import { UserEditInformationComponent } from './../user-edit-information/user-edit-information.component';
 import { ModalService, ModalListElement } from '../../shared/modals';
+import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'clark-user-profile',
@@ -13,18 +14,30 @@ import { ModalService, ModalListElement } from '../../shared/modals';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
+  user: User;
+  self: boolean = false;
   myStyle;
   particleParams;
   height: number = 100;
   width: number = 100;
 
+  editContent: boolean = false;
+
   constructor(
     private service: LearningObjectService,
     private auth: AuthService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    // get data from resolve
+    this.route.data.subscribe(val => {
+      this.user = val.user;
+      this.self = this.user.username === this.auth.username;
+    });
+    
+    // particle config
     this.myStyle = {
       position: 'absolute',
       width: '100%',
@@ -146,5 +159,12 @@ export class UserProfileComponent implements OnInit {
       },
       retina_detect: true
     };
+  }
+
+  closeEdit(changed: boolean = false) {
+    this.editContent = false;
+    if (changed) {
+      this.user = this.auth.user;
+    }
   }
 }

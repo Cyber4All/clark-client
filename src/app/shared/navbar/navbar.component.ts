@@ -45,11 +45,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
   }
 
   userprofile() {
-    this.router.navigate(['/userprofile']);
+    this.router.navigate(['users', this.authService.user.username]);
   }
 
   preferences() {
-    this.router.navigate(['/userpreferences']);
+    this.router.navigate(['users', this.authService.user.username, 'preferences']);
   }
 
   /**

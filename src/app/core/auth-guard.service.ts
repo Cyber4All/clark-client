@@ -18,8 +18,7 @@ export class AuthGuard implements CanActivate {
     const c = this.cookies.get('presence');
 
     if (c) {
-      return this.auth.validate().toPromise().then(val => {
-        this.auth.user = <User> val;
+      return this.auth.validate().then(val => {
         return true;
       }, error => {
         this.router.navigate(['/auth/login'], { queryParams: { redirectRoute: state.url } });

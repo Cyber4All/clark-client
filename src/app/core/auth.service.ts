@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie';
 import { User } from '@cyber4all/clark-entity';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { Router, NavigationEnd, RouterEvent } from '@angular/router';
 
 @Injectable()
@@ -16,9 +16,10 @@ export class AuthService {
 
   constructor(private http: HttpClient, private cookies: CookieService, private router: Router) {
     if (this.cookies.get('presence')) {
-      this.validate().subscribe(val => {
-        this.user = <User> val;
+      this.validate().then(val => {
         this.isLoggedIn.next(true);
+      }, error => {
+        this.isLoggedIn.next(false);
       });
     }
 
@@ -40,13 +41,21 @@ export class AuthService {
     return this.user ? true : false;
   }
 
-  validate(): Observable<User> {
-    return this.http.get<User>(environment.apiURL + '/users/tokens', {withCredentials: true});
+  get username(): string {
+    return this.user ? this.user.username : undefined;
+  }
+
+  validate(): Promise<void> {
+    return this.http.get(environment.apiURL + '/users/tokens', {withCredentials: true}).toPromise().then((val: any) => {
+      this.user = this.makeUserFromCookieResponse(val);
+    }, error => {
+      throw error;
+    });
   }
 
   login(user: {username: string, password: string}): Promise<any> {
     return this.http.post<User>(environment.apiURL + '/users/tokens', user, {withCredentials: true}).toPromise().then(val => {
-      this.user = <User> val;
+      this.user = this.makeUserFromCookieResponse(val);
       this.isLoggedIn.next(true);
       return this.user;
     }, error => {
@@ -100,6 +109,10 @@ export class AuthService {
     return this.http.patch(
       environment.apiURL + '/users/name', user.firstname,  
       {withCredentials: true, responseType: 'text'});
+  }
+
+  makeUserFromCookieResponse(val: any): User {
+    return new User(val.username, val.name, val.email, val.organization, null);
   }
  }
 

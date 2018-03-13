@@ -28,7 +28,7 @@
     background-position: center;
     background-repeat: no-repeat;
     margin: auto;
-    margin-top: -120px;
+    margin-top: -180px;
     z-index: 2;
 
     &:after {
@@ -80,5 +80,5 @@
                 border-bottom: 1px solid $blue-accent;
             }
         }
-      }
+    }
 }
