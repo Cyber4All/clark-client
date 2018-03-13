@@ -5,18 +5,21 @@ import {
   OnChanges,
   SimpleChanges,
   EventEmitter,
-  Output
+  Output,
+  OnDestroy
 } from '@angular/core';
 import { UserService } from '../../core/user.service';
 import { AuthService } from '../../core/auth.service';
 import { NotificationService } from '../../shared/notifications';
+import { User } from '@cyber4all/clark-entity';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-edit-information',
   templateUrl: './user-edit-information.component.html',
   styleUrls: ['./user-edit-information.component.scss']
 })
-export class UserEditInformationComponent implements OnInit, OnChanges {
+export class UserEditInformationComponent implements OnInit, OnDestroy, OnChanges {
   @Input('user') user;
   @Output('close') close = new EventEmitter<boolean>();
 
@@ -27,10 +30,9 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     organization: ''
   };
 
-  constructor(
-    private userService: UserService,
-    private noteService: NotificationService
-  ) {}
+  sub: Subscription; // open subscription to close
+
+  constructor(private userService: UserService, private noteService: NotificationService, private auth: AuthService) { }
 
   ngOnInit() {}
 
@@ -52,25 +54,21 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
       organization: this.editInfo.organization
     };
 
-    this.userService.editUserInfo(concatInfo).then(
-      val => {
+    console.log('to send', concatInfo);
+
+    this.userService.editUserInfo(concatInfo).then(val => {
+      this.sub = this.auth.validate().subscribe(user => {
+        this.auth.user = user;
         this.close.emit(true);
-        this.noteService.notify(
-          'Success!',
-          "We've updated your user information!",
-          'good',
-          'far fa-check'
-        );
-      },
-      error => {
-        this.noteService.notify(
-          'Error!',
-          "We couldn't update your user information!",
-          'bad',
-          'far fa-times'
-        );
-      }
-    );
+        this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
+      });
+    }, error => {
+      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }
 
