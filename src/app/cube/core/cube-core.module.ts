@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 // Services
-import { OutcomeService } from './outcome.service';
+import { OutcomeService } from './services/outcome.service';
 
 /**
  * Contains all singleton services for the cube module.

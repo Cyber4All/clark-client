@@ -1,0 +1,79 @@
+@import '~_globals.scss';
+
+form {
+    text-align: center; 
+
+    .h-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .input {
+            width: 49%;
+            margin-bottom: 0px;
+        }
+    }
+
+    .input {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        border: 1px solid $placeholder;
+        border-radius: 1px;
+    
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    
+        input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            color: $blue-accent;
+            flex-grow: 1;
+            flex-shrink: 1;
+            border: none;
+            font-size: 15px;
+            outline: 0;
+            font-family: 'Source Sans Pro', serif;
+            font-weight: normal;
+            padding: 12px;
+            width: 100%;
+    
+            &:focus ~ .svg-inline--fa {
+                color: $blue-accent;
+            }
+        }
+    
+        .svg-inline--fa {
+            width: 15px;
+            height: 15px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            @include vert-center;
+            color: darken($placeholder, 20);
+            padding-left: 14px;
+            box-sizing: content-box;
+        }
+    
+        &.active {
+
+            .svg-inline--fa {
+                color: $blue-accent;
+            }
+        }
+    }    
+
+    .btn-group {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+}
+
+.title {
+    text-align: center; 
+    color: $dark-text;
+    font-size: 28px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
