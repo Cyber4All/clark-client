@@ -1,33 +1,35 @@
 export enum OrderBy {
-    Name = 'name_',
-    Date = 'date'
+  Name = 'name',
+  Date = 'date'
 }
 
 export enum SortType {
-    Ascending = 1,
-    Descending = -1,
+  Ascending = 1,
+  Descending = -1
 }
 
 export interface Query {
-    currPage?: number;
-    limit?: number;
-    length?: string[] | string;
-    level?: string[];
-    orderBy?: OrderBy;
-    sortType?: SortType;
-    text?: string;
-    standardOutcomes?: string[] | {id: string, name: string, date: string, outcome: string}[];
+  currPage?: number;
+  limit?: number;
+  length?: string[] | string;
+  level?: string[];
+  orderBy?: OrderBy;
+  sortType?: SortType;
+  text?: string;
+  standardOutcomes?:
+    | string[]
+    | { id: string; name: string; date: string; outcome: string }[];
 }
 
-export interface TextQuery extends Query {
-    
-}
+export interface TextQuery extends Query {}
 
 export interface MappingQuery extends Query {
-    standardOutcomes?: string[] | {id: string, name: string, date: string, outcome: string}[];
+  standardOutcomes?:
+    | string[]
+    | { id: string; name: string; date: string; outcome: string }[];
 }
 
 export interface FilterQuery extends Query {
-    length?: string[];
-    level?: string[];
+  length?: string[];
+  level?: string[];
 }

@@ -215,11 +215,6 @@ export class DashboardComponent implements OnInit {
     let list: Array<ModalListElement> = [
       new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit'),
       new ModalListElement(
-        '<i class="far fa-trash-alt"></i>Delete',
-        'delete',
-        'bad'
-      ),
-      new ModalListElement(
         '<i class="far fa-upload"></i>Manage Materials',
         'upload'
       ),
@@ -244,6 +239,13 @@ export class DashboardComponent implements OnInit {
         )
       );
     }
+    list.push(
+      new ModalListElement(
+        '<i class="far fa-trash-alt"></i>Delete',
+        'delete',
+        'bad'
+      )
+    );
 
     this.modalService
       .makeContextMenu(

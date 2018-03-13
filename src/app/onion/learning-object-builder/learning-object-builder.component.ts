@@ -6,7 +6,12 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
 import { User, LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
-import { verbs, assessments, quizzes, instructions } from 'clark-taxonomy';
+import {
+  verbs,
+  assessments,
+  quizzes,
+  instructions
+} from '@cyber4all/clark-taxonomy';
 
 @Component({
   selector: 'learning-object-builder',
@@ -26,6 +31,8 @@ export class LearningObjectBuilderComponent implements OnInit {
   isNew = false;
   submitted = 0;
 
+  validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -35,6 +42,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.learningObject.addGoal('');
     console.log(this.learningObject.level, this.learningObject.length);
     this.getRouteParams();
   }
@@ -113,6 +121,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       : this.learningObject.unpublish();
 
     this.learningObject.date = Date.now().toString();
+    this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
       this.service
         .save(this.learningObject)
@@ -275,7 +284,9 @@ export class LearningObjectBuilderComponent implements OnInit {
       'learning-outcome-component > .container'
     );
     for (const outcome of Array.from(o)) {
-      if (outcome.attributes['valid'].value !== 'true') { return false; }
+      if (outcome.attributes['valid'].value !== 'true') {
+        return false;
+      }
     }
 
     return true;
