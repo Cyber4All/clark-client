@@ -10,7 +10,7 @@
       <app-user-information></app-user-information>
     </div>
     <div *ngIf="editContent">
-      <app-user-edit-information [user]="this.auth.user"></app-user-edit-information>
+      <app-user-edit-information [user]="this.auth.user" (close)="editContent = !editContent"></app-user-edit-information>
     </div>
 </div>
 </div>

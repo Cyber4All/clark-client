@@ -3,7 +3,9 @@ import { environment } from './environment';
 export const USER_ROUTES = {
     LOGIN: `${environment.apiURL}/users/tokens`,
     REGISTER: `${environment.apiURL}/users`,
-    EDIT_USER_INFO: `${environment.apiURL}/users`,
+    EDIT_USER_INFO(username) {
+     return `${environment.apiURL}/users/${username}`;
+    },
     VALIDATE_TOKEN(username) {
         return `${environment.apiURL}/users/${username}/tokens`;
     },
