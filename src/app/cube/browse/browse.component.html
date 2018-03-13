@@ -19,7 +19,7 @@
       <div class="filter">
         <div class="filter-title">Length</div>
         <ul>
-            <li *ngFor="let length of loLength">
+            <li tip="{{tooltipText[i]}} " tipLocation="side" *ngFor="let length of loLength; let i = index;">
               <checkbox [checked]="checkFilters('length', length)" (checkboxChecked)="addFilter('length', length)"  (checkboxUnchecked)="removeFilter('length', length)"></checkbox>
               {{ length }}
             </li>

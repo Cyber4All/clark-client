@@ -52,6 +52,7 @@ import { AuthService } from '../core/auth.service';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 import { ModalModule } from '../shared/modals';
+import { TooltipModule } from '@cyber4all/clark-tooltip';
 import {
   NotificationComponent,
   NotificationModule
@@ -60,6 +61,7 @@ import { UserInformationComponent } from './user-information/user-information.co
 import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
 import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
+
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -101,6 +103,7 @@ import { CollectionModule } from './collections/collection.module';
     ModalModule,
     NotificationModule,
     CollectionModule,
+    TooltipModule
   ],
   providers: [LearningObjectService, CartService]
 })

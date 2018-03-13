@@ -30,6 +30,14 @@ export class BrowseComponent implements OnInit, OnDestroy {
     level: [],
     standardOutcomes: []
   };
+  
+  tooltipText = [
+    "a Learning Object up to 1 hour in length",
+    "a Learning Object between 1 and 4 hours in length",
+    "a Learning Object between 4 and 10 hours in length",
+    "a Learning Object over 10 hours in length",
+    "a Learning Object 15 weeks in length"
+  ]
 
   mappingsPopup = false;
 

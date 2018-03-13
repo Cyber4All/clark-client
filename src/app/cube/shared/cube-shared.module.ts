@@ -18,6 +18,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +27,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
     FormsModule,
     VirtualScrollModule,
     CheckBoxModule,
-    ClickOutsideModule
+    ClickOutsideModule,
   ],
   exports: [
     FooterComponent,
