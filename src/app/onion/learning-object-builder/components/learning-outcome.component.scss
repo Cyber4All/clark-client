@@ -80,22 +80,6 @@
         flex-grow: 1;
     }
 }
-.outcome_bloom {
-    display: flex;
-    direction: row;
-    justify-content: flex-start;
-    width: 100%;
-    flex-grow: 1;
-    .squares {            
-        justify-content: center;
-        .square {
-            cursor: pointer;
-        }
-    }
-    .glyphicon {
-        margin-left: 10px;
-    }
-}
 .mappings-toolbar {
     display: flex;
     flex-flow: row nowrap;
@@ -182,4 +166,8 @@
     .button.bad:hover {
         transition: all 1.5s ease;
     }
+}
+
+onion-blooms-selector {
+    flex-grow: 1;
 }

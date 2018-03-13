@@ -9,7 +9,7 @@ import { User, LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
 import { verbs, assessments, quizzes, instructions } from 'clark-taxonomy';
 
 @Component({
-  selector: 'learning-object-builder',
+  selector: 'onion-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss']
 })
@@ -87,7 +87,7 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   async save(willUpload: boolean) {
-    let publish = await this.modalService
+    const publish = await this.modalService
       .makeDialogMenu(
         'PublishConfirmation',
         'Publish changes?',

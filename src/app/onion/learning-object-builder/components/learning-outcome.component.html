@@ -16,25 +16,11 @@
   </div>
   <div class="container-flexer">
     <!-- TODO: .outcome_bloom convert to component due to SRP/CCP -->
-    <div class="outcome_bloom">
-      <div class="squares">
-        <div class="square" [ngClass]="{'active': v === outcome._bloom}" *ngFor="let v of verbKeys" (click)="toggleActiveSquare($event)"
-          [attr.data]="v">
-          <div class="square-inner">
-            <div class="icon">
-              <i *ngIf="v === 'Apply and Analyze'" class="fal fa-bolt"></i>
-              <i *ngIf="v === 'Evaluate and Synthesize'" class="fab fa-connectdevelop"></i>
-              <i *ngIf="v === 'Remember and Understand'" class="fal fa-cloud"></i>
-            </div>
-            <div class="desc">{{v}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <onion-blooms-selector [default]="outcome._bloom" (bloom)="registerBloomsLevel($event)"></onion-blooms-selector>
     <div class="outcome_input">
       <div class="vert-center">Students will be able to </div>
       <div class="select-wrapper">
-        <select (change)="logSelect()" style="display: inline" [(ngModel)]="outcome._verb">
+        <select style="display: inline" [(ngModel)]="outcome._verb">
           <option *ngFor="let v of classverbs[outcome._bloom]; let i = index" [attr.value]="v" [attr.selected]="i == 0 ? true : null">{{ v }}</option>
         </select>
       </div>

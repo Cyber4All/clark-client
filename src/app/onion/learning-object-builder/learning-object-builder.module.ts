@@ -12,6 +12,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
 
 import { OnionRoutingModule } from '../onion.routing';
 import { SharedModule } from '../../shared/shared.module';
+import { BloomsSelectorComponent } from './components/blooms-selector/blooms-selector.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { SharedModule } from '../../shared/shared.module';
     TextEditorComponent,
     ContentEditableDirective,
     LearningOutcomeComponent,
+    BloomsSelectorComponent,
   ],
   exports: [LearningObjectBuilderComponent]
 })

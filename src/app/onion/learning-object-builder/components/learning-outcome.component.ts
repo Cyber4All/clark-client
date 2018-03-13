@@ -31,12 +31,12 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   classassessmentstrategies: { [level: string]: Set<string> };
   instructionalstrategies: { [level: string]: Set<string> };
 
-  constructor(private el: ElementRef, private suggestionService: SuggestionService) {}
+  constructor(private suggestionService: SuggestionService) {}
 
   ngOnInit() {
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
-
+    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
     this.bloomLevels = levels;
     this.testquizstrategies = quizzes;
     this.classassessmentstrategies = assessments;
@@ -70,8 +70,9 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
     return sortedVerbs;
   }
 
-  logSelect() {
-    throw new Error('#logSelect not implemented');
+  registerBloomsLevel(level) {
+    this.outcome._bloom = level;
+    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
   }
 
   updateFocus(i) {
@@ -90,19 +91,6 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
 
   openBloomsInfo(index: number) {
 
-  }
-
-  get verbKeys(): Array<string> {
-    return Object.keys(this.classverbs);
-  }
-
-  toggleActiveSquare(event) {
-    const e = this.el.nativeElement.querySelectorAll('.outcome_bloom .square.active');
-    for (let i = 0; i < e.length; i++) { e[i].classList.remove('active'); }
-    event.currentTarget.classList.add('active');
-
-    this.outcome._bloom = event.currentTarget.attributes.data.value;
-    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
   }
 
   newInstructionalStrategy(i) {
