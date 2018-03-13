@@ -39,8 +39,12 @@ export class FileStorageService {
       const formData: FormData = new FormData(),
         xhr: XMLHttpRequest = new XMLHttpRequest();
       formData.append('learningObjectID', learningObject.id);
-      for (let i = 0; i < files.length; i++) {
-        formData.append('uploads', files[i], files[i].name);
+      for (let file of files) {
+        formData.append(
+          'uploads',
+          file,
+          `${file.name}!@!${file['description']}`
+        );
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {

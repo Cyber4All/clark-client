@@ -7,7 +7,7 @@
       </div>
       <div class="title">{{ learningObject.name }}</div>
       <div class="btn-group to-right">
-        <div routerLink="/onion/content/upload/{{learningObjectName}}" class="button good ">Manage Materials
+        <div routerLink="/onion/content/upload/{{learningObjectName}}" class="button good med-height">Manage Materials
           <i class="far fa-edit "></i>
         </div>
       </div>
@@ -24,6 +24,7 @@
           <div class="cells">
             <div class="cell">Name</div>
             <div class="cell">Added</div>
+            <div class="cell">Description</div>
             <div class="placeholder"></div>
           </div>
         </div>
@@ -34,6 +35,9 @@
             </div>
             <div class="cell">
               {{ TimeFunctions.getTimestampAge(file.date) }}
+            </div>
+            <div class="cell">
+              {{ file.description }}
             </div>
           </div>
           <a [href]="file.url" class="button good icon-only">

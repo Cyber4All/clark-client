@@ -30,8 +30,13 @@
     <div [ngClass]="{'empty-section': dzDirectiveRef.dropzone().files.length == 0}">
       <div class="text" *ngIf="dzDirectiveRef.dropzone().files.length == 0">No new files added!</div>
       <div class="section file-listing" *ngFor="let file of dzDirectiveRef.dropzone().files; let i = index;">
-        <div>
-          {{ file.name }}
+        <div class="inline-flex">
+          <div class="file-name">
+            {{ file.name }}
+          </div>
+          <div class="description">
+            <input placeholder="Description" type="text" [(ngModel)]="file.description" [name]="'file-desc' + i" />
+          </div>
         </div>
         <div class="button bad icon-only" (click)="removeFromDZ(file)">
           <i class="far fa-times"></i>
@@ -49,6 +54,7 @@
         <div class="row columns file-listing-header">
           <div class="cells">
             <div class="cell">Name</div>
+            <div class="cell">Description</div>
             <div class="cell">Added</div>
             <div class="placeholder"></div>
           </div>
@@ -57,6 +63,10 @@
           <div class="cells">
             <div class="cell">
               {{ file.name }}
+            </div>
+            <div class="cell file-description">
+              <input placeholder="Description" type="text" [value]="file.description" [name]="'uploaded-desc' + i" [(ngModel)]="file.description"
+              />
             </div>
             <div class="cell">
               {{ TimeFunctions.getTimestampAge(file.date) }}
@@ -101,8 +111,8 @@
     </div>
   </div>
   <div class="btn-group to-right final">
-    <button *ngIf="!uploading" type="button" (click)="save()" class="button good" [disabled]="submitting">Save
-      <i class="far fa-check"></i>
+    <button *ngIf="!uploading" type="button" (click)="save()" class="button good" [disabled]="submitting">Upload
+      <i class="fas fa-cloud-upload"></i>
     </button>
     <button *ngIf="uploading" type="button" class="button good" [disabled]="submitting">
       Uploading
