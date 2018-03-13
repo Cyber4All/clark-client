@@ -11,7 +11,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { CheckBoxModule } from 'clark-checkbox';
 import { NotificationModule } from '../shared/notifications';
 import { ModalModule } from '../shared/modals';
-import { UserService } from './user.services';
+import { UserService } from './user.service';
 import { RavenErrorHandler } from './error-handler';
 
 @NgModule({

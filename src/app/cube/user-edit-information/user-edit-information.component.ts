@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { UserService } from '../../core/user.services';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
+import { UserService } from '../../core/user.service';
 import { AuthService } from '../../core/auth.service';
-import { OnChanges } from '@angular/core';
+import { NotificationService } from '../../shared/notifications';
 
 @Component({
   selector: 'app-user-edit-information',
@@ -11,6 +11,7 @@ import { OnChanges } from '@angular/core';
 export class UserEditInformationComponent implements OnInit, OnChanges {
 
   @Input('user') user;
+  @Output('close') close = new EventEmitter<boolean>();
   
   editInfo = {
     firstname: '',
@@ -19,17 +20,9 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     organization: '',
   };
 
-  passwordVerify = '';
-  registerFailure;
-  registerFailureTimer;
-  redirectRoute;
-  redirectUrl;
+  constructor(private userService: UserService, private noteService: NotificationService) { }
 
-  constructor(private userService: UserService) {}
-
-  ngOnInit() {
-    
-  }
+  ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.user) {
@@ -42,35 +35,20 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     }
   }
 
-  submit() {
-    this.registerFailure = undefined;
-    clearTimeout(this.registerFailureTimer);
-    
-    let concatInfo = { 
-      name: this.editInfo.firstname +  " " + this.editInfo.lastname,
-      email: this.editInfo.email, 
+  save() {
+    const concatInfo = {
+      name: this.editInfo.firstname +  ' ' + this.editInfo.lastname,
+      email: this.editInfo.email,
       organization: this.editInfo.organization
-    }
+    };
+
+    console.log('to send', concatInfo);
 
     this.userService.editUserInfo(concatInfo).then(val => {
-      if (this.redirectRoute) {
-        window.location.href = window.location.origin + this.redirectRoute;
-        // this.router.navigate([this.redirectRoute]);
-      } else {
-        window.location.href = this.redirectUrl;
-      }
+      this.close.emit(true);
+      this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
     }, error => {
-      console.log(error);
+      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
     });
   }
-
-  error(text: string = 'An error occured', duration: number = 4000) {
-    this.registerFailure = text;
-
-    this.registerFailureTimer = setTimeout(() => {
-      this.registerFailure = undefined;
-    }, duration);
-
-  }
-
 }

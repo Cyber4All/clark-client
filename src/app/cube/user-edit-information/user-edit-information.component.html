@@ -19,7 +19,7 @@
       <i class="far fa-building"></i>
     </div>
     <div class="btn-group to-right">
-        <div class="button good">Save Changes <i class="far fa-save"></i></div>
-        <div class="button bad">Discard Changes <i class="far fa-times"></i></div>
+        <div class="button good" (click)="save()">Save Changes <i class="far fa-save"></i></div>
+        <div class="button bad" (click)="close.emit(true)">Discard Changes <i class="far fa-times"></i></div>
     </div>
 </form>
