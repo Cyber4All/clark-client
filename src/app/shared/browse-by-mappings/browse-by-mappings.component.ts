@@ -1,13 +1,13 @@
 import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked } from '@angular/core';
-import { ModalService, Position, ModalListElement } from '../../../shared/modals';
-import { OutcomeService } from '../../core/services/outcome.service';
+import { ModalService, Position, ModalListElement } from '../../shared/modals';
+import { OutcomeService } from '../../core/outcome.service';
 
 // RXJS
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'browse-by-mappings-component',
+  selector: 'clark-browse-by-mappings-component',
   templateUrl: './browse-by-mappings.component.html',
   styleUrls: ['./browse-by-mappings.component.scss']
 })

@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
 import { FooterComponent } from './footer/footer.component';
-import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 
 // Directives
 import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
@@ -32,15 +31,13 @@ import { ClickOutsideModule } from 'ng-click-outside';
     FooterComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
-    LearningObjectCardDirective,
-    BrowseByMappingsComponent
+    LearningObjectCardDirective
   ],
   declarations: [
     FooterComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
-    LearningObjectCardDirective,
-    BrowseByMappingsComponent
+    LearningObjectCardDirective
   ]
 })
 export class CubeSharedModule { }

@@ -5,7 +5,7 @@ import { AuthGuard } from './auth-guard.service';
 import { AuthService } from './auth.service';
 
 import { CartV2Service } from './cartv2.service';
-
+import { OutcomeService } from './outcome.service';
 import { CookieModule } from 'ngx-cookie';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { CheckBoxModule } from 'clark-checkbox';
@@ -31,6 +31,7 @@ export class CoreModule {
         AuthService,
         CartV2Service,
         UserService,
+        OutcomeService
       ]
     };
   }
