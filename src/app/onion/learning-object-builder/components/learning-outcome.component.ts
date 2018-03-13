@@ -1,18 +1,22 @@
 import { Subject } from 'rxjs/Subject';
-import { SuggestionService } from './../../suggestion/services/suggestion.service';
+import { SuggestionService } from './../suggestion/services/suggestion.service';
 import { quizzes, instructions } from 'clark-taxonomy/dist/taxonomy';
 import { verbs, assessments, levels } from 'clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ElementRef, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
 
+enum TABS {
+  MAPPINGS,
+  SUGGESTIONS,
+  SEARCH
+}
 @Component({
   selector: 'onion-learning-outcome-component',
   templateUrl: 'learning-outcome.component.html',
   styleUrls: ['./learning-outcome.component.scss'],
   providers: [SuggestionService],
 })
-
 export class LearningOutcomeComponent implements OnInit, OnDestroy {
 
   @Input() outcome;

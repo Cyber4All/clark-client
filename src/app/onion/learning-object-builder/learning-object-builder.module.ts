@@ -1,5 +1,5 @@
 import { LearningOutcomeComponent } from './components/learning-outcome.component';
-import { SuggestionModule } from './../suggestion/suggestion.module';
+import { SuggestionModule } from './suggestion/suggestion.module';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -39,6 +39,6 @@ export class LearningObjectBuilderModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: LearningObjectBuilderModule
-    }
+    };
   }
 }
