@@ -4,6 +4,9 @@ export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
+  CHECK_USER_EXISTS(username) {
+    return `${environment.apiURL}/users/search?username=${username}`;
+  },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${username}/tokens`;
   },
@@ -83,5 +86,8 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   },
   GET_COLLECTION(name: string) {
     return `${environment.apiURL}/collections/${name}/learning-objects`;
+  },
+  GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
+    return `${environment.apiURL}/learning-objects/${username}`;
   }
 };

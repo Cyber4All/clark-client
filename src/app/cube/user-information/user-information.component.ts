@@ -1,8 +1,8 @@
-import { USER_ROUTES } from '../../../environments/route';
-import { Component, OnInit } from '@angular/core';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '../../../environments/route';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../../core/auth.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 
 @Component({
@@ -10,19 +10,11 @@ import { Http, Headers, ResponseContentType } from '@angular/http';
   templateUrl: './user-information.component.html',
   styleUrls: ['./user-information.component.scss']
 })
-export class UserInformationComponent implements OnInit {
+export class UserInformationComponent implements OnInit, OnChanges {
   // User Information
-  name: String;
-  organization: String;
-  contributor = false;
+  @Input('user') user: User;
+  @Input('self') self: boolean = false;
   objects: LearningObject[];
-  email: String;
-  password: String;
-  username: String;
-
-  // Display Variables
-  showContent = 0;
-  editContent = true;
 
   constructor(
     private service: LearningObjectService,
@@ -32,12 +24,20 @@ export class UserInformationComponent implements OnInit {
 
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     this.getUsersLearningObjects();
   }
 
   async getUsersLearningObjects(): Promise<void> {
-    return this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username), {withCredentials: true }).toPromise().then(val => {
-      this.objects = <Array<LearningObject>>val.json().map(l => LearningObject.instantiate(l));
+    let route = (this.self) ?
+      USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.user.username) :
+      PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(this.user.username);
+
+    return this.http.get(route, {withCredentials: true }).toPromise().then(val => {
+      console.log(val);
+      this.objects = (this.self) ? <Array<LearningObject>>val.json().map(l => LearningObject.instantiate(l)) : <Array<LearningObject>>val.json().map(l => LearningObject.instantiate(l));
     });
   }
 }
