@@ -1,10 +1,10 @@
 import { SuggestionService } from './services/suggestion.service';
 import {
   Component, EventEmitter, Input, KeyValueDiffers, KeyValueDiffer, OnInit, OnDestroy,
-  OnChanges, Output, SimpleChanges, SimpleChange
+  OnChanges, Output, SimpleChanges, SimpleChange, ChangeDetectorRef
 } from '@angular/core';
 import { providers } from 'ng2-dnd';
-import { OutcomeSuggestion } from '@cyber4all/clark-entity';
+import { OutcomeSuggestion, StandardOutcome } from '@cyber4all/clark-entity';
 
 /*
   TODO: Automatically check or hide standards that are currently mapped from the suggestion view
@@ -12,19 +12,20 @@ import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 */
 
 @Component({
-  selector: 'suggestion-component',
+  selector: 'onion-suggestion-component',
   templateUrl: './suggestion.component.html',
   styleUrls: ['suggestion.component.scss']
 })
 export class SuggestionComponent implements OnInit, OnChanges {
 
   private _differ: any;
-
   @Input('mappingsInput') mappingsInput: Array<OutcomeSuggestion> = [];
+  @Input('outcome') outcome: string;
+  @Input() opened: boolean;
 
   mappings = new Map<string, OutcomeSuggestion>();
   standardAppear: boolean;
-  standardOutcomes: Array<object> = [];
+  standardOutcomes: Array<StandardOutcome> = [];
   connection;
   filter = {
     author: undefined,
@@ -32,13 +33,14 @@ export class SuggestionComponent implements OnInit, OnChanges {
     name: undefined
   };
 
-  @Input('outcome') outcome: string;
-  @Input() opened: boolean;
+  constructor(private loader: SuggestionService, private _differs: KeyValueDiffers) {
+    this._differ = _differs.find(this.filter).create();
+  }
 
   ngOnInit() {
     this.standardAppear = false;
     this.connection = this.loader.observe().subscribe(data => {
-      this.standardOutcomes = data as Array<object>;
+      this.standardOutcomes = data as Array<StandardOutcome>;
     });
     this.loader.emit(this.outcome);
   }
@@ -52,20 +54,14 @@ export class SuggestionComponent implements OnInit, OnChanges {
     }
 
     if (changes.mappingsInput) {
-      for (let m of changes.mappingsInput.currentValue) this.addStandard(m);
+      for (const m of changes.mappingsInput.currentValue) {
+        this.addStandard(m);
+      }
     }
-  }
-
-  constructor(private loader: SuggestionService, private _differs: KeyValueDiffers) {
-    this._differ = _differs.find(this.filter).create();
   }
 
   open(content) {
     this.standardAppear = !this.standardAppear;
-  }
-
-  applyStandards() {
-
   }
 
   updateDate(e) {
@@ -101,9 +97,5 @@ export class SuggestionComponent implements OnInit, OnChanges {
 
   removeStandardByID(id: string) {
     this.removeStandard(this.mappings.get(id));
-  }
-
-  allMappingsUsed(): boolean {
-    return Array.from(this.mappings.values()).every(elem => this.standardOutcomes.indexOf(elem) > -1);
   }
 }

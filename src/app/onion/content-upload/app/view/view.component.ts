@@ -5,6 +5,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TimeFunctions } from '../time-functions';
 import 'rxjs/add/operator/switchMap';
 
+// FIXME: ternary statements return strings to the void
 @Component({
   selector: 'neutrino-view',
   templateUrl: './view.component.html',

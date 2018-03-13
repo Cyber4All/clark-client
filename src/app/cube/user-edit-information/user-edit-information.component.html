@@ -1,18 +1,25 @@
-
-<form class="title" (ngSubmit)="submit()">
-    <div class="input firstname" [ngClass]="{'active': editInfo.name !== ''}">
-      <input name="firstname" type="text" placeholder="First name" [(ngModel)]="editInfo.firstname" />
-    </div>
-    <div class="input lastname" [ngClass]="{'active': editInfo.lastname !== ''}">
-      <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="editInfo.lastname" />
+<div class="title">Edit Profile</div>
+<form (ngSubmit)="submit()">
+    <div class="h-group">
+        <div class="input firstname" [ngClass]="{'active': editInfo.firstname !== ''}">
+          <input name="firstname" type="text" placeholder="First name" [(ngModel)]="editInfo.firstname" />
+          <i class="far fa-id-card"></i>
+        </div>
+        <div class="input lastname" [ngClass]="{'active': editInfo.lastname !== ''}">
+          <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="editInfo.lastname" />
+          <i class="far fa-id-card"></i>
+        </div>
     </div>
     <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
       <input name="email" type="text" placeholder="Email address" [(ngModel)]="editInfo.email" />
+      <i class="far fa-at"></i>
     </div>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
       <input name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
+      <i class="far fa-building"></i>
     </div>
-    <button type="type" class="auth-button">
-        <div class="text">Apply Changes</div>
-    </button>
+    <div class="btn-group to-right">
+        <div class="button good">Save Changes <i class="far fa-save"></i></div>
+        <div class="button bad">Discard Changes <i class="far fa-times"></i></div>
+    </div>
 </form>

@@ -1,4 +1,4 @@
-<mappings-list [mappings]="mappings" (delete)="removeStandardByID($event, m)" *ngIf="opened || mappings.size"></mappings-list>
+<onion-mappings-list (delete)="removeStandardByID($event, m)" *ngIf="opened || mappings.size"></onion-mappings-list>
 <ng-container *ngIf="opened">
     <div class="sub-title sub-sub-title">Outcomes From Other Sources</div>
     <suggestion-filter (date)="updateDate($event)" (name)="updateName($event)" (source)="updateSource($event)"></suggestion-filter>

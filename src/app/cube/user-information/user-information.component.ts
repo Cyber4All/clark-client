@@ -8,26 +8,21 @@ import { Http, Headers, ResponseContentType } from '@angular/http';
 @Component({
   selector: 'app-user-information',
   templateUrl: './user-information.component.html',
-  styleUrls: ['./user-information.component.css']
+  styleUrls: ['./user-information.component.scss']
 })
 export class UserInformationComponent implements OnInit {
-  //User Information
+  // User Information
   name: String;
-  employer: String;
+  organization: String;
   contributor = false;
-  modules: LearningObject[];
-  check: any;
-  array: any;
-  //modulesCreated: number;
+  objects: LearningObject[];
   email: String;
   password: String;
   username: String;
-  //Display Variables
+
+  // Display Variables
   showContent = 0;
   editContent = true;
-  private headers = new Headers();
-
-  //public modules: Array<LearningObject> = [];
 
   constructor(
     private service: LearningObjectService,
@@ -35,52 +30,19 @@ export class UserInformationComponent implements OnInit {
     private http: Http
   ) {}
 
-  changeName() {
-    this.name = 'Houssein';
-  }
+
   ngOnInit() {
+    this.getUsersLearningObjects();
     const user = this.auth.user;
     this.email = user['email'];
     this.name = user['name'];
-    this.employer = user['organization'];
+    this.organization = user['organization'];
     this.username = user['username'];
-    this.array = [
-      { name: 'scott', job: 'doctor' },
-      { name: 'scott', job: 'doctor' },
-      { name: 'rob', job: 'doctor' }
-    ];
-    this.values();
-    //console.log(this.modules);
   }
 
-  getModules(reloadUser = true) {
-    return this.auth.user
-      ? this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username)).map(
-          res =>
-            res.json().subscribe(
-              data => (this.modules = data) //console.log(this.modules)
-            ),
-          { withCredentials: true, headers: this.headers }
-        )
-      : false;
+  async getUsersLearningObjects(): Promise<void> {
+    return this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username), {withCredentials: true }).toPromise().then(val => {
+      this.objects = <Array<LearningObject>>val.json().map(l => LearningObject.instantiate(l));
+    });
   }
-
-  async values() {
-    const val = await this.getModules();
-    if (val) {
-      this.check = val;
-      console.log(this.modules);
-    } else {
-      console.log('nothing!');
-    }
-  }
-
-  /*getModules(reloadUser = false): Promise<Array<LearningObject>> | boolean {
-  return (this.auth.user) ? this.http.get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.username), {withCredentials: true,  headers: this.headers })
-    .toPromise()
-    .then(val => {
-      this.modules = <Array<LearningObject>>val.json();
-      return this.modules;
-    }) : false;
-}*/
 }

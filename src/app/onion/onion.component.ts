@@ -17,7 +17,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './onion.component.html',
   styleUrls: ['./onion.component.scss']
 })
-export class OnionComponent implements OnInit {
+export class OnionComponent {
   activeRoute: string;
   activeContentSwitcher = 'contribute';
 
@@ -28,17 +28,6 @@ export class OnionComponent implements OnInit {
     public modalService: ModalService,
     public noteService: NotificationService,
   ) { }
-
-  /**
-   * Checks login status, gets user's display name if logged in, and subscribes to user's auth status
-   *
-   * @memberof OnionComponent
-   */
-  ngOnInit(): void {
-    this.route.url.subscribe((s: UrlSegment[]) => {
-      console.log('url', s);
-    });
-  }
 
   /**
    * Click events on the user section of the topbar, displays modal

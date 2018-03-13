@@ -8,70 +8,77 @@
     font-weight: bold;
   }
 
-#container-rounded { 
-    border-radius: 45px; 
-    border: 5px solid $blue-accent; 
-    border-top: 0px;
-    border-bottom: 0px;
-    border-left-color: #0c2347; 
-    min-height: 50px;
+.banner {
+    background: linear-gradient(45deg, desaturate(darken($blue-accent, 20), 15), $blue-accent);
+    border-radius: 0px;
+    height: 300px;
+    position: relative;
+    box-shadow: none;
+}
+
+.img {
+    max-width: 180px;
+    width: 100%;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
+    background: url(/assets/images/user.png);
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: auto;
+    margin-top: -120px;
+    z-index: 2;
+
+    &:after {
+        content: '';
+        display: block;
+        padding-bottom: 100%;
+    }
+}
+
+.container { 
     overflow: hidden;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    width: 50%;
+    max-width: 950px;
     margin: auto;
+    margin-top: -120px;
     margin-bottom: 50px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    min-width: 500px;
- 
-    //border: 1px solid #c3c2c2;
-  
-  .splash {
-    background: linear-gradient(45deg, desaturate(darken($blue-accent, 20), 15), $blue-accent);
-    background-position: center;
-    padding-top: 50px;
-	padding-bottom: 50px;
-    box-sizing: border-box; /* here */
-    //border-radius: 22.3px;
-    //border-bottom-right-radius: 0px; 
-    //border-bottom-left-radius: 0px; 
-    bottom:0;
-    left:0;
-    width: 100%; 
-    flex-direction: column; 
-    height: 150px; 
+    background: white;
+    border-radius: 0px 4px 4px 0px;
+    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
     position: relative;
-    
-    ::ng-deep .particles-container {
-      opacity: 0.3;
-    }
-
-    .image-container {
-        //background-color: rgb(231, 230, 230); //for testing and visibility
-        display: block;
-        margin: 0 auto;
-        margin-top: 1%;
-        position: relative;
-        width: 3%;
-    }
-}
 
     .container-inner { 
-        //background: green; //for testing and visibility 
         overflow: hidden;
-        height: 45%; 
         display: flex;
         position: relative;
         flex-direction: column;
         flex-wrap: wrap;
         width: 100%;
-        left: 0; 
-        bottom:0; 
         margin: auto;
-        margin-top: 115px; 
+        padding-top: 120px; 
         margin-bottom: 0px;
-        //box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-        min-width: 500px;
+
+        .edit {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: $blue-accent;
+            font-size: 18px;
+
+            .svg-inline--fa {
+                font-size: 20px;
+                margin-right: 5px;
+            }
+
+            &:hover {
+                cursor: pointer;
+                border-bottom: 1px solid $blue-accent;
+            }
+        }
       }
 }

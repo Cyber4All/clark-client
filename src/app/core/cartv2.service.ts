@@ -18,7 +18,6 @@ export class CartV2Service {
   }
 
   updateUser() {
-    console.log('auth user', this.auth.user);
     // get new user from auth service
     this.user = this.auth.user || undefined;
 
@@ -116,7 +115,6 @@ export class CartV2Service {
   }
 
   checkout() {
-    // tslint:disable-next-line:max-line-length
     this.http
       .get(USER_ROUTES.GET_CART(this.user.username) + '?download=true', {
         headers: this.headers,
@@ -127,7 +125,7 @@ export class CartV2Service {
         res => {
           importedSaveAs(res.blob(), `${Date.now()}.zip`);
         },
-        err => console.log,
+        err => console.log, 
         () => {
           console.log('Downloaded');
         }

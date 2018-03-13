@@ -1,6 +1,12 @@
+<!-- TODO: 
+  * Evaluate all SRP/CCP groupings for components
+  * 
+-->
+
 <div class="container" [attr.valid]="validate()">
   <div class="container-flexer">
     <div class="left">
+      <!-- TODO: .outcome_bloom convert to component due to SRP/CCP -->
       <div class="outcome_bloom">
         <div class="squares">
           <div class="square" [ngClass]="{'active': v === outcome._bloom}" *ngFor="let v of verbKeys" (click)="toggleActiveSquare($event)"
@@ -23,6 +29,7 @@
             <option *ngFor="let v of classverbs[outcome._bloom]; let i = index" [attr.value]="v" [attr.selected]="i == 0 ? true : null">{{ v }}</option>
           </select>
         </div>
+        <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->
         <input class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(i);"
           [(ngModel)]="outcome._text" [ngClass]="{'bad': false && submitted && !outcomeValidate.valid}" required />
         <div class="button good suggest-button" (click)="suggestionLoad(i)">Suggest
@@ -41,5 +48,5 @@
       </div>
     </div>
   </div>
-  <suggestion-component [outcome]="outcome._text" [opened]="suggestOpen && (suggestIndex==i)" [mappingsInput]="outcome._mappings"></suggestion-component>
+  <onion-suggestion-component [outcome]="outcome._text" [opened]="suggestOpen && (suggestIndex==i)" [mappingsInput]="outcome._mappings"></onion-suggestion-component>
 </div>
