@@ -54,5 +54,5 @@
   </div>
   <onion-suggestion-component [outcome]="outcome._text" [opened]="suggestOpen && (suggestIndex==i)" [mappingsInput]="outcome._mappings"></onion-suggestion-component>
 
-
+  <clark-browse-by-mappings-component [open]="openSearch" (mappings)="addMappings($event)"></clark-browse-by-mappings-component>
 </div>

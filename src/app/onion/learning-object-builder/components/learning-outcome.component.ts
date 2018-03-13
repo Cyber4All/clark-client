@@ -21,6 +21,7 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
   suggestOpen = false;
+  openSearch = false;
   suggestIndex: number;
   mappings: Array<Object>;
   bloomLevels;
@@ -148,6 +149,14 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   }
 
   openMappingsSearch(index) {
-    console.log('open search');
+    this.openSearch = true;
+  }
+
+  addMappings(e) {
+    this.openSearch = false;
+    for (const m of e) {
+      console.log(m);
+      this.suggestionService.addMapping(m);
+    }
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked } from '@angular/core';
 import { ModalService, Position, ModalListElement } from '../../shared/modals';
 import { OutcomeService } from '../../core/outcome.service';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
 
 // RXJS
 import { Subject } from 'rxjs/Subject';

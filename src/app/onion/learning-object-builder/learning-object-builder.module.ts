@@ -11,6 +11,7 @@ import { TextEditorComponent } from './text-editor.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 
 import { OnionRoutingModule } from '../onion.routing';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { OnionRoutingModule } from '../onion.routing';
     HttpModule,
     CKEditorModule,
     OnionRoutingModule,
-    DndModule.forRoot()
+    DndModule.forRoot(),
+    SharedModule
   ],
   declarations: [
     LearningObjectBuilderComponent,

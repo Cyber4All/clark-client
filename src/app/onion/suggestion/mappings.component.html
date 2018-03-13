@@ -11,7 +11,7 @@
         </div>
         <div class="row" *ngFor="let m of mappings">
             <div class="cells">
-                <div class="cell">{{ m.author }}</div>
+                <div class="cell">{{ m.author ? m.author : m.source }}</div>
                 <div class="cell">{{ m.date }}</div>
                 <div class="cell">{{ m.name }}</div>
             </div>
