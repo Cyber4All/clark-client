@@ -24,7 +24,10 @@ export class SuggestionService {
   }
 
   get mappings() {
-    return this.mappedSubject.asObservable();
+    return {
+      observable: this.mappedSubject.asObservable(),
+      currentValue: this.mappedStandards
+    };
   }
 
   emit(text, filter?) {

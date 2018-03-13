@@ -1,6 +1,6 @@
 <div class="wrapper">
     <div class="sub-title sub-sub-title">Mapped Outcomes</div>
-    <div *ngIf="mappings && mappings.size" class="faux-table">
+    <div *ngIf="showMappings" class="faux-table">
         <div class="row columns">
             <div class="cells">
                 <div class="cell">Author</div>
@@ -9,11 +9,11 @@
             </div>
             <div class="placeholder"></div>
         </div>
-        <div class="row" *ngFor="let m of keys">
+        <div class="row" *ngFor="let m of mappings">
             <div class="cells">
-                <div class="cell">{{mappings.get(m).author}}</div>
-                <div class="cell">{{mappings.get(m).date}}</div>
-                <div class="cell">{{mappings.get(m).name}}</div>
+                <div class="cell">{{ m.author }}</div>
+                <div class="cell">{{ m.date }}</div>
+                <div class="cell">{{ m.name }}</div>
             </div>
             <div class="placeholder"><div class="button icon-only bad" (click)="deleteMapping(m)"><i class="far fa-minus"></i></div></div>
         </div>

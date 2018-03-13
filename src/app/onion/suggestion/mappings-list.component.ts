@@ -1,27 +1,34 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SuggestionService } from './services/suggestion.service';
 
 @Component({
-    selector: 'mappings-list',
+    selector: 'onion-mappings-list',
     templateUrl: 'mappings.component.html',
     styleUrls: ['mappings.component.scss']
 })
 
 export class MappingsListComponent implements OnInit {
-
   // TODO: Add ability to deselect a mapped outcome
 
-  @Input('mappings') mappings;
   @Output('delete') delete: EventEmitter<string> = new EventEmitter<string>();
-  keys;
+  mappings;
+  showMappings = false;
+
   constructor(public service: SuggestionService) { }
 
   ngOnInit() {
-    this.keys = this.mappings.keys();
-    // this.service.mappings.subscribe(m => this.allMappings = m);
+    const m = this.service.mappings;
+    this.mappings = m.currentValue;
+    this.showMappings = this.mappings.length > 1;
+    m.observable.subscribe(data => {
+      console.log(data);
+      this.mappings = data;
+      this.showMappings = this.mappings.length > 1;
+      console.log(this.showMappings);
+    });
   }
 
   deleteMapping(m) {
-      this.delete.emit(m);
+    this.delete.emit(m.id);
   }
 }

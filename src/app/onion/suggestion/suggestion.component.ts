@@ -1,7 +1,7 @@
 import { SuggestionService } from './services/suggestion.service';
 import {
   Component, EventEmitter, Input, KeyValueDiffers, KeyValueDiffer, OnInit, OnDestroy,
-  OnChanges, Output, SimpleChanges, SimpleChange
+  OnChanges, Output, SimpleChanges, SimpleChange, ChangeDetectorRef
 } from '@angular/core';
 import { providers } from 'ng2-dnd';
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
