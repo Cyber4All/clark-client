@@ -31,6 +31,8 @@ export class LearningObjectBuilderComponent implements OnInit {
   isNew = false;
   submitted = 0;
 
+  validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -119,6 +121,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       : this.learningObject.unpublish();
 
     this.learningObject.date = Date.now().toString();
+    this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
       this.service
         .save(this.learningObject)
