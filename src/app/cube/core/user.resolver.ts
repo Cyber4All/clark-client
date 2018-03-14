@@ -12,7 +12,7 @@ export class UserResolver implements Resolve<User> {
   constructor(private auth: AuthService, private user: UserService, private router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>|Promise<any>|any {
-    if (this.auth.user.username === route.params.username) {
+    if (this.auth.status && this.auth.user.username === route.params.username) {
         return this.auth.user;
     } else {
         return this.user.getUser(route.params.username).then(val => {

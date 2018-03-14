@@ -12,7 +12,8 @@ export class ProfileGuard implements CanActivate {
     const username = state.url.split('/')[1];
     return this.user.validateUser(username).then(val => {
       if (val) {
-        this.router.navigate(['/users/', username]);
+        this.router.navigate(['users', username]);
+        console.log(val);
         return true;
       } else {
         this.router.navigate(['/home']);
