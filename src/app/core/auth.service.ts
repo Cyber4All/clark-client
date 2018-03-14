@@ -75,9 +75,7 @@ export class AuthService {
     });
   }
 
-  register(
-    user: {firstname: string, lastname: string, email: string, username: string, organization: string, password: string}
-  ): Observable<any> {
+  register(user: User): Observable<any> {
     return this.http.post(environment.apiURL + '/users', user, {withCredentials: true, responseType: 'text'});
   }
 
