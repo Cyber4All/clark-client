@@ -1,7 +1,7 @@
 import { ModalService, ModalListElement, Position } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -13,7 +13,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  learningObjects: Array<LearningObject> = [];
+  learningObjects: Array<LearningObject>;
   focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it, used by delete and edit functions
   selected: Array<string> = []; // array of all learning objects that are currently selected (checkbox in UI)
   hidden: Array<string> = []; // array of Learning Object id's that have been hidden from the view
@@ -25,11 +25,12 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private app: ChangeDetectorRef
+    private app: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.getLearningObjects();
+    this.learningObjects = this.route.snapshot.data['learningObjects'];
   }
   /**
    * Fetches and sets LearningObject[]
@@ -41,9 +42,8 @@ export class DashboardComponent implements OnInit {
       .getLearningObjects()
       .then(learningObjects => {
         this.learningObjects = learningObjects;
-      })
-      .catch(err => {
-        console.log(err);
+      }).catch(err => {
+        console.log('error', err);
       });
   }
 
