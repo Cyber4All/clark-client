@@ -238,6 +238,12 @@ export class DashboardComponent implements OnInit {
           'toggle published'
         )
       );
+      list.push(
+        new ModalListElement(
+          '<i class="far fa-cube"></i>View in CUBE',
+          'view details'
+        )
+      );
     }
     list.push(
       new ModalListElement(
@@ -274,6 +280,13 @@ export class DashboardComponent implements OnInit {
             break;
           case 'toggle published':
             this.togglePublished();
+            break;
+          case 'view details':
+            this.router.navigate([
+              `/details/${this.focusedLearningObject.author.username}/${
+                this.focusedLearningObject.name
+              }`
+            ]);
             break;
           default:
             break;
