@@ -37,7 +37,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     "a Learning Object between 4 and 10 hours in length",
     "a Learning Object over 10 hours in length",
     "a Learning Object 15 weeks in length"
-  ]
+  ];
 
   mappingsPopup = false;
 
@@ -52,15 +52,16 @@ export class BrowseComponent implements OnInit, OnDestroy {
   filterInput: Observable<string>;
 
   subscriptions: Subscription[] = [];
+  contextMenuSubscriptions: Subscription[] = [];
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
     private router: Router, private modalService: ModalService) {
     this.learningObjects = [];
-    this.sub = this.route.params.subscribe(params => {
+    this.subscriptions.push(this.route.params.subscribe(params => {
       params['query'] ? this.query.text = params['query'] : this.query.text = '';
       document.querySelector('.search-bar input')['value'] = this.query.text;
       this.fetchLearningObjects(this.query);
-    });
+    }));
   }
 
   ngOnInit() {
@@ -180,30 +181,32 @@ export class BrowseComponent implements OnInit, OnDestroy {
   showSortMenu(event) {
     const currSort = (this.query.orderBy) ?
       this.query.orderBy.replace(/_/g, '') + '-' + ((this.query.sortType > 0) ? 'asc' : 'desc') : undefined;
-    this.modalService.makeContextMenu(
-      'SortContextMenu',
-      'dropdown',
-      [
-        new ModalListElement('Date (Newest first)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
-        new ModalListElement('Date (Oldest first)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
-        new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
-        new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
-      ],
-      null,
-      new Position(
-        this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
-        this.modalService.offset(event.currentTarget).top + 50))
-      .subscribe(val => {
-        if (val !== 'null' && val.length) {
-          const dir = val.split('-')[1];
-          const sort = val.split('-')[0];
-          this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-          this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
-
-          this.fetchLearningObjects(this.query).then(() => {
-          });
-        }
-      });
+      this.contextMenuSubscriptions.push(
+        this.modalService.makeContextMenu(
+          'SortContextMenu',
+          'dropdown',
+          [
+            new ModalListElement('Date (Newest first)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
+            new ModalListElement('Date (Oldest first)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
+            new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
+            new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
+          ],
+          null,
+          new Position(
+            this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
+            this.modalService.offset(event.currentTarget).top + 50))
+          .subscribe(val => {
+            if (val !== 'null' && val.length) {
+              const dir = val.split('-')[1];
+              const sort = val.split('-')[0];
+              this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+              this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
+    
+              this.fetchLearningObjects(this.query);
+            }
+            this.contextMenuSubscriptions.map(l => l.unsubscribe());
+          })
+      );
   }
 
   clearSort(event) {
@@ -213,7 +216,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.fetchLearningObjects(this.query);
   }
 
-  async fetchLearningObjects(query: Query): Promise<void> {
+  async fetchLearningObjects(query: Query) {
+    console.log('test');
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
@@ -225,7 +229,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
     } catch (e) {
       console.log(e);
     }
-
   }
 
   toggleMappingsPopup() {
