@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { DndModule } from 'ng2-dnd';
 import { LearningObjectBuilderComponent } from './learning-object-builder.component';
-import { ContentEditableDirective } from './contenteditable-model.directive';
 import { TextEditorComponent } from './text-editor.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 
@@ -29,7 +28,6 @@ import { BloomsSelectorComponent } from './components/blooms-selector/blooms-sel
   declarations: [
     LearningObjectBuilderComponent,
     TextEditorComponent,
-    ContentEditableDirective,
     LearningOutcomeComponent,
     BloomsSelectorComponent,
   ],

@@ -1,7 +1,6 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
 import { Component, OnInit, Input } from '@angular/core';
-import { ContentEditableDirective } from './contenteditable-model.directive';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
