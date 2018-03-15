@@ -1,3 +1,4 @@
+import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -6,7 +7,7 @@ import { DetailsComponent } from './learning-object-details/details/details.comp
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
+import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
@@ -27,6 +28,7 @@ const cube_routes: Routes = [
       detailRoute,
       { path: 'home', component: HomeComponent },
       { path: 'c/:name', component: CollectionComponent },
+      { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse/:query', component: RouterComponent, data: { breadcrumb: 'Browse' },
         children: [{ path: '', component: BrowseComponent }, detailRoute]

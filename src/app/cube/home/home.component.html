@@ -5,7 +5,7 @@
         <div class="feature-text">Cybersecurity curriculum at your fingertips.</div>
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input autofocus type="text" class="search-input" placeholder="Search for cybersecurity curriculum" [(ngModel)]="query.text" name="query">
+            <input autofocus type="text" class="search-input" placeholder="{{this.placeholderText}}" [(ngModel)]="query.text" name="query">
             <button type="button" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
           </div>
         </form>

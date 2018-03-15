@@ -8,9 +8,9 @@ import {
   Output,
   OnDestroy
 } from '@angular/core';
-import { UserService } from '../../core/user.service';
-import { AuthService } from '../../core/auth.service';
-import { NotificationService } from '../../shared/notifications';
+import { UserService } from '../../../core/user.service';
+import { AuthService } from '../../../core/auth.service';
+import { NotificationService } from '../../../shared/notifications';
 import { User } from '@cyber4all/clark-entity';
 import { Subscription } from 'rxjs';
 

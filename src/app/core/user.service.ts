@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from 'app/core/auth.service';
-import { UserEdit } from '../cube/user-edit-information/user-edit-information.component';
+import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@cyber4all/clark-entity';
 
 @Injectable()
