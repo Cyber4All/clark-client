@@ -1,4 +1,12 @@
 @import '~_globals.scss';
+
+.limit-text {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  margin-right: 30px;
+  max-width: 250px;
+}
+
 .inner-wrapper {
   border-radius: 4px;
   background: white;
@@ -37,7 +45,7 @@ select {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
-  & > div {
+  &>div {
     width: 33%;
   }
   .title {
@@ -72,8 +80,12 @@ select {
   .columns {
     padding: 0px 0px 0px !important;
   }
+  .cells.two-column {
+    .cell {
+      width: 49% !important;
+    }
+  }
   .cell {
-    width: 49% !important;
     &.trailing-overflow {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -223,6 +235,12 @@ select {
   display: flex;
   align-items: center;
 }
+
 .button.med-height {
   max-height: 50px;
+}
+
+// FIXME: Find a better solution to contain rows than this override
+.faux-table .row .cells {
+  width: 97% !important;
 }

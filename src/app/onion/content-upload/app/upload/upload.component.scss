@@ -1,4 +1,12 @@
 @import '~_globals.scss';
+
+@mixin filename-limit {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  margin-right: 30px;
+  max-width: 250px;
+}
+
 .inner-wrapper {
   border-radius: 4px;
   background: white;
@@ -37,7 +45,7 @@ select {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
-  & > div {
+  &>div {
     width: 33%;
   }
   .title {
@@ -250,8 +258,9 @@ select {
 
 .file-listing {
   .inline-flex {
-    flex: 0.55;
+    flex: 0.8;
     .file-name {
+      @include filename-limit;
       flex: 1;
     }
     .description {
@@ -266,6 +275,9 @@ select {
 .cell {
   display: flex;
   align-items: center;
+  &.file-name {
+    @include filename-limit;
+  }
 }
 
 .cell.file-description {

@@ -30,13 +30,13 @@
         </div>
         <div class="row file-listing" *ngFor="let file of learningObject.materials.files; let i = index;">
           <div class="cells">
-            <div class="cell">
+            <div class="cell limit-text">
               {{ file.name }}
             </div>
             <div class="cell">
               {{ TimeFunctions.getTimestampAge(file.date) }}
             </div>
-            <div class="cell">
+            <div class="cell trailing-overflow">
               {{ file.description }}
             </div>
           </div>
@@ -55,14 +55,14 @@
       <div class="text" *ngIf="learningObject.materials.urls.length == 0">You don't have any links yet!</div>
       <div *ngIf="learningObject.materials.urls.length > 0" class="faux-table">
         <div class="row columns">
-          <div class="cells">
+          <div class="cells two-column">
             <div class="cell">Title</div>
             <div class="cell">Link</div>
           </div>
         </div>
         <div class="row url-listing" *ngFor="let url of learningObject.materials.urls; let i = index;">
-          <div class="cells">
-            <div class="cell">
+          <div class="cells two-column">
+            <div class="cell limit-text">
               {{ url.title }}
             </div>
             <div class="cell trailing-overflow">
