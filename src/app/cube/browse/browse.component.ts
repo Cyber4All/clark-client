@@ -11,16 +11,17 @@ import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
+import { MappingsFilterService } from '../../core/mappings-filter.service';
 
 
 @Component({
   selector: 'app-browse',
   templateUrl: './browse.component.html',
-  styleUrls: ['./browse.component.scss']
+  styleUrls: ['./browse.component.scss'],
+  providers: [MappingsFilterService]
 })
 export class BrowseComponent implements OnInit, OnDestroy {
   learningObjects: LearningObject[] = [];
-  private sub: any;
 
   query: Query = {
     text: '',
@@ -30,13 +31,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
     level: [],
     standardOutcomes: []
   };
-  
+
   tooltipText = [
-    "a Learning Object up to 1 hour in length",
-    "a Learning Object between 1 and 4 hours in length",
-    "a Learning Object between 4 and 10 hours in length",
-    "a Learning Object over 10 hours in length",
-    "a Learning Object 15 weeks in length"
+    'a Learning Object up to 1 hour in length',
+    'a Learning Object between 1 and 4 hours in length',
+    'a Learning Object between 4 and 10 hours in length',
+    'a Learning Object over 10 hours in length',
+    'a Learning Object 15 weeks in length'
   ];
 
   mappingsPopup = false;
@@ -55,13 +56,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
   contextMenuSubscriptions: Subscription[] = [];
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService) {
+    private router: Router, private modalService: ModalService, private mappingService: MappingsFilterService) {
     this.learningObjects = [];
-    this.subscriptions.push(this.route.params.subscribe(params => {
-      params['query'] ? this.query.text = params['query'] : this.query.text = '';
-      document.querySelector('.search-bar input')['value'] = this.query.text;
-      this.fetchLearningObjects(this.query);
-    }));
   }
 
   ngOnInit() {
@@ -71,14 +67,27 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }));
 
     this.filterInput = Observable
-      .fromEvent(document.querySelector('.search-bar input'), 'keyup')
+      .fromEvent(document.querySelector('.search-bar input'), 'input')
       .map(x => x['currentTarget'].value).debounceTime(650);
 
     this.subscriptions.push(this.filterInput.subscribe(val => {
       this.router.navigate(['/browse', { query: val }]);
     }));
+
+    this.subscriptions.push(this.route.params.subscribe(params => {
+      params.query ? this.query.text = params.query : this.query.text = '';
+      try {
+        document.querySelector('.search-bar input')['value'] = this.query.text;
+      } catch (e) {
+        // We are the piratesssss that don't do anythingggggggggggg
+      }
+      this.fetchLearningObjects(this.query);
+    }));
   }
 
+  // creates an array of numbers where each represents a page that can be navigated to.
+  // defaults to a grand total of 5 pages, either your page in the middle and two on each side,
+  // or (if you're say on page 2) 1 page on the left and 3 pages on the right. (1, 2, 3, 4, 5)
   get pages() {
     const total = 5;
     const cursor = +this.query.currPage;
@@ -107,11 +116,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     return arr;
   }
 
-  get sortString() {
-    return (this.query.orderBy) ? this.query.orderBy.replace(/_/g, '')
-      + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
-  }
-
+  // navigate to previous page
   prevPage() {
     const page = +this.query.currPage - 1;
     if (page > 0) {
@@ -119,8 +124,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.fetchLearningObjects(this.query);
 
     }
-
   }
+
+  // navigate to next page
   nextPage() {
     const page = +this.query.currPage + 1;
     if (page <= this.pageCount) {
@@ -129,12 +135,23 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
+  // navigate to a numbered page
   goToPage(page) {
     if (page > 0 && page <= this.pageCount) {
       this.query.currPage = +page;
       this.fetchLearningObjects(this.query);
 
     }
+  }
+
+  get sortString() {
+    return (this.query.orderBy) ? this.query.orderBy.replace(/_/g, '')
+      + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
+  }
+
+  clearText() {
+    document.querySelector('.search-bar input')['value'] = '';
+    this.router.navigate(['/browse', { query: '' }]);
   }
 
   toggleFilters() {
@@ -163,6 +180,18 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   checkFilters(key: string, value: string): boolean {
     return (this.filters[key]) ? this.filters[key].indexOf(value) >= 0 : false;
+  }
+
+  // removes an outcome from list of selected outcomes
+  removeMapping(outcome) {
+    for (let i = 0; i < this.mappingService.mappings.length; i++) {
+      if (this.mappingService.mappings[i]['id'] === outcome.id) {
+        this.mappingService.mappings.splice(i, 1);
+        this.query.standardOutcomes = this.mappingService.mappings;
+        this.fetchLearningObjects(this.query);
+        return;
+      }
+    }
   }
 
   sendFilters() {
@@ -217,15 +246,11 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   async fetchLearningObjects(query: Query) {
-    console.log('test');
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(query);
       this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
-
-      return;
-
     } catch (e) {
       console.log(e);
     }
@@ -236,6 +261,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.modalService.closeAll();
 
     if (!this.mappingsPopup) {
+      this.query.standardOutcomes = this.mappingService.mappings;
       this.sendFilters();
     }
   }

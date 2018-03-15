@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../../core/auth.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { UserInformationComponent } from '../user-information/user-information.component';
-import { UserEditInformationComponent } from './../user-edit-information/user-edit-information.component';
+import { UserInformationComponent } from './user-information/user-information.component';
+import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 

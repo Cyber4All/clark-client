@@ -38,6 +38,12 @@ export class LoginComponent implements OnInit {
     this.loginFailure = undefined;
     clearTimeout(this.loginFailureTimer);
     this.loading=true;
+
+    if (!this.validate()) {
+      this.error('Please fill in all fields!');
+      return false;
+    }
+
     this.auth.login(this.authInfo).then(val => {
       if (this.redirectRoute) {
         window.location.href = window.location.origin + this.redirectRoute;
@@ -51,6 +57,10 @@ export class LoginComponent implements OnInit {
       this.loading = false;
       this.error(error.error.message);
     });
+  }
+
+  validate(): boolean {
+    return this.authInfo.username && this.authInfo.password && true;
   }
 
   error(text: string = 'An error occured', duration: number = 4000) {

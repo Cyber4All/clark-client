@@ -1,7 +1,8 @@
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '../../../environments/route';
+import { Router } from '@angular/router';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '../../../../environments/route';
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { LearningObjectService } from '../learning-object.service';
-import { AuthService } from '../../core/auth.service';
+import { LearningObjectService } from '../../learning-object.service';
+import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 
@@ -19,7 +20,8 @@ export class UserInformationComponent implements OnInit, OnChanges {
   constructor(
     private service: LearningObjectService,
     private auth: AuthService,
-    private http: Http
+    private http: Http,
+    private router: Router
   ) {}
 
 
@@ -29,6 +31,10 @@ export class UserInformationComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.getUsersLearningObjects();
   }
+  
+  navigateToOrganizationPage(){
+    this.router.navigate(['/organization', { query: this.user.organization }]);
+  }
 
   async getUsersLearningObjects(): Promise<void> {
     let route = (this.self) ?
@@ -36,7 +42,6 @@ export class UserInformationComponent implements OnInit, OnChanges {
       PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(this.user.username);
 
     return this.http.get(route, {withCredentials: true }).toPromise().then(val => {
-      console.log(val);
       this.objects = (this.self) ? <Array<LearningObject>>val.json().map(l => LearningObject.instantiate(l)) : <Array<LearningObject>>val.json().map(l => LearningObject.instantiate(l));
     });
   }
