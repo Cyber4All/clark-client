@@ -1,11 +1,10 @@
 <div class="title">{{ user.name }}</div>
 <div class="info">
-    <div class="organization" (click)="navigateToOrganizationPage()">
+    <div class="organization">
         {{ user.organization }}
     </div>
-    <button (click)="getSameOrganizationList()">daf</button>
     <div class="email">
-        <a href="mailto: {{ user.email }}"> {{ user.email }}</a>
+        <a href="mailto: {{ user.email }}">{{ user.email }}</a>
     </div>
 </div>
 
