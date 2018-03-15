@@ -1,12 +1,14 @@
 import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked } from '@angular/core';
 import { ModalService, Position, ModalListElement } from '../../shared/modals';
 import { OutcomeService } from '../../core/outcome.service';
+import { SuggestionService } from '../../onion/learning-object-builder/suggestion/services/suggestion.service';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 // RXJS
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable'
+
 
 @Component({
   selector: 'clark-browse-by-mappings-component',
@@ -15,67 +17,101 @@ import { Observable } from 'rxjs/Observable';
 })
 export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
   // Inputs
-  @Input('open') open: boolean = true;
-  @Input('source') source;
+  @Input('dimensions') dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
 
   // Outputs
-  @Output('mappings') mappings = new EventEmitter<Array<any>>();
-  @Output('closed') closed = new EventEmitter<boolean>();
+  @Output('done') done = new EventEmitter<boolean>();
 
   // TODO: sources should be fetched from an API route to allow dynamic configuration
   sources = ['NCWF', 'CAE', 'CS2013'];
+
   mappingsQueryInProgress = false;
-  mappingsFilters: { filterText: string, author: string, date: string } = {
-    filterText: '',
-    author: '',
-    date: ''
-  };
+
+  // array of results (outcomes) from a query
   queriedMappings: any[] = [];
-  standardOutcomes: any[] = [];
+
+  // empty observable to be instantiated after the view is checked
+  // will watch the input and query the database after user has stopped typing
   mappingsFilterInput: Observable<string>;
-  mappingsCheckbox: any;
+  mappingsFilterInputError: boolean = false;
+
   mappingsQueryError = false;
 
-  constructor(private modalService: ModalService, private outcomeService: OutcomeService) { }
+  constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: SuggestionService) { }
 
   ngOnInit() {
-  }
-
-  ngAfterViewChecked() {
-    if (this.open && !this.mappingsFilterInput) {
-      this.mappingsFilterInput = Observable
-        .fromEvent(document.getElementById('mappingsFilter'), 'input')
-        .map(x => x['currentTarget'].value).debounceTime(650);
-
-      this.mappingsFilterInput.subscribe(val => {
-        if (this.mappingsFilters.author && this.mappingsFilters.author !== '') {
-          this.mappingsQueryInProgress = true;
-          this.getOutcomes().then(() => {
-            this.mappingsQueryInProgress = false;
-          });
-        }
+    // check if the service has filterText and author and conditionally populate component
+    // if someone opens component, performs a query, closes the component, and then reopens the component
+    if (this.mappingService.filterText && this.mappingService.author) {
+      this.mappingsQueryInProgress = true;
+      this.getOutcomes().then(() => {
+        this.mappingsQueryInProgress = false;
       });
     }
   }
 
-  close() {
-    this.mappings.emit(this.standardOutcomes);
-    this.closed.emit(true);
+  ngAfterViewChecked() {
+    // TODO change binding to use a FormControl
+    // instantiate observable to watch input and fire events when user stops typing
+    if (!this.mappingsFilterInput) {
+      try {
+        // try here in the off chance that this event loop is called before the component actually loads
+        // (EG inside the learning outcome component in object builder)
+        this.bindFilterInput();
+      } catch(error) {
+        // if this is true, we know to try again when a source is selected
+        this.mappingsFilterInputError = true;
+      }
+    }
   }
 
+  bindFilterInput() {
+    this.mappingsFilterInput = Observable
+      .fromEvent(document.getElementById('mappingsFilter'), 'input')
+      .map(x => x['currentTarget'].value).debounceTime(650);
+
+      // listen for user to stop typing in the text input and perform query
+    this.mappingsFilterInput.subscribe(val => {
+      if (this.mappingService.author && this.mappingService.author !== '') {
+        this.mappingsQueryInProgress = true;
+        this.getOutcomes().then(() => {
+          this.mappingsQueryInProgress = false;
+        });
+      }
+    });
+  }
+
+  // emits from the done event emitter (useful if this component is in a modal)
+  close() {
+    this.done.emit(true);
+  }
+
+  // displays the sources dropdown contextmenu
   showSources(event) {
     this.modalService.makeContextMenu(
       'SourceContextMenu',
       'dropdown',
-      this.sources.map(s => new ModalListElement(s, s, (s === this.mappingsFilters.author) ? 'active' : undefined)),
+      this.sources.map(s => new ModalListElement(s, s, (s === this.mappingService.author) ? 'active' : undefined)),
       null,
       new Position(
         this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
         this.modalService.offset(event.currentTarget).top + 50))
       .subscribe(val => {
         if (val !== 'null') {
-          this.mappingsFilters.author = val;
+          this.mappingService.author = val;
           this.mappingsQueryInProgress = true;
+
+          if (this.mappingsFilterInputError || !this.mappingsFilterInput) {
+            // if we had an error when we tried to bind to the search input in the AfterViewChecked, try again now that we
+            // know the component is loaded and displayed
+            try {
+              this.bindFilterInput();
+              this.mappingsFilterInputError = false;
+            } catch(error) {
+              this.mappingsFilterInputError = false;
+            }
+          }
+
           this.getOutcomes().then(() => {
             this.mappingsQueryInProgress = false;
           });
@@ -83,41 +119,54 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
       });
   }
 
+  // queries database with author and filterText
   getOutcomes(): Promise<void> {
     this.mappingsQueryError = false;
-    return this.outcomeService.getOutcomes(this.mappingsFilters).then(res => {
+    const filters = {
+      filterText: this.mappingService.filterText,
+      author: this.mappingService.author
+    };
+    return this.outcomeService.getOutcomes(filters).then(res => {
       this.queriedMappings = res;
-      if (!this.queriedMappings.length && this.mappingsFilters.filterText !== '') {
+      if (!this.queriedMappings.length && this.mappingService.filterText !== '') {
         this.mappingsQueryError = true;
       }
     });
   }
 
+  // checks lists of outcomes for a specific outcome
   checkOutcomes(outcome): boolean {
-    for (let i = 0; i < this.standardOutcomes.length; i++) {
-      if (this.standardOutcomes[i]['id'] === outcome.id) {
-        return true;
+    if (this.mappingService.mappedStandards && this.mappingService.mappedStandards.length) {
+      for (let i = 0; i < this.mappingService.mappedStandards.length; i++) {
+        if (this.mappingService.mappedStandards[i]['id'] === outcome.id) {
+          return true;
+        }
       }
     }
     return false;
   }
 
+  // adds an outcome to the list of selected outcomes
   addOutcome(outcome) {
-    if (!this.checkOutcomes(outcome)) {
-      const o = { id: outcome.id, name: outcome.name, source: this.mappingsFilters.author, date: outcome.date, outcome: outcome.outcome };
-      (<{ id: string, name: string, date: string, outcome: string }[]>this.standardOutcomes).push(o);
-    }
+    // if (!this.checkOutcomes(outcome)) {
+    //   const o = { id: outcome.id, name: outcome.name, source: this.mappingService.author, date: outcome.date, outcome: outcome.outcome };
+    //   (<{ id: string, name: string, date: string, outcome: string }[]>this.mappingService.mappedStandards).push(o);
+    // }
+    this.mappingService.addMapping(outcome);
   }
 
+  // removes an outcome from list of selected outcomes
   removeOutcome(outcome) {
-    for (let i = 0; i < this.standardOutcomes.length; i++) {
-      if (this.standardOutcomes[i]['id'] === outcome.id) {
-        this.standardOutcomes.splice(i, 1);
-        return;
-      }
-    }
+    // for (let i = 0; i < this.mappingService.mappedStandards.length; i++) {
+    //   if (this.mappingService.mappedStandards[i]['id'] === outcome.id) {
+    //     this.mappingService.mappedStandards.splice(i, 1);
+    //     return;
+    //   }
+    // }
+    this.mappingService.removeMapping(outcome);
   }
 
+  // truncates and appends an ellipsis to block of text based on maximum number of characters
   outcomeText(text: string, max: number = 150, margin: number = 10): string {
     let outcome = text.substring(0, max);
     const spaceAfter = text.substring(max).indexOf(' ') + outcome.length;

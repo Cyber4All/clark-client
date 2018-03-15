@@ -13,6 +13,14 @@
     <ng-container *ngIf="query.text !== ''">
         <span>{{ learningObjectService.totalLearningObjects }}</span> results for "{{ query.text }}"
     </ng-container>
+    <div class="active-filters">
+      <!-- <div *ngIf="query.text && query.text !== ''" class="text-filter filter-active" (click)="clearText()">
+        {{ query.text }}
+      </div> -->
+      <div *ngFor="let l of query.length" class="length-filter filter-active" (click)="removeFilter('length', l)">{{ l }}<i class="fal fa-times"></i></div>
+      <div *ngFor="let l of query.level" class="level-filter filter-active" (click)="removeFilter('level', l)">{{ l }}<i class="fal fa-times"></i></div>
+      <div *ngFor="let m of mappingService.mappedStandards" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
+    </div>
   </div>
   <div *ngIf="filtering" class="filters">
     <div class="list">
@@ -52,4 +60,8 @@
       </ul>
   </div>
 </div>
-<clark-browse-by-mappings-component [open]="mappingsPopup" (mappings)="query.standardOutcomes = $event" (closed)="toggleMappingsPopup()"></clark-browse-by-mappings-component>
+<div *ngIf="mappingsPopup" class="mappings-popup">
+  <div class="popup-content">
+    <clark-browse-by-mappings-component [dimensions]="{h: 400}" (mappings)="query.standardOutcomes = $event" (done)="toggleMappingsPopup()"></clark-browse-by-mappings-component>
+  </div>
+</div>

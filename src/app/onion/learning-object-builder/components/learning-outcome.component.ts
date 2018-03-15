@@ -6,6 +6,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ElementRef, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
 import { ModalService } from '../../../shared/modals';
+import { MappingsFilterService } from '../../../core/mappings-filter.service';
 
 
 @Component({
@@ -51,7 +52,6 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  
   sortVerbs() {
     const sortedVerbs = verbs;
     sortedVerbs['Apply and Analyze'] = new Set(Array.from(sortedVerbs['Apply and Analyze']).sort(function (a, b) {

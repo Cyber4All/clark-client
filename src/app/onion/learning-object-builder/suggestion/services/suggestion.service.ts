@@ -17,6 +17,16 @@ export class SuggestionService {
   mappedSubject = new Subject<{}[]>();
   delete: Subject<string> = new Subject<string>();
 
+  /**
+   * String of current text used to filter outcomes
+   */
+  filterText: string = '';
+
+  /**
+   * String of currently selected author
+   */
+  author: string = '';
+
   private headers = new Headers();
 
   constructor(public http: Http) {
@@ -91,7 +101,10 @@ export class SuggestionService {
         return x.id;
       })
       .indexOf(s.id);
-    this.mappedStandards.splice(index, 1);
-    this.mappedSubject.next(this.mappedStandards);
+
+    if (index >= 0) {
+      this.mappedStandards.splice(index, 1);
+      this.mappedSubject.next(this.mappedStandards);
+    }
   }
 }
