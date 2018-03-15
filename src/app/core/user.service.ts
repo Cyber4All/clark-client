@@ -29,6 +29,13 @@ export class UserService {
       return false;
     });
   }
+  
+  getOrganizationMembers(organization: string): Promise<void> {
+    let route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
+    return this.http.get(route).toPromise().then(val => {
+      return val.json();
+    });
+  }
 
   getUser(username: string): Promise<User> {
     return this.http.get(USER_ROUTES.CHECK_USER_EXISTS(username), { withCredentials: true }).toPromise().then(val => {
