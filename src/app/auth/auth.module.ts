@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ParticlesModule } from 'angular-particle';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
@@ -19,6 +19,7 @@ import { AuthResolve } from './auth.resolver';
 
 // External Modules
 import { SharedModule } from '../shared/shared.module';
+import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
 
 @NgModule({
   declarations: [
@@ -27,12 +28,14 @@ import { SharedModule } from '../shared/shared.module';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     AuthComponent,
+    RecaptchaDirective
   ],
   imports: [
     CommonModule,
     ParticlesModule,
     AuthRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [CanResetPasswordGuard, AuthResolve],
