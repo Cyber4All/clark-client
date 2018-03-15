@@ -36,7 +36,7 @@ export class UserProfileComponent implements OnInit {
       this.user = val.user;
       this.self = this.user.username === this.auth.username;
     });
-    
+
     // particle config
     this.myStyle = {
       position: 'absolute',
@@ -48,7 +48,7 @@ export class UserProfileComponent implements OnInit {
       right: 0,
       bottom: 0
     };
-    
+
     this.particleParams = {
       particles: {
         number: {
