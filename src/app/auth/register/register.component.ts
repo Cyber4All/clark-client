@@ -1,3 +1,4 @@
+import { NgControl, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,14 +11,27 @@ import { User } from '@cyber4all/clark-entity';
 })
 export class RegisterComponent implements OnInit {
   loading: boolean = false;
+  verified: boolean = false;
   regInfo = {
     firstname: '',
     lastname: '',
     username: '',
     email: '',
     organization: '',
-    password: ''
+    password: '',
   };
+  regForm = new FormGroup({
+    firstname: new FormControl(null, Validators.required),
+    lastname: new FormControl(null, Validators.required),
+    username: new FormControl(null, Validators.required),
+    email: new FormControl(null, Validators.required),
+    organization: new FormControl(null, Validators.required),
+    password: new FormControl(null, Validators.required),
+    verifypassword: new FormControl(null, Validators.required),
+    captcha: new FormControl(),
+  });
+  
+  siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
 
   passwordVerify = '';
   registerFailure;
@@ -81,11 +95,15 @@ export class RegisterComponent implements OnInit {
     let m: boolean[] = Object.values(this.regInfo).map(function(l) { return (l && l !== '' && true) || false; });
     let email = this.regInfo.email.match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g) !== null;
     
-    if (m.includes(false)) {
+    if (m.includes(false) && this.verified === true) {
       this.error('Please fill in all fields!');
       this.loading = false;
       return false;
-    } else if (!email) {
+    } else if (this.verified === false){
+      this.error('Please complete captcha!');
+      this.loading = false;
+      return false;
+    }else if (!email) {
       this.error('Please enter a valid email!');
       this.loading = false;
       return false;
@@ -100,6 +118,10 @@ export class RegisterComponent implements OnInit {
     this.registerFailureTimer = setTimeout(() => {
       this.registerFailure = undefined;
     }, duration);
+  }
+
+  captureResponse(event){
+    this.verified = event;
   }
 
 }
