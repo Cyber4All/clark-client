@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
     this.loading=true;
 
     if (!this.validate()) {
+      this.loading=false;
       this.error('Please fill in all fields!');
       return false;
     }

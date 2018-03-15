@@ -9,7 +9,7 @@ import { User } from '@cyber4all/clark-entity';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-
+  loading: boolean = false;
   regInfo = {
     firstname: '',
     lastname: '',
@@ -46,6 +46,7 @@ export class RegisterComponent implements OnInit {
   submit() {
     this.registerFailure = undefined;
     clearTimeout(this.registerFailureTimer);
+    this.loading = true;
 
     if (!this.validate()) {
       return false;
@@ -53,6 +54,7 @@ export class RegisterComponent implements OnInit {
 
     if (this.regInfo.password !== this.passwordVerify) {
       this.error('Passwords do not match!');
+      this.loading = false;
       return;
     }
 
@@ -81,9 +83,11 @@ export class RegisterComponent implements OnInit {
     
     if (m.includes(false)) {
       this.error('Please fill in all fields!');
+      this.loading = false;
       return false;
     } else if (!email) {
       this.error('Please enter a valid email!');
+      this.loading = false;
       return false;
     }
     
@@ -92,7 +96,7 @@ export class RegisterComponent implements OnInit {
 
   error(text: string = 'An error occured', duration: number = 4000) {
     this.registerFailure = text;
-
+    this.loading = false;
     this.registerFailureTimer = setTimeout(() => {
       this.registerFailure = undefined;
     }, duration);

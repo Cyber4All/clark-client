@@ -37,8 +37,12 @@
           <i class="far fa-key"></i>
         </div>
         <button type="type" class="auth-button">
-          <div class="text">Register</div>
+          <div class="text" *ngIf = "!loading">Register</div>
           <div class="mask"></div>
+          <span *ngIf = "loading">
+            Loading
+            <i class="far fa-spinner fa-pulse"></i>
+          </span>
         </button>
       </form>
     </div>
