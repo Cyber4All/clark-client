@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   loginFailureTimer;
   redirectRoute;
   redirectUrl;
-
+  loading: boolean =  false;
   constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) {
     this.route.parent.data
     .subscribe((data) => {
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   submit() {
     this.loginFailure = undefined;
     clearTimeout(this.loginFailureTimer);
-
+    this.loading=true;
     this.auth.login(this.authInfo).then(val => {
       if (this.redirectRoute) {
         window.location.href = window.location.origin + this.redirectRoute;
@@ -45,8 +45,10 @@ export class LoginComponent implements OnInit {
       } else {
         window.location.href = this.redirectUrl;
       }
+
     }).catch(error => {
       console.log(error);
+      this.loading = false;
       this.error(error.error.message);
     });
   }
