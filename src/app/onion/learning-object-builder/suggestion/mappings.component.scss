@@ -16,15 +16,14 @@ ul {
 }
 
 .wrapper {
-  background: aliceblue;
   padding: 10px;
   border-radius: 6px;
   margin-bottom: 20px;
   border-radius: 0;
 }
-
-.row:not(.columns) {
-    padding: 8px;
+.faux-table .row:not(.columns) {
+  padding: 8px;
   padding-left: 14px;
-  margin-bottom: 2px;
+  margin-bottom: 0px;
+  border-bottom: 1px solid lighten($blue-accent, 5);
 }
