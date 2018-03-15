@@ -2,6 +2,7 @@ import { Http } from '@angular/http';
 import { USER_ROUTES } from '@env/route';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../core/user.service';
 
 @Component({
   selector: 'clark-organization-list',
@@ -16,25 +17,13 @@ export class OrganizationListComponent implements OnInit {
   particleParams;
   width = 100;
   height = 100;
-  constructor(private route: ActivatedRoute, private http: Http) { }
+  constructor(private route: ActivatedRoute, private http: Http, private userService: UserService) { }
 
   ngOnInit() {
     this.initParticles();
     this.route.params.subscribe(params => {
       params['query'] ? this.organization = params['query'] : this.organization = '';
-      this.fetchOrganization();
-    });
-  }
-
-  fetchOrganization() {
-    this.getOrganizationMembers();
-  }
-
-  async getOrganizationMembers(): Promise<void> {
-    let route = USER_ROUTES.GET_SAME_ORGANIZATION(this.organization);
-    return this.http.get(route).toPromise().then(val => {
-      this.members = val.json();
-      console.log(this.members);
+      this.members = this.userService.getOrganizationMembers(this.organization);
     });
   }
 

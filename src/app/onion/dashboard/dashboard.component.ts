@@ -42,7 +42,8 @@ export class DashboardComponent implements OnInit {
       .getLearningObjects()
       .then(learningObjects => {
         this.learningObjects = learningObjects;
-      }).catch(err => {
+      })
+      .catch(err => {
         console.log('error', err);
       });
   }
@@ -125,11 +126,10 @@ export class DashboardComponent implements OnInit {
   }
 
   async togglePublished() {
-    !this.focusedLearningObject.published
-      ? this.focusedLearningObject.publish()
-      : this.focusedLearningObject.unpublish();
     try {
-      await this.learningObjectService.save(this.focusedLearningObject);
+      await this.learningObjectService.togglePublished(
+        this.focusedLearningObject
+      );
       this.getLearningObjects();
     } catch (e) {
       console.log(`Error on togglePublished. Error: ${e}`);

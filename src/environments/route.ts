@@ -13,8 +13,8 @@ export const USER_ROUTES = {
   LOGOUT(username) {
     return `${environment.apiURL}/users/${username}/tokens`;
   },
-  // Onion
   GET_MY_LEARNING_OBJECTS(username) {
+    // Onion
     return `${environment.apiURL}/users/${username}/learning-objects`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
@@ -24,6 +24,16 @@ export const USER_ROUTES = {
     return `${
       environment.apiURL
     }/users/${username}/learning-objects/${learningObjectName}`;
+  },
+  PUBLISH_LEARNING_OBJECT(username, learningObjectName) {
+    return `${
+      environment.apiURL
+    }/users/${username}/learning-objects/${learningObjectName}/publish`;
+  },
+  UNPUBLISH_LEARNING_OBJECT(username, learningObjectName) {
+    return `${
+      environment.apiURL
+    }/users/${username}/learning-objects/${learningObjectName}/unpublish`;
   },
   GET_LEARNING_OBJECT(username, learningObjectName) {
     return `${
@@ -50,8 +60,8 @@ export const USER_ROUTES = {
       environment.apiURL
     }/users/${username}/learning-objects/${learningObjectName}/files/${filename}`;
   },
-  // CUBE
   GET_CART(username) {
+    // CUBE
     return `${environment.apiURL}/users/${username}/cart`;
   },
   CLEAR_CART(username) {
@@ -72,12 +82,10 @@ export const USER_ROUTES = {
       environment.apiURL
     }/users/${username}/library/learning-objects/${author}/${learningObjectName}`;
   },
-  // TODO: Create general route to search users based on query string
   GET_SAME_ORGANIZATION(organization) {
-    return `${
-      environment.apiURL
-      }/users/search?organization=${organization}`;
-  },
+    // TODO: Create general route to search users based on query string
+    return `${environment.apiURL}/users/search?organization=${organization}`;
+  }
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
