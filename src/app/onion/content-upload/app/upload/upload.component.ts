@@ -210,8 +210,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         files
       );
       for (let i = 0; i < learningObjectFiles.length; i++) {
-        learningObjectFiles[i].description = this.file_descriptions.get(
-          learningObjectFiles[i].description
+        learningObjectFiles[i]['description'] = this.file_descriptions.get(
+          learningObjectFiles[i]['description']
         );
       }
       return learningObjectFiles;
