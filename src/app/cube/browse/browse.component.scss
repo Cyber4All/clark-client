@@ -14,7 +14,7 @@
         background: white;
         max-width: 800px;
         min-height: 650px;
-        width: 100%;
+        width: 100%;        
         padding: 20px;
         box-sizing: border-box;
         border-radius: 4px;
@@ -253,9 +253,47 @@
         font-size: 16px;
         margin-bottom: 20px;
 
-        span {
+        & > span {
             font-weight: bold;
             color: black;
+        }
+    }
+
+    .active-filters {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        .filter-active {
+            color: $blue-accent;
+            font-size: 12px;
+            padding-left: 15px;
+            cursor: pointer;
+            position: relative;
+            margin-left: 15px;
+
+            .svg-inline--fa {
+                margin-left: 10px;
+                @include vert-center;
+            }
+
+            &:hover {
+                color: $dark-text;
+            }
+
+            &:before {
+                content: '';
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: rgba(0, 0, 0, 0.2);
+                position: absolute;
+                top: 0;
+                left: -3px;
+                bottom: 0;
+                margin: auto;
+            }
         }
     }
 
