@@ -95,34 +95,12 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   async save(willUpload: boolean) {
-    let publish = await this.modalService
-      .makeDialogMenu(
-        'PublishConfirmation',
-        'Publish changes?',
-        '',
-        'title-good',
-        'center',
-        [
-          new ModalListElement(
-            'Save & Publish!<i class="far fa-check-circle"></i>',
-            'accept',
-            'good'
-          ),
-          new ModalListElement(
-            'Save for later<i class="far fa-undo-alt "></i>',
-            'reject',
-            'neutral on-white'
-          )
-        ]
-      )
-      .toPromise();
-    publish === 'accept'
-      ? this.learningObject.publish()
-      : this.learningObject.unpublish();
-
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
+      if (!willUpload) {
+        await this.showPublishingDialog();
+      }
       this.service
         .save(this.learningObject)
         .then(success => {
@@ -151,6 +129,9 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
+      if (!willUpload) {
+        await this.showPublishingDialog();
+      }
       this.service
         .create(this.learningObject)
         .then(() => {
@@ -179,6 +160,33 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     }
+  }
+
+  private async showPublishingDialog() {
+    let publish = await this.modalService
+      .makeDialogMenu(
+        'PublishConfirmation',
+        'Publish changes?',
+        '',
+        'title-good',
+        'center',
+        [
+          new ModalListElement(
+            'Save & Publish!<i class="far fa-check-circle"></i>',
+            'accept',
+            'good'
+          ),
+          new ModalListElement(
+            'Save for later<i class="far fa-undo-alt "></i>',
+            'reject',
+            'neutral on-white'
+          )
+        ]
+      )
+      .toPromise();
+    publish === 'accept'
+      ? this.learningObject.publish()
+      : this.learningObject.unpublish();
   }
 
   toggleLevel(level: AcademicLevel) {

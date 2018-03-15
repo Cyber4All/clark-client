@@ -108,6 +108,37 @@ export class LearningObjectService {
       .toPromise();
   }
   /**
+   * Sends updated Learning Object to API for updating.
+   * Returns null success.
+   * Returns error on error
+   *
+   * @param {string} id
+   * @param {LearningObject} learningObject
+   * @returns {Promise<{}>}
+   * @memberof LearningObjectService
+   */
+  togglePublished(learningObject: LearningObject): Promise<{}> {
+    const route = !learningObject.published
+      ? USER_ROUTES.PUBLISH_LEARNING_OBJECT(
+          this.auth.user.username,
+          learningObject.name
+        )
+      : USER_ROUTES.UNPUBLISH_LEARNING_OBJECT(
+          this.auth.user.username,
+          learningObject.name
+        );
+    return this.http
+      .patch(
+        route,
+        {
+          id: learningObject.id,
+          published: !learningObject.published
+        },
+        { headers: this.headers, withCredentials: true }
+      )
+      .toPromise();
+  }
+  /**
    * Sends Learning Object's ID to API for deletion
    *
    * @param {(string)} id
