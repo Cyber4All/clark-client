@@ -53,6 +53,12 @@ import { Component, OnInit } from '@angular/core';
         input, select {
             flex: 1;
         }
+        select {
+            background: white;
+        }
+        .select-wrapper .svg-inline--fa {
+            z-index: 1;
+        }
         label {
             padding-top: 5px;
             margin-right: 5px;

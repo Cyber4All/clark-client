@@ -29,15 +29,9 @@
         [(ngModel)]="outcome._text" [ngClass]="{'bad': false && submitted && !outcomeValidate.valid}" required />
     </div>
   </div>
-  <div class="mappings-toolbar">
-    <!-- TODO: pass tab components into slots of a tab container component -->
-    <div class="tab" [ngClass]="{ 'active': activeTab === tabs.MAPPINGS }" (click)="switchTab(tabs.MAPPINGS)">Mapped Outcomes</div>
-    <div class="tab" [ngClass]="{ 'active': activeTab === tabs.SUGGESTIONS }" (click)="switchTab(tabs.SUGGESTIONS, i)">Suggest Outcomes</div>
-    <div class="tab" [ngClass]="{ 'active': activeTab === tabs.SEARCH }" (click)="switchTab(tabs.SEARCH, i)">Search for Outcomes</div>
-  </div>
-  <onion-mappings-list *ngIf="activeTab === tabs.MAPPINGS" (delete)="removeStandardByID($event, m)"></onion-mappings-list>
-
-  <onion-suggestion-component [outcome]="outcome._text" [opened]="(activeTab === tabs.SUGGESTIONS) && (suggestIndex==i)" [mappingsInput]="outcome._mappings"></onion-suggestion-component>
-
-  <clark-browse-by-mappings-component [open]="openSearch" (mappings)="addMappings($event)" (closed)="modalService.closeAll()"></clark-browse-by-mappings-component>
+  <onion-standard-outcomes>
+    <onion-mappings-list></onion-mappings-list>
+    <onion-suggestion-component [outcome]="outcome._text" [mappingsInput]="outcome._mappings"></onion-suggestion-component>
+    <!-- <clark-browse-by-mappings-component (mappings)="addMappings($event)" (closed)="modalService.closeAll()"></clark-browse-by-mappings-component> -->
+  </onion-standard-outcomes>
 </div>

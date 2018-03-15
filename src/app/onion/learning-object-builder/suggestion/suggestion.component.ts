@@ -21,7 +21,6 @@ export class SuggestionComponent implements OnInit, OnChanges {
   private _differ: any;
   @Input('mappingsInput') mappingsInput: Array<OutcomeSuggestion> = [];
   @Input('outcome') outcome: string;
-  @Input() opened: boolean;
 
   mappings = new Map<string, OutcomeSuggestion>();
   standardAppear: boolean;

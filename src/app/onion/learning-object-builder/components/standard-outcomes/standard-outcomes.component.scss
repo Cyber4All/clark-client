@@ -1,0 +1,27 @@
+.mappings-toolbar {
+  display: flex;
+  flex-flow: row nowrap;
+  .tab {
+    font-size: 16px;
+    opacity: .8;
+    padding: 10px 30px 15px 30px;
+    cursor: pointer;
+    &.active {
+      box-shadow: 1px -1px 1px rgb(233, 233, 233);
+      font-size: 18px;
+      opacity: 1;
+      background: aliceblue;
+    }
+  }
+}
+
+.mappings-content {
+  background: aliceblue;
+  padding: 16px;
+  min-height: 200px;
+}
+
+::ng-deep .empty {
+  opacity: 0.6;
+  padding: 10px 0px 30px;
+}

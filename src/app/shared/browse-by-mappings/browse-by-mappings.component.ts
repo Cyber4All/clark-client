@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
   // Inputs
-  @Input('open') open: boolean;
+  @Input('open') open: boolean = true;
   @Input('source') source;
 
   // Outputs

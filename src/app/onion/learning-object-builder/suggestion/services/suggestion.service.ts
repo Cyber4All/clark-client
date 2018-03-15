@@ -39,7 +39,8 @@ export class SuggestionService {
       this.formatFilter(filter)
     )}`;
     this.http
-      .get(`${environment.suggestionUrl}/outcomes?${query}`, {
+    // FIXME: remove hardcoded page
+      .get(`${environment.suggestionUrl}/outcomes?${query}?page=1&limit=5`, {
         headers: this.headers
       })
       .toPromise()
