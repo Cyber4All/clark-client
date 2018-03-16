@@ -83,8 +83,10 @@ export const USER_ROUTES = {
     }/users/${username}/library/learning-objects/${author}/${learningObjectName}`;
   },
   GET_SAME_ORGANIZATION(organization) {
-    // TODO: Create general route to search users based on query string
     return `${environment.apiURL}/users/search?organization=${organization}`;
+  },
+  VALIDATE_CAPTCHA() {
+    return `${environment.apiURL}/users/validate-captcha`;
   }
 };
 

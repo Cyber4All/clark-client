@@ -49,7 +49,7 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
   private onChange: (value: string) => void;
   private onTouched: (value: string) => void;
 
-  constructor(private element: ElementRef, private ngZone: NgZone, private injector: Injector) {
+  constructor(private element: ElementRef, private ngZone: NgZone, private injector: Injector, private validator: RecaptchaValidator) {
   }
 
   ngOnInit() {
@@ -134,7 +134,7 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
    * @param token
    */
   verifyToken(token: string) {
-    //this.control.setAsyncValidators(this.validator.validateToken(token))
+    this.control.setAsyncValidators(this.validator.validateToken(token))
     this.control.updateValueAndValidity();
     console.log(this.control.value)
   }
