@@ -136,7 +136,6 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
   verifyToken(token: string) {
     this.control.setAsyncValidators(this.validator.validateToken(token))
     this.control.updateValueAndValidity();
-    console.log(this.control.value)
   }
 
   /**
