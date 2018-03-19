@@ -1,0 +1,60 @@
+<section class="metadata-wrapper">
+  <div class="header">
+    <div class="back"></div>
+    <div class="title">{{isNew ? 'New' : 'Edit'}} Learning Object
+      <span tip="{{ tips.LEARNING_OBJECT }}" tipLocation="side">
+        <i class="fas fa-question-circle"></i>
+      </span>
+    </div>
+    <div></div>
+  </div>
+  <div class="section">
+    <div class="faux-table">
+      <div class="row columns">
+        <div class="cells">
+          <div class="cell">Name</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cells">
+          <div class="cell">
+            <input class="name-field" type="text" name="name" required placeholder="Learning Object Name" [(ngModel)]="learningObject.name"
+              #name="ngModel" [ngClass]="{'bad': false }" [pattern]="validName" />
+          </div>
+        </div>
+      </div>
+      <div class="row columns">
+        <div class="cells">
+          <div class="cell">Type</div>
+          <div class="cell type">Levels</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cells">
+          <div class="cell type">
+            <div class="select-wrapper">
+              <select [(ngModel)]="learningObject.length" name="type" class="flex-g1 vert-center">
+                <option value="nanomodule">Nanomodule - up to 1 hour</option>
+                <option value="micromodule">Micromodule - between 1 and 4 hours</option>
+                <option value="module">Module - between 4 and 10 hours</option>
+                <option value="unit">Unit - over 10 hours</option>
+                <option value="course">Course (15 weeks)</option>
+              </select>
+            </div>
+          </div>
+          <div class="cell type">
+            <div class="level-list">
+              <div class="level button" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let level of academicLevels"
+                (click)="toggleLevel(level)">
+                {{ level | titlecase}}
+                <span *ngIf="learningObject.levels.includes(level)">
+                  <i class="far fa-check-circle"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

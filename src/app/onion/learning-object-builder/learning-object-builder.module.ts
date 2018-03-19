@@ -12,6 +12,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
 
 import { OnionRoutingModule } from '../onion.routing';
 import { TooltipModule } from '@cyber4all/clark-tooltip';
+import { LearningObjectMetadataComponent } from './components/learning-object/metadata/metadata.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { TooltipModule } from '@cyber4all/clark-tooltip';
     TextEditorComponent,
     ContentEditableDirective,
     LearningOutcomeComponent,
+    LearningObjectMetadataComponent
   ],
   exports: [LearningObjectBuilderComponent]
 })
@@ -37,6 +39,6 @@ export class LearningObjectBuilderModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: LearningObjectBuilderModule
-    }
+    };
   }
 }
