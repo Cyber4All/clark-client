@@ -41,7 +41,8 @@ import { LearningObjectMetadataComponent } from './components/learning-object/me
     LearningObjectDescriptionComponent,
     LearningObjectOutcomeContainerComponent,
     LearningObjectMetadataComponent,
-    LearningObjectDescriptionComponent
+    LearningObjectDescriptionComponent,
+    LearningObjectOutcomeContainerComponent
   ],
   exports: [LearningObjectBuilderComponent]
 })
