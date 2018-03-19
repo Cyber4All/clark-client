@@ -15,6 +15,7 @@ import { LearningObjectFile } from '../models/learning-object-file';
 import { TimeFunctions } from '../time-functions';
 import { NotificationService } from '../../../../shared/notifications';
 import 'rxjs/add/operator/toPromise';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-upload',
@@ -56,16 +57,32 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async addFile(file) {
     await file;
-    if (file.accepted) {
+    if (file.accepted && !this.pastFileLimit(file.size)) {
       this.acceptedFiles.push(file);
     } else {
       this.notificationService.notify(
-        'File too large',
+        `Exceeded max upload size of ${
+          environment.DROPZONE_CONFIG.maxFilesize
+        }mb`,
         `${file.name} could not be added`,
         'bad',
         ''
       );
     }
+  }
+
+  pastFileLimit(addedSize: number) {
+    const BYTE_TO_MB = 1000000;
+    if (this.acceptedFiles.length) {
+      let size =
+        (this.acceptedFiles
+          .map(file => file.size)
+          .reduce((total, size) => total + size) +
+          addedSize) /
+        BYTE_TO_MB;
+      if (size > environment.DROPZONE_CONFIG.maxFilesize) return true;
+    }
+    return false;
   }
 
   ngOnInit() {
