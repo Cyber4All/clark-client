@@ -5,6 +5,9 @@
       <p class="file-listing-name">{{ file.name }}</p>
       <p class="file-listing-description">{{ file.description }}</p>
     </div>
+    <div *ngIf="materials.files.length < 1" class="no-listings">
+      This Learning Object has no attached files.
+    </div>
   </section>
 
   <section class="links">
@@ -15,10 +18,16 @@
         <a href="{{ link.url }}">Open Link</a>
       </span>
     </div>
+    <div *ngIf="materials.urls && materials.urls.length < 1" class="no-listings">
+      This Learning Object has no attached links.
+    </div>
   </section>
 
   <section class="notes">
     <div class="title">Notes</div>
     {{ materials.notes }}
+    <div *ngIf="materials.notes.length < 1" class="no-listings">
+      This Learning Object has no notes.
+    </div>
   </section>
 </div>
