@@ -1,6 +1,11 @@
 <onion-mappings-list (delete)="removeStandardByID($event, m)" *ngIf="opened || mappings.size"></onion-mappings-list>
 <ng-container *ngIf="opened">
-    <div class="sub-title sub-sub-title">Outcomes From Other Sources</div>
+    <div class="sub-title sub-sub-title">
+      Outcomes From Other Sources
+      <span tip="{{ tips.OUTCOMES_FROM_OTHER_SOURCES }}" tipLocation="side">
+        <i class="fas fa-question-circle"></i>
+      </span>
+    </div>
     <suggestion-filter (date)="updateDate($event)" (name)="updateName($event)" (source)="updateSource($event)"></suggestion-filter>
     <div class="faux-table" *ngIf="standardOutcomes.length > 0">
       <div class="row columns">
