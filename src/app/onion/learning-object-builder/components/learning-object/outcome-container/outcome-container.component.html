@@ -1,0 +1,24 @@
+<div class="outcome-container-wrapper">
+  <div class="section">
+    <div class="title sticky">Learning Outcomes
+      <span tip="A learning outcome is a precise statement of student outcomes of the Learning Object based on the Bloom's taxonomy">
+        <i class="fas fa-question-circle"></i>
+      </span>
+    </div>
+    <div class="outcomes list" [ngClass]="{'empty-section': learningObject.outcomes.length == 0}">
+      <ng-container *ngIf="learningObject.outcomes.length > 0">
+        <div class="outcome-list" dnd-sortable-container [sortableData]="learningObject.outcomes" [attr.style]="'cursor: default !important;'">
+          <div *ngFor="let outcome of learningObject.outcomes; let i = index">
+            <learning-outcome-component [submitted]="submitted" [outcome]="outcome" [index]="i" (deleteIndex)="deleteOutcome(i)"></learning-outcome-component>
+          </div>
+        </div>
+      </ng-container>
+      <div class="text" *ngIf="learningObject.outcomes.length == 0">You don't have any Learning Outcomes yet!</div>
+      <div class="btn-group to-right">
+        <div (click)="newOutcome()" class="button good">Add Learning Outcome
+          <i class="far fa-plus"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
