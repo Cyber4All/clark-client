@@ -3,7 +3,7 @@
     <div class="title">Files</div>
     <div class="file-listing" *ngFor="let file of materials.files">
       <p class="file-listing-name">{{ file.name }}</p>
-      <p class="file-listing-description">{{ file.description }}</p>
+      <p class="file-listing-description">{{ file.description ? file.description : 'This file does not have a description.' }}</p>
     </div>
     <div *ngIf="materials.files.length < 1" class="no-listings">
       This Learning Object has no attached files.
