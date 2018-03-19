@@ -8,7 +8,7 @@
       <div class="title">Manage Materials</div>
       <div></div>
     </div>
-    <div class="dropzone upload-container" [dropzone]>
+    <div class="dropzone upload-container" [dropzone] (addedFile)="addFile($event)">
       <div class="dropzone-message">
         <div class="file-icons">
           <i class="fal fa-image fa-2x"></i>
@@ -22,14 +22,14 @@
   <div class="inner-wrapper">
     <div class="section inline-flex">
       <div class="title">Queued Uploads</div>
-      <div *ngIf="dzDirectiveRef.dropzone().files.length > 1" class="button bad" (click)="removeFromDZ(null)">
+      <div *ngIf="acceptedFiles.length > 1" class="button bad" (click)="removeFromDZ(null)">
         Clear Queue
         <i class="far fa-times fa-w-12"></i>
       </div>
     </div>
-    <div [ngClass]="{'empty-section': dzDirectiveRef.dropzone().files.length == 0}">
-      <div class="text" *ngIf="dzDirectiveRef.dropzone().files.length == 0">No new files added!</div>
-      <div class="section file-listing" *ngFor="let file of dzDirectiveRef.dropzone().files; let i = index;">
+    <div [ngClass]="{'empty-section': acceptedFiles.length == 0}">
+      <div class="text" *ngIf="acceptedFiles.length == 0">No new files added!</div>
+      <div class="section file-listing" *ngFor="let file of acceptedFiles; let i = index;">
         <div class="inline-flex">
           <div class="file-name">
             {{ file.name }}

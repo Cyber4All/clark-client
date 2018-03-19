@@ -44,6 +44,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   file_descriptions: Map<number, string> = new Map();
 
+  acceptedFiles: any[] = [];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -51,6 +53,20 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private fileStorageService: FileStorageService,
     private notificationService: NotificationService
   ) {}
+
+  async addFile(file) {
+    await file;
+    if (file.accepted) {
+      this.acceptedFiles.push(file);
+    } else {
+      this.notificationService.notify(
+        'File too large',
+        `${file.name} could not be added`,
+        'bad',
+        ''
+      );
+    }
+  }
 
   ngOnInit() {
     this.getRouteParams();
@@ -94,6 +110,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     file
       ? this.dzDirectiveRef.dropzone().removeFile(file)
       : this.dzDirectiveRef.dropzone().removeAllFiles();
+    this.acceptedFiles = this.dzDirectiveRef.dropzone().getAcceptedFiles();
   }
   /**
    * Adds files to scheduled deletion array and removes
@@ -202,7 +219,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async upload(): Promise<LearningObjectFile[]> {
-    if (this.dzDirectiveRef.dropzone().getAcceptedFiles().length >= 1) {
+    if (this.acceptedFiles.length >= 1) {
       let files = this.mapFileDescriptions();
       this.uploading = true;
       let learningObjectFiles = await this.fileStorageService.upload(
@@ -221,7 +238,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private mapFileDescriptions() {
-    let files = this.dzDirectiveRef.dropzone().getAcceptedFiles();
+    let files = this.acceptedFiles;
     for (let i = 0; i < files.length; i++) {
       this.file_descriptions.set(i, files[i].description);
       files[i].descriptionID = i;
