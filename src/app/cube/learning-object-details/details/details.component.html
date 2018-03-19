@@ -24,6 +24,7 @@
             {{ o.outcome }}
           </li>
         </ul>
+        <p *ngIf="learningObject.outcomes.length < 1">This Learning Object does not contain any outcomes.</p>
       </div>
       <onion-file-details [materials]="learningObject.materials"></onion-file-details>
     </div>
