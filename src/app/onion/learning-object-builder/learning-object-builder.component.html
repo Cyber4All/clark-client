@@ -16,7 +16,13 @@
     <form #form="ngForm" (ngSubmit)="form.valid ? save(false) : showFormErrors()">
       <onion-learning-object-metadata [isNew]="true" [learningObject]="learningObject"></onion-learning-object-metadata>
       <onion-learning-object-description [learningObject]="learningObject"></onion-learning-object-description>
-      
+      <onion-learning-object-outcome-container
+        [learningObject]="learningObject"
+        [submitted]="submitted"
+        (newOutcomeRequest)="newOutcome()"
+        (deleteOutcomeRequest)="deleteOutcome($event)">
+      </onion-learning-object-outcome-container>
+      <!--
       <div class="inner-wrapper">
         <div class="section">
           <div class="title sticky">Learning Outcomes
@@ -40,7 +46,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
       <div class="btn-group to-right final">
         <button type="submit" class="button good">Save
           <i class="far fa-check"></i>

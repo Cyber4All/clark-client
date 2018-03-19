@@ -15,7 +15,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { BloomsSelectorComponent } from './components/blooms-selector/blooms-selector.component';
 import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
 import { LearningObjectMetadataComponent } from './components/learning-object/metadata/metadata.component';
-import { LearningObjectDescriptionComponent } from './components/learning-object/description/description.component';
+import { LearningObjectDescriptionComponent } from './components/learning-object/description.component';
+import { LearningObjectOutcomeContainerComponent } from './components/learning-object/outcome-container/outcome-container.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { LearningObjectDescriptionComponent } from './components/learning-object
     BloomsSelectorComponent,
     StandardOutcomesComponent,
     LearningObjectMetadataComponent,
-    LearningObjectDescriptionComponent
+    LearningObjectDescriptionComponent,
+    LearningObjectOutcomeContainerComponent
   ],
   exports: [LearningObjectBuilderComponent]
 })
