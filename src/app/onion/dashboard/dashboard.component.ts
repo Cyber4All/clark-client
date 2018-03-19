@@ -6,13 +6,14 @@ import { Subject } from 'rxjs/Subject';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  public tips = TOOLTIP_TEXT;
   learningObjects: Array<LearningObject>;
   focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it, used by delete and edit functions
   selected: Array<string> = []; // array of all learning objects that are currently selected (checkbox in UI)
