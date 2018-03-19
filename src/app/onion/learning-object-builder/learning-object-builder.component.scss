@@ -10,6 +10,9 @@
     margin-top: 20px;
   }
 }
+::ng-deep .description-wrapper {
+  margin-top: 20px;
+}
 
 ::ng-deep input {
   border: 2px solid $placeholder;
@@ -128,14 +131,4 @@
 }
 .visible {
   display: block;
-}
-
-textarea {
-  padding: 10px;
-  padding-bottom: 0;
-  resize: vertical;
-}
-
-textarea.full-width {
-  width: 100%;
 }
