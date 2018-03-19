@@ -14,6 +14,7 @@ import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { SharedModule } from '../../shared/shared.module';
 import { BloomsSelectorComponent } from './components/blooms-selector/blooms-selector.component';
 import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
+import { LearningObjectMetadataComponent } from './components/learning-object/metadata/metadata.component';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { StandardOutcomesComponent } from './components/standard-outcomes/standa
     LearningOutcomeComponent,
     BloomsSelectorComponent,
     StandardOutcomesComponent,
+    LearningObjectMetadataComponent
   ],
   exports: [LearningObjectBuilderComponent]
 })
