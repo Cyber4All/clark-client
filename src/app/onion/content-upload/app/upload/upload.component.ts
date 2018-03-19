@@ -16,6 +16,8 @@ import { TimeFunctions } from '../time-functions';
 import { NotificationService } from '../../../../shared/notifications';
 import 'rxjs/add/operator/toPromise';
 
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
+
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -26,6 +28,8 @@ import 'rxjs/add/operator/toPromise';
   ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+  public tips = TOOLTIP_TEXT;
+
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
   private routeParamSub: any;
