@@ -8,6 +8,9 @@
     margin-top: 20px;
   }
 }
+::ng-deep .description-wrapper {
+  margin-top: 20px;
+}
 
 ::ng-deep .description-wrapper,
 ::ng-deep .outcome-container-wrapper {
