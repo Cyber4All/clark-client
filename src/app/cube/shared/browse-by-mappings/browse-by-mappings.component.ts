@@ -20,7 +20,16 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
   @Output('done') done = new EventEmitter<boolean>();
 
   // TODO: sources should be fetched from an API route to allow dynamic configuration
-  sources = ['NCWF', 'CAE', 'CS2013'];
+  sources = [
+    'CAE Cyber Defense',
+    'CAE Cyber Ops',
+    'CCECC IT2014',
+    'CS2013',
+    'Military Academy',
+    'NCWF',
+    'NCWF KSAs',
+    'NCWF Tasks',
+    'CSEC'];
 
   mappingsQueryInProgress = false;
 
@@ -57,7 +66,7 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
         .fromEvent(document.getElementById('mappingsFilter'), 'input')
         .map(x => x['currentTarget'].value).debounceTime(650);
 
-        // listen for user to stop typing in the text input and perform query
+      // listen for user to stop typing in the text input and perform query
       this.mappingsFilterInput.subscribe(val => {
         if (this.mappingService.author && this.mappingService.author !== '') {
           this.mappingsQueryInProgress = true;
