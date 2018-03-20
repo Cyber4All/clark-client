@@ -216,12 +216,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           `onion/content/view/${this.learningObjectName}`
         );
       } catch (e) {
-        console.log(e);
         this.submitting = false;
         this.uploading = false;
         this.notificationService.notify(
-          'Error!',
           'Could not update your materials.',
+          `${e}`,
           'bad',
           'far fa-times'
         );
@@ -229,10 +228,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     } catch (e) {
       this.submitting = false;
       this.uploading = false;
-      console.log(e);
       this.notificationService.notify(
-        'Error!',
         'Could not upload your materials.',
+        `${e}`,
         'bad',
         'far fa-times'
       );
