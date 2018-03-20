@@ -122,6 +122,14 @@ export class AuthService {
     );
   }
 
+  sendEmailVerification(email: string): Observable<any> {
+    return this.http.post(
+      environment.apiURL + '/users/ota-codes?action=verifyEmail',
+      { email },
+      { withCredentials: true, responseType: 'text' }
+    );
+  }
+
   makeRedirectURL(url: string) {
     if (!url.match(/https?:\/\/.+/i)) {
       return `http://${url}`;
@@ -143,7 +151,9 @@ export class AuthService {
   }
 
   makeUserFromCookieResponse(val: any): User {
-    return new User(val.username, val.name, val.email, val.organization, null);
+    // TODO: Delete token specific props
+    let user = User.instantiate(val);
+    return user;
   }
 }
 
