@@ -8,9 +8,7 @@
     <div class="outcomes list" [ngClass]="{'empty-section': learningObject.outcomes.length == 0}">
       <ng-container *ngIf="learningObject.outcomes.length > 0">
         <div class="outcome-list" dnd-sortable-container [sortableData]="learningObject.outcomes" [attr.style]="'cursor: default !important;'">
-          <div *ngFor="let outcome of learningObject.outcomes; let i = index">
-            <onion-outcome-component [submitted]="submitted" [outcome]="outcome" [index]="i" (deleteIndex)="deleteOutcome(i)"></onion-outcome-component>
-          </div>
+            <onion-outcome-component [submitted]="submitted" [outcome]="activeOutcome" [index]="outcomeIndex" (deleteIndex)="deleteOutcome(i)"></onion-outcome-component>
         </div>
       </ng-container>
       <div class="text" *ngIf="learningObject.outcomes.length == 0">You don't have any Learning Outcomes yet!</div>

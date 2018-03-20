@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit, OnChanges {
   @Input() outcomeCount;
   @Input() learningObjectName;
+  @Output() nav = new EventEmitter<number>();
 
   links = ['Metadata'];
 
@@ -38,6 +39,7 @@ export class SidebarComponent implements OnInit, OnChanges {
 
   navigate(i) {
     this.activeIndex = i;
+    this.nav.next(i);
   }
 
   uploadMaterials() {

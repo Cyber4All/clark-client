@@ -24,6 +24,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 // Container Components
 import { LearningObjectOutcomePageComponent } from './containers/outcome-page/outcome-page.component';
+import { InfoPageComponent } from './containers/info-page/info-page.component';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { LearningObjectOutcomePageComponent } from './containers/outcome-page/ou
     LearningObjectMetadataComponent,
     LearningObjectDescriptionComponent,
     LearningObjectOutcomePageComponent,
-    SidebarComponent
+    SidebarComponent,
+    InfoPageComponent
   ],
   exports: [LearningObjectBuilderComponent]
 })

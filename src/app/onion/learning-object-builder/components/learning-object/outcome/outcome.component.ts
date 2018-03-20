@@ -43,6 +43,7 @@ export class LearningObjectOutcomeComponent implements OnInit, OnDestroy {
   constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
 
   ngOnInit() {
+    console.log(this.outcome);
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
     this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];

@@ -12,13 +12,19 @@ import {
   instructions
 } from '@cyber4all/clark-taxonomy';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-
+enum PAGES {
+  INFO,
+  OUTCOMES
+}
 @Component({
   selector: 'onion-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss']
 })
 export class LearningObjectBuilderComponent implements OnInit {
+  public PAGES = PAGES;
+  public activePage = PAGES.INFO;
+  public outcomeIndex;
   public tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject = new LearningObject();
@@ -300,5 +306,14 @@ export class LearningObjectBuilderComponent implements OnInit {
     }
 
     return true;
+  }
+
+  changePage(page) {
+    if (page === 0) {
+      this.activePage = PAGES.INFO;
+    } else {
+      this.activePage = PAGES.OUTCOMES;
+      this.outcomeIndex = page - 1;
+    }
   }
 }
