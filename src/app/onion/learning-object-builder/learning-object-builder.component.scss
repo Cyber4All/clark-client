@@ -171,7 +171,9 @@ select {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
   .level {
+    margin-bottom: 15px;
     text-transform: none;
     cursor: pointer;
     margin-right: 10px;
