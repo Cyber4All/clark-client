@@ -1,25 +1,30 @@
 <div class="title">{{ user.name }}</div>
 <div class="info">
-    <div class="organization">
-        {{ user.organization }}
-    </div>
-    <div class="email">
-        <a href="mailto: {{ user.email }}">{{ user.email }}</a>
-    </div>
+  <div class="organization">
+    {{ user.organization }}
+  </div>
+  <div class="email">
+    <a href="mailto: {{ user.email }}">{{ user.email }}</a>
+  </div>
+  <div *ngIf="self && !user.emailVerified" class="verify-email button good" (click)="sendEmailVerification()">
+    Verify your email
+  </div>
 </div>
 
 <div *ngIf="objects && objects.length > 0" class="section-title">Learning Objects</div>
 <div class="learning-objects">
-    <ng-container *ngIf="objects && objects.length > 0">
-        <div *ngFor="let l of objects">
-            <learning-object-component routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l" [owned]="true">
-            </learning-object-component>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="!objects || !objects.length">
-        <div class="no-objects">{{ self ? 'You don\'t have' : 'This user doesn\'t' }} any learning objects yet!</div>
-        <div *ngIf="self" class="btn-group center">
-            <div class="button good" routerLink="/onion/dashboard">Create a Learning Object! <i class="fas fa-plus"></i></div>
-        </div>
-    </ng-container>
+  <ng-container *ngIf="objects && objects.length > 0">
+    <div *ngFor="let l of objects">
+      <learning-object-component routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l" [owned]="true">
+      </learning-object-component>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!objects || !objects.length">
+    <div class="no-objects">{{ self ? 'You don\'t have' : 'This user doesn\'t' }} any learning objects yet!</div>
+    <div *ngIf="self" class="btn-group center">
+      <div class="button good" routerLink="/onion/dashboard">Create a Learning Object!
+        <i class="fas fa-plus"></i>
+      </div>
+    </div>
+  </ng-container>
 </div>

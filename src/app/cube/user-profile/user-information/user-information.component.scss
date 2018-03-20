@@ -1,59 +1,65 @@
 @import '~_globals.scss';
 
 .title {
-    text-align: center; 
-    color: $dark-text;
-    font-size: 28px;
-    margin-top: 10px;
+  text-align: center;
+  color: $dark-text;
+  font-size: 28px;
+  margin-top: 10px;
 }
 
 .info {
-    color: $dark-text;
+  color: $dark-text;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+
+  .organization,
+  .email {
     text-align: center;
-    font-size: 16px;
-    margin-bottom: 20px;
-    
-    .organization, .email {
-        text-align: center;
-    }
+  }
 }
 
 .section-title {
-    color: $blue-accent;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 20px;
+  color: $blue-accent;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 20px;
 }
 
 .learning-objects {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    padding-bottom: 20px;
-    margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  margin-top: 20px;
 
-    .no-objects {
-        margin-top: 30px;
-        color: $dark-text;
-        font-size: 18px;
-        text-align: center;
+  .no-objects {
+    margin-top: 30px;
+    color: $dark-text;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .button {
+    outline: none;
+  }
+
+  & > div {
+    width: 100%;
+
+    &:not(:last-child) {
+      margin-bottom: 15px;
     }
+  }
 
-    .button {
-        outline: none;
-    }
+  learning-object-component {
+    width: 100%;
+    outline: none;
+  }
+}
 
-    & > div {
-        width: 100%;
-
-        &:not(:last-child) {
-            margin-bottom: 15px;
-        }
-    }
-
-    learning-object-component {
-        width: 100%;
-        outline: none;
-    }
+.verify-email.button {
+  max-width: 175px;
+  margin: 10px auto;
 }
