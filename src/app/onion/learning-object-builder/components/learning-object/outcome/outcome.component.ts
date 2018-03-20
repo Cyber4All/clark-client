@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
-import { SuggestionService } from './../suggestion/services/suggestion.service';
-import { quizzes, instructions } from '@cyber4all/clark-taxonomy/dist/taxonomy';
+import { SuggestionService } from '../../../../suggestion/services/suggestion.service';
+import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
 import {
@@ -13,9 +13,8 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
-import { ModalService } from '../../../shared/modals';
-import { MappingsFilterService } from '../../../core/mappings-filter.service';
+import { MappingsFilterService } from '../../../../../core/mappings-filter.service';
+import { ModalService } from '../../../../../shared/modals';
 
 
 @Component({
@@ -24,7 +23,7 @@ import { MappingsFilterService } from '../../../core/mappings-filter.service';
   styleUrls: ['./learning-outcome.component.scss'],
   providers: [SuggestionService]
 })
-export class LearningOutcomeComponent implements OnInit, OnDestroy {
+export class LearningObjectOutcomeComponent implements OnInit, OnDestroy {
   @Input() outcome;
   @Input('index') i;
   @Input() submitted: number;

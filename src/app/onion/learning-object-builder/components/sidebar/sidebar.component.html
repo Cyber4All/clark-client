@@ -1,0 +1,9 @@
+<div class="sidebar-wrapper">
+  <a class="menu-item" 
+    *ngFor="let link of links; let i = index"
+    [ngClass]="{'active': activeIndex === i }"
+    (click)="navigate(i)">
+      {{ link }}
+  </a>
+  <a class="menu-item" (click)="uploadMaterials()">Upload Materials</a>
+</div>

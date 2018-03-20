@@ -2,10 +2,10 @@ import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'onion-learning-object-outcome-container',
-  templateUrl: 'outcome-container.component.html',
-  styleUrls: [ 'outcome-container.component.scss' ]
+  templateUrl: 'outcome-page.component.html',
+  styleUrls: [ 'outcome-page.component.scss' ]
 })
-export class LearningObjectOutcomeContainerComponent implements OnInit {
+export class LearningObjectOutcomePageComponent implements OnInit {
 
   @Input() learningObject;
   @Input() submitted;
