@@ -27,10 +27,18 @@ ul {
             max-height: 1000px;
 
             &.hide {
-                max-height: 0;
-                overflow: hidden;
-                border-bottom-width: 0px !important;
-                opacity: 0;
+
+                .cell, .placeholder {
+
+                    .button {
+                        background: $error-red !important;
+                        border-color: $error-red !important;
+
+                        .svg-inline--fa {
+                            transform: rotate(45deg);
+                        }
+                    }
+                }
             }
 
             &:not(:last-child) {
@@ -103,4 +111,57 @@ onion-mappings-list {
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     padding-bottom: 30px;
     margin-bottom: 30px;
+}
+
+.paginationCtrl {
+    margin-top: 40px;
+    margin-bottom: 30px;
+
+    ul {
+        margin: 0; padding: 0;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+
+        li {
+            padding: 10px;
+            color: $blue-accent;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            list-style-type: none;
+            min-width: 45px;
+            text-align: center;
+            transition: opacity 0.2s ease;
+            transition: opacity 0.2s ease;
+            opacity: 1;
+            justify-content: center !important;
+
+            &.gone {
+                opacity: 0.4 !important;
+                cursor: default !important;
+            }
+
+            &:not(.active):hover {
+                opacity: 0.6;
+                cursor: pointer;
+            }
+
+            &.active {
+                background: $blue-accent;
+                color: white;
+            }
+
+            &:first-child {
+                border-radius: 3px 0px 0px 3px;
+                padding: 13px 10px;
+            }
+
+            &:last-child {
+                border-radius: 0px 3px 3px 0px;
+                border-right: 1px solid rgba(0, 0, 0, 0.1);
+                padding: 13px 10px;
+            }
+        }
+    }
 }

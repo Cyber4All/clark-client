@@ -50,6 +50,9 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
         this.outcome._mappings = this.mappings;
       }
     });
+
+    // TODO make sure this system handles editing objects that already have outcomes mapped
+    this.suggestionService.udpateMappings(this.outcome._mappings);
   }
 
   sortVerbs() {
@@ -102,26 +105,26 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   }
 
   newQuestion(i) {
-      const newQuestion = this.outcome.addAssessment();
-      newQuestion.plan = this.classassessmentstrategies[this.outcome._bloom][0];
-      newQuestion.text = '';
+    const newQuestion = this.outcome.addAssessment();
+    newQuestion.plan = this.classassessmentstrategies[this.outcome._bloom][0];
+    newQuestion.text = '';
   }
 
   deleteStrategy(i, s) {
-      this.outcome.removeStrategy(s);
+    this.outcome.removeStrategy(s);
   }
 
   deleteQuestion(i, s) {
-      this.outcome.removeAssessment(s);
+    this.outcome.removeAssessment(s);
   }
 
   bindEditorOutput(event, type, i, s) {
     if (type === 'question') {
-        this.outcome.assessments[s].text = event;
+      this.outcome.assessments[s].text = event;
     } else {
-        if (type === 'strategy') {
-            this.outcome.strategies[s].text = event;
-        }
+      if (type === 'strategy') {
+          this.outcome.strategies[s].text = event;
+      }
     }
   }
 
@@ -138,15 +141,19 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
     this.suggestionService.mappedSubject.unsubscribe();
   }
 
-  openMappingsSearch(index) {
-    this.openSearch = true;
+  updateMappings(mappings) {
+    this.suggestionService.udpateMappings(mappings);
   }
 
-  addMappings(e) {
-    this.openSearch = false;
-    for (const m of e) {
-      console.log(m);
-      this.suggestionService.addMapping(m);
-    }
-  }
+  // openMappingsSearch(index) {
+  //   this.openSearch = true;
+  // }
+
+  // addMappings(e) {
+  //   this.openSearch = false;
+  //   for (const m of e) {
+  //     console.log(m);
+  //     this.suggestionService.addMapping(m);
+  //   }
+  // }
 }

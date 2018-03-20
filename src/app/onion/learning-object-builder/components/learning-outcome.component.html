@@ -30,8 +30,8 @@
     </div>
   </div>
   <onion-standard-outcomes>
-    <onion-mappings-list></onion-mappings-list>
-    <onion-suggestion-component [outcome]="outcome._text" [mappingsInput]="outcome._mappings"></onion-suggestion-component>
-    <clark-browse-by-mappings-component [dimensions]="{h: 600}" (closed)="modalService.closeAll()"></clark-browse-by-mappings-component>
+    <onion-mappings-list [mappings]="mappings"></onion-mappings-list>
+    <onion-suggestion-component [outcome]="outcome._text" [mappings]="mappings"></onion-suggestion-component>
+    <clark-browse-by-mappings-component (closed)="modalService.closeAll()" [mappings]="mappings" [dimensions]="{h: 600}" [showMappedOutcomesTitle]="true"></clark-browse-by-mappings-component>
   </onion-standard-outcomes>
 </div>

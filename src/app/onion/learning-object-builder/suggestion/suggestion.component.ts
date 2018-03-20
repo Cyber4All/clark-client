@@ -19,18 +19,21 @@ import { OutcomeSuggestion, StandardOutcome } from '@cyber4all/clark-entity';
 export class SuggestionComponent implements OnInit, OnChanges {
 
   private _differ: any;
-  @Input('mappingsInput') mappingsInput: Array<OutcomeSuggestion> = [];
+  @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
   @Input('outcome') outcome: string;
 
-  mappings = new Map<string, OutcomeSuggestion>();
   standardAppear: boolean;
   standardOutcomes: Array<StandardOutcome> = [];
   connection;
   filter = {
     author: undefined,
     date: undefined,
-    name: undefined
+    name: undefined,
+    page: 1,
+    limit: 10
   };
+  pageCount: number = 0;
+
 
   constructor(private loader: SuggestionService, private _differs: KeyValueDiffers) {
     this._differ = _differs.find(this.filter).create();
@@ -40,21 +43,17 @@ export class SuggestionComponent implements OnInit, OnChanges {
     this.standardAppear = false;
     this.connection = this.loader.observe().subscribe(data => {
       this.standardOutcomes = data as Array<StandardOutcome>;
+      this.pageCount = this.loader.mappings.total;
+      console.log('pageCount', this.pageCount);
     });
-    this.loader.emit(this.outcome);
+    this.loader.emit(this.outcome, this.filter);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.outcome) {
       const o: string = changes.outcome.currentValue;
       if (o.substr(o.length - 1, o.length) === ' ') {
-        this.loader.emit(this.outcome);
-      }
-    }
-
-    if (changes.mappingsInput) {
-      for (const m of changes.mappingsInput.currentValue) {
-        this.addStandard(m);
+        this.loader.emit(this.outcome, this.filter);
       }
     }
   }
@@ -78,29 +77,88 @@ export class SuggestionComponent implements OnInit, OnChanges {
     this.loader.emit(this.outcome, this.filter);
   }
 
-  selectStandard(e, suggestion) {
-    this.mappings.get(suggestion.id) !== undefined ? this.removeStandard(suggestion) : this.addStandard(suggestion);
+  toggleStandard(suggestion) {
+      if (!this.mappings || !this.mappings.filter(x => x.id === suggestion.id).length) {
+        this.addStandard(suggestion);
+      } else {
+        this.removeStandard(suggestion);
+      }
   }
 
   addStandard(suggestion) {
-    this.mappings.set(suggestion.id, suggestion);
-    this.loader.addMapping(suggestion);
+    if (!this.mappings || (suggestion && !this.mappings.filter(x => x.id === suggestion.id).length)) {
+      this.loader.addMapping(suggestion);
+    }
   }
 
   removeStandard(suggestion) {
     // Remove from local Map
-    this.mappings.delete(suggestion.id);
-    // Signal Removal from MappingsListComponent
-    this.loader.removeMapping(suggestion);
-  }
-
-  removeStandardByID(id: string) {
-    this.removeStandard(this.mappings.get(id));
+    if (suggestion && this.mappings.filter(x => x.id === suggestion.id).length) {
+      this.loader.removeMapping(suggestion);
+    }
   }
 
   standardShouldHide(s) {
     return this.loader.mappedStandards.filter(outcome => {
       return outcome.id === s.id;
     }).length > 0;
+  }
+
+  // creates an array of numbers where each represents a page that can be navigated to.
+  // defaults to a grand total of 5 pages, either your page in the middle and two on each side,
+  // or (if you're say on page 2) 1 page on the left and 3 pages on the right. (1, [2], 3, 4, 5)
+  pages() {
+    const total = 5;
+    const cursor = +this.filter.page;
+    let count = 1;
+    let upCount = 1;
+    let downCount = 1;
+    const arr = [cursor];
+
+    if (this.standardOutcomes.length) {
+      while (count < Math.min(total, this.pageCount)) {
+        if (cursor + upCount <= this.pageCount) {
+          arr.push(cursor + upCount++);
+          count++;
+        }
+
+        if (cursor - downCount > 0) {
+          arr.unshift(cursor - downCount++);
+          count++;
+        }
+      }
+    } else {
+      return [];
+    }
+
+    return arr;
+  }
+
+  // navigate to previous page
+  prevPage() {
+    const page = +this.filter.page - 1;
+    if (page > 0) {
+      this.filter.page = page;
+      this.loader.emit(this.outcome, this.filter);
+
+    }
+  }
+
+  // navigate to next page
+  nextPage() {
+    const page = +this.filter.page + 1;
+    if (page <= this.pageCount) {
+      this.filter.page = page;
+      this.loader.emit(this.outcome, this.filter);
+    }
+  }
+
+  // navigate to a numbered page
+  goToPage(page) {
+    if (page > 0 && page <= this.pageCount) {
+      this.filter.page = +page;
+      this.loader.emit(this.outcome, this.filter);
+
+    }
   }
 }

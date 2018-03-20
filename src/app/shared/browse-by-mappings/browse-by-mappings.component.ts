@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked, ChangeDetectorRef, SimpleChanges, OnChanges } from '@angular/core';
 import { ModalService, Position, ModalListElement } from '../../shared/modals';
 import { OutcomeService } from '../../core/outcome.service';
 import { SuggestionService } from '../../onion/learning-object-builder/suggestion/services/suggestion.service';
@@ -8,6 +8,7 @@ import 'rxjs/add/operator/debounceTime';
 // RXJS
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable'
+import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 
 
 @Component({
@@ -15,12 +16,16 @@ import { Observable } from 'rxjs/Observable'
   templateUrl: './browse-by-mappings.component.html',
   styleUrls: ['./browse-by-mappings.component.scss']
 })
-export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
+export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnChanges {
   // Inputs
   @Input('dimensions') dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
+  @Input('source') source: string;
+  // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
+  @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
 
   // Outputs
   @Output('done') done = new EventEmitter<boolean>();
+  @Output('sourceChanged') sourceChanged = new EventEmitter<string>();
 
   // TODO: sources should be fetched from an API route to allow dynamic configuration
   sources = ['NCWF', 'CAE', 'CS2013'];
@@ -37,7 +42,9 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
 
   mappingsQueryError = false;
 
-  constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: SuggestionService) { }
+  @Input('showMappedOutcomesTitle') showMappedOutcomesTitle;
+
+  constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: SuggestionService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     // check if the service has filterText and author and conditionally populate component
@@ -50,6 +57,12 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.mappingsInput) {
+      this.mappings = changes.mappingsInput.currentValue;
+    }
+  }
+
   ngAfterViewChecked() {
     // TODO change binding to use a FormControl
     // instantiate observable to watch input and fire events when user stops typing
@@ -58,7 +71,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
         // try here in the off chance that this event loop is called before the component actually loads
         // (EG inside the learning outcome component in object builder)
         this.bindFilterInput();
-      } catch(error) {
+      } catch (error) {
         // if this is true, we know to try again when a source is selected
         this.mappingsFilterInputError = true;
       }
@@ -127,7 +140,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
       author: this.mappingService.author
     };
     return this.outcomeService.getOutcomes(filters).then(res => {
-      this.queriedMappings = res;
+      this.queriedMappings = res['outcomes'];
       if (!this.queriedMappings.length && this.mappingService.filterText !== '') {
         this.mappingsQueryError = true;
       }
@@ -136,9 +149,9 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
 
   // checks lists of outcomes for a specific outcome
   checkOutcomes(outcome): boolean {
-    if (this.mappingService.mappedStandards && this.mappingService.mappedStandards.length) {
-      for (let i = 0; i < this.mappingService.mappedStandards.length; i++) {
-        if (this.mappingService.mappedStandards[i]['id'] === outcome.id) {
+    if (this.mappings && this.mappings.length) {
+      for (let i = 0; i < this.mappings.length; i++) {
+        if (this.mappings[i]['id'] === outcome.id) {
           return true;
         }
       }
@@ -148,22 +161,16 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
 
   // adds an outcome to the list of selected outcomes
   addOutcome(outcome) {
-    // if (!this.checkOutcomes(outcome)) {
-    //   const o = { id: outcome.id, name: outcome.name, source: this.mappingService.author, date: outcome.date, outcome: outcome.outcome };
-    //   (<{ id: string, name: string, date: string, outcome: string }[]>this.mappingService.mappedStandards).push(o);
-    // }
-    this.mappingService.addMapping(outcome);
+    if (!this.mappings || (outcome && !this.mappings.filter(x => x.id === outcome.id).length)) {
+      this.mappingService.addMapping(outcome);
+    }
   }
 
   // removes an outcome from list of selected outcomes
   removeOutcome(outcome) {
-    // for (let i = 0; i < this.mappingService.mappedStandards.length; i++) {
-    //   if (this.mappingService.mappedStandards[i]['id'] === outcome.id) {
-    //     this.mappingService.mappedStandards.splice(i, 1);
-    //     return;
-    //   }
-    // }
-    this.mappingService.removeMapping(outcome);
+    if (outcome && this.mappings.filter(x => x.id === outcome.id).length) {
+      this.mappingService.removeMapping(outcome);
+    }
   }
 
   // truncates and appends an ellipsis to block of text based on maximum number of characters
@@ -187,5 +194,4 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
 
     return outcome.trim() + '...';
   }
-
 }

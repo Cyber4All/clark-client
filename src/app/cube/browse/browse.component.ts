@@ -18,7 +18,7 @@ import { SuggestionService } from '../../onion/learning-object-builder/suggestio
   selector: 'app-browse',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss'],
-  providers: [SuggestionService]
+  providers: [ SuggestionService ]
 })
 export class BrowseComponent implements OnInit, OnDestroy {
   learningObjects: LearningObject[] = [];
@@ -81,6 +81,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
         // We are the piratesssss that don't do anythingggggggggggg
       }
       this.fetchLearningObjects(this.query);
+    }));
+
+    this.subscriptions.push(this.mappingService.mappedSubject.subscribe(val => {
+      this.query.standardOutcomes = this.mappingService.mappedStandards;
     }));
   }
 
@@ -254,6 +258,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.modalService.closeAll();
 
     if (!this.mappingsPopup) {
+      console.log('test', this.mappingService.mappedStandards);
       this.query.standardOutcomes = this.mappingService.mappedStandards;
       this.sendFilters();
     }

@@ -19,7 +19,7 @@
         <div class="cell">{{s.outcome}}</div>
       </div>
       <div class="placeholder">
-        <div class="button icon-only good" (click)="addStandard(s)">
+        <div class="button icon-only good" (click)="toggleStandard(s)">
           <i class="far fa-plus"></i>
         </div>
       </div>
@@ -30,4 +30,11 @@
   <div class="empty center">
     No Outcomes Found
   </div>
+</div>
+<div *ngIf="standardOutcomes.length" class="paginationCtrl">
+  <ul>
+    <li (click)="prevPage()" [ngClass]="{'gone': filter.page <= 1}"><i class="far fa-chevron-left"></i></li>
+    <li *ngFor="let p of pages()" [ngClass]="{'active': filter.page == p}" (click)="goToPage(p)">{{ p }}</li>
+    <li (click)="nextPage()" [ngClass]="{'gone': filter.page >= pageCount}"><i class="far fa-chevron-right"></i></li>
+  </ul>
 </div>

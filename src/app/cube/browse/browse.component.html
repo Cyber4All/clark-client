@@ -53,15 +53,15 @@
     <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l"></learning-object-component>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
-      <ul>
-        <li (click)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"></i></li>
-        <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (click)="goToPage(p)">{{ p }}</li>
-        <li (click)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
-      </ul>
+    <ul>
+      <li (click)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"></i></li>
+      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (click)="goToPage(p)">{{ p }}</li>
+      <li (click)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
+    </ul>
   </div>
 </div>
 <div *ngIf="mappingsPopup" class="mappings-popup">
   <div class="popup-content">
-    <clark-browse-by-mappings-component [dimensions]="{h: 400}" (mappings)="query.standardOutcomes = $event" (done)="toggleMappingsPopup()"></clark-browse-by-mappings-component>
+    <clark-browse-by-mappings-component [mappings]="query.standardOutcomes" [dimensions]="{h: 400}" (done)="toggleMappingsPopup()"></clark-browse-by-mappings-component>
   </div>
 </div>
