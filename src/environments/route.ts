@@ -50,11 +50,7 @@ export const USER_ROUTES = {
       environment.apiURL
     }/users/${username}/learning-objects/multiple/${learningObjectNames}`;
   },
-  POST_FILE_TO_LEARNING_OBJECT(username, learningObjectName) {
-    return `${
-      environment.apiURL
-    }/users/${username}/learning-objects/${learningObjectName}/files`;
-  },
+  POST_FILE_TO_LEARNING_OBJECT: `${environment.contentManagerURL}/files`,
   DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, filename) {
     return `${
       environment.apiURL

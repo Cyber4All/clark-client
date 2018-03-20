@@ -56,10 +56,7 @@ export class FileStorageService {
             }
           }
         };
-        const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
-          this.auth.user.username,
-          learningObject.name
-        );
+        const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT;
         xhr.open('POST', route, true);
         xhr.withCredentials = true;
         xhr.send(formData);

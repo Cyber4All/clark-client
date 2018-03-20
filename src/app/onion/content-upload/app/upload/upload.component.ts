@@ -15,6 +15,7 @@ import { LearningObjectFile } from '../models/learning-object-file';
 import { TimeFunctions } from '../time-functions';
 import { NotificationService } from '../../../../shared/notifications';
 import 'rxjs/add/operator/toPromise';
+import { environment } from '../../environments/environment';
 
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 
@@ -48,6 +49,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   file_descriptions: Map<number, string> = new Map();
 
+  acceptedFiles: any[] = [];
+  private dzError: string = '';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -55,6 +59,42 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private fileStorageService: FileStorageService,
     private notificationService: NotificationService
   ) {}
+
+  async addFile(file) {
+    await file;
+    let pastFileLimit = this.pastFileLimit(file.size);
+    if (file.accepted && !pastFileLimit) {
+      this.acceptedFiles.push(file);
+    } else {
+      console.log(pastFileLimit);
+      if (!pastFileLimit && !file.accepted) this.dzError = 'File not accepted';
+      this.notificationService.notify(
+        `${file.name} could not be added`,
+        this.dzError,
+        'bad',
+        ''
+      );
+    }
+  }
+
+  pastFileLimit(addedSize: number) {
+    const BYTE_TO_MB = 1000000;
+    let size = addedSize / BYTE_TO_MB;
+    if (this.acceptedFiles.length) {
+      size +=
+        this.acceptedFiles
+          .map(file => file.size)
+          .reduce((total, size) => total + size) / BYTE_TO_MB;
+    }
+    if (size > environment.DROPZONE_CONFIG.maxFilesize) {
+      this.dzError = `Exceeded max upload size of ${
+        environment.DROPZONE_CONFIG.maxFilesize
+      }mb`;
+      return true;
+    }
+
+    return false;
+  }
 
   ngOnInit() {
     this.getRouteParams();
@@ -98,6 +138,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     file
       ? this.dzDirectiveRef.dropzone().removeFile(file)
       : this.dzDirectiveRef.dropzone().removeAllFiles();
+    this.acceptedFiles = this.dzDirectiveRef.dropzone().getAcceptedFiles();
   }
   /**
    * Adds files to scheduled deletion array and removes
@@ -206,7 +247,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async upload(): Promise<LearningObjectFile[]> {
-    if (this.dzDirectiveRef.dropzone().getAcceptedFiles().length >= 1) {
+    if (this.acceptedFiles.length >= 1) {
       let files = this.mapFileDescriptions();
       this.uploading = true;
       let learningObjectFiles = await this.fileStorageService.upload(
@@ -225,7 +266,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private mapFileDescriptions() {
-    let files = this.dzDirectiveRef.dropzone().getAcceptedFiles();
+    let files = this.acceptedFiles;
     for (let i = 0; i < files.length; i++) {
       this.file_descriptions.set(i, files[i].description);
       files[i].descriptionID = i;
