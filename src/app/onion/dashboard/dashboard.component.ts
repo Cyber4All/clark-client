@@ -133,7 +133,15 @@ export class DashboardComponent implements OnInit {
       );
       this.getLearningObjects();
     } catch (e) {
-      console.log(`Error on togglePublished. Error: ${e}`);
+      let err = e._body
+        ? e._body
+        : 'Server error occured. Please try again later';
+      this.notificationService.notify(
+        'Could not publish Learning Object.',
+        `${err}`,
+        'bad',
+        'far fa-times'
+      );
     }
   }
 
