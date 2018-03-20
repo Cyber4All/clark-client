@@ -46,6 +46,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   file_descriptions: Map<number, string> = new Map();
 
   acceptedFiles: any[] = [];
+  private dzError: string = '';
 
   constructor(
     private router: Router,
@@ -57,14 +58,15 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async addFile(file) {
     await file;
-    if (file.accepted && !this.pastFileLimit(file.size)) {
+    let pastFileLimit = this.pastFileLimit(file.size);
+    if (file.accepted && !pastFileLimit) {
       this.acceptedFiles.push(file);
     } else {
+      console.log(pastFileLimit);
+      if (!pastFileLimit && !file.accepted) this.dzError = 'File not accepted';
       this.notificationService.notify(
-        `Exceeded max upload size of ${
-          environment.DROPZONE_CONFIG.maxFilesize
-        }mb`,
         `${file.name} could not be added`,
+        this.dzError,
         'bad',
         ''
       );
@@ -73,15 +75,20 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   pastFileLimit(addedSize: number) {
     const BYTE_TO_MB = 1000000;
+    let size = addedSize / BYTE_TO_MB;
     if (this.acceptedFiles.length) {
-      let size =
-        (this.acceptedFiles
+      size +=
+        this.acceptedFiles
           .map(file => file.size)
-          .reduce((total, size) => total + size) +
-          addedSize) /
-        BYTE_TO_MB;
-      if (size > environment.DROPZONE_CONFIG.maxFilesize) return true;
+          .reduce((total, size) => total + size) / BYTE_TO_MB;
     }
+    if (size > environment.DROPZONE_CONFIG.maxFilesize) {
+      this.dzError = `Exceeded max upload size of ${
+        environment.DROPZONE_CONFIG.maxFilesize
+      }mb`;
+      return true;
+    }
+
     return false;
   }
 
