@@ -1,6 +1,11 @@
 <ng-container *ngIf="learningObjects && learningObjects.length > 0">
   <div class="top">
-    <div class="title vert-center">Learning Objects</div>
+    <div class="title vert-center">
+      <span tip="{{ tips.LEARNING_OBJECT }}" tipLocation="side">
+        Learning Objects
+        <i class="fas fa-question-circle"></i>
+      </span>
+    </div>
     <div class="actions btn-group to-right">
       <div class="add button good" (click)="newLearningObject()">Add New
         <i class="fas fa-plus"></i>

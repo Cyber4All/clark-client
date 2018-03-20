@@ -70,11 +70,16 @@ import { Component, OnInit } from '@angular/core';
 export class SuggestionFilterComponent implements OnInit {
 
     sources = [
-        'All',
-        'NCWF',
+        'CAE Cyber Defense',
+        'CAE Cyber Ops',
+        'CCECC IT2014',
         'CS2013',
-        'CAE'
-    ];
+        'Military Academy',
+        'NCWF',
+        'NCWF KSAs',
+        'NCWF Tasks',
+        'CSEC'];
+    // FIXME: Fetch dates from API
     dates = [
         'Any',
         '2017',

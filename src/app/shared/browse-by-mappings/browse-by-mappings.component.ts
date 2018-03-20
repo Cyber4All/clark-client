@@ -28,7 +28,16 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   @Output('sourceChanged') sourceChanged = new EventEmitter<string>();
 
   // TODO: sources should be fetched from an API route to allow dynamic configuration
-  sources = ['NCWF', 'CAE', 'CS2013'];
+  sources = [
+    'CAE Cyber Defense',
+    'CAE Cyber Ops',
+    'CCECC IT2014',
+    'CS2013',
+    'Military Academy',
+    'NCWF',
+    'NCWF KSAs',
+    'NCWF Tasks',
+    'CSEC'];
 
   mappingsQueryInProgress = false;
 

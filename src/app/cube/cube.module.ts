@@ -62,6 +62,7 @@ import { UserEditInformationComponent } from './user-profile/user-edit-informati
 import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
+import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
 
 
 /**
@@ -83,7 +84,8 @@ import { OrganizationListComponent } from './organization-list/organization-list
     UserPreferencesComponent,
     UserInformationComponent,
     UserEditInformationComponent,
-    OrganizationListComponent
+    OrganizationListComponent,
+    FileDetailsComponent
 ],
   imports: [
     // Angular imports

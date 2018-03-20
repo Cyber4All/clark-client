@@ -1,9 +1,11 @@
+import { EventEmitter, forwardRef } from '@angular/core';
+import { Output } from '@angular/core';
 import { RecaptchaValidator } from './recaptcha-validator.service';
 import { ElementRef, Injector, NgZone } from '@angular/core';
 import { OnInit, AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { Input } from '@angular/core';
 import { Directive } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NgControl, Validators, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface ReCaptchaConfig {
   theme?: 'dark' | 'light';
@@ -22,31 +24,69 @@ declare global {
 
 @Directive({
   selector: '[ngRecaptcha]',
-  providers: [RecaptchaValidator]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RecaptchaDirective),
+      multi: true
+    },
+    RecaptchaValidator
+  ]
 })
 export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAccessor {
   @Input() key: string;
   @Input() config: ReCaptchaConfig = {};
   @Input() lang: string;
+
+  @Output() captchaResponse = new EventEmitter<string>();
+  @Output() captchaSuccess = new EventEmitter<boolean>();
+
+  @Output() captchaExpired = new EventEmitter();
+
   private control: FormControl;
+  private widgetId: number;
 
   private onChange: (value: string) => void;
   private onTouched: (value: string) => void;
 
-  private widgetId: number;
-
-  constructor(private element: ElementRef, private ngZone: NgZone, private injector: Injector, private validator: RecaptchaValidator) { }
+  constructor(private element: ElementRef, private ngZone: NgZone, private injector: Injector, private validator: RecaptchaValidator) {
+  }
 
   ngOnInit() {
     this.registerReCaptchaCallback();
     this.addScript();
   }
-  ngAfterViewInit() {
-    this.control = this.injector.get(NgControl).control;
-    this.setValidator();
+
+  registerReCaptchaCallback() {
+    window.reCaptchaLoad = () => {
+      const config = {
+        ...this.config,
+        'sitekey': this.key,
+        'callback': this.onSuccess.bind(this),
+        'expired-callback': this.onExpired.bind(this)
+      };
+      this.widgetId = this.render(this.element.nativeElement, config);
+    };
   }
 
-  private setValidator() {
+  ngAfterViewInit() {
+    this.control = this.injector.get(NgControl).control;
+    this.setValidators();
+  }
+
+  /**
+   * Useful for multiple captcha
+   * @returns {number}
+   */
+  getId() {
+    return this.widgetId;
+  }
+
+  /**
+   * Calling the setValidators doesn't trigger any update or value change event.
+   * Therefore, we need to call updateValueAndValidity to trigger the update
+   */
+  private setValidators() {
     this.control.setValidators(Validators.required);
     this.control.updateValueAndValidity();
   }
@@ -62,22 +102,73 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
     this.onTouched = fn;
   }
 
-  registerReCaptchaCallback() {
-    window.reCaptchaLoad = () => {
-      const config = {
-        ...this.config,
-        'sitekey': this.key,
-        'callback': this.onSuccess.bind(this),
-        'expired-callback': this.onExpired.bind(this)
-      };
-      this.widgetId = this.render(this.element.nativeElement, config);
-    };
+  /**
+   * onExpired
+   */
+  onExpired() {
+    this.ngZone.run(() => {
+      this.captchaExpired.emit();
+      this.onChange(null);
+      this.onTouched(null);
+      this.captchaSuccess.emit(false)
+    });
+
   }
 
+  /**
+   *
+   * @param response
+   */
+  onSuccess(token: string) {
+    this.ngZone.run(() => {
+      this.verifyToken(token);
+      this.captchaResponse.next(token);
+      this.onChange(token);
+      this.onTouched(token);
+      this.captchaSuccess.emit(true)
+    });
+  }
+
+  /**
+   *
+   * @param token
+   */
+  verifyToken(token: string) {
+    this.control.setAsyncValidators(this.validator.validateToken(token))
+    this.control.updateValueAndValidity();
+  }
+
+  /**
+   * Renders the container as a reCAPTCHA widget and returns the ID of the newly created widget.
+   * @param element
+   * @param config
+   * @returns {number}
+   */
   private render(element: HTMLElement, config): number {
     return grecaptcha.render(element, config);
   }
 
+  /**
+   * Resets the reCAPTCHA widget.
+   */
+  reset(): void {
+    if (!this.widgetId) return;
+    grecaptcha.reset(this.widgetId);
+    this.onChange(null);
+  }
+
+  /**
+   * Gets the response for the reCAPTCHA widget.
+   * @returns {string}
+   */
+  getResponse(): string {
+    if (!this.widgetId)
+      return grecaptcha.getResponse(this.widgetId);
+  }
+
+  /**
+   * Add the script
+   */
   addScript() {
     let script = document.createElement('script');
     const lang = this.lang ? '&hl=' + this.lang : '';
@@ -86,24 +177,4 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
     script.defer = true;
     document.body.appendChild(script);
   }
-  onExpired() {
-    this.ngZone.run(() => {
-      this.onChange(null);
-      this.onTouched(null);
-    });
-  }
-
-  onSuccess(token: string) {
-    this.ngZone.run(() => {
-      this.verifyToken(token);
-      this.onChange(token);
-      this.onTouched(token);
-    });
-  }
-
-  verifyToken(token: string) {
-    this.control.setAsyncValidators(this.validator.validateToken(token))
-    this.control.updateValueAndValidity();
-  }
-
 }

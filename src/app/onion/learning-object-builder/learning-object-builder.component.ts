@@ -11,6 +11,7 @@ import {
   quizzes,
   instructions
 } from '@cyber4all/clark-taxonomy';
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
 
 @Component({
   selector: 'onion-learning-object-builder',
@@ -18,6 +19,8 @@ import {
   styleUrls: ['./learning-object-builder.component.scss']
 })
 export class LearningObjectBuilderComponent implements OnInit {
+  public tips = TOOLTIP_TEXT;
+
   learningObject: LearningObject = new LearningObject();
 
   classverbs: { [level: string]: Set<string> } = verbs;

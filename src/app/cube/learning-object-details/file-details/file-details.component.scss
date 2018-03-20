@@ -1,0 +1,67 @@
+@import '~_globals.scss';
+.file-details-wrapper {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  border-radius: 2px;
+  padding: 20px;
+  background: desaturate(lighten($blue-accent, 55), 20);
+  color: $dark-text;
+  margin-bottom: 40px;
+  .title {
+    color: black;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  .files,
+  .links,
+  .notes {
+    margin-bottom: 40px;
+  }
+  .files {
+    .file-listing {
+      display: flex;
+      flex-flow: row wrap;
+      padding: 8px 0 8px 0;
+      &:first-child {
+        border-bottom: 0;
+      }
+      &:last-child {
+        border-top: 0;
+      }
+      .file-listing-description,
+      .file-listing-name {
+        width: 98%;
+        margin-left: 1%;
+        margin-right: 1%;
+        word-wrap: break-word;
+      }
+      .file-listing-name {
+        font-weight: 700;
+      }
+      .file-listing-description {}
+    }
+  }
+  .links {
+    $section-width: 45%;
+    .link-listing {
+      display: flex;
+      flex-flow: row nowrap;
+      padding: 8px 0 8px 0;
+      .link-listing-title,
+      .link-listing-url {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .link-listing-title {
+        width: $section-width;
+        flex-grow: 1;
+        margin-left: 1%;
+        margin-right: 8%;
+      }
+      .link-listing-url {
+        margin-right: 1%;
+      }
+    }
+  }
+  .notes {}
+}

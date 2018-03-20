@@ -177,6 +177,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async fetchLearningObject() {
     this.learningObject = await this.learningObjectService.getLearningObject(this.author, this.learningObjectName);
+    console.log(this.learningObject);
   }
 
   async addToCart(download?: boolean) {
