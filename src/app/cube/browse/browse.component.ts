@@ -11,14 +11,14 @@ import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
-import { MappingsFilterService } from '../../core/mappings-filter.service';
+import { SuggestionService } from '../../onion/learning-object-builder/suggestion/services/suggestion.service';
 
 
 @Component({
   selector: 'app-browse',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss'],
-  providers: [MappingsFilterService]
+  providers: [ SuggestionService ]
 })
 export class BrowseComponent implements OnInit, OnDestroy {
   learningObjects: LearningObject[] = [];
@@ -56,7 +56,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   contextMenuSubscriptions: Subscription[] = [];
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, private mappingService: MappingsFilterService) {
+    private router: Router, private modalService: ModalService, private mappingService: SuggestionService) {
     this.learningObjects = [];
   }
 
@@ -82,6 +82,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
         // We are the piratesssss that don't do anythingggggggggggg
       }
       this.fetchLearningObjects(this.query);
+    }));
+
+    this.subscriptions.push(this.mappingService.mappedSubject.subscribe(val => {
+      this.query.standardOutcomes = this.mappingService.mappedStandards;
     }));
   }
 
@@ -184,14 +188,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   // removes an outcome from list of selected outcomes
   removeMapping(outcome) {
-    for (let i = 0; i < this.mappingService.mappings.length; i++) {
-      if (this.mappingService.mappings[i]['id'] === outcome.id) {
-        this.mappingService.mappings.splice(i, 1);
-        this.query.standardOutcomes = this.mappingService.mappings;
-        this.fetchLearningObjects(this.query);
-        return;
-      }
-    }
+    this.mappingService.removeMapping(outcome);
+    this.query.standardOutcomes = this.mappingService.mappedStandards;
+    this.fetchLearningObjects(this.query);
   }
 
   sendFilters() {
@@ -261,7 +260,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.modalService.closeAll();
 
     if (!this.mappingsPopup) {
-      this.query.standardOutcomes = this.mappingService.mappings;
+      this.query.standardOutcomes = this.mappingService.mappedStandards;
       this.sendFilters();
     }
   }

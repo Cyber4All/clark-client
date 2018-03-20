@@ -8,6 +8,7 @@ import { ClarkRoutingModule } from '../clark.routing';
 
 // Components
 import { NavbarComponent } from './navbar/navbar.component';
+import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
@@ -17,6 +18,7 @@ import { ParticlesModule } from 'angular-particle';
 import { CookieModule } from 'ngx-cookie';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ModalModule } from './modals';
+import { FormsModule } from '@angular/forms';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -27,6 +29,7 @@ import { ModalModule } from './modals';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     ParticlesModule,
     VirtualScrollModule,
     ClickOutsideModule,
@@ -36,9 +39,11 @@ import { ModalModule } from './modals';
   ],
   providers: [ ],
   declarations: [
+    BrowseByMappingsComponent,
     NavbarComponent
   ],
   exports: [
+    BrowseByMappingsComponent,
     NavbarComponent,
   ]
 })

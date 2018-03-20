@@ -1,17 +1,19 @@
 import { LearningOutcomeComponent } from './components/learning-outcome.component';
-import { SuggestionModule } from './../suggestion/suggestion.module';
+import { SuggestionModule } from './suggestion/suggestion.module';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { DndModule } from 'ng2-dnd';
 import { LearningObjectBuilderComponent } from './learning-object-builder.component';
-import { ContentEditableDirective } from './contenteditable-model.directive';
 import { TextEditorComponent } from './text-editor.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 
 import { OnionRoutingModule } from '../onion.routing';
 import { TooltipModule } from '@cyber4all/clark-tooltip';
+import { SharedModule } from '../../shared/shared.module';
+import { BloomsSelectorComponent } from './components/blooms-selector/blooms-selector.component';
+import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
 
 @NgModule({
   imports: [
@@ -23,13 +25,15 @@ import { TooltipModule } from '@cyber4all/clark-tooltip';
     CKEditorModule,
     OnionRoutingModule,
     DndModule.forRoot(),
-    TooltipModule
+    TooltipModule,
+    SharedModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
     TextEditorComponent,
-    ContentEditableDirective,
     LearningOutcomeComponent,
+    BloomsSelectorComponent,
+    StandardOutcomesComponent,
   ],
   exports: [LearningObjectBuilderComponent]
 })
@@ -37,6 +41,6 @@ export class LearningObjectBuilderModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: LearningObjectBuilderModule
-    }
+    };
   }
 }

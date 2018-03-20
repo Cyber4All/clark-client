@@ -2,8 +2,6 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-// Services
-import { OutcomeService } from './services/outcome.service';
 
 /**
  * Contains all singleton services for the cube module.
@@ -17,7 +15,6 @@ import { OutcomeService } from './services/outcome.service';
   ],
   exports: [],
   providers: [
-    OutcomeService
   ]
 })
 export class CubeCoreModule {

@@ -1,7 +1,6 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
 import { Component, OnInit, Input } from '@angular/core';
-import { ContentEditableDirective } from './contenteditable-model.directive';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
@@ -14,7 +13,7 @@ import {
 } from '@cyber4all/clark-taxonomy';
 
 @Component({
-  selector: 'learning-object-builder',
+  selector: 'onion-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss']
 })
@@ -289,7 +288,7 @@ export class LearningObjectBuilderComponent implements OnInit {
 
     // check outcomes
     const o: NodeListOf<Element> = document.querySelectorAll(
-      'learning-outcome-component > .container'
+      'onion-learning-outcome-component > .container'
     );
     for (const outcome of Array.from(o)) {
       if (outcome.attributes['valid'].value !== 'true') {

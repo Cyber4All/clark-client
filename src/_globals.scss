@@ -7,7 +7,7 @@
 }
 
 // variables
-$topbarHeight: 75px;
+$topbarHeight: calc(37px + 95px);
 $max-width: 1200px;
 $bright-blue: #3789CE;
 $blue-accent: #3B608B;
@@ -240,12 +240,13 @@ $course-color: #295948;
   position: fixed;
   right: 20px;
   z-index: $notification-z;
-  height: 90px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   color: $dark-text;
   transition: all 0.2s ease-out;
+  left: 20px;
+  min-height: 85px;
 
   & > div {
     box-sizing: border-box;
@@ -638,9 +639,7 @@ $course-color: #295948;
 // this should hold page content (IE not the topbar) and be placed inside the .outer-wrapper
 .content {
   padding: 20px 20px 0px;
-  height: calc(
-    100vh - #{$topbarHeight}
-  ); // calculates the height of the content div, adjust to add things like a footer
+  // height: calc(100vh - #{$topbarHeight}); // calculates the height of the content div, adjust to add things like a footer
   box-sizing: border-box;
   overflow-y: scroll;
 

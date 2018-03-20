@@ -1,23 +1,31 @@
-import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked, SimpleChanges, OnChanges } from '@angular/core';
-import { ModalService, Position, ModalListElement } from '../../../shared/modals';
-import { OutcomeService } from '../../core/services/outcome.service';
+import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked, ChangeDetectorRef, SimpleChanges, OnChanges } from '@angular/core';
+import { ModalService, Position, ModalListElement } from '../../shared/modals';
+import { SuggestionService } from '../../onion/learning-object-builder/suggestion/services/suggestion.service';
+import { OutcomeService } from '../../core/outcome.service';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
 
 // RXJS
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import { MappingsFilterService } from '../../../core/mappings-filter.service';
+import { Observable } from 'rxjs/Observable'
+import { OutcomeSuggestion } from '@cyber4all/clark-entity';
+
 
 @Component({
-  selector: 'browse-by-mappings-component',
+  selector: 'clark-browse-by-mappings-component',
   templateUrl: './browse-by-mappings.component.html',
   styleUrls: ['./browse-by-mappings.component.scss']
 })
-export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewChecked {
+export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnChanges {
   // Inputs
   @Input('dimensions') dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
+  @Input('source') source: string;
+  // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
+  @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
 
   // Outputs
   @Output('done') done = new EventEmitter<boolean>();
+  @Output('sourceChanged') sourceChanged = new EventEmitter<string>();
 
   // TODO: sources should be fetched from an API route to allow dynamic configuration
   sources = ['NCWF', 'CAE', 'CS2013'];
@@ -30,10 +38,13 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
   // empty observable to be instantiated after the view is checked
   // will watch the input and query the database after user has stopped typing
   mappingsFilterInput: Observable<string>;
+  mappingsFilterInputError: boolean = false;
 
   mappingsQueryError = false;
 
-  constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: MappingsFilterService) { }
+  @Input('showMappedOutcomesTitle') showMappedOutcomesTitle;
+
+  constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: SuggestionService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     // check if the service has filterText and author and conditionally populate component
@@ -47,29 +58,43 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // do nothing yet
-  }
-
-  ngAfterViewChecked() {
-    // instantiate observable to watch input and fire events when user stops typing
-    if (!this.mappingsFilterInput) {
-      this.mappingsFilterInput = Observable
-        .fromEvent(document.getElementById('mappingsFilter'), 'input')
-        .map(x => x['currentTarget'].value).debounceTime(650);
-
-        // listen for user to stop typing in the text input and perform query
-      this.mappingsFilterInput.subscribe(val => {
-        if (this.mappingService.author && this.mappingService.author !== '') {
-          this.mappingsQueryInProgress = true;
-          this.getOutcomes().then(() => {
-            this.mappingsQueryInProgress = false;
-          });
-        }
-      });
+    if (changes.mappingsInput) {
+      this.mappings = changes.mappingsInput.currentValue;
     }
   }
 
-  // emits from the close event emitter (useful if this component is in a modal)
+  ngAfterViewChecked() {
+    // TODO change binding to use a FormControl
+    // instantiate observable to watch input and fire events when user stops typing
+    if (!this.mappingsFilterInput) {
+      try {
+        // try here in the off chance that this event loop is called before the component actually loads
+        // (EG inside the learning outcome component in object builder)
+        this.bindFilterInput();
+      } catch (error) {
+        // if this is true, we know to try again when a source is selected
+        this.mappingsFilterInputError = true;
+      }
+    }
+  }
+
+  bindFilterInput() {
+    this.mappingsFilterInput = Observable
+      .fromEvent(document.getElementById('mappingsFilter'), 'input')
+      .map(x => x['currentTarget'].value).debounceTime(650);
+
+      // listen for user to stop typing in the text input and perform query
+    this.mappingsFilterInput.subscribe(val => {
+      if (this.mappingService.author && this.mappingService.author !== '') {
+        this.mappingsQueryInProgress = true;
+        this.getOutcomes().then(() => {
+          this.mappingsQueryInProgress = false;
+        });
+      }
+    });
+  }
+
+  // emits from the done event emitter (useful if this component is in a modal)
   close() {
     this.done.emit(true);
   }
@@ -88,6 +113,18 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
         if (val !== 'null') {
           this.mappingService.author = val;
           this.mappingsQueryInProgress = true;
+
+          if (this.mappingsFilterInputError || !this.mappingsFilterInput) {
+            // if we had an error when we tried to bind to the search input in the AfterViewChecked, try again now that we
+            // know the component is loaded and displayed
+            try {
+              this.bindFilterInput();
+              this.mappingsFilterInputError = false;
+            } catch(error) {
+              this.mappingsFilterInputError = false;
+            }
+          }
+
           this.getOutcomes().then(() => {
             this.mappingsQueryInProgress = false;
           });
@@ -103,7 +140,7 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
       author: this.mappingService.author
     };
     return this.outcomeService.getOutcomes(filters).then(res => {
-      this.queriedMappings = res;
+      this.queriedMappings = res['outcomes'];
       if (!this.queriedMappings.length && this.mappingService.filterText !== '') {
         this.mappingsQueryError = true;
       }
@@ -112,9 +149,9 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
 
   // checks lists of outcomes for a specific outcome
   checkOutcomes(outcome): boolean {
-    if (this.mappingService.hasMappings) {
-      for (let i = 0; i < this.mappingService.mappings.length; i++) {
-        if (this.mappingService.mappings[i]['id'] === outcome.id) {
+    if (this.mappings && this.mappings.length) {
+      for (let i = 0; i < this.mappings.length; i++) {
+        if (this.mappings[i]['id'] === outcome.id) {
           return true;
         }
       }
@@ -124,19 +161,15 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
 
   // adds an outcome to the list of selected outcomes
   addOutcome(outcome) {
-    if (!this.checkOutcomes(outcome)) {
-      const o = { id: outcome.id, name: outcome.name, source: this.mappingService.author, date: outcome.date, outcome: outcome.outcome };
-      (<{ id: string, name: string, date: string, outcome: string }[]>this.mappingService.mappings).push(o);
+    if (!this.mappings || (outcome && !this.mappings.filter(x => x.id === outcome.id).length)) {
+      this.mappingService.addMapping(outcome);
     }
   }
 
   // removes an outcome from list of selected outcomes
   removeOutcome(outcome) {
-    for (let i = 0; i < this.mappingService.mappings.length; i++) {
-      if (this.mappingService.mappings[i]['id'] === outcome.id) {
-        this.mappingService.mappings.splice(i, 1);
-        return;
-      }
+    if (outcome && this.mappings.filter(x => x.id === outcome.id).length) {
+      this.mappingService.removeMapping(outcome);
     }
   }
 
@@ -161,5 +194,4 @@ export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewCh
 
     return outcome.trim() + '...';
   }
-
 }

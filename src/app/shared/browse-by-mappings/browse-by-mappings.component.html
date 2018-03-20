@@ -7,25 +7,26 @@
       <div class="source">
         <div class="mappings-spinner" *ngIf="mappingsQueryInProgress"><i class="far fa-spinner-third"></i></div>
         <div class="button neutral" (click)="showSources($event)">{{(mappingService.author && mappingService.author !== '') ? mappingService.author : '- Source -'}} <i class="far fa-sort"></i></div>
-        <div class="button good" (click)="showSources($event)" (click)="close()">Done <i class="far fa-check"></i></div>
+        <div class="button good" (click)="close()">Done <i class="far fa-check"></i></div>
       </div>
   </div>
   <div class="mappings">
     <div class="text-filter">
       <input type="text" id="mappingsFilter" [(ngModel)]="mappingService.filterText" placeholder="Outcome text includes...">
       <div class="selected-mappings">
-        <div class="pill" *ngFor="let m of mappingService.mappings" (click)="removeOutcome(m)">
-          {{ m.source + ' - ' + m.name }} <i class="far fa-times"></i>
+        <span *ngIf="showMappedOutcomesTitle">Mapped Outcomes: </span>
+        <div class="pill" *ngFor="let m of mappings" (click)="removeOutcome(m)">
+          {{ m.author + ' - ' + m.name }} <i class="far fa-times"></i>
         </div>
       </div>
     </div>
     <div class="list">
-      <div class="none" *ngIf="queriedMappings.length === 0">
+      <div class="none" *ngIf="this.queriedMappings.length === 0">
         <div class="empty-source" *ngIf="mappingService.author === ''">Select a source from the dropdown list to get started!</div>
         <div class="no-query" *ngIf="mappingService.author !== '' && mappingService.filterText === ''">Now enter some text into the above text box that your standard outcome should include!</div>
         <div class="bad-query" *ngIf="mappingsQueryError && mappingService.author !== '' && mappingService.filterText !== ''">Whoops! We couldn't find any standard outcomes matching that query!</div>
       </div>
-      <virtual-scroll *ngIf="queriedMappings.length > 0" [ngStyle]="{height: (dimensions.h) ? dimensions.h + 'px' : '400px'}" [items]="queriedMappings" (update)="viewportItems = $event">
+      <virtual-scroll *ngIf="this.queriedMappings.length > 0" [ngStyle]="{height: (dimensions.h) ? dimensions.h + 'px' : '400px'}" [items]="queriedMappings" (update)="viewportItems = $event">
         <div class="map" *ngFor="let m of viewportItems">
           <div class="mapping-top">
             <div class="mapping-name">{{ m.author.toUpperCase() + ' - ' + m.name }}</div>

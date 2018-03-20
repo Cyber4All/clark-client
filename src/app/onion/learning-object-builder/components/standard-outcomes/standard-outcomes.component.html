@@ -1,0 +1,21 @@
+<div class="mappings-toolbar">
+  <div class="tab" [ngClass]="{ 'active': activeTab === tabs.MAPPINGS }" (click)="switchTab(tabs.MAPPINGS)">Mapped Outcomes</div>
+  <div class="tab" [ngClass]="{ 'active': activeTab === tabs.SUGGESTIONS }" (click)="switchTab(tabs.SUGGESTIONS, i)">Suggest Outcomes</div>
+  <div class="tab" [ngClass]="{ 'active': activeTab === tabs.SEARCH }" (click)="switchTab(tabs.SEARCH, i)">Search for Outcomes</div>
+</div>
+<div class="mappings-content">
+  <ng-content 
+    select="onion-mappings-list"
+    *ngIf="activeTab === tabs.MAPPINGS">
+  </ng-content>
+
+  <ng-content 
+    select="onion-suggestion-component"
+    *ngIf="activeTab === tabs.SUGGESTIONS">
+  </ng-content>
+
+  <ng-content 
+    select="clark-browse-by-mappings-component" 
+    *ngIf="activeTab === tabs.SEARCH">
+  </ng-content>
+</div>

@@ -19,7 +19,7 @@
       </div> -->
       <div *ngFor="let l of query.length" class="length-filter filter-active" (click)="removeFilter('length', l)">{{ l }}<i class="fal fa-times"></i></div>
       <div *ngFor="let l of query.level" class="level-filter filter-active" (click)="removeFilter('level', l)">{{ l }}<i class="fal fa-times"></i></div>
-      <div *ngFor="let m of mappingService.mappings" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
+      <div *ngFor="let m of mappingService.mappedStandards" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
     </div>
   </div>
   <div *ngIf="filtering" class="filters">
@@ -53,15 +53,15 @@
     <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l"></learning-object-component>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
-      <ul>
-        <li (click)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"></i></li>
-        <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (click)="goToPage(p)">{{ p }}</li>
-        <li (click)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
-      </ul>
+    <ul>
+      <li (click)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"></i></li>
+      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (click)="goToPage(p)">{{ p }}</li>
+      <li (click)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
+    </ul>
   </div>
 </div>
 <div *ngIf="mappingsPopup" class="mappings-popup">
   <div class="popup-content">
-    <browse-by-mappings-component [dimensions]="{h: 400}" (mappings)="query.standardOutcomes = $event" (done)="toggleMappingsPopup()"></browse-by-mappings-component>
+    <clark-browse-by-mappings-component [mappings]="query.standardOutcomes" [dimensions]="{h: 400}" (done)="toggleMappingsPopup()"></clark-browse-by-mappings-component>
   </div>
 </div>

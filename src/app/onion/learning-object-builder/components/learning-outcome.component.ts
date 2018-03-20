@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
-import { SuggestionService } from './../../suggestion/services/suggestion.service';
-import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
+import { SuggestionService } from './../suggestion/services/suggestion.service';
+import { quizzes, instructions } from '@cyber4all/clark-taxonomy/dist/taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
 import {
@@ -14,9 +14,12 @@ import {
   EventEmitter
 } from '@angular/core';
 import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
+import { ModalService } from '../../../shared/modals';
+import { MappingsFilterService } from '../../../core/mappings-filter.service';
+
 
 @Component({
-  selector: 'learning-outcome-component',
+  selector: 'onion-learning-outcome-component',
   templateUrl: 'learning-outcome.component.html',
   styleUrls: ['./learning-outcome.component.scss'],
   providers: [SuggestionService]
@@ -28,6 +31,7 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
   suggestOpen = false;
+  openSearch = false;
   suggestIndex: number;
   mappings: Array<Object>;
   bloomLevels;
@@ -37,15 +41,12 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   classassessmentstrategies: { [level: string]: Set<string> };
   instructionalstrategies: { [level: string]: Set<string> };
 
-  constructor(
-    private el: ElementRef,
-    private suggestionService: SuggestionService
-  ) {}
+  constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
 
   ngOnInit() {
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
-
+    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
     this.bloomLevels = levels;
     this.testquizstrategies = quizzes;
     this.classassessmentstrategies = assessments;
@@ -57,6 +58,9 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
         this.outcome._mappings = this.mappings;
       }
     });
+
+    // TODO make sure this system handles editing objects that already have outcomes mapped
+    this.suggestionService.udpateMappings(this.outcome._mappings);
   }
 
   sortVerbs() {
@@ -85,8 +89,9 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
     return sortedVerbs;
   }
 
-  logSelect() {
-    throw new Error('#logSelect not implemented');
+  registerBloomsLevel(level) {
+    this.outcome._bloom = level;
+    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
   }
 
   updateFocus(i) {
@@ -104,25 +109,6 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   }
 
   openBloomsInfo(index: number) {}
-
-  get verbKeys(): Array<string> {
-    return Object.keys(this.classverbs);
-  }
-
-  toggleActiveSquare(event) {
-    const e = this.el.nativeElement.querySelectorAll(
-      '.outcome_bloom .square.active'
-    );
-    for (let i = 0; i < e.length; i++) {
-      e[i].classList.remove('active');
-    }
-    event.currentTarget.classList.add('active');
-
-    this.outcome._bloom = event.currentTarget.attributes.data.value;
-    this.outcome._verb = Array.from(
-      this.classverbs[this.outcome._bloom].values()
-    )[0];
-  }
 
   newInstructionalStrategy(i) {
     const newStrategy = this.outcome.addStrategy();
@@ -170,4 +156,20 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.suggestionService.mappedSubject.unsubscribe();
   }
+
+  updateMappings(mappings) {
+    this.suggestionService.udpateMappings(mappings);
+  }
+
+  // openMappingsSearch(index) {
+  //   this.openSearch = true;
+  // }
+
+  // addMappings(e) {
+  //   this.openSearch = false;
+  //   for (const m of e) {
+  //     console.log(m);
+  //     this.suggestionService.addMapping(m);
+  //   }
+  // }
 }
