@@ -246,7 +246,7 @@ $course-color: #295948;
   color: $dark-text;
   transition: all 0.2s ease-out;
   left: 20px;
-  min-height: 85px;
+  min-height: 90px;
 
   & > div {
     box-sizing: border-box;
@@ -271,6 +271,7 @@ $course-color: #295948;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    word-wrap: break-word;
 
     & > div {
       align-self: flex-start;

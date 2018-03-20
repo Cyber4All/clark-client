@@ -1,6 +1,6 @@
 import { SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { NotificationService } from './notification.service';
-import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 
 @Component({
     selector: '<notification></notification>',
@@ -14,7 +14,7 @@ import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDe
     </div>
     `
 })
-export class NotificationComponent implements OnChanges {
+export class NotificationComponent implements OnChanges, AfterViewChecked {
     toRender: Array<object> = [];
     @Input() content: object = {};
 
@@ -24,20 +24,24 @@ export class NotificationComponent implements OnChanges {
     private notificationHeight = 90;
     private spaceBetween = 10;
 
-    constructor(private elementRef: ElementRef, private service: NotificationService, private el: ElementRef, private cd: ChangeDetectorRef) {
-        console.log('el', el);
-    }
+    private changed = false;
+
+    constructor(private elementRef: ElementRef, private service: NotificationService, private el: ElementRef) { }
 
     ngOnChanges(changes: SimpleChanges) {
         if (Object.keys(this.content).length > 0) {
             this.toRender.push(this.content);
             this.open++;
+            this.changed = true;
+        }
+    }
 
-            this.cd.detectChanges();
-
+    ngAfterViewChecked() {
+        if (this.changed) {
             if (this.toRender.length > 1) {
                 for (let i = 0; i < this.toRender.length - 1; i++) {
-                    this.toRender[i]['bottom'] += (Dimension(this.el.nativeElement.children[this.toRender.length - 1]) + this.spaceBetween);
+                    this.toRender[i]['bottom'] +=
+                        (this.el.nativeElement.children[this.toRender.length - 1].offsetHeight + this.spaceBetween);
                 }
             }
 
@@ -47,6 +51,7 @@ export class NotificationComponent implements OnChanges {
             }, 200);
 
             this.close(this.toRender.length - 1);
+            this.changed = false;
         }
     }
 
@@ -62,17 +67,9 @@ export class NotificationComponent implements OnChanges {
                     this.closed = this.open = 0;
                     this.toRender = [];
                     this.service.content = {};
-                    this.cd.detectChanges();
                     console.log('doin it', this.toRender);
                 }
             }, 200);
         }, 4200);
     }
-}
-
-function Dimension(el) {
-    const style = window.getComputedStyle(el);
-    return ['height', 'padding-top', 'padding-bottom']
-        .map((key) => parseInt(style.getPropertyValue(key), 10))
-        .reduce((prev, cur) => prev + cur);
 }
