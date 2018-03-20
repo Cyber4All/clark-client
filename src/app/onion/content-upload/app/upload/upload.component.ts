@@ -16,6 +16,8 @@ import { TimeFunctions } from '../time-functions';
 import { NotificationService } from '../../../../shared/notifications';
 import 'rxjs/add/operator/toPromise';
 
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
+
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -26,6 +28,8 @@ import 'rxjs/add/operator/toPromise';
   ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+  public tips = TOOLTIP_TEXT;
+
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
   private routeParamSub: any;
@@ -41,6 +45,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   uploading: boolean = false;
   submitting: boolean = false;
+
+  file_descriptions: Map<number, string> = new Map();
 
   constructor(
     private router: Router,
@@ -147,42 +153,49 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async save() {
-    this.submitting = true;
-    if (this.scheduledDeletions.length > 0) {
-      await this.deleteFiles();
-    }
+    try {
+      this.submitting = true;
+      if (this.scheduledDeletions.length > 0) {
+        await this.deleteFiles();
+      }
 
-    let learningObjectFiles = await this.upload();
-    this.uploading = false;
+      let learningObjectFiles = await this.upload();
+      this.uploading = false;
 
-    typeof learningObjectFiles === 'string'
-      ? (this.learningObject.materials.files = [
-          ...this.learningObject.materials.files,
-          ...JSON.parse(<any>learningObjectFiles)
-        ])
-      : (this.learningObject.materials.files = [
-          ...this.learningObject.materials.files,
-          ...(<any>learningObjectFiles)
-        ]);
-    this.fixURLs();
-    this.learningObjectService
-      .save(this.learningObject)
-      .then(learningObject => {
+      this.learningObject.materials.files = [
+        ...this.learningObject.materials.files,
+        ...(<any>learningObjectFiles)
+      ];
+      this.fixURLs();
+      try {
+        await this.learningObjectService.save(this.learningObject);
         this.submitting = false;
+        this.uploading = false;
         this.router.navigateByUrl(
           `onion/content/view/${this.learningObjectName}`
         );
-      })
-      .catch(error => {
+      } catch (e) {
+        console.log(e);
         this.submitting = false;
-        console.log(error);
+        this.uploading = false;
         this.notificationService.notify(
           'Error!',
           'Could not update your materials.',
           'bad',
           'far fa-times'
         );
-      });
+      }
+    } catch (e) {
+      this.submitting = false;
+      this.uploading = false;
+      console.log(e);
+      this.notificationService.notify(
+        'Error!',
+        'Could not upload your materials.',
+        'bad',
+        'far fa-times'
+      );
+    }
   }
 
   /**
@@ -192,14 +205,32 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns {Promise<LearningObjectFile[]>}
    * @memberof UploadComponent
    */
-  upload(): Promise<LearningObjectFile[]> {
-    var files = this.dzDirectiveRef.dropzone().getAcceptedFiles();
-    if (files.length >= 1) {
+  async upload(): Promise<LearningObjectFile[]> {
+    if (this.dzDirectiveRef.dropzone().getAcceptedFiles().length >= 1) {
+      let files = this.mapFileDescriptions();
       this.uploading = true;
-      return this.fileStorageService.upload(this.learningObject, files);
+      let learningObjectFiles = await this.fileStorageService.upload(
+        this.learningObject,
+        files
+      );
+      for (let i = 0; i < learningObjectFiles.length; i++) {
+        learningObjectFiles[i]['description'] = this.file_descriptions.get(
+          learningObjectFiles[i]['description']
+        );
+      }
+      return learningObjectFiles;
     }
     this.uploading = false;
     return Promise.resolve([]);
+  }
+
+  private mapFileDescriptions() {
+    let files = this.dzDirectiveRef.dropzone().getAcceptedFiles();
+    for (let i = 0; i < files.length; i++) {
+      this.file_descriptions.set(i, files[i].description);
+      files[i].descriptionID = i;
+    }
+    return files;
   }
 
   /**

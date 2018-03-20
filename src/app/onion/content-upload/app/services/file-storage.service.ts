@@ -33,7 +33,7 @@ export class FileStorageService {
    */
   upload(
     learningObject: LearningObject,
-    files: File[]
+    files: any[]
   ): Promise<LearningObjectFile[]> {
     return new Promise((resolve, reject) => {
       const formData: FormData = new FormData(),
@@ -43,12 +43,14 @@ export class FileStorageService {
         formData.append(
           'uploads',
           file,
-          `${file.name}!@!${file['description']}`
+          `${file.name}!@!${file.descriptionID}`
         );
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-              resolve(xhr.response as LearningObjectFile[]);
+              let response = xhr.response;
+              if (typeof response === 'string') response = JSON.parse(response);
+              resolve(response as LearningObjectFile[]);
             } else {
               reject(xhr.response);
             }

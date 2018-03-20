@@ -13,13 +13,21 @@
     <ng-container *ngIf="query.text !== ''">
         <span>{{ learningObjectService.totalLearningObjects }}</span> results for "{{ query.text }}"
     </ng-container>
+    <div class="active-filters">
+      <!-- <div *ngIf="query.text && query.text !== ''" class="text-filter filter-active" (click)="clearText()">
+        {{ query.text }}
+      </div> -->
+      <div *ngFor="let l of query.length" class="length-filter filter-active" (click)="removeFilter('length', l)">{{ l }}<i class="fal fa-times"></i></div>
+      <div *ngFor="let l of query.level" class="level-filter filter-active" (click)="removeFilter('level', l)">{{ l }}<i class="fal fa-times"></i></div>
+      <div *ngFor="let m of mappingService.mappings" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
+    </div>
   </div>
   <div *ngIf="filtering" class="filters">
     <div class="list">
       <div class="filter">
         <div class="filter-title">Length</div>
         <ul>
-            <li *ngFor="let length of loLength">
+            <li tip="{{tooltipText[i]}} " tipLocation="side" *ngFor="let length of loLength; let i = index;">
               <checkbox [checked]="checkFilters('length', length)" (checkboxChecked)="addFilter('length', length)"  (checkboxUnchecked)="removeFilter('length', length)"></checkbox>
               {{ length }}
             </li>
@@ -34,10 +42,7 @@
           </li>
         </ul>
       </div>
-      <div class="button neutral" (click)="toggleMappingsPopup()">Standard Outcomes <i class="far fa-map"></i></div>
-    </div>
-    <div class="buttons">
-        <div class="button good" (click)="sendFilters()">Refresh <i class="far fa-sync"></i></div>
+      <div class="button neutral" (click)="toggleMappingsPopup()" tip="Filter by learning outcomes that may meet predefined requirements" tipDelay="1000" tipLocation="above">Standard Outcomes <i class="far fa-map"></i></div>
     </div>
   </div>
   <div class="content">
@@ -52,4 +57,8 @@
       </ul>
   </div>
 </div>
-<browse-by-mappings-component [open]="mappingsPopup" (mappings)="query.standardOutcomes = $event" (closed)="toggleMappingsPopup()"></browse-by-mappings-component>
+<div *ngIf="mappingsPopup" class="mappings-popup">
+  <div class="popup-content">
+    <browse-by-mappings-component [dimensions]="{h: 400}" (mappings)="query.standardOutcomes = $event" (done)="toggleMappingsPopup()"></browse-by-mappings-component>
+  </div>
+</div>

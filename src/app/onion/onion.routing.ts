@@ -5,6 +5,7 @@ import { LearningObjectBuilderComponent } from './learning-object-builder/learni
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { OnionComponent } from './onion.component';
+import { DashboardResolver } from './dashboard/dashboard.resolver';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -16,7 +17,7 @@ import { OnionComponent } from './onion.component';
 const onion_routes: Routes = [
   {
     path: '', component: OnionComponent, children: [
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], resolve: { learningObjects: DashboardResolver }, },
       { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard] },
       { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard] },
       // Load Neutrino module

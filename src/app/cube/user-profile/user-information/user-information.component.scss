@@ -13,7 +13,7 @@
     font-size: 16px;
     margin-bottom: 20px;
     
-    .organization {
+    .organization, .email {
         text-align: center;
     }
 }
@@ -31,7 +31,18 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     padding-bottom: 20px;
-    margin-top: 10px;
+    margin-top: 20px;
+
+    .no-objects {
+        margin-top: 30px;
+        color: $dark-text;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .button {
+        outline: none;
+    }
 
     & > div {
         width: 100%;
@@ -43,5 +54,6 @@
 
     learning-object-component {
         width: 100%;
+        outline: none;
     }
 }

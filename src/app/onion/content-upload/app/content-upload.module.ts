@@ -20,27 +20,22 @@ import { ContentUploadComponent } from './content-upload.component';
 import { UploadComponent } from './upload/upload.component';
 import { ViewComponent } from './view/view.component';
 
+import { TooltipModule } from '@cyber4all/clark-tooltip';
 
-
-
-const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = environment.DROPZONE_CONFIG;
+const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
+  environment.DROPZONE_CONFIG;
 
 @NgModule({
-  declarations: [
-    ContentUploadComponent,
-    UploadComponent,
-    ViewComponent,
-  ],
+  declarations: [ContentUploadComponent, UploadComponent, ViewComponent],
   imports: [
     CommonModule,
     FormsModule,
     HttpModule,
     DropzoneModule,
+    TooltipModule,
     routes
   ],
-  exports: [
-    RouterModule
-  ],
+  exports: [RouterModule],
   providers: [
     LearningObjectService,
     FileStorageService,
@@ -51,4 +46,4 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = environment.DROPZONE_CO
   ],
   bootstrap: [ContentUploadComponent]
 })
-export class ContentUploadModule { }
+export class ContentUploadModule {}

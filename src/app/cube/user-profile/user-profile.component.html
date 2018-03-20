@@ -5,12 +5,12 @@
 <div class="img"></div>
 <div class="container">
   <div class="container-inner">
-    <div class="edit" *ngIf="!editContent" (click)="editContent = !editContent" ><i class="far fa-pencil"></i> Edit Profile</div>
+    <div class="edit" *ngIf="!editContent && self" (click)="editContent = !editContent" ><i class="far fa-pencil"></i> Edit Profile</div>
     <div *ngIf="!editContent">
-      <app-user-information></app-user-information>
+      <app-user-information [user]="user" [self]="self"></app-user-information>
     </div>
     <div *ngIf="editContent">
-      <app-user-edit-information [user]="this.auth.user" (close)="editContent = !editContent"></app-user-edit-information>
+      <app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></app-user-edit-information>
     </div>
 </div>
 </div>

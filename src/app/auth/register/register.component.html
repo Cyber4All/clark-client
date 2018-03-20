@@ -4,41 +4,47 @@
       <div class="error"> {{ registerFailure || '' }} </div>
       <div class="title">C.L.A.R.K.</div>
       <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
-      <form (ngSubmit)="submit()">
+      <form [formGroup] = "regForm" (ngSubmit)="submit()">
         <div class="h-group">
           <div class="input firstname" [ngClass]="{'active': regInfo.firstname !== ''}">
-            <input name="firstname" type="text" placeholder="First name" [(ngModel)]="regInfo.firstname" />
+            <input name="firstname" type="text" placeholder="First name" [(ngModel)]="regInfo.firstname" formControlName ="firstname" />
             <i class="far fa-id-card"></i>
           </div>
           <div class="input lastname" [ngClass]="{'active': regInfo.lastname !== ''}">
-            <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="regInfo.lastname" />
+            <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="regInfo.lastname" formControlName="lastname" />
+
             <i class="far fa-id-card"></i>
           </div>
         </div>
         <div class="input email" [ngClass]="{'active': regInfo.email !== ''}">
-          <input name="email" type="text" placeholder="Email address" [(ngModel)]="regInfo.email" />
+          <input name="email" type="text" placeholder="Email address" [(ngModel)]="regInfo.email" formControlName ="email"/>
           <i class="far fa-at"></i>
         </div>
         <div class="input username" [ngClass]="{'active': regInfo.username !== ''}">
-          <input name="username" type="text" placeholder="Username" [(ngModel)]="regInfo.username" />
+          <input name="username" type="text" placeholder="Username" [(ngModel)]="regInfo.username" formControlName ="username"/>
           <i class="far fa-user"></i>
         </div>
         <div class="input organization" [ngClass]="{'active': regInfo.organization !== ''}">
-          <input name="organization" type="text" placeholder="Organization" [(ngModel)]="regInfo.organization" />
+          <input name="organization" type="text" placeholder="Organization" [(ngModel)]="regInfo.organization" formControlName ="organization"/>
           <i class="far fa-building"></i>
         </div>
         <div class="line-spacer"></div>
         <div class="input password" [ngClass]="{'active': regInfo.password !== ''}">
-          <input name="password" type="password" placeholder="Password" [(ngModel)]="regInfo.password" />
+          <input name="password" type="password" placeholder="Password" [(ngModel)]="regInfo.password" formControlName ="password"/>
           <i class="far fa-key"></i>
         </div>
         <div class="input password-verify" [ngClass]="{'active': passwordVerify !== ''}">
-          <input name="password-verify" type="password" placeholder="Confirm password" [(ngModel)]="passwordVerify" />
+          <input name="password-verify" type="password" placeholder="Confirm password" [(ngModel)]="passwordVerify" formControlName ="verifypassword"/>
           <i class="far fa-key"></i>
         </div>
+        <div ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
         <button type="type" class="auth-button">
-          <div class="text">Register</div>
+          <div class="text" *ngIf = "!loading">Register</div>
           <div class="mask"></div>
+          <span *ngIf = "loading">
+            Loading
+            <i class="far fa-spinner fa-pulse"></i>
+          </span>
         </button>
       </form>
     </div>

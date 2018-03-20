@@ -4,14 +4,17 @@ export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
+  CHECK_USER_EXISTS(username) {
+    return `${environment.apiURL}/users/search?username=${username}`;
+  },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${username}/tokens`;
   },
   LOGOUT(username) {
     return `${environment.apiURL}/users/${username}/tokens`;
   },
-  // Onion
   GET_MY_LEARNING_OBJECTS(username) {
+    // Onion
     return `${environment.apiURL}/users/${username}/learning-objects`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
@@ -21,6 +24,16 @@ export const USER_ROUTES = {
     return `${
       environment.apiURL
     }/users/${username}/learning-objects/${learningObjectName}`;
+  },
+  PUBLISH_LEARNING_OBJECT(username, learningObjectName) {
+    return `${
+      environment.apiURL
+    }/users/${username}/learning-objects/${learningObjectName}/publish`;
+  },
+  UNPUBLISH_LEARNING_OBJECT(username, learningObjectName) {
+    return `${
+      environment.apiURL
+    }/users/${username}/learning-objects/${learningObjectName}/unpublish`;
   },
   GET_LEARNING_OBJECT(username, learningObjectName) {
     return `${
@@ -47,8 +60,8 @@ export const USER_ROUTES = {
       environment.apiURL
     }/users/${username}/learning-objects/${learningObjectName}/files/${filename}`;
   },
-  // CUBE
   GET_CART(username) {
+    // CUBE
     return `${environment.apiURL}/users/${username}/cart`;
   },
   CLEAR_CART(username) {
@@ -68,6 +81,12 @@ export const USER_ROUTES = {
     return `${
       environment.apiURL
     }/users/${username}/library/learning-objects/${author}/${learningObjectName}`;
+  },
+  GET_SAME_ORGANIZATION(organization) {
+    return `${environment.apiURL}/users/search?organization=${organization}`;
+  },
+  VALIDATE_CAPTCHA() {
+    return `${environment.apiURL}/users/validate-captcha`;
   }
 };
 
@@ -83,5 +102,8 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   },
   GET_COLLECTION(name: string) {
     return `${environment.apiURL}/collections/${name}/learning-objects`;
+  },
+  GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
+    return `${environment.apiURL}/learning-objects/${username}`;
   }
 };

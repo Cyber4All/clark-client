@@ -6,7 +6,13 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
 import { User, LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
-import { verbs, assessments, quizzes, instructions } from 'clark-taxonomy';
+import {
+  verbs,
+  assessments,
+  quizzes,
+  instructions
+} from '@cyber4all/clark-taxonomy';
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
 
 @Component({
   selector: 'learning-object-builder',
@@ -14,6 +20,8 @@ import { verbs, assessments, quizzes, instructions } from 'clark-taxonomy';
   styleUrls: ['./learning-object-builder.component.scss']
 })
 export class LearningObjectBuilderComponent implements OnInit {
+  public tips = TOOLTIP_TEXT;
+
   learningObject: LearningObject = new LearningObject();
 
   classverbs: { [level: string]: Set<string> } = verbs;
@@ -26,6 +34,8 @@ export class LearningObjectBuilderComponent implements OnInit {
   isNew = false;
   submitted = 0;
 
+  validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -35,6 +45,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.learningObject.addGoal('');
     console.log(this.learningObject.level, this.learningObject.length);
     this.getRouteParams();
   }
@@ -87,33 +98,12 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   async save(willUpload: boolean) {
-    let publish = await this.modalService
-      .makeDialogMenu(
-        'PublishConfirmation',
-        'Publish changes?',
-        '',
-        'title-good',
-        'center',
-        [
-          new ModalListElement(
-            'Save & Publish!<i class="far fa-check-circle"></i>',
-            'accept',
-            'good'
-          ),
-          new ModalListElement(
-            'Save for later<i class="far fa-undo-alt "></i>',
-            'reject',
-            'neutral on-white'
-          )
-        ]
-      )
-      .toPromise();
-    publish === 'accept'
-      ? this.learningObject.publish()
-      : this.learningObject.unpublish();
-
     this.learningObject.date = Date.now().toString();
+    this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
+      if (!willUpload) {
+        await this.showPublishingDialog();
+      }
       this.service
         .save(this.learningObject)
         .then(success => {
@@ -142,6 +132,9 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
+      if (!willUpload) {
+        await this.showPublishingDialog();
+      }
       this.service
         .create(this.learningObject)
         .then(() => {
@@ -170,6 +163,33 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     }
+  }
+
+  private async showPublishingDialog() {
+    let publish = await this.modalService
+      .makeDialogMenu(
+        'PublishConfirmation',
+        'Publish changes?',
+        '',
+        'title-good',
+        'center',
+        [
+          new ModalListElement(
+            'Save & Publish!<i class="far fa-check-circle"></i>',
+            'accept',
+            'good'
+          ),
+          new ModalListElement(
+            'Save for later<i class="far fa-undo-alt "></i>',
+            'reject',
+            'neutral on-white'
+          )
+        ]
+      )
+      .toPromise();
+    publish === 'accept'
+      ? this.learningObject.publish()
+      : this.learningObject.unpublish();
   }
 
   toggleLevel(level: AcademicLevel) {
@@ -275,7 +295,9 @@ export class LearningObjectBuilderComponent implements OnInit {
       'learning-outcome-component > .container'
     );
     for (const outcome of Array.from(o)) {
-      if (outcome.attributes['valid'].value !== 'true') { return false; }
+      if (outcome.attributes['valid'].value !== 'true') {
+        return false;
+      }
     }
 
     return true;

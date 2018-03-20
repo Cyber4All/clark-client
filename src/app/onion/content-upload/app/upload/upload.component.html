@@ -5,7 +5,11 @@
         <div>
           <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
       </div>
-      <div class="title">Manage Materials</div>
+      <div class="title">Manage Materials
+        <span tip="{{ tips.FILE_UPLOAD }}" tipLocation="side">
+          <i class="fas fa-question-circle"></i>
+        </span>
+      </div>
       <div></div>
     </div>
     <div class="dropzone upload-container" [dropzone]>
@@ -61,7 +65,7 @@
         </div>
         <div class="row file-listing" *ngFor="let file of learningObject.materials.files; let i = index;">
           <div class="cells">
-            <div class="cell">
+            <div class="cell file-name">
               {{ file.name }}
             </div>
             <div class="cell file-description">

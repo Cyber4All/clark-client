@@ -22,7 +22,10 @@ export class SuggestionComponent implements OnInit, OnChanges {
   @Input('mappingsInput') mappingsInput: Array<OutcomeSuggestion> = [];
   @Input('outcome') outcome: string;
   @Input() opened: boolean;
-
+  tips = {
+    // tslint:disable-next-line:max-line-length
+    OUTCOMES_FROM_OTHER_SOURCES: 'You can can map your learning outcome to these outcomes from curricular guidelines, or use the text from these suggestions in your outcome. Outcomes should only be mapped at the same level in the Bloom\'s taxonomy.'
+  };
   mappings = new Map<string, OutcomeSuggestion>();
   standardAppear: boolean;
   standardOutcomes: Array<StandardOutcome> = [];

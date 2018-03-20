@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   loginFailureTimer;
   redirectRoute;
   redirectUrl;
-
+  loading: boolean =  false;
   constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) {
     this.route.parent.data
     .subscribe((data) => {
@@ -37,6 +37,13 @@ export class LoginComponent implements OnInit {
   submit() {
     this.loginFailure = undefined;
     clearTimeout(this.loginFailureTimer);
+    this.loading=true;
+
+    if (!this.validate()) {
+      this.loading=false;
+      this.error('Please fill in all fields!');
+      return false;
+    }
 
     this.auth.login(this.authInfo).then(val => {
       if (this.redirectRoute) {
@@ -45,9 +52,16 @@ export class LoginComponent implements OnInit {
       } else {
         window.location.href = this.redirectUrl;
       }
+
     }).catch(error => {
+      console.log(error);
+      this.loading = false;
       this.error(error.error.message);
     });
+  }
+
+  validate(): boolean {
+    return this.authInfo.username && this.authInfo.password && true;
   }
 
   error(text: string = 'An error occured', duration: number = 4000) {

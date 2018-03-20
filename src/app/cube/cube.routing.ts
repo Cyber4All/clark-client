@@ -1,3 +1,4 @@
+import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -6,7 +7,7 @@ import { DetailsComponent } from './learning-object-details/details/details.comp
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
+import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
@@ -14,6 +15,8 @@ import { AuthGuard } from '../core/auth-guard.service';
 import { AuthResolve } from '../auth/auth.resolver';
 import { CubeComponent } from './cube.component';
 import { CollectionComponent } from './collections/collection.component';
+import { ProfileGuard } from './core/profile.guard';
+import { UserResolver } from './core/user.resolver';
 
 // Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {
@@ -25,6 +28,7 @@ const cube_routes: Routes = [
       detailRoute,
       { path: 'home', component: HomeComponent },
       { path: 'c/:name', component: CollectionComponent },
+      { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse/:query', component: RouterComponent, data: { breadcrumb: 'Browse' },
         children: [{ path: '', component: BrowseComponent }, detailRoute]
@@ -37,10 +41,14 @@ const cube_routes: Routes = [
         path: 'library', component: RouterComponent, data: { breadcrumb: 'Library' }, canActivate: [AuthGuard],
         children: [{ path: '', component: CartComponent }, detailRoute]
       },
-      { path: 'userprofile', component: UserProfileComponent, data: { breadcrumb: 'Profile' }, canActivate: [AuthGuard] },
-      { path: 'userpreferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' }, canActivate: [AuthGuard] },
+      { path: 'users/:username', component: UserProfileComponent, resolve: {
+        user: UserResolver
+      }},
+      { path: 'users/:username/preferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' },
+        canActivate: [AuthGuard]
+      },
       // Catch All
-      { path: '**', redirectTo: '/home', pathMatch: 'full' },
+      { path: '**', component: UserProfileComponent, pathMatch: 'full', canActivate: [ProfileGuard] },
     ]
   }
 ];

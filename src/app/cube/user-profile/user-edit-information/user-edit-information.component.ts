@@ -8,9 +8,9 @@ import {
   Output,
   OnDestroy
 } from '@angular/core';
-import { UserService } from '../../core/user.service';
-import { AuthService } from '../../core/auth.service';
-import { NotificationService } from '../../shared/notifications';
+import { UserService } from '../../../core/user.service';
+import { AuthService } from '../../../core/auth.service';
+import { NotificationService } from '../../../shared/notifications';
 import { User } from '@cyber4all/clark-entity';
 import { Subscription } from 'rxjs';
 
@@ -19,8 +19,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './user-edit-information.component.html',
   styleUrls: ['./user-edit-information.component.scss']
 })
-export class UserEditInformationComponent implements OnInit, OnDestroy, OnChanges {
+export class UserEditInformationComponent implements OnInit, OnChanges {
   @Input('user') user;
+  @Input('self') self: boolean = false;
   @Output('close') close = new EventEmitter<boolean>();
 
   editInfo = {
@@ -54,21 +55,14 @@ export class UserEditInformationComponent implements OnInit, OnDestroy, OnChange
       organization: this.editInfo.organization
     };
 
-    console.log('to send', concatInfo);
-
     this.userService.editUserInfo(concatInfo).then(val => {
-      this.sub = this.auth.validate().subscribe(user => {
-        this.auth.user = user;
+      this.auth.validate().then(() => {
         this.close.emit(true);
         this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
       });
     }, error => {
       this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
     });
-  }
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
   }
 }
 

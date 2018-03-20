@@ -1,52 +1,74 @@
-import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked, SimpleChanges, OnChanges } from '@angular/core';
 import { ModalService, Position, ModalListElement } from '../../../shared/modals';
 import { OutcomeService } from '../../core/services/outcome.service';
 
 // RXJS
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { MappingsFilterService } from '../../../core/mappings-filter.service';
 
 @Component({
   selector: 'browse-by-mappings-component',
   templateUrl: './browse-by-mappings.component.html',
   styleUrls: ['./browse-by-mappings.component.scss']
 })
-export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
+export class BrowseByMappingsComponent implements OnInit, OnChanges, AfterViewChecked {
   // Inputs
-  @Input('open') open: boolean;
-  @Input('source') source;
+  @Input('dimensions') dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
 
   // Outputs
-  @Output('mappings') mappings = new EventEmitter<Array<any>>();
-  @Output('closed') closed = new EventEmitter<boolean>();
+  @Output('done') done = new EventEmitter<boolean>();
 
   // TODO: sources should be fetched from an API route to allow dynamic configuration
-  sources = ['NCWF', 'CAE', 'CS2013'];
+  sources = [
+    'CAE Cyber Defense',
+    'CAE Cyber Ops',
+    'CCECC IT2014',
+    'CS2013',
+    'Military Academy',
+    'NCWF',
+    'NCWF KSAs',
+    'NCWF Tasks',
+    'CSEC'];
+
   mappingsQueryInProgress = false;
-  mappingsFilters: { filterText: string, author: string, date: string } = {
-    filterText: '',
-    author: '',
-    date: ''
-  };
+
+  // array of results (outcomes) from a query
   queriedMappings: any[] = [];
-  standardOutcomes: any[] = [];
+
+  // empty observable to be instantiated after the view is checked
+  // will watch the input and query the database after user has stopped typing
   mappingsFilterInput: Observable<string>;
-  mappingsCheckbox: any;
+
   mappingsQueryError = false;
 
-  constructor(private modalService: ModalService, private outcomeService: OutcomeService) { }
+  constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: MappingsFilterService) { }
 
   ngOnInit() {
+    // check if the service has filterText and author and conditionally populate component
+    // if someone opens component, performs a query, closes the component, and then reopens the component
+    if (this.mappingService.filterText && this.mappingService.author) {
+      this.mappingsQueryInProgress = true;
+      this.getOutcomes().then(() => {
+        this.mappingsQueryInProgress = false;
+      });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // do nothing yet
   }
 
   ngAfterViewChecked() {
-    if (this.open && !this.mappingsFilterInput) {
+    // instantiate observable to watch input and fire events when user stops typing
+    if (!this.mappingsFilterInput) {
       this.mappingsFilterInput = Observable
         .fromEvent(document.getElementById('mappingsFilter'), 'input')
         .map(x => x['currentTarget'].value).debounceTime(650);
 
+      // listen for user to stop typing in the text input and perform query
       this.mappingsFilterInput.subscribe(val => {
-        if (this.mappingsFilters.author && this.mappingsFilters.author !== '') {
+        if (this.mappingService.author && this.mappingService.author !== '') {
           this.mappingsQueryInProgress = true;
           this.getOutcomes().then(() => {
             this.mappingsQueryInProgress = false;
@@ -56,23 +78,24 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  // emits from the close event emitter (useful if this component is in a modal)
   close() {
-    this.mappings.emit(this.standardOutcomes);
-    this.closed.emit(true);
+    this.done.emit(true);
   }
 
+  // displays the sources dropdown contextmenu
   showSources(event) {
     this.modalService.makeContextMenu(
       'SourceContextMenu',
       'dropdown',
-      this.sources.map(s => new ModalListElement(s, s, (s === this.mappingsFilters.author) ? 'active' : undefined)),
+      this.sources.map(s => new ModalListElement(s, s, (s === this.mappingService.author) ? 'active' : undefined)),
       null,
       new Position(
         this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
         this.modalService.offset(event.currentTarget).top + 50))
       .subscribe(val => {
         if (val !== 'null') {
-          this.mappingsFilters.author = val;
+          this.mappingService.author = val;
           this.mappingsQueryInProgress = true;
           this.getOutcomes().then(() => {
             this.mappingsQueryInProgress = false;
@@ -81,41 +104,52 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked {
       });
   }
 
+  // queries database with author and filterText
   getOutcomes(): Promise<void> {
     this.mappingsQueryError = false;
-    return this.outcomeService.getOutcomes(this.mappingsFilters).then(res => {
+    const filters = {
+      filterText: this.mappingService.filterText,
+      author: this.mappingService.author
+    };
+    return this.outcomeService.getOutcomes(filters).then(res => {
       this.queriedMappings = res;
-      if (!this.queriedMappings.length && this.mappingsFilters.filterText !== '') {
+      if (!this.queriedMappings.length && this.mappingService.filterText !== '') {
         this.mappingsQueryError = true;
       }
     });
   }
 
+  // checks lists of outcomes for a specific outcome
   checkOutcomes(outcome): boolean {
-    for (let i = 0; i < this.standardOutcomes.length; i++) {
-      if (this.standardOutcomes[i]['id'] === outcome.id) {
-        return true;
+    if (this.mappingService.hasMappings) {
+      for (let i = 0; i < this.mappingService.mappings.length; i++) {
+        if (this.mappingService.mappings[i]['id'] === outcome.id) {
+          return true;
+        }
       }
     }
     return false;
   }
 
+  // adds an outcome to the list of selected outcomes
   addOutcome(outcome) {
     if (!this.checkOutcomes(outcome)) {
-      const o = { id: outcome.id, name: outcome.name, source: this.mappingsFilters.author, date: outcome.date, outcome: outcome.outcome };
-      (<{ id: string, name: string, date: string, outcome: string }[]>this.standardOutcomes).push(o);
+      const o = { id: outcome.id, name: outcome.name, source: this.mappingService.author, date: outcome.date, outcome: outcome.outcome };
+      (<{ id: string, name: string, date: string, outcome: string }[]>this.mappingService.mappings).push(o);
     }
   }
 
+  // removes an outcome from list of selected outcomes
   removeOutcome(outcome) {
-    for (let i = 0; i < this.standardOutcomes.length; i++) {
-      if (this.standardOutcomes[i]['id'] === outcome.id) {
-        this.standardOutcomes.splice(i, 1);
+    for (let i = 0; i < this.mappingService.mappings.length; i++) {
+      if (this.mappingService.mappings[i]['id'] === outcome.id) {
+        this.mappingService.mappings.splice(i, 1);
         return;
       }
     }
   }
 
+  // truncates and appends an ellipsis to block of text based on maximum number of characters
   outcomeText(text: string, max: number = 150, margin: number = 10): string {
     let outcome = text.substring(0, max);
     const spaceAfter = text.substring(max).indexOf(' ') + outcome.length;

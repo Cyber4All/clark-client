@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="content-box" [ngClass]="{'failed': loginFailure}">
     <div class="top">
-      <div class="error"> {{ loginFailure || '' }} </div>
+      <div class="error" > {{ loginFailure || '' }} </div>
       <div class="title">C.L.A.R.K.</div>
       <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
       <form (ngSubmit)="submit()">
@@ -15,13 +15,18 @@
         </div>
         <div class="forgot" routerLink="../forgot-password">Forgot password?</div>
         <button type="type" class="auth-button">
-          <div class="text">Login</div>
+          <div class="text" *ngIf = "!loading">Login</div>
           <div class="mask"></div>
+          <span *ngIf = "loading">
+            Loading
+            <i class="far fa-spinner fa-pulse"></i>
+          </span>
         </button>
       </form>
     </div>
     <div class="bottom-link" routerLink="../register">
-      Don't have an account yet? <span>Register!</span>
+      Don't have an account yet?
+      <span>Register!</span>
     </div>
   </div>
 </div>

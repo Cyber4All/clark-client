@@ -4,7 +4,7 @@
     <div class="inner">
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
-        <div class="author">Created by {{learningObject.author._name}}, updated {{ date | date:'shortDate' }}</div>
+        <div class="author">Created by {{learningObject.author.name}}, updated {{ date | date:'shortDate' }}</div>
         <div class="type">{{ learningObject.length }}</div>
       </div>
     </div>
@@ -12,12 +12,10 @@
   <div class="flex">
     <div class="content">
       <div class="goals">
-        <div class="title">Learning Goals</div>
-        <ul>
-          <li *ngFor="let goal of learningObject.goals" class="goal">
-            {{ goal.text }}
-          </li>
-        </ul>
+        <div class="title">Description</div>
+        <p>
+          {{ learningObject.goals[0].text }}
+        </p>
       </div>
       <div class="outcomes">
         <div class="title">Learning Outcomes</div>
@@ -26,14 +24,17 @@
             {{ o.outcome }}
           </li>
         </ul>
+        <p *ngIf="learningObject.outcomes.length < 1">This Learning Object does not contain any outcomes.</p>
       </div>
+      <onion-file-details [materials]="learningObject.materials"></onion-file-details>
     </div>
     <div class="sidebar">
       <div class="inner">
         <div [ngClass]="{'disabled': !auth.user}" class="button good" (click)="addToCart(true)">Download Now</div>
-        <div [ngClass]="{'disabled': !auth.user}"  class="button neutral on-white" (click)="addToCart()">Add to Library</div>
+        <div [ngClass]="{'disabled': !auth.user}" class="button neutral on-white" (click)="addToCart()">Add to Library</div>
         <ng-container *ngIf="!auth.user">
-          <div class="login-msg">Please <span [routerLink]="['/auth/login']">log in</span> to add this Learning Object to your library.</div>
+          <div class="login-msg">Please
+            <span [routerLink]="['/auth/login']">log in</span> to add this Learning Object to your library.</div>
         </ng-container>
       </div>
     </div>

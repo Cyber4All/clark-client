@@ -45,11 +45,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
   }
 
   userprofile() {
-    this.router.navigate(['/userprofile']);
+    this.router.navigate(['users', this.authService.user.username]);
   }
 
   preferences() {
-    this.router.navigate(['/userpreferences']);
+    this.router.navigate(['users', this.authService.user.username, 'preferences']);
   }
 
   /**
@@ -62,7 +62,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
       'dropdown',
       [
         new ModalListElement('<i class="fas fa-user-circle fa-fw"></i>View profile', 'userprofile'),
-        new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
+        // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
         new ModalListElement('<i class="far fa-sign-out"></i>Sign out', 'logout'),
       ],
       null,

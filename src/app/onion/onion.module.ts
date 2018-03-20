@@ -18,6 +18,8 @@ import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { NotificationModule } from '../shared/notifications';
 import { ModalModule } from '../shared/modals';
+import { DashboardResolver } from './dashboard/dashboard.resolver';
+import { TooltipModule } from '@cyber4all/clark-tooltip';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -44,7 +46,9 @@ import { ModalModule } from '../shared/modals';
     HttpClientModule,
     CheckBoxModule,
     ModalModule,
-    NotificationModule
-  ]
+    NotificationModule,
+    TooltipModule
+  ],
+  providers: [ DashboardResolver ]
 })
 export class OnionModule { }

@@ -37,7 +37,7 @@ import { DetailsContentComponent } from './learning-object-details/details/detai
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
+import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 
 
@@ -52,14 +52,18 @@ import { AuthService } from '../core/auth.service';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 import { ModalModule } from '../shared/modals';
+import { TooltipModule } from '@cyber4all/clark-tooltip';
 import {
   NotificationComponent,
   NotificationModule
 } from '../shared/notifications';
-import { UserInformationComponent } from './user-information/user-information.component';
-import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
+import { UserInformationComponent } from './user-profile/user-information/user-information.component';
+import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
 import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
+import { OrganizationListComponent } from './organization-list/organization-list.component';
+import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
+
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -79,8 +83,10 @@ import { CollectionModule } from './collections/collection.module';
     UserProfileComponent,
     UserPreferencesComponent,
     UserInformationComponent,
-    UserEditInformationComponent
-  ],
+    UserEditInformationComponent,
+    OrganizationListComponent,
+    FileDetailsComponent
+],
   imports: [
     // Angular imports
     HttpModule,
@@ -101,6 +107,7 @@ import { CollectionModule } from './collections/collection.module';
     ModalModule,
     NotificationModule,
     CollectionModule,
+    TooltipModule
   ],
   providers: [LearningObjectService, CartService]
 })

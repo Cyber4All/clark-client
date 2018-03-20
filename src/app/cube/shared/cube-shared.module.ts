@@ -8,6 +8,10 @@ import { LearningObjectListingComponent } from './learning-object/learning-objec
 import { FooterComponent } from './footer/footer.component';
 import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 
+// Guards/Resolvers
+import { ProfileGuard } from '../core/profile.guard';
+import { UserResolver } from '../core/user.resolver';
+
 // Directives
 import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
 import { RouterModule } from '@angular/router';
@@ -18,6 +22,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +31,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
     FormsModule,
     VirtualScrollModule,
     CheckBoxModule,
-    ClickOutsideModule
+    ClickOutsideModule,
   ],
   exports: [
     FooterComponent,
@@ -41,6 +46,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
     LearningObjectListingComponent,
     LearningObjectCardDirective,
     BrowseByMappingsComponent
-  ]
+  ],
+  providers: [ProfileGuard, UserResolver]
 })
 export class CubeSharedModule { }
