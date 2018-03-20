@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalService, Position, ModalListElement } from '../shared/modals';
 import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { NotificationService } from '../shared/notifications';
 
 @Component({
   selector: 'clark-cube',
@@ -14,7 +15,7 @@ export class CubeComponent implements OnInit {
   hideTopbar: any = false;
   filterButton = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private noteService: NotificationService, private modalService: ModalService) { }
 
   ngOnInit() {
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {

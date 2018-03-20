@@ -157,4 +157,8 @@ export class CartV2Service {
         }
       );
   }
+
+  has(object: LearningObject): boolean {
+    return this.cartItems.filter(o => o.name === object.name && o.author.username === object.author.username).length > 0;
+  }
 }

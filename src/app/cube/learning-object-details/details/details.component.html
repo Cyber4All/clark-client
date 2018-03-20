@@ -31,7 +31,7 @@
     <div class="sidebar">
       <div class="inner">
         <div [ngClass]="{'disabled': !auth.user}" class="button good" (click)="addToCart(true)">Download Now</div>
-        <div [ngClass]="{'disabled': !auth.user}" class="button neutral on-white" (click)="addToCart()">Add to Library</div>
+        <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">{{ saved ? 'Saved to your library!' : 'Add to Library' }}</div>
         <ng-container *ngIf="!auth.user">
           <div class="login-msg">Please
             <span [routerLink]="['/auth/login']">log in</span> to add this Learning Object to your library.</div>
