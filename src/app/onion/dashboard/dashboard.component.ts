@@ -267,6 +267,7 @@ export class DashboardComponent implements OnInit {
         'LearningObjectContext',
         'small',
         list,
+        true,
         event.currentTarget
       )
       .subscribe(val => {
@@ -335,6 +336,7 @@ export class DashboardComponent implements OnInit {
         'FilteringContext',
         'dropdown',
         list,
+        true,
         null,
         pos,
         this.filters.slice(0)

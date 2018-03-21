@@ -40,6 +40,7 @@ export class OnionComponent {
       [
         new ModalListElement('<i class="far fa-sign-out"></i>Sign out', 'logout')
       ],
+      true,
       null,
       new Position(
         this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),

@@ -65,6 +65,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
         // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
         new ModalListElement('<i class="far fa-sign-out"></i>Sign out', 'logout'),
       ],
+      true,
       null,
       new Position(
         this.modalCtrl.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),

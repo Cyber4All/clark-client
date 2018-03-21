@@ -1,5 +1,5 @@
 import { ModalService } from './modal.service';
-import { Component, Output, Input, ElementRef, EventEmitter, DoCheck, AfterViewChecked} from '@angular/core';
+import { Component, Output, Input, ElementRef, EventEmitter, DoCheck, AfterViewChecked, HostListener} from '@angular/core';
 import { Modal } from './modal';
 
 @Component({
@@ -16,6 +16,15 @@ import { Modal } from './modal';
     `
 })
 export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChecked {
+
+    @HostListener("window:scroll", [])
+    onWindowScroll() {
+        // close any context menus if they're a) in the document flow and b) the document is scrolled
+        if (this.content.inFlow) {
+            this.close();
+        }
+    }
+
     type: string = 'context';
 
     constructor(private elementRef: ElementRef, modalService: ModalService) {
@@ -35,7 +44,7 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
                 this.calculatePosition(this.content.el);
             } else if (this.content.pos) {
                 // we passed coordinates
-                this.assignCoords(this.content.pos.x, this.content.pos.y);
+                this.calculatePosition(undefined, this.content.pos);
             }
         }
     }
@@ -45,7 +54,11 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
      * @param x 
      * @param y 
      */
-    private assignCoords(x, y) {
+    private assignCoords(x, y, scrolled?) {
+        if (scrolled) {
+            y -= +scrolled;
+        }
+
         this.x = (typeof x === 'number') ? x + 'px' : x;
         this.y = (typeof y === 'number') ? y + 'px' : y;
     }
@@ -54,15 +67,24 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
      * Takes the passed element parameter and checks to ensure the modal will display on screen, and if not, moves it so that it will.
      * @param el 
      */
-    private calculatePosition(el) {
-        const offsetConst = 15;
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+    private calculatePosition(el?, pos?) {
+        const scrolled = this.content.inFlow ? document.documentElement.scrollTop : 0;
 
-        const p = this.elementRef.nativeElement.querySelector('.popup');
-        const x = (this.modalService.offset(el).left + p.offsetWidth + offsetConst < windowWidth) ? this.modalService.offset(el).left + offsetConst : this.modalService.offset(el).left - p.offsetWidth;
-        const y = (this.modalService.offset(el).top + p.offsetHeight + offsetConst < windowHeight) ? this.modalService.offset(el).top + offsetConst : this.modalService.offset(el).top - p.offsetHeight;
-        
-        this.assignCoords(x, y);
+        if (pos) {
+            console.log(scrolled);
+            this.assignCoords(pos.x, pos.y, scrolled);
+        } else if (el) {
+            const offsetConst = 15;
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            const p = this.elementRef.nativeElement.querySelector('.popup');
+            const x = (this.modalService.offset(el).left + p.offsetWidth + offsetConst < windowWidth) ? this.modalService.offset(el).left + offsetConst : this.modalService.offset(el).left - p.offsetWidth;
+            const y = (this.modalService.offset(el).top + p.offsetHeight + offsetConst < windowHeight) ? this.modalService.offset(el).top + offsetConst - scrolled : this.modalService.offset(el).top - p.offsetHeight - scrolled;
+            
+            this.assignCoords(x, y);
+        } else {
+            console.error('ContextMenuError! Must pass either a position or an element to calculatePosition()!');
+        }
     }
 }

@@ -7,7 +7,6 @@
 }
 
 // variables
-$topbarHeight: calc(37px + 95px);
 $max-width: 1200px;
 $bright-blue: #3789CE;
 $blue-accent: #3B608B;
@@ -26,6 +25,13 @@ $micromodule-color: #3B8B5A;
 $module-color: #2C6E58;
 $unit-color: #3B8B5A;
 $course-color: #295948;
+
+body {
+
+  ::ng-deep & > * {
+    font-family: 'Source Sans Pro', serif;
+  }
+}
 
 // mixins
 @mixin vert-center {
@@ -549,7 +555,7 @@ $course-color: #295948;
 // CLARK STYLES
 // this is the container, holds everything (topbar, content) except for modal components
 .outer-wrapper {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
@@ -569,7 +575,7 @@ $course-color: #295948;
 
 // fixed postion nav bar
 .topbar {
-  position: fixed;
+  position: relative;
   width: 100%;
   padding: 20px;
   background: white;
@@ -588,7 +594,6 @@ $course-color: #295948;
       display: inline-flex;
       flex-direction: column;
       align-self: center;
-      letter-spacing: 1px;
     }
 
     .left {
@@ -655,11 +660,6 @@ $course-color: #295948;
 }
 
 // styles for the 'switch' used for transitioning between SEARCH and CONTRIBUTE options (IE Onion and Cube)
-
-.content-switch-container.buffer {
-  margin-top: 95px;
-}
-
 .content-switch {
   width: 300px;
   overflow: hidden;

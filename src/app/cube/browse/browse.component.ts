@@ -219,6 +219,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
             new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
             new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
           ],
+          true,
           null,
           new Position(
             this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),

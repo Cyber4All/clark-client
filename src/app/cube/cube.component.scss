@@ -29,12 +29,16 @@ html, body {
   }
 }
 
+::ng-deep .breadcrumb {
+  background: transparent !important;
+  margin-bottom: 0px !important;
+}
+
 .toolbar {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   min-width: 100vw;
-  margin-top: 75px;
   justify-content: space-between;
   padding: 0px 0px 0px 20px;
   background: white;

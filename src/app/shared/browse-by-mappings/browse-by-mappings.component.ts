@@ -114,6 +114,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
       'SourceContextMenu',
       'dropdown',
       this.sources.map(s => new ModalListElement(s, s, (s === this.mappingService.author) ? 'active' : undefined)),
+      false,
       null,
       new Position(
         this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
