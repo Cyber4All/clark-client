@@ -34,10 +34,10 @@
               {{ file.name }}
             </div>
             <div class="cell">
-              {{ TimeFunctions.getTimestampAge(file.date) }}
+              {{ file.timeAgo }}
             </div>
             <div class="cell trailing-overflow">
-              {{ file.description }}
+              {{ file.description ? file.description : 'No description' }}
             </div>
           </div>
           <a [href]="file.url" class="button good icon-only">

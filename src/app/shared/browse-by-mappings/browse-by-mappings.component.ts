@@ -31,9 +31,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   sources = [
     'CAE Cyber Defense',
     'CAE Cyber Ops',
-    'CCECC IT2014',
     'CS2013',
-    'Military Academy',
     'NCWF',
     'NCWF KSAs',
     'NCWF Tasks',

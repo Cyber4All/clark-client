@@ -1,14 +1,15 @@
 export class TimeFunctions {
-  getTimestampAge(timestamp: number) {
+  public static getTimestampAge(timestamp: number): string {
+    return this.convertTimestamp(timestamp);
+  }
+
+  private static convertTimestamp(timestamp: number): string {
     //Ensure timestamp is a number;
     timestamp = +timestamp;
     var currTimeInSeconds = Math.floor(Date.now() / 1000);
     var submittedSeconds = Math.floor(timestamp / 1000);
     if (currTimeInSeconds - submittedSeconds <= 59) {
-      if (currTimeInSeconds - submittedSeconds == 1) {
-        return currTimeInSeconds - submittedSeconds + ' second ago';
-      }
-      return currTimeInSeconds - submittedSeconds + ' seconds ago';
+      return 'less than a minute ago';
     } else if (
       currTimeInSeconds - submittedSeconds >= 60 &&
       currTimeInSeconds - submittedSeconds < 3600
