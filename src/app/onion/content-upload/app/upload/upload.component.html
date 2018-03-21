@@ -73,7 +73,7 @@
               />
             </div>
             <div class="cell">
-              {{ TimeFunctions.getTimestampAge(file.date) }}
+              {{ file.timeAgo }}
             </div>
           </div>
           <div class="button bad icon-only" (click)="markForDeletion(file, i)">
