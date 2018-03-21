@@ -1,5 +1,5 @@
 // font
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700");
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700');
 
 // functions
 @function gradient($color1, $color2, $angle) {
@@ -8,26 +8,25 @@
 
 // variables
 $max-width: 1200px;
-$bright-blue: #3789CE;
-$blue-accent: #3B608B;
+$bright-blue: #3789ce;
+$blue-accent: #3b608b;
 $dark-blue: #2b4066;
 $green: #389857;
 $dark-text: #55595e;
 $wrapper-background: #f0f4f7;
 $blue-gradient: linear-gradient(45deg, $dark-blue, $blue-accent);
-$error-red: #CF4739;
+$error-red: #cf4739;
 $placeholder: lighten(#a9a9a9, 10);
 $popup-z: 9;
 $notification-z: 10;
 
-$nanomodule-color: #3B8B87;
-$micromodule-color: #3B8B5A;
-$module-color: #2C6E58;
-$unit-color: #3B8B5A;
+$nanomodule-color: #3b8b87;
+$micromodule-color: #3b8b5a;
+$module-color: #2c6e58;
+$unit-color: #3b8b5a;
 $course-color: #295948;
 
 body {
-
   ::ng-deep & > * {
     font-family: 'Source Sans Pro', serif;
   }
@@ -52,7 +51,7 @@ body {
   margin-bottom: auto !important;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -66,7 +65,7 @@ body {
   }
 
   &.active {
-      border-color: $blue-accent;
+    border-color: $blue-accent;
     &:after {
       transform: scale(1);
       opacity: 1;
@@ -75,7 +74,7 @@ body {
 }
 
 ::ng-deep .checkbox {
-    @include checkbox;
+  @include checkbox;
 }
 
 ::ng-deep .squares {
@@ -148,8 +147,8 @@ body {
 
   &::after {
     display: none;
-    content: "\f0dc";
-    font-family: "Font Awesome 5 Solid";
+    content: '\f0dc';
+    font-family: 'Font Awesome 5 Solid';
   }
 
   .svg-inline--fa {
@@ -225,7 +224,8 @@ body {
   flex-direction: row;
   justify-content: flex-start;
 
-  &.to-right, &.center {
+  &.to-right,
+  &.center {
     flex-direction: row-reverse;
   }
 
@@ -446,8 +446,8 @@ body {
     }
 
     .checkbox {
-        display: inline-block;
-        margin-right: 15px;
+      display: inline-block;
+      margin-right: 15px;
     }
   }
 
@@ -461,11 +461,10 @@ body {
     box-shadow: 0px 0px 0px 0px transparent;
     border: 2px solid #c2c2c2;
 
-
     &:after,
     &:before {
       $t: 7px;
-      content: "";
+      content: '';
       position: absolute;
       top: calc(#{$t} * -1);
       right: 10px;
@@ -562,8 +561,7 @@ body {
   bottom: 0;
   background: $wrapper-background;
   z-index: 1;
-  font-family: "Source Sans Pro", sans-serif;
-  overflow-y: scroll;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 // use this inside container divs to standardize the max-width and maintain grid structures
@@ -605,7 +603,7 @@ body {
       &:after {
         width: 3px;
         height: 35px;
-        content: "";
+        content: '';
         right: 0;
         top: 0;
         bottom: 0;
@@ -647,7 +645,6 @@ body {
   padding: 20px 20px 0px;
   // height: calc(100vh - #{$topbarHeight}); // calculates the height of the content div, adjust to add things like a footer
   box-sizing: border-box;
-  overflow-y: scroll;
 
   & > .inner {
     padding-bottom: 20px; // fixes bug in firefox where scrolling would clip the bottom of the content div

@@ -3,13 +3,14 @@
 
 $footer-height: 250px;
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
-.dropdown{
+.dropdown {
   @include vert-center;
 }
 
@@ -38,7 +39,6 @@ html, body {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  min-width: 100vw;
   justify-content: space-between;
   padding: 0px 0px 0px 20px;
   background: white;
@@ -156,9 +156,8 @@ html, body {
 
 .inner-content {
   flex: 1 0 auto;
-  min-width: 100vw;
   margin-top: 0;
-  
+
   .content-switch {
     margin-top: 20px;
     margin-left: 20px;
@@ -179,7 +178,7 @@ html, body {
   }
 }
 
-@media(max-width: 1370px) {
+@media (max-width: 1370px) {
   .filter-options-button {
     display: block !important;
   }
