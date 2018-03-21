@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs/Subject';
-import { SuggestionService } from '../../../../suggestion/services/suggestion.service';
+import { SuggestionService } from '../../../suggestion/services/suggestion.service';
 import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -11,19 +11,20 @@ import {
   SimpleChanges,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnChanges
 } from '@angular/core';
 import { MappingsFilterService } from '../../../../../core/mappings-filter.service';
 import { ModalService } from '../../../../../shared/modals';
 
 
 @Component({
-  selector: 'onion-learning-outcome-component',
-  templateUrl: 'learning-outcome.component.html',
-  styleUrls: ['./learning-outcome.component.scss'],
+  selector: 'onion-outcome-component',
+  templateUrl: 'outcome.component.html',
+  styleUrls: ['./outcome.component.scss'],
   providers: [SuggestionService]
 })
-export class LearningObjectOutcomeComponent implements OnInit, OnDestroy {
+export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() outcome;
   @Input('index') i;
   @Input() submitted: number;
@@ -42,11 +43,14 @@ export class LearningObjectOutcomeComponent implements OnInit, OnDestroy {
 
   constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
 
-  ngOnInit() {
-    console.log(this.outcome);
+  setupView() {
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
     this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
+    this.suggestionService.udpateMappings(this.outcome._mappings);
+  }
+  ngOnInit() {
+    console.log(this.outcome);
     this.bloomLevels = levels;
     this.testquizstrategies = quizzes;
     this.classassessmentstrategies = assessments;
@@ -61,6 +65,11 @@ export class LearningObjectOutcomeComponent implements OnInit, OnDestroy {
 
     // TODO make sure this system handles editing objects that already have outcomes mapped
     this.suggestionService.udpateMappings(this.outcome._mappings);
+    this.setupView();
+  }
+
+  ngOnChanges() {
+    this.setupView();
   }
 
   sortVerbs() {
