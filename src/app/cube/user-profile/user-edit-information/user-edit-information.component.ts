@@ -33,7 +33,11 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
 
   sub: Subscription; // open subscription to close
 
-  constructor(private userService: UserService, private noteService: NotificationService, private auth: AuthService) { }
+  constructor(
+    private userService: UserService,
+    private noteService: NotificationService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {}
 
@@ -47,22 +51,36 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
       };
     }
   }
-
-  save() {
-    const concatInfo: UserEdit = {
-      name: `${this.editInfo.firstname} ${this.editInfo.lastname}`,
-      email: this.editInfo.email,
-      organization: this.editInfo.organization
+  /**
+   * Saves User's information edits
+   *
+   * @private
+   * @memberof UserEditInformationComponent
+   */
+  private async save() {
+    const edits: UserEdit = {
+      name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
+      email: this.editInfo.email.trim(),
+      organization: this.editInfo.organization.trim()
     };
-
-    this.userService.editUserInfo(concatInfo).then(val => {
-      this.auth.validate().then(() => {
-        this.close.emit(true);
-        this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
-      });
-    }, error => {
-      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
-    });
+    try {
+      await this.userService.editUserInfo(edits);
+      await this.auth.validate();
+      this.close.emit(true);
+      this.noteService.notify(
+        'Success!',
+        "We've updated your user information!",
+        'good',
+        'far fa-check'
+      );
+    } catch (e) {
+      this.noteService.notify(
+        'Error!',
+        "We couldn't update your user information!",
+        'bad',
+        'far fa-times'
+      );
+    }
   }
 }
 

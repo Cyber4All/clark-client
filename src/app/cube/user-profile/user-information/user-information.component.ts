@@ -67,10 +67,15 @@ export class UserInformationComponent implements OnInit, OnChanges {
               .map(l => LearningObject.instantiate(l));
       });
   }
-
+  /**
+   * Sends email verification email
+   *
+   * @memberof UserInformationComponent
+   */
   public async sendEmailVerification() {
     try {
       await this.auth.sendEmailVerification(this.user.email).toPromise();
+      await this.auth.validate();
       this.notifications.notify(
         `Email sent to ${this.user.email}`,
         `Please check your inbox and spam.`,
