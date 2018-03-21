@@ -23,9 +23,6 @@ export class SidebarComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.store.state.subscribe(state => {
       this.activeIndex = state.section;
-      if (this.activeIndex > this.outcomeCount) {
-        this.uploadMaterials();
-      }
     });
   }
 

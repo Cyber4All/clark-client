@@ -238,7 +238,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (newOutcome.verb === 'Define') {
       newOutcome.verb = 'Choose';
     }
-    // FIXME: this.advanceSection();
+    this.advanceSection();
     return newOutcome;
   }
 

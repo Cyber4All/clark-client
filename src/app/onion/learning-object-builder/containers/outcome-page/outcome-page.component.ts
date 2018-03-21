@@ -10,7 +10,6 @@ export class LearningObjectOutcomePageComponent implements OnChanges, OnInit {
   @Input() learningObject;
   @Input() submitted;
   @Input() outcomeIndex;
-  @Output() newOutcomeRequest = new EventEmitter<string>();
   @Output() deleteOutcomeRequest = new EventEmitter<number>();
 
   activeOutcome;
@@ -23,10 +22,6 @@ export class LearningObjectOutcomePageComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes) {
     this.activeOutcome = this.learningObject.outcomes[this.outcomeIndex];
-  }
-
-  newOutcome() {
-    this.newOutcomeRequest.next('NEW_OUTCOME');
   }
 
   deleteOutcome() {
