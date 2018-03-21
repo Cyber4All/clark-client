@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { LearningObjectStoreService } from '../../store';
 
 @Component({
   selector: 'onion-sidebar',
@@ -13,16 +14,28 @@ export class SidebarComponent implements OnInit, OnChanges {
 
   links = ['Metadata'];
 
-  activeIndex = 0;
+  activeIndex;
   constructor(
     private router: Router,
+    private store: LearningObjectStoreService
   ) { }
 
   ngOnInit() {
-    console.log(this.outcomeCount);
+    this.store.state.subscribe(state => {
+      this.activeIndex = state.section;
+      if (this.activeIndex > this.outcomeCount) {
+        this.uploadMaterials();
+      }
+    });
   }
 
   ngOnChanges(changes) {
+    if (changes.outcomeCount) {
+      this.buildMenu(changes);
+    }
+  }
+
+  buildMenu(changes) {
     const outcomes = [];
     if (changes.outcomeCount.previousValue < changes.outcomeCount.currentValue) {
       for (let i = changes.outcomeCount.previousValue; i < this.outcomeCount; i++) {
@@ -38,8 +51,12 @@ export class SidebarComponent implements OnInit, OnChanges {
   }
 
   navigate(i) {
-    this.activeIndex = i;
-    this.nav.next(i);
+    this.store.dispatch({
+      type: 'NAVIGATE',
+      request: {
+        sectionIndex: i
+      }
+    });
   }
 
   uploadMaterials() {

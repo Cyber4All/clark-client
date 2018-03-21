@@ -29,7 +29,7 @@ export class LearningObjectOutcomePageComponent implements OnChanges, OnInit {
     this.newOutcomeRequest.next('NEW_OUTCOME');
   }
 
-  deleteOutcome(index) {
-    this.deleteOutcomeRequest.next(index);
+  deleteOutcome() {
+    this.deleteOutcomeRequest.next(this.outcomeIndex);
   }
 }

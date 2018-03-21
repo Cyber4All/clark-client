@@ -12,14 +12,18 @@ import {
   instructions
 } from '@cyber4all/clark-taxonomy';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { LearningObjectStoreService } from './store';
+
 enum PAGES {
   INFO,
   OUTCOMES
 }
+
 @Component({
   selector: 'onion-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
-  styleUrls: ['./learning-object-builder.component.scss']
+  styleUrls: ['./learning-object-builder.component.scss'],
+  providers: [LearningObjectStoreService]
 })
 export class LearningObjectBuilderComponent implements OnInit {
   public PAGES = PAGES;
@@ -46,13 +50,22 @@ export class LearningObjectBuilderComponent implements OnInit {
     private router: Router,
     private service: LearningObjectService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private store: LearningObjectStoreService
   ) {}
 
   ngOnInit() {
     this.learningObject.addGoal('');
-    console.log(this.learningObject.level, this.learningObject.length);
     this.getRouteParams();
+    this.store.dispatch({
+      type: 'INIT',
+      request: {
+        initialSection: 0
+      }
+    });
+    this.store.state.subscribe(state => {
+      this.changePage(state.section);
+    });
   }
   /**
    * Grabs parameters in route (Learning Object's ID)
@@ -82,6 +95,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       .getLearningObject(this.learningObjectName)
       .then(learningObject => {
         this.learningObject = learningObject;
+        console.log(this.learningObject);
       })
       .catch(err => {
         this.isNew = true;
@@ -224,6 +238,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (newOutcome.verb === 'Define') {
       newOutcome.verb = 'Choose';
     }
+    // FIXME: this.advanceSection();
     return newOutcome;
   }
 
@@ -237,7 +252,14 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   deleteOutcome(index: number): void {
+    console.log(index);
     this.learningObject.removeOutcome(index);
+    this.store.dispatch({
+      type: 'NAVIGATE',
+      request: {
+        sectionModifier: -1
+      }
+    });
   }
   /**
    * Deletes InstructionalStrategy from LearningObject's LearningOutcomes
@@ -315,5 +337,14 @@ export class LearningObjectBuilderComponent implements OnInit {
       this.activePage = PAGES.OUTCOMES;
       this.outcomeIndex = page - 1;
     }
+  }
+
+  advanceSection() {
+    this.store.dispatch({
+      type: 'NAVIGATE',
+      request: {
+        sectionModifier: 1
+      }
+    });
   }
 }
