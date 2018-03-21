@@ -1,0 +1,44 @@
+@import '~_globals.scss';
+
+.wrapper {
+    position: relative;
+    z-index: 4;
+    padding: 10px;
+    background: $blue-accent;
+    color: white;
+
+    .inner-wrapper {
+        max-width: $max-width;
+        margin: auto;
+        text-align: center;
+        font-size: 18px;
+        font-weight: normal;
+
+        .icon {
+            padding: 5px;
+            margin-left: 20px;
+            cursor: pointer;
+            transform: scale(1);
+            transition: all 0.2s ease;
+
+            .svg-inline--fa {
+                @include vert-center;
+            }
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    // styles
+    &.bad {
+        background: $error-red;
+        color: white;
+    }
+
+    &.good {
+        background: $green;
+        color: white;
+    }
+}
