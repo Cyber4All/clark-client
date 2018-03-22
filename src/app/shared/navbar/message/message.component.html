@@ -1,6 +1,6 @@
 <div class="wrapper bad" *ngIf="showing">
   <div class="inner-wrapper">
-    <span>System is currently under maintenance! Please excuse any disruptions!</span>
+    <span>{{ message.message }}</span>
     <span class="icon" (click)="close()">
       <i class="far fa-times"></i>
     </span>

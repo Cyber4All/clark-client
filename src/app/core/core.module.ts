@@ -12,6 +12,7 @@ import { CheckBoxModule } from 'clark-checkbox';
 import { NotificationModule } from '../shared/notifications';
 import { ModalModule } from '../shared/modals';
 import { UserService } from './user.service';
+import { MessagesService } from './messages.service';
 import { RavenErrorHandler } from './error-handler';
 
 @NgModule({
@@ -31,7 +32,8 @@ export class CoreModule {
         AuthService,
         CartV2Service,
         UserService,
-        OutcomeService
+        OutcomeService,
+        MessagesService
       ]
     };
   }

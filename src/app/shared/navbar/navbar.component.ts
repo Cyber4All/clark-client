@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { NotificationModule } from '../notifications';
 import { CheckBoxModule } from 'clark-checkbox';
 import { AuthService } from '../../core/auth.service';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'clark-navbar',
@@ -22,6 +23,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
 
   constructor(private modalCtrl: ModalService, private router: Router,
     private route: ActivatedRoute, private authService: AuthService, private cartService: CartV2Service) {
+      router.events.filter(e => e instanceof NavigationEnd).subscribe(e => {
+        // scroll to top of page when any router event is fired
+        window.scrollTo(0, 0);
+      });
     }
 
   ngOnInit() {
