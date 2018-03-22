@@ -12,6 +12,7 @@ import {
   instructions
 } from '@cyber4all/clark-taxonomy';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'onion-learning-object-builder',
@@ -40,12 +41,13 @@ export class LearningObjectBuilderComponent implements OnInit {
     private router: Router,
     private service: LearningObjectService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
     this.learningObject.addGoal('');
-    console.log(this.learningObject.level, this.learningObject.length);
+    
     this.getRouteParams();
   }
   /**
@@ -80,12 +82,6 @@ export class LearningObjectBuilderComponent implements OnInit {
       .catch(err => {
         this.isNew = true;
       });
-  }
-
-  parseFromContextMenu(msg) {
-    if (msg === 'logout') {
-      this.modalService.action.emit('logout');
-    }
   }
 
   /**
@@ -165,30 +161,62 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   private async showPublishingDialog() {
+    
+    let text = this.auth.user.emailVerified ? '' : 'You must have a verfied email address to publish learning objects! Would you like to verfiy your email now?';
+    let buttons = [
+      new ModalListElement(
+        'Save for later<i class="far fa-undo-alt "></i>',
+        'reject',
+        'neutral on-white'
+      )
+    ];
+
+    if (this.auth.user.emailVerified) {
+      buttons.unshift(
+        new ModalListElement(
+          'Save & Publish!<i class="far fa-check-circle"></i>',
+          'accept',
+          'good'
+        ),
+      );
+    } else {
+      buttons.unshift(
+        new ModalListElement(
+          'Verify your email!<i class="far fa-at"></i>',
+          'verify-email',
+          'good'
+        ),
+      );
+    }
+
     let publish = await this.modalService
       .makeDialogMenu(
         'PublishConfirmation',
         'Publish changes?',
-        '',
+        text,
         'title-good',
         'center',
-        [
-          new ModalListElement(
-            'Save & Publish!<i class="far fa-check-circle"></i>',
-            'accept',
-            'good'
-          ),
-          new ModalListElement(
-            'Save for later<i class="far fa-undo-alt "></i>',
-            'reject',
-            'neutral on-white'
-          )
-        ]
+        buttons
       )
       .toPromise();
-    publish === 'accept'
-      ? this.learningObject.publish()
-      : this.learningObject.unpublish();
+    if (publish === 'verify-email') {
+      try {
+        await this.auth.sendEmailVerification(this.auth.email).toPromise();
+        await this.auth.validate();
+        this.notificationService.notify(
+          'Done!',
+          `An email was sent to ${this.auth.email}`,
+          'good',
+          'far fa-check'
+        );
+      } catch (e) {
+        this.notificationService.notify(`Could not send email`, `${e}`, 'bad', '');
+      }
+    } else {
+      publish === 'accept'
+        ? this.learningObject.publish()
+        : this.learningObject.unpublish();
+    }
   }
 
   toggleLevel(level: AcademicLevel) {

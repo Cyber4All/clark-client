@@ -43,9 +43,9 @@ export class SuggestionComponent implements OnInit, OnChanges {
     this.standardAppear = false;
     this.connection = this.loader.observe().subscribe(data => {
       this.standardOutcomes = data as Array<StandardOutcome>;
-      console.log(this.standardOutcomes);
+      
       this.pageCount = this.loader.mappings.total;
-      console.log('pageCount', this.pageCount);
+      
     });
     this.loader.emit(this.outcome, this.filter);
   }

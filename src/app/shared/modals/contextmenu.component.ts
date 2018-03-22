@@ -71,7 +71,7 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
         const scrolled = this.content.inFlow ? document.documentElement.scrollTop : 0;
 
         if (pos) {
-            console.log(scrolled);
+            
             this.assignCoords(pos.x, pos.y, scrolled);
         } else if (el) {
             const offsetConst = 15;

@@ -127,7 +127,7 @@ export class CartV2Service {
         },
         err => console.log, 
         () => {
-          console.log('Downloaded');
+          
         }
       );
   }
@@ -153,7 +153,7 @@ export class CartV2Service {
         },
         err => console.log,
         () => {
-          console.log('Downloaded');
+          
         }
       );
   }

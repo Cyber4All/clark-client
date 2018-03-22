@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LearningObjectBuilderComponent } from './learning-object-builder/learning-object-builder.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
+import { UserVerifiedGuard } from '../core/user-verified.guard';
 import { OnionComponent } from './onion.component';
 import { DashboardResolver } from './dashboard/dashboard.resolver';
 
@@ -22,7 +23,7 @@ const onion_routes: Routes = [
       { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard] },
       // Load Neutrino module
       // TODO: content should redirect, only show child routes
-      { path: 'content', loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule' },
+      { path: 'content', loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule', canActivate: [UserVerifiedGuard] },
 
       // else redirect to DashboardComponent
       { path: '**', redirectTo: 'dashboard' }

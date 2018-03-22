@@ -27,7 +27,7 @@ export class CartComponent implements OnInit {
     try {
       this.cartItems = await this.cartService.getCart();
     } catch (e) {
-      console.log('not logged in!', e);
+      
     }
   }
 
@@ -41,7 +41,7 @@ export class CartComponent implements OnInit {
     if (await this.cartService.clearCart()) {
       this.cartItems = [];
     } else {
-      console.log('not logged in!');
+      
     }
   }
 
@@ -55,7 +55,7 @@ export class CartComponent implements OnInit {
         learningObjectName
       );
     } catch (e) {
-      console.log('not logged in!', e);
+      
     }
   }
 

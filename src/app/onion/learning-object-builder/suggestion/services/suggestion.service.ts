@@ -88,7 +88,7 @@ export class SuggestionService {
   }
 
   addMapping(s): boolean {
-    console.log('trying', this.mappedStandards);
+    
     // Filter the array so that any outcomes with ide
     if (
       this.mappedStandards.filter(outcome => {
@@ -99,11 +99,11 @@ export class SuggestionService {
       this.mappedStandards.push(s);
       this.mappedSubject.next(this.mappedStandards);
 
-      console.log('succeeded', this.mappedStandards);
+      
       return true;
     }
 
-    console.log('failed', this.mappedStandards);
+    
     return false;
   }
 

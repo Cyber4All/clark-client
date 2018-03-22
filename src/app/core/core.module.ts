@@ -2,6 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 
 import { AuthGuard } from './auth-guard.service';
+import { UserVerifiedGuard } from './user-verified.guard';
 import { AuthService } from './auth.service';
 
 import { CartV2Service } from './cartv2.service';
@@ -16,7 +17,7 @@ import { RavenErrorHandler } from './error-handler';
 
 @NgModule({
   imports: [
-    CookieModule.forRoot(),
+  CookieModule.forRoot(),
     ModalModule.forRoot(),
     NotificationModule.forRoot()
   ],
@@ -31,7 +32,8 @@ export class CoreModule {
         AuthService,
         CartV2Service,
         UserService,
-        OutcomeService
+        OutcomeService,
+        UserVerifiedGuard
       ]
     };
   }

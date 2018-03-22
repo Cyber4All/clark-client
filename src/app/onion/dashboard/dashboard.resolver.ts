@@ -18,7 +18,7 @@ export class DashboardResolver implements Resolve<any> {
       .then(learningObjects => {
         return learningObjects;
       }).catch(err => {
-        console.log('error', err);
+        
       });
   }
 }
