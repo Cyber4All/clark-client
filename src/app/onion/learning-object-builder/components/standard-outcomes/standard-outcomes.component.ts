@@ -24,16 +24,16 @@ export class StandardOutcomesComponent implements OnInit {
     switch (tab) {
       case TABS.MAPPINGS:
         this.activeTab = tab;
-        console.log('mappings');
+        
         break;
       case TABS.SUGGESTIONS:
         this.activeTab = tab;
-        console.log('suggestions', index);
+        
         // this.suggestionLoad(index);
         break;
       case TABS.SEARCH:
         this.activeTab = tab;
-        console.log('search', index);
+        
         // this.openMappingsSearch(index);
         break;
       default:

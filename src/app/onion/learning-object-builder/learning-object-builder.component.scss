@@ -139,6 +139,10 @@ select {
 
 .btn-group.final {
   margin-top: 20px;
+
+  div:not(.button) {
+    margin-left: 15px;
+  }
 }
 
 ::ng-deep .grippy-container {

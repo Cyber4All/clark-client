@@ -26,7 +26,7 @@ export class CartService {
     constructor(private store: Store<AppState>, private http: Http) {
         // Set cart to Cart Redux Store
         this.cart$ = this.store.select(CART_STORAGE_LOCATION);
-        // ubscribe to Redux Store state
+        // subscribe to Redux Store state
         this.store.subscribe((state) => {
             sessionStorage.setItem(environment.STATE_STORAGE_LOCATION, JSON.stringify(state));
         });
@@ -80,9 +80,7 @@ export class CartService {
         this.http.get(route, { responseType: ResponseContentType.Blob })
             .subscribe((res) => {
                 importedSaveAs(res.blob(), `${Date.now()}.zip`);
-            },
-            (err) => console.log,
-            () => { console.log('Downloaded'); });
+            });
     }
 
 }

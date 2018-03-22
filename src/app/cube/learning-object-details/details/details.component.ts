@@ -191,7 +191,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   async clearCart() {
     if (await this.cartService.clearCart()) {
     } else {
-      console.log('not logged in!');
+      
     }
   }
 

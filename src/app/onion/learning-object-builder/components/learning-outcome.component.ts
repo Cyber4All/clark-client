@@ -168,7 +168,7 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   // addMappings(e) {
   //   this.openSearch = false;
   //   for (const m of e) {
-  //     console.log(m);
+  //     
   //     this.suggestionService.addMapping(m);
   //   }
   // }

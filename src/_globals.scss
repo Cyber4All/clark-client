@@ -217,6 +217,13 @@ body {
     background: $green;
     border-color: $green;
   }
+
+  &.disabled {
+    opacity: 0.6;
+    box-shadow: none;
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 ::ng-deep .btn-group {
@@ -407,6 +414,7 @@ body {
   right: 0;
   margin: auto;
   z-index: calc(#{$popup-z - 1});
+  display: flex;
 }
 
 ::ng-deep .popup {
@@ -493,34 +501,32 @@ body {
   // small popups (IE delete confirms) usually with action buttons
   &.dialog {
     max-width: 500px;
-    max-height: 150px;
-    padding: 20px;
+    min-width: 300px;
+    padding: 20px 40px;
     border-radius: 4px;
     margin: auto;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    position: fixed;
+    position: relative;
 
     .title-text {
       color: $blue-accent;
       font-size: 20px;
       text-align: center;
       font-weight: bold;
+      margin-bottom: 10px;
     }
 
     .text {
       color: $dark-text;
       text-align: center;
+      margin: 25px auto;
+      font-size: 16px;
     }
 
     .btn-group {
-      margin-top: 20px;
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      left: 20px;
     }
 
     &.title-bad .title-text {

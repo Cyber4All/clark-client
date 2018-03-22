@@ -38,6 +38,7 @@ export class NotificationComponent implements OnChanges, AfterViewChecked {
 
     ngAfterViewChecked() {
         if (this.changed) {
+            this.changed = false;
             if (this.toRender.length > 1) {
                 for (let i = 0; i < this.toRender.length - 1; i++) {
                     this.toRender[i]['bottom'] +=
@@ -46,19 +47,48 @@ export class NotificationComponent implements OnChanges, AfterViewChecked {
             }
 
             setTimeout(() => {
-                this.toRender[this.toRender.length - 1]['show'] = true;
-                this.toRender[this.toRender.length - 1]['bottom'] = 20;
+                let notVisible = this.toRender.filter((x, index) => {
+                    if (!x['show'] && !x['dead']) {
+                        x['index'] = index;
+                        return true;
+                    }
+                    return false;
+                });
+                for (let i = 0; i < notVisible.length; i++) {
+                    
+                    const e = notVisible[i];
+                    // calculate bottom postion for each element
+                    const below = notVisible.length > 1 ? notVisible.slice(i + 1)
+                        .map(n => this.el.nativeElement.children[n['index']].offsetHeight + this.spaceBetween + 20)
+                        .reduce((x, y) => x + y) : 20;
+                    this.show(e, below, i * 200);
+                }
             }, 200);
 
-            this.close(this.toRender.length - 1);
-            this.changed = false;
         }
     }
 
-    close(index) {
+    show(el, below, timeout = 200, close = true) {
+        
+        
         setTimeout(() => {
-            this.toRender[index]['show'] = false;
-            this.toRender[index]['left'] = '-80px';
+            // set params
+            el['show'] = true;
+            el['bottom'] = below;
+
+            // if close param true, start close timer
+            if (close) {
+                this.close(el);
+            }
+        }, timeout);
+    }
+
+    close(el, duration = 4200) {
+        
+        setTimeout(() => {
+            el['show'] = false;
+            el['left'] = '-80px';
+            el['dead'] = true;
             this.closed++;
 
             setTimeout(() => {
@@ -67,9 +97,9 @@ export class NotificationComponent implements OnChanges, AfterViewChecked {
                     this.closed = this.open = 0;
                     this.toRender = [];
                     this.service.content = {};
-                    console.log('doin it', this.toRender);
+                    
                 }
             }, 200);
-        }, 4200);
+        }, duration);
     }
 }
