@@ -17,4 +17,4 @@ jobs:
             - ./node_modules
       - run:
           name: Build Application
-          command: ng build --prod --aot=false
+          command: yarn ng -- build --prod --aot=false --no-progress
