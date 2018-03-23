@@ -2,7 +2,19 @@ version: 2
 jobs:
   build:
     docker:
-      - image: 'circleci/node:8.10'
+      - image: 'circleci/node:8.10.0'
     steps:
       - checkout
-      - run: echo "Hello World"
+      - restore_cache:
+          key: 'dependency-cache-{{ checksum "package.json" }}'
+      - dependencies:
+          name: Install Dependencies
+          command: npm install
+      - save_cache:
+          key: 'dependency-cache-{{ checksum "package.json" }}'
+          paths:
+            - ~/.cache/npm
+            - ./node_modules
+      - build:
+          name: Build Application
+          command: ng build --prod --aot=false
