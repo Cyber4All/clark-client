@@ -18,3 +18,40 @@ jobs:
       - run:
           name: Build Application
           command: yarn ng build --prod --aot=false
+  test:
+    docker:
+      - image: 'circleci/node:8.10.0'
+    steps:
+      - checkout
+      - run: echo 'We need tests'
+  deploy:
+    docker:
+      - image: 'circleci/node:8.10.0'
+    steps:
+      - checkout
+      - run: echo 'This will deploy'
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build
+      - test
+  build-test-and-deploy:
+    jobs:
+      - build: null
+        filters:
+          tags:
+            only: /^v.*/
+      - test: null
+        requires:
+          - build
+        filters:
+          tags:
+            only: /^v.*/
+      - deploy:
+          requires:
+            - build
+            - test
+          filters:
+            tags:
+              only: /^v.*/
