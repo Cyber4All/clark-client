@@ -26,7 +26,7 @@ jobs:
       - run: echo 'We need tests'
   deploy:
     docker:
-      - image: 'governmentpaas/awscli'
+      - image: 'wilson208/circleci-awscli'
     steps:
       - checkout
       - run: 
