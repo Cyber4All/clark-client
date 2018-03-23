@@ -7,7 +7,7 @@ jobs:
       - checkout
       - restore_cache:
           key: 'dependency-cache-{{ checksum "package.json" }}'
-      - dependencies:
+      - run:
           name: Install Dependencies
           command: npm install
       - save_cache:
@@ -15,6 +15,6 @@ jobs:
           paths:
             - ~/.cache/npm
             - ./node_modules
-      - build:
+      - run:
           name: Build Application
           command: ng build --prod --aot=false
