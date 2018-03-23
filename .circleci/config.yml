@@ -40,10 +40,19 @@ workflows:
             - build
   build-test-and-deploy:
     jobs:
-      - build
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
       - test:
           requires:
             - build
+          filters:
+            tags:
+              only: /^v.*/
       - deploy:
           requires:
             - test
+          filters:
+            tags:
+              only: /^v.*/
