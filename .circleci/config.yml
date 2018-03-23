@@ -26,10 +26,15 @@ jobs:
       - run: echo 'We need tests'
   deploy:
     docker:
-      - image: 'circleci/node:8.10.0'
+      - image: 'governmentpaas/awscli'
     steps:
       - checkout
-      - run: echo 'This will deploy'
+      - run: 
+          name: Invalidate index.html in CloudFront
+          command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
+      - run:
+          name: Deploy to S3 
+          command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
 workflows:
   version: 2
   build-and-test:
