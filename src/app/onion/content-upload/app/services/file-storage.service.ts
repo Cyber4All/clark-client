@@ -83,6 +83,5 @@ export class FileStorageService {
       .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise()
       .then(success => success.json())
-      .catch(error => console.log);
   }
 }
