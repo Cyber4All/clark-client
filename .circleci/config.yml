@@ -1,5 +1,5 @@
 defaults: &defaults
-  working_directory: /tmp
+  working_directory: ~/clark-client
   docker:
     - image: circleci/node:8.10.0
 
@@ -29,7 +29,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace : 
-          at: /tmp/dist
+          at: ~/clark-client/dist
       - run: echo 'We need tests'
   deploy:
     <<: *defaults
@@ -37,7 +37,7 @@ jobs:
       - image: 'wilson208/circleci-awscli'
     steps:
       - attach_workspace : 
-          at: /tmp/dist
+          at: ~/clark-client/dist
       - run: 
           name: Invalidate index.html in CloudFront
           command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
