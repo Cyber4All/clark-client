@@ -38,3 +38,13 @@ workflows:
       - test:
           requires:
             - build
+  build-test-and-deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test
