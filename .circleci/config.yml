@@ -57,22 +57,16 @@ workflows:
       - build:
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^v[0-9]+(\.[0-9]+)*.*/
+              only: /master/
       - test:
           requires:
             - build
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^v[0-9]+(\.[0-9]+)*.*/
+              only: /master/
       - deploy:
           requires:
             - test
           filters:
             branches:
-              ignore: /.*/
-            tags:
-              only: /^v[0-9]+(\.[0-9]+)*.*/
+              only: /master/
