@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/clark-client
   docker:
-    - image: circleci/node:8.10.0
+    - image: cyber4all/circleci-aws:latest
 
 version: 2
 jobs:
@@ -33,8 +33,6 @@ jobs:
       - run: echo 'We need tests'
   deploy:
     <<: *defaults
-    docker:
-      - image: 'wilson208/circleci-awscli'
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
