@@ -1,4 +1,5 @@
-@import '~_globals.scss';
+@import '~_vars.scss';
+
 .inner-wrapper {
   border-radius: 4px;
   background: white;
@@ -98,6 +99,10 @@ button[disabled] {
 
 .btn-group.final {
   margin-top: 20px;
+
+  div:not(.button) {
+    margin-left: 15px;
+  }
 }
 
 ::ng-deep .grippy-container {

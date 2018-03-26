@@ -167,7 +167,7 @@ export class LearningObjectService {
       this.auth.user.username,
       names
     );
-    console.log(route);
+    
     return this.http
       .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise();

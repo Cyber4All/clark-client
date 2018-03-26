@@ -75,8 +75,8 @@ export class RegisterComponent implements OnInit {
     let u = new User(
       this.regInfo.username,
       `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
-      this.regInfo.email,
-      this.regInfo.organization,
+      this.regInfo.email.trim(),
+      this.regInfo.organization.trim(),
       this.regInfo.password
     );
 

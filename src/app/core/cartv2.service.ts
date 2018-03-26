@@ -125,10 +125,8 @@ export class CartV2Service {
         res => {
           importedSaveAs(res.blob(), `${Date.now()}.zip`);
         },
-        err => console.log, 
-        () => {
-          console.log('Downloaded');
-        }
+        err => err,
+        () => {}
       );
   }
 
@@ -151,10 +149,17 @@ export class CartV2Service {
         res => {
           importedSaveAs(res.blob(), `${Date.now()}.zip`);
         },
-        err => console.log,
-        () => {
-          console.log('Downloaded');
-        }
+        err => err,
+        () => {}
       );
+  }
+
+  has(object: LearningObject): boolean {
+    return (
+      this.cartItems.filter(
+        o =>
+          o.name === object.name && o.author.username === object.author.username
+      ).length > 0
+    );
   }
 }

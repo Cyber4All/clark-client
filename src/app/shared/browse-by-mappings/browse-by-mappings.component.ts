@@ -7,7 +7,7 @@ import 'rxjs/add/operator/debounceTime';
 
 // RXJS
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs/Observable';
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 
 
@@ -22,6 +22,8 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   @Input('source') source: string;
   // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
   @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
+  // boolean value that dictates whether this component should remain in the document flow or not (IE if this is in a modal, inflow should be false)
+  @Input('inflow') inflow: boolean;
 
   // Outputs
   @Output('done') done = new EventEmitter<boolean>();
@@ -31,13 +33,12 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   sources = [
     'CAE Cyber Defense',
     'CAE Cyber Ops',
-    'CCECC IT2014',
     'CS2013',
-    'Military Academy',
     'NCWF',
     'NCWF KSAs',
     'NCWF Tasks',
-    'CSEC'];
+    'CSEC'
+  ];
 
   mappingsQueryInProgress = false;
 
@@ -63,6 +64,12 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
       this.getOutcomes().then(() => {
         this.mappingsQueryInProgress = false;
       });
+    }
+
+    // if this.inflow === undefined, set it to true, else leave it alone
+    console.log('inflow', this.inflow);
+    if (this.inflow == undefined) {
+      this.inflow = true;
     }
   }
 
@@ -114,6 +121,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
       'SourceContextMenu',
       'dropdown',
       this.sources.map(s => new ModalListElement(s, s, (s === this.mappingService.author) ? 'active' : undefined)),
+      this.inflow,
       null,
       new Position(
         this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),

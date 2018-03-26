@@ -1,5 +1,16 @@
-@import '~_globals.scss';
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import '~_vars.scss';
+
+.version.topbar {
+
+  .version-label {
+    opacity: 1;
+  }
+
+  .logo {
+    padding-left: 30px;
+  }
+}
+
 .dropdown {
   @include vert-center;
 }
@@ -24,13 +35,16 @@
 .user {
   display: flex;
   flex-direction: row;
+
   .left {
     display: flex;
     flex-direction: row !important;
-    &>* {
+
+    & > * {
       @include vert-center;
     }
   }
+  
   .shopping-cart-container {
     outline: none;
     margin-left: 20px;
@@ -41,6 +55,7 @@
 .inner {
   max-width: 100vw;
   margin-top: 0;
+
   .content-switch {
     margin-top: 20px;
     margin-left: 20px;
@@ -74,13 +89,14 @@
   padding-top: 1px;
 }
 
-.login,
-.register {
+.login, .register {
   flex-direction: row !important;
   padding: 0px 15px;
+
   &:not(:last-child) {
     border-right: 1px solid $placeholder;
   }
+
   .svg-inline--fa {
     margin-left: 10px;
     @include vert-center;
@@ -89,4 +105,21 @@
 
 .logo-link {
   cursor: pointer;
+}
+
+.version-label {
+  background: linear-gradient(40deg, darken($error-red, 10), $error-red);
+  color: white;
+  padding: 5px 10px;
+  font-size: 16px;
+  width: 200px;
+  text-align: center;
+  position: absolute;
+  z-index: 4;
+  transform: rotate(-45deg);
+  left: -75px;
+  top: 8px;
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+  opacity: 0;
 }

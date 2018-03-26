@@ -19,6 +19,7 @@ import { CookieModule } from 'ngx-cookie';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ModalModule } from './modals';
 import { FormsModule } from '@angular/forms';
+import { MessageComponent } from './navbar/message/message.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -40,7 +41,8 @@ import { FormsModule } from '@angular/forms';
   providers: [ ],
   declarations: [
     BrowseByMappingsComponent,
-    NavbarComponent
+    NavbarComponent,
+    MessageComponent
   ],
   exports: [
     BrowseByMappingsComponent,

@@ -141,10 +141,11 @@ export class LearningObjectListingComponent implements OnInit {
             'retina_detect': true
         };
 
-        console.log(this.owned);
+        
     }
 
     get goals() {
+        const punc = ['.', '!', '?'];
         // convert goals to an array of strings containing the goal text
         let goalsArray = this.learningObject.goals.map(g => g.text);
 
@@ -159,7 +160,36 @@ export class LearningObjectListingComponent implements OnInit {
         // join all of the formatted goals with a comma and a space and convert to lower case;
         const goalsString = goalsArray.join(', ').toLowerCase();
         // return newly formatted string with the first character capitalized and a period at the end
-        return goalsString.charAt(0).toUpperCase() + goalsString.substring(1) + '.';
+        let final = this.truncateText(goalsString.charAt(0).toUpperCase() + goalsString.substring(1), 236);
+        
+        if (punc.includes(final.charAt(final.length - 1))) {
+            return final;
+        } else {
+            return final + '.';
+        }
+    }
+
+    // truncates and appends an ellipsis to block of text based on maximum number of characters
+    truncateText(text: string, max: number = 150, margin: number = 10): string {
+        let outcome = text.substring(0, max);
+        const spaceAfter = text.substring(max).indexOf(' ') + outcome.length;
+        const spaceBefore = outcome.lastIndexOf(' ');
+        const punc = ['.', '!', '?'];
+
+        if (punc.includes(outcome.charAt(outcome.length - 1))) {
+            return outcome;
+        } else if (outcome.charAt(outcome.length - 1) === ' ') {
+            return outcome.substring(0, outcome.length - 1) + '...';
+        }
+
+        // otherwise we're in the middle of a word and should attempt to finsih the word before adding an ellpises
+        if (spaceAfter - outcome.length - 1 <= margin) {
+        outcome = text.substring(0, spaceAfter);
+        } else {
+        outcome = text.substring(0, spaceBefore);
+        }
+
+        return outcome.trim() + '...';
     }
 
     get date() {

@@ -156,7 +156,3 @@ export class AuthService {
     return user;
   }
 }
-
-//${environment.apiURL}/users/${username}/learning-objects/${learningObjectName}/files`;
-
-///email/${email}/organization/${organization}',

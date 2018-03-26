@@ -16,7 +16,7 @@ export class UserResolver implements Resolve<User> {
         return this.auth.user;
     } else {
         return this.user.getUser(route.params.username).then(val => {
-            console.log('val', val, route.params.username);
+            
             if (val) {
                 return val;
             } else {

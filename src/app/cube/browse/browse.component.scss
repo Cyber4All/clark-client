@@ -1,422 +1,427 @@
-@import "~_globals.scss";
+@import '~_vars.scss';
 
 .mappings-popup {
-    position: fixed;
-    z-index: 8;
-    background: rgba(0, 0, 0, 0.7);
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  z-index: 8;
+  background: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    .popup-content {
-        background: white;
-        max-width: 800px;
-        min-height: 650px;
-        width: 100%;        
-        padding: 20px;
-        box-sizing: border-box;
-        border-radius: 4px;
-        margin: auto;
-
-        virtual-scroll {
-            display: block;
-            width: 100%;
-            height: 400px;
-            padding: 5px;
-        }
-
-        .top {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-
-            .title {
-                color: $blue-accent;
-                font-size: 22px;
-                text-transform: uppercase;
-                font-weight: bolder;
-
-                & > div {
-                    color: $dark-text;
-                    text-transform: none;
-                    font-weight: normal;
-                    font-size: 16px;
-                }
-            }
-
-            .source {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-end;
-                align-items: center;
-
-                & > *:not(:last-child) {
-                    margin-right: 15px;
-                }
-
-                .mappings-spinner {
-
-                    .svg-inline--fa {
-                        animation: fa-spin 0.5s infinite linear;
-                    }
-                }
-            }
-
-            .button {
-                opacity: 1 !important;
-            }
-        }
-
-        .text-filter {
-            margin-bottom: 30px;
-
-            input {
-                width: 100%;
-                padding: 8px;
-                border-radius: 4px;
-                box-sizing: border-box;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                border: 1px solid $placeholder;
-                outline: 0;
-                font-size: 14px;
-
-                &:focus {
-                    border-color: $blue-accent;
-                }
-            }
-
-            .selected-mappings {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                margin: 5px 0;
-                margin-left: -5px;
-                flex-wrap: wrap;
-
-                .pill {
-                    background: $blue-accent;
-                    border-radius: 2px;
-                    font-size: 14px;
-                    color: white;
-                    padding: 3px;
-                    margin: 5px;
-                    cursor: pointer;
-
-                    .svg-inline--fa {
-                        @include vert-center;
-                        margin-left: 5px;
-                        margin-right: 5px;
-                        margin-top: 3px;
-                    }
-                }
-            }
-        }
-
-        .list {
-            margin-top: -10px;
-
-            ::ng-deep .scrollable-content {
-                display: flex;
-                flex-direction: row;
-                flex: 0 0 auto;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                padding:5px;
-            }
-
-            .map {
-                position: relative;
-                width: 47%;
-                padding: 15px;
-                box-sizing: border-box;
-                border-radius: 2px;
-                box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
-                background: white;
-                border-left: 8px solid $blue-accent;
-                margin-top: 7px;
-                margin-bottom: 7px;
-                overflow: hidden;
-
-                .mapping-top {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    color: $dark-text;
-
-                    .mapping-name {
-                        color: $blue-accent;
-                    }
-                }
-
-                .mapping-content {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-
-                    checkbox {
-                        flex: 0 0 auto;
-                        margin-left: 15px;
-                        @include vert-center;
-                    }
-                }
-            }
-
-            .none {
-                font-size: 20px;
-                opacity: 0.5;
-            }
-        }
-
-    }
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0px;
-
-    learning-object-component {
-        width: 100%;
-
-        &:not(:last-child) {
-            margin-bottom: 10px;
-        }
-    }
-}
-
-.container {
-    max-width: $max-width;
+  .popup-content {
+    background: white;
+    max-width: 800px;
+    min-height: 650px;
     width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin: auto;
 
-    .title {
-        text-transform: uppercase;
+    virtual-scroll {
+      display: block;
+      width: 100%;
+      height: 400px;
+      padding: 5px;
+    }
+
+    .top {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+
+      .title {
         color: $blue-accent;
-        font-weight: bold !important;
-        font-size: 24px !important;
+        font-size: 22px;
+        text-transform: uppercase;
+        font-weight: bolder;
+
+        & > div {
+          color: $dark-text;
+          text-transform: none;
+          font-weight: normal;
+          font-size: 16px;
+        }
+      }
+
+      .source {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
-        max-width: 850px;
+        justify-content: flex-end;
+        align-items: center;
 
-        .filtering-controls {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            .button {
-                opacity: 1;
-
-                .removeSort {
-                    display: inline-flex;
-                    flex-direction: row;
-                    height: 18px;
-                    width: 18px;
-                    background: white;
-                    border-radius: 50%;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 12px;
-                    margin-right: 10px !important;
-                    color: $error-red;
-
-                    .svg-inline--fa {
-                        margin-left: 0px !important;
-                    }
-
-                    &:hover {
-                        background: $error-red;
-                        color: white;
-                    }
-                }
-
-                &:not(:first-child) {
-                    margin-left: 10px;
-                }
-            }
-
-            .active {
-                border-color: $blue-accent !important;
-            }
+        & > *:not(:last-child) {
+          margin-right: 15px;
         }
+
+        .mappings-spinner {
+          .svg-inline--fa {
+            animation: fa-spin 0.5s infinite linear;
+          }
+        }
+      }
+
+      .button {
+        opacity: 1 !important;
+      }
     }
 
-    .subtitle {
-        color: $dark-text;
-        font-size: 16px;
-        margin-bottom: 20px;
+    .text-filter {
+      margin-bottom: 30px;
 
-        & > span {
-            font-weight: bold;
-            color: black;
+      input {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        box-sizing: border-box;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: 1px solid $placeholder;
+        outline: 0;
+        font-size: 14px;
+
+        &:focus {
+          border-color: $blue-accent;
         }
-    }
+      }
 
-    .active-filters {
-        display: inline-flex;
+      .selected-mappings {
+        display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+        margin: 5px 0;
+        margin-left: -5px;
+        flex-wrap: wrap;
 
-        .filter-active {
-            color: $blue-accent;
-            font-size: 12px;
-            padding-left: 15px;
-            cursor: pointer;
-            position: relative;
-            margin-left: 15px;
+        .pill {
+          background: $blue-accent;
+          border-radius: 2px;
+          font-size: 14px;
+          color: white;
+          padding: 3px;
+          margin: 5px;
+          cursor: pointer;
 
-            .svg-inline--fa {
-                margin-left: 10px;
-                @include vert-center;
-            }
-
-            &:hover {
-                color: $dark-text;
-            }
-
-            &:before {
-                content: '';
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: rgba(0, 0, 0, 0.2);
-                position: absolute;
-                top: 0;
-                left: -3px;
-                bottom: 0;
-                margin: auto;
-            }
+          .svg-inline--fa {
+            @include vert-center;
+            margin-left: 5px;
+            margin-right: 5px;
+            margin-top: 3px;
+          }
         }
+      }
     }
 
-    .filters {
-        $reallyDarkBlue: darken($blue-accent, 50);
-        padding: 20px;
-        box-sizing: border-box;
-        background: rgba(red($reallyDarkBlue), green($reallyDarkBlue), blue($reallyDarkBlue), 0.05);
-        max-width: 850px;
-        display: flex; 
+    .list {
+      margin-top: -10px;
+
+      ::ng-deep .scrollable-content {
+        display: flex;
         flex-direction: row;
+        flex: 0 0 auto;
         justify-content: space-between;
-        margin-bottom: 25px;
+        flex-wrap: wrap;
+        padding: 5px;
+      }
 
-        .list {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
+      .map {
+        position: relative;
+        width: 47%;
+        padding: 15px;
+        box-sizing: border-box;
+        border-radius: 2px;
+        box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+        background: white;
+        border-left: 8px solid $blue-accent;
+        margin-top: 7px;
+        margin-bottom: 7px;
+        overflow: hidden;
 
-            & > .button {
-                margin-left: 35px;
-                align-self: flex-start;
-            }
+        .mapping-top {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          color: $dark-text;
+
+          .mapping-name {
+            color: $blue-accent;
+          }
         }
 
-        .filter {
+        .mapping-content {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
 
-            &:not(:first-child) {
-                margin-left: 35px;
-            }
-
-            .filter-title {
-                font-size: 16px;
-                font-weight: bold;
-                color: $blue-accent;
-            }
-            
-            ul {
-                padding-left: 10px;
-
-                li {
-                    list-style-type: none;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    font-size: 16px;
-                    color: $dark-text;
-                    text-transform: capitalize;
-
-                    checkbox {
-                        margin-right: 10px;
-                    }
-                }
-            }
+          checkbox {
+            flex: 0 0 auto;
+            margin-left: 15px;
+            @include vert-center;
+          }
         }
+      }
 
-
-        & > .buttons {
-            align-self: flex-end;
-
-            .svg-inline--fa {
-                align-self: center;
-            }
-        }
+      .none {
+        font-size: 20px;
+        opacity: 0.5;
+      }
     }
-    
-    .content {
-        height: auto !important;
-        overflow-y: hidden !important;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0px;
+
+  learning-object-component {
+    width: 100%;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
     }
+  }
+}
+
+.container {
+  max-width: $max-width;
+  width: 100%;
+
+  .title {
+    text-transform: uppercase;
+    color: $blue-accent;
+    font-weight: bold !important;
+    font-size: 24px !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 850px;
+
+    .filtering-controls {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .button {
+        opacity: 1;
+
+        .removeSort {
+          display: inline-flex;
+          flex-direction: row;
+          height: 18px;
+          width: 18px;
+          background: white;
+          border-radius: 50%;
+          justify-content: center;
+          align-items: center;
+          font-size: 12px;
+          margin-right: 10px !important;
+          color: $error-red;
+
+          .svg-inline--fa {
+            margin-left: 0px !important;
+          }
+
+          &:hover {
+            background: $error-red;
+            color: white;
+          }
+        }
+
+        &:not(:first-child) {
+          margin-left: 10px;
+        }
+      }
+
+      .active {
+        border-color: $blue-accent !important;
+      }
+    }
+  }
+
+  .subtitle {
+    color: $dark-text;
+    font-size: 16px;
+    margin-bottom: 20px;
+
+    & > span {
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  .active-filters {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    .filter-active {
+      color: $blue-accent;
+      font-size: 12px;
+      padding-left: 15px;
+      cursor: pointer;
+      position: relative;
+      margin-left: 15px;
+
+      .svg-inline--fa {
+        margin-left: 10px;
+        @include vert-center;
+      }
+
+      &:hover {
+        color: $dark-text;
+      }
+
+      &:before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.2);
+        position: absolute;
+        top: 0;
+        left: -3px;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+  }
+
+  .filters {
+    $reallyDarkBlue: darken($blue-accent, 50);
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(
+      red($reallyDarkBlue),
+      green($reallyDarkBlue),
+      blue($reallyDarkBlue),
+      0.05
+    );
+    max-width: 850px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 25px;
+
+    .list {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+
+      & > .button {
+        margin-left: 35px;
+        align-self: flex-start;
+      }
+    }
+
+    .filter {
+      &:not(:first-child) {
+        margin-left: 35px;
+      }
+
+      .filter-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: $blue-accent;
+      }
+
+      ul {
+        padding-left: 10px;
+
+        li {
+          list-style-type: none;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-size: 16px;
+          color: $dark-text;
+          text-transform: capitalize;
+
+          checkbox {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    & > .buttons {
+      align-self: flex-end;
+
+      .svg-inline--fa {
+        align-self: center;
+      }
+    }
+  }
+
+  .content {
+    height: auto !important;
+    overflow-y: hidden !important;
+  }
 }
 
 ::ng-deep .popup.dropdown li.active {
-    background: $blue-accent;
-    color: white !important;
+  background: $blue-accent;
+  color: white !important;
 }
 
 .paginationCtrl {
-    margin-top: 40px;
-    margin-bottom: 30px;
+  margin-top: 40px;
+  margin-bottom: 30px;
 
-    ul {
-        margin: 0; padding: 0;
-        display:flex;
-        justify-content: center;
-        align-items: center;
+  ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-        li {
-            padding: 10px;
-            color: $blue-accent;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            border-left: 1px solid rgba(0, 0, 0, 0.1);
-            list-style-type: none;
-            min-width: 45px;
-            text-align: center;
-            transition: opacity 0.2s ease;
-            transition: opacity 0.2s ease;
-            opacity: 1;
+    li {
+      padding: 10px;
+      color: $blue-accent;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      list-style-type: none;
+      min-width: 45px;
+      text-align: center;
+      transition: opacity 0.2s ease;
+      transition: opacity 0.2s ease;
+      opacity: 1;
 
-            &.gone {
-                opacity: 0.4 !important;
-                cursor: default !important;
-            }
+      &.gone {
+        opacity: 0.4 !important;
+        cursor: default !important;
+      }
 
-            &:not(.active):hover {
-                opacity: 0.6;
-                cursor: pointer;
-            }
+      &:not(.active):hover {
+        opacity: 0.6;
+        cursor: pointer;
+      }
 
-            &.active {
-                background: $blue-accent;
-                color: white;
-            }
+      &.active {
+        background: $blue-accent;
+        color: white;
+      }
 
-            &:first-child {
-                border-radius: 3px 0px 0px 3px;
-            }
+      &:first-child {
+        border-radius: 3px 0px 0px 3px;
+      }
 
-            &:last-child {
-                border-radius: 0px 3px 3px 0px;
-                border-right: 1px solid rgba(0, 0, 0, 0.1);
-            }
-        }
+      &:last-child {
+        border-radius: 0px 3px 3px 0px;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+      }
     }
+  }
 }

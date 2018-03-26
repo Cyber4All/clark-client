@@ -32,6 +32,14 @@
         <button class="button good save-button" type="submit">Save
           <i class="far fa-check"></i>
         </button>
+        <div *ngIf="auth.user.emailVerified" class="button neutral" (click)="form.valid ? save(true) : showFormErrors()">Upload Materials
+          <i class="far fa-upload"></i>
+        </div>
+        <div *ngIf="!auth.user.emailVerified" tip="{{ tips.UNVERIFIED_UPLOAD }}" tipLocation="above">
+          <div  class="button neutral disabled">Upload Materials
+            <i class="far fa-upload"></i>
+          </div>
+        </div>
         <div class="button bad" routerLink="/onion/dashboard">Cancel
           <i class="far fa-times"></i>
         </div>

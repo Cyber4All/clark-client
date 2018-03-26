@@ -1,58 +1,69 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TimeFunctions } from '../time-functions';
-import 'rxjs/add/operator/switchMap';
+import { NotificationService } from '../../../../shared/notifications';
 
-// FIXME: ternary statements return strings to the void
 @Component({
   selector: 'neutrino-view',
   templateUrl: './view.component.html',
   styleUrls: ['../../styles.css', './view.component.scss']
 })
-export class ViewComponent implements OnInit, OnDestroy {
+export class ViewComponent implements OnInit {
   learningObjectName: string;
-  routeParamSub: any;
-
-  TimeFunctions: TimeFunctions = new TimeFunctions();
-
   learningObject: LearningObject;
 
   constructor(
-    private lobjectService: LearningObjectService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private lobjectService: LearningObjectService,
+    private notifications: NotificationService
   ) {}
 
   ngOnInit() {
-    this.getRouteParams();
+    this.learningObjectName = this.route.snapshot.params.learningObjectName;
     this.learningObjectName
       ? this.fetchLearningObject()
-      : 'No ID provided in route, redirect somewhere';
+      : this.router.navigate(['/onion/dashboard']);
   }
-
-  getRouteParams() {
-    this.routeParamSub = this.route.params.subscribe(params => {
-      this.learningObjectName = params['learningObjectName'];
-    });
+  /**
+   * Fetches Learning Object by name
+   *
+   * @private
+   * @memberof ViewComponent
+   */
+  private async fetchLearningObject() {
+    try {
+      this.learningObject = await this.lobjectService.getLearningObject(
+        this.learningObjectName
+      );
+      this.watchTimestamps();
+    } catch (e) {
+      this.notifications.notify(
+        `Could not fetch Learning Object`,
+        `${e}`,
+        `bad`,
+        ``
+      );
+    }
   }
-
-  fetchLearningObject() {
-    this.lobjectService
-      .getLearningObject(this.learningObjectName)
-      .then(learningObject => {
-        learningObject
-          ? (this.learningObject = learningObject)
-          : 'Error fetching LearningObject';
-      })
-      .catch(error => {
-        console.log(error);
-        alert('Invalid Learning Object.');
+  /**
+   * Adds a human readable representation of time elapsed since file was added
+   *
+   * @private
+   * @memberof ViewComponent
+   */
+  private watchTimestamps() {
+    let interval = 1000;
+    const MINUTE = 60000;
+    setInterval(() => {
+      // After initial pass only update every minute
+      interval = MINUTE;
+      this.learningObject.materials.files.map(file => {
+        file['timeAgo'] = TimeFunctions.getTimestampAge(+file.date);
+        return file;
       });
-  }
-
-  ngOnDestroy() {
-    this.routeParamSub.unsubscribe();
+    }, interval);
   }
 }

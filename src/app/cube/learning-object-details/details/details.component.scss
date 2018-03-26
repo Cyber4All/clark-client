@@ -1,4 +1,4 @@
-@import "~_globals.scss";
+@import "~_vars.scss";
 
 .details-wrapper {
   width: 100%;
@@ -160,9 +160,11 @@
         padding: 20px;
 
         .button {
+          overflow: hidden;
           text-align: center;
-          font-size: 18px;
+          font-size: 16px;
           margin-bottom: 10px;
+          position: relative;
 
           &.disabled {
             cursor: default !important;
@@ -177,6 +179,14 @@
             &.neutral {
               color: $dark-text !important;
             }
+          }
+
+          &.saved {
+            cursor: default !important;
+            pointer-events: none;
+            border-color: transparent;
+            color: $green;
+            box-shadow: none;
           }
         }
 

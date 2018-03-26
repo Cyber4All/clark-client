@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { NotificationModule } from '../notifications';
 import { CheckBoxModule } from 'clark-checkbox';
 import { AuthService } from '../../core/auth.service';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'clark-navbar',
@@ -19,9 +20,22 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
   // FIXME: Convert 'class' to 'type' for consistancy
   hideNavbar = false;
   loggedin = this.authService.user ? true : false;
+  version;
+  // [0-9]+\-([A-z]+(?=\.[0-9]+))
 
   constructor(private modalCtrl: ModalService, private router: Router,
     private route: ActivatedRoute, private authService: AuthService, private cartService: CartV2Service) {
+      router.events.filter(e => e instanceof NavigationEnd).subscribe(e => {
+        // scroll to top of page when any router event is fired
+        window.scrollTo(0, 0);
+      });
+
+      const { version: appVersion, name: appName, displayName: appDisplayName } = require('../../../../package.json');
+      const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
+      const matched = versionRegex.exec(appVersion);
+      if (matched.length >= 1) {
+        this.version = matched[1];
+      }
     }
 
   ngOnInit() {
@@ -65,6 +79,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
         // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
         new ModalListElement('<i class="far fa-sign-out"></i>Sign out', 'logout'),
       ],
+      true,
       null,
       new Position(
         this.modalCtrl.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),

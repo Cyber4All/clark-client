@@ -18,7 +18,7 @@ export class MappingsListComponent implements OnInit {
   ngOnInit() {
     const m = this.service.mappings;
     this.mappings = m.currentValue;
-    console.log(this.mappings);
+    
   }
 
   deleteMapping(m) {

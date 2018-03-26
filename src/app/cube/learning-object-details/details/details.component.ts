@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router'
 import { CartService } from '../../core/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'learning-object-details',
@@ -25,6 +26,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   width = 100;
   myStyle: object = {};
   returnUrl: string;
+  saved = false;
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -177,18 +179,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async fetchLearningObject() {
     this.learningObject = await this.learningObjectService.getLearningObject(this.author, this.learningObjectName);
-    console.log(this.learningObject);
+    this.saved = this.cartService.has(this.learningObject);
   }
 
   async addToCart(download?: boolean) {
     let val = await this.cartService.addToCart(this.author, this.learningObjectName);
+    this.saved = this.cartService.has(this.learningObject);
     if (download) await this.download(this.author, this.learningObjectName);
   }
 
   async clearCart() {
     if (await this.cartService.clearCart()) {
     } else {
-      console.log('not logged in!');
+      
     }
   }
 

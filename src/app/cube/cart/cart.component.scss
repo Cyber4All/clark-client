@@ -1,4 +1,4 @@
-@import '~_globals.scss';
+@import '~_vars.scss';
 
 .wrapper {
     max-width: 950px;
@@ -6,6 +6,7 @@
     padding: 20px;
     border-radius: 3px;
     margin: auto;
+    margin-top: 40px;
     box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.1);
 
     .title {

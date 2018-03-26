@@ -1,12 +1,6 @@
 import { ModalService } from '../../../../shared/modals';
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  AfterViewInit
-} from '@angular/core';
-import { Router, ParamMap, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
@@ -14,9 +8,8 @@ import { DropzoneDirective } from 'ngx-dropzone-wrapper';
 import { LearningObjectFile } from '../models/learning-object-file';
 import { TimeFunctions } from '../time-functions';
 import { NotificationService } from '../../../../shared/notifications';
-import 'rxjs/add/operator/toPromise';
-import { environment } from '../../environments/environment';
 
+import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 
 @Component({
@@ -28,22 +21,18 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
     '../../dropzone.scss'
   ]
 })
-export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+export class UploadComponent implements OnInit {
   public tips = TOOLTIP_TEXT;
 
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
-  private routeParamSub: any;
-  learningObjectName: string;
+  private learningObjectName: string;
 
   hasFile: boolean = false;
 
   learningObject: LearningObject = new LearningObject(null, '');
 
   scheduledDeletions: {}[] = [];
-
-  TimeFunctions: TimeFunctions = new TimeFunctions();
-
   uploading: boolean = false;
   submitting: boolean = false;
 
@@ -60,13 +49,64 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: NotificationService
   ) {}
 
+  ngOnInit() {
+    this.learningObjectName = this.route.snapshot.params.learningObjectName;
+    this.learningObjectName
+      ? this.fetchLearningObject()
+      : this.router.navigate(['/onion/dashboard']);
+  }
+
+  /**
+   * Fetches Learning Object by name
+   *
+   * @private
+   * @memberof ViewComponent
+   */
+  private async fetchLearningObject() {
+    try {
+      this.learningObject = await this.learningObjectService.getLearningObject(
+        this.learningObjectName
+      );
+      this.watchTimestamps();
+    } catch (e) {
+      this.notificationService.notify(
+        `Could not fetch Learning Object`,
+        `${e}`,
+        `bad`,
+        ``
+      );
+    }
+  }
+  /**
+   * Adds a human readable representation of time elapsed since file was added
+   *
+   * @private
+   * @memberof ViewComponent
+   */
+  private watchTimestamps() {
+    let interval = 1000;
+    const MINUTE = 60000;
+    setInterval(() => {
+      // After initial pass only update every minute
+      interval = MINUTE;
+      this.learningObject.materials.files.map(file => {
+        file['timeAgo'] = TimeFunctions.getTimestampAge(+file.date);
+        return file;
+      });
+    }, interval);
+  }
+  /**
+   * Fired when file is added. Verifies limit hasn't been reached and adds to accepted files
+   *
+   * @param {any} file
+   * @memberof UploadComponent
+   */
   async addFile(file) {
     await file;
     let pastFileLimit = this.pastFileLimit(file.size);
     if (file.accepted && !pastFileLimit) {
       this.acceptedFiles.push(file);
     } else {
-      console.log(pastFileLimit);
       if (!pastFileLimit && !file.accepted) this.dzError = 'File not accepted';
       this.notificationService.notify(
         `${file.name} could not be added`,
@@ -76,8 +116,15 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       );
     }
   }
-
-  pastFileLimit(addedSize: number) {
+  /**
+   * Checks if user has reached upload size limit
+   *
+   * @private
+   * @param {number} addedSize
+   * @returns
+   * @memberof UploadComponent
+   */
+  private pastFileLimit(addedSize: number) {
     const BYTE_TO_MB = 1000000;
     let size = addedSize / BYTE_TO_MB;
     if (this.acceptedFiles.length) {
@@ -96,37 +143,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     return false;
   }
 
-  ngOnInit() {
-    this.getRouteParams();
-    this.fetchLearningObject();
-  }
-
-  ngAfterViewInit(): void {}
-  /**
-   * Gets route param
-   *
-   * @memberof UploadComponent
-   */
-  getRouteParams() {
-    this.routeParamSub = this.route.params.subscribe(params => {
-      this.learningObjectName = params['learningObjectName'];
-    });
-  }
-  /**
-   * Fetches learning object
-   *
-   * @memberof UploadComponent
-   */
-  fetchLearningObject(): void {
-    this.learningObjectService
-      .getLearningObject(this.learningObjectName)
-      .then(learningObject => {
-        this.learningObject = learningObject;
-      })
-      .catch(err => {
-        alert('Invalid Learning Object.');
-      });
-  }
   /**
    * Removes files from Dropzone Queue
    * If no file is passed removes all files from queue
@@ -175,11 +191,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return null;
   }
-
+  /**
+   * Corrects malfored URLs and removes empty URLs
+   *
+   * @memberof UploadComponent
+   */
   fixURLs() {
     for (let i = 0; i < this.learningObject.materials.urls.length; i++) {
       let url = this.learningObject.materials.urls[i];
-      if (!url.url.match(/https?:\/\/.+/i)) {
+      if (!url.title || !url.url) {
+        this.removeURL(i);
+      } else if (!url.url.match(/https?:\/\/.+/i)) {
         url.url = `http://${url.url}`;
         this.learningObject.materials.urls[i] = url;
       }
@@ -262,7 +284,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     this.uploading = false;
     return Promise.resolve([]);
   }
-
+  /**
+   * Maps Learning Object Files to their descriptions
+   *
+   * @private
+   * @returns
+   * @memberof UploadComponent
+   */
   private mapFileDescriptions() {
     let files = this.acceptedFiles;
     for (let i = 0; i < files.length; i++) {
@@ -290,9 +318,5 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       })
     );
-  }
-
-  ngOnDestroy() {
-    this.routeParamSub.unsubscribe();
   }
 }

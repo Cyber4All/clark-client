@@ -1,6 +1,6 @@
 import { SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { NotificationService } from './notification.service';
-import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 
 @Component({
     selector: '<notification></notification>',
@@ -14,7 +14,7 @@ import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDe
     </div>
     `
 })
-export class NotificationComponent implements OnChanges {
+export class NotificationComponent implements OnChanges, AfterViewChecked {
     toRender: Array<object> = [];
     @Input() content: object = {};
 
@@ -24,36 +24,71 @@ export class NotificationComponent implements OnChanges {
     private notificationHeight = 90;
     private spaceBetween = 10;
 
-    constructor(private elementRef: ElementRef, private service: NotificationService, private el: ElementRef, private cd: ChangeDetectorRef) {
-        console.log('el', el);
-    }
+    private changed = false;
+
+    constructor(private elementRef: ElementRef, private service: NotificationService, private el: ElementRef) { }
 
     ngOnChanges(changes: SimpleChanges) {
         if (Object.keys(this.content).length > 0) {
             this.toRender.push(this.content);
             this.open++;
+            this.changed = true;
+        }
+    }
 
-            this.cd.detectChanges();
-
+    ngAfterViewChecked() {
+        if (this.changed) {
+            this.changed = false;
             if (this.toRender.length > 1) {
                 for (let i = 0; i < this.toRender.length - 1; i++) {
-                    this.toRender[i]['bottom'] += (Dimension(this.el.nativeElement.children[this.toRender.length - 1]) + this.spaceBetween);
+                    this.toRender[i]['bottom'] +=
+                        (this.el.nativeElement.children[this.toRender.length - 1].offsetHeight + this.spaceBetween);
                 }
             }
 
             setTimeout(() => {
-                this.toRender[this.toRender.length - 1]['show'] = true;
-                this.toRender[this.toRender.length - 1]['bottom'] = 20;
+                let notVisible = this.toRender.filter((x, index) => {
+                    if (!x['show'] && !x['dead']) {
+                        x['index'] = index;
+                        return true;
+                    }
+                    return false;
+                });
+                for (let i = 0; i < notVisible.length; i++) {
+                    
+                    const e = notVisible[i];
+                    // calculate bottom postion for each element
+                    const below = notVisible.length > 1 ? notVisible.slice(i + 1)
+                        .map(n => this.el.nativeElement.children[n['index']].offsetHeight + this.spaceBetween + 20)
+                        .reduce((x, y) => x + y) : 20;
+                    this.show(e, below, i * 200);
+                }
             }, 200);
 
-            this.close(this.toRender.length - 1);
         }
     }
 
-    close(index) {
+    show(el, below, timeout = 200, close = true) {
+        
+        
         setTimeout(() => {
-            this.toRender[index]['show'] = false;
-            this.toRender[index]['left'] = '-80px';
+            // set params
+            el['show'] = true;
+            el['bottom'] = below;
+
+            // if close param true, start close timer
+            if (close) {
+                this.close(el);
+            }
+        }, timeout);
+    }
+
+    close(el, duration = 4200) {
+        
+        setTimeout(() => {
+            el['show'] = false;
+            el['left'] = '-80px';
+            el['dead'] = true;
             this.closed++;
 
             setTimeout(() => {
@@ -62,17 +97,9 @@ export class NotificationComponent implements OnChanges {
                     this.closed = this.open = 0;
                     this.toRender = [];
                     this.service.content = {};
-                    this.cd.detectChanges();
-                    console.log('doin it', this.toRender);
+                    
                 }
             }, 200);
-        }, 4200);
+        }, duration);
     }
-}
-
-function Dimension(el) {
-    const style = window.getComputedStyle(el);
-    return ['height', 'padding-top', 'padding-bottom']
-        .map((key) => parseInt(style.getPropertyValue(key), 10))
-        .reduce((prev, cur) => prev + cur);
 }

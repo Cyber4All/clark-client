@@ -101,5 +101,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   },
   GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
     return `${environment.apiURL}/learning-objects/${username}`;
-  }
+  },
 };
+
+export const MISC_ROUTES = {
+  CHECK_STATUS: `${environment.apiURL}/status`
+}

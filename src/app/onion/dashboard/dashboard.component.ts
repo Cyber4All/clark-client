@@ -7,10 +7,11 @@ import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { AuthService } from 'app/core/auth.service';
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
   public tips = TOOLTIP_TEXT;
@@ -27,7 +28,8 @@ export class DashboardComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private app: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -45,7 +47,7 @@ export class DashboardComponent implements OnInit {
         this.learningObjects = learningObjects;
       })
       .catch(err => {
-        console.log('error', err);
+        
       });
   }
 
@@ -119,7 +121,7 @@ export class DashboardComponent implements OnInit {
                 this.getLearningObjects();
               })
               .catch(err => {
-                console.log(err);
+                
               });
           }
         }
@@ -223,24 +225,29 @@ export class DashboardComponent implements OnInit {
     this.focusedLearningObject = learningObject;
     let list: Array<ModalListElement> = [
       new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit'),
-      new ModalListElement(
-        '<i class="far fa-upload"></i>Manage Materials',
-        'upload'
-      ),
-      new ModalListElement(
-        '<i class="far fa-archive"></i>View Materials',
-        'view materials'
-      )
     ];
 
-    if (!learningObject.published) {
+    if (this.auth.user.emailVerified) {
+      list.push(
+        new ModalListElement(
+          '<i class="far fa-upload"></i>Manage Materials',
+          'upload'
+        ),
+        new ModalListElement(
+          '<i class="far fa-archive"></i>View Materials',
+          'view materials'
+        )
+      );
+    }
+
+    if (!learningObject.published && this.auth.user.emailVerified) {
       list.push(
         new ModalListElement(
           '<i class="far fa-eye"></i>Publish',
           'toggle published'
         )
       );
-    } else {
+    } else if (this.auth.user.emailVerified) {
       list.push(
         new ModalListElement(
           '<i class="far fa-eye-slash"></i>Unpublish',
@@ -267,6 +274,7 @@ export class DashboardComponent implements OnInit {
         'LearningObjectContext',
         'small',
         list,
+        true,
         event.currentTarget
       )
       .subscribe(val => {
@@ -335,6 +343,7 @@ export class DashboardComponent implements OnInit {
         'FilteringContext',
         'dropdown',
         list,
+        true,
         null,
         pos,
         this.filters.slice(0)
