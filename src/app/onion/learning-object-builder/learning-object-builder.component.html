@@ -1,12 +1,7 @@
-<!--
-  TODO:
-    * Break into container components on inner-wrapper class (meta, description, outcomes)
-    * break outcomes into each as their own container
--->
 <onion-sidebar 
   [outcomeCount]="learningObject.outcomes.length"
-  [learningObjectName]="learningObject.name"
-></onion-sidebar>
+  [learningObjectName]="learningObject.name">
+</onion-sidebar>
 <div>
   <div class="inner">
     <!-- Back Button -->
@@ -26,7 +21,6 @@
         [outcomeIndex]="outcomeIndex"
         (deleteOutcomeRequest)="deleteOutcome($event)">
       </onion-learning-object-outcome-container>
-    </form>
       
       <div class="btn-group to-right final">
         <button class="button good" *ngIf="(outcomeIndex !== undefined && outcomeIndex < learningObject.outcomes.length-1) || outcomeIndex === undefined && learningObject.outcomes.length > 0" (click)="advanceSection()">Next
@@ -35,12 +29,14 @@
         <button *ngIf="outcomeIndex === learningObject.outcomes.length-1 || (activePage === PAGES.INFO && learningObject.outcomes.length === 0)" class="button good" (click)="newOutcome()">Add Learning Outcome
           <i class="far fa-arrow-right"></i>
         </button>
-        <button class="button good save-button" [disabled]="!validate()">Save
+        <button class="button good save-button" type="submit">Save
           <i class="far fa-check"></i>
         </button>
         <div class="button bad" routerLink="/onion/dashboard">Cancel
           <i class="far fa-times"></i>
         </div>
       </div>
+
+    </form>
   </div>
 </div>
