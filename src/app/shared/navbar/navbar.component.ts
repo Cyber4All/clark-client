@@ -20,6 +20,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
   // FIXME: Convert 'class' to 'type' for consistancy
   hideNavbar = false;
   loggedin = this.authService.user ? true : false;
+  version;
+  // [0-9]+\-([A-z]+(?=\.[0-9]+))
 
   constructor(private modalCtrl: ModalService, private router: Router,
     private route: ActivatedRoute, private authService: AuthService, private cartService: CartV2Service) {
@@ -27,6 +29,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked  {
         // scroll to top of page when any router event is fired
         window.scrollTo(0, 0);
       });
+
+      const { version: appVersion, name: appName, displayName: appDisplayName } = require('../../../../package.json');
+      const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
+      const matched = versionRegex.exec(appVersion);
+      if (matched.length >= 1) {
+        this.version = matched[1];
+      }
     }
 
   ngOnInit() {
