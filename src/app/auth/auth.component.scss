@@ -1,4 +1,4 @@
-@import '~_globals.scss';
+@import '~_vars.scss';
 
 :host {
     font-family: 'Source Sans Pro', serif;
@@ -22,12 +22,12 @@
 
     .image {
         z-index: 0;
-        background-image: url(/assets/images/background.png);
+        background: linear-gradient(180deg, #0d1928, #1e2e40);
     }
 
     .mask {
         z-index: 2;
-        background-image: url(/assets/images/background_mask.png);
+        background-image: url(/assets/images/background_mask_compressed.png);
     }
 }
 

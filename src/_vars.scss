@@ -1,0 +1,65 @@
+// variables
+$max-width: 1200px;
+$bright-blue: #3789ce;
+$blue-accent: #3b608b;
+$dark-blue: #2b4066;
+$green: #389857;
+$dark-text: #55595e;
+$wrapper-background: #f0f4f7;
+$blue-gradient: linear-gradient(45deg, $dark-blue, $blue-accent);
+$error-red: #cf4739;
+$placeholder: lighten(#a9a9a9, 10);
+$popup-z: 9;
+$notification-z: 10;
+
+$nanomodule-color: #3b8b87;
+$micromodule-color: #3b8b5a;
+$module-color: #2c6e58;
+$unit-color: #3b8b5a;
+$course-color: #295948;
+
+// functions
+@function gradient($color1, $color2, $angle) {
+    @return linear-gradient($angle, $color1, $color2);
+}
+
+// mixins
+@mixin vert-center {
+  display: inline-flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+@mixin checkbox {
+  background: white;
+  border: 2px solid lighten($dark-text, 40);
+  position: relative;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $blue-accent;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease;
+    border: 1px solid white;
+  }
+
+  &.active {
+    border-color: $blue-accent;
+    &:after {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}

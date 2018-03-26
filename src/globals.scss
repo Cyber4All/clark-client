@@ -1,83 +1,18 @@
 // font
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,700');
-
-// functions
-@function gradient($color1, $color2, $angle) {
-  @return linear-gradient($angle, $color1, $color2);
-}
-
-// variables
-$max-width: 1200px;
-$bright-blue: #3789ce;
-$blue-accent: #3b608b;
-$dark-blue: #2b4066;
-$green: #389857;
-$dark-text: #55595e;
-$wrapper-background: #f0f4f7;
-$blue-gradient: linear-gradient(45deg, $dark-blue, $blue-accent);
-$error-red: #cf4739;
-$placeholder: lighten(#a9a9a9, 10);
-$popup-z: 9;
-$notification-z: 10;
-
-$nanomodule-color: #3b8b87;
-$micromodule-color: #3b8b5a;
-$module-color: #2c6e58;
-$unit-color: #3b8b5a;
-$course-color: #295948;
+@import '~_vars.scss';
 
 body {
-  ::ng-deep & > * {
-    font-family: 'Source Sans Pro', serif;
-  }
+  font-family: 'Source Sans Pro', serif;
+  background: #f0f4f7 !important;
+  height: 100vh;
 }
 
-// mixins
-@mixin vert-center {
-  display: inline-flex;
-  flex-direction: column;
-  align-self: center;
-}
-
-@mixin checkbox {
-  background: white;
-  border: 2px solid lighten($dark-text, 40);
-  position: relative;
-  transition: all 0.1s ease;
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-  margin-top: auto !important;
-  margin-bottom: auto !important;
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: $blue-accent;
-    opacity: 0;
-    transform: scale(0);
-    transition: all 0.2s ease;
-    border: 1px solid white;
-  }
-
-  &.active {
-    border-color: $blue-accent;
-    &:after {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-}
-
-::ng-deep .checkbox {
+.checkbox {
   @include checkbox;
 }
 
-::ng-deep .squares {
+.squares {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -126,7 +61,7 @@ body {
   @include vert-center;
 }
 
-::ng-deep .select-wrapper {
+.select-wrapper {
   position: relative;
 
   select {
@@ -160,7 +95,7 @@ body {
   }
 }
 
-::ng-deep .button {
+.button {
   border: 2px solid transparent;
   border-radius: 4px;
   background: white;
@@ -175,6 +110,8 @@ body {
   font-size: 15px;
   cursor: pointer;
   box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.2s ease;
+  outline: none !important;
 
   .svg-inline--fa,
   .icon {
@@ -224,9 +161,13 @@ body {
     cursor: default;
     pointer-events: none;
   }
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-::ng-deep .btn-group {
+.btn-group {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -245,7 +186,7 @@ body {
   }
 }
 
-::ng-deep .notification {
+.notification {
   background: gradient(darken(white, 5), white, 45deg);
   border-radius: 3px;
   box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
@@ -314,7 +255,7 @@ body {
 }
 
 // collection of flexed divs that mimic the appearance of tables but that will scale better on mobile devices
-::ng-deep .faux-table {
+.faux-table {
   width: 100%;
 
   .row {
@@ -405,7 +346,7 @@ body {
   }
 }
 
-::ng-deep .popup-wrapper {
+.popup-wrapper {
   background: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
@@ -417,7 +358,7 @@ body {
   display: flex;
 }
 
-::ng-deep .popup {
+.popup {
   position: fixed;
   z-index: $popup-z;
   background: white;
