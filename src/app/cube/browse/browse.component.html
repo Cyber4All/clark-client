@@ -59,6 +59,6 @@
 </div>
 <div *ngIf="mappingsPopup" class="mappings-popup">
   <div class="popup-content">
-    <clark-browse-by-mappings-component [mappings]="query.standardOutcomes" [dimensions]="{h: 400}" (done)="toggleMappingsPopup()"></clark-browse-by-mappings-component>
+    <clark-browse-by-mappings-component [mappings]="query.standardOutcomes" [dimensions]="{h: 400}" (done)="toggleMappingsPopup()" [inflow]="false"></clark-browse-by-mappings-component>
   </div>
 </div>
