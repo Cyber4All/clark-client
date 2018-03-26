@@ -314,6 +314,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   validate(): boolean {
     // check name
     if (this.learningObject.name === '') {
+      console.log('bad name');
       return false;
     }
 
@@ -323,6 +324,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     );
     for (const outcome of Array.from(o)) {
       if (outcome.attributes['valid'].value !== 'true') {
+        console.log('bad outcome');
         return false;
       }
     }

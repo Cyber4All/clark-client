@@ -9,6 +9,11 @@
   }
 }
 
+button[disabled] {
+  opacity: .8;
+  cursor: not-allowed;
+}
+
 ::ng-deep .description-wrapper,
 ::ng-deep .outcome-container-wrapper {
   margin-top: 20px;

@@ -35,7 +35,7 @@
         <button *ngIf="outcomeIndex === learningObject.outcomes.length-1 || (activePage === PAGES.INFO && learningObject.outcomes.length === 0)" class="button good" (click)="newOutcome()">Add Learning Outcome
           <i class="far fa-arrow-right"></i>
         </button>
-        <button class="button good">Save
+        <button class="button good save-button" [disabled]="!validate()">Save
           <i class="far fa-check"></i>
         </button>
         <div class="button bad" routerLink="/onion/dashboard">Cancel
