@@ -9,16 +9,9 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          key: 'dependency-cache-{{ checksum "package.json" }}'
       - run:
           name: Install Dependencies
           command: npm install
-      - save_cache:
-          key: 'dependency-cache-{{ checksum "package.json" }}'
-          paths:
-            - ~/.cache/npm
-            - ./node_modules
       - run:
           name: Build Application
           command: yarn ng build --prod --aot=false
