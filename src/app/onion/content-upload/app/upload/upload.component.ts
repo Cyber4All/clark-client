@@ -12,6 +12,8 @@ import { NotificationService } from '../../../../shared/notifications';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 
+import * as uuid from 'uuid';
+
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -23,6 +25,12 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 })
 export class UploadComponent implements OnInit {
   public tips = TOOLTIP_TEXT;
+
+  public folders: Folder[] = [];
+  public directory: Map<string, Folder> = new Map<string, Folder>();
+  private fileMap: Map<string, string> = new Map<string, string>();
+
+  currentFolder: string;
 
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
@@ -98,24 +106,115 @@ export class UploadComponent implements OnInit {
   /**
    * Fired when file is added. Verifies limit hasn't been reached and adds to accepted files
    *
-   * @param {any} file
+   * @param {File} file
    * @memberof UploadComponent
    */
-  async addFile(file) {
+  async addFile(file: File) {
     await file;
-    let pastFileLimit = this.pastFileLimit(file.size);
-    if (file.accepted && !pastFileLimit) {
-      this.acceptedFiles.push(file);
-    } else {
-      if (!pastFileLimit && !file.accepted) this.dzError = 'File not accepted';
-      this.notificationService.notify(
-        `${file.name} could not be added`,
-        this.dzError,
-        'bad',
-        ''
-      );
+    console.log(file);
+    if (!file.accepted) {
+      this.dzError = 'File not accepted';
+      this.showFileError(file.name);
+      return;
     }
+    const pastFileLimit = this.pastFileLimit(file.size);
+    if (pastFileLimit) {
+      this.showFileError(file.name);
+      return;
+    }
+
+    const isFolder = this.isFolder(file);
+    if (isFolder) {
+      //construct Folder structure
+      this.buildDirectory(file);
+      this.getFolders();
+    } else this.acceptedFiles.push(file);
   }
+
+  /**
+   * Check upload is folder or not
+   *
+   * @param {File} file
+   * @returns {boolean}
+   * @memberof UploadComponent
+   */
+  private isFolder(file: File): boolean {
+    if (!file.fullPath) return false;
+    const paths: string[] = this.getPaths(file.fullPath);
+    if (paths.length > 1) return true;
+    return false;
+  }
+
+  private buildDirectory(file: File) {
+    const paths: string[] = this.getPaths(file.fullPath);
+    let folder = this.constructFolder(paths, null);
+    file.parent = folder.id;
+    folder.files.push(file);
+  }
+
+  private constructFolder(paths: string[], parent: Folder): Folder {
+    let current = paths.shift();
+    if (!paths.length) {
+      return parent;
+    }
+    const path = (parent ? `${parent.name}/` : '') + current;
+    let folder = this.directory.get(path);
+    if (!folder) {
+      folder = this.getNewFolder(path);
+      this.directory.set(path, folder);
+    }
+    if (parent) {
+      if (!parent.subdirectories.includes(folder.id)) {
+        parent.subdirectories.push(folder.id);
+        this.directory.set(parent.name, parent);
+      }
+      folder.parent = parent.name;
+      this.directory.set(folder.name, folder);
+    }
+
+    return this.constructFolder(paths, folder);
+  }
+
+  private getNewFolder(name: string): Folder {
+    const folder = {
+      id: this.getUUID(),
+      name: name,
+      subdirectories: [],
+      files: []
+    };
+    return folder;
+  }
+
+  /**
+   * Breaks Path string into array of paths
+   *
+   * @private
+   * @param {string} path
+   * @returns {string[]}
+   * @memberof UploadComponent
+   */
+  private getPaths(path: string): string[] {
+    const paths: string[] = path.split('/');
+    if (paths[0] === '') paths.slice(0, 0);
+    return paths;
+  }
+
+  /**
+   * Displays error via notification service
+   *
+   * @private
+   * @param {string} name
+   * @memberof UploadComponent
+   */
+  private showFileError(name: string) {
+    this.notificationService.notify(
+      `${name} could not be added`,
+      this.dzError,
+      'bad',
+      ''
+    );
+  }
+
   /**
    * Checks if user has reached upload size limit
    *
@@ -155,6 +254,17 @@ export class UploadComponent implements OnInit {
       ? this.dzDirectiveRef.dropzone().removeFile(file)
       : this.dzDirectiveRef.dropzone().removeAllFiles();
     this.acceptedFiles = this.dzDirectiveRef.dropzone().getAcceptedFiles();
+  }
+  /**
+   * Removes files from Dropzone Queue
+   * If no file is passed removes all files from queue
+   *
+   * @param {any} file
+   * @memberof UploadComponent
+   */
+  removeFolder(folder: Folder) {
+    this.directory.delete(folder.name);
+    this.getFolders();
   }
   /**
    * Adds files to scheduled deletion array and removes
@@ -319,4 +429,37 @@ export class UploadComponent implements OnInit {
       })
     );
   }
+
+  getFolders() {
+    this.folders = [];
+    this.directory.forEach((folder, key) => {
+      if (!folder.parent) {
+        this.folders.push(folder);
+      }
+    });
+  }
+
+  getContents() {}
+
+  private getUUID(): string {
+    return uuid.v1();
+  }
 }
+
+export type Folder = {
+  id: string;
+  name: string;
+  subdirectories: string[];
+  files: File[];
+  parent?: string;
+};
+
+export type File = {
+  id?: string;
+  accepted: boolean;
+  fullPath: string;
+  name: string;
+  size: number;
+  parent: string;
+  [key: string]: any;
+};
