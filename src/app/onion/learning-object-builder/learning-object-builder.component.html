@@ -72,7 +72,8 @@
             </span>
           </div>
           <div class="goals list">
-            <textarea class="full-width" rows="2" [(ngModel)]="learningObject.goals[0].text" name="description" type="text" placeholder="Description"></textarea>
+            <text-editor [(savedContent)] = "learningObject.goals[0].text" editorPlaceholder = "Enter description here" (textOutput) = "bindEditorOutput($event,'description')" name="description"></text-editor>
+            <!--<textarea class="full-width" rows="2" [(ngModel)]="learningObject.goals[0].text" name="description" type="text" placeholder="Description"></textarea>-->
           </div>
         </div>
       </div>
