@@ -15,7 +15,7 @@
     <div class="link-listing" *ngFor="let link of materials.urls">
       <span class="link-listing-title">{{ link.title }}</span>
       <span class="link-listing-url">
-        <a href="{{ link.url }}">Open Link</a>
+        <a href="{{ link.url }}" target="_blank">Open Link</a>
       </span>
     </div>
     <div *ngIf="materials.urls && materials.urls.length < 1" class="no-listings">
