@@ -109,9 +109,7 @@ export class LearningObjectBuilderComponent implements OnInit {
             'fal fa-save'
           );
           willUpload
-            ? this.router.navigateByUrl(
-                `/onion/content/upload/${this.learningObjectName}`
-              )
+            ? this.router.navigate([`/onion/content/upload/${this.learningObjectName}`])
             : this.router.navigate(['/onion']);
         })
         .catch(err => {
