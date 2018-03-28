@@ -19,10 +19,8 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
 
     @HostListener("window:scroll", [])
     onWindowScroll() {
-        // close any context menus if they're a) in the document flow and b) the document is scrolled
-        if (this.content.inFlow) {
-            this.close();
-        }
+        // close any context menus when the document is scrolled
+        this.close();
     }
 
     type: string = 'context';
@@ -40,8 +38,8 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
         if (this.show) {
             // we're opening
             if (this.content.el) {
-            // we passed an element
-                this.calculatePosition(this.content.el);
+            // we passed an element    
+            this.calculatePosition(this.content.el);
             } else if (this.content.pos) {
                 // we passed coordinates
                 this.calculatePosition(undefined, this.content.pos);
@@ -68,10 +66,9 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
      * @param el 
      */
     private calculatePosition(el?, pos?) {
-        const scrolled = this.content.inFlow ? document.documentElement.scrollTop : 0;
 
+        const scrolled = (window.scrollY || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop));
         if (pos) {
-            
             this.assignCoords(pos.x, pos.y, scrolled);
         } else if (el) {
             const offsetConst = 15;
