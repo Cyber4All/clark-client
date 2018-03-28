@@ -6,6 +6,7 @@ import { Http, Headers } from '@angular/http';
 import { AuthService } from '../../../../core/auth.service';
 import { CookieService } from 'ngx-cookie';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { Folder } from '../upload/upload.component';
 
 @Injectable()
 export class FileStorageService {
@@ -33,17 +34,20 @@ export class FileStorageService {
    */
   upload(
     learningObject: LearningObject,
-    files: any[]
+    files: File[] | any[],
+    directory: Map<string, Folder>
   ): Promise<LearningObjectFile[]> {
     return new Promise((resolve, reject) => {
       const formData: FormData = new FormData(),
         xhr: XMLHttpRequest = new XMLHttpRequest();
       formData.append('learningObjectID', learningObject.id);
+      const stringifiedMap = this.stringifyMap(directory);
+      formData.append('directory', stringifiedMap);
       for (let file of files) {
         formData.append(
           'uploads',
           file,
-          `${file.name}!@!${file.descriptionID}`
+          `${file.name}!@!${file.id ? file.id : ''}`
         );
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
@@ -82,6 +86,14 @@ export class FileStorageService {
     return this.http
       .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise()
-      .then(success => success.json())
+      .then(success => success.json());
+  }
+
+  private stringifyMap(map: Map<any, any>): string {
+    let pairArray = [];
+    map.forEach((value, key) => {
+      pairArray.push([key, value]);
+    });
+    return JSON.stringify(pairArray);
   }
 }
