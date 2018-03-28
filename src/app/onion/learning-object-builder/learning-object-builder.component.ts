@@ -291,13 +291,14 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @param {number} s
    * @memberof LearningObjectBuilderComponent
    */
-  bindEditorOutput(event, type, i, s): void {
+  bindEditorOutput(event, type:string, i?:number, s?:number): void {
     if (type === 'question') {
       this.learningObject.outcomes[i].assessments[s].text = event;
-    } else {
-      if (type === 'strategy') {
+    } else if (type === 'strategy') {
         this.learningObject.outcomes[i].strategies[s].text = event;
-      }
+    }
+    else {
+      if(event!=='') this.learningObject.goals[0].text = event;
     }
   }
 

@@ -13,9 +13,7 @@
     <div class="content">
       <div class="goals">
         <div class="title">Description</div>
-        <p>
-          {{ learningObject.goals[0].text }}
-        </p>
+        <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
       <div class="outcomes">
         <div class="title">Learning Outcomes</div>
