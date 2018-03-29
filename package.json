@@ -1,7 +1,7 @@
 {
   "name": "cube",
   "displayName": "CyberCuBE: Curriculum Bank Enumeration",
-  "version": "1.0.0-beta.9.11",
+  "version": "1.0.0-beta.9.12",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -23,7 +23,7 @@
     "@angular/router": "^5.0.0",
     "@cyber4all/clark-entity": "^2.1.0-beta.0.3",
     "@cyber4all/clark-taxonomy": "^2.0.1",
-    "@cyber4all/clark-tooltip": "^0.2.7",
+    "@cyber4all/clark-tooltip": "^0.4.0",
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^4.1.1",
     "angular-particle": "^1.0.4",
