@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { LearningObjectFile } from '../models/learning-object-file';
 import { USER_ROUTES } from '@env/route';
 import 'rxjs/add/operator/toPromise';
 import { Http, Headers } from '@angular/http';
 import { AuthService } from '../../../../core/auth.service';
 import { CookieService } from 'ngx-cookie';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { Folder } from '../upload/upload.component';
+import { LearningObjectFile } from '../DirectoryTree';
 
 @Injectable()
 export class FileStorageService {
@@ -35,36 +34,36 @@ export class FileStorageService {
   upload(
     learningObject: LearningObject,
     files: File[] | any[],
-    directory: Map<string, Folder>
+    filePathMap: Map<string, string>
   ): Promise<LearningObjectFile[]> {
     return new Promise((resolve, reject) => {
       const formData: FormData = new FormData(),
         xhr: XMLHttpRequest = new XMLHttpRequest();
       formData.append('learningObjectID', learningObject.id);
-      const stringifiedMap = this.stringifyMap(directory);
-      formData.append('directory', stringifiedMap);
+      const stringifiedMap = this.stringifyMap(filePathMap);
+      formData.append('filePathMap', stringifiedMap);
       for (let file of files) {
         formData.append(
           'uploads',
           file,
           `${file.name}!@!${file.id ? file.id : ''}`
         );
-        xhr.onreadystatechange = () => {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              let response = xhr.response;
-              if (typeof response === 'string') response = JSON.parse(response);
-              resolve(response as LearningObjectFile[]);
-            } else {
-              reject(xhr.response);
-            }
-          }
-        };
-        const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT;
-        xhr.open('POST', route, true);
-        xhr.withCredentials = true;
-        xhr.send(formData);
       }
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            let response = xhr.response;
+            if (typeof response === 'string') response = JSON.parse(response);
+            resolve(response as LearningObjectFile[]);
+          } else {
+            reject(xhr.response);
+          }
+        }
+      };
+      const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT;
+      xhr.open('POST', route, true);
+      xhr.withCredentials = true;
+      xhr.send(formData);
     });
   }
 

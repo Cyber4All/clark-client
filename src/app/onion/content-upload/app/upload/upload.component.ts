@@ -5,12 +5,12 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { DropzoneDirective } from 'ngx-dropzone-wrapper';
-import { LearningObjectFile } from '../models/learning-object-file';
 import { TimeFunctions } from '../time-functions';
 import { NotificationService } from '../../../../shared/notifications';
-
+import { DirectoryTree, LearningObjectFile } from '../DirectoryTree';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { getPaths } from '../file-functions';
 
 import * as uuid from 'uuid';
 
@@ -26,17 +26,14 @@ import * as uuid from 'uuid';
 export class UploadComponent implements OnInit {
   public tips = TOOLTIP_TEXT;
 
-  public folders: Folder[] = [];
-  public directory: Map<string, Folder> = new Map<string, Folder>();
-  private fileMap: Map<string, string> = new Map<string, string>();
+  public filesystem: DirectoryTree;
+  private filePathMap: Map<string, string> = new Map<string, string>();
 
   currentFolder: string;
 
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
   private learningObjectName: string;
-
-  hasFile: boolean = false;
 
   learningObject: LearningObject = new LearningObject(null, '');
 
@@ -46,7 +43,7 @@ export class UploadComponent implements OnInit {
 
   file_descriptions: Map<string, string> = new Map();
 
-  acceptedFiles: any[] = [];
+  queuedUploads: any[] = [];
   private dzError: string = '';
 
   constructor(
@@ -75,6 +72,11 @@ export class UploadComponent implements OnInit {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      // FIXME: Remove cast and fix typing in entity package
+      this.constructFileSystem(<LearningObjectFile[]>this.learningObject
+        .materials.files);
+      console.log('INITIAL FILESYSTEM: ', this.filesystem);
+      console.log('INITAL NODE: ', this.filesystem.traversePath([]));
       this.watchTimestamps();
     } catch (e) {
       this.notificationService.notify(
@@ -104,7 +106,7 @@ export class UploadComponent implements OnInit {
     }, interval);
   }
   /**
-   * Fired when file is added. Verifies limit hasn't been reached and adds to accepted files
+   * Fired when file is added. Verifies limit hasn't been reached and adds to queued files & filesystem
    *
    * @param {File} file
    * @memberof UploadComponent
@@ -123,12 +125,9 @@ export class UploadComponent implements OnInit {
     }
     file.id = this.getUUID();
     const isFolder = this.isFolder(file);
-    if (isFolder) {
-      //construct Folder structure
-      this.buildDirectory(file);
-      this.getFolders();
-    }
-    this.acceptedFiles.push(file);
+    if (isFolder) this.mapToPath(file);
+    this.queuedUploads.push(file);
+    this.addToFileSystem(file);
   }
 
   /**
@@ -140,63 +139,14 @@ export class UploadComponent implements OnInit {
    */
   private isFolder(file: File): boolean {
     if (!file.fullPath) return false;
-    const paths: string[] = this.getPaths(file.fullPath);
-    if (paths.length > 1) return true;
+    const paths: string[] = getPaths(file.fullPath);
+    if (paths.length > 0) return true;
     return false;
   }
 
-  private buildDirectory(file: File) {
-    const paths: string[] = this.getPaths(file.fullPath);
-    let folder = this.constructFolder(paths, null);
-    file.parent = folder.id;
-    folder.files.push(file.id);
-  }
-
-  private constructFolder(paths: string[], parent: Folder): Folder {
-    let current = paths.shift();
-    if (!paths.length) {
-      return parent;
-    }
-    const path = (parent ? `${parent.name}/` : '') + current;
-    let folder = this.directory.get(path);
-    if (!folder) {
-      folder = this.getNewFolder(path);
-      this.directory.set(path, folder);
-    }
-    if (parent) {
-      if (!parent.subdirectories.includes(folder.id)) {
-        parent.subdirectories.push(folder.id);
-        this.directory.set(parent.name, parent);
-      }
-      folder.parent = parent.name;
-      this.directory.set(folder.name, folder);
-    }
-
-    return this.constructFolder(paths, folder);
-  }
-
-  private getNewFolder(name: string): Folder {
-    const folder = {
-      id: this.getUUID(),
-      name: name,
-      subdirectories: [],
-      files: []
-    };
-    return folder;
-  }
-
-  /**
-   * Breaks Path string into array of paths
-   *
-   * @private
-   * @param {string} path
-   * @returns {string[]}
-   * @memberof UploadComponent
-   */
-  private getPaths(path: string): string[] {
-    const paths: string[] = path.split('/');
-    if (paths[0] === '') paths.slice(0, 0);
-    return paths;
+  private mapToPath(file) {
+    const path = getPaths(file.fullPath).join('/');
+    this.filePathMap.set(file.id, path);
   }
 
   /**
@@ -226,9 +176,9 @@ export class UploadComponent implements OnInit {
   private pastFileLimit(addedSize: number) {
     const BYTE_TO_MB = 1000000;
     let size = addedSize / BYTE_TO_MB;
-    if (this.acceptedFiles.length) {
+    if (this.queuedUploads.length) {
       size +=
-        this.acceptedFiles
+        this.queuedUploads
           .map(file => file.size)
           .reduce((total, size) => total + size) / BYTE_TO_MB;
     }
@@ -253,19 +203,9 @@ export class UploadComponent implements OnInit {
     file
       ? this.dzDirectiveRef.dropzone().removeFile(file)
       : this.dzDirectiveRef.dropzone().removeAllFiles();
-    this.acceptedFiles = this.dzDirectiveRef.dropzone().getAcceptedFiles();
+    this.queuedUploads = this.dzDirectiveRef.dropzone().getAcceptedFiles();
   }
-  /**
-   * Removes files from Dropzone Queue
-   * If no file is passed removes all files from queue
-   *
-   * @param {any} file
-   * @memberof UploadComponent
-   */
-  removeFolder(folder: Folder) {
-    this.directory.delete(folder.name);
-    this.getFolders();
-  }
+
   /**
    * Adds files to scheduled deletion array and removes
    * from learning object repository files
@@ -336,13 +276,6 @@ export class UploadComponent implements OnInit {
 
       this.uploading = false;
 
-      this.constructFileSystem(learningObjectFiles);
-
-      return;
-
-      // FIXME: Temp reassignment to save breaking changes
-      learningObjectFiles = [];
-
       this.learningObject.materials.files = [
         ...this.learningObject.materials.files,
         ...(<any>learningObjectFiles)
@@ -352,9 +285,11 @@ export class UploadComponent implements OnInit {
         await this.learningObjectService.save(this.learningObject);
         this.submitting = false;
         this.uploading = false;
-        this.router.navigateByUrl(
-          `onion/content/view/${this.learningObjectName}`
-        );
+        this.constructFileSystem(<LearningObjectFile[]>this.learningObject
+          .materials.files);
+        // this.router.navigateByUrl(
+        //   `onion/content/view/${this.learningObjectName}`
+        // );
       } catch (e) {
         this.submitting = false;
         this.uploading = false;
@@ -385,13 +320,13 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   async upload(): Promise<LearningObjectFile[]> {
-    if (this.acceptedFiles.length >= 1) {
+    if (this.queuedUploads.length >= 1) {
       this.mapFileDescriptions();
       this.uploading = true;
       let learningObjectFiles = await this.fileStorageService.upload(
         this.learningObject,
-        this.acceptedFiles,
-        this.directory
+        this.queuedUploads,
+        this.filePathMap
       );
       for (let i = 0; i < learningObjectFiles.length; i++) {
         learningObjectFiles[i]['description'] = this.file_descriptions.get(
@@ -412,7 +347,7 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   private mapFileDescriptions() {
-    for (let file of this.acceptedFiles) {
+    for (let file of this.queuedUploads) {
       this.file_descriptions.set(file.id, file.description);
     }
   }
@@ -437,49 +372,31 @@ export class UploadComponent implements OnInit {
     );
   }
 
-  getFolders() {
-    this.folders = [];
-    this.directory.forEach((folder, key) => {
-      if (!folder.parent) {
-        this.folders.push(folder);
-      }
-    });
-  }
-
-  getContents() {}
-
   private getUUID(): string {
     return uuid.v1();
   }
-
-  // TODO: Implement
-  private constructFileSystem(files: any[]) {
-    let filesystem: DirectoryTree = this.learningObject.materials['filesystem']
-      ? this.learningObject.materials['filesystem']
-      : new DirectoryTree();
-
-    for (let file of files) {
-      if (!file.relativePath) {
-        filesystem.traversePath([]).addFile(file);
-      } else {
-        let paths = this.getPaths(file.relativePath);
-        console.log('PATHS: ', paths);
-        filesystem.traversePath(paths).addFile(file);
-      }
-    }
-    console.log('FILESYSTEM:', filesystem);
-    // this.learningObject.materials['filesystem'] = filesystem;
+  /**
+   * Constructs a new DirectoryTree with files
+   *
+   * @private
+   * @param {LearningObjectFile[]} files
+   * @memberof UploadComponent
+   */
+  private constructFileSystem(files: LearningObjectFile[]) {
+    this.filesystem = new DirectoryTree();
+    this.filesystem.addFiles(files);
+  }
+  /**
+   * Adds file to file system
+   *
+   * @private
+   * @param {any} file
+   * @memberof UploadComponent
+   */
+  private addToFileSystem(file) {
+    this.filesystem.addFiles([file]);
   }
 }
-
-// TODO: Move to package
-export type Folder = {
-  id: string;
-  name: string;
-  subdirectories: string[];
-  files: string[];
-  parent?: string;
-};
 
 export type File = {
   id?: string;
@@ -490,135 +407,3 @@ export type File = {
   parent: string;
   [key: string]: any;
 };
-
-export class DirectoryTree {
-  private _root: DirectoryNode;
-  private pathMap: Map<string, number> = new Map<string, number>();
-  constructor() {
-    this._root = new DirectoryNode('', '');
-  }
-
-  public traversePath(paths: string[], parent?: DirectoryNode): DirectoryNode {
-    let currentPath = paths.shift();
-    if (!parent) {
-      if (!currentPath) return this._root;
-      let index = this.pathMap.get(currentPath);
-      let children = this._root.getChildren();
-      let node = index
-        ? children[index]
-        : this.findNodeAtLevel(currentPath, children);
-      if (!node) {
-        this.pathMap.set(currentPath, 0);
-        let newNode = new DirectoryNode(currentPath, currentPath);
-        return this._root.addChild(newNode);
-      }
-      return this.traversePath(paths, node);
-    }
-    let parentPath = parent.getPath();
-    let childPath = `${parentPath}/${currentPath}`;
-    let index = this.pathMap.get(childPath);
-    let children = parent.getChildren();
-    let node = index
-      ? children[index]
-      : this.findNodeAtLevel(currentPath, children);
-    if (paths.length === 1) {
-      if (node) return node;
-      let newNode = new DirectoryNode(currentPath, childPath);
-      return parent.addChild(newNode);
-    } else {
-      return this.traversePath(paths, node);
-    }
-  }
-
-  public findNodeAtLevel(
-    path: string,
-    elements: DirectoryNode[]
-  ): DirectoryNode {
-    let node;
-    for (let i = 0; i < elements.length; i++) {
-      let child = elements[i];
-      if (child.getName() === path) {
-        this.pathMap.set(child.getPath(), i);
-        node = child;
-        break;
-      }
-    }
-    return node;
-  }
-  //TODO: Implement
-  public traverseDF() {
-    throw new Error('TraverseDF not yet implemented');
-  }
-  //TODO: Implement
-  public traverseBF() {
-    throw new Error('TraverseBF not yet implemented');
-  }
-  //TODO: Implement
-  public contains() {
-    throw new Error('Contains not yet implemented');
-  }
-
-  public add(name: string, path: string, parent: DirectoryNode) {
-    let node = new DirectoryNode(name, path);
-    parent.addChild(node);
-  }
-  //TODO: Implement
-  public remove() {
-    throw new Error('Remove not yet implemented');
-  }
-}
-
-export class DirectoryNode {
-  private name: string;
-  private path: string;
-  private files: LearningObjectFile[];
-  private parent: DirectoryNode;
-  private children: DirectoryNode[];
-
-  constructor(name: string, path: string) {
-    this.name = name;
-    this.path = path;
-    this.files = [];
-    this.parent = null;
-    this.children = [];
-  }
-
-  public getName(): string {
-    return this.name;
-  }
-
-  public getPath(): string {
-    return this.path;
-  }
-
-  public getChildren(): DirectoryNode[] {
-    return this.children;
-  }
-
-  public addChild(child: DirectoryNode): DirectoryNode {
-    this.children.push(child);
-    return this.children[this.children.length - 1];
-  }
-
-  public addFile(file: LearningObjectFile) {
-    this.files.push(file);
-  }
-
-  public removeFile(file: LearningObjectFile): LearningObjectFile {
-    let index = this.findFile(file);
-    let deleted = this.files[index];
-    this.files.splice(index, 1);
-    return deleted;
-  }
-
-  private findFile(file: LearningObjectFile): number {
-    let index = 0;
-    for (let i = 0; i < this.files.length; i++) {
-      if (this.files[i] == file) {
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
-}
