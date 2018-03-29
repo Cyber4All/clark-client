@@ -25,6 +25,12 @@
   </div>
   <div class="inner-wrapper">
     <div class="section">
+      <div class="title">Your Materials</div>
+    </div>
+    <file-manager [files$]="files$" [queuedUploads$]="queuedUploads$"></file-manager>
+  </div>
+  <div class="inner-wrapper">
+    <div class="section">
       <div class="title">Urls</div>
     </div>
     <div [ngClass]="{'empty-section': learningObject.materials.urls.length == 0}">

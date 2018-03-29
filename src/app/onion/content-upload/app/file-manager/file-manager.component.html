@@ -1,0 +1,26 @@
+<div class="file-breadcrumb">
+  <ng-container *ngFor="let path of currentPath; let i=index;">
+    <span *ngIf="i > 0">
+      <i class="far fa-chevron-right arrow"></i>
+    </span>
+    <span class="link" (click)="jumpTo(i)">{{path}}</span>
+  </ng-container>
+</div>
+<div class="flex-wrapper">
+  <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children">
+    <div>
+      <i class="fas fa-folder icon"></i>
+    </div>
+    <div>
+      {{ folder.name }}
+    </div>
+  </div>
+  <div class="file" *ngFor="let file of currentNode?.files">
+    <div>
+      <i class="fas fa-file icon"></i>
+    </div>
+    <div>
+      {{ file.name }}
+    </div>
+  </div>
+</div>

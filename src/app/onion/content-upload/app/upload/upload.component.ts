@@ -13,6 +13,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { getPaths } from '../file-functions';
 
 import * as uuid from 'uuid';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -24,14 +25,18 @@ import * as uuid from 'uuid';
   ]
 })
 export class UploadComponent implements OnInit {
+  @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
+  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
+    LearningObjectFile[]
+  >([]);
+  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
+    LearningObjectFile[]
+  >([]);
   public tips = TOOLTIP_TEXT;
 
-  public filesystem: DirectoryTree;
   private filePathMap: Map<string, string> = new Map<string, string>();
 
   currentFolder: string;
-
-  @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
   private learningObjectName: string;
 
@@ -72,11 +77,9 @@ export class UploadComponent implements OnInit {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
-      // FIXME: Remove cast and fix typing in entity package
-      this.constructFileSystem(<LearningObjectFile[]>this.learningObject
-        .materials.files);
-      console.log('INITIAL FILESYSTEM: ', this.filesystem);
-      console.log('INITAL NODE: ', this.filesystem.traversePath([]));
+      // FIXME: Update typing in entity package and remove type casting
+      this.files$.next(<LearningObjectFile[]>this.learningObject.materials
+        .files);
       this.watchTimestamps();
     } catch (e) {
       this.notificationService.notify(
@@ -127,7 +130,7 @@ export class UploadComponent implements OnInit {
     const isFolder = this.isFolder(file);
     if (isFolder) this.mapToPath(file);
     this.queuedUploads.push(file);
-    this.addToFileSystem(file);
+    this.queuedUploads$.next(this.queuedUploads);
   }
 
   /**
@@ -285,8 +288,6 @@ export class UploadComponent implements OnInit {
         await this.learningObjectService.save(this.learningObject);
         this.submitting = false;
         this.uploading = false;
-        this.constructFileSystem(<LearningObjectFile[]>this.learningObject
-          .materials.files);
         // this.router.navigateByUrl(
         //   `onion/content/view/${this.learningObjectName}`
         // );
@@ -301,6 +302,7 @@ export class UploadComponent implements OnInit {
         );
       }
     } catch (e) {
+      console.log(e);
       this.submitting = false;
       this.uploading = false;
       this.notificationService.notify(
@@ -374,27 +376,6 @@ export class UploadComponent implements OnInit {
 
   private getUUID(): string {
     return uuid.v1();
-  }
-  /**
-   * Constructs a new DirectoryTree with files
-   *
-   * @private
-   * @param {LearningObjectFile[]} files
-   * @memberof UploadComponent
-   */
-  private constructFileSystem(files: LearningObjectFile[]) {
-    this.filesystem = new DirectoryTree();
-    this.filesystem.addFiles(files);
-  }
-  /**
-   * Adds file to file system
-   *
-   * @private
-   * @param {any} file
-   * @memberof UploadComponent
-   */
-  private addToFileSystem(file) {
-    this.filesystem.addFiles([file]);
   }
 }
 

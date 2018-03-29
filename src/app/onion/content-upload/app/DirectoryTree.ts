@@ -48,6 +48,7 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   public traversePath(paths: string[], parent?: DirectoryNode): DirectoryNode {
+    paths = [...paths];
     let currentPath = paths.shift();
     if (!parent) {
       if (!currentPath) return this._root;
@@ -171,7 +172,7 @@ export class DirectoryTree {
  *
  * @class DirectoryNode
  */
-class DirectoryNode {
+export class DirectoryNode {
   private name: string;
   private path: string;
   private files: LearningObjectFile[];
