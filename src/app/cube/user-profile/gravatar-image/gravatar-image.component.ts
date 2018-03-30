@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {md5} from './md5';
 
 @Component({
   selector: 'clark-gravatar-image',
@@ -20,7 +21,7 @@ export class GravatarImageComponent implements OnInit {
   }
 
   getGravatarImage():string {
-    return 'http://www.gravatar.com/avatar/' + this.email + '?s=' + this.size;
+    return 'http://www.gravatar.com/avatar/' + md5(this.email) + '?s=' + this.size;
   }
 
 }

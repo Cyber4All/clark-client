@@ -63,6 +63,7 @@ import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
+import { GravatarImageComponent } from './user-profile/gravatar-image/gravatar-image.component';
 
 
 /**
@@ -85,7 +86,8 @@ import { FileDetailsComponent } from './learning-object-details/file-details/fil
     UserInformationComponent,
     UserEditInformationComponent,
     OrganizationListComponent,
-    FileDetailsComponent
+    FileDetailsComponent,
+    GravatarImageComponent
 ],
   imports: [
     // Angular imports
