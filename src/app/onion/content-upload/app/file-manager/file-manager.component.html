@@ -7,14 +7,14 @@
     <span class="link" (click)="jumpTo(i)">{{path}}</span>
   </ng-container>
 </div>
-<div class="flex-wrapper" [ngClass]="{empty: !currentNode?.children.length && !currentNode?.files.length}">
+<div (click)="openDropzone($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !currentNode?.children.length && !currentNode?.files.length}">
   <div *ngIf="!currentNode?.children.length && !currentNode?.files.length" class="dropzone-message">
     <div class="file-icons">
       <i class="fal fa-image fa-2x"></i>
       <i class="fal fa-file-pdf fa-2x"></i>
       <i class="fal fa-file-word fa-2x"></i>
     </div>
-    <span>Drop files and folders here</span>
+    <span>Drop files and folders or click here</span>
   </div>
   <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children">
     <div>

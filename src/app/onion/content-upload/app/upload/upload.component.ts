@@ -65,6 +65,10 @@ export class UploadComponent implements OnInit {
       : this.router.navigate(['/onion/dashboard']);
   }
 
+  openDZ() {
+    this.dzDirectiveRef.dropzone().clickableElements[0].click();
+  }
+
   /**
    * Fetches Learning Object by name
    *

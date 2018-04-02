@@ -6,13 +6,10 @@
           <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
       </div>
       <div class="title">Manage Materials
-        <span tip="{{ tips.FILE_UPLOAD }}" tipLocation="side">
-          <i class="fas fa-question-circle"></i>
-        </span>
       </div>
       <div></div>
     </div>
-    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$"></file-manager>
+    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" (openDZ)="openDZ()"></file-manager>
   </div>
   <div class="inner-wrapper">
     <div class="section">
@@ -41,7 +38,7 @@
       <div class="title">Notes</div>
     </div>
     <div class="notes">
-      <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add notes here"></textarea>
+      <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add descriptions about files here. (eg. Lab1_Solutions.doc - Solutions to Lab 1)"></textarea>
     </div>
   </div>
   <div class="btn-group to-right final">

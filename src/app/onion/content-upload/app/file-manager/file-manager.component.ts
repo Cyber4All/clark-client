@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  OnDestroy,
+  EventEmitter,
+  Output
+} from '@angular/core';
 import {
   LearningObjectFile,
   DirectoryTree,
@@ -13,6 +21,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
   @Input() files$: BehaviorSubject<LearningObjectFile[]>;
+  @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
   files: LearningObjectFile[] = [];
@@ -51,6 +60,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    */
   private addToFileSystem(file) {
     this.filesystem.addFiles([file]);
+  }
+
+  openDropzone(e) {
+    const target = e.target;
+    const classNames: string[] = target.className.trim().split(' ');
+    if (classNames.includes('dz-clickable')) {
+      this.openDZ.emit(true);
+    }
   }
 
   openFolder(path: string) {
