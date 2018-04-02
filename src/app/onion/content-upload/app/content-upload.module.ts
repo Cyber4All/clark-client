@@ -16,6 +16,9 @@ import { LearningObjectService } from '../../core/learning-object.service';
 import { FileStorageService } from './services/file-storage.service';
 
 // Components
+import { FileManagerComponent } from './file-manager/file-manager.component';
+import { UploadQueueComponent } from './file-manager/upload-queue/upload-queue.component';
+
 import { ContentUploadComponent } from './content-upload.component';
 import { UploadComponent } from './upload/upload.component';
 import { ViewComponent } from './view/view.component';
@@ -26,7 +29,13 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
 
 @NgModule({
-  declarations: [ContentUploadComponent, UploadComponent, ViewComponent],
+  declarations: [
+    ContentUploadComponent,
+    UploadComponent,
+    ViewComponent,
+    FileManagerComponent,
+    UploadQueueComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

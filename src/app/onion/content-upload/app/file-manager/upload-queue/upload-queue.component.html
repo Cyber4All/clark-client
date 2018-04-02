@@ -1,0 +1,40 @@
+<div class="queue-container">
+  <div class="header">
+    <div>
+      Queued Uploads
+    </div>
+    <div (click)="collapsed = !collapsed">
+      <span *ngIf="!collapsed">
+        <i class="far fa-minus"></i>
+      </span>
+      <span *ngIf="collapsed">
+        <i class="fal fa-bars"></i>
+      </span>
+    </div>
+  </div>
+  <div class="queue-body" [ngClass]="{collapsed: collapsed}">
+    <div class="folder" *ngFor="let folder of folders">
+      <div class="inline-flex">
+        <div>
+          <i class="fas fa-folder icon"></i>
+          {{ folder.name }}
+          <span class="item-count">({{ folder.contents.length }} items)</span>
+        </div>
+        <div (click)="remove(folder)">
+          <i class="fas fa-times-circle"></i>
+        </div>
+      </div>
+    </div>
+    <div class="file" *ngFor="let file of files">
+      <div class="inline-flex">
+        <div>
+          <i class="fas fa-file icon"></i>
+          {{ file.name }}
+        </div>
+        <div (click)="remove(file)">
+          <i class="fas fa-times-circle"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
