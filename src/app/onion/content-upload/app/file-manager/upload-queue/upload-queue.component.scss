@@ -33,3 +33,19 @@
   align-items: center;
   justify-content: space-between;
 }
+.folder {
+  .icon {
+    color: #808e9b;
+  }
+}
+
+.file {
+  .icon {
+    color: #485460;
+  }
+}
+
+.folder,
+.file {
+  margin-bottom: 10px;
+}

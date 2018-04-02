@@ -7,7 +7,15 @@
     <span class="link" (click)="jumpTo(i)">{{path}}</span>
   </ng-container>
 </div>
-<div class="flex-wrapper">
+<div class="flex-wrapper" [ngClass]="{empty: !currentNode?.children.length && !currentNode?.files.length}">
+  <div *ngIf="!currentNode?.children.length && !currentNode?.files.length" class="dropzone-message">
+    <div class="file-icons">
+      <i class="fal fa-image fa-2x"></i>
+      <i class="fal fa-file-pdf fa-2x"></i>
+      <i class="fal fa-file-word fa-2x"></i>
+    </div>
+    <span>Drop files and folders here</span>
+  </div>
   <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children">
     <div>
       <i class="fas fa-folder icon"></i>
@@ -15,6 +23,7 @@
     <div>
       {{ folder.name }}
     </div>
+    <div></div>
   </div>
   <div class="file" *ngFor="let file of currentNode?.files">
     <div>
@@ -23,5 +32,6 @@
     <div>
       {{ file.name }}
     </div>
+    <div></div>
   </div>
 </div>
