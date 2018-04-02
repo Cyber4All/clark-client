@@ -158,7 +158,8 @@ export class LearningObjectListingComponent implements OnInit {
         goalsArray = goalsArray.map(g => g.replace(/\.+\s*$/gm, ''));
 
         // join all of the formatted goals with a comma and a space and convert to lower case;
-        const goalsString = goalsArray.join(', ').toLowerCase();
+        // const goalsString = goalsArray.join(', ').toLowerCase();
+        const goalsString = goalsArray.join(', ');
         // return newly formatted string with the first character capitalized and a period at the end
         let final = this.truncateText(goalsString.charAt(0).toUpperCase() + goalsString.substring(1), 236);
         

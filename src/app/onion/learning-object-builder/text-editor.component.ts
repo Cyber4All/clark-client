@@ -1,4 +1,4 @@
-import { Input, Output, EventEmitter, Component, ChangeDetectionStrategy } from '@angular/core';
+import { Input, Output, EventEmitter, Component, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
@@ -22,10 +22,10 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
   `,
   styles: ['#cke_bottom_detail, .cke_bottom { display: none; }']
 })
-export class TextEditorComponent implements OnInit{
-  @Output()
-  textOutput: EventEmitter<String> = new EventEmitter<String>();
+export class TextEditorComponent implements OnInit, OnChanges{
+  @Output() textOutput: EventEmitter<String> = new EventEmitter<String>();
   @Input() savedContent: String;
+  @Input() editorPlaceholder: String;
   editorContent: String;
   buttonText: String;
 
@@ -33,17 +33,21 @@ export class TextEditorComponent implements OnInit{
   config: any;
 
   constructor() {
-    this.config = {
-        uiColor: '',
-        extraPlugins: 'confighelper',
-        placeholder: 'Enter or paste content here...',
-        removePlugins: 'elementspath,wsc,scayt',
-        autoGrow_onStartup: true
-    };
+
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    this.editorContent = this.savedContent;
   }
   ngOnInit() {
+    this.config = {
+      uiColor: '',
+      extraPlugins: 'confighelper',
+      placeholder: this.editorPlaceholder,
+      removePlugins: 'elementspath,wsc,scayt',
+      autoGrow_onStartup: true
+    };
     if (this.savedContent) {
-      this.editorContent = this.savedContent;
+      //this.editorContent = this.savedContent;
       this.buttonText = 'Show Content';
       // this.toggleBox();
     } else {
