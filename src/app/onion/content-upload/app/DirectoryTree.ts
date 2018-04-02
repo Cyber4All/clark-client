@@ -290,4 +290,6 @@ export type LearningObjectFile = {
   url: string;
   date: string;
   fullPath?: string;
+  size?: number;
+  description?: string;
 };

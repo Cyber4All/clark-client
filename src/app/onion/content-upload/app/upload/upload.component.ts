@@ -48,7 +48,6 @@ export class UploadComponent implements OnInit {
 
   file_descriptions: Map<string, string> = new Map();
 
-  queuedUploads: any[] = [];
   private dzError: string = '';
 
   constructor(
@@ -78,8 +77,7 @@ export class UploadComponent implements OnInit {
         this.learningObjectName
       );
       // FIXME: Update typing in entity package and remove type casting
-      this.files$.next(<LearningObjectFile[]>this.learningObject.materials
-        .files);
+      this.updateFileSubscription();
       this.watchTimestamps();
     } catch (e) {
       this.notificationService.notify(
@@ -90,6 +88,10 @@ export class UploadComponent implements OnInit {
       );
     }
   }
+  private updateFileSubscription() {
+    this.files$.next(<LearningObjectFile[]>this.learningObject.materials.files);
+  }
+
   /**
    * Adds a human readable representation of time elapsed since file was added
    *
@@ -114,7 +116,7 @@ export class UploadComponent implements OnInit {
    * @param {File} file
    * @memberof UploadComponent
    */
-  async addFile(file: File) {
+  async addFile(file) {
     await file;
     if (!file.accepted) {
       this.dzError = 'File not accepted';
@@ -129,8 +131,9 @@ export class UploadComponent implements OnInit {
     file.id = this.getUUID();
     const isFolder = this.isFolder(file);
     if (isFolder) this.mapToPath(file);
-    this.queuedUploads.push(file);
-    this.queuedUploads$.next(this.queuedUploads);
+    const queue = this.queuedUploads$.getValue();
+    queue.push(file);
+    this.queuedUploads$.next(queue);
   }
 
   /**
@@ -179,11 +182,11 @@ export class UploadComponent implements OnInit {
   private pastFileLimit(addedSize: number) {
     const BYTE_TO_MB = 1000000;
     let size = addedSize / BYTE_TO_MB;
-    if (this.queuedUploads.length) {
+    const queue = this.queuedUploads$.getValue();
+    if (queue.length) {
       size +=
-        this.queuedUploads
-          .map(file => file.size)
-          .reduce((total, size) => total + size) / BYTE_TO_MB;
+        queue.map(file => file.size).reduce((total, size) => total + size) /
+        BYTE_TO_MB;
     }
     if (size > environment.DROPZONE_CONFIG.maxFilesize) {
       this.dzError = `Exceeded max upload size of ${
@@ -193,20 +196,6 @@ export class UploadComponent implements OnInit {
     }
 
     return false;
-  }
-
-  /**
-   * Removes files from Dropzone Queue
-   * If no file is passed removes all files from queue
-   *
-   * @param {any} file
-   * @memberof UploadComponent
-   */
-  removeFromDZ(file) {
-    file
-      ? this.dzDirectiveRef.dropzone().removeFile(file)
-      : this.dzDirectiveRef.dropzone().removeAllFiles();
-    this.queuedUploads = this.dzDirectiveRef.dropzone().getAcceptedFiles();
   }
 
   /**
@@ -279,6 +268,8 @@ export class UploadComponent implements OnInit {
 
       this.uploading = false;
 
+      this.submitting = false;
+
       this.learningObject.materials.files = [
         ...this.learningObject.materials.files,
         ...(<any>learningObjectFiles)
@@ -288,9 +279,7 @@ export class UploadComponent implements OnInit {
         await this.learningObjectService.save(this.learningObject);
         this.submitting = false;
         this.uploading = false;
-        // this.router.navigateByUrl(
-        //   `onion/content/view/${this.learningObjectName}`
-        // );
+        this.updateFileSubscription();
       } catch (e) {
         this.submitting = false;
         this.uploading = false;
@@ -322,19 +311,21 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   async upload(): Promise<LearningObjectFile[]> {
-    if (this.queuedUploads.length >= 1) {
-      this.mapFileDescriptions();
+    const queue = this.queuedUploads$.getValue();
+    if (queue.length >= 1) {
+      // this.mapFileDescriptions();
       this.uploading = true;
       let learningObjectFiles = await this.fileStorageService.upload(
         this.learningObject,
-        this.queuedUploads,
+        queue,
         this.filePathMap
       );
-      for (let i = 0; i < learningObjectFiles.length; i++) {
-        learningObjectFiles[i]['description'] = this.file_descriptions.get(
-          learningObjectFiles[i]['id']
-        );
-      }
+      this.queuedUploads$.next([]);
+      // for (let i = 0; i < learningObjectFiles.length; i++) {
+      //   learningObjectFiles[i]['description'] = this.file_descriptions.get(
+      //     learningObjectFiles[i]['id']
+      //   );
+      // }
 
       return learningObjectFiles;
     }
@@ -349,7 +340,8 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   private mapFileDescriptions() {
-    for (let file of this.queuedUploads) {
+    const queue = this.queuedUploads$.getValue();
+    for (let file of queue) {
       this.file_descriptions.set(file.id, file.description);
     }
   }

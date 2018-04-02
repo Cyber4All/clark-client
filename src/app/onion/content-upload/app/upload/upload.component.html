@@ -12,22 +12,7 @@
       </div>
       <div></div>
     </div>
-    <div class="dropzone upload-container" [dropzone] (addedFile)="addFile($event)">
-      <div class="dropzone-message">
-        <div class="file-icons">
-          <i class="fal fa-image fa-2x"></i>
-          <i class="fal fa-file-pdf fa-2x"></i>
-          <i class="fal fa-file-word fa-2x"></i>
-        </div>
-        <span>Click or drop any files here</span>
-      </div>
-    </div>
-  </div>
-  <div class="inner-wrapper">
-    <div class="section">
-      <div class="title">Your Materials</div>
-    </div>
-    <file-manager [files$]="files$" [queuedUploads$]="queuedUploads$"></file-manager>
+    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$"></file-manager>
   </div>
   <div class="inner-wrapper">
     <div class="section">
@@ -72,3 +57,4 @@
     </div>
   </div>
 </div>
+<upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$"></upload-queue>

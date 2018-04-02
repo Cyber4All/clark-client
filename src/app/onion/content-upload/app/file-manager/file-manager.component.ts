@@ -13,7 +13,6 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
   @Input() files$: BehaviorSubject<LearningObjectFile[]>;
-  @Input() queuedUploads$: BehaviorSubject<LearningObjectFile[]>;
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
   files: LearningObjectFile[] = [];
@@ -27,18 +26,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.files$.subscribe(files => {
         this.filesystem.addFiles(files);
-        console.log('FILESYSTEM: ', this.filesystem);
         this.refreshNode();
       })
     );
-    // this.subscriptions.push(
-    //   this.queuedUploads$.subscribe(queuedUploads => {
-    //     this.queuedUploads = queuedUploads;
-    //     this.filesystem.addFiles(queuedUploads);
-    //     console.log('FILESYSTEM: ', this.filesystem);
-    //     this.refreshNode();
-    //   })
-    // );
   }
 
   /**
@@ -68,9 +58,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     this.refreshNode();
   }
 
-  jumpTo(index: number) {
+  jumpTo(index: number, root?: boolean) {
     let path;
-    if (index === 0) {
+    if (root) {
       path = [];
     } else {
       path = this.currentPath.slice(0, index + 1);
@@ -83,7 +73,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   private refreshNode() {
     let path = this.currentPath;
     this.currentNode = this.filesystem.traversePath(path);
-    console.log('NODE AT: ', path, this.currentNode);
   }
 
   ngOnDestroy(): void {

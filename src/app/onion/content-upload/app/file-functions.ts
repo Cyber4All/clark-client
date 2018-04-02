@@ -1,5 +1,5 @@
 /**
- * Breaks Path string into array of paths
+ * Breaks Path string into array of paths. Removes last element assuming last element is file name.
  *
  * @private
  * @param {string} path

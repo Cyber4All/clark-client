@@ -45,7 +45,7 @@ select {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
-  &>div {
+  & > div {
     width: 33%;
   }
   .title {
@@ -282,4 +282,10 @@ select {
 
 .cell.file-description {
   padding-right: 15px;
+}
+
+.upload-queue {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
 }
