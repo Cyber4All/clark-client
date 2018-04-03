@@ -1,34 +1,178 @@
 @import '~_vars.scss';
 
+$border-color: lighten($dark-text, 55);
+
+.back {
+  color: $blue-accent;
+  @include vert-center;
+  cursor: pointer;
+  font-size: 15px;
+  margin-bottom: 10px;
+  outline: none;
+
+  .svg-inline--fa,
+  .icon {
+    margin-right: 5px;
+    @include vert-center;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+::ng-deep .input-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: flex-start;
+  margin-bottom: 35px;
+
+  .label {
+    color: $dark-text;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+    padding-left: 0;
+    margin-bottom: 5px;
+  }
+
+  & > *:last-child,
+  input {
+    max-width: 800px;
+    font-size: 16px;
+  }
+}
+
 .inner-wrapper {
   border-radius: 4px;
   background: white;
   padding: 20px;
   box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+
   &:not(:first-child) {
     margin-top: 20px;
   }
 }
 
+.wrapper {
+  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+  background: white;
+
+  .top-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid (lighten($dark-text, 50));
+
+    .left {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    .right {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .published-toggle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 30px;
+
+        .toggle-label {
+          color: $error-red;
+          font-weight: bold;
+          text-transform: uppercase;
+          transition: all 0.2s ease;
+          margin-right: 5px;
+        
+          &.published {
+            color: $green;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    .title-user {
+      @include vert-center;
+
+      .title {
+        font-size: 24px;
+        text-transform: uppercase;
+
+        &.placeholder {
+          color: $placeholder;
+        }
+      }
+
+      .length {
+        padding: 5px;
+        font-size: 12px;
+        color: white;
+        border-radius: 2px;
+        font-weight: normal;
+        margin-left: 5px;
+
+        &.nanomodule {
+          background: $nanomodule-color;
+        }
+
+        &.micromodule {
+          background: $micromodule-color;
+        }
+
+        &.module {
+          background: $module-color;
+        }
+
+        &.unit {
+          background: $unit-color;
+        }
+
+        &.course {
+          background: $course-color;
+        }
+      }
+    }
+  }
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+
+  .component-wrapper {
+    width: 100%;
+    padding: 15px 40px;
+  }
+
+  .sidebar-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-right: 1px solid (lighten($dark-text, 50));
+    max-width: 260px;
+    width: 100%;
+  }
+}
+
 button[disabled] {
-  opacity: .8;
+  opacity: 0.8;
   cursor: not-allowed;
 }
 
-::ng-deep .description-wrapper,
-::ng-deep .outcome-container-wrapper {
-  margin-top: 20px;
-}
-
-::ng-deep .description-wrapper,
-::ng-deep .outcome-container-wrapper {
-  margin-top: 20px;
-}
-
-::ng-deep input {
-  border: 2px solid $placeholder;
+::ng-deep input,
+::ng-deep textarea {
+  border: 1px solid $placeholder;
   outline: 0;
-  padding: 7px;
+  padding: 10px;
+  border-radius: 3px;
+
   &:focus {
     border-color: $blue-accent;
   }

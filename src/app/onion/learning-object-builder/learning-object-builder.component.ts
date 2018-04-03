@@ -1,6 +1,6 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
@@ -29,7 +29,7 @@ import { AuthService } from 'app/core/auth.service';
 export class LearningObjectBuilderComponent implements OnInit {
   public PAGES = PAGES;
   public activePage = PAGES.INFO;
-  public outcomeIndex;
+  public childIndex;
   public tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject = new LearningObject();
@@ -53,7 +53,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private store: LearningObjectStoreService,
-    private auth: AuthService
+    private auth: AuthService,
   ) {}
 
   ngOnInit() {
@@ -66,7 +66,8 @@ export class LearningObjectBuilderComponent implements OnInit {
       }
     });
     this.store.state.subscribe(state => {
-      this.changePage(state.section);
+      console.log('state', state);
+      this.changePage(state.section, state.childSection, state.noPage);
     });
   }
   /**
@@ -81,27 +82,10 @@ export class LearningObjectBuilderComponent implements OnInit {
       this.learningObjectName = this.route.snapshot.params[
         'learningObjectName'
       ];
-      this.loadLearningObject();
+      this.learningObject = this.route.snapshot.data['learningObject'];
     } else {
       this.isNew = true;
     }
-  }
-  /**
-   * Loads LearningObject by ID
-   * Logs error if unable to fetch LearningObject
-   *
-   * @memberof LearningObjectBuilderComponent
-   */
-  loadLearningObject(): void {
-    this.service
-      .getLearningObject(this.learningObjectName)
-      .then(learningObject => {
-        this.learningObject = learningObject;
-        console.log(this.learningObject);
-      })
-      .catch(err => {
-        this.isNew = true;
-      });
   }
 
   /**
@@ -113,10 +97,11 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   async save(willUpload: boolean) {
+    console.log('object to save', this.learningObject);
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
-      if (!willUpload) {
+      if (!willUpload && this.isNew) {
         await this.showPublishingDialog();
       }
       this.service
@@ -147,7 +132,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
-      if (!willUpload) {
+      if (!willUpload && this.isNew) {
         await this.showPublishingDialog();
       }
       this.service
@@ -266,7 +251,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (newOutcome.verb === 'Define') {
       newOutcome.verb = 'Choose';
     }
-    this.advanceSection();
+    // this.advanceSection();
     return newOutcome;
   }
 
@@ -280,14 +265,15 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   deleteOutcome(index: number): void {
-    console.log(index);
+    console.log('index', index);
     this.learningObject.removeOutcome(index);
-    this.store.dispatch({
-      type: 'NAVIGATE',
-      request: {
-        sectionModifier: -1
-      }
-    });
+    // this.store.dispatch({
+    //   type: 'NAVIGATE',
+    //   request: {
+    //     sectionModifier: -1
+    //   }
+    // });
+    console.log(this.learningObject);
   }
   /**
    * Deletes InstructionalStrategy from LearningObject's LearningOutcomes
@@ -342,30 +328,39 @@ export class LearningObjectBuilderComponent implements OnInit {
   validate(): boolean {
     // check name
     if (this.learningObject.name === '') {
-      console.log('bad name');
+      this.notificationService.notify('Error!', 'Please enter a name for this learning object!', 'bad', 'far fa-times');
       return false;
     }
 
     // check outcomes
-    const o: NodeListOf<Element> = document.querySelectorAll(
-      'onion-learning-outcome-component > .container'
-    );
-    for (const outcome of Array.from(o)) {
-      if (outcome.attributes['valid'].value !== 'true') {
-        console.log('bad outcome');
-        return false;
-      }
+    const badOutcomes = this.learningObject.outcomes.map((x, i) => (!x.text || x.text === '') ? i : undefined).filter(x => x);
+    if (badOutcomes.length) {
+      this.store.dispatch({
+        type: 'NAVIGATE',
+        request: {
+          sectionIndex: 1
+        }
+      });
+      this.store.dispatch({
+        type: 'NAVIGATECHILD',
+        request: {
+          sectionIndex: badOutcomes[0]
+        }
+      });
+      this.notificationService.notify('Error!', 'You cannot submit a learning outcome without text!', 'bad', 'far fa-times');
+      return false;
     }
-
     return true;
   }
 
-  changePage(page) {
-    if (page === 0) {
-      this.activePage = PAGES.INFO;
-    } else {
-      this.activePage = PAGES.OUTCOMES;
-      this.outcomeIndex = page - 1;
+  changePage(page, childPage, noPage = false) {
+    if (!noPage) {
+      if (page === 0) {
+        this.activePage = PAGES.INFO;
+      } else {
+        this.activePage = PAGES.OUTCOMES;
+        this.childIndex = childPage;
+      }
     }
   }
 
@@ -374,6 +369,16 @@ export class LearningObjectBuilderComponent implements OnInit {
       type: 'NAVIGATE',
       request: {
         sectionModifier: 1
+      }
+    });
+  }
+
+  togglePublished(event) {
+    this.service.togglePublished(this.learningObject).then(val => {
+      if (this.learningObject.published) {
+        this.learningObject.unpublish();
+      } else {
+        this. learningObject.publish();
       }
     });
   }

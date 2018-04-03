@@ -1,64 +1,142 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges, IterableDiffers, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectStoreService } from '../../store';
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { AuthService } from '../../../../core/auth.service';
+import { LearningOutcome } from '@cyber4all/clark-entity';
+
+interface SidebarLink {
+  name: string;
+  action: Function;
+  classes?: string;
+  children?: SidebarLink[];
+  externalAction?: boolean;
+}
 
 @Component({
   selector: 'onion-sidebar',
   templateUrl: 'sidebar.component.html',
   styleUrls: ['sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnChanges {
-  @Input() outcomeCount;
+export class SidebarComponent implements OnInit, DoCheck, OnChanges {
+  @Input() outcomes: LearningOutcome[];
   @Input() learningObjectName;
-  @Output() nav = new EventEmitter<number>();
+  @Output() newOutcome = new EventEmitter();
+  @Output() upload = new EventEmitter();
 
-  links = ['Metadata'];
+
+  links: SidebarLink[] = [
+    {
+      name: 'Basic Information',
+      action: this.navigate,
+    },
+    {
+      name: 'Learning Outcomes',
+      action: this.navigate,
+      children: [
+        {
+          name: 'New Learning Outcome',
+          action: this.createOutcome,
+          externalAction: true,
+          classes: 'new'
+        }
+      ]
+    }
+  ];
 
   activeIndex;
+  activeChildIndex;
+  outcomesDiffer;
+
+  self = this;
+
+  public tips = TOOLTIP_TEXT;
+  
   constructor(
     private router: Router,
-    private store: LearningObjectStoreService
-  ) { }
+    private store: LearningObjectStoreService,
+    private auth: AuthService,
+    private _iterableDiffers: IterableDiffers
+  ) {
+    this.outcomesDiffer = this._iterableDiffers.find([]).create(null);
+  }
 
   ngOnInit() {
     this.store.state.subscribe(state => {
       this.activeIndex = state.section;
+
+      if (this.activeChildIndex !== state.childSection) {
+        this.activeChildIndex = state.childSection;
+      } else {
+        this.activeChildIndex = undefined;
+      }
     });
   }
 
-  ngOnChanges(changes) {
-    if (changes.outcomeCount) {
-      this.buildMenu(changes);
+  ngDoCheck() {
+    const changes = this.outcomesDiffer.diff(this.outcomes);
+    if (changes) {
+      this.buildOutcomes(changes.collection);
     }
   }
 
-  buildMenu(changes) {
-    const outcomes = [];
-    if (changes.outcomeCount.previousValue < changes.outcomeCount.currentValue) {
-      for (let i = changes.outcomeCount.previousValue; i < this.outcomeCount; i++) {
-        outcomes.push('Outcome ' + (i + 1));
-      }
-      this.links = [...this.links, ...outcomes];
-    } else if (changes.outcomeCount.previousValue > changes.outcomeCount.currentValue) {
-      console.log('We lost one!');
-      for (let i = changes.outcomeCount.previousValue; i > changes.outcomeCount.currentValue; i--) {
-        this.links.pop();
+  ngOnChanges(changes: SimpleChanges) {
+    this.buildMenu(changes);
+  }
+
+  buildMenu(changes?: SimpleChanges) {
+    if (changes && changes.outcomes) {
+      this.buildOutcomes(changes.outcomes.currentValue, true);
+    }
+  }
+
+  buildOutcomes(outcomes, noNav = false) {
+    const linkEl = this.links.filter(l => l.name === 'Learning Outcomes')[0];
+    outcomes = outcomes.map((m: LearningOutcome, i: number) =>  ({ name: m.text && m.text !== '' ? m.outcome : 'Learning Outcome ' + (+i + 1), action: this.navigateChild }));
+
+    linkEl.children = [...outcomes, linkEl.children[linkEl.children.length - 1]];
+
+    if (!noNav) {
+      if (linkEl.children.length > 1) {
+        // we have outcomes, navigate to the last one
+        this.navigateChild(linkEl.children.length - 2);
+      } else {
+        // we don't have outcomes, navigate to closest higher activeIndex
+        if (this.activeIndex !== 0) {
+          this.navigate(this.activeIndex - 1);
+        } else {
+          this.navigate(this.activeIndex + 1);
+        }
       }
     }
   }
 
-  navigate(i) {
-    this.store.dispatch({
-      type: 'NAVIGATE',
+  // these contain references to 'self' because they're being passed as parameters to the Angular HTML where 'this' isn't the same
+  navigate(i, self = this, parent = false) {
+    const t = parent ? 'NAVIGATEPARENT' : 'NAVIGATE';
+    self.store.dispatch({
+      type: t,
       request: {
         sectionIndex: i
       }
     });
   }
 
+  navigateChild(i, self = this) {
+    self.buildOutcomes(self.outcomes, true);
+    self.store.dispatch({
+      type: 'NAVIGATECHILD',
+      request: {
+        sectionIndex: i
+      }
+    });
+  }
+
+  createOutcome(i, self = this) {
+    self.newOutcome.emit();
+  }
+
   uploadMaterials() {
-    this.router.navigateByUrl(
-      `/onion/content/upload/${this.learningObjectName.trim()}`
-    );
+    this.upload.emit();
   }
 }

@@ -20,6 +20,7 @@ import { NotificationModule } from '../shared/notifications';
 import { ModalModule } from '../shared/modals';
 import { DashboardResolver } from './dashboard/dashboard.resolver';
 import { TooltipModule } from '@cyber4all/clark-tooltip';
+import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -49,6 +50,6 @@ import { TooltipModule } from '@cyber4all/clark-tooltip';
     NotificationModule,
     TooltipModule
   ],
-  providers: [ DashboardResolver ]
+  providers: [ DashboardResolver, LearningObjectResolve ]
 })
 export class OnionModule { }

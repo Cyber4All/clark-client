@@ -1,9 +1,6 @@
 @import '~_vars.scss';
 .metadata-wrapper {
-  border-radius: 4px;
-  background: white;
-  padding: 20px;
-  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+
   .header {
     display: flex;
     flex-direction: row;
@@ -19,39 +16,6 @@
       text-align: center;
       text-transform: uppercase;
     }
-    .back {
-      color: $blue-accent;
-      @include vert-center;
-      cursor: pointer;
-      font-size: 15px;
-      .svg-inline--fa,
-      .icon {
-        margin-right: 5px;
-        @include vert-center;
-      }
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-  .faux-table {
-    .row {
-      padding-left: 0px !important;
-      padding-right: 0px !important;
-      background: transparent;
-    }
-    .columns {
-      padding: 0px 0px 0px !important;
-    }
-    .cell {
-      width: 49% !important;
-      input {
-        width: 100%;
-        &.name-field {
-          width: calc(100% - 18px);
-        }
-      }
-    }
   }
   select {
     &[name='type'],
@@ -59,11 +23,13 @@
       width: 100%;
     }
   }
+
   .level-list {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+
     .level {
       text-transform: none;
       cursor: pointer;
@@ -74,6 +40,7 @@
       padding: 5px 10px;
       border-radius: 2px;
       border: 3px solid transparent;
+      margin-top: 10px;
     }
     .level.selected {
       background: $blue-accent;

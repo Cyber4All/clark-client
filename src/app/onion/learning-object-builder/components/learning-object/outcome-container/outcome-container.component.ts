@@ -12,7 +12,8 @@ export class LearningObjectOutcomeContainerComponent implements OnInit {
   @Output() newOutcomeRequest = new EventEmitter<string>();
   @Output() deleteOutcomeRequest = new EventEmitter<number>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() { }
 

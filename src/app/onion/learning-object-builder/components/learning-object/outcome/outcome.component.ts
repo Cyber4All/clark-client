@@ -12,10 +12,15 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges
+  OnChanges,
+  ViewChild
 } from '@angular/core';
 import { MappingsFilterService } from '../../../../../core/mappings-filter.service';
 import { ModalService } from '../../../../../shared/modals';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
 
 
 @Component({
@@ -30,11 +35,15 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
+  @ViewChild('outcomeInput', {read: ElementRef}) outcomeInput: ElementRef;
+  
+
   suggestOpen = false;
   openSearch = false;
   suggestIndex: number;
   mappings: Array<Object>;
   bloomLevels;
+  outcomeSuggestionText = '';
 
   classverbs: { [level: string]: Set<string> };
   testquizstrategies: { [level: string]: Set<string> };
@@ -46,11 +55,15 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   setupView() {
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
-    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
+
+    if (!this.outcome._verb) {
+      this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
+    }
+
     this.suggestionService.udpateMappings(this.outcome._mappings);
   }
+
   ngOnInit() {
-    console.log(this.outcome);
     this.bloomLevels = levels;
     this.testquizstrategies = quizzes;
     this.classassessmentstrategies = assessments;
@@ -66,10 +79,20 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
     // TODO make sure this system handles editing objects that already have outcomes mapped
     this.suggestionService.udpateMappings(this.outcome._mappings);
     this.setupView();
+
+    // pass the outcome text to the suggestion component
+    this.outcomeSuggestionText = this.outcome._text;
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    Observable.fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
+      this.outcomeSuggestionText = val;
+    });
   }
 
-  ngOnChanges() {
-    this.setupView();
+  ngOnChanges(changes: SimpleChanges) {
+    if (!Object.values(changes).map(c => c.firstChange).includes(false)) {
+      // don't call this on initialize, leave that for ngOnInit
+      this.setupView();
+    }
   }
 
   sortVerbs() {
@@ -177,7 +200,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   // addMappings(e) {
   //   this.openSearch = false;
   //   for (const m of e) {
-  //     
+  //
   //     this.suggestionService.addMapping(m);
   //   }
   // }

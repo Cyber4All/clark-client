@@ -7,6 +7,7 @@ import { AuthGuard } from '../core/auth-guard.service';
 import { UserVerifiedGuard } from '../core/user-verified.guard';
 import { OnionComponent } from './onion.component';
 import { DashboardResolver } from './dashboard/dashboard.resolver';
+import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -20,7 +21,9 @@ const onion_routes: Routes = [
     path: '', component: OnionComponent, children: [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], resolve: { learningObjects: DashboardResolver }, },
       { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard] },
-      { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard] },
+      { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard], resolve: {
+        learningObject: LearningObjectResolve
+      } },
       // Load Neutrino module
       // TODO: content should redirect, only show child routes
       { path: 'content', loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule', canActivate: [UserVerifiedGuard] },
@@ -34,6 +37,7 @@ export const OnionRoutingModule: ModuleWithProviders = RouterModule.forChild(oni
 /*
 @NgModule({
   imports: [RouterModule.forChild(onion_routes)],
-  exports: [RouterModule]
+  import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
+exports: [RouterModule]
 })
 export class OnionRoutingModule { }*/

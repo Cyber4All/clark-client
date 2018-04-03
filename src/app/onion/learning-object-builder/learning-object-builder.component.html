@@ -1,50 +1,63 @@
-<onion-sidebar 
-  [outcomeCount]="learningObject.outcomes.length"
-  [learningObjectName]="learningObject.name">
-</onion-sidebar>
-<div>
-  <div class="inner">
-    <!-- Back Button -->
-    <div class="back" routerLink="/onion/dashboard">
-      <div>
-        <i class="far fa-arrow-to-left"></i>
-        Back to Learning Objects
+<!-- Back Button -->
+<div class="back" routerLink="/onion/dashboard">
+  <div>
+    <i class="far fa-arrow-to-left"></i>
+    Back to Learning Objects
+  </div>
+</div>
+<div class="wrapper">
+  <div class="top-content" [ngClass]="learningObject.length">
+    <div class="left">
+      <div class="title-user">
+        <div class="title" [ngClass]="{'placeholder': !learningObject.name}">
+          {{ learningObject.name || 'Learning Object Name' }}
+        </div>
+        <div class="author">
+          {{ auth.name }}
+          <span class="length {{ learningObject.length }}">
+            {{ learningObject.length }}
+          </span>
+        </div>
       </div>
     </div>
-    
-    <form #form="ngForm" (ngSubmit)="form.valid ? save(false) : showFormErrors()">
-      <onion-learning-object-info-page *ngIf="activePage === PAGES.INFO" [learningObject]="learningObject"></onion-learning-object-info-page>
-      <onion-learning-object-outcome-container
-        *ngIf="activePage === PAGES.OUTCOMES"
-        [learningObject]="learningObject"
-        [submitted]="submitted"
-        [outcomeIndex]="outcomeIndex"
-        (deleteOutcomeRequest)="deleteOutcome($event)">
-      </onion-learning-object-outcome-container>
-      
-      <div class="btn-group to-right final">
-        <button class="button good" *ngIf="(outcomeIndex !== undefined && outcomeIndex < learningObject.outcomes.length-1) || outcomeIndex === undefined && learningObject.outcomes.length > 0" (click)="advanceSection()">Next
-          <i class="far fa-arrow-right"></i>
-        </button>
-        <button *ngIf="outcomeIndex === learningObject.outcomes.length-1 || (activePage === PAGES.INFO && learningObject.outcomes.length === 0)" class="button good" (click)="newOutcome()">Add Learning Outcome
-          <i class="far fa-arrow-right"></i>
-        </button>
-        <button class="button good save-button" type="submit">Save
-          <i class="far fa-check"></i>
-        </button>
-        <div *ngIf="auth.user.emailVerified" class="button neutral" (click)="form.valid ? save(true) : showFormErrors()">Upload Materials
-          <i class="far fa-upload"></i>
+    <div class="right">
+      <div *ngIf="!isNew" class="published-toggle" [ngClass]="{'disabled': !auth.user}" tip='test tooltip' tipLocation='above' tipDisabled='{{ (auth.user ? false : true) }}'>
+        <div class='toggle-label' [ngClass]="{'published': learningObject.published}">
+          {{ (this.learningObject.published) ? 'published' : 'unpublished' }}
         </div>
-        <div *ngIf="!auth.user.emailVerified" tip="{{ tips.UNVERIFIED_UPLOAD }}" tipLocation="above">
-          <div  class="button neutral disabled">Upload Materials
-            <i class="far fa-upload"></i>
-          </div>
-        </div>
-        <div class="button bad" routerLink="/onion/dashboard">Cancel
-          <i class="far fa-times"></i>
+        <div class="toggleSwitch" (click)="togglePublished($event)" [ngClass]="{'on': learningObject.published}">
+          <div class="handle"></div>
+          <div class="bg"></div>
         </div>
       </div>
-
-    </form>
+      <div class="btn-group to-right">
+        <div class="button good save-button" (click)="validate() && save()">Save
+          <i class="far fa-check"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-wrapper">
+    <div class="sidebar-wrapper">
+      <onion-sidebar 
+        [outcomes]="this.learningObject._outcomes"
+        [learningObjectName]="learningObject.name"
+        (newOutcome)="newOutcome()"
+        (upload)="validate() && save(true)"
+        >
+      </onion-sidebar>
+    </div>
+    <div class="component-wrapper">
+      <div class="inner">        
+          <onion-learning-object-info-page *ngIf="activePage === PAGES.INFO" [learningObject]="learningObject"></onion-learning-object-info-page>
+          <onion-learning-object-outcome-container
+            *ngIf="activePage === PAGES.OUTCOMES"
+            [learningObject]="learningObject"
+            [submitted]="submitted"
+            [outcomeIndex]="childIndex"
+            (deleteOutcomeRequest)="deleteOutcome($event)">
+          </onion-learning-object-outcome-container>
+      </div>
+    </div>
   </div>
 </div>

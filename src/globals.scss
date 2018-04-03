@@ -65,15 +65,17 @@ body {
   position: relative;
 
   select {
-    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     background: transparent;
     color: $dark-text;
-    padding: 7px;
+    padding: 10px;
     border-radius: 0px;
-    border: 2px solid $placeholder;
+    border: 1px solid $placeholder;
     outline: 0;
     z-index: 1;
     position: relative;
+    border-radius: 3px;
 
     &:focus {
       border-color: $blue-accent;
@@ -82,16 +84,16 @@ body {
 
   &::after {
     display: none;
-    content: '\f0dc';
+    content: '\f107';
     font-family: 'Font Awesome 5 Solid';
   }
 
   .svg-inline--fa {
     position: absolute;
     right: 10px;
-    top: 12px;
+    top: 16px;
     z-index: 0;
-    color: $dark-text;
+    color: lighten($dark-text, 30);
   }
 }
 
@@ -164,6 +166,51 @@ body {
 
   &:hover {
     opacity: 0.8;
+  }
+}
+
+.toggleSwitch {
+  border-radius: 22px;
+  width: 60px;
+  height: 30px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &.on {
+
+    .bg {
+      background: $green;
+    }
+
+    .handle {
+      right: 1px;
+    }
+  }
+
+  .handle {
+    background: linear-gradient(to top, white, darken(white, 4px));
+    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0; bottom: 0; right: 30px;
+    margin: auto;
+    z-index: 1;
+    transition: right 0.2s ease-out;
+  }
+
+
+  .bg {
+    background: $error-red;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    transition: background 0.2s ease;
+  }
+
+  &.on {
+    background: $green;
   }
 }
 
