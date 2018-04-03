@@ -84,8 +84,7 @@ export class FileStorageService {
 
     return this.http
       .delete(route, { headers: this.headers, withCredentials: true })
-      .toPromise()
-      .then(success => success.json());
+      .toPromise();
   }
 
   private stringifyMap(map: Map<any, any>): string {

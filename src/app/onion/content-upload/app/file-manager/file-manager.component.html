@@ -16,7 +16,9 @@
     </div>
     <span>Drop files and folders or click here</span>
   </div>
-  <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children">
+  <!-- Render Folders -->
+  <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children" [contextMenu]="fileOptions"
+    [contextMenuSubject]="folder">
     <div>
       <i class="fas fa-folder icon"></i>
     </div>
@@ -25,7 +27,8 @@
     </div>
     <div></div>
   </div>
-  <div class="file" *ngFor="let file of currentNode?.files">
+  <!-- Render Files -->
+  <div class="file" *ngFor="let file of currentNode?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
     <div>
       <i class="fas fa-file icon"></i>
     </div>
@@ -35,3 +38,16 @@
     <div></div>
   </div>
 </div>
+
+<context-menu>
+  <ng-template contextMenuItem (execute)="deleteFile($event.item)">
+    <div class="context-item bad">
+      <div>
+        Delete
+      </div>
+      <div>
+        <i class="far fa-trash-alt"></i>
+      </div>
+    </div>
+  </ng-template>
+</context-menu>

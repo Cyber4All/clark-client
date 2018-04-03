@@ -5,7 +5,8 @@ import {
   OnChanges,
   OnDestroy,
   EventEmitter,
-  Output
+  Output,
+  ViewChild
 } from '@angular/core';
 import {
   LearningObjectFile,
@@ -13,6 +14,8 @@ import {
   DirectoryNode
 } from '../DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { ContextMenuComponent } from 'ngx-contextmenu';
+import { FileStorageService } from '../services/file-storage.service';
 
 @Component({
   selector: 'file-manager',
@@ -20,12 +23,12 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
+  @ViewChild(ContextMenuComponent) public fileOptions: ContextMenuComponent;
   @Input() files$: BehaviorSubject<LearningObjectFile[]>;
+  @Output() fileDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
-  files: LearningObjectFile[] = [];
-  queuedUploads: LearningObjectFile[] = [];
 
   currentPath: string[] = [];
   currentNode: DirectoryNode;
@@ -36,6 +39,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.files$.subscribe(files => {
         this.filesystem.addFiles(files);
         this.refreshNode();
+        console.log(files);
       })
     );
   }
@@ -60,6 +64,35 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    */
   private addToFileSystem(file) {
     this.filesystem.addFiles([file]);
+  }
+
+  deleteFile(file) {
+    let scheduledDeletions: string[] = [];
+    if (!(file instanceof DirectoryNode)) {
+      scheduledDeletions = [file.fullPath ? file.fullPath : file.name];
+      this.filesystem.removeFile(file.fullPath ? file.fullPath : file.name);
+    } else {
+      const folder = file;
+      this.filesystem.removeFolder(folder.getPath());
+      scheduledDeletions = this.getFilePaths(folder);
+    }
+    this.fileDeleted.emit(scheduledDeletions);
+  }
+
+  getFilePaths(folder: DirectoryNode): string[] {
+    const children = folder.getChildren();
+    const files = folder.getFiles();
+    if (!children.length && !files.length) {
+      return [];
+    }
+    let filePaths = [];
+    for (let file of files) {
+      filePaths.push(file.fullPath);
+    }
+    for (let child of children) {
+      filePaths = [...filePaths, ...this.getFilePaths(child)];
+    }
+    return filePaths;
   }
 
   openDropzone(e) {

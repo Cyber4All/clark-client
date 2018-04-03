@@ -56,9 +56,10 @@ export class DirectoryTree {
       let index = this.pathMap.get(currentPath);
       let children = this._root.getChildren();
 
-      let node = index
-        ? children[index]
-        : this.findNodeAtLevel(currentPath, children);
+      let node =
+        index !== undefined
+          ? children[index]
+          : this.findNodeAtLevel(currentPath, children);
 
       if (node) return this.traversePath(paths, node);
 
@@ -72,9 +73,10 @@ export class DirectoryTree {
     let childPath = `${parentPath}/${currentPath}`;
     let index = this.pathMap.get(childPath);
     let children = parent.getChildren();
-    let node = index
-      ? children[index]
-      : this.findNodeAtLevel(currentPath, children);
+    let node =
+      index !== undefined
+        ? children[index]
+        : this.findNodeAtLevel(currentPath, children);
 
     if (node) return this.traversePath(paths, node);
 
@@ -132,7 +134,8 @@ export class DirectoryTree {
    * @param {string[]} paths Array of paths to folder
    * @memberof DirectoryTree
    */
-  public removeFolder(paths: string[]) {
+  public removeFolder(path: string) {
+    const paths = getPaths(path, false);
     let node = this.traversePath(paths);
     if (node) {
       let parent = node.getParent();
@@ -140,24 +143,21 @@ export class DirectoryTree {
       let removingFrom = parent ? parent : this._root;
       removingFrom.getChildren().splice(index, 1);
     } else {
-      throw new Error(`Node at path: ${paths.join('/')} does not exist`);
+      throw new Error(`Node at path: ${path} does not exist`);
     }
   }
   /**
-   * Removes folder at path from Tree
+   * Removes file at path from Tree
    *
    * @param {string[]} paths Array of paths to file
    * @memberof DirectoryTree
    */
-  public removeFile(paths: string[]): LearningObjectFile {
-    let folderPath = getPaths(paths.join('/'));
-    let fileName = paths.pop();
+  public removeFile(path: string): LearningObjectFile {
+    let folderPath = getPaths(path);
+    let fileName = path.split('/').pop();
     let node = this.traversePath(folderPath);
     if (node) {
-      let parent = node.getParent();
-      let index = this.pathMap.get(node.getPath());
-      let removingFrom = parent ? parent : this._root;
-      return removingFrom.removeFile(fileName);
+      return node.removeFile(fileName);
     } else {
       throw new Error(`Node at path: ${folderPath.join('/')} does not exist`);
     }
@@ -223,15 +223,34 @@ export class DirectoryNode {
     return this.children;
   }
   /**
+   * Gets Files in Directory
+   *
+   * @returns {LearningObjectFile[]}
+   * @memberof DirectoryNode
+   */
+  public getFiles(): LearningObjectFile[] {
+    return this.files;
+  }
+  /**
    * Add Child to Node
    *
    * @param {DirectoryNode} child
    * @returns {DirectoryNode}
    * @memberof DirectoryNode
    */
-  public addChild(child: DirectoryNode): DirectoryNode {
-    this.children.push(child);
-    return this.children[this.children.length - 1];
+  public addChild(newChild: DirectoryNode): DirectoryNode {
+    let canAdd = true;
+    console.log(newChild);
+    for (let child of this.children) {
+      console.log(child);
+      if (newChild.name === child.name) {
+        console.log(newChild);
+        canAdd = false;
+        break;
+      }
+    }
+    if (canAdd) this.children.push(newChild);
+    return newChild;
   }
   /**
    * Add File to Node's files

@@ -36,13 +36,10 @@ export class UploadComponent implements OnInit {
 
   private filePathMap: Map<string, string> = new Map<string, string>();
 
-  currentFolder: string;
-
   private learningObjectName: string;
 
   learningObject: LearningObject = new LearningObject(null, '');
 
-  scheduledDeletions: {}[] = [];
   uploading: boolean = false;
   submitting: boolean = false;
 
@@ -203,19 +200,6 @@ export class UploadComponent implements OnInit {
   }
 
   /**
-   * Adds files to scheduled deletion array and removes
-   * from learning object repository files
-   *
-   * @param {any} file
-   * @param {number} index
-   * @memberof UploadComponent
-   */
-  markForDeletion(file, index: number) {
-    this.scheduledDeletions.push(file);
-    this.learningObject.materials.files.splice(index, 1);
-  }
-
-  /**
    * Adds a link to learning object repository URLs
    *
    * @memberof UploadComponent
@@ -264,9 +248,6 @@ export class UploadComponent implements OnInit {
   async save() {
     try {
       this.submitting = true;
-      if (this.scheduledDeletions.length > 0) {
-        await this.deleteFiles();
-      }
 
       let learningObjectFiles = await this.upload();
 
@@ -351,23 +332,48 @@ export class UploadComponent implements OnInit {
   }
 
   /**
-   * Sends a list of files to API for deletion
+   * Sends a list of files to API for deletion & Updates learning object
    *
-   * @returns {Promise<{}[]>}
+   * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  deleteFiles(): Promise<{}[]> {
-    return Promise.all(
-      this.scheduledDeletions.map(file => {
-        return new Promise((resolve, reject) => {
-          this.fileStorageService
-            .delete(this.learningObject, file['name'])
-            .then(() => {
-              resolve('Deleted');
-            });
-        });
-      })
-    );
+  async handleDeletion(files: string[]): Promise<void> {
+    try {
+      await this.deleteFromMaterials(files);
+      this.deleteFiles(files);
+      this.updateFileSubscription();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  private deleteFromMaterials(paths: string[]): Promise<any> {
+    for (let path of paths) {
+      const index = this.findFile(path);
+      this.learningObject.materials.files.splice(index, 1);
+    }
+    return this.learningObjectService.save(this.learningObject);
+  }
+
+  private deleteFiles(files: string[]) {
+    for (let file of files) {
+      this.fileStorageService.delete(this.learningObject, file);
+    }
+  }
+
+  private findFile(path: string): number {
+    let index = -1;
+    const files = this.learningObject.materials.files;
+    for (let i = 0; i < files.length; i++) {
+      const filePath = files[i]['fullPath']
+        ? files[i]['fullPath']
+        : files[i].name;
+      if (filePath === path) {
+        index = i;
+        break;
+      }
+    }
+    return index;
   }
 
   private getUUID(): string {
