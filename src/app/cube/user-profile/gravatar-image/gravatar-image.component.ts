@@ -6,14 +6,13 @@ import {md5} from './md5';
   template: `
         <div id="container">
             <img [src]="getGravatarImage()">
-            <input [(ngModel)]="email" type="email" placeholder="Enter your Gravatar email">
         </div>
     `,
     styles: []
 })
 export class GravatarImageComponent implements OnInit {
   @Input() size:number = 200;
-  @Input() email:string = "";
+  @Input() email:string;
 
   constructor() { }
 
@@ -23,5 +22,4 @@ export class GravatarImageComponent implements OnInit {
   getGravatarImage():string {
     return 'http://www.gravatar.com/avatar/' + md5(this.email) + '?s=' + this.size;
   }
-
 }

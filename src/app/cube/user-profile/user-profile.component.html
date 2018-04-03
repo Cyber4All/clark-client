@@ -14,7 +14,7 @@
       <app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></app-user-edit-information>
     </div>
     <div *ngIf="gravatar">
-        <clark-gravatar-image></clark-gravatar-image>
+        <clark-gravatar-image [email]="user.email"></clark-gravatar-image>
     </div>
 </div>
 </div>
