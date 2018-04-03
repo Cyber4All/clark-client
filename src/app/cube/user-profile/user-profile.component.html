@@ -2,10 +2,11 @@
 <div class="banner">
   <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
 </div>
-<div class="img"></div>
+<!--<div class="img"></div>-->
+<img [src]="getGravatarImage()" class="img">
 <div class="container">
   <div class="container-inner">
-    <div class="gravatar" *ngIf="!gravatar && self" (click)="gravatar = !gravatar" ><i class="far fa-pencil"></i> Connect to Gravatar</div>
+    <!--<div class="gravatar" *ngIf="!gravatar && self" (click)="gravatar = !gravatar" ><i class="far fa-pencil"></i> Connect to Gravatar</div>-->
     <div class="edit" *ngIf="!editContent && self" (click)="editContent = !editContent" ><i class="far fa-pencil"></i> Edit Profile</div>
     <div *ngIf="!editContent">
       <app-user-information [user]="user" [self]="self"></app-user-information>
@@ -13,9 +14,9 @@
     <div *ngIf="editContent">
       <app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></app-user-edit-information>
     </div>
-    <div *ngIf="gravatar">
-        <clark-gravatar-image [email]="user.email"></clark-gravatar-image>
-    </div>
+    <!--<div *ngIf="gravatar">-->
+    <clark-gravatar-image [email]="this.user.email"></clark-gravatar-image>
+    <!--</div>-->
 </div>
 </div>
 

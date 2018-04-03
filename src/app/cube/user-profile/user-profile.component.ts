@@ -7,6 +7,7 @@ import { UserInformationComponent } from './user-information/user-information.co
 import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import {md5} from './md5';
 
 @Component({
   selector: 'clark-user-profile',
@@ -20,6 +21,7 @@ export class UserProfileComponent implements OnInit {
   particleParams;
   height: number = 100;
   width: number = 100;
+  size: number = 200; 
 
   editContent: boolean = false;
 
@@ -166,5 +168,9 @@ export class UserProfileComponent implements OnInit {
     if (changed) {
       this.user = this.auth.user;
     }
+  }
+
+  getGravatarImage():string {
+    return 'http://www.gravatar.com/avatar/' + md5(this.user.email) + '?s=' + this.size;
   }
 }
