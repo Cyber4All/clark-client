@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'onion-learning-object-description',
@@ -12,14 +13,7 @@ import { Component, OnInit, Input } from '@angular/core';
         </span>
         </div>
         <div class="goals list">
-          <textarea
-            class="full-width"
-            rows="2"
-            name="description"
-            type="text"
-            placeholder="Description"
-            [(ngModel)]="learningObject.goals[0].text">
-          </textarea>
+          <text-editor [(savedContent)] = "learningObject.goals[0].text" editorPlaceholder = "Enter description here" (textOutput) = "bindEditorOutput($event)" name="description"></text-editor>
         </div>
       </div>
   </div>
@@ -40,8 +34,13 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class LearningObjectDescriptionComponent implements OnInit {
   @Input() learningObject;
+  @Output() textOutput = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() { }
+
+  bindEditorOutput(event) {
+    if(event!=='') this.learningObject.goals[0].text = event;
+  }
 }

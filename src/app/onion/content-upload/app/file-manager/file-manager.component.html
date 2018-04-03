@@ -1,0 +1,53 @@
+<div class="file-breadcrumb">
+  <span *ngIf="currentPath.length" class="link" (click)="jumpTo(0, true)">Root</span>
+  <ng-container *ngFor="let path of currentPath; let i=index;">
+    <span>
+      <i class="far fa-chevron-right arrow"></i>
+    </span>
+    <span class="link" (click)="jumpTo(i)">{{path}}</span>
+  </ng-container>
+</div>
+<div (click)="openDropzone($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !currentNode?.children.length && !currentNode?.files.length}">
+  <div *ngIf="!currentNode?.children.length && !currentNode?.files.length" class="dropzone-message">
+    <div class="file-icons">
+      <i class="fal fa-image fa-2x"></i>
+      <i class="fal fa-file-pdf fa-2x"></i>
+      <i class="fal fa-file-word fa-2x"></i>
+    </div>
+    <span>Drop files and folders or click here</span>
+  </div>
+  <!-- Render Folders -->
+  <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children" [contextMenu]="fileOptions"
+    [contextMenuSubject]="folder">
+    <div>
+      <i class="fas fa-folder icon"></i>
+    </div>
+    <div>
+      {{ folder.name }}
+    </div>
+    <div></div>
+  </div>
+  <!-- Render Files -->
+  <div class="file" *ngFor="let file of currentNode?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
+    <div>
+      <i class="fas fa-file icon"></i>
+    </div>
+    <div>
+      {{ file.name }}
+    </div>
+    <div></div>
+  </div>
+</div>
+
+<context-menu>
+  <ng-template contextMenuItem (execute)="deleteFile($event.item)">
+    <div class="context-item bad">
+      <div>
+        Delete
+      </div>
+      <div>
+        <i class="far fa-trash-alt"></i>
+      </div>
+    </div>
+  </ng-template>
+</context-menu>

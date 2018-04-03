@@ -6,84 +6,11 @@
           <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
       </div>
       <div class="title">Manage Materials
-        <span tip="{{ tips.FILE_UPLOAD }}" tipLocation="side">
-          <i class="fas fa-question-circle"></i>
-        </span>
       </div>
       <div></div>
     </div>
-    <div class="dropzone upload-container" [dropzone] (addedFile)="addFile($event)">
-      <div class="dropzone-message">
-        <div class="file-icons">
-          <i class="fal fa-image fa-2x"></i>
-          <i class="fal fa-file-pdf fa-2x"></i>
-          <i class="fal fa-file-word fa-2x"></i>
-        </div>
-        <span>Click or drop any files here</span>
-      </div>
-    </div>
+    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)"></file-manager>
   </div>
-  <div class="inner-wrapper">
-    <div class="section inline-flex">
-      <div class="title">Queued Uploads</div>
-      <div *ngIf="acceptedFiles.length > 1" class="button bad" (click)="removeFromDZ(null)">
-        Clear Queue
-        <i class="far fa-times fa-w-12"></i>
-      </div>
-    </div>
-    <div [ngClass]="{'empty-section': acceptedFiles.length == 0}">
-      <div class="text" *ngIf="acceptedFiles.length == 0">No new files added!</div>
-      <div class="section file-listing" *ngFor="let file of acceptedFiles; let i = index;">
-        <div class="inline-flex">
-          <div class="file-name">
-            {{ file.name }}
-          </div>
-          <div class="description">
-            <input placeholder="Description" type="text" [(ngModel)]="file.description" [name]="'file-desc' + i" />
-          </div>
-        </div>
-        <div class="button bad icon-only" (click)="removeFromDZ(file)">
-          <i class="far fa-times"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="inner-wrapper">
-    <div class="section">
-      <div class="title">Files Uploaded</div>
-    </div>
-    <div [ngClass]="{'empty-section': learningObject.materials.files.length == 0}">
-      <div class="text" *ngIf="learningObject.materials.files.length == 0">You don't have any files yet!</div>
-      <div *ngIf="learningObject.materials.files.length > 0" class="faux-table">
-        <div class="row columns file-listing-header">
-          <div class="cells">
-            <div class="cell">Name</div>
-            <div class="cell">Description</div>
-            <div class="cell">Added</div>
-            <div class="placeholder"></div>
-          </div>
-        </div>
-        <div class="row file-listing" *ngFor="let file of learningObject.materials.files; let i = index;">
-          <div class="cells">
-            <div class="cell file-name">
-              {{ file.name }}
-            </div>
-            <div class="cell file-description">
-              <input placeholder="Description" type="text" [value]="file.description" [name]="'uploaded-desc' + i" [(ngModel)]="file.description"
-              />
-            </div>
-            <div class="cell">
-              {{ file.timeAgo }}
-            </div>
-          </div>
-          <div class="button bad icon-only" (click)="markForDeletion(file, i)">
-            <i class="far fa-times"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="inner-wrapper">
     <div class="section">
       <div class="title">Urls</div>
@@ -111,7 +38,7 @@
       <div class="title">Notes</div>
     </div>
     <div class="notes">
-      <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add notes here"></textarea>
+      <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add descriptions about files here. (eg. Lab1_Solutions.doc - Solutions to Lab 1)"></textarea>
     </div>
   </div>
   <div class="btn-group to-right final">
@@ -127,3 +54,4 @@
     </div>
   </div>
 </div>
+<upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$"></upload-queue>

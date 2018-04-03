@@ -52,11 +52,11 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
 
   constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
 
-  setupView() {
+  setupView(first?: boolean) {
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
 
-    if (!this.outcome._verb) {
+    if (first) {
       this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
     }
 
@@ -78,7 +78,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
 
     // TODO make sure this system handles editing objects that already have outcomes mapped
     this.suggestionService.udpateMappings(this.outcome._mappings);
-    this.setupView();
+    this.setupView(true);
 
     // pass the outcome text to the suggestion component
     this.outcomeSuggestionText = this.outcome._text;

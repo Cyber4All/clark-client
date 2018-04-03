@@ -54,7 +54,8 @@ export class LearningObjectBuilderComponent implements OnInit {
     private notificationService: NotificationService,
     private store: LearningObjectStoreService,
     private auth: AuthService,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.learningObject.addGoal('');
@@ -114,9 +115,7 @@ export class LearningObjectBuilderComponent implements OnInit {
             'fal fa-save'
           );
           willUpload
-            ? this.router.navigateByUrl(
-                `/onion/content/upload/${this.learningObjectName}`
-              )
+            ? this.router.navigate([`/onion/content/upload/${this.learningObjectName}`])
             : this.router.navigate(['/onion']);
         })
         .catch(err => {
@@ -305,13 +304,14 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @param {number} s
    * @memberof LearningObjectBuilderComponent
    */
-  bindEditorOutput(event, type, i, s): void {
+  bindEditorOutput(event, type:string, i?:number, s?:number): void {
     if (type === 'question') {
       this.learningObject.outcomes[i].assessments[s].text = event;
-    } else {
-      if (type === 'strategy') {
+    } else if (type === 'strategy') {
         this.learningObject.outcomes[i].strategies[s].text = event;
-      }
+    }
+    else {
+      if(event!=='') this.learningObject.goals[0].text = event;
     }
   }
 
@@ -329,6 +329,12 @@ export class LearningObjectBuilderComponent implements OnInit {
     // check name
     if (this.learningObject.name === '') {
       this.notificationService.notify('Error!', 'Please enter a name for this learning object!', 'bad', 'far fa-times');
+      this.store.dispatch({
+        type: 'NAVIGATE',
+        request: {
+          sectionIndex: 0
+        }
+      });
       return false;
     }
 
@@ -374,12 +380,12 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   togglePublished(event) {
-    this.service.togglePublished(this.learningObject).then(val => {
+    if (this.auth.user.emailVerified) {
       if (this.learningObject.published) {
         this.learningObject.unpublish();
       } else {
         this. learningObject.publish();
       }
-    });
+    }
   }
 }

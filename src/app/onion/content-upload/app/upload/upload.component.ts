@@ -5,12 +5,25 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { DropzoneDirective } from 'ngx-dropzone-wrapper';
-import { LearningObjectFile } from '../models/learning-object-file';
 import { TimeFunctions } from '../time-functions';
 import { NotificationService } from '../../../../shared/notifications';
-
+import { DirectoryTree, LearningObjectFile } from '../DirectoryTree';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { getPaths } from '../file-functions';
+
+import * as uuid from 'uuid';
+import { BehaviorSubject } from 'rxjs';
+
+export type File = {
+  id?: string;
+  accepted: boolean;
+  fullPath: string;
+  name: string;
+  size: number;
+  parent: string;
+  [key: string]: any;
+};
 
 @Component({
   selector: 'app-upload',
@@ -22,23 +35,26 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
   ]
 })
 export class UploadComponent implements OnInit {
+  @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
+  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
+    LearningObjectFile[]
+  >([]);
+  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
+    LearningObjectFile[]
+  >([]);
   public tips = TOOLTIP_TEXT;
 
-  @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
+  private filePathMap: Map<string, string> = new Map<string, string>();
 
   private learningObjectName: string;
 
-  hasFile: boolean = false;
-
   learningObject: LearningObject = new LearningObject(null, '');
 
-  scheduledDeletions: {}[] = [];
   uploading: boolean = false;
   submitting: boolean = false;
 
-  file_descriptions: Map<number, string> = new Map();
+  file_descriptions: Map<string, string> = new Map();
 
-  acceptedFiles: any[] = [];
   private dzError: string = '';
 
   constructor(
@@ -56,6 +72,10 @@ export class UploadComponent implements OnInit {
       : this.router.navigate(['/onion/dashboard']);
   }
 
+  openDZ() {
+    this.dzDirectiveRef.dropzone().clickableElements[0].click();
+  }
+
   /**
    * Fetches Learning Object by name
    *
@@ -67,6 +87,7 @@ export class UploadComponent implements OnInit {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      this.updateFileSubscription();
       this.watchTimestamps();
     } catch (e) {
       this.notificationService.notify(
@@ -77,6 +98,10 @@ export class UploadComponent implements OnInit {
       );
     }
   }
+  private updateFileSubscription() {
+    this.files$.next(<LearningObjectFile[]>this.learningObject.materials.files);
+  }
+
   /**
    * Adds a human readable representation of time elapsed since file was added
    *
@@ -96,26 +121,66 @@ export class UploadComponent implements OnInit {
     }, interval);
   }
   /**
-   * Fired when file is added. Verifies limit hasn't been reached and adds to accepted files
+   * Fired when file is added. Verifies limit hasn't been reached and adds to queued files & filesystem
    *
-   * @param {any} file
+   * @param {File} file
    * @memberof UploadComponent
    */
   async addFile(file) {
     await file;
-    let pastFileLimit = this.pastFileLimit(file.size);
-    if (file.accepted && !pastFileLimit) {
-      this.acceptedFiles.push(file);
-    } else {
-      if (!pastFileLimit && !file.accepted) this.dzError = 'File not accepted';
-      this.notificationService.notify(
-        `${file.name} could not be added`,
-        this.dzError,
-        'bad',
-        ''
-      );
+    if (!file.accepted) {
+      this.dzError = 'File not accepted';
+      this.showFileError(file.name);
+      return;
     }
+    const pastFileLimit = this.pastFileLimit(file.size);
+    if (pastFileLimit) {
+      this.showFileError(file.name);
+      return;
+    }
+    file.id = this.getUUID();
+    const isFolder = this.isFolder(file);
+    if (isFolder) this.mapToPath(file);
+    const queue = this.queuedUploads$.getValue();
+    queue.push(file);
+    this.queuedUploads$.next(queue);
   }
+
+  /**
+   * Check upload is folder or not
+   *
+   * @param {File} file
+   * @returns {boolean}
+   * @memberof UploadComponent
+   */
+  private isFolder(file: File): boolean {
+    if (!file.fullPath) return false;
+    const paths: string[] = getPaths(file.fullPath);
+    if (paths.length > 0) return true;
+    return false;
+  }
+
+  private mapToPath(file) {
+    const path = getPaths(file.fullPath).join('/');
+    this.filePathMap.set(file.id, path);
+  }
+
+  /**
+   * Displays error via notification service
+   *
+   * @private
+   * @param {string} name
+   * @memberof UploadComponent
+   */
+  private showFileError(name: string) {
+    this.notificationService.notify(
+      `${name} could not be added`,
+      this.dzError,
+      'bad',
+      ''
+    );
+  }
+
   /**
    * Checks if user has reached upload size limit
    *
@@ -127,11 +192,11 @@ export class UploadComponent implements OnInit {
   private pastFileLimit(addedSize: number) {
     const BYTE_TO_MB = 1000000;
     let size = addedSize / BYTE_TO_MB;
-    if (this.acceptedFiles.length) {
+    const queue = this.queuedUploads$.getValue();
+    if (queue.length) {
       size +=
-        this.acceptedFiles
-          .map(file => file.size)
-          .reduce((total, size) => total + size) / BYTE_TO_MB;
+        queue.map(file => file.size).reduce((total, size) => total + size) /
+        BYTE_TO_MB;
     }
     if (size > environment.DROPZONE_CONFIG.maxFilesize) {
       this.dzError = `Exceeded max upload size of ${
@@ -141,32 +206,6 @@ export class UploadComponent implements OnInit {
     }
 
     return false;
-  }
-
-  /**
-   * Removes files from Dropzone Queue
-   * If no file is passed removes all files from queue
-   *
-   * @param {any} file
-   * @memberof UploadComponent
-   */
-  removeFromDZ(file) {
-    file
-      ? this.dzDirectiveRef.dropzone().removeFile(file)
-      : this.dzDirectiveRef.dropzone().removeAllFiles();
-    this.acceptedFiles = this.dzDirectiveRef.dropzone().getAcceptedFiles();
-  }
-  /**
-   * Adds files to scheduled deletion array and removes
-   * from learning object repository files
-   *
-   * @param {any} file
-   * @param {number} index
-   * @memberof UploadComponent
-   */
-  markForDeletion(file, index: number) {
-    this.scheduledDeletions.push(file);
-    this.learningObject.materials.files.splice(index, 1);
   }
 
   /**
@@ -218,12 +257,12 @@ export class UploadComponent implements OnInit {
   async save() {
     try {
       this.submitting = true;
-      if (this.scheduledDeletions.length > 0) {
-        await this.deleteFiles();
-      }
 
       let learningObjectFiles = await this.upload();
+
       this.uploading = false;
+
+      this.submitting = false;
 
       this.learningObject.materials.files = [
         ...this.learningObject.materials.files,
@@ -234,9 +273,7 @@ export class UploadComponent implements OnInit {
         await this.learningObjectService.save(this.learningObject);
         this.submitting = false;
         this.uploading = false;
-        this.router.navigateByUrl(
-          `onion/content/view/${this.learningObjectName}`
-        );
+        this.updateFileSubscription();
       } catch (e) {
         this.submitting = false;
         this.uploading = false;
@@ -248,6 +285,7 @@ export class UploadComponent implements OnInit {
         );
       }
     } catch (e) {
+      console.log(e);
       this.submitting = false;
       this.uploading = false;
       this.notificationService.notify(
@@ -267,18 +305,22 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   async upload(): Promise<LearningObjectFile[]> {
-    if (this.acceptedFiles.length >= 1) {
-      let files = this.mapFileDescriptions();
+    const queue = this.queuedUploads$.getValue();
+    if (queue.length >= 1) {
+      // this.mapFileDescriptions();
       this.uploading = true;
       let learningObjectFiles = await this.fileStorageService.upload(
         this.learningObject,
-        files
+        queue,
+        this.filePathMap
       );
-      for (let i = 0; i < learningObjectFiles.length; i++) {
-        learningObjectFiles[i]['description'] = this.file_descriptions.get(
-          learningObjectFiles[i]['description']
-        );
-      }
+      this.queuedUploads$.next([]);
+      // for (let i = 0; i < learningObjectFiles.length; i++) {
+      //   learningObjectFiles[i]['description'] = this.file_descriptions.get(
+      //     learningObjectFiles[i]['id']
+      //   );
+      // }
+
       return learningObjectFiles;
     }
     this.uploading = false;
@@ -292,31 +334,58 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   private mapFileDescriptions() {
-    let files = this.acceptedFiles;
-    for (let i = 0; i < files.length; i++) {
-      this.file_descriptions.set(i, files[i].description);
-      files[i].descriptionID = i;
+    const queue = this.queuedUploads$.getValue();
+    for (let file of queue) {
+      this.file_descriptions.set(file.id, file.description);
     }
-    return files;
   }
 
   /**
-   * Sends a list of files to API for deletion
+   * Sends a list of files to API for deletion & Updates learning object
    *
-   * @returns {Promise<{}[]>}
+   * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  deleteFiles(): Promise<{}[]> {
-    return Promise.all(
-      this.scheduledDeletions.map(file => {
-        return new Promise((resolve, reject) => {
-          this.fileStorageService
-            .delete(this.learningObject, file['name'])
-            .then(() => {
-              resolve('Deleted');
-            });
-        });
-      })
-    );
+  async handleDeletion(files: string[]): Promise<void> {
+    try {
+      await this.deleteFromMaterials(files);
+      this.deleteFiles(files);
+      this.updateFileSubscription();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  private deleteFromMaterials(paths: string[]): Promise<any> {
+    for (let path of paths) {
+      const index = this.findFile(path);
+      this.learningObject.materials.files.splice(index, 1);
+    }
+    return this.learningObjectService.save(this.learningObject);
+  }
+
+  private deleteFiles(files: string[]) {
+    for (let file of files) {
+      this.fileStorageService.delete(this.learningObject, file);
+    }
+  }
+
+  private findFile(path: string): number {
+    let index = -1;
+    const files = this.learningObject.materials.files;
+    for (let i = 0; i < files.length; i++) {
+      const filePath = files[i]['fullPath']
+        ? files[i]['fullPath']
+        : files[i].name;
+      if (filePath === path) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
+
+  private getUUID(): string {
+    return uuid.v1();
   }
 }

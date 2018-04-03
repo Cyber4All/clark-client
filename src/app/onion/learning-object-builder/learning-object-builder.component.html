@@ -21,11 +21,11 @@
       </div>
     </div>
     <div class="right">
-      <div *ngIf="!isNew" class="published-toggle" [ngClass]="{'disabled': !auth.user}" tip='test tooltip' tipLocation='above' tipDisabled='{{ (auth.user ? false : true) }}'>
+      <div *ngIf="!isNew" class="published-toggle">
         <div class='toggle-label' [ngClass]="{'published': learningObject.published}">
           {{ (this.learningObject.published) ? 'published' : 'unpublished' }}
         </div>
-        <div class="toggleSwitch" (click)="togglePublished($event)" [ngClass]="{'on': learningObject.published}">
+        <div class="toggleSwitch" (click)="togglePublished($event)" [ngClass]="{'on': learningObject.published, 'disabled': !auth.user.emailVerified}" tip='{{ tips.UNVERIFIED_PUBLISH }}' tipLocation='above' tipDisabled="{{ auth.user.emailVerified }}">
           <div class="handle"></div>
           <div class="bg"></div>
         </div>

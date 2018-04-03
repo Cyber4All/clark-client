@@ -177,6 +177,11 @@ body {
   overflow: hidden;
   cursor: pointer;
 
+  &.disabled {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
   &.on {
 
     .bg {
