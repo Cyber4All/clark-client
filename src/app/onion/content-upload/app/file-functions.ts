@@ -6,10 +6,10 @@
  * @returns {string[]}
  * @memberof UploadComponent
  */
-export function getPaths(path: string): string[] {
+export function getPaths(path: string, removeLast: boolean = true): string[] {
   const paths: string[] = path.split('/');
   if (paths[0] === '') paths.slice(0, 0);
   //Remove file
-  paths.pop();
+  if (removeLast) paths.pop();
   return paths;
 }

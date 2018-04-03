@@ -54,7 +54,9 @@ export const USER_ROUTES = {
   DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, filename) {
     return `${
       environment.apiURL
-    }/users/${username}/learning-objects/${learningObjectName}/files/${filename}`;
+    }/users/${username}/learning-objects/${learningObjectName}/files/${encodeURIComponent(
+      filename
+    )}`;
   },
   GET_CART(username) {
     // CUBE
@@ -101,9 +103,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   },
   GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
     return `${environment.apiURL}/learning-objects/${username}`;
-  },
+  }
 };
 
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
-}
+};

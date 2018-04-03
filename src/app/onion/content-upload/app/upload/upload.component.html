@@ -9,7 +9,7 @@
       </div>
       <div></div>
     </div>
-    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" (openDZ)="openDZ()"></file-manager>
+    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)"></file-manager>
   </div>
   <div class="inner-wrapper">
     <div class="section">

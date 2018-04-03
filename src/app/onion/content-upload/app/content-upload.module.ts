@@ -24,6 +24,7 @@ import { UploadComponent } from './upload/upload.component';
 import { ViewComponent } from './view/view.component';
 
 import { TooltipModule } from '@cyber4all/clark-tooltip';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
@@ -42,7 +43,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     HttpModule,
     DropzoneModule,
     TooltipModule,
-    routes
+    routes,
+    ContextMenuModule.forRoot()
   ],
   exports: [RouterModule],
   providers: [

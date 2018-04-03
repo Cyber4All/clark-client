@@ -72,3 +72,11 @@
   font-size: 25px;
   margin-right: 5px;
 }
+.context-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bad {
+  color: #cf4739;
+}
