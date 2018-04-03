@@ -39,7 +39,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.files$.subscribe(files => {
         this.filesystem.addFiles(files);
         this.refreshNode();
-        console.log(files);
       })
     );
   }

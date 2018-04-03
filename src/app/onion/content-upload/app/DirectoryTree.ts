@@ -1,4 +1,6 @@
 import { getPaths } from './file-functions';
+import { File } from '@cyber4all/clark-entity/dist/learning-object';
+export type LearningObjectFile = File;
 
 /**
  * Class Representing Simple Filesystem
@@ -162,10 +164,6 @@ export class DirectoryTree {
       throw new Error(`Node at path: ${folderPath.join('/')} does not exist`);
     }
   }
-  //TODO: Implement
-  public contains() {
-    throw new Error('Contains not yet implemented');
-  }
 }
 /**
  * Class representing simple Node in DirectoryTree
@@ -240,11 +238,8 @@ export class DirectoryNode {
    */
   public addChild(newChild: DirectoryNode): DirectoryNode {
     let canAdd = true;
-    console.log(newChild);
     for (let child of this.children) {
-      console.log(child);
       if (newChild.name === child.name) {
-        console.log(newChild);
         canAdd = false;
         break;
       }
@@ -300,15 +295,3 @@ export class DirectoryNode {
     return index;
   }
 }
-
-export type LearningObjectFile = {
-  id: string;
-  name: string;
-  fileType: string;
-  extension: string;
-  url: string;
-  date: string;
-  fullPath?: string;
-  size?: number;
-  description?: string;
-};

@@ -15,6 +15,16 @@ import { getPaths } from '../file-functions';
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs';
 
+export type File = {
+  id?: string;
+  accepted: boolean;
+  fullPath: string;
+  name: string;
+  size: number;
+  parent: string;
+  [key: string]: any;
+};
+
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -77,7 +87,6 @@ export class UploadComponent implements OnInit {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
-      // FIXME: Update typing in entity package and remove type casting
       this.updateFileSubscription();
       this.watchTimestamps();
     } catch (e) {
@@ -380,13 +389,3 @@ export class UploadComponent implements OnInit {
     return uuid.v1();
   }
 }
-
-export type File = {
-  id?: string;
-  accepted: boolean;
-  fullPath: string;
-  name: string;
-  size: number;
-  parent: string;
-  [key: string]: any;
-};

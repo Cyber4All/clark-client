@@ -11,7 +11,7 @@ import { AuthService } from 'app/core/auth.service';
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   public tips = TOOLTIP_TEXT;
@@ -46,9 +46,7 @@ export class DashboardComponent implements OnInit {
       .then(learningObjects => {
         this.learningObjects = learningObjects;
       })
-      .catch(err => {
-        
-      });
+      .catch(err => {});
   }
 
   /**
@@ -120,9 +118,7 @@ export class DashboardComponent implements OnInit {
                 );
                 this.getLearningObjects();
               })
-              .catch(err => {
-                
-              });
+              .catch(err => {});
           }
         }
       });
@@ -224,7 +220,7 @@ export class DashboardComponent implements OnInit {
   makeContextMenu(event, learningObject: LearningObject) {
     this.focusedLearningObject = learningObject;
     let list: Array<ModalListElement> = [
-      new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit'),
+      new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit')
     ];
 
     if (this.auth.user.emailVerified) {
@@ -232,10 +228,6 @@ export class DashboardComponent implements OnInit {
         new ModalListElement(
           '<i class="far fa-upload"></i>Manage Materials',
           'upload'
-        ),
-        new ModalListElement(
-          '<i class="far fa-archive"></i>View Materials',
-          'view materials'
         )
       );
     }
@@ -288,11 +280,6 @@ export class DashboardComponent implements OnInit {
           case 'upload':
             this.router.navigate([
               '/onion/content/upload/' + this.focusedLearningObject.name
-            ]);
-            break;
-          case 'view materials':
-            this.router.navigate([
-              '/onion/content/view/' + this.focusedLearningObject.name
             ]);
             break;
           case 'toggle published':

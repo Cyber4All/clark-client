@@ -21,7 +21,6 @@ import { UploadQueueComponent } from './file-manager/upload-queue/upload-queue.c
 
 import { ContentUploadComponent } from './content-upload.component';
 import { UploadComponent } from './upload/upload.component';
-import { ViewComponent } from './view/view.component';
 
 import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { ContextMenuModule } from 'ngx-contextmenu';
@@ -33,7 +32,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   declarations: [
     ContentUploadComponent,
     UploadComponent,
-    ViewComponent,
     FileManagerComponent,
     UploadQueueComponent
   ],
