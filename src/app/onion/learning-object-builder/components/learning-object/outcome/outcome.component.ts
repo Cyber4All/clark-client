@@ -56,8 +56,8 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   setupView(first?: boolean) {
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
-
-    if (first && !this.outcome._verb) {
+    if (first && !this.outcome._text) {
+      // THIS CHECK ONLY PASSES BECAUSE VALIDATION PREVENTS SAVING OUTCOMES WITHOUT TEXT
       this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
     }
 
@@ -90,7 +90,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!Object.values(changes).map(c => c.firstChange).includes(false)) {
+    if (Object.values(changes).map(c => c.firstChange).indexOf(false) >= 0) {
       // don't call this on initialize, leave that for ngOnInit
       this.setupView();
     }
