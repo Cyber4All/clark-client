@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
-import { SuggestionService } from './../suggestion/services/suggestion.service';
-import { quizzes, instructions } from '@cyber4all/clark-taxonomy/dist/taxonomy';
+import { SuggestionService } from '../../../suggestion/services/suggestion.service';
+import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
 import {
@@ -11,30 +11,39 @@ import {
   SimpleChanges,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnChanges,
+  ViewChild
 } from '@angular/core';
-import { LearningObjectBuilderComponent } from '../learning-object-builder.component';
-import { ModalService } from '../../../shared/modals';
-import { MappingsFilterService } from '../../../core/mappings-filter.service';
+import { MappingsFilterService } from '../../../../../core/mappings-filter.service';
+import { ModalService } from '../../../../../shared/modals';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
 
 
 @Component({
-  selector: 'onion-learning-outcome-component',
-  templateUrl: 'learning-outcome.component.html',
-  styleUrls: ['./learning-outcome.component.scss'],
+  selector: 'onion-outcome-component',
+  templateUrl: 'outcome.component.html',
+  styleUrls: ['./outcome.component.scss'],
   providers: [SuggestionService]
 })
-export class LearningOutcomeComponent implements OnInit, OnDestroy {
+export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() outcome;
   @Input('index') i;
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
+
+  @ViewChild('outcomeInput', {read: ElementRef}) outcomeInput: ElementRef;
+  
 
   suggestOpen = false;
   openSearch = false;
   suggestIndex: number;
   mappings: Array<Object>;
   bloomLevels;
+  outcomeSuggestionText = '';
 
   classverbs: { [level: string]: Set<string> };
   testquizstrategies: { [level: string]: Set<string> };
@@ -43,10 +52,18 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
 
   constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
 
-  ngOnInit() {
+  setupView(first?: boolean) {
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
-    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
+
+    if (first && !this.outcome._verb) {
+      this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
+    }
+
+    this.suggestionService.udpateMappings(this.outcome._mappings);
+  }
+
+  ngOnInit() {
     this.bloomLevels = levels;
     this.testquizstrategies = quizzes;
     this.classassessmentstrategies = assessments;
@@ -61,6 +78,21 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
 
     // TODO make sure this system handles editing objects that already have outcomes mapped
     this.suggestionService.udpateMappings(this.outcome._mappings);
+    this.setupView(true);
+
+    // pass the outcome text to the suggestion component
+    this.outcomeSuggestionText = this.outcome._text;
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    Observable.fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
+      this.outcomeSuggestionText = val;
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!Object.values(changes).map(c => c.firstChange).includes(false)) {
+      // don't call this on initialize, leave that for ngOnInit
+      this.setupView();
+    }
   }
 
   sortVerbs() {
@@ -168,7 +200,7 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   // addMappings(e) {
   //   this.openSearch = false;
   //   for (const m of e) {
-  //     
+  //
   //     this.suggestionService.addMapping(m);
   //   }
   // }

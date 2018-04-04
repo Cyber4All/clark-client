@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ElementRef, Output, Input } from '@angular/core';
+import { Component, EventEmitter, OnInit, ElementRef, Output, Input, OnChanges } from '@angular/core';
 import { verbs, levels } from '@cyber4all/clark-taxonomy';
 
 @Component({
@@ -7,7 +7,7 @@ import { verbs, levels } from '@cyber4all/clark-taxonomy';
   styleUrls: ['blooms-selector.component.scss']
 })
 
-export class BloomsSelectorComponent implements OnInit {
+export class BloomsSelectorComponent implements OnInit, OnChanges {
   @Input('default') default;
   @Output('bloom') bloom = new EventEmitter<string>();
   bloomValue;
@@ -16,6 +16,10 @@ export class BloomsSelectorComponent implements OnInit {
   constructor(private el: ElementRef) { }
 
   ngOnInit() {
+    this.bloomValue = this.default;
+  }
+
+  ngOnChanges() {
     this.bloomValue = this.default;
   }
 

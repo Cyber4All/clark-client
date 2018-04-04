@@ -25,13 +25,13 @@
         </select>
       </div>
       <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->
-      <input class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(i);"
+      <input #outcomeInput class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(i);"
         [(ngModel)]="outcome._text" [ngClass]="{'bad': false && submitted && !outcomeValidate.valid}" required />
     </div>
   </div>
   <onion-standard-outcomes>
     <onion-mappings-list [mappings]="mappings"></onion-mappings-list>
-    <onion-suggestion-component [outcome]="outcome._text" [mappings]="mappings"></onion-suggestion-component>
+    <onion-suggestion-component [outcome]="outcomeSuggestionText" [mappings]="mappings"></onion-suggestion-component>
     <clark-browse-by-mappings-component (closed)="modalService.closeAll()" [mappings]="mappings" [dimensions]="{h: 600}" [showMappedOutcomesTitle]="true"></clark-browse-by-mappings-component>
   </onion-standard-outcomes>
 </div>

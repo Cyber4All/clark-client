@@ -21,18 +21,6 @@
   padding-bottom: 30px;
 }
 
-::ng-deep input {
-  border: 2px solid $placeholder;
-  outline: 0;
-  padding: 7px;
-  &:focus {
-    border-color: $blue-accent;
-  }
-  &.bad {
-    border-color: $error-red !important;
-  }
-}
-
 select {
   &[name='type'],
   &[name='level'] {
@@ -236,11 +224,9 @@ select {
 
 .notes {
   margin: 15px 0;
+
   textarea {
     width: 98%;
-    border: 2px solid #c3c2c2;
-    outline: 0;
-    padding: 10px;
     resize: vertical;
   }
 }

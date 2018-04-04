@@ -1,6 +1,6 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
@@ -12,14 +12,24 @@ import {
   instructions
 } from '@cyber4all/clark-taxonomy';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { LearningObjectStoreService } from './store';
+
+enum PAGES {
+  INFO,
+  OUTCOMES
+}
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'onion-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
-  styleUrls: ['./learning-object-builder.component.scss']
+  styleUrls: ['./learning-object-builder.component.scss'],
+  providers: [LearningObjectStoreService]
 })
 export class LearningObjectBuilderComponent implements OnInit {
+  public PAGES = PAGES;
+  public activePage = PAGES.INFO;
+  public childIndex;
   public tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject = new LearningObject();
@@ -42,13 +52,24 @@ export class LearningObjectBuilderComponent implements OnInit {
     private service: LearningObjectService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private auth: AuthService
-  ) {}
+    private store: LearningObjectStoreService,
+    private auth: AuthService,
+  ) {
+  }
 
   ngOnInit() {
     this.learningObject.addGoal('');
-    
     this.getRouteParams();
+    this.store.dispatch({
+      type: 'INIT',
+      request: {
+        initialSection: 0
+      }
+    });
+    this.store.state.subscribe(state => {
+      console.log('state', state);
+      this.changePage(state.section, state.childSection, state.noPage);
+    });
   }
   /**
    * Grabs parameters in route (Learning Object's ID)
@@ -62,26 +83,10 @@ export class LearningObjectBuilderComponent implements OnInit {
       this.learningObjectName = this.route.snapshot.params[
         'learningObjectName'
       ];
-      this.loadLearningObject();
+      this.learningObject = this.route.snapshot.data['learningObject'];
     } else {
       this.isNew = true;
     }
-  }
-  /**
-   * Loads LearningObject by ID
-   * Logs error if unable to fetch LearningObject
-   *
-   * @memberof LearningObjectBuilderComponent
-   */
-  loadLearningObject(): void {
-    this.service
-      .getLearningObject(this.learningObjectName)
-      .then(learningObject => {
-        this.learningObject = learningObject;
-      })
-      .catch(err => {
-        this.isNew = true;
-      });
   }
 
   /**
@@ -93,10 +98,11 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   async save(willUpload: boolean) {
+    console.log('object to save', this.learningObject);
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
-      if (!willUpload) {
+      if (!willUpload && this.isNew) {
         await this.showPublishingDialog();
       }
       this.service
@@ -125,7 +131,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
-      if (!willUpload) {
+      if (!willUpload && this.isNew) {
         await this.showPublishingDialog();
       }
       this.service
@@ -244,6 +250,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (newOutcome.verb === 'Define') {
       newOutcome.verb = 'Choose';
     }
+    // this.advanceSection();
     return newOutcome;
   }
 
@@ -257,7 +264,15 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   deleteOutcome(index: number): void {
+    console.log('index', index);
     this.learningObject.removeOutcome(index);
+    // this.store.dispatch({
+    //   type: 'NAVIGATE',
+    //   request: {
+    //     sectionModifier: -1
+    //   }
+    // });
+    console.log(this.learningObject);
   }
   /**
    * Deletes InstructionalStrategy from LearningObject's LearningOutcomes
@@ -313,19 +328,64 @@ export class LearningObjectBuilderComponent implements OnInit {
   validate(): boolean {
     // check name
     if (this.learningObject.name === '') {
+      this.notificationService.notify('Error!', 'Please enter a name for this learning object!', 'bad', 'far fa-times');
+      this.store.dispatch({
+        type: 'NAVIGATE',
+        request: {
+          sectionIndex: 0
+        }
+      });
       return false;
     }
 
     // check outcomes
-    const o: NodeListOf<Element> = document.querySelectorAll(
-      'onion-learning-outcome-component > .container'
-    );
-    for (const outcome of Array.from(o)) {
-      if (outcome.attributes['valid'].value !== 'true') {
-        return false;
+    const badOutcomes = this.learningObject.outcomes.map((x, i) => (!x.text || x.text === '') ? i : undefined).filter(x => x);
+    if (badOutcomes.length) {
+      this.store.dispatch({
+        type: 'NAVIGATE',
+        request: {
+          sectionIndex: 1
+        }
+      });
+      this.store.dispatch({
+        type: 'NAVIGATECHILD',
+        request: {
+          sectionIndex: badOutcomes[0]
+        }
+      });
+      this.notificationService.notify('Error!', 'You cannot submit a learning outcome without text!', 'bad', 'far fa-times');
+      return false;
+    }
+    return true;
+  }
+
+  changePage(page, childPage, noPage = false) {
+    if (!noPage) {
+      if (page === 0) {
+        this.activePage = PAGES.INFO;
+      } else {
+        this.activePage = PAGES.OUTCOMES;
+        this.childIndex = childPage;
       }
     }
+  }
 
-    return true;
+  advanceSection() {
+    this.store.dispatch({
+      type: 'NAVIGATE',
+      request: {
+        sectionModifier: 1
+      }
+    });
+  }
+
+  togglePublished(event) {
+    if (this.auth.user.emailVerified) {
+      if (this.learningObject.published) {
+        this.learningObject.unpublish();
+      } else {
+        this. learningObject.publish();
+      }
+    }
   }
 }

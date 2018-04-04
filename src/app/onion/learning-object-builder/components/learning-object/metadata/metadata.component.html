@@ -1,0 +1,47 @@
+<section class="metadata-wrapper">
+  <div class="header">
+    <div class="back"></div>
+    <div class="title">Basic Information
+    </div>
+    <div></div>
+  </div>
+  <div class="section">
+    <div class="input-group">
+      <div class="label">
+        What is this learning object named?
+      </div>
+      <input class="name-field" type="text" name="name" required placeholder="Learning Object Name" [(ngModel)]="learningObject.name"
+        #name="ngModel" [ngClass]="{'bad': false }" [pattern]="validName" />
+    </div>
+
+    <div class="input-group">
+      <div class="label">
+        What is the Length of this learning object?
+      </div>
+      <div class="select-wrapper">
+        <select [(ngModel)]="learningObject.length" name="type" class="flex-g1 vert-center">
+          <option value="nanomodule">Nanomodule - up to 1 hour</option>
+          <option value="micromodule">Micromodule - between 1 and 4 hours</option>
+          <option value="module">Module - between 4 and 10 hours</option>
+          <option value="unit">Unit - over 10 hours</option>
+          <option value="course">Course (15 weeks)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div class="label">
+        What academic levels is this learning object intended for?
+      </div>
+      <div class="level-list">
+        <div class="level button" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let level of academicLevels"
+          (click)="toggleLevel(level)">
+          {{ level | titlecase}}
+          <span *ngIf="learningObject.levels.includes(level)">
+            <i class="far fa-check-circle"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
