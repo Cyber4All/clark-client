@@ -15,7 +15,7 @@
 <div class="learning-objects">
   <ng-container *ngIf="objects && objects.length > 0">
     <div *ngFor="let l of objects">
-      <learning-object-component routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l" [owned]="true">
+      <learning-object-component *ngIf="l.published" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l" [owned]="true">
       </learning-object-component>
     </div>
   </ng-container>
