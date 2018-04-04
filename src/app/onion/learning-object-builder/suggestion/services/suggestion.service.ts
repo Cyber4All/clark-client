@@ -59,12 +59,14 @@ export class SuggestionService {
       .then(res => {
         const outcomes = res.json().outcomes;
         // FIXME: If alphabetical sorting by author is the normal use case, this sort function should be implemented at the API layer
+        /*
         outcomes.sort(function(a, b) {
           const textA = a.author.toUpperCase();
           const textB = b.author.toUpperCase();
           return textA < textB ? -1 : textA > textB ? 1 : 0;
         });
 
+        */
         if (res.ok) {
           this.total = Math.ceil(res.json().total / +filter.limit);
           this.suggestion.next(outcomes);

@@ -1,6 +1,6 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
@@ -28,6 +28,9 @@ import { AuthService } from 'app/core/auth.service';
   providers: [LearningObjectStoreService, LearningObjectErrorStoreService]
 })
 export class LearningObjectBuilderComponent implements OnInit {
+  public PAGES = PAGES;
+  public activePage = PAGES.INFO;
+  public childIndex;
   public tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject = new LearningObject();
@@ -58,8 +61,17 @@ export class LearningObjectBuilderComponent implements OnInit {
 
   ngOnInit() {
     this.learningObject.addGoal('');
-    
     this.getRouteParams();
+    this.store.dispatch({
+      type: 'INIT',
+      request: {
+        initialSection: 0
+      }
+    });
+    this.store.state.subscribe(state => {
+      console.log('state', state);
+      this.changePage(state.section, state.childSection, state.noPage);
+    });
   }
   /**
    * Grabs parameters in route (Learning Object's ID)
@@ -73,26 +85,10 @@ export class LearningObjectBuilderComponent implements OnInit {
       this.learningObjectName = this.route.snapshot.params[
         'learningObjectName'
       ];
-      this.loadLearningObject();
+      this.learningObject = this.route.snapshot.data['learningObject'];
     } else {
       this.isNew = true;
     }
-  }
-  /**
-   * Loads LearningObject by ID
-   * Logs error if unable to fetch LearningObject
-   *
-   * @memberof LearningObjectBuilderComponent
-   */
-  loadLearningObject(): void {
-    this.service
-      .getLearningObject(this.learningObjectName)
-      .then(learningObject => {
-        this.learningObject = learningObject;
-      })
-      .catch(err => {
-        this.isNew = true;
-      });
   }
 
   /**
@@ -104,10 +100,11 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   async save(willUpload: boolean) {
+    console.log('object to save', this.learningObject);
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
-      if (!willUpload) {
+      if (!willUpload && this.isNew) {
         await this.showPublishingDialog();
       }
       this.service
@@ -136,7 +133,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
-      if (!willUpload) {
+      if (!willUpload && this.isNew) {
         await this.showPublishingDialog();
       }
       this.service
@@ -255,6 +252,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (newOutcome.verb === 'Define') {
       newOutcome.verb = 'Choose';
     }
+    // this.advanceSection();
     return newOutcome;
   }
 
@@ -268,7 +266,15 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   deleteOutcome(index: number): void {
+    console.log('index', index);
     this.learningObject.removeOutcome(index);
+    // this.store.dispatch({
+    //   type: 'NAVIGATE',
+    //   request: {
+    //     sectionModifier: -1
+    //   }
+    // });
+    console.log(this.learningObject);
   }
   /**
    * Deletes InstructionalStrategy from LearningObject's LearningOutcomes
@@ -339,7 +345,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     console.log('outcomes', this.learningObject.outcomes);
 
     // check outcomes
-    const badOutcomes = this.learningObject.outcomes.map((x, i) => { console.log(x); return (!x.text || x.text === '') ? i : undefined }).filter(x => x !== undefined);
+    const badOutcomes = this.learningObject.outcomes.map((x, i) => { return (!x.text || x.text === '') ? i : undefined }).filter(x => x !== undefined);
     if (badOutcomes.length) {
       this.errorStore.set('outcometext');
       this.store.dispatch({
@@ -369,7 +375,24 @@ export class LearningObjectBuilderComponent implements OnInit {
         this.childIndex = childPage;
       }
     }
+  }
 
-    return true;
+  advanceSection() {
+    this.store.dispatch({
+      type: 'NAVIGATE',
+      request: {
+        sectionModifier: 1
+      }
+    });
+  }
+
+  togglePublished(event) {
+    if (this.auth.user.emailVerified) {
+      if (this.learningObject.published) {
+        this.learningObject.unpublish();
+      } else {
+        this. learningObject.publish();
+      }
+    }
   }
 }

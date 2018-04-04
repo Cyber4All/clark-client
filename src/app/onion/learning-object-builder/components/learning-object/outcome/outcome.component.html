@@ -31,7 +31,7 @@
   </div>
   <onion-standard-outcomes>
     <onion-mappings-list [mappings]="mappings"></onion-mappings-list>
-    <onion-suggestion-component [outcome]="outcome._text" [mappings]="mappings"></onion-suggestion-component>
+    <onion-suggestion-component [outcome]="outcomeSuggestionText" [mappings]="mappings"></onion-suggestion-component>
     <clark-browse-by-mappings-component (closed)="modalService.closeAll()" [mappings]="mappings" [dimensions]="{h: 600}" [showMappedOutcomesTitle]="true"></clark-browse-by-mappings-component>
   </onion-standard-outcomes>
 </div>
