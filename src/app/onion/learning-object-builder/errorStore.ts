@@ -1,6 +1,6 @@
 export class LearningObjectErrorStoreService {
     private validTypes = ['name', 'outcometext'];
-    private status: boolean = false;
+    private status = false;
     private type?: string;
 
     set(type: string): void {

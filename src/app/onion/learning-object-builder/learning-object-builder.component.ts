@@ -345,7 +345,9 @@ export class LearningObjectBuilderComponent implements OnInit {
     console.log('outcomes', this.learningObject.outcomes);
 
     // check outcomes
-    const badOutcomes = this.learningObject.outcomes.map((x, i) => { return (!x.text || x.text === '') ? i : undefined }).filter(x => x !== undefined);
+    const badOutcomes = this.learningObject.outcomes.map(
+      (x, i) => (!x.text || x.text === '') ? i : undefined
+    ).filter(x => x !== undefined);
     if (badOutcomes.length) {
       this.errorStore.set('outcometext');
       this.store.dispatch({
