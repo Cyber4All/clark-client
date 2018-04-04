@@ -56,7 +56,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
     // FIXME: classverbs should be sorted at the API
     this.classverbs = this.sortVerbs();
 
-    if (first) {
+    if (first && !this.outcome._verb) {
       this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
     }
 
