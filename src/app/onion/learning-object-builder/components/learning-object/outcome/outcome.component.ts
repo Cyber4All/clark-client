@@ -22,6 +22,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
+import { LearningObjectErrorStoreService } from '../../../errorStore';
 
 @Component({
   selector: 'onion-outcome-component',
@@ -50,7 +51,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   classassessmentstrategies: { [level: string]: Set<string> };
   instructionalstrategies: { [level: string]: Set<string> };
 
-  constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
+  constructor(private suggestionService: SuggestionService, public modalService: ModalService, private errorStore: LearningObjectErrorStoreService) {}
 
   setupView(first?: boolean) {
     // FIXME: classverbs should be sorted at the API
