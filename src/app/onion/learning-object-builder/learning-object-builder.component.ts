@@ -13,6 +13,7 @@ import {
 } from '@cyber4all/clark-taxonomy';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObjectStoreService } from './store';
+import { LearningObjectErrorStoreService } from './errorStore';
 
 enum PAGES {
   INFO,
@@ -24,7 +25,7 @@ import { AuthService } from 'app/core/auth.service';
   selector: 'onion-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss'],
-  providers: [LearningObjectStoreService]
+  providers: [LearningObjectStoreService, LearningObjectErrorStoreService]
 })
 export class LearningObjectBuilderComponent implements OnInit {
   public PAGES = PAGES;
@@ -53,6 +54,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private store: LearningObjectStoreService,
+    private errorStore: LearningObjectErrorStoreService,
     private auth: AuthService,
   ) {
   }
@@ -326,9 +328,11 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   validate(): boolean {
+    this.errorStore.clear();
     // check name
     if (this.learningObject.name === '') {
       this.notificationService.notify('Error!', 'Please enter a name for this learning object!', 'bad', 'far fa-times');
+      this.errorStore.set('name');
       this.store.dispatch({
         type: 'NAVIGATE',
         request: {
@@ -338,9 +342,14 @@ export class LearningObjectBuilderComponent implements OnInit {
       return false;
     }
 
+    console.log('outcomes', this.learningObject.outcomes);
+
     // check outcomes
-    const badOutcomes = this.learningObject.outcomes.map((x, i) => (!x.text || x.text === '') ? i : undefined).filter(x => x);
+    const badOutcomes = this.learningObject.outcomes.map(
+      (x, i) => (!x.text || x.text === '') ? i : undefined
+    ).filter(x => x !== undefined);
     if (badOutcomes.length) {
+      this.errorStore.set('outcometext');
       this.store.dispatch({
         type: 'NAVIGATE',
         request: {
@@ -353,7 +362,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           sectionIndex: badOutcomes[0]
         }
       });
-      this.notificationService.notify('Error!', 'You cannot submit a learning outcome without text!', 'bad', 'far fa-times');
+      this.notificationService.notify('Error!', 'You cannot submit a learning outcome without outcome text!', 'bad', 'far fa-times');
       return false;
     }
     return true;

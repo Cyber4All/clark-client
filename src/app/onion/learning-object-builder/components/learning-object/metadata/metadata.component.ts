@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AcademicLevel } from '@cyber4all/clark-entity';
+import { LearningObjectErrorStoreService } from '../../../errorStore';
 
 // TODO: Apply .bad to input if the form is submitted and it's not valid
 
@@ -17,7 +18,7 @@ export class LearningObjectMetadataComponent implements OnInit {
   validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
   academicLevels = Object.values(AcademicLevel);
 
-  constructor() { }
+  constructor(private errorStore: LearningObjectErrorStoreService) { }
 
   ngOnInit() { }
 

@@ -26,7 +26,7 @@
       </div>
       <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->
       <input #outcomeInput class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(i);"
-        [(ngModel)]="outcome._text" [ngClass]="{'bad': false && submitted && !outcomeValidate.valid}" required />
+        [(ngModel)]="outcome._text" [ngClass]="{'bad': errorStore.error === 'outcometext'}" required />
     </div>
   </div>
   <onion-standard-outcomes>
