@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { LearningObjectFile } from '../../DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getPaths } from '../../file-functions';
@@ -10,6 +18,9 @@ import { getPaths } from '../../file-functions';
 })
 export class UploadQueueComponent implements OnInit, OnDestroy {
   @Input() queuedUploads$: BehaviorSubject<LearningObjectFile[]>;
+  @Input()
+  uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  @Output() upload: EventEmitter<void> = new EventEmitter<void>();
   private subscriptions: Subscription[] = [];
   collapsed: boolean = false;
   files: LearningObjectFile[] = [];
@@ -65,6 +76,10 @@ export class UploadQueueComponent implements OnInit, OnDestroy {
       }
     }
     return index;
+  }
+
+  triggerUpload() {
+    this.upload.emit();
   }
 
   remove(item) {

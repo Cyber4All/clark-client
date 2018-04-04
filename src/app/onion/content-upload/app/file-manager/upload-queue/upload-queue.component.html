@@ -3,7 +3,7 @@
     <div>
       Queued Uploads
     </div>
-    <div (click)="collapsed = !collapsed">
+    <div class="button clean" (click)="collapsed = !collapsed">
       <span *ngIf="!collapsed">
         <i class="far fa-minus"></i>
       </span>
@@ -36,5 +36,9 @@
         </div>
       </div>
     </div>
+    <button type="button" (click)="triggerUpload()" class="button good stretch upload" [disabled]="uploading$.getValue()">
+      <span *ngIf="uploading$.getValue(); else uploadText">Uploading</span>
+      <ng-template #uploadText>Upload</ng-template>
+    </button>
   </div>
 </div>
