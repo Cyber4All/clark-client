@@ -12,12 +12,20 @@ import {
   instructions
 } from '@cyber4all/clark-taxonomy';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { LearningObjectStoreService } from './store';
+import { LearningObjectErrorStoreService } from './errorStore';
+
+enum PAGES {
+  INFO,
+  OUTCOMES
+}
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'onion-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
-  styleUrls: ['./learning-object-builder.component.scss']
+  styleUrls: ['./learning-object-builder.component.scss'],
+  providers: [LearningObjectStoreService, LearningObjectErrorStoreService]
 })
 export class LearningObjectBuilderComponent implements OnInit {
   public tips = TOOLTIP_TEXT;
@@ -42,8 +50,11 @@ export class LearningObjectBuilderComponent implements OnInit {
     private service: LearningObjectService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private auth: AuthService
-  ) {}
+    private store: LearningObjectStoreService,
+    private errorStore: LearningObjectErrorStoreService,
+    private auth: AuthService,
+  ) {
+  }
 
   ngOnInit() {
     this.learningObject.addGoal('');
@@ -311,18 +322,51 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   validate(): boolean {
+    this.errorStore.clear();
     // check name
     if (this.learningObject.name === '') {
+      this.notificationService.notify('Error!', 'Please enter a name for this learning object!', 'bad', 'far fa-times');
+      this.errorStore.set('name');
+      this.store.dispatch({
+        type: 'NAVIGATE',
+        request: {
+          sectionIndex: 0
+        }
+      });
       return false;
     }
 
+    console.log('outcomes', this.learningObject.outcomes);
+
     // check outcomes
-    const o: NodeListOf<Element> = document.querySelectorAll(
-      'onion-learning-outcome-component > .container'
-    );
-    for (const outcome of Array.from(o)) {
-      if (outcome.attributes['valid'].value !== 'true') {
-        return false;
+    const badOutcomes = this.learningObject.outcomes.map((x, i) => { console.log(x); return (!x.text || x.text === '') ? i : undefined }).filter(x => x !== undefined);
+    if (badOutcomes.length) {
+      this.errorStore.set('outcometext');
+      this.store.dispatch({
+        type: 'NAVIGATE',
+        request: {
+          sectionIndex: 1
+        }
+      });
+      this.store.dispatch({
+        type: 'NAVIGATECHILD',
+        request: {
+          sectionIndex: badOutcomes[0]
+        }
+      });
+      this.notificationService.notify('Error!', 'You cannot submit a learning outcome without outcome text!', 'bad', 'far fa-times');
+      return false;
+    }
+    return true;
+  }
+
+  changePage(page, childPage, noPage = false) {
+    if (!noPage) {
+      if (page === 0) {
+        this.activePage = PAGES.INFO;
+      } else {
+        this.activePage = PAGES.OUTCOMES;
+        this.childIndex = childPage;
       }
     }
 

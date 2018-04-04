@@ -18,6 +18,11 @@ import { ModalService } from '../../../shared/modals';
 import { MappingsFilterService } from '../../../core/mappings-filter.service';
 
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
+import { LearningObjectErrorStoreService } from '../../../errorStore';
+
 @Component({
   selector: 'onion-learning-outcome-component',
   templateUrl: 'learning-outcome.component.html',
@@ -41,7 +46,7 @@ export class LearningOutcomeComponent implements OnInit, OnDestroy {
   classassessmentstrategies: { [level: string]: Set<string> };
   instructionalstrategies: { [level: string]: Set<string> };
 
-  constructor(private suggestionService: SuggestionService, public modalService: ModalService) {}
+  constructor(private suggestionService: SuggestionService, public modalService: ModalService, private errorStore: LearningObjectErrorStoreService) {}
 
   ngOnInit() {
     // FIXME: classverbs should be sorted at the API
