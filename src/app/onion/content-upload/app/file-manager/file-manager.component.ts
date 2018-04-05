@@ -42,13 +42,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
-
-  getIcon = (extension: string) => getIcon(extension);
-
+  
   currentPath: string[] = [];
   currentNode: DirectoryNode;
 
   editDescription: boolean = false;
+
+  getIcon = (extension: string) => getIcon(extension);
 
   constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {
