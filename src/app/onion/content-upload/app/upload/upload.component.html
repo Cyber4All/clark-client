@@ -5,11 +5,16 @@
         <div>
           <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
       </div>
-      <div class="title">Manage Materials
+      <div class="title">
+        <span tip="{{ tips.FILE_OPTIONS }}" tipLocation="side">
+          Manage Materials
+          <i class="fas fa-question-circle"></i>
+        </span>
       </div>
       <div></div>
     </div>
-    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" ></file-manager>
+    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
+      (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)"></file-manager>
   </div>
   <div class="inner-wrapper">
     <div class="section">
