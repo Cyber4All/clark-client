@@ -17,7 +17,7 @@
     <span>Drop files and folders or click here</span>
   </div>
   <!-- Render Folders -->
-  <div (click)="openFolder(folder.name); lastEvent=$event;" class="folder" *ngFor="let folder of currentNode?.children" [contextMenu]="fileOptions"
+  <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children" [contextMenu]="fileOptions"
     [contextMenuSubject]="folder" tip="{{folder.description}}" tipTitle={{folder.name}} tipLocation="above" tipDelay="500">
     <div>
       <i class="fas fa-folder icon"></i>
@@ -28,7 +28,7 @@
     <div></div>
   </div>
   <!-- Render Files -->
-  <div class="file" (click)="lastEvent=$event;" *ngFor="let file of currentNode?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file"
+  <div class="file" *ngFor="let file of currentNode?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file"
     tip="{{file.description}}" tipTitle={{file.name}} tipLocation="above" tipDelay="500">
     <div>
       <i class="fas {{ getIcon(file.extension) }} icon"></i>
