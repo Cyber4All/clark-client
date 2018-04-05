@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit {
   height: number = 100;
   width: number = 100;
   size: number = 200; 
+  default: string; 
 
   editContent: boolean = false;
 
@@ -37,6 +38,7 @@ export class UserProfileComponent implements OnInit {
     this.route.data.subscribe(val => {
       this.user = val.user;
       this.self = this.user.username === this.auth.username;
+      this.default = "identicon";
     });
 
     // particle config
@@ -171,6 +173,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   getGravatarImage():string {
-    return 'http://www.gravatar.com/avatar/' + md5(this.user.email) + '?s=' + this.size;
+    return 'http://www.gravatar.com/avatar/' + md5(this.user.email) + '?s=200?r=pg&d=retro';
+    //return 'http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200&r=pg&d=404'
   }
 }
