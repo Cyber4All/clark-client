@@ -46,7 +46,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   currentPath: string[] = [];
   currentNode: DirectoryNode;
 
-  editDescription: boolean = false;
+  editDescription = false;
 
   getIcon = (extension: string) => getIcon(extension);
 
