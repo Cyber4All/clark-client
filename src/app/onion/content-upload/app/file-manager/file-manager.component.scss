@@ -76,8 +76,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+  .description-input {
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .buttons {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+  }
 }
-.bad {
+.context-item.stacked {
+  flex-direction: column;
+}
+.context-item.bad {
   color: #cf4739;
 }
 .text-contained {
@@ -107,7 +126,8 @@
   max-height: 150px;
   padding: 15px;
   overflow: hidden;
-  input {
-    width: 100%;
-  }
+}
+
+.button.slim {
+  padding: 1px 15px;
 }

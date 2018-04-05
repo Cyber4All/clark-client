@@ -17,7 +17,7 @@
     <span>Drop files and folders or click here</span>
   </div>
   <!-- Render Folders -->
-  <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of currentNode?.children" [contextMenu]="fileOptions"
+  <div (click)="openFolder(folder.name); lastEvent=$event;" class="folder" *ngFor="let folder of currentNode?.children" [contextMenu]="fileOptions"
     [contextMenuSubject]="folder" tip="{{folder.description}}" tipTitle={{folder.name}} tipLocation="above" tipDelay="500">
     <div>
       <i class="fas fa-folder icon"></i>
@@ -28,8 +28,8 @@
     <div></div>
   </div>
   <!-- Render Files -->
-  <div class="file" *ngFor="let file of currentNode?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file" tip="{{file.description}}" tipTitle={{file.name}}
-   tipLocation="above" tipDelay="500">
+  <div class="file" (click)="lastEvent=$event;" *ngFor="let file of currentNode?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file"
+    tip="{{file.description}}" tipTitle={{file.name}} tipLocation="above" tipDelay="500">
     <div>
       <i class="fas {{ getIcon(file.extension) }} icon"></i>
     </div>
@@ -38,29 +38,11 @@
     </div>
     <div></div>
   </div>
-
-  <div *ngIf="currentFile" class="input-modal">
-    <div class="text-contained">
-      {{ currentFile?.name }}
-    </div>
-    <div>
-      <input #descriptionInput type="text" name="file-description" [value]="currentFile.description ? currentFile.description : ''"
-      />
-    </div>
-    <div>
-      <button (click)="currentFile=undefined">
-        Cancel
-      </button>
-      <button (click)="saveDescription(descriptionInput.value)">
-        Save
-      </button>
-    </div>
-  </div>
 </div>
 
-<context-menu>
-  <ng-template contextMenuItem (execute)="editDescription($event.item)">
-    <div class="context-item">
+<context-menu (close)="editDescription=false" #fileOptions>
+  <ng-template contextMenuItem passive="true">
+    <div *ngIf="!editDescription" class="context-item" (click)="editDescription=true">
       <div>
         Edit description
       </div>
@@ -70,7 +52,7 @@
     </div>
   </ng-template>
   <ng-template contextMenuItem (execute)="deleteFile($event.item)">
-    <div class="context-item bad">
+    <div *ngIf="!editDescription" class="context-item bad">
       <div>
         Delete
       </div>
@@ -79,4 +61,24 @@
       </div>
     </div>
   </ng-template>
+
+  <ng-template let-item contextMenuItem passive="true">
+    <div *ngIf="editDescription" class="context-item stacked">
+      <form #decriptionInput="ngForm" (submit)="saveDescription(description.value, item); closeContextMenu()">
+        <div class="description-input">
+          <input #description name="description" ([ngModel])="item?.description" type="text" name="file-description" placeholder="Enter description" [value]="item?.description ? item?.description : ''"
+          />
+        </div>
+        <div class="buttons">
+          <button type="button" class="button bad slim" (click)="closeContextMenu()">
+            Cancel
+          </button>
+          <button type="button" class="button good slim" (click)="saveDescription(description.value, item); closeContextMenu()">
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
 </context-menu>

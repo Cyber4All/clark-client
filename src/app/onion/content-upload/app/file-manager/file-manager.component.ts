@@ -14,7 +14,7 @@ import {
   DirectoryNode
 } from '../DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ContextMenuComponent } from 'ngx-contextmenu';
+import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { FileStorageService } from '../services/file-storage.service';
 import { getIcon } from './file-icons';
 import { getPaths } from '../file-functions';
@@ -31,7 +31,7 @@ export type FileEdit = {
   styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
-  @ViewChild(ContextMenuComponent) public fileOptions: ContextMenuComponent;
+  @ViewChild('fileOptions') public fileOptions: ContextMenuComponent;
   @Input()
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
@@ -48,9 +48,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   currentPath: string[] = [];
   currentNode: DirectoryNode;
 
-  currentFile;
+  editDescription: boolean = false;
 
-  constructor() {}
+  constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {
     this.subscriptions.push(
       this.files$.subscribe(files => {
@@ -95,26 +95,31 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     this.filesystem.addFiles([file]);
   }
 
-  editDescription(file) {
-    this.currentFile = file;
+  closeContextMenu() {
+    this.contextMenuService.closeAllContextMenus({
+      eventType: 'cancel'
+    });
   }
-  saveDescription(description: string) {
-    if (!this.currentFile) return;
-    let edit: FileEdit = {
+
+  saveDescription(
+    description: string,
+    file: LearningObjectFile | DirectoryNode
+  ) {
+    if (!file || !description) return;
+
+    const edit: FileEdit = {
       path: '',
       description: description
     };
-    if (!(this.currentFile instanceof DirectoryNode)) {
-      edit.path = this.currentFile.fullPath
-        ? this.currentFile.fullPath
-        : this.currentFile.name;
+
+    if (!(file instanceof DirectoryNode)) {
+      edit.path = file.fullPath ? file.fullPath : file.name;
     } else {
-      edit.path = this.currentFile.getPath();
+      edit.path = file.getPath();
       edit.isFolder = true;
     }
 
     this.fileEdited.emit(edit);
-    this.currentFile = undefined;
   }
 
   deleteFile(file) {
