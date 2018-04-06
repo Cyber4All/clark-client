@@ -14,13 +14,10 @@ $border-color: #d8d8d8;
 }
 
 .container {
-  padding: 0px;
-  padding: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
   box-sizing: border-box;
   width: 100%;
   margin-bottom: 20px;
+  
   select {
     min-width: 200px;
   }
@@ -136,9 +133,10 @@ $border-color: #d8d8d8;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   margin-bottom: 30px;
   padding-bottom: 5px;
+  margin-top: -35px;
+
   .left {
     width: 100%;
   }
@@ -147,10 +145,10 @@ $border-color: #d8d8d8;
     background-color: white;
     border-color: white;
     box-shadow: none;
-    transition: all .5s ease;
+    transition: all 0.2s ease;
   }
   .button.bad:hover {
-    transition: all 1.5s ease;
+    transition: all 0.2s ease;
   }
 }
 

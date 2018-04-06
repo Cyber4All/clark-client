@@ -52,10 +52,7 @@ export class SuggestionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.outcome) {
-      const o: string = changes.outcome.currentValue;
-      if (o.substr(o.length - 1, o.length) === ' ') {
-        this.loader.emit(this.outcome, this.filter);
-      }
+      this.loader.emit(this.outcome, this.filter);
     }
   }
 

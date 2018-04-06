@@ -1,5 +1,49 @@
 @import '~_vars.scss';
 
+$border-color: lighten($dark-text, 55);
+
+.back {
+  color: $blue-accent;
+  @include vert-center;
+  cursor: pointer;
+  font-size: 15px;
+  margin-bottom: 10px;
+  outline: none;
+
+  .svg-inline--fa,
+  .icon {
+    margin-right: 5px;
+    @include vert-center;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+::ng-deep .input-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: flex-start;
+  margin-bottom: 35px;
+
+  .label {
+    color: $dark-text;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: left;
+    padding-left: 0;
+    margin-bottom: 5px;
+  }
+
+  & > *:last-child,
+  input {
+    max-width: 800px;
+    font-size: 16px;
+  }
+}
+
 .inner-wrapper {
   border-radius: 4px;
   background: white;
@@ -11,60 +55,129 @@
   }
 }
 
-::ng-deep input {
-  border: 2px solid $placeholder;
-  outline: 0;
-  padding: 7px;
+.wrapper {
+  box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.1);
+  background: white;
 
-  &:focus {
-    border-color: $blue-accent;
-  }
+  .top-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid (lighten($dark-text, 50));
 
-  &.bad {
-    border-color: $error-red !important;
+    .left {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    .right {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .published-toggle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-right: 30px;
+
+        .toggle-label {
+          color: $error-red;
+          font-weight: bold;
+          text-transform: uppercase;
+          transition: all 0.2s ease;
+          margin-right: 5px;
+        
+          &.published {
+            color: $green;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    .title-user {
+      @include vert-center;
+
+      .title {
+        font-size: 24px;
+        text-transform: uppercase;
+
+        &.placeholder {
+          color: $placeholder;
+        }
+      }
+
+      .length {
+        padding: 5px;
+        font-size: 12px;
+        color: white;
+        border-radius: 2px;
+        font-weight: normal;
+        margin-left: 5px;
+
+        &.nanomodule {
+          background: $nanomodule-color;
+        }
+
+        &.micromodule {
+          background: $micromodule-color;
+        }
+
+        &.module {
+          background: $module-color;
+        }
+
+        &.unit {
+          background: $unit-color;
+        }
+
+        &.course {
+          background: $course-color;
+        }
+      }
+    }
   }
 }
 
-select {
-  &[name='type'],
-  &[name='level'] {
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+
+  .component-wrapper {
+    width: 100%;
+    padding: 15px 40px;
+  }
+
+  .sidebar-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-right: 1px solid (lighten($dark-text, 50));
+    max-width: 260px;
     width: 100%;
   }
 }
 
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 20px;
+button[disabled] {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
 
-  & > div {
-    width: 33%;
+::ng-deep input,
+::ng-deep textarea {
+  border: 1px solid $placeholder;
+  outline: 0;
+  padding: 10px;
+  border-radius: 3px;
+
+  &:focus {
+    border-color: $blue-accent;
   }
-
-  .title {
-    font-size: 28px;
-    color: $blue-accent;
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  .back {
-    color: $blue-accent;
-    @include vert-center;
-    cursor: pointer;
-    font-size: 15px;
-
-    .svg-inline--fa,
-    .icon {
-      margin-right: 5px;
-      @include vert-center;
-    }
-
-    &:hover {
-      text-decoration: underline;
-    }
+  &.bad {
+    border-color: $error-red !important;
   }
 }
 
@@ -74,14 +187,11 @@ select {
     padding-right: 0px !important;
     background: transparent;
   }
-
   .columns {
     padding: 0px 0px 0px !important;
   }
-
   .cell {
     width: 49% !important;
-
     input {
       width: 100%;
       &.name-field {
@@ -98,26 +208,21 @@ select {
     color: $blue-accent;
     font-size: 20px;
   }
-
   .list {
     margin-top: 15px;
-
     ul {
       padding-left: 0px;
-
       li {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         margin-bottom: 10px;
-
         input {
           width: 100%;
         }
       }
     }
   }
-
   .icon-only {
     max-height: 35px;
     padding: 6px 8px;
@@ -129,7 +234,6 @@ select {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
   .text {
     @include vert-center;
     font-size: 16px;
@@ -152,7 +256,6 @@ select {
   min-width: 36px;
   text-align: center;
   padding: 5px;
-
   .draganddrop {
     display: inline-block;
     border-top: 2px solid #ccc;
@@ -160,7 +263,6 @@ select {
     padding-top: 4px;
     margin-top: 10px;
   }
-
   .draganddrop:before,
   .draganddrop:after {
     display: block;
@@ -170,44 +272,10 @@ select {
   }
 }
 
-.level-list {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-  .level {
-    margin-bottom: 15px;
-    text-transform: none;
-    cursor: pointer;
-    margin-right: 10px;
-    background: #fff;
-    color: $blue-accent;
-    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
-    padding: 5px 10px;
-    border-radius: 2px;
-    border: 3px solid transparent;
-  }
-  .level.selected {
-    background: $blue-accent;
-    color: #fff;
-    box-shadow: none;
-  }
-}
-
 .hidden {
   display: none;
 }
+
 .visible {
   display: block;
-}
-
-textarea {
-  padding: 10px;
-  padding-bottom: 0;
-  resize: vertical;
-}
-
-textarea.full-width {
-  width: 100%;
 }

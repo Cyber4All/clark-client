@@ -16,24 +16,33 @@ import { LearningObjectService } from '../../core/learning-object.service';
 import { FileStorageService } from './services/file-storage.service';
 
 // Components
+import { FileManagerComponent } from './file-manager/file-manager.component';
+import { UploadQueueComponent } from './file-manager/upload-queue/upload-queue.component';
+
 import { ContentUploadComponent } from './content-upload.component';
 import { UploadComponent } from './upload/upload.component';
-import { ViewComponent } from './view/view.component';
 
 import { TooltipModule } from '@cyber4all/clark-tooltip';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
 
 @NgModule({
-  declarations: [ContentUploadComponent, UploadComponent, ViewComponent],
+  declarations: [
+    ContentUploadComponent,
+    UploadComponent,
+    FileManagerComponent,
+    UploadQueueComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
     HttpModule,
     DropzoneModule,
     TooltipModule,
-    routes
+    routes,
+    ContextMenuModule.forRoot()
   ],
   exports: [RouterModule],
   providers: [
