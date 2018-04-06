@@ -17,6 +17,7 @@
 }
 
 .img {
+    display: block; 
     max-width: 180px;
     width: 100%;
     border-radius: 50%;
@@ -64,6 +65,24 @@
         margin-bottom: 0px;
 
         .edit {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: $blue-accent;
+            font-size: 18px;
+
+            .svg-inline--fa {
+                font-size: 20px;
+                margin-right: 5px;
+            }
+
+            &:hover {
+                cursor: pointer;
+                border-bottom: 1px solid $blue-accent;
+            }
+        }
+
+        .gravatar {
             position: absolute;
             top: 20px;
             right: 20px;

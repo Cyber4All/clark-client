@@ -64,7 +64,6 @@ import { CollectionModule } from './collections/collection.module';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
 
-
 /**
  * A feature collection module that bundles all feature modules related to the cube.
  *
@@ -85,7 +84,7 @@ import { FileDetailsComponent } from './learning-object-details/file-details/fil
     UserInformationComponent,
     UserEditInformationComponent,
     OrganizationListComponent,
-    FileDetailsComponent
+    FileDetailsComponent,
 ],
   imports: [
     // Angular imports
