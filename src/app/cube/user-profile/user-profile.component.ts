@@ -1,5 +1,5 @@
 import { USER_ROUTES } from '../../../environments/route';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../../core/auth.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
@@ -7,34 +7,40 @@ import { UserInformationComponent } from './user-information/user-information.co
 import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import { ISubscription } from 'rxjs/Subscription';
+import * as md5 from 'md5';
 
 @Component({
   selector: 'clark-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
+
 export class UserProfileComponent implements OnInit {
   user: User;
+  subscription: ISubscription;
   self: boolean = false;
   myStyle;
   particleParams;
   height: number = 100;
   width: number = 100;
-
+  size: number = 200; 
+  default: string; 
   editContent: boolean = false;
 
   constructor(
     private service: LearningObjectService,
     private auth: AuthService,
     private modalService: ModalService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     // get data from resolve
-    this.route.data.subscribe(val => {
+    this.subscription = this.route.data.subscribe(val => {
       this.user = val.user;
       this.self = this.user.username === this.auth.username;
+      this.default = 'identicon';
     });
 
     // particle config
@@ -161,10 +167,20 @@ export class UserProfileComponent implements OnInit {
     };
   }
 
+  ngOnDestroy() { 
+    this.subscription.unsubscribe(); 
+  }
+  
   closeEdit(changed: boolean = false) {
     this.editContent = false;
     if (changed) {
       this.user = this.auth.user;
     }
+  }
+
+  getGravatarImage():string {
+    // r=pg checks the rating of the Gravatar image 
+    return 'http://www.gravatar.com/avatar/' + md5(this.user.email) + '?s=' + this.size + 
+      '?r=pg&d=' + this.default;
   }
 }
