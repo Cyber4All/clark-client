@@ -7,8 +7,8 @@ import { UserInformationComponent } from './user-information/user-information.co
 import { UserEditInformationComponent } from './user-edit-information/user-edit-information.component';
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
-import { ISubscription } from "rxjs/Subscription";
-import * as md5 from 'md5'
+import { ISubscription } from 'rxjs/Subscription';
+import * as md5 from 'md5';
 
 @Component({
   selector: 'clark-user-profile',
@@ -18,7 +18,7 @@ import * as md5 from 'md5'
 
 export class UserProfileComponent implements OnInit {
   user: User;
-  subscription: ISubscription
+  subscription: ISubscription;
   self: boolean = false;
   myStyle;
   particleParams;
@@ -40,7 +40,7 @@ export class UserProfileComponent implements OnInit {
     this.subscription = this.route.data.subscribe(val => {
       this.user = val.user;
       this.self = this.user.username === this.auth.username;
-      this.default = "identicon";
+      this.default = 'identicon';
     });
 
     // particle config
@@ -179,7 +179,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   getGravatarImage():string {
-    //r=pg checks the rating of the Gravatar image 
+    // r=pg checks the rating of the Gravatar image 
     return 'http://www.gravatar.com/avatar/' + md5(this.user.email) + '?s=' + this.size + 
       '?r=pg&d=' + this.default;
   }
