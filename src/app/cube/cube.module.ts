@@ -63,8 +63,6 @@ import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
-import { GravatarImageComponent } from './user-profile/gravatar-image/gravatar-image.component';
-
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -87,7 +85,6 @@ import { GravatarImageComponent } from './user-profile/gravatar-image/gravatar-i
     UserEditInformationComponent,
     OrganizationListComponent,
     FileDetailsComponent,
-    GravatarImageComponent
 ],
   imports: [
     // Angular imports
