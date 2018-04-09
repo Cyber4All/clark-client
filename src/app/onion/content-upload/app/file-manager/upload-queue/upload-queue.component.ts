@@ -7,9 +7,10 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { LearningObjectFile } from '../../DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { getPaths } from '../../file-functions';
+import { getPaths } from '../../shared/file-functions';
+import { File } from '@cyber4all/clark-entity/dist/learning-object';
+type LearningObjectFile = File;
 
 @Component({
   selector: 'upload-queue',
@@ -55,7 +56,7 @@ export class UploadQueueComponent implements OnInit, OnDestroy {
         }
       } else if (
         !file.fullPath &&
-        this.findFile(file.fullPath, this.files) === -1
+        this.findFile(file.name, this.files) === -1
       ) {
         this.files.push(file);
       }

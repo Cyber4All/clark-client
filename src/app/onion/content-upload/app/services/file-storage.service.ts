@@ -5,8 +5,8 @@ import { Http, Headers } from '@angular/http';
 import { AuthService } from '../../../../core/auth.service';
 import { CookieService } from 'ngx-cookie';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { LearningObjectFile } from '../DirectoryTree';
-
+import { File } from '@cyber4all/clark-entity/dist/learning-object';
+type LearningObjectFile = File;
 @Injectable()
 export class FileStorageService {
   private authHeader: { header: string; value: string };

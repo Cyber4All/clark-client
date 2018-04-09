@@ -5,12 +5,12 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { DropzoneDirective } from 'ngx-dropzone-wrapper';
-import { TimeFunctions } from '../time-functions';
+import { TimeFunctions } from '../shared/time-functions';
 import { NotificationService } from '../../../../shared/notifications';
-import { DirectoryTree, LearningObjectFile } from '../DirectoryTree';
+import { DirectoryTree, LearningObjectFile } from '../shared/DirectoryTree';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { getPaths } from '../file-functions';
+import { getPaths } from '../shared/file-functions';
 
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs';
@@ -28,11 +28,7 @@ export type File = {
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
-  styleUrls: [
-    '../../styles.css',
-    './upload.component.scss',
-    '../../dropzone.scss'
-  ]
+  styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;

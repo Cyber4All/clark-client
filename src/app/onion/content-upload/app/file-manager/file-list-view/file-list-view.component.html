@@ -1,0 +1,28 @@
+<div class="wrapper">
+  <div class="grid-row header">
+    <div class>Name</div>
+    <div class>Description</div>
+  </div>
+  <!-- Render Folders -->
+  <div (click)="openFolder(folder.name)" class="grid-row folder" *ngFor="let folder of (node$ | async).children" [contextMenu]="fileOptions"
+    [contextMenuSubject]="folder">
+    <div class="text-contained inline-flex">
+      <i class="fas fa-folder icon"></i>
+      {{ folder.name }}
+    </div>
+    <div class="text-contained description">
+      {{ folder.description }}
+    </div>
+  </div>
+  <!-- Render Files -->
+  <div class="grid-row file" *ngFor="let file of (node$ | async).files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
+    <div class="text-contained inline-flex">
+      <i class="fas {{ getIcon(file.extension) }} icon"></i>
+      {{ file.name }}
+    </div>
+    <div class="text-contained description">
+      {{ file.description }}
+    </div>
+  </div>
+
+</div>

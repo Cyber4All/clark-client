@@ -1,16 +1,4 @@
 @import '~_vars.scss';
-.upload-container {
-  max-width: 75%;
-  margin: auto;
-  min-height: 350px;
-  border: 2px dashed $blue-accent;
-  border-radius: 2px;
-}
-
-.upload-container:hover {
-  cursor: pointer;
-}
-
 .dropzone {
   width: 100%;
   display: flex;

@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   DROPZONE_CONFIG: {
     url: '/',
-    maxFilesize: 300,
+    maxFilesize: 100000,
     acceptedFiles: '',
     autoQueue: false
   }

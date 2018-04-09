@@ -8,16 +8,14 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {
-  LearningObjectFile,
-  DirectoryTree,
-  DirectoryNode
-} from '../DirectoryTree';
+import { DirectoryTree, DirectoryNode } from '../shared/DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { FileStorageService } from '../services/file-storage.service';
 import { getIcon } from './file-icons';
-import { getPaths } from '../file-functions';
+import { getPaths } from '../shared/file-functions';
+import { File } from '@cyber4all/clark-entity/dist/learning-object';
+type LearningObjectFile = File;
 
 export type FileEdit = {
   path: string;
@@ -42,13 +40,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
-  
+
   currentPath: string[] = [];
-  currentNode: DirectoryNode;
+  currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
+    DirectoryNode
+  >(null);
 
   editDescription = false;
-
-  getIcon = (extension: string) => getIcon(extension);
+  view = 'list';
 
   constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {
@@ -179,8 +178,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
   }
   private refreshNode() {
-    let path = this.currentPath;
-    this.currentNode = this.filesystem.traversePath(path);
+    const path = this.currentPath;
+    this.currentNode$.next(this.filesystem.traversePath(path));
   }
 
   ngOnDestroy(): void {
