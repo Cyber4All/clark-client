@@ -176,6 +176,7 @@ export class DirectoryNode {
   private files: LearningObjectFile[];
   private parent: DirectoryNode;
   private children: DirectoryNode[];
+  public description: string;
 
   constructor(name: string, path: string, parent: DirectoryNode) {
     this.name = name;
@@ -183,6 +184,7 @@ export class DirectoryNode {
     this.files = [];
     this.parent = parent;
     this.children = [];
+    this.description = '';
   }
   /**
    * Gets Parent Node

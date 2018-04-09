@@ -39,6 +39,7 @@ export class UploadComponent implements OnInit {
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
   >([]);
+  folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
   >([]);
@@ -50,7 +51,7 @@ export class UploadComponent implements OnInit {
 
   learningObject: LearningObject = new LearningObject(null, '');
 
-  uploading: boolean = false;
+  uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   submitting: boolean = false;
 
   file_descriptions: Map<string, string> = new Map();
@@ -87,7 +88,13 @@ export class UploadComponent implements OnInit {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      // FIXME: Add folder descriptions to entity
+      // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
+      if (!this.learningObject.materials['folderDescriptions']) {
+        this.learningObject.materials['folderDescriptions'] = [];
+      }
       this.updateFileSubscription();
+      this.updateFolderMeta();
       this.watchTimestamps();
     } catch (e) {
       this.notificationService.notify(
@@ -100,6 +107,9 @@ export class UploadComponent implements OnInit {
   }
   private updateFileSubscription() {
     this.files$.next(<LearningObjectFile[]>this.learningObject.materials.files);
+  }
+  private updateFolderMeta() {
+    this.folderMeta$.next(this.learningObject.materials['folderDescriptions']);
   }
 
   /**
@@ -260,7 +270,7 @@ export class UploadComponent implements OnInit {
 
       let learningObjectFiles = await this.upload();
 
-      this.uploading = false;
+      this.uploading$.next(false);
 
       this.submitting = false;
 
@@ -272,11 +282,11 @@ export class UploadComponent implements OnInit {
       try {
         await this.learningObjectService.save(this.learningObject);
         this.submitting = false;
-        this.uploading = false;
+        this.uploading$.next(false);
         this.updateFileSubscription();
       } catch (e) {
         this.submitting = false;
-        this.uploading = false;
+        this.uploading$.next(false);
         this.notificationService.notify(
           'Could not update your materials.',
           `${e}`,
@@ -287,7 +297,7 @@ export class UploadComponent implements OnInit {
     } catch (e) {
       console.log(e);
       this.submitting = false;
-      this.uploading = false;
+      this.uploading$.next(false);
       this.notificationService.notify(
         'Could not upload your materials.',
         `${e}`,
@@ -308,7 +318,7 @@ export class UploadComponent implements OnInit {
     const queue = this.queuedUploads$.getValue();
     if (queue.length >= 1) {
       // this.mapFileDescriptions();
-      this.uploading = true;
+      this.uploading$.next(true);
       let learningObjectFiles = await this.fileStorageService.upload(
         this.learningObject,
         queue,
@@ -323,7 +333,7 @@ export class UploadComponent implements OnInit {
 
       return learningObjectFiles;
     }
-    this.uploading = false;
+    this.uploading$.next(false);
     return Promise.resolve([]);
   }
   /**
@@ -356,6 +366,37 @@ export class UploadComponent implements OnInit {
     }
   }
 
+  async handleEdit(file): Promise<void> {
+    try {
+      if (!file.isFolder) {
+        const index = this.findFile(file.path);
+        this.learningObject.materials.files[index].description =
+          file.description;
+        this.updateFileSubscription();
+      } else {
+        const index = this.findFolder(file.path);
+        if (index > -1) {
+          this.learningObject.materials['folderDescriptions'][
+            index
+          ].description =
+            file.description;
+        } else {
+          const folderDescription = {
+            path: file.path,
+            description: file.description
+          };
+          this.learningObject.materials['folderDescriptions'].push(
+            folderDescription
+          );
+        }
+        this.updateFolderMeta();
+      }
+      await this.learningObjectService.save(this.learningObject);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   private deleteFromMaterials(paths: string[]): Promise<any> {
     for (let path of paths) {
       const index = this.findFile(path);
@@ -378,6 +419,19 @@ export class UploadComponent implements OnInit {
         ? files[i]['fullPath']
         : files[i].name;
       if (filePath === path) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
+
+  private findFolder(path: string): number {
+    let index = -1;
+    const folders = this.learningObject.materials['folderDescriptions'];
+    for (let i = 0; i < folders.length; i++) {
+      const folderPath = folders[i].path;
+      if (folderPath === path) {
         index = i;
         break;
       }

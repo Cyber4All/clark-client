@@ -49,3 +49,22 @@
 .file {
   margin-bottom: 10px;
 }
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+.button.upload {
+  margin-top: 20px;
+}
+.button.stretch {
+  width: 100%;
+}
+.button.clean {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.fa-minus,
+.fa-bars {
+  color: #fff !important;
+}

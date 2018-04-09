@@ -1,5 +1,6 @@
 @import '~_vars.scss';
 .flex-wrapper {
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -44,7 +45,6 @@
   height: 48px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 .folder,
 .file {
@@ -76,7 +76,58 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+  .description-input {
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .buttons {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+  }
 }
-.bad {
+.context-item.stacked {
+  flex-direction: column;
+}
+.context-item.bad {
   color: #cf4739;
+}
+.text-contained {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+// MODAL
+
+.input-modal {
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  z-index: 9999;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.25);
+  max-width: 300px;
+  width: 50%;
+  max-height: 150px;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.button.slim {
+  padding: 1px 15px;
 }

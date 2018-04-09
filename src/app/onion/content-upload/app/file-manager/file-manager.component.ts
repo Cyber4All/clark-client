@@ -14,8 +14,16 @@ import {
   DirectoryNode
 } from '../DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { ContextMenuComponent } from 'ngx-contextmenu';
+import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { FileStorageService } from '../services/file-storage.service';
+import { getIcon } from './file-icons';
+import { getPaths } from '../file-functions';
+
+export type FileEdit = {
+  path: string;
+  description: string;
+  isFolder?: boolean;
+};
 
 @Component({
   selector: 'file-manager',
@@ -23,22 +31,36 @@ import { FileStorageService } from '../services/file-storage.service';
   styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
-  @ViewChild(ContextMenuComponent) public fileOptions: ContextMenuComponent;
-  @Input() files$: BehaviorSubject<LearningObjectFile[]>;
+  @ViewChild('fileOptions') public fileOptions: ContextMenuComponent;
+  @Input()
+  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
+    LearningObjectFile[]
+  >([]);
+  @Input() folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   @Output() fileDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() fileEdited: EventEmitter<FileEdit> = new EventEmitter<FileEdit>();
   @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
-
+  
   currentPath: string[] = [];
   currentNode: DirectoryNode;
 
-  constructor() {}
+  editDescription = false;
+
+  getIcon = (extension: string) => getIcon(extension);
+
+  constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {
     this.subscriptions.push(
       this.files$.subscribe(files => {
         this.filesystem.addFiles(files);
         this.refreshNode();
+      })
+    );
+    this.subscriptions.push(
+      this.folderMeta$.subscribe(folders => {
+        this.mapFolderMeta(folders);
       })
     );
   }
@@ -54,6 +76,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     this.filesystem.addFiles(files);
   }
 
+  private mapFolderMeta(folders: any[]) {
+    for (const folder of folders) {
+      const paths = getPaths(folder.path, false);
+      const node = this.filesystem.traversePath(paths);
+      if (node) node.description = folder.description;
+    }
+  }
+
   /**
    * Adds file to file system
    *
@@ -63,6 +93,33 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    */
   private addToFileSystem(file) {
     this.filesystem.addFiles([file]);
+  }
+
+  closeContextMenu() {
+    this.contextMenuService.closeAllContextMenus({
+      eventType: 'cancel'
+    });
+  }
+
+  saveDescription(
+    description: string,
+    file: LearningObjectFile | DirectoryNode
+  ) {
+    if (!file || !description) return;
+
+    const edit: FileEdit = {
+      path: '',
+      description: description
+    };
+
+    if (!(file instanceof DirectoryNode)) {
+      edit.path = file.fullPath ? file.fullPath : file.name;
+    } else {
+      edit.path = file.getPath();
+      edit.isFolder = true;
+    }
+
+    this.fileEdited.emit(edit);
   }
 
   deleteFile(file) {
@@ -96,6 +153,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
   openDropzone(e) {
     const target = e.target;
+    if (!target.className) return;
+
     const classNames: string[] = target.className.trim().split(' ');
     if (classNames.includes('dz-clickable')) {
       this.openDZ.emit(true);

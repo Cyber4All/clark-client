@@ -5,11 +5,16 @@
         <div>
           <i class="far fa-arrow-to-left"></i>Back to Learning Objects</div>
       </div>
-      <div class="title">Manage Materials
+      <div class="title">
+        <span tip="{{ tips.FILE_OPTIONS }}" tipLocation="side">
+          Manage Materials
+          <i class="fas fa-question-circle"></i>
+        </span>
       </div>
       <div></div>
     </div>
-    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)"></file-manager>
+    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
+      (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)"></file-manager>
   </div>
   <div class="inner-wrapper">
     <div class="section">
@@ -38,20 +43,14 @@
       <div class="title">Notes</div>
     </div>
     <div class="notes">
-      <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add descriptions about files here. (eg. Lab1_Solutions.doc - Solutions to Lab 1)"></textarea>
+      <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
     </div>
   </div>
   <div class="btn-group to-right final">
-    <button *ngIf="!uploading" type="button" (click)="save()" class="button good" [disabled]="submitting">Upload
-      <i class="fas fa-cloud-upload"></i>
+    <button *ngIf="!queuedUploads$.getValue().length" type="button" (click)="save()" class="button good" [disabled]="submitting">Save
+      <i class="fas fa-check"></i>
     </button>
-    <button *ngIf="uploading" type="button" class="button good" [disabled]="submitting">
-      Uploading
-      <i class="far fa-spinner fa-pulse"></i>
-    </button>
-    <div class="button bad" routerLink="/onion/dashboard">Cancel
-      <i class="far fa-times"></i>
-    </div>
   </div>
 </div>
-<upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$"></upload-queue>
+<upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$" [uploading$]="uploading$"
+  (upload)="save()"></upload-queue>
