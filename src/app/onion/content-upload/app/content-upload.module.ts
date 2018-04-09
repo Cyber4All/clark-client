@@ -24,6 +24,8 @@ import { UploadComponent } from './upload/upload.component';
 
 import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { ContextMenuModule } from 'ngx-contextmenu';
+import { FileGridViewComponent } from './file-manager/file-grid-view/file-grid-view.component';
+import { FileListViewComponent } from './file-manager/file-list-view/file-list-view.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
@@ -33,7 +35,9 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     ContentUploadComponent,
     UploadComponent,
     FileManagerComponent,
-    UploadQueueComponent
+    UploadQueueComponent,
+    FileGridViewComponent,
+    FileListViewComponent
   ],
   imports: [
     CommonModule,
