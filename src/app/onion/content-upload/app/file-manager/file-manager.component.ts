@@ -151,7 +151,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   }
 
   openDropzone(e) {
-    console.log('EVENT: ', e);
     const target = e.target;
     if (!target.className) return;
 

@@ -56,7 +56,7 @@ export class UploadQueueComponent implements OnInit, OnDestroy {
         }
       } else if (
         !file.fullPath &&
-        this.findFile(file.fullPath, this.files) === -1
+        this.findFile(file.name, this.files) === -1
       ) {
         this.files.push(file);
       }
