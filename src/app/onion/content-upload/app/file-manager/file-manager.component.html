@@ -26,8 +26,10 @@
     </div>
     <span>Drop files and folders or click here</span>
   </div>
-  <file-grid-view *ngIf="view==='grid'" class="full-width" [node$]="currentNode$" (emitPath)="openFolder($event)"></file-grid-view>
-  <file-list-view *ngIf="view==='list'" class="full-width" [node$]="currentNode$" (emitPath)="openFolder($event)"></file-list-view>
+  <file-grid-view *ngIf="view==='grid' && (currentNode$| async)?.children.length" class="full-width dz-clickable" [node$]="currentNode$"
+    (emitPath)="openFolder($event)"></file-grid-view>
+  <file-list-view *ngIf="view==='list' && (currentNode$| async)?.children.length" class="full-width dz-clickable" [node$]="currentNode$"
+    (emitPath)="openFolder($event)"></file-list-view>
 </div>
 
 <context-menu (close)="editDescription=false" #fileOptions>

@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { DirectoryNode } from '../../DirectoryTree';
+import { DirectoryNode } from '../../shared/DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { getIcon } from '../file-icons';
 

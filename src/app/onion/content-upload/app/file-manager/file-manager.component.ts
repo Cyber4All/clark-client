@@ -8,16 +8,14 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {
-  LearningObjectFile,
-  DirectoryTree,
-  DirectoryNode
-} from '../DirectoryTree';
+import { DirectoryTree, DirectoryNode } from '../shared/DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { FileStorageService } from '../services/file-storage.service';
 import { getIcon } from './file-icons';
-import { getPaths } from '../file-functions';
+import { getPaths } from '../shared/file-functions';
+import { File } from '@cyber4all/clark-entity/dist/learning-object';
+type LearningObjectFile = File;
 
 export type FileEdit = {
   path: string;
@@ -153,6 +151,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   }
 
   openDropzone(e) {
+    console.log('EVENT: ', e);
     const target = e.target;
     if (!target.className) return;
 
