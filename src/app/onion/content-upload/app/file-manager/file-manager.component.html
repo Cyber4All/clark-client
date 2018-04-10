@@ -8,16 +8,22 @@
       <span class="link" (click)="jumpTo(i)">{{path}}</span>
     </ng-container>
   </div>
-  <div class="view-switcher">
-    <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">
-      <i class="fas fa-th icon-clean"></i>
-    </span>
-    <span *ngIf="view==='grid'" (click)="view='list'" class="button clean">
-      <i class="fas fa-list icon-clean"></i>
-    </span>
+  <div class="view-switcher inline-flex right">
+    <div class="inline-flex">
+      <div (click)="openNewOptions($event)" class="button new">
+        New
+      </div>
+      <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">
+        <i class="fas fa-th icon-clean"></i>
+      </span>
+      <span *ngIf="view==='grid'" (click)="view='list'" class="button clean">
+        <i class="fas fa-list icon-clean"></i>
+      </span>
+    </div>
   </div>
+
 </div>
-<div (click)="openDropzone($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length}">
+<div (click)="handleClick($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length}">
   <div *ngIf="!(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length" class="dropzone-message">
     <div class="file-icons">
       <i class="fal fa-image fa-2x"></i>
@@ -26,10 +32,10 @@
     </div>
     <span>Drop files and folders or click here</span>
   </div>
-  <file-grid-view *ngIf="view==='grid' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)" class="full-width dz-clickable" [node$]="currentNode$"
-    (emitPath)="openFolder($event)"></file-grid-view>
-  <file-list-view *ngIf="view==='list' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)" class="full-width dz-clickable" [node$]="currentNode$"
-    (emitPath)="openFolder($event)"></file-list-view>
+  <file-grid-view *ngIf="view==='grid' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
+    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)"></file-grid-view>
+  <file-list-view *ngIf="view==='list' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
+    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)"></file-list-view>
 </div>
 
 <context-menu (close)="editDescription=false" #fileOptions>
@@ -73,4 +79,23 @@
     </div>
   </ng-template>
 
+</context-menu>
+
+<context-menu (close)="editDescription=false" #newOptions>
+  <ng-template contextMenuItem (execute)="openFileDialog()">
+    <div class="context-item">
+      <div class="option">
+        <i class="fas fa-file icon  icon-left light"></i>
+        File Upload
+      </div>
+    </div>
+  </ng-template>
+  <ng-template contextMenuItem (execute)="openFolderDialog()">
+    <div class="context-item">
+      <div class="option">
+        <i class="fas fa-folder  icon icon-left light"></i>
+        Folder Upload
+      </div>
+    </div>
+  </ng-template>
 </context-menu>

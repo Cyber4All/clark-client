@@ -30,6 +30,8 @@ export type FileEdit = {
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
   @ViewChild('fileOptions') public fileOptions: ContextMenuComponent;
+  @ViewChild('newOptions') public newOptions: ContextMenuComponent;
+
   @Input()
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
@@ -94,6 +96,17 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     this.filesystem.addFiles([file]);
   }
 
+  openNewOptions($event: MouseEvent): void {
+    this.contextMenuService.show.next({
+      anchorElement: $event.target,
+      contextMenu: this.newOptions,
+      event: <any>$event,
+      item: undefined
+    });
+    $event.preventDefault();
+    $event.stopPropagation();
+  }
+
   closeContextMenu() {
     this.contextMenuService.closeAllContextMenus({
       eventType: 'cancel'
@@ -150,13 +163,33 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     return filePaths;
   }
 
-  openDropzone(e) {
+  openFolderDialog() {
+    const fileInput = document.querySelector('.dz-hidden-input');
+    fileInput.setAttribute('directory', 'true');
+    fileInput.setAttribute('webkitdirectory', 'true');
+    fileInput.setAttribute('mozdirectory', 'true');
+    fileInput.setAttribute('msdirectory', 'true');
+    fileInput.setAttribute('odirectory', 'true');
+    this.openDZ.emit(true);
+  }
+
+  openFileDialog() {
+    const fileInput = document.querySelector('.dz-hidden-input');
+    fileInput.removeAttribute('directory');
+    fileInput.removeAttribute('webkitdirectory');
+    fileInput.removeAttribute('mozdirectory');
+    fileInput.removeAttribute('msdirectory');
+    fileInput.removeAttribute('odirectory');
+    this.openDZ.emit(true);
+  }
+
+  handleClick(e) {
     const target = e.target;
     if (!target.className) return;
 
     const classNames: string[] = target.className.trim().split(' ');
     if (classNames.includes('dz-clickable')) {
-      this.openDZ.emit(true);
+      this.openFileDialog();
     }
   }
 
