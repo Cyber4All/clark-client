@@ -23,6 +23,7 @@
           <i class="far fa-at"></i>
         </div>
         <div class="title light">Profile Image Preview</div>
+        <img [src]="getGravatarImage()" class = "img">
         <div class="input username" [ngClass]="{'active': regInfo.username !== ''}">
           <input name="username" type="text" placeholder="Username" [(ngModel)]="regInfo.username" formControlName ="username"/>
           <i class="far fa-user"></i>

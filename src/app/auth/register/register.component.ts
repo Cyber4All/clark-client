@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
+import * as md5 from 'md5';
 
 @Component({
   selector: 'clark-register',
@@ -38,8 +39,11 @@ export class RegisterComponent implements OnInit {
   registerFailureTimer;
   redirectRoute;
   redirectUrl;
+  size: number = 200; 
+  default: string; 
 
   constructor(private auth: AuthService, private route: ActivatedRoute) {
+    this.default = 'identicon';
     this.route.parent.data.subscribe(data => {
       if (route.snapshot.queryParams.returnUrl) {
         this.redirectUrl = this.auth.makeRedirectURL(
@@ -130,5 +134,11 @@ export class RegisterComponent implements OnInit {
 
   captureResponse(event) {
     this.verified = event;
+  }
+
+  getGravatarImage():string {
+    // r=pg checks the rating of the Gravatar image 
+    return 'http://www.gravatar.com/avatar/' + md5(this.regInfo.email) + '?s=' + this.size + 
+      '?r=pg&d=' + this.default;
   }
 }
