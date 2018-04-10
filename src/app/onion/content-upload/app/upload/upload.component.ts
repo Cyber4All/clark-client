@@ -134,6 +134,7 @@ export class UploadComponent implements OnInit {
    */
   async addFile(file) {
     await file;
+    file = this.setFullPath(file);
     if (!file.accepted) {
       this.dzError = 'File not accepted';
       this.showFileError(file.name);
@@ -150,6 +151,21 @@ export class UploadComponent implements OnInit {
     const queue = this.queuedUploads$.getValue();
     queue.push(file);
     this.queuedUploads$.next(queue);
+  }
+  /**
+   * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;
+   *
+   * @private
+   * @param {any} file
+   * @returns
+   * @memberof UploadComponent
+   */
+  private setFullPath(file) {
+    const path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+    if (path) {
+      file.fullPath = path;
+    }
+    return file;
   }
 
   /**
