@@ -15,6 +15,16 @@ form {
         }
     }
 
+    .gravatar-header {
+        text-align: left; 
+        font-size: 15px; 
+    }
+    
+    .gravatar-text {
+        text-align: left; 
+        font-size: 10px; 
+    }
+
     .input {
         display: flex;
         flex-direction: row-reverse;

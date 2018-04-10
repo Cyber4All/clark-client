@@ -16,10 +16,13 @@
             <i class="far fa-id-card"></i>
           </div>
         </div>
+        <div class="gravatar-header">C.L.A.R.K. uses Gravatar</div>
+        <div class="gravatar-text">Don't have an account?<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar</a></div>
         <div class="input email" [ngClass]="{'active': regInfo.email !== ''}">
           <input name="email" type="text" placeholder="Email address" [(ngModel)]="regInfo.email" formControlName ="email"/>
           <i class="far fa-at"></i>
         </div>
+        <div class="title light">Profile Image Preview</div>
         <div class="input username" [ngClass]="{'active': regInfo.username !== ''}">
           <input name="username" type="text" placeholder="Username" [(ngModel)]="regInfo.username" formControlName ="username"/>
           <i class="far fa-user"></i>
