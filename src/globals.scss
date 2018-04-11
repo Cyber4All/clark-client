@@ -183,7 +183,6 @@ body {
   }
 
   &.on {
-
     .bg {
       background: $green;
     }
@@ -200,17 +199,21 @@ body {
     height: 28px;
     border-radius: 50%;
     position: absolute;
-    top: 0; bottom: 0; right: 30px;
+    top: 0;
+    bottom: 0;
+    right: 30px;
     margin: auto;
     z-index: 1;
     transition: right 0.2s ease-out;
   }
 
-
   .bg {
     background: $error-red;
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     transition: background 0.2s ease;
   }
 
@@ -643,4 +646,8 @@ body {
       left: 150px;
     }
   }
+}
+
+*[ng-reflect-router-link] {
+  outline: none;
 }
