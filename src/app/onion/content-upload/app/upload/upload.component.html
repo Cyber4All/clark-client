@@ -14,7 +14,7 @@
       <div></div>
     </div>
     <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
-      (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)"></file-manager>
+      (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event"></file-manager>
   </div>
   <div class="inner-wrapper">
     <div class="section">
