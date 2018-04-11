@@ -20,6 +20,9 @@ import { AuthResolve } from './auth.resolver';
 // External Modules
 import { SharedModule } from '../shared/shared.module';
 import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
+import { PersonalInfoComponent } from './register/personal-info/personal-info.component';
+import { ProfileInfoComponent } from './register/profile-info/profile-info.component';
+import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     AuthComponent,
-    RecaptchaDirective
+    RecaptchaDirective,
+    PersonalInfoComponent,
+    ProfileInfoComponent,
+    GravatarInfoComponent
   ],
   imports: [
     CommonModule,

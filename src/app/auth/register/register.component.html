@@ -4,7 +4,13 @@
       <div class="error"> {{ registerFailure || '' }} </div>
       <div class="title">C.L.A.R.K.</div>
       <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
-      <form [formGroup] = "regForm" (ngSubmit)="submit()">
+      
+      <clark-personal-info></clark-personal-info>
+      <!--<clark-profile-info></clark-profile-info>-->
+      <!--<clark-gravatar-info></clark-gravatar-info>-->
+
+
+      <!--<form [formGroup] = "regForm" (ngSubmit)="submit()">
         <div class="h-group">
           <div class="input firstname" [ngClass]="{'active': regInfo.firstname !== ''}">
             <input name="firstname" type="text" placeholder="First name" [(ngModel)]="regInfo.firstname" formControlName ="firstname" />
@@ -51,7 +57,9 @@
           </span>
         </button>
       </form>
-    </div>
+    </div>-->
+
+
     <div class="bottom-link" routerLink="../login">
       Already have an account? <span>Sign in!</span>
     </div>

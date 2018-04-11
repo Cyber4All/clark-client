@@ -1,0 +1,9 @@
+<form [formGroup] = "regForm" (ngSubmit)="submit()">
+    <div class="gravatar-header">C.L.A.R.K. uses Gravatar</div>
+    <div class="gravatar-text">Don't have an account?<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar</a></div>
+    <div class="input email" [ngClass]="{'active': regInfo.email !== ''}">
+      <input name="email" type="text" placeholder="Email address" [(ngModel)]="regInfo.email" formControlName ="email"/>
+      <i class="far fa-at"></i>
+    </div>
+    <div class="title light">Profile Image Preview</div>
+    <img [src]="getGravatarImage()" class = "img">

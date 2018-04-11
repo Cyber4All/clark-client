@@ -1,0 +1,16 @@
+<form [formGroup] = "regForm" (ngSubmit)="submit()">
+    <div class="input username" [ngClass]="{'active': regInfo.username !== ''}">
+        <input name="username" type="text" placeholder="Username" [(ngModel)]="regInfo.username" formControlName ="username"/>
+        <i class="far fa-user"></i>
+    </div>
+    <div class="input password" [ngClass]="{'active': regInfo.password !== ''}">
+        <input name="password" type="password" placeholder="Password" [(ngModel)]="regInfo.password" formControlName ="password"/>
+        <i class="far fa-key"></i>
+    </div>
+    <div class="input password-verify" [ngClass]="{'active': passwordVerify !== ''}">
+        <input name="password-verify" type="password" placeholder="Confirm password" [(ngModel)]="passwordVerify" formControlName ="verifypassword"/>
+        <i class="far fa-key"></i>
+    </div>
+  
+  
+    
