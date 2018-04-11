@@ -201,3 +201,11 @@ body {
     }
   }
 }
+
+@media (max-width: 680px) {
+  .toolbar {
+    flex-direction: column !important;
+    text-align: center !important;
+    align-items: center;
+  }
+}
