@@ -1,21 +1,27 @@
-<form [formGroup] = "regForm" (ngSubmit)="submit()">
+
+  <div *ngIf="!editContent && self"></div>
+    <div *ngIf="!editContent">
+      <form [formGroup] = "personalInfo">
         <div class="h-group">
-          <div class="input firstname" [ngClass]="{'active': regInfo.firstname !== ''}">
-            <input name="firstname" type="text" placeholder="First name" [(ngModel)]="regInfo.firstname" formControlName ="firstname" />
+          <div class="input firstname">
+            <input name="firstname" type="text" placeholder="First name" formControlName ="firstname" />
             <i class="far fa-id-card"></i>
           </div>
-          <div class="input lastname" [ngClass]="{'active': regInfo.lastname !== ''}">
-            <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="regInfo.lastname" formControlName="lastname" />
-
+          <div class="input lastname">
+            <input name="lastname" type="text" placeholder="Last name" formControlName="lastname" />
             <i class="far fa-id-card"></i>
           </div>
         </div>
-        
-          <div class="input email" [ngClass]="{'active': regInfo.email !== ''}">
-            <input name="email" type="text" placeholder="Email address" [(ngModel)]="regInfo.email" formControlName ="email"/>
-            <i class="far fa-at"></i>
-          </div>
-          <div class="input organization" [ngClass]="{'active': regInfo.organization !== ''}">
-            <input name="organization" type="text" placeholder="Organization" [(ngModel)]="regInfo.organization" formControlName ="organization"/>
-            <i class="far fa-building"></i>
-          </div>
+
+        <div class="input email">
+          <input name="email" type="text" placeholder="Email address" formControlName ="email"/>
+          <i class="far fa-at"></i>
+        </div>
+        <div class="input organization">
+          <input name="organization" type="text" placeholder="Organization" formControlName ="organization"/>
+          <i class="far fa-building"></i>
+        </div>
+      </form>
+    </div>
+
+ 

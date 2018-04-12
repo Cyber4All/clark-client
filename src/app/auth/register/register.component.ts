@@ -1,9 +1,10 @@
-import { NgControl, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ControlValueAccessor } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
+
 
 @Component({
   selector: 'clark-register',
@@ -12,7 +13,7 @@ import * as md5 from 'md5';
 })
 export class RegisterComponent implements OnInit {
   loading: boolean = false;
-  verified: boolean = false;
+  verified: boolean = true;
   regInfo = {
     firstname: '',
     lastname: '',
@@ -41,9 +42,28 @@ export class RegisterComponent implements OnInit {
   redirectUrl;
   size: number = 200; 
   default: string; 
+  page: number = 1; 
 
-  constructor(private auth: AuthService, private route: ActivatedRoute) {
+  constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
     this.default = 'identicon';
+
+    this.regForm = this.fb.group({
+      personalInfo: this.fb.group({ // create nested formgroup to pass to child
+        firstname: [''],
+        lastname: [''], 
+        email: [''], 
+        organization: ['']
+      }),
+      profileInfo: this.fb.group({ // create nested formgroup to pass to child
+        username: [''],
+        verifypassword: [''],
+        password: [''],
+      }), 
+      gravatarInfo: this.fb.group({ // create nested formgroup to pass to child
+        email: [''],
+      })
+    })
+
     this.route.parent.data.subscribe(data => {
       if (route.snapshot.queryParams.returnUrl) {
         this.redirectUrl = this.auth.makeRedirectURL(
@@ -140,5 +160,16 @@ export class RegisterComponent implements OnInit {
     // r=pg checks the rating of the Gravatar image 
     return 'http://www.gravatar.com/avatar/' + md5(this.regInfo.email) + '?s=' + this.size + 
       '?r=pg&d=' + this.default;
+  }
+
+  next():number{
+    // r=pg checks the rating of the Gravatar image 
+    if (this.page == 1) {
+      this.page = 2; 
+      return this.page; 
+    } else if (this.page == 2) {
+      this.page = 3; 
+      return this.page;
+    }
   }
 }

@@ -5,11 +5,26 @@
       <div class="title">C.L.A.R.K.</div>
       <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
       
-      <clark-personal-info></clark-personal-info>
-      <!--<clark-profile-info></clark-profile-info>-->
-      <!--<clark-gravatar-info></clark-gravatar-info>-->
+      <form [formGroup]="regForm">
+          <div *ngIf="this.page === 1">
+            <clark-personal-info [personalInfo]="regForm.controls.personalInfo"></clark-personal-info>
+          </div>
+          <div *ngIf="this.page === 2">
+            <clark-profile-info [profileInfo]="regForm.controls.profileInfo"></clark-profile-info>
+          </div>
+          <div *ngIf="this.page === 3">
+            <clark-gravatar-info [gravatarInfo]="regForm.controls.gravatarInfo"></clark-gravatar-info>
+            <div ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
+          </div>
+      </form>
 
-
+      <!--<div *ngIf="pageNumber == 2">
+          <clark-profile-info></clark-profile-info>
+      </div>
+      <div *ngIf="pageNumber == 3">
+          <clark-gravatar-info></clark-gravatar-info>
+      </div>-->
+  
       <!--<form [formGroup] = "regForm" (ngSubmit)="submit()">
         <div class="h-group">
           <div class="input firstname" [ngClass]="{'active': regInfo.firstname !== ''}">
@@ -58,10 +73,31 @@
         </button>
       </form>
     </div>-->
+    <div *ngIf="page !== 3">
+      <button type="type" class="auth-button" (click)="next()">
+          <div class="text" *ngIf = "!loading">Continue to page {{ page + 1 }}</div>
+          <div class="mask"></div>
+          <span *ngIf = "loading">
+            Loading
+            <i class="far fa-spinner fa-pulse"></i>
+          </span>
+      </button>
+    </div>
 
+    <div *ngIf="page === 3">
+        <button type="submit" class="auth-button" (click)="submit()">
+            <div class="text">Finish</div>
+            <div class="mask"></div>
+            <span *ngIf = "loading">
+              Loading
+              <i class="far fa-spinner fa-pulse"></i>
+            </span>
+        </button>
+    </div>
 
     <div class="bottom-link" routerLink="../login">
       Already have an account? <span>Sign in!</span>
     </div>
   </div>
+</div>
 </div>
