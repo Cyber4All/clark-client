@@ -13,7 +13,7 @@ import * as md5 from 'md5';
 })
 export class RegisterComponent implements OnInit {
   loading: boolean = false;
-  verified: boolean = true;
+  verified: boolean = false;
   regInfo = {
     firstname: '',
     lastname: '',
@@ -169,6 +169,17 @@ export class RegisterComponent implements OnInit {
       return this.page; 
     } else if (this.page == 2) {
       this.page = 3; 
+      return this.page;
+    }
+  }
+
+  back():number{
+    // r=pg checks the rating of the Gravatar image 
+    if (this.page == 2) {
+      this.page = 1; 
+      return this.page; 
+    } else if (this.page == 3) {
+      this.page = 2; 
       return this.page;
     }
   }

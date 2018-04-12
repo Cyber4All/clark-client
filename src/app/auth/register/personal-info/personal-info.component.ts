@@ -1,14 +1,45 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgControl, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { NgControl, FormGroup, FormControl, Validators, ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+
+interface Person {
+  firstname: string;
+  lastname: string;
+  email: string;
+  organization: string;
+}
 
 @Component({
   selector: 'clark-personal-info',
   templateUrl: './personal-info.component.html',
-  styleUrls: ['./personal-info.component.scss']
+  styleUrls: ['./personal-info.component.scss'], 
+  providers: [
+    {
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => PersonalInfoComponent),
+        multi: true
+    }
+  ]
 })
-export class PersonalInfoComponent implements OnInit {
+
+export class PersonalInfoComponent implements OnInit, ControlValueAccessor {
   @Input() personalInfo: FormGroup;
 
+  private _personinfo: Person = <Person>{};
+
+  writeValue(value: any): void {
+    this._personinfo = value;
+  }
+
+  propagateChange = (_: any) => { };
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {}
+
+  setDisabledState?(isDisabled: boolean): void {}
+ 
   /*loading: boolean = false;
   verified: boolean = true;
   personInfo = {
@@ -22,6 +53,42 @@ export class PersonalInfoComponent implements OnInit {
   registerFailureTimer;*/
 
   constructor() { }
+
+  get firstname() {
+    return this._personinfo.firstname;
+  }
+s
+  set firstname(value) {
+    this._personinfo.firstname = value;
+    this.propagateChange(this._personinfo);
+  }
+
+  get lastname() {
+    return this._personinfo.lastname;
+  }
+
+  set lastname(value) {
+    this._personinfo.lastname = value;
+    this.propagateChange(this._personinfo);
+  }
+
+  get email() {
+    return this._personinfo.email;
+  }
+
+  set email(value) {
+    this._personinfo.email = value;
+    this.propagateChange(this._personinfo);
+  }
+
+  get organization() {
+    return this._personinfo.organization;
+  }
+
+  set organization(value) {
+    this._personinfo.organization = value;
+    this.propagateChange(this._personinfo);
+  } 
 
   ngOnInit() {}
 

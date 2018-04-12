@@ -4,21 +4,21 @@
       <form [formGroup] = "personalInfo">
         <div class="h-group">
           <div class="input firstname">
-            <input name="firstname" type="text" placeholder="First name" formControlName ="firstname" />
+            <input name="firstname" type="text" placeholder="First name" [(ngModel)]="firstname" formControlName="firstname"/>
             <i class="far fa-id-card"></i>
           </div>
           <div class="input lastname">
-            <input name="lastname" type="text" placeholder="Last name" formControlName="lastname" />
+            <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="lastname" formControlName="lastname" />
             <i class="far fa-id-card"></i>
           </div>
         </div>
 
         <div class="input email">
-          <input name="email" type="text" placeholder="Email address" formControlName ="email"/>
+          <input name="email" type="text" placeholder="Email address" [(ngModel)]="email" formControlName ="email"/>
           <i class="far fa-at"></i>
         </div>
         <div class="input organization">
-          <input name="organization" type="text" placeholder="Organization" formControlName ="organization"/>
+          <input name="organization" type="text" placeholder="Organization" [(ngModel)]="organinzation" formControlName ="organization"/>
           <i class="far fa-building"></i>
         </div>
       </form>

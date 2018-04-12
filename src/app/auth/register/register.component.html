@@ -7,7 +7,7 @@
       
       <form [formGroup]="regForm">
           <div *ngIf="this.page === 1">
-            <clark-personal-info [personalInfo]="regForm.controls.personalInfo"></clark-personal-info>
+            <clark-personal-info [(ngModel)]="regInfo.firstname" [personalInfo]="regForm.controls.personalInfo"></clark-personal-info>
           </div>
           <div *ngIf="this.page === 2">
             <clark-profile-info [profileInfo]="regForm.controls.profileInfo"></clark-profile-info>
@@ -15,6 +15,7 @@
           <div *ngIf="this.page === 3">
             <clark-gravatar-info [gravatarInfo]="regForm.controls.gravatarInfo"></clark-gravatar-info>
             <div ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
+            <div>{{regInfo | json}}</div>
           </div>
       </form>
 
@@ -73,26 +74,39 @@
         </button>
       </form>
     </div>-->
-    <div *ngIf="page !== 3">
-      <button type="type" class="auth-button" (click)="next()">
-          <div class="text" *ngIf = "!loading">Continue to page {{ page + 1 }}</div>
-          <div class="mask"></div>
-          <span *ngIf = "loading">
-            Loading
-            <i class="far fa-spinner fa-pulse"></i>
-          </span>
-      </button>
-    </div>
+    <div class="h-group">
+        <div *ngIf="page !== 1">
+            <button type="type" class="auth-button" (click)="back()">
+                <div class="text" *ngIf = "!loading">Return to step {{ page }}</div>
+                <div class="mask"></div>
+                <span *ngIf = "loading">
+                  Loading
+                  <i class="far fa-spinner fa-pulse"></i>
+                </span>
+            </button>
+          </div>
 
-    <div *ngIf="page === 3">
-        <button type="submit" class="auth-button" (click)="submit()">
-            <div class="text">Finish</div>
-            <div class="mask"></div>
-            <span *ngIf = "loading">
-              Loading
+        <div *ngIf="page !== 3">
+          <button type="type" class="auth-button" (click)="next()">
+              <div class="text" *ngIf = "!loading">Continue to step {{ page + 1 }}</div>
+              <div class="mask"></div>
+              <span *ngIf = "loading">
+               Loading
               <i class="far fa-spinner fa-pulse"></i>
             </span>
-        </button>
+          </button>
+        </div>
+
+        <div *ngIf="page === 3">
+          <button type="submit" class="auth-button" (click)="submit()">
+              <div class="text">Finish</div>
+              <div class="mask"></div>
+              <span *ngIf = "loading">
+                Loading
+              <i class="far fa-spinner fa-pulse"></i>
+            </span>
+          </button>
+        </div>
     </div>
 
     <div class="bottom-link" routerLink="../login">
