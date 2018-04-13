@@ -30,19 +30,20 @@ import 'rxjs/add/operator/filter';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, AfterContentChecked {
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.windowWidth = event.target.innerWidth;
-  }
-
   // FIXME: Convert 'class' to 'type' for consistancy
   hideNavbar = false;
   isOnion = false;
   menuOpen = false;
+  searchDown = false;
   loggedin = this.authService.user ? true : false;
   responsiveThreshold = 750;
   windowWidth: number;
   version: any;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.windowWidth = event.target.innerWidth;
+  }
 
   constructor(
     private modalCtrl: ModalService,
@@ -189,6 +190,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
       // FIXME: Should use a relative route './browse'
       this.router.navigate(['/browse', { query }]);
     }
+
+    this.searchDown = false;
   }
 
   gravatarImage(): string {
