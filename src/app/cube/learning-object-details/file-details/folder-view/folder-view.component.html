@@ -1,0 +1,25 @@
+<div class="content-container grid-area folder" [ngClass]="{expanded: expanded, childrenExpanded: childrenExpanded.length, amChild: amChild}"
+  (click)="toggleExpansion()">
+  <div class="title">
+    <span *ngIf="!expanded">
+      <i class="fas fa-plus icon left"></i>
+    </span>
+    <span *ngIf="expanded">
+      <i class="fas fa-minus icon left"></i>
+    </span>
+    <span class="text">{{ folder.name }}</span>
+  </div>
+  <div *ngIf="!expanded" class="file-count">
+    {{ fileCount }} {{ fileCount === 1 ? 'file' : 'files'}}
+  </div>
+  <div class="description">
+    {{ folder.description }}
+  </div>
+</div>
+<div class="children-container" *ngIf="expanded" [ngClass]="{childrenExpanded: childrenExpanded.length}">
+  <ng-container *ngIf=" !childrenExpanded.length ">
+    <file-view *ngFor="let file of folder.files " [file]="file "></file-view>
+  </ng-container>
+  <folder-view *ngFor="let childFolder of folder.children " [amChild]="expanded && !childrenExpanded.length" [folder]="childFolder "
+    (isExpanded)="manageChildren($event) "></folder-view>
+</div>

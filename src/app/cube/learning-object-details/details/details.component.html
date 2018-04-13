@@ -12,7 +12,7 @@
   </div>
   <div class="flex">
     <div class="content">
-      <div class="goals">
+      <div class="description">
         <div class="title">Description</div>
         <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
@@ -25,7 +25,9 @@
         </ul>
         <p *ngIf="learningObject.outcomes.length < 1">This Learning Object does not contain any outcomes.</p>
       </div>
-      <onion-file-details [materials]="learningObject.materials"></onion-file-details>
+      <div class="materials">
+        <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
+      </div>
     </div>
     <div class="sidebar">
       <div class="inner">

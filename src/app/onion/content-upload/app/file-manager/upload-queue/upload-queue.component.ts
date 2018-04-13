@@ -8,8 +8,9 @@ import {
   EventEmitter
 } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { getPaths } from '../../shared/file-functions';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { getPaths } from 'app/shared/filesystem/file-functions';
+import { getIcon } from 'app/shared/filesystem/file-icons';
 type LearningObjectFile = File;
 
 @Component({
@@ -26,6 +27,8 @@ export class UploadQueueComponent implements OnInit, OnDestroy {
   collapsed: boolean = false;
   files: LearningObjectFile[] = [];
   folders: any[] = [];
+
+  getIcon = (extension: string) => getIcon(extension);
 
   constructor() {}
   ngOnInit(): void {

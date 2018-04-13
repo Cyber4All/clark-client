@@ -6,9 +6,9 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { DirectoryNode } from '../../shared/DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { getIcon } from '../file-icons';
+import { DirectoryNode } from 'app/shared/filesystem/DirectoryTree';
+import { getIcon } from 'app/shared/filesystem/file-icons';
 
 @Component({
   selector: 'file-grid-view',

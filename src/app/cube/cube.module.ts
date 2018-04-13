@@ -40,8 +40,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 
-
-
 // Guards
 import { AuthGuard } from '../core/auth-guard.service';
 
@@ -63,6 +61,8 @@ import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
+import { FolderViewComponent } from './learning-object-details/file-details/folder-view/folder-view.component';
+import { FileViewComponent } from './learning-object-details/file-details/file-view/file-view.component';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -85,7 +85,9 @@ import { FileDetailsComponent } from './learning-object-details/file-details/fil
     UserEditInformationComponent,
     OrganizationListComponent,
     FileDetailsComponent,
-],
+    FolderViewComponent,
+    FileViewComponent
+  ],
   imports: [
     // Angular imports
     HttpModule,

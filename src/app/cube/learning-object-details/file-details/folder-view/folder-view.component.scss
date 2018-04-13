@@ -1,0 +1,53 @@
+@import '~_vars.scss';
+.title {
+  .text {
+    font-weight: 600;
+  }
+}
+
+.content-container {
+  cursor: pointer;
+  background: #fff;
+  padding: 10px;
+  width: 100%;
+  border-radius: 2.5px;
+}
+
+.expanded-container {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.amChild {
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.childrenExpanded {
+  border: none !important;
+}
+
+.content-container.folder {
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.children-container {
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+
+  border-top: none;
+}
+
+:host ::ng-deep .content-container.file {
+  background: #f9f9f9 !important;
+}
+
+.fa-plus,
+.fa-minus {
+  font-size: 11px;
+  font-weight: 100;
+}

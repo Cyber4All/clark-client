@@ -648,6 +648,13 @@ body {
   }
 }
 
+.icon.left {
+  margin-right: 10px;
+}
+.icon.right {
+  margin-left: 10px;
+}
+
 *[ng-reflect-router-link] {
   outline: none;
 }

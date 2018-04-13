@@ -28,7 +28,7 @@
     <div class="file" *ngFor="let file of files">
       <div class="inline-flex">
         <div>
-          <i class="fas fa-file icon"></i>
+          <i class="fas {{ getIcon(file.extension) }} icon"></i>
           {{ file.name }}
         </div>
         <div (click)="remove(file)">
