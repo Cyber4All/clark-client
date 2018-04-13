@@ -5,7 +5,7 @@ import {
 } from '../../../shared/filesystem/DirectoryTree';
 import { Material } from '@cyber4all/clark-entity/dist/learning-object';
 import { getPaths } from 'app/shared/filesystem/file-functions';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'onion-file-details',
@@ -41,7 +41,9 @@ export class FileDetailsComponent implements OnInit {
     for (const folder of folders) {
       const paths = getPaths(folder.path, false);
       const node = this.directoryTree.traversePath(paths);
-      if (node) node.description = folder.description;
+      if (node) {
+        node.description = folder.description;
+      }
     }
   }
   /**

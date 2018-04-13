@@ -18,8 +18,8 @@
 
 
     <div class="file-listing">
-      <folder-view *ngFor="let folder of rootNode.children" [forceCollapse$]="forceCollapse$" [folder]="folder"></folder-view>
-      <file-view *ngFor="let file of rootNode.files" [file]="file"></file-view>
+      <cube-folder-view *ngFor="let folder of rootNode.children" [forceCollapse$]="forceCollapse$" [folder]="folder"></cube-folder-view>
+      <cube-file-view *ngFor="let file of rootNode.files" [file]="file"></cube-file-view>
     </div>
     <div *ngIf="materials.files.length < 1" class="no-listings">
       This Learning Object has no attached files.

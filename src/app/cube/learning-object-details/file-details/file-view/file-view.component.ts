@@ -4,7 +4,7 @@ import { getIcon } from 'app/shared/filesystem/file-icons';
 type LearningObjectFile = File;
 
 @Component({
-  selector: 'file-view',
+  selector: 'cube-file-view',
   templateUrl: 'file-view.component.html',
   styleUrls: ['file-view.component.scss']
 })

@@ -7,10 +7,11 @@ import {
   OnDestroy
 } from '@angular/core';
 import { DirectoryNode } from 'app/shared/filesystem/DirectoryTree';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'folder-view',
+  selector: 'cube-folder-view',
   templateUrl: 'folder-view.component.html',
   styleUrls: ['folder-view.component.scss']
 })
@@ -27,7 +28,7 @@ export class FolderViewComponent implements OnInit, OnDestroy {
 
   expanded = false;
   childrenExpanded: number[] = [];
-  fileCount: number = 0;
+  fileCount = 0;
   constructor() {}
 
   ngOnInit() {
@@ -55,8 +56,8 @@ export class FolderViewComponent implements OnInit, OnDestroy {
     const folders = folder ? folder.getChildren() : this.folder.getChildren();
     count += files.length;
 
-    for (const folder of folders) {
-      count += this.getFileCount(folder);
+    for (const child of folders) {
+      count += this.getFileCount(child);
     }
 
     return count;

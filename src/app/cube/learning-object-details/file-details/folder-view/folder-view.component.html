@@ -18,8 +18,9 @@
 </div>
 <div class="children-container" *ngIf="expanded" [ngClass]="{childrenExpanded: childrenExpanded.length}">
   <ng-container *ngIf=" !childrenExpanded.length ">
-    <file-view *ngFor="let file of folder.files " [file]="file "></file-view>
+    <cube-file-view *ngFor="let file of folder.files " [file]="file "></cube-file-view>
   </ng-container>
-  <folder-view *ngFor="let childFolder of folder.children " [amChild]="expanded && !childrenExpanded.length" [folder]="childFolder "
-    (isExpanded)="manageChildren($event) "></folder-view>
+  <cube-folder-view *ngFor="let childFolder of folder.children " [amChild]="expanded && !childrenExpanded.length" [folder]="childFolder "
+    (isExpanded)="manageChildren($event) ">
+    </cube-folder-view>
 </div>

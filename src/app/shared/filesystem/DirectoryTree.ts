@@ -22,19 +22,19 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   public addFiles(files: LearningObjectFile[]) {
-    for (let file of files) {
+    for (const file of files) {
       if (!file.fullPath) {
         this._root.addFile(file);
       } else {
         let paths = getPaths(file.fullPath);
-        let node = this.traversePath(paths);
+        const node = this.traversePath(paths);
         if (node) {
           node.addFile(file);
         } else {
-          let paths = getPaths(file.fullPath);
-          let path = paths.join('/');
-          let name = paths.pop();
-          let newNode = this.add(name, path, this.lastNode);
+          paths = getPaths(file.fullPath);
+          const path = paths.join('/');
+          const name = paths.pop();
+          const newNode = this.add(name, path, this.lastNode);
           newNode.addFile(file);
           this.lastNode = undefined;
         }
@@ -51,36 +51,44 @@ export class DirectoryTree {
    */
   public traversePath(paths: string[], parent?: DirectoryNode): DirectoryNode {
     paths = [...paths];
-    let currentPath = paths.shift();
+    const currentPath = paths.shift();
     if (!parent) {
-      if (!currentPath) return this._root;
+      if (!currentPath) {
+        return this._root;
+      }
 
-      let index = this.pathMap.get(currentPath);
-      let children = this._root.getChildren();
+      const nodeIndex = this.pathMap.get(currentPath);
+      const nodeChildren = this._root.getChildren();
 
-      let node =
-        index !== undefined
-          ? children[index]
-          : this.findNodeAtLevel(currentPath, children);
+      const currentNode =
+        nodeIndex !== undefined
+          ? nodeChildren[nodeIndex]
+          : this.findNodeAtLevel(currentPath, nodeChildren);
 
-      if (node) return this.traversePath(paths, node);
+      if (currentNode) {
+        return this.traversePath(paths, currentNode);
+      }
 
       this.lastNode = this._root;
       return null;
     }
 
-    if (!currentPath) return parent;
+    if (!currentPath) {
+      return parent;
+    }
 
-    let parentPath = parent.getPath();
-    let childPath = `${parentPath}/${currentPath}`;
-    let index = this.pathMap.get(childPath);
-    let children = parent.getChildren();
-    let node =
+    const parentPath = parent.getPath();
+    const childPath = `${parentPath}/${currentPath}`;
+    const index = this.pathMap.get(childPath);
+    const children = parent.getChildren();
+    const node =
       index !== undefined
         ? children[index]
         : this.findNodeAtLevel(currentPath, children);
 
-    if (node) return this.traversePath(paths, node);
+    if (node) {
+      return this.traversePath(paths, node);
+    }
 
     this.lastNode = parent;
     return null;
@@ -99,7 +107,7 @@ export class DirectoryTree {
   ): DirectoryNode {
     let node;
     for (let i = 0; i < elements.length; i++) {
-      let child = elements[i];
+      const child = elements[i];
       if (child.getName() === path) {
         this.pathMap.set(child.getPath(), i);
         node = child;
@@ -123,7 +131,7 @@ export class DirectoryTree {
     path: string,
     parent: DirectoryNode
   ): DirectoryNode {
-    let newNode = new DirectoryNode(name, path, parent);
+    const newNode = new DirectoryNode(name, path, parent);
     parent.addChild(newNode);
     // Cache path's index
     this.pathMap.set(path, parent.getChildren().length - 1);
@@ -138,11 +146,11 @@ export class DirectoryTree {
    */
   public removeFolder(path: string) {
     const paths = getPaths(path, false);
-    let node = this.traversePath(paths);
+    const node = this.traversePath(paths);
     if (node) {
-      let parent = node.getParent();
-      let index = this.pathMap.get(node.getPath());
-      let removingFrom = parent ? parent : this._root;
+      const parent = node.getParent();
+      const index = this.pathMap.get(node.getPath());
+      const removingFrom = parent ? parent : this._root;
       removingFrom.getChildren().splice(index, 1);
     } else {
       throw new Error(`Node at path: ${path} does not exist`);
@@ -155,9 +163,9 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   public removeFile(path: string): LearningObjectFile {
-    let folderPath = getPaths(path);
-    let fileName = path.split('/').pop();
-    let node = this.traversePath(folderPath);
+    const folderPath = getPaths(path);
+    const fileName = path.split('/').pop();
+    const node = this.traversePath(folderPath);
     if (node) {
       return node.removeFile(fileName);
     } else {
@@ -240,13 +248,15 @@ export class DirectoryNode {
    */
   public addChild(newChild: DirectoryNode): DirectoryNode {
     let canAdd = true;
-    for (let child of this.children) {
+    for (const child of this.children) {
       if (newChild.name === child.name) {
         canAdd = false;
         break;
       }
     }
-    if (canAdd) this.children.push(newChild);
+    if (canAdd) {
+      this.children.push(newChild);
+    }
     return newChild;
   }
   /**
@@ -257,13 +267,15 @@ export class DirectoryNode {
    */
   public addFile(newFile: LearningObjectFile) {
     let canAdd = true;
-    for (let file of this.files) {
+    for (const file of this.files) {
       if (file.name === newFile.name) {
         canAdd = false;
         break;
       }
     }
-    if (canAdd) this.files.push(newFile);
+    if (canAdd) {
+      this.files.push(newFile);
+    }
   }
   /**
    * Remove file from Node's files by filename
@@ -273,8 +285,8 @@ export class DirectoryNode {
    * @memberof DirectoryNode
    */
   public removeFile(filename: string): LearningObjectFile {
-    let index = this.findFile(filename);
-    let deleted = this.files[index];
+    const index = this.findFile(filename);
+    const deleted = this.files[index];
     this.files.splice(index, 1);
     return deleted;
   }
@@ -289,7 +301,7 @@ export class DirectoryNode {
   private findFile(filename: string): number {
     let index = 0;
     for (let i = 0; i < this.files.length; i++) {
-      if (this.files[i].name == filename) {
+      if (this.files[i].name === filename) {
         index = i;
         break;
       }
