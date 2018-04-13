@@ -5,11 +5,14 @@ import { Component, OnInit, Input } from '@angular/core';
   template: `
   <section class="outcomes-detail-view">
     <h1>Learning Outcomes</h1>
+    <p class="no-content-alert" *ngIf="!outcomes.length > 0">
+      This Learning Object doesn't have any learning outcomes.
+    </p>
     <div class="outcomes" *ngFor="let o of outcomes; let i = index">
-      <div class="header" (click)="toggleMappings(i)" [ngClass]="{ 'clickable': o.mappings.length > 0 }">
-        <div class="title">{{ o.outcome }}</div>
+      <button class="header" [disabled]="!o.mappings.length > 0" (click)="toggleMappings(i)" [ngClass]="{ 'clickable': o.mappings.length > 0 }">
+        <span class="title">{{ o.outcome }}</span>
         <span class="mappings-count">({{ o.mappings.length }} Mapped Outcomes)</span>
-      </div>
+      </button>
       <ul *ngIf="showMappings[i]">
         <div style="margin-top: 20px;"></div>
         <li *ngFor="let m of o.mappings">

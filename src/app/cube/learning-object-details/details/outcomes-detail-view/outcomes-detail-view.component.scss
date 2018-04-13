@@ -5,6 +5,10 @@
     font-size: 22px;
     padding-left: 10px;
   }
+  .no-content-alert {
+    margin-left: 10px;
+    color: rgb(124, 124, 124);
+  }
   .outcomes {
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 2px;
@@ -15,20 +19,26 @@
       flex-flow: row nowrap;
       background-color: rgb(236, 239, 242);
       align-items: center;
+      width: 100%;
+      border: none;
+      &:focus { outline: 0; }
       .title {
         flex-grow: 2;
         color: black;
         font-size: 18px;
         padding: 10px;
         padding-left: 20px;
+        text-align: start;
       }
       .mappings-count {
         font-size: 12px;
         color: gray;
         padding-right: 10px;
       }
+      &:not(.clickable) {
+        cursor: default;
+      }
       &.clickable {
-        cursor: pointer;
         &:hover {
           background-color: darken(rgb(236, 239, 242), 5);
         }
@@ -42,16 +52,22 @@
       padding-right: 40px;
     }
     li {
-      border: 1px solid black;
       margin-bottom: 25px;
       font-size: 18px;
       list-style-type: none; // Grid layout
       display: grid;
-      grid-template-columns: auto 75px;
+      grid-template-columns: auto 175px; //FIXME: Remove hardcoded col 2 value
       grid-row-gap: 10px;
       .standard-author,
       .standard-name {
         //background-color: skyblue;
+        color: darken(#55595e,10);
+      }
+      .standard-name {
+        text-align: right;
+      }
+      .standard-outcome {
+        font-size: 16px;
       }
       .standard-author,
       .standard-name,
