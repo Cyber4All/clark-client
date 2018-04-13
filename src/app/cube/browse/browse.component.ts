@@ -66,13 +66,16 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.sendFilters();
     }));
 
-    this.filterInput = Observable
-      .fromEvent(document.querySelector('.search-bar input'), 'input')
+    let searchInput = document.querySelector('.search-bar input');
+    if (searchInput) {
+      this.filterInput = Observable
+      .fromEvent(searchInput, 'input')
       .map(x => x['currentTarget'].value).debounceTime(650);
 
-    this.subscriptions.push(this.filterInput.subscribe(val => {
-      this.router.navigate(['/browse', { query: val }]);
-    }));
+      this.subscriptions.push(this.filterInput.subscribe(val => {
+        this.router.navigate(['/browse', { query: val }]);
+      }));
+    }
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       params.query ? this.query.text = params.query : this.query.text = '';
