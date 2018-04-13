@@ -7,6 +7,7 @@ $banner-height: 90px;
   font-weight: 200;
   font-size: 36px;
   margin-bottom: 25px;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .whois {
@@ -26,7 +27,6 @@ $banner-height: 90px;
 }
 
 .top {
-  //height: calc($top-height + $banner-height);
 
   .img-viewport {
     background: url(/assets/servers.jpg) no-repeat;
@@ -36,11 +36,23 @@ $banner-height: 90px;
     position: relative;
     padding: 200px 20px;
 
+    &:after {
+      // color overlay to darken image slightly
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: darken($blue-accent, 35);
+      opacity: 0.2;
+      z-index: 1;
+    }
+
     .search-viewport {
       display: flex;
       justify-content: center;
       flex-direction: row;
       height: 100%;
+      position: relative;
+      z-index: 2;
 
       .search-contents {
         margin: auto;
@@ -53,7 +65,6 @@ $banner-height: 90px;
 
         .feature-text {
           color: white;
-          text-shadow: 0px 1px rgba(0, 0, 0, 0.3);
           text-align: center;
         }
 
@@ -148,5 +159,26 @@ $banner-height: 90px;
     display: inline-flex;
     flex-direction: row;
     justify-content: center;
+  }
+}
+
+@media (max-width: 750px) {
+
+  .img-viewport {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+
+    &:after {
+      opacity: 0.4 !important;
+    }
+  }
+
+  .featured-viewport, .whois {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+
+  ::ng-deep .feature-text {
+    font-size: 26px !important;
   }
 }

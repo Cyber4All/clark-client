@@ -13,7 +13,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   padding: 10px;
   height: 48px;
   white-space: nowrap;
@@ -35,6 +34,8 @@
 }
 
 .folder {
+  justify-content: space-between;
+
   .icon {
     color: #808e9b;
   }
