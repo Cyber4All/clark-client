@@ -183,7 +183,6 @@ body {
   }
 
   &.on {
-
     .bg {
       background: $green;
     }
@@ -200,17 +199,21 @@ body {
     height: 28px;
     border-radius: 50%;
     position: absolute;
-    top: 0; bottom: 0; right: 30px;
+    top: 0;
+    bottom: 0;
+    right: 30px;
     margin: auto;
     z-index: 1;
     transition: right 0.2s ease-out;
   }
 
-
   .bg {
     background: $error-red;
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     transition: background 0.2s ease;
   }
 
@@ -570,75 +573,6 @@ body {
   position: relative;
 }
 
-// fixed postion nav bar
-.topbar {
-  position: relative;
-  width: 100%;
-  padding: 20px;
-  background: white;
-  z-index: 3;
-  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
-  color: $blue-accent;
-  box-sizing: border-box;
-
-  .inner {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  .logo {
-    & > div {
-      display: inline-flex;
-      flex-direction: column;
-      align-self: center;
-    }
-
-    .left {
-      font-size: 25px;
-      font-weight: bold;
-      padding-right: 15px;
-      position: relative;
-
-      &:after {
-        width: 3px;
-        height: 35px;
-        content: '';
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        background: $blue-accent;
-        position: absolute;
-      }
-    }
-
-    .right {
-      padding-left: 15px;
-      font-size: 18px;
-
-      a {
-        color: $blue-accent !important;
-      }
-    }
-  }
-
-  .user {
-    font-size: 16px;
-    cursor: pointer;
-
-    & > * {
-      @include vert-center;
-    }
-
-    .fa-user-circle {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin: auto 10px;
-    }
-  }
-}
-
 // this should hold page content (IE not the topbar) and be placed inside the .outer-wrapper
 .content {
   padding: 20px 20px 0px;
@@ -712,4 +646,8 @@ body {
       left: 150px;
     }
   }
+}
+
+*[ng-reflect-router-link] {
+  outline: none;
 }
