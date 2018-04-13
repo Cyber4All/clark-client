@@ -21,6 +21,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
+import { EncodeUriComponentPipe } from './encoded-url.pipe';
 
 
 @NgModule({
@@ -38,14 +39,16 @@ import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
     BreadcrumbComponent,
     LearningObjectListingComponent,
     LearningObjectCardDirective,
-    EscapeHtmlPipe
+    EscapeHtmlPipe,
+    EncodeUriComponentPipe
   ],
   declarations: [
     FooterComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
     LearningObjectCardDirective,
-    EscapeHtmlPipe
+    EscapeHtmlPipe,
+    EncodeUriComponentPipe
   ],
   providers: [ProfileGuard, UserResolver]
 })
