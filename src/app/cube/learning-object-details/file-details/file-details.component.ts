@@ -32,7 +32,9 @@ export class FileDetailsComponent implements OnInit {
   private constructTree() {
     this.directoryTree.addFiles(this.materials.files);
     this.rootNode = this.directoryTree.traversePath([]);
-    this.linkFolderMeta();
+    if (this.materials['folderDescriptions']) {
+      this.linkFolderMeta();
+    }
   }
 
   private linkFolderMeta() {
