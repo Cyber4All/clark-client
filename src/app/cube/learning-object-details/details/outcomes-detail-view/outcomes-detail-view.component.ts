@@ -9,7 +9,12 @@ import { Component, OnInit, Input } from '@angular/core';
       This Learning Object doesn't have any learning outcomes.
     </p>
     <div class="outcomes" *ngFor="let o of outcomes; let i = index">
-      <button class="header" [disabled]="!o.mappings.length > 0" (click)="toggleMappings(i)" [ngClass]="{ 'clickable': o.mappings.length > 0 }">
+      <button
+        class="header"
+        [disabled]="!o.mappings.length > 0"
+        (click)="toggleMappings(i)"
+        [ngClass]="{ 'clickable': o.mappings.length > 0 }"
+      >
         <span class="title">{{ o.outcome }}</span>
         <span class="mappings-count">({{ o.mappings.length }} Mapped Outcomes)</span>
       </button>
