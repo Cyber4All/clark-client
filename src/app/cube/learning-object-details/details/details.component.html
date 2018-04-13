@@ -4,7 +4,8 @@
     <div class="inner">
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
-        <div class="author">Created by {{learningObject.author.name}}, updated {{ date | date:'shortDate' }}</div>
+        <div class="author">Created by
+          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name}}</span>, updated {{ date | date:'shortDate' }}</div>
         <div class="type">{{ learningObject.length }}</div>
       </div>
     </div>
@@ -13,7 +14,7 @@
     <div class="content">
       <div class="goals">
         <div class="title">Description</div>
-        <p [innerHtml]="learningObject.goals[0].text"></p> 
+        <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
       <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
       

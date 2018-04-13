@@ -21,8 +21,8 @@ export class HomeComponent implements OnInit {
   constructor(private learningObjectService: LearningObjectService, private router: Router) { }
 
   ngOnInit() {
-    document.querySelector('.search-bar input')['value'] = '';
-    this.placeholderText = "Searching " + this.learningObjectService.totalLearningObjects + " learning objects of cybersecurity curriculum";
+    // document.querySelector('.search-bar input')['value'] = '';
+    this.placeholderText = 'Searching ' + this.learningObjectService.totalLearningObjects + ' learning objects of cybersecurity curriculum';
   }
 
   keyDownSearch(event) {

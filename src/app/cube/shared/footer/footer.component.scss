@@ -3,43 +3,72 @@
 $footer-height: 250px;
 footer {
   color: whitesmoke;
-  flex-shrink: 0;
-  height: $footer-height;
   background: $blue-gradient;
   display: flex;
   flex-flow: row nowrap;
+  padding: 20px;
+
   .funding-info {
     font-size: 16px;
-    flex-grow: 1;
+    flex: 1;
     display: flex;
-    flex-flow: column nowrap;
-    margin-left: 20px;
+    flex-direction: column;
+    overflow: hidden;
+
     .nsa-wrapper {
-      width: 400px;
+      max-width: 400px;
       text-align: center;
       margin-top: auto;
-      margin-bottom: 20px;
+
       p {
         margin: 0;
       }
     }
+
     img {
       width: 150px;
+      margin-bottom: 10px;
     }
   }
+
   .small-links {
+    position: relative;
+    box-sizing: border-box;
+    padding-left: 30px;
+    flex-shrink: 0;
     display: flex;
     flex-flow: row nowrap;
     margin-top: auto;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    .divider {
+
+    & > *:not(:last-child):after {
+      content: '|';
       padding: 0 8px;
+      position: relative;
     }
   }
-  a,
-  .small-links {
+
+  a, .small-links {
     color: whitesmoke;
     font-size: 16px;
+  }
+}
+
+@media(max-width: 750px) {
+
+  footer {
+    flex-direction: column !important;
+    // justify-content: center;
+    align-items: center;
+
+    & > * {
+      
+      &:not(:last-child) {
+        margin-bottom: 25px;
+      }
+
+      &.small-links {
+        padding-left: 0 !important;
+      }
+    }
   }
 }

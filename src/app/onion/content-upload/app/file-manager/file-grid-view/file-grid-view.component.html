@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper dz-clickable">
   <!-- Render Folders -->
   <div (click)="openFolder(folder.name)" class="folder" *ngFor="let folder of (node$ | async)?.children" [contextMenu]="fileOptions"
     [contextMenuSubject]="folder" tip="{{folder.description}}" tipTitle={{folder.name}} tipLocation="above" tipDelay="500">

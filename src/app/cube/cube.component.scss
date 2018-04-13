@@ -35,105 +35,6 @@ body {
   margin-bottom: 0px !important;
 }
 
-.toolbar {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  padding: 0px 0px 0px 20px;
-  background: white;
-
-  .content-switch-container {
-    border-radius: 4px;
-    color: rgba(26, 70, 107, 0.7);
-    padding-left: 0px;
-
-    .content-switch {
-      margin-left: 0px !important;
-    }
-  }
-
-  .search-bar {
-    max-width: 350px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 20px;
-
-    form {
-      width: 100%;
-    }
-
-    input {
-      padding: 8px 8px 8px 12px;
-      border-radius: 5px 0px 0px 5px;
-      font-size: 16px;
-      width: 100%;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      border: 1px solid transparent;
-      border-right-width: 0px;
-      outline: 0;
-      background: lighten(desaturate($blue-accent, 40), 56);
-
-      &:focus {
-        border-color: $blue-accent;
-      }
-    }
-
-    .icon {
-      color: white;
-      background: $blue-accent;
-      padding: 9px 12px;
-      font-size: 16px;
-      border-radius: 0px 5px 5px 0px;
-      cursor: pointer;
-    }
-  }
-
-  .filter-options-button {
-    @include vert-center;
-    display: none;
-    margin-right: 30px;
-    transition: all 0.2s ease;
-
-    .svg-inline--fa {
-      transition: inherit;
-    }
-
-    &.active {
-      background: transparent;
-      color: $blue-accent;
-
-      .svg-inline--fa {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  .filter-options {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-
-    .filter-button {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      line-height: 40px;
-      padding-top: 20px;
-      font-size: 16px;
-      outline: none;
-      svg {
-        margin-top: 12px;
-        font-size: 16px;
-      }
-    }
-  }
-}
-
 // Global CLARK Style Overrides
 .user {
   display: flex;
@@ -201,3 +102,4 @@ body {
     }
   }
 }
+
