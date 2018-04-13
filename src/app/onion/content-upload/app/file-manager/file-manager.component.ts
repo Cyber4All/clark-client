@@ -40,6 +40,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output() fileDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() fileEdited: EventEmitter<FileEdit> = new EventEmitter<FileEdit>();
   @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() path: EventEmitter<string> = new EventEmitter<string>();
+
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
 
@@ -163,7 +165,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     return filePaths;
   }
 
-  openFolderDialog() {
+  openFolderDialog(fromRoot?: boolean) {
     const fileInput = document.querySelector('.dz-hidden-input');
     fileInput.setAttribute('directory', 'true');
     fileInput.setAttribute('webkitdirectory', 'true');
@@ -171,9 +173,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     fileInput.setAttribute('msdirectory', 'true');
     fileInput.setAttribute('odirectory', 'true');
     this.openDZ.emit(true);
+    if (fromRoot) this.path.emit();
   }
 
-  openFileDialog() {
+  openFileDialog(fromRoot?: boolean) {
     const fileInput = document.querySelector('.dz-hidden-input');
     fileInput.removeAttribute('directory');
     fileInput.removeAttribute('webkitdirectory');
@@ -181,6 +184,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     fileInput.removeAttribute('msdirectory');
     fileInput.removeAttribute('odirectory');
     this.openDZ.emit(true);
+    if (fromRoot) this.path.emit();
   }
 
   handleClick(e) {
@@ -213,6 +217,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   private refreshNode() {
     const path = this.currentPath;
     this.currentNode$.next(this.filesystem.traversePath(path));
+    this.path.emit(path.join('/'));
   }
 
   ngOnDestroy(): void {

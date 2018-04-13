@@ -32,6 +32,13 @@ export type File = {
 })
 export class UploadComponent implements OnInit {
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
+
+  private filePathMap: Map<string, string> = new Map<string, string>();
+
+  private learningObjectName: string;
+
+  private dzError: string = '';
+
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
   >([]);
@@ -39,11 +46,8 @@ export class UploadComponent implements OnInit {
   queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
   >([]);
-  public tips = TOOLTIP_TEXT;
 
-  private filePathMap: Map<string, string> = new Map<string, string>();
-
-  private learningObjectName: string;
+  tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject = new LearningObject(null, '');
 
@@ -52,7 +56,7 @@ export class UploadComponent implements OnInit {
 
   file_descriptions: Map<string, string> = new Map();
 
-  private dzError: string = '';
+  openPath: string;
 
   constructor(
     private router: Router,
@@ -161,7 +165,13 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   private setFullPath(file) {
-    const path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+    let path;
+    if (file.fullPath || file.webkitRelativePath) {
+      path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+    }
+    if (this.openPath) {
+      path = `${this.openPath}/${path ? path : file.name}`;
+    }
     if (path) {
       file.fullPath = path;
     }

@@ -38,6 +38,29 @@
     class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)"></file-list-view>
 </div>
 
+
+<!-- New Options Context Menu -->
+<context-menu (close)="editDescription=false" #newOptions>
+  <ng-template contextMenuItem (execute)="openFileDialog(true)">
+    <div class="context-item">
+      <div class="option">
+        <i class="fas fa-file icon  icon-left light"></i>
+        File Upload
+      </div>
+    </div>
+  </ng-template>
+  <ng-template contextMenuItem (execute)="openFolderDialog(true)">
+    <div class="context-item">
+      <div class="option">
+        <i class="fas fa-folder  icon icon-left light"></i>
+        Folder Upload
+      </div>
+    </div>
+  </ng-template>
+</context-menu>
+
+
+<!-- File Options Context Menu -->
 <context-menu (close)="editDescription=false" #fileOptions>
   <ng-template contextMenuItem passive="true">
     <div *ngIf="!editDescription" class="context-item" (click)="editDescription=true">
@@ -79,23 +102,4 @@
     </div>
   </ng-template>
 
-</context-menu>
-
-<context-menu (close)="editDescription=false" #newOptions>
-  <ng-template contextMenuItem (execute)="openFileDialog()">
-    <div class="context-item">
-      <div class="option">
-        <i class="fas fa-file icon  icon-left light"></i>
-        File Upload
-      </div>
-    </div>
-  </ng-template>
-  <ng-template contextMenuItem (execute)="openFolderDialog()">
-    <div class="context-item">
-      <div class="option">
-        <i class="fas fa-folder  icon icon-left light"></i>
-        Folder Upload
-      </div>
-    </div>
-  </ng-template>
 </context-menu>
