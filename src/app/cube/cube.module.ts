@@ -55,9 +55,6 @@ import { UserEditInformationComponent } from './user-profile/user-edit-informati
 import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
-import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
-import { FolderViewComponent } from './learning-object-details/file-details/folder-view/folder-view.component';
-import { FileViewComponent } from './learning-object-details/file-details/file-view/file-view.component';
 import { DetailsModule } from './learning-object-details/details/details.module';
 
 /**
@@ -75,10 +72,7 @@ import { DetailsModule } from './learning-object-details/details/details.module'
     UserPreferencesComponent,
     UserInformationComponent,
     UserEditInformationComponent,
-    OrganizationListComponent,
-    FileDetailsComponent,
-    FolderViewComponent,
-    FileViewComponent
+    OrganizationListComponent
   ],
   imports: [
     // Angular imports
