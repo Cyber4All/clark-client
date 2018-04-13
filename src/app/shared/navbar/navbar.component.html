@@ -5,6 +5,7 @@
   <div class="topbar" [ngClass]="{'version': version}">
     <div *ngIf="version" class="version-label">{{version}}</div>
     <div class="inner flex h left-right">
+      <div class="spacer" *ngIf="isMobile"></div>
       <div class="logo flex h left-right">
         <div class="left logo-link" routerLink="/home">C.L.A.R.K.
         </div>
@@ -12,7 +13,7 @@
           Cybersecurity Labs and Resource Knowledge-base
         </div>
       </div>
-      <div class="user flex h flex-end" *ngIf="loggedin">
+      <div class="user flex h flex-end" *ngIf="loggedin && !isMobile">
 
         <div class="left flex h flex-end" (click)="userDropdown($event)">
           <!-- get just first name -->
@@ -29,11 +30,52 @@
         </div>
       </div>
 
-      <div class="user flex h flex-end" *ngIf="!loggedin">
+      <div class="user flex h flex-end" *ngIf="!loggedin && !isMobile">
         <div class="login flex h flex-end" routerLink="/auth/login"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
         <div class="register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
       </div>
 
+      <div class="mobile-options" *ngIf="isMobile" >
+        <div class="mobile-search-option"><i class="far fa-search"></i></div>
+        <div class="hamburger"[ngClass]="{'active': menuOpen}" (click)="menuOpen = !menuOpen">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div *ngIf="!hideNavbar && !isMobile" class="toolbar" [ngClass]="{'onion': isOnion}">
+    <div class="content-switch-container">
+      <div class="content-switch" [ngClass]="{'right': !isOnion, 'left': isOnion}">
+        <div class="options">
+          <div class="left contribute" [ngClass]="{'active': isOnion }" (click)="contentSwitchClick($event)" routerLink="/onion">Contribute</div>
+          <div class="right search" [ngClass]="{'active': !isOnion }" (click)="contentSwitchClick($event)" routerLink="/home">Search</div>
+        </div>
+        <div class="highlight"></div>
+      </div>
+    </div>
+    <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
+    <div class="search-bar">
+      <form (submit)="performSearch(searchBar)">
+        <input #searchBar type="text" placeholder="Search...">
+      </form>
+      <div class="icon" (click)="performSearch(searchBar)">
+        <i class="far fa-search"></i>
+      </div>
+    </div>
+  </div>
+  <div class="slideout-underlay" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}" (click)="menuOpen = !menuOpen"></div>
+  <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">
+    <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">
+      <ng-container *ngIf="loggedin">
+          <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage() + ')'}"></div>
+          <div class="right">
+            <div class="greeting">Howdy, {{ authService.firstName }}!</div>
+            <a>View your profile</a>
+          </div>
+      </ng-container>
     </div>
   </div>
 </ng-container>

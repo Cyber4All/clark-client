@@ -593,8 +593,6 @@ body {
   border-radius: 5px;
   background: #e1e3ec;
   position: relative;
-  margin-left: 20px;
-  margin-top: 20px;
 
   .options {
     display: flex;
@@ -606,7 +604,7 @@ body {
 
     & > div {
       width: 150px;
-      padding: 8px 5px;
+      padding: 10px 5px;
       text-align: center;
       color: $blue-accent;
       font-size: 15px;
@@ -643,4 +641,8 @@ body {
       left: 150px;
     }
   }
+}
+
+*[routerLink], *[ng-reflect-router-link] {
+  outline: none;
 }
