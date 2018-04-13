@@ -3,21 +3,22 @@
 </div>
 <div class="file-details-wrapper section">
   <section class="files">
-    <div class="grid-area header">
+    <div class="grid-area" [ngClass]="{header: materials.files.length}">
       <div class="section title">
         Files
       </div>
-      <div class="file-count">
-        {{ materials.files.length }} Files
-      </div>
-      <div class="description">
-        <span class="link-button" (click)="forceCollapse()">Collapse All</span>
-      </div>
-
+      <ng-container *ngIf="materials.files.length">
+        <div class="file-count">
+          {{ materials.files.length }} Files
+        </div>
+        <div class="description">
+          <span class="link-button" (click)="forceCollapse()">Collapse All</span>
+        </div>
+      </ng-container>
     </div>
 
 
-    <div class="file-listing">
+    <div *ngIf="materials.files.length" class="file-listing">
       <cube-folder-view *ngFor="let folder of rootNode.children" [forceCollapse$]="forceCollapse$" [folder]="folder"></cube-folder-view>
       <cube-file-view *ngFor="let file of rootNode.files" [file]="file"></cube-file-view>
     </div>
