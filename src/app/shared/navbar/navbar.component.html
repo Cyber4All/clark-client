@@ -71,7 +71,7 @@
     <form (submit)="performSearch(mobileSearch)">
       <input #mobileSearch name="mobileSearch" placeholder="Search">
     </form>
-    <div class="button icon-only good"><i class="far fa-search"></i></div>
+    <div class="button icon-only good" (click)="performSearch(mobileSearch)"><i class="far fa-search"></i></div>
   </div>
   <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">
     <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">

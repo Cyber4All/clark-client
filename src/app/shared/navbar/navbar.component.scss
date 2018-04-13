@@ -400,6 +400,7 @@
   align-items: center;
   visibility: hidden;
   transition: all 0.2s cubic-bezier(.55,.11,.26,.91);
+  transition-delay: 0.1s;
 
   &.active {
     top: 0;
