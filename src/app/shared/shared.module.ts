@@ -1,25 +1,20 @@
 // Core
-import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-
-// Modules
-import { ClarkRoutingModule } from '../clark.routing';
-
-// Components
-import { NavbarComponent } from './navbar/navbar.component';
-import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
-
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
-import { NotificationModule } from '../shared/notifications';
 import { CheckBoxModule } from 'clark-checkbox';
-import { ParticlesModule } from 'angular-particle';
-import { CookieModule } from 'ngx-cookie';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { ParticlesModule } from 'angular-particle';
+import { NotificationModule } from '../shared/notifications';
+// Shared CLARK Modules
 import { ModalModule } from './modals';
-import { FormsModule } from '@angular/forms';
+// Components
+import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 import { MessageComponent } from './navbar/message/message.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -50,17 +45,3 @@ import { MessageComponent } from './navbar/message/message.component';
   ]
 })
 export class SharedModule { }
-
-
-/*
-    CommonModule,
-    CheckBoxModule,
-    RouterModule,
-    NotificationModule,
-    ModalModule.forRoot(),
-    ParticlesModule,
-    VirtualScrollModule,
-    CookieModule.forRoot(),
-    NotificationModule.forRoot(),
-    CheckBoxModule,
-*/
