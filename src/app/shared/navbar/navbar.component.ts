@@ -62,9 +62,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
           this.isOnion = false;
         }
 
-        if (this.menuOpen) {
-          this.menuOpen = !this.menuOpen;
-        }
+        this.menuOpen = this.searchDown = false;
       } else if (e instanceof NavigationEnd) {
         // scroll to top of page when any router event is fired
         window.scrollTo(0, 0);
