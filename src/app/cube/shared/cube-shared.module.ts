@@ -20,6 +20,8 @@ import { ParticlesModule } from 'angular-particle'; // FIXME: push down into a c
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
+import { EncodeUriComponentPipe } from './encoded-url.pipe';
 
 
 @NgModule({
@@ -36,13 +38,17 @@ import { ClickOutsideModule } from 'ng-click-outside';
     FooterComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
-    LearningObjectCardDirective
+    LearningObjectCardDirective,
+    EscapeHtmlPipe,
+    EncodeUriComponentPipe
   ],
   declarations: [
     FooterComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
-    LearningObjectCardDirective
+    LearningObjectCardDirective,
+    EscapeHtmlPipe,
+    EncodeUriComponentPipe
   ],
   providers: [ProfileGuard, UserResolver]
 })

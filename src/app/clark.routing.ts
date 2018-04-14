@@ -1,7 +1,5 @@
 import { ModuleWithProviders } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
-// TODO: Import cube routes to expose
+import { RouterModule, Routes } from '@angular/router';
 
 const clark_routes: Routes = [
   { path: 'auth', loadChildren: 'app/auth/auth.module#AuthModule', data: { hideNavbar: true } },

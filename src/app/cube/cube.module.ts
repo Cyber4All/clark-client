@@ -17,9 +17,6 @@ import { CartV2Service } from '../core/cartv2.service';
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from './core/redux/reducers/cart.reducer';
 
-// Pipes
-import { EscapeHtmlPipe } from '../shared/pipes/keep-html.pipe';
-
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
 import { CubeSharedModule } from './shared/cube-shared.module';
@@ -32,8 +29,6 @@ import { AuthModule } from '../auth/auth.module';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { CubeComponent } from './cube.component';
-import { DetailsComponent } from './learning-object-details/details/details.component';
-import { DetailsContentComponent } from './learning-object-details/details/details-content.component';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -62,7 +57,7 @@ import { UserEditInformationComponent } from './user-profile/user-edit-informati
 import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
-import { FileDetailsComponent } from './learning-object-details/file-details/file-details.component';
+import { DetailsModule } from './learning-object-details/details/details.module';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -72,11 +67,7 @@ import { FileDetailsComponent } from './learning-object-details/file-details/fil
 @NgModule({
   declarations: [
     CubeComponent,
-    EscapeHtmlPipe,
-    DetailsComponent,
-    DetailsContentComponent,
-    CartComponent, // TODO Create Details module
-    DetailsContentComponent, // TODO Create Details module
+    CartComponent,
     RouterComponent,
     BrowseComponent,
     UserProfileComponent,
@@ -84,7 +75,6 @@ import { FileDetailsComponent } from './learning-object-details/file-details/fil
     UserInformationComponent,
     UserEditInformationComponent,
     OrganizationListComponent,
-    FileDetailsComponent,
 ],
   imports: [
     // Angular imports
@@ -106,7 +96,8 @@ import { FileDetailsComponent } from './learning-object-details/file-details/fil
     ModalModule,
     NotificationModule,
     CollectionModule,
-    TooltipModule
+    TooltipModule,
+    DetailsModule
   ],
   providers: [LearningObjectService, CartService]
 })

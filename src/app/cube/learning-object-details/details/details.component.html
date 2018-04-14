@@ -16,15 +16,8 @@
         <div class="title">Description</div>
         <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
-      <div class="outcomes">
-        <div class="title">Learning Outcomes</div>
-        <ul>
-          <li *ngFor="let o of learningObject.outcomes">
-            {{ o.outcome }}
-          </li>
-        </ul>
-        <p *ngIf="learningObject.outcomes.length < 1">This Learning Object does not contain any outcomes.</p>
-      </div>
+      <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
+      
       <onion-file-details [materials]="learningObject.materials"></onion-file-details>
     </div>
     <div class="sidebar">
