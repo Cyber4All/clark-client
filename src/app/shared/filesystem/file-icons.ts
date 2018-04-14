@@ -56,7 +56,9 @@ IconMap.set(FILE_TYPE.CODE, FONT_AWESOME_ICONS.CODE);
 
 export function getIcon(extension: string): Icon {
   let icon = FONT_AWESOME_ICONS.FILE;
-  if (!extension) return icon;
+  if (!extension) {
+    return icon;
+  }
   const fileType = getFileType(extension);
   if (fileType) {
     icon = IconMap.get(fileType);

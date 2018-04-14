@@ -8,13 +8,15 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { DirectoryTree, DirectoryNode } from '../shared/DirectoryTree';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { FileStorageService } from '../services/file-storage.service';
-import { getIcon } from './file-icons';
-import { getPaths } from '../shared/file-functions';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import {
+  DirectoryTree,
+  DirectoryNode
+} from 'app/shared/filesystem/DirectoryTree';
+import { getPaths } from 'app/shared/filesystem/file-functions';
 type LearningObjectFile = File;
 
 export type FileEdit = {

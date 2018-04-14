@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { DetailsComponent } from './details.component';
 import { DetailsContentComponent } from './details-content.component';
 import { FileDetailsComponent } from '../file-details/file-details.component';
+import { FolderViewComponent } from '../file-details/folder-view/folder-view.component';
+import { FileViewComponent } from '..//file-details/file-view/file-view.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CubeSharedModule } from '../../shared/cube-shared.module';
@@ -23,8 +25,10 @@ import { RouterModule } from '@angular/router';
     DetailsComponent,
     DetailsContentComponent,
     FileDetailsComponent,
+    FolderViewComponent,
+    FileViewComponent,
     OutcomesDetailViewComponent
   ],
-  providers: [],
+  providers: []
 })
-export class DetailsModule { }
+export class DetailsModule {}

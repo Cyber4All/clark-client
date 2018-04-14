@@ -7,13 +7,13 @@ import { FileStorageService } from '../services/file-storage.service';
 import { DropzoneDirective } from 'ngx-dropzone-wrapper';
 import { TimeFunctions } from '../shared/time-functions';
 import { NotificationService } from '../../../../shared/notifications';
-import { DirectoryTree, LearningObjectFile } from '../shared/DirectoryTree';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { getPaths } from '../shared/file-functions';
-
+import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs';
+import { getPaths } from 'app/shared/filesystem/file-functions';
+type LearningObjectFile = File;
 
 export type File = {
   id?: string;
