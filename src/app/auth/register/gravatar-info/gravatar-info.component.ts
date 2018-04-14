@@ -11,7 +11,7 @@ import * as md5 from 'md5';
   styleUrls: ['./gravatar-info.component.scss']
 })
 export class GravatarInfoComponent implements OnInit {
-  @Input() gravatarInfo: FormGroup;
+  @Input() group: FormGroup;
 
   /*loading: boolean = false;
   verified: boolean = false;

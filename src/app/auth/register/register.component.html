@@ -6,18 +6,19 @@
       <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
       
       <form [formGroup]="regForm">
+
           <div *ngIf="this.page === 1">
-            <clark-personal-info [(ngModel)]="regInfo.firstname" [personalInfo]="regForm.controls.personalInfo"></clark-personal-info>
+            <clark-personal-info [group]="regForm"></clark-personal-info>
           </div>
           <div *ngIf="this.page === 2">
-            <clark-profile-info [profileInfo]="regForm.controls.profileInfo"></clark-profile-info>
+            <clark-profile-info [group]="regForm"></clark-profile-info>
           </div>
           <div *ngIf="this.page === 3">
-            <clark-gravatar-info [gravatarInfo]="regForm.controls.gravatarInfo"></clark-gravatar-info>
+            <clark-gravatar-info [group]="regForm"></clark-gravatar-info>
             <div ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
-            <div>{{regInfo | json}}</div>
           </div>
       </form>
+      <div>{{regInfo | json}}</div>
 
       <!--<div *ngIf="pageNumber == 2">
           <clark-profile-info></clark-profile-info>
@@ -98,7 +99,7 @@
         </div>
 
         <div *ngIf="page === 3">
-          <button type="submit" class="auth-button" (click)="submit()">
+          <button type="submit" class="auth-button" (click)="alert()">
               <div class="text">Finish</div>
               <div class="mask"></div>
               <span *ngIf = "loading">

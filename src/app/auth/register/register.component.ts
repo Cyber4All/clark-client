@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
     this.default = 'identicon';
 
-    this.regForm = this.fb.group({
+    /*this.regForm = this.fb.group({
       personalInfo: this.fb.group({ // create nested formgroup to pass to child
         firstname: [''],
         lastname: [''], 
@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit {
       gravatarInfo: this.fb.group({ // create nested formgroup to pass to child
         email: [''],
       })
-    })
+    })*/
 
     this.route.parent.data.subscribe(data => {
       if (route.snapshot.queryParams.returnUrl) {
@@ -183,4 +183,16 @@ export class RegisterComponent implements OnInit {
       return this.page;
     }
   }
+
+  alert() {
+    alert(this.regForm.controls['firstname'].value); 
+    alert(this.regForm.controls['lastname'].value); 
+    alert(this.regForm.controls['email'].value); 
+    alert(this.regForm.controls['organization'].value); 
+    alert(this.regForm.controls['username'].value); 
+    alert(this.regForm.controls['password'].value); 
+    alert(this.regForm.controls['verifypassword'].value); 
+   
+  }
+  
 }

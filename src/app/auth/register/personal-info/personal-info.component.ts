@@ -22,7 +22,7 @@ interface Person {
 })
 
 export class PersonalInfoComponent implements OnInit, ControlValueAccessor {
-  @Input() personalInfo: FormGroup;
+  @Input() group: FormGroup;
 
   private _personinfo: Person = <Person>{};
 

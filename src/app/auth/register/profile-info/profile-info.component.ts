@@ -7,7 +7,7 @@ import { NgControl, FormGroup, FormControl, Validators, ControlValueAccessor, NG
   styleUrls: ['./profile-info.component.scss'], 
 })
 export class ProfileInfoComponent implements OnInit {
-  @Input() profileInfo: FormGroup;
+  @Input() group: FormGroup;
   
   /*loading: boolean = false;
   verified: boolean = true;

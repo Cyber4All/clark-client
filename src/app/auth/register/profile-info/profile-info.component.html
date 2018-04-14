@@ -1,6 +1,6 @@
 <div *ngIf="!editContent && self"></div>
     <div *ngIf="!editContent">
-      <form [formGroup] = "profileInfo">
+      <form [formGroup] = "group">
         <div class="input username">
           <input name="username" type="text" placeholder="Username" formControlName ="username"/>
           <i class="far fa-user"></i>

@@ -1,7 +1,5 @@
 
-  <div *ngIf="!editContent && self"></div>
-    <div *ngIf="!editContent">
-      <form [formGroup] = "personalInfo">
+      <form [formGroup] = "group">
         <div class="h-group">
           <div class="input firstname">
             <input name="firstname" type="text" placeholder="First name" [(ngModel)]="firstname" formControlName="firstname"/>
@@ -22,6 +20,6 @@
           <i class="far fa-building"></i>
         </div>
       </form>
-    </div>
+   
 
  
