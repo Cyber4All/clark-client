@@ -82,6 +82,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {}
 
   submit() {
+    this.updateObjValues(); 
     this.registerFailure = undefined;
     clearTimeout(this.registerFailureTimer);
     this.loading = true;
@@ -184,7 +185,19 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  updateObjValues(){
+    this.regInfo.firstname = this.regForm.controls['firstname'].value; 
+    this.regInfo.lastname = this.regForm.controls['lastname'].value;
+    this.regInfo.email = this.regForm.controls['email'].value;
+    this.regInfo.organization = this.regForm.controls['organization'].value;
+    this.regInfo.username = this.regForm.controls['username'].value;
+    this.regInfo.password = this.regForm.controls['password'].value;
+    this.passwordVerify = this.regForm.controls['verifypassword'].value; 
+
+  }
+
   alert() {
+    this.updateObjValues();
     alert(this.regForm.controls['firstname'].value); 
     alert(this.regForm.controls['lastname'].value); 
     alert(this.regForm.controls['email'].value); 
