@@ -97,7 +97,7 @@ import { DetailsModule } from './learning-object-details/details/details.module'
     NotificationModule,
     CollectionModule,
     TooltipModule,
-    DetailsModule
+    DetailsModule, 
   ],
   providers: [LearningObjectService, CartService]
 })

@@ -1,13 +1,33 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
 import { NgControl, FormGroup, FormControl, Validators, ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'clark-profile-info',
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.scss'], 
+  animations: [
+    trigger(
+      'slideInRight',
+      [
+        transition(
+          ':enter', [
+            style({transform: 'translateX(100%)', opacity: 0}),
+            animate('500ms', style({transform: 'translateX(0)', opacity: 1}))
+          ]
+        ),
+        transition(
+          ':leave', [
+            style({transform: 'translateX(0)', 'opacity': 1}),
+            animate('500ms', style({transform: 'translateX(-100%)', opacity: 0}))
+          ]
+        )
+      ])
+  ]
 })
 export class ProfileInfoComponent implements OnInit {
   @Input() group: FormGroup;
+  slide: String = 'enter';
   
   /*loading: boolean = false;
   verified: boolean = true;

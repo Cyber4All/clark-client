@@ -3,17 +3,35 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import * as md5 from 'md5';
 
 
 @Component({
   selector: 'clark-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'], 
+  animations: [
+    trigger('work', [
+      state('*', style({transform: 'translateX(0)', opacity: 1})),
+      state('true', style({'border-right': '50px solid #72BF44', opacity: 1})),
+      state('false', style({'border-right': '20px solid #72BF44', opacity: 1})),
+      transition('true => false', animate('.125s .1s cubic-bezier(0.29, 0.06, 0.43, 0.92)')),
+      transition('false => true', animate('.125s 0s cubic-bezier(0.29, 0.06, 0.43, 0.92)')),
+      transition('void => *', [
+        style({transform: 'translateX(-100%)', opacity: 0}),
+        animate('1s 1.1s cubic-bezier(0.29, 0.06, 0.43, 0.92)')
+      ])
+    ])
+  ]
 })
+
 export class RegisterComponent implements OnInit {
+  slide: boolean = false;
   loading: boolean = false;
   verified: boolean = false;
+  check: boolean; 
+
   regInfo = {
     firstname: '',
     lastname: '',
@@ -45,24 +63,6 @@ export class RegisterComponent implements OnInit {
   page: number = 1; 
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
-    this.default = 'identicon';
-
-    /*this.regForm = this.fb.group({
-      personalInfo: this.fb.group({ // create nested formgroup to pass to child
-        firstname: [''],
-        lastname: [''], 
-        email: [''], 
-        organization: ['']
-      }),
-      profileInfo: this.fb.group({ // create nested formgroup to pass to child
-        username: [''],
-        verifypassword: [''],
-        password: [''],
-      }), 
-      gravatarInfo: this.fb.group({ // create nested formgroup to pass to child
-        email: [''],
-      })
-    })*/
 
     this.route.parent.data.subscribe(data => {
       if (route.snapshot.queryParams.returnUrl) {
@@ -157,25 +157,19 @@ export class RegisterComponent implements OnInit {
     this.verified = event;
   }
 
-  getGravatarImage():string {
-    // r=pg checks the rating of the Gravatar image 
-    return 'http://www.gravatar.com/avatar/' + md5(this.regInfo.email) + '?s=' + this.size + 
-      '?r=pg&d=' + this.default;
-  }
-
   next():number{
-    // r=pg checks the rating of the Gravatar image 
-    if (this.page == 1) {
+    this.pageValidate(this.page); 
+
+    if (this.page == 1 && this.check) {
       this.page = 2; 
       return this.page; 
-    } else if (this.page == 2) {
+    } else if (this.page == 2 && this.check) {
       this.page = 3; 
       return this.page;
     }
   }
 
   back():number{
-    // r=pg checks the rating of the Gravatar image 
     if (this.page == 2) {
       this.page = 1; 
       return this.page; 
@@ -185,6 +179,30 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  pageValidate(value : number) { 
+    switch(value) { 
+      case 1:
+        if (this.regForm.controls['firstname'].value !== null && this.regForm.controls['lastname'].value !== null &&
+              this.regForm.controls['email'].value !== null && this.regForm.controls['organization'].value !== null) { 
+          this.check = true; 
+        } else {
+          this.check = false; 
+        }
+        break; 
+
+      case 2: 
+        if (this.regForm.controls['username'].value !== null && this.regForm.controls['password'].value !== null &&
+              this.regForm.controls['verifypassword'].value !== null) { 
+          this.check = true; 
+        } else {
+          this.check = false; 
+        }
+        break; 
+      }
+  }
+
+  // Places FormControl values in regInfo object 
+  // RegInfo object is used for form validation 
   updateObjValues(){
     this.regInfo.firstname = this.regForm.controls['firstname'].value; 
     this.regInfo.lastname = this.regForm.controls['lastname'].value;
@@ -193,19 +211,5 @@ export class RegisterComponent implements OnInit {
     this.regInfo.username = this.regForm.controls['username'].value;
     this.regInfo.password = this.regForm.controls['password'].value;
     this.passwordVerify = this.regForm.controls['verifypassword'].value; 
-
   }
-
-  alert() {
-    this.updateObjValues();
-    alert(this.regForm.controls['firstname'].value); 
-    alert(this.regForm.controls['lastname'].value); 
-    alert(this.regForm.controls['email'].value); 
-    alert(this.regForm.controls['organization'].value); 
-    alert(this.regForm.controls['username'].value); 
-    alert(this.regForm.controls['password'].value); 
-    alert(this.regForm.controls['verifypassword'].value); 
-   
-  }
-  
 }
