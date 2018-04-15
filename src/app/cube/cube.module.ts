@@ -35,8 +35,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 
-
-
 // Guards
 import { AuthGuard } from '../core/auth-guard.service';
 
@@ -74,8 +72,8 @@ import { DetailsModule } from './learning-object-details/details/details.module'
     UserPreferencesComponent,
     UserInformationComponent,
     UserEditInformationComponent,
-    OrganizationListComponent,
-],
+    OrganizationListComponent
+  ],
   imports: [
     // Angular imports
     HttpModule,

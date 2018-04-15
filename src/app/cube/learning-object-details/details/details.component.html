@@ -12,13 +12,14 @@
   </div>
   <div class="flex">
     <div class="content">
-      <div class="goals">
+      <div class="description">
         <div class="title">Description</div>
         <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
       <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
-      
-      <onion-file-details [materials]="learningObject.materials"></onion-file-details>
+      <div class="materials">
+        <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
+      </div>
     </div>
     <div class="sidebar">
       <div class="inner">
