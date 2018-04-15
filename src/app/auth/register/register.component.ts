@@ -5,32 +5,21 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import * as md5 from 'md5';
+import { Type } from '@angular/compiler/src/core';
 
+type orientation = ("prev" | "next" | "none"); 
 
 @Component({
   selector: 'clark-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'], 
-  animations: [
-    trigger('work', [
-      state('*', style({transform: 'translateX(0)', opacity: 1})),
-      state('true', style({'border-right': '50px solid #72BF44', opacity: 1})),
-      state('false', style({'border-right': '20px solid #72BF44', opacity: 1})),
-      transition('true => false', animate('.125s .1s cubic-bezier(0.29, 0.06, 0.43, 0.92)')),
-      transition('false => true', animate('.125s 0s cubic-bezier(0.29, 0.06, 0.43, 0.92)')),
-      transition('void => *', [
-        style({transform: 'translateX(-100%)', opacity: 0}),
-        animate('1s 1.1s cubic-bezier(0.29, 0.06, 0.43, 0.92)')
-      ])
-    ])
-  ]
 })
 
 export class RegisterComponent implements OnInit {
-  slide: boolean = false;
+
   loading: boolean = false;
   verified: boolean = false;
-  check: boolean; 
+  check: boolean = true; 
 
   regInfo = {
     firstname: '',
@@ -61,6 +50,7 @@ export class RegisterComponent implements OnInit {
   size: number = 200; 
   default: string; 
   page: number = 1; 
+  orientation: string = null; 
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
 
@@ -157,9 +147,10 @@ export class RegisterComponent implements OnInit {
     this.verified = event;
   }
 
+  // navigation 
   next():number{
-    this.pageValidate(this.page); 
-
+    //this.orientation = "forward"; 
+    //this.pageValidate(this.page); 
     if (this.page == 1 && this.check) {
       this.page = 2; 
       return this.page; 
@@ -169,7 +160,9 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // navigation 
   back():number{
+    //this.orientation = "backward"; 
     if (this.page == 2) {
       this.page = 1; 
       return this.page; 
@@ -186,15 +179,16 @@ export class RegisterComponent implements OnInit {
               this.regForm.controls['email'].value !== null && this.regForm.controls['organization'].value !== null) { 
           this.check = true; 
         } else {
+          this.error('Please fill in all fields!');
           this.check = false; 
         }
         break; 
-
       case 2: 
         if (this.regForm.controls['username'].value !== null && this.regForm.controls['password'].value !== null &&
               this.regForm.controls['verifypassword'].value !== null) { 
           this.check = true; 
         } else {
+          this.error('Please fill in all fields!');
           this.check = false; 
         }
         break; 

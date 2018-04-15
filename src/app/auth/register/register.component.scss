@@ -4,8 +4,12 @@ form {
     margin: auto;
     margin-top: 40px;
     width: 100%;
-    height: 375px; 
-    overflow-y: scroll;
+    height: 380px; 
+    overflow-y: none;
+}
+
+form.ng-enter {
+    animation: slidenRight 100s; 
 }
 
 .h-group {
@@ -65,3 +69,6 @@ form {
     height: 1px;
     display: none;
 }
+
+
+

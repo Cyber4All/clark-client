@@ -14,6 +14,7 @@ import { NotificationModule } from './shared/notifications';
 import { ModalModule } from './shared/modals';
 import { AuthService } from './core/auth.service';
 
+
 @NgModule({
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper {{ orientation }}">
   <div class="content-box" [ngClass]="{'failed': registerFailure }">
     <div class="top">
       <div class="error"> {{ registerFailure || '' }} </div>
@@ -48,7 +48,8 @@
         </div>
       </div>
       <div class="bottom-link" routerLink="../login">
-        Already have an account? <span>Sign in!</span>
+        Already have an account? 
+        <span>Sign in!</span>
       </div>
     </div>
   </div>
