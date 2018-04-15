@@ -6,7 +6,6 @@ import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
 import { trigger,style,transition,animate,keyframes,query,stagger } from '@angular/animations';
 
-
 @Component({
   selector: 'clark-register',
   templateUrl: './register.component.html',
@@ -49,12 +48,6 @@ import { trigger,style,transition,animate,keyframes,query,stagger } from '@angul
 
 export class RegisterComponent implements OnInit {
 
-  fall: boolean; 
-  slide: boolean; 
-  loading: boolean = false;
-  verified: boolean = false;
-  check: boolean = true; 
-
   regInfo = {
     firstname: '',
     lastname: '',
@@ -84,7 +77,11 @@ export class RegisterComponent implements OnInit {
   size: number = 200; 
   default: string; 
   page: number = 1; 
-  orientation: string = null; 
+  fall: boolean;
+  slide: boolean;
+  loading: boolean = false;
+  verified: boolean = false;
+  check: boolean; 
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
 
@@ -183,9 +180,11 @@ export class RegisterComponent implements OnInit {
 
   // navigation 
   next():number{
-    this.slide = !this.slide; 
-     
-    //this.pageValidate(this.page); 
+
+    this.pageValidate(this.page); 
+    if(this.check) {
+      this.slide = !this.slide; 
+    }
     if (this.page == 1 && this.check) {
       this.page = 2; 
       return this.page; 
