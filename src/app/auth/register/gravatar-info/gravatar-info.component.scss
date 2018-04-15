@@ -6,18 +6,6 @@ form {
     overflow-y: hidden;
 }
 
-.h-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 15px;
-
-    .input {
-        width: 48%;
-        margin-bottom: 0px;
-    }
-}
-
 .gravatar-header {
     text-align: left; 
     font-size: 15px; 
