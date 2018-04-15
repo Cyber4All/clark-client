@@ -17,13 +17,13 @@ import { trigger,style,transition,animate,keyframes,query,stagger } from '@angul
         transition(
           '* => *', [
             style({transform: 'translateX(100%)', opacity: 0}),
-            animate('500ms', style({transform: 'translateX(0)', opacity: 1}))
+            animate('400ms', style({transform: 'translateX(0)', opacity: 1}))
           ]
         ),
         transition(
           '* => *', [
             style({transform: 'translateX(0)', 'opacity': 1}),
-            animate('500ms', style({transform: 'translateX(-100%)', opacity: 0}))
+            animate('400ms', style({transform: 'translateX(-100%)', opacity: 0}))
           ]
         )
       ]
