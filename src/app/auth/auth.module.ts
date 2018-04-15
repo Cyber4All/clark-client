@@ -7,7 +7,6 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 
 // This module
 import { CookieModule } from 'ngx-cookie';
-
 import { LoginComponent } from './login/login.component';
 import { AuthRoutingModule } from './auth.routing';
 import { RegisterComponent } from './register/register.component';
@@ -42,7 +41,7 @@ import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.co
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule, 
   ],
   providers: [CanResetPasswordGuard, AuthResolve],
 })

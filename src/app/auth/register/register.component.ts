@@ -3,20 +3,54 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import * as md5 from 'md5';
-import { Type } from '@angular/compiler/src/core';
+import { trigger,style,transition,animate,keyframes,query,stagger } from '@angular/animations';
 
-type orientation = ("prev" | "next" | "none"); 
 
 @Component({
   selector: 'clark-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'], 
+  animations: [
+    trigger(
+      'slideInRight',
+      [
+        transition(
+          '* => *', [
+            style({transform: 'translateX(100%)', opacity: 0}),
+            animate('500ms', style({transform: 'translateX(0)', opacity: 1}))
+          ]
+        ),
+        transition(
+          '* => *', [
+            style({transform: 'translateX(0)', 'opacity': 1}),
+            animate('500ms', style({transform: 'translateX(-100%)', opacity: 0}))
+          ]
+        )
+      ]
+    ), 
+
+    trigger(
+      'fallFromTop', 
+      [
+        transition('* => *', [
+        query(':enter', style({ opacity: 0 }), { optional: true }), 
+
+        query(':enter', stagger('300ms', [
+          animate('.6s ease-in', keyframes([
+            style({opacity: 0, transform: 'translateY(-75%)', offset: 0}),
+            style({opacity: .5, transform: 'translateY(35px)',  offset: 0.3}),
+            style({opacity: 1, transform: 'translateY(0)',     offset: 1.0}),
+          ]))]), {optional: true})
+      ])
+    ])
+  ]
 })
 
 export class RegisterComponent implements OnInit {
 
+  fall: boolean; 
+  slide: boolean; 
   loading: boolean = false;
   verified: boolean = false;
   check: boolean = true; 
@@ -149,7 +183,8 @@ export class RegisterComponent implements OnInit {
 
   // navigation 
   next():number{
-    //this.orientation = "forward"; 
+    this.slide = !this.slide; 
+     
     //this.pageValidate(this.page); 
     if (this.page == 1 && this.check) {
       this.page = 2; 
@@ -162,7 +197,8 @@ export class RegisterComponent implements OnInit {
 
   // navigation 
   back():number{
-    //this.orientation = "backward"; 
+     
+    this.fall = !this.fall; 
     if (this.page == 2) {
       this.page = 1; 
       return this.page; 
