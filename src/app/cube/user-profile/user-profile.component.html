@@ -2,7 +2,7 @@
 <div class="banner">
   <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
 </div>
-<img [src]="getGravatarImage()" class = "img">
+<img [src]="gravatarImage" class = "img">
 <div class="container">
   <div class="container-inner">
     <div class="edit" *ngIf="!editContent && self" (click)="editContent = !editContent" ><i class="far fa-pencil"></i> Edit Profile</div>

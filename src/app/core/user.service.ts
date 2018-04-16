@@ -4,6 +4,7 @@ import { USER_ROUTES } from '@env/route';
 import { AuthService } from 'app/core/auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@cyber4all/clark-entity';
+import * as md5 from 'md5';
 
 @Injectable()
 export class UserService {
@@ -36,6 +37,13 @@ export class UserService {
       const arr = val.json();
       return arr.map(member => User.instantiate(member));
     });
+  }
+
+  getGravatarImage(email, imgSize): string {
+    let defaultIcon = "identicon";
+    // r=pg checks the rating of the Gravatar image 
+    return 'http://www.gravatar.com/avatar/' + md5(email) + '?s=' + imgSize +
+      '?r=pg&d=' + defaultIcon;
   }
 
   getUser(username: string): Promise<User> {

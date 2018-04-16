@@ -1,8 +1,9 @@
+import { LearningObjectService } from './../../learning-object.service';
+import { UserService } from './../../../core/user.service';
 import { Http } from '@angular/http';
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from './../../../../environments/route';
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { User, LearningObject } from '@cyber4all/clark-entity';
-import * as md5 from 'md5';
 
 @Component({
   selector: 'user-card',
@@ -12,36 +13,17 @@ import * as md5 from 'md5';
 export class UserCardComponent implements OnInit, OnChanges {
   @Input() user: User
   objects: Array<LearningObject>;
-  default: String;
+  icon:string;
   imgSize: number;
-  constructor(private http: Http) { }
+  constructor(private http: Http, private learningObjectService: LearningObjectService, private userService: UserService) { }
   ngOnInit() {
-    console.log(this.user)
-    this.default = 'identicon';
     this.imgSize = 100;
+    this.icon = this.userService.getGravatarImage(this.user.email, this.imgSize);
   }
   ngOnChanges(changes: SimpleChanges) {
-    this.getUsersLearningObjects();
+    this.fetchLearningObjects();
   }
-  getGravatarImage(): string {
-    // r=pg checks the rating of the Gravatar image 
-    return 'http://www.gravatar.com/avatar/' + md5(this.user.email) + '?s=' + this.imgSize +
-      '?r=pg&d=' + this.default;
+  async fetchLearningObjects() {
+    this.objects = await this.learningObjectService.getUsersLearningObjects(this.user.username);
   }
-  async getUsersLearningObjects(): Promise<void> {
-    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(
-        this.user.username
-      );
-
-    return this.http
-      .get(route, { withCredentials: true })
-      .toPromise()
-      .then(val => {
-        this.objects = <Array<LearningObject>>val
-            .json()
-            .map(l => LearningObject.instantiate(l));
-      });
-  }
-  
-
 }
