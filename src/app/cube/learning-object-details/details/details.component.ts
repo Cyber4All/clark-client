@@ -176,16 +176,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  get goals(): Array<string> {
-    return this.learningObject.goals.map(
-      m => m.text.charAt(0).toUpperCase() + m.text.substring(1)
-    );
-  }
-
-  get date(): Date {
-    return new Date(parseInt(this.learningObject.date, 2));
-  }
-
   async fetchLearningObject() {
     try {
       this.learningObject = await this.learningObjectService.getLearningObject(
@@ -214,8 +204,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async clearCart() {
-    if (await this.cartService.clearCart()) {
-    } else {
+    try {
+      await this.cartService.clearCart();
+    } catch (e) {
+      console.log(e);
     }
   }
 
