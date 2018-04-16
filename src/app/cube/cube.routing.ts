@@ -30,7 +30,7 @@ const cube_routes: Routes = [
       { path: 'c/:name', component: CollectionComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {
-        path: 'browse/:query', component: RouterComponent, data: { breadcrumb: 'Browse' },
+        path: 'browse/:query', component: RouterComponent, data: { breadcrumb: 'Browse', blockForCrumbs: true },
         children: [{ path: '', component: BrowseComponent }, detailRoute]
       },
       {
