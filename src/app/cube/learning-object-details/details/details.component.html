@@ -23,7 +23,10 @@
     </div>
     <div class="sidebar">
       <div class="inner">
-        <div [ngClass]="{'disabled': !auth.user}" class="button good" (click)="addToCart(true)">Download Now</div>
+        <div [ngClass]="{'disabled': !auth.user || !canDownload}" class="button good" (click)="addToCart(true)">
+          <span *ngIf="canDownload">Download Now</span>
+          <span *ngIf="!canDownload">Not available for download</span>
+        </div>
         <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">{{ saved ? 'Saved to your library!' : 'Add to Library' }}</div>
         <ng-container *ngIf="!auth.user">
           <div class="login-msg">Please
