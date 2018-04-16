@@ -5,7 +5,7 @@
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
         <div class="author">Created by
-          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name}}</span>, updated {{ date | date:'shortDate' }}</div>
+          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
         <div class="type">{{ learningObject.length }}</div>
       </div>
     </div>
