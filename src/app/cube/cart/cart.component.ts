@@ -12,7 +12,6 @@ import { environment } from '@env/environment';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  private whitelist: string[] = [];
   cartItems: LearningObject[] = [];
 
   constructor(
@@ -23,16 +22,19 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.loadCart();
-
-    if (!environment.production) {
-      this.fetchWhitelist();
-    }
   }
 
   async loadCart() {
     try {
       this.cartItems = await this.cartService.getCart();
-    } catch (e) {}
+
+      // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+      if (!environment.production) {
+        this.checkWhitelist();
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async download() {
@@ -72,24 +74,19 @@ export class CartComponent implements OnInit {
   }
 
   // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
-  private async fetchWhitelist() {
+  private async checkWhitelist() {
     try {
       const response = await fetch(environment.whiteListURL);
       const object = await response.json();
-      this.whitelist = object.whitelist;
+      const whitelist = object.whitelist;
+      this.cartItems.map(lo => {
+        if (whitelist.includes(lo.author.username)) {
+          lo.canDownload = true;
+        }
+        return lo;
+      });
     } catch (e) {
       console.log(e);
     }
-  }
-
-  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
-  canDownload(author): boolean {
-    if (!environment.production) {
-      return true;
-    }
-    if (this.whitelist.includes(author)) {
-      return true;
-    }
-    return false;
   }
 }
