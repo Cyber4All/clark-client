@@ -1,0 +1,20 @@
+<div class="user-card" [routerLink]="['/users', user._username]">
+  <div class="image">
+    <img [src]="getGravatarImage()" class="img">
+  </div>
+  <div class="user-content">
+    <div class="title">{{user.name}}</div>
+    <div class="details">
+      <div class="username">
+        Username: {{ user.username }}
+      </div>
+      <div class="email">
+        Email: {{user.email}}
+      </div>
+      <div *ngIf = "objects" class="learning-objects">
+        Number of Learning Objects: {{objects.length}}
+      </div>
+    </div>
+
+  </div>
+</div>

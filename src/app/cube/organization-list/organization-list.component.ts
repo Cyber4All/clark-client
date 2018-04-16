@@ -1,3 +1,4 @@
+import { User } from '@cyber4all/clark-entity';
 import { Http } from '@angular/http';
 import { USER_ROUTES } from '@env/route';
 import { ActivatedRoute } from '@angular/router';
@@ -10,20 +11,30 @@ import { UserService } from '../../core/user.service';
   styleUrls: ['./organization-list.component.scss']
 })
 export class OrganizationListComponent implements OnInit {
-
   organization;
-  members;
+  members: Array<User>;
   myStyle;
   particleParams;
   width = 100;
   height = 100;
+
   constructor(private route: ActivatedRoute, private http: Http, private userService: UserService) { }
 
   ngOnInit() {
     this.initParticles();
     this.route.params.subscribe(params => {
       params['query'] ? this.organization = params['query'] : this.organization = '';
-      this.members = this.userService.getOrganizationMembers(this.organization);
+    });
+    this.fetchMembers();
+  }
+  
+  async fetchMembers() {
+    this.members = await this.userService.getOrganizationMembers(this.organization);
+    //sorts by last name
+    this.members.sort(function (a, b) {
+      let first = a.name.substr(a.name.indexOf(" ") + 1).toUpperCase();
+      let second = b.name.substr(b.name.indexOf(" ") + 1).toUpperCase();
+      return (first < second) ? -1 : (first > second) ? 1 : 0;
     });
   }
 
