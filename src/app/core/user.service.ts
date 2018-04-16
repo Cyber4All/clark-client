@@ -30,10 +30,11 @@ export class UserService {
     });
   }
   
-  getOrganizationMembers(organization: string): Promise<void> {
+  getOrganizationMembers(organization: string): Promise<User[]> {
     let route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http.get(route).toPromise().then(val => {
-      return val.json();
+      const arr = val.json();
+      return arr.map(member => User.instantiate(member));
     });
   }
 
