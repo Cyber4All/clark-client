@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
 import { Observable } from 'rxjs/Observable';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'cube-cart',
@@ -11,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+  private whitelist: string[] = [];
   cartItems: LearningObject[] = [];
 
   constructor(
@@ -21,14 +23,16 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.loadCart();
+
+    if (!environment.production) {
+      this.fetchWhitelist();
+    }
   }
 
   async loadCart() {
     try {
       this.cartItems = await this.cartService.getCart();
-    } catch (e) {
-      
-    }
+    } catch (e) {}
   }
 
   async download() {
@@ -41,7 +45,6 @@ export class CartComponent implements OnInit {
     if (await this.cartService.clearCart()) {
       this.cartItems = [];
     } else {
-      
     }
   }
 
@@ -54,9 +57,7 @@ export class CartComponent implements OnInit {
         author,
         learningObjectName
       );
-    } catch (e) {
-      
-    }
+    } catch (e) {}
   }
 
   async downloadObject(event, object) {
@@ -68,5 +69,27 @@ export class CartComponent implements OnInit {
 
   goToItem(object) {
     this.router.navigate(['/details/', object._author._username, object._name]);
+  }
+
+  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  private async fetchWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      this.whitelist = object.whitelist;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  canDownload(author): boolean {
+    if (!environment.production) {
+      return true;
+    }
+    if (this.whitelist.includes(author)) {
+      return true;
+    }
+    return false;
   }
 }
