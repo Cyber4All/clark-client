@@ -91,8 +91,6 @@ export class BreadcrumbComponent implements OnInit {
       // append route URL to URL
       url += `/${routeURL}`;
 
-      console.log('DATA', child.snapshot.data);
-
       // add breadcrumb
       const breadcrumb: Breadcrumb = {
         label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
