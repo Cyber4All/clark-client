@@ -535,11 +535,12 @@ body {
       font-size: 16px;
     }
 
-    .btn-group {
-    }
-
     &.title-bad .title-text {
       color: $error-red;
+    }
+
+    &.title-good .title-text {
+      color: $green;
     }
   }
 }
