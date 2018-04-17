@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, NavigationStart } from '@angular/router';
 import 'rxjs/add/operator/filter';
 
 interface Breadcrumb {
@@ -26,16 +26,18 @@ export class BreadcrumbComponent implements OnInit {
   isHome = true;
   public breadcrumbs: Breadcrumb[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) { }
-
-  ngOnInit() {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     // subscribe to the NavigationEnd event
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
-      // set breadcrumbs
-      const root: ActivatedRoute = this.activatedRoute.root;
-      this.breadcrumbs = this.getBreadcrumbs(root);
-      this.breadcrumbs = this.cleanBreadcrumbs(this.breadcrumbs);
+        // set breadcrumbs
+        const root: ActivatedRoute = this.activatedRoute.root;
+        this.breadcrumbs = this.getBreadcrumbs(root);
+        this.breadcrumbs = this.cleanBreadcrumbs(this.breadcrumbs);
     });
+  }
+
+  ngOnInit() {
+    
   }
   /**
    * Strips off duplicate routes and returns array of breadcrumbs

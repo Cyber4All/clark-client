@@ -34,6 +34,10 @@ import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
+import { OrganizationListComponent } from './organization-list/organization-list.component';
+import { UserCardComponent } from './organization-list/user-card/user-card.component';
+import { UserInformationComponent } from './user-profile/user-information/user-information.component';
+import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
 
 // Guards
 import { AuthGuard } from '../core/auth-guard.service';
@@ -50,11 +54,8 @@ import {
   NotificationComponent,
   NotificationModule
 } from '../shared/notifications';
-import { UserInformationComponent } from './user-profile/user-information/user-information.component';
-import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
 import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
-import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { DetailsModule } from './learning-object-details/details/details.module';
 
 /**
@@ -72,7 +73,8 @@ import { DetailsModule } from './learning-object-details/details/details.module'
     UserPreferencesComponent,
     UserInformationComponent,
     UserEditInformationComponent,
-    OrganizationListComponent
+    OrganizationListComponent,
+    UserCardComponent
   ],
   imports: [
     // Angular imports

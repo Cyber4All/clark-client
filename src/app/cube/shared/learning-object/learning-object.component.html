@@ -13,8 +13,7 @@
         Updated {{ date | date:'mediumDate' }}
       </div>
     </div>
-    <div class="goals">
-      {{ goals() }}
+    <div class="goals" [innerHtml]="goals()">
     </div>
   </div>
 </div>

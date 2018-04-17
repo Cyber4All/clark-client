@@ -12,6 +12,7 @@ import { CartService } from '../../core/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
 import { NgClass } from '@angular/common';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -31,6 +32,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
 
+  canDownload = false;
+
   constructor(
     private learningObjectService: LearningObjectService,
     private cartService: CartV2Service,
@@ -46,6 +49,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
 
     this.fetchLearningObject();
+
+    // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+    if (environment.production) {
+      this.checkWhitelist();
+    } else {
+      this.canDownload = true;
+    }
 
     this.returnUrl =
       '/browse/details/' +
@@ -66,50 +76,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.particleParams = {
       particles: {
-        number: {
-          value: 180,
-          density: {
-            enable: true,
-            value_area: 900
-          }
-        },
-        color: {
-          value: '#ffffff'
-        },
+        number: { value: 180, density: { enable: true, value_area: 900 } },
+        color: { value: '#ffffff' },
         shape: {
           type: 'circle',
-          stroke: {
-            width: 0,
-            color: '#000000'
-          },
-          polygon: {
-            nb_sides: 5
-          },
-          image: {
-            src: 'img/github.svg',
-            width: 100,
-            height: 100
-          }
+          stroke: { width: 0, color: '#000000' },
+          polygon: { nb_sides: 5 },
+          image: { src: 'img/github.svg', width: 100, height: 100 }
         },
         opacity: {
           value: 0.5,
           random: false,
-          anim: {
-            enable: false,
-            speed: 1,
-            opacity_min: 0.1,
-            sync: false
-          }
+          anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false }
         },
         size: {
           value: 3,
           random: true,
-          anim: {
-            enable: false,
-            speed: 40,
-            size_min: 0.1,
-            sync: false
-          }
+          anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
         },
         line_linked: {
           enable: true,
@@ -126,33 +109,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
           straight: false,
           out_mode: 'out',
           bounce: false,
-          attract: {
-            enable: false,
-            rotateX: 600,
-            rotateY: 1200
-          }
+          attract: { enable: false, rotateX: 600, rotateY: 1200 }
         }
       },
       interactivity: {
         detect_on: 'canvas',
         events: {
-          onhover: {
-            enable: false,
-            mode: 'repulse'
-          },
-          onclick: {
-            enable: false,
-            mode: 'push'
-          },
+          onhover: { enable: false, mode: 'repulse' },
+          onclick: { enable: false, mode: 'push' },
           resize: true
         },
         modes: {
-          grab: {
-            distance: 400,
-            line_linked: {
-              opacity: 1
-            }
-          },
+          grab: { distance: 400, line_linked: { opacity: 1 } },
           bubble: {
             distance: 400,
             size: 40,
@@ -160,30 +128,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
             opacity: 8,
             speed: 3
           },
-          repulse: {
-            distance: 200,
-            duration: 0.4
-          },
-          push: {
-            particles_nb: 4
-          },
-          remove: {
-            particles_nb: 2
-          }
+          repulse: { distance: 200, duration: 0.4 },
+          push: { particles_nb: 4 },
+          remove: { particles_nb: 2 }
         }
       },
       retina_detect: true
     };
   }
 
-  get goals(): Array<string> {
-    return this.learningObject.goals.map(
-      m => m.text.charAt(0).toUpperCase() + m.text.substring(1)
-    );
-  }
-
-  get date(): Date {
-    return new Date(parseInt(this.learningObject.date, 2));
+  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  private async checkWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      const whitelist: string[] = object.whitelist;
+      const username = this.auth.username;
+      if (whitelist.includes(username)) {
+        this.canDownload = true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async fetchLearningObject() {
@@ -214,8 +180,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async clearCart() {
-    if (await this.cartService.clearCart()) {
-    } else {
+    try {
+      await this.cartService.clearCart();
+    } catch (e) {
+      console.log(e);
     }
   }
 

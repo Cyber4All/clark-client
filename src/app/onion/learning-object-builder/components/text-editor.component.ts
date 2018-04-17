@@ -22,11 +22,12 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
   `,
   styles: ['#cke_bottom_detail, .cke_bottom { display: none; }']
 })
-export class TextEditorComponent implements OnInit, OnChanges{
+export class TextEditorComponent implements OnInit, OnChanges {
   @Output() textOutput: EventEmitter<String> = new EventEmitter<String>();
   @Input() savedContent: String;
   @Input() editorPlaceholder: String;
   editorContent: String;
+  counter: any;
   buttonText: String;
 
   showBox: Boolean = true;
@@ -39,15 +40,27 @@ export class TextEditorComponent implements OnInit, OnChanges{
     this.editorContent = this.savedContent;
   }
   ngOnInit() {
+    this.counter = {
+      showParagraphs: false,
+      showWordCount: false,
+      showCharCount: true,
+      countSpacesAsChars: false,
+      countHTML: false,
+      maxWordCount: -1,
+      maxCharCount: 1000,
+    };
+
     this.config = {
       uiColor: '',
-      extraPlugins: 'confighelper',
+      extraPlugins: 'confighelper,wordcount,notification',
       placeholder: this.editorPlaceholder,
       removePlugins: 'elementspath,wsc,scayt',
-      autoGrow_onStartup: true
+      autoGrow_onStartup: true,
+      entities: false,
+      wordcount: this.counter
     };
     if (this.savedContent) {
-      //this.editorContent = this.savedContent;
+      // this.editorContent = this.savedContent;
       this.buttonText = 'Show Content';
       // this.toggleBox();
     } else {
@@ -60,6 +73,7 @@ export class TextEditorComponent implements OnInit, OnChanges{
   onBlur(event) {
   }
   onChange(editorContent) {
+    console.log(this.editorContent);
     this.textOutput.emit(this.editorContent);
   }
 

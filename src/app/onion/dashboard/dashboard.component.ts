@@ -8,6 +8,9 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from 'app/core/auth.service';
+import { encodeURIForRouter } from '../../shared/pipes/encoded-url.pipe';
+
+
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
@@ -55,7 +58,7 @@ export class DashboardComponent implements OnInit {
   edit() {
     this.router.navigate([
       '/onion/learning-object-builder',
-      this.focusedLearningObject.name
+      encodeURIForRouter(this.focusedLearningObject.name)
     ]);
   }
 
@@ -279,7 +282,7 @@ export class DashboardComponent implements OnInit {
             break;
           case 'upload':
             this.router.navigate([
-              '/onion/content/upload/' + this.focusedLearningObject.name
+              '/onion/content/upload/' + encodeURIForRouter(this.focusedLearningObject.name)
             ]);
             break;
           case 'toggle published':
@@ -288,7 +291,7 @@ export class DashboardComponent implements OnInit {
           case 'view details':
             this.router.navigate([
               `/details/${this.focusedLearningObject.author.username}/${
-                this.focusedLearningObject.name
+                encodeURIForRouter(this.focusedLearningObject.name)
               }`
             ]);
             break;

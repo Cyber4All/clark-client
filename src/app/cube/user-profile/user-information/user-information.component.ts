@@ -1,3 +1,4 @@
+import { UserService } from './../../../core/user.service';
 import { Router } from '@angular/router';
 import {
   USER_ROUTES,
@@ -28,7 +29,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
   objects: LearningObject[];
 
   constructor(
-    private service: LearningObjectService,
+    private learningObjectService: LearningObjectService,
     private auth: AuthService,
     private http: Http,
     private router: Router,
@@ -47,25 +48,8 @@ export class UserInformationComponent implements OnInit, OnChanges {
     this.router.navigate(['/organization', { query: this.user.organization }]);
   }
 
-  async getUsersLearningObjects(): Promise<void> {
-    let route = this.self
-      ? USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.user.username)
-      : PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(
-          this.user.username
-        );
-
-    return this.http
-      .get(route, { withCredentials: true })
-      .toPromise()
-      .then(val => {
-        this.objects = this.self
-          ? <Array<LearningObject>>val
-              .json()
-              .map(l => LearningObject.instantiate(l))
-          : <Array<LearningObject>>val
-              .json()
-              .map(l => LearningObject.instantiate(l));
-      });
+  async getUsersLearningObjects(){
+    this.objects = await this.learningObjectService.getUsersLearningObjects(this.user.username);
   }
   /**
    * Sends email verification email
