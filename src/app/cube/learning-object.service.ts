@@ -3,7 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { LearningObject} from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 
 import * as querystring from 'querystring';
@@ -89,6 +89,20 @@ export class LearningObjectService {
       .toPromise()
       .then(res => {
         return LearningObject.instantiate(res.json());
+      });
+  }
+  getUsersLearningObjects(username: string ): Promise<LearningObject[]> {
+    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(
+      username
+    );
+
+    return this.http
+      .get(route, { withCredentials: true })
+      .toPromise()
+      .then(val => {
+        return val
+          .json()
+          .map(l => LearningObject.instantiate(l));
       });
   }
 }

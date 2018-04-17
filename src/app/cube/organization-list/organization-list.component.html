@@ -6,5 +6,8 @@
     </div>
   </div>
 </div>
-<section class="collection-container">
+<section class="list-container">
+  <div *ngIf="members" class="list-content">
+    <user-card *ngFor="let user of members" [user]="user"></user-card>
+  </div>
 </section>
