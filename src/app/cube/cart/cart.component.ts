@@ -5,6 +5,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '@env/environment';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'cube-cart',
@@ -13,25 +14,28 @@ import { environment } from '@env/environment';
 })
 export class CartComponent implements OnInit {
   cartItems: LearningObject[] = [];
+  canDownload = false;
 
   constructor(
     public cartService: CartV2Service,
     private learningObjectService: LearningObjectService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.loadCart();
+    // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+    if (environment.production) {
+      this.checkWhitelist();
+    } else {
+      this.canDownload = true;
+    }
   }
 
   async loadCart() {
     try {
       this.cartItems = await this.cartService.getCart();
-
-      // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
-      if (environment.production) {
-        this.checkWhitelist();
-      }
     } catch (e) {
       console.log(e);
     }
@@ -78,13 +82,11 @@ export class CartComponent implements OnInit {
     try {
       const response = await fetch(environment.whiteListURL);
       const object = await response.json();
-      const whitelist = object.whitelist;
-      this.cartItems.map(lo => {
-        if (whitelist.includes(lo.author.username)) {
-          lo.canDownload = true;
-        }
-        return lo;
-      });
+      const whitelist: string[] = object.whitelist;
+      const username = this.authService.username;
+      if (whitelist.includes(username)) {
+        this.canDownload = true;
+      }
     } catch (e) {
       console.log(e);
     }

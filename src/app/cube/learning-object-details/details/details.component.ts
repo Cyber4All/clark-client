@@ -50,6 +50,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.fetchLearningObject();
 
+    // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+    if (environment.production) {
+      this.checkWhitelist();
+    } else {
+      this.canDownload = true;
+    }
+
     this.returnUrl =
       '/browse/details/' +
       this.route.snapshot.params['username'] +
@@ -69,50 +76,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.particleParams = {
       particles: {
-        number: {
-          value: 180,
-          density: {
-            enable: true,
-            value_area: 900
-          }
-        },
-        color: {
-          value: '#ffffff'
-        },
+        number: { value: 180, density: { enable: true, value_area: 900 } },
+        color: { value: '#ffffff' },
         shape: {
           type: 'circle',
-          stroke: {
-            width: 0,
-            color: '#000000'
-          },
-          polygon: {
-            nb_sides: 5
-          },
-          image: {
-            src: 'img/github.svg',
-            width: 100,
-            height: 100
-          }
+          stroke: { width: 0, color: '#000000' },
+          polygon: { nb_sides: 5 },
+          image: { src: 'img/github.svg', width: 100, height: 100 }
         },
         opacity: {
           value: 0.5,
           random: false,
-          anim: {
-            enable: false,
-            speed: 1,
-            opacity_min: 0.1,
-            sync: false
-          }
+          anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false }
         },
         size: {
           value: 3,
           random: true,
-          anim: {
-            enable: false,
-            speed: 40,
-            size_min: 0.1,
-            sync: false
-          }
+          anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
         },
         line_linked: {
           enable: true,
@@ -129,33 +109,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
           straight: false,
           out_mode: 'out',
           bounce: false,
-          attract: {
-            enable: false,
-            rotateX: 600,
-            rotateY: 1200
-          }
+          attract: { enable: false, rotateX: 600, rotateY: 1200 }
         }
       },
       interactivity: {
         detect_on: 'canvas',
         events: {
-          onhover: {
-            enable: false,
-            mode: 'repulse'
-          },
-          onclick: {
-            enable: false,
-            mode: 'push'
-          },
+          onhover: { enable: false, mode: 'repulse' },
+          onclick: { enable: false, mode: 'push' },
           resize: true
         },
         modes: {
-          grab: {
-            distance: 400,
-            line_linked: {
-              opacity: 1
-            }
-          },
+          grab: { distance: 400, line_linked: { opacity: 1 } },
           bubble: {
             distance: 400,
             size: 40,
@@ -163,16 +128,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
             opacity: 8,
             speed: 3
           },
-          repulse: {
-            distance: 200,
-            duration: 0.4
-          },
-          push: {
-            particles_nb: 4
-          },
-          remove: {
-            particles_nb: 2
-          }
+          repulse: { distance: 200, duration: 0.4 },
+          push: { particles_nb: 4 },
+          remove: { particles_nb: 2 }
         }
       },
       retina_detect: true
@@ -185,7 +143,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       const response = await fetch(environment.whiteListURL);
       const object = await response.json();
       const whitelist: string[] = object.whitelist;
-      if (whitelist.includes(this.learningObject.author.username)) {
+      const username = this.auth.username;
+      if (whitelist.includes(username)) {
         this.canDownload = true;
       }
     } catch (e) {
@@ -199,13 +158,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.author,
         this.learningObjectName
       );
-
-      // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
-      if (environment.production) {
-        this.checkWhitelist();
-      } else {
-        this.canDownload = true;
-      }
     } catch (e) {
       console.log(e);
     }
