@@ -29,7 +29,7 @@ export class CartComponent implements OnInit {
       this.cartItems = await this.cartService.getCart();
 
       // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
-      if (!environment.production) {
+      if (environment.production) {
         this.checkWhitelist();
       }
     } catch (e) {
