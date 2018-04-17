@@ -5,7 +5,7 @@
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
         <div class="author">Created by
-          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name}}</span>, updated {{ date | date:'shortDate' }}</div>
+          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
         <div class="type">{{ learningObject.length }}</div>
       </div>
     </div>
@@ -23,7 +23,10 @@
     </div>
     <div class="sidebar">
       <div class="inner">
-        <div [ngClass]="{'disabled': !auth.user}" class="button good" (click)="addToCart(true)">Download Now</div>
+        <div [ngClass]="{'disabled': !auth.user || !canDownload}" class="button good" (click)="addToCart(true)">
+          <span *ngIf="canDownload">Download Now</span>
+          <span *ngIf="!canDownload">Not available for download</span>
+        </div>
         <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">{{ saved ? 'Saved to your library!' : 'Add to Library' }}</div>
         <ng-container *ngIf="!auth.user">
           <div class="login-msg">Please

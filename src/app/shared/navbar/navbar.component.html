@@ -66,13 +66,16 @@
       </div>
     </div>
   </div>
+
   <div class="slideout-underlay" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen || searchDown}" (click)="menuOpen = false; searchDown = false;"></div>
+ 
   <div class="search-slidedown" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': searchDown}">
     <form (submit)="performSearch(mobileSearch)">
       <input #mobileSearch name="mobileSearch" placeholder="Search">
     </form>
     <div class="button icon-only good" (click)="performSearch(mobileSearch)"><i class="far fa-search"></i></div>
   </div>
+  
   <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">
     <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">
       <ng-template [ngIf]="loggedin" [ngIfElse]="noUserGreeting">

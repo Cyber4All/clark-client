@@ -12,6 +12,7 @@ import { CartService } from '../../core/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
 import { NgClass } from '@angular/common';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -30,6 +31,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   myStyle: object = {};
   returnUrl: string;
   saved = false;
+
+  canDownload = false;
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -176,14 +179,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  get goals(): Array<string> {
-    return this.learningObject.goals.map(
-      m => m.text.charAt(0).toUpperCase() + m.text.substring(1)
-    );
-  }
-
-  get date(): Date {
-    return new Date(parseInt(this.learningObject.date, 2));
+  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  private async checkWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      const whitelist: string[] = object.whitelist;
+      if (whitelist.includes(this.learningObject.author.username)) {
+        this.canDownload = true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async fetchLearningObject() {
@@ -192,6 +199,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.author,
         this.learningObjectName
       );
+
+      // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+      if (environment.production) {
+        this.checkWhitelist();
+      } else {
+        this.canDownload = true;
+      }
     } catch (e) {
       console.log(e);
     }
@@ -214,8 +228,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async clearCart() {
-    if (await this.cartService.clearCart()) {
-    } else {
+    try {
+      await this.cartService.clearCart();
+    } catch (e) {
+      console.log(e);
     }
   }
 
