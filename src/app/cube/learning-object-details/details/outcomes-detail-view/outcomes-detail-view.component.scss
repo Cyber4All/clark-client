@@ -12,15 +12,15 @@
   .outcomes {
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 2px;
-    background: desaturate(lighten($blue-accent, 55), 20);
+    background: #fff;
     color: $dark-text;
     .header {
       display: flex;
       flex-flow: row nowrap;
-      background-color: rgb(236, 239, 242);
       align-items: center;
       width: 100%;
       border: none;
+      background: #fff;
       &:focus { outline: 0; }
       .title {
         flex-grow: 2;
@@ -40,11 +40,12 @@
       }
       &.clickable {
         &:hover {
-          background-color: darken(rgb(236, 239, 242), 5);
+          outline: 1px solid lighten($bright-blue, 15);
         }
       }
     }
     ul {
+      border-top: 1px solid lighten($bright-blue, 15);
       display: flex;
       flex-direction: column;
       flex-wrap: nowrap;
