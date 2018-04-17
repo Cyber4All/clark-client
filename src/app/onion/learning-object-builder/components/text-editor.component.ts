@@ -44,7 +44,8 @@ export class TextEditorComponent implements OnInit, OnChanges{
       extraPlugins: 'confighelper',
       placeholder: this.editorPlaceholder,
       removePlugins: 'elementspath,wsc,scayt',
-      autoGrow_onStartup: true
+      autoGrow_onStartup: true,
+      entities: false
     };
     if (this.savedContent) {
       //this.editorContent = this.savedContent;
@@ -60,6 +61,7 @@ export class TextEditorComponent implements OnInit, OnChanges{
   onBlur(event) {
   }
   onChange(editorContent) {
+    console.log(this.editorContent);
     this.textOutput.emit(this.editorContent);
   }
 
