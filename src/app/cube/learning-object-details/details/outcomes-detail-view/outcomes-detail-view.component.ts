@@ -16,7 +16,7 @@ import { Component, OnInit, Input } from '@angular/core';
         [ngClass]="{ 'clickable': o.mappings.length > 0 }"
       >
         <span class="title">{{ o.outcome }}</span>
-        <span class="mappings-count">({{ o.mappings.length }} Mapped Outcomes)</span>
+        <span class="mappings-count">({{ o.mappings.length }}&nbsp;Mapped&nbsp;Outcomes)</span>
       </button>
       <ul *ngIf="showMappings[i]">
         <div style="margin-top: 20px;"></div>

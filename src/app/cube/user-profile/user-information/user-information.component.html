@@ -1,7 +1,7 @@
 <div class="title">{{ user.name }}</div>
 <div class="info">
   <div class="organization">
-    {{ user.organization }}
+    <a [routerLink]="['/organization', user.organization]">{{ user.organization }}</a>
   </div>
   <div class="email">
     <a href="mailto: {{ user.email }}">{{ user.email }}</a>
