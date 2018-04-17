@@ -1,14 +1,14 @@
 @import '~_vars.scss';
 $sidebar-width: 350px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
-.collection-container {
+.list-container {
   max-width: $max-width;
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-  .collection-content {
+  .list-content {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -17,7 +17,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     padding: 0px;
     margin-left: -10px;
     margin-bottom: 30px;
-    learning-object-component {
+    user-card {
       width: calc(100% - 10px);
       margin-left: 10px;
       &:not(:last-child) {
@@ -73,19 +73,19 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 }
 
 @media only screen and (min-width: 1224px) {
-  .collection-container {
-    .collection-content {
-      learning-object-component {
-        width: calc(25% - 10px);
+  .list-container {
+    .list-content {
+      user-card {
+        width: calc(33% - 10px);
       }
     }
   }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1224px) {
-  .collection-container {
-    .collection-content {
-      learning-object-component {
+  .list-container {
+    .list-content {
+      user-card {
         width: calc(33% - 10px);
       }
     }
@@ -93,9 +93,9 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
-  .collection-container {
-    .collection-content {
-      learning-object-component {
+  .list-container {
+    .list-content {
+      user-card {
         width: calc(50% - 10px);
       }
     }
