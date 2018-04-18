@@ -26,6 +26,8 @@ import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { FileGridViewComponent } from './file-manager/file-grid-view/file-grid-view.component';
 import { FileListViewComponent } from './file-manager/file-list-view/file-list-view.component';
+import { SharedModule } from '../../../shared/shared.module';
+import { EncodeUriComponentPipe } from '../../../shared/pipes/encoded-url.pipe';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
@@ -37,7 +39,9 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     FileManagerComponent,
     UploadQueueComponent,
     FileGridViewComponent,
-    FileListViewComponent
+    FileListViewComponent,
+    // TODO: Remove import should be imported in shared
+    EncodeUriComponentPipe
   ],
   imports: [
     CommonModule,
