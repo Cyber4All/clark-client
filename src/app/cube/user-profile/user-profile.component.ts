@@ -17,17 +17,17 @@ import * as md5 from 'md5';
   styleUrls: ['./user-profile.component.scss']
 })
 
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
   user: User;
   subscription: ISubscription;
-  self: boolean = false;
+  self= false;
   myStyle;
   particleParams;
-  height: number = 100;
-  width: number = 100;
-  size: number = 200; 
-  gravatarImage: string; 
-  editContent: boolean = false;
+  height = 100;
+  width = 100;
+  size = 200;
+  gravatarImage: string;
+  editContent = false;
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -43,8 +43,8 @@ export class UserProfileComponent implements OnInit {
       this.user = val.user;
       this.self = this.user.username === this.auth.username;
     });
-    
-    this.gravatarImage = this.userService.getGravatarImage(this.user.email,this.size);
+
+    this.gravatarImage = this.userService.getGravatarImage(this.user.email, this.size);
 
     // particle config
     this.myStyle = {
@@ -170,10 +170,10 @@ export class UserProfileComponent implements OnInit {
     };
   }
 
-  ngOnDestroy() { 
-    this.subscription.unsubscribe(); 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
-  
+
   closeEdit(changed: boolean = false) {
     this.editContent = false;
     if (changed) {
