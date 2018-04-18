@@ -104,7 +104,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
-      if (!willUpload && this.isNew) {
+      if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
         await this.showPublishingDialog();
       }
       this.service
@@ -133,7 +133,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
-      if (!willUpload && this.isNew) {
+      if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
         await this.showPublishingDialog();
       }
       this.service
@@ -200,7 +200,7 @@ export class LearningObjectBuilderComponent implements OnInit {
         'PublishConfirmation',
         'Publish changes?',
         text,
-        'title-good',
+        '',
         'center',
         buttons
       )
