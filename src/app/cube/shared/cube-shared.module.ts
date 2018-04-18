@@ -21,7 +21,8 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
-import { EncodeUriComponentPipe } from './encoded-url.pipe';
+import { EncodeUriComponentPipe } from '../../shared/pipes/encoded-url.pipe';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -33,22 +34,22 @@ import { EncodeUriComponentPipe } from './encoded-url.pipe';
     VirtualScrollModule,
     CheckBoxModule,
     ClickOutsideModule,
+    // TODO: Push down to feature feature modules if not all need to use it
+    SharedModule
   ],
   exports: [
     FooterComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
     LearningObjectCardDirective,
-    EscapeHtmlPipe,
-    EncodeUriComponentPipe
+    EscapeHtmlPipe
   ],
   declarations: [
     FooterComponent,
     BreadcrumbComponent,
     LearningObjectListingComponent,
     LearningObjectCardDirective,
-    EscapeHtmlPipe,
-    EncodeUriComponentPipe
+    EscapeHtmlPipe
   ],
   providers: [ProfileGuard, UserResolver]
 })

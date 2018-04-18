@@ -36,7 +36,9 @@
       <div [ngClass]="{published: l.published, unpublished: !l.published}" class="row">
         <checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></checkbox>
         <div class="cells">
-          <div class="cell">{{l.name}}</div>
+          <div class="cell">
+            <a [routerLink]="['/onion/learning-object-builder', l.name | encodeURIComponent]" class="builder-link">{{l.name}}</a>
+          </div>
           <div class="cell">{{l.length | titlecase}}</div>
           <div class="cell">{{l.date | date:'medium'}}</div>
         </div>
