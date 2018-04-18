@@ -27,11 +27,11 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
 
   links: SidebarLink[] = [
     {
-      name: 'Basic Information',
+      name: '1. Basic Information',
       action: this.navigate,
     },
     {
-      name: 'Learning Outcomes',
+      name: '2. Learning Outcomes',
       action: this.navigate,
       children: [
         {
@@ -91,7 +91,7 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
   }
 
   buildOutcomes(outcomes, noNav = false) {
-    const linkEl = this.links.filter(l => l.name === 'Learning Outcomes')[0];
+    const linkEl = this.links.filter(l => l.name === '2. Learning Outcomes')[0];
     outcomes = outcomes.map((m: LearningOutcome, i: number) =>  ({ name: m.text && m.text !== '' ? m.outcome : 'Learning Outcome ' + (+i + 1), action: this.navigateChild }));
 
     linkEl.children = [...outcomes, linkEl.children[linkEl.children.length - 1]];
