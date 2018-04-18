@@ -75,6 +75,7 @@ export class DashboardComponent implements OnInit {
         'DeleteConfirmation',
         'Are you sure?',
         'You cannot undo this action!',
+        false,
         'title-bad',
         'center',
         [
