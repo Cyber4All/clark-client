@@ -39,6 +39,7 @@ export class ClarkComponent {
             'emailVerified',
             'Email Verified!',
             'Thank you for verifying your email! Now you can do awesome things like publish learning objects and upload materials!',
+            true,
             'title-good',
             'center',
             [new ModalListElement('Got it!', 'done', 'green')]

@@ -520,6 +520,13 @@ body {
     bottom: 0;
     position: relative;
 
+    .dialog-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+    }
+
     .title-text {
       color: $blue-accent;
       font-size: 20px;
