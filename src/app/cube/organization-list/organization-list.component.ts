@@ -13,10 +13,11 @@ import { UserService } from '../../core/user.service';
 export class OrganizationListComponent implements OnInit {
   organization;
   members: Array<User>;
-  myStyle;
-  particleParams;
   width = 100;
   height = 100;
+  myStyle;
+  particleParams;
+
 
   constructor(private route: ActivatedRoute, private http: Http, private userService: UserService) { }
 
@@ -27,13 +28,13 @@ export class OrganizationListComponent implements OnInit {
     });
     this.fetchMembers();
   }
-  
+
   async fetchMembers() {
     this.members = await this.userService.getOrganizationMembers(this.organization);
-    //sorts by last name
+    // sorts by last name
     this.members.sort(function (a, b) {
-      let first = a.name.substr(a.name.indexOf(" ") + 1).toUpperCase();
-      let second = b.name.substr(b.name.indexOf(" ") + 1).toUpperCase();
+      const first = a.name.substr(a.name.indexOf(' ') + 1).toUpperCase();
+      const second = b.name.substr(b.name.indexOf(' ') + 1).toUpperCase();
       return (first < second) ? -1 : (first > second) ? 1 : 0;
     });
   }
