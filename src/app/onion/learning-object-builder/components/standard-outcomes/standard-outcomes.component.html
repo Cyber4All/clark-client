@@ -1,5 +1,5 @@
 <div class="mappings-toolbar">
-  <div class="tab" [ngClass]="{ 'active': activeTab === tabs.MAPPINGS }" (click)="switchTab(tabs.MAPPINGS)">Mapped outcomes</div>
+  <div class="tab" [ngClass]="{ 'active': activeTab === tabs.MAPPINGS }" (click)="switchTab(tabs.MAPPINGS)">Mapped outcomes <div class="badge" [ngClass]="{'active': service.mappedStandards.length}"> {{ service.mappedStandards.length }} </div></div>
   <div class="tab" [ngClass]="{ 'active': activeTab === tabs.SEARCH }" (click)="switchTab(tabs.SEARCH, i)">Search curricular guidelines for outcomes</div>
   <div class="tab" [ngClass]="{ 'active': activeTab === tabs.SUGGESTIONS }" (click)="switchTab(tabs.SUGGESTIONS, i)">Suggested mappings</div>
 </div>
