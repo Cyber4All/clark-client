@@ -4,22 +4,17 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 .list-container {
   max-width: $max-width;
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
   .list-content {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(400px, 1fr));
+
     padding: 0px;
-    margin-left: -10px;
     margin-bottom: 30px;
     user-card {
-      width: calc(100% - 10px);
-      margin-left: 10px;
+      justify-self: center;
+      width: 400px;
       &:not(:last-child) {
         margin-bottom: 10px;
       }
@@ -67,36 +62,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         bottom: 0;
         margin: auto;
         position: absolute;
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 1224px) {
-  .list-container {
-    .list-content {
-      user-card {
-        width: calc(33% - 10px);
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 768px) and (max-width: 1224px) {
-  .list-container {
-    .list-content {
-      user-card {
-        width: calc(33% - 10px);
-      }
-    }
-  }
-}
-
-@media only screen and (min-width: 600px) and (max-width: 768px) {
-  .list-container {
-    .list-content {
-      user-card {
-        width: calc(50% - 10px);
       }
     }
   }
