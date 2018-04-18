@@ -15,6 +15,7 @@ import { ModalModule } from './modals';
 import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { EncodeUriComponentPipe } from './pipes/encoded-url.pipe';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -37,11 +38,13 @@ import { NavbarComponent } from './navbar/navbar.component';
   declarations: [
     BrowseByMappingsComponent,
     NavbarComponent,
-    MessageComponent
+    MessageComponent,
+    EncodeUriComponentPipe
   ],
   exports: [
     BrowseByMappingsComponent,
     NavbarComponent,
+    EncodeUriComponentPipe
   ]
 })
 export class SharedModule { }

@@ -1,16 +1,13 @@
 @import '~_vars.scss';
-
 .top {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
   .title {
     font-weight: bold;
     color: $blue-accent;
     font-size: 26px;
   }
-
   .button {
     padding-top: 8px;
     padding-bottom: 8px;
@@ -19,23 +16,25 @@
 
 .faux-table {
   margin-top: 30px;
-
   .row.columns {
     padding-left: 21px;
   }
-
   .row.hide {
     display: none;
   }
-
   .placeholder {
     min-width: 30px;
   }
 }
+
 .published {
   border-left: 6px solid $green;
 }
 
 .unpublished {
   border-left: 6px solid $error-red;
+}
+
+.builder-link {
+  color: #333;
 }
