@@ -71,7 +71,6 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
     }
 
     // if this.inflow === undefined, set it to true, else leave it alone
-    console.log('inflow', this.inflow);
     if (this.inflow == undefined) {
       this.inflow = true;
     }
@@ -105,7 +104,6 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
 
       // listen for user to stop typing in the text input and perform query
     this.mappingsFilterInput.subscribe(val => {
-      console.log('stopped typing, author: ', this.mappingService.author);
       if (this.mappingService.author && this.mappingService.author !== '') {
         this.mappingsQueryInProgress = true;
         this.getOutcomes().then(() => {
