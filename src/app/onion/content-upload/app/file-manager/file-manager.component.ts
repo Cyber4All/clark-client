@@ -17,6 +17,7 @@ import {
   DirectoryNode
 } from 'app/shared/filesystem/DirectoryTree';
 import { getPaths } from 'app/shared/filesystem/file-functions';
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
 type LearningObjectFile = File;
 
 export type FileEdit = {
@@ -54,6 +55,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
   editDescription = false;
   view = 'list';
+  tips = TOOLTIP_TEXT;
 
   constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {

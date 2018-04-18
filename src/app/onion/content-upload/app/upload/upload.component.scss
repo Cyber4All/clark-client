@@ -275,3 +275,10 @@ select {
   bottom: 10px;
   right: 10px;
 }
+.back.right {
+  svg,
+  i {
+    margin-left: 5px;
+  }
+  text-align: right;
+}

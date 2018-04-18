@@ -23,6 +23,9 @@
   </div>
 
 </div>
+<div class="help">
+  {{ tips.FILE_OPTIONS }}
+</div>
 <div (click)="handleClick($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length}">
   <div *ngIf="!(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length" class="dropzone-message">
     <div class="file-icons">
