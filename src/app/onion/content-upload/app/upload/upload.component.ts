@@ -290,7 +290,7 @@ export class UploadComponent implements OnInit {
     try {
       this.submitting = true;
 
-      let learningObjectFiles = await this.upload();
+      const learningObjectFiles = await this.upload();
 
       this.uploading$.next(false);
 
@@ -306,6 +306,7 @@ export class UploadComponent implements OnInit {
         this.submitting = false;
         this.uploading$.next(false);
         this.updateFileSubscription();
+        this.router.navigate(['/onion/dashboard']);
       } catch (e) {
         this.submitting = false;
         this.uploading$.next(false);
