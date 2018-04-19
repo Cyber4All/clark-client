@@ -42,7 +42,7 @@ export class FileStorageService {
       formData.append('learningObjectID', learningObject.id);
       const stringifiedMap = this.stringifyMap(filePathMap);
       formData.append('filePathMap', stringifiedMap);
-      for (let file of files) {
+      for (const file of files) {
         formData.append(
           'uploads',
           file,
@@ -53,7 +53,9 @@ export class FileStorageService {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             let response = xhr.response;
-            if (typeof response === 'string') response = JSON.parse(response);
+            if (typeof response === 'string') {
+              response = JSON.parse(response);
+            }
             resolve(response as LearningObjectFile[]);
           } else {
             reject(xhr.response);
@@ -88,7 +90,7 @@ export class FileStorageService {
   }
 
   private stringifyMap(map: Map<any, any>): string {
-    let pairArray = [];
+    const pairArray = [];
     map.forEach((value, key) => {
       pairArray.push([key, value]);
     });
