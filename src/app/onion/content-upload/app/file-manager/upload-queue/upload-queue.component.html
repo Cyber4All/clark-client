@@ -31,7 +31,7 @@
           <i class="fas {{ getIcon(file.extension) }} icon"></i>
           {{ file.name }}
         </div>
-        <div (click)="remove(file)">
+        <div *ngIf="!uploading$.getValue();" (click)="remove(file)">
           <i class="fas fa-times-circle"></i>
         </div>
       </div>
