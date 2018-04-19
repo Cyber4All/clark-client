@@ -37,7 +37,9 @@
       </div>
     </div>
     <button type="button" (click)="triggerUpload()" class="button good stretch upload" [disabled]="uploading$.getValue()">
-      <span *ngIf="uploading$.getValue(); else uploadText">Uploading</span>
+      <span *ngIf="uploading$.getValue(); else uploadText">Uploading
+        <i class="far fa-spinner fa-spin"></i>
+      </span>
       <ng-template #uploadText>Upload</ng-template>
     </button>
   </div>
