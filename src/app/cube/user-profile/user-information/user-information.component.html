@@ -15,7 +15,8 @@
 <div class="learning-objects">
   <ng-container *ngIf="objects && objects.length > 0">
     <div *ngFor="let l of objects">
-      <learning-object-component *ngIf="l.published" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l" [owned]="true">
+      <learning-object-component *ngIf="l.published" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l"
+        [owned]="true">
       </learning-object-component>
     </div>
   </ng-container>
@@ -28,3 +29,6 @@
     </div>
   </ng-container>
 </div>
+<section class="card-printer">
+  <button class="print-cards button neutral on-white" (click)="printCards()">Print Personalized Business Cards</button>
+</section>
