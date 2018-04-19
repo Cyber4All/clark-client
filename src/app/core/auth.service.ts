@@ -241,8 +241,8 @@ export class AuthService {
 
     // tslint:disable-next-line:max-line-length
     // FIXME: if this feature stays in the system, this route should be accessed via the gateway
-    this.http.get(`http://ec2-34-226-190-22.compute-1.amazonaws.com:3000/users/${this.username}/cards?fname=${this.name.split(' ')[0]}&lname=${this.name.split(' ')[1]}&org=${this.user.organization}`,
-      { responseType: 'blob' })
+    this.http.get(`${environment.apiURL}/users/${this.username}/cards?fname=${this.name.split(' ')[0]}&lname=${this.name.split(' ')[1]}&org=${this.user.organization}`,
+      { withCredentials: true, responseType: 'blob' })
       .toPromise()
       .then(blob => {
         const pdfBlob = new Blob([blob], { type: 'application/pdf' });
