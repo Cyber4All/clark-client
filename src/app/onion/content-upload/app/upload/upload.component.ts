@@ -306,7 +306,7 @@ export class UploadComponent implements OnInit {
    *
    * @memberof UploadComponent
    */
-  async save() {
+  async save(stayOnPage?: boolean) {
     try {
       this.submitting = true;
 
@@ -326,7 +326,9 @@ export class UploadComponent implements OnInit {
         this.submitting = false;
         this.uploading$.next(false);
         this.updateFileSubscription();
-        this.router.navigate(['/onion/dashboard']);
+        if (!stayOnPage) {
+          this.router.navigate(['/onion/dashboard']);
+        }
       } catch (e) {
         this.submitting = false;
         this.uploading$.next(false);

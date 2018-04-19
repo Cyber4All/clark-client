@@ -57,4 +57,4 @@
   </div>
 </div>
 <upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$" [uploading$]="uploading$"
-  (upload)="save()"></upload-queue>
+  (upload)="save(true)"></upload-queue>
