@@ -14,7 +14,7 @@ import { NotificationModule } from './shared/notifications';
 import { ModalModule } from './shared/modals';
 import { AuthService } from './core/auth.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { UnsupportedComponent } from './unsupported.component';
 
 
 @NgModule({
@@ -27,7 +27,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule.forRoot(),
     BrowserAnimationsModule
   ],
-  declarations: [ClarkComponent],
-  bootstrap: [ClarkComponent]
+  declarations: [
+    ClarkComponent,
+    UnsupportedComponent
+],
+  bootstrap: [ClarkComponent],
 })
 export class ClarkModule {}
