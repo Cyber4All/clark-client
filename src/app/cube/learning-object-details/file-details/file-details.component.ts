@@ -6,6 +6,7 @@ import {
 import { Material } from '@cyber4all/clark-entity/dist/learning-object';
 import { getPaths } from 'app/shared/filesystem/file-functions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'onion-file-details',
@@ -16,44 +17,15 @@ export class FileDetailsComponent implements OnInit {
   @Input() length: string;
   @Input() materials: Material;
 
-  forceCollapse$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
-  );
-
-  private directoryTree: DirectoryTree = new DirectoryTree();
-  rootNode: DirectoryNode;
+  files$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  folderMeta$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   constructor() {}
 
   ngOnInit() {
-    this.constructTree();
-  }
-
-  private constructTree() {
-    this.directoryTree.addFiles(this.materials.files);
-    this.rootNode = this.directoryTree.traversePath([]);
-    if (this.materials['folderDescriptions']) {
-      this.linkFolderMeta();
-    }
-  }
-
-  private linkFolderMeta() {
-    // FIXME: Add folder descriptions to entity
-    const folders = this.materials['folderDescriptions'];
-    for (const folder of folders) {
-      const paths = getPaths(folder.path, false);
-      const node = this.directoryTree.traversePath(paths);
-      if (node) {
-        node.description = folder.description;
-      }
-    }
-  }
-  /**
-   * Send force collapse signal to folder views
-   *
-   * @memberof FileDetailsComponent
-   */
-  forceCollapse() {
-    this.forceCollapse$.next(true);
+    const files = this.materials.files;
+    const folderMeta = this.materials['folderDescriptions'];
+    this.files$.next(files);
+    this.folderMeta$.next(folderMeta);
   }
 }

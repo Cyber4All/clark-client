@@ -1,5 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
 import { ClarkComponent } from './clark.component';
@@ -22,7 +22,7 @@ import { UnsupportedComponent } from './unsupported.component';
     HttpClientModule,
     ClarkRoutingModule,
     SharedModule,
-    CoreModule.forRoot(),
+    CoreModule.forRoot()
   ],
   declarations: [
     ClarkComponent,
@@ -30,4 +30,4 @@ import { UnsupportedComponent } from './unsupported.component';
 ],
   bootstrap: [ClarkComponent],
 })
-export class ClarkModule { }
+export class ClarkModule {}
