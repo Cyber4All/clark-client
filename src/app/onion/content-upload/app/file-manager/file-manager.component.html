@@ -1,13 +1,5 @@
 <div class="top-wrapper">
-  <div class="file-breadcrumb">
-    <span *ngIf="currentPath.length" class="link" (click)="jumpTo(0, true)">Root</span>
-    <ng-container *ngFor="let path of currentPath; let i=index;">
-      <span>
-        <i class="far fa-chevron-right arrow"></i>
-      </span>
-      <span class="link" (click)="jumpTo(i)">{{path}}</span>
-    </ng-container>
-  </div>
+  <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
   <div class="view-switcher inline-flex right">
     <div class="inline-flex">
       <div (click)="openNewOptions($event)" class="button new">
@@ -35,10 +27,12 @@
     </div>
     <span>Drop files and folders or click here</span>
   </div>
-  <file-grid-view *ngIf="view==='grid' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
-    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)"></file-grid-view>
-  <file-list-view *ngIf="view==='list' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
-    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)"></file-list-view>
+  <clark-file-grid-view *ngIf="view==='grid' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
+    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)">
+  </clark-file-grid-view>
+  <clark-file-list-view *ngIf="view==='list' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
+    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)">
+  </clark-file-list-view>
 </div>
 
 

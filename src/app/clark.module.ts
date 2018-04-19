@@ -1,5 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
 import { ClarkComponent } from './clark.component';
@@ -21,9 +21,9 @@ import { AuthService } from './core/auth.service';
     HttpClientModule,
     ClarkRoutingModule,
     SharedModule,
-    CoreModule.forRoot(),
+    CoreModule.forRoot()
   ],
   declarations: [ClarkComponent],
-  bootstrap: [ClarkComponent],
+  bootstrap: [ClarkComponent]
 })
-export class ClarkModule { }
+export class ClarkModule {}

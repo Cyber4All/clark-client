@@ -48,7 +48,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private filesystem: DirectoryTree = new DirectoryTree();
 
-  currentPath: string[] = [];
+  currentPath$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
     DirectoryNode
   >(null);
@@ -70,6 +70,11 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.mapFolderMeta(folders);
       })
     );
+    this.subscriptions.push(
+      this.currentPath$.subscribe(() => {
+        this.refreshNode();
+      })
+    );
   }
 
   /**
@@ -87,7 +92,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     for (const folder of folders) {
       const paths = getPaths(folder.path, false);
       const node = this.filesystem.traversePath(paths);
-      if (node) node.description = folder.description;
+      if (node) {
+        node.description = folder.description;
+      }
     }
   }
 
@@ -123,8 +130,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     description: string,
     file: LearningObjectFile | DirectoryNode
   ) {
-    if (!file || !description) return;
-
+    if (!file || !description) {
+      return;
+    }
     const edit: FileEdit = {
       path: '',
       description: description
@@ -160,10 +168,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       return [];
     }
     let filePaths = [];
-    for (let file of files) {
+    for (const file of files) {
       filePaths.push(file.fullPath);
     }
-    for (let child of children) {
+    for (const child of children) {
       filePaths = [...filePaths, ...this.getFilePaths(child)];
     }
     return filePaths;
@@ -177,7 +185,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     fileInput.setAttribute('msdirectory', 'true');
     fileInput.setAttribute('odirectory', 'true');
     this.openDZ.emit(true);
-    if (fromRoot) this.path.emit();
+    if (fromRoot) {
+      this.path.emit();
+    }
   }
 
   openFileDialog(fromRoot?: boolean) {
@@ -188,12 +198,16 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     fileInput.removeAttribute('msdirectory');
     fileInput.removeAttribute('odirectory');
     this.openDZ.emit(true);
-    if (fromRoot) this.path.emit();
+    if (fromRoot) {
+      this.path.emit();
+    }
   }
 
   handleClick(e) {
     const target = e.target;
-    if (!target.className) return;
+    if (!target.className) {
+      return;
+    }
 
     const classNames: string[] = target.className.trim().split(' ');
     if (classNames.includes('dz-clickable')) {
@@ -202,30 +216,20 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   }
 
   openFolder(path: string) {
-    this.currentPath.push(path);
+    const paths = this.currentPath$.getValue();
+    paths.push(path);
+    this.currentPath$.next(paths);
     this.refreshNode();
   }
 
-  jumpTo(index: number, root?: boolean) {
-    let path;
-    if (root) {
-      path = [];
-    } else {
-      path = this.currentPath.slice(0, index + 1);
-    }
-    if (JSON.stringify(path) !== JSON.stringify(this.currentPath)) {
-      this.currentPath = path;
-      this.refreshNode();
-    }
-  }
   private refreshNode() {
-    const path = this.currentPath;
+    const path = this.currentPath$.getValue();
     this.currentNode$.next(this.filesystem.traversePath(path));
     this.path.emit(path.join('/'));
   }
 
   ngOnDestroy(): void {
-    for (let sub of this.subscriptions) {
+    for (const sub of this.subscriptions) {
       sub.unsubscribe();
     }
   }

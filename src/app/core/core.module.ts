@@ -15,14 +15,16 @@ import { ModalModule } from '../shared/modals';
 import { UserService } from './user.service';
 import { MessagesService } from './messages.service';
 import { RavenErrorHandler } from './error-handler';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 @NgModule({
   imports: [
-  CookieModule.forRoot(),
+    CookieModule.forRoot(),
     ModalModule.forRoot(),
-    NotificationModule.forRoot()
+    NotificationModule.forRoot(),
+    ContextMenuModule.forRoot()
   ],
-  exports: [],
+  exports: []
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders {

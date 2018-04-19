@@ -6,22 +6,20 @@
     <section class="files" *ngIf="materials.files.length">
       <div class="grid-area" [ngClass]="{header: materials.files.length}">
         <div class="section title">
-          Files
+          Files and Folders
         </div>
         <ng-container>
           <div class="file-count">
             {{ materials.files.length }} Files
-          </div>
-          <div class="description">
-            <span class="link-button" (click)="forceCollapse()">Collapse All</span>
           </div>
         </ng-container>
       </div>
 
 
       <div class="file-listing">
-        <cube-folder-view *ngFor="let folder of rootNode.children" [forceCollapse$]="forceCollapse$" [folder]="folder"></cube-folder-view>
-        <cube-file-view *ngFor="let file of rootNode.files" [file]="file"></cube-file-view>
+        <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
+        <clark-file-list-view *ngIf="view==='list'" [node$]="currentNode$" (emitPath)="openFolder($event)"></clark-file-list-view>
+        <clark-file-grid-view *ngIf="view==='grid'" [node$]="currentNode$" (emitPath)="openFolder($event)"></clark-file-grid-view>
       </div>
     </section>
 
