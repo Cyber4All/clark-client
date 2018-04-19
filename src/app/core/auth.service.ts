@@ -203,4 +203,25 @@ export class AuthService {
       this.socket.emit('close');
     }
   }
+
+  printCards() {
+    this.http.get(`http://ec2-34-226-190-22.compute-1.amazonaws.com:3000/users/${this.username}/cards?fname=${this.name.split(' ')[0]}&lname=${this.name.split(' ')[1]}&org=${this.user.organization}`,
+      { responseType: 'blob' })
+      .toPromise()
+      .then(blob => {
+        const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+
+        const data = window.URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = data;
+        link.target = '_blank';
+        link.click();
+        setTimeout(function () {
+          // For Firefox it is necessary to delay revoking the ObjectURL
+          window.URL.revokeObjectURL(data);
+        }, 100);
+    }, error => {
+      throw error;
+    });
+  }
 }
