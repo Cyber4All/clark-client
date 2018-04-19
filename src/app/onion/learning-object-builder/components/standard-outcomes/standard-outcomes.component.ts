@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SuggestionService } from '../../suggestion/services/suggestion.service';
 
 enum TABS {
   MAPPINGS,
@@ -14,7 +15,8 @@ enum TABS {
 export class StandardOutcomesComponent implements OnInit {
   tabs = TABS;
   activeTab: TABS;
-  constructor() { }
+
+  constructor(private service: SuggestionService) { }
 
   ngOnInit() {
     this.activeTab = TABS.MAPPINGS;

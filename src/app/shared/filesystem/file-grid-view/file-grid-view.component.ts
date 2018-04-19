@@ -6,12 +6,13 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import { DirectoryNode } from 'app/shared/filesystem/DirectoryTree';
 import { getIcon } from 'app/shared/filesystem/file-icons';
 
 @Component({
-  selector: 'file-grid-view',
+  selector: 'clark-file-grid-view',
   templateUrl: 'file-grid-view.component.html',
   styleUrls: ['file-grid-view.component.scss']
 })

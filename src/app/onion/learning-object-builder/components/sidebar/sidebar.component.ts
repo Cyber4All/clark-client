@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges, IterableDiffers, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter,
+  SimpleChanges, IterableDiffers, DoCheck, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectStoreService } from '../../store';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -18,20 +19,23 @@ interface SidebarLink {
   templateUrl: 'sidebar.component.html',
   styleUrls: ['sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, DoCheck, OnChanges {
+export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewChecked {
   @Input() outcomes: LearningOutcome[];
   @Input() learningObjectName;
   @Output() newOutcome = new EventEmitter();
   @Output() upload = new EventEmitter();
 
+  forceOutcomesOpen = true;
+  loaded = false;
+
 
   links: SidebarLink[] = [
     {
-      name: 'Basic Information',
+      name: '1. Basic Information',
       action: this.navigate,
     },
     {
-      name: 'Learning Outcomes',
+      name: '2. Learning Outcomes',
       action: this.navigate,
       children: [
         {
@@ -75,9 +79,13 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
 
   ngDoCheck() {
     const changes = this.outcomesDiffer.diff(this.outcomes);
-    if (changes) {
+    if (changes && this.loaded) {
       this.buildOutcomes(changes.collection);
     }
+  }
+
+  ngAfterViewChecked() {
+    this.loaded = true;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -91,7 +99,7 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
   }
 
   buildOutcomes(outcomes, noNav = false) {
-    const linkEl = this.links.filter(l => l.name === 'Learning Outcomes')[0];
+    const linkEl = this.links.filter(l => l.name === '2. Learning Outcomes')[0];
     outcomes = outcomes.map((m: LearningOutcome, i: number) =>  ({ name: m.text && m.text !== '' ? m.outcome : 'Learning Outcome ' + (+i + 1), action: this.navigateChild }));
 
     linkEl.children = [...outcomes, linkEl.children[linkEl.children.length - 1]];
@@ -123,6 +131,10 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
   }
 
   navigateChild(i, self = this) {
+    if (self.forceOutcomesOpen) {
+      self.navigate(1, self, true);
+    }
+
     self.buildOutcomes(self.outcomes, true);
     self.store.dispatch({
       type: 'NAVIGATECHILD',

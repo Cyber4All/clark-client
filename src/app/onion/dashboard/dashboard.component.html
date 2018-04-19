@@ -1,10 +1,7 @@
 <ng-container *ngIf="learningObjects && learningObjects.length > 0">
   <div class="top">
     <div class="title vert-center">
-      <span tip="{{ tips.LEARNING_OBJECT }}" tipLocation="side">
-        Learning Objects
-        <i class="fas fa-question-circle"></i>
-      </span>
+        Dashboard
     </div>
     <div class="actions btn-group to-right">
       <div class="add button good" (click)="newLearningObject()">Add New
@@ -36,7 +33,9 @@
       <div [ngClass]="{published: l.published, unpublished: !l.published}" class="row">
         <checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></checkbox>
         <div class="cells">
-          <div class="cell">{{l.name}}</div>
+          <div class="cell">
+            <a [routerLink]="['/onion/learning-object-builder', l.name | encodeURIComponent]" class="builder-link">{{l.name}}</a>
+          </div>
           <div class="cell">{{l.length | titlecase}}</div>
           <div class="cell">{{l.date | date:'medium'}}</div>
         </div>
@@ -52,6 +51,6 @@
 <ng-container *ngIf="this.learningObjects.length === 0">
   <div class="banner no-lo">
     <div class="text">You don't have any Learning Objects yet!</div>
-    <div (click)="newLearningObject()" class="button neutral bright">Create a Learning Object</div>
+    <div tip="{{ tips.LEARNING_OBJECT }}" tipDelay = "500" tipLocation="bottom" (click)="newLearningObject()" class="button neutral bright">Create a Learning Object</div>
   </div>
 </ng-container>

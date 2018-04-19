@@ -2,8 +2,10 @@
 
 form {
     margin: auto;
-    margin-top: 40px;
+    margin-top: 15px;
     width: 100%;
+    height: 380px; 
+    overflow-y: hidden;
 }
 
 .h-group {
@@ -29,3 +31,7 @@ form {
     height: 1px;
     display: none;
 }
+
+
+
+

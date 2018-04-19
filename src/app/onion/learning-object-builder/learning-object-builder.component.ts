@@ -100,29 +100,35 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   async save(willUpload: boolean) {
-    console.log('object to save', this.learningObject);
+    if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
+
+      if (!await this.showPublishingDialog()) {
+        return;
+      }
+    }
+
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
-      if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
-        await this.showPublishingDialog();
-      }
       this.service
         .save(this.learningObject)
         .then(success => {
-          this.notificationService.notify(
-            'Done!',
-            'Learning Object saved!',
-            'alerting',
-            'fal fa-save'
-          );
-          willUpload
-            ? this.router.navigate([`/onion/content/upload/${this.learningObjectName}`])
-            : this.router.navigate(['/onion']);
+          if (!willUpload) {
+            this.notificationService.notify(
+              'Done!',
+              'Learning Object saved!',
+              'good',
+              'far fa-check'
+            );
+            this.isNew = false;
+            this.learningObjectName = this.learningObject.name;
+          } else {
+            this.router.navigate([`/onion/content/upload/${this.learningObjectName}`]);
+          }
         })
         .catch(err => {
           const error =
-            typeof err['_body'] == 'string'
+            typeof err['_body'] === 'string'
               ? err['_body']
               : 'Error saving Learning Object';
           this.notificationService.notify(
@@ -133,27 +139,27 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
-      if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
-        await this.showPublishingDialog();
-      }
       this.service
         .create(this.learningObject)
         .then(() => {
-          this.notificationService.notify(
-            'Done!',
-            'New Learning Object created!',
-            'good',
-            'far fa-check'
-          );
-          willUpload
-            ? this.router.navigateByUrl(
-                `/onion/content/upload/${this.learningObject.name}`
-              )
-            : this.router.navigate(['/onion']);
+          if (!willUpload) {
+            this.notificationService.notify(
+              'Done!',
+              'New Learning Object created!',
+              'good',
+              'far fa-check'
+            );
+            this.isNew = false;
+            this.learningObjectName = this.learningObject.name;
+          } else {
+            this.router.navigateByUrl(
+              `/onion/content/upload/${this.learningObject.name}`
+            );
+          }
         })
         .catch(err => {
           const error =
-            typeof err['_body'] == 'string'
+            typeof err['_body'] === 'string'
               ? err['_body']
               : 'Error creating Learning Object';
           this.notificationService.notify(
@@ -166,10 +172,12 @@ export class LearningObjectBuilderComponent implements OnInit {
     }
   }
 
-  private async showPublishingDialog() {
-    
-    let text = this.auth.user.emailVerified ? '' : 'You must have a verfied email address to publish learning objects! Would you like to verfiy your email now?';
-    let buttons = [
+  private async showPublishingDialog(): Promise<boolean> {
+    const text =
+    this.auth.user.emailVerified ?
+    '' : 'You must have a verfied email address to publish learning objects! Would you like to verfiy your email now?';
+
+    const buttons = [
       new ModalListElement(
         'Save for later<i class="far fa-undo-alt "></i>',
         'reject',
@@ -195,16 +203,18 @@ export class LearningObjectBuilderComponent implements OnInit {
       );
     }
 
-    let publish = await this.modalService
+    const publish = await this.modalService
       .makeDialogMenu(
         'PublishConfirmation',
         'Publish changes?',
         text,
+        true,
         '',
         'center',
         buttons
       )
       .toPromise();
+
     if (publish === 'verify-email') {
       try {
         await this.auth.sendEmailVerification(this.auth.email).toPromise();
@@ -219,9 +229,17 @@ export class LearningObjectBuilderComponent implements OnInit {
         this.notificationService.notify(`Could not send email`, `${e}`, 'bad', '');
       }
     } else {
-      publish === 'accept'
-        ? this.learningObject.publish()
-        : this.learningObject.unpublish();
+
+      switch (publish) {
+        case 'accept':
+          this.learningObject.publish();
+          return true;
+        case 'reject':
+          this.learningObject.unpublish();
+          return true;
+        default:
+          return false;
+      }
     }
   }
 
@@ -306,14 +324,15 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @param {number} s
    * @memberof LearningObjectBuilderComponent
    */
-  bindEditorOutput(event, type:string, i?:number, s?:number): void {
+  bindEditorOutput(event, type: string, i?: number, s?: number): void {
     if (type === 'question') {
       this.learningObject.outcomes[i].assessments[s].text = event;
     } else if (type === 'strategy') {
         this.learningObject.outcomes[i].strategies[s].text = event;
-    }
-    else {
-      if(event!=='') this.learningObject.goals[0].text = event;
+    } else {
+      if (event !== '') {
+        this.learningObject.goals[0].text = event;
+      }
     }
   }
 
@@ -341,9 +360,6 @@ export class LearningObjectBuilderComponent implements OnInit {
       });
       return false;
     }
-
-    console.log('outcomes', this.learningObject.outcomes);
-
     // check outcomes
     const badOutcomes = this.learningObject.outcomes.map(
       (x, i) => (!x.text || x.text === '') ? i : undefined

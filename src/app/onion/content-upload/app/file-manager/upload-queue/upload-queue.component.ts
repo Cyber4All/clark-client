@@ -24,7 +24,7 @@ export class UploadQueueComponent implements OnInit, OnDestroy {
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   @Output() upload: EventEmitter<void> = new EventEmitter<void>();
   private subscriptions: Subscription[] = [];
-  collapsed: boolean = false;
+  collapsed = false;
   files: LearningObjectFile[] = [];
   folders: any[] = [];
 
