@@ -7,7 +7,6 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 
 // This module
 import { CookieModule } from 'ngx-cookie';
-
 import { LoginComponent } from './login/login.component';
 import { AuthRoutingModule } from './auth.routing';
 import { RegisterComponent } from './register/register.component';
@@ -20,6 +19,9 @@ import { AuthResolve } from './auth.resolver';
 // External Modules
 import { SharedModule } from '../shared/shared.module';
 import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
+import { PersonalInfoComponent } from './register/personal-info/personal-info.component';
+import { ProfileInfoComponent } from './register/profile-info/profile-info.component';
+import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,10 @@ import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     AuthComponent,
-    RecaptchaDirective
+    RecaptchaDirective,
+    PersonalInfoComponent,
+    ProfileInfoComponent,
+    GravatarInfoComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +41,7 @@ import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule, 
   ],
   providers: [CanResetPasswordGuard, AuthResolve],
 })

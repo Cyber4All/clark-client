@@ -1,0 +1,10 @@
+<form [formGroup] = "group">
+    <div class="title light">Step 3/3 | Connect A Gravatar Account</div>
+    <img [src]="getGravatarImage()" class = "img">
+    <div class="gravatar-header">C.L.A.R.K. uses Gravatar</div>
+    <div class="gravatar-text">Don't have an account?<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar</a></div>
+    <div class="input email">
+      <input name="email" type="text" placeholder="Email address" [(ngModel)]="email" formControlName ="email"/>
+      <i class="far fa-at"></i>
+    </div>
+</form>
