@@ -29,6 +29,6 @@
     </div>
   </ng-container>
 </div>
-<section class="card-printer">
+<section id="card-printer" *ngIf="self">
   <button class="print-cards button neutral on-white" (click)="printCards()">Print Personalized Business Cards</button>
 </section>
