@@ -15,6 +15,13 @@ import { ModalModule } from './modals';
 import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { EncodeUriComponentPipe } from './pipes/encoded-url.pipe';
+import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
+import { FileGridViewComponent } from './filesystem/file-grid-view/file-grid-view.component';
+import { ContextMenuModule } from 'ngx-contextmenu';
+import { TooltipModule } from '@cyber4all/clark-tooltip';
+import { FileBreadcrumbComponent } from './filesystem/file-breadcrumb/file-breadcrumb.component';
+import { FileBrowserComponent } from './filesystem/file-browser/file-browser.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -31,17 +38,29 @@ import { NavbarComponent } from './navbar/navbar.component';
     ClickOutsideModule,
     CheckBoxModule,
     ModalModule,
-    NotificationModule
+    NotificationModule,
+    TooltipModule,
+    ContextMenuModule
   ],
-  providers: [ ],
+  providers: [],
   declarations: [
     BrowseByMappingsComponent,
     NavbarComponent,
-    MessageComponent
+    MessageComponent,
+    EncodeUriComponentPipe,
+    FileBrowserComponent,
+    FileListViewComponent,
+    FileGridViewComponent,
+    FileBreadcrumbComponent
   ],
   exports: [
     BrowseByMappingsComponent,
     NavbarComponent,
+    EncodeUriComponentPipe,
+    FileBrowserComponent,
+    FileListViewComponent,
+    FileGridViewComponent,
+    FileBreadcrumbComponent
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

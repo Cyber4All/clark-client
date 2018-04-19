@@ -6,12 +6,13 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import { DirectoryNode } from 'app/shared/filesystem/DirectoryTree';
 import { getIcon } from 'app/shared/filesystem/file-icons';
 
 @Component({
-  selector: 'file-list-view',
+  selector: 'clark-file-list-view',
   templateUrl: 'file-list-view.component.html',
   styleUrls: ['file-list-view.component.scss']
 })

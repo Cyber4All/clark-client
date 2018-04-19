@@ -1,5 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
 import { ClarkComponent } from './clark.component';
@@ -13,6 +13,7 @@ import { OnionModule } from './onion/onion.module';
 import { NotificationModule } from './shared/notifications';
 import { ModalModule } from './shared/modals';
 import { AuthService } from './core/auth.service';
+import { UnsupportedComponent } from './unsupported.component';
 
 @NgModule({
   imports: [
@@ -21,9 +22,12 @@ import { AuthService } from './core/auth.service';
     HttpClientModule,
     ClarkRoutingModule,
     SharedModule,
-    CoreModule.forRoot(),
+    CoreModule.forRoot()
   ],
-  declarations: [ClarkComponent],
+  declarations: [
+    ClarkComponent,
+    UnsupportedComponent
+],
   bootstrap: [ClarkComponent],
 })
-export class ClarkModule { }
+export class ClarkModule {}
