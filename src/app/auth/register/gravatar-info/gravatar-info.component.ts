@@ -1,23 +1,25 @@
 import { NgControl, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
 import { Observable } from 'rxjs/Observable';
 import { RegisterComponent } from '../../register/register.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clark-gravatar-info',
   templateUrl: './gravatar-info.component.html',
   styleUrls: ['./gravatar-info.component.scss']
 })
-export class GravatarInfoComponent implements OnInit {
+export class GravatarInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
   @Input() email: String;
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
   result: boolean;
+  sub: Subscription;
 
   size = 200;
   default: string;
@@ -32,7 +34,7 @@ export class GravatarInfoComponent implements OnInit {
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    Observable.fromEvent(this.emailInput.nativeElement, 'input')
+    this.sub = Observable.fromEvent(this.emailInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
@@ -59,5 +61,9 @@ export class GravatarInfoComponent implements OnInit {
       '?r=pg&d=' +
       this.default
     );
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
