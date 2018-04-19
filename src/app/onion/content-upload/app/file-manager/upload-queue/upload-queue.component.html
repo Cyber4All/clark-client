@@ -20,7 +20,7 @@
           {{ folder.name }}
           <span class="item-count">({{ folder.contents.length }} items)</span>
         </div>
-        <div (click)="remove(folder)">
+        <div *ngIf="!uploading$.getValue();" (click)="remove(folder)">
           <i class="fas fa-times-circle"></i>
         </div>
       </div>
@@ -31,13 +31,15 @@
           <i class="fas {{ getIcon(file.extension) }} icon"></i>
           {{ file.name }}
         </div>
-        <div (click)="remove(file)">
+        <div *ngIf="!uploading$.getValue();" (click)="remove(file)">
           <i class="fas fa-times-circle"></i>
         </div>
       </div>
     </div>
     <button type="button" (click)="triggerUpload()" class="button good stretch upload" [disabled]="uploading$.getValue()">
-      <span *ngIf="uploading$.getValue(); else uploadText">Uploading</span>
+      <span *ngIf="uploading$.getValue(); else uploadText">Uploading
+        <i class="far fa-spinner fa-spin"></i>
+      </span>
       <ng-template #uploadText>Upload</ng-template>
     </button>
   </div>
