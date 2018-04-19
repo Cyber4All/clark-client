@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -7,12 +7,18 @@ import { CookieService } from 'ngx-cookie';
 import { User } from '@cyber4all/clark-entity';
 import { Subject } from 'rxjs/Subject';
 import { Router, NavigationEnd, RouterEvent } from '@angular/router';
+import { Http, Headers, ResponseContentType } from '@angular/http';
+import { map } from 'rxjs/operator/map';
 import * as io from 'socket.io-client';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
   user: User = undefined;
+  // isLoggedIn = new Subject<boolean>();
+  headers = new Headers();
+  httpHeaders = new HttpHeaders();
+  inUse: object;
   isLoggedIn = new BehaviorSubject<boolean>(false);
   socket;
   socketWatcher: Observable<string>;
@@ -47,7 +53,9 @@ export class AuthService {
   get firstName(): string {
     return this.user.name
       ? this.user.name.split(' ')[0]
-      : this.user.name ? this.user.name.split(' ')[0] : undefined;
+      : this.user.name
+        ? this.user.name.split(' ')[0]
+        : undefined;
   }
 
   get email(): string {
@@ -77,11 +85,19 @@ export class AuthService {
   }
 
   refreshToken(): Promise<void> {
-    return this.http.get(environment.apiURL + '/users/tokens/refresh', { withCredentials: true }).toPromise().then(val => {
-      this.user = this.makeUserFromCookieResponse(val);
-    }, error => {
-      throw error;
-    });
+    return this.http
+      .get(environment.apiURL + '/users/tokens/refresh', {
+        withCredentials: true
+      })
+      .toPromise()
+      .then(
+        val => {
+          this.user = this.makeUserFromCookieResponse(val);
+        },
+        error => {
+          throw error;
+        }
+      );
   }
 
   login(user: { username: string; password: string }): Promise<any> {
@@ -148,6 +164,23 @@ export class AuthService {
     );
   }
 
+  identifiersInUse(username: string) {
+    return this.http
+      .get(
+        environment.apiURL + '/users/identifiers/active?username=' + username,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+          // responseType: 'text'
+        }
+      )
+      .toPromise()
+      .then(val => {
+        this.inUse = val;
+        return this.inUse;
+      });
+  }
+
   makeRedirectURL(url: string) {
     if (!url.match(/https?:\/\/.+/i)) {
       return `http://${url}`;
@@ -170,7 +203,7 @@ export class AuthService {
 
   makeUserFromCookieResponse(val: any): User {
     // TODO: Delete token specific props
-    let user = User.instantiate(val);
+    const user = User.instantiate(val);
     return user;
   }
 
@@ -179,7 +212,7 @@ export class AuthService {
       this.socketWatcher = new Observable(observer => {
         this.socket = io(environment.apiURL + '?user=' + this.username);
 
-        this.socket.on('message', (val) => {
+        this.socket.on('message', val => {
           if (val === 'VERIFIED_EMAIL') {
             this.validate().then(() => {
               if (!this.user.emailVerfied) {
