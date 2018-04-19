@@ -20,7 +20,7 @@
           {{ folder.name }}
           <span class="item-count">({{ folder.contents.length }} items)</span>
         </div>
-        <div (click)="remove(folder)">
+        <div *ngIf="!uploading$.getValue();" (click)="remove(folder)">
           <i class="fas fa-times-circle"></i>
         </div>
       </div>
