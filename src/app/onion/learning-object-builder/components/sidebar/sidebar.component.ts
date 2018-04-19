@@ -24,6 +24,8 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
   @Output() newOutcome = new EventEmitter();
   @Output() upload = new EventEmitter();
 
+  forceOutcomesOpen = true;
+
 
   links: SidebarLink[] = [
     {
@@ -123,6 +125,10 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
   }
 
   navigateChild(i, self = this) {
+    if (self.forceOutcomesOpen) {
+      self.navigate(1, self, true);
+    }
+
     self.buildOutcomes(self.outcomes, true);
     self.store.dispatch({
       type: 'NAVIGATECHILD',
