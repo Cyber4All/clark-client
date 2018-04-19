@@ -57,6 +57,7 @@ import {
 import { CoreModule } from '../core/core.module';
 import { CollectionModule } from './collections/collection.module';
 import { DetailsModule } from './learning-object-details/details/details.module';
+import { UserProfileLearningObjectsResolver } from './user-profile/learning-objects.resolver';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -99,6 +100,6 @@ import { DetailsModule } from './learning-object-details/details/details.module'
     TooltipModule,
     DetailsModule, 
   ],
-  providers: [LearningObjectService, CartService]
+  providers: [LearningObjectService, CartService, UserProfileLearningObjectsResolver]
 })
 export class CubeModule {}

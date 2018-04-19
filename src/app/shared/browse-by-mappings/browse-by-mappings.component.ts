@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked, ChangeDetectorRef, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked, ChangeDetectorRef, SimpleChanges, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { ModalService, Position, ModalListElement } from '../../shared/modals';
 import { SuggestionService } from '../../onion/learning-object-builder/suggestion/services/suggestion.service';
 import { OutcomeService } from '../../core/outcome.service';
@@ -29,6 +29,8 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   @Output('done') done = new EventEmitter<boolean>();
   @Output('sourceChanged') sourceChanged = new EventEmitter<string>();
 
+  @ViewChild('mappingSearchInput', {read: ElementRef}) mappingsSearchInput: ElementRef;
+
   // TODO: sources should be fetched from an API route to allow dynamic configuration
   sources = [
     'CAE Cyber Defense',
@@ -57,6 +59,8 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: SuggestionService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.mappingService.author = this.sources[0];
+
     // check if the service has filterText and author and conditionally populate component
     // if someone opens component, performs a query, closes the component, and then reopens the component
     if (this.mappingService.filterText && this.mappingService.author) {
@@ -67,7 +71,6 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
     }
 
     // if this.inflow === undefined, set it to true, else leave it alone
-    console.log('inflow', this.inflow);
     if (this.inflow == undefined) {
       this.inflow = true;
     }
@@ -96,7 +99,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
 
   bindFilterInput() {
     this.mappingsFilterInput = Observable
-      .fromEvent(document.getElementById('mappingsFilter'), 'input')
+      .fromEvent(this.mappingsSearchInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value).debounceTime(650);
 
       // listen for user to stop typing in the text input and perform query

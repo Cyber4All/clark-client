@@ -9,13 +9,18 @@ import { Subject } from 'rxjs/Subject';
 import { Router, NavigationEnd, RouterEvent } from '@angular/router';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { map } from 'rxjs/operator/map';
+import * as io from 'socket.io-client';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   user: User = undefined;
-  isLoggedIn = new Subject<boolean>();
+  // isLoggedIn = new Subject<boolean>();
   headers = new Headers();
   inUse: string;  
+  isLoggedIn = new BehaviorSubject<boolean>(false);
+  socket;
+  socketWatcher: Observable<string>;
 
   constructor(
     private http: HttpClient,
@@ -25,12 +30,18 @@ export class AuthService {
     if (this.cookies.get('presence')) {
       this.validate().then(
         val => {
-          this.isLoggedIn.next(true);
+          this.changeStatus(true);
         },
         error => {
-          this.isLoggedIn.next(false);
+          this.changeStatus(false);
         }
       );
+    }
+  }
+
+  private changeStatus(status: boolean) {
+    if (this.isLoggedIn.getValue() !== status) {
+      this.isLoggedIn.next(status);
     }
   }
 
@@ -70,6 +81,14 @@ export class AuthService {
       );
   }
 
+  refreshToken(): Promise<void> {
+    return this.http.get(environment.apiURL + '/users/tokens/refresh', { withCredentials: true }).toPromise().then(val => {
+      this.user = this.makeUserFromCookieResponse(val);
+    }, error => {
+      throw error;
+    });
+  }
+
   login(user: { username: string; password: string }): Promise<any> {
     return this.http
       .post<User>(environment.apiURL + '/users/tokens', user, {
@@ -79,11 +98,11 @@ export class AuthService {
       .then(
         val => {
           this.user = this.makeUserFromCookieResponse(val);
-          this.isLoggedIn.next(true);
+          this.changeStatus(true);
           return this.user;
         },
         error => {
-          this.isLoggedIn.next(false);
+          this.changeStatus(false);
           this.user = undefined;
           throw error;
         }
@@ -99,7 +118,7 @@ export class AuthService {
       .toPromise()
       .then(val => {
         this.user = undefined;
-        this.isLoggedIn.next(false);
+        this.changeStatus(false);
       });
   }
 
@@ -171,5 +190,35 @@ export class AuthService {
     // TODO: Delete token specific props
     let user = User.instantiate(val);
     return user;
+  }
+
+  establishSocket() {
+    if (!this.socketWatcher) {
+      this.socketWatcher = new Observable(observer => {
+        this.socket = io(environment.apiURL + '?user=' + this.username);
+
+        this.socket.on('message', (val) => {
+          if (val === 'VERIFIED_EMAIL') {
+            this.validate().then(() => {
+              if (!this.user.emailVerfied) {
+                // the link must have been clicked in a different browser, let's refresh the token
+                this.refreshToken().then(() => {
+                  observer.next('VERIFIED_EMAIL');
+                  this.destroySocket();
+                });
+              }
+            });
+          }
+        });
+      });
+    }
+
+    return this.socketWatcher;
+  }
+
+  destroySocket() {
+    if (this.socket) {
+      this.socket.emit('close');
+    }
   }
 }

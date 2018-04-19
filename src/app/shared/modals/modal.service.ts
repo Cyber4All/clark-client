@@ -29,12 +29,17 @@ export class ModalService {
     name: string,
     title: string,
     text: string,
+    canCancel?: boolean,
     classes?: string,
     buttonGroupClasses?: string,
     buttons?: Array<ModalListElement>
   ): Observable<string> {
 
     let toSend = {name: name, title: title, text: text};
+
+    if (canCancel) {
+      toSend['canCancel'] = canCancel;
+    }
 
     if (classes) {
       toSend['classes'] = classes;

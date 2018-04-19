@@ -1,5 +1,5 @@
 import { UserService } from './../../../core/user.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   USER_ROUTES,
   PUBLIC_LEARNING_OBJECT_ROUTES
@@ -33,11 +33,14 @@ export class UserInformationComponent implements OnInit, OnChanges {
     private auth: AuthService,
     private http: Http,
     private router: Router,
-    private notifications: NotificationService
+    private notifications: NotificationService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    
+    this.route.data.subscribe(val => {
+      this.objects = val.learningObjects;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

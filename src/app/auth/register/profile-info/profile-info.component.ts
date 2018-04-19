@@ -24,7 +24,7 @@ export class ProfileInfoComponent implements OnInit {
       this.auth.identifiersInUse(val).then(res => {
         let data = JSON.parse(res);
         this.result = data.inUse;
-        if (!this.result) { 
+        if (this.result) { 
           this.register.setEmailValidation(this.result);
         } else {
           this.register.error("This username is already taken"); 
