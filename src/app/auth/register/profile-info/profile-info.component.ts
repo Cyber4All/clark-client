@@ -11,8 +11,7 @@ import { RegisterComponent} from '../../register/register.component';
 })
 export class ProfileInfoComponent implements OnInit {
   @Input() group: FormGroup;
-  @ViewChild('usernameInput', {read: ElementRef}) usernameInput: ElementRef;
-  emailValidation : any; 
+  @ViewChild('usernameInput', {read: ElementRef}) usernameInput: ElementRef; 
   result: boolean; 
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
@@ -25,10 +24,10 @@ export class ProfileInfoComponent implements OnInit {
         let data = JSON.parse(JSON.stringify(res));
         this.result = data.inUse;
         if (!this.result) { 
-          this.register.setEmailValidation(this.result);
+          this.register.setInUseUsername(this.result);
         } else {
           this.register.error("This username is already taken"); 
-          this.register.setEmailValidation(!this.result);
+          this.register.setInUseUsername(this.result);
         }
      })
     }

@@ -16,7 +16,6 @@ export class GravatarInfoComponent implements OnInit {
   @Input() group: FormGroup;
   @Input() email: String;
   @ViewChild('emailInput', {read: ElementRef}) emailInput: ElementRef;
-  emailValidation : any; 
   result: boolean; 
 
   size: number = 200; 
@@ -33,10 +32,10 @@ export class GravatarInfoComponent implements OnInit {
         let data = JSON.parse(JSON.stringify(res));
         this.result = data.inUse;
         if (!this.result) { 
-          this.register.setEmailValidation(this.result);
+          this.register.setInUseEmail(this.result);
         } else {
           this.register.error("This email is already taken"); 
-          this.register.setEmailValidation(this.result);
+          this.register.setInUseEmail(this.result);
         }
      })
    })

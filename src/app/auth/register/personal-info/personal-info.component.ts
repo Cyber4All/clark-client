@@ -13,7 +13,6 @@ import { RegisterComponent} from '../../register/register.component';
 export class PersonalInfoComponent implements OnInit {
   @Input() group: FormGroup;
   @ViewChild('emailInput', {read: ElementRef}) emailInput: ElementRef;
-  emailValidation : any; 
   result: boolean; 
 
   constructor(private auth: AuthService, private register: RegisterComponent) { }
@@ -25,10 +24,10 @@ export class PersonalInfoComponent implements OnInit {
         let data = JSON.parse(JSON.stringify(res));
         this.result = data.inUse;
         if (!this.result) { 
-          this.register.setEmailValidation(this.result);
+          this.register.setInUseEmail(this.result);
         } else {
           this.register.error("This email is already taken"); 
-          this.register.setEmailValidation(!this.result);
+          this.register.setInUseEmail(this.result);
         }
      })
     }
