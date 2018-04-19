@@ -22,13 +22,13 @@ export class ProfileInfoComponent implements OnInit {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     Observable.fromEvent(this.usernameInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
       this.auth.identifiersInUse(val).then(res => {
-        let data = JSON.parse(res);
+        let data = JSON.parse(JSON.stringify(res));
         this.result = data.inUse;
-        if (this.result) { 
+        if (!this.result) { 
           this.register.setEmailValidation(this.result);
         } else {
           this.register.error("This username is already taken"); 
-          this.register.setEmailValidation(this.result);
+          this.register.setEmailValidation(!this.result);
         }
      })
     }

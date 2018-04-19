@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
   loading: boolean = false;
   verified: boolean = false;
   check: boolean; 
-  emailCheck: boolean= false; 
+  inUse: boolean= false; 
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
 
@@ -151,6 +151,9 @@ export class RegisterComponent implements OnInit {
       this.error('Please enter a valid email!');
       this.loading = false;
       return false;
+    } else if (this.inUse) {
+      this.error('This email is already taken');
+      return false; 
     }
     return true;
   }
@@ -201,7 +204,7 @@ export class RegisterComponent implements OnInit {
         } else if (!this.getvalidEmail()) {
             this.error('Please enter a valid email!');
             this.check = false; 
-        } else if (!this.emailCheck) {
+        } else if (this.inUse) {
             this.error('This email is already taken');
             this.check = false; 
         } else {
@@ -216,6 +219,9 @@ export class RegisterComponent implements OnInit {
             this.regForm.controls['verifypassword'].value === null) { 
             this.error('Please fill in all fields!');
             this.check = false; 
+        } else if (this.inUse) {
+          this.error('This username is already taken');
+          this.check = false; 
         } else {
             this.check = true; 
         }
@@ -243,6 +249,6 @@ export class RegisterComponent implements OnInit {
   }
 
   setEmailValidation(personalEmail : boolean) { 
-    this.emailCheck = personalEmail; 
+    this.inUse = personalEmail; 
   }
 }

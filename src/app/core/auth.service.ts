@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,8 @@ export class AuthService {
   user: User = undefined;
   // isLoggedIn = new Subject<boolean>();
   headers = new Headers();
-  inUse: string;  
+  httpHeaders = new HttpHeaders(); 
+  inUse: object;  
   isLoggedIn = new BehaviorSubject<boolean>(false);
   socket;
   socketWatcher: Observable<string>;
@@ -155,9 +156,10 @@ export class AuthService {
 
   identifiersInUse(username: string) {
     return this.http.get(
-        environment.apiURL + '/users/identifiers/active?=' + username, { 
-          withCredentials: true, 
-          responseType: 'text'
+        environment.apiURL + '/users/identifiers/active?username=' + username, { 
+          headers: this.httpHeaders,
+          withCredentials: true,
+          //responseType: 'text'
         })
         .toPromise()
         .then(val => {
