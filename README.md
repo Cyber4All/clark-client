@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/Cyber4All/cube/tree/production.svg?style=svg)](https://circleci.com/gh/Cyber4All/cube/tree/production)
+[![CircleCI](https://circleci.com/gh/Cyber4All/clark-client/tree/master.svg?style=svg)](https://circleci.com/gh/Cyber4All/clark-client/tree/master)
 
 # CLARK
 The official [CLARK Platform](https://clark.center) client, created with :heart: by the Cyber4All team.
