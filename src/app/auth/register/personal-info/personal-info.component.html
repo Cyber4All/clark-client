@@ -13,13 +13,14 @@
         </div>
 
         <div class="input email">
-          <input name="email" type="text" placeholder="Email address" formControlName ="email"/>
+          <input #emailInput name="email" type="text" placeholder="Email address" formControlName ="email"/>
           <i class="far fa-at"></i>
         </div>
         <div class="input organization">
           <input name="organization" type="text" placeholder="Organization" formControlName ="organization"/>
           <i class="far fa-building"></i>
         </div>
+        {{ this.result }}
       </form>
    
 

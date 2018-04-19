@@ -7,11 +7,15 @@ import { CookieService } from 'ngx-cookie';
 import { User } from '@cyber4all/clark-entity';
 import { Subject } from 'rxjs/Subject';
 import { Router, NavigationEnd, RouterEvent } from '@angular/router';
+import { Http, Headers, ResponseContentType } from '@angular/http';
+import { map } from 'rxjs/operator/map';
 
 @Injectable()
 export class AuthService {
   user: User = undefined;
   isLoggedIn = new Subject<boolean>();
+  headers = new Headers();
+  inUse: string;  
 
   constructor(
     private http: HttpClient,
@@ -128,6 +132,19 @@ export class AuthService {
       { email },
       { withCredentials: true, responseType: 'text' }
     );
+  }
+
+  identifiersInUse(username: string) {
+    return this.http.get(
+        environment.apiURL + '/users/identifiers/active?=' + username, { 
+          withCredentials: true, 
+          responseType: 'text'
+        })
+        .toPromise()
+        .then(val => {
+          this.inUse = val; 
+          return this.inUse;
+        });
   }
 
   makeRedirectURL(url: string) {

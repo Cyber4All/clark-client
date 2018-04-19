@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
 import { trigger,style,transition,animate,keyframes,query,stagger } from '@angular/animations';
+import { PersonalInfoComponent} from '../register/personal-info/personal-info.component';
 
 @Component({
   selector: 'clark-register',
@@ -81,6 +82,7 @@ export class RegisterComponent implements OnInit {
   loading: boolean = false;
   verified: boolean = false;
   check: boolean; 
+  emailCheck: boolean= false; 
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
 
@@ -199,6 +201,9 @@ export class RegisterComponent implements OnInit {
         } else if (!this.getvalidEmail()) {
             this.error('Please enter a valid email!');
             this.check = false; 
+        } else if (!this.emailCheck) {
+            this.error('This email is already taken');
+            this.check = false; 
         } else {
             this.check = true; 
         }
@@ -235,5 +240,9 @@ export class RegisterComponent implements OnInit {
       /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g
       ) !== null;
     return email; 
+  }
+
+  setEmailValidation(personalEmail : boolean) { 
+    this.emailCheck = personalEmail; 
   }
 }

@@ -2,7 +2,7 @@
       <form [formGroup]= "group">
           <div class="title light">Step 2/3 | Create A User Profile</div><hr/>
         <div class="input username">
-          <input name="username" type="text" placeholder="Username" formControlName ="username"/>
+          <input #usernameInput name="username" type="text" placeholder="Username" formControlName ="username"/>
           <i class="far fa-user"></i>
         </div>
         <div class="input password">
