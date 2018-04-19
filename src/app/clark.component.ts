@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
@@ -10,21 +11,23 @@ import { ModalService, ModalListElement } from './shared/modals';
 })
 export class ClarkComponent {
   connectedToSocket: boolean;
+  isSupportedBrowser: boolean;
 
-  constructor(private authService: AuthService, private cartService: CartV2Service, private modal: ModalService) {
-    this.connectedToSocket = false;
+  constructor(private authService: AuthService, private cartService: CartV2Service, private modal: ModalService, private router: Router) {
+    this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
+    !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
+      this.connectedToSocket = false;
+      this.authService.isLoggedIn.subscribe(val => {
+        if (val) {
+          this.cartService.updateUser();
+          this.cartService.getCart();
 
-    this.authService.isLoggedIn.subscribe(val => {
-      if (val) {
-        this.cartService.updateUser();
-        this.cartService.getCart();
+          this.connectedToSocket = this.attemptSocketConnection();
 
-        this.connectedToSocket = this.attemptSocketConnection();
-
-      } else if (this.connectedToSocket) {
-        this.authService.destroySocket();
-      }
-    });
+        } else if (this.connectedToSocket) {
+          this.authService.destroySocket();
+        }
+      });
   }
 
   /**

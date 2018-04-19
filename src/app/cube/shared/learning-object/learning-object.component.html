@@ -13,7 +13,7 @@
         Updated {{ date | date:'mediumDate' }}
       </div>
     </div>
-    <div class="goals" *ngIf = "learningObject.goals[0].text" [innerHtml]="goals()">
+    <div class="goals" *ngIf="this.learningObject.goals[0]?.text" [innerHtml]="goals()">
     </div>
   </div>
 </div>
