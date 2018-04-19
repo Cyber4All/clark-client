@@ -360,9 +360,6 @@ export class LearningObjectBuilderComponent implements OnInit {
       });
       return false;
     }
-
-    console.log('outcomes', this.learningObject.outcomes);
-
     // check outcomes
     const badOutcomes = this.learningObject.outcomes.map(
       (x, i) => (!x.text || x.text === '') ? i : undefined
@@ -382,6 +379,10 @@ export class LearningObjectBuilderComponent implements OnInit {
         }
       });
       this.notificationService.notify('Error!', 'You cannot submit a learning outcome without outcome text!', 'bad', 'far fa-times');
+      return false;
+    } 
+    if (!this.learningObject.goals[0].text) {
+      this.notificationService.notify('Error!', 'You cannot submit a learning object without a decription!', 'bad', 'far fa-times');
       return false;
     }
     return true;
