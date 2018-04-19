@@ -98,7 +98,7 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     NotificationModule,
     CollectionModule,
     TooltipModule,
-    DetailsModule
+    DetailsModule, 
   ],
   providers: [LearningObjectService, CartService, UserProfileLearningObjectsResolver]
 })

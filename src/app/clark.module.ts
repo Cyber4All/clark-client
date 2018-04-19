@@ -13,7 +13,9 @@ import { OnionModule } from './onion/onion.module';
 import { NotificationModule } from './shared/notifications';
 import { ModalModule } from './shared/modals';
 import { AuthService } from './core/auth.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
+
 
 @NgModule({
   imports: [
@@ -22,7 +24,8 @@ import { UnsupportedComponent } from './unsupported.component';
     HttpClientModule,
     ClarkRoutingModule,
     SharedModule,
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
+    BrowserAnimationsModule
   ],
   declarations: [
     ClarkComponent,
