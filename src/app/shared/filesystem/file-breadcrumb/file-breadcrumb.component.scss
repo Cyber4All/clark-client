@@ -1,0 +1,13 @@
+.file-breadcrumb {
+  .link {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 5px;
+    padding: 0 7px;
+    border-radius: 4px;
+  }
+  & :hover {
+    cursor: pointer;
+    background: #e9e9e9;
+  }
+}

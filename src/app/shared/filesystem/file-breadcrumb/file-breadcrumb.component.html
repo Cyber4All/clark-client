@@ -1,0 +1,9 @@
+<div class="file-breadcrumb">
+  <span *ngIf="(paths$|async)?.length" class="link" (click)="jumpTo(0, true)">Root</span>
+  <ng-container *ngFor="let path of (paths$ | async); let i=index;">
+    <span>
+      <i class="far fa-chevron-right arrow"></i>
+    </span>
+    <span class="link" (click)="jumpTo(i)">{{path}}</span>
+  </ng-container>
+</div>

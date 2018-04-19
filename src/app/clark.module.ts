@@ -1,5 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
 import { ClarkComponent } from './clark.component';
@@ -28,6 +28,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule
   ],
   declarations: [ClarkComponent],
-  bootstrap: [ClarkComponent],
+  bootstrap: [ClarkComponent]
 })
-export class ClarkModule { }
+export class ClarkModule {}
