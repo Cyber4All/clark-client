@@ -41,8 +41,8 @@ import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.co
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule, 
+    HttpClientModule
   ],
-  providers: [CanResetPasswordGuard, AuthResolve],
+  providers: [CanResetPasswordGuard, AuthResolve]
 })
-export class AuthModule { }
+export class AuthModule {}

@@ -2,10 +2,19 @@ import { EventEmitter, forwardRef } from '@angular/core';
 import { Output } from '@angular/core';
 import { RecaptchaValidator } from './recaptcha-validator.service';
 import { ElementRef, Injector, NgZone } from '@angular/core';
-import { OnInit, AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import {
+  OnInit,
+  AfterViewInit
+} from '@angular/core/src/metadata/lifecycle_hooks';
 import { Input } from '@angular/core';
 import { Directive } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl, Validators, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NgControl,
+  Validators,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms';
 
 export interface ReCaptchaConfig {
   theme?: 'dark' | 'light';
@@ -18,7 +27,7 @@ declare const grecaptcha: any;
 declare global {
   interface Window {
     grecaptcha: any;
-    reCaptchaLoad: () => void
+    reCaptchaLoad: () => void;
   }
 }
 
@@ -33,7 +42,8 @@ declare global {
     RecaptchaValidator
   ]
 })
-export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAccessor {
+export class RecaptchaDirective
+  implements OnInit, AfterViewInit, ControlValueAccessor {
   @Input() key: string;
   @Input() config: ReCaptchaConfig = {};
   @Input() lang: string;
@@ -49,8 +59,12 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
   private onChange: (value: string) => void;
   private onTouched: (value: string) => void;
 
-  constructor(private element: ElementRef, private ngZone: NgZone, private injector: Injector, private validator: RecaptchaValidator) {
-  }
+  constructor(
+    private element: ElementRef,
+    private ngZone: NgZone,
+    private injector: Injector,
+    private validator: RecaptchaValidator
+  ) {}
 
   ngOnInit() {
     this.registerReCaptchaCallback();
@@ -61,8 +75,8 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
     window.reCaptchaLoad = () => {
       const config = {
         ...this.config,
-        'sitekey': this.key,
-        'callback': this.onSuccess.bind(this),
+        sitekey: this.key,
+        callback: this.onSuccess.bind(this),
         'expired-callback': this.onExpired.bind(this)
       };
       this.widgetId = this.render(this.element.nativeElement, config);
@@ -91,8 +105,7 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
     this.control.updateValueAndValidity();
   }
 
-  writeValue(obj: any): void {
-  }
+  writeValue(obj: any): void {}
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -110,9 +123,8 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
       this.captchaExpired.emit();
       this.onChange(null);
       this.onTouched(null);
-      this.captchaSuccess.emit(false)
+      this.captchaSuccess.emit(false);
     });
-
   }
 
   /**
@@ -125,7 +137,7 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
       this.captchaResponse.next(token);
       this.onChange(token);
       this.onTouched(token);
-      this.captchaSuccess.emit(true)
+      this.captchaSuccess.emit(true);
     });
   }
 
@@ -134,7 +146,7 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
    * @param token
    */
   verifyToken(token: string) {
-    this.control.setAsyncValidators(this.validator.validateToken(token))
+    this.control.setAsyncValidators(this.validator.validateToken(token));
     this.control.updateValueAndValidity();
   }
 
@@ -152,7 +164,9 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
    * Resets the reCAPTCHA widget.
    */
   reset(): void {
-    if (!this.widgetId) return;
+    if (!this.widgetId) {
+      return;
+    }
     grecaptcha.reset(this.widgetId);
     this.onChange(null);
   }
@@ -162,15 +176,16 @@ export class RecaptchaDirective implements OnInit, AfterViewInit, ControlValueAc
    * @returns {string}
    */
   getResponse(): string {
-    if (!this.widgetId)
+    if (!this.widgetId) {
       return grecaptcha.getResponse(this.widgetId);
+    }
   }
 
   /**
    * Add the script
    */
   addScript() {
-    let script = document.createElement('script');
+    const script = document.createElement('script');
     const lang = this.lang ? '&hl=' + this.lang : '';
     script.src = `https://www.google.com/recaptcha/api.js?onload=reCaptchaLoad&render=explicit${lang}`;
     script.async = true;
