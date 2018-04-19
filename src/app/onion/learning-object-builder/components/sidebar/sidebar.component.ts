@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges, IterableDiffers, DoCheck, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter,
+  SimpleChanges, IterableDiffers, DoCheck, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectStoreService } from '../../store';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
