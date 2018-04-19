@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges, IterableDiffers, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter,
+  SimpleChanges, IterableDiffers, DoCheck, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectStoreService } from '../../store';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -18,11 +19,14 @@ interface SidebarLink {
   templateUrl: 'sidebar.component.html',
   styleUrls: ['sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, DoCheck, OnChanges {
+export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewChecked {
   @Input() outcomes: LearningOutcome[];
   @Input() learningObjectName;
   @Output() newOutcome = new EventEmitter();
   @Output() upload = new EventEmitter();
+
+  forceOutcomesOpen = true;
+  loaded = false;
 
 
   links: SidebarLink[] = [
@@ -75,9 +79,13 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
 
   ngDoCheck() {
     const changes = this.outcomesDiffer.diff(this.outcomes);
-    if (changes) {
+    if (changes && this.loaded) {
       this.buildOutcomes(changes.collection);
     }
+  }
+
+  ngAfterViewChecked() {
+    this.loaded = true;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -123,6 +131,10 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges {
   }
 
   navigateChild(i, self = this) {
+    if (self.forceOutcomesOpen) {
+      self.navigate(1, self, true);
+    }
+
     self.buildOutcomes(self.outcomes, true);
     self.store.dispatch({
       type: 'NAVIGATECHILD',

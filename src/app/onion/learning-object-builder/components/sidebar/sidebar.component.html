@@ -9,7 +9,7 @@
       <div class="menu-item-inner">{{ link.name }}</div>
       <i class="fas fa-chevron-right"></i>
     </div>
-    <div *ngIf="link.children" class="menu-item-group" [ngClass]="{'open': activeIndex === i}">
+    <div *ngIf="link.children" class="menu-item-group" [ngClass]="{'open': activeIndex === i || forceOutcomesOpen}">
       <div *ngFor="let childlink of link.children; let childi = index" class="menu-item" [ngClass]="{'active': activeChildIndex === childi, 'externalAction': childlink.externalAction}" (click)="childlink.action(childi, self)">
         <div class="menu-item-inner"><i *ngIf="childlink.externalAction" [ngClass]="{'fas fa-plus': childlink.externalAction}"></i>{{ childlink.name }}</div>
         <i class="fas fa-chevron-right"></i>
