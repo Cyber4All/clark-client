@@ -215,14 +215,10 @@ export class AuthService {
         const pdfBlob = new Blob([blob], { type: 'application/pdf' });
 
         const data = window.URL.createObjectURL(pdfBlob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.target = '_blank';
-        link.click();
-        setTimeout(function () {
-          // For Firefox it is necessary to delay revoking the ObjectURL
-          window.URL.revokeObjectURL(data);
-        }, 100);
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('src', data);
+        iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
+        document.getElementById('card-printer').appendChild(iframe);
     }, error => {
       throw error;
     });
