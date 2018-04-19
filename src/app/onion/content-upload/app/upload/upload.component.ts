@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import * as uuid from 'uuid';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { getPaths } from 'app/shared/filesystem/file-functions';
 type LearningObjectFile = File;
 
@@ -37,7 +37,7 @@ export class UploadComponent implements OnInit {
 
   private learningObjectName: string;
 
-  private dzError: string = '';
+  private dzError = '';
 
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
@@ -52,9 +52,7 @@ export class UploadComponent implements OnInit {
   learningObject: LearningObject = new LearningObject(null, '');
 
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  submitting: boolean = false;
-
-  file_descriptions: Map<string, string> = new Map();
+  submitting = false;
 
   openPath: string;
 
@@ -72,7 +70,11 @@ export class UploadComponent implements OnInit {
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']);
   }
-
+  /**
+   * Opens Dropzone upload dialog
+   *
+   * @memberof UploadComponent
+   */
   openDZ() {
     this.dzDirectiveRef.dropzone().clickableElements[0].click();
   }
@@ -105,9 +107,21 @@ export class UploadComponent implements OnInit {
       );
     }
   }
+  /**
+   * Updates next valud on files$
+   *
+   * @private
+   * @memberof UploadComponent
+   */
   private updateFileSubscription() {
     this.files$.next(<LearningObjectFile[]>this.learningObject.materials.files);
   }
+  /**
+   * Updates next value on folderMeta
+   *
+   * @private
+   * @memberof UploadComponent
+   */
   private updateFolderMeta() {
     this.folderMeta$.next(this.learningObject.materials['folderDescriptions']);
   }
@@ -151,7 +165,9 @@ export class UploadComponent implements OnInit {
     }
     file.id = this.getUUID();
     const isFolder = this.isFolder(file);
-    if (isFolder) this.mapToPath(file);
+    if (isFolder) {
+      this.mapToPath(file);
+    }
     const queue = this.queuedUploads$.getValue();
     queue.push(file);
     this.queuedUploads$.next(queue);
@@ -186,9 +202,13 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   private isFolder(file: File): boolean {
-    if (!file.fullPath) return false;
+    if (!file.fullPath) {
+      return false;
+    }
     const paths: string[] = getPaths(file.fullPath);
-    if (paths.length > 0) return true;
+    if (paths.length > 0) {
+      return true;
+    }
     return false;
   }
 
@@ -269,7 +289,7 @@ export class UploadComponent implements OnInit {
    */
   fixURLs() {
     for (let i = 0; i < this.learningObject.materials.urls.length; i++) {
-      let url = this.learningObject.materials.urls[i];
+      const url = this.learningObject.materials.urls[i];
       if (!url.title || !url.url) {
         this.removeURL(i);
       } else if (!url.url.match(/https?:\/\/.+/i)) {
@@ -340,37 +360,18 @@ export class UploadComponent implements OnInit {
   async upload(): Promise<LearningObjectFile[]> {
     const queue = this.queuedUploads$.getValue();
     if (queue.length >= 1) {
-      // this.mapFileDescriptions();
       this.uploading$.next(true);
-      let learningObjectFiles = await this.fileStorageService.upload(
+      const learningObjectFiles = await this.fileStorageService.upload(
         this.learningObject,
         queue,
         this.filePathMap
       );
       this.queuedUploads$.next([]);
-      // for (let i = 0; i < learningObjectFiles.length; i++) {
-      //   learningObjectFiles[i]['description'] = this.file_descriptions.get(
-      //     learningObjectFiles[i]['id']
-      //   );
-      // }
 
       return learningObjectFiles;
     }
     this.uploading$.next(false);
     return Promise.resolve([]);
-  }
-  /**
-   * Maps Learning Object Files to their descriptions
-   *
-   * @private
-   * @returns
-   * @memberof UploadComponent
-   */
-  private mapFileDescriptions() {
-    const queue = this.queuedUploads$.getValue();
-    for (let file of queue) {
-      this.file_descriptions.set(file.id, file.description);
-    }
   }
 
   /**
@@ -388,7 +389,13 @@ export class UploadComponent implements OnInit {
       console.log(e);
     }
   }
-
+  /**
+   * Adds description to file or folderMeat
+   *
+   * @param {any} file
+   * @returns {Promise<void>}
+   * @memberof UploadComponent
+   */
   async handleEdit(file): Promise<void> {
     try {
       if (!file.isFolder) {
@@ -419,21 +426,41 @@ export class UploadComponent implements OnInit {
       console.log(e);
     }
   }
-
+  /**
+   * Deletes file from materials
+   *
+   * @private
+   * @param {string[]} paths
+   * @returns {Promise<any>}
+   * @memberof UploadComponent
+   */
   private deleteFromMaterials(paths: string[]): Promise<any> {
-    for (let path of paths) {
+    for (const path of paths) {
       const index = this.findFile(path);
       this.learningObject.materials.files.splice(index, 1);
     }
     return this.learningObjectService.save(this.learningObject);
   }
-
+  /**
+   * Deletes file from S3
+   *
+   * @private
+   * @param {string[]} files
+   * @memberof UploadComponent
+   */
   private deleteFiles(files: string[]) {
-    for (let file of files) {
+    for (const file of files) {
       this.fileStorageService.delete(this.learningObject, file);
     }
   }
-
+  /**
+   * Finds index of file
+   *
+   * @private
+   * @param {string} path
+   * @returns {number}
+   * @memberof UploadComponent
+   */
   private findFile(path: string): number {
     let index = -1;
     const files = this.learningObject.materials.files;
@@ -448,7 +475,14 @@ export class UploadComponent implements OnInit {
     }
     return index;
   }
-
+  /**
+   * Finds index of folder
+   *
+   * @private
+   * @param {string} path
+   * @returns {number}
+   * @memberof UploadComponent
+   */
   private findFolder(path: string): number {
     let index = -1;
     const folders = this.learningObject.materials['folderDescriptions'];
@@ -461,7 +495,13 @@ export class UploadComponent implements OnInit {
     }
     return index;
   }
-
+  /**
+   * Generates UUID
+   *
+   * @private
+   * @returns {string}
+   * @memberof UploadComponent
+   */
   private getUUID(): string {
     return uuid.v1();
   }

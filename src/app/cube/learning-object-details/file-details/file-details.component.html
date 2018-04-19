@@ -9,7 +9,7 @@
           Files and Folders
         </div>
         <ng-container>
-          <div class="file-count">
+          <div class="description">
             {{ materials.files.length }} Files
           </div>
         </ng-container>
@@ -17,10 +17,9 @@
 
 
       <div class="file-listing">
-        <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
-        <clark-file-list-view *ngIf="view==='list'" [node$]="currentNode$" (emitPath)="openFolder($event)"></clark-file-list-view>
-        <clark-file-grid-view *ngIf="view==='grid'" [node$]="currentNode$" (emitPath)="openFolder($event)"></clark-file-grid-view>
+        <clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$"></clark-file-browser>
       </div>
+
     </section>
 
     <section class="links" *ngIf="materials.urls.length > 0">

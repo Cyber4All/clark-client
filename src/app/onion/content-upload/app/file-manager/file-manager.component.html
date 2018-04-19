@@ -1,40 +1,5 @@
-<div class="top-wrapper">
-  <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
-  <div class="view-switcher inline-flex right">
-    <div class="inline-flex">
-      <div (click)="openNewOptions($event)" class="button new">
-        New
-      </div>
-      <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">
-        <i class="fas fa-th icon-clean"></i>
-      </span>
-      <span *ngIf="view==='grid'" (click)="view='list'" class="button clean">
-        <i class="fas fa-list icon-clean"></i>
-      </span>
-    </div>
-  </div>
-
-</div>
-<div class="help">
-  {{ tips.FILE_OPTIONS }}
-</div>
-<div (click)="handleClick($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length}">
-  <div *ngIf="!(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length" class="dropzone-message">
-    <div class="file-icons">
-      <i class="fal fa-image fa-2x"></i>
-      <i class="fal fa-file-pdf fa-2x"></i>
-      <i class="fal fa-file-word fa-2x"></i>
-    </div>
-    <span>Drop files and folders or click here</span>
-  </div>
-  <clark-file-grid-view *ngIf="view==='grid' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
-    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)">
-  </clark-file-grid-view>
-  <clark-file-list-view *ngIf="view==='list' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
-    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)">
-  </clark-file-list-view>
-</div>
-
+<clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$" [handleRemove$]="removal$" (containerClick)="handleContainerClick($event)" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)"
+  canManage="true"></clark-file-browser>
 
 <!-- New Options Context Menu -->
 <context-menu (close)="editDescription=false" #newOptions>

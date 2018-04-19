@@ -2,7 +2,7 @@
   <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
   <div class="view-switcher inline-flex right">
     <div class="inline-flex">
-      <div (click)="openNewOptions($event)" class="button new">
+      <div *ngIf="canManage" (click)="emitNewOptionClick($event)" class="button new">
         New
       </div>
       <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">
@@ -15,11 +15,11 @@
   </div>
 
 </div>
-<div class="help">
+<div *ngIf="canManage" class="help">
   {{ tips.FILE_OPTIONS }}
 </div>
-<div (click)="handleClick($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length}">
-  <div *ngIf="!(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length" class="dropzone-message">
+<div (click)="emitContainerClick($event)" class="flex-wrapper dz-clickable" [ngClass]="{empty: !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length}">
+  <div *ngIf="canManage && !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length" class="dropzone-message">
     <div class="file-icons">
       <i class="fal fa-image fa-2x"></i>
       <i class="fal fa-file-pdf fa-2x"></i>

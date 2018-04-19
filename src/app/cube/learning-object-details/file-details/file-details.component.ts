@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {
   DirectoryTree,
   DirectoryNode
@@ -13,75 +13,19 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'file-details.component.html',
   styleUrls: ['file-details.component.scss']
 })
-export class FileDetailsComponent implements OnInit, OnDestroy {
+export class FileDetailsComponent implements OnInit {
   @Input() length: string;
   @Input() materials: Material;
 
-  private directoryTree: DirectoryTree = new DirectoryTree();
-  private subscriptions: Subscription[] = [];
-  currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
-    DirectoryNode
-  >(null);
-
-  currentPath$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  view = 'list';
-  forceCollapse$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
-  );
+  files$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  folderMeta$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   constructor() {}
 
   ngOnInit() {
-    this.constructTree();
-    this.subscriptions.push(
-      this.currentPath$.subscribe(() => {
-        this.refreshNode();
-      })
-    );
-  }
-
-  private constructTree() {
-    this.directoryTree.addFiles(this.materials.files);
-    this.currentNode$.next(this.directoryTree.traversePath([]));
-    if (this.materials['folderDescriptions']) {
-      this.linkFolderMeta();
-    }
-  }
-
-  private linkFolderMeta() {
-    // FIXME: Add folder descriptions to entity
-    const folders = this.materials['folderDescriptions'];
-    for (const folder of folders) {
-      const paths = getPaths(folder.path, false);
-      const node = this.directoryTree.traversePath(paths);
-      if (node) {
-        node.description = folder.description;
-      }
-    }
-  }
-  /**
-   * Send force collapse signal to folder views
-   *
-   * @memberof FileDetailsComponent
-   */
-  forceCollapse() {
-    this.forceCollapse$.next(true);
-  }
-
-  openFolder(path: string) {
-    const paths = this.currentPath$.getValue();
-    paths.push(path);
-    this.currentPath$.next(paths);
-    this.refreshNode();
-  }
-  private refreshNode() {
-    const path = this.currentPath$.getValue();
-    this.currentNode$.next(this.directoryTree.traversePath(path));
-  }
-
-  ngOnDestroy() {
-    for (const sub of this.subscriptions) {
-      sub.unsubscribe();
-    }
+    const files = this.materials.files;
+    const folderMeta = this.materials['folderDescriptions'];
+    this.files$.next(files);
+    this.folderMeta$.next(folderMeta);
   }
 }

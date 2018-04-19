@@ -18,6 +18,7 @@ import {
 } from 'app/shared/filesystem/DirectoryTree';
 import { getPaths } from 'app/shared/filesystem/file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { Removal } from 'app/shared/filesystem/file-browser/file-browser.component';
 type LearningObjectFile = File;
 
 export type FileEdit = {
@@ -27,11 +28,11 @@ export type FileEdit = {
 };
 
 @Component({
-  selector: 'file-manager',
+  selector: 'onion-file-manager',
   templateUrl: './file-manager.component.html',
   styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
 })
-export class FileManagerComponent implements OnInit, OnDestroy {
+export class FileManagerComponent implements OnInit {
   @ViewChild('fileOptions') public fileOptions: ContextMenuComponent;
   @ViewChild('newOptions') public newOptions: ContextMenuComponent;
 
@@ -45,70 +46,19 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() path: EventEmitter<string> = new EventEmitter<string>();
 
-  private subscriptions: Subscription[] = [];
-  private filesystem: DirectoryTree = new DirectoryTree();
-
-  currentPath$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
-    DirectoryNode
-  >(null);
-
-  editDescription = false;
-  view = 'list';
-  tips = TOOLTIP_TEXT;
+  private removal$: BehaviorSubject<Removal> = new BehaviorSubject<Removal>(
+    null
+  );
 
   constructor(private contextMenuService: ContextMenuService) {}
-  ngOnInit(): void {
-    this.subscriptions.push(
-      this.files$.subscribe(files => {
-        this.filesystem.addFiles(files);
-        this.refreshNode();
-      })
-    );
-    this.subscriptions.push(
-      this.folderMeta$.subscribe(folders => {
-        this.mapFolderMeta(folders);
-      })
-    );
-    this.subscriptions.push(
-      this.currentPath$.subscribe(() => {
-        this.refreshNode();
-      })
-    );
-  }
+  ngOnInit(): void {}
 
   /**
-   * Constructs a new DirectoryTree with files
+   * Triggers new options context menu
    *
-   * @private
-   * @param {LearningObjectFile[]} files
-   * @memberof UploadComponent
+   * @param {MouseEvent} $event
+   * @memberof FileManagerComponent
    */
-  private constructFileSystem(files: LearningObjectFile[]) {
-    this.filesystem.addFiles(files);
-  }
-
-  private mapFolderMeta(folders: any[]) {
-    for (const folder of folders) {
-      const paths = getPaths(folder.path, false);
-      const node = this.filesystem.traversePath(paths);
-      if (node) {
-        node.description = folder.description;
-      }
-    }
-  }
-
-  /**
-   * Adds file to file system
-   *
-   * @private
-   * @param {any} file
-   * @memberof UploadComponent
-   */
-  private addToFileSystem(file) {
-    this.filesystem.addFiles([file]);
-  }
-
   openNewOptions($event: MouseEvent): void {
     this.contextMenuService.show.next({
       anchorElement: $event.target,
@@ -119,13 +69,24 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     $event.preventDefault();
     $event.stopPropagation();
   }
-
+  /**
+   * Closes all context menus
+   *
+   * @memberof FileManagerComponent
+   */
   closeContextMenu() {
     this.contextMenuService.closeAllContextMenus({
       eventType: 'cancel'
     });
   }
-
+  /**
+   * Emits file edit
+   *
+   * @param {string} description
+   * @param {(LearningObjectFile | DirectoryNode)} file
+   * @returns
+   * @memberof FileManagerComponent
+   */
   saveDescription(
     description: string,
     file: LearningObjectFile | DirectoryNode
@@ -147,20 +108,36 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
     this.fileEdited.emit(edit);
   }
-
+  /**
+   * Deletes file from Filesystem and emits array of files to be deleted
+   *
+   * @param {any} file
+   * @memberof FileManagerComponent
+   */
   deleteFile(file) {
+    let removal: Removal;
     let scheduledDeletions: string[] = [];
     if (!(file instanceof DirectoryNode)) {
       scheduledDeletions = [file.fullPath ? file.fullPath : file.name];
-      this.filesystem.removeFile(file.fullPath ? file.fullPath : file.name);
+      removal = {
+        type: 'file',
+        path: file.fullPath ? file.fullPath : file.name
+      };
     } else {
       const folder = file;
-      this.filesystem.removeFolder(folder.getPath());
+      removal = { type: 'folder', path: folder.getPath() };
       scheduledDeletions = this.getFilePaths(folder);
     }
+    this.removal$.next(removal);
     this.fileDeleted.emit(scheduledDeletions);
   }
-
+  /**
+   * Recursively gets all paths of files in folder
+   *
+   * @param {DirectoryNode} folder
+   * @returns {string[]}
+   * @memberof FileManagerComponent
+   */
   getFilePaths(folder: DirectoryNode): string[] {
     const children = folder.getChildren();
     const files = folder.getFiles();
@@ -176,7 +153,12 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
     return filePaths;
   }
-
+  /**
+   * Opens Folder upload dialog
+   *
+   * @param {boolean} [fromRoot]
+   * @memberof FileManagerComponent
+   */
   openFolderDialog(fromRoot?: boolean) {
     const fileInput = document.querySelector('.dz-hidden-input');
     fileInput.setAttribute('directory', 'true');
@@ -189,7 +171,12 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.path.emit();
     }
   }
-
+  /**
+   * Opens File Upload Dialog
+   *
+   * @param {boolean} [fromRoot]
+   * @memberof FileManagerComponent
+   */
   openFileDialog(fromRoot?: boolean) {
     const fileInput = document.querySelector('.dz-hidden-input');
     fileInput.removeAttribute('directory');
@@ -202,8 +189,15 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.path.emit();
     }
   }
-
-  handleClick(e) {
+  /**
+   * Handles click event on container
+   * If on empty area dropzone upload dialog is triggered
+   *
+   * @param {any} e
+   * @returns
+   * @memberof FileManagerComponent
+   */
+  handleContainerClick(e) {
     const target = e.target;
     if (!target.className) {
       return;
@@ -214,23 +208,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.openFileDialog();
     }
   }
-
-  openFolder(path: string) {
-    const paths = this.currentPath$.getValue();
-    paths.push(path);
-    this.currentPath$.next(paths);
-    this.refreshNode();
-  }
-
-  private refreshNode() {
-    const path = this.currentPath$.getValue();
-    this.currentNode$.next(this.filesystem.traversePath(path));
-    this.path.emit(path.join('/'));
-  }
-
-  ngOnDestroy(): void {
-    for (const sub of this.subscriptions) {
-      sub.unsubscribe();
-    }
+  /**
+   * Emits current path
+   *
+   * @param {string} path
+   * @memberof FileManagerComponent
+   */
+  emitPath(path: string) {
+    this.path.emit(path);
   }
 }

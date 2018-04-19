@@ -18,8 +18,9 @@
       </div>
     </div>
 
-    <file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
-      (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event"></file-manager>
+    <onion-file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
+      (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event">
+    </onion-file-manager>
   </div>
   <div class="inner-wrapper">
     <div class="section">
