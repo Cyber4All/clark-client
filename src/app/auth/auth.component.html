@@ -1,10 +1,11 @@
-<div class="background">
-  <div class="image"></div>
-  <div class="particles">
-    <particles [width]="particlew" [height]="particleh" [params]="particleParams" [style]="particleStyle"></particles>
+<div class="authentication-component">
+  <div class="background">
+    <div class="image"></div>
+    <div class="particles">
+      <particles [width]="particlew" [height]="particleh" [params]="particleParams" [style]="particleStyle"></particles>
+    </div>
+    <div class="mask"></div>
   </div>
-  <div class="mask"></div>
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>
-
 

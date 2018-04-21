@@ -1,253 +1,255 @@
 @import '~_vars.scss';
+.authentication-component {
 
-:host {
-    font-family: 'Source Sans Pro', serif;
-    font-size: 16px;
-}
+    :host {
+        font-family: 'Source Sans Pro', serif;
+        font-size: 16px;
+    }
 
-::ng-deep .background, ::ng-deep .wrapper {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-}
-
-.background {
-    z-index: 1;
-
-    .image, .mask {
+    ::ng-deep .background, ::ng-deep .wrapper {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
-        background-size: cover;
-        background-position: center bottom;
     }
 
-    .image {
-        z-index: 0;
-        background: linear-gradient(180deg, #0d1928, #1e2e40);
+    .background {
+        z-index: 1;
+
+        .image, .mask {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-size: cover;
+            background-position: center bottom;
+        }
+
+        .image {
+            z-index: 0;
+            background: linear-gradient(180deg, #0d1928, #1e2e40);
+        }
+
+        .mask {
+            z-index: 2;
+            background-image: url(/assets/images/background_mask_compressed.png);
+        }
     }
 
-    .mask {
+    ::ng-deep .wrapper {
+        display: block;
         z-index: 2;
-        background-image: url(/assets/images/background_mask_compressed.png);
-    }
-}
-
-::ng-deep .wrapper {
-    display: block;
-    z-index: 2;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    .content-box {
-        background: white;
-        border-radius: 2px;
-        box-sizing: border-box;
-        max-width: 520px;
-        width: 100%;
-        box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.1);
-        border-top: 7px solid $blue-accent;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.2s ease;
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        flex-direction: row;
+        justify-content: center;
         align-items: center;
 
-        & > div {
+        .content-box {
+            background: white;
+            border-radius: 2px;
             box-sizing: border-box;
+            max-width: 520px;
             width: 100%;
-            padding: 10px 40px;
-        }
-    
-        .top {
-            padding-top: 50px;
-        }
-
-        .error {
-            background: $error-red;
-            color: white;
-            text-align: center;
-            opacity: 0;
+            box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.1);
+            border-top: 7px solid $blue-accent;
+            position: relative;
+            overflow: hidden;
             transition: all 0.2s ease;
-            position: absolute;
-            left: 0; right: 0;
-            top: -5px;
-            padding: 8px;
-            border-radius: 1px;
-        }
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
 
-        &.failed {
-            animation: validate-failure 0.4s linear;
-            border-top-color: $error-red;
+            & > div {
+                box-sizing: border-box;
+                width: 100%;
+                padding: 10px 40px;
+            }
+        
+            .top {
+                padding-top: 50px;
+            }
 
             .error {
-                top: 0px;
-                opacity: 1;
+                background: $error-red;
+                color: white;
+                text-align: center;
+                opacity: 0;
+                transition: all 0.2s ease;
+                position: absolute;
+                left: 0; right: 0;
+                top: -5px;
+                padding: 8px;
+                border-radius: 1px;
             }
-        }
 
-        .bottom-link {
-            outline: 0;
-            cursor: pointer;
-            margin-top: 40px;
-            text-align: center;
-            background: desaturate(rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.1), 10);
-            color: $dark-text;
-        
-            span {
-                color: $blue-accent;
+            &.failed {
+                animation: validate-failure 0.4s linear;
+                border-top-color: $error-red;
+
+                .error {
+                    top: 0px;
+                    opacity: 1;
+                }
             }
-        
-            &:hover {
-        
+
+            .bottom-link {
+                outline: 0;
+                cursor: pointer;
+                margin-top: 40px;
+                text-align: center;
+                background: desaturate(rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.1), 10);
+                color: $dark-text;
+            
                 span {
-                    text-decoration: underline;
+                    color: $blue-accent;
+                }
+            
+                &:hover {
+            
+                    span {
+                        text-decoration: underline;
+                    }
                 }
             }
         }
     }
-}
 
-::ng-deep .title {
-    font-size: 26px;
-    color: $blue-accent;
-    font-weight: bolder;
-    text-align: center;
+    ::ng-deep .title {
+        font-size: 26px;
+        color: $blue-accent;
+        font-weight: bolder;
+        text-align: center;
 
-    &.light {
-        font-weight: lighter;
-        font-size: 18px;
-    }
-}
-
-::ng-deep .auth-button {
-    background: linear-gradient(45deg,darken($blue-accent, 15), lighten($blue-accent, 15));
-    border-radius: 2px;
-    color: white;
-    padding: 15px;
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    margin-top: 30px;
-    cursor: pointer !important;
-    position: relative;
-    font-size: 16px;
-    outline: 0;
-
-    .mask {
-        width: calc(100% - 6px);
-        height: calc(100% - 6px);
-        top: 0; left: 0; right: 0; bottom: 0;
-        position: absolute;
-        margin: auto;
-        background: white;
-        z-index: 1;
-        transition: all 0.2s ease;
-        border-radius: 0;
-        opacity: 0;
-        border-radius: 1px;
+        &.light {
+            font-weight: lighter;
+            font-size: 18px;
+        }
     }
 
-    .text {
+    ::ng-deep .auth-button {
+        background: linear-gradient(45deg,darken($blue-accent, 15), lighten($blue-accent, 15));
+        border-radius: 2px;
         color: white;
-        z-index: 2;
+        padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        margin-top: 30px;
+        cursor: pointer !important;
         position: relative;
-        transition: all 0.2s ease;
-    }
-
-    &:hover {
+        font-size: 16px;
+        outline: 0;
 
         .mask {
-            opacity: 1;
+            width: calc(100% - 6px);
+            height: calc(100% - 6px);
+            top: 0; left: 0; right: 0; bottom: 0;
+            position: absolute;
+            margin: auto;
+            background: white;
+            z-index: 1;
+            transition: all 0.2s ease;
+            border-radius: 0;
+            opacity: 0;
+            border-radius: 1px;
         }
 
         .text {
-            color: $blue-accent;
+            color: white;
+            z-index: 2;
+            position: relative;
+            transition: all 0.2s ease;
         }
-    }
-}
 
-::ng-deep .input {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    border: 1px solid $placeholder;
-    border-radius: 1px;
+        &:hover {
 
-    &:not(:last-child) {
-        margin-bottom: 10px;
-    }
+            .mask {
+                opacity: 1;
+            }
 
-    input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        color: $blue-accent;
-        flex-grow: 1;
-        flex-shrink: 1;
-        border: none;
-        font-size: 15px;
-        outline: 0;
-        font-family: 'Source Sans Pro', serif;
-        font-weight: normal;
-        padding: 12px;
-        width: 100%;
-
-        &:focus ~ .svg-inline--fa {
-            color: $blue-accent;
+            .text {
+                color: $blue-accent;
+            }
         }
     }
 
-    .svg-inline--fa {
-        width: 15px;
-        height: 15px;
-        flex-grow: 0;
-        flex-shrink: 0;
-        @include vert-center;
-        color: darken($placeholder, 20);
-        padding-left: 14px;
-        box-sizing: content-box;
+    ::ng-deep .input {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        border: 1px solid $placeholder;
+        border-radius: 1px;
+
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            color: $blue-accent;
+            flex-grow: 1;
+            flex-shrink: 1;
+            border: none;
+            font-size: 15px;
+            outline: 0;
+            font-family: 'Source Sans Pro', serif;
+            font-weight: normal;
+            padding: 12px;
+            width: 100%;
+
+            &:focus ~ .svg-inline--fa {
+                color: $blue-accent;
+            }
+        }
+
+        .svg-inline--fa {
+            width: 15px;
+            height: 15px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            @include vert-center;
+            color: darken($placeholder, 20);
+            padding-left: 14px;
+            box-sizing: content-box;
+        }
+
+        &.active > .svg-inline--fa {
+            color: $blue-accent;
+        }
     }
 
-    &.active > .svg-inline--fa {
-        color: $blue-accent;
+    @keyframes validate-failure {
+        0% {
+            margin-left: 0px;
+        } 20% {
+            margin-left: 30px;
+        } 40% {
+            margin-left: -30px;
+        } 60% {
+            margin-left: 30px;
+        } 80% {
+            margin-left: -30px;
+        } 100% {
+            margin-left: 0px;
+        }
     }
-}
 
-@keyframes validate-failure {
-    0% {
-        margin-left: 0px;
-    } 20% {
-        margin-left: 30px;
-    } 40% {
-        margin-left: -30px;
-    } 60% {
-        margin-left: 30px;
-    } 80% {
-        margin-left: -30px;
-    } 100% {
-        margin-left: 0px;
-    }
-}
-
-::ng-deep .done {
-    text-align: center;
-    margin-top: 40px;
-    color: $green;
-
-    .svg-inline--fa {
+    ::ng-deep .done {
+        text-align: center;
+        margin-top: 40px;
         color: $green;
-        font-size: 60px;
-        display: block;
-        margin: 0px auto 20px;
-    }
-}
 
-@media (max-width: 640px) {
-    ::ng-deep .content-box {
-        //background: transparent !important;
-        border-top-color: transparent !important;
-        box-shadow: 0px 0px 0px 0px transparent !important;
+        .svg-inline--fa {
+            color: $green;
+            font-size: 60px;
+            display: block;
+            margin: 0px auto 20px;
+        }
+    }
+
+    @media (max-width: 640px) {
+        ::ng-deep .content-box {
+            //background: transparent !important;
+            border-top-color: transparent !important;
+            box-shadow: 0px 0px 0px 0px transparent !important;
+        }
     }
 }
