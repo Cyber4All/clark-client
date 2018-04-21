@@ -1,60 +1,62 @@
-<div class="container">
-  <div class="inner-wrapper padded-bottom">
-    <div class="header">
-      <div class="back" routerLink="/onion/dashboard">
-        <div>
-          <i class="far fa-arrow-to-left"></i>Back to Dashboard</div>
-      </div>
-      <div class="title">
-        Manage Materials
-      </div>
-      <div class="back right" [routerLink]="['/onion/learning-object-builder', learningObject.name | encodeURIComponent ]">
-        <div>
-          Back to Learning Object
-          <i class="far fa-arrow-to-right"></i>
+<div class="content-upload-component">
+  <div class="container">
+    <div class="inner-wrapper padded-bottom">
+      <div class="header">
+        <div class="back" routerLink="/onion/dashboard">
+          <div>
+            <i class="far fa-arrow-to-left"></i>Back to Dashboard</div>
+        </div>
+        <div class="title">
+          Manage Materials
+        </div>
+        <div class="back right" [routerLink]="['/onion/learning-object-builder', learningObject.name | encodeURIComponent ]">
+          <div>
+            Back to Learning Object
+            <i class="far fa-arrow-to-right"></i>
+          </div>
         </div>
       </div>
-    </div>
 
-    <onion-file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
-      (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event">
-    </onion-file-manager>
-  </div>
-  <div class="inner-wrapper">
-    <div class="section">
-      <div class="title">Urls</div>
+      <onion-file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
+        (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event">
+      </onion-file-manager>
     </div>
-    <div [ngClass]="{'empty-section': learningObject.materials.urls.length == 0}">
-      <div class="text" *ngIf="learningObject.materials.urls.length == 0">You don't have any URLs yet!</div>
-      <div class="section url-wrapper" *ngFor="let url of learningObject.materials.urls; let i = index;">
-        <div class="link input-wrapper">
-          <input placeholder="Title" type="text" [(ngModel)]="learningObject.materials.urls[i].title" name="url.title.{{ i }}">
-          <input placeholder="https://example.com" type="text" [(ngModel)]="learningObject.materials.urls[i].url" name="url.url.{{ i }}">
+    <div class="inner-wrapper">
+      <div class="section">
+        <div class="title">Urls</div>
+      </div>
+      <div [ngClass]="{'empty-section': learningObject.materials.urls.length == 0}">
+        <div class="text" *ngIf="learningObject.materials.urls.length == 0">You don't have any URLs yet!</div>
+        <div class="section url-wrapper" *ngFor="let url of learningObject.materials.urls; let i = index;">
+          <div class="link input-wrapper">
+            <input placeholder="Title" type="text" [(ngModel)]="learningObject.materials.urls[i].title" name="url.title.{{ i }}">
+            <input placeholder="https://example.com" type="text" [(ngModel)]="learningObject.materials.urls[i].url" name="url.url.{{ i }}">
+          </div>
+          <div class="button bad icon-only" (click)="removeURL(i)">
+            <i class="far fa-times"></i>
+          </div>
         </div>
-        <div class="button bad icon-only" (click)="removeURL(i)">
-          <i class="far fa-times"></i>
+        <div class="btn-group to-right">
+          <div (click)="addURL()" class="button good">Add URL
+            <i class="far fa-plus"></i>
+          </div>
         </div>
       </div>
-      <div class="btn-group to-right">
-        <div (click)="addURL()" class="button good">Add URL
-          <i class="far fa-plus"></i>
-        </div>
+    </div>
+    <div class="inner-wrapper notes">
+      <div class="section">
+        <div class="title">Notes</div>
+      </div>
+      <div class="notes">
+        <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
       </div>
     </div>
-  </div>
-  <div class="inner-wrapper notes">
-    <div class="section">
-      <div class="title">Notes</div>
-    </div>
-    <div class="notes">
-      <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
+    <div class="btn-group to-right final">
+      <button *ngIf="!queuedUploads$.getValue().length" type="button" (click)="save()" class="button good" [disabled]="submitting">Save
+        <i class="fas fa-check"></i>
+      </button>
     </div>
   </div>
-  <div class="btn-group to-right final">
-    <button *ngIf="!queuedUploads$.getValue().length" type="button" (click)="save()" class="button good" [disabled]="submitting">Save
-      <i class="fas fa-check"></i>
-    </button>
-  </div>
+  <upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$" [uploading$]="uploading$"
+    (upload)="save(true)"></upload-queue>
 </div>
-<upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$" [uploading$]="uploading$"
-  (upload)="save(true)"></upload-queue>
