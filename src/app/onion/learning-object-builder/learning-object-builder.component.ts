@@ -142,7 +142,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     } else {
       this.service
         .create(this.learningObject)
-        .then((id) => {
+        .then((newObject) => {
           if (!willUpload) {
             this.notificationService.notify(
               'Done!',
@@ -151,9 +151,8 @@ export class LearningObjectBuilderComponent implements OnInit {
               'far fa-check'
             );
             this.isNew = false;
+            this.learningObject = newObject;
             this.learningObjectName = this.learningObject.name;
-            this.learningObject.id = id;
-            this.learningObject._author = this.auth.user;
           } else {
             this.router.navigateByUrl(
               `/onion/content/upload/${this.learningObject.name}`

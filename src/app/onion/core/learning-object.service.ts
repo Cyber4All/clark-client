@@ -32,7 +32,7 @@ export class LearningObjectService {
    * @returns {Promise<string>}
    * @memberof LearningObjectService
    */
-  create(learningObject): Promise<string> {
+  create(learningObject): Promise<LearningObject> {
     const route = USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(
       this.auth.user.username
     );
@@ -43,7 +43,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true }
       )
       .toPromise().then(res => {
-        return res['_body'];
+        return LearningObject.instantiate(res.json());
       });
     // TODO: Verify this response gives the learning object name
   }
