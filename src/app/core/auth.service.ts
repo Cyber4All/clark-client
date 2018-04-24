@@ -238,22 +238,32 @@ export class AuthService {
   }
 
   printCards() {
-
     // tslint:disable-next-line:max-line-length
-    // FIXME: if this feature stays in the system, this route should be accessed via the gateway
-    this.http.get(`${environment.apiURL}/users/${this.username}/cards?fname=${this.name.split(' ')[0]}&lname=${this.name.split(' ')[1]}&org=${this.user.organization}`,
-      { responseType: 'blob' })
+    this.http
+      .get(
+        `${environment.apiURL}/users/${encodeURIComponent(
+          this.username
+        )}/cards?fname=${encodeURIComponent(
+          this.name.split(' ')[0]
+        )}&lname=${encodeURIComponent(
+          this.name.split(' ')[1]
+        )}&org=${encodeURIComponent(this.user.organization)}`,
+        { responseType: 'blob' }
+      )
       .toPromise()
-      .then(blob => {
-        const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+      .then(
+        blob => {
+          const pdfBlob = new Blob([blob], { type: 'application/pdf' });
 
-        const data = window.URL.createObjectURL(pdfBlob);
-        const iframe = document.createElement('iframe');
-        iframe.setAttribute('src', data);
-        iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
-        document.getElementById('card-printer').appendChild(iframe);
-    }, error => {
-      throw error;
-    });
+          const data = window.URL.createObjectURL(pdfBlob);
+          const iframe = document.createElement('iframe');
+          iframe.setAttribute('src', data);
+          iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
+          document.getElementById('card-printer').appendChild(iframe);
+        },
+        error => {
+          throw error;
+        }
+      );
   }
 }
