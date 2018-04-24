@@ -32,7 +32,7 @@ export class LearningObjectService {
    * @returns {Promise<string>}
    * @memberof LearningObjectService
    */
-  create(learningObject): Promise<any> {
+  create(learningObject): Promise<string> {
     const route = USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(
       this.auth.user.username
     );
@@ -42,7 +42,9 @@ export class LearningObjectService {
         { object: learningObject },
         { headers: this.headers, withCredentials: true }
       )
-      .toPromise();
+      .toPromise().then(res => {
+        return res['_body'];
+      });
     // TODO: Verify this response gives the learning object name
   }
   /**
@@ -97,7 +99,7 @@ export class LearningObjectService {
   save(learningObject: LearningObject): Promise<{}> {
     const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(
       this.auth.user.username,
-      learningObject.id
+      learningObject.id || learningObject._id
     );
     return this.http
       .patch(

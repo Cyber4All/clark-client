@@ -69,7 +69,6 @@ export class LearningObjectBuilderComponent implements OnInit {
       }
     });
     this.store.state.subscribe(state => {
-      console.log('state', state);
       this.changePage(state.section, state.childSection, state.noPage);
     });
   }
@@ -82,9 +81,11 @@ export class LearningObjectBuilderComponent implements OnInit {
    */
   getRouteParams(): void {
     if (this.route.snapshot.params['learningObjectName']) {
-      this.learningObjectName = this.route.snapshot.params[
-        'learningObjectName'
-      ];
+      if (!this.learningObjectName) {
+        this.learningObjectName = this.route.snapshot.params[
+          'learningObjectName'
+        ];
+      }
       this.learningObject = this.route.snapshot.data['learningObject'];
     } else {
       this.isNew = true;
@@ -141,7 +142,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     } else {
       this.service
         .create(this.learningObject)
-        .then(() => {
+        .then((id) => {
           if (!willUpload) {
             this.notificationService.notify(
               'Done!',
@@ -151,6 +152,8 @@ export class LearningObjectBuilderComponent implements OnInit {
             );
             this.isNew = false;
             this.learningObjectName = this.learningObject.name;
+            this.learningObject.id = id;
+            this.learningObject._author = this.auth.user;
           } else {
             this.router.navigateByUrl(
               `/onion/content/upload/${this.learningObject.name}`
@@ -229,7 +232,6 @@ export class LearningObjectBuilderComponent implements OnInit {
         this.notificationService.notify(`Could not send email`, `${e}`, 'bad', '');
       }
     } else {
-
       switch (publish) {
         case 'accept':
           this.learningObject.publish();
@@ -284,15 +286,7 @@ export class LearningObjectBuilderComponent implements OnInit {
    * @memberof LearningObjectBuilderComponent
    */
   deleteOutcome(index: number): void {
-    console.log('index', index);
     this.learningObject.removeOutcome(index);
-    // this.store.dispatch({
-    //   type: 'NAVIGATE',
-    //   request: {
-    //     sectionModifier: -1
-    //   }
-    // });
-    console.log(this.learningObject);
   }
   /**
    * Deletes InstructionalStrategy from LearningObject's LearningOutcomes
