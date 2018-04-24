@@ -45,7 +45,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     if (changes.user) {
       this.editInfo = {
         firstname: this.user.name ? this.user.name.split(' ')[0] : '',
-        lastname: this.user.name ? this.user.name.split(' ')[1] : '',
+        lastname: this.user.name ? this.user.name.substring(this.user.name.indexOf(' ') + 1) : '',
         email: this.user.email || '',
         organization: this.user.organization || ''
       };
