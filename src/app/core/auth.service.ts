@@ -239,15 +239,18 @@ export class AuthService {
 
   printCards() {
     // tslint:disable-next-line:max-line-length
+    const nameSplit = this.name.split(' ');
+    const firstname = nameSplit[0];
+    const lastname = nameSplit.slice(1, nameSplit.length).join(' ');
     this.http
       .get(
         `${environment.apiURL}/users/${encodeURIComponent(
           this.username
         )}/cards?fname=${encodeURIComponent(
-          this.name.split(' ')[0]
-        )}&lname=${encodeURIComponent(
-          this.name.split(' ')[1]
-        )}&org=${encodeURIComponent(this.user.organization)}`,
+          firstname
+        )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
+          this.user.organization
+        )}`,
         { responseType: 'blob' }
       )
       .toPromise()
