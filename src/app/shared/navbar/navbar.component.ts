@@ -195,7 +195,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   gravatarImage(): string {
     // r=pg checks the rating of the Gravatar image
     return (
-      'http://www.gravatar.com/avatar/' +
+      'https://www.gravatar.com/avatar/' +
       md5(this.authService.user.email) +
       '?s=200?r=pg&d=identicon'
     );
