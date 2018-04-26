@@ -42,7 +42,7 @@ export class UserService {
   getGravatarImage(email, imgSize): string {
     let defaultIcon = "identicon";
     // r=pg checks the rating of the Gravatar image 
-    return 'http://www.gravatar.com/avatar/' + md5(email) + '?s=' + imgSize +
+    return 'https://www.gravatar.com/avatar/' + md5(email) + '?s=' + imgSize +
       '?r=pg&d=' + defaultIcon;
   }
 

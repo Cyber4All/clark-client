@@ -54,7 +54,7 @@ export class GravatarInfoComponent implements OnInit, OnDestroy {
   getGravatarImage(): string {
     // r=pg checks the rating of the Gravatar image
     return (
-      'http://www.gravatar.com/avatar/' +
+      'https://www.gravatar.com/avatar/' +
       md5(this.email) +
       '?s=' +
       this.size +
