@@ -61,7 +61,7 @@ export class LearningObjectStoreService {
           section: action.request.hasOwnProperty('sectionIndex')
             ? action.request.sectionIndex
             : this._state.section + action.request.sectionModifier,
-          childSection: action.request.childSection
+          childSection: this._state.sidebar.links[1].children.length === 1 ? undefined : action.request.childSection
         };
         break;
       case 'UPDATE_SIDEBAR_TEXT':

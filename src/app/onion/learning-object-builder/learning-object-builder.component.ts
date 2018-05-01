@@ -267,11 +267,6 @@ export class LearningObjectBuilderComponent implements OnInit {
    */
   newOutcome() {
     const newOutcome = this.learningObject.addOutcome();
-    // FIXME: This should be handled API side
-    if (newOutcome.verb === 'Define') {
-      newOutcome.verb = 'Choose';
-    }
-    // this.advanceSection();
     return newOutcome;
   }
 
