@@ -23,6 +23,7 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 import { LearningObjectErrorStoreService } from '../../../errorStore';
+import { LearningObjectStoreService } from '../../../store';
 
 @Component({
   selector: 'onion-outcome-component',
@@ -37,7 +38,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
   @ViewChild('outcomeInput', {read: ElementRef}) outcomeInput: ElementRef;
-  
+
 
   suggestOpen = false;
   openSearch = false;
@@ -51,7 +52,12 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   classassessmentstrategies: { [level: string]: Set<string> };
   instructionalstrategies: { [level: string]: Set<string> };
 
-  constructor(private suggestionService: SuggestionService, public modalService: ModalService, private errorStore: LearningObjectErrorStoreService) {}
+  constructor(
+    private suggestionService: SuggestionService,
+    public modalService: ModalService,
+    private errorStore: LearningObjectErrorStoreService,
+    private store: LearningObjectStoreService,
+  ) {}
 
   setupView(first?: boolean) {
     // FIXME: classverbs should be sorted at the API
@@ -192,6 +198,10 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
 
   updateMappings(mappings) {
     this.suggestionService.udpateMappings(mappings);
+  }
+
+  updateSidebarText() {
+    // this.store.dispatch({  })
   }
 
   // openMappingsSearch(index) {

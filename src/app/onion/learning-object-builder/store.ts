@@ -48,6 +48,12 @@ export class LearningObjectStoreService {
           noPage: true
         };
         break;
+      case 'UPDATE_SIDEBAR_TEXT':
+        this._state = {
+          ...this._state
+
+        };
+        break;
     }
     this.state.next(this._state);
   }
