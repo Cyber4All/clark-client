@@ -27,7 +27,6 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Promise<boolean> | boolean {
     const c = this.cookies.get('presence');
-    console.log('COOKIE', c);
 
     if (c) {
       return this.auth.validate().then(
