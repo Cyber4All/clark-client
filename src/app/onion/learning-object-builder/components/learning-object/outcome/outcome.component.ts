@@ -201,7 +201,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   }
 
   updateSidebarText() {
-    // this.store.dispatch({  })
+    this.store.dispatch({ type: 'UPDATE_SIDEBAR_TEXT', request: { name: this.outcome.verb + ' ' + this.outcome.text } });
   }
 
   // openMappingsSearch(index) {

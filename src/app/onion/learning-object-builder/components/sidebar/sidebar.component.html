@@ -4,7 +4,7 @@
       <i class="fas fa-question-circle"></i>
     </span>
   </div>
-  <ng-container *ngFor="let link of sidebarService.links; let i = index">
+  <ng-container *ngFor="let link of links; let i = index">
     <div class="menu-item" [ngClass]="{'active': activeIndex === i, 'parent': link.children }" (click)="link.action(i, self, (link.children ? true : false))">
       <div class="menu-item-inner">{{ link.name }}</div>
       <i class="fas fa-chevron-right"></i>

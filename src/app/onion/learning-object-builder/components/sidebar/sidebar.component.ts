@@ -1,19 +1,18 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter,
+import { Component, Input, OnChanges, Output, EventEmitter,
   SimpleChanges, IterableDiffers, DoCheck, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectStoreService } from '../../store';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from '../../../../core/auth.service';
 import { LearningOutcome } from '@cyber4all/clark-entity';
-import { navigate, SidebarService } from './sidebar.service';
+import { navigate } from '../../store';
 
 @Component({
   selector: 'onion-sidebar',
   templateUrl: 'sidebar.component.html',
-  styleUrls: ['sidebar.component.scss'],
-  providers: [SidebarService]
+  styleUrls: ['sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewChecked {
+export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
   @Input() outcomes: LearningOutcome[];
   @Input() learningObjectName;
   @Output() newOutcome = new EventEmitter();
@@ -28,6 +27,7 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewCh
 
   self = this;
   navigate = navigate;
+  links;
 
   public tips = TOOLTIP_TEXT;
 
@@ -36,21 +36,13 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewCh
     private store: LearningObjectStoreService,
     private auth: AuthService,
     private _iterableDiffers: IterableDiffers,
-    public sidebarService: SidebarService,
   ) {
     this.outcomesDiffer = this._iterableDiffers.find([]).create(null);
-  }
 
-  ngOnInit() {
-    console.log(this.outcomes);
     this.store.state.subscribe(state => {
       this.activeIndex = state.section;
-
-      if (this.activeChildIndex !== state.childSection) {
-        this.activeChildIndex = state.childSection;
-      } else {
-        this.activeChildIndex = undefined;
-      }
+      this.activeChildIndex = state.childSection;
+      this.links = state.sidebar.links;
     });
   }
 
@@ -76,8 +68,7 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewCh
   }
 
   buildOutcomes(outcomes, noNav = false) {
-    console.log(this.outcomes);
-    const linkEl = this.sidebarService.links.filter(l => l.name === '2. Learning Outcomes')[0];
+    const linkEl = this.links.filter(l => l.name === '2. Learning Outcomes')[0];
     outcomes = outcomes.map((m: LearningOutcome, i: number) =>
       ({ name: m.text && m.text !== ''
         ? m.outcome :
