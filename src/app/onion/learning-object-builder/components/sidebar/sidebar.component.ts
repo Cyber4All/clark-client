@@ -1,25 +1,18 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter,
+import { Component, Input, OnChanges, Output, EventEmitter,
   SimpleChanges, IterableDiffers, DoCheck, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectStoreService } from '../../store';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from '../../../../core/auth.service';
 import { LearningOutcome } from '@cyber4all/clark-entity';
-
-interface SidebarLink {
-  name: string;
-  action: Function;
-  classes?: string;
-  children?: SidebarLink[];
-  externalAction?: boolean;
-}
+import { navigate } from '../../store';
 
 @Component({
   selector: 'onion-sidebar',
   templateUrl: 'sidebar.component.html',
   styleUrls: ['sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewChecked {
+export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
   @Input() outcomes: LearningOutcome[];
   @Input() learningObjectName;
   @Output() newOutcome = new EventEmitter();
@@ -28,52 +21,28 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewCh
   forceOutcomesOpen = true;
   loaded = false;
 
-
-  links: SidebarLink[] = [
-    {
-      name: '1. Basic Information',
-      action: this.navigate,
-    },
-    {
-      name: '2. Learning Outcomes',
-      action: this.navigate,
-      children: [
-        {
-          name: 'New Learning Outcome',
-          action: this.createOutcome,
-          externalAction: true,
-          classes: 'new'
-        }
-      ]
-    }
-  ];
-
   activeIndex;
   activeChildIndex;
   outcomesDiffer;
 
   self = this;
+  navigate = navigate;
+  links;
 
   public tips = TOOLTIP_TEXT;
-  
+
   constructor(
     private router: Router,
     private store: LearningObjectStoreService,
     private auth: AuthService,
-    private _iterableDiffers: IterableDiffers
+    private _iterableDiffers: IterableDiffers,
   ) {
     this.outcomesDiffer = this._iterableDiffers.find([]).create(null);
-  }
 
-  ngOnInit() {
     this.store.state.subscribe(state => {
       this.activeIndex = state.section;
-
-      if (this.activeChildIndex !== state.childSection) {
-        this.activeChildIndex = state.childSection;
-      } else {
-        this.activeChildIndex = undefined;
-      }
+      this.activeChildIndex = state.childSection;
+      this.links = state.sidebar.links;
     });
   }
 
@@ -100,7 +69,10 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewCh
 
   buildOutcomes(outcomes, noNav = false) {
     const linkEl = this.links.filter(l => l.name === '2. Learning Outcomes')[0];
-    outcomes = outcomes.map((m: LearningOutcome, i: number) =>  ({ name: m.text && m.text !== '' ? m.outcome : 'Learning Outcome ' + (+i + 1), action: this.navigateChild }));
+    outcomes = outcomes.map((m: LearningOutcome, i: number) =>
+      ({ name: m.text && m.text !== ''
+        ? m.outcome :
+        'Learning Outcome ' + (+i + 1), action: this.navigateChild }));
 
     linkEl.children = [...outcomes, linkEl.children[linkEl.children.length - 1]];
 
@@ -119,17 +91,6 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewCh
     }
   }
 
-  // these contain references to 'self' because they're being passed as parameters to the Angular HTML where 'this' isn't the same
-  navigate(i, self = this, parent = false) {
-    const t = parent ? 'NAVIGATEPARENT' : 'NAVIGATE';
-    self.store.dispatch({
-      type: t,
-      request: {
-        sectionIndex: i
-      }
-    });
-  }
-
   navigateChild(i, self = this) {
     if (self.forceOutcomesOpen) {
       self.navigate(1, self, true);
@@ -142,10 +103,6 @@ export class SidebarComponent implements OnInit, DoCheck, OnChanges, AfterViewCh
         sectionIndex: i
       }
     });
-  }
-
-  createOutcome(i, self = this) {
-    self.newOutcome.emit();
   }
 
   uploadMaterials() {
