@@ -28,7 +28,7 @@ export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
   self = this;
   navigate = navigate;
   links;
-
+  public isEmailVerified;
   public tips = TOOLTIP_TEXT;
 
   constructor(
@@ -39,6 +39,7 @@ export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
   ) {
     this.outcomesDiffer = this._iterableDiffers.find([]).create(null);
 
+    this.isEmailVerified = this.auth.user.emailVerified;
     this.store.state.subscribe(state => {
       this.activeIndex = state.section;
       this.activeChildIndex = state.childSection;

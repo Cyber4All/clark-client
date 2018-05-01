@@ -69,7 +69,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       }
     });
     this.store.state.subscribe(state => {
-      this.changePage(state.section, state.childSection, state.noPage);
+      this.changePage(state.section, state.childSection);
     });
   }
   /**
@@ -377,14 +377,12 @@ export class LearningObjectBuilderComponent implements OnInit {
     return true;
   }
 
-  changePage(page, childPage, noPage = false) {
-    if (!noPage) {
-      if (page === 0) {
-        this.activePage = PAGES.INFO;
-      } else {
-        this.activePage = PAGES.OUTCOMES;
-        this.childIndex = childPage;
-      }
+  changePage(page, childPage) {
+    if (page === 0) {
+      this.activePage = PAGES.INFO;
+    } else {
+      this.activePage = PAGES.OUTCOMES;
+      this.childIndex = childPage;
     }
   }
 

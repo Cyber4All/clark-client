@@ -35,8 +35,7 @@ export class LearningObjectStoreService {
       case 'INIT':
         this._state = {
           ...this._state,
-          section: action.request.initialSection,
-          noPage: false
+          section: action.request.initialSection
         };
         break;
       case 'NAVIGATE':
@@ -45,8 +44,7 @@ export class LearningObjectStoreService {
           section: action.request.hasOwnProperty('sectionIndex')
             ? action.request.sectionIndex
             : this._state.section + action.request.sectionModifier,
-          childSection: undefined,
-          noPage: false
+          childSection: undefined
         };
         break;
       case 'NAVIGATECHILD':
@@ -54,8 +52,7 @@ export class LearningObjectStoreService {
           ...this._state,
           childSection: action.request.hasOwnProperty('sectionIndex')
             ? action.request.sectionIndex
-            : this._state.section + action.request.sectionModifier,
-          noPage: false
+            : this._state.section + action.request.sectionModifier
         };
         break;
       case 'NAVIGATEPARENT':
@@ -64,8 +61,7 @@ export class LearningObjectStoreService {
           section: action.request.hasOwnProperty('sectionIndex')
             ? action.request.sectionIndex
             : this._state.section + action.request.sectionModifier,
-          childSection: undefined,
-          noPage: true
+          childSection: action.request.childSection
         };
         break;
       case 'UPDATE_SIDEBAR_TEXT':
@@ -95,7 +91,6 @@ export class LearningObjectStoreService {
 interface STATE {
   section: number;
   childSection: number;
-  noPage: boolean;
   sidebar: { links: SidebarLink[] };
 }
 interface ACTION {
@@ -105,6 +100,7 @@ interface ACTION {
     sectionModifier?: number;
     sectionIndex?: number;
     name?: string;
+    childSection?: number;
   };
 }
 
@@ -126,7 +122,8 @@ export function navigate(i, self = this, parent = false) {
   self.store.dispatch({
     type: t,
     request: {
-      sectionIndex: i
+      sectionIndex: i,
+      childSection: i === 1 ? 0 : undefined
     }
   });
 }
