@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { OutcomeService } from '../../core/outcome.service';
-import { SuggestionService } from '../../onion/learning-object-builder/components/standard-outcomes/suggestion/services/suggestion.service';
+import { SuggestionService } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
 import { ModalListElement, ModalService, Position } from '../../shared/modals';
 
 @Component({

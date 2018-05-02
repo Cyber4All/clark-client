@@ -1,5 +1,4 @@
 import { Subject } from 'rxjs/Subject';
-import { SuggestionService } from '../../standard-outcomes/suggestion/services/suggestion.service';
 import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -24,6 +23,7 @@ import 'rxjs/add/operator/debounceTime';
 
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { LearningObjectStoreService } from '../../../store';
+import { SuggestionService } from './standard-outcomes/suggestion/services/suggestion.service';
 
 @Component({
   selector: 'onion-outcome-component',

@@ -11,7 +11,7 @@ import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
-import { SuggestionService } from '../../onion/learning-object-builder/components/standard-outcomes/suggestion/services/suggestion.service';
+import { SuggestionService } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
 
 
 @Component({
