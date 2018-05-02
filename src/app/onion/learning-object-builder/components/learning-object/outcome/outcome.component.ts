@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs/Subject';
-import { SuggestionService } from '../../../suggestion/services/suggestion.service';
+import { SuggestionService } from '../../standard-outcomes/suggestion/services/suggestion.service';
 import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -33,7 +33,7 @@ import { LearningObjectStoreService } from '../../../store';
 })
 export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() outcome;
-  @Input('index') i;
+  @Input('index') index;
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
@@ -83,7 +83,6 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
       }
     });
 
-    // TODO make sure this system handles editing objects that already have outcomes mapped
     this.suggestionService.udpateMappings(this.outcome._mappings);
     this.setupView(true);
 
@@ -144,7 +143,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   }
 
   deleteOutcome() {
-    this.deleteIndex.emit(this.i);
+    this.deleteIndex.emit(this.index);
   }
 
   openBloomsInfo(index: number) {}
@@ -203,16 +202,4 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   updateSidebarText() {
     this.store.dispatch({ type: 'UPDATE_SIDEBAR_TEXT', request: { name: this.outcome.verb + ' ' + this.outcome.text } });
   }
-
-  // openMappingsSearch(index) {
-  //   this.openSearch = true;
-  // }
-
-  // addMappings(e) {
-  //   this.openSearch = false;
-  //   for (const m of e) {
-  //
-  //     this.suggestionService.addMapping(m);
-  //   }
-  // }
 }

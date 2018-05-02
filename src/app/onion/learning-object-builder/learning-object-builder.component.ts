@@ -55,7 +55,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private notificationService: NotificationService,
     private store: LearningObjectStoreService,
     private errorStore: LearningObjectErrorStoreService,
-    private auth: AuthService,
+    public auth: AuthService,
   ) {
   }
 

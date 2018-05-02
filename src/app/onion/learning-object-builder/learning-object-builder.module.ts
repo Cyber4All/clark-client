@@ -1,5 +1,5 @@
 import { LearningObjectOutcomeComponent } from './components/learning-object/outcome/outcome.component';
-import { SuggestionModule } from './suggestion/suggestion.module';
+import { SuggestionModule } from './components/standard-outcomes/suggestion/suggestion.module';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
