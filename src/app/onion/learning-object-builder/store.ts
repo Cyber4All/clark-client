@@ -44,7 +44,7 @@ export class LearningObjectStoreService {
           section: action.request.hasOwnProperty('sectionIndex')
             ? action.request.sectionIndex
             : this._state.section + action.request.sectionModifier,
-          childSection: undefined
+          childSection: this._state.section === 0 ? 0 : undefined
         };
         break;
       case 'NAVIGATECHILD':

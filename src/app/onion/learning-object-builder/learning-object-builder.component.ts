@@ -373,11 +373,18 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   changePage(page, childPage) {
-    if (page === 0) {
-      this.activePage = PAGES.INFO;
-    } else {
-      this.activePage = PAGES.OUTCOMES;
-      this.childIndex = childPage;
+    switch (page) {
+      case 0:
+        this.activePage = PAGES.INFO;
+        break;
+      case 1:
+        this.activePage = PAGES.OUTCOMES;
+        this.childIndex = childPage;
+        break;
+      case 2:
+        if (this.validate()) {
+          this.save(true);
+        }
     }
   }
 
