@@ -7,26 +7,20 @@ import { Subject } from 'rxjs/Subject';
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
-/*
-TODO: ensure that the mappedStandards array is never a subset of suggestion array
-*/
 @Injectable()
 export class SuggestionService {
   suggestion = new Subject<{}[]>();
   mappedStandards = [];
   mappedSubject = new Subject<{}[]>();
   delete: Subject<string> = new Subject<string>();
-  total: number = 0;
+  total = 0;
 
-  /**
-   * String of current text used to filter outcomes
-   */
-  filterText: string = '';
+  // String of current text used to filter outcomes
+  filterText = '';
 
-  /**
-   * String of currently selected author
-   */
-  author: string = '';
+
+  // String of currently selected author
+  author = '';
 
   private headers = new Headers();
 
@@ -51,29 +45,18 @@ export class SuggestionService {
       this.formatFilter(filter)
     )}`;
     this.http
-    // FIXME: remove hardcoded page
       .get(`${environment.suggestionUrl}/outcomes/suggest?${query}`, {
         headers: this.headers
       })
       .toPromise()
       .then(res => {
         const outcomes = res.json().outcomes;
-        // FIXME: If alphabetical sorting by author is the normal use case, this sort function should be implemented at the API layer
-        /*
-        outcomes.sort(function(a, b) {
-          const textA = a.author.toUpperCase();
-          const textB = b.author.toUpperCase();
-          return textA < textB ? -1 : textA > textB ? 1 : 0;
-        });
-
-        */
         if (res.ok) {
           this.total = Math.ceil(res.json().total / +filter.limit);
           this.suggestion.next(outcomes);
         }
       });
   }
-  
 
   private formatFilter(filter) {
     if (!filter) {
@@ -90,7 +73,6 @@ export class SuggestionService {
   }
 
   addMapping(s): boolean {
-    
     // Filter the array so that any outcomes with ide
     if (
       this.mappedStandards.filter(outcome => {
@@ -100,12 +82,8 @@ export class SuggestionService {
       // Add standard to the array of mapped standards
       this.mappedStandards.push(s);
       this.mappedSubject.next(this.mappedStandards);
-
-      
       return true;
     }
-
-    
     return false;
   }
 

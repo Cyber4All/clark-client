@@ -2,10 +2,9 @@ import { Output, EventEmitter } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'suggestion-filter',
+    selector: 'onion-suggestion-filter',
     template: `
         <div class="filter-container">
-        
             <div class="flex-item">
                 <label for="author-filter">Author</label>
                 <div class="select-wrapper">
@@ -14,7 +13,6 @@ import { Component, OnInit } from '@angular/core';
                     </select>
                 </div>
             </div>
-        
             <div class="flex-item">
                 <label for="date-filter">Date Published</label>
                 <div class="select-wrapper">
@@ -23,14 +21,13 @@ import { Component, OnInit } from '@angular/core';
                 </select>
                 </div>
             </div>
-        
             <div class="flex-item">
             <label for="name-filter">Name Contains</label>
-            <input 
-                type="text" 
-                placeholder="Outcome Name" 
-                name="name-filter" 
-                [ngModel]="_name" 
+            <input
+                type="text"
+                placeholder="Outcome Name"
+                name="name-filter"
+                [ngModel]="_name"
                 (ngModelChange)="nameChanged($event)"
             />
             </div>
