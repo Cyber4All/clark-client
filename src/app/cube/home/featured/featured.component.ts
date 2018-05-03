@@ -26,7 +26,7 @@ export class FeaturedComponent implements OnInit {
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(this.query);
     } catch (e) {
-      
+
     }
   }
 
