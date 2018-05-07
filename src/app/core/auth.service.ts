@@ -34,6 +34,7 @@ export class AuthService {
           this.changeStatus(true);
         },
         error => {
+          this.cookies.remove('presence');
           this.changeStatus(false);
         }
       );

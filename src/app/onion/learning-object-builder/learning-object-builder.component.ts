@@ -55,7 +55,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private notificationService: NotificationService,
     private store: LearningObjectStoreService,
     private errorStore: LearningObjectErrorStoreService,
-    private auth: AuthService,
+    public auth: AuthService,
   ) {
   }
 
@@ -69,7 +69,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       }
     });
     this.store.state.subscribe(state => {
-      this.changePage(state.section, state.childSection, state.noPage);
+      this.changePage(state.section, state.childSection);
     });
   }
   /**
@@ -267,11 +267,6 @@ export class LearningObjectBuilderComponent implements OnInit {
    */
   newOutcome() {
     const newOutcome = this.learningObject.addOutcome();
-    // FIXME: This should be handled API side
-    if (newOutcome.verb === 'Define') {
-      newOutcome.verb = 'Choose';
-    }
-    // this.advanceSection();
     return newOutcome;
   }
 
@@ -377,14 +372,19 @@ export class LearningObjectBuilderComponent implements OnInit {
     return true;
   }
 
-  changePage(page, childPage, noPage = false) {
-    if (!noPage) {
-      if (page === 0) {
+  changePage(page, childPage) {
+    switch (page) {
+      case 0:
         this.activePage = PAGES.INFO;
-      } else {
+        break;
+      case 1:
         this.activePage = PAGES.OUTCOMES;
         this.childIndex = childPage;
-      }
+        break;
+      case 2:
+        if (this.validate()) {
+          this.save(true);
+        }
     }
   }
 
