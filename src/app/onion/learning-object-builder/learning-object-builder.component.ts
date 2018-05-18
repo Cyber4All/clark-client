@@ -389,13 +389,17 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   advanceSection() {
+    const modifier = 1;
+    const action = this.activePage + modifier === PAGES.OUTCOMES ? 'NAVIGATEPARENT' : 'NAVIGATE';
+
     this.store.dispatch({
-      type: 'NAVIGATE',
+      type: action,
       request: {
-        sectionModifier: 1
+        sectionIndex: this.activePage + modifier,
+        childSection: this.activePage + modifier === PAGES.OUTCOMES ? 0 : undefined
       }
     });
-  }
+    }
 
   togglePublished(event) {
     if (this.auth.user.emailVerified) {
