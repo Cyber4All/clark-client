@@ -11,7 +11,7 @@
         <i class="fa fa-filter"></i>
       </div>
       <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected
-        <i class="fa fa-times"></i>
+        <i class="fa fa-trash"></i>
       </div>
     </div>
   </div>
@@ -29,22 +29,13 @@
         <!-- this is a placeholder and should remain empty -->
       </div>
     </div>
-    <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
-      <div [ngClass]="{published: l.published, unpublished: !l.published}" class="row">
-        <checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></checkbox>
-        <div class="cells">
-          <div class="cell">
-            <a [routerLink]="['/onion/learning-object-builder', l.name | encodeURIComponent]" class="builder-link">{{l.name}}</a>
-          </div>
-          <div class="cell">{{l.length | titlecase}}</div>
-          <div class="cell">{{l.date | date:'medium'}}</div>
-        </div>
-        <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <div class="circle"></div>
-        </div>
-      </div>
+    <div class="rows">
+      <clark-dashboard-learning-object *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}"
+        [learningObject]="l" 
+        [changeSelect]="allSelected"
+        (selectChanged)="toggleSelectLearningObject($event, l)"
+        (onDelete)="this.delete(l)" (togglePublished)="this.togglePublished(l)">
+      </clark-dashboard-learning-object>
     </div>
   </div>
 </ng-container>

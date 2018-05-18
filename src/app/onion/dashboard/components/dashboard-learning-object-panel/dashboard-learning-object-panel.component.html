@@ -1,0 +1,19 @@
+<div class="dashboard-learning-object-panel">
+  <div class="wrapper" *ngIf="!editing else editingTemplate">
+    <ng-container *ngIf="false">
+      <div class="children">
+        <div class="child" *ngFor="let l of learningObject.children">{{ l.name }}</div>
+  
+      </div>
+    </ng-container>
+    <ng-container *ngIf="true">
+      <div class="no-children">
+        This learning object has no children!
+        <div class="btn-group" (click)="editChildren()"><div class="button neutral">Add Children</div></div>
+      </div>
+    </ng-container>
+  </div>
+  <ng-template #editingTemplate>
+    <panel-edit-children
+  </ng-template>
+</div>

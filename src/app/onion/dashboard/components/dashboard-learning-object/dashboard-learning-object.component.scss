@@ -1,0 +1,24 @@
+@import '~_vars.scss';
+
+.published {
+  border-left: 6px solid $green;
+}
+
+.unpublished {
+  border-left: 6px solid $error-red;
+}
+
+.row:not(.columns) {
+  margin-bottom: 0 !important;
+}
+
+:host:not(:last-child) .dashboard-learning-object {
+    margin-bottom: 15px;
+}
+
+.details {
+    background: rgba(0, 0, 0, 0.03);
+    padding: 20px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

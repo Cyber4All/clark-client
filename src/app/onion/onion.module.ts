@@ -21,6 +21,10 @@ import { ModalModule } from '../shared/modals';
 import { DashboardResolver } from './dashboard/dashboard.resolver';
 import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
+import { DashboardLearningObjectComponent } from './dashboard/components/dashboard-learning-object/dashboard-learning-object.component';
+import { DashboardLearningObjectPanelComponent } from './dashboard/components/dashboard-learning-object-panel/dashboard-learning-object-panel.component';
+import { PanelOverviewComponent } from './dashboard/components/dashboard-learning-object-panel/panel-overview/panel-overview.component';
+import { PanelEditChildrenComponent } from './dashboard/components/dashboard-learning-object-panel/panel-edit-children/panel-edit-children.component';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -32,7 +36,11 @@ import { LearningObjectResolve } from './learning-object-builder/learning-object
   // Specifys the components included in this module
   declarations: [
     OnionComponent,
-    DashboardComponent
+    DashboardComponent,
+    DashboardLearningObjectComponent,
+    DashboardLearningObjectPanelComponent,
+    PanelOverviewComponent,
+    PanelEditChildrenComponent
   ],
   // Specifys all modules to be imported
   imports: [

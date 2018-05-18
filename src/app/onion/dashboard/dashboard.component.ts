@@ -53,23 +53,13 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Opens the learning object builder component and populates it with the active learning object
-   */
-  edit() {
-    this.router.navigate([
-      '/onion/learning-object-builder',
-      encodeURIForRouter(this.focusedLearningObject.name)
-    ]);
-  }
-
-  /**
    * Deletes the learning object from the focuedLearningObject parameter if selected = false;
    * If selected = true, deletes all Learning Objects
    * from the selected array.
    *
    * @memberof DashboardComponent
    */
-  delete(multiple = false) {
+  delete(learningObject: LearningObject, multiple = false) {
     this.modalService
       .makeDialogMenu(
         'DeleteConfirmation',
@@ -95,7 +85,7 @@ export class DashboardComponent implements OnInit {
         if (val === 'accept') {
           if (!multiple) {
             this.learningObjectService
-              .delete(this.focusedLearningObject.name)
+              .delete(learningObject.name)
               .then(() => {
                 this.notificationService.notify(
                   'Done!',
@@ -128,11 +118,9 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  async togglePublished() {
+  async togglePublished(l: LearningObject) {
     try {
-      await this.learningObjectService.togglePublished(
-        this.focusedLearningObject
-      );
+      await this.learningObjectService.togglePublished(l);
       this.getLearningObjects();
     } catch (e) {
       let err = e._body
@@ -154,15 +142,24 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/onion/learning-object-builder']);
   }
 
+  toggleSelectLearningObject(insert: boolean = false, l: LearningObject) {
+    if (insert) {
+      this.selectLearningObject(l);
+    } else {
+      this.deselectLearningObject(l);
+    }
+  }
+
   /**
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject) {
+
     if (!this.selected.includes(l['name'])) {
       this.selected.push(l['name']);
+      this.app.detectChanges();
     }
-    this.app.detectChanges();
   }
 
   /**
@@ -170,8 +167,10 @@ export class DashboardComponent implements OnInit {
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
-    this.selected.splice(this.selected.indexOf(l['name']), 1);
-    this.app.detectChanges();
+    if (this.selected.includes(l['name'])) {
+      this.selected.splice(this.selected.indexOf(l['name']), 1);
+      this.app.detectChanges();
+    }
   }
 
   /**
@@ -212,94 +211,6 @@ export class DashboardComponent implements OnInit {
       }
     }
     return true;
-  }
-
-  /**
-   * Creates dashboard learning object popup (context menu) when clicking on one of the options buttons in a row
-   *
-   * @param {any} event click event
-   * @param {any} learningObject clicked learning object
-   * @memberof DashboardComponent
-   */
-  makeContextMenu(event, learningObject: LearningObject) {
-    this.focusedLearningObject = learningObject;
-    let list: Array<ModalListElement> = [
-      new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit')
-    ];
-
-    if (this.auth.user.emailVerified) {
-      list.push(
-        new ModalListElement(
-          '<i class="far fa-upload"></i>Manage Materials',
-          'upload'
-        )
-      );
-    }
-
-    if (!learningObject.published && this.auth.user.emailVerified) {
-      list.push(
-        new ModalListElement(
-          '<i class="far fa-eye"></i>Publish',
-          'toggle published'
-        )
-      );
-    } else if (this.auth.user.emailVerified) {
-      list.push(
-        new ModalListElement(
-          '<i class="far fa-eye-slash"></i>Unpublish',
-          'toggle published'
-        )
-      );
-      list.push(
-        new ModalListElement(
-          '<i class="far fa-cube"></i>View in CUBE',
-          'view details'
-        )
-      );
-    }
-    list.push(
-      new ModalListElement(
-        '<i class="far fa-trash-alt"></i>Delete',
-        'delete',
-        'bad'
-      )
-    );
-
-    this.modalService
-      .makeContextMenu(
-        'LearningObjectContext',
-        'small',
-        list,
-        true,
-        event.currentTarget
-      )
-      .subscribe(val => {
-        switch (val) {
-          case 'edit':
-            this.edit();
-            break;
-          case 'delete':
-            this.delete();
-            break;
-          case 'upload':
-            this.router.navigate([
-              '/onion/content/upload/' + encodeURIForRouter(this.focusedLearningObject.name)
-            ]);
-            break;
-          case 'toggle published':
-            this.togglePublished();
-            break;
-          case 'view details':
-            this.router.navigate([
-              `/details/${this.focusedLearningObject.author.username}/${
-                encodeURIForRouter(this.focusedLearningObject.name)
-              }`
-            ]);
-            break;
-          default:
-            break;
-        }
-      });
   }
 
   /**

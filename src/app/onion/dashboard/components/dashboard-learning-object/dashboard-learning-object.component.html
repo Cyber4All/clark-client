@@ -1,0 +1,20 @@
+<div class="dashboard-learning-object">
+  <div [ngClass]="{'published': learningObject.published, 'unpublished': !learningObject.published}" class="row">
+    <checkbox [checked]="selected"  (checkboxChecked)="emitSelected()" (checkboxUnchecked)="emitDeselected()"></checkbox>
+    <div class="cells">
+      <div class="cell">
+        <a [routerLink]="['/onion/learning-object-builder', learningObject.name | encodeURIComponent]" class="builder-link">{{learningObject.name}}</a>
+      </div>
+      <div class="cell">{{learningObject.length | titlecase}}</div>
+      <div class="cell">{{learningObject.date | date:'medium'}}</div>
+    </div>
+    <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="learningObject.length">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+  </div>
+  <div *ngIf="expanded" class="details">
+    <clark-dashboard-learning-object-panel [learningObject]="this.learningObject"></clark-dashboard-learning-object-panel>
+  </div>
+</div>
