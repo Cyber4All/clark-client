@@ -25,7 +25,7 @@ submit() {
     this.auth.initiateResetPassword(this.email).subscribe(val => {
       this.done = true;
     }, error => {
-      this.error(error.error.message);
+      this.error('Error! User with specified email address doesn\'t exist!');
     });
   }
 
