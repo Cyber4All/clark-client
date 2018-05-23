@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Headers, Http, Response } from '@angular/http';
-import * as querystring from 'query-string';
+import * as querystring from 'querystring';
 
 @Injectable()
 export class OutcomeService {
