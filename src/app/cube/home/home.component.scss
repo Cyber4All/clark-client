@@ -1,4 +1,4 @@
-@import '~_vars.scss';
+@import "~_vars.scss";
 
 $top-height: 500px;
 $banner-height: 90px;
@@ -27,6 +27,7 @@ $banner-height: 90px;
 }
 
 .top {
+
   .img-viewport {
     background: url(/assets/servers.jpg) no-repeat;
     background-size: cover;
@@ -39,10 +40,7 @@ $banner-height: 90px;
       // color overlay to darken image slightly
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: darken($blue-accent, 35);
       opacity: 0.2;
       z-index: 1;
@@ -64,6 +62,7 @@ $banner-height: 90px;
         justify-content: center;
         align-items: center;
 
+
         .feature-text {
           color: white;
           text-align: center;
@@ -73,7 +72,7 @@ $banner-height: 90px;
           display: inline-block;
           text-align: right;
           // max-width: 500px;
-          width: 100%;
+            width: 100%;
 
           .search-input {
             padding: 12px;
@@ -134,7 +133,7 @@ $banner-height: 90px;
   align-items: center;
 
   .feature-text {
-    padding-top: 45px;
+      padding-top: 45px;
     margin: 65px auto 30px;
     text-shadow: 0px 2px transparent;
     color: $dark-text;
@@ -142,16 +141,15 @@ $banner-height: 90px;
     position: relative;
 
     &:after {
-      content: '';
-      top: 0px;
-      height: 2px;
-      background: black;
-      opacity: 0.1;
-      width: 50%;
-      margin: auto;
-      left: 0;
-      right: 0;
-      position: absolute;
+        content: "";
+        top: 0px;
+        height: 2px;
+        background: black;
+        opacity: 0.1;
+        width: 50%;
+        margin: auto;
+        left: 0; right: 0;
+        position: absolute;
     }
   }
 
@@ -165,6 +163,7 @@ $banner-height: 90px;
 }
 
 @media (max-width: 750px) {
+
   .img-viewport {
     padding-top: 60px !important;
     padding-bottom: 60px !important;
@@ -174,29 +173,12 @@ $banner-height: 90px;
     }
   }
 
-  .featured-viewport,
-  .whois {
+  .featured-viewport, .whois {
     padding-top: 40px !important;
     padding-bottom: 40px !important;
   }
 
   ::ng-deep .feature-text {
     font-size: 26px !important;
-  }
-}
-.browselink {
-  color: white;
-  font-size: 18px;
-  // width: 100px;
-  cursor: pointer;
-  @include vert-center;
-  position: relative;
-  left: -10px;
-  flex-direction: row;
-  justify-content: right;
-  text-align: right;
-
-  &:hover {
-    text-decoration: underline;
   }
 }
