@@ -1,22 +1,15 @@
-import {
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild } from '@angular/core';
-import { OutcomeSuggestion } from '@cyber4all/clark-entity';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit, Output, Input, EventEmitter, AfterViewChecked, ChangeDetectorRef, SimpleChanges, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { ModalService, Position, ModalListElement } from '../../shared/modals';
+import { SuggestionService } from '../../onion/learning-object-builder/suggestion/services/suggestion.service';
+import { OutcomeService } from '../../core/outcome.service';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
-import { OutcomeService } from '../../core/outcome.service';
-import { SuggestionService } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
-import { ModalListElement, ModalService, Position } from '../../shared/modals';
+
+// RXJS
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { OutcomeSuggestion } from '@cyber4all/clark-entity';
+
 
 @Component({
   selector: 'clark-browse-by-mappings-component',
@@ -29,7 +22,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   @Input('source') source: string;
   // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
   @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
-  // dictates whether this component should remain in the document flow or not (IE if this is in a modal, inflow should be false)
+  // boolean value that dictates whether this component should remain in the document flow or not (IE if this is in a modal, inflow should be false)
   @Input('inflow') inflow: boolean;
 
   // Outputs
@@ -57,18 +50,13 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   // empty observable to be instantiated after the view is checked
   // will watch the input and query the database after user has stopped typing
   mappingsFilterInput: Observable<string>;
-  mappingsFilterInputError = false;
+  mappingsFilterInputError: boolean = false;
 
   mappingsQueryError = false;
 
   @Input('showMappedOutcomesTitle') showMappedOutcomesTitle;
 
-  constructor(
-    private modalService: ModalService,
-    private outcomeService: OutcomeService,
-    private mappingService: SuggestionService,
-    private cd: ChangeDetectorRef,
-  ) { }
+  constructor(private modalService: ModalService, private outcomeService: OutcomeService, private mappingService: SuggestionService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.mappingService.author = this.sources[0];
@@ -83,7 +71,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
     }
 
     // if this.inflow === undefined, set it to true, else leave it alone
-    if (this.inflow === undefined) {
+    if (this.inflow == undefined) {
       this.inflow = true;
     }
   }

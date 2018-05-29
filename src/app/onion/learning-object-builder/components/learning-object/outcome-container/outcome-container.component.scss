@@ -1,0 +1,12 @@
+.outcome-container-wrapper {
+  border-radius: 4px;
+  background: white;
+
+  .title {
+    font-size: 28px;
+    color: $blue-accent;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}

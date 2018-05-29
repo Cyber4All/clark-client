@@ -10,7 +10,6 @@
     padding-left: 30px;
   }
 }
-
 // fixed postion nav bar
 .topbar {
   position: relative;
@@ -121,7 +120,6 @@
     justify-content: flex-end;
   }
 }
-
 .toolbar {
   display: flex;
   flex-direction: row;
@@ -139,7 +137,7 @@
       margin-right: 20px;
       opacity: 0;
       visibility: hidden;
-    }
+    }  
   }
 
   .search-bar {
@@ -174,7 +172,7 @@
         border-color: $blue-accent;
       }
     }
-
+   
     .icon {
       color: white;
       background: $blue-accent;

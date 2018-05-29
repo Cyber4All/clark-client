@@ -22,9 +22,9 @@
                     margin-bottom: 10px;
     
                     .author {
+                        width: 100%;
                         overflow-x: hidden;
                         text-overflow: ellipsis;
-                        width: 100%;
                     }
                 }
             }
@@ -162,9 +162,6 @@
             font-size: 14px;
             color: lighten($dark-text, 10);
             margin-top: 5px;
-        }
-        .author {
-            text-transform: capitalize;
         }
     }
  }

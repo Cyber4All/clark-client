@@ -182,3 +182,20 @@ $banner-height: 90px;
     font-size: 26px !important;
   }
 }
+
+.browselink{
+  color:white;
+  font-size: 18px;
+ // width: 100px;
+  cursor: pointer;
+  @include vert-center;
+  position: relative;
+  left: -10px;
+  flex-direction: row;
+  justify-content: right;
+  text-align: right;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -25,8 +25,7 @@ submit() {
     this.auth.initiateResetPassword(this.email).subscribe(val => {
       this.done = true;
     }, error => {
-      console.log(error);
-      this.error(error.error);
+      this.error(error.error.message);
     });
   }
 

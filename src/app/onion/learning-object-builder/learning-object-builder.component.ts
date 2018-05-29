@@ -55,7 +55,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private notificationService: NotificationService,
     private store: LearningObjectStoreService,
     private errorStore: LearningObjectErrorStoreService,
-    public auth: AuthService,
+    private auth: AuthService,
   ) {
   }
 
@@ -69,7 +69,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       }
     });
     this.store.state.subscribe(state => {
-      this.changePage(state.section, state.childSection);
+      this.changePage(state.section, state.childSection, state.noPage);
     });
   }
   /**
@@ -267,6 +267,11 @@ export class LearningObjectBuilderComponent implements OnInit {
    */
   newOutcome() {
     const newOutcome = this.learningObject.addOutcome();
+    // FIXME: This should be handled API side
+    if (newOutcome.verb === 'Define') {
+      newOutcome.verb = 'Choose';
+    }
+    // this.advanceSection();
     return newOutcome;
   }
 
@@ -372,34 +377,25 @@ export class LearningObjectBuilderComponent implements OnInit {
     return true;
   }
 
-  changePage(page, childPage) {
-    switch (page) {
-      case 0:
+  changePage(page, childPage, noPage = false) {
+    if (!noPage) {
+      if (page === 0) {
         this.activePage = PAGES.INFO;
-        break;
-      case 1:
+      } else {
         this.activePage = PAGES.OUTCOMES;
         this.childIndex = childPage;
-        break;
-      case 2:
-        if (this.validate()) {
-          this.save(true);
-        }
+      }
     }
   }
 
   advanceSection() {
-    const modifier = 1;
-    const action = this.activePage + modifier === PAGES.OUTCOMES ? 'NAVIGATEPARENT' : 'NAVIGATE';
-
     this.store.dispatch({
-      type: action,
+      type: 'NAVIGATE',
       request: {
-        sectionIndex: this.activePage + modifier,
-        childSection: this.activePage + modifier === PAGES.OUTCOMES ? 0 : undefined
+        sectionModifier: 1
       }
     });
-    }
+  }
 
   togglePublished(event) {
     if (this.auth.user.emailVerified) {
