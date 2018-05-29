@@ -25,7 +25,7 @@
       <i class="far fa-building"></i>
     </div>
     <div class="input organization" [ngClass]="{'active': editInfo.bio !== ''}">
-      <textarea (keydown)="handleCounter()" name="bio" type="text" placeholder="Add a bio to your profile!" maxlength="140" [(ngModel)]="editInfo.bio"
+      <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Add a bio to your profile!" maxlength="140"
       rows="5" cols="50" >
       </textarea>
       <span id="bio-icon"><i class="fas fa-user-alt"></i></span>

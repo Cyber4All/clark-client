@@ -31,8 +31,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     firstname: '',
     lastname: '',
     email: '',
-    organization: '',
-    bio: ''
+    organization: ''
   };
 
   sub: Subscription; // open subscription to close
@@ -86,13 +85,14 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
       );
     }
   }
-
-  handleCounter() {
-    this.counter--;
+  handleCounter(e) {
+    if (e.which === 8 && this.counter !== 140) {
+       this.counter++;
+    } else if (e.which !== 8 && this.counter !== 0) {
+      this.counter--;
+    }
   }
 }
-
-
 
 export type UserEdit = {
   name: string;
