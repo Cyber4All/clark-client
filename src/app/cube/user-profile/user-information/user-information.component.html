@@ -6,6 +6,9 @@
   <div class="email">
     <a href="mailto: {{ user.email }}">{{ user.email }}</a>
   </div>
+  <div class="bio">
+    <p>User Bio: {{ user.bio }}</p>
+  </div>
   <div *ngIf="self && !user.emailVerified" class="verify-email button good" (click)="sendEmailVerification()">
     Verify your email
   </div>

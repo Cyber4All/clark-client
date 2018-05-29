@@ -31,7 +31,9 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     firstname: '',
     lastname: '',
     email: '',
-    organization: ''
+    organization: '',
+    password: '',
+    bio: ''
   };
 
   sub: Subscription; // open subscription to close
@@ -50,7 +52,9 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
         firstname: this.user.name ? this.user.name.split(' ')[0] : '',
         lastname: this.user.name ? this.user.name.substring(this.user.name.indexOf(' ') + 1) : '',
         email: this.user.email || '',
-        organization: this.user.organization || ''
+        organization: this.user.organization || '',
+        password: this.user.password || '',
+        bio: this.user.bio || ''
       };
     }
   }
@@ -64,8 +68,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     const edits: UserEdit = {
       name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
       email: this.editInfo.email.trim(),
-      organization: this.editInfo.organization.trim()
+      organization: this.editInfo.organization.trim(),
+      bio: this.editInfo.bio.trim()
     };
+    console.log(edits.bio);
     try {
       await this.userService.editUserInfo(edits);
       await this.auth.validate();
@@ -86,11 +92,9 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     }
   }
   handleCounter(e) {
-    if (e.which === 8 && this.counter !== 140) {
-       this.counter++;
-    } else if (e.which !== 8 && this.counter !== 0) {
-      this.counter--;
-    }
+    const inputLength = this.editInfo.bio.length;
+    this.counter = 140 - inputLength;
+    console.log(this.editInfo.bio);
   }
 }
 
@@ -98,4 +102,5 @@ export type UserEdit = {
   name: string;
   email: string;
   organization: string;
+  bio: string;
 };

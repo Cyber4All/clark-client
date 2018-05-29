@@ -10,23 +10,28 @@
           <i class="far fa-id-card"></i>
         </div>
     </div>
+    <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
+      <input name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
+      <i class="far fa-building"></i>
+    </div>
     <div class="gravatar-header">C.L.A.R.K. uses Gravatar</div>
     <div class="gravatar-text">Don't have an account?<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
     <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
       <input name="email" type="text" placeholder="Email address" [(ngModel)]="editInfo.email" />
       <i class="far fa-at"></i>
     </div>
+    <p id="character-counter">Change Password</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input name="password" type="text" placeholder="Password" [(ngModel)]="editInfo.password" />
+      <input name="password" type="text" placeholder="Enter Password" [(ngModel)]="editInfo.password" />
       <i class="fas fa-key"></i>
     </div>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
-      <i class="far fa-building"></i>
+      <input name="password" type="text" placeholder="Enter New Password" [(ngModel)]="editInfo.password" />
+      <i class="fas fa-key"></i>
     </div>
-    <div class="input organization" [ngClass]="{'active': editInfo.bio !== ''}">
-      <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Add a bio to your profile!" maxlength="140"
-      rows="5" cols="50" >
+    <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
+      <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Add a bio to your profile!" [(ngModel)]="editInfo.bio" 
+      maxlength="140" rows="5" cols="50" >
       </textarea>
       <span id="bio-icon"><i class="fas fa-user-alt"></i></span>
     </div>
