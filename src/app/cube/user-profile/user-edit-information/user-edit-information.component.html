@@ -17,9 +17,20 @@
       <i class="far fa-at"></i>
     </div>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
+      <input name="password" type="text" placeholder="Password" [(ngModel)]="editInfo.password" />
+      <i class="fas fa-key"></i>
+    </div>
+    <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
       <input name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
       <i class="far fa-building"></i>
     </div>
+    <div class="input organization" [ngClass]="{'active': editInfo.bio !== ''}">
+      <textarea (keydown)="handleCounter()" name="bio" type="text" placeholder="Add a bio to your profile!" maxlength="140" [(ngModel)]="editInfo.bio"
+      rows="5" cols="50" >
+      </textarea>
+      <span id="bio-icon"><i class="fas fa-user-alt"></i></span>
+    </div>
+    <p id="character-counter">Characters Remaining: {{ counter }}</p>
     <div class="btn-group to-right">
         <div class="button good" (click)="save()">Save Changes <i class="far fa-save"></i></div>
         <div class="button bad" (click)="close.emit(false)">Discard Changes <i class="far fa-times"></i></div>

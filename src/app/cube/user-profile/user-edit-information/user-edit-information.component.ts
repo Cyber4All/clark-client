@@ -20,15 +20,19 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./user-edit-information.component.scss']
 })
 export class UserEditInformationComponent implements OnInit, OnChanges {
+  elementRef: any;
   @Input('user') user;
   @Input('self') self: boolean = false;
   @Output('close') close = new EventEmitter<boolean>();
+
+  counter = 140;
 
   editInfo = {
     firstname: '',
     lastname: '',
     email: '',
-    organization: ''
+    organization: '',
+    bio: ''
   };
 
   sub: Subscription; // open subscription to close
@@ -82,7 +86,13 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
       );
     }
   }
+
+  handleCounter() {
+    this.counter--;
+  }
 }
+
+
 
 export type UserEdit = {
   name: string;
