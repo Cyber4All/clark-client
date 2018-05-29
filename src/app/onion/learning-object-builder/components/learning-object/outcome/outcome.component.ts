@@ -1,4 +1,5 @@
 import { Subject } from 'rxjs/Subject';
+import { SuggestionService } from '../../../suggestion/services/suggestion.service';
 import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -22,8 +23,6 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 import { LearningObjectErrorStoreService } from '../../../errorStore';
-import { LearningObjectStoreService } from '../../../store';
-import { SuggestionService } from './standard-outcomes/suggestion/services/suggestion.service';
 
 @Component({
   selector: 'onion-outcome-component',
@@ -33,12 +32,12 @@ import { SuggestionService } from './standard-outcomes/suggestion/services/sugge
 })
 export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() outcome;
-  @Input('index') index;
+  @Input('index') i;
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
   @ViewChild('outcomeInput', {read: ElementRef}) outcomeInput: ElementRef;
-
+  
 
   suggestOpen = false;
   openSearch = false;
@@ -52,12 +51,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   classassessmentstrategies: { [level: string]: Set<string> };
   instructionalstrategies: { [level: string]: Set<string> };
 
-  constructor(
-    private suggestionService: SuggestionService,
-    public modalService: ModalService,
-    private errorStore: LearningObjectErrorStoreService,
-    private store: LearningObjectStoreService,
-  ) {}
+  constructor(private suggestionService: SuggestionService, public modalService: ModalService, private errorStore: LearningObjectErrorStoreService) {}
 
   setupView(first?: boolean) {
     // FIXME: classverbs should be sorted at the API
@@ -83,6 +77,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
       }
     });
 
+    // TODO make sure this system handles editing objects that already have outcomes mapped
     this.suggestionService.udpateMappings(this.outcome._mappings);
     this.setupView(true);
 
@@ -143,7 +138,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   }
 
   deleteOutcome() {
-    this.deleteIndex.emit(this.index);
+    this.deleteIndex.emit(this.i);
   }
 
   openBloomsInfo(index: number) {}
@@ -199,7 +194,15 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
     this.suggestionService.udpateMappings(mappings);
   }
 
-  updateSidebarText() {
-    this.store.dispatch({ type: 'UPDATE_SIDEBAR_TEXT', request: { name: this.outcome.verb + ' ' + this.outcome.text } });
-  }
+  // openMappingsSearch(index) {
+  //   this.openSearch = true;
+  // }
+
+  // addMappings(e) {
+  //   this.openSearch = false;
+  //   for (const m of e) {
+  //
+  //     this.suggestionService.addMapping(m);
+  //   }
+  // }
 }

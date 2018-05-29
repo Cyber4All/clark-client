@@ -1,28 +1,24 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { SuggestionService } from '../suggestion/services/suggestion.service';
+import { SuggestionService } from './services/suggestion.service';
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 
-/**
- * Displays a list of outcomes that the user has mapped to their outcome.
- *
- * @export
- * @class MappingsListComponent
- * @implements {OnInit}
- */
 @Component({
-  selector: 'onion-mappings-list',
-  templateUrl: 'mappings-list.component.html',
-  styleUrls: ['mappings-list.component.scss']
+    selector: 'onion-mappings-list',
+    templateUrl: 'mappings.component.html',
+    styleUrls: ['mappings.component.scss']
 })
-export class MappingsListComponent implements OnInit {
 
-  @Input() mappings: Array<OutcomeSuggestion> = [];
+export class MappingsListComponent implements OnInit {
+  // TODO: Add ability to deselect a mapped outcome
+
+  @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
 
   constructor(public service: SuggestionService) { }
 
   ngOnInit() {
     const m = this.service.mappings;
     this.mappings = m.currentValue;
+    
   }
 
   deleteMapping(m) {
