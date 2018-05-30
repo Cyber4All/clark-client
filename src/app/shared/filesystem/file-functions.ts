@@ -9,7 +9,7 @@
 export function getPaths(path: string, removeLast: boolean = true): string[] {
   const paths: string[] = path.split('/');
   if (paths[0] === '') {
-    paths.slice(0, 0);
+    paths.shift();
   }
   // Remove file
   if (removeLast) {

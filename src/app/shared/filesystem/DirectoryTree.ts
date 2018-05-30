@@ -26,21 +26,34 @@ export class DirectoryTree {
       if (!file.fullPath) {
         this._root.addFile(file);
       } else {
-        let paths = getPaths(file.fullPath);
-        const node = this.traversePath(paths);
+        const paths = getPaths(file.fullPath);
+        let node = this.traversePath(paths);
         if (node) {
           node.addFile(file);
         } else {
-          paths = getPaths(file.fullPath);
-          const path = paths.join('/');
-          const name = paths.pop();
-          const newNode = this.add(name, path, this.lastNode);
-          newNode.addFile(file);
-          this.lastNode = undefined;
+          node = this.buildSubTree(paths);
+          node.addFile(file);
         }
       }
     }
   }
+  private buildSubTree(paths: string[]) {
+    const last_touched_node_paths = getPaths(this.lastNode.getPath(), false);
+    const _paths = [...last_touched_node_paths];
+    const continueFromIndex = last_touched_node_paths.length;
+    let lastCreatedNode: DirectoryNode;
+    for (let i = continueFromIndex; i < paths.length; i++) {
+      const p = paths[i];
+      _paths.push(p);
+      const _node = this.traversePath(_paths);
+      if (!_node) {
+        const name = p;
+        lastCreatedNode = this.add(name, `${_paths.join('/')}`, this.lastNode);
+      }
+    }
+    return lastCreatedNode;
+  }
+
   /**
    * Traverses Filesystem Tree on path
    *
