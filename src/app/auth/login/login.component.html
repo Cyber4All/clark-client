@@ -2,8 +2,10 @@
   <div class="content-box" [ngClass]="{'failed': loginFailure}">
     <div class="top">
       <div class="error" > {{ loginFailure || '' }} </div>
-      <div class="title">C.L.A.R.K.</div>
-      <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
+      <div class="title_wrapper" routerLink="/home">
+        <div class="title">C.L.A.R.K.</div>
+        <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
+      </div>
       <form (ngSubmit)="submit()">
         <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
           <input name="username" type="text" placeholder="Username" [(ngModel)]="authInfo.username" />
