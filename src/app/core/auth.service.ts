@@ -245,13 +245,7 @@ export class AuthService {
     const lastname = nameSplit.slice(1, nameSplit.length).join(' ');
     this.http
       .get(
-        `${environment.apiURL}/users/${encodeURIComponent(
-          this.username
-        )}/cards?fname=${encodeURIComponent(
-          firstname
-        )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
-          this.user.organization
-        )}`,
+        `${environment.apiURL}/users/${this.username}/cards?fname=${firstname}&lname=${lastname}&org=${this.user.organization}`,
         { responseType: 'blob' }
       )
       .toPromise()
