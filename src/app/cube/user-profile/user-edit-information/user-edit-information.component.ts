@@ -36,7 +36,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   newPassword = '';
   confirmPassword = '';
 
-  isPasswordMatch = false;
+  isPasswordMatch;
 
   editInfo = {
     firstname: '',
@@ -87,14 +87,23 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     .debounceTime(650)
     .subscribe(val => {
       console.log('isCorrectPassword debounce active');
-      // if (this.isCorrectPassword()) {
-      //   this.noteService.notify(
-      //     'Valid Entry',
-      //     'Passwords match',
-      //     'good',
-      //     'far fa-check'
-      //   );
-      // }
+      this.isCorrectPassword().then(res => {
+        if (res) {
+          this.noteService.notify(
+            'Valid Entry',
+            'Password is correct',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.noteService.notify(
+            'Invalid Entry',
+            'Password is incorrect',
+            'bad',
+            'far fa-times'
+          );
+        }
+      });
     });
   }
 
@@ -149,11 +158,13 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 
   async isCorrectPassword() {
+    this.isPasswordMatch = false;
     this.userInfo.username = this.user.username;
     try {
       // Provide checkPassword with an object that contains username
       // and user-provided password
       this.isPasswordMatch = await this.auth.checkPassword(this.userInfo);
+      console.log(this.isPasswordMatch);
     } catch (e) {
       this.noteService.notify(
         'Invalid Entry',
