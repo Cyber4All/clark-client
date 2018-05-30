@@ -17,6 +17,8 @@ import { getIcon } from 'app/shared/filesystem/file-icons';
   styleUrls: ['file-grid-view.component.scss']
 })
 export class FileGridViewComponent implements OnInit {
+  @Input() canManage = false;
+
   @Input()
   node$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(
     null

@@ -1,7 +1,7 @@
 // Core
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
@@ -32,6 +32,7 @@ import { FileBrowserComponent } from './filesystem/file-browser/file-browser.com
     CommonModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     ParticlesModule,
     VirtualScrollModule,
     ClickOutsideModule,
