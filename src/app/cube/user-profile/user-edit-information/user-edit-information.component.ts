@@ -63,6 +63,29 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub2 = Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
+    .debounceTime(650)
+    .subscribe(val => {
+      this.isCorrectPassword().then(res => {
+        if (res) {
+          this.editInfo.password = this.confirmPassword;
+          this.noteService.notify(
+            'Valid Entry',
+            'Password is correct',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.noteService.notify(
+            'Invalid Entry',
+            'Password is incorrect',
+            'bad',
+            'far fa-times'
+          );
+        }
+      });
+    });
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     this.sub = Observable.fromEvent(this.confirmNewPasswordInput.nativeElement, 'input')
       .debounceTime(650)
       .subscribe(val => {
@@ -82,29 +105,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
           );
         }
       });
-    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub2 = Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
-    .debounceTime(650)
-    .subscribe(val => {
-      console.log('isCorrectPassword debounce active');
-      this.isCorrectPassword().then(res => {
-        if (res) {
-          this.noteService.notify(
-            'Valid Entry',
-            'Password is correct',
-            'good',
-            'far fa-check'
-          );
-        } else {
-          this.noteService.notify(
-            'Invalid Entry',
-            'Password is incorrect',
-            'bad',
-            'far fa-times'
-          );
-        }
-      });
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -114,7 +114,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
         lastname: this.user.name ? this.user.name.substring(this.user.name.indexOf(' ') + 1) : '',
         email: this.user.email || '',
         organization: this.user.organization || '',
-        password: this.user.password || '',
+        password: '',
         bio: this.user.bio || ''
       };
     }
@@ -130,6 +130,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
+      
       bio: this.editInfo.bio.trim()
     };
     try {
