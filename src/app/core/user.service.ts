@@ -30,7 +30,7 @@ export class UserService {
       return false;
     });
   }
-  
+
   getOrganizationMembers(organization: string): Promise<User[]> {
     let route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http.get(route).toPromise().then(val => {
@@ -41,7 +41,7 @@ export class UserService {
 
   getGravatarImage(email, imgSize): string {
     let defaultIcon = "identicon";
-    // r=pg checks the rating of the Gravatar image 
+    // r=pg checks the rating of the Gravatar image
     return 'https://www.gravatar.com/avatar/' + md5(email) + '?s=' + imgSize +
       '?r=pg&d=' + defaultIcon;
   }

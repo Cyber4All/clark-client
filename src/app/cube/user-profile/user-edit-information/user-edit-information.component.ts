@@ -6,26 +6,33 @@ import {
   SimpleChanges,
   EventEmitter,
   Output,
-  OnDestroy
+  OnDestroy,
+  ElementRef,
+  ViewChild
 } from '@angular/core';
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
 import { NotificationService } from '../../../shared/notifications';
 import { User } from '@cyber4all/clark-entity';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-edit-information',
   templateUrl: './user-edit-information.component.html',
   styleUrls: ['./user-edit-information.component.scss']
 })
-export class UserEditInformationComponent implements OnInit, OnChanges {
+export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
   elementRef: any;
   @Input('user') user;
   @Input('self') self: boolean = false;
   @Output('close') close = new EventEmitter<boolean>();
+  @ViewChild('confirmNewPasswordInput', { read: ElementRef })
+  confirmNewPasswordInput: ElementRef;
 
   counter = 140;
+
+  newPassword = '';
+  confirmPassword = '';
 
   editInfo = {
     firstname: '',
@@ -44,7 +51,28 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     private auth: AuthService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub = Observable.fromEvent(this.confirmNewPasswordInput.nativeElement, 'input')
+      .debounceTime(650)
+      .subscribe(val => {
+        if (this.confirmNewPassword()) {
+          this.noteService.notify(
+            'Valid Entry',
+            'Passwords match',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.noteService.notify(
+            'Invalid Entry',
+            'Passwords must match',
+            'bad',
+            'far fa-times'
+          );
+        }
+      });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.user) {
@@ -71,21 +99,20 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
       organization: this.editInfo.organization.trim(),
       bio: this.editInfo.bio.trim()
     };
-    console.log(edits.bio);
     try {
       await this.userService.editUserInfo(edits);
       await this.auth.validate();
       this.close.emit(true);
       this.noteService.notify(
         'Success!',
-        "We've updated your user information!",
+        'We\'ve updated your user information!',
         'good',
         'far fa-check'
       );
     } catch (e) {
       this.noteService.notify(
         'Error!',
-        "We couldn't update your user information!",
+        'We couldn\'t update your user information!',
         'bad',
         'far fa-times'
       );
@@ -95,6 +122,17 @@ export class UserEditInformationComponent implements OnInit, OnChanges {
     const inputLength = this.editInfo.bio.length;
     this.counter = 140 - inputLength;
     console.log(this.editInfo.bio);
+  }
+
+  confirmNewPassword() {
+    if (this.newPassword === this.confirmPassword) {
+      return true;
+    }
+    return false;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
 
