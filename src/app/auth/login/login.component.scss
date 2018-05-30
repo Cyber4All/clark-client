@@ -14,7 +14,9 @@
     .top {
         padding-top: 50px;
     }
+
 }
+
 
 form {
     margin: auto;
@@ -30,5 +32,13 @@ form {
         &:hover {
             text-decoration: underline;
         }
+    }
+}
+
+.wrapper2 {
+    cursor:pointer;
+
+    &:hover {
+        text-decoration:underline;
     }
 }
