@@ -25,18 +25,17 @@
       <input #originalPasswordInput name="password" type="password" placeholder="Enter Password" [(ngModel)]="userInfo.password" />
       <i class="fas fa-key"></i>
     </div>
-    <div [hidden] = '!this.isPasswordMatch'>
+    <div [hidden] = '!this.isPasswordMatch' id='new-password'>
       <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
         <input name="new password" type="password" placeholder="Enter New Password" [(ngModel)]="newPassword" />
         <i class="fas fa-key"></i>
       </div>
-    </div>
-    <div [hidden] = '!this.isPasswordMatch'>
       <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
         <input #confirmNewPasswordInput name="confirm password" type="password" placeholder="Confirm New Password" [(ngModel)]="confirmPassword" />
         <i class="fas fa-key"></i>
       </div>
     </div>
+    <p>Add a bio</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
       <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Add a bio to your profile!" [(ngModel)]="editInfo.bio" 
       maxlength="140" rows="5" cols="50" >

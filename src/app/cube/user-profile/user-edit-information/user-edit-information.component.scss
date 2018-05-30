@@ -111,6 +111,10 @@ form {
     text-align: left; 
 }
 
+#new-password {
+    margin-bottom: 10px;
+}
+
 @media (max-width: 750px) {
     .btn-group {
         flex-direction: column !important;
