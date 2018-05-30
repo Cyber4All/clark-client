@@ -108,7 +108,7 @@ export class UploadComponent implements OnInit {
     }
   }
   /**
-   * Updates next valud on files$
+   * Updates next valid on files$
    *
    * @private
    * @memberof UploadComponent
@@ -361,8 +361,10 @@ export class UploadComponent implements OnInit {
    */
   async upload(): Promise<LearningObjectFile[]> {
     const queue = this.queuedUploads$.getValue();
+
     if (queue.length >= 1) {
       this.uploading$.next(true);
+
       const learningObjectFiles = await this.fileStorageService.upload(
         this.learningObject,
         queue,
