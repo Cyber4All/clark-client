@@ -28,11 +28,15 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   @Output('close') close = new EventEmitter<boolean>();
   @ViewChild('confirmNewPasswordInput', { read: ElementRef })
   confirmNewPasswordInput: ElementRef;
+  @ViewChild('originalPasswordInput', { read: ElementRef })
+  originalPasswordInput: ElementRef;
 
   counter = 140;
 
   newPassword = '';
   confirmPassword = '';
+
+  isPasswordMatch = false;
 
   editInfo = {
     firstname: '',
@@ -43,7 +47,13 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     bio: ''
   };
 
+  userInfo = {
+    username: '',
+    password: ''
+  };
+
   sub: Subscription; // open subscription to close
+  sub2: Subscription; // open subscription to close
 
   constructor(
     private userService: UserService,
@@ -72,6 +82,20 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
           );
         }
       });
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub2 = Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
+    .debounceTime(650)
+    .subscribe(val => {
+      console.log('isCorrectPassword debounce active');
+      // if (this.isCorrectPassword()) {
+      //   this.noteService.notify(
+      //     'Valid Entry',
+      //     'Passwords match',
+      //     'good',
+      //     'far fa-check'
+      //   );
+      // }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -124,6 +148,23 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     console.log(this.editInfo.bio);
   }
 
+  async isCorrectPassword() {
+    this.userInfo.username = this.user.username;
+    try {
+      // Provide checkPassword with an object that contains username
+      // and user-provided password
+      this.isPasswordMatch = await this.auth.checkPassword(this.userInfo);
+    } catch (e) {
+      this.noteService.notify(
+        'Invalid Entry',
+        'Password is incorrect',
+        'bad',
+        'far fa-times'
+      );
+    }
+    return this.isPasswordMatch;
+  }
+
   confirmNewPassword() {
     if (this.newPassword === this.confirmPassword) {
       return true;
@@ -133,6 +174,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.sub2.unsubscribe();
   }
 }
 

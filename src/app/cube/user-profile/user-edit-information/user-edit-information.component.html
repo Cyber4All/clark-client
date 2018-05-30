@@ -22,7 +22,7 @@
     </div>
     <p>Change Password</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input name="password" type="password" placeholder="Enter Password" [(ngModel)]="editInfo.password" />
+      <input #originalPasswordInput name="password" type="password" placeholder="Enter Password" [(ngModel)]="userInfo.password" />
       <i class="fas fa-key"></i>
     </div>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">

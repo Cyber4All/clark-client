@@ -4,7 +4,8 @@ import {
   Input,
   forwardRef,
   ViewChild,
-  ElementRef
+  ElementRef,
+  OnDestroy
 } from '@angular/core';
 import {
   NgControl,
@@ -17,23 +18,25 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../../register/register.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clark-profile-info',
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.scss']
 })
-export class ProfileInfoComponent implements OnInit {
+export class ProfileInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
   @ViewChild('usernameInput', { read: ElementRef })
   usernameInput: ElementRef;
   result: boolean;
+  sub: Subscription;
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    Observable.fromEvent(this.usernameInput.nativeElement, 'input')
+    this.sub = Observable.fromEvent(this.usernameInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
@@ -48,5 +51,9 @@ export class ProfileInfoComponent implements OnInit {
           }
         });
       });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
