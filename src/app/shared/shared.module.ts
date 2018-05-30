@@ -15,7 +15,6 @@ import { ModalModule } from './modals';
 import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { EncodeUriComponentPipe } from './pipes/encoded-url.pipe';
 import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
 import { FileGridViewComponent } from './filesystem/file-grid-view/file-grid-view.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
@@ -47,7 +46,6 @@ import { FileBrowserComponent } from './filesystem/file-browser/file-browser.com
     BrowseByMappingsComponent,
     NavbarComponent,
     MessageComponent,
-    EncodeUriComponentPipe,
     FileBrowserComponent,
     FileListViewComponent,
     FileGridViewComponent,
@@ -56,7 +54,6 @@ import { FileBrowserComponent } from './filesystem/file-browser/file-browser.com
   exports: [
     BrowseByMappingsComponent,
     NavbarComponent,
-    EncodeUriComponentPipe,
     FileBrowserComponent,
     FileListViewComponent,
     FileGridViewComponent,

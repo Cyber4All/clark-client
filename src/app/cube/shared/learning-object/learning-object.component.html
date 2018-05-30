@@ -1,4 +1,4 @@
-<div class="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name | encodeURIComponent]">
+<div class="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
   <div class="image">
     <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
     <!-- <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles> -->

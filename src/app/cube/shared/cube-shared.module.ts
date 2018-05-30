@@ -21,7 +21,6 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
-import { EncodeUriComponentPipe } from '../../shared/pipes/encoded-url.pipe';
 import { SharedModule } from '../../shared/shared.module';
 
 

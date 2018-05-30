@@ -2,6 +2,9 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
+import {UrlSerializer} from '@angular/router';
+import { CustomUrlSerializer } from './core/custom-url-serliazer';
+
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
 import { CubeModule } from './cube/cube.module';
@@ -32,5 +35,6 @@ import { UnsupportedComponent } from './unsupported.component';
     UnsupportedComponent
 ],
   bootstrap: [ClarkComponent],
+  providers: [{provide: UrlSerializer, useClass: CustomUrlSerializer}]
 })
 export class ClarkModule {}
