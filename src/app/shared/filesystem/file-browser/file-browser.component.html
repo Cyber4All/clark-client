@@ -28,9 +28,9 @@
     <span>Drop files and folders or click here</span>
   </div>
   <clark-file-grid-view *ngIf="view==='grid' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
-    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)">
+    class="full-width dz-clickable" [node$]="currentNode$" [canManage]="canManage" (emitPath)="openFolder($event)">
   </clark-file-grid-view>
   <clark-file-list-view *ngIf="view==='list' && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
-    class="full-width dz-clickable" [node$]="currentNode$" (emitPath)="openFolder($event)">
+    class="full-width dz-clickable" [node$]="currentNode$" [canManage]="canManage" (emitPath)="openFolder($event)" (emitDesc)="emitDesc($event)">
   </clark-file-list-view>
 </div>
