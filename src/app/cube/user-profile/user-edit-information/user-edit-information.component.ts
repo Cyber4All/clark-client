@@ -21,6 +21,7 @@ import { Subscription, Observable } from 'rxjs';
   templateUrl: './user-edit-information.component.html',
   styleUrls: ['./user-edit-information.component.scss']
 })
+
 export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
   elementRef: any;
   @Input('user') user;
@@ -68,7 +69,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     .subscribe(val => {
       this.isCorrectPassword().then(res => {
         if (res) {
-          this.editInfo.password = this.confirmPassword;
           this.noteService.notify(
             'Valid Entry',
             'Password is correct',
@@ -126,27 +126,67 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
    * @memberof UserEditInformationComponent
    */
   private async save() {
-    const edits: UserEdit = {
-      name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
-      email: this.editInfo.email.trim(),
-      organization: this.editInfo.organization.trim(),
-      
-      bio: this.editInfo.bio.trim()
-    };
-    try {
-      await this.userService.editUserInfo(edits);
-      await this.auth.validate();
-      this.close.emit(true);
+    // If the user doesn't provide an email in this form, we need to
+    // get the account's in order to update the password.
+    // If a new password is not prvided, do not update password
+    if (this.confirmNewPassword()) {
+      if (this.editInfo.email === '') {
+        this.editInfo.email = this.user.email;
+      }
+      console.log(this.confirmPassword);
+      const edits: UserEdit = {
+        name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
+        email: this.editInfo.email.trim(),
+        organization: this.editInfo.organization.trim(),
+        bio: this.editInfo.bio.trim()
+      };
+      try {
+        await this.userService.editUserInfo(edits);
+        await this.auth.validate();
+        // this.close.emit(true);
+        this.noteService.notify(
+          'Success!',
+          'We\'ve updated your user information!',
+          'good',
+          'far fa-check'
+        );
+      } catch (e) {
+        this.noteService.notify(
+          'Error!',
+          'We couldn\'t update your user information!',
+          'bad',
+          'far fa-times'
+        );
+      }
+
+      if (this.confirmPassword !== '') {
+        const editPassword = {
+          password: this.confirmPassword,
+          email: this.editInfo.email
+        };
+        try {
+          await this.userService.changePassword(editPassword);
+          console.log('hwdy');
+          this.close.emit(true);
+          this.noteService.notify(
+            'Success!',
+            'We\'ve updated your password!',
+            'good',
+            'far fa-check'
+          );
+        } catch (e) {
+          this.noteService.notify(
+            'Error!',
+            'We couldn\'t update your password!',
+            'bad',
+            'far fa-times'
+          );
+        }
+      }
+    } else {
       this.noteService.notify(
-        'Success!',
-        'We\'ve updated your user information!',
-        'good',
-        'far fa-check'
-      );
-    } catch (e) {
-      this.noteService.notify(
-        'Error!',
-        'We couldn\'t update your user information!',
+        'Invalid Entry',
+        'Passwords must match',
         'bad',
         'far fa-times'
       );
@@ -155,7 +195,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   handleCounter(e) {
     const inputLength = this.editInfo.bio.length;
     this.counter = 140 - inputLength;
-    console.log(this.editInfo.bio);
   }
 
   async isCorrectPassword() {
@@ -179,6 +218,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   confirmNewPassword() {
     if (this.newPassword === this.confirmPassword) {
+      console.log(this.newPassword + ' ' + this.confirmPassword);
+      this.editInfo.password = this.confirmPassword;
       return true;
     }
     return false;
