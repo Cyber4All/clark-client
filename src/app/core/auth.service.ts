@@ -144,7 +144,7 @@ export class AuthService {
   // checkPassword is used when changing a password in the user-edit-information.component
   checkPassword(user: { username: string; password: string }): Promise<any> {
     return this.http
-    .post<User>(environment.apiURL + '/users/password', user, {
+    .get<User>(environment.apiURL + '/users/password?username=' + user.username, {
       withCredentials: true
     })
     .toPromise()
