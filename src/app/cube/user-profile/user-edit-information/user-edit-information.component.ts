@@ -151,12 +151,14 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 
   private async savePasswordEdits() {
-    const editPassword = {
-      password: this.confirmPassword,
-      username: this.user.username
-    };
+    // const editPassword = {
+    //   password: this.confirmPassword,
+    //   username: this.user.username
+    // };
+    this.userInfo.password = this.confirmPassword;
+    this.userInfo.username = this.user.username;
     try {
-      await this.userService.changePassword(editPassword);
+      await this.userService.changePassword(this.userInfo);
       this.close.emit(true);
       this.noteService.notify('Success!', 'We\'ve updated your password!', 'good', 'far fa-check');
     } catch (e) {
@@ -195,7 +197,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       // Provide checkPassword with an object that contains username
       // and user-provided password
       this.isPasswordMatch = await this.auth.checkPassword(this.userInfo);
-      console.log(this.isPasswordMatch);
     } catch (e) {
       this.noteService.notify(
         'Invalid Entry',
@@ -209,7 +210,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   confirmNewPassword() {
     if (this.newPassword === this.confirmPassword) {
-      console.log(this.newPassword + ' ' + this.confirmPassword);
       this.editInfo.password = this.confirmPassword;
       return true;
     }

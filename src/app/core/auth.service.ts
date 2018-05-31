@@ -150,7 +150,6 @@ export class AuthService {
     .toPromise()
     .then(
       val => {
-        // val is a boolean | true if provided password is correct
         return val;
       }
     );
