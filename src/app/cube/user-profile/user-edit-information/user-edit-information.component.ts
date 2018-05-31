@@ -126,62 +126,19 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
    * @memberof UserEditInformationComponent
    */
   private async save() {
-    // If the user doesn't provide an email in this form, we need to
-    // get the account's in order to update the password.
-    // If a new password is not prvided, do not update password
+    // If the new password fields do not match, the user cannot save changes.
+    // If the user does not wish to change their password, the fields will
+    // match when empty.
     if (this.confirmNewPassword()) {
-      if (this.editInfo.email === '') {
-        this.editInfo.email = this.user.email;
-      }
-      console.log(this.confirmPassword);
-      const edits: UserEdit = {
-        name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
-        email: this.editInfo.email.trim(),
-        organization: this.editInfo.organization.trim(),
-        bio: this.editInfo.bio.trim()
-      };
-      try {
-        await this.userService.editUserInfo(edits);
-        await this.auth.validate();
-        // this.close.emit(true);
-        this.noteService.notify(
-          'Success!',
-          'We\'ve updated your user information!',
-          'good',
-          'far fa-check'
-        );
-      } catch (e) {
-        this.noteService.notify(
-          'Error!',
-          'We couldn\'t update your user information!',
-          'bad',
-          'far fa-times'
-        );
-      }
-
+      // If the user doesn't provide an email in this form, we need to
+      // get the account's email in order to update the password.
+      // if (this.editInfo.email === '') {
+      //   this.editInfo.email = this.user.email;
+      // }
+      await this.saveUserEdits();
+      // If a new password is not provided, do not update password.
       if (this.confirmPassword !== '') {
-        const editPassword = {
-          password: this.confirmPassword,
-          email: this.editInfo.email
-        };
-        try {
-          await this.userService.changePassword(editPassword);
-          console.log('hwdy');
-          this.close.emit(true);
-          this.noteService.notify(
-            'Success!',
-            'We\'ve updated your password!',
-            'good',
-            'far fa-check'
-          );
-        } catch (e) {
-          this.noteService.notify(
-            'Error!',
-            'We couldn\'t update your password!',
-            'bad',
-            'far fa-times'
-          );
-        }
+        await this.savePasswordEdits();
       }
     } else {
       this.noteService.notify(
@@ -192,6 +149,40 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       );
     }
   }
+
+  private async savePasswordEdits() {
+    const editPassword = {
+      password: this.confirmPassword,
+      username: this.user.username
+    };
+    try {
+      await this.userService.changePassword(editPassword);
+      this.close.emit(true);
+      this.noteService.notify('Success!', 'We\'ve updated your password!', 'good', 'far fa-check');
+    } catch (e) {
+      this.noteService.notify('Error!', 'We couldn\'t update your password!', 'bad', 'far fa-times');
+    }
+  }
+
+  private async saveUserEdits() {
+    const edits: UserEdit = {
+      name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
+      email: this.editInfo.email.trim(),
+      organization: this.editInfo.organization.trim(),
+      bio: this.editInfo.bio.trim()
+    };
+    try {
+      await this.userService.editUserInfo(edits);
+      await this.auth.validate();
+      if (this.confirmPassword === '') {
+        this.close.emit(true);
+      }
+      this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
+    } catch (e) {
+      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
+    }
+  }
+
   handleCounter(e) {
     const inputLength = this.editInfo.bio.length;
     this.counter = 140 - inputLength;
