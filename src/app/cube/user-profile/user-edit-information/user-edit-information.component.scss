@@ -1,5 +1,19 @@
 @import '~_vars.scss';
 
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none; 
+    width: 100%;
+    outline: none;
+    font-family: 'Source Sans Pro', serif;
+    font-weight: normal;
+    padding: 12px;
+    font-size: 15px;
+    resize: none;
+    color: $blue-accent;
+}
+
 form {
     text-align: center; 
 
@@ -53,6 +67,7 @@ form {
             &:focus ~ .svg-inline--fa {
                 color: $blue-accent;
             }
+
         }
     
         .svg-inline--fa {
@@ -85,6 +100,18 @@ form {
     color: $dark-text;
     font-size: 28px;
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#bio-icon {
+    padding-top: 12px;
+}
+
+#character-counter {
+    text-align: left; 
+}
+
+#new-password {
     margin-bottom: 10px;
 }
 

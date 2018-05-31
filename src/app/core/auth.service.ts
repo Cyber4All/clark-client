@@ -141,6 +141,20 @@ export class AuthService {
     });
   }
 
+  // checkPassword is used when changing a password in the user-edit-information.component
+  checkPassword(user: { username: string; password: string }): Promise<any> {
+    return this.http
+    .get<User>(environment.apiURL + '/users/password?password=' + user.password, {
+      withCredentials: true
+    })
+    .toPromise()
+    .then(
+      val => {
+        return val;
+      }
+    );
+  }
+
   initiateResetPassword(email: string): Observable<any> {
     return this.http.post(
       environment.apiURL + '/users/ota-codes?action=resetPassword',
