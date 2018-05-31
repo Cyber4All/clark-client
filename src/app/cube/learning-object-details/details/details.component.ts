@@ -13,6 +13,7 @@ import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
 import { NgClass } from '@angular/common';
 import { environment } from '@env/environment';
+import { TOOLTIP_TEXT } from '@env/tooltip-text';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -33,6 +34,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   saved = false;
 
   canDownload = false;
+
+  public tips = TOOLTIP_TEXT;
 
   constructor(
     private learningObjectService: LearningObjectService,

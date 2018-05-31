@@ -6,5 +6,7 @@ export const TOOLTIP_TEXT = {
   UNVERIFIED_UPLOAD:
     'You must have a verified email address to upload materials!',
   UNVERIFIED_PUBLISH:
-    'You must have a verified email address to publish learning objects!'
+    'You must have a verified email address to publish learning objects!',
+  DOWNLOAD_NOW:
+    'These materials will be available to download after review.'
 };
