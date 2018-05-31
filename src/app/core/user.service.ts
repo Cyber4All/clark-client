@@ -22,18 +22,6 @@ export class UserService {
       .toPromise();
   }
 
-  changePassword(editPassword: object): Promise<any> {
-    return this.http
-      .patch(
-        USER_ROUTES.EDIT_USER_INFO,
-        { editPassword },
-        {
-          withCredentials: true
-        }
-      )
-      .toPromise();
-  }
-
   validateUser(username: string): Promise<boolean> {
     return this.http.get(USER_ROUTES.CHECK_USER_EXISTS(username), { withCredentials: true }).toPromise().then(val => {
       return (<string[]> val.json()).length > 0;
