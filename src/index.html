@@ -2,16 +2,21 @@
 <html lang="en">
 
 <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120134925-1"></script>
+  <!-- Google Analytics Scripts -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+    ga('create', 'UA-120134925-1', 'auto');
 
-    gtag('config', 'UA-120134925-1');
+    // Plugins in use.
+    ga('require', 'outboundLinkTracker');
+    ga('require', 'urlChangeTracker');
+    // ...
+
+    ga('send', 'pageview');
   </script>
-  <!-- End Global Site Tag -->
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"></script>
+  <!-- END Google Analytics Scripts -->
   <meta charset="utf-8">
   <title>CLARK | Cybersecurity Labs and Resource Knowledgebase</title>
   <base href="/">
