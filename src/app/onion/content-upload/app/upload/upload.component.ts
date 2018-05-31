@@ -13,6 +13,7 @@ import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { getPaths } from 'app/shared/filesystem/file-functions';
+import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 type LearningObjectFile = File;
 
 export type File = {
@@ -283,7 +284,7 @@ export class UploadComponent implements OnInit {
     return null;
   }
   /**
-   * Corrects malfored URLs and removes empty URLs
+   * Corrects malformed URLs and removes empty URLs
    *
    * @memberof UploadComponent
    */
@@ -297,6 +298,29 @@ export class UploadComponent implements OnInit {
         this.learningObject.materials.urls[i] = url;
       }
     }
+  }
+  /**
+   * Check to see if file exists in array of Learning Object Material Files
+   * If exists update else add
+   *
+   * @param {File[]} loFiles
+   * @memberof UploadComponent
+   */
+  updateFiles(loFiles: File[]) {
+    for (const newFile of loFiles) {
+      for (let i = 0; i < this.learningObject.materials.files.length; i++) {
+        const oldFile = this.learningObject.materials.files[i];
+        if (newFile.url === oldFile.url) {
+          newFile.description = oldFile.description;
+          this.learningObject.materials.files[i] = newFile;
+          loFiles.pop();
+        }
+      }
+    }
+    this.learningObject.materials.files = [
+      ...loFiles,
+      ...this.learningObject.materials.files
+    ];
   }
 
   /**
@@ -316,10 +340,8 @@ export class UploadComponent implements OnInit {
 
       this.submitting = false;
 
-      this.learningObject.materials.files = [
-        ...this.learningObject.materials.files,
-        ...(<any>learningObjectFiles)
-      ];
+      this.updateFiles(learningObjectFiles);
+
       this.fixURLs();
       try {
         await this.learningObjectService.save(this.learningObject);
@@ -384,10 +406,20 @@ export class UploadComponent implements OnInit {
    * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  async handleDeletion(files: string[]): Promise<void> {
+  async handleDeletion(params: {
+    files: string[];
+    removal: Removal;
+  }): Promise<void> {
     try {
-      await this.deleteFromMaterials(files);
-      this.deleteFiles(files);
+      if (params.removal.type === 'folder') {
+        const index = this.findFolder(params.removal.path);
+        (<any[]>this.learningObject.materials['folderDescriptions']).splice(
+          index,
+          1
+        );
+      }
+      await this.deleteFromMaterials(params.files);
+      this.deleteFiles(params.files);
       this.updateFileSubscription();
     } catch (e) {
       console.log(e);

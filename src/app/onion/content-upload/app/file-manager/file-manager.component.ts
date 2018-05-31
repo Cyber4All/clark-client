@@ -41,7 +41,11 @@ export class FileManagerComponent implements OnInit {
     LearningObjectFile[]
   >([]);
   @Input() folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  @Output() fileDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output()
+  fileDeleted: EventEmitter<{
+    files: string[];
+    removal: Removal;
+  }> = new EventEmitter<{ files: string[]; removal: Removal }>();
   @Output() fileEdited: EventEmitter<FileEdit> = new EventEmitter<FileEdit>();
   @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() path: EventEmitter<string> = new EventEmitter<string>();
@@ -129,7 +133,7 @@ export class FileManagerComponent implements OnInit {
       scheduledDeletions = this.getFilePaths(folder);
     }
     this.removal$.next(removal);
-    this.fileDeleted.emit(scheduledDeletions);
+    this.fileDeleted.emit({ removal, files: scheduledDeletions });
   }
   /**
    * Recursively gets all paths of files in folder
