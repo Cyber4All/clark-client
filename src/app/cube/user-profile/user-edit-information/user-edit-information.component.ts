@@ -114,7 +114,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
         lastname: this.user.name ? this.user.name.substring(this.user.name.indexOf(' ') + 1) : '',
         email: this.user.email || '',
         organization: this.user.organization || '',
-        password: '',
+        password: this.confirmPassword,
         bio: this.user.bio || ''
       };
     }
@@ -132,14 +132,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     if (this.confirmNewPassword()) {
       // If the user doesn't provide an email in this form, we need to
       // get the account's email in order to update the password.
-      // if (this.editInfo.email === '') {
-      //   this.editInfo.email = this.user.email;
-      // }
       await this.saveUserEdits();
       // If a new password is not provided, do not update password.
-      if (this.confirmPassword !== '') {
-        await this.savePasswordEdits();
-      }
     } else {
       this.noteService.notify(
         'Invalid Entry',
@@ -150,35 +144,18 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     }
   }
 
-  private async savePasswordEdits() {
-    // const editPassword = {
-    //   password: this.confirmPassword,
-    //   username: this.user.username
-    // };
-    this.userInfo.password = this.confirmPassword;
-    this.userInfo.username = this.user.username;
-    try {
-      await this.userService.changePassword(this.userInfo);
-      this.close.emit(true);
-      this.noteService.notify('Success!', 'We\'ve updated your password!', 'good', 'far fa-check');
-    } catch (e) {
-      this.noteService.notify('Error!', 'We couldn\'t update your password!', 'bad', 'far fa-times');
-    }
-  }
-
   private async saveUserEdits() {
     const edits: UserEdit = {
       name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
+      password: this.editInfo.password.trim(),
       bio: this.editInfo.bio.trim()
     };
     try {
       await this.userService.editUserInfo(edits);
       await this.auth.validate();
-      if (this.confirmPassword === '') {
-        this.close.emit(true);
-      }
+      this.close.emit(true);
       this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
     } catch (e) {
       this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
@@ -226,5 +203,6 @@ export type UserEdit = {
   name: string;
   email: string;
   organization: string;
+  password: string;
   bio: string;
 };
