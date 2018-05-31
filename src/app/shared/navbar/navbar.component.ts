@@ -192,12 +192,12 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     this.searchDown = false;
   }
 
-  gravatarImage(): string {
+  gravatarImage(size): string {
     // r=pg checks the rating of the Gravatar image
     return (
       'https://www.gravatar.com/avatar/' +
       md5(this.authService.user.email) +
-      '?s=200?r=pg&d=identicon'
+      '?s=' + size + '?r=pg&d=identicon'
     );
   }
 

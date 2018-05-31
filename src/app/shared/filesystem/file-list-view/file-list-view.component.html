@@ -4,14 +4,16 @@
     <div class>Description</div>
   </div>
   <!-- Render Folders -->
-  <div (click)="openFolder(folder.name)" class="grid-row folder" *ngFor="let folder of (node$ | async)?.children" [contextMenu]="fileOptions"
+  <div (click)="openFolder(folder.name, $event)" class="grid-row folder" *ngFor="let folder of (node$ | async)?.children" [contextMenu]="fileOptions"
     [contextMenuSubject]="folder">
     <div class="text-contained inline-flex">
       <i class="fas fa-folder icon"></i>
       {{ folder.name }}
     </div>
     <div class="text-contained description">
-      {{ folder.description }}
+      <span *ngIf="!canManage">{{ folder.description }}</span>
+      <input #folderDesc (click)="setEditable(folder)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="folder.description ? folder.description: ''"
+        [formControl]="descriptionControl" />
     </div>
   </div>
   <!-- Render Files -->
@@ -21,7 +23,9 @@
       {{ file.name }}
     </div>
     <div class="text-contained description">
-      {{ file.description }}
+      <span *ngIf="!canManage">{{ file.description }}</span>
+      <input #fileDesc (click)="setEditable(file)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="file.description ? file.description: ''"
+        [formControl]="descriptionControl" />
     </div>
   </div>
 

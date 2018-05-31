@@ -18,7 +18,7 @@
         <div class="left flex h flex-end" (click)="userDropdown($event)">
           <!-- get just first name -->
           <span>Howdy, {{authService.firstName}}!</span>
-          <i class="fas fa-user-circle"></i>
+          <div class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
           <div class="chevron">
             <i class="fas fa-caret-down"></i>
           </div>
@@ -79,7 +79,7 @@
   <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">
     <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">
       <ng-template [ngIf]="loggedin" [ngIfElse]="noUserGreeting">
-        <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage() + ')'}"></div>
+        <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
         <div class="right">
           <div class="greeting">Howdy, {{ authService.firstName }}!</div>
           <a>View your profile</a>

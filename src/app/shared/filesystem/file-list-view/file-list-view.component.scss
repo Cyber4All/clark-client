@@ -2,6 +2,7 @@
   display: grid;
   grid-row-gap: 5px;
   padding-bottom: 15px;
+  grid-auto-columns: 100%;
 }
 
 .grid-row {
@@ -26,6 +27,7 @@
 .text-contained {
   text-overflow: ellipsis;
   overflow: hidden;
+  white-space: nowrap;
 }
 .inline-flex {
   display: flex;
@@ -64,4 +66,8 @@
 }
 .description {
   color: #555555;
+}
+input {
+  width: 100%;
+  padding: 5px 10px;
 }

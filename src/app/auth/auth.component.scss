@@ -1,6 +1,6 @@
 @import '~_vars.scss';
 .authentication-component {
-
+   
     :host {
         font-family: 'Source Sans Pro', serif;
         font-size: 16px;
@@ -13,6 +13,7 @@
 
     .background {
         z-index: 1;
+        
 
         .image, .mask {
             position: fixed;
@@ -39,6 +40,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        overflow-y:auto;
 
         .content-box {
             background: white;
@@ -121,6 +123,7 @@
             font-weight: lighter;
             font-size: 18px;
         }
+
     }
 
     ::ng-deep .auth-button {
