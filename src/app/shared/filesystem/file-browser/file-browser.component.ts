@@ -17,9 +17,16 @@ import { getPaths } from 'app/shared/filesystem/file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 type LearningObjectFile = File;
 
+// tslint:disable-next-line:interface-over-type-literal
 export type Removal = {
   type: 'file' | 'folder';
   path: string;
+};
+
+// tslint:disable-next-line:interface-over-type-literal
+export type DescriptionUpdate = {
+  description: string;
+  file: LearningObjectFile | DirectoryNode;
 };
 
 @Component({
@@ -41,6 +48,10 @@ export class FileBrowserComponent implements OnInit {
   containerClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output()
   newOptionsClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output()
+  descriptionUpdated: EventEmitter<DescriptionUpdate> = new EventEmitter<
+    DescriptionUpdate
+  >();
 
   private filesystem: DirectoryTree = new DirectoryTree();
 
@@ -62,7 +73,7 @@ export class FileBrowserComponent implements OnInit {
     this.subToRemoval();
   }
   /**
-   * Subscribe to fiie changes
+   * Subscribe to file changes
    *
    * @private
    * @memberof FileBrowserComponent
@@ -179,5 +190,14 @@ export class FileBrowserComponent implements OnInit {
    */
   emitNewOptionClick($event: MouseEvent): void {
     this.newOptionsClick.emit($event);
+  }
+  /**
+   * Emit updated description and file
+   *
+   * @param {{ description: string; file: LearningObjectFile }} value
+   * @memberof FileBrowserComponent
+   */
+  emitDesc(value: DescriptionUpdate): void {
+    this.descriptionUpdated.emit(value);
   }
 }
