@@ -1,7 +1,7 @@
 <ng-container *ngIf="learningObjects && learningObjects.length > 0">
   <div class="top">
     <div class="title vert-center">
-        Dashboard
+      Dashboard
     </div>
     <div class="actions btn-group to-right">
       <div class="add button good" (click)="newLearningObject()">Add New
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
-      <div [ngClass]="{published: l.published, unpublished: !l.published}" class="row">
+      <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock}" class="row">
         <checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></checkbox>
         <div class="cells">
           <div class="cell">
@@ -51,6 +51,6 @@
 <ng-container *ngIf="this.learningObjects.length === 0">
   <div class="banner no-lo">
     <div class="text">You don't have any Learning Objects yet!</div>
-    <div tip="{{ tips.LEARNING_OBJECT }}" tipDelay = "500" tipLocation="bottom" (click)="newLearningObject()" class="button neutral bright">Create a Learning Object</div>
+    <div tip="{{ tips.LEARNING_OBJECT }}" tipDelay="500" tipLocation="bottom" (click)="newLearningObject()" class="button neutral bright">Create a Learning Object</div>
   </div>
 </ng-container>
