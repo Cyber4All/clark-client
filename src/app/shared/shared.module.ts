@@ -21,6 +21,7 @@ import { ContextMenuModule } from 'ngx-contextmenu';
 import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { FileBreadcrumbComponent } from './filesystem/file-breadcrumb/file-breadcrumb.component';
 import { FileBrowserComponent } from './filesystem/file-browser/file-browser.component';
+import { FilePreviewComponent } from './filesystem/file-preview/file-preview.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -50,7 +51,8 @@ import { FileBrowserComponent } from './filesystem/file-browser/file-browser.com
     FileBrowserComponent,
     FileListViewComponent,
     FileGridViewComponent,
-    FileBreadcrumbComponent
+    FileBreadcrumbComponent,
+    FilePreviewComponent
   ],
   exports: [
     BrowseByMappingsComponent,
