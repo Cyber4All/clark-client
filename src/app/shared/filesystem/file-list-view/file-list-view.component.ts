@@ -36,6 +36,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private editableFile: LearningObjectFile | DirectoryNode;
   descriptionControl = new FormControl();
+  preview = true;
 
   getIcon = (extension: string) => getIcon(extension);
 
@@ -72,6 +73,14 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     if ($event.target.nodeName !== 'INPUT') {
       this.emitPath.emit(path);
     }
+  }
+
+  openFile(path: string, $event: any): void {
+    this.preview = false;
+  }
+
+  returnToFileView() {
+    this.preview = true;
   }
   /**
    * Sets currently editable file
