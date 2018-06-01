@@ -76,7 +76,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   }
 
   openFile(path: string, $event: any): void {
-    this.preview = !this.preview;
+    this.preview = false;
+  }
+
+  returnToFileView() {
+    this.preview = true;
   }
   /**
    * Sets currently editable file
