@@ -155,6 +155,23 @@ export class AuthService {
     );
   }
 
+  getUserInfo(username: string): Promise<any> {
+    return this.http
+      .get(
+        environment.apiURL + '/users/update?username=' + username,
+        {
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(
+        val => {
+          this.user = this.makeUserFromCookieResponse(val);
+          return this.user;
+        }
+      );
+  }
+
   initiateResetPassword(email: string): Observable<any> {
     return this.http.post(
       environment.apiURL + '/users/ota-codes?action=resetPassword',
