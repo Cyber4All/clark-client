@@ -41,6 +41,13 @@ export class UserInformationComponent implements OnInit, OnChanges {
     this.route.data.subscribe(val => {
       this.objects = val.learningObjects;
     });
+    this.getUser();
+  }
+
+  private getUser() {
+    this.auth.getUserInfo(this.user.username).then(val => {
+      this.user = val;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -51,7 +58,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
     this.router.navigate(['/organization', { query: this.user.organization }]);
   }
 
-  async getUsersLearningObjects(){
+  async getUsersLearningObjects() {
     this.objects = await this.learningObjectService.getUsersLearningObjects(this.user.username);
   }
   /**

@@ -1,19 +1,18 @@
 <div class="title">{{ user.name }}</div>
 <div class="info">
+  <div class="bio">
+    <div>{{ user.bio }}</div>
+  </div>
   <div class="organization">
     <a [routerLink]="['/organization', user.organization]">{{ user.organization }}</a>
   </div>
   <div class="email">
     <a href="mailto: {{ user.email }}">{{ user.email }}</a>
   </div>
-  <div class="bio">
-    <p>User Bio: {{ user.bio }}</p>
-  </div>
   <div *ngIf="self && !user.emailVerified" class="verify-email button good" (click)="sendEmailVerification()">
     Verify your email
   </div>
 </div>
-
 <div *ngIf="objects && objects.length > 0" class="section-title">Learning Objects</div>
 <div class="learning-objects">
   <ng-container *ngIf="objects && objects.length > 0">

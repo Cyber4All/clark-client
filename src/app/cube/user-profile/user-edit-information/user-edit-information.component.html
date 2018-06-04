@@ -37,8 +37,8 @@
     </div>
     <p>Add a bio</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Add a bio to your profile!" [(ngModel)]="editInfo.bio" 
-      maxlength="140" rows="5" cols="50" >
+      <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Enter Bio" [(ngModel)]="editInfo.bio" 
+      maxlength="140" rows="5" cols="50">
       </textarea>
       <span id="bio-icon"><i class="fas fa-user-alt"></i></span>
     </div>
