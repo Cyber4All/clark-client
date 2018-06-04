@@ -5,7 +5,7 @@ export const USER_ROUTES = {
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
   CHECK_USER_EXISTS(username) {
-    return `${environment.apiURL}/users/search?username=${encodeURIComponent(username)}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/profile`;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
