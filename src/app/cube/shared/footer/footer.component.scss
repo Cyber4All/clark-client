@@ -7,30 +7,32 @@ footer {
   display: flex;
   flex-flow: row nowrap;
   padding: 20px;
-
   .funding-info {
     font-size: 16px;
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-
     .nsa-wrapper {
-      max-width: 400px;
+      margin-top: 50px;
       text-align: center;
-      margin-top: auto;
-
+      display: flex;
+      flex-flow: row nowrap;
       p {
+        color: whitesmoke;
         margin: 0;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-self: center;
       }
     }
-
     img {
-      width: 150px;
       margin-bottom: 10px;
+      height: 75px;
+      width: 75px;
     }
   }
-
   .small-links {
     position: relative;
     box-sizing: border-box;
@@ -38,34 +40,38 @@ footer {
     flex-shrink: 0;
     display: flex;
     flex-flow: row nowrap;
-    margin-top: auto;
-
-    & > *:not(:last-child):after {
+    margin-bottom: auto;
+    &>*:not(:last-child):after {
       content: '|';
       padding: 0 8px;
       position: relative;
     }
   }
-
-  a, .small-links {
+  a,
+  .small-links {
     color: whitesmoke;
     font-size: 16px;
+  }
+  .notice {
+    color: whitesmoke;
+    max-width: 800px;
+    p {
+      font-size: 12px;
+    }
+    .notice-title {
+      font-size: 14px;
+    }
   }
 }
 
 @media(max-width: 750px) {
-
   footer {
-    flex-direction: column !important;
-    // justify-content: center;
+    flex-direction: column !important; // justify-content: center;
     align-items: center;
-
-    & > * {
-      
+    &>* {
       &:not(:last-child) {
         margin-bottom: 25px;
       }
-
       &.small-links {
         padding-left: 0 !important;
       }
