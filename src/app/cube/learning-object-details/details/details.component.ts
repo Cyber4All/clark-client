@@ -22,6 +22,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   private sub: any;
+  downloading = false;
   author: string;
   learningObjectName: string;
   learningObject: LearningObject;
@@ -33,7 +34,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
 
-  canDownload = false;
+  canDownload = true;
 
   public tips = TOOLTIP_TEXT;
 
@@ -53,9 +54,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.fetchLearningObject();
 
-    // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
-      this.checkWhitelist();
+      // this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
@@ -191,7 +192,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async download(author: string, learningObjectName: string) {
-    this.cartService.downloadLearningObject(author, learningObjectName);
+    try {
+      this.downloading = true;
+      await this.cartService.downloadLearningObject(author, learningObjectName);
+      this.downloading = false;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   removeFromCart() {
