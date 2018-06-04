@@ -4,23 +4,30 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 
 @Component({
-    selector: 'clark-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
+  selector: 'clark-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
-  authInfo: {username: string, password: string} = {username: '', password: ''};
+  authInfo: { username: string; password: string } = {
+    username: '',
+    password: ''
+  };
   loginFailure: string;
   loginFailureTimer;
   redirectRoute;
   redirectUrl;
-  loading: boolean =  false;
-  constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) {
-    this.route.parent.data
-    .subscribe((data) => {
+  loading: boolean = false;
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.route.parent.data.subscribe(data => {
       if (route.snapshot.queryParams.returnUrl) {
-        this.redirectUrl = this.auth.makeRedirectURL(route.snapshot.queryParams.returnUrl);
+        this.redirectUrl = this.auth.makeRedirectURL(
+          route.snapshot.queryParams.returnUrl
+        );
       } else {
         if (route.snapshot.queryParams.redirectRoute) {
           this.redirectRoute = route.snapshot.queryParams.redirectRoute;
@@ -32,32 +39,48 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getRedirectURL();
+  }
+  /**
+   *Gets Redirect URL from query params
+   *
+   * @private
+   * @memberof LoginComponent
+   */
+  private getRedirectURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get('redirectURL');
+    if (redirectUrl && !this.redirectUrl) {
+      this.redirectUrl = redirectUrl;
+    }
   }
 
   submit() {
     this.loginFailure = undefined;
     clearTimeout(this.loginFailureTimer);
-    this.loading=true;
+    this.loading = true;
 
     if (!this.validate()) {
-      this.loading=false;
+      this.loading = false;
       this.error('Please fill in all fields!');
       return false;
     }
 
-    this.auth.login(this.authInfo).then(val => {
-      if (this.redirectRoute) {
-        window.location.href = window.location.origin + this.redirectRoute;
-        // this.router.navigate([this.redirectRoute]);
-      } else {
-        window.location.href = this.redirectUrl;
-      }
-
-    }).catch(error => {
-      console.log(error);
-      this.loading = false;
-      this.error(error.error);
-    });
+    this.auth
+      .login(this.authInfo)
+      .then(val => {
+        if (this.redirectRoute) {
+          window.location.href = window.location.origin + this.redirectRoute;
+          // this.router.navigate([this.redirectRoute]);
+        } else {
+          window.location.href = this.redirectUrl;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.loading = false;
+        this.error(error.error);
+      });
   }
 
   validate(): boolean {
@@ -71,5 +94,4 @@ export class LoginComponent implements OnInit {
       this.loginFailure = undefined;
     }, duration);
   }
-
 }
