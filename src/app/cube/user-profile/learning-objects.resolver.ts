@@ -23,13 +23,16 @@ export class UserProfileLearningObjectsResolver implements Resolve<any> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> | Promise<any> | any {
-    return this.learningObjectService
-      .getUsersLearningObjects(this.authService.username)
-      .then(learningObjects => {
-        return learningObjects;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const username = this.authService.username;
+    return username
+      ? this.learningObjectService
+          .getUsersLearningObjects(username)
+          .then(learningObjects => {
+            return learningObjects;
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      : null;
   }
 }

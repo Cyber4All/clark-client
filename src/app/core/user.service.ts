@@ -67,12 +67,8 @@ export class UserService {
       .toPromise()
       .then(
         val => {
-          const arr = val.json();
-          if (arr.length) {
-            return User.instantiate(arr[0]);
-          } else {
-            return null;
-          }
+          const user = val.json();
+          return user ? User.instantiate(user) : null;
         },
         error => {
           return null;
