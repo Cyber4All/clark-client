@@ -20,6 +20,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   users = '';
   arrayOfKeys = [];
   tempArrayOfKeys = [];
+  selectedAuthors = [];
   json = '';
   author = false;
   user: User;
@@ -74,12 +75,19 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
               this.arrayOfKeys[i] = this.tempArrayOfKeys[i];
             }
           }
+          // If query is empty, remove previous results
           if (this.query.text === '') {
             console.log('delete');
             this.arrayOfKeys = [];
             this.tempArrayOfKeys = [];
           }
       });
+  }
+
+  addUser(index) {
+    console.log(this.users[index]._username + ' clicked!');
+    this.selectedAuthors.push(this.users[index]);
+    console.log(this.selectedAuthors);
   }
 
   // Checks to see if a socket connection already exists, if not ... establish socket connection

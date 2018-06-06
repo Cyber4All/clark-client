@@ -17,13 +17,21 @@
         <div class="label">
           Add more authors.
         </div>
+        <div *ngIf="selectedAuthors.length > 0">
+          <div class="level-list">
+            <div class="level button" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let user of selectedAuthors; let i = index;"
+              (click)="toggleLevel(level)">
+              {{ user._name }}
+              <span *ngIf="learningObject.levels.includes(level)">
+                <i class="far fa-check-circle"></i>
+              </span>
+            </div>
+          </div>
+        </div>
         <input autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text" (keyup)="keyUpSearch()" name="query">
-        <!-- <div *ngIf="author">
-          <clark-author-attribution [users]='users'></clark-author-attribution>
-        </div> -->
         <div id="container">
             <ul>
-              <li *ngFor="let user of arrayOfKeys"><span id="plus"><i class="fas fa-plus"></i></span><span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(users[user]._email, 200) + ')'}"></span>{{ users[user]._username }} - {{ users[user]._name }} from {{ users[user]._organization }}</li>
+              <li *ngFor="let user of arrayOfKeys; let i = index;"><span id="plus" (click)="addUser(i)"><i class="fas fa-plus"></i></span><span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(users[user]._email, 200) + ')'}"></span>{{ users[user]._username }} - {{ users[user]._name }} from {{ users[user]._organization }}</li>
             </ul>
         </div>        
     </div>
