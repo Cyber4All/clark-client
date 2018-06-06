@@ -52,8 +52,9 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     .subscribe(val => {
       this.search();
     });
-      if (this.learningObject.contributors.length !== 0) {
-        this.selectedAuthors = this.learningObject.contributors;
+    console.log(this.learningObject._contributors);
+      if (this.learningObject._contributors.length !== 0) {
+        this.selectedAuthors = this.learningObject._contributors;
       }
   }
 
@@ -107,23 +108,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-
-  // Checks to see if a socket connection already exists, if not ... establish socket connection
-  // our observable returns a subscription object that we can use to unsubscribe and break the connection.
-//   attemptSocketConnection(): boolean {
-//     if (!this.connected) {
-//       this.connection = this.userService.searchUsers(this.query.text.trim()).subscribe(users => {
-//         // events
-//         // Update list of users.
-//         this.users = users;
-//         console.log('socket.io connected!');
-//       });
-//       this.connected = true;
-//       return true;
-//     }
-//     this.connected = false;
-//     return false;
-// }
 
   sendSearchQuery() {
   this.userService.sendSearchQuery(this.query.text);
