@@ -74,6 +74,11 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
               this.arrayOfKeys[i] = this.tempArrayOfKeys[i];
             }
           }
+          if (this.query.text === '') {
+            console.log('delete');
+            this.arrayOfKeys = [];
+            this.tempArrayOfKeys = [];
+          }
       });
   }
 
