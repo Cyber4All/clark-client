@@ -108,6 +108,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       }
     }
 
+    console.log(this.learningObject);
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
@@ -373,6 +374,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   changePage(page, childPage) {
+    console.log(this.learningObject.contributors);
     switch (page) {
       case 0:
         this.activePage = PAGES.INFO;

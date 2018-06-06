@@ -25,7 +25,7 @@
             </div>
           </div>
         </div>
-        <input autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text" (keyup)="keyUpSearch()" name="query">
+        <input #userSearchInput autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
         <div id="container">
             <ul>
               <li *ngFor="let user of arrayOfKeys; let i = index;">

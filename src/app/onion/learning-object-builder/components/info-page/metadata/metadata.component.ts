@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { AcademicLevel, User } from '@cyber4all/clark-entity';
+import { AcademicLevel, User, LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { TextQuery } from '../../../../../shared/interfaces/query';
 import { UserService } from '../../../../../core/user.service';
 import { runInThisContext } from 'vm';
+import { Subscription, Observable } from 'rxjs';
 
 // TODO: Apply .bad to input if the form is submitted and it's not valid
 
@@ -16,13 +17,13 @@ import { runInThisContext } from 'vm';
 export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   @Input() isNew;
   @Input() learningObject;
+  @ViewChild('userSearchInput', { read: ElementRef })
+  userSearchInput: ElementRef;
 
-  users = '';
+  users;
   arrayOfKeys = [];
   tempArrayOfKeys = [];
   selectedAuthors = [];
-  json = '';
-  author = false;
   user: User;
   connected = false;
   connection;
@@ -32,6 +33,8 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     currPage: 1,
     limit: 30
   };
+
+  sub: Subscription; // open subscription to close
 
   public tips = TOOLTIP_TEXT;
   validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
@@ -43,8 +46,15 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-   // image =  this.userService.getGravatarImage(this.user.email, 200);
-   // this.attemptSocketConnection();
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub = Observable.fromEvent(this.userSearchInput.nativeElement, 'input')
+    .debounceTime(650)
+    .subscribe(val => {
+      this.search();
+    });
+      if (this.learningObject.contributors.length !== 0) {
+        this.selectedAuthors = this.learningObject.contributors;
+      }
   }
 
   toggleLevel(level: AcademicLevel) {
@@ -56,12 +66,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     }
   }
 
-  keyUpSearch(event) {
-    // if (event.keyCode === 13) {
-    //   this.search();
-    // }
-    this.search();
-  }
   search() {
     this.query.text = this.query.text.trim();
       this.userService.searchUsers(this.query.text).then(val => {
@@ -77,7 +81,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
           }
           // If query is empty, remove previous results
           if (this.query.text === '') {
-            console.log('delete');
             this.arrayOfKeys = [];
             this.tempArrayOfKeys = [];
           }
@@ -86,8 +89,10 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   addAuthor(index) {
     if (this.isAuthorSelected) {
+      // this.selectedAuthors.push(this.users[index]._username);
       this.selectedAuthors.push(this.users[index]._username);
-      console.log(this.selectedAuthors);
+      this.learningObject.contributors = this.selectedAuthors;
+      console.log(this.learningObject.contributors);
     }
   }
 
@@ -120,12 +125,14 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 //     return false;
 // }
 
-sendSearchQuery() {
+  sendSearchQuery() {
   this.userService.sendSearchQuery(this.query.text);
   this.users = '';
-}
+  }
 
-ngOnDestroy() {
-  this.connection.unsubscribe();
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
 }
 

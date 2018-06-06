@@ -55,10 +55,10 @@ export class UserService {
       .toPromise()
       .then(val => {
         // val contains a list of users
-         const json = JSON.parse(val._body);
-        console.log(val._body);
-         console.log(val);
-        return val._body;
+        const json = JSON.parse(val['_body']);
+        console.log(val['_body']);
+        console.log(val);
+        return val['_body'];
       });
   }
 
