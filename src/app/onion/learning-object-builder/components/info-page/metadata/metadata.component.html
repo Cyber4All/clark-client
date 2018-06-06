@@ -21,14 +21,23 @@
           <div class="level-list">
             <div class="level button" *ngFor="let user of selectedAuthors; let i = index;"
               (click)="toggleLevel(level)">
-              {{ user._name }}<span (click)="removeAuthor(i)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+              {{ user._name }}<span (click)="removeAuthor(user)"><i class="fa fa-trash" aria-hidden="true"></i></span>
             </div>
           </div>
         </div>
         <input autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text" (keyup)="keyUpSearch()" name="query">
         <div id="container">
             <ul>
-              <li *ngFor="let user of arrayOfKeys; let i = index;"><span id="plus" (click)="addUser(i)"><i class="fas fa-plus"></i></span><span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(users[user]._email, 200) + ')'}"></span>{{ users[user]._username }} - {{ users[user]._name }} from {{ users[user]._organization }}</li>
+              <li *ngFor="let user of arrayOfKeys; let i = index;">
+                <span *ngIf="this.isAuthorSelected(i)" id="plus" (click)="addAuthor(i)">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span *ngIf="!this.isAuthorSelected(i)" id="delete" (click)="removeAuthor(users[user])">
+                    <i class="fa fa-trash"></i>
+                </span>
+                <span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(users[user]._email, 200) + ')'}"></span>
+                {{ users[user]._username }} - {{ users[user]._name }} from {{ users[user]._organization }}
+              </li>
             </ul>
         </div>        
     </div>

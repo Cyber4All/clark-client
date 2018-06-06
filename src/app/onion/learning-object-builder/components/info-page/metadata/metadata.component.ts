@@ -84,14 +84,24 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
       });
   }
 
-  addUser(index) {
-    if (this.selectedAuthors.indexOf(this.users[index]) === -1) {
+  addAuthor(index) {
+    if (this.isAuthorSelected) {
       this.selectedAuthors.push(this.users[index]);
     }
   }
 
-  removeAuthor(index) {
+  removeAuthor(name) {
+    console.log(name);
+    const index = this.selectedAuthors.indexOf(name);
+    console.log(index);
     this.selectedAuthors.splice(index, 1);
+  }
+
+  isAuthorSelected(index) {
+    if (this.selectedAuthors.indexOf(this.users[index]) === -1) {
+      return true;
+    }
+    return false;
   }
 
   // Checks to see if a socket connection already exists, if not ... establish socket connection

@@ -25,6 +25,18 @@ li {
 	opacity: 0;
 }
 
+#delete {
+	background-color: red;
+	height: 40px;
+	margin-right: 20px;
+	text-align: center;
+	color: white;
+	width: 0;
+	display: inline-block;
+	transition: 0.2s linear;
+	opacity: 0;
+}
+
 .navbar-gravatar {
   display: inline-block;
   margin-left: 8px;
@@ -43,6 +55,11 @@ li:nth-child(2n) {
 }
 
 li:hover #plus {
+	width: 40px;
+	opacity: 1;
+}
+
+li:hover #delete {
 	width: 40px;
 	opacity: 1;
 }
