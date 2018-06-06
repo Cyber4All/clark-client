@@ -14,7 +14,8 @@ import { AuthService } from '../../core/auth.service';
 })
 export class CartComponent implements OnInit {
   cartItems: LearningObject[] = [];
-  canDownload = false;
+  canDownload = true;
+  downloading = false;
 
   constructor(
     public cartService: CartV2Service,
@@ -27,7 +28,7 @@ export class CartComponent implements OnInit {
     this.loadCart();
     // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
     if (environment.production) {
-      this.checkWhitelist();
+      // this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
@@ -68,9 +69,16 @@ export class CartComponent implements OnInit {
 
   async downloadObject(event, object) {
     event.stopPropagation();
-    const author = object._author._username;
-    const learningObjectName = object._name;
-    await this.cartService.downloadLearningObject(author, learningObjectName);
+
+    try {
+      const author = object._author._username;
+      const learningObjectName = object._name;
+      this.downloading = true;
+      await this.cartService.downloadLearningObject(author, learningObjectName);
+      this.downloading = false;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   goToItem(object) {
