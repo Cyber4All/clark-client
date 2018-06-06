@@ -23,7 +23,7 @@
         </div> -->
         <div id="container">
             <ul>
-              <li *ngFor="let user of arrayOfKeys"><span><i class="fas fa-plus"></i></span>{{ users[user]._username }} - {{ users[user]._name }} from {{ users[user]._organization }}</li>
+              <li *ngFor="let user of arrayOfKeys"><span id="plus"><i class="fas fa-plus"></i></span><span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(users[user]._email, 200) + ')'}"></span>{{ users[user]._username }} - {{ users[user]._name }} from {{ users[user]._organization }}</li>
             </ul>
         </div>        
     </div>

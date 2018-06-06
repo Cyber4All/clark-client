@@ -17,8 +17,9 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   @Input() isNew;
   @Input() learningObject;
 
-  users;
-  arrayOfKeys;
+  users = '';
+  arrayOfKeys = [];
+  tempArrayOfKeys = [];
   json = '';
   author = false;
   user: User;
@@ -64,16 +65,16 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     this.query.text = this.query.text.trim();
       this.userService.searchUsers(this.query.text).then(val => {
         this.users = JSON.parse(val);
-        this.arrayOfKeys = Object.keys(this.users);
-        console.log(typeof(this.arrayOfKeys));
+        this.tempArrayOfKeys = Object.keys(this.users);
+         // Limit search results to 10
+         if (this.tempArrayOfKeys.length <= 10) {
+          this.arrayOfKeys = this.tempArrayOfKeys;
+         } else {
+            for (let i = 0; i < 10; i++) {
+              this.arrayOfKeys[i] = this.tempArrayOfKeys[i];
+            }
+          }
       });
-      console.log(typeof(this.users));
-      // if (this.users === '') {
-      //   this.author = false;
-      // } else {
-      //   this.author = true;
-      // }
-      // this.json = JSON.parse(this.users._body);
   }
 
   // Checks to see if a socket connection already exists, if not ... establish socket connection
