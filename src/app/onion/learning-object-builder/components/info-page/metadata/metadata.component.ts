@@ -90,6 +90,10 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     console.log(this.selectedAuthors);
   }
 
+  removeAuthor(index) {
+    this.selectedAuthors.splice(index, 1);
+  }
+
   // Checks to see if a socket connection already exists, if not ... establish socket connection
   // our observable returns a subscription object that we can use to unsubscribe and break the connection.
 //   attemptSocketConnection(): boolean {
