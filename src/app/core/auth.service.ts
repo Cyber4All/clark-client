@@ -144,32 +144,28 @@ export class AuthService {
   // checkPassword is used when changing a password in the user-edit-information.component
   checkPassword(user: { username: string; password: string }): Promise<any> {
     return this.http
-    .get<User>(environment.apiURL + '/users/password?password=' + user.password, {
-      withCredentials: true
-    })
-    .toPromise()
-    .then(
-      val => {
-        return val;
-      }
-    );
-  }
-
-  getUserInfo(username: string): Promise<any> {
-    return this.http
-      .get(
-        environment.apiURL + '/users/update?username=' + username,
+      .get<User>(
+        environment.apiURL + '/users/password?password=' + user.password,
         {
           withCredentials: true
         }
       )
       .toPromise()
-      .then(
-        val => {
-          this.user = this.makeUserFromCookieResponse(val);
-          return this.user;
-        }
-      );
+      .then(val => {
+        return val;
+      });
+  }
+
+  getUserInfo(username: string): Promise<any> {
+    return this.http
+      .get(environment.apiURL + '/users/update?username=' + username, {
+        withCredentials: true
+      })
+      .toPromise()
+      .then(val => {
+        this.user = this.makeUserFromCookieResponse(val);
+        return this.user;
+      });
   }
 
   initiateResetPassword(email: string): Observable<any> {
@@ -234,7 +230,6 @@ export class AuthService {
   }
 
   makeUserFromCookieResponse(val: any): User {
-    // TODO: Delete token specific props
     const user = User.instantiate(val);
     return user;
   }
@@ -276,11 +271,13 @@ export class AuthService {
     const lastname = nameSplit.slice(1, nameSplit.length).join(' ');
     this.http
       .get(
-        `${environment.apiURL}/users/${
-          encodeURIComponent(this.username)}/cards?fname=${
-            encodeURIComponent(firstname)}&lname=${
-              encodeURIComponent(lastname)}&org=${
-                encodeURIComponent(this.user.organization)}`,
+        `${environment.apiURL}/users/${encodeURIComponent(
+          this.username
+        )}/cards?fname=${encodeURIComponent(
+          firstname
+        )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
+          this.user.organization
+        )}`,
         { responseType: 'blob' }
       )
       .toPromise()
