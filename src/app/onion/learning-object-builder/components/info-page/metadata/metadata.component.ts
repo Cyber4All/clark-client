@@ -85,9 +85,9 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   }
 
   addUser(index) {
-    console.log(this.users[index]._username + ' clicked!');
-    this.selectedAuthors.push(this.users[index]);
-    console.log(this.selectedAuthors);
+    if (this.selectedAuthors.indexOf(this.users[index]) === -1) {
+      this.selectedAuthors.push(this.users[index]);
+    }
   }
 
   removeAuthor(index) {
