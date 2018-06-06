@@ -34,7 +34,8 @@ export class UserInformationComponent implements OnInit, OnChanges {
     private http: Http,
     private router: Router,
     private notifications: NotificationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -45,7 +46,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
   }
 
   private getUser() {
-    this.auth.getUserInfo(this.user.username).then(val => {
+    this.userService.getUser(this.user.username).then(val => {
       this.user = val;
     });
   }
