@@ -13,7 +13,20 @@
       <input class="name-field" type="text" name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name"
         #name="ngModel" [ngClass]="{'bad': errorStore.error === 'name' }" [pattern]="validName" />
     </div>
-
+    <div class="input-group">
+        <div class="label">
+          Add more authors.
+        </div>
+        <input autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text" (keyup)="keyUpSearch()" name="query">
+        <!-- <div *ngIf="author">
+          <clark-author-attribution [users]='users'></clark-author-attribution>
+        </div> -->
+        <div id="container">
+            <ul>
+              <li *ngFor="let user of arrayOfKeys"><span><i class="fas fa-plus"></i></span>{{ users[user]._username }} - {{ users[user]._name }} from {{ users[user]._organization }}</li>
+            </ul>
+        </div>        
+    </div>
     <div class="input-group">
       <div class="label">
         What is the Length of this learning object?

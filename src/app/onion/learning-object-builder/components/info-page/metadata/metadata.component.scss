@@ -1,4 +1,45 @@
 @import '~_vars.scss';
+
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	height: 40px;
+	line-height: 40px;
+	background-color: white; 
+	color: #666;
+}
+
+span {
+	background-color: green;
+	height: 40px;
+	margin-right: 20px;
+	text-align: center;
+	color: white;
+	width: 0;
+	display: inline-block;
+	transition: 0.2s linear;
+	opacity: 0;
+}
+
+li:nth-child(2n) {
+	background-color: #f7f7f7;
+}
+
+li:hover span {
+	width: 40px;
+	opacity: 1;
+}
+
+#container {
+	box-shadow: 0 0 3px rgba(0, 0 , 0, 0.1);
+	background-color: #f7f7f7;
+	width: 100%; 
+}
+
 .metadata-wrapper {
 
   .header {

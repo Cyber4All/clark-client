@@ -259,7 +259,6 @@ export class AuthService {
         });
       });
     }
-
     return this.socketWatcher;
   }
 

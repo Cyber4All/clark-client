@@ -5,10 +5,16 @@ import { AuthService } from 'app/core/auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
+import { environment } from '@env/environment';
+import * as io from 'socket.io-client';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
-  constructor(private http: Http, private auth: AuthService) {}
+  socket;
+  socketWatcher: Observable<string>;
+  constructor(private http: Http, private auth: AuthService) {
+  }
 
   editUserInfo(user: UserEdit): Promise<any> {
     return this.http
@@ -29,6 +35,54 @@ export class UserService {
       console.error(error);
       return false;
     });
+  }
+
+  // For testing
+  searchUsers(query: {}) {
+    return this.http
+      .get(
+        environment.apiURL + '/users/search?text=' + query,
+        {
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
+        // val contains a list of users
+         const json = JSON.parse(val._body);
+        console.log(val._body);
+         console.log(val);
+        return val._body;
+      });
+  }
+
+  // searchUsers(query: string) {
+  //     this.socketWatcher = new Observable(observer => {
+  //       this.socket = io(environment.apiURL + '/users/search?text=' + query);
+  //       console.log('search');
+  //         // Problem starts here
+  //         this.socket.on('users', val => {
+  //           // io.emit('users', {type: 'new-query', text: val});
+  //           // subscribers to our observable will be notified of the new search results.
+  //           observer.next(val);
+  //           console.log(val);
+  //         });
+  //         return () => {
+  //           this.socket.disconnect();
+  //         };
+  //     });
+  //   // Return observable
+  //   return this.socketWatcher;
+  // }
+
+  sendSearchQuery(query: string) {
+    this.socket.emit('send-query', query);
+  }
+
+  destroySocket() {
+    if (this.socket) {
+      this.socket.emit('close');
+    }
   }
 
   getOrganizationMembers(organization: string): Promise<User[]> {
