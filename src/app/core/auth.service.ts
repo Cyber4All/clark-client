@@ -218,7 +218,6 @@ export class AuthService {
   }
 
   makeUserFromCookieResponse(val: any): User {
-    console.log('lets make a user', val);
     const user = User.instantiate(val);
     return user;
   }
