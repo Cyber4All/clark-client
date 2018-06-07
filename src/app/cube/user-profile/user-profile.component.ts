@@ -42,9 +42,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.subscription = this.route.data.subscribe(val => {
       this.user = val.user;
       this.self = this.user.username === this.auth.username;
+      this.gravatarImage = this.userService.getGravatarImage(this.user.email, this.size);
     });
-
-    this.gravatarImage = this.userService.getGravatarImage(this.user.email, this.size);
 
     // particle config
     this.myStyle = {

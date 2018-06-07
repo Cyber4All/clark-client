@@ -29,18 +29,23 @@ export class UserService {
   }
 
   validateUser(username: string): Promise<boolean> {
-    return this.http
-      .get(USER_ROUTES.CHECK_USER_EXISTS(username), { withCredentials: true })
-      .toPromise()
-      .then(
-        val => {
-          return val.json() ? true : false;
-        },
-        error => {
-          console.error(error);
-          return false;
-        }
-      );
+    return username && username !== 'undefined'
+      ? this.http
+          .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
+            withCredentials: true
+          })
+          .toPromise()
+          .then(
+            val => {
+              console.log(val);
+              return val.json() ? true : false;
+            },
+            error => {
+              console.error(error);
+              return false;
+            }
+          )
+      : Promise.resolve(false);
   }
 
   searchUsers(query: {}) {
@@ -73,7 +78,7 @@ export class UserService {
   }
 
   getGravatarImage(email, imgSize): string {
-    let defaultIcon = 'identicon';
+    const defaultIcon = 'identicon';
     // r=pg checks the rating of the Gravatar image
     return (
       'https://www.gravatar.com/avatar/' +
@@ -86,17 +91,21 @@ export class UserService {
   }
 
   getUser(username: string): Promise<User> {
-    return this.http
-      .get(USER_ROUTES.CHECK_USER_EXISTS(username), { withCredentials: true })
-      .toPromise()
-      .then(
-        val => {
-          const user = val.json();
-          return user ? User.instantiate(user) : null;
-        },
-        error => {
-          return null;
-        }
-      );
+    return username && username !== 'undefined'
+      ? this.http
+          .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
+            withCredentials: true
+          })
+          .toPromise()
+          .then(
+            val => {
+              const user = val.json();
+              return user ? User.instantiate(user) : null;
+            },
+            error => {
+              return null;
+            }
+          )
+      : Promise.resolve(null);
   }
 }

@@ -16,6 +16,7 @@ import { UserService } from './user.service';
 import { MessagesService } from './messages.service';
 import { RavenErrorHandler } from './error-handler';
 import { ContextMenuModule } from 'ngx-contextmenu';
+import { environment } from '@env/environment';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ export class CoreModule {
         UserService,
         OutcomeService,
         MessagesService,
-        UserVerifiedGuard
+        UserVerifiedGuard,
+        { provide: ErrorHandler, useClass: RavenErrorHandler }
       ]
     };
   }
