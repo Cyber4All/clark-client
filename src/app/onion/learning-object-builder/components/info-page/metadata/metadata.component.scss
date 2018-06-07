@@ -29,7 +29,7 @@ li {
 }
 
 #delete {
-	background-color: red;
+	background-color: $error-red;
 	height: 40px;
 	margin-right: 20px;
 	text-align: center;
@@ -100,6 +100,7 @@ li:hover #delete {
 
   .level-list {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
