@@ -35,7 +35,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
 
-  contributorsList: string[];
+  contributorsList = [];
 
   canDownload = true;
 
@@ -215,10 +215,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   private getContributors() {
     for (let i = 0; i < this.learningObject.contributors.length; i++) {
-      // console.log(typeof(this.learningObject.contributors[i]));
-      // this.userService.getUser(this.learningObject.contributors[i].trim()).then (val => {
-      //   console.log(val);
-      // });
+      this.userService.getUser(this.learningObject.contributors[i]).then (val => {
+        this.contributorsList[i] = val;
+      });
     }
   }
 
