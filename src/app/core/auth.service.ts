@@ -166,8 +166,7 @@ export class AuthService {
       .toPromise()
       .then(
         val => {
-          this.user = this.makeUserFromCookieResponse(val);
-          return this.user;
+          return this.makeUserFromCookieResponse(val);
         }
       );
   }

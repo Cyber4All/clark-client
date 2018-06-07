@@ -43,7 +43,6 @@ export class UserService {
       );
   }
 
-  // For testing
   searchUsers(query: {}) {
     return this.http
       .get(
