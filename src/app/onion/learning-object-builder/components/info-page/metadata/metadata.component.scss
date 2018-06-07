@@ -10,11 +10,14 @@ li {
 	height: 40px;
 	line-height: 40px;
 	background-color: white; 
-	color: #666;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 #plus {
-	background-color: green;
+	background-color: $green;
 	height: 40px;
 	margin-right: 20px;
 	text-align: center;
