@@ -7,8 +7,8 @@
         <div class="author">Created by
           <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
         <div class="type">{{ learningObject.length }}</div>
-        <div class="author">Contributors
-        <span [routerLink]="['/users', learningObject._contributors]" class="link">{{ learningObject._contributors }}</span></div>
+        <div *ngIf="learningObject.contributors" class="author">Contributors
+        <span class="link">{{ learningObject.contributors }}</span></div>
       </div>
     </div>
   </div>

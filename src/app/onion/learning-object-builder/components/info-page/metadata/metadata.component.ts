@@ -52,9 +52,8 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     .subscribe(val => {
       this.search();
     });
-    console.log(this.learningObject._contributors);
-      if (this.learningObject._contributors.length !== 0) {
-        this.selectedAuthors = this.learningObject._contributors;
+      if (this.learningObject.contributors.length !== 0) {
+        this.selectedAuthors = this.learningObject.contributors;
       }
   }
 
@@ -107,11 +106,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
-  }
-
-  sendSearchQuery() {
-  this.userService.sendSearchQuery(this.query.text);
-  this.users = '';
   }
 
   ngOnDestroy() {

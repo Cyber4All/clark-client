@@ -62,35 +62,6 @@ export class UserService {
       });
   }
 
-  // searchUsers(query: string) {
-  //     this.socketWatcher = new Observable(observer => {
-  //       this.socket = io(environment.apiURL + '/users/search?text=' + query);
-  //       console.log('search');
-  //         // Problem starts here
-  //         this.socket.on('users', val => {
-  //           // io.emit('users', {type: 'new-query', text: val});
-  //           // subscribers to our observable will be notified of the new search results.
-  //           observer.next(val);
-  //           console.log(val);
-  //         });
-  //         return () => {
-  //           this.socket.disconnect();
-  //         };
-  //     });
-  //   // Return observable
-  //   return this.socketWatcher;
-  // }
-
-  sendSearchQuery(query: string) {
-    this.socket.emit('send-query', query);
-  }
-
-  destroySocket() {
-    if (this.socket) {
-      this.socket.emit('close');
-    }
-  }
-
   getOrganizationMembers(organization: string): Promise<User[]> {
     let route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
