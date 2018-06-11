@@ -18,8 +18,8 @@
       </div>
     </div>
     <!-- Render Files -->
-    <div (click)="openFile(file.name, $event)" class="grid-row file" *ngFor="let file of (node$ | async)?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
-      <div class="text-contained inline-flex">
+    <div class="grid-row file" *ngFor="let file of (node$ | async)?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
+      <div (click)="openFile(file.name, $event)" class="text-contained inline-flex">
         <i class="fas {{ getIcon(file.extension) }} icon"></i>
         {{ file.name }}
       </div>
