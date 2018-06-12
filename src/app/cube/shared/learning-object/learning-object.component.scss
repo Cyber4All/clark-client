@@ -67,6 +67,49 @@
 
 }
 
+:host.loading {
+    // loading styles
+    $color: lighten($placeholder, 17);
+    pointer-events: none;
+
+    .image {
+        background: $color !important;
+    }
+
+    .initials {
+        visibility: hidden;
+    }
+
+    &:not(.card) {
+        .image {
+            height: 100px !important;
+        }
+    }
+
+    .learning-object-content {
+        & > * {
+            color: transparent !important;
+            background: $color !important;
+            margin-bottom: 20px;
+            height: 15px;
+        }
+    }  
+
+    .learning-object {
+
+        &:after {
+            content: '';
+            background: linear-gradient(90deg, transparent, white, transparent);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 70px;
+            animation: loading 2s linear forwards infinite;
+        }
+    }
+
+}
+
 .learning-object {
     background: white;
     border-radius: 3px;
@@ -78,6 +121,7 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     outline: none;
     cursor: pointer;
+    position: relative;
 
     @function gradient($color) {
         @return linear-gradient(45deg, $color, lighten($color, 10));
@@ -167,4 +211,16 @@
             text-transform: capitalize;
         }
     }
+ }
+
+ @keyframes loading {
+     0% {
+        left: -60px;
+        opacity: 0;
+     } 50% {
+         opacity: 0.5;
+     } 100% {
+         opacity: 0;
+         left: 100%;
+     }
  }

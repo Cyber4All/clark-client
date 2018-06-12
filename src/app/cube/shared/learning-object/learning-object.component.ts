@@ -1,13 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'learning-object-component',
   templateUrl: 'learning-object.component.html',
   styleUrls: ['./learning-object.component.scss']
 })
-export class LearningObjectListingComponent implements OnInit {
+export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() learningObject;
   @Input() link;
+  @Input('loading') loading: boolean;
   @Input() owned? = false;
 
   public particleParams: any;
@@ -15,7 +16,17 @@ export class LearningObjectListingComponent implements OnInit {
   public width = 100;
   public height = 100;
 
-  constructor() {}
+  constructor(private hostEl: ElementRef, private renderer: Renderer2) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.loading) {
+      if (changes.loading.currentValue) {
+        this.renderer.addClass(this.hostEl.nativeElement, 'loading');
+      } else {
+        this.renderer.removeClass(this.hostEl.nativeElement, 'loading');
+      }
+    }
+  }
 
   ngOnInit() {
     this.myStyle = {

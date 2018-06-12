@@ -21,7 +21,7 @@ import { SuggestionService } from '../../onion/learning-object-builder/component
   providers: [ SuggestionService ]
 })
 export class BrowseComponent implements OnInit, OnDestroy {
-  learningObjects: LearningObject[] = [];
+  learningObjects: LearningObject[] = Array(20).fill(new LearningObject);
 
   query: Query = {
     text: '',
@@ -39,7 +39,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     'a Learning Object over 10 hours in length',
     'a Learning Object 15 weeks in length'
   ];
-
+  loading = false;
   mappingsPopup = false;
 
   pageCount: number;
@@ -57,7 +57,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
     private router: Router, private modalService: ModalService, private mappingService: SuggestionService) {
-    this.learningObjects = [];
+      this.learningObjects = Array(20).fill(new LearningObject);
   }
 
   ngOnInit() {
@@ -249,13 +249,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   async fetchLearningObjects(query: Query) {
+    this.loading = true;
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(query);
       this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
+      this.loading = false;
     } catch (e) {
-      
+      console.log(`Error: ${e}`);
     }
   }
 

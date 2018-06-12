@@ -9,24 +9,30 @@ import { Query, OrderBy, SortType } from '../../../shared/interfaces/query';
   styleUrls: ['./featured.component.scss']
 })
 export class FeaturedComponent implements OnInit {
-  learningObjects: LearningObject[];
+  learningObjects: LearningObject[] = Array(5);
   query: Query= {
     limit: 5,
     orderBy: OrderBy.Date,
     sortType: SortType.Descending
   };
+  loading = false;
+
   constructor(private learningObjectService: LearningObjectService) {
-  }
+    this.learningObjects = this.learningObjects.fill(new LearningObject());
+}
 
   ngOnInit() {
     this.fetchLearningObjects();
   }
 
   async fetchLearningObjects() {
+    this.loading = true;
+
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(this.query);
+      this.loading = false;
     } catch (e) {
-      
+      this.loading = false;
     }
   }
 
