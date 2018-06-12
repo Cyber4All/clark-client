@@ -169,6 +169,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async addToCart(download?: boolean) {
+    this.downloading = true;
     const val = await this.cartService.addToCart(
       this.author,
       this.learningObjectName
@@ -193,7 +194,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async download(author: string, learningObjectName: string) {
     try {
-      this.downloading = true;
       await this.cartService.downloadLearningObject(author, learningObjectName);
       this.downloading = false;
     } catch (e) {

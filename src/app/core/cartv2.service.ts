@@ -131,7 +131,7 @@ export class CartV2Service {
   }
 
   downloadLearningObject(author: string, learningObjectName: string) {
-    this.http
+    return this.http
       .post(
         USER_ROUTES.DOWNLOAD_OBJECT(
           this.user.username,
@@ -145,13 +145,12 @@ export class CartV2Service {
           withCredentials: true
         }
       )
-      .subscribe(
-        res => {
-          importedSaveAs(res.blob(), `${Date.now()}.zip`);
-        },
-        err => err,
-        () => {}
-      );
+      .toPromise()
+      .then(data => {
+        importedSaveAs(data.blob(), `${Date.now()}.zip`);
+      }).catch(error => {
+        console.error(error);
+      });
   }
 
   has(object: LearningObject): boolean {
