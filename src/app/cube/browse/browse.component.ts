@@ -56,7 +56,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   contextMenuSubscriptions: Subscription[] = [];
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, private mappingService: SuggestionService) {
+    private router: Router, private modalService: ModalService, public mappingService: SuggestionService) {
     this.learningObjects = [];
   }
 
