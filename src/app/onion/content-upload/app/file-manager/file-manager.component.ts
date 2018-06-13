@@ -53,6 +53,7 @@ export class FileManagerComponent implements OnInit {
   removal$: BehaviorSubject<Removal> = new BehaviorSubject<Removal>(
     null
   );
+  editDescription: boolean;
 
   constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {}
@@ -220,5 +221,9 @@ export class FileManagerComponent implements OnInit {
    */
   emitPath(path: string) {
     this.path.emit(path);
+  }
+
+  toggleEditDescription(value: boolean): void {
+    this.editDescription = value;
   }
 }

@@ -10,7 +10,6 @@ import { OutcomesDetailViewComponent } from './outcomes-detail-view/outcomes-det
 import { ParticlesModule } from 'angular-particle';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
-import { TooltipModule } from '@cyber4all/clark-tooltip';
 
 @NgModule({
   imports: [
@@ -20,7 +19,6 @@ import { TooltipModule } from '@cyber4all/clark-tooltip';
     ParticlesModule,
     RouterModule,
     CubeSharedModule,
-    TooltipModule
   ],
   exports: [],
   declarations: [

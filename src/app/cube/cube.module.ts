@@ -49,7 +49,6 @@ import { AuthService } from '../core/auth.service';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 import { ModalModule } from '../shared/modals';
-import { TooltipModule } from '@cyber4all/clark-tooltip';
 import {
   NotificationComponent,
   NotificationModule
@@ -97,8 +96,7 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     ModalModule,
     NotificationModule,
     CollectionModule,
-    TooltipModule,
-    DetailsModule, 
+    DetailsModule,
   ],
   providers: [LearningObjectService, CartService, UserProfileLearningObjectsResolver]
 })

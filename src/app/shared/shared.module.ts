@@ -60,7 +60,8 @@ import { FilePreviewComponent } from './filesystem/file-preview/file-preview.com
     FileBrowserComponent,
     FileListViewComponent,
     FileGridViewComponent,
-    FileBreadcrumbComponent
+    FileBreadcrumbComponent,
+    TooltipModule
   ]
 })
 export class SharedModule {}

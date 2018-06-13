@@ -2,7 +2,7 @@
   canManage="true"></clark-file-browser>
 
 <!-- New Options Context Menu -->
-<context-menu (close)="editDescription=false" #newOptions>
+<context-menu (close)="toggleEditDescription(false)" #newOptions>
   <ng-template contextMenuItem (execute)="openFileDialog(true)">
     <div class="context-item">
       <div class="option">
@@ -23,9 +23,9 @@
 
 
 <!-- File Options Context Menu -->
-<context-menu (close)="editDescription=false" #fileOptions>
+<context-menu (close)="toggleEditDescription(false)" #fileOptions>
   <ng-template contextMenuItem passive="true">
-    <div *ngIf="!editDescription" class="context-item" (click)="editDescription=true">
+    <div *ngIf="!editDescription" class="context-item" (click)="toggleEditDescription(true)">
       <div>
         Edit description
       </div>
