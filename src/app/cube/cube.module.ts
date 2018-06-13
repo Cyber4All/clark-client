@@ -10,12 +10,7 @@ import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
-import { CartService } from './core/services/cart.service';
 import { CartV2Service } from '../core/cartv2.service';
-
-// Redux
-import { StoreModule } from '@ngrx/store';
-import { cartReducer } from './core/redux/reducers/cart.reducer';
 
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
@@ -86,7 +81,6 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     ParticlesModule,
     VirtualScrollModule,
     // Local module imports
-    StoreModule.forRoot({ cart: cartReducer }),
     CubeCoreModule,
     CubeSharedModule,
     CubeRoutingModule,
@@ -98,6 +92,6 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     CollectionModule,
     DetailsModule,
   ],
-  providers: [LearningObjectService, CartService, UserProfileLearningObjectsResolver]
+  providers: [LearningObjectService, UserProfileLearningObjectsResolver]
 })
 export class CubeModule {}

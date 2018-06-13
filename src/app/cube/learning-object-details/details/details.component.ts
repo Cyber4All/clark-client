@@ -8,7 +8,6 @@ import {
   Router,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { CartService } from '../../core/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
 import { NgClass } from '@angular/common';
