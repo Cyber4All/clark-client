@@ -14,9 +14,6 @@
         <span>{{ learningObjectService.totalLearningObjects }}</span> results for "{{ query.text }}"
     </ng-container>
     <div class="active-filters">
-      <!-- <div *ngIf="query.text && query.text !== ''" class="text-filter filter-active" (click)="clearText()">
-        {{ query.text }}
-      </div> -->
       <div *ngFor="let l of query.length" class="length-filter filter-active" (click)="removeFilter('length', l)">{{ l }}<i class="fal fa-times"></i></div>
       <div *ngFor="let l of query.level" class="level-filter filter-active" (click)="removeFilter('level', l)">{{ l }}<i class="fal fa-times"></i></div>
       <div *ngFor="let m of mappingService.mappedStandards" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
