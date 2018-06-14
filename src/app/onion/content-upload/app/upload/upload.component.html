@@ -9,7 +9,7 @@
         <div class="title">
           Manage Materials
         </div>
-        <div class="back right" [routerLink]="['/onion/learning-object-builder', learningObject.name ]">
+        <div class="back right" [routerLink]="['/onion/learning-object-builder', learningObject?.name ]">
           <div>
             Back to Learning Object
             <i class="far fa-arrow-to-right"></i>
@@ -25,12 +25,12 @@
       <div class="section">
         <div class="title">Urls</div>
       </div>
-      <div [ngClass]="{'empty-section': learningObject.materials.urls.length == 0}">
-        <div class="text" *ngIf="learningObject.materials.urls.length == 0">You don't have any URLs yet!</div>
-        <div class="section url-wrapper" *ngFor="let url of learningObject.materials.urls; let i = index;">
+      <div [ngClass]="{'empty-section': learningObject?.materials.urls.length == 0}">
+        <div class="text" *ngIf="learningObject?.materials.urls.length == 0">You don't have any URLs yet!</div>
+        <div class="section url-wrapper" *ngFor="let url of learningObject?.materials.urls; let i = index;">
           <div class="link input-wrapper">
-            <input placeholder="Title" type="text" [(ngModel)]="learningObject.materials.urls[i].title" name="url.title.{{ i }}">
-            <input placeholder="https://example.com" type="text" [(ngModel)]="learningObject.materials.urls[i].url" name="url.url.{{ i }}">
+            <input placeholder="Title" type="text" [(ngModel)]="learningObject?.materials.urls[i].title" name="url.title.{{ i }}">
+            <input placeholder="https://example.com" type="text" [(ngModel)]="learningObject?.materials.urls[i].url" name="url.url.{{ i }}">
           </div>
           <div class="button bad icon-only" (click)="removeURL(i)">
             <i class="far fa-times"></i>
@@ -48,7 +48,7 @@
         <div class="title">Notes</div>
       </div>
       <div class="notes">
-        <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
+        <textarea rows="8" type="text" [(ngModel)]="learningObject?.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
       </div>
     </div>
     <div class="btn-group to-right final">

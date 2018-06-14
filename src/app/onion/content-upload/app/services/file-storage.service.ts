@@ -33,20 +33,17 @@ export class FileStorageService {
    */
   upload(
     learningObject: LearningObject,
-    files: File[] | any[],
-    filePathMap: Map<string, string>
+    files: File[] | any[]
   ): Promise<LearningObjectFile[]> {
     return new Promise((resolve, reject) => {
       const formData: FormData = new FormData(),
         xhr: XMLHttpRequest = new XMLHttpRequest();
       formData.append('learningObjectID', learningObject.id);
-      const stringifiedMap = this.stringifyMap(filePathMap);
-      formData.append('filePathMap', stringifiedMap);
       for (const file of files) {
         formData.append(
           'uploads',
           file,
-          `${file.name}!@!${file.id ? file.id : ''}`
+          `${file.fullPath ? file.fullPath : file.name}`
         );
       }
       xhr.onreadystatechange = () => {
