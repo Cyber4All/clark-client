@@ -13,7 +13,11 @@ import { navigate } from '../../store';
   styleUrls: ['sidebar.component.scss']
 })
 export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
-  @Input() outcomes: LearningOutcome[];
+  _outcomes: LearningOutcome[] = [];
+  @Input('outcomes')
+  set outcomes(values: LearningOutcome[]) {
+    this._outcomes = values;
+  }
   @Input() learningObjectName;
   @Output() newOutcome = new EventEmitter();
   @Output() upload = new EventEmitter();
@@ -48,7 +52,7 @@ export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
   }
 
   ngDoCheck() {
-    const changes = this.outcomesDiffer.diff(this.outcomes);
+    const changes = this.outcomesDiffer.diff(this._outcomes);
     if (changes && this.loaded) {
       this.buildOutcomes(changes.collection);
     }
@@ -97,7 +101,7 @@ export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
       self.navigate(1, self, true);
     }
 
-    self.buildOutcomes(self.outcomes, true);
+    self.buildOutcomes(self._outcomes, true);
     self.store.dispatch({
       type: 'NAVIGATECHILD',
       request: {

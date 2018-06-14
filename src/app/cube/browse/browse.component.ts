@@ -56,7 +56,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   contextMenuSubscriptions: Subscription[] = [];
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, private mappingService: SuggestionService) {
+    private router: Router, private modalService: ModalService, public mappingService: SuggestionService) {
     this.learningObjects = [];
   }
 
@@ -66,7 +66,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.sendFilters();
     }));
 
-    let searchInput = document.querySelector('.search-bar input');
+    /* const searchInput = document.querySelector('.search-bar input');
     if (searchInput) {
       this.filterInput = Observable
       .fromEvent(searchInput, 'input')
@@ -75,7 +75,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.filterInput.subscribe(val => {
         this.router.navigate(['/browse', { query: val }]);
       }));
-    }
+    } */
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       params.query ? this.query.text = params.query : this.query.text = '';

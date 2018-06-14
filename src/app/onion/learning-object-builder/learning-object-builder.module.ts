@@ -10,7 +10,6 @@ import { TextEditorComponent } from './components/text-editor.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 
 import { OnionRoutingModule } from '../onion.routing';
-import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { SharedModule } from '../../shared/shared.module';
 import { BloomsSelectorComponent } from './components/outcome-page/outcome/blooms-selector/blooms-selector.component';
 import { StandardOutcomesComponent } from './components/outcome-page/outcome/standard-outcomes/standard-outcomes.component';
@@ -34,7 +33,6 @@ import { InfoPageComponent } from './components/info-page/info-page.component';
     CKEditorModule,
     OnionRoutingModule,
     DndModule.forRoot(),
-    TooltipModule,
     SharedModule
   ],
   declarations: [

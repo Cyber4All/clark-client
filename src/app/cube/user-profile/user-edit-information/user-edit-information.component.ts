@@ -125,7 +125,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
    * @private
    * @memberof UserEditInformationComponent
    */
-  private async save() {
+  async save() {
     // If the new password fields do not match, the user cannot save changes.
     // If the user does not wish to change their password, the fields will
     // match when empty.

@@ -8,7 +8,7 @@ import { Modal } from './modal';
     <div *ngIf="show" class="popup " [attr.class]="'popup ' + content.classes" [ngStyle]="{'left': this.x, 'top': this.y}" (clickOutside)="tryClose($event)">
         <ul>
             <li *ngFor="let l of content['list']" (click)="!l.checkbox && optionClick($event, l.func)" [ngClass]="l.classes ? l.classes : ''">
-                <checkbox *ngIf="l.checkbox" [func]='l.func' [checked]="content.checked.includes(l.func)" (action)="checkbox($event, val)"></checkbox>
+                <clark-checkbox *ngIf="l.checkbox" [func]='l.func' [checked]="content.checked.includes(l.func)" (action)="checkbox($event, val)"></clark-checkbox>
                 <span [innerHTML]="l.text"></span>
             </li>
         </ul>
