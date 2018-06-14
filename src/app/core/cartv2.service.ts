@@ -130,13 +130,13 @@ export class CartV2Service {
       );
   }
 
-  downloadLearningObject(author: string, learningObjectName: string) {
+  downloadLearningObject(learningObject: LearningObject) {
     return this.http
       .post(
         USER_ROUTES.DOWNLOAD_OBJECT(
           this.user.username,
-          author,
-          learningObjectName
+          learningObject.author.username,
+          learningObject.name
         ),
         {},
         {
@@ -147,8 +147,14 @@ export class CartV2Service {
       )
       .toPromise()
       .then(data => {
-        importedSaveAs(data.blob(), `${Date.now()}.zip`);
-      }).catch(error => {
+        importedSaveAs(
+          data.blob(),
+          `${sanitizeFileName(
+            `${learningObject.author.name} - ${learningObject.name}.zip`
+          )}`
+        );
+      })
+      .catch(error => {
         console.error(error);
       });
   }
@@ -161,4 +167,13 @@ export class CartV2Service {
       ).length > 0
     );
   }
+}
+
+const MAX_CHAR = 255;
+export function sanitizeFileName(name: string): string {
+  let clean = name.replace(/[\\/:"*?<>|]/gi, '_');
+  if (clean.length > MAX_CHAR) {
+    clean = clean.slice(0, MAX_CHAR);
+  }
+  return clean;
 }
