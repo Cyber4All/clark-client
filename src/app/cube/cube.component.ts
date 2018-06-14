@@ -15,8 +15,8 @@ export class CubeComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private noteService: NotificationService,
-    private modalService: ModalService,
+    public noteService: NotificationService,
+    public modalService: ModalService,
   ) { }
 
   ngOnInit() { }
