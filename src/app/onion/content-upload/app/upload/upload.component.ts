@@ -3,21 +3,32 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
-import { FileStorageService } from '../services/file-storage.service';
-import { DropzoneDirective } from 'ngx-dropzone-wrapper';
+import {
+  FileStorageService,
+  encodeFilePath
+} from '../services/file-storage.service';
+import {
+  DropzoneDirective,
+  DropzoneConfigInterface
+} from 'ngx-dropzone-wrapper';
 import { TimeFunctions } from '../shared/time-functions';
 import { NotificationService } from '../../../../shared/notifications';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { File, Material } from '@cyber4all/clark-entity/dist/learning-object';
+import {
+  File,
+  Material,
+  FolderDescription
+} from '@cyber4all/clark-entity/dist/learning-object';
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { getPaths } from 'app/shared/filesystem/file-functions';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
+import { fail } from 'assert';
 type LearningObjectFile = File;
 
 // tslint:disable-next-line:interface-over-type-literal
-export type File = {
+export type DZFile = {
   id?: string;
   accepted: boolean;
   fullPath: string;
@@ -40,13 +51,23 @@ export class UploadComponent implements OnInit {
 
   private dzError = '';
 
+  config: DropzoneConfigInterface = {
+    ...environment.DROPZONE_CONFIG,
+    renameFile: this.renameFile,
+    params: {
+      learningObjectID: ''
+    },
+    chunking: true,
+    chunkSize: 100
+  };
+
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
   >([]);
-  folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
+  folderMeta$: BehaviorSubject<FolderDescription[]> = new BehaviorSubject<
+    FolderDescription[]
   >([]);
+  queuedUploads$: BehaviorSubject<DZFile[]> = new BehaviorSubject<DZFile[]>([]);
 
   tips = TOOLTIP_TEXT;
 
@@ -91,6 +112,7 @@ export class UploadComponent implements OnInit {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      this.config.params.learningObjectID = this.learningObject.id;
 
       if (!this.learningObject.materials.folderDescriptions) {
         this.learningObject.materials.folderDescriptions = [];
@@ -147,10 +169,10 @@ export class UploadComponent implements OnInit {
   /**
    * Fired when file is added. Verifies limit hasn't been reached and adds to queued files & filesystem
    *
-   * @param {File} file
+   * @param {DZFile} file
    * @memberof UploadComponent
    */
-  async addFile(file) {
+  async addFile(file: DZFile) {
     await file;
     file = this.setFullPath(file);
     if (!file.accepted) {
@@ -171,11 +193,11 @@ export class UploadComponent implements OnInit {
    * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;
    *
    * @private
-   * @param {any} file
+   * @param {DZFile} file
    * @returns
    * @memberof UploadComponent
    */
-  private setFullPath(file) {
+  private setFullPath(file: DZFile) {
     let path;
     if (file.fullPath || file.webkitRelativePath) {
       path = file.fullPath ? file.fullPath : file.webkitRelativePath;
@@ -187,6 +209,40 @@ export class UploadComponent implements OnInit {
       file.fullPath = path;
     }
     return file;
+  }
+
+  /**
+   * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;
+   *
+   * @private
+   * @param {DZFile} file
+   * @returns
+   * @memberof UploadComponent
+   */
+  private renameFile(file: any): string {
+    let path: string;
+    if (file.fullPath || file.webkitRelativePath) {
+      path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+    }
+    if (this.openPath) {
+      path = `${this.openPath}/${path ? path : file.name}`;
+    }
+    if (!path) {
+      path = file.name;
+    }
+    path = encodeFilePath(path);
+    return path.trim();
+  }
+
+  onUploadSuccess($event) {
+    console.log('FINISH UPLOADED: ', $event);
+  }
+  chunksUploaded($event) {
+    console.log('CHUNKS UPLOADED: ', $event);
+  }
+
+  progress($event) {
+    console.log('PROGRESS: ', $event);
   }
 
   /**
@@ -219,8 +275,9 @@ export class UploadComponent implements OnInit {
     const queue = this.queuedUploads$.value;
     if (queue.length) {
       size +=
-        queue.map(file => file.size).reduce((total, size) => total + size) /
-        BYTE_TO_MB;
+        queue
+          .map(file => file.size)
+          .reduce((total, currentSize) => total + currentSize) / BYTE_TO_MB;
     }
     if (size > environment.DROPZONE_CONFIG.maxFilesize) {
       this.dzError = `Exceeded max upload size of ${
@@ -274,10 +331,10 @@ export class UploadComponent implements OnInit {
    * Check to see if file exists in array of Learning Object Material Files
    * If exists update else add
    *
-   * @param {File[]} loFiles
+   * @param {LearningObjectFile[]} loFiles
    * @memberof UploadComponent
    */
-  updateFiles(loFiles: File[]) {
+  updateFiles(loFiles: LearningObjectFile[]) {
     for (const newFile of loFiles) {
       for (let i = 0; i < this.learningObject.materials.files.length; i++) {
         const oldFile = this.learningObject.materials.files[i];
@@ -357,16 +414,33 @@ export class UploadComponent implements OnInit {
 
     if (queue.length >= 1) {
       this.uploading$.next(true);
-      const uploaded: File[] = [];
-      const failed: any[] = [];
+      const failed: DZFile[] = [];
 
-      const learningObjectFiles = await this.fileStorageService.upload(
-        this.learningObject,
-        queue
-      );
-      this.queuedUploads$.next([]);
+      const uploaded: LearningObjectFile[] = await Promise.all(
+        queue.map((file, index) =>
+          this.fileStorageService
+            .upload(this.learningObject, file)
+            .then(loFile => {
+              queue.splice(index, 1);
+              this.queuedUploads$.next(queue);
+              return loFile;
+            })
+            .catch(e => {
+              file.status = 'failed';
+              failed.push(file);
+              return null;
+            })
+        )
+      )
+        .then(files => files.filter(obj => obj))
+        .catch(e => {
+          console.log(e);
+          return null;
+        });
 
-      return learningObjectFiles;
+      this.queuedUploads$.next(failed ? failed : []);
+
+      return uploaded;
     }
     this.uploading$.next(false);
     return Promise.resolve([]);
@@ -404,7 +478,7 @@ export class UploadComponent implements OnInit {
    * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  async handleEdit(file): Promise<void> {
+  async handleEdit(file: LearningObjectFile | any): Promise<void> {
     try {
       if (!file.isFolder) {
         const index = this.findFile(file.path);

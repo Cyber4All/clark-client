@@ -40,6 +40,8 @@ export class UploadQueueComponent implements OnInit, OnDestroy {
   }
 
   private refreshQueue(): void {
+    this.files = [];
+    this.folders = [];
     const queue = this.queuedUploads$.getValue();
     for (const file of queue) {
       if (file.fullPath) {

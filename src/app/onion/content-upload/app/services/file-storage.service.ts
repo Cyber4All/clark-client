@@ -6,6 +6,7 @@ import { AuthService } from '../../../../core/auth.service';
 import { CookieService } from 'ngx-cookie';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { DZFile } from '../upload/upload.component';
 type LearningObjectFile = File;
 @Injectable()
 export class FileStorageService {
@@ -24,6 +25,48 @@ export class FileStorageService {
   }
 
   /**
+   * Sends file to API for uploading to S3 bucket
+   *
+   * @param {string} learningObjectID
+   * @param {any[]} file
+   * @returns {Promise<LearningObjectFile[]>}
+   * @memberof FileStorageService
+   */
+  upload(
+    learningObject: LearningObject,
+    file: DZFile | any
+  ): Promise<LearningObjectFile> {
+    return new Promise((resolve, reject) => {
+      const formData: FormData = new FormData(),
+        xhr: XMLHttpRequest = new XMLHttpRequest();
+      formData.append('learningObjectID', learningObject.id);
+      formData.append(
+        'uploads',
+        file,
+        `${file.fullPath ? encodeFilePath(file.fullPath) : file.name}`
+      );
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            let response = xhr.response;
+            if (typeof response === 'string') {
+              response = JSON.parse(response);
+            }
+            resolve(response as LearningObjectFile);
+          } else {
+            reject(xhr.response);
+          }
+        }
+      };
+      const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT;
+      xhr.open('POST', route, true);
+      xhr.withCredentials = true;
+      xhr.send(formData);
+    });
+  }
+
+  /**
    * Sends files to API for uploading to S3 bucket
    *
    * @param {string} learningObjectID
@@ -31,9 +74,9 @@ export class FileStorageService {
    * @returns {Promise<LearningObjectFile[]>}
    * @memberof FileStorageService
    */
-  upload(
+  uploadMultiple(
     learningObject: LearningObject,
-    files: File[] | any[]
+    files: DZFile[] | any[]
   ): Promise<LearningObjectFile[]> {
     return new Promise((resolve, reject) => {
       const formData: FormData = new FormData(),
@@ -43,7 +86,7 @@ export class FileStorageService {
         formData.append(
           'uploads',
           file,
-          `${file.fullPath ? file.fullPath : file.name}`
+          `${file.fullPath ? encodeFilePath(file.fullPath) : file.name}`
         );
       }
       xhr.onreadystatechange = () => {
@@ -85,12 +128,10 @@ export class FileStorageService {
       .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise();
   }
+}
 
-  private stringifyMap(map: Map<any, any>): string {
-    const pairArray = [];
-    map.forEach((value, key) => {
-      pairArray.push([key, value]);
-    });
-    return JSON.stringify(pairArray);
-  }
+export function encodeFilePath(path: string): string {
+  const replacementChar = '!@!';
+  const sanitized = path.replace(/\//g, replacementChar);
+  return sanitized;
 }
