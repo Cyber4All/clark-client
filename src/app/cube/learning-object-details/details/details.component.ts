@@ -182,7 +182,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
     if (download) {
       try {
-        await this.download(this.author, this.learningObjectName);
+        await this.download(this.learningObject);
       } catch (e) {
         console.log(e);
       }
@@ -197,10 +197,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async download(author: string, learningObjectName: string) {
+  async download(object: LearningObject) {
     try {
       this.downloading = true;
-      await this.cartService.downloadLearningObject(author, learningObjectName);
+      await this.cartService.downloadLearningObject(object);
       this.downloading = false;
     } catch (e) {
       console.log(e);
