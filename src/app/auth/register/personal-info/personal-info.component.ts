@@ -2,17 +2,15 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  forwardRef,
   ViewChild,
   ElementRef,
   OnDestroy
 } from '@angular/core';
-import { NgControl, FormGroup, FormControl, Validators } from '@angular/forms';
+import {FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../../register/register.component';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'clark-personal-info',
@@ -24,6 +22,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
+  emailError = false;
+  querying = false;
   result: boolean;
   sub: Subscription;
 
@@ -35,12 +35,17 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
-        this.auth.identifiersInUse(val).then(res => {
-          const data = JSON.parse(JSON.stringify(res));
-          this.result = data.inUse;
+        this.querying = true;
+        this.emailError = false;
+
+        this.auth.identifiersInUse(val).then((res: any) => {
+          this.querying = false;
+          this.result = res.inUse;
           if (!this.result) {
             this.register.setInUseEmail(this.result);
+            this.emailError = false;
           } else {
+            this.emailError = true;
             this.register.error('This email is already taken');
             this.register.setInUseEmail(this.result);
           }

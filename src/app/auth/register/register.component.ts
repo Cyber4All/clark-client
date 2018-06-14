@@ -2,15 +2,12 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormArray,
   FormControl,
-  ControlValueAccessor
 } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
-import * as md5 from 'md5';
 import {
   trigger,
   style,
@@ -20,7 +17,6 @@ import {
   query,
   stagger
 } from '@angular/animations';
-import { PersonalInfoComponent } from '../register/personal-info/personal-info.component';
 
 @Component({
   selector: 'clark-register',
@@ -64,6 +60,7 @@ import { PersonalInfoComponent } from '../register/personal-info/personal-info.c
     ])
   ]
 })
+
 export class RegisterComponent implements OnInit {
   regInfo = {
     firstname: '',
@@ -99,6 +96,19 @@ export class RegisterComponent implements OnInit {
   check: boolean;
   inUseEmail = false;
   inUseUsername = false;
+
+  elements = ['Personal Information', 'User Information', 'Preview'];
+
+  @HostListener('window:keyup', ['$event'])
+    keyup(event) {
+      if (event.target.tagName.toLowerCase() !== 'input') {
+        if (event.keyCode === 39) {
+          this.next();
+        } else if (event.keyCode === 37) {
+          this.back();
+        }
+      }
+    }
 
   constructor(
     private auth: AuthService,
@@ -155,7 +165,7 @@ export class RegisterComponent implements OnInit {
   }
 
   validate(): boolean {
-    let m: boolean[] = Object.values(this.regInfo).map(function(l) {
+    const m: boolean[] = Object.values(this.regInfo).map(function(l) {
       return (l && l !== '' && true) || false;
     });
     if (m.includes(false) && this.verified === true) {
@@ -195,9 +205,9 @@ export class RegisterComponent implements OnInit {
     if (this.check) {
       this.slide = !this.slide;
     }
-    if (this.page == 1 && this.check) {
+    if (this.page === 1 && this.check) {
       this.page = 2;
-    } else if (this.page == 2 && this.check) {
+    } else if (this.page === 2 && this.check) {
       this.page = 3;
     }
   }
@@ -205,9 +215,9 @@ export class RegisterComponent implements OnInit {
   // navigation
   back() {
     this.fall = !this.fall;
-    if (this.page == 2) {
+    if (this.page === 2) {
       this.page = 1;
-    } else if (this.page == 3) {
+    } else if (this.page === 3) {
       this.page = 2;
     }
   }
@@ -258,6 +268,18 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  navigate(index: number) {
+    if (index > this.page - 1) {
+      for (let i = this.page - 1; i < index; i++) {
+        this.next();
+      }
+    } else if (index < this.page - 1) {
+      for (let i = index; i <= this.page - 1; i++) {
+        this.back();
+      }
+    }
+  }
+
   // Places FormControl values in regInfo object
   // RegInfo object is used for final form validation
   updateObjValues() {
@@ -273,6 +295,7 @@ export class RegisterComponent implements OnInit {
   getvalidEmail() {
     const email =
       this.regForm.controls['email'].value.match(
+        // tslint:disable-next-line:max-line-length
         /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g
       ) !== null;
     return email;

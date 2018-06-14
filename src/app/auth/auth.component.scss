@@ -13,9 +13,18 @@
 
     .background {
         z-index: 1;
+        background: linear-gradient(180deg, #0d1928, #1e2e40);
+
+        &:after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: $cube-pattern;
+            opacity: 0.02;
+        }
         
 
-        .image, .mask {
+        .image {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background-size: cover;
@@ -23,13 +32,8 @@
         }
 
         .image {
-            z-index: 0;
-            background: linear-gradient(180deg, #0d1928, #1e2e40);
-        }
-
-        .mask {
-            z-index: 2;
             background-image: url(/assets/images/background_mask_compressed.png);
+            z-index: 2;
         }
     }
 
@@ -179,6 +183,7 @@
         justify-content: space-between;
         border: 1px solid $placeholder;
         border-radius: 1px;
+        position: relative;
 
         &:not(:last-child) {
             margin-bottom: 10px;
@@ -203,7 +208,7 @@
             }
         }
 
-        .svg-inline--fa {
+        & > .svg-inline--fa {
             width: 15px;
             height: 15px;
             flex-grow: 0;
@@ -216,6 +221,12 @@
 
         &.active > .svg-inline--fa {
             color: $blue-accent;
+        }
+
+        .icon-right {
+            position: absolute;
+            right: 10px;
+            @include vert-center;
         }
     }
 

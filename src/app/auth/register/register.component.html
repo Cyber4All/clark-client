@@ -16,37 +16,19 @@
           <div ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
         </div>
       </form>
-      <!--<div>{{regInfo | json}}</div>-->
-      <div *ngIf="page === 1">
-        <button type="type" class="auth-button" (click)="next()">
-          <div class="text">Continue to step 2</div>
-          <div class="mask"></div>
-        </button>
+      <div class="buttons">
+        <ng-container *ngIf="page !== 1">
+          <button type="type" class="reg-button" (click)="back()">
+            <i class="far fa-arrow-left"></i>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="page !== elements.length">
+          <button type="type" class="reg-button right" (click)="next()">
+            <i class="far fa-arrow-right"></i>
+          </button>
+        </ng-container>
       </div>
-      <div class="h-group">
-        <div *ngIf="page !== 1">
-          <button type="type" class="auth-button" (click)="back()">
-            <div class="text">Return to step {{ page - 1 }}</div>
-            <div class="mask"></div>
-          </button>
-        </div>
-        <div *ngIf="page === 2">
-          <button type="type" class="auth-button" (click)="next()">
-            <div class="text">Continue to step 3</div>
-            <div class="mask"></div>
-          </button>
-        </div>
-        <div *ngIf="page === 3">
-          <button type="submit" class="auth-button" (click)="submit()">
-            <div class="text">Finish</div>
-            <div class="mask"></div>
-            <span *ngIf = "loading">
-              Loading
-              <i class="far fa-spinner fa-pulse"></i>
-            </span>
-          </button>
-        </div>
-      </div>
+      <clark-indicator [active]="page - 1" [elements]="elements" (shouldChange)="navigate($event)"></clark-indicator>
     </div>
     <div class="bottom-link" routerLink="../login">
       Already have an account? 

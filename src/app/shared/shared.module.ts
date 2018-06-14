@@ -20,6 +20,8 @@ import { FileBreadcrumbComponent } from './filesystem/file-breadcrumb/file-bread
 import { FileBrowserComponent } from './filesystem/file-browser/file-browser.component';
 import { FilePreviewComponent } from './filesystem/file-preview/file-preview.component';
 import { TooltipModule } from './tooltips/tip.module';
+import { IndicatorComponent } from './indicator/indicator.component';
+
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
  *
@@ -47,7 +49,8 @@ import { TooltipModule } from './tooltips/tip.module';
     FileListViewComponent,
     FileGridViewComponent,
     FileBreadcrumbComponent,
-    FilePreviewComponent
+    FilePreviewComponent,
+    IndicatorComponent
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -56,7 +59,8 @@ import { TooltipModule } from './tooltips/tip.module';
     FileListViewComponent,
     FileGridViewComponent,
     FileBreadcrumbComponent,
-    TooltipModule
+    TooltipModule,
+    IndicatorComponent
   ]
 })
 export class SharedModule {}
