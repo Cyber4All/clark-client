@@ -17,7 +17,6 @@ import { CubeCoreModule } from './core/cube-core.module';
 import { CubeSharedModule } from './shared/cube-shared.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from '../shared/shared.module';
-import { CheckBoxModule } from 'clark-checkbox';
 import { AuthModule } from '../auth/auth.module';
 
 // Components
@@ -69,7 +68,7 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     UserInformationComponent,
     UserEditInformationComponent,
     OrganizationListComponent,
-    UserCardComponent
+    UserCardComponent,
   ],
   imports: [
     // Angular imports
@@ -86,7 +85,6 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     CubeRoutingModule,
     SharedModule,
     HomeModule,
-    CheckBoxModule,
     ModalModule,
     NotificationModule,
     CollectionModule,

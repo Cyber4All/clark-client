@@ -16,7 +16,6 @@ export class SidebarComponent implements DoCheck, OnChanges, AfterViewChecked {
   _outcomes: LearningOutcome[] = [];
   @Input('outcomes')
   set outcomes(values: LearningOutcome[]) {
-    console.log(values);
     this._outcomes = values;
   }
   @Input() learningObjectName;

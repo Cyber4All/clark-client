@@ -18,7 +18,7 @@ import { SharedModule } from '../../../shared/shared.module';
     FormsModule,
     ParticlesModule,
     RouterModule,
-    CubeSharedModule,
+    CubeSharedModule
   ],
   exports: [],
   declarations: [

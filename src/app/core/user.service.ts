@@ -31,7 +31,6 @@ export class UserService {
           .toPromise()
           .then(
             val => {
-              console.log(val);
               return val.json() ? true : false;
             },
             error => {

@@ -14,39 +14,39 @@
         <i class="fa fa-times"></i>
       </div>
     </div>
-  </div>
-  <div class="faux-table">
-    <div class="row columns">
-      <div class="select">
-        <checkbox [checked]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></checkbox>
-      </div>
-      <div class="cells">
-        <div class="cell">Name</div>
-        <div class="cell">Type</div>
-        <div class="cell">Last Updated</div>
-      </div>
-      <div class="options placeholder">
-        <!-- this is a placeholder and should remain empty -->
-      </div>
     </div>
-    <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
-      <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock}" class="row">
-        <checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></checkbox>
+    <div class="faux-table">
+      <div class="row columns">
+        <div class="select">
+          <clark-checkbox [checked]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></clark-checkbox>
+        </div>
         <div class="cells">
-          <div class="cell">
-            <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>
-          </div>
-          <div class="cell">{{l.length | titlecase}}</div>
-          <div class="cell">{{l.date | date:'medium'}}</div>
+          <div class="cell">Name</div>
+          <div class="cell">Type</div>
+          <div class="cell">Last Updated</div>
         </div>
-        <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
-          <div class="circle"></div>
-          <div class="circle"></div>
-          <div class="circle"></div>
+        <div class="options placeholder">
+          <!-- this is a placeholder and should remain empty -->
+        </div>
+      </div>
+      <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
+        <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock}" class="row">
+          <clark-checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
+          <div class="cells">
+            <div class="cell">
+              <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>
+            </div>
+            <div class="cell">{{l.length | titlecase}}</div>
+            <div class="cell">{{l.date | date:'medium'}}</div>
+          </div>
+          <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </ng-container>
 <ng-container *ngIf="this.learningObjects.length === 0">
   <div class="banner no-lo">
