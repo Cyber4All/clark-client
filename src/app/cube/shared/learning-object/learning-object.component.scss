@@ -110,6 +110,17 @@
 
 }
 
+:host.card {
+
+    .image {
+        max-height: 120px;
+    }
+
+    .goals {
+        white-space: normal !important;
+    }
+}
+
 .learning-object {
     background: white;
     border-radius: 3px;
@@ -122,6 +133,8 @@
     outline: none;
     cursor: pointer;
     position: relative;
+    align-items: stretch;
+    justify-content: flex-start;
 
     @function gradient($color) {
         @return linear-gradient(45deg, $color, lighten($color, 10));
@@ -165,7 +178,6 @@
     .image {
         background: white;
         width: 140px;
-        max-height: 100px;
         flex: 0 0 1;
         position: relative;
         display: flex;
@@ -173,6 +185,7 @@
         justify-content: center;
         flex-grow: 0;
         flex-shrink: 0;
+        position: relative;
 
         ::ng-deep canvas {
             opacity: 0.4;
@@ -180,32 +193,46 @@
 
         .initials {
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
             background: rgba(0, 0, 0, 0.4);
             padding: 5px;
             z-index: 2;
         }
+
+        &:after {
+            content: '';
+            background: white;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0.05;
+            mask: $cube-pattern repeat;
+        }
     }
 
     .learning-object-content {
         padding: 10px;
+        min-width: 0;
 
         .title {
-            font-size: 18px;
+            font-size: 16px;
             color: black;
         }
 
         .details {
-            font-size: 14px;
+            font-size: 13px;
             color: lighten($dark-text, 10);
             margin-top: 5px;
         }
 
         .goals {
-            font-size: 14px;
+            font-size: 13px;
             color: lighten($dark-text, 10);
             margin-top: 5px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            min-width: 0;
+            overflow: hidden;
         }
         .author {
             text-transform: capitalize;

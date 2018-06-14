@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { ParticlesModule } from 'angular-particle';
 import { NotificationModule } from '../shared/notifications';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
@@ -34,7 +33,6 @@ import { FilePreviewComponent } from './filesystem/file-preview/file-preview.com
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    ParticlesModule,
     VirtualScrollModule,
     ClickOutsideModule,
     CheckBoxModule,

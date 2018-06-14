@@ -15,19 +15,69 @@
 .topbar {
   position: relative;
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   background: white;
   z-index: 3;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
   color: $blue-accent;
   box-sizing: border-box;
+  height: 65px;
+
+  .search-bar {
+    $color: lighten(desaturate($blue-accent, 30), 54);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    opacity: 1;
+    margin-right: 0px;
+    visibility: visible;
+    transition: all 0.1s ease;
+    background: $color;
+    border: 2px solid $color;
+
+    &.focused {
+      background: white;
+    }
+
+    form {
+      width: 100%;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 14px;
+      width: 100%;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: 1px solid transparent;
+      border-right-width: 0px;
+      outline: 0;
+      background: transparent;
+      border-color: transparent;
+      width: 100%;
+    }
+
+    .icon {
+      color: $blue-accent;
+      padding: 9px 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
 
   .inner {
-    max-width: 100%;
+    max-width: $max-width;
     box-sizing: border-box;
   }
 
   .logo {
+    cursor: pointer;
+
     & > div {
       display: inline-flex;
       flex-direction: column;
@@ -35,23 +85,26 @@
   
     }
 
+    .logo-image {
+      background: url('/assets/images/logo.png');
+      width: 40px;
+      background-size: contain;
+      background-repeat: no-repeat;
+
+      &:after {
+        content: '';
+        display: block;
+        padding-top: 100%;
+      }
+    }
+
     .left {
-      font-size: 25px;
+      font-size: 23px;
       font-weight: bold;
       padding-right: 15px;
       position: relative;
-
-      &:after {
-        width: 3px;
-        height: 35px;
-        content: '';
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        background: $blue-accent;
-        position: absolute;
-      }
+      margin-left: 10px;
+      margin-top: 4px;
     }
 
     .right {
@@ -64,26 +117,20 @@
     }
   }
 
+  // Global CLARK Style Overrides
   .user {
+    display: flex;
+    flex-direction: row;
     font-size: 16px;
     cursor: pointer;
 
     & > * {
       @include vert-center;
+      
+      &:not(:first-child) {
+        margin-left: 25px;
+      }
     }
-
-    .fa-user-circle {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin: auto 10px;
-    }
-  }
-
-  // Global CLARK Style Overrides
-  .user {
-    display: flex;
-    flex-direction: row;
 
     .left {
       display: flex;
@@ -151,49 +198,6 @@
       margin-right: 20px;
       opacity: 0;
       visibility: hidden;
-    }
-  }
-
-  .search-bar {
-    max-width: 350px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    opacity: 1;
-    margin-right: 0px;
-    visibility: visible;
-    transition: all 0.2s ease;
-
-    form {
-      width: 100%;
-    }
-
-    input {
-      padding: 8px 8px 8px 12px;
-      border-radius: 5px 0px 0px 5px;
-      font-size: 16px;
-      width: 100%;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      border: 1px solid transparent;
-      border-right-width: 0px;
-      outline: 0;
-      background: lighten(desaturate($blue-accent, 40), 56);
-
-      &:focus {
-        border-color: $blue-accent;
-      }
-    }
-
-    .icon {
-      color: white;
-      background: $blue-accent;
-      padding: 9px 12px;
-      font-size: 16px;
-      border-radius: 0px 5px 5px 0px;
-      cursor: pointer;
     }
   }
 
@@ -462,6 +466,17 @@
   -webkit-mask: url(../../../assets/books.svg) no-repeat 50% 50%;
   mask: url(../../../assets/books.svg) no-repeat 50% 50%;
   position: relative;
+}
+
+.shopping-cart-container .svg-inline--fa {
+  color: $blue-accent;
+  width: 25px;
+  height: 25px;
+}
+
+.contributor {
+  color: $blue-accent;
+  font-size: 15px;
 }
 
 .library-badge {

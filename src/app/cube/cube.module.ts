@@ -47,7 +47,7 @@ import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { AuthService } from '../core/auth.service';
 // TODO: is ng-click-outside being used?
 import { ClickOutsideModule } from 'ng-click-outside';
-import { ParticlesModule } from 'angular-particle';
+
 import { ModalModule } from '../shared/modals';
 import { TooltipModule } from '@cyber4all/clark-tooltip';
 import {
@@ -84,7 +84,6 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     CommonModule,
     // 3rd Party imports
     ClickOutsideModule,
-    ParticlesModule,
     VirtualScrollModule,
     // Local module imports
     StoreModule.forRoot({ cart: cartReducer }),

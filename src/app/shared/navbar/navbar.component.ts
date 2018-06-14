@@ -39,6 +39,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   responsiveThreshold = 750;
   windowWidth: number;
   version: any;
+  searchFocused = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -81,7 +82,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
     const matched = versionRegex.exec(appVersion);
     if (matched.length >= 1) {
-      this.version = matched[1];
+      // this.version = matched[1];
     }
   }
 
@@ -173,6 +174,44 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
         }
         if (val === 'preferences') {
           this.preferences();
+        }
+      });
+  }
+
+  /**
+   * Click events on the contributor section of the topbar, displays modal
+   * @param event
+   */
+  contributorDropdown(event): void {
+    this.modalCtrl
+      .makeContextMenu(
+        'ContributorContextMenu',
+        'dropdown',
+        [
+          new ModalListElement(
+            'Your dashboard',
+            'dashboard'
+          ),
+          // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
+          new ModalListElement(
+            'Create a Learning Object',
+            'create'
+          )
+        ],
+        true,
+        null,
+        new Position(
+          this.modalCtrl.offset(event.currentTarget).left -
+            (190 - event.currentTarget.offsetWidth),
+          this.modalCtrl.offset(event.currentTarget).top + 40
+        )
+      )
+      .subscribe(val => {
+        if (val === 'create') {
+          this.router.navigate(['onion', 'learning-object-builder']);
+        }
+        if (val === 'dashboard') {
+          this.router.navigate(['onion', 'dashboard']);
         }
       });
   }

@@ -28,7 +28,6 @@
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^4.1.1",
     "@types/uuid": "^3.4.3",
-    "angular-particle": "^1.0.4",
     "angular2-virtual-scroll": "^0.3.2",
     "clark-checkbox": "^1.0.7",
     "core-js": "^2.5.3",
