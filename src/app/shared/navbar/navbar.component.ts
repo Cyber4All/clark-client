@@ -1,5 +1,4 @@
 import { CartV2Service } from '../../core/cartv2.service';
-import { CartService } from '../../cube/core/services/cart.service';
 import {
   Component,
   OnInit,
@@ -19,7 +18,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NotificationModule } from '../notifications';
-import { CheckBoxModule } from 'clark-checkbox';
+
 import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
 import 'rxjs/add/operator/filter';

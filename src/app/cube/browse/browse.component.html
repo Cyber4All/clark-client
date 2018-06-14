@@ -25,7 +25,7 @@
         <div class="filter-title">Length</div>
         <ul>
             <li tip="{{tooltipText[i]}} " tipLocation="side" *ngFor="let length of loLength; let i = index;">
-              <checkbox [checked]="checkFilters('length', length)" (checkboxChecked)="addFilter('length', length)"  (checkboxUnchecked)="removeFilter('length', length)"></checkbox>
+              <clark-checkbox [checked]="checkFilters('length', length)" (checkboxChecked)="addFilter('length', length)"  (checkboxUnchecked)="removeFilter('length', length)"></clark-checkbox>
               {{ length }}
             </li>
         </ul>
@@ -34,7 +34,7 @@
         <div class="filter-title">Academic Level</div>
         <ul>
           <li *ngFor="let level of aLevel">
-            <checkbox [checked]="checkFilters('level', level)" (checkboxChecked)="addFilter('level', level)"  (checkboxUnchecked)="removeFilter('level', level)"></checkbox>
+            <clark-checkbox [checked]="checkFilters('level', level)" (checkboxChecked)="addFilter('level', level)"  (checkboxUnchecked)="removeFilter('level', level)"></clark-checkbox>
             {{ level }}
           </li>
         </ul>

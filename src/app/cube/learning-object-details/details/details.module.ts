@@ -9,7 +9,6 @@ import { CubeSharedModule } from '../../shared/cube-shared.module';
 import { OutcomesDetailViewComponent } from './outcomes-detail-view/outcomes-detail-view.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
-import { TooltipModule } from '@cyber4all/clark-tooltip';
 
 @NgModule({
   imports: [
@@ -17,8 +16,7 @@ import { TooltipModule } from '@cyber4all/clark-tooltip';
     SharedModule,
     FormsModule,
     RouterModule,
-    CubeSharedModule,
-    TooltipModule
+    CubeSharedModule
   ],
   exports: [],
   declarations: [

@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   };
   placeholderText: string;
 
-  constructor(private learningObjectService: LearningObjectService, private router: Router) { }
+  constructor(public learningObjectService: LearningObjectService, private router: Router) { }
 
   ngOnInit() {
     // document.querySelector('.search-bar input')['value'] = '';

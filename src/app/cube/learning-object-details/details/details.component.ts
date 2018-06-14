@@ -8,7 +8,6 @@ import {
   Router,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { CartService } from '../../core/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
 import { NgClass } from '@angular/common';
@@ -23,6 +22,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 export class DetailsComponent implements OnInit, OnDestroy {
   private sub: any;
   downloading = false;
+  addingToLibrary = false;
   author: string;
   learningObjectName: string;
   learningObject: LearningObject;
@@ -91,15 +91,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async addToCart(download?: boolean) {
-    this.downloading = true;
+    if (!download) {
+      // we don't want the add to library button spinner on the 'download' action
+      this.addingToLibrary = true;
+    }
     const val = await this.cartService.addToCart(
       this.author,
       this.learningObjectName
     );
     this.saved = this.cartService.has(this.learningObject);
+    this.addingToLibrary = false;
     if (download) {
       try {
-        await this.download(this.author, this.learningObjectName);
+        await this.download(this.learningObject);
       } catch (e) {
         console.log(e);
       }
@@ -114,9 +118,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async download(author: string, learningObjectName: string) {
+  async download(object: LearningObject) {
     try {
-      await this.cartService.downloadLearningObject(author, learningObjectName);
+      this.downloading = true;
+      await this.cartService.downloadLearningObject(object);
       this.downloading = false;
     } catch (e) {
       console.log(e);
