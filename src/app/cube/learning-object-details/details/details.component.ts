@@ -23,6 +23,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 export class DetailsComponent implements OnInit, OnDestroy {
   private sub: any;
   downloading = false;
+  addingToLibrary = false;
   author: string;
   learningObjectName: string;
   learningObject: LearningObject;
@@ -169,12 +170,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async addToCart(download?: boolean) {
-    this.downloading = true;
+    if (!download) {
+      // we don't want the add to library button spinner on the 'download' action
+      this.addingToLibrary = true;
+    }
     const val = await this.cartService.addToCart(
       this.author,
       this.learningObjectName
     );
     this.saved = this.cartService.has(this.learningObject);
+    this.addingToLibrary = false;
     if (download) {
       try {
         await this.download(this.author, this.learningObjectName);
@@ -194,6 +199,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async download(author: string, learningObjectName: string) {
     try {
+      this.downloading = true;
       await this.cartService.downloadLearningObject(author, learningObjectName);
       this.downloading = false;
     } catch (e) {
