@@ -1,56 +1,63 @@
-<ng-container *ngIf="learningObjects && learningObjects.length > 0">
-  <div class="top">
-    <div class="title vert-center">
-      Dashboard
+<div class="top">
+  <div class="title vert-center">
+    Dashboard
+  </div>
+  <div class="actions btn-group to-right">
+    <div class="add button good" (click)="newLearningObject()">New
+      <i class="far fa-plus"></i>
     </div>
-    <div class="actions btn-group to-right">
-      <div class="add button good" (click)="newLearningObject()">Add New
-        <i class="fas fa-plus"></i>
-      </div>
-      <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">Filter
-        <i class="fa fa-filter"></i>
-      </div>
-      <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected
-        <i class="fa fa-times"></i>
-      </div>
+    <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">Filter
+      <i class="fa fa-filter"></i>
     </div>
+    <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected
+      <i class="fa fa-times"></i>
     </div>
-    <div class="faux-table">
-      <div class="row columns">
-        <div class="select">
-          <clark-checkbox [checked]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></clark-checkbox>
-        </div>
-        <div class="cells">
-          <div class="cell">Name</div>
-          <div class="cell">Type</div>
-          <div class="cell">Last Updated</div>
-        </div>
-        <div class="options placeholder">
-          <!-- this is a placeholder and should remain empty -->
-        </div>
-      </div>
-      <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
-        <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock}" class="row">
-          <clark-checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
+  </div>
+</div>
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <ng-container *ngIf="learningObjects && learningObjects.length; else noObjects">
+      <div class="faux-table">
+        <div class="row columns">
+          <div class="select">
+            <clark-checkbox [checked]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></clark-checkbox>
+          </div>
           <div class="cells">
-            <div class="cell">
-              <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>
-            </div>
-            <div class="cell">{{l.length | titlecase}}</div>
-            <div class="cell">{{l.date | date:'medium'}}</div>
+            <div class="cell">Name</div>
+            <div class="cell">Type</div>
+            <div class="cell">Last Updated</div>
           </div>
-          <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
+          <div class="options placeholder">
+            <!-- this is a placeholder and should remain empty -->
+          </div>
+        </div>
+        <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
+          <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock}" class="row">
+            <clark-checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
+            <div class="cells">
+              <div class="cell">
+                <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>
+              </div>
+              <div class="cell">{{l.length | titlecase}}</div>
+              <div class="cell">{{l.date | date:'medium'}}</div>
+            </div>
+            <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+  </ng-container>
 </ng-container>
-<ng-container *ngIf="this.learningObjects.length === 0">
+<ng-template #loadingTemplate>
+  <div class="dashboard-loading">
+      <i class="far fa-spinner-third fa-spin"></i>
+  </div>
+</ng-template>
+<ng-template #noObjects>
   <div class="banner no-lo">
     <div class="text">You don't have any Learning Objects yet!</div>
     <div tip="{{ tips.LEARNING_OBJECT }}" tipDelay="500" tipLocation="bottom" (click)="newLearningObject()" class="button neutral bright">Create a Learning Object</div>
   </div>
-</ng-container>
+</ng-template>

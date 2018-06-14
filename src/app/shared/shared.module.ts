@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { ParticlesModule } from 'angular-particle';
 import { NotificationModule } from '../shared/notifications';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
@@ -32,7 +31,6 @@ import { TooltipModule } from './tooltips/tip.module';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    ParticlesModule,
     VirtualScrollModule,
     ClickOutsideModule,
     ModalModule,

@@ -11,17 +11,19 @@ import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
-import { SuggestionService } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
+import {
+  SuggestionService
+ } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
 
 
 @Component({
-  selector: 'app-browse',
+  selector: 'cube-browse',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss'],
   providers: [ SuggestionService ]
 })
 export class BrowseComponent implements OnInit, OnDestroy {
-  learningObjects: LearningObject[] = [];
+  learningObjects: LearningObject[] = Array(20).fill(new LearningObject);
 
   query: Query = {
     text: '',
@@ -39,7 +41,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     'a Learning Object over 10 hours in length',
     'a Learning Object 15 weeks in length'
   ];
-
+  loading = false;
   mappingsPopup = false;
 
   pageCount: number;
@@ -56,8 +58,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
   contextMenuSubscriptions: Subscription[] = [];
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, public mappingService: SuggestionService) {
-    this.learningObjects = [];
+    private router: Router, private modalService: ModalService, private mappingService: SuggestionService) {
+      this.learningObjects = Array(20).fill(new LearningObject);
   }
 
   ngOnInit() {
@@ -66,7 +68,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.sendFilters();
     }));
 
-    /* const searchInput = document.querySelector('.search-bar input');
+    const searchInput = document.querySelector('.search-bar input');
     if (searchInput) {
       this.filterInput = Observable
       .fromEvent(searchInput, 'input')
@@ -75,7 +77,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.filterInput.subscribe(val => {
         this.router.navigate(['/browse', { query: val }]);
       }));
-    } */
+    }
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       params.query ? this.query.text = params.query : this.query.text = '';
@@ -204,8 +206,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.query.level = this.filters['level'];
     }
 
-    
-
     this.fetchLearningObjects(this.query);
   }
 
@@ -233,7 +233,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
               const sort = val.split('-')[0];
               this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
               this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
-    
+
               this.fetchLearningObjects(this.query);
             }
             this.contextMenuSubscriptions.map(l => l.unsubscribe());
@@ -249,13 +249,16 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   async fetchLearningObjects(query: Query) {
+    this.loading = true;
+    this.learningObjects = Array(20).fill(new LearningObject);
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
       this.learningObjects = await this.learningObjectService.getLearningObjects(query);
       this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
+      this.loading = false;
     } catch (e) {
-      
+      console.log(`Error: ${e}`);
     }
   }
 

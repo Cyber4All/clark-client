@@ -19,7 +19,7 @@ import { LearningObjectResolve } from './learning-object-builder/learning-object
 const onion_routes: Routes = [
   {
     path: '', component: OnionComponent, children: [
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], resolve: { learningObjects: DashboardResolver }, },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard] },
       { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard], resolve: {
         learningObject: LearningObjectResolve

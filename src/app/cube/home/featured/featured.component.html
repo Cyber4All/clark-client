@@ -7,7 +7,7 @@
 </div>
 
 <div class="card-container">
-  <learning-object-component *ngFor="let l of learningObjects" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l"
-    learningObjectCard>
-  </learning-object-component>
+    <learning-object-component *ngFor="let l of learningObjects" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l"
+      learningObjectCard [loading]="loading">
+    </learning-object-component>
 </div>

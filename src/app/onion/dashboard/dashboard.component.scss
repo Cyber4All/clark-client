@@ -42,3 +42,25 @@
 .builder-link {
   color: #333;
 }
+
+.dashboard-loading {
+  margin-top: 40px;
+  text-align: center;
+
+  .svg-inline--fa {
+    color: $blue-accent;
+    font-size: 30px;
+  }
+}
+
+.no-lo {
+  margin-top: 40px;
+}
+
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  } 100% {
+    transform: rotate(720deg);
+  }
+}
