@@ -1,4 +1,3 @@
-import { ClickOutsideModule } from 'ng-click-outside';
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { SortType, OrderBy } from './../../shared/interfaces/query';
 import { ModalService, ModalListElement, Position} from '../../shared/modals';
@@ -72,7 +71,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     if (searchInput) {
       this.filterInput = Observable
       .fromEvent(searchInput, 'input')
-      .map(x => x['currentTarget'].value).debounceTime(650);
+      .map(x => (<HTMLInputElement>x['currentTarget']).value).debounceTime(650);
 
       this.subscriptions.push(this.filterInput.subscribe(val => {
         this.router.navigate(['/browse', { query: val }]);
