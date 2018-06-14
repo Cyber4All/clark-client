@@ -1,5 +1,5 @@
 <div class="title">Edit Profile</div>
-<form (ngSubmit)="submit()">
+<form>
     <div class="h-group">
         <div class="input firstname" [ngClass]="{'active': editInfo.firstname !== ''}">
           <input name="firstname" type="text" placeholder="First name" [(ngModel)]="editInfo.firstname" />

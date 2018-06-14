@@ -9,7 +9,7 @@ import { CartV2Service } from './cartv2.service';
 import { OutcomeService } from './outcome.service';
 import { CookieModule } from 'ngx-cookie';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { CheckBoxModule } from 'clark-checkbox';
+
 import { NotificationModule } from '../shared/notifications';
 import { ModalModule } from '../shared/modals';
 import { UserService } from './user.service';

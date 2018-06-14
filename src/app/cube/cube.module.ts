@@ -10,19 +10,13 @@ import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
-import { CartService } from './core/services/cart.service';
 import { CartV2Service } from '../core/cartv2.service';
-
-// Redux
-import { StoreModule } from '@ngrx/store';
-import { cartReducer } from './core/redux/reducers/cart.reducer';
 
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
 import { CubeSharedModule } from './shared/cube-shared.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from '../shared/shared.module';
-import { CheckBoxModule } from 'clark-checkbox';
 import { AuthModule } from '../auth/auth.module';
 
 // Components
@@ -49,7 +43,6 @@ import { AuthService } from '../core/auth.service';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ParticlesModule } from 'angular-particle';
 import { ModalModule } from '../shared/modals';
-import { TooltipModule } from '@cyber4all/clark-tooltip';
 import {
   NotificationComponent,
   NotificationModule
@@ -75,7 +68,7 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     UserInformationComponent,
     UserEditInformationComponent,
     OrganizationListComponent,
-    UserCardComponent
+    UserCardComponent,
   ],
   imports: [
     // Angular imports
@@ -87,19 +80,16 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     ParticlesModule,
     VirtualScrollModule,
     // Local module imports
-    StoreModule.forRoot({ cart: cartReducer }),
     CubeCoreModule,
     CubeSharedModule,
     CubeRoutingModule,
     SharedModule,
     HomeModule,
-    CheckBoxModule,
     ModalModule,
     NotificationModule,
     CollectionModule,
-    TooltipModule,
-    DetailsModule, 
+    DetailsModule,
   ],
-  providers: [LearningObjectService, CartService, UserProfileLearningObjectsResolver]
+  providers: [LearningObjectService, UserProfileLearningObjectsResolver]
 })
 export class CubeModule {}

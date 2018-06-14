@@ -34,7 +34,7 @@
           </div>
           <div class="mapping-content">
               <div class="mapping-text">{{ outcomeText(m.outcome, 80) }}</div>
-              <checkbox [checked]="checkOutcomes(m)" (checkboxChecked)="addOutcome(m)" (checkboxUnchecked)="removeOutcome(m)"></checkbox>
+              <clark-checkbox [checked]="checkOutcomes(m)" (checkboxChecked)="addOutcome(m)" (checkboxUnchecked)="removeOutcome(m)"></clark-checkbox>
           </div>
         </div>
       </virtual-scroll>

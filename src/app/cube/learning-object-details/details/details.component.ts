@@ -8,7 +8,6 @@ import {
   Router,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { CartService } from '../../core/services/cart.service';
 import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
 import { NgClass } from '@angular/common';
@@ -169,6 +168,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async addToCart(download?: boolean) {
+    this.downloading = true;
     const val = await this.cartService.addToCart(
       this.author,
       this.learningObjectName
@@ -193,7 +193,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async download(author: string, learningObjectName: string) {
     try {
-      this.downloading = true;
       await this.cartService.downloadLearningObject(author, learningObjectName);
       this.downloading = false;
     } catch (e) {
