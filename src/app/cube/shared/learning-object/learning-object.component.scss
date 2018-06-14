@@ -80,18 +80,16 @@
         visibility: hidden;
     }
 
-    &:not(.card) {
-        .image {
-            height: 100px !important;
-        }
-    }
-
     .learning-object-content {
+        width: 100%;
+
         & > * {
             color: transparent !important;
             background: $color !important;
             margin-bottom: 20px;
             height: 15px;
+            max-width: 500px;
+            width: 100% !important;
         }
     }  
 
