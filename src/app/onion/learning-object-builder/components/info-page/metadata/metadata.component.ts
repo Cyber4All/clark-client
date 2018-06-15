@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@ang
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AcademicLevel, User, LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
-import { TextQuery } from '../../../../../shared/interfaces/query';
 import { UserService } from '../../../../../core/user.service';
 import { runInThisContext } from 'vm';
 import { Subscription, Observable } from 'rxjs';
