@@ -1,0 +1,225 @@
+$dark-text: #111111;
+$light-text: #FFFFFF;
+$green: #389857;
+$black: #000000;
+$red: #cf4739;
+$blue: #3b608b;
+$light: #FEFEFE;
+:host {
+  position: fixed;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 1;
+  display: block;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: left;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal; //overflow-wrap: break-word;
+  word-spacing: normal;
+  word-wrap: break-word;
+  white-space: normal;
+  line-break: auto;
+  opacity: 0.95;
+  animation: fadein 0.6s;
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.9;
+    }
+  }
+  &.dark {
+    .tooltip-inner {
+      color: $light-text;
+      background-color: $black;
+    }
+    &.top .tooltip-arrow {
+      border-top-color: $black;
+    }
+    &.right .tooltip-arrow {
+      border-right-color: $black;
+    }
+    &.left .tooltip-arrow {
+      border-left-color: $black;
+    }
+    &.bottom .tooltip-arrow {
+      border-bottom-color: $black;
+    }
+  }
+  &.light {
+    .tooltip-inner {
+      color: $dark-text;
+      background-color: $light;
+      background: linear-gradient(-90deg, darken($light, 2), $light);
+    }
+    &.top .tooltip-arrow {
+      border-top-color: $light;
+    }
+    &.right .tooltip-arrow {
+      border-right-color: $light;
+    }
+    &.left .tooltip-arrow {
+      border-left-color: $light;
+    }
+    &.bottom .tooltip-arrow {
+      border-bottom-color: $light;
+    }
+  }
+  &.good {
+    .tooltip-inner {
+      color: $light-text;
+      background-color: $green;
+    }
+    &.top .tooltip-arrow {
+      border-top-color: $green;
+    }
+    &.right .tooltip-arrow {
+      border-right-color: $green;
+    }
+    &.left .tooltip-arrow {
+      border-left-color: $green;
+    }
+    &.bottom .tooltip-arrow {
+      border-bottom-color: $green;
+    }
+  }
+  &.bad {
+    .tooltip-inner {
+      color: $light-text;
+      background-color: $red;
+    }
+    &.top .tooltip-arrow {
+      border-top-color: $red;
+    }
+    &.right .tooltip-arrow {
+      border-right-color: $red;
+    }
+    &.left .tooltip-arrow {
+      border-left-color: $red;
+    }
+    &.bottom .tooltip-arrow {
+      border-bottom-color: $red;
+    }
+  }
+  &.neutral {
+    .tooltip-inner {
+      color: $light-text;
+      background-color: $blue;
+    }
+    &.top .tooltip-arrow {
+      border-top-color: $blue;
+    }
+    &.right .tooltip-arrow {
+      border-right-color: $blue;
+    }
+    &.left .tooltip-arrow {
+      border-left-color: $blue;
+    }
+    &.bottom .tooltip-arrow {
+      border-bottom-color: $blue;
+    }
+  }
+  .tooltip-inner {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+    max-width: 250px;
+    padding: 8px;
+    text-align: center;
+    border-radius: 4px; // .tooltip-title {
+    //     padding-bottom: 1px;
+    //     margin-bottom:1px;
+    //     border-bottom: 1px solid rgba(0, 0, 0, .2);
+    // }
+  }
+  .tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    opacity: 0.95;
+  }
+  &.top {
+    padding: 5px 0;
+    margin-top: -3px;
+    .tooltip-inner {
+      box-shadow: 0 -1px 3px rgba(0, 0, 0, .2);
+    }
+  }
+  &.right {
+    padding: 0 5px;
+    margin-left: 3px;
+  }
+  &.bottom {
+    padding: 5px 0;
+    margin-top: 3px;
+  }
+  &.left {
+    padding: 0 5px;
+    margin-left: -3px;
+  }
+  &.top .tooltip-arrow {
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+  }
+  &.right .tooltip-arrow {
+    top: 50%;
+    left: 0;
+    margin-top: -5px;
+    border-width: 5px 5px 5px 0;
+  }
+  &.left .tooltip-arrow {
+    top: 50%;
+    right: 0;
+    margin-top: -5px;
+    border-width: 5px 0 5px 5px;
+  }
+  &.bottom .tooltip-arrow {
+    top: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 0 5px 5px;
+  }
+}
+
+//UNUSED BOOTSTRAP CODE
+// .tooltip.bottom-left .tooltip-arrow {
+//     top: 0;
+//     right: 5px;
+//     margin-top: -5px;
+//     border-width: 0 5px 5px;
+//     border-bottom-color: #000;
+// }
+// .tooltip.bottom-right .tooltip-arrow {
+//     top: 0;
+//     left: 5px;
+//     margin-top: -5px;
+//     border-width: 0 5px 5px;
+//     border-bottom-color: #000;
+// }
+// .tooltip.top-left .tooltip-arrow {
+//     right: 5px;
+//     bottom: 0;
+//     margin-bottom: -5px;
+//     border-width: 5px 5px 0;
+//     border-top-color: #000;
+// }
+// .tooltip.top-right .tooltip-arrow {
+//     bottom: 0;
+//     left: 5px;
+//     margin-bottom: -5px;
+//     border-width: 5px 5px 0;
+//     border-top-color: #000;
+// }

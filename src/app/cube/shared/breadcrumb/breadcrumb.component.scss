@@ -1,0 +1,11 @@
+@import '~_vars.scss';
+
+.breadcrumb {
+    max-width: $max-width;
+    width: 100ﬁ;
+    margin: auto;
+
+    li:first-child a {
+        padding-left: 0px;
+    }
+}

@@ -66,7 +66,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   constructor(
     private modalService: ModalService,
     private outcomeService: OutcomeService,
-    private mappingService: SuggestionService,
+    public mappingService: SuggestionService,
     private cd: ChangeDetectorRef,
   ) { }
 

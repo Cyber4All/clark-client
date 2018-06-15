@@ -9,7 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { Router, NavigationEnd, RouterEvent } from '@angular/router';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { map } from 'rxjs/operator/map';
-import * as io from 'socket.io-client';
+// import * as io from 'socket.io';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
@@ -223,7 +223,7 @@ export class AuthService {
   }
 
   establishSocket() {
-    if (!this.socketWatcher) {
+    /* if (!this.socketWatcher) {
       this.socketWatcher = new Observable(observer => {
         this.socket = io(environment.apiURL + '?user=' + this.username);
 
@@ -240,9 +240,11 @@ export class AuthService {
             });
           }
         });
-      });
+      }); 
     }
     return this.socketWatcher;
+    */
+   return new Observable();
   }
 
   destroySocket() {
