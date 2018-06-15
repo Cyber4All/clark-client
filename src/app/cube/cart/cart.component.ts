@@ -67,14 +67,14 @@ export class CartComponent implements OnInit {
     } catch (e) {}
   }
 
-  async downloadObject(event, object) {
+  downloadObject(event, object) {
     event.stopPropagation();
 
     try {
       const author = object._author._username;
       const learningObjectName = object._name;
       this.downloading = true;
-      await this.cartService.downloadLearningObject(author, learningObjectName);
+      this.cartService.downloadLearningObject(author, learningObjectName);
       this.downloading = false;
     } catch (e) {
       console.log(e);

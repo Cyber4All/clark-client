@@ -31,7 +31,9 @@ export class CartV2Service {
   }
 
   getCart(reloadUser = false): Promise<LearningObject[]> {
-    if (!this.user) return Promise.reject('User is undefined');
+    if (!this.user) {
+      return Promise.reject('User is undefined');
+    }
 
     return this.http
       .get(USER_ROUTES.GET_CART(this.user.username), {
@@ -52,7 +54,9 @@ export class CartV2Service {
     learningObjectName: string,
     download?: boolean
   ): Promise<LearningObject[]> {
-    if (!this.user) return Promise.reject('User is undefined');
+    if (!this.user) {
+      return Promise.reject('User is undefined');
+    }
     return this.http
       .post(
         USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
@@ -77,7 +81,9 @@ export class CartV2Service {
     learningObjectName: string
   ): Promise<LearningObject[]> {
     // tslint:disable-next-line:max-line-length
-    if (!this.user) return Promise.reject('User is undefined');
+    if (!this.user) {
+      return Promise.reject('User is undefined');
+    }
     return this.http
       .delete(
         USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
@@ -130,27 +136,18 @@ export class CartV2Service {
       );
   }
 
-  downloadLearningObject(author: string, learningObjectName: string) {
-    return this.http
-      .post(
-        USER_ROUTES.DOWNLOAD_OBJECT(
-          this.user.username,
-          author,
-          learningObjectName
-        ),
-        {},
-        {
-          headers: this.headers,
-          responseType: ResponseContentType.Blob,
-          withCredentials: true
-        }
-      )
-      .toPromise()
-      .then(data => {
-        importedSaveAs(data.blob(), `${Date.now()}.zip`);
-      }).catch(error => {
-        console.error(error);
-      });
+  downloadLearningObject(author: string, learningObjectName: string): void {
+    const url = USER_ROUTES.DOWNLOAD_OBJECT(
+      this.user.username,
+      author,
+      learningObjectName
+    );
+    const link = document.createElement('a');
+    const linkID = 'learning-object-download';
+    link.id = linkID;
+    link.href = url;
+    document.body.appendChild(link);
+    document.getElementById(linkID).click();
   }
 
   has(object: LearningObject): boolean {

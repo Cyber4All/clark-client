@@ -197,10 +197,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async download(author: string, learningObjectName: string) {
+  download(author: string, learningObjectName: string) {
     try {
       this.downloading = true;
-      await this.cartService.downloadLearningObject(author, learningObjectName);
+      this.cartService.downloadLearningObject(author, learningObjectName);
       this.downloading = false;
     } catch (e) {
       console.log(e);
