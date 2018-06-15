@@ -39,7 +39,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   academicLevels = Object.values(AcademicLevel);
 
   constructor(
-    private errorStore: LearningObjectErrorStoreService,
+    public errorStore: LearningObjectErrorStoreService,
     private userService: UserService
   ) { }
 
