@@ -1,4 +1,4 @@
-import { CartV2Service } from '../../../core/cartv2.service';
+import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ModalService } from '../../../shared/modals';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -36,6 +36,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   saved = false;
 
   canDownload = true;
+  iframeParent = iframeParentID;
 
   public tips = TOOLTIP_TEXT;
 

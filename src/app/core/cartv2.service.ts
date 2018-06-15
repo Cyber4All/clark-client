@@ -1,11 +1,11 @@
 import { USER_ROUTES } from '@env/route';
-import { Injectable, OnInit } from '@angular/core';
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { Injectable } from '@angular/core';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
-import { isArray } from 'util';
 
+export const iframeParentID = 'learning-object-download';
 @Injectable()
 export class CartV2Service {
   private user;
@@ -142,12 +142,10 @@ export class CartV2Service {
       author,
       learningObjectName
     );
-    const link = document.createElement('a');
-    const linkID = 'learning-object-download';
-    link.id = linkID;
-    link.href = url;
-    document.body.appendChild(link);
-    document.getElementById(linkID).click();
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
+    document.getElementById(iframeParentID).appendChild(iframe);
   }
 
   has(object: LearningObject): boolean {

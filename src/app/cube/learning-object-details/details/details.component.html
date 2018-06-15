@@ -34,7 +34,9 @@
         </div>
         <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
           {{ saved ? 'Saved to your library!' : 'Add to Library' }}
-          <span *ngIf="addingToLibrary"><i class="fal fa-spinner-third fa-spin"></i></span>
+          <span *ngIf="addingToLibrary">
+            <i class="fal fa-spinner-third fa-spin"></i>
+          </span>
         </div>
         <ng-container *ngIf="!auth.user">
           <div class="login-msg">Please
@@ -43,4 +45,5 @@
       </div>
     </div>
   </div>
+  <div [id]="iframeParent"></div>
 </div>

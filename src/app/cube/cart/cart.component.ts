@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { CartV2Service } from '../../core/cartv2.service';
+import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
@@ -16,6 +16,7 @@ export class CartComponent implements OnInit {
   cartItems: LearningObject[] = [];
   canDownload = true;
   downloading = false;
+  iframeParent = iframeParentID;
 
   constructor(
     public cartService: CartV2Service,
@@ -26,7 +27,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.loadCart();
-    // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
       // this.checkWhitelist();
     } else {
@@ -85,7 +86,7 @@ export class CartComponent implements OnInit {
     this.router.navigate(['/details/', object._author._username, object._name]);
   }
 
-  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
   private async checkWhitelist() {
     try {
       const response = await fetch(environment.whiteListURL);
