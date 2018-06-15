@@ -5,6 +5,7 @@ import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { UserService } from '../../../../../core/user.service';
 import { runInThisContext } from 'vm';
 import { Subscription, Observable } from 'rxjs';
+import { Query } from '../../../../../shared/interfaces/query';
 
 // TODO: Apply .bad to input if the form is submitted and it's not valid
 
@@ -25,7 +26,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   connected = false;
   connection;
 
-  query: TextQuery = {
+  query: Query= {
     text: '',
     currPage: 1,
     limit: 30
