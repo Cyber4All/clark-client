@@ -36,7 +36,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.learningObjects = this.route.snapshot.data['learningObjects'];
-    console.log(this.route.snapshot.data['learningObjects']);
   }
   /**
    * Fetches and sets LearningObject[]

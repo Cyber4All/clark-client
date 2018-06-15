@@ -21,10 +21,8 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   userSearchInput: ElementRef;
 
   users;
-  arrayOfKeys = [];
-  tempArrayOfKeys = [];
+  arrayOfUsers = [];
   selectedAuthors = [];
-  user: User;
   connected = false;
   connection;
 
@@ -52,7 +50,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     .subscribe(val => {
       this.search();
     });
-      if (this.learningObject.contributors.length !== 0) {
+      if (this.learningObject.contributors) {
         this.selectedAuthors = this.learningObject.contributors;
       }
   }
@@ -69,30 +67,25 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   search() {
     this.query.text = this.query.text.trim();
       this.userService.searchUsers(this.query.text).then(val => {
-        this.users = JSON.parse(val);
-        this.tempArrayOfKeys = Object.keys(this.users);
          // Limit search results to 10
-         if (this.tempArrayOfKeys.length <= 10) {
-          this.arrayOfKeys = this.tempArrayOfKeys;
+         if (val.length <= 10) {
+          this.arrayOfUsers = val;
          } else {
             for (let i = 0; i < 10; i++) {
-              this.arrayOfKeys[i] = this.tempArrayOfKeys[i];
+              this.arrayOfUsers[i] = val[i];
             }
           }
           // If query is empty, remove previous results
           if (this.query.text === '') {
-            this.arrayOfKeys = [];
-            this.tempArrayOfKeys = [];
+            this.arrayOfUsers = [];
           }
       });
   }
 
   addAuthor(index) {
     if (this.isAuthorSelected) {
-      // this.selectedAuthors.push(this.users[index]._username);
-      this.selectedAuthors.push(this.users[index]._username);
+      this.selectedAuthors.push(this.arrayOfUsers[index].username);
       this.learningObject.contributors = this.selectedAuthors;
-      console.log(this.learningObject.contributors);
     }
   }
 
@@ -102,7 +95,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   }
 
   isAuthorSelected(index) {
-    if (this.selectedAuthors.indexOf(this.users[index]._username) === -1) {
+    if (this.selectedAuthors.indexOf(this.arrayOfUsers[index].username) === -1) {
       return true;
     }
     return false;

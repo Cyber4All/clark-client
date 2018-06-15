@@ -5,8 +5,6 @@ import { AuthService } from 'app/core/auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
-import { environment } from '@env/environment';
-import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -51,18 +49,15 @@ export class UserService {
   searchUsers(query: {}) {
     return this.http
       .get(
-        environment.apiURL + '/users/search?text=' + query,
+        USER_ROUTES.SEARCH_USERS(query),
         {
           withCredentials: true
         }
       )
       .toPromise()
       .then(val => {
-        // val contains a list of users
-        const json = JSON.parse(val['_body']);
-        console.log(val['_body']);
-        console.log(val);
-        return val['_body'];
+        const arr = val.json();
+        return arr.map(member => User.instantiate(member));
       });
   }
 
