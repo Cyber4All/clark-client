@@ -14,7 +14,7 @@ import { AuthService } from '../../core/auth.service';
 })
 export class CartComponent implements OnInit {
   cartItems: LearningObject[] = [];
-  canDownload = true;
+  canDownload = false;
   downloading = false;
 
   constructor(
@@ -26,9 +26,9 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.loadCart();
-    // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
-      // this.checkWhitelist();
+      this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
@@ -85,7 +85,7 @@ export class CartComponent implements OnInit {
     this.router.navigate(['/details/', object._author._username, object._name]);
   }
 
-  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
   private async checkWhitelist() {
     try {
       const response = await fetch(environment.whiteListURL);
