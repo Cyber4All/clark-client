@@ -97,6 +97,21 @@ export class RegisterComponent implements OnInit {
   inUseEmail = false;
   inUseUsername = false;
 
+  tipText = [
+    {
+      left: 'Tell us about yourself',
+      right: 'Create your profile'
+    },
+    {
+      left: 'Tell us about yourself',
+      right: 'Preview your profile'
+    },
+    {
+      left: 'Create your profile',
+      right: 'Register!'
+    },
+  ];
+
   elements = ['Personal Information', 'User Information', 'Preview'];
 
   @HostListener('window:keyup', ['$event'])
@@ -151,7 +166,7 @@ export class RegisterComponent implements OnInit {
     );
 
     this.auth.register(u).subscribe(
-      val => {
+      () => {
         if (this.redirectRoute) {
           window.location.href = window.location.origin + this.redirectRoute;
         } else {

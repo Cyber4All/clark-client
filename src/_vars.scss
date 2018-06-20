@@ -1,7 +1,8 @@
 // variables
 $max-width: 1400px;
-$bright-blue: #3789ce;
+// $bright-blue: #3789ce;
 $blue-accent: #3b608b;
+$bright-blue: saturate(lighten($blue-accent, 20), 40);
 $dark-blue: darken($blue-accent, 20);
 $green: #389857;
 $dark-text: #55595e;

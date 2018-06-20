@@ -2,8 +2,8 @@
   <div class="content-box" [ngClass]="{'failed': registerFailure }">
     <div class="top">
       <div class="error"> {{ registerFailure || '' }} </div>
-      <div class="title">C.L.A.R.K.</div>
-      <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
+      <div class="auth-title">C.L.A.R.K.</div>
+      <div class="auth-title light">Cybersecurity Labs and Resource Knowledge-base</div>
       <form [formGroup]="regForm" [@slideInRight]="slide" [@fallFromTop]="fall">
         <div *ngIf="this.page === 1">
           <clark-personal-info [group]="regForm"></clark-personal-info>
@@ -12,21 +12,29 @@
           <clark-profile-info [group]="regForm"></clark-profile-info>
         </div>
         <div *ngIf="this.page === 3">
-          <clark-gravatar-info [group]="regForm" [email]="this.regForm.controls['email'].value"></clark-gravatar-info>
-          <div ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
+          <clark-gravatar-info [group]="regForm"></clark-gravatar-info>
+          <div class="recaptcha" ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha">
+
+          </div>
         </div>
       </form>
       <div class="buttons">
         <ng-container *ngIf="page !== 1">
-          <button type="type" class="reg-button" (click)="back()">
+          <button type="type" class="reg-button" tip="{{tipText[page - 1].left}}" tipLocation="above" (click)="back()">
             <i class="far fa-arrow-left"></i>
           </button>
         </ng-container>
-        <ng-container *ngIf="page !== elements.length">
-          <button type="type" class="reg-button right" (click)="next()">
+        <ng-container *ngIf="page !== elements.length; else submitTemplate">
+          <button type="type" class="reg-button right" tip="{{tipText[page - 1].right}}" tipLocation="above" (click)="next()">
             <i class="far fa-arrow-right"></i>
           </button>
         </ng-container>
+        <ng-template #submitTemplate>
+          <button type="submit" class="reg-button right submit" tip="{{tipText[page - 1].right}}" tipLocation="above" (click)="submit()">
+            <span *ngIf="!loading; else loadingIcon"><i class="far fa-check"></i></span>
+            <ng-template #loadingIcon><i class="far fa-spinner-third fa-spin"></i></ng-template>
+          </button>
+        </ng-template>
       </div>
       <clark-indicator [active]="page - 1" [elements]="elements" (shouldChange)="navigate($event)"></clark-indicator>
     </div>

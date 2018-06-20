@@ -21,6 +21,9 @@ import { FileBrowserComponent } from './filesystem/file-browser/file-browser.com
 import { FilePreviewComponent } from './filesystem/file-preview/file-preview.component';
 import { TooltipModule } from './tooltips/tip.module';
 import { IndicatorComponent } from './indicator/indicator.component';
+import { LearningObjectListingComponent } from '../shared/learning-object/learning-object.component';
+import { UserCardComponent } from '../shared/user-card/user-card.component';
+import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -50,7 +53,10 @@ import { IndicatorComponent } from './indicator/indicator.component';
     FileGridViewComponent,
     FileBreadcrumbComponent,
     FilePreviewComponent,
-    IndicatorComponent
+    IndicatorComponent,
+    LearningObjectListingComponent,
+    UserCardComponent,
+    LearningObjectCardDirective
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -60,7 +66,10 @@ import { IndicatorComponent } from './indicator/indicator.component';
     FileGridViewComponent,
     FileBreadcrumbComponent,
     TooltipModule,
-    IndicatorComponent
+    IndicatorComponent,
+    LearningObjectListingComponent,
+    UserCardComponent,
+    LearningObjectCardDirective
   ]
 })
 export class SharedModule {}

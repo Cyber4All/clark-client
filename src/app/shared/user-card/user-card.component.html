@@ -1,0 +1,30 @@
+<a *ngIf="link" [routerLink]="['/users', user.username]">
+  <ng-container *ngTemplateOutlet="cardContent"></ng-container>
+</a>
+<ng-container *ngIf="!link">
+  <ng-container *ngTemplateOutlet="cardContent"></ng-container>
+</ng-container>
+
+<ng-template #cardContent>
+  <div class="user-card">
+    <div class="image">
+      <img [src]="icon" class="img">
+      <span *ngIf="gravatarInfo" tip="What is this?" tipLocation="above" (click)="showGravatarModal($event)"><i class="fas fa-info-circle"></i></span>
+    </div>
+    <div class="user-content">
+      <div class="title">{{user.name}}</div>
+      <div class="details">
+        <div class="username">
+          Username: {{ user.username }}
+        </div>
+        <div class="email">
+          Email: {{user.email}}
+        </div>
+        <div *ngIf = "objects" class="learning-objects">
+          Number of Learning Objects: {{objects.length}}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
