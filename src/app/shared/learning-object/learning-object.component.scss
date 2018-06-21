@@ -95,10 +95,11 @@
     }  
 
     .learning-object {
+        overflow: hidden;
 
         &:after {
             content: '';
-            background: linear-gradient(90deg, transparent, white, transparent);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
             position: absolute;
             top: 0;
             bottom: 0;
