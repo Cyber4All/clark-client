@@ -121,12 +121,10 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
       }
     }
 
-    // I guess the pizza wasn't aggressive.
     return true;
   }
 
   checkPasswordsIdentical(verifiedValue): boolean {
-    console.log(verifiedValue === this.group.value.password);
     return verifiedValue === this.group.value.password;
   }
 
