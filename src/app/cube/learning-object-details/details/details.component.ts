@@ -1,4 +1,4 @@
-import { CartV2Service } from '../../../core/cartv2.service';
+import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ModalService } from '../../../shared/modals';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -33,6 +33,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   contributorsList = [];
 
   canDownload = true;
+  iframeParent = iframeParentID;
 
   public tips = TOOLTIP_TEXT;
 
@@ -111,7 +112,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
     if (download) {
       try {
-        await this.download(this.learningObject);
+        await this.download(
+          this.learningObject.author.name,
+          this.learningObject.name
+        );
       } catch (e) {
         console.log(e);
       }
@@ -126,10 +130,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async download(object: LearningObject) {
+  download(author: string, learningObjectName: string) {
     try {
       this.downloading = true;
-      await this.cartService.downloadLearningObject(object);
+      this.cartService.downloadLearningObject(author, learningObjectName);
       this.downloading = false;
     } catch (e) {
       console.log(e);
