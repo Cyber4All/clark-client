@@ -6,6 +6,7 @@ import { LearningObjectService } from '../learning-object.service';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '@env/environment';
 import { AuthService } from '../../core/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cube-cart',
@@ -13,9 +14,10 @@ import { AuthService } from '../../core/auth.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
   cartItems: LearningObject[] = [];
   canDownload = true;
-  downloading = false;
+  downloading = [];
   iframeParent = iframeParentID;
 
   constructor(
@@ -43,16 +45,9 @@ export class CartComponent implements OnInit {
     }
   }
 
-  async download() {
-    this.cartService.checkout();
-  }
-
-  saveBundle() {}
-
   async clearCart() {
     if (await this.cartService.clearCart()) {
       this.cartItems = [];
-    } else {
     }
   }
 
@@ -65,22 +60,25 @@ export class CartComponent implements OnInit {
         author,
         learningObjectName
       );
-    } catch (e) {}
-  }
-
-  downloadObject(event, object: LearningObject) {
-    event.stopPropagation();
-
-    try {
-      this.downloading = true;
-      this.cartService.downloadLearningObject(
-        object.author.username,
-        object.name
-      );
-      this.downloading = false;
     } catch (e) {
       console.log(e);
     }
+  }
+
+  downloadObject(event, object: LearningObject, index: number) {
+    event.stopPropagation();
+    this.downloading[index] = true;
+    const loaded = this.cartService.downloadLearningObject(
+      object.author.username,
+      object.name
+    );
+    this.subscriptions.push(
+      loaded.subscribe(finished => {
+        if (finished) {
+          this.downloading[index] = false;
+        }
+      })
+    );
   }
 
   goToItem(object) {

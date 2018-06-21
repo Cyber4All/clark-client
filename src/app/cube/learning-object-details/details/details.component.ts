@@ -14,6 +14,7 @@ import { NgClass } from '@angular/common';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { UserService } from '../../../core/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -21,7 +22,7 @@ import { UserService } from '../../../core/user.service';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit, OnDestroy {
-  private sub: any;
+  private subscriptions: Subscription[] = [];
   downloading = false;
   addingToLibrary = false;
   author: string;
@@ -47,10 +48,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.author = params['username'];
-      this.learningObjectName = params['learningObjectName'];
-    });
+    this.subscriptions.push(
+      this.route.params.subscribe(params => {
+        this.author = params['username'];
+        this.learningObjectName = params['learningObjectName'];
+      })
+    );
     this.fetchLearningObject();
 
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
@@ -89,7 +92,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.learningObjectName
       );
       if (this.learningObject.contributors) {
-        // The array of contributors attached to the learnining object contains a
+        // The array of contributors attached to the learning object contains a
         // list of usernames. We want to display their full names.
         this.getContributors();
       }
@@ -103,6 +106,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
       this.addingToLibrary = true;
+    } else {
+      this.downloading = true;
     }
     const val = await this.cartService.addToCart(
       this.author,
@@ -112,7 +117,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
     if (download) {
       try {
-        await this.download(
+        this.download(
           this.learningObject.author.username,
           this.learningObject.name
         );
@@ -131,13 +136,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   download(author: string, learningObjectName: string) {
-    try {
-      this.downloading = true;
-      this.cartService.downloadLearningObject(author, learningObjectName);
-      this.downloading = false;
-    } catch (e) {
-      console.log(e);
-    }
+    this.downloading = true;
+    const loaded = this.cartService.downloadLearningObject(
+      author,
+      learningObjectName
+    );
+    this.subscriptions.push(
+      loaded.subscribe(finished => {
+        if (finished) {
+          this.downloading = false;
+        }
+      })
+    );
   }
 
   removeFromCart() {
@@ -154,9 +164,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  reportThisObject() {}
-
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
   }
 }
