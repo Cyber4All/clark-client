@@ -25,7 +25,8 @@ li {
 	width: 0;
 	display: inline-block;
 	transition: 0.2s linear;
-	opacity: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 #delete {
@@ -37,7 +38,8 @@ li {
 	width: 0;
 	display: inline-block;
 	transition: 0.2s linear;
-	opacity: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .navbar-gravatar {

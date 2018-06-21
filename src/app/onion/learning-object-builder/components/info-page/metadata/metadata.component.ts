@@ -3,6 +3,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AcademicLevel, User, LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { UserService } from '../../../../../core/user.service';
+import { AuthService } from '../../../../../core/auth.service';
 import { runInThisContext } from 'vm';
 import { Subscription, Observable } from 'rxjs';
 import { Query } from '../../../../../shared/interfaces/query';
@@ -40,7 +41,8 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   constructor(
     public errorStore: LearningObjectErrorStoreService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -67,6 +69,12 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   search() {
     this.query.text = this.query.text.trim();
       this.userService.searchUsers(this.query.text).then(val => {
+         // Remove current user from results
+         for (let i = 0; i < val.length; i++) {
+          if (this.authService.username === val[i].username) {
+            val.splice(i, 1);
+          }
+         }
          // Limit search results to 10
          if (val.length <= 10) {
           this.arrayOfUsers = val;
