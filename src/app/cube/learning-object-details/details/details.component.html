@@ -1,11 +1,12 @@
 <div *ngIf="learningObject" class="details-wrapper" [ngClass]="learningObject.length">
   <div class="splash">
-    <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
     <div class="inner">
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
         <div class="author">Created by
           <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
+        <div *ngIf="learningObject.contributors" class="author">Contributors:
+        <span *ngFor="let contributor of contributorsList; let i = index;" class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name }}<span *ngIf="i !== contributorsList.length -1">, </span></span></div>
         <div class="type">{{ learningObject.length }}</div>
       </div>
     </div>
@@ -34,7 +35,9 @@
         </div>
         <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
           {{ saved ? 'Saved to your library!' : 'Add to Library' }}
-          <span *ngIf="addingToLibrary"><i class="fal fa-spinner-third fa-spin"></i></span>
+          <span *ngIf="addingToLibrary">
+            <i class="fal fa-spinner-third fa-spin"></i>
+          </span>
         </div>
         <ng-container *ngIf="!auth.user">
           <div class="login-msg">Please
@@ -43,4 +46,5 @@
       </div>
     </div>
   </div>
+  <div [id]="iframeParent"></div>
 </div>

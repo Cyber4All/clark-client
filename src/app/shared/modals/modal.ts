@@ -7,24 +7,26 @@ export abstract class Modal {
     protected name: string;
     protected x: number;
     protected y: number;
-    protected type: string; 
-    
+    protected type: string;
+
     public show: boolean;
 
     @Input() content: any = {};
     @Output() action: EventEmitter<string> = this.modalService.action;
 
-    protected justCreated: boolean = true;
-    protected firstLoad: boolean = true;
-    protected preventClose: boolean = false;
+    protected justCreated = true;
+    protected firstLoad = true;
+    protected preventClose = false;
 
     constructor(protected modalService: ModalService) { }
 
+    // tslint:disable-next-line:use-life-cycle-interface
     ngDoCheck(): void {
         this.name = this.content.name;
         this.show = (Object.keys(this.content).length > 0);
     }
 
+    // tslint:disable-next-line:use-life-cycle-interface
     ngAfterViewChecked() {
         if (!this.show && this.type !== 'dialog') {
             this.justCreated = true;
@@ -35,9 +37,15 @@ export abstract class Modal {
         event.stopPropagation();
         this.sendEvent(msg);
 
-        if (checkbox && msg !== null) this.preventClose = true;
-        if (!this.preventClose) this.close();
-        if (this.preventClose) this.preventClose = false;
+        if (checkbox && msg !== null) {
+            this.preventClose = true;
+        }
+        if (!this.preventClose) {
+            this.close();
+        }
+        if (this.preventClose) {
+            this.preventClose = false;
+        }
     }
 
     /**
@@ -62,6 +70,7 @@ export abstract class Modal {
         this.justCreated = true;
     }
 
+    // tslint:disable-next-line:use-life-cycle-interface
     ngOnDestroy() {
         // close menues when navigating away
         this.close();

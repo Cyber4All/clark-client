@@ -24,9 +24,10 @@ import { NotificationService } from '../../../shared/notifications';
 })
 export class UserInformationComponent implements OnInit, OnChanges {
   // User Information
-  @Input('user') user: User;
-  @Input('self') self: boolean = false;
-  objects: LearningObject[];
+  @Input() user: User;
+  @Input() self = false;
+  objects: LearningObject[] = Array(5).fill(new LearningObject());
+  loading = false;
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -39,10 +40,6 @@ export class UserInformationComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(val => {
-      this.objects = val.learningObjects;
-    });
-    this.getUser();
   }
 
   private getUser() {
@@ -60,7 +57,9 @@ export class UserInformationComponent implements OnInit, OnChanges {
   }
 
   async getUsersLearningObjects() {
+    this.loading = true;
     this.objects = await this.learningObjectService.getUsersLearningObjects(this.user.username);
+    this.loading = false;
   }
   /**
    * Sends email verification email

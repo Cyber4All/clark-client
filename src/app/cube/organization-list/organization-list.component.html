@@ -1,5 +1,4 @@
 <div class="splash">
-  <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
   <div class="inner">
     <div class="header">
       <div class="name">{{ organization }}</div>
@@ -8,6 +7,6 @@
 </div>
 <section class="list-container">
   <div *ngIf="members" class="list-content">
-    <user-card *ngFor="let user of members" [user]="user"></user-card>
+    <clark-user-card *ngFor="let user of members" [user]="user"></clark-user-card>
   </div>
 </section>

@@ -6,15 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
-import { ParticlesModule } from 'angular-particle';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
-    ParticlesModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
-    CubeSharedModule
+    CubeSharedModule,
+    SharedModule
   ],
   exports: [],
   declarations: [CollectionComponent],

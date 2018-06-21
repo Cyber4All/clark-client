@@ -1,5 +1,4 @@
 import { CartV2Service } from '../../core/cartv2.service';
-import { CartService } from '../../cube/core/services/cart.service';
 import {
   Component,
   OnInit,
@@ -19,7 +18,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NotificationModule } from '../notifications';
-import { CheckBoxModule } from 'clark-checkbox';
+
 import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
 import 'rxjs/add/operator/filter';
@@ -39,6 +38,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   responsiveThreshold = 750;
   windowWidth: number;
   version: any;
+  searchFocused = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
     const matched = versionRegex.exec(appVersion);
     if (matched.length >= 1) {
-      this.version = matched[1];
+      // this.version = matched[1];
     }
   }
 
@@ -178,6 +178,44 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   }
 
   /**
+   * Click events on the contributor section of the topbar, displays modal
+   * @param event
+   */
+  contributorDropdown(event): void {
+    this.modalCtrl
+      .makeContextMenu(
+        'ContributorContextMenu',
+        'dropdown',
+        [
+          new ModalListElement(
+            'Your dashboard',
+            'dashboard'
+          ),
+          // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
+          new ModalListElement(
+            'Create a Learning Object',
+            'create'
+          )
+        ],
+        true,
+        null,
+        new Position(
+          this.modalCtrl.offset(event.currentTarget).left -
+            (190 - event.currentTarget.offsetWidth),
+          this.modalCtrl.offset(event.currentTarget).top + 40
+        )
+      )
+      .subscribe(val => {
+        if (val === 'create') {
+          this.router.navigate(['onion', 'learning-object-builder']);
+        }
+        if (val === 'dashboard') {
+          this.router.navigate(['onion', 'dashboard']);
+        }
+      });
+  }
+
+  /**
    * Takes a reference to the searchbar input to pass as a query to the browse component.
    * @param query
    */
@@ -202,6 +240,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   }
 
   get isMobile(): boolean {
-    return this.windowWidth < this.responsiveThreshold;
+    return this.windowWidth <= this.responsiveThreshold;
   }
 }

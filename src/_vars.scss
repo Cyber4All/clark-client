@@ -1,8 +1,9 @@
 // variables
-$max-width: 1300px;
-$bright-blue: #3789ce;
+$max-width: 1400px;
+// $bright-blue: #3789ce;
 $blue-accent: #3b608b;
-$dark-blue: #2b4066;
+$bright-blue: saturate(lighten($blue-accent, 20), 40);
+$dark-blue: darken($blue-accent, 20);
 $green: #389857;
 $dark-text: #55595e;
 $wrapper-background: #f0f4f7;
@@ -11,12 +12,18 @@ $error-red: #cf4739;
 $placeholder: lighten(#a9a9a9, 10);
 $popup-z: 9;
 $notification-z: 10;
+$cube-pattern: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPgoKPHBhdGggZD0iTTI4IDY2TDAgNTBMMCAxNkwyOCAwTDU2IDE2TDU2IDUwTDI4IDY2TDI4IDEwMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+CjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPgo8L3N2Zz4=");
 
-$nanomodule-color: #3b8b87;
-$micromodule-color: #3b8b5a;
-$module-color: #2c6e58;
-$unit-color: #3b8b5a;
-$course-color: #295948;
+$nanomodule-color: #3b788b;
+$micromodule-color: #3b8b80;
+$module-color: #3b8b6c;
+$unit-color: #236b2d;
+$course-color: #1e4b25;
+// $nanomodule-color: #3b8b87;
+// $micromodule-color: #3b8b5a;
+// $module-color: #2c6e58;
+// $unit-color: #3b8b5a;
+// $course-color: #295948;
 
 // functions
 @function gradient($color1, $color2, $angle) {

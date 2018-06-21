@@ -44,8 +44,7 @@ const cube_routes: Routes = [
         children: [{ path: '', component: CartComponent }, detailRoute]
       },
       { path: 'users/:username', component: UserProfileComponent, resolve: {
-        user: UserResolver,
-        learningObjects: UserProfileLearningObjectsResolver
+        user: UserResolver
       }},
       { path: 'users/:username/preferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' },
         canActivate: [AuthGuard]

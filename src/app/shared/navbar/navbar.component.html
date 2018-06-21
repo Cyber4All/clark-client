@@ -6,28 +6,31 @@
     <div *ngIf="version" class="version-label">{{version}}</div>
     <div class="inner flex h left-right">
       <div class="spacer" *ngIf="isMobile"></div>
-      <div class="logo flex h left-right">
-        <div class="left logo-link" routerLink="/home">C.L.A.R.K.
-        </div>
-        <div class="right">
+      <div class="logo flex h left-right" routerLink="/home">
+        <div class="logo-image"></div>
+        <div class="left logo-link">C.L.A.R.K.</div>
+        <!-- <div class="right">
           Cybersecurity Labs and Resource Knowledge-base
+        </div> -->
+      </div>
+      <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
+      <div *ngIf="!isMobile" class="search-bar" [ngClass]="{'focused': searchFocused}">
+        <form (submit)="performSearch(searchBar)">
+          <input #searchBar type="text" placeholder="Search..." (focus)="searchFocused = true;" (blur)="searchFocused = false;">
+        </form>
+        <div class="icon" (click)="performSearch(searchBar)">
+          <i class="far fa-search"></i>
         </div>
       </div>
-      <div class="user flex h flex-end" *ngIf="loggedin && !isMobile">
-
-        <div class="left flex h flex-end" (click)="userDropdown($event)">
-          <!-- get just first name -->
-          <span>Howdy, {{authService.firstName}}!</span>
-          <div class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
-          <div class="chevron">
-            <i class="fas fa-caret-down"></i>
-          </div>
-        </div>
-
+      <div class="user loggedin flex h flex-end" *ngIf="loggedin && !isMobile">
+        <div class="contributor" (click)="contributorDropdown($event)">Contributor</div>
         <div class="right shopping-cart-container" routerLink="/library">
-          <div class="library-icon"></div>
-          <div *ngIf="cartService.cartItems.length" class="library-badge">{{cartService.cartItems.length}}</div>
+          <i class="far fa-university"></i>
+          <!-- <div *ngIf="cartService.cartItems.length" class="library-badge">{{cartService.cartItems.length}}</div> -->
         </div>
+        <div class="left flex h flex-end" (click)="userDropdown($event)">
+            <div class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
+          </div>
       </div>
 
       <div class="user flex h flex-end" *ngIf="!loggedin && !isMobile">
@@ -46,7 +49,7 @@
 
     </div>
   </div>
-  <div *ngIf="!hideNavbar && !isMobile" class="toolbar" [ngClass]="{'onion': isOnion}">
+  <!-- <div *ngIf="!hideNavbar && !isMobile" class="toolbar" [ngClass]="{'onion': isOnion}">
     <div class="content-switch-container">
       <div class="content-switch" [ngClass]="{'right': !isOnion, 'left': isOnion}">
         <div class="options">
@@ -56,16 +59,7 @@
         <div class="highlight"></div>
       </div>
     </div>
-    <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
-    <div class="search-bar">
-      <form (submit)="performSearch(searchBar)">
-        <input #searchBar type="text" placeholder="Search...">
-      </form>
-      <div class="icon" (click)="performSearch(searchBar)">
-        <i class="far fa-search"></i>
-      </div>
-    </div>
-  </div>
+  </div> -->
 
   <div class="slideout-underlay" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen || searchDown}" (click)="menuOpen = false; searchDown = false;"></div>
  

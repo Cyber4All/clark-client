@@ -24,8 +24,8 @@ import { Subscription, Observable } from 'rxjs';
 
 export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
   elementRef: any;
-  @Input('user') user;
-  @Input('self') self: boolean = false;
+  @Input() user;
+  @Input() self = false;
   @Output('close') close = new EventEmitter<boolean>();
   @ViewChild('confirmNewPasswordInput', { read: ElementRef })
   confirmNewPasswordInput: ElementRef;
@@ -125,7 +125,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
    * @private
    * @memberof UserEditInformationComponent
    */
-  private async save() {
+  async save() {
     // If the new password fields do not match, the user cannot save changes.
     // If the user does not wish to change their password, the fields will
     // match when empty.
@@ -199,10 +199,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 }
 
-export type UserEdit = {
+export interface UserEdit {
   name: string;
   email: string;
   organization: string;
   password: string;
   bio: string;
-};
+}

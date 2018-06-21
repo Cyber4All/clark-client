@@ -5,9 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
-import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { ParticlesModule } from 'angular-particle';
 import { NotificationModule } from '../shared/notifications';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
@@ -18,10 +16,14 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
 import { FileGridViewComponent } from './filesystem/file-grid-view/file-grid-view.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
-import { TooltipModule } from '@cyber4all/clark-tooltip';
 import { FileBreadcrumbComponent } from './filesystem/file-breadcrumb/file-breadcrumb.component';
 import { FileBrowserComponent } from './filesystem/file-browser/file-browser.component';
 import { FilePreviewComponent } from './filesystem/file-preview/file-preview.component';
+import { TooltipModule } from './tooltips/tip.module';
+import { IndicatorComponent } from './indicator/indicator.component';
+import { LearningObjectListingComponent } from '../shared/learning-object/learning-object.component';
+import { UserCardComponent } from '../shared/user-card/user-card.component';
+import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -34,14 +36,12 @@ import { FilePreviewComponent } from './filesystem/file-preview/file-preview.com
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    ParticlesModule,
     VirtualScrollModule,
     ClickOutsideModule,
-    CheckBoxModule,
     ModalModule,
     NotificationModule,
-    TooltipModule,
-    ContextMenuModule
+    ContextMenuModule,
+    TooltipModule
   ],
   providers: [],
   declarations: [
@@ -52,7 +52,11 @@ import { FilePreviewComponent } from './filesystem/file-preview/file-preview.com
     FileListViewComponent,
     FileGridViewComponent,
     FileBreadcrumbComponent,
-    FilePreviewComponent
+    FilePreviewComponent,
+    IndicatorComponent,
+    LearningObjectListingComponent,
+    UserCardComponent,
+    LearningObjectCardDirective
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -60,7 +64,12 @@ import { FilePreviewComponent } from './filesystem/file-preview/file-preview.com
     FileBrowserComponent,
     FileListViewComponent,
     FileGridViewComponent,
-    FileBreadcrumbComponent
+    FileBreadcrumbComponent,
+    TooltipModule,
+    IndicatorComponent,
+    LearningObjectListingComponent,
+    UserCardComponent,
+    LearningObjectCardDirective
   ]
 })
 export class SharedModule {}

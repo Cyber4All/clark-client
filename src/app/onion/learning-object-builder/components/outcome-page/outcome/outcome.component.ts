@@ -33,7 +33,7 @@ import { SuggestionService } from './standard-outcomes/suggestion/services/sugge
 })
 export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() outcome;
-  @Input('index') index;
+  @Input() index;
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
@@ -55,7 +55,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   constructor(
     private suggestionService: SuggestionService,
     public modalService: ModalService,
-    private errorStore: LearningObjectErrorStoreService,
+    public errorStore: LearningObjectErrorStoreService,
     private store: LearningObjectStoreService,
   ) {}
 

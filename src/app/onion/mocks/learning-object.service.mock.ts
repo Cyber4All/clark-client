@@ -10,7 +10,7 @@ export class LearningObjectServiceMock {
 
     learningObjects: LearningObject[] = [];
     constructor() {
-        let token = 'test';
+        const token = 'test';
     }
 
     getExisting(): Observable<any> {
