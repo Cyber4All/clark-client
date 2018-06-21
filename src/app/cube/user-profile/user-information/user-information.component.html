@@ -13,7 +13,7 @@
     Verify your email
   </div>
 </div>
-<div class="section-title">Learning Objects</div>
+<div *ngIf="objects && objects.length > 0" class="section-title">Learning Objects</div>
 <div class="learning-objects">
   <ng-container *ngIf="objects && objects.length > 0">
     <div *ngFor="let l of objects">
