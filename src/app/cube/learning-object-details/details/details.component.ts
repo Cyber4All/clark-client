@@ -104,7 +104,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
     if (download) {
       try {
-        await this.download(this.learningObject);
+        await this.download(
+          this.learningObject.author.name,
+          this.learningObject.name
+        );
       } catch (e) {
         console.log(e);
       }
@@ -123,10 +126,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     try {
       this.downloading = true;
       this.cartService.downloadLearningObject(author, learningObjectName);
-  async download(object: LearningObject) {
-    try {
-      this.downloading = true;
-      await this.cartService.downloadLearningObject(object);
       this.downloading = false;
     } catch (e) {
       console.log(e);
