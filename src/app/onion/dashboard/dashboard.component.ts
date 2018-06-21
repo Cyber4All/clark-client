@@ -139,7 +139,7 @@ export class DashboardComponent implements OnInit {
       );
       this.learningObjects = await this.getLearningObjects();
     } catch (e) {
-      let err = e._body
+      const err = e._body
         ? e._body
         : 'Server error occured. Please try again later';
       this.notificationService.notify(
@@ -227,7 +227,7 @@ export class DashboardComponent implements OnInit {
    */
   makeContextMenu(event, learningObject: LearningObject) {
     this.focusedLearningObject = learningObject;
-    let list: Array<ModalListElement> = [
+    const list: Array<ModalListElement> = [
       new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit')
     ];
 

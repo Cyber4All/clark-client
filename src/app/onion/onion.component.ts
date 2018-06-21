@@ -1,10 +1,8 @@
 import { ModalService, ModalListElement, Position } from '../shared/modals';
 import { NotificationService } from '../shared/notifications';
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { AuthService } from '../core/auth.service';
-import { map, filter } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
 
 /**
  * The entry component for the application. This component contains a router outlet for routing to other components.
