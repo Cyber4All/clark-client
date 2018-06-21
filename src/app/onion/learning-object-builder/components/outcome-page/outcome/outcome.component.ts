@@ -33,7 +33,7 @@ import { SuggestionService } from './standard-outcomes/suggestion/services/sugge
 })
 export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
   @Input() outcome;
-  @Input('index') index;
+  @Input() index;
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 

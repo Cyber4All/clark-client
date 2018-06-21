@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, ElementRef, Output, Input, OnChanges } from '@angular/core';
-import { verbs, levels } from '@cyber4all/clark-taxonomy';
+import { levels } from '@cyber4all/clark-taxonomy';
 
 @Component({
   selector: 'onion-blooms-selector',
@@ -8,7 +8,7 @@ import { verbs, levels } from '@cyber4all/clark-taxonomy';
 })
 
 export class BloomsSelectorComponent implements OnInit, OnChanges {
-  @Input('default') default;
+  @Input() default;
   @Output('bloom') bloom = new EventEmitter<string>();
   bloomValue;
   classverbs: { [level: string]: Set<string> };

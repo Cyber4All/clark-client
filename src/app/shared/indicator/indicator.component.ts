@@ -16,10 +16,10 @@ export class IndicatorComponent implements OnChanges, AfterViewInit {
   @ViewChild('indicator') indicator: ElementRef;
 
   // inputs
-  @Input('elements') elements: string[];
-  @Input('active') active = 0;
-  @Input('increment') increment: number;
-  @Input('decrement') decrement: number;
+  @Input() elements: string[];
+  @Input() active = 0;
+  @Input() increment: number;
+  @Input() decrement: number;
 
   // outputs
   @Output('change') change = new EventEmitter<number>();

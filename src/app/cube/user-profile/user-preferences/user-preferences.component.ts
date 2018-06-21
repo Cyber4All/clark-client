@@ -10,7 +10,7 @@ export class UserPreferencesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    
+
   }
 
 }
