@@ -16,9 +16,9 @@ import { Subscription } from 'rxjs';
 export class CartComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   cartItems: LearningObject[] = [];
-  canDownload = true;
   downloading = [];
   iframeParent = iframeParentID;
+  canDownload = false;
 
   constructor(
     public cartService: CartV2Service,
@@ -31,7 +31,7 @@ export class CartComponent implements OnInit {
     this.loadCart();
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
-      // this.checkWhitelist();
+      this.checkWhitelist();
     } else {
       this.canDownload = true;
     }

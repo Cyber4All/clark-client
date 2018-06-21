@@ -29,7 +29,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   contributorsList = [];
 
-  canDownload = true;
+  canDownload = false;
   iframeParent = iframeParentID;
 
   public tips = TOOLTIP_TEXT;
@@ -54,7 +54,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
-      // this.checkWhitelist();
+      this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
@@ -66,7 +66,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.route.snapshot.params['learningObjectName'];
   }
 
-  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
   private async checkWhitelist() {
     try {
       const response = await fetch(environment.whiteListURL);

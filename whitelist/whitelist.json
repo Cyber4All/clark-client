@@ -1,3 +1,35 @@
 {
-  "whitelist": ["skaza", "btaylor", "dark", "dark@purdue.edu", "mdturne", "aparakh", "bblairtaylor", "chuanyue", "jstroschein", "jianlipan", "susanc", "xhyuan" ]
+  "whitelist": [
+    "skaza",
+    "btaylor",
+    "dark",
+    "dark@purdue.edu",
+    "mdturne",
+    "aparakh",
+    "bblairtaylor",
+    "chuanyue",
+    "jstroschein",
+    "jianlipan",
+    "susanc",
+    "xhyuan",
+    "Floappel",
+    "msmayyash",
+    "brunty",
+    "clifton",
+    "ArtC",
+    "rkgaede",
+    "tirthankar",
+    "vicmacon",
+    "mceachen",
+    "simellostark",
+    "jmihevc",
+    "peker_yesem",
+    "ashleypodhradsky",
+    "cservin",
+    "nstevens",
+    "caratang",
+    "byuan",
+    "dburley",
+    "baijianyang"
+  ]
 }
