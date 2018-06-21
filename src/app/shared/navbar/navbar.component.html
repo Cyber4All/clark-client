@@ -14,7 +14,7 @@
         </div> -->
       </div>
       <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
-      <div class="search-bar" [ngClass]="{'focused': searchFocused}">
+      <div *ngIf="!isMobile" class="search-bar" [ngClass]="{'focused': searchFocused}">
         <form (submit)="performSearch(searchBar)">
           <input #searchBar type="text" placeholder="Search..." (focus)="searchFocused = true;" (blur)="searchFocused = false;">
         </form>
@@ -22,7 +22,7 @@
           <i class="far fa-search"></i>
         </div>
       </div>
-      <div class="user flex h flex-end" *ngIf="loggedin && !isMobile">
+      <div class="user loggedin flex h flex-end" *ngIf="loggedin && !isMobile">
         <div class="contributor" (click)="contributorDropdown($event)">Contributor</div>
         <div class="right shopping-cart-container" routerLink="/library">
           <i class="far fa-university"></i>

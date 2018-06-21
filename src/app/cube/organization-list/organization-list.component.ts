@@ -1,6 +1,4 @@
 import { User } from '@cyber4all/clark-entity';
-import { Http } from '@angular/http';
-import { USER_ROUTES } from '@env/route';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/user.service';
@@ -15,7 +13,7 @@ export class OrganizationListComponent implements OnInit {
   members: Array<User>;
 
 
-  constructor(private route: ActivatedRoute, private http: Http, private userService: UserService) { }
+  constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {

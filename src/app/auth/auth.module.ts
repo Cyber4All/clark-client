@@ -16,11 +16,16 @@ import { AuthComponent } from './auth.component';
 import { AuthResolve } from './auth.resolver';
 
 // External Modules
+import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
 import { PersonalInfoComponent } from './register/personal-info/personal-info.component';
 import { ProfileInfoComponent } from './register/profile-info/profile-info.component';
 import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.component';
+import { ModalModule } from '../shared/modals';
+import {
+  NotificationModule
+} from '../shared/notifications';
 
 @NgModule({
   declarations: [
@@ -39,7 +44,10 @@ import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.co
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule,
+    ModalModule,
+    NotificationModule,
   ],
   providers: [CanResetPasswordGuard, AuthResolve]
 })

@@ -1,21 +1,33 @@
-
-      <form [formGroup]= "group">
-          <div class="title light">Step 2/3 | Create A User Profile</div><hr/>
-        <div class="input username">
-          <input #usernameInput name="username" type="text" placeholder="Username" formControlName ="username"/>
-          <i class="far fa-user"></i>
-        </div>
-        <div class="input password">
-          <input name="password" type="password" placeholder="Password" formControlName ="password"/>
-          <i class="far fa-key"></i>
-        </div>
-        <div class="input password-verify">
-          <input name="password-verify" type="password" placeholder="Confirm password" formControlName ="verifypassword"/>
-          <i class="far fa-key"></i>
-        </div>
-      </form>
-    
-
-  
-  
-    
+<form [formGroup]= "group">
+    <div class="auth-title light">Create A User Profile</div><hr/>
+  <div class="input username">
+    <input #usernameInput name="username" type="text" placeholder="Username" formControlName ="username"/>
+    <i class="far fa-user"></i>
+    <div class="icon-right">
+      <ng-container *ngIf="querying">
+        <span><i class="far fa-spinner-third fa-spin"></i></span>
+      </ng-container>
+      <ng-container *ngIf="!querying && usernameError">
+        <span class="email-error" tip="This username is already in our system!"><i class="far fa-times"></i></span>
+      </ng-container>
+    </div>
+  </div>
+  <div class="input password">
+    <input #passwordInput name="password" type="password" placeholder="Password" formControlName ="password"/>
+    <i class="far fa-key"></i>
+    <div class="icon-right">
+      <ng-container *ngIf="passwordError">
+        <span class="email-error" tip="Passwords must contain 2 lower case letters, an upper case letter, a symbol, and a number."><i class="far fa-times"></i></span>
+      </ng-container>
+    </div>
+  </div>
+  <div class="input password-verify">
+    <input #passwordVerifyInput name="password-verify" type="password" placeholder="Confirm password" formControlName ="verifypassword"/>
+    <i class="far fa-key"></i>
+    <div class="icon-right">
+      <ng-container *ngIf="passwordVerifyError">
+        <span class="email-error" tip="Passwords do not match!"><i class="far fa-times"></i></span>
+      </ng-container>
+    </div>
+  </div>
+</form>

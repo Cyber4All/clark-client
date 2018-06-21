@@ -240,6 +240,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   }
 
   get isMobile(): boolean {
-    return this.windowWidth < this.responsiveThreshold;
+    return this.windowWidth <= this.responsiveThreshold;
   }
 }
