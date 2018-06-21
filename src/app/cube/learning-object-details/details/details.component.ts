@@ -113,7 +113,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (download) {
       try {
         await this.download(
-          this.learningObject.author.name,
+          this.learningObject.author.username,
           this.learningObject.name
         );
       } catch (e) {
@@ -146,9 +146,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   private getContributors() {
     for (let i = 0; i < this.learningObject.contributors.length; i++) {
-      this.userService.getUser(this.learningObject.contributors[i]).then (val => {
-        this.contributorsList[i] = val;
-      });
+      this.userService
+        .getUser(this.learningObject.contributors[i])
+        .then(val => {
+          this.contributorsList[i] = val;
+        });
     }
   }
 
