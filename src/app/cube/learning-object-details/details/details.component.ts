@@ -13,6 +13,7 @@ import { AuthService } from '../../../core/auth.service';
 import { NgClass } from '@angular/common';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { UserService } from '../../../core/user.service';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -29,6 +30,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
 
+  contributorsList = [];
+
   canDownload = true;
 
   public tips = TOOLTIP_TEXT;
@@ -36,6 +39,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   constructor(
     private learningObjectService: LearningObjectService,
     private cartService: CartV2Service,
+    public userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService
@@ -46,7 +50,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.author = params['username'];
       this.learningObjectName = params['learningObjectName'];
     });
-
     this.fetchLearningObject();
 
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
@@ -84,6 +87,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.author,
         this.learningObjectName
       );
+      if (this.learningObject.contributors) {
+        // The array of contributors attached to the learnining object contains a
+        // list of usernames. We want to display their full names.
+        this.getContributors();
+      }
     } catch (e) {
       console.log(e);
     }
@@ -130,6 +138,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   removeFromCart() {
     this.cartService.removeFromCart(this.author, this.learningObjectName);
+  }
+
+  private getContributors() {
+    for (let i = 0; i < this.learningObject.contributors.length; i++) {
+      this.userService.getUser(this.learningObject.contributors[i]).then (val => {
+        this.contributorsList[i] = val;
+      });
+    }
   }
 
   reportThisObject() {}
