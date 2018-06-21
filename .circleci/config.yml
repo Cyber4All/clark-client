@@ -14,7 +14,7 @@ jobs:
           command: npm install
       - run:
           name: Build Application
-          command: yarn ng build --prod --aot=false
+          command: yarn ng build --prod
       - persist_to_workspace: 
           root: dist
           paths: ./

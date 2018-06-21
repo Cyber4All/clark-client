@@ -2,7 +2,7 @@ import { LearningObjectService } from './../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Router } from '@angular/router';
-import { TextQuery } from '../../shared/interfaces/query';
+import { Query } from '../../shared/interfaces/query';
 
 
 @Component({
@@ -11,14 +11,14 @@ import { TextQuery } from '../../shared/interfaces/query';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  query: TextQuery = {
+  query: Query = {
     text: '',
     currPage: 1,
     limit: 30
   };
   placeholderText: string;
 
-  constructor(private learningObjectService: LearningObjectService, private router: Router) { }
+  constructor(public learningObjectService: LearningObjectService, private router: Router) { }
 
   ngOnInit() {
     // document.querySelector('.search-bar input')['value'] = '';

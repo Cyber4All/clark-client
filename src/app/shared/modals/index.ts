@@ -6,10 +6,10 @@ import { DialogMenuComponent } from './dialogmenu.component';
 
 import { CommonModule } from '@angular/common';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { CheckBoxModule } from 'clark-checkbox';
 import { NotificationModule } from '../notifications';
 import { ModalListElement } from './modal-list-element';
 import { Position } from './position';
+import { CheckBoxComponent } from './checkbox.component';
 
 export * from './modal.service';
 export * from './contextmenu.component';
@@ -19,9 +19,9 @@ export * from './position';
 
 
 @NgModule({
-  imports: [CommonModule, CheckBoxModule, NotificationModule.forRoot(), ClickOutsideModule],
-  declarations: [ContextMenuComponent, DialogMenuComponent],
-  exports: [ContextMenuComponent, DialogMenuComponent]
+  imports: [CommonModule, NotificationModule.forRoot(), ClickOutsideModule],
+  declarations: [ContextMenuComponent, DialogMenuComponent, CheckBoxComponent],
+  exports: [ContextMenuComponent, DialogMenuComponent, CheckBoxComponent]
 })
 
 export class ModalModule {

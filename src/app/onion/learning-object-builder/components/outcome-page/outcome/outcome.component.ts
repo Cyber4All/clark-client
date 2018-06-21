@@ -55,7 +55,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   constructor(
     private suggestionService: SuggestionService,
     public modalService: ModalService,
-    private errorStore: LearningObjectErrorStoreService,
+    public errorStore: LearningObjectErrorStoreService,
     private store: LearningObjectStoreService,
   ) {}
 

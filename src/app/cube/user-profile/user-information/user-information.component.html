@@ -13,12 +13,12 @@
     Verify your email
   </div>
 </div>
-<div *ngIf="objects && objects.length > 0" class="section-title">Learning Objects</div>
+<div class="section-title">Learning Objects</div>
 <div class="learning-objects">
   <ng-container *ngIf="objects && objects.length > 0">
     <div *ngFor="let l of objects">
-      <learning-object-component *ngIf="l.published" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l"
-        [owned]="true">
+      <learning-object-component *ngIf="l.published || loading" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l"
+        [owned]="true" [loading]="loading">
       </learning-object-component>
     </div>
   </ng-container>

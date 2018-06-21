@@ -18,7 +18,7 @@ export class LearningObjectMetadataComponent implements OnInit {
   validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
   academicLevels = Object.values(AcademicLevel);
 
-  constructor(private errorStore: LearningObjectErrorStoreService) { }
+  constructor(public errorStore: LearningObjectErrorStoreService) { }
 
   ngOnInit() { }
 

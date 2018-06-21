@@ -16,9 +16,7 @@ import { LearningObjectCardDirective } from './directives/learning-object-card.d
 import { RouterModule } from '@angular/router';
 
 // 3rd Party Modules
-import { ParticlesModule } from 'angular-particle'; // FIXME: push down into a component module
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
-import { CheckBoxModule } from 'clark-checkbox';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
@@ -28,10 +26,8 @@ import { SharedModule } from '../../shared/shared.module';
   imports: [
     CommonModule,
     RouterModule,
-    ParticlesModule,
     FormsModule,
     VirtualScrollModule,
-    CheckBoxModule,
     ClickOutsideModule,
     // TODO: Push down to feature feature modules if not all need to use it
     SharedModule

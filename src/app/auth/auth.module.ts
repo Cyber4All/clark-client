@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ParticlesModule } from 'angular-particle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRouteSnapshot } from '@angular/router';
@@ -37,7 +36,6 @@ import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.co
   ],
   imports: [
     CommonModule,
-    ParticlesModule,
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,

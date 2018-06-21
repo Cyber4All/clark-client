@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="btn-group to-right">
-        <div class="button good save-button" (click)="validate() && save()">Save Learning Object
+        <div class="button good save-button" (click)="validate() && save(false)">Save Learning Object
           <i class="far fa-check"></i>
         </div>
       </div>
@@ -40,7 +40,7 @@
   <div class="content-wrapper">
     <div class="sidebar-wrapper">
       <onion-sidebar 
-        [outcomes]="this.learningObject._outcomes"
+        [outcomes]="this.learningObject.outcomes"
         [learningObjectName]="learningObject.name"
         (newOutcome)="newOutcome()"
         (upload)="validate() && save(true)"

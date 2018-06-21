@@ -1,14 +1,12 @@
-import { Directive, HostBinding } from '@angular/core';
+import { Directive, Renderer2, ElementRef } from '@angular/core';
 
 @Directive({
   selector: '[learningObjectCard]'
 })
 export class LearningObjectCardDirective {
 
-  @HostBinding('class')
-  elementClass = 'card';
-
-  constructor() {
+  constructor(private renderer: Renderer2, hostElement: ElementRef) {
+    renderer.addClass(hostElement.nativeElement, 'card');
   }
 
 }
