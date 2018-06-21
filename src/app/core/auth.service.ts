@@ -242,7 +242,6 @@ export class AuthService {
         });
       }); 
     }
-
     return this.socketWatcher;
     */
    return new Observable();
