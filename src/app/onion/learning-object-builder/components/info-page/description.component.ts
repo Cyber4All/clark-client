@@ -13,7 +13,8 @@ import { EventEmitter } from '@angular/core';
         </span>
         </div>
         <div class="goals list">
-          <text-editor [(savedContent)] = "learningObject.goals[0].text" editorPlaceholder = "Enter description here" (textOutput) = "bindEditorOutput($event)" name="description"></text-editor>
+          <text-editor [(savedContent)] = "learningObject.goals[0].text"
+          editorPlaceholder = "Enter description here" (textOutput) = "bindEditorOutput($event)" name="description"></text-editor>
         </div>
       </div>
   </div>
@@ -41,6 +42,8 @@ export class LearningObjectDescriptionComponent implements OnInit {
   ngOnInit() { }
 
   bindEditorOutput(event) {
-    if(event!=='') this.learningObject.goals[0].text = event;
+    if ( event !== '') {
+      this.learningObject.goals[0].text = event;
+    }
   }
 }

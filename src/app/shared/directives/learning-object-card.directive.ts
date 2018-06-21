@@ -5,7 +5,7 @@ import { Directive, Renderer2, ElementRef } from '@angular/core';
 })
 export class LearningObjectCardDirective {
 
-  constructor(private renderer: Renderer2, hostElement: ElementRef) {
+  constructor(renderer: Renderer2, hostElement: ElementRef) {
     renderer.addClass(hostElement.nativeElement, 'card');
   }
 

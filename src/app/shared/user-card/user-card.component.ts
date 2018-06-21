@@ -46,13 +46,15 @@ export class UserCardComponent implements OnInit, OnChanges {
       'gravatarModal',
       'CLARK uses Gravatar!',
       // tslint:disable-next-line:max-line-length
-      'A Gravatar is a Globally Recognized Avatar. You upload it and create your profile just once, and then when you participate in any Gravatar-enabled site, your Gravatar image will automatically follow you there. <br /><br /> A Gravatar account is not required to register for CLARK, but it is highly encouraged for recognition in the cyber security education community.',
+      `A Gravatar is a Globally Recognized Avatar. You upload it and create your profile just once, and then when you participate in any Gravatar-enabled site, your Gravatar image will
+       automatically follow you there. <br /><br /> A Gravatar account is not required to register for CLARK, but it is highly encouraged for recognition in the cyber security education community.`,
       true,
       undefined,
       'center',
       [accept, learn]
     ).subscribe(res => {
       if (res === 'learn') {
+        // learn more
         window.open('https://en.gravatar.com/support/what-is-gravatar/');
       } else {
         // either accepted or canceled

@@ -1,16 +1,12 @@
 import { CartV2Service } from '../../../core/cartv2.service';
-import { ModalService } from '../../../shared/modals';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
-  ActivatedRouteSnapshot
 } from '@angular/router';
-import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
-import { NgClass } from '@angular/common';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 

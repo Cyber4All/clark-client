@@ -15,7 +15,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { OutcomeService } from '../../core/outcome.service';
-import { SuggestionService } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
+import {
+  SuggestionService
+} from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
 import { ModalListElement, ModalService, Position } from '../../shared/modals';
 
 @Component({
@@ -25,12 +27,12 @@ import { ModalListElement, ModalService, Position } from '../../shared/modals';
 })
 export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnChanges {
   // Inputs
-  @Input('dimensions') dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
-  @Input('source') source: string;
+  @Input() dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
+  @Input() source: string;
   // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
-  @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
+  @Input() mappings: Array<OutcomeSuggestion> = [];
   // dictates whether this component should remain in the document flow or not (IE if this is in a modal, inflow should be false)
-  @Input('inflow') inflow: boolean;
+  @Input() inflow: boolean;
 
   // Outputs
   @Output('done') done = new EventEmitter<boolean>();
@@ -61,7 +63,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
 
   mappingsQueryError = false;
 
-  @Input('showMappedOutcomesTitle') showMappedOutcomesTitle;
+  @Input() showMappedOutcomesTitle;
 
   constructor(
     private modalService: ModalService,
@@ -152,7 +154,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
             try {
               this.bindFilterInput();
               this.mappingsFilterInputError = false;
-            } catch(error) {
+            } catch (error) {
               this.mappingsFilterInputError = false;
             }
           }

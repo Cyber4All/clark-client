@@ -24,8 +24,8 @@ import { Subscription, Observable } from 'rxjs';
 
 export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
   elementRef: any;
-  @Input('user') user;
-  @Input('self') self: boolean = false;
+  @Input() user;
+  @Input() self = false;
   @Output('close') close = new EventEmitter<boolean>();
   @ViewChild('confirmNewPasswordInput', { read: ElementRef })
   confirmNewPasswordInput: ElementRef;
@@ -199,10 +199,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 }
 
-export type UserEdit = {
+export interface UserEdit {
   name: string;
   email: string;
   organization: string;
   password: string;
   bio: string;
-};
+}
