@@ -119,7 +119,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
     );
     this.saved = this.cartService.has(this.learningObject);
     this.addingToLibrary = false;
-    this.animateSaves();
+
+    if (!this.saved) {
+      this.animateSaves();
+      this.saved = true;
+    }
+
     if (download) {
       try {
         this.download(
