@@ -34,14 +34,13 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   @ViewChild('organization', { read: ElementRef })
   organization: ElementRef;
 
-  organizationsList = [];
-
   counter = 140;
 
   newPassword = '';
   confirmPassword = '';
 
   isPasswordMatch;
+  organizationsList = [];
 
   editInfo = {
     firstname: '',
@@ -59,7 +58,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   sub: Subscription; // open subscription to close
   sub2: Subscription; // open subscription to close
-  sub3: Subscription; // open subscription to close
 
   constructor(
     private userService: UserService,
@@ -68,12 +66,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   ) {}
 
   ngOnInit() {
-    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub3 = Observable.fromEvent(this.organization.nativeElement, 'input')
-     .debounceTime(650)
-     .subscribe(val => {
-       this.checkOrganizations();
-     });
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     this.sub2 = Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
     .debounceTime(650)
@@ -204,10 +196,13 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     return false;
   }
 
-  checkOrganizations() {
+  checkOrganizations(e) {
     this.auth.checkOrganizations().then(val => {
-        this.organizationsList = val;
-        this.editInfo.organization = val[0];
+        // Display top 5 matching organizations
+        for (let i = 0; i < 5; i++) {
+          this.organizationsList[i] = val[i]['institution'];
+        }
+        this.editInfo.organization = val[0]['institution'];
     });
   }
 

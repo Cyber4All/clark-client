@@ -265,7 +265,7 @@ export class AuthService {
       .toPromise()
       .then(val => {
         // val is an array of organizations
-        return val['orgs'];
+        return val;
       });
   }
 
