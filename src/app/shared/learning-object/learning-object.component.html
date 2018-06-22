@@ -6,7 +6,7 @@
     <div class="title">{{ truncateText(learningObject.name, 45) }}</div>
     <div class="details">
       <div class="author">
-        {{ learningObject.author.name }} | {{ learningObject.author.organization }}
+        {{ learningObject.author.name | titlecase }} | {{ learningObject.author.organization }}
       </div>
       <div class="date">
         Updated {{ date | date:'mediumDate' }}
