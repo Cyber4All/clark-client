@@ -253,6 +253,22 @@ export class AuthService {
     }
   }
 
+  checkOrganizations() {
+    return this.http
+      .get(
+        environment.apiURL + '/users/organizations',
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
+        // val is an array of organizations
+        return val['orgs'];
+      });
+  }
+
   printCards() {
     // tslint:disable-next-line:max-line-length
     const nameSplit = this.name.split(' ');

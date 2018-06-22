@@ -32,6 +32,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   @ViewChild('originalPasswordInput', { read: ElementRef })
   originalPasswordInput: ElementRef;
 
+  organizationsList = [];
+
   counter = 140;
 
   newPassword = '';
@@ -191,6 +193,17 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       return true;
     }
     return false;
+  }
+
+  checkOrganizations(e) {
+    this.auth.checkOrganizations().then(val => {
+      if (e.data === 't') {
+        this.organizationsList = val;
+        this.editInfo.organization = val[0];
+      } else if (e.data === 'u') {
+        this.editInfo.organization = val[1];
+      }
+    });
   }
 
   ngOnDestroy() {

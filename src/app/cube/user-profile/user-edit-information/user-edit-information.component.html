@@ -31,8 +31,18 @@
         <i class="fas fa-key"></i>
       </div>
       <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-        <input #confirmNewPasswordInput name="confirm password" type="password" placeholder="Confirm New Password" [(ngModel)]="confirmPassword" />
-        <i class="fas fa-key"></i>
+        <input name="organization" type="text" placeholder="Organization" (input)="checkOrganizations($event)" [(ngModel)]="editInfo.organization" />
+        <i class="far fa-building"></i>
+      </div>
+      <div id="container">
+        <ul>
+          <li *ngFor="let organization of organizationsList; let i = index;">
+            <span id="plus">
+              <i class="fas fa-plus"></i>
+            </span>
+            {{ organization }}
+          </li>
+        </ul>
       </div>
     </div>
     <p>Add a bio</p>
