@@ -7,7 +7,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "node_modules/.bin/jest --verbose  --coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -24,10 +24,13 @@
     "@angular/router": "^6.0.4",
     "@cyber4all/clark-entity": "^2.1.0-beta.0.4",
     "@cyber4all/clark-taxonomy": "^2.0.1",
+    "@types/jest": "^23.1.1",
     "@types/uuid": "^3.4.3",
     "angular2-virtual-scroll": "^0.3.2",
+    "chai": "^4.1.2",
     "core-js": "^2.5.3",
     "file-saver": "^1.3.3",
+    "jest-preset-angular": "^5.2.2",
     "md5": "^2.2.1",
     "ng-click-outside": "^3.2.0",
     "ng2-ckeditor": "^1.2.0",
@@ -64,9 +67,29 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "~2.7.2"
+    "typescript": "~2.7.2",
+    "ts-jest": "^22.4.2",
+    "jest": "^22.4.3"
   },
   "prettier": {
     "singleQuote": true
+  },
+  "jest": {
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/.*/.*(spec).(ts|tsx|js)$",
+    "moduleNameMapper": {
+      "route": "<rootDir>/src/environments/route.ts",
+      "tooltip-text": "<rootDir>/src/environments/tooltip-text.ts",
+      "environment": "<rootDir>/src/environments/environment.ts",
+      "auth": "<rootDir>/src/app/core/auth.service.ts"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "preset": "jest-preset-angular",
+    "setupTestFrameworkScriptFile": "<rootDir>/src/test.ts"
   }
 }
