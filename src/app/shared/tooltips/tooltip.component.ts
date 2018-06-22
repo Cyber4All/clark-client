@@ -19,7 +19,7 @@ export class TooltipComponent implements AfterViewInit, OnInit {
   @Input() parent: HTMLElement;
   @Input() location: string;
   @Input() theme: string;
-  validThemes: Array<string> = ["dark", "light", "good", "bad", "neutral"];
+  validThemes: Array<string> = ['dark', 'light', 'good', 'bad', 'neutral'];
   class: string;
   el: HTMLElement;
   position: Position;
@@ -29,7 +29,7 @@ export class TooltipComponent implements AfterViewInit, OnInit {
   constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.location ? this.location = this.location : this.location = "right"
+    this.location ? this.location = this.location : this.location = 'right';
     this.assignClass(this.location);
   }
 
@@ -55,19 +55,20 @@ export class TooltipComponent implements AfterViewInit, OnInit {
   // TODO: Deprecate side and above tags
 
   private assignClass(location: string) {
-    if (!this.theme && !(this.validThemes.indexOf(this.theme) > -1)) this.theme = "dark";
-
-    if (location === "right" || location === "side") {
-      this.class = this.theme + " right";
-    } else if (location === "left") {
-      this.class = this.theme + " left";
-    } else if (location === "top" || location === "above") {
-      this.class = this.theme + " top";
-    } else if (location === "bottom") {
-      this.class = this.theme + " bottom";
+    if (!this.theme && !(this.validThemes.indexOf(this.theme) > -1)) {
+      this.theme = 'dark';
     }
-    else {
-      console.log("Bad location for tooltip! Try 'top', 'bottom', 'right', or 'left'.")
+
+    if (location === 'right' || location === 'side') {
+      this.class = this.theme + ' right';
+    } else if (location === 'left') {
+      this.class = this.theme + ' left';
+    } else if (location === 'top' || location === 'above') {
+      this.class = this.theme + ' top';
+    } else if (location === 'bottom') {
+      this.class = this.theme + ' bottom';
+    } else {
+      console.log('Bad location for tooltip! Try \'top\', \'bottom\', \'right\', or \'left\'.');
     }
   }
 
@@ -82,22 +83,20 @@ export class TooltipComponent implements AfterViewInit, OnInit {
     const offsetConst = 5;
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    let offsetY = window.pageYOffset;
-    let scrollY = window.scrollY || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
+    const offsetY = window.pageYOffset;
+    const scrollY = window.scrollY || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
 
-    if (location === "right" || location === "side") {
+    if (location === 'right' || location === 'side') {
       x = this.parent.getBoundingClientRect().left + (this.parent.offsetWidth + offsetConst);
       y = (this.parent.getBoundingClientRect().top + offsetY - scrollY) + (this.parent.offsetHeight / 2) - (this.el.offsetHeight / 2);
-    }
-    else if (location === "left") {
+    } else if (location === 'left') {
       x = this.parent.getBoundingClientRect().right - (this.parent.offsetWidth + this.el.offsetWidth + offsetConst);
       y = (this.parent.getBoundingClientRect().top + offsetY - scrollY) + (this.parent.offsetHeight / 2) - (this.el.offsetHeight / 2);
-    }
-    else if (location === "top" || location === "above") {
+    } else if (location === 'top' || location === 'above') {
       x = this.parent.getBoundingClientRect().left + (this.parent.offsetWidth / 2) - (this.el.offsetWidth / 2);
-      y = (this.parent.getBoundingClientRect().bottom + offsetY - scrollY) - (this.parent.offsetHeight + this.el.offsetHeight + offsetConst);
-    }
-    else if (location === "bottom") {
+      y = (this.parent.getBoundingClientRect().bottom + offsetY - scrollY)
+        - (this.parent.offsetHeight + this.el.offsetHeight + offsetConst);
+    } else if (location === 'bottom') {
       x = this.parent.getBoundingClientRect().left + (this.parent.offsetWidth / 2) - (this.el.offsetWidth / 2);
       y = (this.parent.getBoundingClientRect().top + offsetY - scrollY) + (this.parent.offsetHeight + offsetConst);
     }

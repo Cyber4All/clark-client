@@ -1,9 +1,8 @@
 import { SuggestionService } from './services/suggestion.service';
 import {
-  Component, EventEmitter, Input, KeyValueDiffers, KeyValueDiffer, OnInit, OnDestroy,
-  OnChanges, Output, SimpleChanges, SimpleChange, ChangeDetectorRef
+  Component, Input, KeyValueDiffers, OnInit, OnDestroy,
+  OnChanges, SimpleChanges
 } from '@angular/core';
-import { providers } from 'ng2-dnd';
 import { OutcomeSuggestion, StandardOutcome } from '@cyber4all/clark-entity';
 
 /*
@@ -19,8 +18,8 @@ import { OutcomeSuggestion, StandardOutcome } from '@cyber4all/clark-entity';
 export class SuggestionComponent implements OnInit, OnChanges {
 
   private _differ: any;
-  @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
-  @Input('outcome') outcome: string;
+  @Input() mappings: Array<OutcomeSuggestion> = [];
+  @Input() outcome: string;
 
   standardAppear: boolean;
   standardOutcomes: Array<StandardOutcome> = [];
@@ -32,7 +31,7 @@ export class SuggestionComponent implements OnInit, OnChanges {
     page: 1,
     limit: 10
   };
-  pageCount: number = 0;
+  pageCount = 0;
 
 
   constructor(private loader: SuggestionService, private _differs: KeyValueDiffers) {
@@ -43,9 +42,9 @@ export class SuggestionComponent implements OnInit, OnChanges {
     this.standardAppear = false;
     this.connection = this.loader.observe().subscribe(data => {
       this.standardOutcomes = data as Array<StandardOutcome>;
-      
+
       this.pageCount = this.loader.mappings.total;
-      
+
     });
     this.loader.emit(this.outcome, this.filter);
   }

@@ -9,6 +9,9 @@ export const USER_ROUTES = {
       username
     )}/profile`;
   },
+  SEARCH_USERS(query: {}) {
+    return `${environment.apiURL}/users/search?text=` + query;
+  },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },

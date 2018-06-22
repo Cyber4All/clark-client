@@ -6,7 +6,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { UserVerifiedGuard } from '../core/user-verified.guard';
 import { OnionComponent } from './onion.component';
-import { DashboardResolver } from './dashboard/dashboard.resolver';
 import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
 
 /**
@@ -26,7 +25,8 @@ const onion_routes: Routes = [
       } },
       // Load Neutrino module
       // TODO: content should redirect, only show child routes
-      { path: 'content', loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule', canActivate: [UserVerifiedGuard] },
+      { path: 'content',
+      loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule', canActivate: [UserVerifiedGuard] },
 
       // else redirect to DashboardComponent
       { path: '**', redirectTo: 'dashboard' }

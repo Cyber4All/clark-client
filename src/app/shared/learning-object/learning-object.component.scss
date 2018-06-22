@@ -71,6 +71,7 @@
     // loading styles
     $color: lighten($placeholder, 17);
     pointer-events: none;
+    overflow: hidden;
 
     .image {
         background: $color !important;
@@ -101,7 +102,8 @@
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 70px;
+            max-width: 200px;
+            width: 70%;
             animation: loading 2s linear forwards infinite;
         }
     }
@@ -240,10 +242,10 @@
 
  @keyframes loading {
      0% {
-        left: -60px;
+        left: -200px;
         opacity: 0;
      } 50% {
-         opacity: 0.5;
+         opacity: 0.8;
      } 100% {
          opacity: 0;
          left: 100%;

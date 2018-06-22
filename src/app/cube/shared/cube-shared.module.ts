@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 // Components
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { LearningObjectListingComponent } from './learning-object/learning-object.component';
 import { FooterComponent } from './footer/footer.component';
 
 // Guards/Resolvers
@@ -12,7 +11,6 @@ import { ProfileGuard } from '../core/profile.guard';
 import { UserResolver } from '../core/user.resolver';
 
 // Directives
-import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
 import { RouterModule } from '@angular/router';
 
 // 3rd Party Modules
@@ -35,15 +33,11 @@ import { SharedModule } from '../../shared/shared.module';
   exports: [
     FooterComponent,
     BreadcrumbComponent,
-    LearningObjectListingComponent,
-    LearningObjectCardDirective,
     EscapeHtmlPipe
   ],
   declarations: [
     FooterComponent,
     BreadcrumbComponent,
-    LearningObjectListingComponent,
-    LearningObjectCardDirective,
     EscapeHtmlPipe
   ],
   providers: [ProfileGuard, UserResolver]

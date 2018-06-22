@@ -1,18 +1,16 @@
-import { CartV2Service } from '../../../core/cartv2.service';
-import { ModalService } from '../../../shared/modals';
+import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
-  ActivatedRouteSnapshot
 } from '@angular/router';
-import { LearningGoal } from '@cyber4all/clark-entity/dist/learning-goal';
 import { AuthService } from '../../../core/auth.service';
-import { NgClass } from '@angular/common';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { UserService } from '../../../core/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -20,7 +18,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit, OnDestroy {
-  private sub: any;
+  private subscriptions: Subscription[] = [];
   downloading = false;
   addingToLibrary = false;
   author: string;
@@ -29,29 +27,34 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
 
-  canDownload = true;
+  contributorsList = [];
+
+  canDownload = false;
+  iframeParent = iframeParentID;
 
   public tips = TOOLTIP_TEXT;
 
   constructor(
     private learningObjectService: LearningObjectService,
     private cartService: CartV2Service,
+    public userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService
   ) {}
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.author = params['username'];
-      this.learningObjectName = params['learningObjectName'];
-    });
-
+    this.subscriptions.push(
+      this.route.params.subscribe(params => {
+        this.author = params['username'];
+        this.learningObjectName = params['learningObjectName'];
+      })
+    );
     this.fetchLearningObject();
 
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
-      // this.checkWhitelist();
+      this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
@@ -63,7 +66,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.route.snapshot.params['learningObjectName'];
   }
 
-  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
   private async checkWhitelist() {
     try {
       const response = await fetch(environment.whiteListURL);
@@ -84,6 +87,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.author,
         this.learningObjectName
       );
+      if (this.learningObject.contributors) {
+        // The array of contributors attached to the learning object contains a
+        // list of usernames. We want to display their full names.
+        this.getContributors();
+      }
     } catch (e) {
       console.log(e);
     }
@@ -94,6 +102,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
       this.addingToLibrary = true;
+    } else {
+      this.downloading = true;
     }
     const val = await this.cartService.addToCart(
       this.author,
@@ -103,7 +113,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
     if (download) {
       try {
-        await this.download(this.learningObject);
+        this.download(
+          this.learningObject.author.username,
+          this.learningObject.name
+        );
       } catch (e) {
         console.log(e);
       }
@@ -118,23 +131,38 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async download(object: LearningObject) {
-    try {
-      this.downloading = true;
-      await this.cartService.downloadLearningObject(object);
-      this.downloading = false;
-    } catch (e) {
-      console.log(e);
-    }
+  download(author: string, learningObjectName: string) {
+    this.downloading = true;
+    const loaded = this.cartService.downloadLearningObject(
+      author,
+      learningObjectName
+    );
+    this.subscriptions.push(
+      loaded.subscribe(finished => {
+        if (finished) {
+          this.downloading = false;
+        }
+      })
+    );
   }
 
   removeFromCart() {
     this.cartService.removeFromCart(this.author, this.learningObjectName);
   }
 
-  reportThisObject() {}
+  private getContributors() {
+    for (let i = 0; i < this.learningObject.contributors.length; i++) {
+      this.userService
+        .getUser(this.learningObject.contributors[i])
+        .then(val => {
+          this.contributorsList[i] = val;
+        });
+    }
+  }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
   }
 }

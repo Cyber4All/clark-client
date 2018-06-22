@@ -8,7 +8,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Rendere
 export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() learningObject;
   @Input() link;
-  @Input('loading') loading: boolean;
+  @Input() loading: boolean;
   @Input() owned? = false;
 
   constructor(private hostEl: ElementRef, private renderer: Renderer2) {}

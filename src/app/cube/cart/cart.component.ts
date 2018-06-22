@@ -1,11 +1,12 @@
 import { Router } from '@angular/router';
-import { CartV2Service } from '../../core/cartv2.service';
+import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '@env/environment';
 import { AuthService } from '../../core/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cube-cart',
@@ -13,9 +14,11 @@ import { AuthService } from '../../core/auth.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
   cartItems: LearningObject[] = [];
-  canDownload = true;
-  downloading = false;
+  downloading = [];
+  iframeParent = iframeParentID;
+  canDownload = false;
 
   constructor(
     public cartService: CartV2Service,
@@ -26,9 +29,9 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.loadCart();
-    // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
-      // this.checkWhitelist();
+      this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
@@ -42,16 +45,9 @@ export class CartComponent implements OnInit {
     }
   }
 
-  async download() {
-    this.cartService.checkout();
-  }
-
-  saveBundle() {}
-
   async clearCart() {
     if (await this.cartService.clearCart()) {
       this.cartItems = [];
-    } else {
     }
   }
 
@@ -64,26 +60,32 @@ export class CartComponent implements OnInit {
         author,
         learningObjectName
       );
-    } catch (e) {}
-  }
-
-  async downloadObject(event, object: LearningObject) {
-    event.stopPropagation();
-
-    try {
-      this.downloading = true;
-      await this.cartService.downloadLearningObject(object);
-      this.downloading = false;
     } catch (e) {
       console.log(e);
     }
+  }
+
+  downloadObject(event, object: LearningObject, index: number) {
+    event.stopPropagation();
+    this.downloading[index] = true;
+    const loaded = this.cartService.downloadLearningObject(
+      object.author.username,
+      object.name
+    );
+    this.subscriptions.push(
+      loaded.subscribe(finished => {
+        if (finished) {
+          this.downloading[index] = false;
+        }
+      })
+    );
   }
 
   goToItem(object) {
     this.router.navigate(['/details/', object._author._username, object._name]);
   }
 
-  // FIXME: Hotfix for whitlisting. Remove if functionallity is extended or removed
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
   private async checkWhitelist() {
     try {
       const response = await fetch(environment.whiteListURL);
