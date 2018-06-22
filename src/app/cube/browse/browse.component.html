@@ -19,9 +19,11 @@
       <div *ngFor="let m of mappingService.mappedStandards" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
     </div>
   </div>
+ 
   <div *ngIf="filtering" class="filters">
     <div class="list">
-      <div class="filter">
+
+      <div class="filter" style="z-index: 2;">
         <div class="filter-title">Length</div>
         <ul>
             <li tip="{{tooltipText[i]}} " tipLocation="side" *ngFor="let length of loLength; let i = index;">
@@ -30,7 +32,9 @@
             </li>
         </ul>
       </div>
-      <div class="filter">
+
+
+      <div class="filter" style="z-index: 1;">
         <div class="filter-title">Academic Level</div>
         <ul>
           <li *ngFor="let level of aLevel">
@@ -39,9 +43,13 @@
           </li>
         </ul>
       </div>
+
       <div class="button neutral" (click)="toggleMappingsPopup()" tip="Filter by learning outcomes that may meet predefined requirements" tipDelay="500" tipLocation="above">Standard Outcomes <i class="far fa-map"></i></div>
+
     </div>
   </div>
+
+
   <div class="content">
     <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
     <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
