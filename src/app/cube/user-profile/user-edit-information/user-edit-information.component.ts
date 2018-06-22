@@ -69,6 +69,12 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub3 = Observable.fromEvent(this.organization.nativeElement, 'input')
+     .debounceTime(650)
+     .subscribe(val => {
+       this.checkOrganizations();
+     });
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     this.sub2 = Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
     .debounceTime(650)
     .subscribe(val => {
@@ -110,12 +116,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
           );
         }
       });
-      // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub3 = Observable.fromEvent(this.organization.nativeElement, 'input')
-    .debounceTime(650)
-    .subscribe(val => {
-      this.checkOrganizations();
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
