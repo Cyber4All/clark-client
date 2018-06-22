@@ -61,7 +61,7 @@ export class UserService {
   }
 
   getOrganizationMembers(organization: string): Promise<User[]> {
-    let route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
+    const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
       .get(route)
       .toPromise()

@@ -12,23 +12,29 @@ export class OrganizationListComponent implements OnInit {
   organization;
   members: Array<User>;
 
-
-  constructor(private route: ActivatedRoute, private userService: UserService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      params['query'] ? this.organization = params['query'] : this.organization = '';
+      params['query']
+        ? (this.organization = params['query'])
+        : (this.organization = '');
     });
     this.fetchMembers();
   }
 
   async fetchMembers() {
-    this.members = await this.userService.getOrganizationMembers(this.organization);
+    this.members = await this.userService.getOrganizationMembers(
+      this.organization
+    );
     // sorts by last name
-    this.members.sort(function (a, b) {
+    this.members.sort(function(a, b) {
       const first = a.name.substr(a.name.indexOf(' ') + 1).toUpperCase();
       const second = b.name.substr(b.name.indexOf(' ') + 1).toUpperCase();
-      return (first < second) ? -1 : (first > second) ? 1 : 0;
+      return first < second ? -1 : first > second ? 1 : 0;
     });
   }
 }
