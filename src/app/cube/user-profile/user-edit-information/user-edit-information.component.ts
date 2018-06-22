@@ -31,6 +31,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   confirmNewPasswordInput: ElementRef;
   @ViewChild('originalPasswordInput', { read: ElementRef })
   originalPasswordInput: ElementRef;
+  @ViewChild('organization', { read: ElementRef })
+  organization: ElementRef;
 
   organizationsList = [];
 
@@ -57,6 +59,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   sub: Subscription; // open subscription to close
   sub2: Subscription; // open subscription to close
+  sub3: Subscription; // open subscription to close
 
   constructor(
     private userService: UserService,
@@ -107,6 +110,12 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
           );
         }
       });
+      // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub3 = Observable.fromEvent(this.organization.nativeElement, 'input')
+    .debounceTime(650)
+    .subscribe(val => {
+      this.checkOrganizations();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -195,14 +204,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     return false;
   }
 
-  checkOrganizations(e) {
+  checkOrganizations() {
     this.auth.checkOrganizations().then(val => {
-      if (e.data === 't') {
         this.organizationsList = val;
         this.editInfo.organization = val[0];
-      } else if (e.data === 'u') {
-        this.editInfo.organization = val[1];
-      }
     });
   }
 

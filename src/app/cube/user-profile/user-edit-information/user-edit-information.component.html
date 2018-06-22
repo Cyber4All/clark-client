@@ -31,7 +31,7 @@
         <i class="fas fa-key"></i>
       </div>
       <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-        <input name="organization" type="text" placeholder="Organization" (input)="checkOrganizations($event)" [(ngModel)]="editInfo.organization" />
+        <input #organization name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
         <i class="far fa-building"></i>
       </div>
       <div id="container">
