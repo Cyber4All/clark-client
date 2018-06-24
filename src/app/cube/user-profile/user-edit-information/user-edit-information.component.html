@@ -11,14 +11,14 @@
         </div>
     </div>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input name="organization" type="text" placeholder="Organization" (input)="checkOrganizations($event)" [(ngModel)]="editInfo.organization" />
+      <input #organization name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
       <i class="far fa-building"></i>
     </div>
     <div id="container">
       <ul>
-        <li *ngFor="let organization of organizationsList; let i = index;">
-          <span id="plus">
-            <i class="fas fa-plus"></i>
+        <li *ngFor="let organization of organizationsList">
+          <span id="plus" (click)="chooseOrganization(organization)">
+            <i class="fas fa-check"></i>
           </span>
           {{ organization }}
         </li>

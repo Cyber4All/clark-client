@@ -253,10 +253,10 @@ export class AuthService {
     }
   }
 
-  checkOrganizations() {
+  getOrganizations(query: string) {
     return this.http
       .get(
-        environment.apiURL + '/users/organizations',
+        environment.apiURL + '/users/organizations?query=' + query,
         {
           headers: this.httpHeaders,
           withCredentials: true
@@ -264,7 +264,21 @@ export class AuthService {
       )
       .toPromise()
       .then(val => {
-        // val is an array of organizations
+        return val;
+      });
+  }
+
+  checkOrganization(organization: string) {
+    return this.http
+      .get(
+        environment.apiURL + '/users/verifyorganization?org=' + organization,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
         return val;
       });
   }
