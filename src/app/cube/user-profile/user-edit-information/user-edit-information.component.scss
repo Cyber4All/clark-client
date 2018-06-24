@@ -95,7 +95,7 @@ form {
     }
 }
 
-form.input.organization {
+#organization {
     margin-bottom: 0px;
 }
 
@@ -124,7 +124,8 @@ li:hover #delete {
 #container {
     box-shadow: 0 0 3px rgba(0, 0 , 0, 0.1);
     background-color: #f7f7f7;
-    width: 100%; 
+    width: 100%;
+    margin-bottom: 10px;
  }
 
 li {

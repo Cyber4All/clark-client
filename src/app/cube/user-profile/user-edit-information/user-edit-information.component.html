@@ -10,7 +10,7 @@
           <i class="far fa-id-card"></i>
         </div>
     </div>
-    <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
+    <div class="input organization" id="organization" [ngClass]="{'active': editInfo.organization !== ''}">
       <input #organization name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
       <i class="far fa-building"></i>
     </div>
