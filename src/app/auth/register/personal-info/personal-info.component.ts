@@ -22,10 +22,16 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
+  @ViewChild('organization', { read: ElementRef })
+  organization: ElementRef;
   emailError = false;
   querying = false;
   result: boolean;
+  currentOrganization: string;
+  organizationsList = [];
+  isValidOrganization: boolean;
   sub: Subscription;
+  sub2: Subscription; // open subscription to close
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
@@ -51,9 +57,48 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
           }
         });
       });
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub2 = Observable.fromEvent(this.organization.nativeElement, 'input')
+    .map(x => x['currentTarget'].value)
+    .debounceTime(400)
+    .subscribe(val => {
+       this.querying = true;
+       this.getOrganizations(val);
+    });
+  }
+
+  getOrganizations(currentOrganization) {
+    this.auth.getOrganizations(currentOrganization).then(val => {
+        this.querying = false;
+        // If empty, destroy results display
+        if (!val[0]) {
+          this.organizationsList = [];
+        } else {
+          // Display top 5 matching organizations
+          for (let i = 0; i < 5; i++) {
+            if (val[i]) {
+              this.organizationsList[i] = val[i]['institution'];
+            } else {
+              // Always display 5 results to cover navigation button.
+              this.organizationsList[i] = '';
+            }
+          }
+        }
+    });
+  }
+
+  chooseOrganization(organization: string) {
+    // Always display 5 results to cover navigation button.
+    // prevent user from clicking on emtpy result.
+    if (organization !== '') {
+      this.group.controls['organization'].setValue(organization);
+      // After org is selected, destroy results display
+      this.organizationsList = [];
+    }
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.sub2.unsubscribe();
   }
 }

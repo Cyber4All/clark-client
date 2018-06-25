@@ -113,6 +113,7 @@ export class RegisterComponent implements OnInit {
   ];
 
   elements = ['Personal Information', 'User Information', 'Preview'];
+  organizationsList = [];
 
   @HostListener('window:keyup', ['$event'])
     keyup(event) {
@@ -215,8 +216,22 @@ export class RegisterComponent implements OnInit {
   }
 
   // navigation
-  next() {
+   next() {
     this.pageValidate(); // Validate page before allowing access to the next
+     if (this.page === 1 && this.check) {
+      this.checkOrganization().then(val => {
+        if (!val) {
+          this.error('Invalid Organization');
+        }
+        this.check = val;
+        this.slidePage();
+      });
+     } else {
+       this.slidePage();
+     }
+  }
+
+  private slidePage() {
     if (this.check) {
       this.slide = !this.slide;
     }
@@ -231,6 +246,9 @@ export class RegisterComponent implements OnInit {
   back() {
     this.fall = !this.fall;
     if (this.page === 2) {
+      // When navigating back to page 1, make sure that
+      // organization results are cleared.
+      this.organizationsList = [];
       this.page = 1;
     } else if (this.page === 3) {
       this.page = 2;
@@ -238,7 +256,7 @@ export class RegisterComponent implements OnInit {
   }
 
   // Checks for specific items on pages 1 and 2
-  pageValidate() {
+   pageValidate() {
     switch (this.page) {
       case 1:
         if (
@@ -322,5 +340,37 @@ export class RegisterComponent implements OnInit {
 
   setInUseUsername(inUse: boolean) {
     this.inUseUsername = inUse;
+  }
+
+  async checkOrganization() {
+    // Allow the user to enter an org that does not exist in our
+    // database when empty results are returned
+    await this.getOrganizations(this.regForm.controls['organization'].value);
+    if (this.organizationsList.length > 0) {
+      const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
+      return isValidOrganization['isValid'];
+    } else {
+      return true;
+    }
+  }
+
+  // This function is here to count the number of results
+  // when searching for an organization.
+  getOrganizations(currentOrganization) {
+    this.auth.getOrganizations(currentOrganization).then(val => {
+      // If empty, destroy results display
+      if (!val[0]) {
+        this.organizationsList = [];
+      } else {
+        // Display top 5 matching organizations
+        for (let i = 0; i < 5; i++) {
+          if (val[i]) {
+            this.organizationsList[i] = val[i]['institution'];
+          } else {
+            this.organizationsList[i] = '';
+          }
+        }
+      }
+    });
   }
 }

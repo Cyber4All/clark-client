@@ -31,6 +31,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   confirmNewPasswordInput: ElementRef;
   @ViewChild('originalPasswordInput', { read: ElementRef })
   originalPasswordInput: ElementRef;
+  @ViewChild('organization', { read: ElementRef })
+  organization: ElementRef;
 
   counter = 140;
 
@@ -38,6 +40,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   confirmPassword = '';
 
   isPasswordMatch;
+  organizationsList = [];
+  isValidOrganization: boolean;
 
   editInfo = {
     firstname: '',
@@ -55,6 +59,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   sub: Subscription; // open subscription to close
   sub2: Subscription; // open subscription to close
+  sub3: Subscription; // open subscription to close
 
   constructor(
     private userService: UserService,
@@ -105,6 +110,12 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
           );
         }
       });
+      // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub3 = Observable.fromEvent(this.organization.nativeElement, 'input')
+    .debounceTime(400)
+    .subscribe(val => {
+       this.getOrganizations();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -152,13 +163,17 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       password: this.editInfo.password.trim(),
       bio: this.editInfo.bio.trim()
     };
-    try {
-      await this.userService.editUserInfo(edits);
-      await this.auth.validate();
-      this.close.emit(true);
-      this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
-    } catch (e) {
-      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
+    if (await this.checkOrganization()) {
+      try {
+        await this.userService.editUserInfo(edits);
+        await this.auth.validate();
+        this.close.emit(true);
+        this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
+      } catch (e) {
+        this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
+      }
+    } else {
+      this.noteService.notify('Invalid Organization!', 'Please select a provided orgnization from the dropdown!', 'bad', 'far fa-times');
     }
   }
 
@@ -193,9 +208,40 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     return false;
   }
 
+  getOrganizations() {
+    this.auth.getOrganizations(this.editInfo.organization).then(val => {
+        // Display top 5 matching organizations
+        for (let i = 0; i < 5; i++) {
+          if (val[i]) {
+            this.organizationsList[i] = val[i]['institution'];
+          }
+        }
+        // If empty, destroy results display
+        if (!val[0]) {
+          this.organizationsList = [];
+        }
+    });
+  }
+
+  chooseOrganization(organization: string) {
+    this.editInfo.organization = organization;
+  }
+
+  async checkOrganization() {
+    // Allow the user to enter an org that does not exist in our
+    // database when empty results are returned
+    if (this.organizationsList.length > 0) {
+      const isValidOrganization = await this.auth.checkOrganization(this.editInfo.organization);
+      return isValidOrganization['isValid'];
+    } else {
+      return true;
+    }
+  }
+
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
+    this.sub3.unsubscribe();
   }
 }
 

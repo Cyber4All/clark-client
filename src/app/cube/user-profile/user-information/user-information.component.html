@@ -1,10 +1,10 @@
-<div class="title">{{ user.name }}</div>
+<div class="title">{{ user.name | titlecase }}</div>
 <div class="info">
   <div class="bio">
     <div>{{ user.bio }}</div>
   </div>
   <div class="organization">
-    <a [routerLink]="['/organization', user.organization]">{{ user.organization }}</a>
+    <a [routerLink]="['/organization', user.organization]">{{ user.organization | titlecase }}</a>
   </div>
   <div class="email">
     <a href="mailto: {{ user.email }}">{{ user.email }}</a>
@@ -13,7 +13,7 @@
     Verify your email
   </div>
 </div>
-<div class="section-title">Learning Objects</div>
+<div *ngIf="objects && objects.length > 0" class="section-title">Learning Objects</div>
 <div class="learning-objects">
   <ng-container *ngIf="objects && objects.length > 0">
     <div *ngFor="let l of objects">
