@@ -70,23 +70,31 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   getOrganizations(currentOrganization) {
     this.auth.getOrganizations(currentOrganization).then(val => {
         this.querying = false;
-        // Display top 5 matching organizations
-        for (let i = 0; i < 5; i++) {
-          if (val[i]) {
-            this.organizationsList[i] = val[i]['institution'];
-          }
-        }
         // If empty, destroy results display
         if (!val[0]) {
           this.organizationsList = [];
+        } else {
+          // Display top 5 matching organizations
+          for (let i = 0; i < 5; i++) {
+            if (val[i]) {
+              this.organizationsList[i] = val[i]['institution'];
+            } else {
+              // Always display 5 results to cover navigation button.
+              this.organizationsList[i] = '';
+            }
+          }
         }
     });
   }
 
   chooseOrganization(organization: string) {
-    this.group.controls['organization'].setValue(organization);
-    // After org is selected, destroy results display
-    this.organizationsList = [];
+    // Always display 5 results to cover navigation button.
+    // prevent user from clicking on emtpy result.
+    if (organization !== '') {
+      this.group.controls['organization'].setValue(organization);
+      // After org is selected, destroy results display
+      this.organizationsList = [];
+    }
   }
 
   ngOnDestroy() {

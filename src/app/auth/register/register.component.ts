@@ -237,8 +237,7 @@ export class RegisterComponent implements OnInit {
     }
     if (this.page === 1 && this.check) {
       this.page = 2;
-    }
-    else if (this.page === 2 && this.check) {
+    } else if (this.page === 2 && this.check) {
       this.page = 3;
     }
   }
@@ -247,6 +246,9 @@ export class RegisterComponent implements OnInit {
   back() {
     this.fall = !this.fall;
     if (this.page === 2) {
+      // When navigating back to page 1, make sure that
+      // organization results are cleared.
+      this.organizationsList = [];
       this.page = 1;
     } else if (this.page === 3) {
       this.page = 2;
@@ -344,8 +346,10 @@ export class RegisterComponent implements OnInit {
     // Allow the user to enter an org that does not exist in our
     // database when empty results are returned
     await this.getOrganizations(this.regForm.controls['organization'].value);
+    console.log(this.organizationsList.length);
     if (this.organizationsList.length > 0) {
       const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
+      console.log(isValidOrganization['isValid']);
       return isValidOrganization['isValid'];
     } else {
       return true;
@@ -356,16 +360,19 @@ export class RegisterComponent implements OnInit {
   // when searching for an organization.
   getOrganizations(currentOrganization) {
     this.auth.getOrganizations(currentOrganization).then(val => {
+      // If empty, destroy results display
+      if (!val[0]) {
+        this.organizationsList = [];
+      } else {
         // Display top 5 matching organizations
         for (let i = 0; i < 5; i++) {
           if (val[i]) {
             this.organizationsList[i] = val[i]['institution'];
-          }
-          // If empty, destroy results display
-          if (!val[0]) {
-            this.organizationsList = [];
+          } else {
+            this.organizationsList[i] = '';
           }
         }
+      }
     });
   }
 }
