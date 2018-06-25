@@ -12,14 +12,16 @@ li:nth-child(2n) {
     background-color: #f7f7f7;
 }
     
-li:hover #plus {
-    width: 40px;
-    opacity: 1;
-}
-    
-li:hover #delete {
-    width: 40px;
-    opacity: 1;
+@media (min-width: 641px) {
+    li:hover #plus {
+        width: 40px;
+        opacity: 1;
+    }
+        
+    li:hover #delete {
+        width: 40px;
+        opacity: 1;
+    }
 }
     
 #container {
@@ -87,4 +89,21 @@ ul {
     // border-bottom: 2px dashed darken($placeholder, 0);
     height: 1px;
     display: none;
+}
+
+@media (max-width: 640px) {
+    #container {
+        box-shadow: 0 0 3px rgba(0, 0 , 0, 0.1);
+        background-color: #f7f7f7;
+        margin-bottom: 10px;
+        position: absolute;
+        top: 130px;
+        right: 0px;
+        width: 100%;
+        z-index: 1;
+     }
+
+     li:hover {
+        color: blue;
+    }
 }

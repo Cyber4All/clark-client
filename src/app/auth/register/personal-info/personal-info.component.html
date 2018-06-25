@@ -33,8 +33,8 @@
         <span (click)="destroyDropdown()"><i class="fa fa-times" aria-hidden="true"></i></span>
     </ng-container>
     <ul>
-      <li *ngFor="let organization of organizationsList">
-        <span id="plus" (click)="chooseOrganization(organization)">
+      <li *ngFor="let organization of organizationsList" (click)="chooseOrganization(organization)">
+        <span id="plus">
           <i class="fas fa-check"></i>
         </span>
         {{ organization }}

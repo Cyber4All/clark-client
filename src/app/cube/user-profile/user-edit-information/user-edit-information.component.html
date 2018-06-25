@@ -16,8 +16,8 @@
     </div>
     <div id="container">
       <ul>
-        <li *ngFor="let organization of organizationsList">
-          <span id="plus" (click)="chooseOrganization(organization)">
+        <li *ngFor="let organization of organizationsList" (click)="chooseOrganization(organization)"></li>>
+          <span id="plus">
             <i class="fas fa-check"></i>
           </span>
           {{ organization }}
