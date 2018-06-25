@@ -476,13 +476,13 @@ body {
   }
 
   &.dropdown {
+    $t: 7px;
     width: 200px;
     box-shadow: 0px 0px 0px 0px transparent;
     border: 2px solid #c2c2c2;
 
     &:after,
     &:before {
-      $t: 7px;
       content: '';
       position: absolute;
       top: calc(#{$t} * -1);
@@ -496,12 +496,20 @@ body {
     }
 
     &:before {
-      $t: 7px;
+      $bw: calc(#{$t} + 2px);
       right: 8px;
       top: calc(#{$t} * -1 - 3px);
-      border-left: calc(#{$t} + 2px) solid transparent;
-      border-right: calc(#{$t} + 2px) solid transparent;
-      border-bottom: calc(#{$t} + 2px) solid #c6c6c6;
+      border-left-width: $bw;
+      border-left-style: solid;
+      border-left-color: transparent;
+
+      border-right-width: $bw;
+      border-right-style: solid;
+      border-right-color: transparent;
+
+      border-bottom-width: $bw;
+      border-bottom-style: solid;
+      border-bottom-color: #c6c6c6;
     }
 
     li {
