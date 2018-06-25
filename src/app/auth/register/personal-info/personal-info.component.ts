@@ -80,7 +80,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   }
 
   chooseOrganization(organization: string) {
-    this.organization.nativeElement.value = organization;
+    this.group.controls['organization'].setValue(organization);
   }
 
   ngOnDestroy() {

@@ -215,16 +215,24 @@ export class RegisterComponent implements OnInit {
   }
 
   // navigation
-  next() {
+   next() {
     this.pageValidate(); // Validate page before allowing access to the next
-    if (this.check) {
-      this.slide = !this.slide;
-    }
-    if (this.page === 1 && this.check) {
-      this.page = 2;
-    } else if (this.page === 2 && this.check) {
-      this.page = 3;
-    }
+     if (this.page === 1) {
+      this.checkOrganization().then(val => {
+        if (!val && this.check) {
+          this.error('Invalid Organization');
+        }
+        this.check = val;
+        if (this.check) {
+          this.slide = !this.slide;
+        }
+        if (this.page === 1 && this.check) {
+          this.page = 2;
+        } else if (this.page === 2 && this.check) {
+          this.page = 3;
+        }
+      });
+     }
   }
 
   // navigation
@@ -238,7 +246,7 @@ export class RegisterComponent implements OnInit {
   }
 
   // Checks for specific items on pages 1 and 2
-  pageValidate() {
+   pageValidate() {
     switch (this.page) {
       case 1:
         if (
@@ -325,7 +333,13 @@ export class RegisterComponent implements OnInit {
   }
 
   async checkOrganization() {
-    const isValidOrganization = await this.auth.checkOrganization(this.regInfo.organization);
-    return isValidOrganization['isValid'];
+    try {
+      console.log(this.regInfo.organization);
+      const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
+      console.log(isValidOrganization);
+      return isValidOrganization['isValid'];
+    } catch (e) {
+      return false;
+    }
   }
 }
