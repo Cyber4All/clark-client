@@ -341,9 +341,7 @@ export class RegisterComponent implements OnInit {
 
   async checkOrganization() {
     try {
-      console.log(this.regInfo.organization);
       const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
-      console.log(isValidOrganization);
       return isValidOrganization['isValid'];
     } catch (e) {
       return false;

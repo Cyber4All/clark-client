@@ -269,7 +269,6 @@ export class AuthService {
   }
 
   checkOrganization(organization: string) {
-    console.log(organization);
     return this.http
       .get(
         environment.apiURL + `/users/verifyorganization?org=${encodeURIComponent(organization)}`,
