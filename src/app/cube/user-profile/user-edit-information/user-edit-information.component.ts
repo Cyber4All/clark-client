@@ -216,6 +216,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
             this.organizationsList[i] = val[i]['institution'];
           }
         }
+        // If empty, destroy results display
+        if (!val[0]) {
+          this.organizationsList = [];
+        }
     });
   }
 
@@ -224,8 +228,14 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 
   async checkOrganization() {
-    const isValidOrganization = await this.auth.checkOrganization(this.editInfo.organization);
-    return isValidOrganization['isValid'];
+    // Allow the user to enter an org that does not exist in our
+    // database when empty results are returned
+    if (this.organizationsList.length > 0) {
+      const isValidOrganization = await this.auth.checkOrganization(this.editInfo.organization);
+      return isValidOrganization['isValid'];
+    } else {
+      return true;
+    }
   }
 
   ngOnDestroy() {

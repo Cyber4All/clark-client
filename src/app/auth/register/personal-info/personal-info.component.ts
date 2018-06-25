@@ -76,14 +76,16 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
             this.organizationsList[i] = val[i]['institution'];
           }
         }
+        // If empty, destroy results display
+        if (!val[0]) {
+          this.organizationsList = [];
+        }
     });
   }
 
   chooseOrganization(organization: string) {
     this.group.controls['organization'].setValue(organization);
-  }
-
-  destroyDropdown() {
+    // After org is selected, destroy results display
     this.organizationsList = [];
   }
 

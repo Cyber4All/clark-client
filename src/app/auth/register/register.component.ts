@@ -113,6 +113,7 @@ export class RegisterComponent implements OnInit {
   ];
 
   elements = ['Personal Information', 'User Information', 'Preview'];
+  organizationsList = [];
 
   @HostListener('window:keyup', ['$event'])
     keyup(event) {
@@ -340,11 +341,31 @@ export class RegisterComponent implements OnInit {
   }
 
   async checkOrganization() {
-    try {
+    // Allow the user to enter an org that does not exist in our
+    // database when empty results are returned
+    await this.getOrganizations(this.regForm.controls['organization'].value);
+    if (this.organizationsList.length > 0) {
       const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
       return isValidOrganization['isValid'];
-    } catch (e) {
-      return false;
+    } else {
+      return true;
     }
+  }
+
+  // This function is here to count the number of results
+  // when searching for an organization.
+  getOrganizations(currentOrganization) {
+    this.auth.getOrganizations(currentOrganization).then(val => {
+        // Display top 5 matching organizations
+        for (let i = 0; i < 5; i++) {
+          if (val[i]) {
+            this.organizationsList[i] = val[i]['institution'];
+          }
+          // If empty, destroy results display
+          if (!val[0]) {
+            this.organizationsList = [];
+          }
+        }
+    });
   }
 }
