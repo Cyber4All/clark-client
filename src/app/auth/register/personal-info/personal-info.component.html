@@ -29,6 +29,9 @@
     <i class="far fa-building"></i>
   </div>
   <div id="container">
+    <ng-container *ngIf="organizationsList.length > 0">
+        <span (click)="destroyDropdown()"><i class="fa fa-times" aria-hidden="true"></i></span>
+    </ng-container>
     <ul>
       <li *ngFor="let organization of organizationsList">
         <span id="plus" (click)="chooseOrganization(organization)">

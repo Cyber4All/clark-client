@@ -83,6 +83,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.group.controls['organization'].setValue(organization);
   }
 
+  destroyDropdown() {
+    this.organizationsList = [];
+  }
+
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
