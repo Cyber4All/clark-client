@@ -32,7 +32,7 @@ import { UnsupportedComponent } from './unsupported.component';
   ],
   declarations: [
     ClarkComponent,
-    UnsupportedComponent
+    UnsupportedComponent,
 ],
   bootstrap: [ClarkComponent],
   providers: [{provide: UrlSerializer, useClass: CustomUrlSerializer}]

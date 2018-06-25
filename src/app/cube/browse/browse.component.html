@@ -1,12 +1,12 @@
 <div class="container">
-  <div class="title">
+  <!-- <div class="title">
     {{ (query.text === '') ? 'All Learning Objects' : 'Search Results' }}
     <div class="filtering-controls">
       <div class="button neutral" [ngClass]="{'active': filtering}" (click)="toggleFilters()">Filter <i class="far fa-filter"></i></div>
       <div class="button neutral" (click)="showSortMenu($event)"><div *ngIf="query.orderBy" class="removeSort" (click)="clearSort($event);"><i class="fas fa-times"></i></div>{{ (query.orderBy) ? sortString : 'Sort'}} <i class="far fa-sort"></i></div>
     </div>
-  </div>
-  <div class="subtitle">
+  </div> -->
+  <!-- <div class="subtitle">
     <ng-container *ngIf="query.text === ''">
         Browsing <span>{{ learningObjectService.totalLearningObjects }}</span> Learning Objects
     </ng-container>
@@ -18,8 +18,8 @@
       <div *ngFor="let l of query.level" class="level-filter filter-active" (click)="removeFilter('level', l)">{{ l }}<i class="fal fa-times"></i></div>
       <div *ngFor="let m of mappingService.mappedStandards" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
     </div>
-  </div>
-  <div *ngIf="filtering" class="filters">
+  </div> -->
+  <!-- <div *ngIf="filtering" class="filters">
     <div class="list">
       <div class="filter">
         <div class="filter-title">Length</div>
@@ -41,10 +41,20 @@
       </div>
       <div class="button neutral" (click)="toggleMappingsPopup()" tip="Filter by learning outcomes that may meet predefined requirements" tipDelay="500" tipLocation="above">Standard Outcomes <i class="far fa-map"></i></div>
     </div>
-  </div>
-  <div class="content">
-    <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
-    <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
+  </div> -->
+  <div class="browse-columns">
+    <div class="sidebar-wrapper">
+      <div class="column-title">
+        Filters
+        <div class="filters-clear-all" (click)="clearAllFilters()">Clear all filters</div>
+      </div>
+      <clark-filter [display]="'vertical'" [filters]="filters" (add)="addFilter($event.category, $event.filter)" (remove)="removeFilter($event.category, $event.filter)"></clark-filter>
+    </div>
+    <div class="content">
+      <div class="column-title">Results ({{this.learningObjectService.totalLearningObjects}})</div>
+      <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
+      <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
+    </div>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
     <ul>

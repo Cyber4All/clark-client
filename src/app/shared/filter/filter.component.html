@@ -1,0 +1,50 @@
+<div class="clark-filter" [ngClass]="{'vertical': display === 'vertical', 'horizontal': display === 'horizontal'}">
+  <div class="filter-section" *ngFor="let f of filters">
+    <div class="filter-section-name">{{ f.name }}</div>
+    <div *ngIf="f.canSearch" class="filter-section-search">
+      TODO search bar here
+    </div>
+    <ng-container [ngSwitch]="f.type">
+      <ng-container *ngSwitchCase="'select-one'">
+        
+      </ng-container>
+      <ng-container *ngSwitchCase="'select-many'">
+        <ng-container [ngTemplateOutlet]="selectMany" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="'dropdown-one'" >
+        <!-- TODO implement select many -->
+        dropdown-one hasn't been implemented yet :0
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<!-- TEMPLATES -->
+
+<!-- Select Many -->
+<ng-template #selectMany let-filters="filters" let-name="name">
+  <div class="filter-section-type select-many">
+    <div class="filter filter-checkbox" *ngFor="let f of filters">
+      <span tip="{{f.toolTip ? f.toolTip : ''}}" tipDisabled="{{!f.toolTip}}" tipLocation="right">
+        <clark-checkbox [setValue]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.name)" (checkboxUnchecked)="removeFilter(name, f.name)"></clark-checkbox>
+        <span>{{ f.name }}</span>
+      </span>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Select One -->
+<ng-template #selectOne let-filters="filters" let-name="name">
+  <div class="filter-section-type select-one">
+    <!-- TODO implement select one -->
+    select-one hasn't been implemented yet :0
+  </div>
+</ng-template>
+
+<!-- Dropdown One -->
+<ng-template #dropdownOne let-filters="filters" let-name="name">
+  <div class='filter-section-type dropdown-one'>
+    <!-- TODO implement dropdown one -->
+    dropdown-one hasn't been implemented yet :0
+  </div>
+</ng-template>

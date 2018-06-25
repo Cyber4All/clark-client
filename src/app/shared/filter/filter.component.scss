@@ -1,0 +1,41 @@
+@import '~_vars.scss';
+
+.clark-filter {
+    display: flex;
+    
+    &.horizontal {
+        flex-direction: row;
+    }
+
+    &.vertical {
+        flex-direction: column;
+    }
+
+    .filter-section {
+        padding: 20px;
+
+        .filter-section-name {
+            color: black;
+            font-size: 16px;
+            text-transform: capitalize;
+            margin-bottom: 5px;
+        }
+
+        .filter {
+            text-transform: capitalize;
+            font-size: 15px;
+            display: inline;
+            flex-wrap: nowrap;
+
+            &.filter-checkbox {
+                display: flex;
+                flex-direction: row;
+
+                clark-checkbox {
+                    @include vert-center;
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
