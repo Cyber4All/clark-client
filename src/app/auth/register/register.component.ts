@@ -217,22 +217,29 @@ export class RegisterComponent implements OnInit {
   // navigation
    next() {
     this.pageValidate(); // Validate page before allowing access to the next
-     if (this.page === 1) {
+     if (this.page === 1 && this.check) {
       this.checkOrganization().then(val => {
-        if (!val && this.check) {
+        if (!val) {
           this.error('Invalid Organization');
         }
         this.check = val;
-        if (this.check) {
-          this.slide = !this.slide;
-        }
-        if (this.page === 1 && this.check) {
-          this.page = 2;
-        } else if (this.page === 2 && this.check) {
-          this.page = 3;
-        }
+        this.slidePage();
       });
+     } else {
+       this.slidePage();
      }
+  }
+
+  private slidePage() {
+    if (this.check) {
+      this.slide = !this.slide;
+    }
+    if (this.page === 1 && this.check) {
+      this.page = 2;
+    }
+    else if (this.page === 2 && this.check) {
+      this.page = 3;
+    }
   }
 
   // navigation
