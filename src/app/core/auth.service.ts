@@ -256,7 +256,7 @@ export class AuthService {
   getOrganizations(query: string) {
     return this.http
       .get(
-        environment.apiURL + '/users/organizations?query=' + query,
+        environment.apiURL + `/users/organizations?query=${encodeURIComponent(query)}`,
         {
           headers: this.httpHeaders,
           withCredentials: true
@@ -269,9 +269,10 @@ export class AuthService {
   }
 
   checkOrganization(organization: string) {
+    console.log(organization);
     return this.http
       .get(
-        environment.apiURL + '/users/verifyorganization?org=' + organization,
+        environment.apiURL + `/users/verifyorganization?org=${encodeURIComponent(organization)}`,
         {
           headers: this.httpHeaders,
           withCredentials: true
