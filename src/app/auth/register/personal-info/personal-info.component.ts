@@ -22,10 +22,16 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
+  @ViewChild('organization', { read: ElementRef })
+  organization: ElementRef;
   emailError = false;
   querying = false;
   result: boolean;
+  currentOrganization: string;
+  organizationsList = [];
+  isValidOrganization: boolean;
   sub: Subscription;
+  sub2: Subscription; // open subscription to close
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
@@ -51,9 +57,34 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
           }
         });
       });
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.sub2 = Observable.fromEvent(this.organization.nativeElement, 'input')
+    .map(x => x['currentTarget'].value)
+    .debounceTime(400)
+    .subscribe(val => {
+       this.querying = true;
+       this.getOrganizations(val);
+    });
+  }
+
+  getOrganizations(currentOrganization) {
+    this.auth.getOrganizations(currentOrganization).then(val => {
+        this.querying = false;
+        // Display top 5 matching organizations
+        for (let i = 0; i < 5; i++) {
+          if (val[i]) {
+            this.organizationsList[i] = val[i]['institution'];
+          }
+        }
+    });
+  }
+
+  chooseOrganization(organization: string) {
+    this.organization.nativeElement.value = organization;
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.sub2.unsubscribe();
   }
 }

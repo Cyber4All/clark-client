@@ -323,4 +323,9 @@ export class RegisterComponent implements OnInit {
   setInUseUsername(inUse: boolean) {
     this.inUseUsername = inUse;
   }
+
+  async checkOrganization() {
+    const isValidOrganization = await this.auth.checkOrganization(this.regInfo.organization);
+    return isValidOrganization['isValid'];
+  }
 }
