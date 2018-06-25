@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
   loginFailureTimer;
   redirectRoute;
   redirectUrl;
-  loading: boolean = false;
+  loading = false;
+
   constructor(
     private auth: AuthService,
     private router: Router,

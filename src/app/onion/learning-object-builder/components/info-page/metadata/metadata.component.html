@@ -10,36 +10,38 @@
       <div class="label">
         What is this learning object named?
       </div>
-      <input class="name-field" type="text" name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name"
-        #name="ngModel" [ngClass]="{'bad': errorStore.error === 'name' }" [pattern]="validName" />
+      <input class="name-field" type="text" name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name" #name="ngModel"
+        [ngClass]="{'bad': errorStore.error === 'name' }" [pattern]="validName" />
     </div>
     <div class="input-group">
-        <div class="label">
-          Add more authors.
-        </div>
-        <div *ngIf="selectedAuthors.length > 0">
-          <div class="level-list">
-            <div class="level button" *ngFor="let user of selectedAuthors; let i = index;"
-              (click)="toggleLevel(level)">
-              {{ user }}<span (click)="removeAuthor(user)"><i class="fa fa-trash" aria-hidden="true"></i></span>
-            </div>
+      <div class="label">
+        Add more authors.
+      </div>
+      <div *ngIf="selectedAuthors.length > 0">
+        <div class="level-list">
+          <div class="level button" *ngFor="let user of selectedAuthors; let i = index;" (click)="toggleLevel(level)">
+            {{ user }}
+            <span (click)="removeAuthor(user)">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </span>
           </div>
         </div>
-        <input #userSearchInput autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
-        <div id="container">
-            <ul>
-              <li *ngFor="let user of arrayOfUsers; let i = index;">
-                <span *ngIf="this.isAuthorSelected(i)" id="plus" (click)="addAuthor(i)">
-                  <i class="fas fa-plus"></i>
-                </span>
-                <span *ngIf="!this.isAuthorSelected(i)" id="delete" (click)="removeAuthor(user.username)">
-                    <i class="fa fa-trash"></i>
-                </span>
-                <span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
-                {{ user.username }} - {{ user.name }} from {{ user.organization }}
-              </li>
-            </ul>
-        </div>        
+      </div>
+      <input #userSearchInput autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
+      <div id="container">
+        <ul>
+          <li *ngFor="let user of arrayOfUsers; let i = index;">
+            <span *ngIf="this.isAuthorSelected(i)" id="plus" (click)="addAuthor(i)">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span *ngIf="!this.isAuthorSelected(i)" id="delete" (click)="removeAuthor(user.username)">
+              <i class="fa fa-trash"></i>
+            </span>
+            <span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
+            {{ user.username }} - {{ user.name | titlecase }} from {{ user.organization | titlecase }}
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="input-group">
       <div class="label">

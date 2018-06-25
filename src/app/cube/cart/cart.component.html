@@ -8,7 +8,7 @@
         <div class="name">{{object.name}}
           <span class="length " [ngClass]="object.length">{{ object.length }}</span>
         </div>
-        <div class="author">{{object.author.name}}</div>
+        <div class="author">{{object.author.name | titlecase}}</div>
       </div>
       <div class="actions">
         <div *ngIf="canDownload" class="button icon-only good" [ngClass]="{'disabled': !canDownload || downloading[i]}" (click)="downloadObject($event, object, i)">
