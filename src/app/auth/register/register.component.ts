@@ -346,10 +346,8 @@ export class RegisterComponent implements OnInit {
     // Allow the user to enter an org that does not exist in our
     // database when empty results are returned
     await this.getOrganizations(this.regForm.controls['organization'].value);
-    console.log(this.organizationsList.length);
     if (this.organizationsList.length > 0) {
       const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
-      console.log(isValidOrganization['isValid']);
       return isValidOrganization['isValid'];
     } else {
       return true;
