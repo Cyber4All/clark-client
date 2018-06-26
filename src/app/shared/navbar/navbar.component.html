@@ -23,9 +23,9 @@
         </div>
       </div>
       <div class="user loggedin flex h flex-end" *ngIf="loggedin && !isMobile">
-        <div class="contributor" (click)="contributorDropdown($event)">Contributor</div>
+        <div class="contributor" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
         <div class="right shopping-cart-container" routerLink="/library">
-          <i class="far fa-university"></i>
+          <!-- <i class="far fa-university"></i> -->
           <!-- <div *ngIf="cartService.cartItems.length" class="library-badge">{{cartService.cartItems.length}}</div> -->
         </div>
         <div class="left flex h flex-end" (click)="userDropdown($event)">
