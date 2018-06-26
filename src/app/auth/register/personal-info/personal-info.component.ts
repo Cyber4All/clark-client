@@ -30,14 +30,14 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   currentOrganization: string;
   organizationsList = [];
   isValidOrganization: boolean;
-  sub: Subscription;
-  sub2: Subscription; // open subscription to close
+  // array of subscriptions to destroy on component destroy
+  subs: Subscription[] = [];
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub = Observable.fromEvent(this.emailInput.nativeElement, 'input')
+    this.subs.push(Observable.fromEvent(this.emailInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
@@ -56,15 +56,17 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
             this.register.setInUseEmail(this.result);
           }
         });
-      });
+      })
+    );
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub2 = Observable.fromEvent(this.organization.nativeElement, 'input')
-    .map(x => x['currentTarget'].value)
-    .debounceTime(400)
-    .subscribe(val => {
-       this.querying = true;
-       this.getOrganizations(val);
-    });
+    this.subs.push(Observable.fromEvent(this.organization.nativeElement, 'input')
+      .map(x => x['currentTarget'].value)
+      .debounceTime(400)
+      .subscribe(val => {
+        this.querying = true;
+        this.getOrganizations(val);
+      })
+    );
   }
 
   getOrganizations(currentOrganization) {
@@ -98,7 +100,9 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
-    this.sub2.unsubscribe();
+    // unsubscribe from all observables
+    for (let i = 0, l = this.subs.length; i < l; i++) {
+      this.subs[i].unsubscribe();
+    }
   }
 }
