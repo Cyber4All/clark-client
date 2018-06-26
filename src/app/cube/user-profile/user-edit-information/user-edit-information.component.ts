@@ -57,9 +57,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     password: ''
   };
 
-  sub: Subscription; // open subscription to close
-  sub2: Subscription; // open subscription to close
-  sub3: Subscription; // open subscription to close
+  // array of subscriptions to destroy on component destroy
+  subs: Subscription[] = [];
 
   constructor(
     private userService: UserService,
@@ -69,7 +68,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub2 = Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
+    this.subs.push(Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
     .debounceTime(650)
     .subscribe(val => {
       this.isCorrectPassword().then(res => {
@@ -89,9 +88,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
           );
         }
       });
-    });
+    })
+  );
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub = Observable.fromEvent(this.confirmNewPasswordInput.nativeElement, 'input')
+    this.subs.push(Observable.fromEvent(this.confirmNewPasswordInput.nativeElement, 'input')
       .debounceTime(650)
       .subscribe(val => {
         if (this.confirmNewPassword()) {
@@ -109,13 +109,15 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
             'far fa-times'
           );
         }
-      });
+      })
+    );
       // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub3 = Observable.fromEvent(this.organization.nativeElement, 'input')
-    .debounceTime(400)
-    .subscribe(val => {
-       this.getOrganizations();
-    });
+    this.subs.push(Observable.fromEvent(this.organization.nativeElement, 'input')
+      .debounceTime(400)
+      .subscribe(val => {
+          this.getOrganizations();
+      })
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -239,9 +241,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
-    this.sub2.unsubscribe();
-    this.sub3.unsubscribe();
+     // unsubscribe from all observables
+     for (let i = 0, l = this.subs.length; i < l; i++) {
+      this.subs[i].unsubscribe();
+    }
   }
 }
 
