@@ -67,12 +67,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
         ...
         Object.values(AcademicLevel).map(l => ({name: l.toLowerCase(), initial: false, toolTip: this.tooltipText[l.toLowerCase()]})),
       ]
-    }
+    },
+    {
+      name: 'mappings',
+      type: 'custom'
+    },
   ];
   filteringSubject: any;
-
-  aLevel = Object.values(AcademicLevel);
-  loLength = Array.from(lengths);
 
   filterInput: Observable<string>;
 
@@ -185,10 +186,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.router.navigate(['/browse', { query: '' }]);
   }
 
-  toggleFilters() {
-    this.filtering = !this.filtering;
-  }
-
   addFilter(key: string, value: string) {
     this.modifyFilter(key, value, true);
     this.filteringSubject.next();
@@ -201,8 +198,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   clearAllFilters() {
     for (let i = 0, l = this.filters.length; i < l; i++) {
-      for (let k = 0, j = this.filters[i].values.length; k < j; k++) {
-        this.filters[i].values[k].active = false;
+      if (this.filters[i].values) {
+        for (let k = 0, j = this.filters[i].values.length; k < j; k++) {
+          this.filters[i].values[k].active = false;
+        }
       }
     }
 
@@ -213,10 +212,12 @@ export class BrowseComponent implements OnInit, OnDestroy {
     for (let i = 0, l = this.filters.length; i < l; i++) {
       if (this.filters[i].name === key) {
         // found the correct filter category
-        for (let k = 0, j = this.filters[i].type.length; k < j; k++) {
-          if (this.filters[i].values[k].name === value) {
-            this.filters[i].values[k].active = active;
-            return;
+        if (this.filters[i].values) {
+          for (let k = 0, j = this.filters[i].type.length; k < j; k++) {
+            if (this.filters[i].values[k].name === value) {
+              this.filters[i].values[k].active = active;
+              return;
+            }
           }
         }
       }
@@ -233,7 +234,14 @@ export class BrowseComponent implements OnInit, OnDestroy {
   sendFilters() {
     for (let i = 0, l = this.filters.length; i < l; i++) {
       const category = this.filters[i];
-      const active = category.values.filter(v => v.active);
+      let active;
+
+      if (category.values) {
+        active = category.values.filter(v => v.active);
+      } else {
+        // TODO implement adding non-value (custom component) filters
+        active = [];
+      }
 
       if (active.length) {
         // there are filters in this category
@@ -299,15 +307,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleMappingsPopup() {
-    this.mappingsPopup = !this.mappingsPopup;
-    this.modalService.closeAll();
+  // toggleMappingsPopup() {
+  //   this.mappingsPopup = !this.mappingsPopup;
+  //   this.modalService.closeAll();
 
-    if (!this.mappingsPopup) {
-      this.query.standardOutcomes = this.mappingService.mappedStandards;
-      this.sendFilters();
-    }
-  }
+  //   if (!this.mappingsPopup) {
+  //     this.query.standardOutcomes = this.mappingService.mappedStandards;
+  //     this.sendFilters();
+  //   }
+  // }
 
   ngOnDestroy() {
     for (let i = 0; i < this.subscriptions.length; i++) {

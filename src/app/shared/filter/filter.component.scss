@@ -12,7 +12,11 @@
     }
 
     .filter-section {
-        padding: 20px;
+
+        .filter-section-inner {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
 
         .filter-section-name {
             color: black;

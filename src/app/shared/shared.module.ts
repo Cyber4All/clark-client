@@ -25,6 +25,7 @@ import { LearningObjectListingComponent } from '../shared/learning-object/learni
 import { UserCardComponent } from '../shared/user-card/user-card.component';
 import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
 import { FilterComponent } from './filter/filter.component';
+import { MappingsFilterComponent } from './mappings-filter/mappings-filter.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -58,7 +59,8 @@ import { FilterComponent } from './filter/filter.component';
     LearningObjectListingComponent,
     UserCardComponent,
     LearningObjectCardDirective,
-    FilterComponent
+    FilterComponent,
+    MappingsFilterComponent
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -72,7 +74,8 @@ import { FilterComponent } from './filter/filter.component';
     LearningObjectListingComponent,
     UserCardComponent,
     LearningObjectCardDirective,
-    FilterComponent
+    FilterComponent,
+    MappingsFilterComponent
   ]
 })
 export class SharedModule {}

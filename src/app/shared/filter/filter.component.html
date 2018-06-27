@@ -1,25 +1,31 @@
 <div class="clark-filter" [ngClass]="{'vertical': display === 'vertical', 'horizontal': display === 'horizontal'}">
   <div class="filter-section" *ngFor="let f of filters">
-    <div class="filter-section-name">{{ f.name }}</div>
-    <div *ngIf="f.canSearch" class="filter-section-search">
-      TODO search bar here
-    </div>
-    <ng-container [ngSwitch]="f.type">
-      <ng-container *ngSwitchCase="'select-one'">
-        
-      </ng-container>
-      <ng-container *ngSwitchCase="'select-many'">
-        <ng-container [ngTemplateOutlet]="selectMany" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
-      </ng-container>
-      <ng-container *ngSwitchCase="'dropdown-one'" >
-        <!-- TODO implement select many -->
-        dropdown-one hasn't been implemented yet :0
-      </ng-container>
+    <ng-container *ngIf="f.values || f.template">
+      <div class="filter-section-inner">
+        <div class="filter-section-name">{{ f.name }}</div>
+        <div *ngIf="f.canSearch" class="filter-section-search">
+          <!-- TODO search bar here -->
+        </div>
+        <ng-container *ngIf="f.type === 'custom'" [ngTemplateOutlet]="f.template"></ng-container>
+        <ng-container *ngIf="f.type !== 'custom'" [ngTemplateOutlet]="loadTemplate" [ngTemplateOutletContext]="{filter:f}"></ng-container>
+      </div>
     </ng-container>
   </div>
 </div>
 
 <!-- TEMPLATES -->
+
+<!-- Load custom markup/components -->
+<ng-template #loadTemplate let-f="filter">
+  <ng-container [ngSwitch]="f.type">
+    <ng-container *ngSwitchCase="'select-many'">
+      <ng-container [ngTemplateOutlet]="selectMany" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'dropdown-one'">
+      dropdown-one hasn't been implemented yet :0
+    </ng-container>
+  </ng-container>
+</ng-template>
 
 <!-- Select Many -->
 <ng-template #selectMany let-filters="filters" let-name="name">
@@ -30,14 +36,6 @@
         <span>{{ f.name }}</span>
       </span>
     </div>
-  </div>
-</ng-template>
-
-<!-- Select One -->
-<ng-template #selectOne let-filters="filters" let-name="name">
-  <div class="filter-section-type select-one">
-    <!-- TODO implement select one -->
-    select-one hasn't been implemented yet :0
   </div>
 </ng-template>
 
