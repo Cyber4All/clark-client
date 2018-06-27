@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { Headers, Http, Response } from '@angular/http';
 import * as querystring from 'querystring';
+import { LearningOutcome } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class OutcomeService {
@@ -12,7 +13,7 @@ export class OutcomeService {
     this.headers.append('Content-Type', 'application/json');
   }
 
-  getOutcomes(filter?): Promise<{}[]> {
+  getOutcomes(filter?): Promise<{total: number, outcomes: LearningOutcome[]}> {
     const query = querystring.stringify(this.formatFilter(filter));
     return this.http.get(environment.suggestionUrl + '/outcomes?' + query, { headers: this.headers })
       .toPromise()

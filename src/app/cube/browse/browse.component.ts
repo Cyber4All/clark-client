@@ -2,17 +2,19 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { SortType, OrderBy } from './../../shared/interfaces/query';
 import { ModalService, ModalListElement, Position} from '../../shared/modals';
 import { Router } from '@angular/router';
-import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
+import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
 import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
+import {  } from '@cyber4all/clark-entity';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
 import {
   SuggestionService
  } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
+ import { FilterSection } from '../../shared/filter/filter.component';
 
 
 @Component({
@@ -33,23 +35,45 @@ export class BrowseComponent implements OnInit, OnDestroy {
     standardOutcomes: []
   };
 
-  tooltipText = [
-    'a Learning Object up to 1 hour in length',
-    'a Learning Object between 1 and 4 hours in length',
-    'a Learning Object between 4 and 10 hours in length',
-    'a Learning Object over 10 hours in length',
-    'a Learning Object 15 weeks in length'
-  ];
+  tooltipText = {
+    nanomodule: 'a Learning Object up to 1 hour in length',
+    micromodule: 'a Learning Object between 1 and 4 hours in length',
+    module: 'a Learning Object between 4 and 10 hours in length',
+    unit: 'a Learning Object over 10 hours in length',
+    course: 'a Learning Object 15 weeks in length'
+  };
+
+
   loading = false;
   mappingsPopup = false;
 
   pageCount: number;
   filtering = false;
-  filters: {} = {};
+  filters: FilterSection[] = [
+    {
+      name: 'length',
+      type: 'select-many',
+      canSearch: false,
+      values: [
+        ...
+        Array.from(lengths).map(l => ({name: l, initial: false, toolTip: this.tooltipText[l.toLowerCase()]})),
+      ]
+    },
+    {
+      name: 'level',
+      type: 'select-many',
+      canSearch: false,
+      values: [
+        ...
+        Object.values(AcademicLevel).map(l => ({name: l.toLowerCase(), initial: false, toolTip: this.tooltipText[l.toLowerCase()]})),
+      ]
+    },
+    {
+      name: 'mappings',
+      type: 'custom'
+    },
+  ];
   filteringSubject: any;
-
-  aLevel = Object.values(AcademicLevel);
-  loLength = Array.from(lengths);
 
   filterInput: Observable<string>;
 
@@ -62,7 +86,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.filteringSubject = new Subject<string>().debounceTime(650);
+    this.filteringSubject = new Subject<string>().debounceTime(350);
     this.subscriptions.push(this.filteringSubject.subscribe(() => {
       this.sendFilters();
     }));
@@ -162,32 +186,42 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.router.navigate(['/browse', { query: '' }]);
   }
 
-  toggleFilters() {
-    this.filtering = !this.filtering;
-  }
-
   addFilter(key: string, value: string) {
-    if (!this.filters[key]) {
-      this.filters[key] = [];
-    }
-
-    if (!this.filters[key].includes(value)) {
-      this.filters[key].push(value);
-      this.filteringSubject.next();
-    }
+    this.modifyFilter(key, value, true);
+    this.filteringSubject.next();
   }
 
   removeFilter(key: string, value: string) {
-    if (this.filters[key] && this.filters[key].length) {
-      if (this.filters[key].includes(value)) {
-        this.filters[key].splice(this.filters[key].indexOf(value), 1);
-        this.filteringSubject.next();
-      }
-    }
+    this.modifyFilter(key, value);
+    this.filteringSubject.next();
   }
 
-  checkFilters(key: string, value: string): boolean {
-    return (this.filters[key]) ? this.filters[key].indexOf(value) >= 0 : false;
+  clearAllFilters() {
+    for (let i = 0, l = this.filters.length; i < l; i++) {
+      if (this.filters[i].values) {
+        for (let k = 0, j = this.filters[i].values.length; k < j; k++) {
+          this.filters[i].values[k].active = false;
+        }
+      }
+    }
+
+    this.filteringSubject.next();
+  }
+
+  private modifyFilter(key: string, value: string, active = false) {
+    for (let i = 0, l = this.filters.length; i < l; i++) {
+      if (this.filters[i].name === key) {
+        // found the correct filter category
+        if (this.filters[i].values) {
+          for (let k = 0, j = this.filters[i].type.length; k < j; k++) {
+            if (this.filters[i].values[k].name === value) {
+              this.filters[i].values[k].active = active;
+              return;
+            }
+          }
+        }
+      }
+    }
   }
 
   // removes an outcome from list of selected outcomes
@@ -198,11 +232,23 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   sendFilters() {
-    if (this.filters['length']) {
-      this.query.length = this.filters['length'];
-    }
-    if (this.filters['level']) {
-      this.query.level = this.filters['level'];
+    for (let i = 0, l = this.filters.length; i < l; i++) {
+      const category = this.filters[i];
+      let active;
+
+      if (category.values) {
+        active = category.values.filter(v => v.active);
+      } else {
+        // TODO implement adding non-value (custom component) filters
+        active = [];
+      }
+
+      if (active.length) {
+        // there are filters in this category
+        this.query[category.name] = active.map(v => v.name);
+      } else {
+        this.query[category.name] = [];
+      }
     }
 
     this.fetchLearningObjects(this.query);
@@ -257,19 +303,19 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
       this.loading = false;
     } catch (e) {
-      console.log(`Error: ${e}`);
+       console.log(`Error: ${e}`);
     }
   }
 
-  toggleMappingsPopup() {
-    this.mappingsPopup = !this.mappingsPopup;
-    this.modalService.closeAll();
+  // toggleMappingsPopup() {
+  //   this.mappingsPopup = !this.mappingsPopup;
+  //   this.modalService.closeAll();
 
-    if (!this.mappingsPopup) {
-      this.query.standardOutcomes = this.mappingService.mappedStandards;
-      this.sendFilters();
-    }
-  }
+  //   if (!this.mappingsPopup) {
+  //     this.query.standardOutcomes = this.mappingService.mappedStandards;
+  //     this.sendFilters();
+  //   }
+  // }
 
   ngOnDestroy() {
     for (let i = 0; i < this.subscriptions.length; i++) {
