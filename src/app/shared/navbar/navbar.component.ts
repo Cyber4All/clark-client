@@ -1,27 +1,19 @@
-import { CartV2Service } from '../../core/cartv2.service';
 import {
   Component,
   OnInit,
-  AfterViewChecked,
   AfterContentChecked,
   HostListener
 } from '@angular/core';
-import { LearningObjectService } from '../../cube/learning-object.service';
 import { ModalService, Position, ModalListElement } from '../modals';
 import {
-  RouterModule,
   Router,
   ActivatedRoute,
-  UrlSegment,
   NavigationEnd,
   NavigationStart
 } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { NotificationModule } from '../notifications';
 
 import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
-import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'clark-navbar',
@@ -50,7 +42,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private cartService: CartV2Service
   ) {
     this.windowWidth = window.innerWidth;
     this.router.events.subscribe(e => {
@@ -81,7 +72,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
     const matched = versionRegex.exec(appVersion);
     if (matched.length >= 1) {
-      // this.version = matched[1];
+      this.version = matched[1];
     }
   }
 
@@ -99,24 +90,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  /**
-   * Manages click events for the button for switching between contributing and searching (onion and cube)
-   * @param event
-   */
-  contentSwitchClick(event, element?) {
-    const el = event.target;
-    const h = document.getElementsByClassName('content-switch')[0];
-    if (el.classList.contains('contribute') && !this.isOnion) {
-      // h.classList.remove('right');
-      // h.classList.add('left');
-      this.isOnion = !this.isOnion;
-      this.router.navigate(['onion']);
-    } else if (el.classList.contains('search') && this.isOnion) {
-      // h.classList.remove('left');
-      // h.classList.add('right');
-      this.isOnion = !this.isOnion;
-    }
-  }
 
   logout() {
     this.authService.logout().then(() => {
@@ -128,16 +101,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     this.router.navigate(['users', this.authService.user.username]);
   }
 
-  preferences() {
-    this.router.navigate([
-      'users',
-      this.authService.user.username,
-      'preferences'
-    ]);
-  }
-
   /**
-   * Click events on the user section of the topbar, displays modal
+   * Click events on the user section of the topbar, displays context menu
    * @param event
    */
   userDropdown(event): void {
@@ -150,7 +115,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
             '<i class="fas fa-user-circle fa-fw"></i>View profile',
             'userprofile'
           ),
-          // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
           new ModalListElement(
             '<i class="far fa-sign-out"></i>Sign out',
             'logout'
@@ -167,18 +131,14 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
       .subscribe(val => {
         if (val === 'logout') {
           this.logout();
-        }
-        if (val === 'userprofile') {
+        } else if (val === 'userprofile') {
           this.userprofile();
-        }
-        if (val === 'preferences') {
-          this.preferences();
         }
       });
   }
 
   /**
-   * Click events on the contributor section of the topbar, displays modal
+   * Click events on the contributor section of the topbar, displays context menu
    * @param event
    */
   contributorDropdown(event): void {
@@ -191,7 +151,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
             'Your dashboard',
             'dashboard'
           ),
-          // new ModalListElement('<i class="fas fa-wrench fa-fw"></i>Change preferences', 'preferences'),
           new ModalListElement(
             'Create a Learning Object',
             'create'
