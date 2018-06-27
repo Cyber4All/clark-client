@@ -1,16 +1,16 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpModule } from '@angular/http';
-import { OutcomeService } from './outcome.service';
+import { LearningObjectService } from './learning-object.service';
 
-describe('OutcomeService', () => {
+describe('LearningObjectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpModule],
-      providers: [OutcomeService]
+      providers: [LearningObjectService]
     });
   });
 
-  it('should be created', inject([OutcomeService], (service: OutcomeService) => {
+  it('should be created', inject([LearningObjectService], (service: LearningObjectService) => {
     expect(service).toBeTruthy();
   }));
 });

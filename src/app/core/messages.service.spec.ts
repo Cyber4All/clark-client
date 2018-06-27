@@ -1,16 +1,16 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpModule } from '@angular/http';
-import { OutcomeService } from './outcome.service';
+import { MessagesService } from './messages.service';
 
-describe('OutcomeService', () => {
+describe('MessagesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpModule],
-      providers: [OutcomeService]
+      providers: [MessagesService]
     });
   });
 
-  it('should be created', inject([OutcomeService], (service: OutcomeService) => {
+  it('should be created', inject([MessagesService], (service: MessagesService) => {
     expect(service).toBeTruthy();
   }));
 });

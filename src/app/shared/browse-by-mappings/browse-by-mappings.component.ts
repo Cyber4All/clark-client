@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { OutcomeService } from '../../core/outcome.service';
+// tslint:disable-next-line:max-line-length
 import { SuggestionService } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
 import { ModalListElement, ModalService, Position } from '../../shared/modals';
 
@@ -25,11 +26,15 @@ import { ModalListElement, ModalService, Position } from '../../shared/modals';
 })
 export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnChanges {
   // Inputs
+  // tslint:disable-next-line:no-input-rename
   @Input('dimensions') dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
+  // tslint:disable-next-line:no-input-rename
   @Input('source') source: string;
   // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
+  // tslint:disable-next-line:no-input-rename
   @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
   // dictates whether this component should remain in the document flow or not (IE if this is in a modal, inflow should be false)
+  // tslint:disable-next-line:no-input-rename
   @Input('inflow') inflow: boolean;
 
   // Outputs
@@ -61,6 +66,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
 
   mappingsQueryError = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('showMappedOutcomesTitle') showMappedOutcomesTitle;
 
   constructor(
@@ -152,7 +158,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
             try {
               this.bindFilterInput();
               this.mappingsFilterInputError = false;
-            } catch(error) {
+            } catch (error) {
               this.mappingsFilterInputError = false;
             }
           }

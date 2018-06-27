@@ -78,7 +78,6 @@
     "transform": {
       "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testRegex": "/.*/.*(spec).(ts|tsx|js)$",
     "moduleNameMapper": {
       "route": "<rootDir>/src/environments/route.ts",
       "tooltip-text": "<rootDir>/src/environments/tooltip-text.ts",
