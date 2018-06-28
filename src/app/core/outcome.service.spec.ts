@@ -13,4 +13,10 @@ describe('OutcomeService', () => {
   it('should be created', inject([OutcomeService], (service: OutcomeService) => {
     expect(service).toBeTruthy();
   }));
+  it('should return outcomes', inject([OutcomeService], (service: OutcomeService) => {
+    return service.getOutcomes().then(val => {
+      console.log(val);
+      expect(val).toBeTruthy();
+    });
+  }));
 });
