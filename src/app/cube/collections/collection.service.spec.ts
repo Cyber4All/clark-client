@@ -14,4 +14,8 @@ describe('CollectionService', () => {
   it('should be created', inject([CollectionService], (service: CollectionService) => {
     expect(service).toBeTruthy();
   }));
+  it('should return collection', inject([CollectionService], (service: CollectionService) => {
+    const result = service.fetchCollection('organizations');
+    expect(result).toBeDefined();
+  }));
 });
