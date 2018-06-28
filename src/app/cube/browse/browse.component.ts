@@ -67,7 +67,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.sendFilters();
     }));
 
-    const searchInput = document.querySelector('.search-bar input');
+    const searchInput = document.querySelector('.nav-search-bar input');
     if (searchInput) {
       this.filterInput = Observable
       .fromEvent(searchInput, 'input')
@@ -81,7 +81,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.route.params.subscribe(params => {
       params.query ? this.query.text = params.query : this.query.text = '';
       try {
-        document.querySelector('.search-bar input')['value'] = this.query.text;
+        searchInput['value'] = this.query.text;
       } catch (e) {
         // We are the piratesssss that don't do anythingggggggggggg
       }
@@ -158,7 +158,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   clearText() {
-    document.querySelector('.search-bar input')['value'] = '';
+    document.querySelector('.nav-search-bar input')['value'] = '';
     this.router.navigate(['/browse', { query: '' }]);
   }
 
