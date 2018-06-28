@@ -13,4 +13,10 @@ describe('MessagesService', () => {
   it('should be created', inject([MessagesService], (service: MessagesService) => {
     expect(service).toBeTruthy();
   }));
+  it('should return a status', inject([MessagesService], (service: MessagesService) => {
+    return service.getStatus().then(val => {
+      console.log(val);
+      expect(val).toBeTruthy();
+    });
+  }));
 });
