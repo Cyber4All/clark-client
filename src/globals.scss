@@ -35,7 +35,7 @@ body {
     .square-inner {
       width: 100%;
       background: white;
-      box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
       padding: 10px;
       border-radius: 2px;
       border: 3px solid transparent;
@@ -72,7 +72,6 @@ body {
     background: transparent;
     color: $dark-text;
     padding: 10px;
-    border-radius: 0px;
     border: 1px solid $placeholder;
     outline: 0;
     z-index: 1;
@@ -113,7 +112,7 @@ body {
   text-transform: uppercase;
   font-size: 15px;
   cursor: pointer;
-  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
   transition: opacity 0.2s ease;
   outline: none !important;
 
@@ -127,7 +126,7 @@ body {
 
     .svg-inline--fa,
     .icon {
-      margin-left: 0px;
+      margin-left: 0;
     }
   }
 
@@ -185,6 +184,8 @@ body {
   }
 
   &.on {
+    background: $green;
+
     .bg {
       background: $green;
     }
@@ -196,7 +197,7 @@ body {
 
   .handle {
     background: linear-gradient(to top, white, darken(white, 4px));
-    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -217,10 +218,6 @@ body {
     right: 0;
     bottom: 0;
     transition: background 0.2s ease;
-  }
-
-  &.on {
-    background: $green;
   }
 }
 
@@ -246,12 +243,12 @@ body {
     flex-direction: column;
 
     .button {
-      text-align: center; 
+      text-align: center;
+    }
 
-      &:not(:last-child) {
-        margin-left: 0px;
-        margin-bottom: 15px;
-      }
+    .button:not(:last-child) {
+      margin-left: 0;
+      margin-bottom: 15px;
     }
   }
 }
@@ -259,7 +256,7 @@ body {
 .notification {
   background: gradient(darken(white, 5), white, 45deg);
   border-radius: 3px;
-  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
   width: 300px;
   position: fixed;
   right: 20px;
@@ -359,7 +356,7 @@ body {
       flex-direction: row;
       justify-content: space-between;
       width: 25px;
-      padding: 5px 0px;
+      padding: 5px 0;
       cursor: pointer;
 
       .circle {
@@ -380,7 +377,7 @@ body {
 
       &.active {
         .circle {
-          margin-top: 0px;
+          margin-top: 0;
         }
 
         .circle:nth-child(2) {
@@ -401,7 +398,7 @@ body {
     }
 
     &.columns {
-      padding: 0px 15px 10px;
+      padding: 0 15px 10px;
       color: $blue-accent;
       text-transform: uppercase;
       background: transparent;
@@ -433,11 +430,11 @@ body {
   z-index: $popup-z;
   background: white;
   border-radius: 1px;
-  box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
 
   ul {
     margin: 0;
-    padding: 10px 0px;
+    padding: 10px 0;
   }
 
   li {
@@ -478,7 +475,7 @@ body {
   &.dropdown {
     $t: 7px;
     width: 200px;
-    box-shadow: 0px 0px 0px 0px transparent;
+    box-shadow: none;
     border: 2px solid #c2c2c2;
 
     &:after,
@@ -570,7 +567,7 @@ body {
   color: white;
   border-radius: 6px;
   text-align: center;
-  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
 
   .text {
     font-size: 22px;
@@ -580,7 +577,7 @@ body {
   .button {
     max-width: 300px;
     margin: auto;
-    box-shadow: 0px 3px 4px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 4px 2px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -606,8 +603,7 @@ body {
 
 // this should hold page content (IE not the topbar) and be placed inside the .outer-wrapper
 .content {
-  padding: 20px 20px 0px;
-  // height: calc(100vh - #{$topbarHeight}); // calculates the height of the content div, adjust to add things like a footer
+  padding: 20px 20px 0;
   box-sizing: border-box;
 
   & > .inner {
@@ -658,7 +654,7 @@ body {
     width: 150px;
     border-radius: 5px;
     transition: left 0.2s ease;
-    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
   }
 
   &.left {
@@ -671,6 +667,7 @@ body {
     .options .right {
       color: white;
     }
+
     .highlight {
       left: 150px;
     }
@@ -680,17 +677,20 @@ body {
 .icon.left {
   margin-right: 10px;
 }
+
 .icon.right {
   margin-left: 10px;
 }
 
-*[routerLink], *[ng-reflect-router-link] {
+*[routerLink],
+*[ng-reflect-router-link] {
   outline: none;
 }
 
 @keyframes fa-spin {
   0% {
     transform: rotate(0deg);
+
   } 100% {
     transform: rotate(1080deg);
   }

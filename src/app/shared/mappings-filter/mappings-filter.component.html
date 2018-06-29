@@ -1,7 +1,7 @@
-<div class="mappings-filter" (click)="preventClose()">
+<div class="mappings-filter" (click)="preventClose($event, 'results')">
   <div class="search-bar" [ngClass]="{'focus': focused}">
-    <input #searchInput type="search" placeholder="Search..." (focus)="focused = resultsDown = true;" (blur)="focused = false;" />
-    <div class="search-sources" tip="Filter results by sources" tipLocation="above" (click)="sourcesDown = true;">
+    <input #searchInput type="search" placeholder="Search for mappings..." (focus)="focusInput(searchInput.value)" (blur)="focused = false;" />
+    <div class="search-sources" [ngClass]="{'active': source}" tip="Filter results by sources" tipLocation="bottom" (click)="sourcesDown = true; preventClose($event, 'sources')">
       <i class="far fa-globe-americas"></i>
       <i class="far fa-angle-down"></i>
     </div>
@@ -9,23 +9,21 @@
       <i class="far fa-search"></i>
     </div>
   </div>
-  <div *ngIf="focused || resultsDown" class="result-drop main">
+  <div *ngIf="resultsDown" class="result-drop main">
     <ng-container *ngIf="!loading && outcomes?.length; else noResults">
       <ul>
         <ng-container *ngFor="let c of outcomes">
-          <li class="section">
-            {{ c.source }}
-          </li>
-          <li *ngFor="let o of c.outcomes" tip="{{o.outcome}}" tipLocation="right">
-            {{ o.name }}
+          <li class="section">{{ c.source }}</li>
+          <li *ngFor="let o of c.outcomes" tip="{{o.outcome}}" tipLocation="right" (click)="addOutcome(o)">
+            {{ o.name }} - {{ o.outcome }}
           </li>
         </ng-container>
       </ul>
     </ng-container>
   </div>
-  <div *ngIf="sourcesDown" class="result-drop source">
+  <div *ngIf="sourcesDown" class="result-drop source" (click)="preventClose($event, 'sources')">
     <ul>
-      <li *ngFor="let s of sources">{{ s }}</li>
+      <li *ngFor="let s of possibleSources" [ngClass]="{'active': source === s}" (click)="toggleSource.emit(s)">{{ s }}</li>
     </ul>
   </div>
 </div>

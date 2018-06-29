@@ -104,6 +104,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.route.params.subscribe(params => {
       params.query ? this.query.text = params.query : this.query.text = '';
+      if (params.standardOutcomes) {
+        this.query.standardOutcomes = [...params.standardOutcomes.split(',')];
+      }
       try {
         searchInput['value'] = this.query.text;
       } catch (e) {

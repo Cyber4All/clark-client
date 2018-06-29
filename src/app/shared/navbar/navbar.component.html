@@ -11,12 +11,22 @@
         <div *ngIf="version" class="version-label">{{version}}</div>
       </div>
       <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
-      <div *ngIf="!isMobile" class="nav-search-bar" [ngClass]="{'focused': searchFocused}">
-        <form (submit)="performSearch(searchBar)">
-          <input #searchBar type="search" placeholder="Search..." (focus)="searchFocused = true;" (blur)="searchFocused = false;">
-        </form>
-        <div class="icon" (click)="performSearch(searchBar)">
-          <i class="far fa-search"></i>
+      <div class="nav-search-wrapper">
+        <div class="nav-search-bars">
+          <div *ngIf="!isMobile" class="nav-search-bar" [ngClass]="{'focused': searchFocused, 'noshow': searchByMappings}">
+            <form (submit)="performSearch(searchBar)">
+              <input #searchBar type="search" placeholder="Search..." (focus)="searchFocused = true;" (blur)="searchFocused = false;">
+            </form>
+            <div class="icon" (click)="performSearch(searchBar)">
+              <i class="far fa-search"></i>
+            </div>
+          </div>
+          <div *ngIf="!isMobile" class="nav-mappings-search-bar" [ngClass]="{'focused': searchFocused, 'noshow': !searchByMappings}">
+            <clark-mappings-filter [source]="selectedSource" [close]="closeMappingsDropdown" (add)="performOutcomeSearch($event.filter)" (toggleSource)="toggleMappingsFilterSource($event)"></clark-mappings-filter>
+          </div>
+        </div>
+        <div class="nav-search-switch" (click)="searchByMappings = !searchByMappings">
+          <i class="fas fa-repeat"></i>
         </div>
       </div>
       <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile}">
@@ -54,7 +64,7 @@
   <!-- Mobile search -->
   <div class="search-slidedown" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': searchDown}">
     <form (submit)="performSearch(mobileSearch)">
-      <input #mobileSearch name="mobileSearch" placeholder="Search">
+      <input #mobileSearch name="mobileSearch" placeholder="Search...">
     </form>
     <div class="button icon-only good" (click)="performSearch(mobileSearch)"><i class="far fa-search"></i></div>
   </div>
