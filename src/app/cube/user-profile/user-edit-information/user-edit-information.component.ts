@@ -17,7 +17,7 @@ import { User } from '@cyber4all/clark-entity';
 import { Subscription, Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-user-edit-information',
+  selector: 'cube-app-user-edit-information',
   templateUrl: './user-edit-information.component.html',
   styleUrls: ['./user-edit-information.component.scss']
 })

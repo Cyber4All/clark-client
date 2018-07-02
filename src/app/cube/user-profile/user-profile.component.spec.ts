@@ -13,13 +13,15 @@
 //     .compileComponents();
 //   }));
 
-//   beforeEach(() => {
+//   test('snapshot of user-profile component', () => {
 //     fixture = TestBed.createComponent(UserProfileComponent);
 //     component = fixture.componentInstance;
 //     fixture.detectChanges();
+
+//     expect(fixture).toMatchSnapshot();
 //   });
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
+// //   it('should create', () => {
+// //     expect(component).toBeTruthy();
+// //   });
 // });

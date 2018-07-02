@@ -22,13 +22,15 @@ describe('NavbarComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(() => {
+  test('snap of component', () => {
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // it('should create', () => {
+  //   expect(component).toBeTruthy();
+  // });
 });
