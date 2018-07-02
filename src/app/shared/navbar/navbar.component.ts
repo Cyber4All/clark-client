@@ -30,7 +30,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   version: any;
   subs: Subscription[] = [];
 
-  searchFocusSubject: Subject<string> = new Subject();
+  searchFocusSubject: Subject<any> = new Subject();
+  searchBlurSubject: Subject<any> = new Subject();
 
   // flags
   hideNavbar = false;
@@ -38,10 +39,20 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   loggedin = this.authService.user ? true : false;
   menuOpen = false; // flag for wheher or not the mobile menu is out
   searchDown = false; // flag for wheher or not the search is down
+  searchOverflow = false; // flag for wheher or not the search is down
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.windowWidth = event.target.innerWidth;
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  onKeyUp(event: KeyboardEvent) {
+    event.preventDefault();
+    if (event.keyCode === 27) {
+      // escape key pressed, close the search bar for Sean
+      this.hideSearch();
+    }
   }
 
   constructor(
@@ -102,8 +113,16 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
     // wait for animation and then focus input
     setTimeout(() => {
-      this.searchFocusSubject.next();
+      this.searchOverflow = true;
+      if (this.isMobile) {
+        this.searchFocusSubject.next();
+      }
     }, 450);
+  }
+
+  hideSearch() {
+    this.searchBlurSubject.next();
+    this.searchDown = this.searchOverflow = false;
   }
 
 

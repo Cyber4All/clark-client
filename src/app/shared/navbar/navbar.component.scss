@@ -8,17 +8,15 @@
 }
 
 .clark-search-wrapper {
+  max-width: 600px;
   margin: auto;
-  position: fixed;
-  left: 0; right: 0;
-  padding: 20px;
   background: white;
-  z-index: 9999999;
-  top: -300px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.45s ease;
   width: 100%;
+  position: relative;
+  overflow: hidden;
+  max-height: 46px;
+  height: 100%;
+  transition: all 0.45s ease-out;
 
   .clark-search-inner {
     position: relative;
@@ -33,20 +31,45 @@
       font-size: 32px;
       opacity: 0;
       transition: all 0.2s ease;
-      transition-delay: 0.35s;
+      transition-delay: 0.45s;
     }
   }
 
-  &.down {
-    top: 0;
-    opacity: 1;
-    visibility: visible;
-    border-radius: 0;
-    width: 100%;
+  &.down {  
+    overflow: hidden;
+    padding: 10px 0px;
+    max-height: 200px !important;
+
+    &.overflow {
+      overflow: visible !important;
+    }
 
     .close {
       bottom: -70px !important;
       opacity: 1 !important;
+    }
+  }
+
+  &.mobile {
+    position: fixed;
+    overflow: visible;
+    top: -200px;
+    left: 0;
+    right: 0;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 5;
+    padding: 20px;
+    max-width: 100%;
+    max-width: none !important;
+    max-height: none !important;
+    height: auto;
+
+    &.down {
+      top: 0;
+      opacity: 1;
+      visibility: visible;
+      max-height: auto !important;
     }
   }
 }
@@ -57,7 +80,7 @@
   width: 100%;
   padding: 10px;
   background: white;
-  z-index: 3;
+  z-index: 4;
   box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.08);
   color: $blue-accent;
   box-sizing: border-box;
@@ -65,6 +88,22 @@
   .inner {
     max-width: $max-width;
     box-sizing: border-box;
+
+
+    & > * {
+      max-height: 46px;
+      
+      &:not(.clark-search-wrapper) {
+        transition: all 0.2s ease;
+        transition-delay: 0.15s;
+        opacity: 1;
+
+        &.noShow {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+    }
   }
 
   .flex {
@@ -87,37 +126,6 @@
     }
   }
 
-  .nav-search-bar {
-    $color: lighten(desaturate($blue-accent, 30), 54);
-    border-radius: 2px;
-    overflow: hidden;
-    max-width: 550px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    opacity: 1;
-    margin-right: 0px;
-    visibility: visible;
-    transition: all 0.1s ease;
-    background: $color;
-    cursor: pointer;
-    border: 2px solid $color;
-    margin: auto 20px;
-
-    span {
-      padding: 10px;
-    }
-
-    .icon {
-      color: $blue-accent;
-      padding: 9px 12px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  }
-
   .version-label {
     font-size: 14px;
     border-radius: 3px;
@@ -133,6 +141,7 @@
   .logo {
     cursor: pointer;
     position: relative;
+    left: 0;
 
     & > div {
       display: inline-flex;
@@ -175,6 +184,8 @@
     font-size: 16px;
     cursor: pointer;
     flex-shrink: 0;
+    right: 0;
+    position: relative;
 
     & > * {
       @include vert-center;
@@ -306,7 +317,7 @@
   left: 0;
   right: 0;
   background: darken($blue-accent, 25);
-  z-index: 99999;
+  z-index: 3;
   opacity: 0;
   transition: all 0.5s ease;
   visibility: hidden;

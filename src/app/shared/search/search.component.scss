@@ -5,24 +5,41 @@ $buttonWidth: 135px;
 .clark-search {
 
     .search-options {
-        max-width: 550px;
+        max-width: 600px;
         margin: auto;
         z-index: 2;
         position: relative;
         height: 50px;
+        padding: 0px 10px;
+        box-sizing: border-box;
 
-        .keyword-search {
-            width: 100%;
-            background: white;
+        ::ng-deep .input {
+            $color: lighten(desaturate($blue-accent, 30), 54);
             border-radius: 2px;
-            padding: 3px;
-            box-shadow: 0px 0px 12px 2px rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.3);
-            transition: all 0.2s ease;
+            overflow: hidden;
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 1;
+            margin-right: 0px;
+            visibility: visible;
+            transition: all 0.1s ease;
+            background: $color;
+            cursor: pointer;
+            border: 2px solid $color;
 
-            form {
-                display: flex;
-                flex-direction: row;
-                align-items: stretch;
+            span {
+                padding: 10px;
+            }
+
+            .icon {
+                color: $blue-accent;
+                padding: 9px 12px;
+                font-size: 16px;
+                cursor: pointer;
             }
 
             input {
@@ -35,21 +52,16 @@ $buttonWidth: 135px;
                 outline: 0;
                 padding: 10px;
             }
+        }
 
-            .icon {
-                padding: 6px;
-                flex-grow: 0;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                cursor: pointer;
-
-                .svg-inline--fa {
-                    color: $blue-accent;
-                }
-            }
+        .keyword-search form {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            width: 100%;
         }
     }
+
 
     .description {
         text-align: center;

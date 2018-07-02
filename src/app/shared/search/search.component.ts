@@ -3,7 +3,6 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
-  Renderer2,
   Output,
   EventEmitter,
   AfterViewChecked,
@@ -26,30 +25,42 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('optionTwoSwitch') optionTwoSwitch: ElementRef;
 
   @Input() focus: Subject<any>;
+  @Input() blur: Subject<any>;
 
-  @Output() close: EventEmitter<string> = new EventEmitter();
+  @Output() didFocus: EventEmitter<any> = new EventEmitter();
+  @Output() didBlur: EventEmitter<any> = new EventEmitter();
+  @Output() close: EventEmitter<any> = new EventEmitter();
 
   subs: Subscription[] = [];
 
   selected = 1;
   selectedSource: string;
-  toggled = true;
+  toggled = false;
 
   // This is passed to the mappings-filter component, which will subscribe to it. On event, the component will close all dropdowns
-  closeMappingsDropdown: Subject<string> = new Subject();
-
-  // This is passed to the mappings-filter component, which will subscribe to it. On event, component will focus the input
-  focusMappingsFilter: Subject<string> = new Subject();
-
-  descriptionText = (this.selected === 1) ? 'Search for learning objects by organization, user, or keyword/phrase.' :
+  closeMappingsDropdown: Subject<any> = new Subject();
+  focusMappingsDropdown: Subject<any> = new Subject();
+  blurMappingsDropdown: Subject<any> = new Subject();
+  descriptionText = (this.selected === 1) ?
+    'Search for learning objects by organization, user, or keyword/phrase.' :
     'Search for learning objects by mapped standard outcomes';
 
-  constructor(private renderer: Renderer2, private router: Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     if (this.focus) {
-      this.subs.push(this.focus.subscribe(() => {
-        this.performFocus();
+      this.subs.push(this.focus.subscribe({
+        next: () => {
+          this.performFocus();
+        }
+      }));
+    }
+
+    if (this.blur) {
+      this.subs.push(this.blur.subscribe({
+        next: () => {
+          this.performBlur();
+        }
       }));
     }
   }
@@ -76,11 +87,19 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   performFocus() {
-    console.log(this.selected);
     if (this.selected === 1) {
       this.searchInput.nativeElement.focus();
     } else {
-      this.focusMappingsFilter.next();
+      console.log('firing next');
+      this.focusMappingsDropdown.next();
+    }
+  }
+
+  performBlur() {
+    if (this.selected === 1) {
+      this.searchInput.nativeElement.blur();
+    } else {
+      this.blurMappingsDropdown.next();
     }
   }
 
@@ -92,6 +111,8 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     searchbar.value = searchbar.value.trim();
     const query = searchbar.value;
     if (query.length) {
+      searchbar.blur();
+      this.didBlur.emit();
       this.router.navigate(['/browse', { query }]);
     }
 

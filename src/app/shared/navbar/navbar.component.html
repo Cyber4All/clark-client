@@ -2,27 +2,20 @@
 <ng-container *ngIf="!hideNavbar">
   <app-contextmenu [content]="modalCtrl.contextMenuContent"></app-contextmenu>
   <app-dialogmenu [content]="modalCtrl.dialogMenuContent"></app-dialogmenu>
-  <div class="clark-search-wrapper" [ngClass]="{'down': searchDown}">
-    <div class="clark-search-inner">
-      <clark-search [focus]="searchFocusSubject"></clark-search>
-      <div class="close" (click)="searchDown = false;"><i class="fal fa-times"></i></div>
-    </div>
-  </div>
-
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
-      <div class="logo flex h left-right" routerLink="/home">
+      <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
         <div class="logo-image"></div>
         <div class="logo-link">C.L.A.R.K.</div>
         <div *ngIf="version" class="version-label">{{version}}</div>
       </div>
-      <div *ngIf="!isMobile" class="nav-search-bar" (click)="showSearch()">
-        <span>Search...</span>
-        <div class="icon">
-          <i class="far fa-search"></i>
+      <div class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
+        <div class="clark-search-inner">
+          <clark-search [focus]="searchFocusSubject" [blur]="searchBlurSubject" (didFocus)="showSearch();" (didBlur)="hideSearch()"></clark-search>
+          <div class="close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
         </div>
       </div>
-      <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile}">
+      <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
         <ng-container *ngIf="isMobile; else userTemplate" [ngTemplateOutlet]="mobileUserTemplate"></ng-container>
       </div>
 
@@ -52,7 +45,7 @@
   </div>
 
   <!-- Overlay under mobile slideout -->
-  <div class="slideout-underlay" *ngIf="!hideNavbar" [ngClass]="{'active': menuOpen || searchDown}" (click)="menuOpen = false; searchDown = false;"></div>
+  <div class="slideout-underlay" *ngIf="!hideNavbar" [ngClass]="{'active': menuOpen || searchDown}" (click)="menuOpen = false; hideSearch();"></div>
   
   <!-- Mobile menu slideout -->
   <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">

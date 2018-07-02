@@ -30,9 +30,11 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   @Input() source: string;
-  @Input() close: Subject<any>;
-  @Input() focus: Subject<any>;
+  @Input() close: Subject<boolean>;
+  @Input() focus: Subject<boolean>;
+  @Input() blur: Subject<boolean>;
 
+  @Output() didFocus: EventEmitter<any> = new EventEmitter();
   @Output() add: EventEmitter<{ category: string, filter: string }> = new EventEmitter();
   @Output() remove: EventEmitter<{ category: string, filter: string }> = new EventEmitter();
   @Output() toggleSource: EventEmitter<string> = new EventEmitter();
@@ -64,7 +66,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
 
   /**
-   * 
+   * Listener for handling clicking away from a dropdown
    * @param step If true, will close the top-most dropdown and return. (1 at a time) otherwise closes everything
    */
   @HostListener('window:click') handleClickAway(step?: boolean) {
@@ -95,6 +97,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private outcomeService: OutcomeService) { }
 
   ngOnInit() {
+    console.log('mappings init');
 
     this.subs.push(
       Observable.fromEvent(this.searchInput.nativeElement, 'input')
@@ -113,14 +116,29 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     );
 
     if (this.close) {
-      this.subs.push(this.close.subscribe(() => {
-        this.closeDropdowns();
+      this.subs.push(this.close.subscribe({
+        next: () => {
+          this.closeDropdowns();
+        }
       }));
     }
 
     if (this.focus) {
-      this.subs.push(this.focus.subscribe(() => {
-        this.searchInput.nativeElement.focus();
+      this.subs.push(this.focus.subscribe({
+        next: () => {
+          console.log('focusing')
+          this.searchInput.nativeElement.focus();
+        }
+      }));
+      console.log('focus sub');
+    }
+
+    if (this.blur) {
+      this.subs.push(this.blur.subscribe({
+        next: () => {
+          console.log('bluring')
+          this.searchInput.nativeElement.blur();
+        }
       }));
     }
   }
@@ -157,6 +175,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.focused = true;
+    this.didFocus.emit();
   }
 
   addOutcome(outcome: LearningOutcome) {
