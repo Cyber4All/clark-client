@@ -70,7 +70,7 @@ linters:
     enabled: false
 
   ZeroUnit:
-    enabled: false
+    enabled: true
 
   Indentation:
     enabled: false
