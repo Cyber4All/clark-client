@@ -18,7 +18,7 @@ describe('Cube', () => {
 
     it('Navbar renders correctly', () => {
         cy.get('.topbar').contains('C.L.A.R.K.');
-        cy.get('div.nav-search-bar');
+        // cy.get('.nav-search-bar');
         cy.get('.topbar').contains('Sign in');
         cy.get('.topbar').contains('Register');
     });
@@ -26,6 +26,7 @@ describe('Cube', () => {
     it('Sign in', () => {
         // Click sign in button 
         cy.contains('Sign in').click();
+
 
         // Assert URL 
         cy.url().should('include', 'login');
@@ -54,12 +55,30 @@ describe('Cube', () => {
         cy.url().should('include', 'browse');
     });
 
-    // it('Navigate to details', () => {
-    //     cy.get('.card').click({ multiple: true });
+    it('Navigate to details', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
 
-    //     // Assert URL 
-    //     cy.url().should('include', 'details');
-    // });
+        // Click left-most card
+        cy.get('.learning-object').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'details');
+    });
+
+    it('Navigate to details and click on author name to view author profile', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
+
+        // Click left-most card
+        cy.get('.learning-object').first().click();
+
+        // Click author name
+        cy.get('.author').children('.link').click();
+
+        // Assert URL 
+        cy.url().should('include', 'user');
+    });
 
     it('Clicking display search without entering text does not search', () => {
         cy.contains('Search').click();
@@ -191,4 +210,5 @@ describe('Cube', () => {
         // Assert home URL
         cy.url().should('include', 'home');
     });
+
 });
