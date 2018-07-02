@@ -1,0 +1,147 @@
+@import '~_vars.scss';
+
+$buttonWidth: 135px;
+
+.clark-search {
+
+    .search-options {
+        max-width: 550px;
+        margin: auto;
+        z-index: 2;
+        position: relative;
+        height: 50px;
+
+        .keyword-search {
+            width: 100%;
+            background: white;
+            border-radius: 2px;
+            padding: 3px;
+            box-shadow: 0px 0px 12px 2px rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.3);
+            transition: all 0.2s ease;
+
+            form {
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+            }
+
+            input {
+                width: 100%;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                border: 0;
+                background: transparent;
+                flex-grow: 2;
+                outline: 0;
+                padding: 10px;
+            }
+
+            .icon {
+                padding: 6px;
+                flex-grow: 0;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                cursor: pointer;
+
+                .svg-inline--fa {
+                    color: $blue-accent;
+                }
+            }
+        }
+    }
+
+    .description {
+        text-align: center;
+        color: lighten($dark-text, 20);
+        margin-top: 10px;
+    }
+
+    .search-switch {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        width: calc(#{$buttonWidth} * 2);
+        margin: auto;
+        position: relative;
+        z-index: 1;
+        margin-top: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 2px;
+
+        .highlight {
+            width: $buttonWidth;
+            height: 100%;
+            transform: scale(1);
+            background: linear-gradient(45deg, darken($bright-blue, 15), $bright-blue);
+            position: absolute;
+            left: 0;
+            box-sizing: border-box;
+            border-radius: 2px;
+            animation: left 0.6s linear forwards;
+            box-shadow: 0px 2px 12px 2px rgba(0, 0, 0, 0.1);
+
+            &.right {
+                animation: right 0.6s linear forwards;
+            }
+        }
+
+        .option {
+            width: $buttonWidth;
+            text-transform: uppercase;
+            color: $dark-text;
+            font-size: 15px;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+            z-index: 2;
+            position: relative;
+            transition: all 0.2s ease;
+            color: rgba(0, 0, 0, 0.5);
+            
+            &:not(.active) {
+                cursor: pointer;
+            }
+
+            &:hover {
+                color: $bright-blue;
+            }
+
+            &.active {
+                color: white;
+            }
+        }
+    }
+}
+
+@keyframes right {
+    0% {
+        transform: scale(1);
+        left: 0;
+    } 33% {
+        transform: scale(0.8);
+        left: 0;
+    } 66% {
+        transform: scale(0.8);
+        left: $buttonWidth;
+    } 100% {
+        transform: scale(1);
+        left: $buttonWidth;
+    }
+}
+
+@keyframes left {
+    0% {
+        transform: scale(1);
+        left: $buttonWidth;
+    } 33% {
+        transform: scale(0.8);
+        left: $buttonWidth;
+    } 66% {
+        transform: scale(0.8);
+        left: 0;
+    } 100% {
+        transform: scale(1);
+        left: 0px;
+    }
+}

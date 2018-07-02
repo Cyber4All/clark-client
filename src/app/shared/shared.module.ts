@@ -26,6 +26,7 @@ import { UserCardComponent } from '../shared/user-card/user-card.component';
 import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
 import { FilterComponent } from './filter/filter.component';
 import { MappingsFilterComponent } from './mappings-filter/mappings-filter.component';
+import { SearchComponent } from './search/search.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -60,7 +61,8 @@ import { MappingsFilterComponent } from './mappings-filter/mappings-filter.compo
     UserCardComponent,
     LearningObjectCardDirective,
     FilterComponent,
-    MappingsFilterComponent
+    MappingsFilterComponent,
+    SearchComponent
   ],
   exports: [
     BrowseByMappingsComponent,

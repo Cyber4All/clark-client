@@ -30,19 +30,14 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   version: any;
   subs: Subscription[] = [];
 
+  searchFocusSubject: Subject<string> = new Subject();
+
   // flags
   hideNavbar = false;
   isOnion = false;
   loggedin = this.authService.user ? true : false;
-  searchFocused = false; // boolean, true when user has the default searchbar focused
-  searchByMappings = false; // if false, default search bar shown, if true mappings filter component shown
   menuOpen = false; // flag for wheher or not the mobile menu is out
-  searchDown = false; // flag for wheher or not the mobile search is down
-
-  // This is passed to the mappings-filter component, which will subscribe to it. On event, the component will close all dropdowns
-  closeMappingsDropdown: Subject<string> = new Subject();
-
-  selectedSource: string;
+  searchDown = false; // flag for wheher or not the search is down
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -100,6 +95,15 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     } else {
       this.hideNavbar = false;
     }
+  }
+
+  showSearch() {
+    this.searchDown = true;
+
+    // wait for animation and then focus input
+    setTimeout(() => {
+      this.searchFocusSubject.next();
+    }, 450);
   }
 
 
@@ -184,39 +188,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
           this.router.navigate(['onion', 'dashboard']);
         }
       }));
-  }
-
-  /**
-   * Takes a reference to the searchbar input to pass as a query to the browse component.
-   * @param searchbar reference to input
-   */
-  performSearch(searchbar) {
-    searchbar.value = searchbar.value.trim();
-    const query = searchbar.value;
-    if (query.length) {
-      this.router.navigate(['/browse', { query }]);
-    }
-
-    this.searchDown = false;
-  }
-
-  /**
-   * Takes am outcome id and passes it to the browse component as a query parameter
-   * @param outcomeId id of outcome
-   */
-  performOutcomeSearch(outcomeId) {
-    this.closeMappingsDropdown.next();
-    this.router.navigate(['/browse', { standardOutcomes: outcomeId }]);
-  }
-
-  toggleMappingsFilterSource(sourceName: string) {
-    if (sourceName === this.selectedSource) {
-      // we're toggling it off
-      this.selectedSource = undefined;
-    } else {
-      // we're changing it
-      this.selectedSource = sourceName;
-    }
   }
 
   gravatarImage(size): string {

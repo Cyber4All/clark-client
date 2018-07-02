@@ -31,6 +31,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() source: string;
   @Input() close: Subject<any>;
+  @Input() focus: Subject<any>;
 
   @Output() add: EventEmitter<{ category: string, filter: string }> = new EventEmitter();
   @Output() remove: EventEmitter<{ category: string, filter: string }> = new EventEmitter();
@@ -112,8 +113,14 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     );
 
     if (this.close) {
-      this.subs.push(this.close.subscribe(val => {
+      this.subs.push(this.close.subscribe(() => {
         this.closeDropdowns();
+      }));
+    }
+
+    if (this.focus) {
+      this.subs.push(this.focus.subscribe(() => {
+        this.searchInput.nativeElement.focus();
       }));
     }
   }

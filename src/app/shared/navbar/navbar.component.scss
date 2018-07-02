@@ -7,6 +7,50 @@
   }
 }
 
+.clark-search-wrapper {
+  margin: auto;
+  position: fixed;
+  left: 0; right: 0;
+  padding: 20px;
+  background: white;
+  z-index: 9999999;
+  top: -300px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.45s ease;
+  width: 100%;
+
+  .clark-search-inner {
+    position: relative;
+
+    .close {
+      position: absolute;
+      bottom: -50px;
+      color: white;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 32px;
+      opacity: 0;
+      transition: all 0.2s ease;
+      transition-delay: 0.35s;
+    }
+  }
+
+  &.down {
+    top: 0;
+    opacity: 1;
+    visibility: visible;
+    border-radius: 0;
+    width: 100%;
+
+    .close {
+      bottom: -70px !important;
+      opacity: 1 !important;
+    }
+  }
+}
+
 // fixed postion nav bar
 .topbar {
   position: relative;
@@ -43,60 +87,6 @@
     }
   }
 
-  .nav-mappings-search-bar {
-    max-width: 550px;
-    width: 100%;
-  }
-
-  .nav-search-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    height: 46px;
-
-    .nav-search-bars {
-      position: relative;
-      max-width: 560px;
-      width: 100%;
-    }
-
-    .nav-search-switch {
-      position: relative;
-      @include vert-center;
-      font-size: 17px;
-      color: lighten($dark-text, 10);
-      cursor: pointer;
-      margin-left: 5px;
-
-      .svg-inline--fa {
-        transform: rotate(90deg);
-      }
-
-      &:hover {
-        color: $blue-accent;
-      }
-    }
-
-    .nav-search-bar,
-    .nav-mappings-search-bar {
-      position: absolute;
-      transition: all 0.3s ease;
-
-      &.noshow {
-        visibility: hidden;
-        opacity: 0;
-        transform: rotateX(90deg);
-      }
-
-      &:not(.noshow) {
-        visibility: visible;
-        opacity: 1;
-        transform: rotateX(0deg);
-      }
-    }
-  }
-
   .nav-search-bar {
     $color: lighten(desaturate($blue-accent, 30), 54);
     border-radius: 2px;
@@ -105,35 +95,19 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     opacity: 1;
     margin-right: 0px;
     visibility: visible;
     transition: all 0.1s ease;
     background: $color;
+    cursor: pointer;
     border: 2px solid $color;
+    margin: auto 20px;
 
-
-    &.focused {
-      background: white;
-    }
-
-    form {
-      width: 100%;
-    }
-
-    input {
+    span {
       padding: 10px;
-      font-size: 14px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      border: 1px solid transparent;
-      border-right-width: 0px;
-      outline: 0;
-      background: transparent;
-      border-color: transparent;
-      width: 100%;
     }
 
     .icon {
