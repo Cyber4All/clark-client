@@ -6,7 +6,7 @@
         <div class="filters-clear-all" (click)="clearAllFilters()">Clear all filters</div>
       </div>
       <clark-filter [display]="'vertical'" [filters]="filters" (add)="addFilter($event.category, $event.filter)" (remove)="removeFilter($event.category, $event.filter)">
-        <ng-template><clark-mappings-filter (add)="addFilter($event.category, $event.filter)"></clark-mappings-filter></ng-template>
+        <!-- <ng-template><clark-mappings-filter (add)="addFilter($event.category, $event.filter)"></clark-mappings-filter></ng-template> -->
       </clark-filter>
     </div>
     <div class="content">

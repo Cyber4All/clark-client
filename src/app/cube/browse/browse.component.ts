@@ -67,11 +67,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
         ...
         Object.values(AcademicLevel).map(l => ({name: l.toLowerCase(), initial: false, toolTip: this.tooltipText[l.toLowerCase()]})),
       ]
-    },
-    {
-      name: 'mappings',
-      type: 'custom'
-    },
+    }
   ];
   filteringSubject: any;
 
