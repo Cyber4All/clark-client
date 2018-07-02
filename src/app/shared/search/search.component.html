@@ -1,0 +1,28 @@
+<div class="clark-search">
+  <div class="search-options">
+    <div *ngIf="selected == 1" class="keyword-search input">
+      <form (submit)="performSearch(searchInput)">
+        <input #searchInput type="search" placeholder="Search..." (focus)="didFocus.emit()" />
+        <div class="icon"><i class="far fa-search"></i></div>
+      </form>
+    </div>
+    <div *ngIf="selected == 2">
+      <clark-mappings-filter [source]="selectedSource" [focus]="focusMappingsDropdown" [blur]="blurMappingsDropdown" [close]="closeMappingsDropdown" (add)="performOutcomeSearch($event.filter)" (toggleSource)="toggleMappingsFilterSource($event)" (didFocus)="didFocus.emit()"></clark-mappings-filter>
+    </div>
+  </div>
+  <div class="description">
+    {{
+      (selected === 1) ? 'Search for learning objects by organization, user, or keyword/phrase.' :
+      'Search for learning objects by mapped standard outcomes.'
+    }}
+  </div>
+  <div class="search-switch">
+    <div #optionOneSwitch class="option option-one" [ngClass]="{'active': selected === 1}" (click)="toggle(1)">
+      Keywords
+    </div>
+    <div #optionTwoSwitch class="option option-two" [ngClass]="{'active': selected === 2}" (click)="toggle(2)">
+      Outcomes
+    </div>
+    <div class="highlight" [ngClass]="{'right': selected === 2}"></div>
+  </div>
+</div>
