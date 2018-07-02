@@ -97,8 +97,6 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private outcomeService: OutcomeService) { }
 
   ngOnInit() {
-    console.log('mappings init');
-
     this.subs.push(
       Observable.fromEvent(this.searchInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
@@ -126,17 +124,14 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (this.focus) {
       this.subs.push(this.focus.subscribe({
         next: () => {
-          console.log('focusing')
           this.searchInput.nativeElement.focus();
         }
       }));
-      console.log('focus sub');
     }
 
     if (this.blur) {
       this.subs.push(this.blur.subscribe({
         next: () => {
-          console.log('bluring')
           this.searchInput.nativeElement.blur();
         }
       }));

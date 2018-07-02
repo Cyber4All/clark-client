@@ -90,7 +90,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (this.selected === 1) {
       this.searchInput.nativeElement.focus();
     } else {
-      console.log('firing next');
       this.focusMappingsDropdown.next();
     }
   }
