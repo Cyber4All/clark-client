@@ -52,15 +52,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   sourcesDown = false;
 
   // TODO: sources should be fetched from an API route to allow dynamic configuration
-  possibleSources = [
-    'CAE Cyber Defense',
-    'CAE Cyber Ops',
-    'CS2013',
-    'NCWF',
-    'NCWF KSAs',
-    'NCWF Tasks',
-    'CSEC'
-  ];
+  possibleSources = [];
 
   filter: { name?: string, author?: string, date?: string, filterText?: string } = {};
 
@@ -136,6 +128,10 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
         }
       }));
     }
+
+    this.outcomeService.getSources().then(val => {
+      this.possibleSources = val;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

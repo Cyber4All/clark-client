@@ -22,22 +22,27 @@
     </ng-container>
   </div>
   <div *ngIf="sourcesDown" class="result-drop source" (click)="preventClose($event, 'sources')">
-    <ul>
-      <li *ngFor="let s of possibleSources" [ngClass]="{'active': source === s}" (click)="toggleSource.emit(s)">{{ s }}</li>
-    </ul>
+    <ng-container *ngIf="possibleSources.length; else loadingTemplate">
+      <ul>
+        <li *ngFor="let s of possibleSources" [ngClass]="{'active': source === s}" (click)="toggleSource.emit(s)">{{ s }}</li>
+      </ul>
+    </ng-container>
   </div>
 </div>
 
 <ng-template #noResults >
-  <ng-container *ngIf="loading; else introTemplate">
-    <div class="loading">
-      <i class="far fa-spinner-third fa-spin"></i>
-    </div>
+  <ng-container *ngIf="loading; else introTemplate" [ngTemplateOutlet]="loadingTemplate">
   </ng-container>
 </ng-template>
 
 <ng-template #introTemplate>
   <div *ngIf="outcomes" class="intro">
     We couldn't find anything for that query!
+  </div>
+</ng-template>
+
+<ng-template #loadingTemplate>
+  <div class="loading">
+    <i class="far fa-spinner-third fa-spin"></i>
   </div>
 </ng-template>

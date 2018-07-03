@@ -323,7 +323,7 @@
   left: 0;
   right: 0;
   background: darken($blue-accent, 25);
-  z-index: 3;
+  z-index: 5;
   opacity: 0;
   transition: all 0.5s ease;
   visibility: hidden;
@@ -331,6 +331,10 @@
   &.active {
     opacity: 0.6;
     visibility: visible;
+  }
+
+  &.underNav {
+    z-index: 3 !important;
   }
 }
 
@@ -409,9 +413,11 @@
         margin: 0;
 
         li {
+          font-size: 16px;
           cursor: pointer;
           list-style-type: none;
           padding: 5px 0;
+          color: $dark-text;
 
           &:not(:last-child) {
             margin-bottom: 10px;

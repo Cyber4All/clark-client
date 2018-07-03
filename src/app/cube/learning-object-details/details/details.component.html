@@ -27,20 +27,22 @@
     </div>
     <div class="sidebar">
       <div class="inner">
-        <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
-          class="button good" (click)="addToCart(true)">
-          <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
-            <span *ngIf="downloading">
+        <div class="btn-group vertical">
+          <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
+            class="button good" (click)="addToCart(true)">
+            <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
+              <span *ngIf="downloading">
+                <i class="fal fa-spinner-third fa-spin"></i>
+              </span>
+            </span>
+            <span *ngIf="!canDownload">Not available for download</span>
+          </div>
+          <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
+            {{ saved ? 'Saved to your library!' : 'Save to Library' }}
+            <span *ngIf="addingToLibrary">
               <i class="fal fa-spinner-third fa-spin"></i>
             </span>
-          </span>
-          <span *ngIf="!canDownload">Not available for download</span>
-        </div>
-        <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
-          {{ saved ? 'Saved to your library!' : 'Save to Library' }}
-          <span *ngIf="addingToLibrary">
-            <i class="fal fa-spinner-third fa-spin"></i>
-          </span>
+          </div>
         </div>
         <ng-container *ngIf="!auth.user">
           <div class="login-msg">Please

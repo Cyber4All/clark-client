@@ -1,38 +1,51 @@
 @import '~_vars.scss';
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 $footer-height: 250px;
+
 footer {
+  width: 100%;
   color: whitesmoke;
   background: $blue-gradient;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column;
+  align-items: center;
   padding: 20px;
+  text-align: center;
+
+  .inner {
+    max-width: $max-width;
+  }
+
   .funding-info {
     font-size: 16px;
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
     .nsa-wrapper {
       margin-top: 50px;
       text-align: center;
       display: flex;
-      flex-flow: row nowrap;
+      flex-flow: column;
+      align-items: center;
+
       p {
         color: whitesmoke;
         margin: 0;
-        max-width: 400px;
         display: flex;
         flex-direction: column;
         align-self: center;
       }
     }
+
     img {
       margin-bottom: 10px;
       height: 75px;
       width: 75px;
     }
   }
+
   .small-links {
     position: relative;
     box-sizing: border-box;
@@ -41,23 +54,29 @@ footer {
     display: flex;
     flex-flow: row nowrap;
     margin-bottom: auto;
-    &>*:not(:last-child):after {
+    justify-content: center;
+    margin-top: 20px;
+
+    & > *:not(:last-child):after {
       content: '|';
       padding: 0 8px;
       position: relative;
     }
   }
+
   a,
   .small-links {
     color: whitesmoke;
     font-size: 16px;
   }
+
   .notice {
     color: whitesmoke;
-    max-width: 800px;
+
     p {
       font-size: 12px;
     }
+
     .notice-title {
       font-size: 14px;
     }
@@ -65,13 +84,15 @@ footer {
 }
 
 @media(max-width: 750px) {
+
   footer {
-    flex-direction: column !important; // justify-content: center;
-    align-items: center;
-    &>* {
+
+    & > * {
+
       &:not(:last-child) {
         margin-bottom: 25px;
       }
+
       &.small-links {
         padding-left: 0 !important;
       }

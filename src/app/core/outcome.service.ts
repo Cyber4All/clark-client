@@ -24,6 +24,17 @@ export class OutcomeService {
       });
   }
 
+  getSources(): Promise<string[]> {
+    return this.http.get(environment.suggestionUrl + '/outcomes/sources', { headers: this.headers })
+      .toPromise()
+      .then(res => {
+        console.log(res);
+        if (res.ok) {
+          return res.json();
+        }
+      });
+  }
+
   private formatFilter(filter) {
     if (!filter) { return {}; }
 
