@@ -3,7 +3,7 @@ import { SortType, OrderBy } from './../../shared/interfaces/query';
 import { ModalService, ModalListElement, Position} from '../../shared/modals';
 import { Router } from '@angular/router';
 import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
-import { Component, OnInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, OnDestroy, HostListener } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
@@ -76,8 +76,17 @@ export class BrowseComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   contextMenuSubscriptions: Subscription[] = [];
 
+  filtersDownMobile = false;
+  tempFilters: {name: string, value: string, active?: boolean}[] = [];
+  windowWidth: number;
+
+  @HostListener('window:resize', ['$event']) handelResize(event) {
+    this.windowWidth = event.target.innerWidth;
+  }
+
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
     private router: Router, private modalService: ModalService, public mappingService: SuggestionService) {
+      this.windowWidth = window.innerWidth;
       this.learningObjects = Array(20).fill(new LearningObject);
   }
 
@@ -87,33 +96,25 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.sendFilters();
     }));
 
-    const searchInput = document.querySelector('.nav-search-bar input');
-    if (searchInput) {
-      this.filterInput = Observable
-      .fromEvent(searchInput, 'input')
-      .map(x => (<HTMLInputElement>x['currentTarget']).value).debounceTime(650);
-
-      this.subscriptions.push(this.filterInput.subscribe(val => {
-        this.router.navigate(['/browse', { query: val }]);
-      }));
-    }
-
     this.subscriptions.push(this.route.params.subscribe(params => {
       params.query ? this.query.text = params.query : this.query.text = '';
+
       if (params.standardOutcomes) {
         this.query.standardOutcomes = [...params.standardOutcomes.split(',')];
+      } else {
+        this.query.standardOutcomes = []
       }
-      try {
-        searchInput['value'] = this.query.text;
-      } catch (e) {
-        // We are the piratesssss that don't do anythingggggggggggg
-      }
+
       this.fetchLearningObjects(this.query);
     }));
 
     this.subscriptions.push(this.mappingService.mappedSubject.subscribe(val => {
       this.query.standardOutcomes = this.mappingService.mappedStandards;
     }));
+  }
+
+  get isMobile(): boolean {
+    return this.windowWidth < 750;
   }
 
   // creates an array of numbers where each represents a page that can be navigated to.
@@ -175,27 +176,67 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
+  clearSearch() {
+    this.router.navigate(['browse']);
+  }
+
   get sortString() {
     return (this.query.orderBy) ? this.query.orderBy.replace(/_/g, '')
       + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
   }
 
-  clearText() {
-    document.querySelector('.nav-search-bar input')['value'] = '';
-    this.router.navigate(['/browse', { query: '' }]);
+  toggleFilters() {
+    this.filtersDownMobile = !this.filtersDownMobile;
+  }
+
+  closeFilters() {
+    this.tempFilters = [];
+    this.toggleFilters();
+  }
+
+  /**
+   * This is used only on modal layouts, injects the tempFilter storage into the query object and sends it
+   */
+  applyFilters() {
+    for (let i = 0, l = this.tempFilters.length; i < l; i++) {
+      const o = this.tempFilters[i];
+      this.modifyFilter(o.name, o.value, o.active);
+    }
+
+    this.tempFilters = [];
+    this.sendFilters();
   }
 
   addFilter(key: string, value: string) {
-    this.modifyFilter(key, value, true);
-    this.filteringSubject.next();
+    if (!this.filtersDownMobile) {
+      this.modifyFilter(key, value, true);
+      this.filteringSubject.next();
+    } else {
+      this.tempFilters.push({name: key, value, active: true});
+    }
   }
 
   removeFilter(key: string, value: string) {
-    this.modifyFilter(key, value);
-    this.filteringSubject.next();
+    if (!this.filtersDownMobile) {
+      this.modifyFilter(key, value);
+      this.filteringSubject.next();
+    } else {
+      for (let i = 0, l = this.tempFilters.length; i < l; i++) {
+        const f = this.tempFilters[i];
+
+        if (f.name === key && f.value === value) {
+          this.tempFilters.splice(i, 1);
+          return;
+        }
+      }
+
+      // we didn't find it
+      this.tempFilters.push({name: key, value, active: false});
+      console.log(this.tempFilters);
+    }
   }
 
-  clearAllFilters() {
+  clearAllFilters(sendFilters: boolean = true) {
     for (let i = 0, l = this.filters.length; i < l; i++) {
       if (this.filters[i].values) {
         for (let k = 0, j = this.filters[i].values.length; k < j; k++) {
@@ -204,7 +245,11 @@ export class BrowseComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.filteringSubject.next();
+    this.tempFilters = [];
+
+    if (sendFilters) {
+      this.filteringSubject.next();
+    }
   }
 
   private modifyFilter(key: string, value: string, active = false) {
@@ -249,6 +294,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
         this.query[category.name] = [];
       }
     }
+
+    console.log(this.query);
 
     this.fetchLearningObjects(this.query);
   }
@@ -305,16 +352,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
        console.log(`Error: ${e}`);
     }
   }
-
-  // toggleMappingsPopup() {
-  //   this.mappingsPopup = !this.mappingsPopup;
-  //   this.modalService.closeAll();
-
-  //   if (!this.mappingsPopup) {
-  //     this.query.standardOutcomes = this.mappingService.mappedStandards;
-  //     this.sendFilters();
-  //   }
-  // }
 
   ngOnDestroy() {
     for (let i = 0; i < this.subscriptions.length; i++) {

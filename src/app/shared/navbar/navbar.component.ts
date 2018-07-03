@@ -41,6 +41,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   searchDown = false; // flag for wheher or not the search is down
   searchOverflow = false; // flag for wheher or not the search is down
 
+  url: string;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -80,6 +82,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
         // hide navbar if it should be hidden
         const root: ActivatedRoute = this.route.root;
         this.hideNavbar = root.children[0].snapshot.data.hideTopbar;
+
+        this.url = e.url;
       }
     }));
 
@@ -127,9 +131,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
 
   logout() {
-    this.authService.logout().then(() => {
-      window.location.reload();
-    });
+    this.authService.logout();
   }
 
   userprofile() {
@@ -147,7 +149,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
         'dropdown',
         [
           new ModalListElement(
-            '<i class="fas fa-user-circle fa-fw"></i>View profile',
+            '<i class="far fa-user-circle fa-fw"></i>View profile',
             'userprofile'
           ),
           new ModalListElement(
@@ -159,7 +161,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
         null,
         new Position(
           this.modalCtrl.offset(event.currentTarget).left -
-            (190 - event.currentTarget.offsetWidth),
+            (200 - event.currentTarget.offsetWidth),
           this.modalCtrl.offset(event.currentTarget).top + 50
         )
       )

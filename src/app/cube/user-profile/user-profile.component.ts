@@ -39,7 +39,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // get data from resolve
     this.subscription = this.route.data.subscribe(val => {
+      // Get user object for username and provide username in getUser()
       this.user = val.user;
+      this.getUser();
       this.self = this.user.username === this.auth.username;
       this.gravatarImage = this.userService.getGravatarImage(this.user.email, this.size);
     });
@@ -52,7 +54,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   closeEdit(changed: boolean = false) {
     this.editContent = false;
     if (changed) {
-      this.user = this.auth.user;
+      this.getUser();
     }
+  }
+
+  // Used to retrieve user object that contains a bio
+  private getUser() {
+    this.userService.getUser(this.user.username).then(val => {
+      this.user = val;
+    });
   }
 }

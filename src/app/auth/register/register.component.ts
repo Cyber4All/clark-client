@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import {
   trigger,
@@ -86,7 +86,6 @@ export class RegisterComponent implements OnInit {
   passwordVerify = '';
   registerFailure;
   registerFailureTimer;
-  redirectRoute;
   redirectUrl;
   page = 1;
   fall: boolean;
@@ -113,6 +112,7 @@ export class RegisterComponent implements OnInit {
   ];
 
   elements = ['Personal Information', 'User Information', 'Preview'];
+  organizationsList = [];
 
   @HostListener('window:keyup', ['$event'])
     keyup(event) {
@@ -128,19 +128,11 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private router: Router
   ) {
-    this.route.parent.data.subscribe(data => {
-      if (route.snapshot.queryParams.returnUrl) {
-        this.redirectUrl = this.auth.makeRedirectURL(
-          route.snapshot.queryParams.returnUrl
-        );
-      } else {
-        if (route.snapshot.queryParams.redirectRoute) {
-          this.redirectRoute = route.snapshot.queryParams.redirectRoute;
-        } else {
-          this.redirectRoute = data.redirect;
-        }
+    this.route.parent.data.subscribe(() => {
+      if (route.snapshot.queryParams.redirectUrl) {
+        this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
       }
     });
   }
@@ -167,10 +159,10 @@ export class RegisterComponent implements OnInit {
 
     this.auth.register(u).subscribe(
       () => {
-        if (this.redirectRoute) {
-          window.location.href = window.location.origin + this.redirectRoute;
+        if (this.redirectUrl) {
+          this.router.navigate([this.redirectUrl]);
         } else {
-          window.location.href = this.redirectUrl;
+          this.router.navigate(['home']);
         }
       },
       error => {
@@ -215,8 +207,23 @@ export class RegisterComponent implements OnInit {
   }
 
   // navigation
-  next() {
+   next() {
     this.pageValidate(); // Validate page before allowing access to the next
+     if (this.page === 1 && this.check) {
+      this.checkOrganization().then(val => {
+        console.log(val);
+        if (!val) {
+          this.error('Invalid Organization');
+        }
+        this.check = val;
+        this.slidePage();
+      });
+     } else {
+       this.slidePage();
+     }
+  }
+
+  private slidePage() {
     if (this.check) {
       this.slide = !this.slide;
     }
@@ -231,6 +238,9 @@ export class RegisterComponent implements OnInit {
   back() {
     this.fall = !this.fall;
     if (this.page === 2) {
+      // When navigating back to page 1, make sure that
+      // organization results are cleared.
+      this.organizationsList = [];
       this.page = 1;
     } else if (this.page === 3) {
       this.page = 2;
@@ -238,7 +248,7 @@ export class RegisterComponent implements OnInit {
   }
 
   // Checks for specific items on pages 1 and 2
-  pageValidate() {
+   pageValidate() {
     switch (this.page) {
       case 1:
         if (
@@ -322,5 +332,39 @@ export class RegisterComponent implements OnInit {
 
   setInUseUsername(inUse: boolean) {
     this.inUseUsername = inUse;
+  }
+
+  async checkOrganization() {
+    // If field is contains empty string, return false
+    if (this.regForm.controls['organization'].value === '') {
+      return false;
+    }
+    // Allow the user to enter an org that does not exist in our
+    // database when empty results are returned
+    await this.getOrganizations(this.regForm.controls['organization'].value);
+    if (this.organizationsList.length > 0) {
+      const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
+      return isValidOrganization['isValid'];
+    } else {
+      return true;
+    }
+  }
+
+  // This function is here to count the number of results
+  // when searching for an organization.
+  getOrganizations(currentOrganization) {
+    this.auth.getOrganizations(currentOrganization).then(val => {
+      if (!val[0]) {
+        this.organizationsList = [];
+      } else {
+        for (let i = 0; i < 5; i++) {
+          if (val[i]) {
+            this.organizationsList[i] = val[i]['institution'];
+          } else {
+            this.organizationsList[i] = '';
+          }
+        }
+      }
+    });
   }
 }

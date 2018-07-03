@@ -253,6 +253,36 @@ export class AuthService {
     }
   }
 
+  getOrganizations(query: string) {
+    return this.http
+      .get(
+        environment.apiURL + `/users/organizations?query=${encodeURIComponent(query)}`,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
+        return val;
+      });
+  }
+
+  checkOrganization(organization: string) {
+    return this.http
+      .get(
+        environment.apiURL + `/users/verifyorganization?org=${encodeURIComponent(organization)}`,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
+        return val;
+      });
+  }
+
   printCards() {
     // tslint:disable-next-line:max-line-length
     const nameSplit = this.name.split(' ');
