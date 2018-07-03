@@ -72,7 +72,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   getOrganizations(currentOrganization) {
     this.auth.getOrganizations(currentOrganization).then(val => {
         this.querying = false;
-        // If empty, destroy results display
+        // If no results, destroy results display
         if (!val[0]) {
           this.organizationsList = [];
         } else {
@@ -85,6 +85,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
               this.organizationsList[i] = '';
             }
           }
+        }
+         // If no query, destroy results display
+         if (currentOrganization === '') {
+          this.organizationsList = [];
         }
     });
   }

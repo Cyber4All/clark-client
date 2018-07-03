@@ -137,6 +137,9 @@ li {
     flex-direction: row;
     align-items: center;
     text-transform: capitalize;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: scroll;
 }
     
 #plus {

@@ -218,8 +218,12 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
             this.organizationsList[i] = val[i]['institution'];
           }
         }
-        // If empty, destroy results display
+        // If no results, destroy results display
         if (!val[0]) {
+          this.organizationsList = [];
+        }
+        // If no query, destroy results display
+        if (this.editInfo.organization === '') {
           this.organizationsList = [];
         }
     });
