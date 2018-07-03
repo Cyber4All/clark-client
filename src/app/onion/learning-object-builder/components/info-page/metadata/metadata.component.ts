@@ -33,7 +33,8 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     limit: 30
   };
 
-  sub: Subscription; // open subscription to close
+  // array of subscriptions to destroy on component destroy
+  subs: Subscription[] = [];
 
   public tips = TOOLTIP_TEXT;
   validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
@@ -47,11 +48,12 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub = Observable.fromEvent(this.userSearchInput.nativeElement, 'input')
-    .debounceTime(650)
-    .subscribe(val => {
-      this.search();
-    });
+    this.subs.push(Observable.fromEvent(this.userSearchInput.nativeElement, 'input')
+      .debounceTime(650)
+      .subscribe(val => {
+        this.search();
+      })
+    );
       if (this.learningObject.contributors) {
         this.selectedAuthors = this.learningObject.contributors;
       }
@@ -110,7 +112,10 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+     // unsubscribe from all observables
+     for (let i = 0, l = this.subs.length; i < l; i++) {
+      this.subs[i].unsubscribe();
+    }
   }
 
 }
