@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   closeEdit(changed: boolean = false) {
     this.editContent = false;
     if (changed) {
-      this.user = this.auth.user;
+      this.getUser();
     }
   }
 
