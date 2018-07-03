@@ -1,50 +1,27 @@
 <div class="container">
-  <div class="title">
-    {{ (query.text === '') ? 'All Learning Objects' : 'Search Results' }}
-    <div class="filtering-controls">
-      <div class="button neutral" [ngClass]="{'active': filtering}" (click)="toggleFilters()">Filter <i class="far fa-filter"></i></div>
-      <div class="button neutral" (click)="showSortMenu($event)"><div *ngIf="query.orderBy" class="removeSort" (click)="clearSort($event);"><i class="fas fa-times"></i></div>{{ (query.orderBy) ? sortString : 'Sort'}} <i class="far fa-sort"></i></div>
-    </div>
-  </div>
-  <div class="subtitle">
-    <ng-container *ngIf="query.text === ''">
-        Browsing <span>{{ learningObjectService.totalLearningObjects }}</span> Learning Objects
-    </ng-container>
-    <ng-container *ngIf="query.text !== ''">
-        <span>{{ learningObjectService.totalLearningObjects }}</span> results for "{{ query.text }}"
-    </ng-container>
-    <div class="active-filters">
-      <div *ngFor="let l of query.length" class="length-filter filter-active" (click)="removeFilter('length', l)">{{ l }}<i class="fal fa-times"></i></div>
-      <div *ngFor="let l of query.level" class="level-filter filter-active" (click)="removeFilter('level', l)">{{ l }}<i class="fal fa-times"></i></div>
-      <div *ngFor="let m of mappingService.mappedStandards" class="mapping-filter filter-active" (click)="removeMapping(m)">{{ m.source + ' - ' + m.name }}<i class="fal fa-times"></i></div>
-    </div>
-  </div>
-  <div *ngIf="filtering" class="filters">
-    <div class="list">
-      <div class="filter">
-        <div class="filter-title">Length</div>
-        <ul>
-            <li tip="{{tooltipText[i]}} " tipLocation="side" *ngFor="let length of loLength; let i = index;">
-              <clark-checkbox [checked]="checkFilters('length', length)" (checkboxChecked)="addFilter('length', length)"  (checkboxUnchecked)="removeFilter('length', length)"></clark-checkbox>
-              {{ length }}
-            </li>
-        </ul>
+  <div class="browse-columns">
+    <div class="sidebar-wrapper">
+      <div class="column-title">
+        Filters
+        <div class="filters-clear-all" (click)="clearAllFilters()">Clear all filters</div>
       </div>
-      <div class="filter">
-        <div class="filter-title">Academic Level</div>
-        <ul>
-          <li *ngFor="let level of aLevel">
-            <clark-checkbox [checked]="checkFilters('level', level)" (checkboxChecked)="addFilter('level', level)"  (checkboxUnchecked)="removeFilter('level', level)"></clark-checkbox>
-            {{ level }}
-          </li>
-        </ul>
-      </div>
-      <div class="button neutral" (click)="toggleMappingsPopup()" tip="Filter by learning outcomes that may meet predefined requirements" tipDelay="500" tipLocation="above">Standard Outcomes <i class="far fa-map"></i></div>
+      <clark-filter [display]="'vertical'" [filters]="filters" (add)="addFilter($event.category, $event.filter)" (remove)="removeFilter($event.category, $event.filter)">
+        <!-- <ng-template><clark-mappings-filter (add)="addFilter($event.category, $event.filter)"></clark-mappings-filter></ng-template> -->
+      </clark-filter>
     </div>
-  </div>
-  <div class="content">
-    <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
-    <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
+    <div class="content">
+      <div class="column-title">
+        <span>Results {{this.learningObjectService.totalLearningObjects ? '(' + this.learningObjectService.totalLearningObjects + ')' : ''}} <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span> </span>
+        <div class="sort" (click)="showSortMenu($event)">
+          <div *ngIf="query.orderBy" class="removeSort" (click)="clearSort($event);" tip="Clear sorting criteria" tipLocation="above">
+            <i class="far fa-times"></i>
+          </div>
+          <span>{{ (query.orderBy) ? sortString : 'Sort'}}</span><i class="far fa-chevron-down"></i>
+        </div>
+      </div>
+      <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
+      <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
+    </div>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
     <ul>

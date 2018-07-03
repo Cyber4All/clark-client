@@ -45,7 +45,7 @@ export class LearningObjectService {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
-      if (queryClone.standardOutcomes && queryClone.standardOutcomes.length) {
+      if (queryClone.standardOutcomes && queryClone.standardOutcomes.length && typeof queryClone.standardOutcomes[0] !== 'string') {
         queryClone.standardOutcomes = (<string[]>queryClone.standardOutcomes).map(
           o => o['id']
         );

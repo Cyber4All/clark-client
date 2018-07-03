@@ -2,24 +2,20 @@
 <ng-container *ngIf="!hideNavbar">
   <app-contextmenu [content]="modalCtrl.contextMenuContent"></app-contextmenu>
   <app-dialogmenu [content]="modalCtrl.dialogMenuContent"></app-dialogmenu>
-
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
-      <div class="logo flex h left-right" routerLink="/home">
+      <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
         <div class="logo-image"></div>
         <div class="logo-link">C.L.A.R.K.</div>
         <div *ngIf="version" class="version-label">{{version}}</div>
       </div>
-      <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
-      <div *ngIf="!isMobile" class="nav-search-bar" [ngClass]="{'focused': searchFocused}">
-        <form (submit)="performSearch(searchBar)">
-          <input #searchBar type="search" placeholder="Search..." (focus)="searchFocused = true;" (blur)="searchFocused = false;">
-        </form>
-        <div class="icon" (click)="performSearch(searchBar)">
-          <i class="far fa-search"></i>
+      <div class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
+        <div class="clark-search-inner">
+          <clark-search [focus]="searchFocusSubject" [blur]="searchBlurSubject" (didFocus)="showSearch();" (didBlur)="hideSearch()"></clark-search>
+          <div class="close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
         </div>
       </div>
-      <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile}">
+      <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
         <ng-container *ngIf="isMobile; else userTemplate" [ngTemplateOutlet]="mobileUserTemplate"></ng-container>
       </div>
 
@@ -38,7 +34,7 @@
       </ng-template>
 
       <ng-template #mobileUserTemplate>
-        <div class="mobile-search-option" (click)="searchDown = true;"><i class="far fa-search"></i></div>
+        <div class="mobile-search-option" (click)="showSearch()"><i class="far fa-search"></i></div>
         <div class="hamburger"[ngClass]="{'active': menuOpen}" (click)="menuOpen = !menuOpen">
           <div class="bar"></div>
           <div class="bar"></div>
@@ -49,15 +45,7 @@
   </div>
 
   <!-- Overlay under mobile slideout -->
-  <div class="slideout-underlay" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen || searchDown}" (click)="menuOpen = false; searchDown = false;"></div>
-  
-  <!-- Mobile search -->
-  <div class="search-slidedown" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': searchDown}">
-    <form (submit)="performSearch(mobileSearch)">
-      <input #mobileSearch name="mobileSearch" placeholder="Search">
-    </form>
-    <div class="button icon-only good" (click)="performSearch(mobileSearch)"><i class="far fa-search"></i></div>
-  </div>
+  <div class="slideout-underlay" *ngIf="!hideNavbar" [ngClass]="{'active': menuOpen || searchDown}" (click)="menuOpen = false; hideSearch();"></div>
   
   <!-- Mobile menu slideout -->
   <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">

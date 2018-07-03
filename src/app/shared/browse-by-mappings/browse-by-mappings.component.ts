@@ -1,6 +1,5 @@
 import {
   AfterViewChecked,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -68,8 +67,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   constructor(
     private modalService: ModalService,
     private outcomeService: OutcomeService,
-    public mappingService: SuggestionService,
-    private cd: ChangeDetectorRef,
+    public mappingService: SuggestionService
   ) { }
 
   ngOnInit() {
