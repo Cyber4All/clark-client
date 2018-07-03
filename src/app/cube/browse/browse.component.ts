@@ -96,27 +96,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.sendFilters();
     }));
 
-    const searchInput = document.querySelector('.nav-search-bar input');
-    if (searchInput) {
-      this.filterInput = Observable
-      .fromEvent(searchInput, 'input')
-      .map(x => (<HTMLInputElement>x['currentTarget']).value).debounceTime(650);
-
-      this.subscriptions.push(this.filterInput.subscribe(val => {
-        this.router.navigate(['/browse', { query: val }]);
-      }));
-    }
-
     this.subscriptions.push(this.route.params.subscribe(params => {
       params.query ? this.query.text = params.query : this.query.text = '';
+
       if (params.standardOutcomes) {
         this.query.standardOutcomes = [...params.standardOutcomes.split(',')];
+      } else {
+        this.query.standardOutcomes = []
       }
-      try {
-        searchInput['value'] = this.query.text;
-      } catch (e) {
-        // We are the piratesssss that don't do anythingggggggggggg
-      }
+
       this.fetchLearningObjects(this.query);
     }));
 
@@ -188,14 +176,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
+  clearSearch() {
+    this.router.navigate(['browse']);
+  }
+
   get sortString() {
     return (this.query.orderBy) ? this.query.orderBy.replace(/_/g, '')
       + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
-  }
-
-  clearText() {
-    document.querySelector('.nav-search-bar input')['value'] = '';
-    this.router.navigate(['/browse', { query: '' }]);
   }
 
   toggleFilters() {
