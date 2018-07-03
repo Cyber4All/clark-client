@@ -165,7 +165,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     el.select();
     document.execCommand('copy');
 
-    this.noteService.notify('Success!', 'Learning object link saved copied to your clipboard!', 'good', 'far fa-check');
+    this.noteService.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
   }
 
   animateSaves() {

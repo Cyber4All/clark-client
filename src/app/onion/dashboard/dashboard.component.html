@@ -19,7 +19,7 @@
       <div class="faux-table">
         <div class="row columns">
           <div class="select">
-            <clark-checkbox [checked]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></clark-checkbox>
+            <clark-checkbox [setValue]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></clark-checkbox>
           </div>
           <div class="cells">
             <div class="cell">Name</div>
@@ -32,7 +32,7 @@
         </div>
         <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
           <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock}" class="row">
-            <clark-checkbox [checked]="allSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
+            <clark-checkbox [setValue]="allSelected || objectIsSelected(l.name)" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
             <div class="cells">
               <div class="cell">
                 <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>

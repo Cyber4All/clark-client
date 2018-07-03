@@ -1,41 +1,52 @@
-import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Output, Input, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 
 @Component({
-  selector: 'clark-checkbox',
-  template: `
-    <div class="checkbox" (click)="toggle(func)" [ngClass]="{'active': checked}"></div>
+    selector: 'clark-checkbox',
+    template: `
+    <div class="checkbox" (click)="setStatus(!checked, true)" [ngClass]="{'active': checked}"></div>
     `
 })
 export class CheckBoxComponent implements OnChanges {
-  @Input() checked = false;
-  @Input() func: string;
+    checked = false;
+    @Input() setValue: boolean;
+    @Input() func: string;
+    @Input() externalState = false;
 
-  @Output() checkboxChecked: EventEmitter<string> = new EventEmitter();
-  @Output() checkboxUnchecked: EventEmitter<string> = new EventEmitter();
-  @Output() action: EventEmitter<string> = new EventEmitter();
+    @Output() checkboxChecked: EventEmitter<string> = new EventEmitter();
+    @Output() checkboxUnchecked: EventEmitter<string> = new EventEmitter();
+    @Output() action: EventEmitter<string> = new EventEmitter();
 
-  constructor(private elementRef: ElementRef) { }
+    constructor() {}
 
-  toggle(f: string) {
-    this.checked = !this.checked;
-    this.sendEvent(f);
-  }
-
-  sendEvent(message) {
-    if (typeof message === 'undefined') {
-      message = '';
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.setValue) {
+            // this was set from the outside, so we don't need to fire an event
+            this.setStatus(changes.setValue.currentValue, false);
+            console.log('changed!');
+        }
     }
 
-    if (this.checked) {
-      this.checkboxChecked.emit(message);
-    } else {
-      this.checkboxUnchecked.emit(message);
+    setStatus(value = true, shouldFire: boolean) {
+        if (!this.externalState) {
+            this.checked = value;
+        }
+
+        if (shouldFire) {
+            this.sendEvent(this.func);
+        }
     }
 
-    this.action.emit((this.checked) ? message : '-' + message);
-  }
+    sendEvent(message) {
+        if (typeof message === 'undefined') {
+            message = '';
+        }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.sendEvent(this.func);
-  }
+        if (this.checked) {
+            this.checkboxChecked.emit(message);
+        } else {
+            this.checkboxUnchecked.emit(message);
+        }
+
+        this.action.emit((this.checked) ? message : '-' + message);
+    }
 }

@@ -1,0 +1,48 @@
+<div class="mappings-filter" (click)="preventClose($event, 'results')">
+  <div class="search-bar input" [ngClass]="{'focus': focused}">
+    <input #searchInput type="search" placeholder="Search for mappings..." (focus)="focusInput(searchInput.value)" (blur)="focused = false;" />
+    <div class="search-sources" [ngClass]="{'active': source}" tip="Filter results by sources" tipLocation="bottom" (click)="sourcesDown = true; preventClose($event, 'sources')">
+      <i class="far fa-globe-americas"></i>
+      <i class="far fa-angle-down"></i>
+    </div>
+    <div class="search-button">
+      <i class="far fa-search"></i>
+    </div>
+  </div>
+  <div *ngIf="resultsDown" class="result-drop main">
+    <ng-container *ngIf="!loading && outcomes?.length; else noResults">
+      <ul>
+        <ng-container *ngFor="let c of outcomes">
+          <li class="section">{{ c.source }}</li>
+          <li *ngFor="let o of c.outcomes" tip="{{o.outcome}}" tipLocation="right" (click)="addOutcome(o)">
+            {{ o.name }} - {{ o.outcome }}
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </div>
+  <div *ngIf="sourcesDown" class="result-drop source" (click)="preventClose($event, 'sources')">
+    <ng-container *ngIf="possibleSources.length; else loadingTemplate">
+      <ul>
+        <li *ngFor="let s of possibleSources" [ngClass]="{'active': source === s}" (click)="toggleSource.emit(s)">{{ s }}</li>
+      </ul>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #noResults >
+  <ng-container *ngIf="loading; else introTemplate" [ngTemplateOutlet]="loadingTemplate">
+  </ng-container>
+</ng-template>
+
+<ng-template #introTemplate>
+  <div *ngIf="outcomes" class="intro">
+    We couldn't find anything for that query!
+  </div>
+</ng-template>
+
+<ng-template #loadingTemplate>
+  <div class="loading">
+    <i class="far fa-spinner-third fa-spin"></i>
+  </div>
+</ng-template>

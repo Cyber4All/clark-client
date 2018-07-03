@@ -10,6 +10,5 @@ export class AuthComponent implements OnInit {
   constructor(public modalService: ModalService) {}
 
   ngOnInit() {}
-  
-  
+
 }
