@@ -42,12 +42,6 @@ export class UserInformationComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  private getUser() {
-    this.userService.getUser(this.user.username).then(val => {
-      this.user = val;
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     this.getUsersLearningObjects();
   }
