@@ -9,9 +9,11 @@ describe('Cube', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4200/home');
+        cy.visit('http://localhost:4201/home');
     });
 
+    // /home tests
+    // =============================================================
     it('Has page title', () => {
         cy.contains('Cybersecurity curriculum at your fingertips.');
     });
@@ -64,20 +66,6 @@ describe('Cube', () => {
 
         // Assert URL 
         cy.url().should('include', 'details');
-    });
-
-    it('Navigate to details and click on author name to view author profile', () => {
-        // Wait for learning objects to load on page
-        cy.wait(1000);
-
-        // Click left-most card
-        cy.get('.learning-object').first().click();
-
-        // Click author name
-        cy.get('.author').children('.link').click();
-
-        // Assert URL 
-        cy.url().should('include', 'user');
     });
 
     it('Clicking display search without entering text does not search', () => {
@@ -210,5 +198,201 @@ describe('Cube', () => {
         // Assert home URL
         cy.url().should('include', 'home');
     });
+    // =============================================================
+    // /details testing
+    // =============================================================
+    it('Navigate to details and click on author name to view author profile', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
+
+        // Click left-most card
+        cy.get('.learning-object').first().click({ multiple: true });
+
+        // Click author name
+        cy.get('.author').children('.link').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'user');
+    });
+
+    // it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
+    //     // Wait for learning objects to load on page
+    //     cy.wait(1000);
+
+    //     // Click left-most card
+    //     cy.get('.learning-object').first().click({ multiple: true });
+
+    //     // Click DOWNLOAD NOW button 
+    //     // if disabled class is present, it is working correctly.
+    //     cy.get('.inner').eq(2).children('.button.good.disabled').click();
+
+    //     // Assert URL 
+    //     cy.url().should('include', 'details');
+    // });
+    // =============================================================
+    // /user testing
+    // =============================================================
+    it('Navigate to organization members page', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
+
+        // Click left-most card
+        cy.get('.learning-object').first().click({ multiple: true });
+
+        // Click author name
+        cy.get('.author').children('.link').first().click({ multiple: true });
+
+        // Click organization link 
+        cy.get('.organization').children('a').click();
+
+        // Assert URL 
+        cy.url().should('include', 'organization');
+    });
+
+    it('Navigate to personal profile page', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Assert new navbar elements
+        cy.contains('Contributor');
+        cy.get('.navbar-gravatar').click();
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'user');
+    });
+
+    it('Navigate to personal profile page and click edit profile', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Assert new navbar elements
+        cy.contains('Contributor');
+        cy.get('.navbar-gravatar').click();
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'user');
+
+        // Click Edit Profile
+        cy.get('.edit').children('span').first().click();
+
+        // Check for new page content 
+        cy.contains('Edit Profile');
+    });
+
+    it('Navigate to personal profile page and click edit profile and click DISCARD CHANGES', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Assert new navbar elements
+        cy.contains('Contributor');
+        cy.get('.navbar-gravatar').click();
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'user');
+
+        // Click Edit Profile
+        cy.get('.edit').children('span').first().click();
+
+        // Click Discard Changes
+        cy.get('.button.bad').click();
+
+        // Check for new page content
+        cy.get('.title');
+    });
+
+    it('Navigate to personal profile page and click edit profile and click SAVE', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Assert new navbar elements
+        cy.contains('Contributor');
+        cy.get('.navbar-gravatar').click();
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'user');
+
+        // Click Edit Profile
+        cy.get('.edit').children('span').first().click();
+
+        // Fill out name input 
+        cy.get('input[name=firstname]').type('Randy');
+
+        // Click Save
+        cy.get('.button.good').click();
+
+        // Check for new name
+        cy.contains('Randy');
+    });
+
+    it('Navigate to personal profile page and enter correct password to see if inputs appear', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Assert new navbar elements
+        cy.contains('Contributor');
+        cy.get('.navbar-gravatar').click();
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'user');
+
+        // Click Edit Profile
+        cy.get('.edit').children('span').first().click();
+
+        // Fill out name input 
+        cy.get('input[name=password]').type('122595');
+    
+        // Check for new fields 
+        cy.get('input[name=newpassword]');
+
+    });
+
+
+
+
 
 });
