@@ -15,7 +15,7 @@ $learning-object-width: 820px;
 
   .column-title {
     text-align: left;
-    font-size: 18px;
+    font-size: 16px;
     text-transform: uppercase;
     padding-bottom: 10px;
     border-bottom: 1px solid lighten(desaturate($blue-accent, 20), 50);
@@ -25,12 +25,13 @@ $learning-object-width: 820px;
 
   .sidebar-wrapper {
     max-width: calc((#{$max-width} - #{$learning-object-width}) / 2 - 50px);
+    min-width: 210px;
     width: 100%;
     margin-right: 50px;
     z-index: 2;
 
     ::ng-deep .filter-section {
-      padding-left: 0px;
+      padding-left: 0;
     }
 
     .column-title {
@@ -43,6 +44,10 @@ $learning-object-width: 820px;
         text-transform: none;
       }
     }
+
+    .btn-group {
+      display: none;
+    }
   }
 
   .content {
@@ -52,22 +57,34 @@ $learning-object-width: 820px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 0px;
+    padding: 0;
     z-index: 1;
+    min-width: 0;
 
     .column-title {
       margin-bottom: 30px;
       background: white;
       color: $dark-text;
       padding: 20px;
-      box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.03);
 
       & > span .svg-inline--fa {
         margin-left: 10px;
       }
 
-      .sort {
-        font-size: 16px;
+
+      .results-options {
+        display: flex;
+        flex-direction: row;
+
+        & > *:not(:last-child) {
+          margin-right: 25px;
+        }
+      }
+
+      .sort,
+      .mobile-filters {
+        font-size: 15px;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -88,6 +105,15 @@ $learning-object-width: 820px;
           & > * {
             @include vert-center;
             font-size: 14px;
+          }
+        }
+
+        &.mobile-filters {
+          display: none;
+
+          & > .svg-inline--fa {
+            font-size: 14px;
+            margin-left: 12px;
           }
         }
       }
@@ -129,7 +155,6 @@ $learning-object-width: 820px;
       min-width: 45px;
       text-align: center;
       transition: opacity 0.2s ease;
-      transition: opacity 0.2s ease;
       opacity: 1;
 
       &.gone {
@@ -148,12 +173,93 @@ $learning-object-width: 820px;
       }
 
       &:first-child {
-        border-radius: 3px 0px 0px 3px;
+        border-radius: 3px 0 0 3px;
       }
 
       &:last-child {
-        border-radius: 0px 3px 3px 0px;
+        border-radius: 0 3px 3px 0;
         border-right: 1px solid rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}
+
+@media (max-width: 750px) {
+
+  .mobile-filters {
+    display: inline-flex !important;
+  }
+
+  .browse-columns {
+
+    .sidebar-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.15s ease;
+      background: rgba(255, 255, 255, 0.98);
+      max-width: none !important;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      padding-top: 80px;
+
+      .column-title {
+        width: 100%;
+      }
+
+      .filters-clear-all {
+        display: none;
+      }
+
+      &.active {
+        opacity: 1;
+        transform: scale(1);
+        visibility: visible;
+        z-index: 4;
+
+        .btn-group {
+          display: flex;
+          margin-top: 25px;
+          width: 100%;
+
+          & > *:not(:last-child) {
+            margin-left: 15px;
+          }
+        }
+      }
+    }
+
+    .content .column-title {
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      flex-direction: column;
+
+      & > span {
+        background: white;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.03);
+      }
+
+      .results-options {
+        padding: 15px 0 10px;
+        background: transparent;
+        justify-content: space-between;
+
+        & > * {
+          background: transparent;
+        }
       }
     }
   }

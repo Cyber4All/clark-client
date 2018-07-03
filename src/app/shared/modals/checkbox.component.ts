@@ -10,6 +10,7 @@ export class CheckBoxComponent implements OnChanges {
     checked = false;
     @Input() setValue: boolean;
     @Input() func: string;
+    @Input() externalState = false;
 
     @Output() checkboxChecked: EventEmitter<string> = new EventEmitter();
     @Output() checkboxUnchecked: EventEmitter<string> = new EventEmitter();
@@ -21,11 +22,14 @@ export class CheckBoxComponent implements OnChanges {
         if (changes.setValue) {
             // this was set from the outside, so we don't need to fire an event
             this.setStatus(changes.setValue.currentValue, false);
+            console.log('changed!');
         }
     }
 
     setStatus(value = true, shouldFire: boolean) {
-        this.checked = value;
+        if (!this.externalState) {
+            this.checked = value;
+        }
 
         if (shouldFire) {
             this.sendEvent(this.func);

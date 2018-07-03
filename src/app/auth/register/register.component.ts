@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import {
   trigger,
@@ -86,7 +86,6 @@ export class RegisterComponent implements OnInit {
   passwordVerify = '';
   registerFailure;
   registerFailureTimer;
-  redirectRoute;
   redirectUrl;
   page = 1;
   fall: boolean;
@@ -128,19 +127,11 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private router: Router
   ) {
-    this.route.parent.data.subscribe(data => {
-      if (route.snapshot.queryParams.returnUrl) {
-        this.redirectUrl = this.auth.makeRedirectURL(
-          route.snapshot.queryParams.returnUrl
-        );
-      } else {
-        if (route.snapshot.queryParams.redirectRoute) {
-          this.redirectRoute = route.snapshot.queryParams.redirectRoute;
-        } else {
-          this.redirectRoute = data.redirect;
-        }
+    this.route.parent.data.subscribe(() => {
+      if (route.snapshot.queryParams.redirectUrl) {
+        this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
       }
     });
   }
@@ -167,10 +158,10 @@ export class RegisterComponent implements OnInit {
 
     this.auth.register(u).subscribe(
       () => {
-        if (this.redirectRoute) {
-          window.location.href = window.location.origin + this.redirectRoute;
+        if (this.redirectUrl) {
+          this.router.navigate([this.redirectUrl]);
         } else {
-          window.location.href = this.redirectUrl;
+          this.router.navigate(['home']);
         }
       },
       error => {

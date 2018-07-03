@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   };
   loginFailure: string;
   loginFailureTimer;
-  redirectRoute;
   redirectUrl;
   loading = false;
 
@@ -24,37 +23,14 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.route.parent.data.subscribe(data => {
-      if (route.snapshot.queryParams.returnUrl) {
-        this.redirectUrl = this.auth.makeRedirectURL(
-          route.snapshot.queryParams.returnUrl
-        );
-      } else {
-        if (route.snapshot.queryParams.redirectRoute) {
-          this.redirectRoute = route.snapshot.queryParams.redirectRoute;
-        } else {
-          this.redirectRoute = data.redirect;
-        }
+    this.route.parent.data.subscribe(() => {
+      if (route.snapshot.queryParams.redirectUrl) {
+        this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
       }
     });
   }
 
-  ngOnInit() {
-    this.getRedirectURL();
-  }
-  /**
-   *Gets Redirect URL from query params
-   *
-   * @private
-   * @memberof LoginComponent
-   */
-  private getRedirectURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectUrl = urlParams.get('redirectURL');
-    if (redirectUrl && !this.redirectUrl) {
-      this.redirectUrl = redirectUrl;
-    }
-  }
+  ngOnInit() { }
 
   submit() {
     this.loginFailure = undefined;
@@ -69,12 +45,11 @@ export class LoginComponent implements OnInit {
 
     this.auth
       .login(this.authInfo)
-      .then(val => {
-        if (this.redirectRoute) {
-          window.location.href = window.location.origin + this.redirectRoute;
-          // this.router.navigate([this.redirectRoute]);
+      .then(() => {
+        if (this.redirectUrl) {
+          this.router.navigate([this.redirectUrl]);
         } else {
-          window.location.href = this.redirectUrl;
+          this.router.navigate(['home']);
         }
       })
       .catch(error => {
