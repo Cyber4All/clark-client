@@ -6,6 +6,15 @@ $learning-object-width: 820px;
   max-width: $max-width;
   width: 100%;
   margin-top: 15px;
+
+  .filters-clear-all,
+  .clear-search {
+    color: lighten(desaturate($blue-accent, 10), 5);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: none;
+  }
 }
 
 .browse-columns {
@@ -34,17 +43,6 @@ $learning-object-width: 820px;
       padding-left: 0;
     }
 
-    .column-title {
-
-      .filters-clear-all {
-        color: lighten(desaturate($blue-accent, 10), 5);
-        text-decoration: underline;
-        cursor: pointer;
-        font-size: 16px;
-        text-transform: none;
-      }
-    }
-
     .btn-group {
       display: none;
     }
@@ -67,6 +65,10 @@ $learning-object-width: 820px;
       color: $dark-text;
       padding: 20px;
       box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.03);
+
+      .clear-search {
+        margin-left: 20px;
+      }
 
       & > span .svg-inline--fa {
         margin-left: 10px;
