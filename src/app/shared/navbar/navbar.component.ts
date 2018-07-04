@@ -41,6 +41,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   searchDown = false; // flag for wheher or not the search is down
   searchOverflow = false; // flag for wheher or not the search is down
 
+  url: string;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -59,44 +61,50 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     private modalCtrl: ModalService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
     this.windowWidth = window.innerWidth;
 
-    this.subs.push(this.router.events.subscribe(e => {
-      if (e instanceof NavigationStart) {
-        // if we're in the onion client, make sure the navigation switcher reflects it
-        if (e.url.match(/\/*onion[\/*[0-z]*]*/)) {
-          this.isOnion = true;
-        } else {
-          this.isOnion = false;
+    this.subs.push(
+      this.router.events.subscribe(e => {
+        if (e instanceof NavigationStart) {
+          // if we're in the onion client, make sure the navigation switcher reflects it
+          if (e.url.match(/\/*onion[\/*[0-z]*]*/)) {
+            this.isOnion = true;
+          } else {
+            this.isOnion = false;
+          }
+
+          this.menuOpen = this.searchDown = false;
+        } else if (e instanceof NavigationEnd) {
+          // scroll to top of page when any router event is fired
+          window.scrollTo(0, 0);
+
+          // hide navbar if it should be hidden
+          const root: ActivatedRoute = this.route.root;
+          this.hideNavbar = root.children[0].snapshot.data.hideTopbar;
+
+          this.url = e.url;
         }
-
-        this.menuOpen = this.searchDown = false;
-      } else if (e instanceof NavigationEnd) {
-        // scroll to top of page when any router event is fired
-        window.scrollTo(0, 0);
-
-        // hide navbar if it should be hidden
-        const root: ActivatedRoute = this.route.root;
-        this.hideNavbar = root.children[0].snapshot.data.hideTopbar;
-      }
-    }));
+      })
+    );
 
     // pull the version number out of package.json and extract the prefix (alpha, beta, release-candidate, etc)
     const { version: appVersion } = require('../../../../package.json');
     const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
     const matched = versionRegex.exec(appVersion);
 
-    if (matched.length >= 1) {
+    if (matched && matched.length >= 1) {
       this.version = matched[1];
     }
   }
 
   ngOnInit() {
-    this.subs.push(this.authService.isLoggedIn.subscribe(val => {
-      this.loggedin = val ? true : false;
-    }));
+    this.subs.push(
+      this.authService.isLoggedIn.subscribe(val => {
+        this.loggedin = val ? true : false;
+      })
+    );
   }
 
   ngAfterContentChecked(): void {
@@ -125,11 +133,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.searchDown = this.searchOverflow = false;
   }
 
-
   logout() {
-    this.authService.logout().then(() => {
-      window.location.reload();
-    });
+    this.authService.logout();
   }
 
   userprofile() {
@@ -141,35 +146,37 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
    * @param event
    */
   userDropdown(event): void {
-    this.subs.push(this.modalCtrl
-      .makeContextMenu(
-        'UserContextMenu',
-        'dropdown',
-        [
-          new ModalListElement(
-            '<i class="fas fa-user-circle fa-fw"></i>View profile',
-            'userprofile'
-          ),
-          new ModalListElement(
-            '<i class="far fa-sign-out"></i>Sign out',
-            'logout'
+    this.subs.push(
+      this.modalCtrl
+        .makeContextMenu(
+          'UserContextMenu',
+          'dropdown',
+          [
+            new ModalListElement(
+              '<i class="far fa-user-circle fa-fw"></i>View profile',
+              'userprofile'
+            ),
+            new ModalListElement(
+              '<i class="far fa-sign-out"></i>Sign out',
+              'logout'
+            )
+          ],
+          true,
+          null,
+          new Position(
+            this.modalCtrl.offset(event.currentTarget).left -
+              (200 - event.currentTarget.offsetWidth),
+            this.modalCtrl.offset(event.currentTarget).top + 50
           )
-        ],
-        true,
-        null,
-        new Position(
-          this.modalCtrl.offset(event.currentTarget).left -
-            (190 - event.currentTarget.offsetWidth),
-          this.modalCtrl.offset(event.currentTarget).top + 50
         )
-      )
-      .subscribe(val => {
-        if (val === 'logout') {
-          this.logout();
-        } else if (val === 'userprofile') {
-          this.userprofile();
-        }
-      }));
+        .subscribe(val => {
+          if (val === 'logout') {
+            this.logout();
+          } else if (val === 'userprofile') {
+            this.userprofile();
+          }
+        })
+    );
   }
 
   /**
@@ -177,36 +184,32 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
    * @param event
    */
   contributorDropdown(event): void {
-    this.subs.push(this.modalCtrl
-      .makeContextMenu(
-        'ContributorContextMenu',
-        'dropdown',
-        [
-          new ModalListElement(
-            'Your dashboard',
-            'dashboard'
-          ),
-          new ModalListElement(
-            'Create a Learning Object',
-            'create'
+    this.subs.push(
+      this.modalCtrl
+        .makeContextMenu(
+          'ContributorContextMenu',
+          'dropdown',
+          [
+            new ModalListElement('Your dashboard', 'dashboard'),
+            new ModalListElement('Create a Learning Object', 'create')
+          ],
+          true,
+          null,
+          new Position(
+            this.modalCtrl.offset(event.currentTarget).left -
+              (190 - event.currentTarget.offsetWidth),
+            this.modalCtrl.offset(event.currentTarget).top + 40
           )
-        ],
-        true,
-        null,
-        new Position(
-          this.modalCtrl.offset(event.currentTarget).left -
-            (190 - event.currentTarget.offsetWidth),
-          this.modalCtrl.offset(event.currentTarget).top + 40
         )
-      )
-      .subscribe(val => {
-        if (val === 'create') {
-          this.router.navigate(['onion', 'learning-object-builder']);
-        }
-        if (val === 'dashboard') {
-          this.router.navigate(['onion', 'dashboard']);
-        }
-      }));
+        .subscribe(val => {
+          if (val === 'create') {
+            this.router.navigate(['onion', 'learning-object-builder']);
+          }
+          if (val === 'dashboard') {
+            this.router.navigate(['onion', 'dashboard']);
+          }
+        })
+    );
   }
 
   gravatarImage(size): string {
@@ -214,7 +217,9 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     return (
       'https://www.gravatar.com/avatar/' +
       md5(this.authService.user.email) +
-      '?s=' + size + '?r=pg&d=identicon'
+      '?s=' +
+      size +
+      '?r=pg&d=identicon'
     );
   }
 

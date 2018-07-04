@@ -7,7 +7,7 @@
     border-radius: 3px;
     margin: auto;
     margin-top: 40px;
-    box-shadow: 0px 2px 3px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 
     .title {
         text-transform: uppercase;
@@ -55,19 +55,19 @@
                     &.nanomodule {
                         background: $nanomodule-color;
                     }
-                
+
                     &.micromodule {
                         background: $micromodule-color;
                     }
-                
+
                     &.module {
                         background: $module-color;
                     }
-                
+
                     &.unit {
                         background: $unit-color;
                     }
-                
+
                     &.course {
                         background: $course-color;
                     }
@@ -86,7 +86,8 @@
             }
 
             .actions {
-                display: flex; flex-direction: row;
+                display: flex;
+                flex-direction: row;
                 align-self: center;
 
                 .button {

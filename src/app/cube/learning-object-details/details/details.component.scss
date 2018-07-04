@@ -1,11 +1,11 @@
 @import '~_vars.scss';
 
+$sidebar-width: 320px;
+$content-width: calc(#{$max-width} - #{$sidebar-width});
+
 .details-wrapper {
   width: 100%;
   padding-bottom: 20px;
-
-  $sidebar-width: 350px;
-  $content-width: calc(#{$max-width} - #{$sidebar-width});
 
   &.nanomodule {
     .type {
@@ -39,14 +39,17 @@
 
   .splash {
     background: $blue-gradient;
-    padding: 50px 0px;
+    padding: 50px 0;
     position: relative;
 
     &:after {
       content: '';
       background: white;
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       opacity: 0.03;
       mask: $cube-pattern repeat;
     }
@@ -66,7 +69,7 @@
       .name {
         font-size: 40px;
         color: white;
-        text-shadow: 0px 0px rgba(0, 0, 0, 0.2);
+        text-shadow: 0 0 rgba(0, 0, 0, 0.2);
       }
 
       .author,
@@ -122,7 +125,6 @@
         border: 1px solid rgba(0, 0, 0, 0.05);
         padding: 20px;
         border-radius: 2px;
-        padding: 20px;
         color: $dark-text;
         margin-bottom: 40px;
 
@@ -150,6 +152,7 @@
           }
         }
       }
+
       .description {
         background: #fff;
         box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
@@ -161,7 +164,7 @@
     }
 
     .sidebar {
-      max-width: $sidebar-width;
+      width: $sidebar-width;
       padding: 20px;
       flex-shrink: 0;
       flex-grow: 1;
@@ -171,7 +174,7 @@
       .inner {
         background: white;
         border-radius: 2px;
-        box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
         padding: 20px;
 
         .button {
@@ -226,7 +229,7 @@
         margin-top: 30px;
 
         & > * {
-          
+
           span {
             position: relative;
 
@@ -250,17 +253,17 @@
 
         .share-title {
           position: relative;
-          
+
           &:before {
             content: 'Share';
             color: $dark-text;
             text-align: center;
-            padding: 0px 10px;
+            padding: 0 10px;
             background: white;
             position: absolute;
             z-index: 2;
-            left: 30%; right: 30%;
-            text-align: center;
+            left: 30%;
+            right: 30%;
             bottom: -7px;
           }
 
@@ -282,7 +285,7 @@
           justify-content: space-between;
 
           button {
-            border: none;
+            border: 0;
             -webkit-appearance: none;
             -moz-appearance: none;
             outline: 0;
@@ -294,10 +297,8 @@
           }
 
           & > button {
-            display: block;
             min-width: 30px;
             height: 30px;
-
             background: $blue-accent;
             border-radius: 3px;
             display: flex;
@@ -332,7 +333,7 @@
             }
 
             &.linkedin {
-              background: #0077B5;
+              background: #0077b5;
             }
 
             &.email {
@@ -355,7 +356,34 @@
 
     .sidebar {
       margin: auto;
-      margin-top: 0px !important;
+      margin-top: -50px !important;
+      width: 100% !important;
+
+      .btn-group {
+        width: 100% !important;
+        flex-direction: row-reverse;
+        justify-content: space-around;
+
+        .button {
+          width: 48%;
+        }
+      }
+
+      .details-share {
+        max-width: $sidebar-width;
+        margin: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+
+  .sidebar .btn-group {
+    flex-direction: column !important;
+
+    .button {
+      width: 100% !important;
     }
   }
 }
@@ -366,6 +394,7 @@
     opacity: 1;
     font-weight: 400;
   }
+
   .link:hover {
     cursor: pointer;
     text-decoration: underline;
@@ -376,13 +405,16 @@
   0% {
     bottom: 0;
     opacity: 1;
+
   } 50% {
     bottom: 10px;
     opacity: 0;
+
   } 51% {
     bottom: -10px;
     opacity: 0;
     color: $green;
+
   } 100% {
     bottom: 0;
     opacity: 1;
@@ -393,12 +425,16 @@
 @keyframes jiggle {
   0% {
     transform: scale(1);
+
   } 25% {
     transform: scale(0.95);
+
   } 50% {
     transform: scale(1.1);
+
   } 75% {
     transform: scale(0.95);
+
   } 100% {
     transform: scale(1);
   }

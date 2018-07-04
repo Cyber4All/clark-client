@@ -10,9 +10,19 @@
           <i class="far fa-id-card"></i>
         </div>
     </div>
-    <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
+    <div class="input organization" id="organization" [ngClass]="{'active': editInfo.organization !== ''}">
+      <input #organization name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
       <i class="far fa-building"></i>
+    </div>
+    <div id="container">
+      <ul>
+        <li *ngFor="let organization of organizationsList" (click)="chooseOrganization(organization)">
+          <span id="plus">
+            <i class="fas fa-check"></i>
+          </span>
+          {{ organization }}
+        </li>
+      </ul>
     </div>
     <div class="gravatar-header">C.L.A.R.K. uses Gravatar</div>
     <div class="gravatar-text">Don't have an account?<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
