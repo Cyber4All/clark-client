@@ -211,6 +211,7 @@ export class RegisterComponent implements OnInit {
     this.pageValidate(); // Validate page before allowing access to the next
      if (this.page === 1 && this.check) {
       this.checkOrganization().then(val => {
+        console.log(val);
         if (!val) {
           this.error('Invalid Organization');
         }
@@ -334,6 +335,10 @@ export class RegisterComponent implements OnInit {
   }
 
   async checkOrganization() {
+    // If field is contains empty string, return false
+    if (this.regForm.controls['organization'].value === '') {
+      return false;
+    }
     // Allow the user to enter an org that does not exist in our
     // database when empty results are returned
     await this.getOrganizations(this.regForm.controls['organization'].value);
@@ -349,11 +354,9 @@ export class RegisterComponent implements OnInit {
   // when searching for an organization.
   getOrganizations(currentOrganization) {
     this.auth.getOrganizations(currentOrganization).then(val => {
-      // If empty, destroy results display
       if (!val[0]) {
         this.organizationsList = [];
       } else {
-        // Display top 5 matching organizations
         for (let i = 0; i < 5; i++) {
           if (val[i]) {
             this.organizationsList[i] = val[i]['institution'];
