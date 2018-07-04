@@ -1,188 +1,186 @@
 @import '~_vars.scss';
 
 textarea {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: none; 
-    width: 100%;
-    outline: none;
-    font-family: 'Source Sans Pro', serif;
-    font-weight: normal;
-    padding: 12px;
-    font-size: 15px;
-    resize: none;
-    color: $blue-accent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  width: 100%;
+  outline: none;
+  font-family: 'Source Sans Pro', serif;
+  font-weight: normal;
+  padding: 12px;
+  font-size: 15px;
+  resize: none;
+  color: $blue-accent;
 }
 
 form {
-    text-align: center; 
+  text-align: center;
 
-    .h-group {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-bottom: 10px;
-
-        .input {
-            width: 49%;
-            margin-bottom: 0px;
-        }
-    }
-
-    .gravatar-header {
-        text-align: left; 
-        font-size: 15px; 
-    }
-    
-    .gravatar-text {
-        text-align: left; 
-        font-size: 12px; 
-    }
+  .h-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
 
     .input {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        border: 1px solid $placeholder;
-        border-radius: 1px;
-    
-        &:not(:last-child) {
-            margin-bottom: 10px;
-        }
-    
-        input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            color: $blue-accent;
-            flex-grow: 1;
-            flex-shrink: 1;
-            border: none;
-            font-size: 15px;
-            outline: 0;
-            font-family: 'Source Sans Pro', serif;
-            font-weight: normal;
-            padding: 12px;
-            width: 100%;
-    
-            &:focus ~ .svg-inline--fa {
-                color: $blue-accent;
-            }
-
-        }
-    
-        .svg-inline--fa {
-            width: 15px;
-            height: 15px;
-            flex-grow: 0;
-            flex-shrink: 0;
-            @include vert-center;
-            color: darken($placeholder, 20);
-            padding-left: 14px;
-            box-sizing: content-box;
-        }
-    
-        &.active {
-
-            .svg-inline--fa {
-                color: $blue-accent;
-            }
-        }
-    }    
-
-    .btn-group {
-        margin-bottom: 20px;
-        margin-top: 20px;
+      width: 49%;
+      margin-bottom: 0px;
     }
+  }
+
+  .gravatar-header {
+    text-align: left;
+    font-size: 15px;
+  }
+
+  .gravatar-text {
+    text-align: left;
+    font-size: 12px;
+  }
+
+  .input {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    border: 1px solid $placeholder;
+    border-radius: 1px;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    input {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      color: $blue-accent;
+      flex-grow: 1;
+      flex-shrink: 1;
+      border: none;
+      font-size: 15px;
+      outline: 0;
+      font-family: 'Source Sans Pro', serif;
+      font-weight: normal;
+      padding: 12px;
+      width: 100%;
+
+      &:focus ~ .svg-inline--fa {
+        color: $blue-accent;
+      }
+    }
+
+    .svg-inline--fa {
+      width: 15px;
+      height: 15px;
+      flex-grow: 0;
+      flex-shrink: 0;
+      @include vert-center;
+      color: darken($placeholder, 20);
+      padding-left: 14px;
+      box-sizing: content-box;
+    }
+
+    &.active {
+      .svg-inline--fa {
+        color: $blue-accent;
+      }
+    }
+  }
+
+  .btn-group {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
 }
 
 #organization {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .title {
-    text-align: center; 
-    color: $dark-text;
-    font-size: 28px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  text-align: center;
+  color: $dark-text;
+  font-size: 28px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 li:nth-child(2n) {
-    background-color: #f7f7f7;
+  background-color: #f7f7f7;
 }
-    
+
 li:hover #plus {
-    width: 40px;
-    opacity: 1;
+  width: 40px;
+  opacity: 1;
 }
-    
+
 li:hover #delete {
-    width: 40px;
-    opacity: 1;
+  width: 40px;
+  opacity: 1;
 }
-    
+
 #container {
-    box-shadow: 0 0 3px rgba(0, 0 , 0, 0.1);
-    background-color: #f7f7f7;
-    width: 100%;
-    margin-bottom: 10px;
- }
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  background-color: #f7f7f7;
+  width: 100%;
+  margin-bottom: 10px;
+}
 
 li {
-    height: 40px;
-    line-height: 40px;
-    background-color: white; 
-    color: #666;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-transform: capitalize;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: scroll;
+  height: 40px;
+  line-height: 40px;
+  background-color: white;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-transform: capitalize;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
-    
+
 #plus {
-    background-color: $green;
-    height: 40px;
-    margin-right: 20px;
-    text-align: center;
-    color: white;
-    width: 0;
-    display: inline-block;
-    transition: 0.2s linear;
-    opacity: 0;
-    cursor: pointer;
+  background-color: $green;
+  height: 40px;
+  margin-right: 20px;
+  text-align: center;
+  color: white;
+  width: 0;
+  display: inline-block;
+  transition: 0.2s linear;
+  opacity: 0;
+  cursor: pointer;
 }
-    
+
 ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 #bio-icon {
-    padding-top: 12px;
+  padding-top: 12px;
 }
 
 #character-counter {
-    text-align: left; 
+  text-align: left;
 }
 
 #new-password {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 @media (max-width: 750px) {
-    .btn-group {
-        flex-direction: column !important;
+  .btn-group {
+    flex-direction: column !important;
 
-        .button {
-            margin-left: 0px !important;
+    .button {
+      margin-left: 0px !important;
 
-            &:not(:last-child) {
-                margin-bottom: 10px;
-            }
-        }
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
     }
+  }
 }
