@@ -134,10 +134,18 @@ export class AuthService {
       });
   }
 
-  register(user: User): Observable<any> {
+  register(user: User): Promise<User> {
     return this.http.post(environment.apiURL + '/users', user, {
       withCredentials: true,
       responseType: 'text'
+    }).toPromise().then(val => {
+      this.user = user;
+      this.changeStatus(true);
+      return this.user;
+    }, error => {
+      this.changeStatus(false);
+      this.user = undefined;
+      throw error;
     });
   }
 

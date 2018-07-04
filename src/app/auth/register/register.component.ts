@@ -157,7 +157,7 @@ export class RegisterComponent implements OnInit {
       this.regInfo.password
     );
 
-    this.auth.register(u).subscribe(
+    this.auth.register(u).then(
       () => {
         if (this.redirectUrl) {
           this.router.navigate([this.redirectUrl]);
