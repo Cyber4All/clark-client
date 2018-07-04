@@ -102,7 +102,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       if (params.standardOutcomes) {
         this.query.standardOutcomes = [...params.standardOutcomes.split(',')];
       } else {
-        this.query.standardOutcomes = []
+        this.query.standardOutcomes = [];
       }
 
       this.fetchLearningObjects(this.query);
