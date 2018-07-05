@@ -167,6 +167,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     };
     if (await this.checkOrganization()) {
       try {
+        // Store organization in lower case
+        edits.organization = edits.organization.toLowerCase();
         await this.userService.editUserInfo(edits);
         await this.auth.validate();
         this.close.emit(true);
