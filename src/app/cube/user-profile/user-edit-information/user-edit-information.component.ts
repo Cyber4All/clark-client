@@ -123,10 +123,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   ngOnChanges(changes: SimpleChanges) {
     if (changes.user) {
       this.editInfo = {
-        firstname: this.user.name ? this.user.name.split(' ')[0] : '',
-        lastname: this.user.name ? this.user.name.substring(this.user.name.indexOf(' ') + 1) : '',
+        firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
+        lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
         email: this.user.email || '',
-        organization: this.user.organization || '',
+        organization: this.toUpper(this.user.organization) || '',
         password: this.confirmPassword,
         bio: this.user.bio || ''
       };
@@ -167,8 +167,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     };
     if (await this.checkOrganization()) {
       try {
-        // Store organization in lower case
-        edits.organization = edits.organization.toLowerCase();
         await this.userService.editUserInfo(edits);
         await this.auth.validate();
         this.close.emit(true);
@@ -235,6 +233,16 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     this.editInfo.organization = organization;
   }
 
+  private toUpper(str) {
+    return str
+        .toLowerCase()
+        .split(' ')
+        .map(function(word) {
+            return word[0].toUpperCase() + word.substr(1);
+        })
+        .join(' ');
+  }
+
   async checkOrganization() {
     // Allow the user to enter an org that does not exist in our
     // database when empty results are returned
@@ -253,6 +261,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     }
   }
 }
+
+
 
 export interface UserEdit {
   name: string;
