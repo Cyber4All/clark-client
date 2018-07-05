@@ -29,7 +29,6 @@ describe('Cube', () => {
         // Click sign in button 
         cy.contains('Sign in').click();
 
-
         // Assert URL 
         cy.url().should('include', 'login');
 
@@ -105,7 +104,7 @@ describe('Cube', () => {
         cy.url().should('include', 'query');
     });
 
-    it('Click on contribute button while logged out.', () => {
+    it('Click on contribute button (bottom of home page) while logged out.', () => {
         cy.contains('Contribute to CLARK').click();
         // Assert URL 
         cy.url().should('include', 'login');
@@ -215,6 +214,28 @@ describe('Cube', () => {
         cy.url().should('include', 'user');
     });
 
+    it('Navigate to details and click on login button', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
+
+        // Click left-most card
+        cy.get('.learning-object').first().click({ multiple: true });
+
+        // Click author name
+        cy.get('.login-msg').children('span').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Assert URL 
+        cy.url().should('include', 'home');
+    });
+
     // it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
     //     // Wait for learning objects to load on page
     //     cy.wait(1000);
@@ -224,7 +245,7 @@ describe('Cube', () => {
 
     //     // Click DOWNLOAD NOW button 
     //     // if disabled class is present, it is working correctly.
-    //     cy.get('.inner').eq(2).children('.button.good.disabled').click();
+    //     cy.get('.inner').eq(1).children('.button.good.disabled').click();
 
     //     // Assert URL 
     //     cy.url().should('include', 'details');
@@ -351,13 +372,27 @@ describe('Cube', () => {
         cy.get('.edit').children('span').first().click();
 
         // Fill out name input 
+        cy.get('input[name=firstname]').clear();
         cy.get('input[name=firstname]').type('Randy');
 
         // Click Save
         cy.get('.button.good').click();
 
         // Check for new name
-        cy.contains('Randy');
+        cy.contains('randy');
+
+         // Click Edit Profile
+         cy.get('.edit').children('span').first().click();
+
+         // Fill out name input 
+         cy.get('input[name=firstname]').clear();
+         cy.get('input[name=firstname]').type('Nick');
+ 
+         // Click Save
+         cy.get('.button.good').click();
+ 
+         // Check for new name
+         cy.contains('nick');
     });
 
     it('Navigate to personal profile page and enter correct password to see if inputs appear', () => {
@@ -387,12 +422,132 @@ describe('Cube', () => {
         cy.get('input[name=password]').type('122595');
     
         // Check for new fields 
-        cy.get('input[name=newpassword]');
-
+        cy.get('input[name="new password"]');
     });
 
+    // =============================================================
+    // /browse testing
+    // =============================================================
+    it('Click a card and see details page', () => {
+        // Type in to search bar
+        cy.get('.search-input').type('Nick');
 
+        // Click search 
+        cy.contains('Search').click();
 
+         // Assert URL 
+         cy.url().should('include', 'browse');
 
+        // Click first card and navigate to details page 
+        cy.get('.learning-object').first().click();
 
+        // Assert URL 
+         cy.url().should('include', 'details');
+    });
+
+    it('Filter results', () => {
+        // Type in to search bar
+        cy.get('.search-input').type('Sidd');
+
+        // Click search 
+        cy.contains('Search').click();
+
+        // Click filter button
+        cy.get('.filtering-controls').children('.button.neutral').first().click();
+
+        // Pick filter options
+        // Length
+        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').first().click();
+        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(1).click();
+        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(2).click();
+        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(3).click();
+        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(4).click();
+        
+        // Academic level
+        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').first().click();
+        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(1).click();
+        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(2).click();
+        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(3).click();
+        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(4).click();
+        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(5).click();
+    });
+
+    it('Standard outcomes', () => {
+        // Type in to search bar
+        cy.get('.search-input').type('Sidd');
+
+        // Click search 
+        cy.contains('Search').click();
+
+        // Click filter button
+        cy.get('.filtering-controls').children('.button.neutral').first().click();
+
+        // Click standard outcomes button
+        cy.get('.filters').children('.list').children('.button.neutral').click();
+
+        // // Type query
+        // cy.get('.mappings-popup').children('.popup-content').children('.wrapper').children('.mappings').children('#mappingsFilter').type('risk');
+
+        // // Click done
+        // cy.get('.mappings-popup').children('.popup-content').children('.wrapper').children('.source').children('.button.good').click();
+    });
+    
+    it('Sort results', () => {
+        // Type in to search bar
+        cy.get('.search-input').type('Sidd');
+
+        // Click search 
+        cy.contains('Search').click();
+
+        // Click filter button
+        cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+
+        // Pick sort option
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+
+        // Click filter button
+        cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+
+         // Pick sort option
+         cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(1).click({ multiple: true });
+
+         // Click filter button
+        cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+
+        // Pick sort option
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(2).click({ multiple: true });
+
+         // Click filter button
+         cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+
+         // Pick sort option
+         cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(2).click({ multiple: true });
+
+         // Finally, click the red x
+         cy.get('.filtering-controls').children('.button.neutral').eq(1).children('.removeSort').children('.fa-times').click();
+    });
+    // =============================================================
+    // /dashboard testing
+    // =============================================================
+    it('Navigate to dashboard', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Click on contributor option in navbar
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+
+        // navigate to Your Dashboard
+        cy.get('.popup.dropdown').eq(0).children('ul').children('li').first().click({ multiple: true });
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+    });
 });
