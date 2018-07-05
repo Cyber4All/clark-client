@@ -171,6 +171,10 @@ ul {
   margin-bottom: 10px;
 }
 
+#organization {
+    text-transform: capitalize;
+}
+
 @media (max-width: 750px) {
   .btn-group {
     flex-direction: column !important;
