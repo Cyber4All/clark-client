@@ -38,7 +38,7 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Assert new navbar elements
-        cy.contains('Contributor');
+        cy.contains('Contribute');
         cy.get('.navbar-gravatar').click();
     });
 
@@ -74,17 +74,6 @@ describe('Cube', () => {
         cy.url().should('include', 'home');
     });
 
-    it('Clicking navbar search after typing in it', () => {
-        // Type in to search bar
-        cy.get('.search-input').type('Nick');
-
-        // Click search 
-        cy.contains('Search').click();
-
-        // Assert URL 
-        cy.url().should('include', 'query');
-    });
-
     it('Clicking navbar search without entering text does not search', () => {
         // Click search
         cy.contains('Search').click();
@@ -98,7 +87,7 @@ describe('Cube', () => {
         cy.get('.search-input').type('Nick');
 
         // Click search 
-        cy.contains('Search').click();
+        cy.get('.button.bad').eq(0).click();
 
         // Assert URL 
         cy.url().should('include', 'query');
@@ -142,13 +131,13 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Click contribute button at bottom of page
-        cy.get('.fa-university').click();
+        cy.get('.right.library').click();
 
         // Assert URL 
         cy.url().should('include', 'library');
     });
 
-    it('Navigate from library to home.', () => {
+    it('Navigate from library to browse.', () => {
         // Click sign in button 
         cy.contains('Sign in').click();
 
@@ -161,7 +150,7 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Click contribute button at bottom of page
-        cy.get('.fa-university').click();
+        cy.get('.right.library').click();
 
         // Assert library URL 
         cy.url().should('include', 'library');
@@ -170,7 +159,7 @@ describe('Cube', () => {
         cy.contains('browsing some learning objects!').click();
 
         // Assert home URL
-        cy.url().should('include', 'home');
+        cy.url().should('include', 'browse');
     });
 
     it('Navigate from library to home by clicking on CLARK logo in navbar.', () => {
@@ -186,7 +175,7 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Click contribute button at bottom of page
-        cy.get('.fa-university').click();
+        cy.get('.right.library').click();
 
         // Assert library URL 
         cy.url().should('include', 'library');
@@ -222,7 +211,7 @@ describe('Cube', () => {
         cy.get('.learning-object').first().click({ multiple: true });
 
         // Click author name
-        cy.get('.login-msg').children('span').click();
+        cy.get('.login-msg').children('a').click();
 
         // Assert URL 
         cy.url().should('include', 'login');
@@ -282,8 +271,11 @@ describe('Cube', () => {
         cy.get('input[name=password]').type('122595');
         cy.get('.auth-button').click();
 
+        // Wait for sign in process
+        cy.wait(1000);
+
         // Assert new navbar elements
-        cy.contains('Contributor');
+        cy.contains('Contribute');
         cy.get('.navbar-gravatar').click();
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
@@ -304,7 +296,7 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Assert new navbar elements
-        cy.contains('Contributor');
+        cy.contains('Contribute');
         cy.get('.navbar-gravatar').click();
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
@@ -331,7 +323,7 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Assert new navbar elements
-        cy.contains('Contributor');
+        cy.contains('Contribute');
         cy.get('.navbar-gravatar').click();
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
@@ -361,7 +353,7 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Assert new navbar elements
-        cy.contains('Contributor');
+        cy.contains('Contribute');
         cy.get('.navbar-gravatar').click();
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
@@ -379,7 +371,7 @@ describe('Cube', () => {
         cy.get('.button.good').click();
 
         // Check for new name
-        cy.contains('randy');
+        cy.contains('Randy');
 
          // Click Edit Profile
          cy.get('.edit').children('span').first().click();
@@ -392,7 +384,7 @@ describe('Cube', () => {
          cy.get('.button.good').click();
  
          // Check for new name
-         cy.contains('nick');
+         cy.contains('Nick');
     });
 
     it('Navigate to personal profile page and enter correct password to see if inputs appear', () => {
@@ -408,7 +400,7 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Assert new navbar elements
-        cy.contains('Contributor');
+        cy.contains('Contribute');
         cy.get('.navbar-gravatar').click();
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
@@ -433,7 +425,7 @@ describe('Cube', () => {
         cy.get('.search-input').type('Nick');
 
         // Click search 
-        cy.contains('Search').click();
+        cy.get('.button.bad').eq(0).click();
 
          // Assert URL 
          cy.url().should('include', 'browse');
@@ -450,252 +442,71 @@ describe('Cube', () => {
         cy.get('.search-input').type('Sidd');
 
         // Click search 
-        cy.contains('Search').click();
-
-        // Click filter button
-        cy.get('.filtering-controls').children('.button.neutral').first().click();
+        cy.get('.button.bad').eq(0).click();
 
         // Pick filter options
         // Length
-        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').first().click();
-        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(1).click();
-        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(2).click();
-        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(3).click();
-        cy.get('.filters').children('.list').children('.filter').first().children('ul').children('li').eq(4).click();
+        cy.get('.clark-filter.vertical').children('.filter-section').children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').first().children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(1).children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(2).children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(3).children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(4).children('span').children('clark-checkbox').children('.checkbox').click();
         
         // Academic level
-        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').first().click();
-        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(1).click();
-        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(2).click();
-        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(3).click();
-        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(4).click();
-        cy.get('.filters').children('.list').children('.filter').eq(1).children('ul').children('li').eq(5).click();
+        cy.get('.clark-filter.vertical').children('.filter-section').eq(1).children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').first().children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').eq(1).children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(1).children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').eq(1).children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(2).children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').eq(1).children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(3).children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').eq(1).children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(4).children('span').children('clark-checkbox').children('.checkbox').click();
+        cy.get('.clark-filter.vertical').children('.filter-section').eq(1).children('.filter-section-inner').children('.filter-section-type.select-many').children('.filter.filter-checkbox').eq(5).children('span').children('clark-checkbox').children('.checkbox').click();
     });
 
-    it('Standard outcomes', () => {
+    it('Clear search', () => {
         // Type in to search bar
         cy.get('.search-input').type('Sidd');
 
         // Click search 
-        cy.contains('Search').click();
+        cy.get('.button.bad').eq(0).click();
 
-        // Click filter button
-        cy.get('.filtering-controls').children('.button.neutral').first().click();
+        // Click clear search
+        cy.get('.content').children('.column-title').children('span').first().children('.clear-search').click();
 
-        // Click standard outcomes button
-        cy.get('.filters').children('.list').children('.button.neutral').click();
-
-        // // Type query
-        // cy.get('.mappings-popup').children('.popup-content').children('.wrapper').children('.mappings').children('#mappingsFilter').type('risk');
-
-        // // Click done
-        // cy.get('.mappings-popup').children('.popup-content').children('.wrapper').children('.source').children('.button.good').click();
+        // Assert URL
+        cy.url().should('include', 'browse');
     });
     
     it('Sort results', () => {
-        // Type in to search bar
-        cy.get('.search-input').type('Sidd');
+       // Type in to search bar
+       cy.get('.search-input').type('Sidd');
 
-        // Click search 
-        cy.contains('Search').click();
+       // Click search 
+       cy.get('.button.bad').eq(0).click();
 
-        // Click filter button
-        cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+        // Click Sort
+        cy.get('.content').children('.column-title').children('.results-options').children('.sort').click();
 
         // Pick sort option
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
-        // Click filter button
-        cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+        // Click Sort
+        cy.get('.content').children('.column-title').children('.results-options').children('.sort').click();
 
-         // Pick sort option
-         cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(1).click({ multiple: true });
+        // Pick sort option
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(1).click({ multiple: true });
 
-         // Click filter button
-        cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+        // Click Sort
+        cy.get('.content').children('.column-title').children('.results-options').children('.sort').click();
 
         // Pick sort option
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(2).click({ multiple: true });
 
-         // Click filter button
-         cy.get('.filtering-controls').children('.button.neutral').eq(1).click();
+        // Click Sort
+        cy.get('.content').children('.column-title').children('.results-options').children('.sort').click();
 
          // Pick sort option
-         cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(2).click({ multiple: true });
+         cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(3).click({ multiple: true });
 
-         // Finally, click the red x
-         cy.get('.filtering-controls').children('.button.neutral').eq(1).children('.removeSort').children('.fa-times').click();
-    });
-    // =============================================================
-    // /dashboard testing
-    // =============================================================
-    it('Navigate to dashboard', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
-        cy.contains('Contribute to CLARK').click();
-
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-    });
-
-    it('Navigate to dashboard and click new +', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
-        cy.contains('Contribute to CLARK').click();
-
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-
-        //Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
-
-        // Assert URL
-        cy.url().should('include', 'learning-object-builder');
-    });
-
-    it('Navigate to dashboard and click existing object to edit it', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
-        cy.contains('Contribute to CLARK').click();
-
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-
-        //Click New +
-        cy.get('.cells').children('.cell').eq(1).children('a').click();
-
-        // Assert URL
-        cy.url().should('include', 'learning-object-builder');
-    });
-
-    it('Click checkboxes and look for delete button to appear', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
-        cy.contains('Contribute to CLARK').click();
-
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-
-        //Click New +
-        cy.get('.row.columns').children('.select').children('.checkbox').click();
-
-        //Assert delete button has appeared
-        cy.get('.filter.bad.button');
-    });
-
-    it('Navigate to dashboard and click existing object to edit it', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
-        cy.contains('Contribute to CLARK').click();
-
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-
-        //Click New +
-        cy.get('.cells').children('.options').click();
-        cy,get('.popup.small').children('ul').children('li').first().click();
-
-         // Assert URL
-         cy.url().should('include', 'learning-object-builder');
-    });
-
-    it('Navigate to dashboard and manage materials for an object', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
-        cy.contains('Contribute to CLARK').click();
-
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-
-        //Click New +
-        cy.get('.cells').children('.options').click();
-        cy,get('.popup.small').children('ul').children('li').eq(1).click();
-
-         // Assert URL
-         cy.url().should('include', 'learning-object-builder');
+        // Finally, click the red x
+        cy.get('.content').children('.column-title').children('.results-options').children('.sort').children('.removeSort').children('.fa-times').click();
     });
 });

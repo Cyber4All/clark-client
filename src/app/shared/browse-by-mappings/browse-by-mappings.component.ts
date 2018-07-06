@@ -14,14 +14,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { OutcomeService } from '../../core/outcome.service';
-<<<<<<< HEAD
-// tslint:disable-next-line:max-line-length
-import { SuggestionService } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
-=======
 import {
   SuggestionService
 } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
->>>>>>> 8879306badc82e930962510a3e2c15292510193a
 import { ModalListElement, ModalService, Position } from '../../shared/modals';
 
 @Component({
@@ -31,25 +26,12 @@ import { ModalListElement, ModalService, Position } from '../../shared/modals';
 })
 export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnChanges {
   // Inputs
-<<<<<<< HEAD
-  // tslint:disable-next-line:no-input-rename
-  @Input('dimensions') dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
-  // tslint:disable-next-line:no-input-rename
-  @Input('source') source: string;
-  // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
-  // tslint:disable-next-line:no-input-rename
-  @Input('mappings') mappings: Array<OutcomeSuggestion> = [];
-  // dictates whether this component should remain in the document flow or not (IE if this is in a modal, inflow should be false)
-  // tslint:disable-next-line:no-input-rename
-  @Input('inflow') inflow: boolean;
-=======
   @Input() dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
   @Input() source: string;
   // array of applied mappings (grabbed from service on init and then updated when above input/output actions require it
   @Input() mappings: Array<OutcomeSuggestion> = [];
   // dictates whether this component should remain in the document flow or not (IE if this is in a modal, inflow should be false)
   @Input() inflow: boolean;
->>>>>>> 8879306badc82e930962510a3e2c15292510193a
 
   // Outputs
   @Output('done') done = new EventEmitter<boolean>();
@@ -80,12 +62,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
 
   mappingsQueryError = false;
 
-<<<<<<< HEAD
-  // tslint:disable-next-line:no-input-rename
-  @Input('showMappedOutcomesTitle') showMappedOutcomesTitle;
-=======
   @Input() showMappedOutcomesTitle;
->>>>>>> 8879306badc82e930962510a3e2c15292510193a
 
   constructor(
     private modalService: ModalService,
