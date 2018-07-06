@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SuggestionService } from '../suggestion/services/suggestion.service';
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 

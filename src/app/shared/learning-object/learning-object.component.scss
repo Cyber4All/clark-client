@@ -71,6 +71,7 @@
     // loading styles
     $color: lighten($placeholder, 17);
     pointer-events: none;
+    overflow: hidden;
 
     .image {
         background: $color !important;
@@ -94,15 +95,16 @@
     }  
 
     .learning-object {
+        overflow: hidden;
 
         &:after {
             content: '';
-            background: linear-gradient(90deg, transparent, white, transparent);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
             position: absolute;
             top: 0;
             bottom: 0;
             max-width: 200px;
-            width: 50%;
+            width: 70%;
             animation: loading 2s linear forwards infinite;
         }
     }
@@ -241,10 +243,10 @@
 
  @keyframes loading {
      0% {
-        left: -60px;
+        left: -200px;
         opacity: 0;
      } 50% {
-         opacity: 0.6;
+         opacity: 0.8;
      } 100% {
          opacity: 0;
          left: 100%;

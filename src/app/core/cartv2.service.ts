@@ -4,6 +4,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
@@ -136,7 +137,10 @@ export class CartV2Service {
       );
   }
 
-  downloadLearningObject(author: string, learningObjectName: string): void {
+  downloadLearningObject(
+    author: string,
+    learningObjectName: string
+  ): BehaviorSubject<boolean> {
     const url = USER_ROUTES.DOWNLOAD_OBJECT(
       this.user.username,
       author,
@@ -145,8 +149,20 @@ export class CartV2Service {
     const iframe = document.createElement('iframe');
     iframe.src = url;
     iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
+
+    const loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+      false
+    );
+    try {
+      iframe.onload(<any>loaded.next(true));
+    } catch (e) {
+      // Will always throw an error, do not handle
+    }
     document.getElementById(iframeParentID).appendChild(iframe);
+    return loaded;
   }
+
+  iframeLoaded(this: HTMLIFrameElement, event: Event) {}
 
   has(object: LearningObject): boolean {
     return (

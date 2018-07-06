@@ -1,4 +1,3 @@
-import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, Input } from '@angular/core';
 import { EscapeHtmlPipe } from '../../../shared/pipes/keep-html.pipe';
 
@@ -13,7 +12,7 @@ export class DetailsContentComponent implements OnInit {
     @Input() strategy: any;
     @Input() type: string;
     isShown: boolean;
-    buttonText:string;
+    buttonText: string;
 
 
     constructor() { }

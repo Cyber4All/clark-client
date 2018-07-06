@@ -22,16 +22,22 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
+  @ViewChild('organization', { read: ElementRef })
+  organization: ElementRef;
   emailError = false;
   querying = false;
   result: boolean;
-  sub: Subscription;
+  currentOrganization: string;
+  organizationsList = [];
+  isValidOrganization: boolean;
+  // array of subscriptions to destroy on component destroy
+  subs: Subscription[] = [];
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub = Observable.fromEvent(this.emailInput.nativeElement, 'input')
+    this.subs.push(Observable.fromEvent(this.emailInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
@@ -50,10 +56,57 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
             this.register.setInUseEmail(this.result);
           }
         });
-      });
+      })
+    );
+    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
+    this.subs.push(Observable.fromEvent(this.organization.nativeElement, 'input')
+      .map(x => x['currentTarget'].value)
+      .debounceTime(400)
+      .subscribe(val => {
+        this.querying = true;
+        this.getOrganizations(val);
+      })
+    );
+  }
+
+  getOrganizations(currentOrganization) {
+    this.auth.getOrganizations(currentOrganization).then(val => {
+        this.querying = false;
+        // If no results, destroy results display
+        if (!val[0]) {
+          this.organizationsList = [];
+        } else {
+          // Display top 5 matching organizations
+          for (let i = 0; i < 5; i++) {
+            if (val[i]) {
+              this.organizationsList[i] = val[i]['institution'];
+            } else {
+              // Always display 5 results to cover navigation button.
+              this.organizationsList[i] = '';
+            }
+          }
+        }
+         // If no query, destroy results display
+         if (currentOrganization === '') {
+          this.organizationsList = [];
+        }
+    });
+  }
+
+  chooseOrganization(organization: string) {
+    // Always display 5 results to cover navigation button.
+    // prevent user from clicking on emtpy result.
+    if (organization !== '') {
+      this.group.controls['organization'].setValue(organization);
+      // After org is selected, destroy results display
+      this.organizationsList = [];
+    }
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    // unsubscribe from all observables
+    for (let i = 0, l = this.subs.length; i < l; i++) {
+      this.subs[i].unsubscribe();
+    }
   }
 }

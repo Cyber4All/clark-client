@@ -134,10 +134,18 @@ export class AuthService {
       });
   }
 
-  register(user: User): Observable<any> {
+  register(user: User): Promise<User> {
     return this.http.post(environment.apiURL + '/users', user, {
       withCredentials: true,
       responseType: 'text'
+    }).toPromise().then(val => {
+      this.user = user;
+      this.changeStatus(true);
+      return this.user;
+    }, error => {
+      this.changeStatus(false);
+      this.user = undefined;
+      throw error;
     });
   }
 
@@ -251,6 +259,36 @@ export class AuthService {
     if (this.socket) {
       this.socket.emit('close');
     }
+  }
+
+  getOrganizations(query: string) {
+    return this.http
+      .get(
+        environment.apiURL + `/users/organizations?query=${encodeURIComponent(query)}`,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
+        return val;
+      });
+  }
+
+  checkOrganization(organization: string) {
+    return this.http
+      .get(
+        environment.apiURL + `/users/verifyorganization?org=${encodeURIComponent(organization)}`,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
+        return val;
+      });
   }
 
   printCards() {

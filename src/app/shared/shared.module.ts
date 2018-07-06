@@ -24,6 +24,10 @@ import { IndicatorComponent } from './indicator/indicator.component';
 import { LearningObjectListingComponent } from '../shared/learning-object/learning-object.component';
 import { UserCardComponent } from '../shared/user-card/user-card.component';
 import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
+import { FilterComponent } from './filter/filter.component';
+import { MappingsFilterComponent } from './mappings-filter/mappings-filter.component';
+import { SearchComponent } from './search/search.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -56,7 +60,11 @@ import { LearningObjectCardDirective } from './directives/learning-object-card.d
     IndicatorComponent,
     LearningObjectListingComponent,
     UserCardComponent,
-    LearningObjectCardDirective
+    LearningObjectCardDirective,
+    FilterComponent,
+    MappingsFilterComponent,
+    SearchComponent,
+    AutofocusDirective
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -69,7 +77,10 @@ import { LearningObjectCardDirective } from './directives/learning-object-card.d
     IndicatorComponent,
     LearningObjectListingComponent,
     UserCardComponent,
-    LearningObjectCardDirective
+    LearningObjectCardDirective,
+    FilterComponent,
+    MappingsFilterComponent,
+    AutofocusDirective
   ]
 })
 export class SharedModule {}

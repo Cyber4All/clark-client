@@ -24,8 +24,8 @@ import { NotificationService } from '../../../shared/notifications';
 })
 export class UserInformationComponent implements OnInit, OnChanges {
   // User Information
-  @Input('user') user: User;
-  @Input('self') self = false;
+  @Input() user: User;
+  @Input() self = false;
   objects: LearningObject[] = Array(5).fill(new LearningObject());
   loading = false;
 
@@ -40,12 +40,6 @@ export class UserInformationComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-  }
-
-  private getUser() {
-    this.userService.getUser(this.user.username).then(val => {
-      this.user = val;
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
