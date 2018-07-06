@@ -27,6 +27,7 @@ import { LearningObjectCardDirective } from './directives/learning-object-card.d
 import { FilterComponent } from './filter/filter.component';
 import { MappingsFilterComponent } from './mappings-filter/mappings-filter.component';
 import { SearchComponent } from './search/search.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -62,7 +63,8 @@ import { SearchComponent } from './search/search.component';
     LearningObjectCardDirective,
     FilterComponent,
     MappingsFilterComponent,
-    SearchComponent
+    SearchComponent,
+    AutofocusDirective
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -77,7 +79,8 @@ import { SearchComponent } from './search/search.component';
     UserCardComponent,
     LearningObjectCardDirective,
     FilterComponent,
-    MappingsFilterComponent
+    MappingsFilterComponent,
+    AutofocusDirective
   ]
 })
 export class SharedModule {}
