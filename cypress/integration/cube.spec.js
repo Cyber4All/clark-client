@@ -542,12 +542,160 @@ describe('Cube', () => {
         cy.get('.auth-button').click();
 
         // Click on contributor option in navbar
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
 
         // navigate to Your Dashboard
-        cy.get('.popup.dropdown').eq(0).children('ul').children('li').first().click({ multiple: true });
+        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        cy.contains('Contribute to CLARK').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
+    });
+
+    it('Navigate to dashboard and click new +', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Click on contributor option in navbar
+        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+
+        // navigate to Your Dashboard
+        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        cy.contains('Contribute to CLARK').click();
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        //Click New +
+        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+
+        // Assert URL
+        cy.url().should('include', 'learning-object-builder');
+    });
+
+    it('Navigate to dashboard and click existing object to edit it', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Click on contributor option in navbar
+        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+
+        // navigate to Your Dashboard
+        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        cy.contains('Contribute to CLARK').click();
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        //Click New +
+        cy.get('.cells').children('.cell').eq(1).children('a').click();
+
+        // Assert URL
+        cy.url().should('include', 'learning-object-builder');
+    });
+
+    it('Click checkboxes and look for delete button to appear', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Click on contributor option in navbar
+        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+
+        // navigate to Your Dashboard
+        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        cy.contains('Contribute to CLARK').click();
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        //Click New +
+        cy.get('.row.columns').children('.select').children('.checkbox').click();
+
+        //Assert delete button has appeared
+        cy.get('.filter.bad.button');
+    });
+
+    it('Navigate to dashboard and click existing object to edit it', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Click on contributor option in navbar
+        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+
+        // navigate to Your Dashboard
+        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        cy.contains('Contribute to CLARK').click();
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        //Click New +
+        cy.get('.cells').children('.options').click();
+        cy,get('.popup.small').children('ul').children('li').first().click();
+
+         // Assert URL
+         cy.url().should('include', 'learning-object-builder');
+    });
+
+    it('Navigate to dashboard and manage materials for an object', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // Click on contributor option in navbar
+        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+
+        // navigate to Your Dashboard
+        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        cy.contains('Contribute to CLARK').click();
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        //Click New +
+        cy.get('.cells').children('.options').click();
+        cy,get('.popup.small').children('ul').children('li').eq(1).click();
+
+         // Assert URL
+         cy.url().should('include', 'learning-object-builder');
     });
 });
