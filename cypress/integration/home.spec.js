@@ -75,23 +75,17 @@ describe('Home', () => {
     });
 
     it('Clicking navbar search without entering text does not search', () => {
-        // Click search icon
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('.icon').click();
-        
         // Trigger search dropdown
         cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
             .children('.clark-search-inner').children('clark-search').children('.clark-search')
             .children('.search-options').children('.keyword-search.input').children('form')
             .children('input').click();
         
-        // Click search icon
+        // Click search key
         cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
             .children('.clark-search-inner').children('clark-search').children('.clark-search')
             .children('.search-options').children('.keyword-search.input').children('form')
-            .children('.icon').click();
+            .children('input').type('{enter}');
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -108,10 +102,78 @@ describe('Home', () => {
         cy.url().should('include', 'query');
     });
 
+    it('Clicking navbar search after typing in it - Keyword search', () => {
+        // Trigger search dropdown
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-options').children('.keyword-search.input').children('form')
+            .children('input').click();
+        
+        // Type search query
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-options').children('.keyword-search.input').children('form')
+            .children('input').type('Sidd');
+        
+        // Click search icon
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-options').children('.keyword-search.input').children('form')
+            .children('input').type('{enter}');
+
+        // Assert URL 
+        cy.url().should('include', 'browse');
+    });
+
     it('Click on contribute button (bottom of home page) while logged out.', () => {
         cy.contains('Contribute to CLARK').click();
         // Assert URL 
         cy.url().should('include', 'login');
+    });
+
+    it('Clicking navbar and switching to outcome search should display new menu items', () => {
+        // Trigger search dropdown
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-options').children('.keyword-search.input').children('form')
+            .children('input').click();
+        
+        // Click outcomes search selector
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-switch').children('.option.option-two').click();
+
+        // Assert new menu icons
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-options').children('div').first().children('clark-mappings-filter')
+            .children('.mappings-filter').children('.search-bar.input').children('.search-sources');
+    });
+
+    it('Assert search dropdown description', () => {
+        // Trigger search dropdown
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-options').children('.keyword-search.input').children('form')
+            .children('input').click();
+        
+        // Type search query
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.description')
+            .contains('Search for learning objects by organization, user, or keyword/phrase.');
+    });
+
+    it('Assert search dropdown exit', () => {
+        // Trigger search dropdown
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('clark-search').children('.clark-search')
+            .children('.search-options').children('.keyword-search.input').children('form')
+            .children('input').click();
+        
+        // Click exit
+        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
+            .children('.clark-search-inner').children('.close').click();
     });
 
     it('Click on contribute button while logged in.', () => {
