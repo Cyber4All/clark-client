@@ -4,7 +4,7 @@ import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
 const chance = new Chance();
 
-describe('Cube', () => {
+describe('Dashboard', () => {
     const email = chance.email();
 
     beforeEach(() => {
