@@ -167,7 +167,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       width: $sidebar-width;
       padding: 20px;
       flex-shrink: 0;
-      flex-grow: 1;
       margin-top: -100px;
       z-index: 2;
 
