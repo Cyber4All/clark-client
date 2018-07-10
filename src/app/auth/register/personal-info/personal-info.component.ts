@@ -22,7 +22,7 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./personal-info.component.scss']
 })
 
-export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   @Input() group: FormGroup;
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
@@ -39,14 +39,10 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
-  ngOnInit() {
-
-  }
-
   ngAfterViewInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     this.subs.push(Observable.fromEvent(this.emailInput.nativeElement, 'input')
-      .map(x =>  x['currentTarget'].value)
+      .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
         this.querying = true;
