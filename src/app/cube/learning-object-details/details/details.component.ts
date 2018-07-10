@@ -2,10 +2,7 @@ import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -31,6 +28,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
   url: string;
+  showAddRating = false;
 
   contributorsList = [];
 
@@ -44,7 +42,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private cartService: CartV2Service,
     public userService: UserService,
     private route: ActivatedRoute,
-    private router: Router,
     private auth: AuthService,
     private renderer: Renderer2,
     private noteService: NotificationService

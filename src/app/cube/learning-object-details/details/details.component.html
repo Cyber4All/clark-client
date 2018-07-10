@@ -10,7 +10,12 @@
             <span *ngIf="i !== contributorsList.length -1">, </span>
           </span>
         </div>
-        <div class="type">{{ learningObject.length }}</div>
+        <div class="header-bottom">
+          <div class="rating">
+            <clark-rating-stars [rating]="2.7" [reviewsCount]="64" (click)="showAddRating = true;"></clark-rating-stars>
+          </div>
+          <div class="type">{{ learningObject.length }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -73,4 +78,7 @@
     </div>
   </div>
   <div [id]="iframeParent"></div>
+</div>
+<div class="new-rating-wrapper">
+  <div class="new-rating"></div>
 </div>

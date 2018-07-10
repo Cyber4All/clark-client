@@ -1,0 +1,17 @@
+<div class="rating-stars">
+  <div class="stars">
+    <div class="empty-stars">
+      <div class="empty-star" *ngFor="let item of iterableCount">
+        <i class="fal fa-star"></i>
+      </div>
+    </div>
+    <div class="full-stars-mask" [ngStyle]="{width: (rating / count) * 100 + '%'}">
+      <div class="full-stars">
+        <div class="full-star" *ngFor="let item of iterableCount">
+          <i class="fas fa-star"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="number-reviews">({{ reviewsCount }})</div>
+</div>

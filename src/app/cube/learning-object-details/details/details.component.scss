@@ -64,6 +64,16 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       .header {
         max-width: $content-width;
         padding-right: 20px;
+
+        // .header-bottom {
+        //   display: flex;
+        //   flex-direction: row;
+        //   align-items:
+
+        //   & > *:not(:last-child) {
+        //     margin-right: 10px;
+        //   }
+        // }
       }
 
       .name {
@@ -398,6 +408,19 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     cursor: pointer;
     text-decoration: underline;
   }
+}
+
+.new-rating-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+  background: rgba(0, 0, 0, 0.6); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes newSaveOrDownload {
