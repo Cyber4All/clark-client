@@ -198,4 +198,223 @@
         cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click();
         cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
+
+    it('Assert author dropdown', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // navigate to Your Dashboard
+        cy.contains('Contribute to CLARK').click();
+
+        // Wait for page load
+        cy.wait(1000);
+
+        // Click New +
+        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+
+        // Enter user query
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(1).children('input').type('N');
+        
+        // Assert user results 
+        cy.get('#container').children('ul').children('li').first().contains('dreeves132');
+    });
+
+    it('Assert level options', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // navigate to Your Dashboard
+        cy.contains('Contribute to CLARK').click();
+
+        // Wait for page load
+        cy.wait(1000);
+
+        // Click New +
+        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+
+        // Select first level
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(1).click();
+        
+         // Select second level
+         cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(1).click();
+        
+        // Select third level
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(2).click();
+
+        // Select fourth level
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(3).click();
+
+        // Select fifth level
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(4).click();
+
+        // Select sixth level
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(5).click();
+    });
+
+    it('Assert items on the sidebar', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // navigate to Your Dashboard
+        cy.contains('Contribute to CLARK').click();
+
+        // Wait for page load
+        cy.wait(1000);
+
+        // Click New +
+        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+
+        // Assert sidebar
+        // Assert title
+        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
+            .children('.sidebar-wrapper').children('.title').contains('Learning Object');
+
+        // Assert menu item 1
+        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
+            .children('.sidebar-wrapper').children('.menu-item').eq(0).children('.menu-item-inner').contains('1. Basic Information');
+        
+        // Assert menu item 2
+        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
+            .children('.sidebar-wrapper').children('.menu-item').eq(1).children('.menu-item-inner').contains('2. Learning Outcomes');
+
+        // Assert menu item 3 (link to add new learning outcome)
+        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
+            .children('.sidebar-wrapper').children('.menu-item-group.open').children('.menu-item.externalAction')
+            .children('.menu-item-inner').contains('New Learning Outcome');
+
+        // Assert menu item 4
+        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
+            .children('.sidebar-wrapper').children('div').eq(4).children('.menu-item').contains('3. Upload Materials');
+    });
+
+    it('Add a new learning outcome and assert elements of the form', () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // navigate to Your Dashboard
+        cy.contains('Contribute to CLARK').click();
+
+        // Wait for page load
+        cy.wait(1000);
+
+        // Click New +
+        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+
+        // clink link to add new learning outcome
+        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
+            .children('.sidebar-wrapper').children('.menu-item-group.open').children('.menu-item.externalAction')
+            .children('.menu-item-inner').contains('New Learning Outcome').click();
+
+        // Assert for header 
+        cy.get('.outcome-container-wrapper').children('.section').children('.title.sticky').contains('Learning Outcome');
+        
+        // Click Remember and Understand 
+        cy.get('.container').children('.container-flexer').children('onion-blooms-selector').children('.outcome_bloom')
+            .children('.squares').children('.square').eq(0).click();
+
+        // Click Apply and Analyze
+        cy.get('.container').children('.container-flexer').children('onion-blooms-selector').children('.outcome_bloom')
+            .children('.squares').children('.square').eq(1).click();
+
+        // Click Evaluate and Synthesize
+        cy.get('.container').children('.container-flexer').children('onion-blooms-selector').children('.outcome_bloom')
+            .children('.squares').children('.square').eq(2).click();
+        
+        // Click Mapped Outcomes 
+        cy.get('.mappings-toolbar').children('.tab').eq(0).click();
+
+        // Click Search curricular guidelines for outcomes
+        cy.get('.mappings-toolbar').children('.tab').eq(1).click();
+
+        // Click Suggested mappings
+        cy.get('.mappings-toolbar').children('.tab').eq(2).click();
+    });
+
+    it('Trigger outcome text error' , () => {
+        // Click sign in button 
+        cy.contains('Sign in').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('nvisal1');
+        cy.get('input[name=password]').type('122595');
+        cy.get('.auth-button').click();
+
+        // navigate to Your Dashboard
+        cy.contains('Contribute to CLARK').click();
+
+        // Wait for page load
+        cy.wait(1000);
+
+        // Click New +
+        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+
+        // Enter Learning Object name
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type('blah blah cypress testing');
+
+        // Wait 
+        cy.wait(1000);
+
+        // click link to add new learning outcome
+        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
+            .children('.sidebar-wrapper').children('.menu-item-group.open').children('.menu-item.externalAction')
+            .children('.menu-item-inner').contains('New Learning Outcome').click();
+
+        // Click Next button
+        cy.get('.next.button.neutral.on-white').click();
+
+        // Assert error 
+        cy.get('notification').children('.notification.bad').children('.note-content').children('.title').contains('Error!');
+        cy.get('notification').children('.notification.bad').children('.note-content').children('.text').contains('You cannot submit a learning outcome without outcome text!');
+    });
  });
