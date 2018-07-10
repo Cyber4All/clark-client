@@ -9,16 +9,16 @@ import {
   HostListener,
   Input,
   OnChanges,
-  SimpleChanges,
-  IterableDiffers,
-  DoCheck,
-  IterableDiffer
+  SimpleChanges
 } from '@angular/core';
 import { OutcomeService } from '../../core/outcome.service';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
   selector: 'clark-mappings-filter',
