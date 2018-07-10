@@ -27,6 +27,7 @@
     "@types/uuid": "^3.4.3",
     "angular2-virtual-scroll": "^0.3.2",
     "core-js": "^2.5.3",
+    "dropzone": "^5.4.0",
     "file-saver": "^1.3.3",
     "md5": "^2.2.1",
     "ng-click-outside": "^4.0.0",
