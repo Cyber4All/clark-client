@@ -22,7 +22,6 @@ export class CheckBoxComponent implements OnChanges {
         if (changes.setValue) {
             // this was set from the outside, so we don't need to fire an event
             this.setStatus(changes.setValue.currentValue, false);
-            console.log('changed!');
         }
     }
 

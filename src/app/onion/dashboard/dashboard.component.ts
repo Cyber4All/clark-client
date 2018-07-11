@@ -176,11 +176,8 @@ export class DashboardComponent implements OnInit {
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
-    console.log(this.selected);
     this.selected.splice(this.selected.indexOf(l.name), 1);
     this.app.detectChanges();
-
-    console.log(this.selected);
 
     if (this.selected.length < this.learningObjects.length && this.allSelected) {
       this.allSelected = false;

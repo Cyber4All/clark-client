@@ -1,7 +1,7 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class DetailsComponent implements OnInit, OnDestroy {
   @ViewChild('savesRef') savesRef: ElementRef;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
-
+ 
   private subs: Subscription[] = [];
   downloading = false;
   addingToLibrary = false;
@@ -30,12 +30,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
   url: string;
   showAddRating = false;
 
+  userRating: number;
+
   contributorsList = [];
 
   canDownload = false;
   iframeParent = iframeParentID;
 
   public tips = TOOLTIP_TEXT;
+
+  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
+    if (event.keyCode === 27) {
+      this.showAddRating = false;
+    }
+  }
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -95,6 +103,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         // list of usernames. We want to display their full names.
         this.getContributors();
       }
+
+      // FIXME remove mock reviews
 
       this.url = this.buildLocation();
     } catch (e) {
@@ -229,6 +239,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   removeFromCart() {
     this.cartService.removeFromCart(this.author, this.learningObjectName);
+  }
+
+  submitNewRating(event: {rating: number, comment: string}) {
+    // TODO service call here
+    this.showAddRating = false;
+    this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
   }
 
   private buildLocation(encoded?: boolean) {

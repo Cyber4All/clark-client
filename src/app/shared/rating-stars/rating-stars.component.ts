@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { advanceActivatedRoute } from '../../../../node_modules/@angular/router/src/router_state';
 
 @Component({
   selector: 'clark-rating-stars',
@@ -10,6 +11,7 @@ export class RatingStarsComponent implements OnInit, OnChanges {
   @Input() rating: number;
   @Input() reviewsCount: number;
   iterableCount: Array<any>;
+
 
   constructor() { }
 
