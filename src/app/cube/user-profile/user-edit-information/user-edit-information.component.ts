@@ -13,8 +13,10 @@ import {
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
 import { NotificationService } from '../../../shared/notifications';
-import { User } from '@cyber4all/clark-entity';
 import { Subscription, Observable } from 'rxjs';
+
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
   selector: 'app-user-edit-information',
