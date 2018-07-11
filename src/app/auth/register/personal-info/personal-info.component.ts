@@ -1,10 +1,10 @@
 import {
   Component,
-  OnInit,
   Input,
   ViewChild,
   ElementRef,
-  OnDestroy
+  OnDestroy,
+  AfterViewInit
 } from '@angular/core';
 import {FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -12,13 +12,16 @@ import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../../register/register.component';
 import { Subscription } from 'rxjs/Subscription';
 
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
+
 @Component({
   selector: 'clark-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss']
 })
 
-export class PersonalInfoComponent implements OnInit, OnDestroy {
+export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   @Input() group: FormGroup;
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
@@ -35,7 +38,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     this.subs.push(Observable.fromEvent(this.emailInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
