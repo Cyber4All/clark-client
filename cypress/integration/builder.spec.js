@@ -1,11 +1,8 @@
  /// <reference types="cypress" />
 
- import Chance from 'chance';
  import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
- const chance = new Chance();
  
  describe('Browse', () => {
-     const email = chance.email();
  
      beforeEach(() => {
          // Return to home page before each test
@@ -15,16 +12,8 @@
      // /learning-object-builder testing
      // =============================================================
      it('Assert element within Basic Information step of builder', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -70,16 +59,8 @@
     });
 
     it('Trigger please enter a name for this learning object error', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -102,16 +83,8 @@
     });
 
     it('Trigger name already exists error', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -139,16 +112,8 @@
     });
 
     it('Successfully navigate to the manage materials page (step 3)', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -176,16 +141,8 @@
     });
 
     it('Delete created Learning Object', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -200,16 +157,8 @@
     });
 
     it('Assert author dropdown', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -230,16 +179,8 @@
     });
 
     it('Assert level options', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -282,16 +223,8 @@
     });
 
     it('Assert items on the sidebar', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -326,16 +259,8 @@
     });
 
     it('Add a new learning outcome and assert elements of the form', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -346,7 +271,7 @@
         // Click New +
         cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
 
-        // clink link to add new learning outcome
+        // Click link to add new learning outcome
         cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
             .children('.sidebar-wrapper').children('.menu-item-group.open').children('.menu-item.externalAction')
             .children('.menu-item-inner').contains('New Learning Outcome').click();
@@ -377,18 +302,10 @@
     });
 
     it('Trigger outcome text error' , () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
+        // Login 
+        cy.login();
 
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // navigate to Your Dashboard
+        // Navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
 
         // Wait for page load

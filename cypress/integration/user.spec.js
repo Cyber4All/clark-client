@@ -1,11 +1,8 @@
  /// <reference types="cypress" />
 
-import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-const chance = new Chance();
 
 describe('User', () => {
-    const email = chance.email();
 
     beforeEach(() => {
         // Return to home page before each test
@@ -32,16 +29,8 @@ describe('User', () => {
     });
 
     it('Navigate to personal profile page', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Wait for sign in process
         cy.wait(1000);
@@ -56,16 +45,8 @@ describe('User', () => {
     });
 
     it('Navigate to personal profile page and click edit profile', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Assert new navbar elements
         cy.contains('Contribute');
@@ -83,16 +64,8 @@ describe('User', () => {
     });
 
     it('Navigate to personal profile page and click edit profile and click DISCARD CHANGES', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Assert new navbar elements
         cy.contains('Contribute');
@@ -113,16 +86,8 @@ describe('User', () => {
     });
 
     it('Navigate to personal profile page and click edit profile and click SAVE', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Assert new navbar elements
         cy.contains('Contribute');
@@ -160,16 +125,8 @@ describe('User', () => {
     });
 
     it('Navigate to personal profile page and enter correct password to see if inputs appear', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Assert new navbar elements
         cy.contains('Contribute');

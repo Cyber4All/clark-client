@@ -1,11 +1,8 @@
  /// <reference types="cypress" />
 
-import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-const chance = new Chance();
 
 describe('Library', () => {
-    const email = chance.email();
 
     beforeEach(() => {
         // Return to home page before each test
@@ -15,16 +12,8 @@ describe('Library', () => {
     // /library testing
     // =============================================================
     it('Navigate from library to browse.', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Click contribute button at bottom of page
         cy.get('.right.library').click();

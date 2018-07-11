@@ -1,11 +1,8 @@
  /// <reference types="cypress" />
 
-import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-const chance = new Chance();
 
 describe('Details', () => {
-    const email = chance.email();
 
     beforeEach(() => {
         // Return to home page before each test
@@ -42,6 +39,7 @@ describe('Details', () => {
         cy.url().should('include', 'login');
 
         // Enter login info
+        // Different steps for login - don't replace with helper method
         cy.get('input[name=username]').type('nvisal1');
         cy.get('input[name=password]').type('122595');
         cy.get('.auth-button').click();

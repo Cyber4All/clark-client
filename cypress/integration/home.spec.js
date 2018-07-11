@@ -1,11 +1,8 @@
 /// <reference types="cypress" />
 
-import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-const chance = new Chance();
 
 describe('Home', () => {
-    const email = chance.email();
 
     beforeEach(() => {
         // Return to home page before each test
@@ -26,23 +23,15 @@ describe('Home', () => {
     });
 
     it('Sign in', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Assert new navbar elements
         cy.contains('Contribute');
         cy.get('.navbar-gravatar').click();
     });
 
-    it('Register new user', () => {
+    it('Assert registration', () => {
         cy.contains('Register').click();
 
         // Assert URL 
@@ -177,16 +166,8 @@ describe('Home', () => {
     });
 
     it('Click on contribute button while logged in.', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Click contribute button at bottom of page
         cy.contains('Contribute to CLARK').click();
@@ -215,16 +196,8 @@ describe('Home', () => {
     });
 
     it('Navigate from library to home by clicking on CLARK logo in navbar.', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // Click contribute button at bottom of page
         cy.get('.right.library').click();
@@ -238,8 +211,4 @@ describe('Home', () => {
         // Assert home URL
         cy.url().should('include', 'home');
     });
-   
-   
-
-    
 });

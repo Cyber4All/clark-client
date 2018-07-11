@@ -1,11 +1,8 @@
  /// <reference types="cypress" />
 
-import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-const chance = new Chance();
 
 describe('Dashboard', () => {
-    const email = chance.email();
 
     beforeEach(() => {
         // Return to home page before each test
@@ -15,22 +12,10 @@ describe('Dashboard', () => {
     // /dashboard testing
     // =============================================================
     it('Navigate to dashboard', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
+        // Login 
+        cy.login();
 
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        // Navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
 
         // Assert URL 
@@ -38,22 +23,10 @@ describe('Dashboard', () => {
     });
 
     it('Navigate to dashboard and click new +', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
+        // Login 
+        cy.login();
 
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
-
-        // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
+        // Navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
 
         // Assert URL 
@@ -67,22 +40,10 @@ describe('Dashboard', () => {
     });
 
     it('Click checkboxes and look for delete button to appear', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
-
-        // Click on contributor option in navbar
-        // cy.get('.topbar').children('.inner.flex.h.left-right').children('.user.loggedin.flex.h.flex-end').children('.contributor').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
-        // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
         cy.contains('Contribute to CLARK').click();
 
         // Assert URL 
@@ -97,16 +58,8 @@ describe('Dashboard', () => {
     });
 
     it('Click object to edit it', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -122,16 +75,8 @@ describe('Dashboard', () => {
     });
 
     it('Navigate to dashboard and click existing object to edit it - through options', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         // cy.get('.popup.dropdown').eq(1).children('ul').first().children('li').click({ multiple: true });
@@ -149,16 +94,8 @@ describe('Dashboard', () => {
     });
 
     it('Navigate to dashboard and manage materials for an object', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -175,16 +112,8 @@ describe('Dashboard', () => {
     });
 
     it('Navigate to dashboard and assert publish option', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -198,16 +127,8 @@ describe('Dashboard', () => {
     });
 
     it('Navigate to dashboard and assert delete option', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -215,22 +136,14 @@ describe('Dashboard', () => {
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
-         // Click Edit from options dropdown
-         cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
-         cy.get('.popup.small').eq(1).children('ul').children('li').eq(3);
+        // Click Edit from options dropdown
+        cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
+        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3);
     });
 
     it('Save learning object', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();
@@ -246,16 +159,8 @@ describe('Dashboard', () => {
     });
 
     it('Click next until returned to dashboard', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
-        cy.get('.auth-button').click();
+        // Login 
+        cy.login();
 
         // navigate to Your Dashboard
         cy.contains('Contribute to CLARK').click();

@@ -1,11 +1,8 @@
  /// <reference types="cypress" />
 
-import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-const chance = new Chance();
 
 describe('Browse', () => {
-    const email = chance.email();
 
     beforeEach(() => {
         // Return to home page before each test
@@ -73,11 +70,11 @@ describe('Browse', () => {
     });
     
     it('Sort results', () => {
-       // Type in to search bar
-       cy.get('.search-input').type('Sidd');
+        // Type in to search bar
+        cy.get('.search-input').type('Sidd');
 
-       // Click search 
-       cy.get('.button.bad').eq(0).click();
+        // Click search 
+        cy.get('.button.bad').eq(0).click();
 
         // Click Sort
         cy.get('.content').children('.column-title').children('.results-options').children('.sort').click();
@@ -100,8 +97,8 @@ describe('Browse', () => {
         // Click Sort
         cy.get('.content').children('.column-title').children('.results-options').children('.sort').click();
 
-         // Pick sort option
-         cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(3).click({ multiple: true });
+        // Pick sort option
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(3).click({ multiple: true });
 
         // Finally, click the red x
         cy.get('.content').children('.column-title').children('.results-options').children('.sort').children('.removeSort').children('.fa-times').click();

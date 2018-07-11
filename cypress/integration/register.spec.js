@@ -1,11 +1,8 @@
  /// <reference types="cypress" />
 
-import Chance from 'chance';
 import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-const chance = new Chance();
 
 describe('Browse', () => {
-    const email = chance.email();
 
     beforeEach(() => {
         // Return to home page before each test
