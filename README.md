@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/Cyber4All/clark-client/tree/master.svg?style=svg)](https://circleci.com/gh/Cyber4All/clark-client/tree/master)
+[![CircleCI](https://circleci.com/gh/Cyber4All/clark-client/tree/master.svg?style=svg)](https://circleci.com/gh/Cyber4All/clark-client/tree/master) [![Greenkeeper badge](https://badges.greenkeeper.io/Cyber4All/clark-client.svg)](https://greenkeeper.io/)
 
 # CLARK
 The official [CLARK Platform](https://clark.center) client, created with :heart: by the Cyber4All team.
