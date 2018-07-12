@@ -89,6 +89,21 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         font-weight: 300;
       }
 
+      .rating {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        a {
+          font-size: 16px;
+          color: white;
+          cursor: pointer;
+          margin-left: 10px;
+          text-decoration: underline;
+        }
+      }
+
       .type {
         margin-top: 5px;
         padding: 3px 8px;
@@ -170,6 +185,23 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
       .outcomes {
         background: desaturate(lighten($blue-accent, 55), 20);
+      }
+
+      .ratings {
+        background: white;
+        border-radius: 3px;
+        padding: 20px;
+        position: relative;
+
+        button {
+          position: absolute;
+          right: 20px;
+          top: 20px;
+        }
+
+        ::ng-deep .title {
+          font-size: 22px;
+        }
       }
     }
 

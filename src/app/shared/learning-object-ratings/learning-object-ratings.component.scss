@@ -1,0 +1,86 @@
+@import '~_vars.scss';
+
+.title {
+    font-size: 18px;
+    color: $dark-text;
+}
+
+.overall-rating {
+    margin: 10px auto 40px;
+}
+
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+
+    & > *:not(:last-child) {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+    }
+
+    .rating-list-element {
+        padding: 10px 0;
+
+        a {
+            color: $dark-text;
+            text-decoration: none;
+        }
+
+        .rating-user {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+
+            img {
+                border-radius: 50%;
+
+                &:after {
+                    content: '';
+                    display: block;
+                    padding-bottom: 100%;
+                }
+            }
+
+            .user-name {
+                font-size: 18px;
+                text-transform: capitalize;
+                margin-left: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+
+                .verified {
+                    color: white;
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    background: linear-gradient(45deg, darken($green, 10), $green);
+                    padding: 4px 8px;
+                    border-radius: 3px;
+                    display: flex;
+                    align-items: center;
+
+                    .svg-inline--fa {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+
+        .rating-date {
+            color: $dark-text;
+            opacity: 0.8;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .rating-text {
+            font-size: 16px;
+
+        }
+    }
+
+}

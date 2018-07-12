@@ -12,7 +12,8 @@
         </div>
         <div class="header-bottom">
           <div class="rating">
-            <clark-rating-stars [rating]="2.7" [reviewsCount]="64" (click)="showAddRating = true;"></clark-rating-stars>
+            <clark-rating-stars [rating]="averageRating" [reviewsCount]="learningObject.ratings.length" (click)="scrollToRatings()"></clark-rating-stars>
+            <a (click)="showAddRating = true;">Write a review</a>
           </div>
           <div class="type">{{ learningObject.length }}</div>
         </div>
@@ -28,6 +29,10 @@
       <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
       <div class="materials">
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
+      </div>
+      <div #ratingsWrapper class="ratings">
+        <button *ngIf="!isMobile" class="button good" (click)="showAddRating = true">Write a review <i class="far fa-pencil"></i></button>
+        <clark-learning-object-ratings [ratings]="learningObject.ratings"></clark-learning-object-ratings>
       </div>
     </div>
     <div class="sidebar">

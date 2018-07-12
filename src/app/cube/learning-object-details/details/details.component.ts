@@ -1,6 +1,6 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from './../../learning-object.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
@@ -18,7 +18,8 @@ import { Subscription } from 'rxjs/Subscription';
 export class DetailsComponent implements OnInit, OnDestroy {
   @ViewChild('savesRef') savesRef: ElementRef;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
- 
+  @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
+
   private subs: Subscription[] = [];
   downloading = false;
   addingToLibrary = false;
@@ -29,6 +30,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   saved = false;
   url: string;
   showAddRating = false;
+  windowWidth: number;
 
   userRating: number;
 
@@ -38,11 +40,31 @@ export class DetailsComponent implements OnInit, OnDestroy {
   iframeParent = iframeParentID;
 
   public tips = TOOLTIP_TEXT;
+  
+  // TODO this can be removed when ratings are retrieved from server
+  ratings: {user: User, number: number, comment: string, date: string}[] = [
+    {
+      user: this.auth.user,
+      number: 5,
+      comment: 'This is a comment',
+      date: '530416821'
+    },
+    {
+      user: this.auth.user,
+      number: 2,
+      comment: 'This is a comment again',
+      date: '1531411821'
+    }
+  ];
 
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
     if (event.keyCode === 27) {
       this.showAddRating = false;
     }
+  }
+
+  @HostListener('window:resize', ['$event']) handleResize(event) {
+    this.windowWidth = event.target.outerWidth;
   }
 
   constructor(
@@ -53,7 +75,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private renderer: Renderer2,
     private noteService: NotificationService
-  ) {}
+  ) {
+    this.windowWidth = window.outerWidth;
+  }
 
   ngOnInit() {
     this.subs.push(this.route.params.subscribe(params => {
@@ -111,6 +135,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       console.log(e);
     }
     this.saved = this.cartService.has(this.learningObject);
+    // TODO this can be removed when ratings are retrieved from server
+    this.learningObject.ratings = [...this.ratings, ...this.ratings, ...this.ratings];
   }
 
   async addToCart(download?: boolean) {
@@ -247,6 +273,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
   }
 
+  get averageRating(): number {
+    return this.learningObject.ratings.map(x => x.number).reduce((x, y) => x + y) / this.learningObject.ratings.length;
+  }
+
   private buildLocation(encoded?: boolean) {
     const u = window.location.protocol + '//' + window.location.host +
     '/details' +
@@ -264,6 +294,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.contributorsList[i] = val;
         });
     }
+  }
+
+  scrollToRatings() {
+    window.scrollTo(0, this.ratingsWrapper.nativeElement.offsetTop);
+  }
+
+  get isMobile() {
+    return this.windowWidth <= 750;
   }
 
   ngOnDestroy() {

@@ -8,7 +8,6 @@
             visibility: visible;
             opacity: 1;
             transform: scale(1);
-            // transition-delay: 0.4s;
             max-height: 220px;
             margin: 20px auto;
         }
@@ -79,7 +78,7 @@
             border: 1px solid $placeholder;
             padding: 10px;
             height: 150px;
-            width: 320px;
+            width: 350px;
 
             &:focus {
                 border-color: $blue-accent;

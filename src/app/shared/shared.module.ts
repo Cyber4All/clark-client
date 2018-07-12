@@ -30,6 +30,7 @@ import { SearchComponent } from './search/search.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { RatingStarsComponent } from './rating-stars/rating-stars.component';
 import { NewRatingComponent } from './new-rating/new-rating.component';
+import { LearningObjectRatingsComponent } from './learning-object-ratings/learning-object-ratings.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -69,6 +70,7 @@ import { NewRatingComponent } from './new-rating/new-rating.component';
     AutofocusDirective,
     RatingStarsComponent,
     NewRatingComponent,
+    LearningObjectRatingsComponent,
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -87,6 +89,7 @@ import { NewRatingComponent } from './new-rating/new-rating.component';
     AutofocusDirective,
     RatingStarsComponent,
     NewRatingComponent,
+    LearningObjectRatingsComponent,
   ]
 })
 export class SharedModule {}
