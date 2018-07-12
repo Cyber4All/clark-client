@@ -19,7 +19,7 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
-  selector: 'app-user-edit-information',
+  selector: 'cube-app-user-edit-information',
   templateUrl: './user-edit-information.component.html',
   styleUrls: ['./user-edit-information.component.scss']
 })
