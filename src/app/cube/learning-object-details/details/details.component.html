@@ -35,7 +35,7 @@
                 <i class="fal fa-spinner-third fa-spin"></i>
               </span>
             </span>
-            <span *ngIf="!canDownload">Not available for download</span>
+            <span *ngIf="!canDownload">Download Not Available Pending Review</span>
           </div>
           <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
             {{ saved ? 'Saved to your library!' : 'Save to Library' }}
