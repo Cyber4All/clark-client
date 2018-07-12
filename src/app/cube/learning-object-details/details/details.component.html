@@ -31,7 +31,7 @@
         <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
           <i class="fas fa-exclamation"></i>Review Pending
         </div>
-        <div class="btn-group vertical">
+        <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
           <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
             class="button good" (click)="addToCart(true)">
             <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}

@@ -180,15 +180,23 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           color: white;
           background: linear-gradient(45deg, #fea200, #ffd000);
           padding: 8px 12px;
-          border-radius: 4px;
+          border-radius: 2px 2px 0 0;
           font-size: 18px;
           text-align: center;
           margin-bottom: 10px;
           text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
 
           .svg-inline--fa {
             margin-right: 10px;
           }
+        }
+
+        .btn-group.no-download {
+          margin-top: 40px;
         }
 
         .button {
