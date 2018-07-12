@@ -1,24 +1,24 @@
-$dark-text: #111111;
-$light-text: #FFFFFF;
+$dark-text: #111;
+$light-text: #fff;
 $green: #389857;
-$black: #000000;
+$black: #000;
 $red: #cf4739;
 $blue: #3b608b;
-$light: #FEFEFE;
+$light: #fefefe;
+
 :host {
   position: fixed;
+  z-index: 9999999999999999999999999999999;
 }
 
 .tooltip {
   position: fixed;
-  z-index: 1;
   display: block;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: normal;
   line-height: 1.42857143;
-  text-align: left;
   text-align: start;
   text-decoration: none;
   text-shadow: none;
@@ -43,7 +43,7 @@ $light: #FEFEFE;
     &.top .tooltip-arrow {
       border-top-color: $black;
     }
-    
+
     &.right .tooltip-arrow {
       border-right-color: $black;
     }
@@ -178,57 +178,59 @@ $light: #FEFEFE;
     .tooltip-inner {
       box-shadow: 0 -1px 3px rgba(0, 0, 0, .2);
     }
+
+    &.tooltip-arrow {
+      bottom: 0;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px 5px 0;
+    }
   }
 
   &.right {
     padding: 0 5px;
     margin-left: 3px;
+
+    &.tooltip-arrow {
+      top: 50%;
+      left: 0;
+      margin-top: -5px;
+      border-width: 5px 5px 5px 0;
+    }
   }
 
   &.bottom {
     padding: 5px 0;
     margin-top: 3px;
+
+    &.tooltip-arrow {
+      top: 0;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 0 5px 5px;
+    }
   }
 
   &.left {
     padding: 0 5px;
     margin-left: -3px;
+
+    &.tooltip-arrow {
+      top: 50%;
+      right: 0;
+      margin-top: -5px;
+      border-width: 5px 0 5px 5px;
+    }
   }
 
-  &.top .tooltip-arrow {
-    bottom: 0;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px 5px 0;
-  }
 
-  &.right .tooltip-arrow {
-    top: 50%;
-    left: 0;
-    margin-top: -5px;
-    border-width: 5px 5px 5px 0;
-  }
-
-  &.left .tooltip-arrow {
-    top: 50%;
-    right: 0;
-    margin-top: -5px;
-    border-width: 5px 0 5px 5px;
-  }
-
-  &.bottom .tooltip-arrow {
-    top: 0;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 0 5px 5px;
-  }
 }
 
 @keyframes fadein {
   from {
     opacity: 0;
-  }
-  to {
+
+  } to {
     opacity: 0.9;
   }
 }

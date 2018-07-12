@@ -5,6 +5,9 @@ import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../../register/register.component';
 import { Subscription } from 'rxjs';
 
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
+
 @Component({
   selector: 'clark-profile-info',
   templateUrl: './profile-info.component.html',

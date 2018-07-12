@@ -8,6 +8,9 @@ import { runInThisContext } from 'vm';
 import { Subscription, Observable } from 'rxjs';
 import { Query } from '../../../../../shared/interfaces/query';
 
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
+
 // TODO: Apply .bad to input if the form is submitted and it's not valid
 
 @Component({
