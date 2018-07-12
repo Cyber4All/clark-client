@@ -6,7 +6,7 @@ describe('Details', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4201/home');
+        cy.visit('http://localhost:4200/home');
     });   
     // =============================================================
     // /details testing
@@ -47,6 +47,54 @@ describe('Details', () => {
         // Assert URL 
         cy.url().should('include', 'home');
     });
+
+     it('Navigate to details and clicking the rating to scroll page', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
+
+        // Click left-most card
+        cy.get('.learning-object').first().click({ multiple: true });
+
+        // TODO all login code can be removed when pulling ratings from server
+        // Click author name
+        cy.get('.topbar .login').click();
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        cy.wait(1000);
+
+        // Enter login info
+        // Different steps for login - don't replace with helper method
+        cy.get('input[name=username]').type('nwinne1');
+        cy.get('input[name=password]').type('testpassword');
+        cy.get('.auth-button').click();
+
+        cy.wait(1000);
+
+        cy.url().should('include', 'details');
+
+        cy.get('.rating > clark-rating-stars').first().click({  multiple: true });
+
+        cy.window().then(($w) => {
+            cy.get('.ratings').invoke('offset').its('top').should(($p) => {
+                expect($p - $w.scrollY).to.be.at.most(200)
+            });      
+        })
+     });
+
+     it('Navigate to details and clicking on \'Write a review\'', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
+
+        // Click left-most card
+        cy.get('.learning-object').first().click({ multiple: true });
+
+        cy.get('.rating > a').first().click({  multiple: true });
+
+        cy.get('.new-rating-wrapper').should('be.visible').should('have.class', 'active');
+        cy.get('.new-rating').should('be.visible');
+     });
 
     // it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
     //     // Wait for learning objects to load on page

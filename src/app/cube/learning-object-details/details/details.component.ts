@@ -297,7 +297,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   scrollToRatings() {
-    window.scrollTo(0, this.ratingsWrapper.nativeElement.offsetTop);
+    document.body.scrollTop = document.documentElement.scrollTop = this.ratingsWrapper.nativeElement.offsetTop;
   }
 
   get isMobile() {
