@@ -81,8 +81,6 @@ export class TooltipComponent implements AfterViewInit, OnInit {
     let x = -999;
     let y = -999;
     const offsetConst = 5;
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
     const offsetY = window.pageYOffset;
     const scrollY = window.scrollY || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
 
