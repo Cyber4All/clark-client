@@ -98,7 +98,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         // list of usernames. We want to display their full names.
         this.getContributors();
       }
-
       this.url = this.buildLocation();
     } catch (e) {
       console.log(e);
