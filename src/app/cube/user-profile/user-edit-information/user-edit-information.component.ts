@@ -245,7 +245,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
         .join(' ');
   }
 
-  async checkOrganization() {
+  checkOrganization() {
     // If field is empty, return false
     if (this.editInfo.organization === '') {
       return false;
@@ -253,8 +253,12 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     // Allow the user to enter an org that does not exist in our
     // database when empty results are returned
     if (this.organizationsList.length > 0) {
-      const isValidOrganization = await this.auth.checkOrganization(this.editInfo.organization);
-      return isValidOrganization['isValid'];
+      for (let i = 0; i < this.organizationsList.length; i++) {
+        if (this.editInfo.organization === this.organizationsList[i]) {
+          return true;
+        }
+      }
+      return false;
     } else {
       return true;
     }

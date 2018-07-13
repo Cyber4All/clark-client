@@ -96,7 +96,6 @@ export class RegisterComponent implements OnInit {
   inUseEmail = false;
   inUseUsername = false;
   isValidOrganization;
-  organizationCheck;
 
   tipText = [
     {
@@ -333,18 +332,7 @@ export class RegisterComponent implements OnInit {
     this.inUseUsername = inUse;
   }
 
-  async checkOrganization(hasResults: boolean) {
-    // Allow the user to enter an org that does not exist in our
-    // database when empty results are returned
-    if (hasResults) {
-      this.organizationCheck = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
-      this.isValidOrganization = this.organizationCheck['isValid'];
-    } else {
-      this.isValidOrganization = true;
-    }
-    // If field contains empty string, return false
-    if (this.regForm.controls['organization'].value === '') {
-      this.isValidOrganization = false;
-    }
+  setOrganizationStatus(hasResults: boolean) {
+    this.isValidOrganization = hasResults;
   }
 }
