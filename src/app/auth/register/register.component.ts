@@ -95,6 +95,8 @@ export class RegisterComponent implements OnInit {
   check: boolean;
   inUseEmail = false;
   inUseUsername = false;
+  isValidOrganization;
+  organizationCheck;
 
   tipText = [
     {
@@ -210,14 +212,11 @@ export class RegisterComponent implements OnInit {
    next() {
     this.pageValidate(); // Validate page before allowing access to the next
      if (this.page === 1 && this.check) {
-      this.checkOrganization().then(val => {
-        console.log(val);
-        if (!val) {
+        if (!this.isValidOrganization) {
           this.error('Invalid Organization');
         }
-        this.check = val;
+        this.check = this.isValidOrganization;
         this.slidePage();
-      });
      } else {
        this.slidePage();
      }
@@ -334,37 +333,18 @@ export class RegisterComponent implements OnInit {
     this.inUseUsername = inUse;
   }
 
-  async checkOrganization() {
-    // If field is contains empty string, return false
-    if (this.regForm.controls['organization'].value === '') {
-      return false;
-    }
+  async checkOrganization(hasResults: boolean) {
     // Allow the user to enter an org that does not exist in our
     // database when empty results are returned
-    await this.getOrganizations(this.regForm.controls['organization'].value);
-    if (this.organizationsList.length > 0) {
-      const isValidOrganization = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
-      return isValidOrganization['isValid'];
+    if (hasResults) {
+      this.organizationCheck = await this.auth.checkOrganization(this.regForm.controls['organization'].value);
+      this.isValidOrganization = this.organizationCheck['isValid'];
     } else {
-      return true;
+      this.isValidOrganization = true;
     }
-  }
-
-  // This function is here to count the number of results
-  // when searching for an organization.
-  getOrganizations(currentOrganization) {
-    this.auth.getOrganizations(currentOrganization).then(val => {
-      if (!val[0]) {
-        this.organizationsList = [];
-      } else {
-        for (let i = 0; i < 5; i++) {
-          if (val[i]) {
-            this.organizationsList[i] = val[i]['institution'];
-          } else {
-            this.organizationsList[i] = '';
-          }
-        }
-      }
-    });
+    // If field contains empty string, return false
+    if (this.regForm.controls['organization'].value === '') {
+      this.isValidOrganization = false;
+    }
   }
 }

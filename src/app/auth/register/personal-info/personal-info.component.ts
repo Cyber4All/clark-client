@@ -4,9 +4,11 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
-import {FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../../register/register.component';
@@ -23,6 +25,7 @@ import 'rxjs/add/operator/debounceTime';
 
 export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   @Input() group: FormGroup;
+  @Output() hasResults = new EventEmitter<boolean>();
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
   @ViewChild('organization', { read: ElementRef })
@@ -75,34 +78,32 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   getOrganizations(currentOrganization) {
     this.auth.getOrganizations(currentOrganization).then(val => {
         this.querying = false;
-        // If no results, destroy results display
-        if (!val[0]) {
+        // destroy results display when no results or empty query
+        if (!val[0] || currentOrganization === '') {
           this.organizationsList = [];
+          // Emit a boolean that tells the parent component if there are results
+          this.hasResults.emit(false);
         } else {
           // Display top 5 matching organizations
           for (let i = 0; i < 5; i++) {
             if (val[i]) {
               this.organizationsList[i] = val[i]['institution'];
-            } else {
-              // Always display 5 results to cover navigation button.
-              this.organizationsList[i] = '';
-            }
           }
         }
-         // If no query, destroy results display
-         if (currentOrganization === '') {
-          this.organizationsList = [];
-        }
+        // Emit a boolean that tells the parent component if there are results
+        this.hasResults.emit(true);
+      }
     });
   }
 
   chooseOrganization(organization: string) {
-    // Always display 5 results to cover navigation button.
-    // prevent user from clicking on emtpy result.
+    // Prevent user from clicking on emtpy result.
     if (organization !== '') {
       this.group.controls['organization'].setValue(organization);
       // After org is selected, destroy results display
       this.organizationsList = [];
+      // Emit a boolean that tells the parent component if there are results
+      this.hasResults.emit(false);
     }
   }
 

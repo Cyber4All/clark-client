@@ -246,6 +246,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 
   async checkOrganization() {
+    // If field is empty, return false
+    if (this.editInfo.organization === '') {
+      return false;
+    }
     // Allow the user to enter an org that does not exist in our
     // database when empty results are returned
     if (this.organizationsList.length > 0) {
