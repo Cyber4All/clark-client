@@ -4,9 +4,11 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
-import {FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../../register/register.component';
@@ -23,6 +25,7 @@ import 'rxjs/add/operator/debounceTime';
 
 export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   @Input() group: FormGroup;
+  @Output() hasResults = new EventEmitter();
   @ViewChild('emailInput', { read: ElementRef })
   emailInput: ElementRef;
   @ViewChild('organization', { read: ElementRef })
@@ -32,7 +35,7 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   result: boolean;
   currentOrganization: string;
   organizationsList = [];
-  isValidOrganization: boolean;
+  isValid: boolean;
   // array of subscriptions to destroy on component destroy
   subs: Subscription[] = [];
 
@@ -75,35 +78,61 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   getOrganizations(currentOrganization) {
     this.auth.getOrganizations(currentOrganization).then(val => {
         this.querying = false;
-        // If no results, destroy results display
-        if (!val[0]) {
+        // destroy results display when no results or empty query
+        if (!val[0] || currentOrganization === '') {
           this.organizationsList = [];
+          this.checkOrganization();
         } else {
           // Display top 5 matching organizations
           for (let i = 0; i < 5; i++) {
             if (val[i]) {
               this.organizationsList[i] = val[i]['institution'];
-            } else {
-              // Always display 5 results to cover navigation button.
-              this.organizationsList[i] = '';
-            }
           }
         }
-         // If no query, destroy results display
-         if (currentOrganization === '') {
-          this.organizationsList = [];
-        }
+        this.checkOrganization();
+      }
     });
   }
 
   chooseOrganization(organization: string) {
-    // Always display 5 results to cover navigation button.
-    // prevent user from clicking on emtpy result.
+    // Prevent user from clicking on emtpy result.
     if (organization !== '') {
       this.group.controls['organization'].setValue(organization);
+      this.checkOrganization();
       // After org is selected, destroy results display
       this.organizationsList = [];
     }
+  }
+
+  private checkOrganization() {
+    if (this.organizationsList.length > 0) {
+      // Check if current query matches any org within the results
+      this.searchResults();
+    } else {
+      // Allow user to enter organization that does not exist within our database
+      // when no results are returned
+      // Check for empty input exception
+      if (this.group.controls['organization'].value === '') {
+        this.hasResults.emit(false);
+      } else {
+        this.hasResults.emit(true);
+      }
+    }
+  }
+
+  private searchResults() {
+    for (let i = 0; i < this.organizationsList.length; i++) {
+      if (this.group.controls['organization'].value === this.organizationsList[i]) {
+        // Emit boolean that the parent component uses as a check when proceeding to next step
+        this.hasResults.emit(true);
+        this.isValid = true;
+      }
+    }
+    // Emit boolean that the parent component uses as a check when proceeding to next step
+    if (!this.isValid) {
+      this.hasResults.emit(false);
+    }
+    this.isValid = false;
   }
 
   ngOnDestroy() {
