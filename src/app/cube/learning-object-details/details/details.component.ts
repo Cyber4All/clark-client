@@ -31,6 +31,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
   url: string;
+  error: boolean = false;
+  errorMessage: String = "";
 
   contributorsList = [];
 
@@ -106,18 +108,27 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async addToCart(download?: boolean) {
+    this.error = false;
+
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
       this.addingToLibrary = true;
     } else {
       this.downloading = true;
     }
-    const val = await this.cartService.addToCart(
-      this.author,
-      this.learningObjectName
-    );
 
-    if (!this.saved) {
+    try {
+      const val = await this.cartService.addToCart(
+        this.author,
+        this.learningObjectName
+      );
+    } catch (error) {
+      this.error = true;
+      this.errorMessage = "Failed to add to your library";
+      console.log(this.errorMessage);
+    }
+
+    if (!this.saved && !this.error) {
       this.animateSaves();
     }
 

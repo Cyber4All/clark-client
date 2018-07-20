@@ -27,8 +27,11 @@
     </div>
     <div class="sidebar">
       <div class="inner">
-        <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
+        <div *ngIf="!canDownload && !error" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
           <i class="fas fa-exclamation"></i>Review Pending
+        </div>
+        <div *ngIf="error" class="download-warning" tip="{{errorMessage}}" tipLocation="top">
+          <i class="fas fa-exclamation"></i>Save Failed
         </div>
         <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
           <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
@@ -42,7 +45,7 @@
           </div>
           <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
             {{ saved ? 'Saved to your library!' : 'Save to Library' }}
-            <span *ngIf="addingToLibrary">
+            <span *ngIf="addingToLibrary && !error">
               <i class="fal fa-spinner-third fa-spin"></i>
             </span>
           </div>
