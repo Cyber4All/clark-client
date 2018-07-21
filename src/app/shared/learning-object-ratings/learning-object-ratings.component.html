@@ -3,20 +3,24 @@
     Reviews
   </div>
   <div class="overall-rating">
-    <clark-rating-stars [color]="'gold'" [size]="22" [rating]="averageRating" [reviewsCount]="ratings.length"></clark-rating-stars>
+    <clark-rating-stars [color]="'gold'" [size]="22" [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
   </div>
   <div class="ratings-list">
     <div *ngFor="let rating of ratings; let i = index;" class="rating-list-element">
-      <a [routerLink]="['/users', rating.user.username]">
+      <a [routerLink]="['/users', rating.user[0].username]">
         <div class="rating-user">
-          <img [src]="userService.getGravatarImage(rating.user.email, 45)" class="user-image" /> 
+          <img [src]="userService.getGravatarImage(rating.user[0].email, 45)" class="user-image" /> 
           <div class="user-name">
-            <span>{{ rating.user.name }}</span>
+            <span>{{ rating.user[0].name }}</span>
             <!-- TODO implement check for verified user here -->
             <div *ngIf="false" class="verified"><i class="far fa-check-circle"></i>verified user</div>
           </div>
         </div>
       </a>
+      <div *ngIf="isAuthor(i)" id="auth-buttons">
+        <button class="auth-button" id="edit" (click)="submitEditRating(i)"><i class="far fa-pencil"></i></button>
+        <button class="auth-button" id="delete" (click)="submitDeleteRating(i)"><i class="far fa-times"></i></button>
+      </div>
       <clark-rating-stars [rating]="rating.number" [color]="'gold'" [size]="18"></clark-rating-stars>
       <div class="rating-date">{{ getDate(rating.date) | date }}</div>
       <div class="rating-text">

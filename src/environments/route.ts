@@ -131,6 +131,33 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   }
 };
 
+export const RATING_ROUTES = {
+  GET_RATING(ratingId: string) {
+    return `${environment.apiURL}/ratings/${encodeURIComponent(
+      ratingId
+    )}`;
+  },
+  DELETE_RATING(ratingId: string) {
+    // return `${environment.apiURL}/ratings/${encodeURIComponent(ratingId)}`;
+    return `${environment.apiURL}/ratings/${encodeURIComponent(
+      ratingId
+    )}`;
+  },
+  EDIT_RATING(ratingId: string) {
+    return `${environment.apiURL}/ratings/${encodeURIComponent(
+      ratingId
+    )}`;
+  },
+  CREATE_RATING(username: string, learningObjectName: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings`;
+  },
+  GET_LEARNING_OBJECT_RATINGS(username: string, learningObjectName: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings`;
+  },
+  GET_USER_RATINGS(username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/ratings`;
+  },
+};
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
 };

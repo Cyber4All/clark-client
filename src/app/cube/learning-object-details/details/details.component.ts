@@ -1,7 +1,7 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
@@ -9,6 +9,8 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { NotificationService } from '../../../shared/notifications/notification.service';
 import { UserService } from '../../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
+import { RatingService } from '../../../core/rating.service';
+
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -26,10 +28,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
   author: string;
   learningObjectName: string;
   learningObject: LearningObject;
+  ratings: {user: User, number: number, comment: string, date: string}[] = [];
   returnUrl: string;
   saved = false;
   url: string;
   showAddRating = false;
+  showEditRating = false;
+  showDeleteRating = false;
+  isQuerying = false;
+  editRatingObject: {number: number, comment: string, index: number};
+  deleteRatingIndex: number;
   windowWidth: number;
 
   userRating: number;
@@ -40,22 +48,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   iframeParent = iframeParentID;
 
   public tips = TOOLTIP_TEXT;
-  
-  // TODO this can be removed when ratings are retrieved from server
-  ratings: {user: User, number: number, comment: string, date: string}[] = [
-    {
-      user: this.auth.user,
-      number: 5,
-      comment: 'This is a comment',
-      date: '530416821'
-    },
-    {
-      user: this.auth.user,
-      number: 2,
-      comment: 'This is a comment again',
-      date: '1531411821'
-    }
-  ];
 
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
     if (event.keyCode === 27) {
@@ -74,7 +66,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private auth: AuthService,
     private renderer: Renderer2,
-    private noteService: NotificationService
+    private noteService: NotificationService,
+    private ratingService: RatingService
   ) {
     this.windowWidth = window.outerWidth;
   }
@@ -135,8 +128,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       console.log(e);
     }
     this.saved = this.cartService.has(this.learningObject);
-    // TODO this can be removed when ratings are retrieved from server
-    this.learningObject.ratings = [...this.ratings, ...this.ratings, ...this.ratings];
+    // Get reviews for specified learning object
+    this.getLearningObjectRatings();
   }
 
   async addToCart(download?: boolean) {
@@ -267,14 +260,57 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.cartService.removeFromCart(this.author, this.learningObjectName);
   }
 
-  submitNewRating(event: {rating: number, comment: string}) {
-    // TODO service call here
-    this.showAddRating = false;
-    this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
+  submitNewRating(rating: {number: number, comment: string}) {
+    this.ratingService.createRating(rating, this.learningObject.name).then(() => {
+      this.showAddRating = false;
+      this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
+    });
+  }
+
+  editRating(rating: {number: number, comment: string, index: number}) {
+    this.showEditRating = true;
+    this.editRatingObject = {
+      number: rating.number,
+      comment: rating.comment,
+      index: rating.index
+    };
+  }
+
+  submitEditRating(rating: {number: number, comment: string }) {
+    const ratingId = this.getRatingId(this.editRatingObject.index);
+    this.ratingService.editRating(ratingId, rating).then(() => {
+      this.getLearningObjectRatings();
+      this.showEditRating = false;
+      this.noteService.notify('Success!', 'Review successfully updated!', 'good', 'far fa-check');
+    });
+  }
+
+  deleteRating(index: number) {
+    this.showDeleteRating = true;
+    this.deleteRatingIndex = index;
+  }
+
+  submitDeleteRating() {
+    const ratingId = this.getRatingId(this.deleteRatingIndex);
+    this.ratingService.deleteRating(ratingId).then(() => {
+      this.getLearningObjectRatings();
+      this.showDeleteRating = false;
+      this.noteService.notify('Success!', 'Review successfully deleted!', 'good', 'far fa-check');
+    });
+  }
+
+  private async getLearningObjectRatings() {
+    this.ratings = await this.ratingService.getLearningObjectRatings(this.learningObjectName);
+  }
+
+  private getRatingId(index: number) {
+    return this.ratings[index]['_id'];
   }
 
   get averageRating(): number {
-    return this.learningObject.ratings.map(x => x.number).reduce((x, y) => x + y) / this.learningObject.ratings.length;
+    if (this.ratings.length > 0) {
+      return this.ratings.map(x => x.number).reduce((x, y) => x + y) / this.ratings.length;
+    }
   }
 
   private buildLocation(encoded?: boolean) {

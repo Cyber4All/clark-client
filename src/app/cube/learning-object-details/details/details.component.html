@@ -12,7 +12,7 @@
         </div>
         <div class="header-bottom">
           <div class="rating">
-            <clark-rating-stars [rating]="averageRating" [reviewsCount]="learningObject.ratings.length" (click)="scrollToRatings()"></clark-rating-stars>
+            <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length" (click)="scrollToRatings()"></clark-rating-stars>
             <a (click)="showAddRating = true;">Write a review</a>
           </div>
           <div class="type">{{ learningObject.length }}</div>
@@ -32,7 +32,7 @@
       </div>
       <div #ratingsWrapper class="ratings">
         <button *ngIf="!isMobile" class="button good" (click)="showAddRating = true">Write a review <i class="far fa-pencil"></i></button>
-        <clark-learning-object-ratings [ratings]="learningObject.ratings"></clark-learning-object-ratings>
+        <clark-learning-object-ratings [ratings]="ratings" (editRating)="editRating($event)" (deleteRating)="deleteRating($event)"></clark-learning-object-ratings>
       </div>
     </div>
     <div class="sidebar">
@@ -89,5 +89,19 @@
     <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
     <div class="title">Rate this Learning Object</div>
     <clark-new-rating [rating]="userRating" (setRating)="submitNewRating($event)" (cancelRating)="showAddRating = false;"></clark-new-rating>
+  </div>
+</div>
+<div class="new-rating-wrapper" [ngClass]="{'active': showEditRating}" (click)="showEditRating = false;">
+  <div class="new-rating" (click)="$event.stopPropagation()">
+    <div class="close-new-rating" (click)="showEditRating = false;"><i class="far fa-times"></i></div>
+    <div class="title">Edit Your Review</div>
+    <clark-new-rating [rating]="editRatingObject?.number" [comment]="editRatingObject?.comment" (setRating)="submitEditRating($event)" (cancelRating)="showEditRating = false;"></clark-new-rating>
+  </div>
+</div>
+<div class="new-rating-wrapper" [ngClass]="{'active': showDeleteRating}" (click)="showDeleteRating = false;">
+  <div class="new-rating" (click)="$event.stopPropagation()">
+    <div class="close-new-rating" (click)="showDeleteRating = false;"><i class="far fa-times"></i></div>
+    <div class="title">Wait! You are about to delete your review.</div>
+    <clark-new-rating [delete]="true" (deleteRating)="submitDeleteRating()" (cancelRating)="showDeleteRating = false;"></clark-new-rating>
   </div>
 </div>

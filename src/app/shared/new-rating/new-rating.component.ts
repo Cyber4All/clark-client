@@ -9,7 +9,9 @@ export class NewRatingComponent implements OnInit, OnChanges {
   @Input() count = 5;
   @Input() rating: number;
   @Input() comment: string;
-  @Output() setRating: EventEmitter<{rating: number, comment: string}> = new EventEmitter();
+  @Input() delete: boolean; // Setting delete to true changes the content of the menu
+  @Output() setRating: EventEmitter<{number: number, comment: string}> = new EventEmitter();
+  @Output() deleteRating: EventEmitter<void> = new EventEmitter();
   @Output() cancelRating: EventEmitter<void> = new EventEmitter();
   iterableCount: Array<any>;
 
@@ -66,7 +68,11 @@ export class NewRatingComponent implements OnInit, OnChanges {
   }
 
   submitRating() {
-    this.setRating.emit({rating: this.rating, comment: this.comment});
+    this.setRating.emit({number: this.rating, comment: this.comment});
+  }
+
+  submitDeleteRating() {
+    this.deleteRating.emit();
   }
 
   cancel() {
