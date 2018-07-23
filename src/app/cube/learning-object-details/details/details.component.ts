@@ -31,8 +31,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
   url: string;
-  error: boolean = false;
-  errorMessage: String = "";
+  error = false;
+  errorMessage: String = '';
 
   contributorsList = [];
 
@@ -124,7 +124,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       );
     } catch (error) {
       this.error = true;
-      this.errorMessage = "Failed to add to your library";
+      this.errorMessage = 'Failed to add to your library';
       console.log(this.errorMessage);
     }
 
