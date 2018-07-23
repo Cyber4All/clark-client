@@ -232,7 +232,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
       // we didn't find it
       this.tempFilters.push({name: key, value, active: false});
-      console.log(this.tempFilters);
     }
   }
 
@@ -294,8 +293,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
         this.query[category.name] = [];
       }
     }
-
-    console.log(this.query);
 
     this.fetchLearningObjects(this.query);
   }

@@ -3,7 +3,7 @@
     Reviews
   </div>
   <div class="overall-rating">
-    <clark-rating-stars [color]="'gold'" [size]="22"  [reviewsCount]="ratings?.length"></clark-rating-stars>
+    <clark-rating-stars [rating]="averageRating" [color]="'gold'" [size]="22"  [reviewsCount]="ratings?.length"></clark-rating-stars>
   </div>
   <div class="ratings-list">
     <div *ngFor="let rating of ratings; let i = index;" class="rating-list-element">

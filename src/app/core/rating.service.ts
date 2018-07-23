@@ -10,26 +10,10 @@ export class RatingService {
 
   constructor(private http: Http, private auth: AuthService) { }
 
-  getRating() {
-    const stubId = '5b495bd9a8aa78b0147718b9';
-    return this.http
-      .get(
-        RATING_ROUTES.GET_RATING(stubId),
-        {
-          withCredentials: true
-        }
-      )
-      .toPromise()
-      .then(val => {
-        console.log(val);
-      });
-  }
-
-  createRating(newRating: {number: number, comment: string }, learningObjectName: string) {
-    const username = this.auth.username;
+  createRating(learningObjectAuthor: string, learningObjectName: string, newRating: {number: number, comment: string }) {
     return this.http
       .post(
-        RATING_ROUTES.CREATE_RATING(username, learningObjectName),
+        RATING_ROUTES.CREATE_RATING(learningObjectAuthor, learningObjectName),
         newRating,
         {
           withCredentials: true
@@ -38,11 +22,11 @@ export class RatingService {
       .toPromise();
   }
 
-  editRating(ratingId: string, learningObjectName: string, editRating: {number: number, comment: string}) {
+  editRating(learningObjectAuthor: string, learningObjectName: string, ratingId: string, rating: {number: number, comment: string}) {
     return this.http
       .patch(
-        RATING_ROUTES.EDIT_RATING(ratingId, learningObjectName),
-        editRating,
+        RATING_ROUTES.EDIT_RATING(learningObjectAuthor, learningObjectName, ratingId),
+        rating,
         {
           withCredentials: true
         }
@@ -50,10 +34,10 @@ export class RatingService {
       .toPromise();
   }
 
-  deleteRating(ratingId: string, learningObjectName: string) {
+  deleteRating(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
     return this.http
       .delete(
-        RATING_ROUTES.DELETE_RATING(ratingId, learningObjectName),
+        RATING_ROUTES.DELETE_RATING(learningObjectAuthor, learningObjectName, ratingId),
         {
           withCredentials: true
         }
@@ -61,11 +45,10 @@ export class RatingService {
       .toPromise();
   }
 
-  getLearningObjectRatings(learningObjectName: string): Promise<any> {
-    const username = this.auth.username;
+  getLearningObjectRatings(learningObjectAuthor: string, learningObjectName: string): Promise<any> {
     return this.http
       .get(
-        RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS(username, learningObjectName),
+        RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS(learningObjectAuthor, learningObjectName),
         {
           withCredentials: true
         }
@@ -76,6 +59,7 @@ export class RatingService {
       });
   }
 
+  // TODO implement this
   getUserRatings() {
     const stubUsername = 'nvisal1';
     const stubLearningObjectName = 'testing contributors 3';
@@ -88,7 +72,7 @@ export class RatingService {
       )
       .toPromise()
       .then(val => {
-        console.log(val);
+        // console.log(val);
       });
   }
 }

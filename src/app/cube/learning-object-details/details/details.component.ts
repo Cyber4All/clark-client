@@ -1,7 +1,7 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
@@ -10,6 +10,16 @@ import { NotificationService } from '../../../shared/notifications/notification.
 import { UserService } from '../../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { RatingService } from '../../../core/rating.service';
+import { ModalService, ModalListElement } from '../../../shared/modals';
+
+// TODO move this to clark entity?
+export interface Rating {
+  _id?: string;
+  user: User;
+  number: number;
+  comment: string;
+  date: string;
+}
 
 
 @Component({
@@ -28,19 +38,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
   author: string;
   learningObjectName: string;
   learningObject: LearningObject;
-  ratings: {user: User, number: number, comment: string, date: string}[] = [];
-  returnUrl: string;
+  ratings: Rating[] = [];
+  averageRating = 0;
   saved = false;
   url: string;
   showAddRating = false;
-  showEditRating = false;
-  showDeleteRating = false;
-  isQuerying = false;
-  editRatingObject: {number: number, comment: string, index: number};
-  deleteRatingIndex: number;
   windowWidth: number;
 
-  userRating: number;
+  userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
   contributorsList = [];
 
@@ -67,7 +72,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private renderer: Renderer2,
     private noteService: NotificationService,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private modalService: ModalService
   ) {
     this.windowWidth = window.outerWidth;
   }
@@ -86,12 +92,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     } else {
       this.canDownload = true;
     }
-
-    this.returnUrl =
-      '/browse/details/' +
-      this.route.snapshot.params['username'] +
-      '/' +
-      this.route.snapshot.params['learningObjectName'];
   }
 
   // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
@@ -213,6 +213,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       case 'facebook':
       // ignoring since the FB object is set in an imported script outside of typescripts scope
       // @ts-ignore
+
+
         FB.ui({
           method: 'share',
           href: this.url,
@@ -260,59 +262,101 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.cartService.removeFromCart(this.author, this.learningObjectName);
   }
 
-  async submitNewRating(rating: {number: number, comment: string}) {
-    this.ratingService.createRating(rating, this.learningObject.name).then(() => {
-      this.getLearningObjectRatings();
-      this.showAddRating = false;
-      this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
-    });
+  async submitNewRating(rating: {number: number, comment: string, editing?: boolean}) {
+    if (!rating.editing) {
+      this.ratingService.createRating(this.author, this.learningObject.name, this.userRating as Rating).then(() => {
+        this.getLearningObjectRatings();
+        this.showAddRating = false;
+        this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
+      });
+    } else {
+      // TODO rating id?
+      this.ratingService.editRating(this.author, this.learningObjectName, '1', this.userRating as Rating)
+    }
   }
 
-  editRating(rating: {number: number, comment: string, index: number}) {
-    this.showEditRating = true;
-    this.editRatingObject = {
-      number: rating.number,
-      comment: rating.comment,
-      index: rating.index
-    };
-  }
+  // editRating(rating: {number: number, comment: string, index: number}) {
+  //   this.showEditRating = true;
+  //   this.editRatingObject = {
+  //     number: rating.number,
+  //     comment: rating.comment,
+  //     index: rating.index
+  //   };
+  // }
 
-  submitEditRating(rating: {number: number, comment: string }) {
-    const ratingId = this.getRatingId(this.editRatingObject.index);
-    this.ratingService.editRating(ratingId, this.learningObjectName, rating).then(() => {
-      this.getLearningObjectRatings();
-      this.showEditRating = false;
-      this.noteService.notify('Success!', 'Review successfully updated!', 'good', 'far fa-check');
-    });
-  }
+  // submitEditRating(rating: {number: number, comment: string }) {
+  //   const ratingId = this.getRatingId(this.editRatingObject.index);
+  //   this.ratingService.editRating(ratingId, this.learningObjectName, rating).then(() => {
+  //     this.getLearningObjectRatings();
+  //     this.showEditRating = false;
+  //     this.noteService.notify('Success!', 'Review successfully updated!', 'good', 'far fa-check');
+  //   });
+  // }
 
-  deleteRating(index: number) {
-    this.showDeleteRating = true;
-    this.deleteRatingIndex = index;
-  }
+  // deleteRating(index: number) {
+  //   this.showDeleteRating = true;
+  //   this.deleteRatingIndex = index;
+  // }
 
-  submitDeleteRating() {
-    const ratingId = this.getRatingId(this.deleteRatingIndex);
-    this.ratingService.deleteRating(ratingId, this.learningObjectName).then(() => {
-      this.getLearningObjectRatings();
-      this.showDeleteRating = false;
-      this.noteService.notify('Success!', 'Review successfully deleted!', 'good', 'far fa-check');
-    });
+  // submitDeleteRating() {
+  //   const ratingId = this.getRatingId(this.deleteRatingIndex);
+  //   this.ratingService.deleteRating(ratingId, this.learningObjectName).then(() => {
+  //     this.getLearningObjectRatings();
+  //     this.showDeleteRating = false;
+  //     this.noteService.notify('Success!', 'Review successfully deleted!', 'good', 'far fa-check');
+  //   });
+  // }
+  
+  async deleteRating(index) {
+    console.log(this.ratings);
+    // 'index' here is the index in the ratings array to delete
+    const t = await this.modalService.makeDialogMenu(
+      'ratingDelete',
+      'Are you sure you want to delete this rating?',
+      'You cannot undo this action!',
+      false,
+      'title-bad',
+      'center',
+      [
+        new ModalListElement('Yup, do it!', 'delete', 'bad'),
+        new ModalListElement('No wait!', 'cancel', 'neutral on-white'),
+      ]
+    ).toPromise();
+
+    if (t === 'delete') {
+      this.ratingService.deleteRating(this.author, this.learningObjectName, this.ratings[index]._id).then(val => {
+        this.getLearningObjectRatings();
+        this.noteService.notify('Success!', 'Rating deleted successfully!.', 'good', 'far fa-times');
+      }).catch(() => {
+        this.noteService.notify('Error!', 'Rating couldn\'t be deleted', 'bad', 'far fa-times');
+      });
+    }
   }
 
   private async getLearningObjectRatings() {
-    this.ratings = await this.ratingService.getLearningObjectRatings(this.learningObjectName);
+    this.ratingService.getLearningObjectRatings(this.author, this.learningObjectName).then(val => {
+      this.ratings = val.ratings;
+      this.averageRating = val.avgRating;
+      const u = this.auth.username;
+
+      for (let i = 0, l = val.ratings.length; i < l; i++) {
+        if (u === val.ratings[i].user.username) {
+          // this is the user's rating
+          this.userRating = val.ratings[i];
+          return;
+        }
+      }
+
+      // if we found the rating, we've returned from the function at this
+      this.userRating = {};
+    });
   }
 
-  private getRatingId(index: number) {
-    return this.ratings['ratings'][index]['_id'];
-  }
-
-  get averageRating(): number {
-    if (this.ratings.length > 0) {
-      return this.ratings.map(x => x.number).reduce((x, y) => x + y) / this.ratings.length;
-    }
-  }
+  // get averageRating(): number {
+  //   if (this.ratings.length > 0) {
+  //     return this.ratings.map(x => x.number).reduce((x, y) => x + y) / this.ratings.length;
+  //   }
+  // }
 
   private buildLocation(encoded?: boolean) {
     const u = window.location.protocol + '//' + window.location.host +

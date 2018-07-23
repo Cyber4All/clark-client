@@ -9,9 +9,8 @@ export class NewRatingComponent implements OnInit, OnChanges {
   @Input() count = 5;
   @Input() rating: number;
   @Input() comment: string;
-  @Input() delete: boolean; // Setting delete to true changes the content of the menu
-  @Output() setRating: EventEmitter<{number: number, comment: string}> = new EventEmitter();
-  @Output() deleteRating: EventEmitter<void> = new EventEmitter();
+  @Input() editing: boolean = false;
+  @Output() setRating: EventEmitter<{number: number, comment: string, editing?: boolean}> = new EventEmitter();
   @Output() cancelRating: EventEmitter<void> = new EventEmitter();
   iterableCount: Array<any>;
 
@@ -40,16 +39,22 @@ export class NewRatingComponent implements OnInit, OnChanges {
     }
 
     if (changes.rating) {
-      if (changes.rating.isFirstChange) {
-        this.oldRating = changes.rating.currentValue;
-      } else {
+      if (!changes.rating.isFirstChange || changes.rating.currentValue) {
         this.advance();
       }
     }
+
+    if (changes.editing) {
+      console.log('editing', changes.editing.currentValue);
+    }
+  }
+
+  regress() {
+    this.activePanel = 0;
   }
 
   advance() {
-    this.activePanel++;
+    this.activePanel = 1;
   }
 
   setHover(i: number) {
@@ -68,15 +73,10 @@ export class NewRatingComponent implements OnInit, OnChanges {
   }
 
   submitRating() {
-    this.setRating.emit({number: this.rating, comment: this.comment});
-  }
-
-  submitDeleteRating() {
-    this.deleteRating.emit();
+    this.setRating.emit({number: this.rating, comment: this.comment, editing: this.editing});
   }
 
   cancel() {
-    // this.rating = this.oldRating;
     this.cancelRating.emit();
   }
 

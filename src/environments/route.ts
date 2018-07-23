@@ -132,22 +132,17 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 };
 
 export const RATING_ROUTES = {
-  GET_RATING(ratingId: string) {
-    return `${environment.apiURL}/ratings/${encodeURIComponent(
-      ratingId
-    )}`;
+  DELETE_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string, ) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
   },
-  DELETE_RATING(ratingId: string, learningObjectName: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  EDIT_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string, ) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
   },
-  EDIT_RATING(ratingId: string, learningObjectName: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  CREATE_RATING(learningObjectAuthor: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
   },
-  CREATE_RATING(username: string, learningObjectName: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings`;
-  },
-  GET_LEARNING_OBJECT_RATINGS(username: string, learningObjectName: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings`;
+  GET_LEARNING_OBJECT_RATINGS(learningObjectAuthor: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
   },
   GET_USER_RATINGS(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/ratings`;
