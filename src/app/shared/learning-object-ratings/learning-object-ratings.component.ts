@@ -18,11 +18,11 @@ export class LearningObjectRatingsComponent implements OnInit {
 
   ngOnInit() {}
 
-  get averageRating(): number {
-    if (this.ratings.length > 0) {
-      return this.ratings.map(x => x.number).reduce((x, y) => x + y) / this.ratings.length;
-    }
-  }
+  // get averageRating(): number {
+  //   // if (this.ratings.length > 0) {
+  //   //   return this.ratings.map(x => x.number).reduce((x, y) => x + y) / this.ratings.length;
+  //   // }
+  // }
 
   getDate(seconds: string): Date {
     const t = new Date(1970, 0, 1); // Epoch
@@ -31,7 +31,7 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   isAuthor(index: number): boolean {
-    if (this.ratings[index].user[0].username === this.auth.username) {
+    if (this.ratings[index].user.username === this.auth.username) {
       return true;
     }
     return false;

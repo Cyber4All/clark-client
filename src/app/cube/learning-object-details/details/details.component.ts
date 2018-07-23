@@ -260,8 +260,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.cartService.removeFromCart(this.author, this.learningObjectName);
   }
 
-  submitNewRating(rating: {number: number, comment: string}) {
+  async submitNewRating(rating: {number: number, comment: string}) {
     this.ratingService.createRating(rating, this.learningObject.name).then(() => {
+      this.getLearningObjectRatings();
       this.showAddRating = false;
       this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
     });
@@ -278,7 +279,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   submitEditRating(rating: {number: number, comment: string }) {
     const ratingId = this.getRatingId(this.editRatingObject.index);
-    this.ratingService.editRating(ratingId, rating).then(() => {
+    this.ratingService.editRating(ratingId, this.learningObjectName, rating).then(() => {
       this.getLearningObjectRatings();
       this.showEditRating = false;
       this.noteService.notify('Success!', 'Review successfully updated!', 'good', 'far fa-check');
@@ -292,7 +293,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   submitDeleteRating() {
     const ratingId = this.getRatingId(this.deleteRatingIndex);
-    this.ratingService.deleteRating(ratingId).then(() => {
+    this.ratingService.deleteRating(ratingId, this.learningObjectName).then(() => {
       this.getLearningObjectRatings();
       this.showDeleteRating = false;
       this.noteService.notify('Success!', 'Review successfully deleted!', 'good', 'far fa-check');
@@ -304,7 +305,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   private getRatingId(index: number) {
-    return this.ratings[index]['_id'];
+    return this.ratings['ratings'][index]['_id'];
   }
 
   get averageRating(): number {

@@ -137,16 +137,11 @@ export const RATING_ROUTES = {
       ratingId
     )}`;
   },
-  DELETE_RATING(ratingId: string) {
-    // return `${environment.apiURL}/ratings/${encodeURIComponent(ratingId)}`;
-    return `${environment.apiURL}/ratings/${encodeURIComponent(
-      ratingId
-    )}`;
+  DELETE_RATING(ratingId: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
   },
-  EDIT_RATING(ratingId: string) {
-    return `${environment.apiURL}/ratings/${encodeURIComponent(
-      ratingId
-    )}`;
+  EDIT_RATING(ratingId: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
   },
   CREATE_RATING(username: string, learningObjectName: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectName)}/ratings`;

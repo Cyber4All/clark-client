@@ -38,10 +38,10 @@ export class RatingService {
       .toPromise();
   }
 
-  editRating(ratingId: string, editRating: {number: number, comment: string}) {
+  editRating(ratingId: string, learningObjectName: string, editRating: {number: number, comment: string}) {
     return this.http
       .patch(
-        RATING_ROUTES.EDIT_RATING(ratingId),
+        RATING_ROUTES.EDIT_RATING(ratingId, learningObjectName),
         editRating,
         {
           withCredentials: true
@@ -50,10 +50,10 @@ export class RatingService {
       .toPromise();
   }
 
-  deleteRating(ratingId: string) {
+  deleteRating(ratingId: string, learningObjectName: string) {
     return this.http
       .delete(
-        RATING_ROUTES.DELETE_RATING(ratingId),
+        RATING_ROUTES.DELETE_RATING(ratingId, learningObjectName),
         {
           withCredentials: true
         }

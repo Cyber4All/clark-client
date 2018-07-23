@@ -12,7 +12,7 @@
         </div>
         <div class="header-bottom">
           <div class="rating">
-            <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length" (click)="scrollToRatings()"></clark-rating-stars>
+            <clark-rating-stars [rating]="ratings.avgRating" [reviewsCount]="ratings?.length" (click)="scrollToRatings()"></clark-rating-stars>
             <a (click)="showAddRating = true;">Write a review</a>
           </div>
           <div class="type">{{ learningObject.length }}</div>
@@ -32,7 +32,7 @@
       </div>
       <div #ratingsWrapper class="ratings">
         <button *ngIf="!isMobile" class="button good" (click)="showAddRating = true">Write a review <i class="far fa-pencil"></i></button>
-        <clark-learning-object-ratings [ratings]="ratings" (editRating)="editRating($event)" (deleteRating)="deleteRating($event)"></clark-learning-object-ratings>
+        <clark-learning-object-ratings [ratings]="ratings.ratings" (editRating)="editRating($event)" (deleteRating)="deleteRating($event)"></clark-learning-object-ratings>
       </div>
     </div>
     <div class="sidebar">

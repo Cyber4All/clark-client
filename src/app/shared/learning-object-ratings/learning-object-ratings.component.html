@@ -3,15 +3,15 @@
     Reviews
   </div>
   <div class="overall-rating">
-    <clark-rating-stars [color]="'gold'" [size]="22" [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
+    <clark-rating-stars [color]="'gold'" [size]="22"  [reviewsCount]="ratings?.length"></clark-rating-stars>
   </div>
   <div class="ratings-list">
     <div *ngFor="let rating of ratings; let i = index;" class="rating-list-element">
-      <a [routerLink]="['/users', rating.user[0].username]">
+      <a [routerLink]="['/users', rating.user.username]">
         <div class="rating-user">
-          <img [src]="userService.getGravatarImage(rating.user[0].email, 45)" class="user-image" /> 
+          <img [src]="userService.getGravatarImage(rating.user.email, 45)" class="user-image" /> 
           <div class="user-name">
-            <span>{{ rating.user[0].name }}</span>
+            <span>{{ rating.user.username }}</span>
             <!-- TODO implement check for verified user here -->
             <div *ngIf="false" class="verified"><i class="far fa-check-circle"></i>verified user</div>
           </div>
