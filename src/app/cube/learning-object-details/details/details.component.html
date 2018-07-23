@@ -4,9 +4,9 @@
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
         <div class="author">Created by
-          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name | titlecase}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
+          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
         <div *ngIf="learningObject.contributors" class="author">Contributors:
-          <span *ngFor="let contributor of contributorsList; let i = index;" class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name | titlecase }}
+          <span *ngFor="let contributor of contributorsList; let i = index;" class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name + " - " + contributor.organization | titlecase }}
             <span *ngIf="i !== contributorsList.length -1">, </span>
           </span>
         </div>
@@ -37,7 +37,10 @@
     </div>
     <div class="sidebar">
       <div class="inner">
-        <div class="btn-group vertical">
+        <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
+          <i class="fas fa-exclamation"></i>Review Pending
+        </div>
+        <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
           <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
             class="button good" (click)="addToCart(true)">
             <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
