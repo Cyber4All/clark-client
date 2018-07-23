@@ -7,14 +7,15 @@ import {
   ComponentRef,
   ApplicationRef,
   Injector,
-  EmbeddedViewRef
+  EmbeddedViewRef,
+  OnDestroy
 } from '@angular/core';
 import { TooltipComponent } from './tooltip.component';
 @Directive({
   selector: '[tip]'
 })
 
-export class TipDirective {
+export class TipDirective implements OnDestroy {
   @Input('tip') tip: string;
   @Input() tipTitle: string;
   @Input() tipLocation: string;
@@ -64,17 +65,20 @@ export class TipDirective {
   */
   // TODO: Update to take a tip object
   setProps() {
+    // create injectable tooltip componen
     this.tooltip = this.componentFactoryResolver.resolveComponentFactory(TooltipComponent).create(this.injector);
+    // attach component to angular's component tree (DOES NOT ADD TO DOM)
     this.appRef.attachView(this.tooltip.hostView);
+
+    // set props
     this.tooltip.instance.parent = this.viewContainerRef.element.nativeElement;
     this.tooltip.instance.location = this.tipLocation;
     this.tooltip.instance.theme = this.tipTheme;
     this.tooltip.instance.text = this.tip;
     this.tooltip.instance.title = this.tipTitle;
 
-    const domElem = (this.tooltip.hostView as EmbeddedViewRef<any>)
-      .rootNodes[0] as HTMLElement;
-
+    // append element to DOM
+    const domElem = (this.tooltip.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     document.body.appendChild(domElem);
 
     this.isShown = true;
@@ -85,9 +89,9 @@ export class TipDirective {
   * Method triggered on focus lost
   * Destroys instance of tooltip component
   */
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   @HostListener('mouseleave')
-  hideTip(event) {
+  hideTip() {
     this.isHover = false;
     clearTimeout(this.timeout);
     if (this.isShown === true) {
@@ -95,5 +99,10 @@ export class TipDirective {
       this.tooltip.destroy();
       this.isShown = false;
     }
+  }
+
+  ngOnDestroy() {
+    // if element directive is "on" is destroyed, remove tooltip
+    this.hideTip();
   }
 }
