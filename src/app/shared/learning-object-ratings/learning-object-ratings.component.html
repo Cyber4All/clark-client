@@ -11,7 +11,7 @@
         <div class="rating-user">
           <img [src]="userService.getGravatarImage(rating.user.email, 45)" class="user-image" /> 
           <div class="user-name">
-            <span>{{ rating.user.username }}</span>
+            <span>{{ rating.user.name }}</span>
             <!-- TODO implement check for verified user here -->
             <div *ngIf="false" class="verified"><i class="far fa-check-circle"></i>verified user</div>
           </div>

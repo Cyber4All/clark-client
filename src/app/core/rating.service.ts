@@ -11,6 +11,7 @@ export class RatingService {
   constructor(private http: Http, private auth: AuthService) { }
 
   createRating(learningObjectAuthor: string, learningObjectName: string, newRating: {number: number, comment: string }) {
+    console.log(newRating);
     return this.http
       .post(
         RATING_ROUTES.CREATE_RATING(learningObjectAuthor, learningObjectName),

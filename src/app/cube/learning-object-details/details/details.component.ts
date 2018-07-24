@@ -261,14 +261,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async submitNewRating(rating: {number: number, comment: string, editing?: boolean}) {
     if (!rating.editing) {
-      this.ratingService.createRating(this.author, this.learningObject.name, this.userRating as Rating).then(() => {
+      this.ratingService.createRating(this.author, this.learningObject.name, rating as Rating).then(() => {
         this.getLearningObjectRatings();
         this.showAddRating = false;
         this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
       });
     } else {
       // TODO rating id?
-      this.ratingService.editRating(this.author, this.learningObjectName, '1', this.userRating as Rating)
+      this.ratingService.editRating(this.author, this.learningObjectName, '1' , rating as Rating).then(() => {
+        this.getLearningObjectRatings();
+        this.showAddRating = false;
+        this.noteService.notify('Success!', 'Review updated successfully!', 'good', 'far fa-check');
+      });
     }
   }
 
@@ -303,7 +307,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   //     this.noteService.notify('Success!', 'Review successfully deleted!', 'good', 'far fa-check');
   //   });
   // }
-  
+
   async deleteRating(index) {
     console.log(this.ratings);
     // 'index' here is the index in the ratings array to delete

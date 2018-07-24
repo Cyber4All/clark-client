@@ -35,8 +35,7 @@ export class LearningObjectRatingsComponent implements OnInit, OnChanges {
   }
 
   getDate(seconds: string): Date {
-    const t = new Date(1970, 0, 1); // Epoch
-    t.setSeconds(parseInt(seconds, 10));
+    const t = new Date( parseInt( seconds, 16 ) * 1000 );
     return t;
   }
 
@@ -53,6 +52,7 @@ export class LearningObjectRatingsComponent implements OnInit, OnChanges {
       comment: this.ratings[index].comment,
       index: index
     };
+    console.log(editRating);
     this.editRating.emit(editRating);
   }
 
