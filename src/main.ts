@@ -1,8 +1,8 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { ClarkModule } from './app/clark.module';
-import { environment } from './environments/environment';
+import { ClarkModule } from 'app/clark.module';
+import { environment } from '@env/environment';
 
 // Global rxjs imports
 import 'rxjs/add/operator/toPromise';

@@ -1,5 +1,5 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
-import { LearningObjectService } from './../../learning-object.service';
+import { LearningObjectService } from '../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import {
@@ -9,7 +9,7 @@ import {
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { NotificationService } from '../../../shared/notifications/notification.service';
+import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { UserService } from '../../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -49,7 +49,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private auth: AuthService,
     private renderer: Renderer2,
-    private noteService: NotificationService
+    private noteService: ToasterService
   ) {}
 
   ngOnInit() {

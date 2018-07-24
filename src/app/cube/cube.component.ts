@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '../shared/modals';
-import { NotificationService } from '../shared/notifications';
+import { ToasterService } from '../shared/toaster';
 
 @Component({
   selector: 'clark-cube',
@@ -15,7 +15,7 @@ export class CubeComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public noteService: NotificationService,
+    public noteService: ToasterService,
     public modalService: ModalService,
   ) { }
 

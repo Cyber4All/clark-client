@@ -1,5 +1,5 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
-import { NotificationService } from '../../shared/notifications';
+import { ToasterService } from '../../shared/toaster';
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
@@ -19,7 +19,7 @@ enum PAGES {
   INFO,
   OUTCOMES
 }
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'onion-learning-object-builder',
@@ -52,7 +52,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private router: Router,
     private service: LearningObjectService,
     private modalService: ModalService,
-    private notificationService: NotificationService,
+    private notificationService: ToasterService,
     private store: LearningObjectStoreService,
     private errorStore: LearningObjectErrorStoreService,
     public auth: AuthService,

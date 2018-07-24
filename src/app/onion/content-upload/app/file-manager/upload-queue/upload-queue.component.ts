@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
-import { getPaths } from 'app/shared/filesystem/file-functions';
-import { getIcon } from 'app/shared/filesystem/file-icons';
+import { getPaths } from '../../../../../shared/filesystem/file-functions';
+import { getIcon } from '../../../../../shared/filesystem/file-icons';
 type LearningObjectFile = File;
 
 @Component({

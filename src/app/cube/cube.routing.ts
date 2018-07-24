@@ -17,8 +17,6 @@ import { CubeComponent } from './cube.component';
 import { CollectionComponent } from './collections/collection.component';
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
-import { DashboardResolver } from '../onion/dashboard/dashboard.resolver';
-import { UserProfileLearningObjectsResolver } from './user-profile/learning-objects.resolver';
 
 // Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {

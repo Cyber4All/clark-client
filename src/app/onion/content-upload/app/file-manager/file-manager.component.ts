@@ -15,10 +15,10 @@ import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import {
   DirectoryTree,
   DirectoryNode
-} from 'app/shared/filesystem/DirectoryTree';
-import { getPaths } from 'app/shared/filesystem/file-functions';
+} from '../../../../shared/filesystem/DirectoryTree';
+import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { Removal } from 'app/shared/filesystem/file-browser/file-browser.component';
+import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 type LearningObjectFile = File;
 
 export type FileEdit = {
