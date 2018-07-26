@@ -14,7 +14,7 @@ import { ModalService, ModalListElement } from '../../../shared/modals';
 
 // TODO move this to clark entity?
 export interface Rating {
-  _id?: string;
+  id?: string;
   user: User;
   number: number;
   comment: string;
@@ -259,57 +259,37 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.cartService.removeFromCart(this.author, this.learningObjectName);
   }
 
-  async submitNewRating(rating: {number: number, comment: string, editing?: boolean}) {
+  submitNewRating(rating: {number: number, comment: string, editing?: boolean, id?: string}) {
     if (!rating.editing) {
+      // creating
+      delete rating.editing;
       this.ratingService.createRating(this.author, this.learningObject.name, rating as Rating).then(() => {
         this.getLearningObjectRatings();
         this.showAddRating = false;
         this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
       });
     } else {
+      // editing
       // TODO rating id?
-      this.ratingService.editRating(this.author, this.learningObjectName, '1' , rating as Rating).then(() => {
+      delete rating.editing;
+      if (!rating.id) {
+        this.noteService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
+        console.error('Error: rating id not set');
+        return;
+      }
+      this.ratingService.editRating(this.author, this.learningObjectName, rating.id , rating as Rating).then(() => {
         this.getLearningObjectRatings();
         this.showAddRating = false;
         this.noteService.notify('Success!', 'Review updated successfully!', 'good', 'far fa-check');
+      }, error => {
+        this.showAddRating = false;
+        this.noteService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
+        console.error(error);
       });
     }
   }
 
-  // editRating(rating: {number: number, comment: string, index: number}) {
-  //   this.showEditRating = true;
-  //   this.editRatingObject = {
-  //     number: rating.number,
-  //     comment: rating.comment,
-  //     index: rating.index
-  //   };
-  // }
-
-  // submitEditRating(rating: {number: number, comment: string }) {
-  //   const ratingId = this.getRatingId(this.editRatingObject.index);
-  //   this.ratingService.editRating(ratingId, this.learningObjectName, rating).then(() => {
-  //     this.getLearningObjectRatings();
-  //     this.showEditRating = false;
-  //     this.noteService.notify('Success!', 'Review successfully updated!', 'good', 'far fa-check');
-  //   });
-  // }
-
-  // deleteRating(index: number) {
-  //   this.showDeleteRating = true;
-  //   this.deleteRatingIndex = index;
-  // }
-
-  // submitDeleteRating() {
-  //   const ratingId = this.getRatingId(this.deleteRatingIndex);
-  //   this.ratingService.deleteRating(ratingId, this.learningObjectName).then(() => {
-  //     this.getLearningObjectRatings();
-  //     this.showDeleteRating = false;
-  //     this.noteService.notify('Success!', 'Review successfully deleted!', 'good', 'far fa-check');
-  //   });
-  // }
-
   async deleteRating(index) {
-    console.log(this.ratings);
     // 'index' here is the index in the ratings array to delete
     const t = await this.modalService.makeDialogMenu(
       'ratingDelete',
@@ -325,12 +305,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
     ).toPromise();
 
     if (t === 'delete') {
-      this.ratingService.deleteRating(this.author, this.learningObjectName, this.ratings[index]._id).then(val => {
+      this.ratingService.deleteRating(this.author, this.learningObjectName, this.ratings[index].id).then(val => {
         this.getLearningObjectRatings();
         this.noteService.notify('Success!', 'Rating deleted successfully!.', 'good', 'far fa-times');
       }).catch(() => {
         this.noteService.notify('Error!', 'Rating couldn\'t be deleted', 'bad', 'far fa-times');
       });
+    }
+  }
+
+  reportRating(rating: {concern: string, index: number, comment?: string}) {
+    const ratingId = this.ratings[rating.index].id;
+    delete rating.index;
+
+    if (ratingId) {
+      this.ratingService.flagLearningObjectRating(this.author, this.learningObjectName, ratingId, rating).then(val => {
+        this.noteService.notify('Success!', 'Report submitted successfully!', 'good', 'far fa-check');
+      }, error => {
+        this.noteService.notify('Error!', 'An error occured and your report could not be submitted', 'bad', 'far fa-times');
+      })
+    } else {
+      this.noteService.notify('Error!', 'An error occured and your report could not be submitted', 'bad', 'far fa-times');
+      console.error('No ratingId specified');
     }
   }
 
@@ -343,12 +339,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
       for (let i = 0, l = val.ratings.length; i < l; i++) {
         if (u === val.ratings[i].user.username) {
           // this is the user's rating
-          this.userRating = val.ratings[i];
+          // we deep copy this to prevent direct modification from component subtree
+          this.userRating = Object.assign({}, val.ratings[i]);
           return;
         }
       }
 
-      // if we found the rating, we've returned from the function at this
+      // if we found the rating, we've returned from the function at this point
       this.userRating = {};
     });
   }

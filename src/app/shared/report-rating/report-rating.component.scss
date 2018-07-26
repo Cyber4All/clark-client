@@ -1,0 +1,78 @@
+@import '~_vars.scss';
+
+.title {
+    font-size: 20px;
+    text-align: center;
+    color: $blue-accent;
+    margin-bottom: 15px;
+    position: relative;
+
+    .icon {
+        position: absolute;
+        top: 4px;
+        left: 0;
+        font-size: 15px;
+        cursor: pointer;
+    }
+}
+
+.type-list {
+
+    ul {
+        padding: 0;
+        margin: 0;
+
+        li {
+            font-size: 18px;
+            list-style-type: none;
+            padding: 10px 20px 10px 0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            &:hover {
+                background: lighten($placeholder, 18);
+            }
+
+            .svg-inline--fa {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.comment {
+
+    .comment-description {
+        color: $dark-text;
+        font-size: 16px;
+
+        span {
+            font-weight: bold;
+            color: black;
+        }
+    }
+
+    textarea {
+        margin-top: 15px;
+        width: 100%;
+        appearance: none;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 1px;
+        min-height: 100px;
+        border: 1px solid $placeholder;
+        outline: 0;
+        resize: none;
+
+        &:focus {
+            border-color: $blue-accent;
+        }
+    }
+
+    .btn-group {
+        margin-top: 25px;
+    }
+}

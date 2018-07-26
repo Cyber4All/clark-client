@@ -7,10 +7,9 @@ import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitte
 })
 export class NewRatingComponent implements OnInit, OnChanges {
   @Input() count = 5;
-  @Input() rating: number;
-  @Input() comment: string;
-  @Input() editing: boolean = false;
-  @Output() setRating: EventEmitter<{number: number, comment: string, editing?: boolean}> = new EventEmitter();
+  @Input() rating: {number: number, comment: string, id?: string};
+  @Input() editing = false;
+  @Output() setRating: EventEmitter<{number: number, comment: string, id?: string, editing?: boolean}> = new EventEmitter();
   @Output() cancelRating: EventEmitter<void> = new EventEmitter();
   iterableCount: Array<any>;
 
@@ -67,13 +66,13 @@ export class NewRatingComponent implements OnInit, OnChanges {
   }
 
   rate(i: number) {
-    this.rating = i;
+    this.rating.number = i;
     this.activePanel = 1;
     this.activeHover = -1;
   }
 
   submitRating() {
-    this.setRating.emit({number: this.rating, comment: this.comment, editing: this.editing});
+    this.setRating.emit({...this.rating, editing: this.editing});
   }
 
   cancel() {
@@ -81,6 +80,6 @@ export class NewRatingComponent implements OnInit, OnChanges {
   }
 
   starShouldShow(i: number): boolean {
-    return (this.activeHover !== -1 && i <= this.activeHover) || (this.activeHover === -1 && this.rating && i < this.rating);
+    return (this.activeHover !== -1 && i <= this.activeHover) || (this.activeHover === -1 && this.rating && i < this.rating.number);
   }
 }

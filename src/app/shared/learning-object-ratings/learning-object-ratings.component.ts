@@ -1,32 +1,27 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from '@cyber4all/clark-entity';
 import { UserService } from '../../core/user.service';
 import { AuthService } from '../../core/auth.service';
-import { SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'clark-learning-object-ratings',
   templateUrl: './learning-object-ratings.component.html',
   styleUrls: ['./learning-object-ratings.component.scss']
 })
-export class LearningObjectRatingsComponent implements OnInit, OnChanges {
+export class LearningObjectRatingsComponent implements OnInit {
 
   @Input() ratings: {user: User, number: number, comment: string, date: string}[];
   @Input() averageRating: number;
   @Output() editRating = new EventEmitter();
   @Output() deleteRating = new EventEmitter();
+  @Output() reportRating: EventEmitter<{concern: string, index: number, comment?: string}> = new EventEmitter();
+
+  showReport = false;
+  reportIndex: number;
 
   constructor(public userService: UserService, private auth: AuthService) { }
 
   ngOnInit() { }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.ratings) {
-      if (!this.averageRating) {
-        this.averageRating = this.calculateAverageRating();
-      }
-    }
-  }
 
   calculateAverageRating(): number {
     if (this.ratings.length > 0) {
@@ -58,6 +53,11 @@ export class LearningObjectRatingsComponent implements OnInit, OnChanges {
 
   submitDeleteRating(index: number) {
     this.deleteRating.emit(index);
+  }
+
+  triggerReportRating(report: {concern: string, comment?: string}) {
+    this.reportRating.emit({...report, index: this.reportIndex});
+    this.showReport = false;
   }
 
 }

@@ -55,9 +55,28 @@ export class RatingService {
         }
       )
       .toPromise()
-      .then(val => {
-        return JSON.parse(val['_body']);
+      .then(res => {
+        const data = res.json();
+        // assign id param to the value of _id and remove _id
+        data.ratings = data.ratings.map(r => {
+          const x = ({...r, id: r.id ? r.id : r._id });
+          delete x._id;
+          return x;
+        });
+        return data;
       });
+  }
+
+  flagLearningObjectRating(
+    learningObjectAuthor: string,
+    learningObjectName: string,
+    ratingId: string,
+    report: {concern: string, comment?: string}): Promise<any> {
+    return this.http.post(
+      RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING(learningObjectAuthor, learningObjectName, ratingId),
+      report,
+      { withCredentials: true }
+    ).toPromise();
   }
 
   // TODO implement this

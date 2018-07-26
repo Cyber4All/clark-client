@@ -9,42 +9,6 @@
     margin: 10px auto 40px;
 }
 
-.auth-button {
-    border-radius: 50%;
-    height: 45px;
-    width: 45px;
-    color: white;
-    outline: none;
-}
-
-#delete { 
-    background-color: $error-red;
-}
-
-#delete:hover { 
-    background-color: white;
-    color: $error-red;
-    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
-}
-
-#edit { 
-    background-color: $bright-blue;
-}
-
-#edit:hover { 
-    background-color: white;
-    color: $bright-blue;
-    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
-}
-
-#auth-buttons {
-    display: flex;
-    margin-left: auto;
-    flex-direction: row;
-    align-items: stretch;
-    float: right;
-}
-
 .ratings-list {
     display: flex;
     flex-direction: column;
@@ -53,6 +17,7 @@
 
     & > *:not(:last-child) {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 25px;
         margin-bottom: 15px;
     }
 
@@ -119,5 +84,87 @@
         }
     }
 
+    .options {
+        margin-top: 5px;
+        font-size: 14px;
+
+        & > * {
+            cursor: pointer;
+            color: darken($placeholder, 25);
+
+            &:not(:last-child) {
+                margin-right: 15px;
+            }
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            &.report {
+                color: $error-red;
+            }
+
+            .svg-inline--fa {
+                margin-right: 5px;
+            }
+        }
+    }
+
 }
 
+.no-ratings {
+    text-align: left;
+    color: darken($placeholder, 25);
+    font-size: 18px;
+}
+
+.report-rating-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 4;
+
+    .report-inner {
+        transform: scale(0.9);
+        background: white;
+        padding: 20px;
+        transition-delay: 0s;
+        transition: all 0.2s ease;
+        opacity: 0;
+        max-width: 600px;
+        min-height: 300px;
+        width: 100%;
+        border-radius: 2px;
+        position: relative;
+
+        .closePopup {
+            position: absolute;
+            font-size: 18px;
+            right: 20px;
+            top: 23px;
+            color: $blue-accent;
+            cursor: pointer;
+            z-index: 2;
+        }
+    }
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+
+        .report-inner {
+            transition-delay: 0.1s;
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
