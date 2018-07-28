@@ -44,6 +44,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   url: string;
   showAddRating = false;
   windowWidth: number;
+  loggedin = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -82,6 +83,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.subs.push(this.route.params.subscribe(params => {
       this.author = params['username'];
       this.learningObjectName = params['learningObjectName'];
+    }));
+
+    this.subs.push(this.auth.isLoggedIn.subscribe(val => {
+      // update loggedin flag when auth status changes
+      this.loggedin = val;
     }));
 
     this.fetchLearningObject();

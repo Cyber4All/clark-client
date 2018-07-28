@@ -17,7 +17,7 @@
         <div class="header-bottom">
           <div class="rating">
             <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length" (click)="scrollToRatings()"></clark-rating-stars>
-            <a (click)="showAddRating = true;">Write a review</a>
+            <a *ngIf="loggedin" (click)="showAddRating = true;">Write a review</a>
           </div>
           <div class="type">{{ learningObject.length }}</div>
         </div>
@@ -35,8 +35,8 @@
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
       </div>
       <div #ratingsWrapper class="ratings">
-        <button *ngIf="!isMobile" class="button good" (click)="showAddRating = true">{{ userRating.date ? 'Edit your' : 'Write a'}} review <i class="far fa-pencil"></i></button>
-        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" (editRating)="showAddRating = true;" (deleteRating)="deleteRating($event)" (reportRating)="reportRating($event)"></clark-learning-object-ratings>
+        <button *ngIf="!isMobile && loggedin" class="button good" (click)="showAddRating = true">{{ userRating.date ? 'Edit your' : 'Write a'}} review <i class="far fa-pencil"></i></button>
+        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [loggedIn]="loggedin" (editRating)="showAddRating = true;" (deleteRating)="deleteRating($event)" (reportRating)="reportRating($event)"></clark-learning-object-ratings>
       </div>
     </div>
     <div class="sidebar">
@@ -91,7 +91,7 @@
   </div>
   <div [id]="iframeParent"></div>
 </div>
-<div class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
+<div *ngIf="loggedin" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
   <div class="new-rating" (click)="$event.stopPropagation()">
     <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
     <div class="title">Rate this Learning Object</div>

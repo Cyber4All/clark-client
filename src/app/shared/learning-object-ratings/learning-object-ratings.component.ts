@@ -12,6 +12,7 @@ export class LearningObjectRatingsComponent implements OnInit {
 
   @Input() ratings: {user: User, number: number, comment: string, date: string}[];
   @Input() averageRating: number;
+  @Input() loggedIn: boolean;
   @Output() editRating = new EventEmitter();
   @Output() deleteRating = new EventEmitter();
   @Output() reportRating: EventEmitter<{concern: string, index: number, comment?: string}> = new EventEmitter();
