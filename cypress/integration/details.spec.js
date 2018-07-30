@@ -87,6 +87,14 @@ describe('Details', () => {
         // Wait for learning objects to load on page
         cy.wait(1000);
 
+        // ensure that when not logged in, option doesn't exist
+        cy.get('.rating > a').should('not.exist');
+
+        // login
+        cy.login();
+
+        cy.wait(1000);
+
         // Click left-most card
         cy.get('.learning-object').first().click({ multiple: true });
 
@@ -95,6 +103,15 @@ describe('Details', () => {
         cy.get('.new-rating-wrapper').should('be.visible').should('have.class', 'active');
         cy.get('.new-rating').should('be.visible');
      });
+
+    //  it('From details page, click \'report\' on a rating', () => {
+    //     // Wait for learning objects to load on page
+    //     cy.visit('http://localhost:4200/details/dark/Cybersecurity%20and%20Society');
+
+    //     cy.wait(1000);
+
+    //     cy.visit('.rating-list-element .options').first().click({multiple: true})
+    //  })
 
     // it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
     //     // Wait for learning objects to load on page

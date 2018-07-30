@@ -6,7 +6,7 @@ describe('Browse', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4201/home');
+        cy.visit('http://localhost4200/home');
     });   
     // =============================================================
     // /browse testing
