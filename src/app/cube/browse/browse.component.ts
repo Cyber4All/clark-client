@@ -11,6 +11,7 @@ import { lengths } from '@cyber4all/clark-taxonomy';
 import {  } from '@cyber4all/clark-entity';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
 import {
   SuggestionService
  } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
@@ -71,7 +72,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       ]
     }
   ];
-  filteringSubject: any;
+  searchDelaySubject: any;
 
   filterInput: Observable<string>;
 
@@ -81,6 +82,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
   filtersDownMobile = false;
   tempFilters: {name: string, value: string, active?: boolean}[] = [];
   windowWidth: number;
+
+  unsubscribe: Subject<void> = new Subject();
 
   @HostListener('window:resize', ['$event']) handelResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -93,38 +96,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.filteringSubject = new Subject<string>().debounceTime(350);
-    this.subscriptions.push(this.filteringSubject.subscribe(() => {
+    // used by the performSearch function (when delay is true) to add a debounce effect
+    this.searchDelaySubject = new Subject<void>().debounceTime(650);
+    this.subscriptions.push(this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
       this.performSearch();
     }));
 
-    this.subscriptions.push(this.mappingService.mappedSubject.subscribe(val => {
-      this.query.standardOutcomes = this.mappingService.mappedStandards;
-    }));
-
-    this.subscriptions.push(this.route.queryParams.subscribe(params => {
-
-      // iterate route params and map them to the query object
-      const paramKeys = Object.keys(params);
-      for (let i = 0, l = paramKeys.length; i < l; i++) {
-        const key = paramKeys[i];
-
-        if (Object.keys(this.query).includes(key)) {
-          const val = params[key];
-          // this parameter is a query param, add it to the query object
-          this.query[key] = val;
-
-          // add it to filter list to force checkbox
-          if (Array.isArray(val)) {
-            for (let k = 0, j = val.length; k < j; k++) {
-              this.addFilter(key, val[k]);
-            }
-          } else {
-            this.addFilter(key, val);
-          }
-        }
-      }
-
+    // whenever the queryParams change, map them to the query object and perform the search
+    this.subscriptions.push(this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
+      this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     }));
   }
@@ -227,7 +207,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   addFilter(key: string, value: string) {
     if (!this.filtersDownMobile) {
       this.modifyFilter(key, value, true);
-      this.filteringSubject.next();
+      this.performSearch(true);
     } else {
       this.tempFilters.push({name: key, value, active: true});
     }
@@ -236,7 +216,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   removeFilter(key: string, value: string) {
     if (!this.filtersDownMobile) {
       this.modifyFilter(key, value);
-      this.filteringSubject.next();
+      this.performSearch(true);
     } else {
       for (let i = 0, l = this.tempFilters.length; i < l; i++) {
         const f = this.tempFilters[i];
@@ -249,7 +229,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
       // we didn't find it
       this.tempFilters.push({name: key, value, active: false});
-      console.log(this.tempFilters);
     }
   }
 
@@ -265,7 +244,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.tempFilters = [];
 
     if (sendFilters) {
-      this.filteringSubject.next();
+      this.performSearch(true);
     }
   }
 
@@ -285,36 +264,35 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
-  // removes an outcome from list of selected outcomes
-  removeMapping(outcome) {
-    this.mappingService.removeMapping(outcome);
-    this.query.standardOutcomes = this.mappingService.mappedStandards;
-    this.fetchLearningObjects(this.query);
-  }
+  /**
+   * Executes a search by reading throuhg the query object and mapping it to query parameters and then re-navigating to the component
+   * @param delay if true, triggers a debounced subject, which will call performSearch again with no delay
+   */
+  performSearch(delay: boolean = false) {
+    if (delay) {
+      this.searchDelaySubject.next();
+    } else {
+      for (let i = 0, l = this.filters.length; i < l; i++) {
+        const category = this.filters[i];
+        let active;
 
-  performSearch() {
-    for (let i = 0, l = this.filters.length; i < l; i++) {
-      const category = this.filters[i];
-      let active;
+        if (category.values) {
+          active = category.values.filter(v => v.active);
+        } else {
+          // TODO implement adding non-value (custom component) filters
+          active = [];
+        }
 
-      if (category.values) {
-        active = category.values.filter(v => v.active);
-      } else {
-        // TODO implement adding non-value (custom component) filters
-        active = [];
+        if (active.length) {
+          // there are filters in this category
+          this.query[category.name] = active.map(v => v.name);
+        } else {
+          this.query[category.name] = [];
+        }
       }
 
-      if (active.length) {
-        // there are filters in this category
-        this.query[category.name] = active.map(v => v.name);
-      } else {
-        this.query[category.name] = [];
-      }
+      this.router.navigate(['browse'], {queryParams: this.removeObjFalsy(this.query)});
     }
-
-    this.router.navigate(['browse'], {queryParams: this.query});
-
-    // this.fetchLearningObjects(this.query);
   }
 
   showSortMenu(event) {
@@ -356,8 +334,34 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.performSearch();
   }
 
+  /**
+   * Takes an object of parameters and attempts to map them to the query objcet
+   * @param {*} params the object returned from subscribing to the routers queryParams observable
+   */
+  makeQuery(params: any) {
+    const paramKeys = Object.keys(params);
+    // iterate params object
+    for (let i = 0, l = paramKeys.length; i < l; i++) {
+      const key = paramKeys[i];
+
+      if (Object.keys(this.query).includes(key)) {
+        const val = params[key];
+        // this parameter is a query param, add it to the query object
+        this.query[key] = val;
+
+        // add it to filter list to force checkbox
+        if (Array.isArray(val)) {
+          for (let k = 0, j = val.length; k < j; k++) {
+            this.addFilter(key, val[k]);
+          }
+        } else {
+          this.addFilter(key, val);
+        }
+      }
+    }
+  }
+
   async fetchLearningObjects(query: Query) {
-    console.log(query);
     this.loading = true;
     this.learningObjects = Array(20).fill(new LearningObject);
     // Trim leading and trailing whitespace
@@ -371,12 +375,25 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    for (let i = 0; i < this.subscriptions.length; i++) {
-      this.subscriptions[i].unsubscribe();
+  /**
+   * Deep copy and strip all falsy values (and empty arrays) from an object
+   */
+  private removeObjFalsy(obj: any): any {
+    const keys = Object.keys(obj);
+    // deep copy object to prevent direct modification of passed object
+    const output = Object.assign({}, obj);
+
+    for (let i = 0, l = keys.length; i < l; i++) {
+      if (!output[keys[i]] || (Array.isArray(output[keys[i]]) && output[keys[i]].length === 0)) {
+        delete output[keys[i]];
+      }
     }
 
-    this.subscriptions = [];
+    return output;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
   }
 
 }
