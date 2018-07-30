@@ -32,7 +32,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
     limit: 20,
     length: [],
     level: [],
-    standardOutcomes: []
+    standardOutcomes: [],
+    orderBy: undefined,
+    sortType: undefined,
   };
 
   tooltipText = {
@@ -93,23 +95,37 @@ export class BrowseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.filteringSubject = new Subject<string>().debounceTime(350);
     this.subscriptions.push(this.filteringSubject.subscribe(() => {
-      this.sendFilters();
-    }));
-
-    this.subscriptions.push(this.route.params.subscribe(params => {
-      params.query ? this.query.text = params.query : this.query.text = '';
-
-      if (params.standardOutcomes) {
-        this.query.standardOutcomes = [...params.standardOutcomes.split(',')];
-      } else {
-        this.query.standardOutcomes = [];
-      }
-
-      this.fetchLearningObjects(this.query);
+      this.performSearch();
     }));
 
     this.subscriptions.push(this.mappingService.mappedSubject.subscribe(val => {
       this.query.standardOutcomes = this.mappingService.mappedStandards;
+    }));
+
+    this.subscriptions.push(this.route.queryParams.subscribe(params => {
+
+      // iterate route params and map them to the query object
+      const paramKeys = Object.keys(params);
+      for (let i = 0, l = paramKeys.length; i < l; i++) {
+        const key = paramKeys[i];
+
+        if (Object.keys(this.query).includes(key)) {
+          const val = params[key];
+          // this parameter is a query param, add it to the query object
+          this.query[key] = val;
+
+          // add it to filter list to force checkbox
+          if (Array.isArray(val)) {
+            for (let k = 0, j = val.length; k < j; k++) {
+              this.addFilter(key, val[k]);
+            }
+          } else {
+            this.addFilter(key, val);
+          }
+        }
+      }
+
+      this.fetchLearningObjects(this.query);
     }));
   }
 
@@ -127,7 +143,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
     let upCount = 1;
     let downCount = 1;
     const arr = [cursor];
-
 
     if (this.learningObjects.length) {
       while (count < Math.min(total, this.pageCount)) {
@@ -153,7 +168,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const page = +this.query.currPage - 1;
     if (page > 0) {
       this.query.currPage = page;
-      this.fetchLearningObjects(this.query);
+      this.performSearch();
 
     }
   }
@@ -163,7 +178,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const page = +this.query.currPage + 1;
     if (page <= this.pageCount) {
       this.query.currPage = page;
-      this.fetchLearningObjects(this.query);
+      this.performSearch();
     }
   }
 
@@ -171,13 +186,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
   goToPage(page) {
     if (page > 0 && page <= this.pageCount) {
       this.query.currPage = +page;
-      this.fetchLearningObjects(this.query);
+      this.performSearch();
 
     }
   }
 
   clearSearch() {
-    this.router.navigate(['browse']);
+    this.query.text = '';
+    this.query.standardOutcomes = [];
+    this.router.navigate(['browse'], {queryParams: {}});
   }
 
   get sortString() {
@@ -204,7 +221,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
 
     this.tempFilters = [];
-    this.sendFilters();
+    this.performSearch();
   }
 
   addFilter(key: string, value: string) {
@@ -275,7 +292,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.fetchLearningObjects(this.query);
   }
 
-  sendFilters() {
+  performSearch() {
     for (let i = 0, l = this.filters.length; i < l; i++) {
       const category = this.filters[i];
       let active;
@@ -295,9 +312,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log(this.query);
+    this.router.navigate(['browse'], {queryParams: this.query});
 
-    this.fetchLearningObjects(this.query);
+    // this.fetchLearningObjects(this.query);
   }
 
   showSortMenu(event) {
@@ -325,7 +342,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
               this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
               this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
 
-              this.fetchLearningObjects(this.query);
+              this.performSearch();
             }
             this.contextMenuSubscriptions.map(l => l.unsubscribe());
           })
@@ -336,10 +353,11 @@ export class BrowseComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     this.query.orderBy = undefined;
     this.query.sortType = undefined;
-    this.fetchLearningObjects(this.query);
+    this.performSearch();
   }
 
   async fetchLearningObjects(query: Query) {
+    console.log(query);
     this.loading = true;
     this.learningObjects = Array(20).fill(new LearningObject);
     // Trim leading and trailing whitespace
