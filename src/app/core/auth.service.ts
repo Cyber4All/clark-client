@@ -26,7 +26,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
-    private router: Router
+    // private router: Router
   ) {
     if (this.cookies.get('presence')) {
       this.validate().then(

@@ -1,25 +1,27 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserProfileComponent } from './user-profile.component';
+// import { UserProfileComponent } from './user-profile.component';
 
-describe('UserProfileComponent', () => {
-  let component: UserProfileComponent;
-  let fixture: ComponentFixture<UserProfileComponent>;
+// describe('UserProfileComponent', () => {
+//   let component: UserProfileComponent;
+//   let fixture: ComponentFixture<UserProfileComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ UserProfileComponent ]
-    })
-    .compileComponents();
-  }));
+//   beforeEach(async(() => {
+//     TestBed.configureTestingModule({
+//       declarations: [ UserProfileComponent ]
+//     })
+//     .compileComponents();
+//   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UserProfileComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//   test('snapshot of user-profile component', () => {
+//     fixture = TestBed.createComponent(UserProfileComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//     expect(fixture).toMatchSnapshot();
+//   });
+
+// //   it('should create', () => {
+// //     expect(component).toBeTruthy();
+// //   });
+// });

@@ -18,6 +18,7 @@
     "baseUrl": "src",
     "paths": {
       "@env/*": [ "environments/*" ]
-    }
+    },
+    "types": [ "jest" ]
   }
 }
