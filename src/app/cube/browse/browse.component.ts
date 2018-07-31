@@ -1,14 +1,13 @@
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import { SortType, OrderBy } from './../../shared/interfaces/query';
 import { ModalService, ModalListElement, Position} from '../../shared/modals';
 import { Router } from '@angular/router';
 import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
-import { Component, OnInit, AfterViewChecked, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
-import {  } from '@cyber4all/clark-entity';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
@@ -76,9 +75,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   filterInput: Observable<string>;
 
-  subscriptions: Subscription[] = [];
-  contextMenuSubscriptions: Subscription[] = [];
-
   filtersDownMobile = false;
   tempFilters: {name: string, value: string, active?: boolean}[] = [];
   windowWidth: number;
@@ -98,15 +94,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>().debounceTime(650);
-    this.subscriptions.push(this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
+    this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
       this.performSearch();
-    }));
+    });
 
     // whenever the queryParams change, map them to the query object and perform the search
-    this.subscriptions.push(this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
+    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
-    }));
+    });
   }
 
   get isMobile(): boolean {
@@ -298,33 +294,31 @@ export class BrowseComponent implements OnInit, OnDestroy {
   showSortMenu(event) {
     const currSort = (this.query.orderBy) ?
       this.query.orderBy.replace(/_/g, '') + '-' + ((this.query.sortType > 0) ? 'asc' : 'desc') : undefined;
-      this.contextMenuSubscriptions.push(
-        this.modalService.makeContextMenu(
-          'SortContextMenu',
-          'dropdown',
-          [
-            new ModalListElement('Date (Newest first)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
-            new ModalListElement('Date (Oldest first)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
-            new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
-            new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
-          ],
-          true,
-          null,
-          new Position(
-            this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
-            this.modalService.offset(event.currentTarget).top + 50))
-          .subscribe(val => {
-            if (val !== 'null' && val.length) {
-              const dir = val.split('-')[1];
-              const sort = val.split('-')[0];
-              this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-              this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
+      const sub = this.modalService.makeContextMenu(
+        'SortContextMenu',
+        'dropdown',
+        [
+          new ModalListElement('Date (Newest first)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
+          new ModalListElement('Date (Oldest first)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
+          new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
+          new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
+        ],
+        true,
+        null,
+        new Position(
+          this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
+          this.modalService.offset(event.currentTarget).top + 50))
+        .subscribe(val => {
+          if (val !== 'null' && val.length) {
+            const dir = val.split('-')[1];
+            const sort = val.split('-')[0];
+            this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+            this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
 
-              this.performSearch();
-            }
-            this.contextMenuSubscriptions.map(l => l.unsubscribe());
-          })
-      );
+            this.performSearch();
+          }
+          sub.unsubscribe();
+        });
   }
 
   clearSort(event) {
