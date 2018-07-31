@@ -6,7 +6,7 @@ describe('Browse', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4201/home');
+        cy.visit('http://localhost:4200/home');
     });   
     // =============================================================
     // /browse testing
@@ -66,7 +66,7 @@ describe('Browse', () => {
         cy.get('.content').children('.column-title').children('span').first().children('.clear-search').click();
 
         // Assert URL
-        cy.url().should('include', 'browse');
+        cy.url().should('not.include', 'text=');
     });
     
     it('Sort results', () => {
@@ -103,4 +103,21 @@ describe('Browse', () => {
         // Finally, click the red x
         cy.get('.content').children('.column-title').children('.results-options').children('.sort').children('.removeSort').children('.fa-times').click();
     });
+
+    it('Select a filter and then clear filters', () => {
+        cy.visit('http://localhost:4200/browse');
+        cy.wait(1000);
+
+        // select filter and wait 1 second for query to fire (this is debounced 650ms in the client!)
+        cy.get('.filter-section-type .filter .checkbox').first().click({multiple: true});
+        cy.wait(1000);
+
+        cy.url().should('include', 'length=nanomodule');
+
+        // check clearing filters
+        cy.get('.filters-clear-all').first().click({multiple: true});
+        cy.wait(1000);
+
+        cy.url().should('not.include', 'length=nanomodule')
+    })
 });
