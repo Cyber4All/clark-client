@@ -125,7 +125,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     } catch (error) {
       this.error = true;
       this.errorMessage = 'Failed to add to your library';
-      console.log(this.errorMessage);
     }
 
     if (!this.saved && !this.error) {
