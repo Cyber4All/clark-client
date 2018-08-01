@@ -32,7 +32,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   saved = false;
   url: string;
   error = false;
-  errorMessage: String = '';
 
   contributorsList = [];
 
@@ -124,7 +123,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       );
     } catch (error) {
       this.error = true;
-      this.errorMessage = 'Failed to add to your library';
+      this.noteService.notify("Failure", "Failed to add to your library", "bad", "far fa-times");
     }
 
     if (!this.saved && !this.error) {
