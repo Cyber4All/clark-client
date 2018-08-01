@@ -4,22 +4,23 @@ import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
 
 describe('Browse', () => {
 
+    let home;
+
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4200/home');
+        cy.fixture('route.json').then((route) => {
+            home = route;
+            cy.visit(home[0]);
+        });
     });   
     // =============================================================
     // /browse testing
     // =============================================================
     it('Click a card and see details page', () => {
-        // Type in to search bar
-        cy.get('.search-input').type('Nick');
-
-        // Click search 
-        cy.get('.button.bad').eq(0).click();
+        cy.contains('View All').click();
 
         // Wait for learning object cards to load
-        cy.wait(1000);
+        cy.wait(2000);
 
          // Assert URL 
          cy.url().should('include', 'browse');
@@ -105,7 +106,7 @@ describe('Browse', () => {
     });
 
     it('Select a filter and then clear filters', () => {
-        cy.visit('http://localhost:4200/browse');
+        cy.visit(home[1]);
         cy.wait(1000);
 
         // select filter and wait 1 second for query to fire (this is debounced 650ms in the client!)

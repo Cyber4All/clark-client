@@ -6,7 +6,9 @@ describe('Dashboard', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
     });   
     // =============================================================
     // /dashboard testing
@@ -111,35 +113,38 @@ describe('Dashboard', () => {
          cy.url().should('include', 'onion');
     });
 
-    it('Navigate to dashboard and assert publish option', () => {
-        // Login 
-        cy.login();
+    // ************************
+    // THESE TESTS REQUIRE PUBLISHED OBJECT -- CANNOT VERIFY EMAIL 
+    // ************************
+    // it('Navigate to dashboard and assert publish option', () => {
+    //     // Login 
+    //     cy.login();
 
-        // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+    //     // navigate to Your Dashboard
+    //     cy.contains('Contribute to CLARK').click();
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
+    //     // Assert URL 
+    //     cy.url().should('include', 'dashboard');
 
-         // Click Edit from options dropdown
-         cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
-         cy.get('.popup.small').eq(1).children('ul').children('li').eq(2);
-    });
+    //      // Click Edit from options dropdown
+    //      cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
+    //      cy.get('.popup.small').eq(1).children('ul').children('li').eq(2);
+    // });
 
-    it('Navigate to dashboard and assert delete option', () => {
-        // Login 
-        cy.login();
+    // it('Navigate to dashboard and assert delete option', () => {
+    //     // Login 
+    //     cy.login();
 
-        // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+    //     // navigate to Your Dashboard
+    //     cy.contains('Contribute to CLARK').click();
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
+    //     // Assert URL 
+    //     cy.url().should('include', 'dashboard');
 
-        // Click Edit from options dropdown
-        cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3);
-    });
+    //     // Click Edit from options dropdown
+    //     cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
+    //     cy.get('.popup.small').eq(1).children('ul').children('li').eq(3);
+    // });
 
     it('Save learning object', () => {
         // Login 
@@ -158,33 +163,36 @@ describe('Dashboard', () => {
         cy.get('.top-content').children('.right').children('.btn-group.to-right').click();
     });
 
-    it('Click next until returned to dashboard', () => {
-        // Login 
-        cy.login();
+    // ************************
+    // THIS TEST REQUIRES PUBLISHED OBJECT -- CANNOT VERIFY EMAIL 
+    // ************************
+    // it('Click next until returned to dashboard', () => {
+    //     // Login 
+    //     cy.login();
 
-        // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+    //     // navigate to Your Dashboard
+    //     cy.contains('Contribute to CLARK').click();
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
+    //     // Assert URL 
+    //     cy.url().should('include', 'dashboard');
 
-        // Click object
-        cy.get('.rows').eq(1).children('.row.unpublished').children('.cells').children('.cell').first().children('.builder-link').click();
+    //     // Click object
+    //     cy.get('.rows').eq(1).children('.row.unpublished').children('.cells').children('.cell').first().children('.builder-link').click();
 
-        // Click Next button
-        cy.get('.next.button.neutral.on-white').click();
+    //     // Click Next button
+    //     cy.get('.next.button.neutral.on-white').click();
 
-        // Click Next button
-        cy.get('.next.button.neutral.on-white').click();
+    //     // Click Next button
+    //     cy.get('.next.button.neutral.on-white').click();
 
-        // Wait for page load so that button 
-        // on previous page with same selector is not asserted
-        cy.wait(1000);
+    //     // Wait for page load so that button 
+    //     // on previous page with same selector is not asserted
+    //     cy.wait(1000);
 
-        // Click save button at end of builder
-        cy.get('.button.good').eq(1).click();
+    //     // Click save button at end of builder
+    //     cy.get('.button.good').eq(1).click();
 
-        // Assert URL
-        cy.url().should('include', 'dashboard');
-    });
+    //     // Assert URL
+    //     cy.url().should('include', 'dashboard');
+    // });
 });

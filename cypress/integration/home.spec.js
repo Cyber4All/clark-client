@@ -6,7 +6,9 @@ describe('Home', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
     });
 
     // /home tests
@@ -88,7 +90,7 @@ describe('Home', () => {
         cy.get('.button.bad').eq(0).click();
 
         // Assert URL 
-        cy.url().should('include', 'query');
+        cy.url().should('include', 'text');
     });
 
     it('Clicking navbar search after typing in it - Keyword search', () => {

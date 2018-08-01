@@ -6,7 +6,9 @@ describe('User', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
     });   
     // =============================================================
     // /user testing

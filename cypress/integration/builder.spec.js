@@ -6,7 +6,9 @@
  
      beforeEach(() => {
          // Return to home page before each test
-         cy.visit('http://localhost:4200/home');
+         cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
      });   
      // =============================================================
      // /learning-object-builder testing
@@ -98,7 +100,7 @@
         // Enter Learning Object name
         cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
         .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-        .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type('test');
+        .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type('Cybersecurity and Society');
 
         // Click Next button without filling out step 1 form
         cy.get('.next.button.neutral.on-white').click();
@@ -152,7 +154,7 @@
 
         // Click on options 
         cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click();
+        cy.get('.popup.small').eq(1).children('ul').children('li').eq(1).click();
         cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
 

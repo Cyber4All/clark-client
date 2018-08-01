@@ -35,8 +35,8 @@ Cypress.Commands.add('login', () => {
      cy.url().should('include', 'login');
 
      // Enter login info 
-     cy.get('input[name=username]').type('nvisal1');
-     cy.get('input[name=password]').type('122595');
+     cy.get('input[name=username]').type('cypress');
+     cy.get('input[name=password]').type('Clarktesting1!');
      cy.get('.auth-button').click();
 });
 

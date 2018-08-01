@@ -6,7 +6,9 @@ describe('Details', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
     });   
     // =============================================================
     // /details testing
@@ -48,18 +50,19 @@ describe('Details', () => {
         cy.url().should('include', 'home');
     });
 
-    // it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
-    //     // Wait for learning objects to load on page
-    //     cy.wait(1000);
+    it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
+        // Wait for learning objects to load on page
+        cy.wait(1000);
 
-    //     // Click left-most card
-    //     cy.get('.learning-object').first().click({ multiple: true });
+        // Click left-most card
+        cy.get('.learning-object').first().click({ multiple: true });
 
-    //     // Click DOWNLOAD NOW button 
-    //     // if disabled class is present, it is working correctly.
-    //     cy.get('.inner').eq(1).children('.button.good.disabled').click();
+        // Click DOWNLOAD NOW button 
+        // if disabled class is present, it is working correctly.
+        cy.wait(1000);
+        cy.get('.sidebar').children('.inner').children('.btn-group.vertical').children('.button.good.disabled');
 
-    //     // Assert URL 
-    //     cy.url().should('include', 'details');
-    // });
+        // Assert URL 
+        cy.url().should('include', 'details');
+    });
 });

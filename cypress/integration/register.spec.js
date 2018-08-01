@@ -6,7 +6,9 @@ describe('Browse', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost:4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
     });   
     // =============================================================
     // /register testing
@@ -225,6 +227,8 @@ describe('Browse', () => {
         // Fill in organization
         cy.get('.input.organization').children('input').type('Neat');
 
+        cy.wait(1000);
+
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
 
@@ -300,6 +304,9 @@ describe('Browse', () => {
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
 
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
+
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
 
@@ -322,6 +329,9 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -351,6 +361,9 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -383,6 +396,9 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -418,6 +434,9 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -457,6 +476,9 @@ describe('Browse', () => {
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
 
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
+
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
 
@@ -495,6 +517,9 @@ describe('Browse', () => {
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
 
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
+
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
 
@@ -532,6 +557,9 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson University');
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
