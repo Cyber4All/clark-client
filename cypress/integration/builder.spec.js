@@ -118,37 +118,34 @@
         cy.get('notification').children('.notification.bad').children('.note-content').children('.text').contains('Could not save Learning Object. Learning Object with name: test already exists.');
     });
 
-    // ************************
-    // THIS TEST REQUIRES PUBLISHED OBJECT -- CANNOT VERIFY EMAIL 
-    // ************************
-    // it('Successfully navigate to the manage materials page (step 3)', () => {
-    //     // Login 
-    //     cy.login();
+    it('Successfully navigate to the manage materials page (step 3)', () => {
+        // Login 
+        cy.login();
 
-    //     // navigate to Your Dashboard
-    //     cy.contains('Contribute to CLARK').click();
+        // navigate to Your Dashboard
+        cy.contains('Contribute to CLARK').click();
 
-    //     // Assert URL 
-    //     cy.url().should('include', 'dashboard');
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
 
-    //     //Click New +
-    //     cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        //Click New +
+        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
         
-    //     // Enter Learning Object name
-    //     cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-    //         .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-    //         .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[1]);
+        // Enter Learning Object name
+        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
+            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[1]);
 
-    //     // Click Next 
-    //     cy.get('.next.button.neutral.on-white').click();
+        // Click Next 
+        cy.get('.next.button.neutral.on-white').click();
 
-    //     // Click Next button 
-    //     cy.get('.next.button.neutral.on-white').click();
+        // Click Next button 
+        cy.get('.next.button.neutral.on-white').click();
 
-    //     // Assert page 3 header 
-    //     cy.get('.content-upload-component').children('.container').children('.inner-wrapper.padded-bottom')
-    //         .children('.header').children('.title').contains('Manage Materials');
-    // });
+        // Assert page 3 header 
+        cy.get('.content-upload-component').children('.container').children('.inner-wrapper.padded-bottom')
+            .children('.header').children('.title').contains('Manage Materials');
+    });
 
     it('Delete created Learning Object', () => {
         // Login 
@@ -162,7 +159,7 @@
 
         // Click on options 
         cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(1).click();
+        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click();
         cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
 
