@@ -3,11 +3,16 @@
  import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
  
  describe('Browse', () => {
+
+    let objects
  
      beforeEach(() => {
          // Return to home page before each test
          cy.fixture('route.json').then((route) => {
             cy.visit(route[0]);
+        });
+        cy.fixture('objects.json').then((object) => {
+            objects = object;
         });
      });   
      // =============================================================
@@ -100,7 +105,7 @@
         // Enter Learning Object name
         cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
         .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-        .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type('Cybersecurity and Society');
+        .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[0]);
 
         // Click Next button without filling out step 1 form
         cy.get('.next.button.neutral.on-white').click();
@@ -129,7 +134,7 @@
         // Enter Learning Object name
         cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
             .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type('Learn how to use Cypress');
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[1]);
 
         // Click Next 
         cy.get('.next.button.neutral.on-white').click();
@@ -319,7 +324,7 @@
         // Enter Learning Object name
         cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
             .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type('blah blah cypress testing');
+            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[2]);
 
         // Wait 
         cy.wait(1000);

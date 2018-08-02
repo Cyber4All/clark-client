@@ -5,12 +5,16 @@ import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
 describe('Browse', () => {
 
     let home;
+    let names;
 
     beforeEach(() => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
             home = route;
             cy.visit(home[0]);
+        });
+        cy.fixture('names.json').then((name) => {
+            names = name;
         });
     });   
     // =============================================================
@@ -34,7 +38,7 @@ describe('Browse', () => {
 
     it('Filter results', () => {
         // Type in to search bar
-        cy.get('.search-input').type('Sidd');
+        cy.get('.search-input').type(names[0]);
 
         // Click search 
         cy.get('.button.bad').eq(0).click();
@@ -58,7 +62,7 @@ describe('Browse', () => {
 
     it('Clear search', () => {
         // Type in to search bar
-        cy.get('.search-input').type('Sidd');
+        cy.get('.search-input').type(names[0]);
 
         // Click search 
         cy.get('.button.bad').eq(0).click();
@@ -72,7 +76,7 @@ describe('Browse', () => {
     
     it('Sort results', () => {
         // Type in to search bar
-        cy.get('.search-input').type('Sidd');
+        cy.get('.search-input').type(names[0]);
 
         // Click search 
         cy.get('.button.bad').eq(0).click();

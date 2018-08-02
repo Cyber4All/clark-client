@@ -4,10 +4,15 @@ import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
 
 describe('Details', () => {
 
+    let creds; 
+
     beforeEach(() => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
             cy.visit(route[0]);
+        });
+        cy.fixture('creds.json').then((cred) => {
+            creds = cred;
         });
     });   
     // =============================================================
@@ -42,8 +47,8 @@ describe('Details', () => {
 
         // Enter login info
         // Different steps for login - don't replace with helper method
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
+        cy.get('input[name=username]').type(creds[0]);
+        cy.get('input[name=password]').type(creds[1]);
         cy.get('.auth-button').click();
 
         // Assert URL 
