@@ -175,6 +175,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         border-radius: 2px;
         box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
         padding: 20px;
+        margin-bottom: 20px;
 
         .download-warning {
           color: white;

@@ -9,6 +9,7 @@ import { CubeSharedModule } from '../../shared/cube-shared.module';
 import { OutcomesDetailViewComponent } from './outcomes-detail-view/outcomes-detail-view.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
+import { DetailsIncludedInComponent } from './included-in/included-in.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { SharedModule } from '../../../shared/shared.module';
     DetailsComponent,
     DetailsContentComponent,
     FileDetailsComponent,
-    OutcomesDetailViewComponent
+    OutcomesDetailViewComponent,
+    DetailsIncludedInComponent
   ],
   providers: []
 })

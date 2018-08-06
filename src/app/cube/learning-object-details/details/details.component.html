@@ -26,6 +26,7 @@
       </div>
     </div>
     <div class="sidebar">
+      <!-- TODO: Componentize [NAME] -->
       <div class="inner">
         <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
           <i class="fas fa-exclamation"></i>Review Pending
@@ -73,6 +74,8 @@
           </div>
         </div>
       </div>
+      <!-- END -->
+      <cube-details-included-in></cube-details-included-in>
     </div>
   </div>
   <div [id]="iframeParent"></div>

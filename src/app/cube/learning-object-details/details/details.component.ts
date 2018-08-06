@@ -54,9 +54,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.subs.push(this.route.params.subscribe(params => {
       this.author = params['username'];
       this.learningObjectName = params['learningObjectName'];
+      this.fetchLearningObject();
     }));
-
-    this.fetchLearningObject();
 
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {

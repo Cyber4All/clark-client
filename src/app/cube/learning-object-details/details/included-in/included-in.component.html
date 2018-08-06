@@ -1,0 +1,6 @@
+<section class="included-in">
+  <div class="header">Included in...</div>
+  <div class="parent-listing" *ngFor="let parent of parents">
+    <a [routerLink]="[parent.link, { previous: parent.name }]">{{ parent.name }}</a>
+  </div>
+</section>
