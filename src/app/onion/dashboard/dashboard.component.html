@@ -3,13 +3,16 @@
     Dashboard
   </div>
   <div class="actions btn-group to-right">
-    <div class="add button good" (click)="newLearningObject()">New
+    <div [@buttonEnter] class="filter button bad" *ngIf="showCancel" (click)="cancelAction()">Cancel
+      <i class="far fa-ban"></i>
+    </div>
+    <div [@buttonEnter] *ngIf="!showCancel" class="add button good" (click)="newLearningObject()">New
       <i class="far fa-plus"></i>
     </div>
-    <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">Filter
-      <i class="fa fa-filter"></i>
+    <div [@buttonEnter] class="filter button neutral" *ngIf="selected.length && !freezeSelected" (click)="startAddChildren()">Add selected to
+      <i class="far fa-project-diagram"></i>
     </div>
-    <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected
+    <div [@buttonEnter] class="filter button bad" *ngIf="selected.length && !freezeSelected" (click)="delete(true)">Delete Selected
       <i class="fa fa-times"></i>
     </div>
   </div>
@@ -19,7 +22,7 @@
       <div class="faux-table">
         <div class="row columns">
           <div class="select">
-            <clark-checkbox [setValue]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></clark-checkbox>
+            <clark-checkbox [setValue]="allSelected && selected.length === learningObjects.length" [disabled]="freezeSelected" (click)="selectAll()"></clark-checkbox>
           </div>
           <div class="cells">
             <div class="cell">Name</div>
@@ -30,17 +33,18 @@
             <!-- this is a placeholder and should remain empty -->
           </div>
         </div>
-        <div class="rows" *ngFor="let l of learningObjects" [ngClass]="{'hide': !checkFilter(l)}">
-          <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock}" class="row">
-            <clark-checkbox [setValue]="allSelected || objectIsSelected(l.name)" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
+        <div class="rows" *ngFor="let l of learningObjects" [hidden]="hidden.get(l.name)">
+          <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock, 'disabled': freezeSelected && selected.includes(l.name), 'child': selectingParent && selected.includes(l.name), 'clickable': allowRowClick}" class="row" (click)="allowRowClick ? rowClick() : undefined">
+            <clark-checkbox [setValue]="allSelected || objectIsSelected(l.name)" [disabled]="freezeSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
             <div class="cells">
               <div class="cell">
-                <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>
+                <a *ngIf="!allowRowClick" [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>
+                <a *ngIf="allowRowClick" class="builder-link">{{l.name}}</a>
               </div>
               <div class="cell">{{l.length | titlecase}}</div>
               <div class="cell">{{l.date | date:'medium'}}</div>
             </div>
-            <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
+            <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length" *ngIf="!freezeSelected">
               <div class="circle"></div>
               <div class="circle"></div>
               <div class="circle"></div>
@@ -52,7 +56,8 @@
 </ng-container>
 <ng-template #loadingTemplate>
   <div class="dashboard-loading">
-      <i class="far fa-spinner-third fa-spin"></i>
+      <i class="far fa-spinner-t
+      rd fa-spin"></i>
   </div>
 </ng-template>
 <ng-template #noObjects>

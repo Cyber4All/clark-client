@@ -3,7 +3,7 @@ import { Component, Output, Input, EventEmitter, SimpleChanges, OnChanges } from
 @Component({
     selector: 'clark-checkbox',
     template: `
-    <div class="checkbox" (click)="setStatus(!checked, true)" [ngClass]="{'active': checked}"></div>
+    <div class="checkbox" (click)="setStatus(!checked, true)" [ngClass]="{'active': checked, 'disabled': disabled}"></div>
     `
 })
 export class CheckBoxComponent implements OnChanges {
@@ -11,6 +11,7 @@ export class CheckBoxComponent implements OnChanges {
     @Input() setValue: boolean;
     @Input() func: string;
     @Input() externalState = false;
+    @Input() disabled = false;
 
     @Output() checkboxChecked: EventEmitter<string> = new EventEmitter();
     @Output() checkboxUnchecked: EventEmitter<string> = new EventEmitter();
@@ -22,7 +23,6 @@ export class CheckBoxComponent implements OnChanges {
         if (changes.setValue) {
             // this was set from the outside, so we don't need to fire an event
             this.setStatus(changes.setValue.currentValue, false);
-            console.log('changed!');
         }
     }
 

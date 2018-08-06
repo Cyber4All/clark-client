@@ -174,4 +174,15 @@ export class LearningObjectService {
       .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise();
   }
+
+  /**
+   *
+   * @param learningObjectName the name of the parent learning object
+   * @param id the id of the new child object
+   */
+  addChild(learningObjectName: string, id: string) {
+    const route = USER_ROUTES.ADD_CHILD(this.auth.user.username, learningObjectName);
+
+    return this.http.post(route, {id: id}, {withCredentials: true}).toPromise();
+  }
 }

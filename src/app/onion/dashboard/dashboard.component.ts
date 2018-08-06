@@ -1,29 +1,89 @@
-import { ModalService, ModalListElement, Position } from '../../shared/modals';
+import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from 'app/core/auth.service';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger(
+      'buttonEnter', [
+        transition(':enter', [
+          style(
+            {
+                'max-width': '0px',
+                'padding-left': '0px',
+                'padding-right': '0px',
+                'margin-left': '0px',
+                opacity: 0
+              }
+          ),
+          animate(
+            '220ms ease-out',
+            style(
+              {
+                'max-width': '250px',
+                'padding-left': '25px',
+                'padding-right': '20px',
+                'margin-left': '15px',
+                opacity: 1
+              }
+            ),
+          )
+        ]),
+        transition(':leave', [
+          style(
+              {
+                'max-width': '250px',
+                'padding-left': '25px',
+                'padding-right': '20px',
+                'margin-left': '15px',
+                opacity: 1
+              }
+            ),
+          animate(
+            '220ms ease-out',
+            style(
+              {
+                'max-width': '0px',
+                'padding-left': '0px',
+                'padding-right': '0px',
+                'margin-left': '0px',
+                opacity: 0
+              }
+            )
+          )
+        ])
+      ]
+    )
+  ],
 })
 export class DashboardComponent implements OnInit {
   public tips = TOOLTIP_TEXT;
   learningObjects: LearningObject[] = [];
   focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it, used by delete and edit functions
   selected: Array<string> = []; // array of all learning objects that are currently selected (checkbox in UI)
-  hidden: Array<string> = []; // array of Learning Object id's that have been hidden from the view
-  filters: Array<string> = []; // list of filters to be applied to the list of Learning Objects
+  hidden: Map<string, { reason: string, object: LearningObject } > = new Map();
   allSelected = false;
+  freezeSelected = false;
+  selectingParent = false;
   loading = true;
+
+  showCancel = false;
+  allowRowClick = false;
+
+  // these functions get reassigned as certain events take place in the dashboard
+  cancelAction = () => {};
+  rowClick = () => {};
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -31,7 +91,6 @@ export class DashboardComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private app: ChangeDetectorRef,
-    private route: ActivatedRoute,
     private auth: AuthService
   ) {}
 
@@ -163,11 +222,13 @@ export class DashboardComponent implements OnInit {
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject) {
-    this.selected.push(l.name);
-    this.app.detectChanges();
+    if (!this.freezeSelected) {
+      this.selected.push(l.name);
+      this.app.detectChanges();
 
-    if (this.selected.length === this.learningObjects.length && !this.allSelected) {
-      this.allSelected = true;
+      if (this.selected.length === this.learningObjects.length && !this.allSelected) {
+        this.allSelected = true;
+      }
     }
   }
 
@@ -176,14 +237,13 @@ export class DashboardComponent implements OnInit {
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
-    console.log(this.selected);
-    this.selected.splice(this.selected.indexOf(l.name), 1);
-    this.app.detectChanges();
+    if (!this.freezeSelected) {
+      this.selected.splice(this.selected.indexOf(l.name), 1);
+      this.app.detectChanges();
 
-    console.log(this.selected);
-
-    if (this.selected.length < this.learningObjects.length && this.allSelected) {
-      this.allSelected = false;
+      if (this.selected.length < this.learningObjects.length && this.allSelected) {
+        this.allSelected = false;
+      }
     }
   }
 
@@ -199,45 +259,14 @@ export class DashboardComponent implements OnInit {
    * Selects all learning objects (duh)
    */
   selectAll() {
-    this.allSelected = !this.allSelected;
-    if (this.allSelected) {
-      this.selected = this.learningObjects.map(x => x.name);
-    } else {
-      this.selected = [];
-    }
-  }
-
-  /**
-   * Takes a string input representing a filter, checks for a minus sin in the 0 position. If not found, adds the filter to the array
-   * if it's not already present. If a minus is found, checks for and removes the named filter from the filters array
-   *
-   * @param val
-   */
-  manageFilters(val) {
-    if (val.charAt(0) === '-') {
-      // we're removing
-      this.filters.splice(this.filters.indexOf(val.substring(1)), 1);
-    } else {
-      // we're adding
-      if (!this.filters.includes(val)) {
-        this.filters.push(val);
+    if (!this.freezeSelected) {
+      this.allSelected = !this.allSelected;
+      if (this.allSelected) {
+        this.selected = this.learningObjects.map(x => x.name);
+      } else {
+        this.selected = [];
       }
     }
-  }
-
-  /**
-   * Takes a Learning Object and compares it against the list of applied filters, adds the 'hide' class when the LO is filtered out
-   *
-   * @param l Learning Object to be tested
-   */
-  // TODO: Is this still being used?
-  checkFilter(l: LearningObject): boolean {
-    if (this.filters.includes('courses')) {
-      if (l['length'] !== 'course') {
-        return false;
-      }
-    }
-    return true;
   }
 
   /**
@@ -328,46 +357,78 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  /**
-   * Creates a dropdown menu that displays a list of possible filters for the dashboard content
-   *
-   * @param event click event
-   */
-  filterDropdown(event) {
-    const list: Array<ModalListElement> = [
-      new ModalListElement(
-        '<i class="far fa-check-circle"></i>Published',
-        'published',
-        'no-hover',
-        true
-      ),
-      new ModalListElement(
-        '<i class="far fa-ban"></i>Unpublished',
-        'unpublished',
-        'no-hover',
-        true
-      )
+  startAddChildren() {
+    this.freezeSelected = true;
+    this.showCancel = this.allowRowClick = this.selectingParent = true;
+
+    // set action for cancel buton
+    this.cancelAction = this.cancelAddChildren;
+
+    const lengths = [
+      'nanomodule',
+      'micromodule',
+      'module',
+      'unit',
+      'course'
     ];
-    const pos = new Position(
-      this.modalService.offset(event.currentTarget).left -
-        (190 - event.currentTarget.offsetWidth),
-      this.modalService.offset(event.currentTarget).top +
-        event.currentTarget.offsetHeight +
-        15
-    );
-    this.modalService
-      .makeContextMenu(
-        'FilteringContext',
-        'dropdown',
-        list,
-        true,
-        null,
-        pos,
-        this.filters.slice(0)
-      )
-      .subscribe(val => {
-        if (val !== 'null') {
-          this.manageFilters(val);
+    const selected = this.learningObjects.filter(f => this.selected.includes(f.name));
+    const maxLength: number = Math.max(...selected.map(l => lengths.indexOf(l.length)));
+
+    // set action for rowClick
+    this.rowClick = () => {
+      this.finishAddChildren(selected);
+    };
+
+    for (let i = 0, l = this.learningObjects.length; i < l; i++) {
+      const lo = this.learningObjects[i];
+
+      if (lengths.indexOf(lo.length) <= maxLength && !this.selected.includes(lo.name)) {
+        // hide learning object
+        this.hidden.set(lo.name, { reason: 'children', object: lo });
+      }
+    }
+  }
+
+  async finishAddChildren(learningObjects: LearningObject[]) {
+    const names = learningObjects.map(l => '\'' + l.name + '\'');
+
+    const confirmation = await this.modalService.makeDialogMenu(
+      'confirmChildren',
+      'Confirm addition of children',
+      `Just to confirm you want to add 
+      ${(names.length > 1) ? names.slice(names.length * -1, -1).join(', ') +  ', and ' +  names[names.length - 1] : names[0]}
+       to this learning object?`,
+       false,
+       undefined,
+       'center',
+       [
+         new ModalListElement('Confirm! <i class="far fa-check"></i>', 'confirm', 'good'),
+         new ModalListElement('Never mind <i class="far fa-times"></i>', 'cancel', 'bad')
+       ]
+    ).toPromise();
+
+    if (confirmation === 'confirm') {
+      // TODO add multiple children tomorrow
+      this.notificationService.notify(
+        'Success!',
+        'Learning ' + (names.length > 1 ? 'objects' : 'object') + ' successfully added as children!',
+        'good',
+        'far fa-check'
+      );
+    }
+
+    this.selected = [];
+    this.cancelAddChildren();
+  }
+
+  cancelAddChildren() {
+    this.freezeSelected = false;
+    this.showCancel = this.allowRowClick = this.selectingParent = false;
+    this.cancelAction = this.rowClick = () => {};
+
+      this.hidden.forEach(x => {
+        if (x.reason === 'children') {
+          this.hidden.delete(x.object.name);
         }
       });
   }
