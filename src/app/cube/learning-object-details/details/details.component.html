@@ -21,6 +21,7 @@
         <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
       <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
+      <cube-children-detail-view *ngIf="learningObject.children && learningObject.children.length > 0" [children]="learningObject.children"></cube-children-detail-view>
       <div class="materials">
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
       </div>

@@ -10,6 +10,7 @@ import { OutcomesDetailViewComponent } from './outcomes-detail-view/outcomes-det
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 import { DetailsIncludedInComponent } from './included-in/included-in.component';
+import { ChildrenDetailViewComponent } from './children-detail-view/children-detail-view.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { DetailsIncludedInComponent } from './included-in/included-in.component'
     DetailsContentComponent,
     FileDetailsComponent,
     OutcomesDetailViewComponent,
-    DetailsIncludedInComponent
+    DetailsIncludedInComponent,
+    ChildrenDetailViewComponent
   ],
   providers: []
 })
