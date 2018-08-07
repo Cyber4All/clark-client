@@ -12,6 +12,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { NotificationService } from '../../../shared/notifications/notification.service';
 import { UserService } from '../../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -112,16 +113,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
     } else {
       this.downloading = true;
     }
-    const val = await this.cartService.addToCart(
-      this.author,
-      this.learningObjectName
-    );
 
-    if (!this.saved) {
-      this.animateSaves();
+    try {
+      const val = await this.cartService.addToCart(
+        this.author,
+        this.learningObjectName
+      );
+
+      this.saved = this.cartService.has(this.learningObject);
+
+      if (!this.saved) {
+        this.animateSaves();
+      }
+    } catch (error) {
+      console.log(error);
+      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
     }
 
-    this.saved = this.cartService.has(this.learningObject);
     this.addingToLibrary = false;
 
     if (download) {
@@ -146,10 +154,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   download(author: string, learningObjectName: string) {
     this.downloading = true;
+
     const loaded = this.cartService.downloadLearningObject(
       author,
       learningObjectName
-    );
+    ).pipe(catchError(error => {
+      console.log(error);
+      this.noteService.notify('Error!', 'An error occurred and this learning object couldn\'t be downloaded', 'bad', 'far fa-times');
+      return error;
+    }));
+
     this.subs.push(
       loaded.subscribe(finished => {
         if (finished) {
