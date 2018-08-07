@@ -1,6 +1,6 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -68,10 +68,11 @@ import { trigger, style, animate, transition } from '@angular/animations';
   ],
 })
 export class DashboardComponent implements OnInit {
+  @ViewChildren('learningObjectElement') learningObjectElements: ElementRef[];
   public tips = TOOLTIP_TEXT;
   learningObjects: LearningObject[] = [];
-  focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it, used by delete and edit functions
-  selected: Array<string> = []; // array of all learning objects that are currently selected (checkbox in UI)
+  focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it
+  selected: Map<string, { index: number, object: LearningObject}> = new Map();
   hidden: Map<string, { reason: string, object: LearningObject } > = new Map();
   allSelected = false;
   freezeSelected = false;
@@ -174,9 +175,9 @@ export class DashboardComponent implements OnInit {
           } else {
             this.learningObjectService
               // TODO: Verify selected is an array of names
-              .deleteMultiple(this.selected)
+              .deleteMultiple(Array.from(this.selected.values()).map(s => s.object.name))
               .then(async () => {
-                this.selected = [];
+                this.selected = new Map();
                 this.notificationService.notify(
                   'Done!',
                   'New Learning Object(s) deleted!',
@@ -221,12 +222,12 @@ export class DashboardComponent implements OnInit {
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
    * @param l Learning Object to be selected
    */
-  selectLearningObject(l: LearningObject) {
+  selectLearningObject(l: LearningObject, index: number) {
     if (!this.freezeSelected) {
-      this.selected.push(l.name);
+      this.selected.set(l.id, { index,  object: l });
       this.app.detectChanges();
 
-      if (this.selected.length === this.learningObjects.length && !this.allSelected) {
+      if (this.selected.size === this.learningObjects.length && !this.allSelected) {
         this.allSelected = true;
       }
     }
@@ -238,10 +239,10 @@ export class DashboardComponent implements OnInit {
    */
   deselectLearningObject(l: LearningObject) {
     if (!this.freezeSelected) {
-      this.selected.splice(this.selected.indexOf(l.name), 1);
+      this.selected.delete(l.id);
       this.app.detectChanges();
 
-      if (this.selected.length < this.learningObjects.length && this.allSelected) {
+      if (this.selected.size < this.learningObjects.length && this.allSelected) {
         this.allSelected = false;
       }
     }
@@ -251,8 +252,8 @@ export class DashboardComponent implements OnInit {
    * Returns a boolean that indicates whether the learning object with the specified name is selected
    * @param name of the learning object in question
    */
-  objectIsSelected(name: string): boolean {
-    return this.selected.includes(name);
+  objectIsSelected(id: string): boolean {
+    return this.selected.get(id) ? true : false;
   }
 
   /**
@@ -262,9 +263,10 @@ export class DashboardComponent implements OnInit {
     if (!this.freezeSelected) {
       this.allSelected = !this.allSelected;
       if (this.allSelected) {
-        this.selected = this.learningObjects.map(x => x.name);
+        // @ts-ignore
+        this.selected = new Map(this.learningObjects.map((x, i) => [x.id, { index: i, object: x }]));
       } else {
-        this.selected = [];
+        this.selected = new Map();
       }
     }
   }
@@ -371,7 +373,7 @@ export class DashboardComponent implements OnInit {
       'unit',
       'course'
     ];
-    const selected = this.learningObjects.filter(f => this.selected.includes(f.name));
+    const selected = Array.from(this.selected.values()).map(x => x.object);
     const maxLength: number = Math.max(...selected.map(l => lengths.indexOf(l.length)));
 
     // set action for rowClick
@@ -382,9 +384,9 @@ export class DashboardComponent implements OnInit {
     for (let i = 0, l = this.learningObjects.length; i < l; i++) {
       const lo = this.learningObjects[i];
 
-      if (lengths.indexOf(lo.length) <= maxLength && !this.selected.includes(lo.name)) {
+      if (lengths.indexOf(lo.length) <= maxLength && !this.selected.get(lo.id)) {
         // hide learning object
-        this.hidden.set(lo.name, { reason: 'children', object: lo });
+        this.hidden.set(lo.id, { reason: 'children', object: lo });
       }
     }
   }
@@ -415,10 +417,10 @@ export class DashboardComponent implements OnInit {
         'good',
         'far fa-check'
       );
-    }
 
-    this.selected = [];
-    this.cancelAddChildren();
+      this.selected = new Map();
+      this.cancelAddChildren();
+    }
   }
 
   cancelAddChildren() {
@@ -428,7 +430,7 @@ export class DashboardComponent implements OnInit {
 
       this.hidden.forEach(x => {
         if (x.reason === 'children') {
-          this.hidden.delete(x.object.name);
+          this.hidden.delete(x.object.id);
         }
       });
   }
