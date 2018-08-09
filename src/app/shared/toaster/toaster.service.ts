@@ -1,7 +1,7 @@
 import { Injectable, Input } from '@angular/core';
 
 @Injectable()
-export class NotificationService {
+export class ToasterService {
   @Input() content: object = {};
   map: object = {};
 

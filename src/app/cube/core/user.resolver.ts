@@ -1,5 +1,5 @@
 import { User } from '@cyber4all/clark-entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
