@@ -29,7 +29,7 @@ import { updateShorthandPropertyAssignment } from "../../node_modules/typescript
 // Login help method 
 Cypress.Commands.add('login', () => {
      // Click sign in button 
-     cy.contains('Sign in').click();
+     cy.get('#clark-sign-in').click({ force: true });
 
      // Assert URL 
      cy.url().should('include', 'login');

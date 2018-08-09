@@ -1,7 +1,7 @@
-<div class="clark-filter" [ngClass]="{'vertical': display === 'vertical', 'horizontal': display === 'horizontal'}">
-  <div class="filter-section" *ngFor="let f of filters">
+<div class="clark-filter" id="clark-filter" [ngClass]="{'vertical': display === 'vertical', 'horizontal': display === 'horizontal'}">
+  <div class="filter-section" id="filter-section" *ngFor="let f of filters">
     <ng-container *ngIf="f.values || f.template">
-      <div class="filter-section-inner">
+      <div class="filter-section-inner" id="filter-section-inner">
         <div class="filter-section-name">{{ f.name }}</div>
         <div *ngIf="f.canSearch" class="filter-section-search">
           <!-- TODO search bar here -->
@@ -29,8 +29,8 @@
 
 <!-- Select Many -->
 <ng-template #selectMany let-filters="filters" let-name="name">
-  <div class="filter-section-type select-many">
-    <div class="filter filter-checkbox" *ngFor="let f of filters">
+  <div class="filter-section-type select-many" id="filter-section-type">
+    <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of filters">
       <span tip="{{f.toolTip ? f.toolTip : ''}}" tipDisabled="{{!f.toolTip}}" tipLocation="right">
         <clark-checkbox [setValue]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.name)" (checkboxUnchecked)="removeFilter(name, f.name)"></clark-checkbox>
         <span>{{ f.name }}</span>

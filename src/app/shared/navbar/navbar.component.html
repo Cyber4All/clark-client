@@ -29,7 +29,7 @@
           </div>
         </ng-container>
         <ng-container *ngIf="!loggedin">
-          <div class="login flex h flex-end" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
+          <div class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
           <div class="register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
         </ng-container>
       </ng-template>

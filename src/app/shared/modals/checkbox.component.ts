@@ -3,7 +3,7 @@ import { Component, Output, Input, EventEmitter, SimpleChanges, OnChanges } from
 @Component({
     selector: 'clark-checkbox',
     template: `
-    <div class="checkbox" (click)="setStatus(!checked, true)" [ngClass]="{'active': checked}"></div>
+    <div class="checkbox" id="checkbox" (click)="setStatus(!checked, true)" [ngClass]="{'active': checked}"></div>
     `
 })
 export class CheckBoxComponent implements OnChanges {

@@ -3,7 +3,7 @@
     Dashboard
   </div>
   <div class="actions btn-group to-right">
-    <div class="add button good" (click)="newLearningObject()">New
+    <div class="add button good" id="create-new-learning-object" (click)="newLearningObject()">New
       <i class="far fa-plus"></i>
     </div>
     <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">Filter
@@ -40,7 +40,7 @@
               <div class="cell">{{l.length | titlecase}}</div>
               <div class="cell">{{l.date | date:'medium'}}</div>
             </div>
-            <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
+            <div class="options" id="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length">
               <div class="circle"></div>
               <div class="circle"></div>
               <div class="circle"></div>

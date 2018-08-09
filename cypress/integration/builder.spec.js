@@ -1,6 +1,9 @@
  /// <reference types="cypress" />
-
- import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
+ // *********************************************************************
+ // Important note about the use of selectors when writing Cypress tests:
+ //     Do not select elements by class name as they are highly volatile.
+ //     Instead, refence all selections by id.
+ // *********************************************************************
  
  describe('Browse', () => {
 
@@ -23,46 +26,34 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
-        //Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        // Click New +
+        cy.get('#create-new-learning-object').click({ force: true });
 
         // Assert URL
         cy.url().should('include', 'learning-object-builder');
 
         // Assert title
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.header').children('.title').contains('Basic Information');
+        cy.get('#basic-information-title');
         
         // Assert Learning Object name label
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('.label').contains('What is this learning object named?');
+        cy.get('#name-label');
 
         // Assert contributors label
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(1).children('.label').contains('Add more authors.');
+        cy.get('#contributors-label');
 
         // Assert length label
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(2).children('.label').contains('What is the Length of this learning object?');
+        cy.get('#length-label');
         
         // Assert levels label
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.label').contains('What levels is this content suited for?');
+        cy.get('#level-label');
         
         // Assert decription label
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-description')
-            .children('.description-wrapper').children('.input-group').children('.label').contains('How would you describe this learning object?');
+        cy.get('#description-label');
     });
 
     it('Trigger please enter a name for this learning object error', () => {
@@ -70,23 +61,22 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
-        //Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        // Click New +
+        cy.get('#create-new-learning-object').click({ force: true });
 
         // Click Next button without filling out step 1 form
-        cy.get('.next.button.neutral.on-white').click();
+        cy.get('#builder-next').click({ force: true });
 
         // Click Next button without filling out step 2 form 
-        cy.get('.next.button.neutral.on-white').click();
+        cy.get('#builder-next').click({ force: true });
 
         // Assert error message 
-        cy.get('notification').children('.notification.bad').children('.note-content').children('.title').contains('Error!');
-        cy.get('notification').children('.notification.bad').children('.note-content').children('.text').contains('Please enter a name for this learning object!');
+        cy.get('#note-content');
     });
 
     it('Trigger name already exists error', () => {
@@ -94,28 +84,28 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
-        //Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        // Click New +
+        cy.get('#create-new-learning-object').click({ force: true });
         
         // Enter Learning Object name
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-        .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-        .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[0]);
+        cy.get('#object-name-field').type(objects[0], { force: true });
 
         // Click Next button without filling out step 1 form
-        cy.get('.next.button.neutral.on-white').click();
+        cy.get('#builder-next').click({ force: true });
 
         // Click Next button without filling out step 2 form 
-        cy.get('.next.button.neutral.on-white').click();
+        cy.get('#builder-next').click({ force: true });
+
+        // Click Next button without filling out step 2 form 
+        cy.get('#builder-next').click({ force: true });
 
         // Assert error message 
-        cy.get('notification').children('.notification.bad').children('.note-content').children('.title').contains('Error!');
-        cy.get('notification').children('.notification.bad').children('.note-content').children('.text').contains('Could not save Learning Object. Learning Object with name: test already exists.');
+        cy.get('#note-content');
     });
 
     it('Successfully navigate to the manage materials page (step 3)', () => {
@@ -123,28 +113,25 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
-        //Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        // Click New +
+        cy.get('#create-new-learning-object').click({ force: true });
         
         // Enter Learning Object name
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[1]);
+        cy.get('#object-name-field').type(objects[1], { force: true });
 
         // Click Next 
-        cy.get('.next.button.neutral.on-white').click();
+        cy.get('#builder-next').click({ force: true });
 
         // Click Next button 
-        cy.get('.next.button.neutral.on-white').click();
+        cy.get('#builder-next').click({ force: true });
 
         // Assert page 3 header 
-        cy.get('.content-upload-component').children('.container').children('.inner-wrapper.padded-bottom')
-            .children('.header').children('.title').contains('Manage Materials');
+        cy.get('#materials-title');
     });
 
     it('Delete created Learning Object', () => {
@@ -152,14 +139,14 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click on options 
-        cy.get('.rows').eq(1).children('.row.unpublished').children('.options').click();
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click();
+        cy.get('#options').click({ force: true });
+        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click({ force: true });
         cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
 
@@ -168,21 +155,19 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        cy.get('#create-new-learning-object').click({ force: true });
 
         // Enter user query
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(1).children('input').type('N');
+        cy.get('#user-search').type('N', { force: true });
         
         // Assert user results 
-        cy.get('#container').children('ul').children('li').first().contains('dreeves132');
+        cy.get('#container').children('ul').children('li').first();
     });
 
     it('Assert level options', () => {
@@ -190,43 +175,31 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        cy.get('#create-new-learning-object').click({ force: true });
 
         // Select first level
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(1).click();
+        cy.get('#level-selection').eq(0).click({ force: true });
         
-         // Select second level
-         cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(1).click();
+        // Select second level
+        cy.get('#level-selection').eq(1).click({ force: true });
         
         // Select third level
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(2).click();
+        cy.get('#level-selection').eq(2).click({ force: true });
 
         // Select fourth level
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(3).click();
+        cy.get('#level-selection').eq(3).click({ force: true });
 
         // Select fifth level
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(4).click();
+        cy.get('#level-selection').eq(4).click({ force: true });
 
         // Select sixth level
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(3).children('.level-list').children('.level.button').eq(5).click();
+        cy.get('#level-selection').eq(5).click({ force: true });
     });
 
     it('Assert items on the sidebar', () => {
@@ -234,35 +207,29 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        cy.get('#create-new-learning-object').click({ force: true });
 
         // Assert sidebar
         // Assert title
-        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
-            .children('.sidebar-wrapper').children('.title').contains('Learning Object');
+        cy.get('#sidebar-title');
 
         // Assert menu item 1
-        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
-            .children('.sidebar-wrapper').children('.menu-item').eq(0).children('.menu-item-inner').contains('1. Basic Information');
+        cy.get('#sidebar-item-link').eq(0);
         
         // Assert menu item 2
-        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
-            .children('.sidebar-wrapper').children('.menu-item').eq(1).children('.menu-item-inner').contains('2. Learning Outcomes');
+        cy.get('#sidebar-item-link').eq(1);
 
         // Assert menu item 3 (link to add new learning outcome)
-        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
-            .children('.sidebar-wrapper').children('.menu-item-group.open').children('.menu-item.externalAction')
-            .children('.menu-item-inner').contains('New Learning Outcome');
+        cy.get('#child-link');
 
         // Assert menu item 4
-        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
-            .children('.sidebar-wrapper').children('div').eq(4).children('.menu-item').contains('3. Upload Materials');
+        cy.get('#upload-material-link');
     });
 
     it('Add a new learning outcome and assert elements of the form', () => {
@@ -313,32 +280,27 @@
         cy.login();
 
         // Navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        cy.get('#create-new-learning-object').click({ force: true });
 
         // Enter Learning Object name
-        cy.get('.content-wrapper').children('.component-wrapper').children('.inner')
-            .children('onion-learning-object-info-page').children('onion-learning-object-metadata')
-            .children('.metadata-wrapper').children('.section').children('.input-group').eq(0).children('input').type(objects[2]);
+        cy.get('#object-name-field').type(objects[2], { force: true });
 
         // Wait 
         cy.wait(1000);
 
         // click link to add new learning outcome
-        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
-            .children('.sidebar-wrapper').children('.menu-item-group.open').children('.menu-item.externalAction')
-            .children('.menu-item-inner').contains('New Learning Outcome').click();
+        cy.get('#child-link').click({ force: true });
 
         // Click Next button
-        cy.get('.next.button.neutral.on-white').click();
+        cy.get('#builder-next').click({ force: true });
 
         // Assert error 
-        cy.get('notification').children('.notification.bad').children('.note-content').children('.title').contains('Error!');
-        cy.get('notification').children('.notification.bad').children('.note-content').children('.text').contains('You cannot submit a learning outcome without outcome text!');
+        cy.get('#note-content');
     });
  });
