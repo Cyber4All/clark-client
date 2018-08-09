@@ -9,6 +9,10 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from 'app/core/auth.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 
+interface DashboardLearningObject extends LearningObject {
+  parents: string[];
+}
+
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
@@ -59,7 +63,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
 export class DashboardComponent implements OnInit {
   @ViewChildren('learningObjectElement') learningObjectElements: ElementRef[];
   public tips = TOOLTIP_TEXT;
-  learningObjects: LearningObject[] = [];
+  learningObjects: DashboardLearningObject[] = [];
   focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it
   selected: Map<string, { index: number; object: LearningObject }> = new Map();
   hidden: Map<string, { reason: string; object: LearningObject }> = new Map();
@@ -95,14 +99,17 @@ export class DashboardComponent implements OnInit {
    *
    * @memberof DashboardComponent
    */
-  async getLearningObjects(): Promise<LearningObject[]> {
+  async getLearningObjects(): Promise<DashboardLearningObject[]> {
     this.loading = true;
     return this.learningObjectService
       .getLearningObjects()
       .then((learningObjects: LearningObject[]) => {
         this.loading = false;
         // parse through deep copy of returned array
-        const arr: LearningObject[] = Array.from(learningObjects);
+        const arr: DashboardLearningObject[] = Array.from(learningObjects.map(l => {
+          l.parents = [];
+          return l as DashboardLearningObject;
+        }));
 
         const lengths = ['nanomodule', 'micromodule', 'module', 'unit', 'course'];
 
@@ -111,22 +118,18 @@ export class DashboardComponent implements OnInit {
         });
 
         // @ts-ignore typescript doesn't like arr.map...
-        const m: Map<string, LearningObject> = new Map(arr.map(l => [l.id, l]));
+        const m: Map<string, DashboardLearningObject> = new Map(arr.map(l => [l.id, l]));
 
         for (let i = 0, l = arr.length; i < l; i++) {
-          const l = arr[i];
-
-          if (l.children && l.children.length) {
-            for (const c of l.children as LearningObject[]) {
-              console.log('yasss', c.name);
-              m.get(c.id).parents ? m.get(c.id).parents.push(l.name) : m.get(c.id).parents = [l.name];
+          const lo = arr[i];
+          if (lo.children && lo.children.length) {
+            for (const c of lo.children as DashboardLearningObject[]) {
+              m.get(c.id).parents ? m.get(c.id).parents.push(lo.name) : m.get(c.id).parents = [lo.name];
             }
           }
         }
 
-        console.log(m);
-
-        return learningObjects;
+        return learningObjects as DashboardLearningObject[];
       })
       .catch(err => {
         this.loading = false;
@@ -596,5 +599,13 @@ export class DashboardComponent implements OnInit {
       : '';
 
       return [addMessage, removeMessage];
+  }
+
+  objectChildrenNames(learningObject: LearningObject): string[] {
+    if (learningObject.children && learningObject.children.length) {
+      return (learningObject.children as LearningObject[]).map(l => l.name);
+    } else {
+      return [];
+    }
   }
 }
