@@ -11,9 +11,9 @@ import { Subscription } from 'rxjs/Subscription';
 import {
   DirectoryNode,
   DirectoryTree
-} from 'app/shared/filesystem/DirectoryTree';
+} from '../DirectoryTree';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
-import { getPaths } from 'app/shared/filesystem/file-functions';
+import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 type LearningObjectFile = File;
 

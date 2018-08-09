@@ -1,4 +1,4 @@
-import { LearningObjectService } from './../learning-object.service';
+import { LearningObjectService } from '../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Router } from '@angular/router';
