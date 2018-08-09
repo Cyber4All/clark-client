@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
     if (this.query.text === '') {
       this.learningObjectService.clearSearch();
     } else if (this.query !== undefined) {
-      this.router.navigate(['/browse', { query: this.query.text }]);
+      this.router.navigate(['/browse'], {queryParams:  {text: this.query.text }});
     }
   }
   goToContribute() {

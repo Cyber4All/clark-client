@@ -1,10 +1,10 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { ToasterService } from '../../shared/toaster';
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
-import { User, LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
+import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
 import {
   verbs,
   assessments,
@@ -14,12 +14,12 @@ import {
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObjectStoreService } from './store';
 import { LearningObjectErrorStoreService } from './errorStore';
+import { AuthService } from 'app/core/auth.service';
 
 enum PAGES {
   INFO,
   OUTCOMES
 }
-import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'onion-learning-object-builder',
@@ -55,8 +55,9 @@ export class LearningObjectBuilderComponent implements OnInit {
     private notificationService: ToasterService,
     private store: LearningObjectStoreService,
     private errorStore: LearningObjectErrorStoreService,
-    public auth: AuthService,
+    public auth: AuthService
   ) {
+    this.learningObject = new LearningObject(this.auth.user);
   }
 
   ngOnInit() {
@@ -102,8 +103,7 @@ export class LearningObjectBuilderComponent implements OnInit {
    */
   async save(willUpload: boolean) {
     if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
-
-      if (!await this.showPublishingDialog()) {
+      if (!(await this.showPublishingDialog())) {
         return;
       }
     }
@@ -124,7 +124,9 @@ export class LearningObjectBuilderComponent implements OnInit {
             this.isNew = false;
             this.learningObjectName = this.learningObject.name;
           } else {
-            this.router.navigate([`/onion/content/upload/${this.learningObjectName}`]);
+            this.router.navigate([
+              `/onion/content/upload/${this.learningObjectName}`
+            ]);
           }
         })
         .catch(err => {
@@ -142,7 +144,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     } else {
       this.service
         .create(this.learningObject)
-        .then((newObject) => {
+        .then(newObject => {
           if (!willUpload) {
             this.notificationService.notify(
               'Done!',
@@ -175,9 +177,9 @@ export class LearningObjectBuilderComponent implements OnInit {
   }
 
   private async showPublishingDialog(): Promise<boolean> {
-    const text =
-    this.auth.user.emailVerified ?
-    '' : 'You must have a verfied email address to publish learning objects! Would you like to verfiy your email now?';
+    const text = this.auth.user.emailVerified
+      ? ''
+      : 'You must have a verfied email address to publish learning objects! Would you like to verfiy your email now?';
 
     const buttons = [
       new ModalListElement(
@@ -193,7 +195,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           'Save & Publish!<i class="far fa-check-circle"></i>',
           'accept',
           'good'
-        ),
+        )
       );
     } else {
       buttons.unshift(
@@ -201,7 +203,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           'Verify your email!<i class="far fa-at"></i>',
           'verify-email',
           'good'
-        ),
+        )
       );
     }
 
@@ -228,7 +230,12 @@ export class LearningObjectBuilderComponent implements OnInit {
           'far fa-check'
         );
       } catch (e) {
-        this.notificationService.notify(`Could not send email`, `${e}`, 'bad', '');
+        this.notificationService.notify(
+          `Could not send email`,
+          `${e}`,
+          'bad',
+          ''
+        );
       }
     } else {
       switch (publish) {
@@ -316,7 +323,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (type === 'question') {
       this.learningObject.outcomes[i].assessments[s].text = event;
     } else if (type === 'strategy') {
-        this.learningObject.outcomes[i].strategies[s].text = event;
+      this.learningObject.outcomes[i].strategies[s].text = event;
     } else {
       if (event !== '') {
         this.learningObject.goals[0].text = event;
@@ -338,7 +345,12 @@ export class LearningObjectBuilderComponent implements OnInit {
     this.errorStore.clear();
     // check name
     if (this.learningObject.name === '') {
-      this.notificationService.notify('Error!', 'Please enter a name for this learning object!', 'bad', 'far fa-times');
+      this.notificationService.notify(
+        'Error!',
+        'Please enter a name for this learning object!',
+        'bad',
+        'far fa-times'
+      );
       this.errorStore.set('name');
       this.store.dispatch({
         type: 'NAVIGATE',
@@ -349,9 +361,9 @@ export class LearningObjectBuilderComponent implements OnInit {
       return false;
     }
     // check outcomes
-    const badOutcomes = this.learningObject.outcomes.map(
-      (x, i) => (!x.text || x.text === '') ? i : undefined
-    ).filter(x => x !== undefined);
+    const badOutcomes = this.learningObject.outcomes
+      .map((x, i) => (!x.text || x.text === '' ? i : undefined))
+      .filter(x => x !== undefined);
     if (badOutcomes.length) {
       this.errorStore.set('outcometext');
       this.store.dispatch({
@@ -366,7 +378,12 @@ export class LearningObjectBuilderComponent implements OnInit {
           sectionIndex: badOutcomes[0]
         }
       });
-      this.notificationService.notify('Error!', 'You cannot submit a learning outcome without outcome text!', 'bad', 'far fa-times');
+      this.notificationService.notify(
+        'Error!',
+        'You cannot submit a learning outcome without outcome text!',
+        'bad',
+        'far fa-times'
+      );
       return false;
     }
     return true;
@@ -390,23 +407,27 @@ export class LearningObjectBuilderComponent implements OnInit {
 
   advanceSection() {
     const modifier = 1;
-    const action = this.activePage + modifier === PAGES.OUTCOMES ? 'NAVIGATEPARENT' : 'NAVIGATE';
+    const action =
+      this.activePage + modifier === PAGES.OUTCOMES
+        ? 'NAVIGATEPARENT'
+        : 'NAVIGATE';
 
     this.store.dispatch({
       type: action,
       request: {
         sectionIndex: this.activePage + modifier,
-        childSection: this.activePage + modifier === PAGES.OUTCOMES ? 0 : undefined
+        childSection:
+          this.activePage + modifier === PAGES.OUTCOMES ? 0 : undefined
       }
     });
-    }
+  }
 
   togglePublished(event) {
     if (this.auth.user.emailVerified) {
       if (this.learningObject.published) {
         this.learningObject.unpublish();
       } else {
-        this. learningObject.publish();
+        this.learningObject.publish();
       }
     }
   }

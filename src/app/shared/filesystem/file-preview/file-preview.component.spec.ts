@@ -5,6 +5,7 @@ import { FilePreviewComponent } from './file-preview.component';
 describe('FilePreviewComponent', () => {
   let component: FilePreviewComponent;
   let fixture: ComponentFixture<FilePreviewComponent>;
+  
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

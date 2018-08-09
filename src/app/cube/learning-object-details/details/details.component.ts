@@ -12,6 +12,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { UserService } from '../../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -121,16 +122,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.author,
         this.learningObjectName
       );
+
+      this.saved = this.cartService.has(this.learningObject);
+
+      if (!this.saved) {
+        this.animateSaves();
+      }
     } catch (error) {
-      this.error = true;
-      this.noteService.notify("Failure", "Failed to add to your library", "bad", "far fa-times");
+      console.log(error);
+      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
     }
 
-    if (!this.saved && !this.error) {
-      this.animateSaves();
-    }
-
-    this.saved = this.cartService.has(this.learningObject);
     this.addingToLibrary = false;
 
     if (download) {
@@ -155,10 +157,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   download(author: string, learningObjectName: string) {
     this.downloading = true;
+
     const loaded = this.cartService.downloadLearningObject(
       author,
       learningObjectName
-    );
+    ).pipe(catchError(error => {
+      console.log(error);
+      this.noteService.notify('Error!', 'An error occurred and this learning object couldn\'t be downloaded', 'bad', 'far fa-times');
+      return error;
+    }));
+
     this.subs.push(
       loaded.subscribe(finished => {
         if (finished) {
