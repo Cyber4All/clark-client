@@ -44,7 +44,7 @@
     }
 
     &.child {
-      transform: scale(0.98);
+      transform: scale(0.95);
     }
 
     &.clickable {
@@ -53,6 +53,11 @@
       &:hover {
         transform: scale(1.02);
       }
+    }
+
+    .row-counter {
+      color: $bright-blue;
+      padding-left: 15px;
     }
   }
 }

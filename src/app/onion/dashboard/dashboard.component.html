@@ -3,16 +3,16 @@
     Dashboard
   </div>
   <div class="actions btn-group to-right">
-    <div [@buttonEnter] class="filter button bad" *ngIf="showCancel" (click)="cancelAction()">Cancel
-      <i class="far fa-ban"></i>
+    <div [@buttonEnter] class="filter button green" *ngIf="showSubmit" (click)="submitAction()">Submit
+      <i class="far fa-check"></i>
     </div>
     <div [@buttonEnter] *ngIf="!showCancel" class="add button good" (click)="newLearningObject()">New
       <i class="far fa-plus"></i>
     </div>
-    <div [@buttonEnter] class="filter button neutral" *ngIf="selected.size && !freezeSelected" (click)="startAddChildren()">Add selected to
-      <i class="far fa-project-diagram"></i>
+    <div [@buttonEnter] class="filter button bad" *ngIf="showCancel" (click)="cancelAction()">Cancel
+      <i class="far fa-ban"></i>
     </div>
-    <div [@buttonEnter] class="filter button bad" *ngIf="selected.size && !freezeSelected" (click)="delete(true)">Delete Selected
+    <div [@buttonEnter] class="filter button bad" *ngIf="selected.size && !freezeSelected && !freezeFocused" (click)="delete(true)">Delete Selected
       <i class="fa fa-times"></i>
     </div>
   </div>
@@ -22,7 +22,7 @@
       <div class="faux-table">
         <div class="row columns">
           <div class="select">
-            <clark-checkbox [setValue]="allSelected && selected.size === learningObjects.length" [disabled]="freezeSelected" (click)="selectAll()"></clark-checkbox>
+            <clark-checkbox [setValue]="allSelected && selected.size === learningObjects.length" [disabled]="freezeSelected || freezeFocused" (click)="selectAll()"></clark-checkbox>
           </div>
           <div class="cells">
             <div class="cell">Name</div>
@@ -33,18 +33,24 @@
             <!-- this is a placeholder and should remain empty -->
           </div>
         </div>
-        <div class="rows" #learningObjectElement *ngFor="let l of learningObjects" [hidden]="hidden.get(l.id)">
-          <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock, 'disabled': freezeSelected && selected.get(l.id), 'child': selectingParent && selected.get(l.id), 'clickable': allowRowClick}" class="row" (click)="allowRowClick ? rowClick() : undefined">
-            <clark-checkbox [setValue]="allSelected || objectIsSelected(l.id)" [disabled]="freezeSelected" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
+        <div class="rows" #learningObjectElement *ngFor="let l of learningObjects">
+          <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock, 'disabled': (freezeSelected && selected.get(l.id)) || (freezeFocused && hidden.get(l.id)), 'child': (selectingParent && selected.get(l.id)) || (freezeFocused && l.id !== focusedLearningObject.id), 'clickable': allowRowClick}" class="row" (click)="allowRowClick ? rowClick() : undefined">
+            <clark-checkbox [setValue]="allSelected || objectIsSelected(l.id)" [disabled]="freezeSelected || (freezeFocused && l.id === focusedLearningObject.id)" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
             <div class="cells">
               <div class="cell">
-                <a *ngIf="!allowRowClick" [routerLink]="['/onion/learning-object-builder', l.id]" class="builder-link">{{l.name}}</a>
-                <a *ngIf="allowRowClick" class="builder-link">{{l.name}}</a>
+                <a *ngIf="!allowRowClick" [routerLink]="['/onion/learning-object-builder', l.id]" class="builder-link">
+                  {{ l.name }}
+                  <span *ngIf="l.parents && l.parents.length" class="parents-count row-counter">{{ l.parents.length }} parent{{ l.parents.length > 1 ? 's' : '' }}</span>
+                  <span *ngIf="l.children && l.children.length" class="children-count row-counter">{{ l.children.length }} child{{ l.children.length > 1 ? 'ren' : '' }}</span>
+                </a>
+                <a *ngIf="allowRowClick" class="builder-link">
+                  {{l.name}}
+                </a>
               </div>
               <div class="cell">{{l.length | titlecase}}</div>
               <div class="cell">{{l.date | date:'medium'}}</div>
             </div>
-            <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length" *ngIf="!freezeSelected">
+            <div class="options" (click)="makeContextMenu($event, l)" [attr.type]="l.length" *ngIf="!freezeSelected && !freezeFocused">
               <div class="circle"></div>
               <div class="circle"></div>
               <div class="circle"></div>
@@ -56,8 +62,7 @@
 </ng-container>
 <ng-template #loadingTemplate>
   <div class="dashboard-loading">
-      <i class="far fa-spinner-t
-      rd fa-spin"></i>
+      <i class="far fa-spinner-third fa-spin"></i>
   </div>
 </ng-template>
 <ng-template #noObjects>

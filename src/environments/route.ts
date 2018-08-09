@@ -22,7 +22,7 @@ export const USER_ROUTES = {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects`;
+    )}/learning-objects?children=true`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -107,12 +107,9 @@ export const USER_ROUTES = {
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
   },
-  ADD_CHILD(username, learningObjectName) {
+  SET_CHILDREN(username, learningObjectName) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(username)}/${encodeURIComponent(learningObjectName)}/children`;
-  },
-  REMOVE_CHILD(username, learningObjectName) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(username)}/${encodeURIComponent(learningObjectName)}/children`;
-  },
+  }
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
