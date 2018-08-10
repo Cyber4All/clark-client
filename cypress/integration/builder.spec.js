@@ -237,21 +237,19 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('.top').children('.actions.btn-group.to-right').children('.add.button.good').click();
+        cy.get('#create-new-learning-object').click({ force: true });
 
         // Click link to add new learning outcome
-        cy.get('.content-wrapper').children('.sidebar-wrapper').children('onion-sidebar')
-            .children('.sidebar-wrapper').children('.menu-item-group.open').children('.menu-item.externalAction')
-            .children('.menu-item-inner').contains('New Learning Outcome').click();
+        cy.get('#child-link').click({ force: true });
 
         // Assert for header 
-        cy.get('.outcome-container-wrapper').children('.section').children('.title.sticky').contains('Learning Outcome');
+        cy.get('#outcome-title');
         
         // Click Remember and Understand 
         cy.get('.container').children('.container-flexer').children('onion-blooms-selector').children('.outcome_bloom')

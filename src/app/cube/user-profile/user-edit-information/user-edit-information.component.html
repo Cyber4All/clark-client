@@ -1,4 +1,4 @@
-<div class="title">Edit Profile</div>
+<div class="title" id="edit-profile-title">Edit Profile</div>
 <form>
     <div class="h-group">
         <div class="input firstname" [ngClass]="{'active': editInfo.firstname !== ''}">
@@ -54,7 +54,7 @@
     </div>
     <p id="character-counter">Characters Remaining: {{ counter }}</p>
     <div class="btn-group to-right">
-        <div class="button good" (click)="save()">Save Changes <i class="far fa-save"></i></div>
-        <div class="button bad" (click)="close.emit(false)">Discard Changes <i class="far fa-times"></i></div>
+        <div class="button good" id="save-changes" (click)="save()">Save Changes <i class="far fa-save"></i></div>
+        <div class="button bad" id="discard-changes" (click)="close.emit(false)">Discard Changes <i class="far fa-times"></i></div>
     </div>
 </form>

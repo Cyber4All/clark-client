@@ -26,10 +26,10 @@ describe('Details', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('.learning-object').first().click({ multiple: true });
+        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
 
         // Click author name
-        cy.get('.author').children('.link').first().click({ multiple: true });
+        cy.get('#author-link').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
@@ -40,19 +40,19 @@ describe('Details', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('.learning-object').first().click({ multiple: true });
+        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
 
         // Click author name
-        cy.get('.login-msg').children('a').click();
+        cy.get('#login-msg').children('a').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'login');
 
         // Enter login info
         // Different steps for login - don't replace with helper method
-        cy.get('input[name=username]').type(creds[0]);
-        cy.get('input[name=password]').type(creds[1]);
-        cy.get('.auth-button').click();
+        cy.get('input[name=username]').type(creds[0], { force: true });
+        cy.get('input[name=password]').type(creds[1], { force: true });
+        cy.get('.auth-button').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -63,12 +63,12 @@ describe('Details', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('.learning-object').first().click({ multiple: true });
+        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
 
         // Click DOWNLOAD NOW button 
         // if disabled class is present, it is working correctly.
         cy.wait(1000);
-        cy.get('.sidebar').children('.inner').children('.btn-group.vertical').children('.button.good.disabled');
+        cy.get('#download-button').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'details');

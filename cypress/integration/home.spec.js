@@ -26,14 +26,13 @@ describe('Home', () => {
     // /home tests
     // =============================================================
     it('Has page title', () => {
-        cy.contains('Cybersecurity curriculum at your fingertips.');
+        cy.get('#home-title');
     });
 
     it('Navbar renders correctly', () => {
-        cy.get('.topbar').contains('C.L.A.R.K.');
-        // cy.get('.nav-search-bar');
-        cy.get('.topbar').contains('Sign in');
-        cy.get('.topbar').contains('Register');
+        cy.get('#clark-logo');
+        cy.get('#clark-sign-in');
+        cy.get('#clark-register');
     });
 
     it('Sign in', () => {
@@ -41,19 +40,19 @@ describe('Home', () => {
         cy.login();
 
         // Assert new navbar elements
-        cy.contains('Contribute');
-        cy.get('.navbar-gravatar').click();
+        cy.get('#contributor-link');
+        cy.get('#gravatar').click({ force: true });
     });
 
     it('Assert registration', () => {
-        cy.contains('Register').click();
+        cy.get('#clark-register').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'register');
     });
 
     it('Navigate to browse', () => {
-        cy.contains('View All').click();
+        cy.get('#view-all').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'browse');
@@ -64,14 +63,14 @@ describe('Home', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('.learning-object').first().click({ multiple: true });
+        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'details');
     });
 
     it('Clicking display search without entering text does not search', () => {
-        cy.contains('Search').click();
+        cy.get('#search-button').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -79,16 +78,10 @@ describe('Home', () => {
 
     it('Clicking navbar search without entering text does not search', () => {
         // Trigger search dropdown
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').click();
+        cy.get('#clark-search-input').click({ force: true });
         
         // Click search key
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').type('{enter}');
+        cy.get('#clark-search-input').type('{enter}', { force: true });
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -96,10 +89,10 @@ describe('Home', () => {
 
     it('Clicking display search after typing in it', () => {
         // Type in to search bar
-        cy.get('.search-input').type(names[1]);
+        cy.get('#search-input').type(names[1], { force: true });
 
         // Click search 
-        cy.get('.button.bad').eq(0).click();
+        cy.get('#search-button').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'text');
@@ -107,76 +100,49 @@ describe('Home', () => {
 
     it('Clicking navbar search after typing in it - Keyword search', () => {
         // Trigger search dropdown
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').click();
+        cy.get('#clark-search-input').click({ force: true });
         
         // Type search query
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').type(names[0]);
+        cy.get('#clark-search-input').type(names[0], { force: true });
         
         // Click search icon
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').type('{enter}');
+        cy.get('#clark-search-input').type('{enter}', { force: true });
 
         // Assert URL 
         cy.url().should('include', 'browse');
     });
 
     it('Click on contribute button (bottom of home page) while logged out.', () => {
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
         // Assert URL 
         cy.url().should('include', 'login');
     });
 
     it('Clicking navbar and switching to outcome search should display new menu items', () => {
         // Trigger search dropdown
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').click();
+        cy.get('#clark-search-input').click({ force: true });
         
         // Click outcomes search selector
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-switch').children('.option.option-two').click();
+        cy.get('#outcomes-option').click({ force: true });
 
         // Assert new menu icons
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('div').first().children('clark-mappings-filter')
-            .children('.mappings-filter').children('.search-bar.input').children('.search-sources');
+        cy.get('#search-sources');
     });
 
     it('Assert search dropdown description', () => {
         // Trigger search dropdown
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').click();
+        cy.get('#clark-search-input').click({ force: true });
         
         // Type search query
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.description')
-            .contains('Search for learning objects by organization, user, or keyword/phrase.');
+        cy.get('#search-description');
     });
 
     it('Assert search dropdown exit', () => {
         // Trigger search dropdown
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('clark-search').children('.clark-search')
-            .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').click();
+        cy.get('#clark-search-input').click({ force: true });
         
         // Click exit
-        cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
-            .children('.clark-search-inner').children('.close').click();
+        cy.get('#search-close').click({ force: true });
     });
 
     it('Click on contribute button while logged in.', () => {
@@ -184,29 +150,10 @@ describe('Home', () => {
         cy.login();
 
         // Click contribute button at bottom of page
-        cy.contains('Contribute to CLARK').click();
+        cy.get('#contribute-to-clark').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
-    });
-
-    it('Navigate to library.', () => {
-        // Click sign in button 
-        cy.contains('Sign in').click();
-
-        // Assert URL 
-        cy.url().should('include', 'login');
-
-        // Enter login info 
-        cy.get('input[name=username]').type(creds[0]);
-        cy.get('input[name=password]').type(creds[1]);
-        cy.get('.auth-button').click();
-
-        // Click contribute button at bottom of page
-        cy.get('.right.library').click();
-
-        // Assert URL 
-        cy.url().should('include', 'library');
     });
 
     it('Navigate from library to home by clicking on CLARK logo in navbar.', () => {
@@ -214,13 +161,13 @@ describe('Home', () => {
         cy.login();
 
         // Click contribute button at bottom of page
-        cy.get('.right.library').click();
+        cy.get('#library-link').click({ force: true });
 
         // Assert library URL 
         cy.url().should('include', 'library');
 
         // Return to home page 
-        cy.get('.topbar').contains('C.L.A.R.K.').click();
+        cy.get('#clark-logo').click({ force: true });
 
         // Assert home URL
         cy.url().should('include', 'home');

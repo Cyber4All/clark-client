@@ -30,13 +30,16 @@ describe('User', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('.learning-object').first().click({ multiple: true });
+        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
+
+        // Wait for learning objects to load on page
+        cy.wait(1000);
 
         // Click author name
-        cy.get('.author').children('.link').first().click({ multiple: true });
+        cy.get('#author-link').click({ force: true }, { multiple: true });
 
         // Click organization link 
-        cy.get('.organization').children('a').click();
+        cy.get('#organization-link').children('a').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'organization');
@@ -50,8 +53,8 @@ describe('User', () => {
         cy.wait(1000);
 
         // Assert new navbar elements
-        cy.contains('Contribute');
-        cy.get('.navbar-gravatar').click();
+        cy.get('#contributor-link');
+        cy.get('#gravatar').click({ force: true });
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
         // Assert URL 
@@ -63,18 +66,18 @@ describe('User', () => {
         cy.login();
 
         // Assert new navbar elements
-        cy.contains('Contribute');
-        cy.get('.navbar-gravatar').click();
+        cy.get('#contributor-link');
+        cy.get('#gravatar').click({ force: true });
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('.edit').children('span').first().click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Check for new page content 
-        cy.contains('Edit Profile');
+        cy.get('#edit-profile-title');
     });
 
     it('Navigate to personal profile page and click edit profile and click DISCARD CHANGES', () => {
@@ -82,21 +85,21 @@ describe('User', () => {
         cy.login();
 
         // Assert new navbar elements
-        cy.contains('Contribute');
-        cy.get('.navbar-gravatar').click();
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+        cy.get('#contributor-link');
+        cy.get('#gravatar').click({ force: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('.edit').children('span').first().click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Click Discard Changes
-        cy.get('.button.bad').click();
+        cy.get('#discard-changes').click({ force: true });
 
         // Check for new page content
-        cy.get('.title');
+        cy.get('#profile-title');
     });
 
     it('Navigate to personal profile page and click edit profile and click SAVE', () => {
@@ -104,38 +107,38 @@ describe('User', () => {
         cy.login();
 
         // Assert new navbar elements
-        cy.contains('Contribute');
-        cy.get('.navbar-gravatar').click();
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+        cy.get('#contributor-link');
+        cy.get('#gravatar').click({ force: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('.edit').children('span').first().click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Fill out name input 
-        cy.get('input[name=firstname]').clear();
-        cy.get('input[name=firstname]').type(names[2]);
+        cy.get('input[name=firstname]').clear({ force: true });
+        cy.get('input[name=firstname]').type(names[2], { force: true });
 
         // Click Save
-        cy.get('.button.good').click();
+        cy.get('#save-changes').click({ force: true });
 
         // Check for new name
         cy.contains('Random');
 
-         // Click Edit Profile
-         cy.get('.edit').children('span').first().click();
+        // Click Edit Profile
+        cy.get('#edit-profile').click({ force: true });
 
-         // Fill out name input 
-         cy.get('input[name=firstname]').clear();
-         cy.get('input[name=firstname]').type(names[1]);
+        // Fill out name input 
+        cy.get('input[name=firstname]').clear({ force: true });
+        cy.get('input[name=firstname]').type(names[1], { force: true });
  
-         // Click Save
-         cy.get('.button.good').click();
+        // Click Save
+        cy.get('#save-changes').click({ force: true });
  
-         // Check for new name
-         cy.contains('Nick');
+        // Check for new name
+        cy.contains('Nick');
     });
 
     it('Navigate to personal profile page and enter correct password to see if inputs appear', () => {
@@ -143,18 +146,18 @@ describe('User', () => {
         cy.login();
 
         // Assert new navbar elements
-        cy.contains('Contribute');
-        cy.get('.navbar-gravatar').click();
+        cy.get('#contributor-link');
+        cy.get('#gravatar').click({ force: true });
         cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('.edit').children('span').first().click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Fill out name input 
-        cy.get('input[name=password]').type(creds[1]);
+        cy.get('input[name=password]').type(creds[1], { force: true });
     
         // Check for new fields 
         cy.get('input[name="new password"]');
