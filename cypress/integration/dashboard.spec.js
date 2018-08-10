@@ -21,7 +21,7 @@ describe('Dashboard', () => {
         cy.login();
 
         // Navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
@@ -32,13 +32,13 @@ describe('Dashboard', () => {
         cy.login();
 
         // Navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         //Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Assert URL
         cy.url().should('include', 'learning-object-builder');
@@ -49,16 +49,16 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click checkbox
-        cy.get('#checkbox').click({ force: true });
+        cy.get('#checkbox').click();
 
         //Assert delete button has appeared
-        cy.get('#delete-selected').click({ force: true });
+        cy.get('#delete-selected').click();
     });
 
     it('Click object to edit it', () => {
@@ -66,13 +66,13 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click object
-        cy.get('#builder-link').click({ force: true });
+        cy.get('#builder-link').click();
 
         // Assert URL
         cy.url().should('include', 'learning-object-builder');
@@ -83,14 +83,14 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click Edit from options dropdown
-        cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').first().click({ force: true });
+        cy.get('#options').click();
+        cy.get('.popup.small').eq(1).children('ul').children('li').first().click();
 
          // Assert URL
          cy.url().should('include', 'learning-object-builder');
@@ -101,13 +101,13 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click Edit from options dropdown
-        cy.get('#options').click({ force: true });
+        cy.get('#options').click();
         cy.get('.popup.small').eq(1).children('ul').children('li').eq(1).click();
 
         // Assert URL
@@ -119,13 +119,13 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click Edit from options dropdown
-        cy.get('#options').click({ force: true });
+        cy.get('#options').click();
         cy.get('.popup.small').eq(1).children('ul').children('li').eq(2);
     });
 
@@ -134,13 +134,13 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click Edit from options dropdown
-        cy.get('#options').click({ force: true });
+        cy.get('#options').click();
         cy.get('.popup.small').eq(1).children('ul').children('li').eq(3);
     });
 
@@ -149,7 +149,7 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
@@ -158,10 +158,10 @@ describe('Dashboard', () => {
         cy.wait(1000);
 
         // Click object
-        cy.get('#builder-link').click({ force: true });
+        cy.get('#builder-link').click();
 
         // Click Save button
-        cy.get('#save-learning-object').click({ force: true });
+        cy.get('#save-learning-object').click();
     });
 
     it('Click next until returned to dashboard', () => {
@@ -169,26 +169,26 @@ describe('Dashboard', () => {
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click object
-        cy.get('#builder-link').click({ force: true });
+        cy.get('#builder-link').click();
 
         // Click Next button
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Click Next button
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Wait for page load so that button 
         // on previous page with same selector is not asserted
         cy.wait(1000);
 
         // Click save button at end of builder
-        cy.get('#upload-save').click({ force: true });
+        cy.get('#upload-save').click();
 
         // Assert URL
         cy.url().should('include', 'dashboard');

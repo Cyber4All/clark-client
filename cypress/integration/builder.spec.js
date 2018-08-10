@@ -26,13 +26,13 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Assert URL
         cy.url().should('include', 'learning-object-builder');
@@ -61,19 +61,19 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Click Next button without filling out step 1 form
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Click Next button without filling out step 2 form 
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Assert error message 
         cy.get('#note-content');
@@ -84,25 +84,25 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
         
         // Enter Learning Object name
-        cy.get('#object-name-field').type(objects[0], { force: true });
+        cy.get('#object-name-field').type(objects[0], );
 
         // Click Next button without filling out step 1 form
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Click Next button without filling out step 2 form 
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Click Next button without filling out step 2 form 
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Assert error message 
         cy.get('#note-content');
@@ -113,28 +113,28 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
         
         // Enter Learning Object name
-        cy.get('#object-name-field').type(objects[1], { force: true });
+        cy.get('#object-name-field').type(objects[1], );
 
         // Click Next 
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Click New Learning Outcome
-        cy.get('#child-link').click({ force: true });
+        cy.get('#child-link').click();
         
         // Enter Outcome Name
-        cy.get('#outcome-text').type(objects[2], { force: true });
+        cy.get('#outcome-text').type(objects[2], );
 
         // Click Next button 
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Assert page 3 header 
         cy.get('#materials-title');
@@ -145,14 +145,14 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
 
         // Click on options 
-        cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click({ force: true });
+        cy.get('#options').click();
+        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click();
         cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
 
@@ -161,16 +161,16 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Enter user query
-        cy.get('#user-search').type('N', { force: true });
+        cy.get('#user-search').type('N', );
         
         // Assert user results 
         cy.get('#container').children('ul').children('li').first();
@@ -181,16 +181,16 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Select first level
-        cy.get('#level-selection').click({ force: true });
+        cy.get('#level-selection').click();
         
     });
 
@@ -199,13 +199,13 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Assert sidebar
         // Assert title
@@ -226,31 +226,31 @@
         cy.login();
 
         // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Click link to add new learning outcome
-        cy.get('#child-link').click({ force: true });
+        cy.get('#child-link').click();
 
         // Assert for header 
         cy.get('#outcome-title');
         
         // Click Remember and Understand 
-        cy.get('#square').click({ force: true });
+        cy.get('#square').click();
         
         // Click Mapped Outcomes 
-        cy.get('#mappings').click({ force: true });
+        cy.get('#mappings').click();
 
         // Click Search curricular guidelines for outcomes
-        cy.get('#search').click({ force: true });
+        cy.get('#search').click();
 
         // Click Suggested mappings
-        cy.get('#suggestions').click({ force: true });
+        cy.get('#suggestions').click();
     });
 
     it('Trigger outcome text error' , () => {
@@ -258,25 +258,25 @@
         cy.login();
 
         // Navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Wait for page load
         cy.wait(1000);
 
         // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.get('#create-new-learning-object').click();
 
         // Enter Learning Object name
-        cy.get('#object-name-field').type(objects[2], { force: true });
+        cy.get('#object-name-field').type(objects[2], );
 
         // Wait 
         cy.wait(1000);
 
         // click link to add new learning outcome
-        cy.get('#child-link').click({ force: true });
+        cy.get('#child-link').click();
 
         // Click Next button
-        cy.get('#builder-next').click({ force: true });
+        cy.get('#builder-next').click();
 
         // Assert error 
         cy.get('#note-content');

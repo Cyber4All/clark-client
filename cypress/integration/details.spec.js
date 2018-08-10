@@ -26,10 +26,10 @@ describe('Details', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
+        cy.get('#learning-object').first().click({ multiple: true });
 
         // Click author name
-        cy.get('#author-link').first().click({ force: true }, { multiple: true });
+        cy.get('#author-link').first().click({ multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
@@ -40,19 +40,19 @@ describe('Details', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
+        cy.get('#learning-object').first().click({ multiple: true });
 
         // Click author name
-        cy.get('#login-msg').children('a').click({ force: true });
+        cy.get('#login-msg').children('a').click();
 
         // Assert URL 
         cy.url().should('include', 'login');
 
         // Enter login info
         // Different steps for login - don't replace with helper method
-        cy.get('input[name=username]').type(creds[0], { force: true });
-        cy.get('input[name=password]').type(creds[1], { force: true });
-        cy.get('.auth-button').click({ force: true });
+        cy.get('input[name=username]').type(creds[0]);
+        cy.get('input[name=password]').type(creds[1]);
+        cy.get('.auth-button').click();
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -63,12 +63,12 @@ describe('Details', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
+        cy.get('#learning-object').first().click({ multiple: true });
 
         // Click DOWNLOAD NOW button 
         // if disabled class is present, it is working correctly.
         cy.wait(1000);
-        cy.get('#download-button').click({ force: true });
+        cy.get('#download-button').click();
 
         // Assert URL 
         cy.url().should('include', 'details');

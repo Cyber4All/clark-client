@@ -41,18 +41,18 @@ describe('Home', () => {
 
         // Assert new navbar elements
         cy.get('#contributor-link');
-        cy.get('#gravatar').click({ force: true });
+        cy.get('#gravatar').click();
     });
 
     it('Assert registration', () => {
-        cy.get('#clark-register').click({ force: true });
+        cy.get('#clark-register').click();
 
         // Assert URL 
         cy.url().should('include', 'register');
     });
 
     it('Navigate to browse', () => {
-        cy.get('#view-all').click({ force: true });
+        cy.get('#view-all').click();
 
         // Assert URL 
         cy.url().should('include', 'browse');
@@ -63,14 +63,14 @@ describe('Home', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
+        cy.get('#learning-object').first().click({ multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'details');
     });
 
     it('Clicking display search without entering text does not search', () => {
-        cy.get('#search-button').click({ force: true });
+        cy.get('#search-button').click();
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -78,10 +78,10 @@ describe('Home', () => {
 
     it('Clicking navbar search without entering text does not search', () => {
         // Trigger search dropdown
-        cy.get('#clark-search-input').click({ force: true });
+        cy.get('#clark-search-input').click();
         
         // Click search key
-        cy.get('#clark-search-input').type('{enter}', { force: true });
+        cy.get('#clark-search-input').type('{enter}', );
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -89,10 +89,10 @@ describe('Home', () => {
 
     it('Clicking display search after typing in it', () => {
         // Type in to search bar
-        cy.get('#search-input').type(names[1], { force: true });
+        cy.get('#search-input').type(names[1], );
 
         // Click search 
-        cy.get('#search-button').click({ force: true });
+        cy.get('#search-button').click();
 
         // Assert URL 
         cy.url().should('include', 'text');
@@ -100,30 +100,30 @@ describe('Home', () => {
 
     it('Clicking navbar search after typing in it - Keyword search', () => {
         // Trigger search dropdown
-        cy.get('#clark-search-input').click({ force: true });
+        cy.get('#clark-search-input').click();
         
         // Type search query
-        cy.get('#clark-search-input').type(names[0], { force: true });
+        cy.get('#clark-search-input').type(names[0], );
         
         // Click search icon
-        cy.get('#clark-search-input').type('{enter}', { force: true });
+        cy.get('#clark-search-input').type('{enter}', );
 
         // Assert URL 
         cy.url().should('include', 'browse');
     });
 
     it('Click on contribute button (bottom of home page) while logged out.', () => {
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
         // Assert URL 
         cy.url().should('include', 'login');
     });
 
     it('Clicking navbar and switching to outcome search should display new menu items', () => {
         // Trigger search dropdown
-        cy.get('#clark-search-input').click({ force: true });
+        cy.get('#clark-search-input').click();
         
         // Click outcomes search selector
-        cy.get('#outcomes-option').click({ force: true });
+        cy.get('#outcomes-option').click();
 
         // Assert new menu icons
         cy.get('#search-sources');
@@ -131,7 +131,7 @@ describe('Home', () => {
 
     it('Assert search dropdown description', () => {
         // Trigger search dropdown
-        cy.get('#clark-search-input').click({ force: true });
+        cy.get('#clark-search-input').click();
         
         // Type search query
         cy.get('#search-description');
@@ -139,10 +139,10 @@ describe('Home', () => {
 
     it('Assert search dropdown exit', () => {
         // Trigger search dropdown
-        cy.get('#clark-search-input').click({ force: true });
+        cy.get('#clark-search-input').click();
         
         // Click exit
-        cy.get('#search-close').click({ force: true });
+        cy.get('#search-close').click();
     });
 
     it('Click on contribute button while logged in.', () => {
@@ -150,7 +150,7 @@ describe('Home', () => {
         cy.login();
 
         // Click contribute button at bottom of page
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.get('#contribute-to-clark').click();
 
         // Assert URL 
         cy.url().should('include', 'dashboard');
@@ -161,13 +161,13 @@ describe('Home', () => {
         cy.login();
 
         // Click contribute button at bottom of page
-        cy.get('#library-link').click({ force: true });
+        cy.get('#library-link').click();
 
         // Assert library URL 
         cy.url().should('include', 'library');
 
         // Return to home page 
-        cy.get('#clark-logo').click({ force: true });
+        cy.get('#clark-logo').click();
 
         // Assert home URL
         cy.url().should('include', 'home');
