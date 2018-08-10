@@ -1,8 +1,8 @@
-import { PUBLIC_LEARNING_OBJECT_ROUTES } from '../../environments/route';
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../environments/environment';
+import { environment } from '@env/environment';
 import { LearningObject} from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 

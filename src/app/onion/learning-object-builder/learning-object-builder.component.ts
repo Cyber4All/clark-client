@@ -1,5 +1,5 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
-import { NotificationService } from '../../shared/notifications';
+import { ToasterService } from '../../shared/toaster';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
@@ -52,7 +52,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private router: Router,
     private service: LearningObjectService,
     private modalService: ModalService,
-    private notificationService: NotificationService,
+    private notificationService: ToasterService,
     private store: LearningObjectStoreService,
     private errorStore: LearningObjectErrorStoreService,
     public auth: AuthService

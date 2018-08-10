@@ -42,7 +42,7 @@
           </div>
           <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
             {{ saved ? 'Saved to your library!' : 'Save to Library' }}
-            <span *ngIf="addingToLibrary">
+            <span *ngIf="addingToLibrary && !error">
               <i class="fal fa-spinner-third fa-spin"></i>
             </span>
           </div>
