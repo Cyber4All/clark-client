@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@ang
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
-import { RegisterComponent } from '../../register/register.component';
+import { RegisterComponent } from '../register.component';
 import { Subscription } from 'rxjs';
 
 import 'rxjs/add/observable/fromEvent';

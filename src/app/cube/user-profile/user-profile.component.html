@@ -11,7 +11,7 @@
       <app-user-information [user]="user" [self]="self"></app-user-information>
     </div>
     <div *ngIf="editContent">
-      <app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></app-user-edit-information>
+      <cube-app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></cube-app-user-edit-information>
     </div>
   </div>
 </div>

@@ -11,7 +11,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
-import { RegisterComponent } from '../../register/register.component';
+import { RegisterComponent } from '../register.component';
 import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/fromEvent';
