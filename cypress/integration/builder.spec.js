@@ -127,6 +127,12 @@
         // Click Next 
         cy.get('#builder-next').click({ force: true });
 
+        // Click New Learning Outcome
+        cy.get('#child-link').click({ force: true });
+        
+        // Enter Outcome Name
+        cy.get('#outcome-text').type(objects[2], { force: true });
+
         // Click Next button 
         cy.get('#builder-next').click({ force: true });
 
@@ -184,22 +190,8 @@
         cy.get('#create-new-learning-object').click({ force: true });
 
         // Select first level
-        cy.get('#level-selection').eq(0).click({ force: true });
+        cy.get('#level-selection').click({ force: true });
         
-        // Select second level
-        cy.get('#level-selection').eq(1).click({ force: true });
-        
-        // Select third level
-        cy.get('#level-selection').eq(2).click({ force: true });
-
-        // Select fourth level
-        cy.get('#level-selection').eq(3).click({ force: true });
-
-        // Select fifth level
-        cy.get('#level-selection').eq(4).click({ force: true });
-
-        // Select sixth level
-        cy.get('#level-selection').eq(5).click({ force: true });
     });
 
     it('Assert items on the sidebar', () => {
@@ -220,10 +212,7 @@
         cy.get('#sidebar-title');
 
         // Assert menu item 1
-        cy.get('#sidebar-item-link').eq(0);
-        
-        // Assert menu item 2
-        cy.get('#sidebar-item-link').eq(1);
+        cy.get('#sidebar-item-link');
 
         // Assert menu item 3 (link to add new learning outcome)
         cy.get('#child-link');
@@ -252,25 +241,16 @@
         cy.get('#outcome-title');
         
         // Click Remember and Understand 
-        cy.get('.container').children('.container-flexer').children('onion-blooms-selector').children('.outcome_bloom')
-            .children('.squares').children('.square').eq(0).click();
-
-        // Click Apply and Analyze
-        cy.get('.container').children('.container-flexer').children('onion-blooms-selector').children('.outcome_bloom')
-            .children('.squares').children('.square').eq(1).click();
-
-        // Click Evaluate and Synthesize
-        cy.get('.container').children('.container-flexer').children('onion-blooms-selector').children('.outcome_bloom')
-            .children('.squares').children('.square').eq(2).click();
+        cy.get('#square').click({ force: true });
         
         // Click Mapped Outcomes 
-        cy.get('.mappings-toolbar').children('.tab').eq(0).click();
+        cy.get('#mappings').click({ force: true });
 
         // Click Search curricular guidelines for outcomes
-        cy.get('.mappings-toolbar').children('.tab').eq(1).click();
+        cy.get('#search').click({ force: true });
 
         // Click Suggested mappings
-        cy.get('.mappings-toolbar').children('.tab').eq(2).click();
+        cy.get('#suggestions').click({ force: true });
     });
 
     it('Trigger outcome text error' , () => {

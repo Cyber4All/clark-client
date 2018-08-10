@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="btn-group to-right final">
-      <button *ngIf="!queuedUploads$.getValue().length" type="button" (click)="save()" class="button good" [disabled]="submitting">Save
+      <button *ngIf="!queuedUploads$.getValue().length" type="button" (click)="save()" class="button good" id="upload-save" [disabled]="submitting">Save
         <i class="fas fa-check"></i>
       </button>
     </div>

@@ -1,7 +1,7 @@
 <form [formGroup]= "group">
-    <div class="auth-title light">Create A User Profile</div><hr/>
+    <div class="auth-title light" id="profile-title">Create A User Profile</div><hr/>
   <div class="input username">
-    <input #usernameInput name="username" type="text" placeholder="Username" formControlName ="username"/>
+    <input id="input-username" #usernameInput name="username" type="text" placeholder="Username" formControlName ="username"/>
     <i class="far fa-user"></i>
     <div class="icon-right">
       <ng-container *ngIf="querying">
@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="input password">
-    <input #passwordInput name="password" type="password" placeholder="Password" formControlName ="password"/>
+    <input id="input-password" #passwordInput name="password" type="password" placeholder="Password" formControlName ="password"/>
     <i class="far fa-key"></i>
     <div class="icon-right">
       <ng-container *ngIf="passwordError">
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="input password-verify">
-    <input #passwordVerifyInput name="password-verify" type="password" placeholder="Confirm password" formControlName ="verifypassword"/>
+    <input id="input-verify-password" #passwordVerifyInput name="password-verify" type="password" placeholder="Confirm password" formControlName ="verifypassword"/>
     <i class="far fa-key"></i>
     <div class="icon-right">
       <ng-container *ngIf="passwordVerifyError">

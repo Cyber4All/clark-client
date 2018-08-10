@@ -9,7 +9,7 @@
     <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">Filter
       <i class="fa fa-filter"></i>
     </div>
-    <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected
+    <div class="filter button bad" id="delete-selected" *ngIf="selected.length" (click)="delete(true)">Delete Selected
       <i class="fa fa-times"></i>
     </div>
   </div>
@@ -35,7 +35,7 @@
             <clark-checkbox [setValue]="allSelected || objectIsSelected(l.name)" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
             <div class="cells">
               <div class="cell">
-                <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link">{{l.name}}</a>
+                <a [routerLink]="['/onion/learning-object-builder', l.name]" class="builder-link" id="builder-link">{{l.name}}</a>
               </div>
               <div class="cell">{{l.length | titlecase}}</div>
               <div class="cell">{{l.date | date:'medium'}}</div>
