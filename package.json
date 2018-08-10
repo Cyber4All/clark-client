@@ -6,10 +6,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod && gzipper ./dist --log",
     "test": "node_modules/.bin/jest --verbose  --coverage",
     "lint": "ng lint",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "gzipper": "gzipper"
   },
   "dependencies": {
     "@angular/animations": "^6.0.4",
@@ -58,9 +59,11 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^10.5.2",
     "codelyzer": "^4.3.0",
+    "gzipper": "^1.4.1",
     "install-peers": "^1.0.2",
     "jasmine-core": "~3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
+    "jest": "^22.4.3",
     "karma": "~2.0.4",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "~1.0.1",
@@ -68,11 +71,10 @@
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-html-reporter": "^1.2.0",
     "protractor": "~5.4.0",
+    "ts-jest": "^22.4.2",
     "ts-node": "~7.0.0",
     "tslint": "~5.10.0",
-    "typescript": "^2.7.2",
-    "ts-jest": "^22.4.2",
-    "jest": "^22.4.3"
+    "typescript": "^2.7.2"
   },
   "prettier": {
     "singleQuote": true
