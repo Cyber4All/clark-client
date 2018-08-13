@@ -13,6 +13,7 @@ import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { UserService } from '../../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { catchError } from 'rxjs/operators';
+import { COPY } from './details.copy';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -20,6 +21,7 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
+  copy = COPY;
   @ViewChild('savesRef') savesRef: ElementRef;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
 
@@ -202,7 +204,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     switch (type) {
       case 'facebook':
       // ignoring since the FB object is set in an imported script outside of typescripts scope
-      // @ts-ignore
+      // @ts-ignoreimport { COPY } from './outcomes-detail-view/outcomes-detail-view.copy';
+
         FB.ui({
           method: 'share',
           href: this.url,

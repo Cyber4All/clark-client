@@ -14,6 +14,7 @@ import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
 import { ToasterService } from '../../../shared/toaster';
 import { Subscription, Observable } from 'rxjs';
+import { COPY } from './user-edit-information.copy';
 
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
@@ -25,6 +26,7 @@ import 'rxjs/add/operator/debounceTime';
 })
 
 export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
+  copy = COPY;
   elementRef: any;
   @Input() user;
   @Input() self = false;

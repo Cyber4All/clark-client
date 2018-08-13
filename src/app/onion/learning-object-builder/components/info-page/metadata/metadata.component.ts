@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { AcademicLevel, User, LearningObject } from '@cyber4all/clark-entity';
+import { AcademicLevel } from '@cyber4all/clark-entity';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { UserService } from '../../../../../core/user.service';
 import { AuthService } from '../../../../../core/auth.service';
-import { runInThisContext } from 'vm';
 import { Subscription, Observable } from 'rxjs';
 import { Query } from '../../../../../shared/interfaces/query';
+import { COPY } from './metadata.copy';
 
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
@@ -19,6 +19,7 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: [ 'metadata.component.scss' ]
 })
 export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
+  copy = COPY;
   @Input() isNew;
   @Input() learningObject;
   @ViewChild('userSearchInput', { read: ElementRef })

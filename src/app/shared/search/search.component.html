@@ -12,16 +12,16 @@
   </div>
   <div class="description">
     {{
-      (selected === 1) ? 'Search for learning objects by organization, user, or keyword/phrase.' :
-      'Search for learning objects by mapped standard outcomes.'
+      (selected === 1) ? copy.KEYWORDSDESC :
+      copy.OUTCOMESDESC
     }}
   </div>
   <div class="search-switch">
     <div #optionOneSwitch class="option option-one" [ngClass]="{'active': selected === 1}" (click)="toggle(1)">
-      Keywords
+      {{ copy.OPT1 }}
     </div>
     <div #optionTwoSwitch class="option option-two" [ngClass]="{'active': selected === 2}" (click)="toggle(2)">
-      Outcomes
+      {{ copy.OPT2 }}
     </div>
     <div class="highlight" [ngClass]="{'right': selected === 2}"></div>
   </div>

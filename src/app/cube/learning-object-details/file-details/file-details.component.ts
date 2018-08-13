@@ -1,12 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  DirectoryTree,
-  DirectoryNode
-} from '../../../shared/filesystem/DirectoryTree';
 import { Material } from '@cyber4all/clark-entity/dist/learning-object';
-import { getPaths } from '../../../shared/filesystem/file-functions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { COPY } from './file-details.copy';
 
 @Component({
   selector: 'onion-file-details',
@@ -14,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['file-details.component.scss']
 })
 export class FileDetailsComponent implements OnInit {
+  copy = COPY;
   @Input() length: string;
   @Input() materials: Material;
 

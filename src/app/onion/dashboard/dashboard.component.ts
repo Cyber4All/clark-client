@@ -1,13 +1,13 @@
 import { ModalService, ModalListElement, Position } from '../../shared/modals';
 import { ToasterService } from '../../shared/toaster';
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from '../../core/auth.service';
+import { COPY } from './dashboard.copy';
 
 
 @Component({
@@ -16,6 +16,7 @@ import { AuthService } from '../../core/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  copy = COPY;
   public tips = TOOLTIP_TEXT;
   learningObjects: LearningObject[] = [];
   focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it, used by delete and edit functions
@@ -31,7 +32,6 @@ export class DashboardComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: ToasterService,
     private app: ChangeDetectorRef,
-    private route: ActivatedRoute,
     private auth: AuthService
   ) {}
 

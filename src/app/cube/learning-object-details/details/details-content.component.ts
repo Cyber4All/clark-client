@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { EscapeHtmlPipe } from '../../../shared/pipes/keep-html.pipe';
+import { COPY } from './details-content.copy';
+
 
 
 @Component({
@@ -8,7 +10,7 @@ import { EscapeHtmlPipe } from '../../../shared/pipes/keep-html.pipe';
     styleUrls: ['./details-content.component.scss']
 })
 export class DetailsContentComponent implements OnInit {
-
+    copy = COPY;
     @Input() strategy: any;
     @Input() type: string;
     isShown: boolean;

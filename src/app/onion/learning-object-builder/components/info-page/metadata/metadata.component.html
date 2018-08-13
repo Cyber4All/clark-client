@@ -1,21 +1,21 @@
 <section class="metadata-wrapper">
   <div class="header">
     <div class="back"></div>
-    <div class="title">Basic Information
+    <div class="title">{{ copy.TITLE }}
     </div>
     <div></div>
   </div>
   <div class="section">
     <div class="input-group">
       <div class="label">
-        What is this learning object named?
+        {{ copy.NAME }}
       </div>
-      <input class="name-field" type="text" name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name" #name="ngModel"
+      <input class="name-field" type="text" name="name" placeholder="{{ copy.NAMEPLACEHOLDER }}" [(ngModel)]="learningObject.name" #name="ngModel"
         [ngClass]="{'bad': errorStore.error === 'name' }" [pattern]="validName" />
     </div>
     <div class="input-group">
       <div class="label">
-        Add more authors.
+        {{ copy.ADDCOLLABS }}
       </div>
       <div *ngIf="selectedAuthors.length > 0">
         <div class="level-list">
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <input #userSearchInput autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
+      <input #userSearchInput autofocus type="text" class="search-input" placeholder="{{ copy.COLLABPLACEHOLDER }}" [(ngModel)]="query.text">
       <div id="container">
         <ul>
           <li *ngFor="let user of arrayOfUsers; let i = index;">
@@ -45,22 +45,22 @@
     </div>
     <div class="input-group">
       <div class="label">
-        What is the Length of this learning object?
+        {{ copy.LENGTH }}
       </div>
       <div class="select-wrapper">
         <select [(ngModel)]="learningObject.length" name="type" class="flex-g1 vert-center">
-          <option value="nanomodule">Nanomodule - up to 1 hour</option>
-          <option value="micromodule">Micromodule - between 1 and 4 hours</option>
-          <option value="module">Module - between 4 and 10 hours</option>
-          <option value="unit">Unit - over 10 hours</option>
-          <option value="course">Course (15 weeks)</option>
+          <option value="nanomodule">{{ copy.NANO }}</option>
+          <option value="micromodule">{{ copy.MICRO }}</option>
+          <option value="module">{{ copy.MOD }}</option>
+          <option value="unit">{{ copy.UNIT }}</option>
+          <option value="course">{{ copy.COURSE }}</option>
         </select>
       </div>
     </div>
 
     <div class="input-group">
       <div class="label">
-        What levels is this content suited for?
+        {{ copy.LEVELS }}
       </div>
       <div class="level-list">
         <div class="level button" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let level of academicLevels"

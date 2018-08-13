@@ -1,12 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { COPY } from './outcomes-detail-view.copy';
 
 @Component({
   selector: 'cube-outcomes-detail-view',
   template: `
   <section class="outcomes-detail-view">
-    <h1>Learning Outcomes</h1>
+    <h1>{{ copy.HEADER }}</h1>
     <p class="no-content-alert" *ngIf="!(outcomes.length > 0)">
-      This Learning Object doesn't have any learning outcomes.
+      {{ copy.NOOUTCOMES }}
     </p>
     <div class="outcomes" *ngFor="let o of outcomes; let i = index">
       <button
@@ -26,13 +27,14 @@ import { Component, OnInit, Input } from '@angular/core';
         <span class="standard-outcome">{{ m.outcome }}</span>
         </li>
       </ul>
-      <p *ngIf="outcomes.length < 1">This Learning Object does not contain any outcomes.</p>
+      <p *ngIf="outcomes.length < 1">{{ copy.NOOUTCOMES }}</p>
     </div>
   </section>
   `,
   styleUrls: ['./outcomes-detail-view.component.scss']
 })
 export class OutcomesDetailViewComponent {
+  copy = COPY;
   @Input() outcomes;
   showMappings = [];
 

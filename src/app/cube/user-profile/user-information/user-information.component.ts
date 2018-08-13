@@ -1,21 +1,10 @@
-import { UserService } from '../../../core/user.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
-  USER_ROUTES,
-  PUBLIC_LEARNING_OBJECT_ROUTES
-} from '@env/route';
-import {
-  Component,
-  OnInit,
-  Input,
-  SimpleChanges,
-  OnChanges
-} from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
 import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Http, Headers, ResponseContentType } from '@angular/http';
 import { ToasterService } from '../../../shared/toaster';
+import { COPY } from './user-information.copy';
 
 @Component({
   selector: 'app-user-information',
@@ -23,6 +12,7 @@ import { ToasterService } from '../../../shared/toaster';
   styleUrls: ['./user-information.component.scss']
 })
 export class UserInformationComponent implements OnInit, OnChanges {
+  copy = COPY;
   // User Information
   @Input() user: User;
   @Input() self = false;
@@ -32,17 +22,14 @@ export class UserInformationComponent implements OnInit, OnChanges {
   constructor(
     private learningObjectService: LearningObjectService,
     private auth: AuthService,
-    private http: Http,
     private router: Router,
-    private notifications: ToasterService,
-    private route: ActivatedRoute,
-    private userService: UserService
+    private notifications: ToasterService
   ) {}
 
   ngOnInit() {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.getUsersLearningObjects();
   }
 

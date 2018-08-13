@@ -1,15 +1,15 @@
 <div class="top">
   <div class="title vert-center">
-    Dashboard
+  {{ copy.TITLE }}
   </div>
   <div class="actions btn-group to-right">
-    <div class="add button good" (click)="newLearningObject()">New
+    <div class="add button good" (click)="newLearningObject()">{{ copy.NEWBUTTON }}
       <i class="far fa-plus"></i>
     </div>
-    <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">Filter
+    <div *ngIf="false" class="filter button neutral" (click)="filterDropdown($event)">{{ copy.FILTERBUTTON }}
       <i class="fa fa-filter"></i>
     </div>
-    <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">Delete Selected
+    <div class="filter button bad" *ngIf="selected.length" (click)="delete(true)">{{ copy.DELETEBUTTON }}
       <i class="fa fa-times"></i>
     </div>
   </div>
@@ -22,9 +22,9 @@
             <clark-checkbox [setValue]="allSelected && selected.length === learningObjects.length" (click)="selectAll()"></clark-checkbox>
           </div>
           <div class="cells">
-            <div class="cell">Name</div>
-            <div class="cell">Type</div>
-            <div class="cell">Last Updated</div>
+            <div class="cell">{{ copy.NAMECOL }}</div>
+            <div class="cell">{{ copy.TYPECOL }}</div>
+            <div class="cell">{{ copy.DATECOL }}</div>
           </div>
           <div class="options placeholder">
             <!-- this is a placeholder and should remain empty -->
@@ -57,7 +57,7 @@
 </ng-template>
 <ng-template #noObjects>
   <div class="banner no-lo">
-    <div class="text">You don't have any Learning Objects yet!</div>
-    <div tip="{{ tips.LEARNING_OBJECT }}" tipDelay="500" tipLocation="bottom" (click)="newLearningObject()" class="button neutral bright">Create a Learning Object</div>
+    <div class="text">{{ copy.EMPTY }}</div>
+    <div tip="{{ tips.LEARNING_OBJECT }}" tipDelay="500" tipLocation="bottom" (click)="newLearningObject()" class="button neutral bright">{{ copy.CREATE }}</div>
   </div>
 </ng-template>

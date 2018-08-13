@@ -3,9 +3,9 @@
     <div class="inner">
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
-        <div class="author">Created by
+        <div class="author">{{ copy.AUTHORPREFIX }}
           <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
-        <div *ngIf="learningObject.contributors" class="author">Contributors:
+        <div *ngIf="learningObject.contributors" class="author">{{ copy.CONTRIBUTORSPREFIX }}
           <span *ngFor="let contributor of contributorsList; let i = index;" class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name + " - " + contributor.organization | titlecase }}
             <span *ngIf="i !== contributorsList.length -1">, </span>
           </span>
@@ -17,7 +17,7 @@
   <div class="flex">
     <div class="content">
       <div class="description">
-        <div class="title">Description</div>
+        <div class="title">{{ copy.DESCRIPTIONTITLE }}</div>
         <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
       <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
@@ -27,21 +27,21 @@
     </div>
     <div class="sidebar">
       <div class="inner">
-        <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
-          <i class="fas fa-exclamation"></i>Review Pending
+        <div *ngIf="!canDownload" class="download-warning" tip="{{ copy.REVIEWMESSAGE }}" tipLocation="top">
+          <i class="fas fa-exclamation"></i>{{ copy.PENDINGREVIEW }}
         </div>
         <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
           <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
             class="button good" (click)="addToCart(true)">
-            <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
+            <span *ngIf="canDownload">{{!downloading ? copy.DOWNLOAD : copy.DOWNLOADING}}
               <span *ngIf="downloading">
                 <i class="fal fa-spinner-third fa-spin"></i>
               </span>
             </span>
-            <span *ngIf="!canDownload">Not available for download</span>
+            <span *ngIf="!canDownload">{{ copy.DOWNLOADNOTAVAILABLE }}</span>
           </div>
           <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
-            {{ saved ? 'Saved to your library!' : 'Save to Library' }}
+            {{ saved ? copy.SAVED : copy.SAVE }}
             <span *ngIf="addingToLibrary && !error">
               <i class="fal fa-spinner-third fa-spin"></i>
             </span>
