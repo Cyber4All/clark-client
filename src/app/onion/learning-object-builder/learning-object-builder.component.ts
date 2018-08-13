@@ -1,10 +1,10 @@
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { NotificationService } from '../../shared/notifications';
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
-import { User, LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
+import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
 import {
   verbs,
   assessments,
@@ -19,7 +19,7 @@ enum PAGES {
   INFO,
   OUTCOMES
 }
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'onion-learning-object-builder',

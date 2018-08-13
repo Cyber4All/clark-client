@@ -4,9 +4,7 @@ import {
   DirectoryNode
 } from '../../../shared/filesystem/DirectoryTree';
 import { Material } from '@cyber4all/clark-entity/dist/learning-object';
-import { getPaths } from 'app/shared/filesystem/file-functions';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'onion-file-details',

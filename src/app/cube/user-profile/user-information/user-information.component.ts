@@ -1,9 +1,9 @@
-import { UserService } from './../../../core/user.service';
+import { UserService } from '../../../core/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   USER_ROUTES,
   PUBLIC_LEARNING_OBJECT_ROUTES
-} from '../../../../environments/route';
+} from '@env/route';
 import {
   Component,
   OnInit,
@@ -14,7 +14,7 @@ import {
 import { LearningObjectService } from '../../learning-object.service';
 import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Http, Headers, ResponseContentType } from '@angular/http';
+import { Http } from '@angular/http';
 import { NotificationService } from '../../../shared/notifications';
 
 @Component({

@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { NotificationModule } from '../shared/notifications';
+import { NotificationModule } from './notifications';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
 // Components
@@ -21,8 +21,8 @@ import { FileBrowserComponent } from './filesystem/file-browser/file-browser.com
 import { FilePreviewComponent } from './filesystem/file-preview/file-preview.component';
 import { TooltipModule } from './tooltips/tip.module';
 import { IndicatorComponent } from './indicator/indicator.component';
-import { LearningObjectListingComponent } from '../shared/learning-object/learning-object.component';
-import { UserCardComponent } from '../shared/user-card/user-card.component';
+import { LearningObjectListingComponent } from './learning-object/learning-object.component';
+import { UserCardComponent } from './user-card/user-card.component';
 import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
 import { FilterComponent } from './filter/filter.component';
 import { MappingsFilterComponent } from './mappings-filter/mappings-filter.component';

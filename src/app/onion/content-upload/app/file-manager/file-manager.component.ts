@@ -2,23 +2,15 @@ import {
   Component,
   OnInit,
   Input,
-  OnChanges,
-  OnDestroy,
   EventEmitter,
   Output,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
-import { FileStorageService } from '../services/file-storage.service';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
-import {
-  DirectoryTree,
-  DirectoryNode
-} from 'app/shared/filesystem/DirectoryTree';
-import { getPaths } from 'app/shared/filesystem/file-functions';
-import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { Removal } from 'app/shared/filesystem/file-browser/file-browser.component';
+import { DirectoryNode } from '../../../../shared/filesystem/DirectoryTree';
+import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 type LearningObjectFile = File;
 
 export type FileEdit = {

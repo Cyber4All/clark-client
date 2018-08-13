@@ -1,16 +1,16 @@
-import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
-import { LearningObjectService } from './../../learning-object.service';
+import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
+import { LearningObjectService } from '../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
-import { AuthService } from '../../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { NotificationService } from '../../../shared/notifications/notification.service';
-import { UserService } from '../../../core/user.service';
+import { NotificationService } from '../../shared/notifications/notification.service';
+import { UserService } from '../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({

@@ -1,4 +1,3 @@
-import { ModalService } from '../../../../shared/modals';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -12,7 +11,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { getPaths } from 'app/shared/filesystem/file-functions';
+import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 type LearningObjectFile = File;
 

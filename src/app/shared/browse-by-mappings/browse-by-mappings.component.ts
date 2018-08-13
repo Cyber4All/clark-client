@@ -17,7 +17,7 @@ import { OutcomeService } from '../../core/outcome.service';
 import {
   SuggestionService
 } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
-import { ModalListElement, ModalService, Position } from '../../shared/modals';
+import { ModalListElement, ModalService, Position } from '../modals';
 
 @Component({
   selector: 'clark-browse-by-mappings-component',
