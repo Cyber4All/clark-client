@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { DetailsComponent } from './details.component';
-import { DetailsContentComponent } from './details-content.component';
 import { FileDetailsComponent } from './file-details/file-details.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +24,6 @@ import { DetailsSplashComponent } from './splash/details-splash.component';
   exports: [],
   declarations: [
     DetailsComponent,
-    DetailsContentComponent,
     FileDetailsComponent,
     OutcomesDetailViewComponent,
     DetailsIncludedInComponent,
