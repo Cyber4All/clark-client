@@ -14,21 +14,25 @@
       background: $nanomodule-color;
     }
   }
+
   &.micromodule {
     .type {
       background: $micromodule-color;
     }
   }
+
   &.module {
     .type {
       background: $module-color;
     }
   }
+
   &.unit {
     .type {
       background: $unit-color;
     }
   }
+
   &.course {
     .type {
       background: $course-color;

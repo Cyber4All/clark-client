@@ -12,6 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { DetailsIncludedInComponent } from './included-in/included-in.component';
 import { ChildrenDetailViewComponent } from './children-detail-view/children-detail-view.component';
 import { ParentListingComponent } from './included-in/parent-listing.component';
+import { DetailsSplashComponent } from './splash/details-splash.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ParentListingComponent } from './included-in/parent-listing.component';
     OutcomesDetailViewComponent,
     DetailsIncludedInComponent,
     ChildrenDetailViewComponent,
-    ParentListingComponent
+    ParentListingComponent,
+    DetailsSplashComponent
   ],
   providers: []
 })

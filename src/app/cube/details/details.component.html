@@ -1,19 +1,5 @@
 <div *ngIf="learningObject" class="details-wrapper" [ngClass]="learningObject.length">
-  <div class="splash">
-    <div class="inner">
-      <div class="header">
-        <div class="name">{{ learningObject.name }}</div>
-        <div class="author">Created by
-          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
-        <div *ngIf="learningObject.contributors" class="author">Contributors:
-          <span *ngFor="let contributor of contributorsList; let i = index;" class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name + " - " + contributor.organization | titlecase }}
-            <span *ngIf="i !== contributorsList.length -1">, </span>
-          </span>
-        </div>
-        <div class="type">{{ learningObject.length }}</div>
-      </div>
-    </div>
-  </div>
+  <cube-details-splash [learningObject]="learningObject"></cube-details-splash>
   <div class="flex">
     <div class="content">
       <div class="description">

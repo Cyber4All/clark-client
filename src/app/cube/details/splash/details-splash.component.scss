@@ -1,0 +1,92 @@
+@import '~_vars.scss';
+
+$sidebar-width: 320px;
+$content-width: calc(#{$max-width} - #{$sidebar-width});
+
+.splash {
+  background: $blue-gradient;
+  padding: 50px 0;
+  position: relative;
+
+  &:after {
+    content: '';
+    background: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.03;
+    mask: $cube-pattern repeat;
+  }
+
+  .inner {
+    max-width: $max-width;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1;
+
+    .header {
+      max-width: $content-width;
+      padding-right: 20px;
+    }
+
+    .name {
+      font-size: 40px;
+      color: white;
+      text-shadow: 0 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .author,
+    .downloads {
+      color: white;
+      font-size: 18px;
+      font-weight: 300;
+    }
+
+    .type {
+      margin-top: 5px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      display: inline-block;
+      position: relative;
+      color: white;
+      text-transform: capitalize;
+      font-size: 14px;
+      font-weight: 300;
+
+      &.nanomodule {
+        background: $nanomodule-color;
+      }
+
+      &.micromodule {
+        background: $micromodule-color;
+      }
+
+      &.module {
+        background: $module-color;
+      }
+
+      &.unit {
+        background: $unit-color;
+      }
+
+      &.course {
+        background: $course-color;
+      }
+
+      &:before {
+        content: '';
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        position: absolute;
+      }
+    }
+  }
+}

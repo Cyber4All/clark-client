@@ -29,8 +29,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   saved = false;
   url: string;
 
-  contributorsList = [];
-
   canDownload = false;
   iframeParent = iframeParentID;
 
@@ -88,11 +86,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.author,
         this.learningObjectName
       );
-      if (this.learningObject.contributors) {
-        // The array of contributors attached to the learning object contains a
-        // list of usernames. We want to display their full names.
-        this.getContributors();
-      }
       this.url = this.buildLocation();
     } catch (e) {
       console.log(e);
@@ -235,16 +228,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     '/' + encodeURIComponent(this.learningObjectName);
 
     return encoded ? encodeURIComponent(u) : u;
-  }
-
-  private getContributors() {
-    for (let i = 0; i < this.learningObject.contributors.length; i++) {
-      this.userService
-        .getUser(this.learningObject.contributors[i])
-        .then(val => {
-          this.contributorsList[i] = val;
-        });
-    }
   }
 
   ngOnDestroy() {
