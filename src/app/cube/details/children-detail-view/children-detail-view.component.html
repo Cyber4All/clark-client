@@ -1,6 +1,6 @@
 <section class="children-detail-view">
   <div class="header">
-    <h1>Includes</h1>
+    <h1>This <span class="lo-length">{{ length }}</span> includes...</h1>
   </div>
-  <learning-object-component *ngFor="let l of children" [learningObject]="l"></learning-object-component>
+  <learning-object-component *ngFor="let child of children" [learningObject]="child"></learning-object-component>
 </section>

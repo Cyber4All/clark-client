@@ -128,6 +128,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username
     )}`;
+  },
+  GET_LEARNING_OBJECT_PARENTS(id: string) {
+    return `${environment.apiURL}/learning-objects/${id}/parents`;
   }
 };
 

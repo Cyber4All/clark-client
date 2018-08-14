@@ -9,10 +9,9 @@
     padding: 8px;
     font-size: 16px;
     background-color: white;
+    .lo-length {
+      text-transform: capitalize;
+    }
   }
 
-  .parent-listing {
-    padding: 6px;
-    background-color: white;
-  }
 }

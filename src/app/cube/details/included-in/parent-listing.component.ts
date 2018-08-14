@@ -1,0 +1,27 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { LearningObject } from '@cyber4all/clark-entity';
+
+@Component({
+  selector: 'cube-parent-listing',
+  template: `
+    <div class="parent-listing" [ngClass]="parent.length">
+      <span class="type">{{ parent.length }}</span>
+      <a [routerLink]="[buildLink(parent), { previous: parent.name }]">
+        {{ parent.name }}
+      </a>
+    </div>
+  `,
+  styleUrls: ['parent-listing.component.scss']
+})
+
+export class ParentListingComponent implements OnInit {
+  @Input() parent;
+
+  constructor() { }
+
+  ngOnInit() { }
+
+  public buildLink(learningObject: LearningObject) {
+    return `/details/${learningObject.author.username}/${learningObject.name}`;
+  }
+}

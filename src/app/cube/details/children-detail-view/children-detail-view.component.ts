@@ -9,6 +9,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 
 export class ChildrenDetailViewComponent implements OnInit {
   @Input() children: LearningObject[];
+  @Input() length: string;
 
   constructor() { }
 

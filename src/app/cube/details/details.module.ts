@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { DetailsIncludedInComponent } from './included-in/included-in.component';
 import { ChildrenDetailViewComponent } from './children-detail-view/children-detail-view.component';
+import { ParentListingComponent } from './included-in/parent-listing.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { ChildrenDetailViewComponent } from './children-detail-view/children-det
     FileDetailsComponent,
     OutcomesDetailViewComponent,
     DetailsIncludedInComponent,
-    ChildrenDetailViewComponent
+    ChildrenDetailViewComponent,
+    ParentListingComponent
   ],
   providers: []
 })

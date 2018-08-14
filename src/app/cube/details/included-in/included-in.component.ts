@@ -1,24 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { IncludedInService } from './included-in.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'cube-details-included-in',
   styleUrls: ['included-in.component.scss'],
-  templateUrl: 'included-in.component.html'
+  templateUrl: 'included-in.component.html',
+  providers: [ IncludedInService ]
 })
-export class DetailsIncludedInComponent implements OnInit {
+export class DetailsIncludedInComponent implements OnInit, OnChanges {
 
-  parents = [
-    {
-      name: 'DOCKER IS FÜN',
-      link: '/details/donseannelly/DOCKER IS FÜN'
-    },
-    {
-      name: 'Cybersecurity and Society',
-      link: '/details/dark/Cybersecurity and Society'
-    }
-  ];
+  @Input() learningObject: LearningObject;
+  parents;
 
-  constructor() { }
+  constructor(public service: IncludedInService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.loadParents();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.loadParents();
+  }
+
+  private loadParents() {
+    this.service.fetchParents(this.learningObject['id']).then((data: any) => {
+      this.parents = data.map(learningObject => LearningObject.instantiate(learningObject));
+    }).catch(e => {
+      console.error(e);
+    });
+  }
 }
