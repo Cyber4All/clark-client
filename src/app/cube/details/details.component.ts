@@ -1,14 +1,10 @@
-import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
+import { iframeParentID } from '../../core/cartv2.service';
 import { LearningObjectService } from '../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../core/auth.service';
-import { environment } from '@env/environment';
-import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { NotificationService } from '../../shared/notifications/notification.service';
 import { UserService } from '../../core/user.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -17,16 +13,12 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class DetailsComponent implements OnInit, OnDestroy {
 
-  private subs: Subscription[] = [];
-  author: string;
-  learningObjectName: string;
+  private isDestroyed$ = new Subject<void>();
   learningObject: LearningObject;
   returnUrl: string;
-  url: string;
 
+  // This is used by the cart service to target the iframe in this component when the action-panel download function is triggered
   iframeParent = iframeParentID;
-
-  public tips = TOOLTIP_TEXT;
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -35,11 +27,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subs.push(this.route.params.subscribe(params => {
-      this.author = params['username'];
-      this.learningObjectName = params['learningObjectName'];
-      this.fetchLearningObject();
-    }));
+    this.route.params
+      .takeUntil(this.isDestroyed$)
+      .subscribe(params => {
+        this.fetchLearningObject(params['username'], params['learningObjectName']);
+      });
 
     this.returnUrl =
       '/browse/details/' +
@@ -48,29 +40,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.route.snapshot.params['learningObjectName'];
   }
 
-  async fetchLearningObject() {
+  async fetchLearningObject(author: string, name: string) {
     try {
       this.learningObject = await this.learningObjectService.getLearningObject(
-        this.author,
-        this.learningObjectName
+        author,
+        name
       );
     } catch (e) {
       console.log(e);
     }
   }
 
-  /*
-  async clearCart() {
-    try {
-      await this.cartService.clearCart();
-    } catch (e) {
-      console.log(e);
-    }
-  }*/
-
   ngOnDestroy() {
-    for (const sub of this.subs) {
-      sub.unsubscribe();
-    }
+    this.isDestroyed$.next();
+    this.isDestroyed$.unsubscribe();
   }
 }
