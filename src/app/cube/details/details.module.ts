@@ -12,6 +12,7 @@ import { DetailsIncludedInComponent } from './included-in/included-in.component'
 import { ChildrenDetailViewComponent } from './children-detail-view/children-detail-view.component';
 import { ParentListingComponent } from './included-in/parent-listing.component';
 import { DetailsSplashComponent } from './splash/details-splash.component';
+import { ActionPanelComponent } from './action-panel/action-panel.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { DetailsSplashComponent } from './splash/details-splash.component';
     DetailsIncludedInComponent,
     ChildrenDetailViewComponent,
     ParentListingComponent,
-    DetailsSplashComponent
+    DetailsSplashComponent,
+    ActionPanelComponent
   ],
   providers: []
 })

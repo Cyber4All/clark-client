@@ -30,6 +30,19 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     .header {
       max-width: $content-width;
       padding-right: 20px;
+
+      .author {
+        .link {
+          color: #fff;
+          opacity: 1;
+          font-weight: 400;
+        }
+
+        .link:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
     }
 
     .name {

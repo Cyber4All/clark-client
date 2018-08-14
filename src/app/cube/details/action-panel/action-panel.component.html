@@ -1,0 +1,58 @@
+<div class="inner">
+  <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete."
+    tipLocation="top">
+    <i class="fas fa-exclamation"></i>Review Pending
+  </div>
+  <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
+    <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
+      class="button good" (click)="addToCart(true)">
+      <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
+        <span *ngIf="downloading">
+          <i class="fal fa-spinner-third fa-spin"></i>
+        </span>
+      </span>
+      <span *ngIf="!canDownload">Not available for download</span>
+    </div>
+    <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
+      {{ saved ? 'Saved to your library!' : 'Save to Library' }}
+      <span *ngIf="addingToLibrary">
+        <i class="fal fa-spinner-third fa-spin"></i>
+      </span>
+    </div>
+  </div>
+  <ng-container *ngIf="!auth.user">
+    <div class="login-msg">Please
+      <a [routerLink]="['/auth/login']">log in</a> to add this Learning Object to your library.</div>
+  </ng-container>
+  <div class="details-metrics">
+    <div>
+      <i class="far fa-save"></i>
+      <span #savesRef>{{ learningObject?.metrics.saves }}</span> save{{ (learningObject?.metrics.saves) !== 1 ? 's' : '' }}
+    </div>
+    <div>
+      <i class="far fa-download"></i>
+      <span>{{ learningObject?.metrics.downloads }}</span> download{{ (learningObject?.metrics.downloads) !== 1 ? 's' : '' }}
+    </div>
+  </div>
+  <div class="details-share">
+    <div class="share-title"></div>
+    <div class="share-icons">
+      <button (click)="shareButton($event, 'facebook')" class="facebook">
+        <i class="fab fa-facebook"></i>
+      </button>
+      <button (click)="shareButton($event, 'twitter')" class="twitter">
+        <i class="fab fa-twitter"></i>
+      </button>
+      <button (click)="shareButton($event, 'linkedin')" class="linkedin">
+        <i class="fab fa-linkedin"></i>
+      </button>
+      <button (click)="shareButton($event, 'email')" class="email">
+        <i class="fas fa-envelope"></i>
+      </button>
+      <button (click)="shareButton($event, 'copyLink')" class="copylink">
+        <i class="fas fa-clipboard"></i>
+      </button>
+      <textarea #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height: 0;"></textarea>
+    </div>
+  </div>
+</div>
