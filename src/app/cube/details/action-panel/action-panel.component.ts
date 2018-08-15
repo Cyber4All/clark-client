@@ -1,22 +1,24 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { environment } from '@env/environment';
 import { AuthService } from '../../../core/auth.service';
 import { CartV2Service } from '../../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { NotificationService } from '../../../shared/notifications';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'cube-details-action-panel',
   styleUrls: ['action-panel.component.scss'],
   templateUrl: 'action-panel.component.html'
 })
-export class ActionPanelComponent implements OnInit {
+export class ActionPanelComponent implements OnInit, OnDestroy {
 
   @Input() learningObject: LearningObject;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
+  private isDestroyed$ = new Subject<void>();
   canDownload = false;
   downloading = false;
   addingToLibrary = false;
@@ -76,14 +78,16 @@ export class ActionPanelComponent implements OnInit {
 
   download(author: string, learningObjectName: string) {
     this.downloading = true;
-    const loaded = this.cartService.downloadLearningObject(
-      author,
-      learningObjectName
-    );
-    // FIXME: Takeuntil unsub
+    const loaded = this.cartService
+      .downloadLearningObject(author, learningObjectName)
+      .takeUntil(this.isDestroyed$);
+
     loaded.subscribe(finished => {
       if (finished) {
         this.downloading = false;
+      } else {
+        // TODO: Check if this can be triggered
+        console.log('dis an error?');
       }
     });
   }
@@ -184,5 +188,10 @@ export class ActionPanelComponent implements OnInit {
         this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
       }, 1000);
     }, 400);
+  }
+
+  ngOnDestroy() {
+    this.isDestroyed$.next();
+    this.isDestroyed$.unsubscribe();
   }
 }
