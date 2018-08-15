@@ -20,18 +20,23 @@ export class FileDetailsComponent implements OnInit, OnChanges {
 
   constructor() {}
 
-  setup() {
+  /**
+   * Emits files and folder metadata provided by the component input to subscribers.
+   *
+   * @memberof FileDetailsComponent
+   */
+  emit(): void {
     const files = this.materials.files;
     const folderMeta = this.materials['folderDescriptions'];
     this.files$.next(files);
     this.folderMeta$.next(folderMeta);
   }
 
-  ngOnInit() {
-    this.setup();
+  ngOnInit(): void {
+    this.emit();
   }
 
   ngOnChanges(): void {
-    this.setup();
+    this.emit();
   }
 }
