@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import {
   DirectoryTree,
   DirectoryNode
@@ -11,7 +11,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   templateUrl: 'file-details.component.html',
   styleUrls: ['file-details.component.scss']
 })
-export class FileDetailsComponent implements OnInit {
+export class FileDetailsComponent implements OnInit, OnChanges {
   @Input() length: string;
   @Input() materials: Material;
 
@@ -20,10 +20,18 @@ export class FileDetailsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
+  setup() {
     const files = this.materials.files;
     const folderMeta = this.materials['folderDescriptions'];
     this.files$.next(files);
     this.folderMeta$.next(folderMeta);
+  }
+
+  ngOnInit() {
+    this.setup();
+  }
+
+  ngOnChanges(): void {
+    this.setup();
   }
 }
