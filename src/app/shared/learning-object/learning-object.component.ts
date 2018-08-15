@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Renderer2 } from '@angular/core';
+import { CartV2Service } from '../../core/cartv2.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'learning-object-component',
@@ -6,12 +8,12 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Rendere
   styleUrls: ['./learning-object.component.scss']
 })
 export class LearningObjectListingComponent implements OnInit, OnChanges {
-  @Input() learningObject;
+  @Input() learningObject: LearningObject;
   @Input() link;
   @Input() loading: boolean;
   @Input() owned? = false;
 
-  constructor(private hostEl: ElementRef, private renderer: Renderer2) {}
+  constructor(private hostEl: ElementRef, private renderer: Renderer2, private cart: CartV2Service) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.loading) {
@@ -94,5 +96,14 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   get date() {
     // tslint:disable-next-line:radix
     return new Date(parseInt(this.learningObject.date));
+  }
+
+  download() {
+    console.log('download');
+    this.cart.downloadLearningObject(this.learningObject.author.username, this.learningObject.name)
+      .take(1)
+      .subscribe(status => {
+        console.log(status);
+      });
   }
 }
