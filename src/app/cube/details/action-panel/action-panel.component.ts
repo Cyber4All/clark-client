@@ -28,7 +28,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   public tips = TOOLTIP_TEXT;
 
   constructor(
-    private auth: AuthService,
+    public auth: AuthService,
     private cartService: CartV2Service,
     private renderer: Renderer2,
     private noteService: NotificationService,
