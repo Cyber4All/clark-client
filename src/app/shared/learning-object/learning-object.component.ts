@@ -43,7 +43,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     // join all of the formatted goals with a comma and a space and convert to lower case;
     // const goalsString = goalsArray.join(', ');
     // return newly formatted string with the first character capitalized and a period at the end
-    const goalsString = this.learningObject.goals[0]._text;
+    const goalsString = this.learningObject.goals[0].text;
     const final = this.truncateText(
       goalsString.charAt(0).toUpperCase() + goalsString.substring(1),
       150
@@ -99,11 +99,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   }
 
   download() {
-    console.log('download');
+    // TODO: Write no sub comment
     this.cart.downloadLearningObject(this.learningObject.author.username, this.learningObject.name)
-      .take(1)
-      .subscribe(status => {
-        console.log(status);
-      });
+      .take(1);
   }
 }
