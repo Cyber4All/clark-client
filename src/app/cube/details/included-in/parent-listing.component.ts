@@ -6,7 +6,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
   template: `
     <div class="parent-listing" [ngClass]="parent.length">
       <span class="type">{{ parent.length }}</span>
-      <a [routerLink]="[buildLink(parent), { previous: parent.name }]">
+      <a [routerLink]="[buildLink(parent)]">
         {{ parent.name }}
       </a>
     </div>
