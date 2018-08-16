@@ -52,7 +52,7 @@
       <button (click)="shareButton($event, 'copyLink')" class="copylink">
         <i class="fas fa-clipboard"></i>
       </button>
-      <textarea #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height: 0;"></textarea>
+      <textarea aria-label="link copy area" #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height: 0;"></textarea>
     </div>
   </div>
 </div>
