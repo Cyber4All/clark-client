@@ -99,9 +99,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     loaded.subscribe(finished => {
       if (finished) {
         this.downloading = false;
-      } else {
-        // TODO: Check if this can be triggered
-        console.log('dis an error?');
       }
     });
   }
