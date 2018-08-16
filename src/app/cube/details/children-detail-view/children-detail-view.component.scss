@@ -4,6 +4,11 @@
     padding-left: 10px;
   }
 
+  learning-object-component:not(:last-child) {
+    display: block;
+    margin-bottom: 10px;
+  }
+
   .lo-length {
     text-transform: capitalize;
   }
