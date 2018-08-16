@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { NotificationModule } from './notifications';
+import { ToasterModule } from './toaster';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
 // Components
@@ -43,7 +43,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     VirtualScrollModule,
     ClickOutsideModule,
     ModalModule,
-    NotificationModule,
+    ToasterModule,
     ContextMenuModule,
     TooltipModule
   ],

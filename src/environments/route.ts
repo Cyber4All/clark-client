@@ -1,4 +1,4 @@
-import { environment } from './environment';
+import { environment } from '@env/environment';
 
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,

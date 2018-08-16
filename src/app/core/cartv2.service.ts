@@ -70,10 +70,12 @@ export class CartV2Service {
       )
       .toPromise()
       .then(async val => {
-        this.cartItems = val
-          .json()
-          .map(object => LearningObject.instantiate(object));
-        return this.cartItems;
+        try {
+          this.cartItems = val.json().map(object => LearningObject.instantiate(object));
+          return this.cartItems;
+        } catch (error) {
+          return Promise.reject('Error! ' + error);
+        }
       });
   }
 

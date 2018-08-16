@@ -1,11 +1,15 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
-import { environment } from '@env/environment';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
+import { environment } from '@env/environment';
 import { CartV2Service } from '../../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { NotificationService } from '../../../shared/notifications';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs/Subject';
+import { ToasterService } from '../../../shared/toaster/toaster.service';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -24,6 +28,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   addingToLibrary = false;
   saved = false;
   url: string;
+  error = false;
 
   public tips = TOOLTIP_TEXT;
 
@@ -31,8 +36,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private cartService: CartV2Service,
     private renderer: Renderer2,
-    private noteService: NotificationService,
-  ) { }
+    private noteService: ToasterService
+  ) {}
 
   ngOnInit() {
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
@@ -46,22 +51,31 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   async addToCart(download?: boolean) {
+    this.error = false;
+
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
       this.addingToLibrary = true;
     } else {
       this.downloading = true;
     }
-    const val = await this.cartService.addToCart(
-      this.learningObject.author.username,
-      this.learningObject.name
-    );
 
-    if (!this.saved) {
-      this.animateSaves();
+    try {
+      const val = await this.cartService.addToCart(
+        this.learningObject.author.username,
+        this.learningObject.name
+      );
+
+      this.saved = this.cartService.has(this.learningObject);
+
+      if (!this.saved) {
+        this.animateSaves();
+      }
+    } catch (error) {
+      console.log(error);
+      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
     }
 
-    this.saved = this.cartService.has(this.learningObject);
     this.addingToLibrary = false;
 
     if (download) {

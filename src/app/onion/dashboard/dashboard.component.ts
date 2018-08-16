@@ -1,5 +1,5 @@
 import { ModalService, ModalListElement, Position } from '../../shared/modals';
-import { NotificationService } from '../../shared/notifications';
+import { ToasterService } from '../../shared/toaster';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObjectService } from '../core/learning-object.service';
@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     private router: Router,
     private modalService: ModalService,
-    private notificationService: NotificationService,
+    private notificationService: ToasterService,
     private app: ChangeDetectorRef,
     private route: ActivatedRoute,
     private auth: AuthService

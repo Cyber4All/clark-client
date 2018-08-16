@@ -9,7 +9,9 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
-import { DirectoryNode } from '../../../../shared/filesystem/DirectoryTree';
+import {
+  DirectoryNode
+} from '../../../../shared/filesystem/DirectoryTree';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 type LearningObjectFile = File;
 

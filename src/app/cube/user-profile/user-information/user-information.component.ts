@@ -14,8 +14,8 @@ import {
 import { LearningObjectService } from '../../learning-object.service';
 import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Http } from '@angular/http';
-import { NotificationService } from '../../../shared/notifications';
+import { Http, Headers, ResponseContentType } from '@angular/http';
+import { ToasterService } from '../../../shared/toaster';
 
 @Component({
   selector: 'app-user-information',
@@ -34,7 +34,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
     private auth: AuthService,
     private http: Http,
     private router: Router,
-    private notifications: NotificationService,
+    private notifications: ToasterService,
     private route: ActivatedRoute,
     private userService: UserService
   ) {}
