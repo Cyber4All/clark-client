@@ -98,7 +98,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     return new Date(parseInt(this.learningObject.date));
   }
 
-  download() {
+  download(e) {
+    // Stop the event propagation so that the routerLink of the parent doesn't trigger
+    e.stopPropagation();
     // TODO: Write no sub comment
     this.cart.downloadLearningObject(this.learningObject.author.username, this.learningObject.name)
       .take(1);

@@ -28,7 +28,6 @@ import { FilterComponent } from './filter/filter.component';
 import { MappingsFilterComponent } from './mappings-filter/mappings-filter.component';
 import { SearchComponent } from './search/search.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
-import { ExtendedRouterLinkDirective } from './learning-object/button-inside-routerlink.directive';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -65,8 +64,7 @@ import { ExtendedRouterLinkDirective } from './learning-object/button-inside-rou
     FilterComponent,
     MappingsFilterComponent,
     SearchComponent,
-    AutofocusDirective,
-    ExtendedRouterLinkDirective
+    AutofocusDirective
   ],
   exports: [
     BrowseByMappingsComponent,
