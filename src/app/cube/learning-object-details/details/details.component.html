@@ -17,7 +17,8 @@
         <div class="header-bottom">
           <div class="rating">
             <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length" (click)="scrollToRatings()"></clark-rating-stars>
-            <a *ngIf="loggedin" (click)="showAddRating = true;">Write a review</a>
+            <a *ngIf="loggedin && auth.user.emailVerified" (click)="showAddRating = true;">Write a review</a>
+            <span class="emailNotVerified" *ngIf="!auth.user.emailVerified">You must verify your email in order to review learning objects.</span>
           </div>
           <div class="type">{{ learningObject.length }}</div>
         </div>
@@ -35,7 +36,7 @@
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
       </div>
       <div #ratingsWrapper class="ratings">
-        <button *ngIf="!isMobile && loggedin" class="button good" (click)="showAddRating = true">{{ userRating.date ? 'Edit your' : 'Write a'}} review <i class="far fa-pencil"></i></button>
+        <button *ngIf="!isMobile && loggedin" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}" class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' : 'Write a'}} review <i class="far fa-pencil"></i></button>
         <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [loggedIn]="loggedin" (editRating)="showAddRating = true;" (deleteRating)="deleteRating($event)" (reportRating)="reportRating($event)"></clark-learning-object-ratings>
       </div>
     </div>
