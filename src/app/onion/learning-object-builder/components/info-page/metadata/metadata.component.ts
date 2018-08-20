@@ -96,7 +96,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   }
 
   addAuthor(index) {
-    console.log(this.arrayOfUsers[index]);
     if (this.isAuthorSelected) {
       this.selectedAuthors.push(this.arrayOfUsers[index]);
       this.learningObject.contributors = this.selectedAuthors;
