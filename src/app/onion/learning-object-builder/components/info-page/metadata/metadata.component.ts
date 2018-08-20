@@ -96,20 +96,26 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   }
 
   addAuthor(index) {
+    console.log(this.arrayOfUsers[index]);
     if (this.isAuthorSelected) {
-      this.selectedAuthors.push(this.arrayOfUsers[index].username);
+      this.selectedAuthors.push(this.arrayOfUsers[index]);
       this.learningObject.contributors = this.selectedAuthors;
     }
   }
 
-  removeAuthor(username) {
-    const index = this.selectedAuthors.indexOf(username);
-    this.selectedAuthors.splice(index, 1);
+  removeAuthor(user) {
+    for (let i = 0; i < this.selectedAuthors.length; i++) {
+      if (user.username === this.selectedAuthors[i].username) {
+        this.selectedAuthors.splice(i, 1);
+      }
+    }
   }
 
   isAuthorSelected(index) {
-    if (this.selectedAuthors.indexOf(this.arrayOfUsers[index].username) === -1) {
-      return true;
+    for (let i = 0; i < this.selectedAuthors.length; i++) {
+      if (this.arrayOfUsers[index].username === this.selectedAuthors[i].username) {
+        return true;
+      }
     }
     return false;
   }
