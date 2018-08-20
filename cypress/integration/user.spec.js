@@ -30,16 +30,33 @@ describe('User', () => {
         cy.wait(1000);
 
         // Click left-most card
-        cy.get('#learning-object').first().click({ multiple: true });
+        cy.get('#learning-object').first().click({ force: true }, { multiple: true });
 
         // Wait for learning objects to load on page
         cy.wait(1000);
 
         // Click author name
-        cy.get('#author-link').click({ multiple: true });
+        cy.get('#author-link').click({ force: true }, { multiple: true });
 
         // Click organization link 
-        cy.get('#organization-link').children('a').click();
+        cy.get('#organization-link').children('a').click({ force: true });
+
+        // Assert URL 
+        cy.url().should('include', 'organization');
+    });
+
+    it('Navigate to organization members page through navbar', () => {
+        cy.login();
+
+        // Wait for learning objects to load on page
+        cy.wait(1000);
+
+        // Navigate to user profile from navbar
+        cy.get('#gravatar').click({ force: true }, { multiple: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+
+        // Click organization link 
+        cy.get('#organization-link').children('a').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'organization');
@@ -54,8 +71,8 @@ describe('User', () => {
 
         // Assert new navbar elements
         cy.get('#contributor-link');
-        cy.get('#gravatar').click();
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+        cy.get('#gravatar').click({ force: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
@@ -67,14 +84,14 @@ describe('User', () => {
 
         // Assert new navbar elements
         cy.get('#contributor-link');
-        cy.get('#gravatar').click();
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+        cy.get('#gravatar').click({ force: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('#edit-profile').click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Check for new page content 
         cy.get('#edit-profile-title');
@@ -86,17 +103,17 @@ describe('User', () => {
 
         // Assert new navbar elements
         cy.get('#contributor-link');
-        cy.get('#gravatar').click();
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+        cy.get('#gravatar').click({ force: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('#edit-profile').click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Click Discard Changes
-        cy.get('#discard-changes').click();
+        cy.get('#discard-changes').click({ force: true });
 
         // Check for new page content
         cy.get('#profile-title');
@@ -108,34 +125,34 @@ describe('User', () => {
 
         // Assert new navbar elements
         cy.get('#contributor-link');
-        cy.get('#gravatar').click();
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+        cy.get('#gravatar').click({ force: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('#edit-profile').click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Fill out name input 
-        cy.get('input[name=firstname]').clear();
-        cy.get('input[name=firstname]').type(names[2], );
+        cy.get('input[name=firstname]').clear({ force: true });
+        cy.get('input[name=firstname]').type(names[2], { force: true });
 
         // Click Save
-        cy.get('#save-changes').click();
+        cy.get('#save-changes').click({ force: true });
 
         // Check for new name
         cy.contains('Random');
 
         // Click Edit Profile
-        cy.get('#edit-profile').click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Fill out name input 
-        cy.get('input[name=firstname]').clear();
-        cy.get('input[name=firstname]').type(names[1], );
+        cy.get('input[name=firstname]').clear({ force: true });
+        cy.get('input[name=firstname]').type(names[1], { force: true });
  
         // Click Save
-        cy.get('#save-changes').click();
+        cy.get('#save-changes').click({ force: true });
  
         // Check for new name
         cy.contains('Nick');
@@ -147,19 +164,46 @@ describe('User', () => {
 
         // Assert new navbar elements
         cy.get('#contributor-link');
-        cy.get('#gravatar').click();
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true });
+        cy.get('#gravatar').click({ force: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
 
         // Click Edit Profile
-        cy.get('#edit-profile').click();
+        cy.get('#edit-profile').click({ force: true });
 
         // Fill out name input 
-        cy.get('input[name=password]').type(creds[1], );
+        cy.get('input[name=password]').type(creds[1], { force: true });
     
         // Check for new fields 
         cy.get('input[name="new password"]');
+    });
+
+    it('Navigate to personal profile page and click print clark card button', () => {
+        // Login 
+        cy.login();
+
+       // Navigate to user profile from navbar
+       cy.get('#gravatar').click({ force: true }, { multiple: true });
+       cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+
+       // Click organization link 
+       cy.get('#clark-card-link').click({ force: true });
+    });
+
+    it('Click on create a learning object button', () => {
+        // Login 
+        cy.login();
+
+       // Navigate to user profile from navbar
+       cy.get('#gravatar').click({ force: true }, { multiple: true });
+       cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+
+       // Click organization link 
+       cy.get('#profile-create-learning-object').click({ force: true });
+
+        // Assert URL 
+        cy.url().should('include', '/onion/dashboard');
     });
 });

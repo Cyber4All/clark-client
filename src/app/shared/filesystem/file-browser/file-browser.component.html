@@ -2,7 +2,7 @@
   <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
   <div class="view-switcher inline-flex right">
     <div class="inline-flex">
-      <div *ngIf="canManage" (click)="emitNewOptionClick($event)" class="button new">
+      <div *ngIf="canManage" (click)="emitNewOptionClick($event)" id="new-file"class="button new">
         New
       </div>
       <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">

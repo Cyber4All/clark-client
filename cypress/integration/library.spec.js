@@ -21,13 +21,13 @@ describe('Library', () => {
         cy.login();
 
         // Click contribute button at bottom of page
-        cy.get('#library-link').click();
+        cy.get('#library-link').click({ force: true });
 
         // Assert library URL 
         cy.url().should('include', 'library');
 
         // Return to home page 
-        cy.get('#browse-message').click();
+        cy.get('#browse-message').click({ force: true });
 
         // Assert home URL
         cy.url().should('include', 'browse');

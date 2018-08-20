@@ -7,7 +7,7 @@
     <a [routerLink]="['/organization', user.organization]">{{ user.organization | titlecase }}</a>
   </div>
   <div class="email">
-    <a href="mailto: {{ user.email }}">{{ user.email }}</a>
+    <a id="email-link" href="mailto: {{ user.email }}">{{ user.email }}</a>
   </div>
   <div *ngIf="self && !user.emailVerified" class="verify-email button good" (click)="sendEmailVerification()">
     Verify your email
@@ -25,12 +25,12 @@
   <ng-container *ngIf="!objects || !objects.length">
     <div class="no-objects">{{ self ? 'You don\'t have' : 'This user doesn\'t' }} any learning objects yet!</div>
     <div *ngIf="self" class="btn-group center">
-      <div class="button good" routerLink="/onion/dashboard">Create a Learning Object!
+      <div id="profile-create-learning-object" class="button good" routerLink="/onion/dashboard">Create a Learning Object!
         <i class="fas fa-plus"></i>
       </div>
     </div>
   </ng-container>
 </div>
 <section id="card-printer" *ngIf="self">
-  <button class="print-cards button neutral on-white" (click)="printCards()">Print Clark Cards</button>
+  <button id="clark-card-link" class="print-cards button neutral on-white" (click)="printCards()">Print Clark Cards</button>
 </section>

@@ -181,7 +181,7 @@ export class LearningObjectBuilderComponent implements OnInit {
 
     const buttons = [
       new ModalListElement(
-        'Save for later<i class="far fa-undo-alt "></i>',
+        'Save for later<i class="far fa-undo-alt " id="save-for-later"></i>',
         'reject',
         'neutral on-white'
       )
