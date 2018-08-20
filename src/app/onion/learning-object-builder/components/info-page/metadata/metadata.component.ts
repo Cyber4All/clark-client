@@ -25,7 +25,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   userSearchInput: ElementRef;
 
   users;
-  arrayOfUsers = [];
+  searchResults = [];
   selectedAuthors = [];
   connected = false;
   connection;
@@ -82,22 +82,22 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
          }
          // Limit search results to 10
          if (val.length <= 10) {
-          this.arrayOfUsers = val;
+          this.searchResults = val;
          } else {
             for (let i = 0; i < 10; i++) {
-              this.arrayOfUsers[i] = val[i];
+              this.searchResults[i] = val[i];
             }
           }
           // If query is empty, remove previous results
           if (this.query.text === '') {
-            this.arrayOfUsers = [];
+            this.searchResults = [];
           }
       });
   }
 
   addAuthor(index) {
     if (this.isAuthorSelected) {
-      this.selectedAuthors.push(this.arrayOfUsers[index]);
+      this.selectedAuthors.push(this.searchResults[index]);
       this.learningObject.contributors = this.selectedAuthors;
     }
   }
@@ -112,7 +112,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   isAuthorSelected(index) {
     for (let i = 0; i < this.selectedAuthors.length; i++) {
-      if (this.arrayOfUsers[index].username === this.selectedAuthors[i].username) {
+      if (this.searchResults[index].username === this.selectedAuthors[i].username) {
         return true;
       }
     }

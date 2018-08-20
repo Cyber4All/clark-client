@@ -30,7 +30,7 @@
       <input #userSearchInput autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
       <div id="container">
         <ul>
-          <li *ngFor="let user of arrayOfUsers; let i = index;">
+          <li *ngFor="let user of searchResults; let i = index;">
             <span *ngIf="!this.isAuthorSelected(i)" id="plus" (click)="addAuthor(i)">
               <i class="fas fa-plus"></i>
             </span>
