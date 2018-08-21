@@ -283,7 +283,7 @@
         cy.get('#note-content');
     });
 
-    it('Publish an object in the builder by using the slider at the top' , () => {
+    it('Assert description to publish error' , () => {
         // Login 
         cy.login();
 
@@ -299,7 +299,7 @@
         // Wait 
         cy.wait(1000);
 
-        cy.get('#object-name-field').type(objects[1], { force: true });
+        cy.get('#object-name-field').type(objects[3], { force: true });
 
         // Assert Unpublised label
         cy.get('#toggle-label').contains('unpublished');
@@ -311,7 +311,7 @@
         cy.get('#toggle-label').contains('published');
 
         // Enter description
-        cy.get('.cke_wysiwyg_frame.cke_reset').type('blah', { force: true });
+        cy.get('iframe').eq(1).type('blah', { force: true });
 
         // Click next button
         cy.get('#builder-next').click({ force: true });
@@ -326,26 +326,8 @@
         // Click next button
         cy.get('#builder-next').click({ force: true });
 
-         // Save edits 
-         cy.get('#upload-save').click({ force: true });
-
-        // Go back and unpublish 
-        cy.get('#builder-link').click({ force: true });
-
-        // Click slider to change published status
-        cy.get('#toggle-switch').click({ force: true });
-
-        // Assert Published label
-        cy.get('#toggle-label').contains('unpublished');
-
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
-
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
-
-        // Save edits 
-        cy.get('#upload-save').click({ force: true });
+        // Assert error 
+        cy.get('#note-content');
     });
 
     it('Navigate directly to the builder from navbar', () => {
@@ -372,7 +354,7 @@
         cy.url().should('include', '/onion/learning-object-builder');
 
         // Enter learning object name 
-        cy.get('#object-name-field').type(objects[1], { force: true });
+        cy.get('#object-name-field').type(objects[4], { force: true });
 
         // Click Save Learning Object button
         cy.get('#save-learning-object').click({ force: true });
@@ -395,9 +377,7 @@
         // Delete new object
         cy.get('#options').click({ force: true });
         cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click({ force: true });
-
-        // Confirm deletion of object
-        cy.get('#confirm-deletion').click({ force: true });
+        cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
 
     it('Click dropzone for file upload', () => {
@@ -412,7 +392,7 @@
         cy.url().should('include', '/onion/learning-object-builder');
 
         // Enter learning object name 
-        cy.get('#object-name-field').type(objects[1], { force: true });
+        cy.get('#object-name-field').type(objects[5], { force: true });
 
         // Click next button
         cy.get('#builder-next').click({ force: true });
@@ -443,7 +423,7 @@
         cy.url().should('include', '/onion/learning-object-builder');
 
         // Enter learning object name 
-        cy.get('#object-name-field').type(objects[1], { force: true });
+        cy.get('#object-name-field').type(objects[6], { force: true });
 
         // Click next button
         cy.get('#builder-next').click({ force: true });
@@ -453,12 +433,30 @@
         cy.get('#child-link').click({ force: true });
 
         // Enter Outcome Name
-        cy.get('#outcome-text').type(objects[2], { force: true });
+        cy.get('#outcome-text').type(objects[6], { force: true });
 
         // Click next button
         cy.get('#builder-next').click({ force: true });
 
         // Assert URL
         cy.get('#new-file').click({ force: true });
+    });
+
+    it('Delete all objects', () => {
+        // Login 
+        cy.login();
+
+        // navigate to Your Dashboard
+        cy.get('#contribute-to-clark').click({ force: true });
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        // Click checkbox
+        cy.get('#checkbox').click({ force: true });
+
+        //Assert delete button has appeared
+        cy.get('#delete-selected').click({ force: true });
+        cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
  });

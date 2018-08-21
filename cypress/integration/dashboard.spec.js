@@ -7,15 +7,52 @@
 
 describe('Dashboard', () => {
 
+    let objects;
+
     beforeEach(() => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
             cy.visit(route[0]);
         });
+        cy.fixture('objects.json').then((object) => {
+            objects = object;
+        });
     });   
     // =============================================================
     // /dashboard testing
     // =============================================================
+    it('Create an object', () => {
+        // Login 
+        cy.login();
+
+        // navigate to Your Dashboard
+        cy.get('#contribute-to-clark').click({ force: true });
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        // Click New +
+        cy.get('#create-new-learning-object').click({ force: true });
+        
+        // Enter Learning Object name
+        cy.get('#object-name-field').type(objects[1], { force: true });
+
+        // Click Next 
+        cy.get('#builder-next').click({ force: true });
+
+        // Click New Learning Outcome
+        cy.get('#child-link').click({ force: true });
+        
+        // Enter Outcome Name
+        cy.get('#outcome-text').type(objects[2], { force: true });
+
+        // Click Next button 
+        cy.get('#builder-next').click({ force: true });
+
+        // Assert page 3 header 
+        cy.get('#materials-title');
+    });
+
     it('Navigate to dashboard', () => {
         // Login 
         cy.login();
@@ -192,5 +229,23 @@ describe('Dashboard', () => {
 
         // Assert URL
         cy.url().should('include', 'dashboard');
+    });
+
+    it('Delete all objects', () => {
+        // Login 
+        cy.login();
+
+        // navigate to Your Dashboard
+        cy.get('#contribute-to-clark').click({ force: true });
+
+        // Assert URL 
+        cy.url().should('include', 'dashboard');
+
+        // Click checkbox
+        cy.get('#checkbox').click({ force: true });
+
+        //Assert delete button has appeared
+        cy.get('#delete-selected').click({ force: true });
+        cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
     });
 });
