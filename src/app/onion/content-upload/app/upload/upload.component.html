@@ -17,30 +17,7 @@
       </onion-file-manager>
     </div>
     <div [@fadeIn] *ngIf="slide === 2"class="slide slide2">
-      <div class="topbar">
-          <div class="slide-title">URLs</div>
-          <div class="btn-group to-right">
-            <div *ngIf="learningObject.materials.urls.length > 0" (click)="addURL()" class="button good">Add URL
-              <i class="far fa-plus"></i>
-            </div>
-          </div>
-      </div>
-      <div [ngClass]="{'empty-section': learningObject.materials.urls.length == 0}">
-        <div *ngIf="learningObject.materials.urls.length == 0" class="empty-message">
-          <i class="fal fa-link"></i>
-          <div class="empty-title">No URLs here!</div>
-          <div class="button good" (click)="addURL()">Click here to add a URL</div>
-        </div>
-        <div class="section url-wrapper" *ngFor="let url of learningObject.materials.urls; let i = index;">
-          <div class="link input-wrapper">
-            <input placeholder="Title" type="text" [(ngModel)]="learningObject.materials.urls[i].title" name="url.title.{{ i }}">
-            <input placeholder="https://example.com" type="text" [(ngModel)]="learningObject.materials.urls[i].url" name="url.url.{{ i }}">
-          </div>
-          <div class="button bad icon-only" (click)="removeURL(i)">
-            <i class="far fa-times"></i>
-          </div>
-        </div>
-      </div>
+      <clark-url-manager [urls]="learningObject.materials.urls" (add)="addURL()" (remove)="removeURL($event)" (save)="saveLearningObject()"></clark-url-manager>
     </div>
     <div [@fadeIn] *ngIf="slide === 3"class="slide slide3">
       <div class="notes">

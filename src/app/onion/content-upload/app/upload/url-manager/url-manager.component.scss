@@ -1,0 +1,86 @@
+@import '~_vars.scss';
+
+.button.good {
+    text-align: center;
+    margin: 0 5px;
+    background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+    color: white;
+    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    font-weight: normal;
+    border: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+.empty-message {
+    margin: auto;
+    align-self: center;
+    font-weight: 200;
+    font-size: 20px;
+    // color: desaturate(lighten($bright-blue, 15), 30);
+    color: lighten($dark-text, 20);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+
+    & > .svg-inline--fa {
+        font-size: 60px;
+        // color: $bright-blue;
+        margin-bottom: 10px;
+    }
+
+    .empty-title {
+        font-size: 30px;
+        margin-bottom: 15px;
+    }
+
+    .button {
+        margin-bottom: 15px;
+    }
+}
+
+.topbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .slide-title {
+        font-size: 26px;
+        margin: 0 5px;
+        border-radius: 4px;
+        padding: 15px 7px 5px;
+    }
+}
+
+.url-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+
+    .link {
+        display: flex;
+        flex-direction: row;
+
+        & > * {
+            flex-grow: 2;
+
+            &:not(:last-child) {
+                margin-right: 15px;
+            }
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+    }
+}

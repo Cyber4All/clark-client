@@ -432,7 +432,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fixURLs();
       try {
         this.serverInteraction = true;
-        await this.learningObjectService.save(this.learningObject);
+        await this.saveLearningObject();
         this.serverInteraction = false;
         this.submitting = false;
         this.uploading$.next(false);
@@ -553,12 +553,21 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.updateFolderMeta();
       }
-      this.serverInteraction = true;
-      await this.learningObjectService.save(this.learningObject);
-      this.serverInteraction = false;
+      await this.saveLearningObject();
     } catch (e) {
       console.log(e);
     }
+  }
+
+  /**
+   * Initiates a save of the learning object in it's current state in the component
+   */
+  async saveLearningObject(): Promise<{}> {
+    this.serverInteraction = true;
+    return this.learningObjectService.save(this.learningObject).then(() => {
+      this.serverInteraction = false;
+      return {}; // why?
+    });
   }
 
   /**
@@ -574,7 +583,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       const index = this.findFile(path);
       this.learningObject.materials.files.splice(index, 1);
     }
-    return this.learningObjectService.save(this.learningObject);
+    return this.saveLearningObject();
   }
 
   /**
