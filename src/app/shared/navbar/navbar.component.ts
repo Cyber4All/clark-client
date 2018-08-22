@@ -18,9 +18,6 @@ import * as md5 from 'md5';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 
-
-
-
 @Component({
   selector: 'clark-navbar',
   templateUrl: './navbar.component.html',
@@ -140,6 +137,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.authService.logout();
   }
 
+  //naviagtes to the user information by using the authservice class in the constructor above 
   userprofile() {
     this.router.navigate(['users', this.authService.user.username]);
   }
