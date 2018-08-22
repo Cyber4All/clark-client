@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { CookieService } from 'ngx-cookie';
@@ -36,6 +34,8 @@ export class LearningObjectService {
     const route = USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(
       this.auth.user.username
     );
+
+    console.log(learningObject);
     return this.http
       .post(
         route,
@@ -75,7 +75,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(): Promise<any> {
+  getLearningObjects(): Promise<LearningObject[]> {
     const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.auth.user.username);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
@@ -173,5 +173,11 @@ export class LearningObjectService {
     return this.http
       .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise();
+  }
+
+  setChildren(learningObjectName: string, children: string[]): Promise<any> {
+    const route = USER_ROUTES.SET_CHILDREN(this.auth.user.username, learningObjectName);
+
+    return this.http.post(route, { children }, { withCredentials: true }).toPromise();
   }
 }
