@@ -18,6 +18,9 @@ import * as md5 from 'md5';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 
+
+
+
 @Component({
   selector: 'clark-navbar',
   templateUrl: './navbar.component.html',
@@ -140,6 +143,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   userprofile() {
     this.router.navigate(['users', this.authService.user.username]);
   }
+  
+  reset(){
+    this.router.navigate(['/auth/forgot-password']);
+   }
 
   /**
    * Click events on the user section of the topbar, displays context menu
@@ -155,6 +162,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
             new ModalListElement(
               '<i class="far fa-user-circle fa-fw"></i>View profile',
               'userprofile'
+            ),
+            new ModalListElement(
+              '<i class="fal fa-exclamation-circle"></i>Reset Password',
+              'reset'
             ),
             new ModalListElement(
               '<i class="far fa-sign-out"></i>Sign out',
@@ -174,6 +185,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
             this.logout();
           } else if (val === 'userprofile') {
             this.userprofile();
+          } else if (val === 'reset') {
+            this.reset();
           }
         })
     );
