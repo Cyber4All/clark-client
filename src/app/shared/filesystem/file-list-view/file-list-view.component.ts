@@ -44,6 +44,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subToDescription();
+    console.log(this.node$.getValue());
   }
   /**
    * Subscribe to changes in input fields

@@ -66,7 +66,7 @@ export class FileManagerComponent implements OnInit {
    */
   openNewOptions($event: MouseEvent): void {
     this.contextMenuService.show.next({
-      anchorElement: $event.target,
+      anchorElement: $event.currentTarget,
       contextMenu: this.newOptions,
       event: <any>$event,
       item: undefined
@@ -192,25 +192,6 @@ export class FileManagerComponent implements OnInit {
     this.openDZ.emit(true);
     if (fromRoot) {
       this.path.emit();
-    }
-  }
-  /**
-   * Handles click event on container
-   * If on empty area dropzone upload dialog is triggered
-   *
-   * @param {any} e
-   * @returns
-   * @memberof FileManagerComponent
-   */
-  handleContainerClick(e) {
-    const target = e.target;
-    if (!target.className) {
-      return;
-    }
-
-    const classNames: string[] = target.className.trim().split(' ');
-    if (classNames.includes('dz-clickable')) {
-      this.openFileDialog();
     }
   }
   /**

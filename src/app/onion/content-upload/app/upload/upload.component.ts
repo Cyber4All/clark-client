@@ -1,5 +1,5 @@
-import { ModalService } from '../../../../shared/modals';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { trigger, style, animate, transition } from '@angular/animations';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
@@ -14,6 +14,11 @@ import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
+import { Observable, Subject } from 'rxjs';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/filter';
+
 type LearningObjectFile = File;
 
 export type File = {
@@ -29,9 +34,32 @@ export type File = {
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss']
+  styleUrls: ['./upload.component.scss'],
+  animations: [
+    trigger(
+      'fadeIn', [
+        transition(':enter', [
+          style({opacity: 0}),
+          animate('250ms', style({opacity: 1}))
+        ])
+      ]
+    ),
+    trigger(
+      'uploadQueue', [
+        transition(':enter', [
+          style({bottom: '-20px', opacity: 0}),
+          animate('200ms 400ms ease-out', style({ bottom: '20px', opacity: 1 }))
+        ]),
+        transition(':leave', [
+          style({bottom: '20px', opacity: 1}),
+          animate('200ms ease-out', style({ bottom: '-20px', opacity: 0 }))
+        ]),
+
+      ]
+    )
+  ],
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
   private filePathMap: Map<string, string> = new Map<string, string>();
@@ -40,13 +68,16 @@ export class UploadComponent implements OnInit {
 
   private dzError = '';
 
-  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
-  >([]);
+  slide = 1;
+  animationDirection: 'prev' | 'next' = 'next';
+  showDragMenu = false;
+  dropped = false;
+
+  serverInteraction = false;
+
+  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<LearningObjectFile[]>([]);
   folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
-  >([]);
+  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<LearningObjectFile[]>([]);
 
   tips = TOOLTIP_TEXT;
 
@@ -55,6 +86,8 @@ export class UploadComponent implements OnInit {
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   submitting = false;
 
+  unsubscribe$ = new Subject<void>();
+
   openPath: string;
 
   constructor(
@@ -62,7 +95,8 @@ export class UploadComponent implements OnInit {
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
     private fileStorageService: FileStorageService,
-    private notificationService: ToasterService
+    private notificationService: ToasterService,
+    private changeDetector: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -70,6 +104,46 @@ export class UploadComponent implements OnInit {
     this.learningObjectName
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']);
+
+    this.queuedUploads$.filter(x => x !== [] && x.length > 0).debounceTime(250).takeUntil(this.unsubscribe$).subscribe(() => {
+      this.handleDrop();
+      this.save(true);
+    });
+  }
+
+  changeSlide(index: number) {
+    if (index !== this.slide) {
+      this.animationDirection = index < this.slide ? 'prev' : 'next';
+      this.changeDetector.detectChanges();
+    }
+    this.slide = index;
+  }
+
+  toggleDrag(val: boolean, delay: number = 0) {
+    setTimeout(() => {
+      this.showDragMenu = val;
+    }, delay);
+  }
+
+  toggleDropped(val: boolean, delay: number = 1200) {
+    if (val) {
+      setTimeout(() => {
+        this.dropped = false;
+      }, delay);
+    }
+
+    this.dropped = val;
+  }
+
+  handleDrop() {
+    this.toggleDrag(false, 300);
+    this.toggleDropped(true);
+  }
+
+  ngAfterViewInit() {
+    Observable.fromEvent(document.getElementsByTagName('body')[0], 'dragover').takeUntil(this.unsubscribe$).subscribe(() => {
+      this.toggleDrag(true);
+    });
   }
   /**
    * Opens Dropzone upload dialog
@@ -77,7 +151,9 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   openDZ() {
-    this.dzDirectiveRef.dropzone().clickableElements[0].click();
+    // this.dzDirectiveRef.dropzone().clickableElements[0].click();
+    // @ts-ignore
+    document.querySelector('.dz-hidden-input').click();
   }
 
   /**
@@ -88,9 +164,11 @@ export class UploadComponent implements OnInit {
    */
   private async fetchLearningObject() {
     try {
+      this.serverInteraction = true;
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      this.serverInteraction = false;
       // FIXME: Add folder descriptions to entity
       // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
       if (!this.learningObject.materials['folderDescriptions']) {
@@ -125,6 +203,7 @@ export class UploadComponent implements OnInit {
    */
   private updateFolderMeta() {
     this.folderMeta$.next(this.learningObject.materials['folderDescriptions']);
+    console.log(this.learningObject.materials.folderDescriptions);
   }
 
   /**
@@ -134,7 +213,7 @@ export class UploadComponent implements OnInit {
    * @memberof ViewComponent
    */
   private watchTimestamps() {
-    let interval = 1000;
+    let interval = 0;
     const MINUTE = 60000;
     setInterval(() => {
       // After initial pass only update every minute
@@ -145,6 +224,7 @@ export class UploadComponent implements OnInit {
       });
     }, interval);
   }
+
   /**
    * Fired when file is added. Verifies limit hasn't been reached and adds to queued files & filesystem
    *
@@ -159,20 +239,26 @@ export class UploadComponent implements OnInit {
       this.showFileError(file.name);
       return;
     }
+
     const pastFileLimit = this.pastFileLimit(file.size);
     if (pastFileLimit) {
       this.showFileError(file.name);
       return;
     }
+
     file.id = this.getUUID();
     const isFolder = this.isFolder(file);
+
     if (isFolder) {
       this.mapToPath(file);
     }
+
     const queue = this.queuedUploads$.getValue();
     queue.push(file);
+
     this.queuedUploads$.next(queue);
   }
+
   /**
    * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;
    *
@@ -283,6 +369,7 @@ export class UploadComponent implements OnInit {
     }
     return null;
   }
+
   /**
    * Corrects malformed URLs and removes empty URLs
    *
@@ -299,6 +386,7 @@ export class UploadComponent implements OnInit {
       }
     }
   }
+
   /**
    * Check to see if file exists in array of Learning Object Material Files
    * If exists update else add
@@ -333,7 +421,6 @@ export class UploadComponent implements OnInit {
   async save(stayOnPage?: boolean) {
     try {
       this.submitting = true;
-
       const learningObjectFiles = await this.upload();
 
       this.uploading$.next(false);
@@ -344,7 +431,9 @@ export class UploadComponent implements OnInit {
 
       this.fixURLs();
       try {
+        this.serverInteraction = true;
         await this.learningObjectService.save(this.learningObject);
+        this.serverInteraction = false;
         this.submitting = false;
         this.uploading$.next(false);
         this.updateFileSubscription();
@@ -352,6 +441,7 @@ export class UploadComponent implements OnInit {
           this.router.navigate(['/onion/dashboard']);
         }
       } catch (e) {
+        this.serverInteraction = false;
         this.submitting = false;
         this.uploading$.next(false);
         this.notificationService.notify(
@@ -362,6 +452,7 @@ export class UploadComponent implements OnInit {
         );
       }
     } catch (e) {
+      this.serverInteraction = false;
       console.log(e);
       this.submitting = false;
       this.uploading$.next(false);
@@ -382,6 +473,7 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   async upload(): Promise<LearningObjectFile[]> {
+    this.serverInteraction = true;
     const queue = this.queuedUploads$.getValue();
 
     if (queue.length >= 1) {
@@ -396,6 +488,7 @@ export class UploadComponent implements OnInit {
 
       return learningObjectFiles;
     }
+    this.serverInteraction = false;
     this.uploading$.next(false);
     return Promise.resolve([]);
   }
@@ -418,13 +511,16 @@ export class UploadComponent implements OnInit {
           1
         );
       }
+      this.serverInteraction = true;
       await this.deleteFromMaterials(params.files);
       this.deleteFiles(params.files);
       this.updateFileSubscription();
+      this.serverInteraction = false;
     } catch (e) {
       console.log(e);
     }
   }
+
   /**
    * Adds description to file or folderMeat
    *
@@ -457,11 +553,14 @@ export class UploadComponent implements OnInit {
         }
         this.updateFolderMeta();
       }
+      this.serverInteraction = true;
       await this.learningObjectService.save(this.learningObject);
+      this.serverInteraction = false;
     } catch (e) {
       console.log(e);
     }
   }
+
   /**
    * Deletes file from materials
    *
@@ -477,18 +576,22 @@ export class UploadComponent implements OnInit {
     }
     return this.learningObjectService.save(this.learningObject);
   }
+
   /**
-   * Deletes file from S3
+   * Deletes files from S3
    *
    * @private
    * @param {string[]} files
    * @memberof UploadComponent
    */
-  private deleteFiles(files: string[]) {
+  private async deleteFiles(files: string[]) {
+    this.serverInteraction = true;
     for (const file of files) {
-      this.fileStorageService.delete(this.learningObject, file);
+      await this.fileStorageService.delete(this.learningObject, file);
     }
+    this.serverInteraction = false;
   }
+
   /**
    * Finds index of file
    *
@@ -511,6 +614,7 @@ export class UploadComponent implements OnInit {
     }
     return index;
   }
+
   /**
    * Finds index of folder
    *
@@ -531,6 +635,7 @@ export class UploadComponent implements OnInit {
     }
     return index;
   }
+
   /**
    * Generates UUID
    *
@@ -540,5 +645,10 @@ export class UploadComponent implements OnInit {
    */
   private getUUID(): string {
     return uuid.v1();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.unsubscribe();
   }
 }
