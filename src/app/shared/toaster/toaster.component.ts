@@ -1,9 +1,9 @@
 import { SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
-import { NotificationService } from './notification.service';
+import { ToasterService } from './toaster.service';
 import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 
 @Component({
-    selector: '<notification></notification>',
+    selector: '<clark-toaster></clark-toaster>',
     template: `
     <div *ngFor="let el of toRender; let i = index;" [attr.data-notification]="i" [ngStyle]="{'bottom': el['bottom'] ? el['bottom'] + 'px' : '0px', 'left': el['left'] ? el['left'] : '20px', 'opacity': el['show'] ? 1 : 0}" [attr.class]="'notification ' + el.classes">
         <div class="icon"><div><i [attr.class]="el.icon"></i></div></div>
@@ -14,7 +14,7 @@ import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDe
     </div>
     `
 })
-export class NotificationComponent implements OnChanges, AfterViewChecked {
+export class ToasterComponent implements OnChanges, AfterViewChecked {
     toRender: Array<object> = [];
     @Input() content: object = {};
 
@@ -26,7 +26,7 @@ export class NotificationComponent implements OnChanges, AfterViewChecked {
 
     private changed = false;
 
-    constructor(private elementRef: ElementRef, private service: NotificationService, private el: ElementRef) { }
+    constructor(private elementRef: ElementRef, private service: ToasterService, private el: ElementRef) { }
 
     ngOnChanges(changes: SimpleChanges) {
         if (Object.keys(this.content).length > 0) {

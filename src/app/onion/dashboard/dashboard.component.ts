@@ -1,5 +1,5 @@
 import { ModalService, ModalListElement, Position } from '../../shared/modals';
-import { NotificationService } from '../../shared/notifications';
+import { ToasterService } from '../../shared/toaster';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
@@ -7,7 +7,7 @@ import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from '../../core/auth.service';
 
 
 @Component({
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     private router: Router,
     private modalService: ModalService,
-    private notificationService: NotificationService,
+    private notificationService: ToasterService,
     private app: ChangeDetectorRef,
     private route: ActivatedRoute,
     private auth: AuthService

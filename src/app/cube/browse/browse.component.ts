@@ -1,16 +1,17 @@
+
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
-import { SortType, OrderBy } from './../../shared/interfaces/query';
+import { SortType, OrderBy } from '../../shared/interfaces/query';
 import { ModalService, ModalListElement, Position} from '../../shared/modals';
 import { Router } from '@angular/router';
 import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
-import { Component, OnInit, AfterViewChecked, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
-import {  } from '@cyber4all/clark-entity';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
 import {
   SuggestionService
  } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
@@ -32,7 +33,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
     limit: 20,
     length: [],
     level: [],
-    standardOutcomes: []
+    standardOutcomes: [],
+    orderBy: undefined,
+    sortType: undefined,
   };
 
   tooltipText = {
@@ -69,16 +72,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
       ]
     }
   ];
-  filteringSubject: any;
+  searchDelaySubject: any;
 
   filterInput: Observable<string>;
-
-  subscriptions: Subscription[] = [];
-  contextMenuSubscriptions: Subscription[] = [];
 
   filtersDownMobile = false;
   tempFilters: {name: string, value: string, active?: boolean}[] = [];
   windowWidth: number;
+
+  unsubscribe: Subject<void> = new Subject();
 
   @HostListener('window:resize', ['$event']) handelResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -91,26 +93,17 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.filteringSubject = new Subject<string>().debounceTime(350);
-    this.subscriptions.push(this.filteringSubject.subscribe(() => {
-      this.sendFilters();
-    }));
+    // used by the performSearch function (when delay is true) to add a debounce effect
+    this.searchDelaySubject = new Subject<void>().debounceTime(650);
+    this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
+      this.performSearch();
+    });
 
-    this.subscriptions.push(this.route.params.subscribe(params => {
-      params.query ? this.query.text = params.query : this.query.text = '';
-
-      if (params.standardOutcomes) {
-        this.query.standardOutcomes = [...params.standardOutcomes.split(',')];
-      } else {
-        this.query.standardOutcomes = [];
-      }
-
+    // whenever the queryParams change, map them to the query object and perform the search
+    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
+      this.makeQuery(params);
       this.fetchLearningObjects(this.query);
-    }));
-
-    this.subscriptions.push(this.mappingService.mappedSubject.subscribe(val => {
-      this.query.standardOutcomes = this.mappingService.mappedStandards;
-    }));
+    });
   }
 
   get isMobile(): boolean {
@@ -127,7 +120,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
     let upCount = 1;
     let downCount = 1;
     const arr = [cursor];
-
 
     if (this.learningObjects.length) {
       while (count < Math.min(total, this.pageCount)) {
@@ -153,7 +145,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const page = +this.query.currPage - 1;
     if (page > 0) {
       this.query.currPage = page;
-      this.fetchLearningObjects(this.query);
+      this.performSearch();
 
     }
   }
@@ -163,7 +155,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const page = +this.query.currPage + 1;
     if (page <= this.pageCount) {
       this.query.currPage = page;
-      this.fetchLearningObjects(this.query);
+      this.performSearch();
     }
   }
 
@@ -171,13 +163,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
   goToPage(page) {
     if (page > 0 && page <= this.pageCount) {
       this.query.currPage = +page;
-      this.fetchLearningObjects(this.query);
+      this.performSearch();
 
     }
   }
 
   clearSearch() {
-    this.router.navigate(['browse']);
+    this.query.text = '';
+    this.query.standardOutcomes = [];
+    this.router.navigate(['browse'], {queryParams: {}});
   }
 
   get sortString() {
@@ -204,13 +198,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
 
     this.tempFilters = [];
-    this.sendFilters();
+    this.performSearch();
   }
 
   addFilter(key: string, value: string) {
     if (!this.filtersDownMobile) {
       this.modifyFilter(key, value, true);
-      this.filteringSubject.next();
+      this.performSearch(true);
     } else {
       this.tempFilters.push({name: key, value, active: true});
     }
@@ -219,7 +213,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   removeFilter(key: string, value: string) {
     if (!this.filtersDownMobile) {
       this.modifyFilter(key, value);
-      this.filteringSubject.next();
+      this.performSearch(true);
     } else {
       for (let i = 0, l = this.tempFilters.length; i < l; i++) {
         const f = this.tempFilters[i];
@@ -232,7 +226,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
       // we didn't find it
       this.tempFilters.push({name: key, value, active: false});
-      console.log(this.tempFilters);
     }
   }
 
@@ -248,7 +241,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.tempFilters = [];
 
     if (sendFilters) {
-      this.filteringSubject.next();
+      this.performSearch(true);
     }
   }
 
@@ -268,75 +261,99 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
-  // removes an outcome from list of selected outcomes
-  removeMapping(outcome) {
-    this.mappingService.removeMapping(outcome);
-    this.query.standardOutcomes = this.mappingService.mappedStandards;
-    this.fetchLearningObjects(this.query);
-  }
+  /**
+   * Executes a search by reading throuhg the query object and mapping it to query parameters and then re-navigating to the component
+   * @param delay if true, triggers a debounced subject, which will call performSearch again with no delay
+   */
+  performSearch(delay: boolean = false) {
+    if (delay) {
+      this.searchDelaySubject.next();
+    } else {
+      for (let i = 0, l = this.filters.length; i < l; i++) {
+        const category = this.filters[i];
+        let active;
 
-  sendFilters() {
-    for (let i = 0, l = this.filters.length; i < l; i++) {
-      const category = this.filters[i];
-      let active;
+        if (category.values) {
+          active = category.values.filter(v => v.active);
+        } else {
+          // TODO implement adding non-value (custom component) filters
+          active = [];
+        }
 
-      if (category.values) {
-        active = category.values.filter(v => v.active);
-      } else {
-        // TODO implement adding non-value (custom component) filters
-        active = [];
+        if (active.length) {
+          // there are filters in this category
+          this.query[category.name] = active.map(v => v.name);
+        } else {
+          this.query[category.name] = [];
+        }
       }
 
-      if (active.length) {
-        // there are filters in this category
-        this.query[category.name] = active.map(v => v.name);
-      } else {
-        this.query[category.name] = [];
-      }
+      this.router.navigate(['browse'], {queryParams: this.removeObjFalsy(this.query)});
     }
-
-    console.log(this.query);
-
-    this.fetchLearningObjects(this.query);
   }
 
   showSortMenu(event) {
     const currSort = (this.query.orderBy) ?
       this.query.orderBy.replace(/_/g, '') + '-' + ((this.query.sortType > 0) ? 'asc' : 'desc') : undefined;
-      this.contextMenuSubscriptions.push(
-        this.modalService.makeContextMenu(
-          'SortContextMenu',
-          'dropdown',
-          [
-            new ModalListElement('Date (Newest first)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
-            new ModalListElement('Date (Oldest first)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
-            new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
-            new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
-          ],
-          true,
-          null,
-          new Position(
-            this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
-            this.modalService.offset(event.currentTarget).top + 50))
-          .subscribe(val => {
-            if (val !== 'null' && val.length) {
-              const dir = val.split('-')[1];
-              const sort = val.split('-')[0];
-              this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-              this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
+      const sub = this.modalService.makeContextMenu(
+        'SortContextMenu',
+        'dropdown',
+        [
+          new ModalListElement('Date (Newest first)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
+          new ModalListElement('Date (Oldest first)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
+          new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
+          new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
+        ],
+        true,
+        null,
+        new Position(
+          this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
+          this.modalService.offset(event.currentTarget).top + 50))
+        .subscribe(val => {
+          if (val !== 'null' && val.length) {
+            const dir = val.split('-')[1];
+            const sort = val.split('-')[0];
+            this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+            this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
 
-              this.fetchLearningObjects(this.query);
-            }
-            this.contextMenuSubscriptions.map(l => l.unsubscribe());
-          })
-      );
+            this.performSearch();
+          }
+          sub.unsubscribe();
+        });
   }
 
   clearSort(event) {
     event.stopPropagation();
     this.query.orderBy = undefined;
     this.query.sortType = undefined;
-    this.fetchLearningObjects(this.query);
+    this.performSearch();
+  }
+
+  /**
+   * Takes an object of parameters and attempts to map them to the query objcet
+   * @param {*} params the object returned from subscribing to the routers queryParams observable
+   */
+  makeQuery(params: any) {
+    const paramKeys = Object.keys(params);
+    // iterate params object
+    for (let i = 0, l = paramKeys.length; i < l; i++) {
+      const key = paramKeys[i];
+
+      if (Object.keys(this.query).includes(key)) {
+        const val = params[key];
+        // this parameter is a query param, add it to the query object
+        this.query[key] = val;
+
+        // add it to filter list to force checkbox
+        if (Array.isArray(val)) {
+          for (let k = 0, j = val.length; k < j; k++) {
+            this.addFilter(key, val[k]);
+          }
+        } else {
+          this.addFilter(key, val);
+        }
+      }
+    }
   }
 
   async fetchLearningObjects(query: Query) {
@@ -353,12 +370,25 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    for (let i = 0; i < this.subscriptions.length; i++) {
-      this.subscriptions[i].unsubscribe();
+  /**
+   * Deep copy and strip all falsy values (and empty arrays) from an object
+   */
+  private removeObjFalsy(obj: any): any {
+    const keys = Object.keys(obj);
+    // deep copy object to prevent direct modification of passed object
+    const output = Object.assign({}, obj);
+
+    for (let i = 0, l = keys.length; i < l; i++) {
+      if (!output[keys[i]] || (Array.isArray(output[keys[i]]) && output[keys[i]].length === 0)) {
+        delete output[keys[i]];
+      }
     }
 
-    this.subscriptions = [];
+    return output;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
   }
 
 }

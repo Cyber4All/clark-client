@@ -1,5 +1,5 @@
-import { UserService } from './../../core/user.service';
-import { USER_ROUTES } from '../../../environments/route';
+import { UserService } from '../../core/user.service';
+import { USER_ROUTES } from '@env/route';
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../../core/auth.service';

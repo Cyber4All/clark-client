@@ -11,8 +11,8 @@ import { Subscription } from 'rxjs/Subscription';
 import {
   DirectoryNode,
   LearningObjectFile
-} from 'app/shared/filesystem/DirectoryTree';
-import { getIcon } from 'app/shared/filesystem/file-icons';
+} from '../DirectoryTree';
+import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 

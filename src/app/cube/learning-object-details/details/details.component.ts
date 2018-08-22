@@ -1,5 +1,5 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
-import { LearningObjectService } from './../../learning-object.service';
+import { LearningObjectService } from '../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import {
@@ -9,9 +9,10 @@ import {
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { NotificationService } from '../../../shared/notifications/notification.service';
+import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { UserService } from '../../../core/user.service';
 import { Subscription } from 'rxjs/Subscription';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'cube-learning-object-details',
@@ -31,6 +32,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   saved = false;
   url: string;
+  error = false;
 
   contributorsList = [];
 
@@ -47,7 +49,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private auth: AuthService,
     private renderer: Renderer2,
-    private noteService: NotificationService
+    private noteService: ToasterService
   ) {}
 
   ngOnInit() {
@@ -106,22 +108,31 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async addToCart(download?: boolean) {
+    this.error = false;
+
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
       this.addingToLibrary = true;
     } else {
       this.downloading = true;
     }
-    const val = await this.cartService.addToCart(
-      this.author,
-      this.learningObjectName
-    );
 
-    if (!this.saved) {
-      this.animateSaves();
+    try {
+      const val = await this.cartService.addToCart(
+        this.author,
+        this.learningObjectName
+      );
+
+      this.saved = this.cartService.has(this.learningObject);
+
+      if (!this.saved) {
+        this.animateSaves();
+      }
+    } catch (error) {
+      console.log(error);
+      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
     }
 
-    this.saved = this.cartService.has(this.learningObject);
     this.addingToLibrary = false;
 
     if (download) {
@@ -146,10 +157,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   download(author: string, learningObjectName: string) {
     this.downloading = true;
+
     const loaded = this.cartService.downloadLearningObject(
       author,
       learningObjectName
-    );
+    ).pipe(catchError(error => {
+      console.log(error);
+      this.noteService.notify('Error!', 'An error occurred and this learning object couldn\'t be downloaded', 'bad', 'far fa-times');
+      return error;
+    }));
+
     this.subs.push(
       loaded.subscribe(finished => {
         if (finished) {
