@@ -137,12 +137,16 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.authService.logout();
   }
 
-  //naviagtes to the user information by using the authservice class in the constructor above 
+  /**
+   * naviagtes to the users information by using the 
+   * @constructor authService 
+   * to open the users profile 
+   */
   userprofile() {
     this.router.navigate(['users', this.authService.user.username]);
   }
   
-  //navigates the user to the forgot-password page 
+  /**routes the users to the forgot-password page*/
   reset(){
     this.router.navigate(['/auth/forgot-password']);
    }
