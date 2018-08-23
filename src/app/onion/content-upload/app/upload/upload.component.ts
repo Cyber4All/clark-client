@@ -86,6 +86,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   submitting = false;
 
+  triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
 
   openPath: string;
@@ -108,6 +109,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     this.queuedUploads$.filter(x => x !== [] && x.length > 0).debounceTime(250).takeUntil(this.unsubscribe$).subscribe(() => {
       this.handleDrop();
       this.save(true);
+    });
+
+    this.triggerSave$.takeUntil(this.unsubscribe$).debounceTime(650).subscribe(() => {
+      this.saveLearningObject();
     });
   }
 

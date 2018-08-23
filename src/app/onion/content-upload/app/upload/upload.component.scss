@@ -92,6 +92,19 @@
   }
 }
 
+.topbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  .slide-title {
+    font-size: 26px;
+    border-radius: 4px;
+    padding: 15px 0 5px;
+  }
+}
+
 .manage-materials {
   max-width: $max-width;
   margin: auto;
@@ -222,6 +235,7 @@
     border-radius: 2px;
     border: 1px solid $placeholder;
     outline: 0;
+    margin-top: 10px;
 
     &:focus {
       border-color: $bright-blue;

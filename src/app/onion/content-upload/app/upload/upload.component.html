@@ -20,8 +20,11 @@
       <clark-url-manager [urls]="learningObject.materials.urls" (add)="addURL()" (remove)="removeURL($event)" (save)="saveLearningObject()"></clark-url-manager>
     </div>
     <div [@fadeIn] *ngIf="slide === 3"class="slide slide3">
+      <div class="topbar">
+        <div class="slide-title">Notes</div>
+      </div>
       <div class="notes">
-        <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
+        <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc." (input)="triggerSave$.next()"></textarea>
       </div>
     </div>
   </div>
