@@ -1,8 +1,7 @@
 import { ModalService, ModalListElement, Position } from '../../shared/modals';
 import { ToasterService } from '../../shared/toaster';
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
@@ -31,19 +30,18 @@ export class DashboardComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: ToasterService,
     private app: ChangeDetectorRef,
-    private route: ActivatedRoute,
     private auth: AuthService
   ) {}
 
   async ngOnInit() {
-    this.learningObjects = await this.getLearningObjects();
+    this.learningObjects = await this.getLearningObjects() || [];
   }
   /**
    * Fetches and sets LearningObject[]
    *
    * @memberof DashboardComponent
    */
-  async getLearningObjects(): Promise<LearningObject[]> {
+  async getLearningObjects(): Promise<void | LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
       .getLearningObjects()
@@ -107,10 +105,10 @@ export class DashboardComponent implements OnInit {
                   'good',
                   'far fa-times'
                 );
-                this.learningObjects = await this.getLearningObjects();
+                this.learningObjects = await this.getLearningObjects() || [];
               })
               .catch(async(err) => {
-                this.learningObjects = await this.getLearningObjects();
+                this.learningObjects = await this.getLearningObjects() || [];
               });
           } else {
             this.learningObjectService
@@ -124,7 +122,7 @@ export class DashboardComponent implements OnInit {
                   'good',
                   'far fa-times'
                 );
-                this.learningObjects = await this.getLearningObjects();
+                this.learningObjects = await this.getLearningObjects() || [];
               })
               .catch(err => {});
           }
@@ -137,7 +135,7 @@ export class DashboardComponent implements OnInit {
       await this.learningObjectService.togglePublished(
         this.focusedLearningObject
       );
-      this.learningObjects = await this.getLearningObjects();
+      this.learningObjects = await this.getLearningObjects() || [];
     } catch (e) {
       const err = e._body
         ? e._body

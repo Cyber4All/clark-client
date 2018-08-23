@@ -12,8 +12,8 @@
     <div class="empty-title">No URLs here!</div>
     <div class="button good" (click)="addURL()">Click here to add a URL</div>
   </div>
-  <div class="section url-wrapper" *ngFor="let url of urls; let i = index;">
-    <div class="link input-wrapper">
+  <div class="section url-wrapper">
+    <div *ngFor="let url of urls; let i = index;" class="link input-wrapper">
       <input placeholder="Title" type="text" [(ngModel)]="urls[i].title" name="url.title.{{ i }}" (input)="triggerSave$.next();">
       <input placeholder="https://example.com" type="text" [(ngModel)]="urls[i].url" name="url.url.{{ i }}" (input)="triggerSave$.next();">
       <div class="button bad icon-only" (click)="removeURL(i)">

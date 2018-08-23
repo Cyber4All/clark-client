@@ -18,7 +18,6 @@
     align-self: center;
     font-weight: 200;
     font-size: 20px;
-    // color: desaturate(lighten($bright-blue, 15), 30);
     color: lighten($dark-text, 20);
     display: flex;
     flex-direction: column;
@@ -28,7 +27,6 @@
 
     & > .svg-inline--fa {
         font-size: 60px;
-        // color: $bright-blue;
         margin-bottom: 10px;
     }
 
@@ -50,9 +48,8 @@
 
     .slide-title {
         font-size: 26px;
-        margin: 0 5px;
         border-radius: 4px;
-        padding: 15px 7px 5px;
+        padding: 15px 0 5px;
     }
 }
 
@@ -61,6 +58,7 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
+    margin-top: 20px;
 
     .link {
         display: flex;
@@ -81,6 +79,18 @@
         .button {
             flex-grow: 0;
             flex-shrink: 0;
+        }
+
+        input {
+            padding: 5px;
+            appearance: none;
+            outline: 0;
+            border: 1px solid $placeholder;
+            border-radius: 1px;
+
+            &:focus {
+                border-color: $bright-blue;
+            }
         }
     }
 }
