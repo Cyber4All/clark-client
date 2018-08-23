@@ -63,10 +63,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
 
   private filePathMap: Map<string, string> = new Map<string, string>();
-
-  private learningObjectName: string;
-
   private dzError = '';
+  learningObjectName: string;
 
   slide = 1;
   animationDirection: 'prev' | 'next' = 'next';
