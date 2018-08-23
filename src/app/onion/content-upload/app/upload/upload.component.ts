@@ -119,7 +119,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   changeSlide(index: number) {
     if (index !== this.slide) {
-      this.animationDirection = index < this.slide ? 'prev f' : 'next';
+      this.animationDirection = index < this.slide ? 'prev' : 'next';
       this.changeDetector.detectChanges();
     }
     this.slide = index;
