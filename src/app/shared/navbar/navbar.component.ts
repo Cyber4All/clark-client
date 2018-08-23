@@ -139,8 +139,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   /**
    * naviagtes to the users information by using the 
-   * @constructor authService 
-   * to open the users profile 
+   * authService to open the users profile 
    */
   userprofile() {
     this.router.navigate(['users', this.authService.user.username]);
