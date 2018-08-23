@@ -2,23 +2,20 @@ import {
   Component,
   OnInit,
   Input,
-  OnChanges,
   OnDestroy,
   EventEmitter,
   Output,
   ViewChild
 } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
-import { FileStorageService } from '../services/file-storage.service';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import {
-  DirectoryTree,
   DirectoryNode
 } from '../../../../shared/filesystem/DirectoryTree';
-import { getPaths } from '../../../../shared/filesystem/file-functions';
-import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
+import 'rxjs/add/operator/takeUntil';
+
 type LearningObjectFile = File;
 
 export type FileEdit = {
@@ -32,7 +29,7 @@ export type FileEdit = {
   templateUrl: './file-manager.component.html',
   styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
 })
-export class FileManagerComponent implements OnInit {
+export class FileManagerComponent implements OnInit, OnDestroy {
   @ViewChild('fileOptions') public fileOptions: ContextMenuComponent;
   @ViewChild('newOptions') public newOptions: ContextMenuComponent;
 
@@ -41,6 +38,7 @@ export class FileManagerComponent implements OnInit {
     LearningObjectFile[]
   >([]);
   @Input() folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  @Input() confirmDeletion: Subject<boolean> = new Subject<boolean>();
   @Output()
   fileDeleted: EventEmitter<{
     files: string[];
@@ -55,8 +53,20 @@ export class FileManagerComponent implements OnInit {
   );
   editDescription: boolean;
 
+  filesMarkedForDelete: {removal: Removal, scheduledDeletions: string[]}[] = [];
+
+  componentDestroyed$ = new Subject<void>();
+
   constructor(private contextMenuService: ContextMenuService) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.confirmDeletion.takeUntil(this.componentDestroyed$).subscribe(shouldDelete => {
+      if (shouldDelete) {
+        this.deleteMarked();
+      }
+
+      this.filesMarkedForDelete = [];
+    });
+  }
 
   /**
    * Triggers new options context menu
@@ -113,15 +123,14 @@ export class FileManagerComponent implements OnInit {
 
     this.fileEdited.emit(edit);
   }
+
   /**
-   * Deletes file from Filesystem and emits array of files to be deleted
-   *
-   * @param {any} file
-   * @memberof FileManagerComponent
+   * Marks files for deletion in filesystem and emits deletion event up to parent
    */
-  deleteFile(file) {
+  triggerDelete(file) {
     let removal: Removal;
     let scheduledDeletions: string[] = [];
+
     if (!(file instanceof DirectoryNode)) {
       scheduledDeletions = [file.fullPath ? file.fullPath : file.name];
       removal = {
@@ -133,9 +142,32 @@ export class FileManagerComponent implements OnInit {
       removal = { type: 'folder', path: folder.getPath() };
       scheduledDeletions = this.getFilePaths(folder);
     }
-    this.removal$.next(removal);
+
+    this.filesMarkedForDelete.push({removal, scheduledDeletions});
+
     this.fileDeleted.emit({ removal, files: scheduledDeletions });
   }
+
+
+  /**
+   * Iterates the filesMarkedForDelete array and deletes each
+   */
+  deleteMarked() {
+    for (const x of this.filesMarkedForDelete) {
+      this.deleteFile(x.removal);
+    }
+  }
+
+  /**
+   * Deletes file from Filesystem and emits array of files to be deleted
+   *
+   * @param {any} removal instance of Removal
+   * @memberof FileManagerComponent
+   */
+  deleteFile(removal: Removal) {
+    this.removal$.next(removal);
+  }
+
   /**
    * Recursively gets all paths of files in folder
    *
@@ -206,5 +238,10 @@ export class FileManagerComponent implements OnInit {
 
   toggleEditDescription(value: boolean): void {
     this.editDescription = value;
+  }
+
+  ngOnDestroy() {
+    this.componentDestroyed$.next();
+    this.componentDestroyed$.unsubscribe();
   }
 }

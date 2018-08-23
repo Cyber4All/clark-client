@@ -23,7 +23,7 @@
   </div>
   <div class="materials-slides">
     <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
-      <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [dropzone] (dragOver)="toggleDrag(true)" (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
+      <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [dropzone] [confirmDeletion]="confirmDeletion$" (dragOver)="toggleDrag(true)" (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
         (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event">
       </onion-file-manager>
     </div>
@@ -55,7 +55,7 @@
 </div>
 
 <ng-template #loadingTemplate>
-  <div class="loading">
+  <div [@fadeIn] class="loading">
     <i class="far fa-spinner-third fa-spin"></i>
   </div>
 </ng-template>

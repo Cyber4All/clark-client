@@ -34,7 +34,7 @@
       </div>
     </div>
   </ng-template>
-  <ng-template contextMenuItem (execute)="deleteFile($event.item)">
+  <ng-template contextMenuItem (execute)="triggerDelete($event.item)">
     <div *ngIf="!editDescription" class="context-item bad">
       <div>
         Delete

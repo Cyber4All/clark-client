@@ -18,6 +18,7 @@ import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
+import { ModalService, ModalListElement } from '../../../../shared/modals';
 
 type LearningObjectFile = File;
 
@@ -85,6 +86,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   submitting = false;
 
+  confirmDeletion$ = new Subject<boolean>();
   triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
 
@@ -96,7 +98,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private learningObjectService: LearningObjectService,
     private fileStorageService: FileStorageService,
     private notificationService: ToasterService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -207,7 +210,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private updateFolderMeta() {
     this.folderMeta$.next(this.learningObject.materials['folderDescriptions']);
-    console.log(this.learningObject.materials.folderDescriptions);
   }
 
   /**
@@ -504,21 +506,37 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     files: string[];
     removal: Removal;
   }): Promise<void> {
-    try {
-      if (params.removal.type === 'folder') {
-        const index = this.findFolder(params.removal.path);
-        (<any[]>this.learningObject.materials['folderDescriptions']).splice(
-          index,
-          1
-        );
+    const confirmed = await this.modalService.makeDialogMenu(
+      'materialDelete',
+      'Are you sure?',
+      'You cannot undo this action!',
+      false,
+      'title-bad',
+      'center',
+      [
+        new ModalListElement('Yup, do it!', 'confirm', 'bad'),
+        new ModalListElement('Nevermind!', 'cancel', 'neutral')
+      ]
+    ).toPromise();
+
+    if (confirmed === 'confirm') {
+      try {
+        if (params.removal.type === 'folder') {
+          const index = this.findFolder(params.removal.path);
+          (<any[]>this.learningObject.materials['folderDescriptions']).splice(
+            index,
+            1
+          );
+        }
+        this.saving = true;
+        await this.deleteFromMaterials(params.files);
+        this.deleteFiles(params.files);
+        this.updateFileSubscription();
+        this.confirmDeletion$.next(true);
+        this.saving = false;
+      } catch (e) {
+        console.log(e);
       }
-      this.saving = true;
-      await this.deleteFromMaterials(params.files);
-      this.deleteFiles(params.files);
-      this.updateFileSubscription();
-      this.saving = false;
-    } catch (e) {
-      console.log(e);
     }
   }
 
