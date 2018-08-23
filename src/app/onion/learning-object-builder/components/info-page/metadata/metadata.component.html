@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <input #userSearchInput type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
+      <input #userSearchInput type="text" aria-label="user textbox" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
       <div id="container">
         <ul>
           <li *ngFor="let user of searchResults; let i = index;">
