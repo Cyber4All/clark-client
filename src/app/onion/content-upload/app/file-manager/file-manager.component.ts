@@ -59,11 +59,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
   constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {
+    // This obserbale emits when the user confirms deletion of a file
+    // at which point we should delete all files that are marked for deletion
     this.confirmDeletion.takeUntil(this.componentDestroyed$).subscribe(shouldDelete => {
       if (shouldDelete) {
         this.deleteMarked();
       }
 
+      // these files are deleted and this array can be emptied now
       this.filesMarkedForDelete = [];
     });
   }
@@ -84,6 +87,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     $event.preventDefault();
     $event.stopPropagation();
   }
+
   /**
    * Closes all context menus
    *
@@ -94,6 +98,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       eventType: 'cancel'
     });
   }
+
   /**
    * Emits file edit
    *

@@ -84,7 +84,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   learningObject: LearningObject = new LearningObject(null, '');
 
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  submitting = false;
 
   confirmDeletion$ = new Subject<boolean>();
   triggerSave$ = new Subject<void>();
@@ -108,16 +107,29 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']);
 
+    // Listen for queuedUploads trigger and, if the current value is an array with length > 0, close dropzone popover and save
     this.queuedUploads$.filter(x => x !== [] && x.length > 0).debounceTime(250).takeUntil(this.unsubscribe$).subscribe(() => {
       this.handleDrop();
       this.save(true);
     });
 
+    // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
     this.triggerSave$.takeUntil(this.unsubscribe$).debounceTime(650).subscribe(() => {
       this.saveLearningObject();
     });
   }
 
+  ngAfterViewInit() {
+    // create an observable from the dragover event and subscribe to it to show the dropzone popover
+    Observable.fromEvent(document.getElementsByTagName('body')[0], 'dragover').takeUntil(this.unsubscribe$).subscribe(() => {
+      this.toggleDrag(true);
+    });
+  }
+
+  /**
+   * Change and animate a new slide onto the screen
+   * @param index number corresponding to the new slide to be rendered
+   */
   changeSlide(index: number) {
     if (index !== this.slide) {
       this.animationDirection = index < this.slide ? 'prev' : 'next';
@@ -126,12 +138,22 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     this.slide = index;
   }
 
+  /**
+   * Toggle dropzone popover
+   * @param val boolean, if true show popover, if false hide it
+   * @param delay number of milliseconds to delay action
+   */
   toggleDrag(val: boolean, delay: number = 0) {
     setTimeout(() => {
       this.showDragMenu = val;
     }, delay);
   }
 
+  /**
+   * Adds the dropped class to the uploader popup to animate the arrow. Removed after delay
+   * @param val boolean, if true set dropped to true and set timeout to remove it
+   * @param delay number of milliseconds to delay before removing
+   */
   toggleDropped(val: boolean, delay: number = 1200) {
     if (val) {
       setTimeout(() => {
@@ -142,16 +164,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dropped = val;
   }
 
+  /**
+   * Handle the file drop event
+   */
   handleDrop() {
     this.toggleDrag(false, 300);
     this.toggleDropped(true);
   }
 
-  ngAfterViewInit() {
-    Observable.fromEvent(document.getElementsByTagName('body')[0], 'dragover').takeUntil(this.unsubscribe$).subscribe(() => {
-      this.toggleDrag(true);
-    });
-  }
   /**
    * Opens Dropzone upload dialog
    *
@@ -437,7 +457,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       try {
         await this.saveLearningObject();
         this.saving = false;
-        this.submitting = false;
         this.uploading$.next(false);
         this.updateFileSubscription();
         if (!stayOnPage) {
@@ -445,7 +464,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       } catch (e) {
         this.saving = false;
-        this.submitting = false;
         this.uploading$.next(false);
         this.notificationService.notify(
           'Could not update your materials.',
@@ -457,7 +475,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     } catch (e) {
       this.saving = false;
       console.log(e);
-      this.submitting = false;
       this.uploading$.next(false);
       this.notificationService.notify(
         'Could not upload your materials.',

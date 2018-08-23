@@ -23,6 +23,7 @@
   </div>
   <div class="materials-slides">
     <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
+      <!-- This element has a dropzone tag as a backup in case the browser doesn't support the dragover event or something goes wrong -->
       <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [dropzone] [confirmDeletion]="confirmDeletion$" (dragOver)="toggleDrag(true)" (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
         (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event">
       </onion-file-manager>
