@@ -8,11 +8,22 @@
       <li [ngClass]="{'active': slide === 2}" (click)="changeSlide(2)">URLs</li>
       <li [ngClass]="{'active': slide === 3}" (click)="changeSlide(3)">Notes</li>
     </ul>
-    <span *ngIf="serverInteraction"><i class="far fa-spinner-third fa-spin"></i></span>
+    <div class="server-status" [ngClass]="{'saving': saving}">
+      <ng-container *ngIf="!saving; else savingTemplate">
+        <span>
+          Saved <i class="far fa-check"></i>
+        </span>
+      </ng-container>
+      <ng-template #savingTemplate>
+        <span>
+          Saving <i class="far fa-spinner-third fa-spin"></i>
+        </span>
+      </ng-template>
+    </div>
   </div>
   <div class="materials-slides">
     <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
-      <onion-file-manager [dropzone] (dragOver)="toggleDrag(true)" (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
+      <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [dropzone] (dragOver)="toggleDrag(true)" (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
         (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event">
       </onion-file-manager>
     </div>
@@ -42,3 +53,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #loadingTemplate>
+  <div class="loading">
+    <i class="far fa-spinner-third fa-spin"></i>
+  </div>
+</ng-template>

@@ -73,7 +73,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   showDragMenu = false;
   dropped = false;
 
-  serverInteraction = false;
+  saving = false;
+  retrieving = false;
 
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<LearningObjectFile[]>([]);
   folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
@@ -118,7 +119,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   changeSlide(index: number) {
     if (index !== this.slide) {
-      this.animationDirection = index < this.slide ? 'prev' : 'next';
+      this.animationDirection = index < this.slide ? 'prev f' : 'next';
       this.changeDetector.detectChanges();
     }
     this.slide = index;
@@ -169,11 +170,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private async fetchLearningObject() {
     try {
-      this.serverInteraction = true;
+      this.retrieving = true;
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
-      this.serverInteraction = false;
+      this.retrieving = false;
       // FIXME: Add folder descriptions to entity
       // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
       if (!this.learningObject.materials['folderDescriptions']) {
@@ -425,20 +426,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async save(stayOnPage?: boolean) {
     try {
-      this.submitting = true;
+      this.saving = true;
       const learningObjectFiles = await this.upload();
 
       this.uploading$.next(false);
-
-      this.submitting = false;
 
       this.updateFiles(learningObjectFiles);
 
       this.fixURLs();
       try {
-        this.serverInteraction = true;
         await this.saveLearningObject();
-        this.serverInteraction = false;
+        this.saving = false;
         this.submitting = false;
         this.uploading$.next(false);
         this.updateFileSubscription();
@@ -446,7 +444,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           this.router.navigate(['/onion/dashboard']);
         }
       } catch (e) {
-        this.serverInteraction = false;
+        this.saving = false;
         this.submitting = false;
         this.uploading$.next(false);
         this.notificationService.notify(
@@ -457,7 +455,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         );
       }
     } catch (e) {
-      this.serverInteraction = false;
+      this.saving = false;
       console.log(e);
       this.submitting = false;
       this.uploading$.next(false);
@@ -478,7 +476,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async upload(): Promise<LearningObjectFile[]> {
-    this.serverInteraction = true;
+    this.saving = true;
     const queue = this.queuedUploads$.getValue();
 
     if (queue.length >= 1) {
@@ -493,7 +491,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
       return learningObjectFiles;
     }
-    this.serverInteraction = false;
+    this.saving = false;
     this.uploading$.next(false);
     return Promise.resolve([]);
   }
@@ -516,11 +514,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           1
         );
       }
-      this.serverInteraction = true;
+      this.saving = true;
       await this.deleteFromMaterials(params.files);
       this.deleteFiles(params.files);
       this.updateFileSubscription();
-      this.serverInteraction = false;
+      this.saving = false;
     } catch (e) {
       console.log(e);
     }
@@ -568,9 +566,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initiates a save of the learning object in it's current state in the component
    */
   async saveLearningObject(): Promise<{}> {
-    this.serverInteraction = true;
+    this.saving = true;
     return this.learningObjectService.save(this.learningObject).then(() => {
-      this.serverInteraction = false;
+      this.saving = false;
       return {}; // why?
     });
   }
@@ -599,11 +597,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private async deleteFiles(files: string[]) {
-    this.serverInteraction = true;
+    this.saving = true;
     for (const file of files) {
       await this.fileStorageService.delete(this.learningObject, file);
     }
-    this.serverInteraction = false;
+    this.saving = false;
   }
 
   /**
