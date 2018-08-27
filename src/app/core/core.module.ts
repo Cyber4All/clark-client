@@ -11,8 +11,7 @@ import { CookieModule } from 'ngx-cookie';
 import { ClickOutsideModule } from 'ng-click-outside';
 
 import { RatingService } from './rating.service';
-
-import { NotificationModule } from '../shared/notifications';
+import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { UserService } from './user.service';
 import { MessagesService } from './messages.service';
@@ -24,7 +23,7 @@ import { environment } from '@env/environment';
   imports: [
     CookieModule.forRoot(),
     ModalModule.forRoot(),
-    NotificationModule.forRoot(),
+    ToasterModule.forRoot(),
     ContextMenuModule.forRoot()
   ],
   exports: []

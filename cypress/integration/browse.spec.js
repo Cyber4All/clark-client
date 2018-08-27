@@ -4,22 +4,27 @@ import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
 
 describe('Browse', () => {
 
+    let home;
+    let names;
+
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost4200/home');
+        cy.fixture('route.json').then((route) => {
+            home = route;
+            cy.visit(home[0]);
+        });
+        cy.fixture('names.json').then((name) => {
+            names = name;
+        });
     });   
     // =============================================================
     // /browse testing
     // =============================================================
     it('Click a card and see details page', () => {
-        // Type in to search bar
-        cy.get('.search-input').type('Nick');
-
-        // Click search 
-        cy.get('.button.bad').eq(0).click();
+        cy.contains('View All').click();
 
         // Wait for learning object cards to load
-        cy.wait(1000);
+        cy.wait(2000);
 
          // Assert URL 
          cy.url().should('include', 'browse');
@@ -33,7 +38,7 @@ describe('Browse', () => {
 
     it('Filter results', () => {
         // Type in to search bar
-        cy.get('.search-input').type('Sidd');
+        cy.get('.search-input').type(names[0]);
 
         // Click search 
         cy.get('.button.bad').eq(0).click();
@@ -57,7 +62,7 @@ describe('Browse', () => {
 
     it('Clear search', () => {
         // Type in to search bar
-        cy.get('.search-input').type('Sidd');
+        cy.get('.search-input').type(names[0]);
 
         // Click search 
         cy.get('.button.bad').eq(0).click();
@@ -66,12 +71,12 @@ describe('Browse', () => {
         cy.get('.content').children('.column-title').children('span').first().children('.clear-search').click();
 
         // Assert URL
-        cy.url().should('include', 'browse');
+        cy.url().should('not.include', 'text=');
     });
     
     it('Sort results', () => {
         // Type in to search bar
-        cy.get('.search-input').type('Sidd');
+        cy.get('.search-input').type(names[0]);
 
         // Click search 
         cy.get('.button.bad').eq(0).click();
@@ -103,4 +108,21 @@ describe('Browse', () => {
         // Finally, click the red x
         cy.get('.content').children('.column-title').children('.results-options').children('.sort').children('.removeSort').children('.fa-times').click();
     });
+
+    it('Select a filter and then clear filters', () => {
+        cy.visit(home[1]);
+        cy.wait(1000);
+
+        // select filter and wait 1 second for query to fire (this is debounced 650ms in the client!)
+        cy.get('.filter-section-type .filter .checkbox').first().click({multiple: true});
+        cy.wait(1000);
+
+        cy.url().should('include', 'length=nanomodule');
+
+        // check clearing filters
+        cy.get('.filters-clear-all').first().click({multiple: true});
+        cy.wait(1000);
+
+        cy.url().should('not.include', 'length=nanomodule')
+    })
 });

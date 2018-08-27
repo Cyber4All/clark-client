@@ -1,4 +1,3 @@
-import { ModalService } from '../../../../shared/modals';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -6,13 +5,13 @@ import { LearningObjectService } from '../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { DropzoneDirective } from 'ngx-dropzone-wrapper';
 import { TimeFunctions } from '../shared/time-functions';
-import { NotificationService } from '../../../../shared/notifications';
+import { ToasterService } from '../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { getPaths } from 'app/shared/filesystem/file-functions';
+import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 type LearningObjectFile = File;
 
@@ -62,7 +61,7 @@ export class UploadComponent implements OnInit {
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
     private fileStorageService: FileStorageService,
-    private notificationService: NotificationService
+    private notificationService: ToasterService
   ) {}
 
   ngOnInit() {

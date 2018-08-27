@@ -1,16 +1,16 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { NotificationService } from '../../../shared/notifications/notification.service';
 import { UserService } from '../../../core/user.service';
-import { Subscription } from 'rxjs/Subscription';
 import { RatingService } from '../../../core/rating.service';
 import { ModalService, ModalListElement } from '../../../shared/modals';
+import { Subject } from 'rxjs/Subject';
+import { ToasterService } from '../../../shared/toaster/toaster.service';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -21,23 +21,24 @@ export interface Rating {
   date: string;
 }
 
-
 @Component({
-  selector: 'cube-learning-object-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss'],
+  selector: 'cube-details-action-panel',
+  styleUrls: ['action-panel.component.scss'],
+  templateUrl: 'action-panel.component.html'
 })
-export class DetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('savesRef') savesRef: ElementRef;
+export class ActionPanelComponent implements OnInit, OnDestroy {
+
+  @Input() learningObject: LearningObject;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
   @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
+  @ViewChild('savesRef') savesRef: ElementRef;
 
-  private subs: Subscription[] = [];
+  private isDestroyed$ = new Subject<void>();
+  canDownload = false;
   downloading = false;
   addingToLibrary = false;
   author: string;
   learningObjectName: string;
-  learningObject: LearningObject;
   ratings: Rating[] = [];
   averageRating = 0;
   saved = false;
@@ -49,9 +50,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
   contributorsList = [];
-
-  canDownload = false;
   iframeParent = iframeParentID;
+  error = false;
 
   public tips = TOOLTIP_TEXT;
 
@@ -66,92 +66,53 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private learningObjectService: LearningObjectService,
+    public auth: AuthService,
     private cartService: CartV2Service,
-    public userService: UserService,
-    private route: ActivatedRoute,
-    private auth: AuthService,
     private renderer: Renderer2,
-    private noteService: NotificationService,
+    private noteService: ToasterService,
     private ratingService: RatingService,
     private modalService: ModalService
-  ) {
-    this.windowWidth = window.outerWidth;
-  }
+  ) {}
 
   ngOnInit() {
-    this.subs.push(this.route.params.subscribe(params => {
-      this.author = params['username'];
-      this.learningObjectName = params['learningObjectName'];
-    }));
-
-    this.subs.push(this.auth.isLoggedIn.subscribe(val => {
-      // update loggedin flag when auth status changes
-      this.loggedin = val;
-    }));
-
-    this.fetchLearningObject();
-
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
       this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
-  }
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.auth.username;
-      if (whitelist.includes(username)) {
-        this.canDownload = true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async fetchLearningObject() {
-    try {
-      this.learningObject = await this.learningObjectService.getLearningObject(
-        this.author,
-        this.learningObjectName
-      );
-      if (this.learningObject.contributors) {
-        // The array of contributors attached to the learning object contains a
-        // list of usernames. We want to display their full names.
-        this.getContributors();
-      }
-      this.url = this.buildLocation();
-    } catch (e) {
-      console.log(e);
-    }
+    this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     // Get reviews for specified learning object
     this.getLearningObjectRatings();
   }
 
   async addToCart(download?: boolean) {
+    this.error = false;
+
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
       this.addingToLibrary = true;
     } else {
       this.downloading = true;
     }
-    const val = await this.cartService.addToCart(
-      this.author,
-      this.learningObjectName
-    );
 
-    if (!this.saved) {
-      this.animateSaves();
+    try {
+      const val = await this.cartService.addToCart(
+        this.learningObject.author.username,
+        this.learningObject.name
+      );
+
+      this.saved = this.cartService.has(this.learningObject);
+
+      if (!this.saved) {
+        this.animateSaves();
+      }
+    } catch (error) {
+      console.log(error);
+      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
     }
 
-    this.saved = this.cartService.has(this.learningObject);
     this.addingToLibrary = false;
 
     if (download) {
@@ -166,27 +127,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async clearCart() {
-    try {
-      await this.cartService.clearCart();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   download(author: string, learningObjectName: string) {
     this.downloading = true;
-    const loaded = this.cartService.downloadLearningObject(
-      author,
-      learningObjectName
-    );
-    this.subs.push(
-      loaded.subscribe(finished => {
-        if (finished) {
-          this.downloading = false;
-        }
-      })
-    );
+    const loaded = this.cartService
+      .downloadLearningObject(author, learningObjectName)
+      .takeUntil(this.isDestroyed$);
+
+    loaded.subscribe(finished => {
+      if (finished) {
+        this.downloading = false;
+      }
+    });
   }
 
   copyLink() {
@@ -197,31 +148,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.noteService.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
   }
 
-  animateSaves() {
-    const saves = this.learningObject.metrics.saves + 1;
-
-    this.renderer.addClass(this.savesRef.nativeElement, 'animate');
-
-    setTimeout(() => {
-      this.learningObject.metrics.saves = saves;
-
-      setTimeout(() => {
-        this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
-      }, 1000);
-    }, 400);
-  }
-
   shareButton(event, type) {
     switch (type) {
       case 'facebook':
-      // ignoring since the FB object is set in an imported script outside of typescripts scope
-      // @ts-ignore
-
-
+        // ignoring since the FB object is set in an imported script outside of typescripts scope
+        // @ts-ignore
         FB.ui({
           method: 'share',
           href: this.url,
-        }, function(response){});
+        }, function (response) { });
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK!';
@@ -262,7 +197,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart() {
-    this.cartService.removeFromCart(this.author, this.learningObjectName);
+    this.cartService.removeFromCart(this.learningObject.author.username, this.learningObject.name);
+  }
+
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+  private async checkWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      const whitelist: string[] = object.whitelist;
+      const username = this.auth.username;
+      if (whitelist.includes(username)) {
+        this.canDownload = true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   submitNewRating(rating: {number: number, comment: string, editing?: boolean, id?: string}) {
@@ -364,21 +314,25 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   private buildLocation(encoded?: boolean) {
     const u = window.location.protocol + '//' + window.location.host +
-    '/details' +
-    '/' + encodeURIComponent(this.learningObject.author.username) +
-    '/' + encodeURIComponent(this.learningObjectName);
+      '/details' +
+      '/' + encodeURIComponent(this.learningObject.author.username) +
+      '/' + encodeURIComponent(this.learningObject.name);
 
     return encoded ? encodeURIComponent(u) : u;
   }
 
-  private getContributors() {
-    for (let i = 0; i < this.learningObject.contributors.length; i++) {
-      this.userService
-        .getUser(this.learningObject.contributors[i])
-        .then(val => {
-          this.contributorsList[i] = val;
-        });
-    }
+  animateSaves() {
+    const saves = this.learningObject.metrics.saves + 1;
+
+    this.renderer.addClass(this.savesRef.nativeElement, 'animate');
+
+    setTimeout(() => {
+      this.learningObject.metrics.saves = saves;
+
+      setTimeout(() => {
+        this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
+      }, 1000);
+    }, 400);
   }
 
   scrollToRatings() {
@@ -390,8 +344,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    for (const sub of this.subs) {
-      sub.unsubscribe();
-    }
+    this.isDestroyed$.next();
+    this.isDestroyed$.unsubscribe();
   }
 }

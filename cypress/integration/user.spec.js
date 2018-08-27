@@ -1,12 +1,21 @@
  /// <reference types="cypress" />
 
-import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
-
 describe('User', () => {
+
+    let names;
+    let creds;
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
+        cy.fixture('names.json').then((name) => {
+            names = name;
+        });
+        cy.fixture('creds.json').then((cred) => {
+            creds = cred;
+        });
     });   
     // =============================================================
     // /user testing
@@ -102,20 +111,20 @@ describe('User', () => {
 
         // Fill out name input 
         cy.get('input[name=firstname]').clear();
-        cy.get('input[name=firstname]').type('Randy');
+        cy.get('input[name=firstname]').type(names[2]);
 
         // Click Save
         cy.get('.button.good').click();
 
         // Check for new name
-        cy.contains('Randy');
+        cy.contains('Random');
 
          // Click Edit Profile
          cy.get('.edit').children('span').first().click();
 
          // Fill out name input 
          cy.get('input[name=firstname]').clear();
-         cy.get('input[name=firstname]').type('Nick');
+         cy.get('input[name=firstname]').type(names[1]);
  
          // Click Save
          cy.get('.button.good').click();
@@ -140,7 +149,7 @@ describe('User', () => {
         cy.get('.edit').children('span').first().click();
 
         // Fill out name input 
-        cy.get('input[name=password]').type('122595');
+        cy.get('input[name=password]').type(creds[1]);
     
         // Check for new fields 
         cy.get('input[name="new password"]');

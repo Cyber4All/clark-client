@@ -1,8 +1,7 @@
-import { PUBLIC_LEARNING_OBJECT_ROUTES } from '../../environments/route';
-import { Injectable, OnInit } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../environments/environment';
 import { LearningObject} from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 
@@ -92,7 +91,7 @@ export class LearningObjectService {
       });
   }
   getUsersLearningObjects(username: string ): Promise<LearningObject[]> {
-    let route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(
+    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(
       username
     );
 

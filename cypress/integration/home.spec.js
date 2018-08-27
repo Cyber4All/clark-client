@@ -4,9 +4,20 @@ import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
 
 describe('Home', () => {
 
+    let creds;
+    let names;
+
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
+        cy.fixture('creds.json').then((cred) => {
+            creds = cred;
+        });
+        cy.fixture('names.json').then((name) => {
+            names = name;
+        });
     });
 
     // /home tests
@@ -82,13 +93,13 @@ describe('Home', () => {
 
     it('Clicking display search after typing in it', () => {
         // Type in to search bar
-        cy.get('.search-input').type('Nick');
+        cy.get('.search-input').type(names[1]);
 
         // Click search 
         cy.get('.button.bad').eq(0).click();
 
         // Assert URL 
-        cy.url().should('include', 'query');
+        cy.url().should('include', 'text');
     });
 
     it('Clicking navbar search after typing in it - Keyword search', () => {
@@ -102,7 +113,7 @@ describe('Home', () => {
         cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
             .children('.clark-search-inner').children('clark-search').children('.clark-search')
             .children('.search-options').children('.keyword-search.input').children('form')
-            .children('input').type('Sidd');
+            .children('input').type(names[0]);
         
         // Click search icon
         cy.get('.topbar').children('.inner.flex.h.left-right').children('.clark-search-wrapper')
@@ -184,8 +195,8 @@ describe('Home', () => {
         cy.url().should('include', 'login');
 
         // Enter login info 
-        cy.get('input[name=username]').type('nvisal1');
-        cy.get('input[name=password]').type('122595');
+        cy.get('input[name=username]').type(creds[0]);
+        cy.get('input[name=password]').type(creds[1]);
         cy.get('.auth-button').click();
 
         // Click contribute button at bottom of page

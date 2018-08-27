@@ -1,5 +1,5 @@
 import { ModalService, ModalListElement, Position } from '../shared/modals';
-import { NotificationService } from '../shared/notifications';
+import { ToasterService } from '../shared/toaster';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { AuthService } from '../core/auth.service';
@@ -24,7 +24,7 @@ export class OnionComponent {
     private router: Router,
     private route: ActivatedRoute,
     public modalService: ModalService,
-    public noteService: NotificationService,
+    public noteService: ToasterService,
   ) { }
 
   /**

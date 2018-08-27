@@ -6,9 +6,7 @@ import { DialogMenuComponent } from './dialogmenu.component';
 
 import { CommonModule } from '@angular/common';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { NotificationModule } from '../notifications';
-import { ModalListElement } from './modal-list-element';
-import { Position } from './position';
+import { ToasterModule } from '../toaster';
 import { CheckBoxComponent } from './checkbox.component';
 
 export * from './modal.service';
@@ -19,7 +17,7 @@ export * from './position';
 
 
 @NgModule({
-  imports: [CommonModule, NotificationModule.forRoot(), ClickOutsideModule],
+  imports: [CommonModule, ToasterModule.forRoot(), ClickOutsideModule],
   declarations: [ContextMenuComponent, DialogMenuComponent, CheckBoxComponent],
   exports: [ContextMenuComponent, DialogMenuComponent, CheckBoxComponent]
 })
