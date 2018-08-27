@@ -1,11 +1,15 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObjectService } from '../../learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  Renderer2
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -17,11 +21,13 @@ import { catchError } from 'rxjs/operators';
 @Component({
   selector: 'cube-learning-object-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss'],
+  styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('savesRef') savesRef: ElementRef;
-  @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
+  @ViewChild('savesRef')
+  savesRef: ElementRef;
+  @ViewChild('objectLinkElement')
+  objectLinkElement: ElementRef;
 
   private subs: Subscription[] = [];
   downloading = false;
@@ -53,10 +59,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subs.push(this.route.params.subscribe(params => {
-      this.author = params['username'];
-      this.learningObjectName = params['learningObjectName'];
-    }));
+    this.subs.push(
+      this.route.params.subscribe(params => {
+        this.author = params['username'];
+        this.learningObjectName = params['learningObjectName'];
+      })
+    );
 
     this.fetchLearningObject();
 
@@ -117,11 +125,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.downloading = true;
     }
 
-    try {
-      const val = await this.cartService.addToCart(
-        this.author,
-        this.learningObjectName
+    if (download) {
+      this.download(
+        this.learningObject.author.username,
+        this.learningObject.name
       );
+    }
+
+    try {
+      await this.cartService.addToCart(this.author, this.learningObjectName);
 
       this.saved = this.cartService.has(this.learningObject);
 
@@ -130,21 +142,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.log(error);
-      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
+      this.noteService.notify(
+        'Error!',
+        'There was an error adding to your library',
+        'bad',
+        'far fa-times'
+      );
     }
-
     this.addingToLibrary = false;
-
-    if (download) {
-      try {
-        this.download(
-          this.learningObject.author.username,
-          this.learningObject.name
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    }
   }
 
   async clearCart() {
@@ -158,14 +163,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
   download(author: string, learningObjectName: string) {
     this.downloading = true;
 
-    const loaded = this.cartService.downloadLearningObject(
-      author,
-      learningObjectName
-    ).pipe(catchError(error => {
-      console.log(error);
-      this.noteService.notify('Error!', 'An error occurred and this learning object couldn\'t be downloaded', 'bad', 'far fa-times');
-      return error;
-    }));
+    const loaded = this.cartService
+      .downloadLearningObject(author, learningObjectName)
+      .pipe(
+        catchError(error => {
+          console.log(error);
+          this.noteService.notify(
+            'Error!',
+            // tslint:disable-next-line:quotemark
+            "An error occurred and this learning object couldn't be downloaded",
+            'bad',
+            'far fa-times'
+          );
+          return error;
+        })
+      );
 
     this.subs.push(
       loaded.subscribe(finished => {
@@ -181,7 +193,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
     el.select();
     document.execCommand('copy');
 
-    this.noteService.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+    this.noteService.notify(
+      'Success!',
+      'Learning object link copied to your clipboard!',
+      'good',
+      'far fa-check'
+    );
   }
 
   animateSaves() {
@@ -201,32 +218,45 @@ export class DetailsComponent implements OnInit, OnDestroy {
   shareButton(event, type) {
     switch (type) {
       case 'facebook':
-      // ignoring since the FB object is set in an imported script outside of typescripts scope
-      // @ts-ignore
-        FB.ui({
-          method: 'share',
-          href: this.url,
-        }, function(response){});
+        // ignoring since the FB object is set in an imported script outside of typescripts scope
+        // @ts-ignore
+        FB.ui(
+          {
+            method: 'share',
+            href: this.url
+          },
+          function(response) {}
+        );
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK!';
-        window.open('http://twitter.com/share?url='
-          + encodeURIComponent(this.url) + '&text='
-          + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
+        window.open(
+          'http://twitter.com/share?url=' +
+            encodeURIComponent(this.url) +
+            '&text=' +
+            encodeURIComponent(text),
+          '',
+          'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0'
+        );
 
         break;
       case 'linkedin':
         const payload = {
-          'comment': 'Check out this learning object on CLARK! ' + this.url,
-          'visibility': {
-            'code': 'anyone'
+          comment: 'Check out this learning object on CLARK! ' + this.url,
+          visibility: {
+            code: 'anyone'
           }
         };
         // tslint:disable-next-line:max-line-length
-        window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + this.buildLocation(true));
+        window.open(
+          'https://www.linkedin.com/sharing/share-offsite/?url=' +
+            this.buildLocation(true)
+        );
         break;
       case 'email':
-        window.location.href = 'mailto:?subject=Check out this learning object on CLARK!&body=' + this.buildLocation(true);
+        window.location.href =
+          'mailto:?subject=Check out this learning object on CLARK!&body=' +
+          this.buildLocation(true);
         break;
       case 'copyLink':
         this.copyLink();
@@ -251,10 +281,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   private buildLocation(encoded?: boolean) {
-    const u = window.location.protocol + '//' + window.location.host +
-    '/details' +
-    '/' + encodeURIComponent(this.learningObject.author.username) +
-    '/' + encodeURIComponent(this.learningObjectName);
+    const u =
+      window.location.protocol +
+      '//' +
+      window.location.host +
+      '/details' +
+      '/' +
+      encodeURIComponent(this.learningObject.author.username) +
+      '/' +
+      encodeURIComponent(this.learningObjectName);
 
     return encoded ? encodeURIComponent(u) : u;
   }
