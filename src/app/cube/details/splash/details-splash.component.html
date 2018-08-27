@@ -3,7 +3,7 @@
     <div class="header">
       <div class="name">{{ learningObject.name }}</div>
       <div class="author">Created by
-        <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date
+        <span id="author-link" [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date
         | date:'shortDate' }}</div>
       <div *ngIf="learningObject.contributors" class="author">Contributors:
         <span *ngFor="let contributor of contributorsList; let i = index;" class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name + " - " + contributor.organization | titlecase }}
