@@ -25,7 +25,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   userSearchInput: ElementRef;
 
   users;
-  arrayOfUsers = [];
+  searchResults = [];
   selectedAuthors = [];
   connected = false;
   connection;
@@ -82,34 +82,39 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
          }
          // Limit search results to 10
          if (val.length <= 10) {
-          this.arrayOfUsers = val;
+          this.searchResults = val;
          } else {
             for (let i = 0; i < 10; i++) {
-              this.arrayOfUsers[i] = val[i];
+              this.searchResults[i] = val[i];
             }
           }
           // If query is empty, remove previous results
           if (this.query.text === '') {
-            this.arrayOfUsers = [];
+            this.searchResults = [];
           }
       });
   }
 
   addAuthor(index) {
     if (this.isAuthorSelected) {
-      this.selectedAuthors.push(this.arrayOfUsers[index].username);
+      this.selectedAuthors.push(this.searchResults[index]);
       this.learningObject.contributors = this.selectedAuthors;
     }
   }
 
-  removeAuthor(username) {
-    const index = this.selectedAuthors.indexOf(username);
-    this.selectedAuthors.splice(index, 1);
+  removeAuthor(user) {
+    for (let i = 0; i < this.selectedAuthors.length; i++) {
+      if (user.username === this.selectedAuthors[i].username) {
+        this.selectedAuthors.splice(i, 1);
+      }
+    }
   }
 
   isAuthorSelected(index) {
-    if (this.selectedAuthors.indexOf(this.arrayOfUsers[index].username) === -1) {
-      return true;
+    for (let i = 0; i < this.selectedAuthors.length; i++) {
+      if (this.searchResults[index].username === this.selectedAuthors[i].username) {
+        return true;
+      }
     }
     return false;
   }
