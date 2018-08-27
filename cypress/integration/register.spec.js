@@ -4,9 +4,17 @@ import { SSL_OP_CISCO_ANYCONNECT } from 'constants';
 
 describe('Browse', () => {
 
+    let regInfo; 
+
     beforeEach(() => {
+
         // Return to home page before each test
-        cy.visit('http://localhost4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
+        cy.fixture('register.json').then((reg) => {
+            regInfo = reg;
+        });
     });   
     // =============================================================
     // /register testing
@@ -52,7 +60,7 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -66,7 +74,7 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -80,7 +88,7 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -108,10 +116,10 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -125,13 +133,13 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -145,16 +153,16 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email - should be in use
         cy.get('.input.email').children('input').type('nvisal1@students.towson.edu');
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -168,16 +176,16 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email - should be in use
         cy.get('.input.email').children('input').type('invalid format');
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -191,10 +199,10 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email - should be in use
         cy.get('.input.email').children('input').type('invalid format');
@@ -214,16 +222,18 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email - should be in use
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Neat');
+
+        cy.wait(1000);
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -237,13 +247,13 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email - should be in use
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson');
@@ -263,13 +273,13 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email - should be in use
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
         cy.get('.input.organization').children('input').type('Towson');
@@ -289,16 +299,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -312,16 +325,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -341,16 +357,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -359,7 +378,7 @@ describe('Browse', () => {
         cy.wait(1000);
 
         // Fill in username
-        cy.get('.input.username').children('input').type('Cypress95');
+        cy.get('.input.username').children('input').type(regInfo[4]);
 
         // Click next button on step 2
         cy.get('.content-box').children('.top').children('.buttons').children('button').eq(1).click({multiple: true});
@@ -373,16 +392,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -391,10 +413,10 @@ describe('Browse', () => {
         cy.wait(1000);
 
         // Fill in username
-        cy.get('.input.username').children('input').type('Cypress95');
+        cy.get('.input.username').children('input').type(regInfo[4]);
 
         // Fill in password
-        cy.get('.input.password').children('input').type('password');
+        cy.get('.input.password').children('input').type(regInfo[5]);
 
         // Click next button on step 2
         cy.get('.content-box').children('.top').children('.buttons').children('button').eq(1).click({multiple: true});
@@ -408,16 +430,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -426,10 +451,10 @@ describe('Browse', () => {
         cy.wait(1000);
 
         // Fill in username
-        cy.get('.input.username').children('input').type('Cypress95');
+        cy.get('.input.username').children('input').type(regInfo[4]);
 
         // Fill in password
-        cy.get('.input.password').children('input').type('password');
+        cy.get('.input.password').children('input').type(regInfo[5]);
 
         // Fill in confirm password
         cy.get('.input.password-verify').children('input').type('pass');
@@ -446,16 +471,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -467,10 +495,10 @@ describe('Browse', () => {
         cy.get('.input.username').children('input').type('nvisal1');
 
         // Fill in password
-        cy.get('.input.password').children('input').type('password');
+        cy.get('.input.password').children('input').type(regInfo[5]);
 
         // Fill in confirm password
-        cy.get('.input.password-verify').children('input').type('password');
+        cy.get('.input.password-verify').children('input').type(regInfo[5]);
 
         // Click next button on step 2
         cy.get('.content-box').children('.top').children('.buttons').children('button').eq(1).click({multiple: true});
@@ -484,16 +512,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -502,13 +533,13 @@ describe('Browse', () => {
         cy.wait(1000);
 
         // Fill in username
-        cy.get('.input.username').children('input').type('Cypress95');
+        cy.get('.input.username').children('input').type(regInfo[4]);
 
         // Fill in password
-        cy.get('.input.password').children('input').type('password');
+        cy.get('.input.password').children('input').type(regInfo[5]);
 
         // Fill in confirm password
-        cy.get('.input.password-verify').children('input').type('password');
+        cy.get('.input.password-verify').children('input').type(regInfo[5]);
 
         // Click next button on step 2
         cy.get('.content-box').children('.top').children('.buttons').children('button').eq(1).click({multiple: true});
@@ -522,16 +553,19 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Fill in first name
-        cy.get('.input.firstname').children('input').type('Nick');
+        cy.get('.input.firstname').children('input').type(regInfo[0]);
 
         // Fill in last name
-        cy.get('.input.lastname').children('input').type('test test');
+        cy.get('.input.lastname').children('input').type(regInfo[1]);
 
         // Fill in email
-        cy.get('.input.email').children('input').type('cypressTest@cypresstesting.com');
+        cy.get('.input.email').children('input').type(regInfo[2]);
 
         // Fill in organization
-        cy.get('.input.organization').children('input').type('Towson University');
+        cy.get('.input.organization').children('input').type(regInfo[3]);
+
+        // Select first organization from dropdown
+        cy.get('#container').children('ul').children('li').first().click();
 
         // Click next button on step 1
         cy.get('.content-box').children('.top').children('.buttons').children('button').click();
@@ -540,13 +574,13 @@ describe('Browse', () => {
         cy.wait(1000);
 
         // Fill in username
-        cy.get('.input.username').children('input').type('Cypress95');
+        cy.get('.input.username').children('input').type(regInfo[4]);
 
         // Fill in password
-        cy.get('.input.password').children('input').type('password');
+        cy.get('.input.password').children('input').type(regInfo[5]);
 
         // Fill in confirm password
-        cy.get('.input.password-verify').children('input').type('password');
+        cy.get('.input.password-verify').children('input').type(regInfo[5]);
 
         // Click next button on step 2
         cy.get('.content-box').children('.top').children('.buttons').children('button').eq(1).click({multiple: true});
@@ -557,7 +591,7 @@ describe('Browse', () => {
 
         // User content 
         // Full name
-        cy.get('clark-user-card').children('.user-card.ng-star-inserted').get('.user-content').children('.title').contains('Nick Test Test');
+        cy.get('clark-user-card').children('.user-card.ng-star-inserted').get('.user-content').children('.title').contains(regInfo[0]);
         // Username
         cy.get('clark-user-card').children('.user-card.ng-star-inserted').get('.user-content').children('.details').contains('Username: Cypress95');
         // Email

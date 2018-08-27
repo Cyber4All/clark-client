@@ -6,7 +6,9 @@ describe('Dashboard', () => {
 
     beforeEach(() => {
         // Return to home page before each test
-        cy.visit('http://localhost4200/home');
+        cy.fixture('route.json').then((route) => {
+            cy.visit(route[0]);
+        });
     });   
     // =============================================================
     // /dashboard testing

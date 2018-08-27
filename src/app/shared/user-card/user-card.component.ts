@@ -1,5 +1,5 @@
-import { LearningObjectService } from './../../cube/learning-object.service';
-import { UserService } from './../../core/user.service';
+import { LearningObjectService } from '../../cube/learning-object.service';
+import { UserService } from '../../core/user.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { User, LearningObject } from '@cyber4all/clark-entity';
 import { ModalService } from '../modals';

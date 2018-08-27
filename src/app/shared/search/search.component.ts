@@ -108,11 +108,11 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
    */
   performSearch(searchbar) {
     searchbar.value = searchbar.value.trim();
-    const query = searchbar.value;
-    if (query.length) {
+    const text = searchbar.value;
+    if (text.length) {
       searchbar.blur();
       this.didBlur.emit();
-      this.router.navigate(['/browse', { query }]);
+      this.router.navigate(['/browse'], { queryParams: { text }});
     }
 
     this.close.emit();
@@ -124,7 +124,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
    */
   performOutcomeSearch(outcomeId) {
     this.closeMappingsDropdown.next();
-    this.router.navigate(['/browse', { standardOutcomes: outcomeId }]);
+    this.router.navigate(['/browse'], { queryParams: {standardOutcomes: outcomeId} });
   }
 
   toggleMappingsFilterSource(sourceName: string) {
