@@ -14,9 +14,10 @@
     </div>
   </div>
   <div class="comment-wrapper">
-    <textarea placeholder="Why did you leave this rating?" [(ngModel)]="rating.comment" userscaleable></textarea>
+    <textarea aria-label="comment" placeholder="Why did you leave this rating?" [(ngModel)]="rating.comment" userscaleable></textarea>
     <div class="btn-group center">
-      <button class="button good" [ngClass]="{'disabled': !rating.comment || rating.comment === ''}" (click)="submitRating()">Submit <i class="far fa-arrow-right"></i></button>
+      <button class="button good" [ngClass]="{'disabled': !rating.comment || rating.comment === ''}" (click)="submitRating()">Submit
+        <i class="far fa-arrow-right"></i></button>
       <button class="button neutral" (click)="cancel()">Cancel <i class="far fa-ban"></i></button>
     </div>
   </div>

@@ -3,13 +3,14 @@
     Reviews
   </div>
   <div class="overall-rating">
-    <clark-rating-stars [rating]="averageRating" [color]="'gold'" [size]="22"  [reviewsCount]="ratings?.length"></clark-rating-stars>
+    <clark-rating-stars [rating]="averageRating" [color]="'gold'" [size]="22" [reviewsCount]="ratings?.length"></clark-rating-stars>
   </div>
   <div *ngIf="ratings?.length; else noRatings" class="ratings-list">
     <div *ngFor="let rating of ratings; let i = index;" class="rating-list-element">
       <a [routerLink]="['/users', rating.user.username]">
         <div class="rating-user">
-          <img [src]="userService.getGravatarImage(rating.user.email, 45)" class="user-image" /> 
+          <img [src]="userService.getGravatarImage(rating.user.email, 45)" class="user-image" alt="Picture of {{rating.user.name}}"
+          />
           <div class="user-name">
             <span>{{ rating.user.name }}</span>
             <!-- TODO implement check for verified user here -->
@@ -28,7 +29,8 @@
           <span (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
         </ng-container>
         <ng-template #notOwnerOptions>
-            <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
+          <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report
+            rating</span>
         </ng-template>
       </div>
     </div>

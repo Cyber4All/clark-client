@@ -4,21 +4,25 @@
       <div class="header">
         <div class="name">{{ learningObject.name }}</div>
         <div class="author">Created by
-          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name | titlecase}}</span> - 
-          <span [routerLink]="['/organization', learningObject.author.organization]" class="link">{{learningObject.author.organization | titlecase}}</span>
+          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name | titlecase}}</span>
+          -
+          <span [routerLink]="['/organization', learningObject.author.organization]" class="link">{{learningObject.author.organization
+            | titlecase}}</span>
           , updated {{ learningObject.date | date:'shortDate' }}</div>
         <div *ngIf="learningObject.contributors" class="author">Contributors:
           <span *ngFor="let contributor of contributorsList; let i = index;">
-             <span class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name | titlecase }}</span>
-            - <span [routerLink]="['/organization', contributor.organization]" class="link">{{contributor.organization | titlecase}}</span>
+            <span class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name | titlecase }}</span>
+            - <span [routerLink]="['/organization', contributor.organization]" class="link">{{contributor.organization |
+              titlecase}}</span>
             <span *ngIf="i !== contributorsList.length -1">, </span>
-          </span> 
+          </span>
         </div>
         <div class="header-bottom">
           <div class="rating">
             <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length" (click)="scrollToRatings()"></clark-rating-stars>
             <a *ngIf="loggedin && auth.user.emailVerified" (click)="showAddRating = true;">Write a review</a>
-            <span class="emailNotVerified" *ngIf="!auth.user.emailVerified">You must verify your email in order to review learning objects.</span>
+            <span class="emailNotVerified" *ngIf="!auth.user.emailVerified">You must verify your email in order to review
+              learning objects.</span>
           </div>
           <div class="type">{{ learningObject.length }}</div>
         </div>
@@ -36,13 +40,17 @@
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
       </div>
       <div #ratingsWrapper class="ratings">
-        <button *ngIf="!isMobile && loggedin" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}" class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' : 'Write a'}} review <i class="far fa-pencil"></i></button>
-        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [loggedIn]="loggedin" (editRating)="showAddRating = true;" (deleteRating)="deleteRating($event)" (reportRating)="reportRating($event)"></clark-learning-object-ratings>
+        <button *ngIf="!isMobile && loggedin" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}"
+          class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' :
+          'Write a'}} review <i class="far fa-pencil"></i></button>
+        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
+          (deleteRating)="deleteRating($event)" (reportRating)="reportRating($event)"></clark-learning-object-ratings>
       </div>
     </div>
     <div class="sidebar">
       <div class="inner">
-        <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
+        <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete."
+          tipLocation="top">
           <i class="fas fa-exclamation"></i>Review Pending
         </div>
         <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
@@ -69,11 +77,13 @@
         <div class="details-metrics">
           <div>
             <i class="far fa-save"></i>
-            <span #savesRef>{{ learningObject?.metrics.saves }}</span> save{{ (learningObject?.metrics.saves) !== 1 ? 's' : '' }}
+            <span #savesRef>{{ learningObject?.metrics.saves }}</span> save{{ (learningObject?.metrics.saves) !== 1 ? 's'
+            : '' }}
           </div>
           <div>
             <i class="far fa-download"></i>
-            <span>{{ learningObject?.metrics.downloads }}</span> download{{ (learningObject?.metrics.downloads) !== 1 ? 's' : '' }}
+            <span>{{ learningObject?.metrics.downloads }}</span> download{{ (learningObject?.metrics.downloads) !== 1 ? 's'
+            : '' }}
           </div>
         </div>
         <div class="details-share">
@@ -96,6 +106,7 @@
   <div class="new-rating" (click)="$event.stopPropagation()">
     <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
     <div class="title">Rate this Learning Object</div>
-    <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="submitNewRating($event)" (cancelRating)="showAddRating = false;"></clark-new-rating>
+    <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="submitNewRating($event)"
+      (cancelRating)="showAddRating = false;"></clark-new-rating>
   </div>
 </div>

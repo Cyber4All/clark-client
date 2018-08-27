@@ -17,11 +17,12 @@
     <div class="comment">
       <div class="comment-description">
         <ng-container *ngIf="type !== undefined && type <= 1">
-          You're reporting this {{ subject }} because <span>{{ types[type] | lowercase }}</span>. 
+          You're reporting this {{ subject }} because <span>{{ types[type] | lowercase }}</span>.
         </ng-container>
-        Can you tell us more about why<ng-container *ngIf="type !== undefined && type === 2"> you're reporting this {{ subject }}</ng-container>?
+        Can you tell us more about why
+        <ng-container *ngIf="type !== undefined && type === 2"> you're reporting this {{ subject }}</ng-container>?
       </div>
-      <textarea [(ngModel)]="comment" placeholder="More information..."></textarea>
+      <textarea aria-label="report comment" [(ngModel)]="comment" placeholder="More information..."></textarea>
       <div class="btn-group center">
         <button class="button bad" (click)="triggerReport()">Send Report<i class="fas fa-flag"></i></button>
         <button class="button neutral">Cancel<i class="far fa-ban"></i></button>
