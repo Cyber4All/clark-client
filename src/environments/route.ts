@@ -137,6 +137,26 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   }
 };
 
+export const RATING_ROUTES = {
+  DELETE_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  },
+  EDIT_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  },
+  CREATE_RATING(learningObjectAuthor: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
+  },
+  GET_LEARNING_OBJECT_RATINGS(learningObjectAuthor: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
+  },
+  FLAG_LEARNING_OBJECT_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}/flags`;
+  },
+  GET_USER_RATINGS(username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/ratings`;
+  },
+};
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
 };

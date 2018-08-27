@@ -1,6 +1,10 @@
+@import '~_vars.scss';
+
 .queue-container {
   background: #fff;
-  box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  border-radius: 7px;
 
   .header {
     width: 100%;
@@ -14,18 +18,35 @@
     font-weight: 600;
   }
 }
+
+.status {
+  width: 100%;
+  font-size: 14px;
+  font-weight: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .svg-inline--fa {
+    font-size: 14px;
+    margin-left: 15px;
+    color: $bright-blue;
+  }
+}
+
 .queue-body {
   padding: 10px;
-  min-width: 350px;
+  min-width: 250px;
   max-height: 300px;
   overflow-y: auto;
   overflow-x: hidden;
-}
-.queue-body.collapsed {
-  height: 0;
-  padding: 0;
-  overflow-y: hidden;
-  overflow-x: hidden;
+
+  &.collapsed {
+    height: 0;
+    padding: 0;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
 }
 
 .inline-flex {
@@ -33,6 +54,7 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .folder {
   .icon {
     color: #808e9b;
@@ -49,21 +71,26 @@
 .file {
   margin-bottom: 10px;
 }
+
 .button:disabled {
   cursor: not-allowed;
   opacity: 0.75;
 }
+
 .button.upload {
   margin-top: 20px;
 }
+
 .button.stretch {
   width: 100%;
 }
+
 .button.clean {
   padding: 0;
   background: transparent;
   box-shadow: none;
 }
+
 .fa-minus,
 .fa-bars {
   color: #fff !important;

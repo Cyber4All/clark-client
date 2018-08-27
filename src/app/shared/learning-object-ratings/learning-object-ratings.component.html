@@ -1,0 +1,50 @@
+<div class="learning-object-ratings">
+  <div class="title">
+    Reviews
+  </div>
+  <div class="overall-rating">
+    <clark-rating-stars [rating]="averageRating" [color]="'gold'" [size]="22" [reviewsCount]="ratings?.length"></clark-rating-stars>
+  </div>
+  <div *ngIf="ratings?.length; else noRatings" class="ratings-list">
+    <div *ngFor="let rating of ratings; let i = index;" class="rating-list-element">
+      <a [routerLink]="['/users', rating.user.username]">
+        <div class="rating-user">
+          <img [src]="userService.getGravatarImage(rating.user.email, 45)" class="user-image" alt="Picture of {{rating.user.name}}"
+          />
+          <div class="user-name">
+            <span>{{ rating.user.name }}</span>
+            <!-- TODO implement check for verified user here -->
+            <div *ngIf="false" class="verified"><i class="far fa-check-circle"></i>verified user</div>
+          </div>
+        </div>
+      </a>
+      <clark-rating-stars [rating]="rating.number" [color]="'gold'" [size]="18"></clark-rating-stars>
+      <div class="rating-date">{{ getDate(rating.date) | date }}</div>
+      <div class="rating-text">
+        {{ rating.comment }}
+      </div>
+      <div *ngIf="auth.user.emailVerified" class="options">
+        <ng-container *ngIf="isAuthor(i); else notOwnerOptions">
+          <span (click)="submitEditRating(i)"><i class="far fa-pencil-alt"></i>Edit rating</span>
+          <span (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
+        </ng-container>
+        <ng-template #notOwnerOptions>
+          <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report
+            rating</span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <ng-template #noRatings>
+    <div class="no-ratings">
+      This learning object doesn't have any ratings yet!
+    </div>
+  </ng-template>
+</div>
+<!-- This wrapper is styled from parent component -->
+<div *ngIf="showReport" class="report-rating-wrapper" [ngClass]="{'active': showReport}" (click)="showReport = false;">
+  <div class="report-inner" (click)="$event.stopPropagation();">
+    <div (click)="showReport = false;" class="closePopup"><i class="fal fa-times"></i></div>
+    <clark-report-rating (cancel)="showRating = false;" (submit)="triggerReportRating($event)"></clark-report-rating>
+  </div>
+</div>

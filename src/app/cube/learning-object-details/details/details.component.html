@@ -2,6 +2,7 @@
   <div class="splash">
     <div class="inner">
       <div class="header">
+<<<<<<< HEAD
         <div class="name" id="object-name">{{ learningObject.name }}</div>
         <div class="author">Created by
           <span [routerLink]="['/users', learningObject.author.username]" class="link" id="author-link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date | date:'shortDate' }}</div>
@@ -11,6 +12,32 @@
           </span>
         </div>
         <div class="type">{{ learningObject.length }}</div>
+=======
+        <div class="name">{{ learningObject.name }}</div>
+        <div class="author">Created by
+          <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name | titlecase}}</span>
+          -
+          <span [routerLink]="['/organization', learningObject.author.organization]" class="link">{{learningObject.author.organization
+            | titlecase}}</span>
+          , updated {{ learningObject.date | date:'shortDate' }}</div>
+        <div *ngIf="learningObject.contributors" class="author">Contributors:
+          <span *ngFor="let contributor of contributorsList; let i = index;">
+            <span class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name | titlecase }}</span>
+            - <span [routerLink]="['/organization', contributor.organization]" class="link">{{contributor.organization |
+              titlecase}}</span>
+            <span *ngIf="i !== contributorsList.length -1">, </span>
+          </span>
+        </div>
+        <div class="header-bottom">
+          <div class="rating">
+            <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length" (click)="scrollToRatings()"></clark-rating-stars>
+            <a *ngIf="loggedin && auth.user.emailVerified" (click)="showAddRating = true;">Write a review</a>
+            <span class="emailNotVerified" *ngIf="!auth.user.emailVerified">You must verify your email in order to review
+              learning objects.</span>
+          </div>
+          <div class="type">{{ learningObject.length }}</div>
+        </div>
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
       </div>
     </div>
   </div>
@@ -24,15 +51,34 @@
       <div class="materials">
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
       </div>
+<<<<<<< HEAD
     </div>
     <div class="sidebar">
       <div class="inner">
         <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete." tipLocation="top">
+=======
+      <div #ratingsWrapper class="ratings">
+        <button *ngIf="!isMobile && loggedin" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}"
+          class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' :
+          'Write a'}} review <i class="far fa-pencil"></i></button>
+        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
+          (deleteRating)="deleteRating($event)" (reportRating)="reportRating($event)"></clark-learning-object-ratings>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="inner">
+        <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete."
+          tipLocation="top">
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
           <i class="fas fa-exclamation"></i>Review Pending
         </div>
         <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
           <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
+<<<<<<< HEAD
             class="button good" id="download-button" (click)="addToCart(true)">
+=======
+            class="button good" (click)="addToCart(true)">
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
             <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
               <span *ngIf="downloading">
                 <i class="fal fa-spinner-third fa-spin"></i>
@@ -40,7 +86,11 @@
             </span>
             <span *ngIf="!canDownload">Not available for download</span>
           </div>
+<<<<<<< HEAD
           <div id="save-to-library" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
+=======
+          <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
             {{ saved ? 'Saved to your library!' : 'Save to Library' }}
             <span *ngIf="addingToLibrary">
               <i class="fal fa-spinner-third fa-spin"></i>
@@ -48,27 +98,49 @@
           </div>
         </div>
         <ng-container *ngIf="!auth.user">
+<<<<<<< HEAD
           <div class="login-msg" id="login-msg">Please
+=======
+          <div class="login-msg">Please
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
             <a [routerLink]="['/auth/login']">log in</a> to add this Learning Object to your library.</div>
         </ng-container>
         <div class="details-metrics">
           <div>
             <i class="far fa-save"></i>
+<<<<<<< HEAD
             <span #savesRef>{{ learningObject?.metrics.saves }}</span> save{{ (learningObject?.metrics.saves) !== 1 ? 's' : '' }}
           </div>
           <div>
             <i class="far fa-download"></i>
             <span>{{ learningObject?.metrics.downloads }}</span> download{{ (learningObject?.metrics.downloads) !== 1 ? 's' : '' }}
+=======
+            <span #savesRef>{{ learningObject?.metrics.saves }}</span> save{{ (learningObject?.metrics.saves) !== 1 ? 's'
+            : '' }}
+          </div>
+          <div>
+            <i class="far fa-download"></i>
+            <span>{{ learningObject?.metrics.downloads }}</span> download{{ (learningObject?.metrics.downloads) !== 1 ? 's'
+            : '' }}
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
           </div>
         </div>
         <div class="details-share">
           <div class="share-title"></div>
           <div class="share-icons">
+<<<<<<< HEAD
             <button (click)="shareButton($event, 'facebook')" id="facebook" class="facebook"><i class="fab fa-facebook"></i></button>
             <button (click)="shareButton($event, 'twitter')" id="twitter" class="twitter"><i class="fab fa-twitter"></i></button>
             <button (click)="shareButton($event, 'linkedin')" id="linkedin" class="linkedin"><i class="fab fa-linkedin"></i></button>
             <button (click)="shareButton($event, 'email')" id="email" class="email"><i class="fas fa-envelope"></i></button>
             <button (click)="shareButton($event, 'copyLink')" id="copylink" class="copylink"><i class="fas fa-clipboard"></i></button>
+=======
+            <button (click)="shareButton($event, 'facebook')" class="facebook"><i class="fab fa-facebook"></i></button>
+            <button (click)="shareButton($event, 'twitter')" class="twitter"><i class="fab fa-twitter"></i></button>
+            <button (click)="shareButton($event, 'linkedin')" class="linkedin"><i class="fab fa-linkedin"></i></button>
+            <button (click)="shareButton($event, 'email')" class="email"><i class="fas fa-envelope"></i></button>
+            <button (click)="shareButton($event, 'copyLink')" class="copylink"><i class="fas fa-clipboard"></i></button>
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
             <textarea #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height: 0;"></textarea>
           </div>
         </div>
@@ -77,3 +149,14 @@
   </div>
   <div [id]="iframeParent"></div>
 </div>
+<<<<<<< HEAD
+=======
+<div *ngIf="loggedin" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
+  <div class="new-rating" (click)="$event.stopPropagation()">
+    <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
+    <div class="title">Rate this Learning Object</div>
+    <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="submitNewRating($event)"
+      (cancelRating)="showAddRating = false;"></clark-new-rating>
+  </div>
+</div>
+>>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
