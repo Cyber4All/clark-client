@@ -158,27 +158,27 @@ describe('User', () => {
         cy.contains('Nick');
     });
 
-    it('Navigate to personal profile page and enter correct password to see if inputs appear', () => {
-        // Login 
-        cy.login();
+    // it('Navigate to personal profile page and enter correct password to see if inputs appear', () => {
+    //     // Login 
+    //     cy.login();
 
-        // Assert new navbar elements
-        cy.get('#contributor-link');
-        cy.get('#gravatar').click({ force: true });
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+    //     // Assert new navbar elements
+    //     cy.get('#contributor-link');
+    //     cy.get('#gravatar').click({ force: true });
+    //     cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
 
-        // Assert URL 
-        cy.url().should('include', 'user');
+    //     // Assert URL 
+    //     cy.url().should('include', 'user');
 
-        // Click Edit Profile
-        cy.get('#edit-profile').click({ force: true });
+    //     // Click Edit Profile
+    //     cy.get('#edit-profile').click({ force: true });
 
-        // Fill out name input 
-        cy.get('input[name=password]').type(creds[1], { force: true });
+    //     // Fill out name input 
+    //     cy.get('input[name=password]').type(creds[1], { force: true });
     
-        // Check for new fields 
-        cy.get('input[name="new password"]');
-    });
+    //     // Check for new fields 
+    //     cy.get('input[name="new password"]');
+    // });
 
     it('Navigate to personal profile page and click print clark card button', () => {
         // Login 
