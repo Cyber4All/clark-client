@@ -55,7 +55,6 @@ describe('Details', () => {
         cy.url().should('include', 'home');
     });
 
-<<<<<<< HEAD
      it('Navigate to details and clicking the rating to scroll page', () => {
         // Wait for learning objects to load on page
         cy.wait(1000);
@@ -124,11 +123,9 @@ describe('Details', () => {
     // it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
     //     // Wait for learning objects to load on page
     //     cy.wait(1000);
-=======
     it('Navigate to details and click DOWNLOAD NOW button when logged out', () => {
         // Wait for learning objects to load on page
         cy.wait(1000);
->>>>>>> d406c59e8a11a6279909619f3195ad7de788511d
 
         // Click left-most card
         cy.get('.learning-object').first().click({ multiple: true });
