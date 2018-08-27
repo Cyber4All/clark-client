@@ -58,7 +58,9 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
       })
     );
       if (this.learningObject.contributors) {
-        this.selectedAuthors = this.learningObject.contributors;
+        for (let i = 0; i < this.learningObject.contributors.length; i++) {
+          this.selectedAuthors[i] = this.learningObject.contributors[i];
+        }
       }
   }
 
@@ -74,6 +76,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   search() {
     this.query.text = this.query.text.trim();
       this.userService.searchUsers(this.query.text).then(val => {
+        console.log(val);
          // Remove current user from results
          for (let i = 0; i < val.length; i++) {
           if (this.authService.username === val[i].username) {
@@ -104,7 +107,13 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   removeAuthor(user) {
     for (let i = 0; i < this.selectedAuthors.length; i++) {
-      if (user.username === this.selectedAuthors[i].username) {
+      if (user.username === this.selectedAuthors[i].username ||
+        user.username === this.selectedAuthors[i]._username) {
+        // If contributors list already exits, remove from that list
+        if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+          const index = this.learningObject.contributors.indexOf(user);
+          this.learningObject.contributors.splice(index, 1);
+        }
         this.selectedAuthors.splice(i, 1);
       }
     }
@@ -112,7 +121,8 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   isAuthorSelected(index) {
     for (let i = 0; i < this.selectedAuthors.length; i++) {
-      if (this.searchResults[index].username === this.selectedAuthors[i].username) {
+      if (this.searchResults[index].username === this.selectedAuthors[i].username ||
+        this.searchResults[index].username === this.selectedAuthors[i]._username) {
         return true;
       }
     }
