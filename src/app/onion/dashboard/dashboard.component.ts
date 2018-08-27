@@ -92,14 +92,14 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.learningObjects = await this.getLearningObjects() || [];
+    this.learningObjects = await this.getLearningObjects();
   }
   /**
    * Fetches and sets LearningObject[]
    *
    * @memberof DashboardComponent
    */
-  async getLearningObjects(): Promise<void | DashboardLearningObject[]> {
+  async getLearningObjects(): Promise<[] | DashboardLearningObject[]> {
     this.loading = true;
     return this.learningObjectService
       .getLearningObjects()
@@ -188,10 +188,10 @@ export class DashboardComponent implements OnInit {
                   'good',
                   'far fa-times'
                 );
-                this.learningObjects = await this.getLearningObjects() || [];
+                this.learningObjects = await this.getLearningObjects();
               })
               .catch(async(err) => {
-                this.learningObjects = await this.getLearningObjects() || [];
+                console.log(err);
               });
           } else {
             this.learningObjectService
@@ -207,7 +207,7 @@ export class DashboardComponent implements OnInit {
                   'good',
                   'far fa-times'
                 );
-                this.learningObjects = await this.getLearningObjects() || [];
+                this.learningObjects = await this.getLearningObjects();
               })
               .catch(err => {});
           }
@@ -220,7 +220,7 @@ export class DashboardComponent implements OnInit {
       await this.learningObjectService.togglePublished(
         this.focusedLearningObject
       );
-      this.learningObjects = await this.getLearningObjects() || [];
+      this.learningObjects = await this.getLearningObjects();
     } catch (e) {
       const err = e._body
         ? e._body
@@ -516,7 +516,7 @@ export class DashboardComponent implements OnInit {
           this.clearSelected(true);
           this.cancelAddChildren();
 
-          this.getLearningObjects().then(objects => { this.learningObjects = objects || undefined; });
+          this.getLearningObjects().then(objects => { this.learningObjects = objects });
         }).catch(error => {
           console.log(error);
 
