@@ -36,7 +36,7 @@
         <div class="slide-title">Notes</div>
       </div>
       <div class="notes">
-        <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc." (input)="triggerSave$.next()"></textarea>
+        <textarea aria-label="Learning Object notes" rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc." (input)="triggerSave$.next()"></textarea>
       </div>
     </div>
   </div>
