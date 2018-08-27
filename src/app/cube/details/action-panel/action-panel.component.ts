@@ -1,12 +1,9 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
-import { LearningObjectService } from './../../learning-object.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { UserService } from '../../../core/user.service';
 import { RatingService } from '../../../core/rating.service';
 import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
