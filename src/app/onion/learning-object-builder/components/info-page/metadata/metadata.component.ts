@@ -76,7 +76,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   search() {
     this.query.text = this.query.text.trim();
       this.userService.searchUsers(this.query.text).then(val => {
-        console.log(val);
          // Remove current user from results
          for (let i = 0; i < val.length; i++) {
           if (this.authService.username === val[i].username) {
