@@ -141,7 +141,6 @@ describe('Details', () => {
         // Assert URL 
         cy.url().should('include', 'details');
     });
-<<<<<<< HEAD
 
     it('Navigate to details and click DOWNLOAD NOW button', () => {
         // Login 
@@ -216,6 +215,3 @@ describe('Details', () => {
         cy.get('#copylink').click({ force: true });
     });
 }); 
-=======
-});
->>>>>>> fdd57a44cb2cd718c554603f8f74a8b9b0aa7656
