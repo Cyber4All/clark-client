@@ -61,6 +61,7 @@
     "install-peers": "^1.0.2",
     "jasmine-core": "~3.2.0",
     "jasmine-spec-reporter": "~4.2.1",
+    "jest": "^22.4.3",
     "karma": "~3.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "~1.0.1",
@@ -68,11 +69,11 @@
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-html-reporter": "^1.2.0",
     "protractor": "~5.4.0",
+    "ts-jest": "^22.4.2",
     "ts-node": "~7.0.0",
     "tslint": "~5.10.0",
     "typescript": "^2.7.2",
-    "ts-jest": "^22.4.2",
-    "jest": "^22.4.3"
+    "webpack": "^4.17.1"
   },
   "prettier": {
     "singleQuote": true
