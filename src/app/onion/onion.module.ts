@@ -12,10 +12,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { OnionCoreModule } from './core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
-import { NotificationModule } from '../shared/notifications';
+import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { DashboardResolver } from './dashboard/dashboard.resolver';
-import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
+import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver'
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -41,7 +41,7 @@ import { LearningObjectResolve } from './learning-object-builder/learning-object
     LearningObjectBuilderModule.forRoot(),
     HttpClientModule,
     ModalModule,
-    NotificationModule,
+    ToasterModule,
   ],
   providers: [ DashboardResolver, LearningObjectResolve ]
 })

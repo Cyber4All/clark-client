@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie';
 import { User } from '@cyber4all/clark-entity';
 import { Subject } from 'rxjs/Subject';
-import { Router, NavigationEnd, RouterEvent } from '@angular/router';
+import { NavigationEnd, RouterEvent } from '@angular/router';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { map } from 'rxjs/operator/map';
 // import * as io from 'socket.io';
@@ -25,8 +25,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private cookies: CookieService,
-    // private router: Router
+    private cookies: CookieService
   ) {
     if (this.cookies.get('presence')) {
       this.validate().then(

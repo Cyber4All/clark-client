@@ -2,14 +2,12 @@ import {
   Component,
   OnInit,
   Input,
-  OnDestroy,
   Output,
   EventEmitter
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { DirectoryNode } from 'app/shared/filesystem/DirectoryTree';
-import { getIcon } from 'app/shared/filesystem/file-icons';
+import { DirectoryNode } from '../DirectoryTree';
+import { getIcon } from '../file-icons';
 
 @Component({
   selector: 'clark-file-grid-view',

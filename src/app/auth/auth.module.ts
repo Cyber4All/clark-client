@@ -24,8 +24,8 @@ import { ProfileInfoComponent } from './register/profile-info/profile-info.compo
 import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.component';
 import { ModalModule } from '../shared/modals';
 import {
-  NotificationModule
-} from '../shared/notifications';
+  ToasterModule
+} from '../shared/toaster';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,7 @@ import {
     HttpClientModule,
     SharedModule,
     ModalModule,
-    NotificationModule,
+    ToasterModule,
   ],
   providers: [CanResetPasswordGuard, AuthResolve]
 })

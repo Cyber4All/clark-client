@@ -1,5 +1,6 @@
-import { Observable, Subject } from 'rxjs/Rx';
-import { SortType, OrderBy } from './../../shared/interfaces/query';
+
+import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { SortType, OrderBy } from '../../shared/interfaces/query';
 import { ModalService, ModalListElement, Position} from '../../shared/modals';
 import { Router } from '@angular/router';
 import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';

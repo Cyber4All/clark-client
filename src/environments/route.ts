@@ -1,4 +1,4 @@
-import { environment } from './environment';
+import { environment } from '@env/environment';
 
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
@@ -22,7 +22,7 @@ export const USER_ROUTES = {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects`;
+    )}/learning-objects?children=true`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -106,6 +106,9 @@ export const USER_ROUTES = {
   },
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
+  },
+  SET_CHILDREN(username, learningObjectName) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(username)}/${encodeURIComponent(learningObjectName)}/children`;
   }
 };
 
@@ -128,6 +131,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username
     )}`;
+  },
+  GET_LEARNING_OBJECT_PARENTS(id: string) {
+    return `${environment.apiURL}/learning-objects/${id}/parents`;
   }
 };
 

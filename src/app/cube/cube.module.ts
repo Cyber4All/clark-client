@@ -1,7 +1,6 @@
 // Core
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -35,10 +34,10 @@ import { ClickOutsideModule } from 'ng-click-outside';
 
 import { ModalModule } from '../shared/modals';
 import {
-  NotificationModule
-} from '../shared/notifications';
+  ToasterModule
+} from '../shared/toaster';
 import { CollectionModule } from './collections/collection.module';
-import { DetailsModule } from './learning-object-details/details/details.module';
+import { DetailsModule } from './details/details.module';
 import { UserProfileLearningObjectsResolver } from './user-profile/learning-objects.resolver';
 
 /**
@@ -73,7 +72,7 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     SharedModule,
     HomeModule,
     ModalModule,
-    NotificationModule,
+    ToasterModule,
     CollectionModule,
     DetailsModule,
   ],

@@ -20,7 +20,7 @@
       <div *ngIf="selectedAuthors.length > 0">
         <div class="level-list">
           <div class="level button" *ngFor="let user of selectedAuthors; let i = index;" (click)="toggleLevel(level)">
-            {{ user }}
+            {{ user.name | titlecase }}
             <span (click)="removeAuthor(user)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </span>
@@ -30,11 +30,11 @@
       <input #userSearchInput autofocus type="text" class="search-input" id="user-search" placeholder="Search all users" [(ngModel)]="query.text">
       <div id="container">
         <ul>
-          <li *ngFor="let user of arrayOfUsers; let i = index;">
-            <span *ngIf="this.isAuthorSelected(i)" id="plus" (click)="addAuthor(i)">
+          <li *ngFor="let user of searchResults; let i = index;">
+            <span *ngIf="!this.isAuthorSelected(i)" id="plus" (click)="addAuthor(i)">
               <i class="fas fa-plus"></i>
             </span>
-            <span *ngIf="!this.isAuthorSelected(i)" id="delete" (click)="removeAuthor(user.username)">
+            <span *ngIf="this.isAuthorSelected(i)" id="delete" (click)="removeAuthor(user)">
               <i class="fa fa-trash"></i>
             </span>
             <span class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
