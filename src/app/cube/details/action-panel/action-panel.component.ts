@@ -1,15 +1,22 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
+import { LearningObject, User } from '@cyber4all/clark-entity';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
-import { CartV2Service } from '../../../core/cartv2.service';
-import { LearningObject } from '@cyber4all/clark-entity';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { RatingService } from '../../../core/rating.service';
+import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
+
+// TODO move this to clark entity?
+export interface Rating {
+  id?: string;
+  user: User;
+  number: number;
+  comment: string;
+  date: string;
+}
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -20,23 +27,48 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   @Input() learningObject: LearningObject;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
+  @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private isDestroyed$ = new Subject<void>();
   canDownload = false;
   downloading = false;
   addingToLibrary = false;
+  author: string;
+  learningObjectName: string;
+  ratings: Rating[] = [];
+  averageRating = 0;
   saved = false;
   url: string;
+  showAddRating = false;
+  windowWidth: number;
+  loggedin = false;
+
+  userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
+
+  contributorsList = [];
+  iframeParent = iframeParentID;
   error = false;
 
   public tips = TOOLTIP_TEXT;
+
+  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
+    if (event.keyCode === 27) {
+      this.showAddRating = false;
+    }
+  }
+
+  @HostListener('window:resize', ['$event']) handleResize(event) {
+    this.windowWidth = event.target.outerWidth;
+  }
 
   constructor(
     public auth: AuthService,
     private cartService: CartV2Service,
     private renderer: Renderer2,
-    private noteService: ToasterService
+    private noteService: ToasterService,
+    private ratingService: RatingService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -48,6 +80,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
+    // Get reviews for specified learning object
+    this.getLearningObjectRatings();
   }
 
   async addToCart(download?: boolean) {
@@ -178,6 +212,103 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
   }
 
+  submitNewRating(rating: {number: number, comment: string, editing?: boolean, id?: string}) {
+    if (!rating.editing) {
+      // creating
+      delete rating.editing;
+      this.ratingService.createRating(this.author, this.learningObject.name, rating as Rating).then(() => {
+        this.getLearningObjectRatings();
+        this.showAddRating = false;
+        this.noteService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
+      });
+    } else {
+      // editing
+      // TODO rating id?
+      delete rating.editing;
+      if (!rating.id) {
+        this.noteService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
+        console.error('Error: rating id not set');
+        return;
+      }
+      this.ratingService.editRating(this.author, this.learningObjectName, rating.id , rating as Rating).then(() => {
+        this.getLearningObjectRatings();
+        this.showAddRating = false;
+        this.noteService.notify('Success!', 'Review updated successfully!', 'good', 'far fa-check');
+      }, error => {
+        this.showAddRating = false;
+        this.noteService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
+        console.error(error);
+      });
+    }
+  }
+
+  async deleteRating(index) {
+    // 'index' here is the index in the ratings array to delete
+    const t = await this.modalService.makeDialogMenu(
+      'ratingDelete',
+      'Are you sure you want to delete this rating?',
+      'You cannot undo this action!',
+      false,
+      'title-bad',
+      'center',
+      [
+        new ModalListElement('Yup, do it!', 'delete', 'bad'),
+        new ModalListElement('No wait!', 'cancel', 'neutral on-white'),
+      ]
+    ).toPromise();
+
+    if (t === 'delete') {
+      this.ratingService.deleteRating(this.author, this.learningObjectName, this.ratings[index].id).then(val => {
+        this.getLearningObjectRatings();
+        this.noteService.notify('Success!', 'Rating deleted successfully!.', 'good', 'far fa-times');
+      }).catch(() => {
+        this.noteService.notify('Error!', 'Rating couldn\'t be deleted', 'bad', 'far fa-times');
+      });
+    }
+  }
+
+  reportRating(rating: {concern: string, index: number, comment?: string}) {
+    const ratingId = this.ratings[rating.index].id;
+    delete rating.index;
+
+    if (ratingId) {
+      this.ratingService.flagLearningObjectRating(this.author, this.learningObjectName, ratingId, rating).then(val => {
+        this.noteService.notify('Success!', 'Report submitted successfully!', 'good', 'far fa-check');
+      }, error => {
+        this.noteService.notify('Error!', 'An error occured and your report could not be submitted', 'bad', 'far fa-times');
+      });
+    } else {
+      this.noteService.notify('Error!', 'An error occured and your report could not be submitted', 'bad', 'far fa-times');
+      console.error('No ratingId specified');
+    }
+  }
+
+  private async getLearningObjectRatings() {
+    this.ratingService.getLearningObjectRatings(this.author, this.learningObjectName).then(val => {
+      this.ratings = val.ratings;
+      this.averageRating = val.avgRating;
+      const u = this.auth.username;
+
+      for (let i = 0, l = val.ratings.length; i < l; i++) {
+        if (u === val.ratings[i].user.username) {
+          // this is the user's rating
+          // we deep copy this to prevent direct modification from component subtree
+          this.userRating = Object.assign({}, val.ratings[i]);
+          return;
+        }
+      }
+
+      // if we found the rating, we've returned from the function at this point
+      this.userRating = {};
+    });
+  }
+
+  // get averageRating(): number {
+  //   if (this.ratings.length > 0) {
+  //     return this.ratings.map(x => x.number).reduce((x, y) => x + y) / this.ratings.length;
+  //   }
+  // }
+
   private buildLocation(encoded?: boolean) {
     const u = window.location.protocol + '//' + window.location.host +
       '/details' +
@@ -199,6 +330,14 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
       }, 1000);
     }, 400);
+  }
+
+  scrollToRatings() {
+    document.body.scrollTop = document.documentElement.scrollTop = this.ratingsWrapper.nativeElement.offsetTop;
+  }
+
+  get isMobile() {
+    return this.windowWidth <= 750;
   }
 
   ngOnDestroy() {
