@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit {
    *
    * @memberof DashboardComponent
    */
-  async getLearningObjects(): Promise<[] | DashboardLearningObject[]> {
+  async getLearningObjects(): Promise<DashboardLearningObject[]> {
     this.loading = true;
     return this.learningObjectService
       .getLearningObjects()
