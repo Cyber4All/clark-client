@@ -10,7 +10,7 @@
       <div class="label">
         What is this learning object named?
       </div>
-      <input class="name-field" type="text" name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name" #name="ngModel"
+      <input class="name-field" type="text" autofocus name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name" #name="ngModel"
         [ngClass]="{'bad': errorStore.error === 'name' }" [pattern]="validName" />
     </div>
     <div class="input-group">
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <input #userSearchInput autofocus type="text" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
+      <input #userSearchInput type="text" aria-label="user textbox" class="search-input" placeholder="Search all users" [(ngModel)]="query.text">
       <div id="container">
         <ul>
           <li *ngFor="let user of searchResults; let i = index;">
