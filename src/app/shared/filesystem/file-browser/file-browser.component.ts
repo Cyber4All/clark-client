@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  OnDestroy,
   Output,
   EventEmitter
 } from '@angular/core';

@@ -1,4 +1,3 @@
-import { ModalService } from '../../../../shared/modals';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
