@@ -60,11 +60,15 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       this.downloading = true;
     }
 
-    try {
-      const val = await this.cartService.addToCart(
+    if (download) {
+      this.download(
         this.learningObject.author.username,
         this.learningObject.name
       );
+    }
+
+    try {
+      await this.cartService.addToCart(this.author, this.learningObjectName);
 
       this.saved = this.cartService.has(this.learningObject);
 
@@ -73,21 +77,14 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.log(error);
-      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
+      this.noteService.notify(
+        'Error!',
+        'There was an error adding to your library',
+        'bad',
+        'far fa-times'
+      );
     }
-
     this.addingToLibrary = false;
-
-    if (download) {
-      try {
-        this.download(
-          this.learningObject.author.username,
-          this.learningObject.name
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    }
   }
 
   download(author: string, learningObjectName: string) {
