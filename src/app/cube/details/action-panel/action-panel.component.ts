@@ -68,7 +68,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await this.cartService.addToCart(this.author, this.learningObjectName);
+      await this.cartService.addToCart(this.learningObject.author.username, this.learningObject.name);
 
       this.saved = this.cartService.has(this.learningObject);
 
