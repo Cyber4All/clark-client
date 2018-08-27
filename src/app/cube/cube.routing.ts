@@ -1,9 +1,9 @@
 import { OrganizationListComponent } from './organization-list/organization-list.component';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { DetailsComponent } from './learning-object-details/details/details.component';
+import { DetailsComponent } from './details/details.component';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';

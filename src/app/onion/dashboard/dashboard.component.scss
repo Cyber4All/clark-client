@@ -1,29 +1,65 @@
 @import '~_vars.scss';
+
 .top {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   .title {
     font-weight: bold;
     color: $blue-accent;
     font-size: 26px;
   }
+
   .button {
     padding-top: 8px;
     padding-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 
 .faux-table {
   margin-top: 30px;
-  .row.columns {
-    padding-left: 21px;
-  }
-  .row.hide {
-    display: none;
-  }
+
   .placeholder {
     min-width: 30px;
+  }
+
+  .row {
+    overflow: hidden;
+    transition: all 0.2s ease;
+
+    &.columns {
+      padding-left: 21px;
+    }
+
+    &.hide {
+      display: none;
+    }
+
+    &.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    &.child {
+      transform: scale(0.95);
+    }
+
+    &.clickable {
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+
+    .row-counter {
+      color: $bright-blue;
+      padding-left: 15px;
+      cursor: default;
+    }
   }
 }
 

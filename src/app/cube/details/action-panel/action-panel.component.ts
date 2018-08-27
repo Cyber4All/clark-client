@@ -1,104 +1,52 @@
-import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
-import { LearningObjectService } from '../../learning-object.service';
-import { LearningObject } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
 } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { environment } from '@env/environment';
+import { CartV2Service } from '../../../core/cartv2.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
-import { UserService } from '../../../core/user.service';
-import { Subscription } from 'rxjs/Subscription';
-import { catchError } from 'rxjs/operators';
 
 @Component({
-  selector: 'cube-learning-object-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss'],
+  selector: 'cube-details-action-panel',
+  styleUrls: ['action-panel.component.scss'],
+  templateUrl: 'action-panel.component.html'
 })
-export class DetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('savesRef') savesRef: ElementRef;
-  @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
+export class ActionPanelComponent implements OnInit, OnDestroy {
 
-  private subs: Subscription[] = [];
+  @Input() learningObject: LearningObject;
+  @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
+  @ViewChild('savesRef') savesRef: ElementRef;
+
+  private isDestroyed$ = new Subject<void>();
+  canDownload = false;
   downloading = false;
   addingToLibrary = false;
-  author: string;
-  learningObjectName: string;
-  learningObject: LearningObject;
-  returnUrl: string;
   saved = false;
   url: string;
   error = false;
 
-  contributorsList = [];
-
-  canDownload = false;
-  iframeParent = iframeParentID;
-
   public tips = TOOLTIP_TEXT;
 
   constructor(
-    private learningObjectService: LearningObjectService,
+    public auth: AuthService,
     private cartService: CartV2Service,
-    public userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private auth: AuthService,
     private renderer: Renderer2,
     private noteService: ToasterService
   ) {}
 
   ngOnInit() {
-    this.subs.push(this.route.params.subscribe(params => {
-      this.author = params['username'];
-      this.learningObjectName = params['learningObjectName'];
-    }));
-
-    this.fetchLearningObject();
-
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
     if (environment.production) {
       this.checkWhitelist();
     } else {
       this.canDownload = true;
     }
-
-    this.returnUrl =
-      '/browse/details/' +
-      this.route.snapshot.params['username'] +
-      '/' +
-      this.route.snapshot.params['learningObjectName'];
-  }
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.auth.username;
-      if (whitelist.includes(username)) {
-        this.canDownload = true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async fetchLearningObject() {
-    try {
-      this.learningObject = await this.learningObjectService.getLearningObject(
-        this.author,
-        this.learningObjectName
-      );
-      this.url = this.buildLocation();
-    } catch (e) {
-      console.log(e);
-    }
+    this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
   }
 
@@ -114,8 +62,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     try {
       const val = await this.cartService.addToCart(
-        this.author,
-        this.learningObjectName
+        this.learningObject.author.username,
+        this.learningObject.name
       );
 
       this.saved = this.cartService.has(this.learningObject);
@@ -142,33 +90,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async clearCart() {
-    try {
-      await this.cartService.clearCart();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   download(author: string, learningObjectName: string) {
     this.downloading = true;
+    const loaded = this.cartService
+      .downloadLearningObject(author, learningObjectName)
+      .takeUntil(this.isDestroyed$);
 
-    const loaded = this.cartService.downloadLearningObject(
-      author,
-      learningObjectName
-    ).pipe(catchError(error => {
-      console.log(error);
-      this.noteService.notify('Error!', 'An error occurred and this learning object couldn\'t be downloaded', 'bad', 'far fa-times');
-      return error;
-    }));
-
-    this.subs.push(
-      loaded.subscribe(finished => {
-        if (finished) {
-          this.downloading = false;
-        }
-      })
-    );
+    loaded.subscribe(finished => {
+      if (finished) {
+        this.downloading = false;
+      }
+    });
   }
 
   copyLink() {
@@ -179,29 +111,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.noteService.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
   }
 
-  animateSaves() {
-    const saves = this.learningObject.metrics.saves + 1;
-
-    this.renderer.addClass(this.savesRef.nativeElement, 'animate');
-
-    setTimeout(() => {
-      this.learningObject.metrics.saves = saves;
-
-      setTimeout(() => {
-        this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
-      }, 1000);
-    }, 400);
-  }
-
   shareButton(event, type) {
     switch (type) {
       case 'facebook':
-      // ignoring since the FB object is set in an imported script outside of typescripts scope
-      // @ts-ignore
+        // ignoring since the FB object is set in an imported script outside of typescripts scope
+        // @ts-ignore
         FB.ui({
           method: 'share',
           href: this.url,
-        }, function(response){});
+        }, function (response) { });
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK!';
@@ -242,21 +160,49 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart() {
-    this.cartService.removeFromCart(this.author, this.learningObjectName);
+    this.cartService.removeFromCart(this.learningObject.author.username, this.learningObject.name);
+  }
+
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+  private async checkWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      const whitelist: string[] = object.whitelist;
+      const username = this.auth.username;
+      if (whitelist.includes(username)) {
+        this.canDownload = true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   private buildLocation(encoded?: boolean) {
     const u = window.location.protocol + '//' + window.location.host +
-    '/details' +
-    '/' + encodeURIComponent(this.learningObject.author.username) +
-    '/' + encodeURIComponent(this.learningObjectName);
+      '/details' +
+      '/' + encodeURIComponent(this.learningObject.author.username) +
+      '/' + encodeURIComponent(this.learningObject.name);
 
     return encoded ? encodeURIComponent(u) : u;
   }
 
+  animateSaves() {
+    const saves = this.learningObject.metrics.saves + 1;
+
+    this.renderer.addClass(this.savesRef.nativeElement, 'animate');
+
+    setTimeout(() => {
+      this.learningObject.metrics.saves = saves;
+
+      setTimeout(() => {
+        this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
+      }, 1000);
+    }, 400);
+  }
+
   ngOnDestroy() {
-    for (const sub of this.subs) {
-      sub.unsubscribe();
-    }
+    this.isDestroyed$.next();
+    this.isDestroyed$.unsubscribe();
   }
 }
