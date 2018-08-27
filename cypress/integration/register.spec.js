@@ -35,7 +35,7 @@ describe('Browse', () => {
         cy.contains('Register').click();
 
         // Assert header
-        cy.get('.content-box').children('.top').children('.auth-title').contains('C.L.A.R.K.');
+        cy.get('.content-box').children('.top').children('.auth-title').contains('CLARK');
 
         // Assert light header
         cy.get('.content-box').children('.top').children('.auth-title.light').contains('Cybersecurity Labs and Resource Knowledge-base');

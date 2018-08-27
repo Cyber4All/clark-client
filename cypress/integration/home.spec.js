@@ -27,7 +27,7 @@ describe('Home', () => {
     });
 
     it('Navbar renders correctly', () => {
-        cy.get('.topbar').contains('C.L.A.R.K.');
+        cy.get('.topbar').contains('CLARK');
         // cy.get('.nav-search-bar');
         cy.get('.topbar').contains('Sign in');
         cy.get('.topbar').contains('Register');
@@ -217,7 +217,7 @@ describe('Home', () => {
         cy.url().should('include', 'library');
 
         // Return to home page 
-        cy.get('.topbar').contains('C.L.A.R.K.').click();
+        cy.get('.topbar').contains('CLARK').click();
 
         // Assert home URL
         cy.url().should('include', 'home');

@@ -1,6 +1,6 @@
 export const COPY = {
     TITLE: 'Edit Profile',
-    GRAVATARTITLE: 'C.L.A.R.K. uses Gravatar',
+    GRAVATARTITLE: 'CLARK uses Gravatar',
     GRAVATARC2A: 'Don\'t have an account?',
     CHANGEPASSWORD: 'Change Password',
     ADDBIO: 'Add a bio',
