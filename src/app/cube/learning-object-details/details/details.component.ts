@@ -329,7 +329,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.noteService.notify('Success!', 'Report submitted successfully!', 'good', 'far fa-check');
       }, error => {
         this.noteService.notify('Error!', 'An error occured and your report could not be submitted', 'bad', 'far fa-times');
-      })
+      });
     } else {
       this.noteService.notify('Error!', 'An error occured and your report could not be submitted', 'bad', 'far fa-times');
       console.error('No ratingId specified');

@@ -22,7 +22,7 @@
       <div class="rating-text">
         {{ rating.comment }}
       </div>
-      <div class="options">
+      <div *ngIf="auth.user.emailVerified" class="options">
         <ng-container *ngIf="isAuthor(i); else notOwnerOptions">
           <span (click)="submitEditRating(i)"><i class="far fa-pencil-alt"></i>Edit rating</span>
           <span (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
