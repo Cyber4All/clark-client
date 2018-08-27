@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit {
    *
    * @memberof DashboardComponent
    */
-  async getLearningObjects(): Promise<DashboardLearningObject[]> {
+  async getLearningObjects(): Promise<[] | DashboardLearningObject[]> {
     this.loading = true;
     return this.learningObjectService
       .getLearningObjects()
@@ -190,8 +190,8 @@ export class DashboardComponent implements OnInit {
                 );
                 this.learningObjects = await this.getLearningObjects();
               })
-              .catch(async err => {
-                this.learningObjects = await this.getLearningObjects();
+              .catch(async(err) => {
+                console.log(err);
               });
           } else {
             this.learningObjectService
@@ -516,7 +516,7 @@ export class DashboardComponent implements OnInit {
           this.clearSelected(true);
           this.cancelAddChildren();
 
-          this.getLearningObjects().then(objects => { this.learningObjects = objects; });
+          this.getLearningObjects().then(objects => { this.learningObjects = objects });
         }).catch(error => {
           console.log(error);
 
