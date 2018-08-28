@@ -20,7 +20,7 @@
       <div *ngIf="selectedAuthors.length > 0">
         <div class="level-list">
           <div class="level button" *ngFor="let user of selectedAuthors; let i = index;" (click)="toggleLevel(level)">
-            {{ user.name || user._name | titlecase }}
+            {{ user.name | titlecase }}
             <span (click)="removeAuthor(user)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </span>
