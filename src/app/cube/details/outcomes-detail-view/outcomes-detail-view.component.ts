@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { COPY } from '../details.copy';
 
 @Component({
   selector: 'cube-outcomes-detail-view',

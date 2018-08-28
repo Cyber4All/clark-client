@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { AcademicLevel } from '@cyber4all/clark-entity';
+import { AcademicLevel, User } from '@cyber4all/clark-entity';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { UserService } from '../../../../../core/user.service';
 import { AuthService } from '../../../../../core/auth.service';
