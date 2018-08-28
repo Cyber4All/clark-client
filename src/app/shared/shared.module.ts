@@ -14,7 +14,6 @@ import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappin
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
-import { FileGridViewComponent } from './filesystem/file-grid-view/file-grid-view.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { FileBreadcrumbComponent } from './filesystem/file-breadcrumb/file-breadcrumb.component';
 import { FileBrowserComponent } from './filesystem/file-browser/file-browser.component';
@@ -28,6 +27,10 @@ import { FilterComponent } from './filter/filter.component';
 import { MappingsFilterComponent } from './mappings-filter/mappings-filter.component';
 import { SearchComponent } from './search/search.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { RatingStarsComponent } from './rating-stars/rating-stars.component';
+import { NewRatingComponent } from './new-rating/new-rating.component';
+import { LearningObjectRatingsComponent } from './learning-object-ratings/learning-object-ratings.component';
+import { ReportRatingComponent } from './report-rating/report-rating.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -54,7 +57,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     MessageComponent,
     FileBrowserComponent,
     FileListViewComponent,
-    FileGridViewComponent,
     FileBreadcrumbComponent,
     FilePreviewComponent,
     IndicatorComponent,
@@ -64,14 +66,17 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     FilterComponent,
     MappingsFilterComponent,
     SearchComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    RatingStarsComponent,
+    NewRatingComponent,
+    LearningObjectRatingsComponent,
+    ReportRatingComponent
   ],
   exports: [
     BrowseByMappingsComponent,
     NavbarComponent,
     FileBrowserComponent,
     FileListViewComponent,
-    FileGridViewComponent,
     FileBreadcrumbComponent,
     TooltipModule,
     IndicatorComponent,
@@ -80,7 +85,10 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     LearningObjectCardDirective,
     FilterComponent,
     MappingsFilterComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    RatingStarsComponent,
+    NewRatingComponent,
+    LearningObjectRatingsComponent
   ]
 })
 export class SharedModule {}

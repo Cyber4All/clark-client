@@ -13,7 +13,7 @@ import {
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
 import { ToasterService } from '../../../shared/toaster';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { COPY } from './user-edit-information.copy';
 
 import 'rxjs/add/observable/fromEvent';
@@ -27,23 +27,17 @@ import 'rxjs/add/operator/debounceTime';
 
 export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
   copy = COPY;
+  isDestroyed$ = new Subject<void>();
   elementRef: any;
   @Input() user;
   @Input() self = false;
   @Output('close') close = new EventEmitter<boolean>();
-  @ViewChild('confirmNewPasswordInput', { read: ElementRef })
-  confirmNewPasswordInput: ElementRef;
-  @ViewChild('originalPasswordInput', { read: ElementRef })
-  originalPasswordInput: ElementRef;
+
   @ViewChild('organization', { read: ElementRef })
   organization: ElementRef;
 
   counter = 140;
 
-  newPassword = '';
-  confirmPassword = '';
-
-  isPasswordMatch;
   organizationsList = [];
   isValidOrganization: boolean;
 
@@ -52,7 +46,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     lastname: '',
     email: '',
     organization: '',
-    password: '',
     bio: ''
   };
 
@@ -72,56 +65,12 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
-    .debounceTime(650)
-    .subscribe(val => {
-      this.isCorrectPassword().then(res => {
-        if (res) {
-          this.noteService.notify(
-            'Valid Entry',
-            'Password is correct',
-            'good',
-            'far fa-check'
-          );
-        } else {
-          this.noteService.notify(
-            'Invalid Entry',
-            'Password is incorrect',
-            'bad',
-            'far fa-times'
-          );
-        }
-      });
-    })
-  );
-    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(Observable.fromEvent(this.confirmNewPasswordInput.nativeElement, 'input')
-      .debounceTime(650)
-      .subscribe(val => {
-        if (this.confirmNewPassword()) {
-          this.noteService.notify(
-            'Valid Entry',
-            'Passwords match',
-            'good',
-            'far fa-check'
-          );
-        } else {
-          this.noteService.notify(
-            'Invalid Entry',
-            'Passwords must match',
-            'bad',
-            'far fa-times'
-          );
-        }
-      })
-    );
-      // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(Observable.fromEvent(this.organization.nativeElement, 'input')
+    Observable.fromEvent(this.organization.nativeElement, 'input')
+      .takeUntil(this.isDestroyed$)
       .debounceTime(400)
       .subscribe(val => {
           this.getOrganizations();
-      })
-    );
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -131,7 +80,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
         lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
         email: this.user.email || '',
         organization: this.toUpper(this.user.organization) || '',
-        password: this.confirmPassword,
         bio: this.user.bio || ''
       };
     }
@@ -143,30 +91,10 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
    * @memberof UserEditInformationComponent
    */
   async save() {
-    // If the new password fields do not match, the user cannot save changes.
-    // If the user does not wish to change their password, the fields will
-    // match when empty.
-    if (this.confirmNewPassword()) {
-      // If the user doesn't provide an email in this form, we need to
-      // get the account's email in order to update the password.
-      await this.saveUserEdits();
-      // If a new password is not provided, do not update password.
-    } else {
-      this.noteService.notify(
-        'Invalid Entry',
-        'Passwords must match',
-        'bad',
-        'far fa-times'
-      );
-    }
-  }
-
-  private async saveUserEdits() {
     const edits: UserEdit = {
       name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
-      password: this.editInfo.password.trim(),
       bio: this.editInfo.bio.trim()
     };
     if (await this.checkOrganization()) {
@@ -186,31 +114,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   handleCounter(e) {
     const inputLength = this.editInfo.bio.length;
     this.counter = 140 - inputLength;
-  }
-
-  async isCorrectPassword() {
-    this.isPasswordMatch = false;
-    try {
-      // Provide checkPassword with an object that contains username
-      // and user-provided password
-      this.isPasswordMatch = await this.auth.checkPassword(this.userInfo.password);
-    } catch (e) {
-      this.noteService.notify(
-        'Invalid Entry',
-        'Password is incorrect',
-        'bad',
-        'far fa-times'
-      );
-    }
-    return this.isPasswordMatch;
-  }
-
-  confirmNewPassword() {
-    if (this.newPassword === this.confirmPassword) {
-      this.editInfo.password = this.confirmPassword;
-      return true;
-    }
-    return false;
   }
 
   getOrganizations() {
@@ -266,10 +169,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   }
 
   ngOnDestroy() {
-     // unsubscribe from all observables
-     for (let i = 0, l = this.subs.length; i < l; i++) {
-      this.subs[i].unsubscribe();
-    }
+     this.isDestroyed$.next();
+     this.isDestroyed$.unsubscribe();
   }
 }
 
@@ -279,6 +180,5 @@ export interface UserEdit {
   name: string;
   email: string;
   organization: string;
-  password: string;
   bio: string;
 }

@@ -1,6 +1,6 @@
-import { ModalService, ModalListElement, Position } from '../../shared/modals';
+import { ModalService, ModalListElement } from '../../shared/modals';
 import { ToasterService } from '../../shared/toaster';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -8,23 +8,81 @@ import { ChangeDetectorRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from '../../core/auth.service';
 import { COPY } from './dashboard.copy';
+import { trigger, style, animate, transition } from '@angular/animations';
 
+interface DashboardLearningObject extends LearningObject {
+  parents: string[];
+}
 
 @Component({
   selector: 'onion-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('buttonEnter', [
+      transition(':enter', [
+        style({
+          'max-width': '0px',
+          'padding-left': '0px',
+          'padding-right': '0px',
+          'margin-left': '0px',
+          opacity: 0
+        }),
+        animate(
+          '220ms ease-out',
+          style({
+            'max-width': '250px',
+            'padding-left': '25px',
+            'padding-right': '20px',
+            'margin-left': '15px',
+            opacity: 1
+          })
+        )
+      ]),
+      transition(':leave', [
+        style({
+          'max-width': '250px',
+          'padding-left': '25px',
+          'padding-right': '20px',
+          'margin-left': '15px',
+          opacity: 1
+        }),
+        animate(
+          '220ms ease-out',
+          style({
+            'max-width': '0px',
+            'padding-left': '0px',
+            'padding-right': '0px',
+            'margin-left': '0px',
+            opacity: 0
+          })
+        )
+      ])
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit {
+  @ViewChildren('learningObjectElement') learningObjectElements: ElementRef[];
   copy = COPY;
   public tips = TOOLTIP_TEXT;
-  learningObjects: LearningObject[] = [];
-  focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it, used by delete and edit functions
-  selected: Array<string> = []; // array of all learning objects that are currently selected (checkbox in UI)
-  hidden: Array<string> = []; // array of Learning Object id's that have been hidden from the view
-  filters: Array<string> = []; // list of filters to be applied to the list of Learning Objects
+  learningObjects: DashboardLearningObject[] = [];
+  focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it
+  selected: Map<string, { index: number; object: LearningObject }> = new Map();
+  hidden: Map<string, { reason: string; object: LearningObject }> = new Map();
   allSelected = false;
+  freezeSelected = false;
+  selectingParent = false;
   loading = true;
+  freezeFocused = false;
+
+  showCancel = false;
+  showSubmit = false;
+  allowRowClick = false;
+
+  // these functions get reassigned as certain events take place in the dashboard
+  cancelAction = () => {};
+  rowClick = () => {};
+  submitAction = () => {};
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -43,16 +101,41 @@ export class DashboardComponent implements OnInit {
    *
    * @memberof DashboardComponent
    */
-  async getLearningObjects(): Promise<LearningObject[]> {
+  async getLearningObjects(): Promise<DashboardLearningObject[]> {
     this.loading = true;
     return this.learningObjectService
       .getLearningObjects()
-      .then(learningObjects => {
+      .then((learningObjects: LearningObject[]) => {
         this.loading = false;
-        return learningObjects;
+        // parse through deep copy of returned array
+        const arr: DashboardLearningObject[] = Array.from(learningObjects.map(l => {
+          l.parents = [];
+          return l as DashboardLearningObject;
+        }));
+
+        const lengths = ['nanomodule', 'micromodule', 'module', 'unit', 'course'];
+
+        arr.sort((a, b) => {
+          return lengths.indexOf(a.length) <= lengths.indexOf(b.length) ? 1 : 0;
+        });
+
+        // @ts-ignore typescript doesn't like arr.map...
+        const m: Map<string, DashboardLearningObject> = new Map(arr.map(l => [l.id, l]));
+
+        for (let i = 0, l = arr.length; i < l; i++) {
+          const lo = arr[i];
+          if (lo.children && lo.children.length) {
+            for (const c of lo.children as DashboardLearningObject[]) {
+              m.get(c.id).parents ? m.get(c.id).parents.push(lo.name) : m.get(c.id).parents = [lo.name];
+            }
+          }
+        }
+
+        return learningObjects as DashboardLearningObject[];
       })
       .catch(err => {
         this.loading = false;
+        return Promise.reject('');
       });
   }
 
@@ -110,14 +193,16 @@ export class DashboardComponent implements OnInit {
                 this.learningObjects = await this.getLearningObjects();
               })
               .catch(async(err) => {
-                this.learningObjects = await this.getLearningObjects();
+                console.log(err);
               });
           } else {
             this.learningObjectService
               // TODO: Verify selected is an array of names
-              .deleteMultiple(this.selected)
+              .deleteMultiple(
+                Array.from(this.selected.values()).map(s => s.object.name)
+              )
               .then(async () => {
-                this.selected = [];
+                this.clearSelected();
                 this.notificationService.notify(
                   'Done!',
                   'New Learning Object(s) deleted!',
@@ -162,12 +247,17 @@ export class DashboardComponent implements OnInit {
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
    * @param l Learning Object to be selected
    */
-  selectLearningObject(l: LearningObject) {
-    this.selected.push(l.name);
-    this.app.detectChanges();
+  selectLearningObject(l: LearningObject, index: number) {
+    if (!this.freezeSelected) {
+      this.selected.set(l.id, { index, object: l });
+      this.app.detectChanges();
 
-    if (this.selected.length === this.learningObjects.length && !this.allSelected) {
-      this.allSelected = true;
+      if (
+        this.selected.size === this.learningObjects.length &&
+        !this.allSelected
+      ) {
+        this.allSelected = true;
+      }
     }
   }
 
@@ -176,14 +266,16 @@ export class DashboardComponent implements OnInit {
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
-    console.log(this.selected);
-    this.selected.splice(this.selected.indexOf(l.name), 1);
-    this.app.detectChanges();
+    if (!this.freezeSelected) {
+      this.selected.delete(l.id);
+      this.app.detectChanges();
 
-    console.log(this.selected);
-
-    if (this.selected.length < this.learningObjects.length && this.allSelected) {
-      this.allSelected = false;
+      if (
+        this.selected.size < this.learningObjects.length &&
+        this.allSelected
+      ) {
+        this.allSelected = false;
+      }
     }
   }
 
@@ -191,53 +283,31 @@ export class DashboardComponent implements OnInit {
    * Returns a boolean that indicates whether the learning object with the specified name is selected
    * @param name of the learning object in question
    */
-  objectIsSelected(name: string): boolean {
-    return this.selected.includes(name);
+  objectIsSelected(id: string): boolean {
+    return this.selected.get(id) ? true : false;
   }
 
   /**
    * Selects all learning objects (duh)
    */
-  selectAll() {
-    this.allSelected = !this.allSelected;
-    if (this.allSelected) {
-      this.selected = this.learningObjects.map(x => x.name);
-    } else {
-      this.selected = [];
-    }
-  }
-
-  /**
-   * Takes a string input representing a filter, checks for a minus sin in the 0 position. If not found, adds the filter to the array
-   * if it's not already present. If a minus is found, checks for and removes the named filter from the filters array
-   *
-   * @param val
-   */
-  manageFilters(val) {
-    if (val.charAt(0) === '-') {
-      // we're removing
-      this.filters.splice(this.filters.indexOf(val.substring(1)), 1);
-    } else {
-      // we're adding
-      if (!this.filters.includes(val)) {
-        this.filters.push(val);
+  selectAll(force: boolean = false) {
+    if ((!this.freezeSelected && !this.freezeFocused) || force) {
+      this.allSelected = !this.allSelected;
+      if (this.allSelected) {
+        // @ts-ignore
+        this.selected = new Map(this.learningObjects.map((x, i) => [x.id, { index: i, object: x }]));
+      } else {
+        this.selected = new Map();
       }
     }
   }
 
-  /**
-   * Takes a Learning Object and compares it against the list of applied filters, adds the 'hide' class when the LO is filtered out
-   *
-   * @param l Learning Object to be tested
-   */
-  // TODO: Is this still being used?
-  checkFilter(l: LearningObject): boolean {
-    if (this.filters.includes('courses')) {
-      if (l['length'] !== 'course') {
-        return false;
-      }
+  clearSelected(force: boolean = false) {
+    if (!this.allSelected) {
+      this.selected = new Map();
+    } else {
+      this.selectAll(force);
     }
-    return true;
   }
 
   /**
@@ -252,6 +322,15 @@ export class DashboardComponent implements OnInit {
     const list: Array<ModalListElement> = [
       new ModalListElement('<i class="far fa-edit"></i>Edit', 'edit')
     ];
+
+    if (learningObject.length !== 'nanomodule') {
+      list.push(
+        new ModalListElement(
+          '<i class="far fa-project-diagram"></i>Edit Children',
+          'children'
+        )
+      );
+    }
 
     if (this.auth.user.emailVerified) {
       list.push(
@@ -304,6 +383,9 @@ export class DashboardComponent implements OnInit {
           case 'edit':
             this.edit();
             break;
+          case 'children':
+            this.startAddChildren();
+            break;
           case 'delete':
             this.delete();
             break;
@@ -328,47 +410,204 @@ export class DashboardComponent implements OnInit {
       });
   }
 
+  startAddChildren(editing: boolean = false) {
+    this.showCancel = this.showSubmit = this.freezeFocused = true;
+
+    // set action for cancel buton
+    this.cancelAction = () => {
+      this.cancelAddChildren(true);
+    };
+
+    const lengths = ['nanomodule', 'micromodule', 'module', 'unit', 'course'];
+
+    // set action for submitAction
+    this.submitAction = () => {
+      this.finishAddChildren();
+    };
+
+    // reinit selected Map
+    this.clearSelected(true);
+
+    // if we're editing the children (or setting vs adding) set selected Map equal to the focused object's children
+    if (
+      this.focusedLearningObject.children &&
+      this.focusedLearningObject.children.length
+    ) {
+      for (let i = 0, l = this.focusedLearningObject.children.length; i < l; i++) {
+        const c = this.focusedLearningObject.children[i] as LearningObject;
+        this.selected.set(c.id, { index: 0, object: c });
+      }
+    }
+
+    // loop through the list of learning objects and hide objects that aren't applicable for the current action
+    for (let i = 0, l = this.learningObjects.length; i < l; i++) {
+      const lo = this.learningObjects[i];
+
+      // so hide all learning objects that are bigger than the parent
+      if (
+        lengths.indexOf(lo.length) >=
+          lengths.indexOf(this.focusedLearningObject.length) &&
+        lo.id !== this.focusedLearningObject.id
+      ) {
+        this.hidden.set(lo.id, { reason: 'children', object: lo });
+      }
+    }
+  }
+
+  async finishAddChildren() {
+    const names = Array.from(this.selected.values()).map(l => l.object.name);
+
+    // create a deep copy of the array resulting from iterating the list of current children and mapping their names
+    const current: string[] = Array.from((this.focusedLearningObject.children as LearningObject[]).map(l => l.name));
+
+    // check if no changes
+    if (JSON.stringify(current) === JSON.stringify(names)) {
+      // no changes
+      this.clearSelected(true);
+      this.cancelAddChildren();
+      return;
+    } else {
+      let confirmationMessage: string;
+      const [additions, removals] = this.parseChildrenChanges(names, current);
+
+      if (additions.length || removals.length !== current.length) {
+        const [addMessage, removeMessage] = this.buildAddRemoveMessages(additions, removals);
+
+          confirmationMessage = `Just to confirm, you want to ${addMessage} ${removeMessage} '${
+          this.focusedLearningObject.name
+        }'?`;
+      } else {
+        confirmationMessage = `Just to confirm, you want to remove all children from '${
+          this.focusedLearningObject.name
+        }'?`;
+      }
+
+      const confirmation = await this.modalService
+        .makeDialogMenu(
+          'confirmChildren',
+          'Confirm object\'s children',
+          confirmationMessage,
+          false,
+          undefined,
+          'center',
+          [
+            new ModalListElement(
+              'Confirm! <i class="far fa-check"></i>',
+              'confirm',
+              'good'
+            ),
+            new ModalListElement(
+              'Never mind <i class="far fa-times"></i>',
+              'cancel',
+              'bad'
+            )
+          ]
+        )
+        .toPromise();
+
+      if (confirmation === 'confirm') {
+        const ids = this.learningObjects.filter(l => names.includes(l.name)).map(l => l.id);
+        this.learningObjectService.setChildren(this.focusedLearningObject.name, ids).then(val => {
+          this.notificationService.notify(
+            'Success!',
+            'Learning Object\'s children updated successfully!',
+            'good',
+            'far fa-check'
+          );
+
+          this.clearSelected(true);
+          this.cancelAddChildren();
+
+          this.getLearningObjects().then(objects => { this.learningObjects = objects });
+        }).catch(error => {
+          console.log(error);
+
+          this.notificationService.notify(
+            'Error!', 'An error occurred and the Learning Object\'s children could not be updated', 'bad', 'far fa-times'
+          );
+        });
+      }
+    }
+  }
+
+  cancelAddChildren(shouldClear: boolean = false) {
+    this.freezeSelected = this.freezeFocused = false;
+    this.showCancel = this.showSubmit = this.allowRowClick = this.selectingParent = false;
+    this.cancelAction = this.rowClick = this.submitAction = () => {};
+
+    this.hidden.forEach(x => {
+      if (x.reason === 'children') {
+        this.hidden.delete(x.object.id);
+      }
+    });
+
+    if (shouldClear) {
+      this.clearSelected(true);
+    }
+  }
+
   /**
-   * Creates a dropdown menu that displays a list of possible filters for the dashboard content
-   *
-   * @param event click event
+   * Takes a list of changes (the currently selected map of LO names) and a list of the already existing LO names in the
+   * focusedObject's children and returns an array of names that were added and another array of names that were removed
+   * @param changes
+   * @param exisiting
    */
-  filterDropdown(event) {
-    const list: Array<ModalListElement> = [
-      new ModalListElement(
-        '<i class="far fa-check-circle"></i>Published',
-        'published',
-        'no-hover',
-        true
-      ),
-      new ModalListElement(
-        '<i class="far fa-ban"></i>Unpublished',
-        'unpublished',
-        'no-hover',
-        true
-      )
-    ];
-    const pos = new Position(
-      this.modalService.offset(event.currentTarget).left -
-        (190 - event.currentTarget.offsetWidth),
-      this.modalService.offset(event.currentTarget).top +
-        event.currentTarget.offsetHeight +
-        15
-    );
-    this.modalService
-      .makeContextMenu(
-        'FilteringContext',
-        'dropdown',
-        list,
-        true,
-        null,
-        pos,
-        this.filters.slice(0)
-      )
-      .subscribe(val => {
-        if (val !== 'null') {
-          this.manageFilters(val);
-        }
-      });
+  parseChildrenChanges(changes: string[], exisiting: string[]): [string[], string[]] {
+    // store additions here
+    const additions = [];
+
+    // store removals here
+    let removals = [];
+
+    const spliceIndexes: number[] = [];
+
+    // loop through currently selected ids and determine if they were added
+    for (let i = 0, l = changes.length; i < l; i++) {
+      if (changes.includes(exisiting[i])) {
+        // this was unchanged, store index to remove after iteration complete
+        spliceIndexes.push(i);
+      } else {
+        // must be an addition
+        additions.push(changes[i]);
+      }
+    }
+
+    exisiting = exisiting.filter((_, i) => !spliceIndexes.includes(i));
+
+    // at this point, anything left in the current array is a removal
+    removals = exisiting;
+
+    return [additions, removals];
+  }
+
+  /**
+   * Takes two arrays of LO names, one of additions and one of removals, and 
+   * constructs a gramatically correct addition and subtraction message
+   */
+  buildAddRemoveMessages(additions: string[], removals: string[]): [string, string] {
+    const addMessage = additions.length
+      ? `add ${
+        additions.length > 1 ?
+          additions.slice(0, additions.length - 1).map(n => '\'' + n + '\'').join(', ') + ' and \'' + additions[additions.length - 1] + '\''
+          : '\'' + additions[additions.length - 1] + '\''} ${removals.length ? '' : 'to'
+        } `
+      : '';
+
+    const removeMessage = removals.length
+      ? `and remove ${
+        removals.length > 1 ?
+          removals.slice(0, removals.length - 1).map(n => '\'' + n + '\'').join(', ') + ' and \'' + removals[removals.length - 1] + '\''
+          : '\'' + removals[removals.length - 1] + '\''} from `
+      : '';
+
+      return [addMessage, removeMessage];
+  }
+
+  objectChildrenNames(learningObject: LearningObject): string[] {
+    if (learningObject.children && learningObject.children.length) {
+      return (learningObject.children as LearningObject[]).map(l => l.name);
+    } else {
+      return [];
+    }
   }
 }

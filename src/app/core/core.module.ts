@@ -10,6 +10,7 @@ import { OutcomeService } from './outcome.service';
 import { CookieModule } from 'ngx-cookie';
 import { ClickOutsideModule } from 'ng-click-outside';
 
+import { RatingService } from './rating.service';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { UserService } from './user.service';
@@ -39,6 +40,7 @@ export class CoreModule {
         OutcomeService,
         MessagesService,
         UserVerifiedGuard,
+        RatingService,
         { provide: ErrorHandler, useClass: RavenErrorHandler }
       ]
     };
