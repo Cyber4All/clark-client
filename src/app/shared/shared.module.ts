@@ -14,7 +14,6 @@ import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappin
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
-import { FileGridViewComponent } from './filesystem/file-grid-view/file-grid-view.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { FileBreadcrumbComponent } from './filesystem/file-breadcrumb/file-breadcrumb.component';
 import { FileBrowserComponent } from './filesystem/file-browser/file-browser.component';
@@ -54,7 +53,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     MessageComponent,
     FileBrowserComponent,
     FileListViewComponent,
-    FileGridViewComponent,
     FileBreadcrumbComponent,
     FilePreviewComponent,
     IndicatorComponent,
@@ -71,7 +69,6 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     NavbarComponent,
     FileBrowserComponent,
     FileListViewComponent,
-    FileGridViewComponent,
     FileBreadcrumbComponent,
     TooltipModule,
     IndicatorComponent,
