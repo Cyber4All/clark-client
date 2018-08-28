@@ -58,12 +58,9 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
       })
     );
       if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
-        console.log(this.learningObject.contributors);
         const arr = this.learningObject.contributors;
         this.learningObject.contributors  = arr.map(member => User.instantiate(member));
         this.selectedAuthors = this.learningObject.contributors;
-        console.log(this.learningObject.contributors);
-        console.log(this.selectedAuthors);
       }
   }
 
