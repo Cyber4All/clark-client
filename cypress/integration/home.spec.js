@@ -44,7 +44,7 @@ describe('Home', () => {
         cy.get('#gravatar').click({ force: true });
 
         // Click Sign Out
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(1).click({ force: true }, { multiple: true });
+        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(2).click({ force: true }, { multiple: true });
 
         // Assert new navbar elements
         cy.get('#clark-sign-in');
@@ -187,5 +187,6 @@ describe('Home', () => {
         // Click contribute button at bottom of page
         cy.get('#clark-stats').click({ force: true });
         cy.get('#clark-about').click({ force: true });
+        cy.get('#clark-tutorial').click({ force: true });
     });
 });

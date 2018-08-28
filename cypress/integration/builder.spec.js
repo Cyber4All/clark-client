@@ -392,37 +392,6 @@
         cy.url().should('include', '/onion/learning-object-builder');
 
         // Enter learning object name 
-        cy.get('#object-name-field').type(objects[5], { force: true });
-
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
-
-        // Create learning outcome
-        // Click link to add new learning outcome
-        cy.get('#child-link').click({ force: true });
-
-        // Enter Outcome Name
-        cy.get('#outcome-text').type(objects[2], { force: true });
-
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
-
-        // Assert URL
-        cy.get('#onion-file-manager').click({ force: true });
-    });
-
-    it('Click dropzone for file upload', () => {
-        // Login 
-        cy.login();
-
-        // navigate to Your Dashboard - using navbar link
-        cy.get('#contributor-link').click({ force: true });
-        cy.contains('Create a Learning Object').click({ force: true });
-
-        // Assert URL 
-        cy.url().should('include', '/onion/learning-object-builder');
-
-        // Enter learning object name 
         cy.get('#object-name-field').type(objects[6], { force: true });
 
         // Click next button

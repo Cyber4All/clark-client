@@ -201,7 +201,7 @@ describe('Dashboard', () => {
         cy.get('#save-learning-object').click({ force: true });
     });
 
-    it('Click next until returned to dashboard', () => {
+    it('Click next until upload materials page is reached', () => {
         // Login 
         cy.login();
 
@@ -220,15 +220,7 @@ describe('Dashboard', () => {
         // Click Next button
         cy.get('#builder-next').click({ force: true });
 
-        // Wait for page load so that button 
-        // on previous page with same selector is not asserted
-        cy.wait(1000);
-
-        // Click save button at end of builder
-        cy.get('#upload-save').click({ force: true });
-
-        // Assert URL
-        cy.url().should('include', 'dashboard');
+        cy.url().should('include', '/onion/content/upload');
     });
 
     it('Delete all objects', () => {
