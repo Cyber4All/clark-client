@@ -52,7 +52,7 @@ describe('Details', () => {
         // Different steps for login - don't replace with helper method
         cy.get('input[name=username]').type(creds[0], { force: true });
         cy.get('input[name=password]').type(creds[1], { force: true });
-        cy.get('.auth-button').click({ force: true });
+        cy.get('#auth-button').click({ force: true });
 
         // Assert URL 
         cy.url().should('include', 'home');
@@ -78,7 +78,7 @@ describe('Details', () => {
         // Different steps for login - don't replace with helper method
         cy.get('input[name=username]').type('nwinne1');
         cy.get('input[name=password]').type('testpassword');
-        cy.get('.auth-button').click({ force: true });
+        cy.get('#auth-button').click({ force: true });
 
         cy.wait(1000);
 

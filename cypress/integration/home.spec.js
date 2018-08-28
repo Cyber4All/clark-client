@@ -44,7 +44,7 @@ describe('Home', () => {
         cy.get('#gravatar').click({ force: true });
 
         // Click Sign Out
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(2).click({ force: true }, { multiple: true });
+        cy.get('#context-popup').children('ul').children('li').eq(2).click({ force: true }, { multiple: true });
 
         // Assert new navbar elements
         cy.get('#clark-sign-in');

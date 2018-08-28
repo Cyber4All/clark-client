@@ -88,25 +88,25 @@ describe('Browse', () => {
         cy.get('#content').children('#column-title').children('#results-options').children('#sort').click({ force: true });
 
         // Pick sort option
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ multiple: true }, { force: true });
+        cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Click Sort
         cy.get('#content').children('#column-title').children('#results-options').children('#sort').click({ force: true });
 
         // Pick sort option
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(1).click({ multiple: true }, { force: true });
+        cy.get('#context-popup').children('ul').children('li').eq(1).click({ force: true }, { multiple: true });
 
         // Click Sort
         cy.get('#content').children('#column-title').children('#results-options').children('#sort').click({ force: true });
 
         // Pick sort option
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(2).click({ multiple: true }, { force: true });
+        cy.get('#context-popup').children('ul').children('li').eq(2).click({ force: true }, { multiple: true });
 
         // Click Sort
         cy.get('#content').children('#column-title').children('#results-options').children('#sort').click({ force: true });
 
         // Pick sort option
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').eq(3).click({ multiple: true }, { force: true });
+        cy.get('#context-popup').children('ul').children('li').eq(3).click({ force: true }, { multiple: true });
 
         // Finally, click the red x
         cy.get('#content').children('#column-title').children('#results-options').children('#sort').children('#removeSort').children('#times').click({ force: true });

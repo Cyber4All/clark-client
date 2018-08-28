@@ -5,7 +5,7 @@ import { Modal } from './modal';
 @Component({
     selector: '<app-contextmenu></app-contextmenu>',
     template: `
-    <div *ngIf="show" class="popup " [attr.class]="'popup ' + content.classes" [ngStyle]="{'left': this.x, 'top': this.y}" (clickOutside)="tryClose($event)">
+    <div id="context-popup" *ngIf="show" class="popup " [attr.class]="'popup ' + content.classes" [ngStyle]="{'left': this.x, 'top': this.y}" (clickOutside)="tryClose($event)">
         <ul>
             <li *ngFor="let l of content['list']" (click)="!l.checkbox && optionClick($event, l.func)" [ngClass]="l.classes ? l.classes : ''">
                 <clark-checkbox *ngIf="l.checkbox" [func]='l.func' [setValue]="content.checked.includes(l.func)" (action)="checkbox($event, val)"></clark-checkbox>

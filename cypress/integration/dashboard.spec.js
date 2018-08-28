@@ -127,7 +127,7 @@ describe('Dashboard', () => {
 
         // Click Edit from options dropdown
         cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').first().click({ force: true });
+        cy.get('#context-popup').children('ul').children('li').first().click({ force: true });
 
          // Assert URL
          cy.url().should('include', 'learning-object-builder');
@@ -145,7 +145,7 @@ describe('Dashboard', () => {
 
         // Click Edit from options dropdown
         cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(1).click({ force: true });
+        cy.get('#context-popup').children('ul').children('li').eq(1).click({ force: true });
 
         // Assert URL
         cy.url().should('include', 'onion');
@@ -163,7 +163,7 @@ describe('Dashboard', () => {
 
         // Click Edit from options dropdown
         cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(2);
+        cy.get('#context-popup').children('ul').children('li').eq(2);
     });
 
     it('Navigate to dashboard and assert delete option', () => {
@@ -178,7 +178,7 @@ describe('Dashboard', () => {
 
         // Click Edit from options dropdown
         cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3);
+        cy.get('#context-popup').children('ul').children('li').eq(3);
     });
 
     it('Save learning object', () => {
@@ -238,6 +238,6 @@ describe('Dashboard', () => {
 
         //Assert delete button has appeared
         cy.get('#delete-selected').click({ force: true });
-        cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
+        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(0).click({force: true});
     });
 });

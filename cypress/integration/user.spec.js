@@ -53,7 +53,7 @@ describe('User', () => {
 
         // Navigate to user profile from navbar
         cy.get('#gravatar').click({ force: true }, { multiple: true });
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+        cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Click organization link 
         cy.get('#organization-link').children('a').click({ force: true });
@@ -72,7 +72,7 @@ describe('User', () => {
         // Assert new navbar elements
         cy.get('#contributor-link');
         cy.get('#gravatar').click({ force: true });
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+        cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
@@ -85,7 +85,7 @@ describe('User', () => {
         // Assert new navbar elements
         cy.get('#contributor-link');
         cy.get('#gravatar').click({ force: true });
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+        cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
@@ -104,7 +104,7 @@ describe('User', () => {
         // Assert new navbar elements
         cy.get('#contributor-link');
         cy.get('#gravatar').click({ force: true });
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+        cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
@@ -126,7 +126,7 @@ describe('User', () => {
         // Assert new navbar elements
         cy.get('#contributor-link');
         cy.get('#gravatar').click({ force: true });
-        cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+        cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
         // Assert URL 
         cy.url().should('include', 'user');
@@ -186,7 +186,7 @@ describe('User', () => {
 
        // Navigate to user profile from navbar
        cy.get('#gravatar').click({ force: true }, { multiple: true });
-       cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+       cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
        // Click organization link 
        cy.get('#clark-card-link').click({ force: true });
@@ -198,7 +198,7 @@ describe('User', () => {
 
        // Navigate to user profile from navbar
        cy.get('#gravatar').click({ force: true }, { multiple: true });
-       cy.get('.popup.dropdown').eq(1).children('ul').children('li').first().click({ force: true }, { multiple: true });
+       cy.get('#context-popup').children('ul').children('li').first().click({ force: true }, { multiple: true });
 
        // Click organization link 
        cy.get('#profile-create-learning-object').click({ force: true });

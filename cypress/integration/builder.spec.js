@@ -153,8 +153,8 @@
 
         // Click on options 
         cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click({ force: true });
-        cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
+        cy.get('#context-popup').children('ul').children('li').eq(3).click({ force: true });
+        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(0).click({force: true});
     });
 
     it('Assert author dropdown', () => {
@@ -361,7 +361,7 @@
 
         // Click Save for Later
         // cy.get('#save-for-later').click({ force: true });
-        cy.get('.popup-wrapper').children('.popup.dialog').children('.btn-group.center').children('div').eq(1).click({force: true});
+        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(1).click({force: true});
 
         // Assert Unpublished label 
         cy.get('#toggle-label').contains('unpublished');
@@ -376,8 +376,8 @@
 
         // Delete new object
         cy.get('#options').click({ force: true });
-        cy.get('.popup.small').eq(1).children('ul').children('li').eq(3).click({ force: true });
-        cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
+        cy.get('#context-popup').children('ul').children('li').eq(3).click({ force: true });
+        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(0).click({force: true});
     });
 
     it('Click dropzone for file upload', () => {
@@ -426,6 +426,6 @@
 
         //Assert delete button has appeared
         cy.get('#delete-selected').click({ force: true });
-        cy.get('.popup-wrapper').children('.popup.dialog.title-bad').children('.btn-group.center').children('div').eq(0).click({force: true});
+        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(0).click({force: true});
     });
  });

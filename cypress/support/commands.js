@@ -37,7 +37,7 @@ Cypress.Commands.add('login', () => {
      // Enter login info 
      cy.get('input[name=username]').type('cypress');
      cy.get('input[name=password]').type('Clarktesting1!');
-     cy.get('.auth-button').click();
+     cy.get('#auth-button').click();
 });
 
 // Method that prevents uncaught exceptions from failing otherwise working tests
