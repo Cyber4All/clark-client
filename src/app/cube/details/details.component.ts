@@ -104,28 +104,40 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.getLearningObjectRatings();
         this.showAddRating = false;
         this.toastService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
+      }, error => {
+        this.showAddRating = false;
+        this.toastService.notify('Error!', 'An error occured and your rating could not be submitted', 'bad', 'far fa-times');
+        console.error(error);
       });
     } else {
       // editing
       delete rating.editing;
-      if (!rating.id) {
-        this.toastService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
-        console.error('Error: rating id not set');
-        return;
-      }
-      this.ratingService.editRating(
-        this.learningObject.author.username,
-        this.learningObject.name, rating.id , rating as Rating
-      ).then(() => {
-        this.getLearningObjectRatings();
-        this.showAddRating = false;
-        this.toastService.notify('Success!', 'Review updated successfully!', 'good', 'far fa-check');
-      }, error => {
-        this.showAddRating = false;
-        this.toastService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
-        console.error(error);
-      });
+      this.updateRating(rating);
     }
+  }
+
+  /**
+   * Edits an existing rating. An id must be supplied.
+   * @param rating the rating object to be update
+   */
+  updateRating(rating: {number: number, comment: string, id?: string}) {
+    if (!rating.id) {
+      this.toastService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
+      console.error('Error: rating id not set');
+      return;
+    }
+    this.ratingService.editRating(
+      this.learningObject.author.username,
+      this.learningObject.name, rating.id , rating as Rating
+    ).then(() => {
+      this.getLearningObjectRatings();
+      this.showAddRating = false;
+      this.toastService.notify('Success!', 'Review updated successfully!', 'good', 'far fa-check');
+    }, error => {
+      this.showAddRating = false;
+      this.toastService.notify('Error!', 'An error occured and your rating could not be updated', 'bad', 'far fa-times');
+      console.error(error);
+    });
   }
 
   /**
@@ -134,7 +146,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   async deleteRating(index) {
     // 'index' here is the index in the ratings array to delete
-    const t = await this.modalService.makeDialogMenu(
+    const shouldDelete = await this.modalService.makeDialogMenu(
       'ratingDelete',
       'Are you sure you want to delete this rating?',
       'You cannot undo this action!',
@@ -147,7 +159,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       ]
     ).toPromise();
 
-    if (t === 'delete') {
+    if (shouldDelete === 'delete') {
       this.ratingService.deleteRating(this.learningObject.author.username, this.learningObject.name, this.ratings[index].id).then(val => {
         this.getLearningObjectRatings();
         this.toastService.notify('Success!', 'Rating deleted successfully!.', 'good', 'far fa-times');
