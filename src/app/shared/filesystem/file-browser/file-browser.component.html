@@ -3,7 +3,7 @@
   <div class="view-switcher inline-flex right">
     <div class="inline-flex">
       <div *ngIf="canManage && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)" id="new-file" (click)="emitNewOptionClick($event)" class="button new">
-        Upload <i class="fas fa-upload"></i>
+        New Upload <i class="fas fa-upload"></i>
       </div>
       <!-- <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">
         <i class="fas fa-th icon-clean"></i>

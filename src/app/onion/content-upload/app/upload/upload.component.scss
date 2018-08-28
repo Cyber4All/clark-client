@@ -105,6 +105,20 @@
   }
 }
 
+.back-button {
+  color: $bright-blue;
+  cursor: pointer;
+  margin-bottom: 10px;
+
+  .svg-inline--fa {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .manage-materials {
   max-width: $max-width;
   margin: auto;
