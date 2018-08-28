@@ -29,7 +29,7 @@
   <div class="new-rating" (click)="$event.stopPropagation()">
     <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
     <div class="title">Rate this Learning Object</div>
-    <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="submitNewRating($event)"
+    <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
       (cancelRating)="showAddRating = false;"></clark-new-rating>
   </div>
 </div>

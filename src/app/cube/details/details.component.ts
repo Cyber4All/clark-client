@@ -93,22 +93,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Creates a new rating. If editing is true, edits a rating instead and an id must be supplied.
+   * Determines if a rating is being created or edited and calls appropriate function
    * @param rating the rating object to be created
    */
-  submitNewRating(rating: {number: number, comment: string, editing?: boolean, id?: string}) {
+  handleRatingSubmission(rating: {number: number, comment: string, editing?: boolean, id?: string}) {
     if (!rating.editing) {
       // creating
       delete rating.editing;
-      this.ratingService.createRating(this.learningObject.author.username, this.learningObject.name, rating as Rating).then(() => {
-        this.getLearningObjectRatings();
-        this.showAddRating = false;
-        this.toastService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
-      }, error => {
-        this.showAddRating = false;
-        this.toastService.notify('Error!', 'An error occured and your rating could not be submitted', 'bad', 'far fa-times');
-        console.error(error);
-      });
+      this.createRating(rating);
     } else {
       // editing
       delete rating.editing;
@@ -117,8 +109,24 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Creates a new rating
+   * @param rating the rating to be created
+   */
+  createRating(rating: {number: number, comment: string, id?: string}) {
+    this.ratingService.createRating(this.learningObject.author.username, this.learningObject.name, rating as Rating).then(() => {
+      this.getLearningObjectRatings();
+      this.showAddRating = false;
+      this.toastService.notify('Success!', 'Review submitted successfully!', 'good', 'far fa-check');
+    }, error => {
+      this.showAddRating = false;
+      this.toastService.notify('Error!', 'An error occured and your rating could not be submitted', 'bad', 'far fa-times');
+      console.error(error);
+    });
+  }
+
+  /**
    * Edits an existing rating. An id must be supplied.
-   * @param rating the rating object to be update
+   * @param rating the rating object to be updated
    */
   updateRating(rating: {number: number, comment: string, id?: string}) {
     if (!rating.id) {
