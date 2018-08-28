@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { UserService } from '../../../core/user.service';
 
@@ -9,11 +9,19 @@ import { UserService } from '../../../core/user.service';
 })
 export class DetailsSplashComponent implements OnInit {
   @Input() learningObject: LearningObject;
+  @Input() ratings: any[];
+  @Input() averageRating: number;
+  @Input() canRate: boolean;
+  @Output() showNewRating: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private userService: UserService) { }
 
   ngOnInit() {
 
 
+  }
+
+  showRatingPopup() {
+    this.showNewRating.emit(true);
   }
 }

@@ -10,7 +10,17 @@
             <span *ngIf="i !== learningObject.contributors.length -1">, </span>
           </span>
         </div>
-      <div [ngClass]="learningObject.length" class="type">{{ learningObject.length }}</div>
+        <div class="header-bottom">
+          <div class="rating">
+            <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
+            <a *ngIf="canRate"  (click)="showRatingPopup()">Write a review</a>
+            <span class="emailNotVerified" *ngIf="!canRate" tip="Please log in and verify your email to rate this learning object.
+            learning objects.">
+              <i class="far fa-question-circle"></i>
+            </span>
+          </div>
+          <div [ngClass]="learningObject.length" class="type">{{ learningObject.length }}</div>
+        </div>
     </div>
   </div>
 </div>
