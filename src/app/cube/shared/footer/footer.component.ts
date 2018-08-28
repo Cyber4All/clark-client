@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { COPY } from './footer.copy';
 
 @Component({
   selector: 'cube-footer',
@@ -7,7 +8,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-
+  copy = COPY;
   hideFooter = false;
 
   constructor(private router: Router, private route: ActivatedRoute) { }

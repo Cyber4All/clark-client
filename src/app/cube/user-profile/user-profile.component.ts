@@ -1,11 +1,10 @@
 import { UserService } from '../../core/user.service';
 import { Component, OnInit, OnDestroy} from '@angular/core';
-import { LearningObjectService } from '../learning-object.service';
 import { AuthService } from '../../core/auth.service';
 import { User } from '@cyber4all/clark-entity';
-import { ModalService } from '../../shared/modals';
 import { ActivatedRoute } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
+import { COPY } from './user-profile.copy';
 
 @Component({
   selector: 'clark-user-profile',
@@ -14,6 +13,7 @@ import { ISubscription } from 'rxjs/Subscription';
 })
 
 export class UserProfileComponent implements OnInit, OnDestroy {
+  copy = COPY;
   user: User;
   subscription: ISubscription;
   self = false;
@@ -25,10 +25,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   editContent = false;
 
   constructor(
-    private learningObjectService: LearningObjectService,
     private userService: UserService,
     private auth: AuthService,
-    private modalService: ModalService,
     private route: ActivatedRoute,
   ) {}
 

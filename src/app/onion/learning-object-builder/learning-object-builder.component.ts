@@ -178,8 +178,8 @@ export class LearningObjectBuilderComponent implements OnInit {
 
   private async showPublishingDialog(): Promise<boolean> {
     const text = this.auth.user.emailVerified
-      ? ''
-      : 'You must have a verfied email address to publish learning objects! Would you like to verfiy your email now?';
+      ? 'You can submit this learning object for review by the NCCP review team now, or save it for later.'
+      : 'You must have a verfied email address to submit learning objects! Would you like to verfiy your email now?';
 
     const buttons = [
       new ModalListElement(
@@ -192,7 +192,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (this.auth.user.emailVerified) {
       buttons.unshift(
         new ModalListElement(
-          'Save & Publish!<i class="far fa-check-circle"></i>',
+          'Save & Submit!<i class="far fa-check-circle"></i>',
           'accept',
           'good'
         )
@@ -210,7 +210,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     const publish = await this.modalService
       .makeDialogMenu(
         'PublishConfirmation',
-        'Publish changes?',
+        'Submit learning object for review?',
         text,
         true,
         '',

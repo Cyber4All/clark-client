@@ -12,6 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+import { COPY } from './search.copy';
 
 @Component({
   selector: 'clark-search',
@@ -19,6 +20,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
+  copy = COPY;
 
   @ViewChild('searchInput') searchInput: ElementRef;
   @ViewChild('optionOneSwitch') optionOneSwitch: ElementRef;

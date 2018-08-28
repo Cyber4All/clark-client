@@ -2,6 +2,7 @@ import { User } from '@cyber4all/clark-entity';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/user.service';
+import { COPY } from './organization-list.copy';
 
 @Component({
   selector: 'clark-organization-list',
@@ -9,6 +10,7 @@ import { UserService } from '../../core/user.service';
   styleUrls: ['./organization-list.component.scss']
 })
 export class OrganizationListComponent implements OnInit {
+  copy = COPY;
   organization;
   members: Array<User>;
 

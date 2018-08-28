@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <div class="title">My Library</div>
+  <div class="title">{{ copy.TITLE }}</div>
   <div id="library-count" class="count">{{cartItems.length || 0}} item{{(cartItems.length != 1) ? 's' : ''}}</div>
 
   <div *ngIf="cartItems" class="cart">
@@ -27,7 +27,7 @@
   </div>
   
   <div *ngIf="!cartService.cartItems.length" class="no-objects">
-    You don't have anything in your library!
+    {{ copy.EMPTY }}
     <br/>Get started
     <span routerLink="/browse" id="browse-message">browsing some learning objects!</span>
   </div>
