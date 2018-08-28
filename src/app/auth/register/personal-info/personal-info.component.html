@@ -1,19 +1,19 @@
 
 <form [formGroup] = "group">
-  <div class="auth-title light">Tell Us About Yourself</div><hr/>
+  <div class="auth-title light" id="personal-header">Tell Us About Yourself</div><hr/>
   <div class="h-group">
     <div class="input firstname">
-      <input name="firstname" type="text" placeholder="First name" formControlName="firstname"/>
+      <input id="input-firstname" name="firstname" type="text" placeholder="First name" formControlName="firstname"/>
       <i class="far fa-id-card"></i>
     </div>
     <div class="input lastname">
-      <input name="lastname" type="text" placeholder="Last name" formControlName="lastname" />
+      <input id="input-lastname"  name="lastname" type="text" placeholder="Last name" formControlName="lastname" />
       <i class="far fa-id-card"></i>
     </div>
   </div>
 
   <div class="input email">
-    <input #emailInput name="email" type="text" placeholder="Email address" formControlName="email"/>
+    <input id="input-email" #emailInput name="email" type="text" placeholder="Email address" formControlName="email"/>
     <i class="far fa-at"></i>
     <div class="icon-right">
       <ng-container *ngIf="querying">

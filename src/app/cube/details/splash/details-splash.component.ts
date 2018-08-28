@@ -1,19 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { UserService } from '../../../core/user.service';
 
 @Component({
   selector: 'cube-details-splash',
   styleUrls: ['details-splash.component.scss'],
   templateUrl: 'details-splash.component.html'
 })
-export class DetailsSplashComponent implements OnInit {
+export class DetailsSplashComponent {
   @Input() learningObject: LearningObject;
+  @Input() ratings: any[];
+  @Input() averageRating: number;
+  @Input() canRate: boolean;
+  @Output() showNewRating: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private userService: UserService) { }
-
-  ngOnInit() {
-
-
+  /**
+   * Emits an event to parent component to signal the ratings popup to open
+   */
+  showRatingPopup() {
+    this.showNewRating.emit(true);
   }
 }

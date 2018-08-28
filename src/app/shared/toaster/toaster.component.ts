@@ -7,7 +7,7 @@ import { Component, Output, Input, ElementRef, EventEmitter, OnChanges, ChangeDe
     template: `
     <div *ngFor="let el of toRender; let i = index;" [attr.data-notification]="i" [ngStyle]="{'bottom': el['bottom'] ? el['bottom'] + 'px' : '0px', 'left': el['left'] ? el['left'] : '20px', 'opacity': el['show'] ? 1 : 0}" [attr.class]="'notification ' + el.classes">
         <div class="icon"><div><i [attr.class]="el.icon"></i></div></div>
-        <div class="note-content">
+        <div class="note-content" id="note-content">
             <div class="title">{{el.title}}</div>
             <div class="text">{{el.text}}</div>
         </div>

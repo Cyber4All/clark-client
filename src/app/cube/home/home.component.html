@@ -2,12 +2,12 @@
   <div class="img-viewport">
     <div class="search-viewport">
       <div class="search-contents">
-        <div class="feature-text">{{ copy.HERO }}</div>
+        <div id="home-title" class="feature-text">{{ copy.HERO }}</div>
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input autofocus type="text" class="search-input" placeholder="Searching across {{ learningObjectService.totalLearningObjects }} learning objects" [(ngModel)]="query.text" name="query">
+            <input id="search-input" autofocus type="text" class="search-input" placeholder="Searching across {{ learningObjectService.totalLearningObjects }} learning objects" [(ngModel)]="query.text" name="query">
             <div class="browselink" routerLink="/browse">{{ copy.BROWSE }}</div>
-            <button type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{ copy.SEARCH }}</button>
+            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{ copy.SEARCH }}</button>
           </div>
         </form>
       </div>
@@ -22,5 +22,5 @@
 <div class="featured-viewport">
   <cube-featured></cube-featured>
     <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
-    <div class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</div>
+    <div id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</div>
 </div>

@@ -2,7 +2,7 @@
   <div class="search-options">
     <div *ngIf="selected == 1" class="keyword-search input">
       <form (submit)="performSearch(searchInput)">
-        <input #searchInput type="search" placeholder="Search..." (focus)="didFocus.emit()" />
+        <input #searchInput id="clark-search-input" type="search" placeholder="Search..." (focus)="didFocus.emit()" />
         <div class="icon" (click)="performSearch(searchInput)"><i class="far fa-search"></i></div>
       </form>
     </div>
@@ -10,7 +10,7 @@
       <clark-mappings-filter [source]="selectedSource" [focus]="focusMappingsDropdown" [blur]="blurMappingsDropdown" [close]="closeMappingsDropdown" (add)="performOutcomeSearch($event.filter)" (toggleSource)="toggleMappingsFilterSource($event)" (didFocus)="didFocus.emit()"></clark-mappings-filter>
     </div>
   </div>
-  <div class="description">
+  <div class="description" id='search-description'>
     {{
       (selected === 1) ? copy.KEYWORDSDESC :
       copy.OUTCOMESDESC
@@ -20,7 +20,7 @@
     <div #optionOneSwitch class="option option-one" [ngClass]="{'active': selected === 1}" (click)="toggle(1)">
       {{ copy.OPT1 }}
     </div>
-    <div #optionTwoSwitch class="option option-two" [ngClass]="{'active': selected === 2}" (click)="toggle(2)">
+    <div id="outcomes-option" #optionTwoSwitch class="option option-two" [ngClass]="{'active': selected === 2}" (click)="toggle(2)">
       {{ copy.OPT2 }}
     </div>
     <div class="highlight" [ngClass]="{'right': selected === 2}"></div>

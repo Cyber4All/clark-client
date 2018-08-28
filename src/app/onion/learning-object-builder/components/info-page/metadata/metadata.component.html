@@ -1,21 +1,21 @@
 <section class="metadata-wrapper">
   <div class="header">
     <div class="back"></div>
-    <div class="title">{{ copy.TITLE }}
+    <div id="basic-information-title" class="title">{{ copy.TITLE }}
     </div>
     <div></div>
   </div>
   <div class="section">
     <div class="input-group">
-      <div class="label">
-        {{ copy.NAME }}
+      <div class="label" id="name-label">
+        What is this learning object named?
       </div>
-      <input aria-label="Learning object name" class="name-field" type="text" autofocus name="name" placeholder="{{ copy.NAMEPLACEHOLDER }}" [(ngModel)]="learningObject.name" #name="ngModel"
+      <input class="name-field" id="object-name-field" type="text" autofocus name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name" #name="ngModel"
         [ngClass]="{'bad': errorStore.error === 'name' }" [pattern]="validName" />
     </div>
     <div class="input-group">
-      <div class="label">
-        {{ copy.ADDCOLLABS }}
+      <div class="label" id="contributors-label">
+        Add more authors.
       </div>
       <div *ngIf="selectedAuthors.length > 0">
         <div class="level-list">
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <input #userSearchInput type="text" aria-label="user textbox" class="search-input" placeholder="{{ copy.COLLABPLACEHOLDER }}" [(ngModel)]="query.text">
+      <input id="user-search" #userSearchInput type="text" aria-label="user textbox" class="search-input" placeholder="{{ copy.COLLABPLACEHOLDER }}" [(ngModel)]="query.text">
       <div id="container">
         <ul>
           <li *ngFor="let user of searchResults; let i = index;">
@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="input-group">
-      <div class="label">
+      <div id="length-label" class="label">
         {{ copy.LENGTH }}
       </div>
       <div class="select-wrapper">
@@ -59,11 +59,11 @@
     </div>
 
     <div class="input-group">
-      <div class="label">
+      <div id="level-label" class="label">
         {{ copy.LEVELS }}
       </div>
       <div class="level-list">
-        <div class="level button" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let level of academicLevels"
+        <div class="level button" id="level-selection" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let level of academicLevels"
           (click)="toggleLevel(level)">
           {{ level | titlecase}}
           <span *ngIf="learningObject.levels.includes(level)">

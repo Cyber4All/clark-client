@@ -4,10 +4,10 @@ export class TimeFunctions {
   }
 
   private static convertTimestamp(timestamp: number): string {
-    //Ensure timestamp is a number;
+    // Ensure timestamp is a number;
     timestamp = +timestamp;
-    var currTimeInSeconds = Math.floor(Date.now() / 1000);
-    var submittedSeconds = Math.floor(timestamp / 1000);
+    const currTimeInSeconds = Math.floor(Date.now() / 1000);
+    const submittedSeconds = Math.floor(timestamp / 1000);
     if (currTimeInSeconds - submittedSeconds <= 59) {
       return 'less than a minute ago';
     } else if (

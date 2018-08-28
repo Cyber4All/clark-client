@@ -3,14 +3,23 @@
     <div class="header">
       <div class="name">{{ learningObject.name }}</div>
       <div class="author">Created by
-        <span [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date
+        <span id="author-link" [routerLink]="['/users', learningObject.author.username]" class="link">{{learningObject.author.name + " - " + learningObject.author.organization | titlecase}}</span>, updated {{ learningObject.date
         | date:'shortDate' }}</div>
         <div *ngIf="learningObject.contributors" class="author">Contributors:
           <span *ngFor="let contributor of learningObject.contributors; let i = index;" class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name + " - " + contributor.organization | titlecase }}
             <span *ngIf="i !== learningObject.contributors.length -1">, </span>
           </span>
         </div>
-      <div [ngClass]="learningObject.length" class="type">{{ learningObject.length }}</div>
+        <div class="header-bottom">
+          <div class="rating">
+            <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
+            <a *ngIf="canRate"  (click)="showRatingPopup()">Write a review</a>
+            <span class="emailNotVerified" *ngIf="!canRate" tip="Please log in and verify your email to rate this learning object.">
+              <i class="far fa-question-circle"></i>
+            </span>
+          </div>
+          <div [ngClass]="learningObject.length" class="type">{{ learningObject.length }}</div>
+        </div>
     </div>
   </div>
 </div>

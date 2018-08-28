@@ -7,7 +7,7 @@ describe('New Rating', () => {
         // wait for page to load
         cy.wait(1000);
 
-        cy.get('.learning-object').first().click({ multiple: true });
+        cy.get('.learning-object').first().click({ force: true }, { multiple: true });
 
         cy.wait(1000);
 
@@ -21,12 +21,12 @@ describe('New Rating', () => {
     });
 
     it('Open new rating modal, rate, add comment, submit', () => {
-        cy.get('.rating > a').first().click({  multiple: true });
+        cy.get('.rating > a').first().click({ force: true }, {  multiple: true });
 
         cy.get('.new-rating-wrapper').should('be.visible').should('have.class', 'active');
         cy.get('.new-rating').should('be.visible');
         
-        cy.get('.new-rating .empty-stars .star').eq(3).children('div').click();
+        cy.get('.new-rating .empty-stars .star').eq(3).children('div').click({ force: true });
 
         cy.wait(500);
 
@@ -34,7 +34,7 @@ describe('New Rating', () => {
 
         cy.get('.new-rating .comment-wrapper textarea').type('Adding a comment whoop whoop');
 
-        cy.get('.new-rating .comment-wrapper .button.good').click();
+        cy.get('.new-rating .comment-wrapper .button.good').click({ force: true });
 
         cy.wait(1000);
 
@@ -43,9 +43,9 @@ describe('New Rating', () => {
     })
 
     it('Open new rating modal, click close', () => {
-        cy.get('.rating > a').first().click({  multiple: true });
+        cy.get('.rating > a').first().click({ force: true }, { multiple: true });
 
-        cy.get('.new-rating-wrapper .close-new-rating').click();
+        cy.get('.new-rating-wrapper .close-new-rating').click({ force: true });
 
         cy.get('.new-rating-wrapper').should('not.be.visible').should('not.have.class', 'active');
         cy.get('.new-rating').should('not.be.visible');

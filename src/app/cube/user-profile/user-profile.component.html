@@ -5,7 +5,7 @@
   <div class="container-inner">
     <div class="edit" *ngIf="!editContent && self" (click)="editContent = !editContent">
       <i class="far fa-pencil"></i>
-      <span>{{ copy.EDIT }}</span>
+      <span id="edit-profile">{{ copy.EDIT }}</span>
     </div>
     <div *ngIf="!editContent">
       <app-user-information [user]="user" [self]="self"></app-user-information>

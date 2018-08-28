@@ -8,7 +8,7 @@ import { COPY } from './description.copy';
   `
   <div class="description-wrapper">
       <div class="input-group">
-        <div class="label">{{ copy.QUESTION }}
+        <div id="description-label" class="label">{{ copy.QUESTION }}
         <span tip="{{ copy.TIP }}">
           <i class="fas fa-question-circle"></i>
         </span>
