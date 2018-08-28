@@ -1,11 +1,17 @@
 import { trigger, style, animate, transition } from '@angular/animations';
-import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  OnDestroy,
+  AfterViewInit
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { DropzoneDirective } from 'ngx-dropzone-wrapper';
-import { TimeFunctions } from '../shared/time-functions';
 import { ToasterService } from '../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -37,31 +43,27 @@ export type File = {
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
   animations: [
-    trigger(
-      'fadeIn', [
-        transition(':enter', [
-          style({opacity: 0}),
-          animate('250ms', style({opacity: 1}))
-        ])
-      ]
-    ),
-    trigger(
-      'uploadQueue', [
-        transition(':enter', [
-          style({bottom: '-20px', opacity: 0}),
-          animate('200ms 400ms ease-out', style({ bottom: '20px', opacity: 1 }))
-        ]),
-        transition(':leave', [
-          style({bottom: '20px', opacity: 1}),
-          animate('200ms ease-out', style({ bottom: '-20px', opacity: 0 }))
-        ]),
-
-      ]
-    )
-  ],
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('250ms', style({ opacity: 1 }))
+      ])
+    ]),
+    trigger('uploadQueue', [
+      transition(':enter', [
+        style({ bottom: '-20px', opacity: 0 }),
+        animate('200ms 400ms ease-out', style({ bottom: '20px', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ bottom: '20px', opacity: 1 }),
+        animate('200ms ease-out', style({ bottom: '-20px', opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(DropzoneDirective) dzDirectiveRef: DropzoneDirective;
+  @ViewChild(DropzoneDirective)
+  dzDirectiveRef: DropzoneDirective;
 
   private filePathMap: Map<string, string> = new Map<string, string>();
   private dzError = '';
@@ -75,9 +77,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   saving = false;
   retrieving = false;
 
-  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<LearningObjectFile[]>([]);
+  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
+    LearningObjectFile[]
+  >([]);
   folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<LearningObjectFile[]>([]);
+  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
+    LearningObjectFile[]
+  >([]);
 
   tips = TOOLTIP_TEXT;
 
@@ -108,22 +114,31 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       : this.router.navigate(['/onion/dashboard']);
 
     // Listen for queuedUploads trigger and, if the current value is an array with length > 0, close dropzone popover and save
-    this.queuedUploads$.filter(x => x !== [] && x.length > 0).debounceTime(250).takeUntil(this.unsubscribe$).subscribe(() => {
-      this.handleDrop();
-      this.save(true);
-    });
+    this.queuedUploads$
+      .filter(x => x !== [] && x.length > 0)
+      .debounceTime(250)
+      .takeUntil(this.unsubscribe$)
+      .subscribe(() => {
+        this.handleDrop();
+        this.save(true);
+      });
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
-    this.triggerSave$.takeUntil(this.unsubscribe$).debounceTime(650).subscribe(() => {
-      this.saveLearningObject();
-    });
+    this.triggerSave$
+      .takeUntil(this.unsubscribe$)
+      .debounceTime(650)
+      .subscribe(() => {
+        this.saveLearningObject();
+      });
   }
 
   ngAfterViewInit() {
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
-    Observable.fromEvent(document.getElementsByTagName('body')[0], 'dragover').takeUntil(this.unsubscribe$).subscribe(() => {
-      this.toggleDrag(true);
-    });
+    Observable.fromEvent(document.getElementsByTagName('body')[0], 'dragover')
+      .takeUntil(this.unsubscribe$)
+      .subscribe(() => {
+        this.toggleDrag(true);
+      });
   }
 
   /**
@@ -203,7 +218,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.updateFileSubscription();
       this.updateFolderMeta();
-      this.watchTimestamps();
     } catch (e) {
       this.notificationService.notify(
         `Could not fetch Learning Object`,
@@ -230,25 +244,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private updateFolderMeta() {
     this.folderMeta$.next(this.learningObject.materials['folderDescriptions']);
-  }
-
-  /**
-   * Adds a human readable representation of time elapsed since file was added
-   *
-   * @private
-   * @memberof ViewComponent
-   */
-  private watchTimestamps() {
-    let interval = 0;
-    const MINUTE = 60000;
-    setInterval(() => {
-      // After initial pass only update every minute
-      interval = MINUTE;
-      this.learningObject.materials.files.map(file => {
-        file['timeAgo'] = TimeFunctions.getTimestampAge(+file.date);
-        return file;
-      });
-    }, interval);
   }
 
   /**
@@ -523,18 +518,20 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     files: string[];
     removal: Removal;
   }): Promise<void> {
-    const confirmed = await this.modalService.makeDialogMenu(
-      'materialDelete',
-      'Are you sure?',
-      'You cannot undo this action!',
-      false,
-      'title-bad',
-      'center',
-      [
-        new ModalListElement('Yup, do it!', 'confirm', 'bad'),
-        new ModalListElement('Nevermind!', 'cancel', 'neutral')
-      ]
-    ).toPromise();
+    const confirmed = await this.modalService
+      .makeDialogMenu(
+        'materialDelete',
+        'Are you sure?',
+        'You cannot undo this action!',
+        false,
+        'title-bad',
+        'center',
+        [
+          new ModalListElement('Yup, do it!', 'confirm', 'bad'),
+          new ModalListElement('Nevermind!', 'cancel', 'neutral')
+        ]
+      )
+      .toPromise();
 
     if (confirmed === 'confirm') {
       try {
@@ -576,8 +573,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (index > -1) {
           this.learningObject.materials['folderDescriptions'][
             index
-          ].description =
-            file.description;
+          ].description = file.description;
         } else {
           const folderDescription = {
             path: file.path,

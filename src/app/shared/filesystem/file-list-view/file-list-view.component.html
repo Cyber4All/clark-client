@@ -1,4 +1,4 @@
-<div *ngIf = "preview">
+<div *ngIf="preview">
   <div class="wrapper">
     <div class="grid-row header">
       <div class>Name</div>
@@ -18,7 +18,7 @@
           [formControl]="descriptionControl" /> -->
       </div>
       <div class="text-contained">
-        {{ folder.timeAgo }}
+        <!-- Time Ago Here -->
       </div>
     </div>
     <!-- Render Files -->
@@ -33,12 +33,12 @@
           [formControl]="descriptionControl" /> -->
       </div>
       <div class="text-contained">
-        {{ file.timeAgo }}
+        {{ getTimestampAge(file.date) }}
       </div>
     </div>
   </div>
 </div>
-<div class="preview" *ngIf = "!preview">
+<div class="preview" *ngIf="!preview">
   <clark-file-preview></clark-file-preview>
-  <button (click)="returnToFileView()" class="button good">Return to file view </button> 
+  <button (click)="returnToFileView()" class="button good">Return to file view </button>
 </div>
