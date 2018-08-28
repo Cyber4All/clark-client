@@ -70,7 +70,7 @@ import { ReportRatingComponent } from './report-rating/report-rating.component';
     RatingStarsComponent,
     NewRatingComponent,
     LearningObjectRatingsComponent,
-    ReportRatingComponent,
+    ReportRatingComponent
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -88,7 +88,7 @@ import { ReportRatingComponent } from './report-rating/report-rating.component';
     AutofocusDirective,
     RatingStarsComponent,
     NewRatingComponent,
-    LearningObjectRatingsComponent,
+    LearningObjectRatingsComponent
   ]
 })
 export class SharedModule {}

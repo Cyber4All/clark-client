@@ -57,7 +57,9 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
         this.search();
       })
     );
-      if (this.learningObject.contributors) {
+      if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+        const arr = this.learningObject.contributors;
+        this.learningObject.contributors  = arr.map(member => User.instantiate(member));
         this.selectedAuthors = this.learningObject.contributors;
       }
   }
@@ -105,6 +107,11 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   removeAuthor(user) {
     for (let i = 0; i < this.selectedAuthors.length; i++) {
       if (user.username === this.selectedAuthors[i].username) {
+        // If contributors list already exits, remove from that list
+        if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+          const index = this.learningObject.contributors.indexOf(user);
+          this.learningObject.contributors.splice(index, 1);
+        }
         this.selectedAuthors.splice(i, 1);
       }
     }

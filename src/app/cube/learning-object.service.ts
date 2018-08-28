@@ -2,7 +2,7 @@ import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { LearningObject} from '@cyber4all/clark-entity';
+import { LearningObject, User} from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 
 import * as querystring from 'querystring';
@@ -87,7 +87,13 @@ export class LearningObjectService {
       .get(route)
       .toPromise()
       .then(res => {
-        return LearningObject.instantiate(res.json());
+        const learningObject = LearningObject.instantiate(res.json());
+        // If contributors exist on this learning object, instantiate them
+        if (learningObject['contributors'] && learningObject['contributors'].length > 0) {
+          const arr = learningObject['contributors'];
+          learningObject['contributors'] = arr.map(member => User.instantiate(member));
+        }
+        return learningObject;
       });
   }
   getUsersLearningObjects(username: string ): Promise<LearningObject[]> {
