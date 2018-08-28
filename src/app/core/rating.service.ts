@@ -55,7 +55,6 @@ export class RatingService {
       )
       .toPromise()
       .then(res => {
-        console.log(res);
         const data = res.json();
         // assign id param to the value of _id and remove _id
         data.ratings = data.ratings.map(r => {
