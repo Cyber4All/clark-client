@@ -55,7 +55,7 @@
         </div>
         <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
           <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
-            class="button good" (click)="addToCart(true)">
+            class="button good" id="download-button" (click)="addToCart(true)">
             <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
               <span *ngIf="downloading">
                 <i class="fal fa-spinner-third fa-spin"></i>
@@ -63,7 +63,7 @@
             </span>
             <span *ngIf="!canDownload">Not available for download</span>
           </div>
-          <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
+          <div id="save-to-library" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" (click)="addToCart()">
             {{ saved ? 'Saved to your library!' : 'Save to Library' }}
             <span *ngIf="addingToLibrary">
               <i class="fal fa-spinner-third fa-spin"></i>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <ng-container *ngIf="!auth.user">
-          <div class="login-msg">Please
+          <div class="login-msg" id="login-msg">Please
             <a [routerLink]="['/auth/login']">log in</a> to add this Learning Object to your library.</div>
         </ng-container>
         <div class="details-metrics">
@@ -89,11 +89,11 @@
         <div class="details-share">
           <div class="share-title"></div>
           <div class="share-icons">
-            <button (click)="shareButton($event, 'facebook')" class="facebook"><i class="fab fa-facebook"></i></button>
-            <button (click)="shareButton($event, 'twitter')" class="twitter"><i class="fab fa-twitter"></i></button>
-            <button (click)="shareButton($event, 'linkedin')" class="linkedin"><i class="fab fa-linkedin"></i></button>
-            <button (click)="shareButton($event, 'email')" class="email"><i class="fas fa-envelope"></i></button>
-            <button (click)="shareButton($event, 'copyLink')" class="copylink"><i class="fas fa-clipboard"></i></button>
+            <button (click)="shareButton($event, 'facebook')" id="facebook" class="facebook"><i class="fab fa-facebook"></i></button>
+            <button (click)="shareButton($event, 'twitter')" id="twitter" class="twitter"><i class="fab fa-twitter"></i></button>
+            <button (click)="shareButton($event, 'linkedin')" id="linkedin" class="linkedin"><i class="fab fa-linkedin"></i></button>
+            <button (click)="shareButton($event, 'email')" id="email" class="email"><i class="fas fa-envelope"></i></button>
+            <button (click)="shareButton($event, 'copyLink')" id="copylink" class="copylink"><i class="fas fa-clipboard"></i></button>
             <textarea #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height: 0;"></textarea>
           </div>
         </div>

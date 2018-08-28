@@ -3,7 +3,7 @@
     {{ learningObjectName }}
   </div>
   <div class="tabs">
-    <ul>
+    <ul id="materials-title">
       <li [ngClass]="{'active': slide === 1}" (click)="changeSlide(1)">Materials</li>
       <li [ngClass]="{'active': slide === 2}" (click)="changeSlide(2)">URLs</li>
       <li [ngClass]="{'active': slide === 3}" (click)="changeSlide(3)">Notes</li>

@@ -165,7 +165,7 @@ export class DashboardComponent implements OnInit {
         'center',
         [
           new ModalListElement(
-            'Yup, do it!<i class="far fa-trash-alt"></i>',
+            'Yup, do it!<i id="confirm-deletion" class="far fa-trash-alt"></i>',
             'accept',
             'bad'
           ),

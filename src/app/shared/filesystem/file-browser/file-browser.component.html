@@ -2,7 +2,7 @@
   <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
   <div class="view-switcher inline-flex right">
     <div class="inline-flex">
-      <div *ngIf="canManage && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)" (click)="emitNewOptionClick($event)" class="button new">
+      <div *ngIf="canManage && ((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)" id="new-file" (click)="emitNewOptionClick($event)" class="button new">
         Upload <i class="fas fa-upload"></i>
       </div>
       <!-- <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">
@@ -19,7 +19,7 @@
   <div *ngIf="canManage && !(currentNode$| async)?.children.length && !(currentNode$| async)?.files.length" class="dropzone-message">
     <i class="fal fa-cloud-upload"></i>
     <div class="empty-title">No materials here!</div>
-    <div class="button" (click)="emitNewOptionClick($event)">Click here to upload</div>
+    <div class="button" id="new-file" (click)="emitNewOptionClick($event)">Click here to upload</div>
     <span>or drag and drop files and folders here</span>
   </div>
   <clark-file-list-view *ngIf="((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"

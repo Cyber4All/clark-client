@@ -7,7 +7,7 @@ import { EventEmitter } from '@angular/core';
   `
   <div class="description-wrapper">
       <div class="input-group">
-        <div class="label">How would you describe this learning object?
+        <div class="label" id="description-label">How would you describe this learning object?
         <span tip="The description is a high level overview of the Learning Object that can be returned in search results">
           <i class="fas fa-question-circle"></i>
         </span>
