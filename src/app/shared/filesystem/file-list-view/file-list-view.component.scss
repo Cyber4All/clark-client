@@ -1,3 +1,5 @@
+@import '~_vars.scss';
+
 .preview {
   text-align: center;
 }
@@ -9,9 +11,29 @@
   grid-auto-columns: 100%;
 }
 
+.meatballs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  height: 30px;
+
+  & > div,
+  &:before,
+  &:after {
+    content: '';
+    background: $bright-blue;
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+    flex: 0 0 auto;
+  }
+}
+
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr 25px;
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;

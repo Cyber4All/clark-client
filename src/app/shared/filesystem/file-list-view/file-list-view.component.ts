@@ -32,6 +32,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   emitDesc: EventEmitter<DescriptionUpdate> = new EventEmitter<
     DescriptionUpdate
   >();
+  @Output() emitContextOpen: EventEmitter<{event: MouseEvent, item: any}> = new EventEmitter();
 
   private subscriptions: Subscription[] = [];
   private editableFile: LearningObjectFile | DirectoryNode;
@@ -40,14 +41,27 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   getIcon = (extension: string) => getIcon(extension);
 
-  getTimestampAge = (timestamp: string) =>
-    TimeFunctions.getTimestampAge(+timestamp);
+  getTimestampAge = (timestamp: string) => TimeFunctions.getTimestampAge(+timestamp);
+
+  getFolderTimestamp = (node: DirectoryNode = this.node$.getValue(), timestamp: number = 0): number => {
+    const derivedTimestamp = node.getFiles().map(x => parseInt(x.date, 10)).sort((a, b) => a < b ? 1 : -1)[0];
+    timestamp = timestamp > derivedTimestamp ? timestamp : derivedTimestamp;
+
+    for (const folder of node.getChildren()) {
+      return this.getFolderTimestamp(folder, timestamp);
+    }
+
+    return timestamp;
+  }
 
   constructor() {}
 
   ngOnInit(): void {
     this.subToDescription();
+
+    
   }
+
   /**
    * Subscribe to changes in input fields
    *
