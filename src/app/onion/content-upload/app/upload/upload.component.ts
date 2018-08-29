@@ -10,10 +10,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
-import {
-  FileStorageService,
-  encodeFilePath
-} from '../services/file-storage.service';
+import { FileStorageService } from '../services/file-storage.service';
 import {
   DropzoneDirective,
   DropzoneConfigInterface
@@ -23,12 +20,10 @@ import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import {
   File,
-  Material,
   FolderDescription
 } from '@cyber4all/clark-entity/dist/learning-object';
 import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/observable/fromEvent';
@@ -77,7 +72,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
-  private filePathMap: Map<string, string> = new Map<string, string>();
   private dzError = '';
   learningObjectName: string;
 
@@ -336,7 +330,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!path) {
       path = file.name;
     }
-    path = encodeFilePath(path);
     return path.trim();
   }
 
