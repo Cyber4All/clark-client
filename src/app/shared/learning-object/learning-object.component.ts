@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Renderer2 } from '@angular/core';
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'learning-object-component',
@@ -13,7 +14,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() loading: boolean;
   @Input() owned? = false;
 
-  constructor(private hostEl: ElementRef, private renderer: Renderer2, private cart: CartV2Service) {}
+  constructor(private hostEl: ElementRef, private renderer: Renderer2, private cart: CartV2Service, public auth: AuthService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.loading) {
