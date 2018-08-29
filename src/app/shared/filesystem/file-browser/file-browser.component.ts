@@ -47,6 +47,8 @@ export class FileBrowserComponent implements OnInit {
   containerClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output()
   newOptionsClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output() 
+  meatballClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output()
   descriptionUpdated: EventEmitter<DescriptionUpdate> = new EventEmitter<
     DescriptionUpdate

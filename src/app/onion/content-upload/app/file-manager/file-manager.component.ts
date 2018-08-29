@@ -89,6 +89,23 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Triggers file options context menu
+   *
+   * @param {MouseEvent} $event
+   * @memberof FileManagerComponent
+   */
+  openFileOptions(params: {event: MouseEvent, item: any}): void {
+    this.contextMenuService.show.next({
+      anchorElement: params.event.currentTarget,
+      contextMenu: this.fileOptions,
+      event: <any>params.event,
+      item: params.item
+    });
+    params.event.preventDefault();
+    params.event.stopPropagation();
+  }
+
+  /**
    * Closes all context menus
    *
    * @memberof FileManagerComponent
