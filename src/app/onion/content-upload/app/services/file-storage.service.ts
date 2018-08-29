@@ -3,24 +3,15 @@ import { USER_ROUTES } from '@env/route';
 import 'rxjs/add/operator/toPromise';
 import { Http, Headers } from '@angular/http';
 import { AuthService } from '../../../../core/auth.service';
-import { CookieService } from 'ngx-cookie';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import { DZFile } from '../upload/upload.component';
 type LearningObjectFile = File;
 @Injectable()
 export class FileStorageService {
-  private authHeader: { header: string; value: string };
-
-  private token: string;
   private headers: Headers = new Headers();
 
-  constructor(
-    private http: Http,
-    private auth: AuthService,
-    private cookies: CookieService
-  ) {
-    this.token = cookies.get('presence');
+  constructor(private http: Http, private auth: AuthService) {
     this.headers.append('Content-Type', 'application/json');
   }
 
@@ -43,7 +34,7 @@ export class FileStorageService {
       formData.append(
         'uploads',
         file,
-        `${file.fullPath ? encodeFilePath(file.fullPath) : file.name}`
+        `${file.fullPath ? this.encodeFilePath(file.fullPath) : file.name}`
       );
 
       xhr.onreadystatechange = () => {
@@ -54,49 +45,6 @@ export class FileStorageService {
               response = JSON.parse(response);
             }
             resolve(response as LearningObjectFile);
-          } else {
-            reject(xhr.response);
-          }
-        }
-      };
-      const route = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT;
-      xhr.open('POST', route, true);
-      xhr.withCredentials = true;
-      xhr.send(formData);
-    });
-  }
-
-  /**
-   * Sends files to API for uploading to S3 bucket
-   *
-   * @param {string} learningObjectID
-   * @param {File[]} files
-   * @returns {Promise<LearningObjectFile[]>}
-   * @memberof FileStorageService
-   */
-  uploadMultiple(
-    learningObject: LearningObject,
-    files: DZFile[] | any[]
-  ): Promise<LearningObjectFile[]> {
-    return new Promise((resolve, reject) => {
-      const formData: FormData = new FormData(),
-        xhr: XMLHttpRequest = new XMLHttpRequest();
-      formData.append('learningObjectID', learningObject.id);
-      for (const file of files) {
-        formData.append(
-          'uploads',
-          file,
-          `${file.fullPath ? encodeFilePath(file.fullPath) : file.name}`
-        );
-      }
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            let response = xhr.response;
-            if (typeof response === 'string') {
-              response = JSON.parse(response);
-            }
-            resolve(response as LearningObjectFile[]);
           } else {
             reject(xhr.response);
           }
@@ -128,14 +76,14 @@ export class FileStorageService {
       .delete(route, { headers: this.headers, withCredentials: true })
       .toPromise();
   }
-}
 
-export function encodeFilePath(path: string): string {
-  const escapedSlash = /%2F/g;
-  const replacementChar = '%2F';
-  if (escapedSlash.test(path)) {
-    path = path.replace(escapedSlash, `"%2F"`);
+  private encodeFilePath(path: string): string {
+    const escapedSlash = /%2F/g;
+    const replacementChar = '%2F';
+    if (escapedSlash.test(path)) {
+      path = path.replace(escapedSlash, `"%2F"`);
+    }
+    const sanitized = path.replace(/\//g, replacementChar);
+    return sanitized;
   }
-  const sanitized = path.replace(/\//g, replacementChar);
-  return sanitized;
 }
