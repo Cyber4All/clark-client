@@ -40,7 +40,7 @@
       <div class="text-contained">
         {{ getTimestampAge(file.date) }}
       </div>
-      <div class="meatballs" (click)="emitContextOpen.next({event: $event, item: file}); $event.stopPropagation()">
+      <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: file}); $event.stopPropagation()">
         <div></div>
       </div>
     </div>
