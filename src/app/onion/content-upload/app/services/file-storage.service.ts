@@ -131,7 +131,7 @@ export class FileStorageService {
 }
 
 export function encodeFilePath(path: string): string {
-  const replacementChar = '!@!';
+  const replacementChar = '%2F';
   const sanitized = path.replace(/\//g, replacementChar);
   return sanitized;
 }
