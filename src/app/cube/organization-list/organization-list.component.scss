@@ -1,20 +1,24 @@
 @import '~_vars.scss';
 $sidebar-width: 350px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
+
 .list-container {
   max-width: $max-width;
   width: 100%;
   margin-right: auto;
   margin-left: auto;
+
   .list-content {
     display: grid;
     grid-template-columns: repeat( auto-fit, minmax(400px, 1fr));
 
     padding: 0px;
     margin-bottom: 30px;
-    user-card {
+
+    & > clark-user-card, & > *  {
       justify-self: center;
       width: 400px;
+
       &:not(:last-child) {
         margin-bottom: 10px;
       }
@@ -29,8 +33,14 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   padding: 50px 0px;
   position: relative;
   margin-bottom: 50px;
-  ::ng-deep .particles-container {
-    opacity: 0.3;
+
+  &:after {
+    content: '';
+    background: white;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.03;
+    mask: $cube-pattern repeat;
   }
   .inner {
     text-align: center;

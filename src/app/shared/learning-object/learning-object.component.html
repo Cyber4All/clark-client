@@ -1,0 +1,20 @@
+<div class="learning-object" id="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
+  <div class="image">
+    <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
+  </div>
+  <div class="learning-object-content">
+    <div class="title">
+      {{ truncateText(learningObject.name, 45) }}
+      <button class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
+    </div>
+    <div class="details">
+      <div class="author">
+        {{ learningObject.author.name | titlecase }} | {{ learningObject.author.organization }}
+      </div>
+      <div class="date">
+        Updated {{ date | date:'mediumDate' }}
+      </div>
+    </div>
+    <div class="goals" *ngIf="this.learningObject.goals[0]?.text" [innerHtml]="goals()"></div>
+  </div>
+</div>

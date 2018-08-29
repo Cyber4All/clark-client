@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { USER_ROUTES } from '@env/route';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
-  constructor(private http: Http, private auth: AuthService) {}
+  socket;
+  socketWatcher: Observable<string>;
+  constructor(private http: Http, private auth: AuthService) {
+  }
 
   editUserInfo(user: UserEdit): Promise<any> {
     return this.http
@@ -31,7 +35,6 @@ export class UserService {
           .toPromise()
           .then(
             val => {
-              console.log(val);
               return val.json() ? true : false;
             },
             error => {
@@ -42,8 +45,23 @@ export class UserService {
       : Promise.resolve(false);
   }
 
+  searchUsers(query: {}) {
+    return this.http
+      .get(
+        USER_ROUTES.SEARCH_USERS(query),
+        {
+          withCredentials: true
+        }
+      )
+      .toPromise()
+      .then(val => {
+        const arr = val.json();
+        return arr.map(member => User.instantiate(member));
+      });
+  }
+
   getOrganizationMembers(organization: string): Promise<User[]> {
-    let route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
+    const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
       .get(route)
       .toPromise()

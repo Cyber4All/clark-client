@@ -1,18 +1,17 @@
 <div class="banner">
-  <particles [params]="particleParams" [style]="myStyle" [width]="width" [height]="height"></particles>
 </div>
 <img [src]="gravatarImage" class="img">
 <div class="container">
   <div class="container-inner">
     <div class="edit" *ngIf="!editContent && self" (click)="editContent = !editContent">
       <i class="far fa-pencil"></i>
-      <span>Edit Profile</span>
+      <span id="edit-profile">{{ copy.EDIT }}</span>
     </div>
     <div *ngIf="!editContent">
       <app-user-information [user]="user" [self]="self"></app-user-information>
     </div>
     <div *ngIf="editContent">
-      <app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></app-user-edit-information>
+      <cube-app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></cube-app-user-edit-information>
     </div>
   </div>
 </div>

@@ -3,12 +3,12 @@
     <div class="top">
       <div class="error" > {{ loginFailure || '' }} </div>
       <div class="title_wrapper" routerLink="/home">
-        <div class="title">C.L.A.R.K.</div>
-        <div class="title light">Cybersecurity Labs and Resource Knowledge-base</div>
+        <div class="auth-title">CLARK</div>
+        <div class="auth-title light">Cybersecurity Labs and Resource Knowledge-base</div>
       </div>
       <form (ngSubmit)="submit()">
         <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
-          <input name="username" type="text" placeholder="Username" [(ngModel)]="authInfo.username" />
+          <input name="username" type="text" placeholder="Username" [(ngModel)]="authInfo.username" [autofocus]/>
           <i class="far fa-user"></i>
         </div>
         <div class="input password" [ngClass]="{'active': authInfo.password !== ''}">
@@ -16,19 +16,17 @@
           <i class="far fa-key"></i>
         </div>
         <div class="forgot" routerLink="../forgot-password">Forgot password?</div>
-        <button type="type" class="auth-button">
-          <div class="text" *ngIf = "!loading">Login</div>
+        <button type="type" id="auth-button" class="auth-button">
           <div class="mask"></div>
-          <span *ngIf = "loading">
-            Loading
-            <i class="far fa-spinner fa-pulse"></i>
+          <div class="text" *ngIf = "!loading">Login</div>
+          <span *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i>
           </span>
         </button>
       </form>
     </div>
     <div class="bottom-link" routerLink="../register">
       Don't have an account yet?
-      <span>Register!</span>
+      <span id="bottom-login-link">Register!</span>
     </div>
   </div>
 </div>

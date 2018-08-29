@@ -16,11 +16,12 @@ export class ModalService {
 
   /**
    * Creates a new dialog popup in center of screen and darkens background
-   * 
+   *
    * @param name name of the popup
    * @param title title of popup
    * @param text Text for content of popup
-   * @param inFlow Whether or not this dialog is in a parent component that is of fixed position (if set to true, parent is relative and the modal should move as the document is scrolled)
+   * @param inFlow Whether or not this dialog is in a parent component that is of fixed
+   *  position (if set to true, parent is relative and the modal should move as the document is scrolled)
    * @param classes (optional) classes to be applied to the popup
    * @param buttonGroupClasses (optional) classes to be applied to the btn-grpup element
    * @param buttons (optional) list of ModalListElements representing buttons to be added to the button group
@@ -35,7 +36,7 @@ export class ModalService {
     buttons?: Array<ModalListElement>
   ): Observable<string> {
 
-    let toSend = {name: name, title: title, text: text};
+    const toSend = {name: name, title: title, text: text};
 
     if (canCancel) {
       toSend['canCancel'] = canCancel;
@@ -59,11 +60,12 @@ export class ModalService {
 
   /**
    * Creates a new context menu with the specified list at the specified position. NOTE: either an element or a position MUST be specified!
-   * 
+   *
    * @param name name of the popup
    * @param classes any classes to be applied to the popup element
    * @param list list of elements for the dropdown
-   * @param inFlow Whether or not this dialog is in a parent component that is of fixed position (if set to true, parent is relative and the modal should move as the document is scrolled)
+   * @param inFlow Whether or not this dialog is in a parent component that is of fixed position
+   *  (if set to true, parent is relative and the modal should move as the document is scrolled)
    * @param el (optional) element for the menu to be postioned near
    * @param pos (optional) hardcoded position for element to appear
    */
@@ -80,7 +82,7 @@ export class ModalService {
       throw new Error('Must provide either an Element or a Position!');
     }
 
-    let toSend = {name: name, classes: classes, list: list, inFlow: inFlow};
+    const toSend = {name: name, classes: classes, list: list, inFlow: inFlow};
 
     if (el) {
       toSend['el'] = el;
@@ -142,6 +144,6 @@ export class ModalService {
     const rect = el.getBoundingClientRect(),
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
   }
 }

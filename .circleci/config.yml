@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/clark-client
   docker:
-    - image: cyber4all/circleci-aws:latest
+    - image: cyber4all/circleci-aws:node-alpine
 
 version: 2
 jobs:
@@ -14,7 +14,7 @@ jobs:
           command: npm install
       - run:
           name: Build Application
-          command: yarn ng build --prod --aot=false
+          command: yarn ng build --prod
       - persist_to_workspace: 
           root: dist
           paths: ./

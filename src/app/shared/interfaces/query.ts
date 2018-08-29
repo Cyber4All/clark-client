@@ -21,8 +21,6 @@ export interface Query {
     | { id: string; name: string; date: string; outcome: string }[];
 }
 
-export interface TextQuery extends Query {}
-
 export interface MappingQuery extends Query {
   standardOutcomes?:
     | string[]

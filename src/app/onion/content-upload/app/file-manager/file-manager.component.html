@@ -1,13 +1,13 @@
-<clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$" [handleRemove$]="removal$" (containerClick)="handleContainerClick($event)" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
+<clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$" [handleRemove$]="removal$" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
   canManage="true"></clark-file-browser>
 
 <!-- New Options Context Menu -->
-<context-menu (close)="editDescription=false" #newOptions>
+<context-menu (close)="toggleEditDescription(false)" #newOptions>
   <ng-template contextMenuItem (execute)="openFileDialog(true)">
     <div class="context-item">
       <div class="option">
         <i class="fas fa-file icon  icon-left light"></i>
-        File Upload
+        File
       </div>
     </div>
   </ng-template>
@@ -15,7 +15,7 @@
     <div class="context-item">
       <div class="option">
         <i class="fas fa-folder  icon icon-left light"></i>
-        Folder Upload
+        Folder
       </div>
     </div>
   </ng-template>
@@ -23,9 +23,9 @@
 
 
 <!-- File Options Context Menu -->
-<context-menu (close)="editDescription=false" #fileOptions>
+<context-menu (close)="toggleEditDescription(false)" #fileOptions>
   <ng-template contextMenuItem passive="true">
-    <div *ngIf="!editDescription" class="context-item" (click)="editDescription=true">
+    <div *ngIf="!editDescription" class="context-item" (click)="toggleEditDescription(true)">
       <div>
         Edit description
       </div>
@@ -34,7 +34,7 @@
       </div>
     </div>
   </ng-template>
-  <ng-template contextMenuItem (execute)="deleteFile($event.item)">
+  <ng-template contextMenuItem (execute)="triggerDelete($event.item)">
     <div *ngIf="!editDescription" class="context-item bad">
       <div>
         Delete

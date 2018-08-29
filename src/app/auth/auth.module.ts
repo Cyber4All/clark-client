@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ParticlesModule } from 'angular-particle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRouteSnapshot } from '@angular/router';
@@ -17,11 +16,16 @@ import { AuthComponent } from './auth.component';
 import { AuthResolve } from './auth.resolver';
 
 // External Modules
+import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
 import { PersonalInfoComponent } from './register/personal-info/personal-info.component';
 import { ProfileInfoComponent } from './register/profile-info/profile-info.component';
 import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.component';
+import { ModalModule } from '../shared/modals';
+import {
+  ToasterModule
+} from '../shared/toaster';
 
 @NgModule({
   declarations: [
@@ -37,11 +41,13 @@ import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.co
   ],
   imports: [
     CommonModule,
-    ParticlesModule,
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule,
+    ModalModule,
+    ToasterModule,
   ],
   providers: [CanResetPasswordGuard, AuthResolve]
 })

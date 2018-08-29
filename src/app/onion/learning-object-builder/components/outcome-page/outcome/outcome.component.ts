@@ -1,7 +1,5 @@
-import { Subject } from 'rxjs/Subject';
 import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
-import { LearningObject } from '@cyber4all/clark-entity';
 import {
   Component,
   OnInit,
@@ -14,10 +12,10 @@ import {
   OnChanges,
   ViewChild
 } from '@angular/core';
-import { MappingsFilterService } from '../../../../../core/mappings-filter.service';
 import { ModalService } from '../../../../../shared/modals';
 
 import { Observable } from 'rxjs/Observable';
+import { COPY } from './outcome.copy';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
@@ -32,8 +30,9 @@ import { SuggestionService } from './standard-outcomes/suggestion/services/sugge
   providers: [SuggestionService]
 })
 export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
+  copy = COPY;
   @Input() outcome;
-  @Input('index') index;
+  @Input() index;
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
 
@@ -55,7 +54,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   constructor(
     private suggestionService: SuggestionService,
     public modalService: ModalService,
-    private errorStore: LearningObjectErrorStoreService,
+    public errorStore: LearningObjectErrorStoreService,
     private store: LearningObjectStoreService,
   ) {}
 

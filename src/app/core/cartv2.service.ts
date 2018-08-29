@@ -1,11 +1,12 @@
 import { USER_ROUTES } from '@env/route';
-import { Injectable, OnInit } from '@angular/core';
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { Injectable } from '@angular/core';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { Http, Headers, ResponseContentType } from '@angular/http';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
-import { isArray } from 'util';
+import { BehaviorSubject } from 'rxjs';
 
+export const iframeParentID = 'learning-object-download';
 @Injectable()
 export class CartV2Service {
   private user;
@@ -31,7 +32,9 @@ export class CartV2Service {
   }
 
   getCart(reloadUser = false): Promise<LearningObject[]> {
-    if (!this.user) return Promise.reject('User is undefined');
+    if (!this.user) {
+      return Promise.reject('User is undefined');
+    }
 
     return this.http
       .get(USER_ROUTES.GET_CART(this.user.username), {
@@ -52,7 +55,9 @@ export class CartV2Service {
     learningObjectName: string,
     download?: boolean
   ): Promise<LearningObject[]> {
-    if (!this.user) return Promise.reject('User is undefined');
+    if (!this.user) {
+      return Promise.reject('User is undefined');
+    }
     return this.http
       .post(
         USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
@@ -65,10 +70,12 @@ export class CartV2Service {
       )
       .toPromise()
       .then(async val => {
-        this.cartItems = val
-          .json()
-          .map(object => LearningObject.instantiate(object));
-        return this.cartItems;
+        try {
+          this.cartItems = val.json().map(object => LearningObject.instantiate(object));
+          return this.cartItems;
+        } catch (error) {
+          return Promise.reject('Error! ' + error);
+        }
       });
   }
 
@@ -77,7 +84,9 @@ export class CartV2Service {
     learningObjectName: string
   ): Promise<LearningObject[]> {
     // tslint:disable-next-line:max-line-length
-    if (!this.user) return Promise.reject('User is undefined');
+    if (!this.user) {
+      return Promise.reject('User is undefined');
+    }
     return this.http
       .delete(
         USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
@@ -130,29 +139,32 @@ export class CartV2Service {
       );
   }
 
-  downloadLearningObject(author: string, learningObjectName: string) {
-    this.http
-      .post(
-        USER_ROUTES.DOWNLOAD_OBJECT(
-          this.user.username,
-          author,
-          learningObjectName
-        ),
-        {},
-        {
-          headers: this.headers,
-          responseType: ResponseContentType.Blob,
-          withCredentials: true
-        }
-      )
-      .toPromise()
-      .then(data => {
-        importedSaveAs(data.blob(), `${Date.now()}.zip`);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  downloadLearningObject(
+    author: string,
+    learningObjectName: string
+  ): BehaviorSubject<boolean> {
+    const url = USER_ROUTES.DOWNLOAD_OBJECT(
+      this.user.username,
+      author,
+      learningObjectName
+    );
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
+
+    const loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+      false
+    );
+    try {
+      iframe.onload(<any>loaded.next(true));
+    } catch (e) {
+      // Will always throw an error, do not handle
+    }
+    document.getElementById(iframeParentID).appendChild(iframe);
+    return loaded;
   }
+
+  iframeLoaded(this: HTMLIFrameElement, event: Event) {}
 
   has(object: LearningObject): boolean {
     return (
@@ -162,4 +174,13 @@ export class CartV2Service {
       ).length > 0
     );
   }
+}
+
+const MAX_CHAR = 255;
+export function sanitizeFileName(name: string): string {
+  let clean = name.replace(/[\\/:"*?<>|]/gi, '_');
+  if (clean.length > MAX_CHAR) {
+    clean = clean.slice(0, MAX_CHAR);
+  }
+  return clean;
 }

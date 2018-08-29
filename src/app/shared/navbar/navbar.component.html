@@ -2,100 +2,70 @@
 <ng-container *ngIf="!hideNavbar">
   <app-contextmenu [content]="modalCtrl.contextMenuContent"></app-contextmenu>
   <app-dialogmenu [content]="modalCtrl.dialogMenuContent"></app-dialogmenu>
-  <div class="topbar" [ngClass]="{'version': version}">
-    <div *ngIf="version" class="version-label">{{version}}</div>
+  <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
-      <div class="spacer" *ngIf="isMobile"></div>
-      <div class="logo flex h left-right">
-        <div class="left logo-link" routerLink="/home">C.L.A.R.K.
-        </div>
-        <div class="right">
-          Cybersecurity Labs and Resource Knowledge-base
+      <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
+        <div class="logo-image"></div>
+        <div id="clark-logo" class="logo-link">CLARK</div>
+        <div *ngIf="version" class="version-label">{{version}}</div>
+      </div>
+      <div class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
+        <div class="clark-search-inner">
+          <clark-search [focus]="searchFocusSubject" [blur]="searchBlurSubject" (didFocus)="showSearch();" (didBlur)="hideSearch()"></clark-search>
+          <div class="close" id="search-close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
         </div>
       </div>
-      <div class="user flex h flex-end" *ngIf="loggedin && !isMobile">
+      <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
+        <ng-container *ngIf="isMobile; else userTemplate" [ngTemplateOutlet]="mobileUserTemplate"></ng-container>
+      </div>
 
-        <div class="left flex h flex-end" (click)="userDropdown($event)">
-          <!-- get just first name -->
-          <span>Howdy, {{authService.firstName}}!</span>
-          <div class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
-          <div class="chevron">
-            <i class="fas fa-caret-down"></i>
+      <ng-template #userTemplate>
+        <ng-container *ngIf="loggedin">
+          <div class="contributor" id="contributor-link" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
+          <div class="right library" id="library-link" routerLink="/library"></div>
+          <div class="left flex h flex-end user-menu" (click)="userDropdown($event)">
+            <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
+            <i class="fas fa-chevron-down"></i>
           </div>
-        </div>
+        </ng-container>
+        <ng-container *ngIf="!loggedin">
+          <div class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
+          <div class="register" id="clark-register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
+        </ng-container>
+      </ng-template>
 
-        <div class="right shopping-cart-container" routerLink="/library">
-          <div class="library-icon"></div>
-          <div *ngIf="cartService.cartItems.length" class="library-badge">{{cartService.cartItems.length}}</div>
-        </div>
-      </div>
-
-      <div class="user flex h flex-end" *ngIf="!loggedin && !isMobile">
-        <div class="login flex h flex-end" routerLink="/auth/login"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
-        <div class="register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
-      </div>
-
-      <div class="mobile-options" *ngIf="isMobile" >
-        <div class="mobile-search-option" (click)="searchDown = true;"><i class="far fa-search"></i></div>
+      <ng-template #mobileUserTemplate>
+        <div class="mobile-search-option" (click)="showSearch()"><i class="far fa-search"></i></div>
         <div class="hamburger"[ngClass]="{'active': menuOpen}" (click)="menuOpen = !menuOpen">
           <div class="bar"></div>
           <div class="bar"></div>
           <div class="bar"></div>
         </div>
-      </div>
-
-    </div>
-  </div>
-  <div *ngIf="!hideNavbar && !isMobile" class="toolbar" [ngClass]="{'onion': isOnion}">
-    <div class="content-switch-container">
-      <div class="content-switch" [ngClass]="{'right': !isOnion, 'left': isOnion}">
-        <div class="options">
-          <div class="left contribute" [ngClass]="{'active': isOnion }" (click)="contentSwitchClick($event)" routerLink="/onion">Contribute</div>
-          <div class="right search" [ngClass]="{'active': !isOnion }" (click)="contentSwitchClick($event)" routerLink="/home">Search</div>
-        </div>
-        <div class="highlight"></div>
-      </div>
-    </div>
-    <!-- do NOT change the search-bar class, it's being used in a querySelector in the browse component -->
-    <div class="search-bar">
-      <form (submit)="performSearch(searchBar)">
-        <input #searchBar type="text" placeholder="Search...">
-      </form>
-      <div class="icon" (click)="performSearch(searchBar)">
-        <i class="far fa-search"></i>
-      </div>
+      </ng-template>
     </div>
   </div>
 
-  <div class="slideout-underlay" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen || searchDown}" (click)="menuOpen = false; searchDown = false;"></div>
- 
-  <div class="search-slidedown" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': searchDown}">
-    <form (submit)="performSearch(mobileSearch)">
-      <input #mobileSearch name="mobileSearch" placeholder="Search">
-    </form>
-    <div class="button icon-only good" (click)="performSearch(mobileSearch)"><i class="far fa-search"></i></div>
-  </div>
+  <!-- Overlay under mobile slideout -->
+  <div class="slideout-underlay" *ngIf="!hideNavbar" [ngClass]="{'active': menuOpen || searchDown, 'underNav': !isMobile || searchDown}" (click)="menuOpen = false; hideSearch();"></div>
   
+  <!-- Mobile menu slideout -->
   <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">
     <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">
-      <ng-template [ngIf]="loggedin" [ngIfElse]="noUserGreeting">
+      <ng-container *ngIf="loggedin; else noUserGreeting">
         <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
         <div class="right">
           <div class="greeting">Howdy, {{ authService.firstName }}!</div>
           <a>View your profile</a>
         </div>
-      </ng-template>
+      </ng-container>
       <ng-template #noUserGreeting>
         <div class="greeting">Hi there!<br />We're happy you're here!</div>
       </ng-template>
     </div>
-    <div class="slideout-section content-switcher" routerLink="{{ isOnion ? '/home' : '/onion/dashboard' }}">
-      <div *ngIf="isOnion; else elseBlock">Search</div>
-      <ng-template #elseBlock>Contribute</ng-template>
-      <i class="far fa-chevron-right"></i>
-    </div>
     <div class="slideout-section menu-items">
       <ul>
+        <li *ngIf="loggedin" routerLink="/onion/dashboard">Your Dashboard</li>
+        <li *ngIf="loggedin" routerLink="/library">Your Library</li>
         <li *ngIf="loggedin" (click)="logout()">Logout</li>
       </ul>
     </div>

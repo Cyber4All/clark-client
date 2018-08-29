@@ -73,7 +73,6 @@ export class TextEditorComponent implements OnInit, OnChanges {
   onBlur(event) {
   }
   onChange(editorContent) {
-    console.log(this.editorContent);
     this.textOutput.emit(this.editorContent);
   }
 

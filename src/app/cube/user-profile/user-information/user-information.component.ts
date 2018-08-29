@@ -1,21 +1,10 @@
-import { UserService } from './../../../core/user.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
-  USER_ROUTES,
-  PUBLIC_LEARNING_OBJECT_ROUTES
-} from '../../../../environments/route';
-import {
-  Component,
-  OnInit,
-  Input,
-  SimpleChanges,
-  OnChanges
-} from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
 import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Http, Headers, ResponseContentType } from '@angular/http';
-import { NotificationService } from '../../../shared/notifications';
+import { ToasterService } from '../../../shared/toaster';
+import { COPY } from './user-information.copy';
 
 @Component({
   selector: 'app-user-information',
@@ -23,35 +12,24 @@ import { NotificationService } from '../../../shared/notifications';
   styleUrls: ['./user-information.component.scss']
 })
 export class UserInformationComponent implements OnInit, OnChanges {
+  copy = COPY;
   // User Information
-  @Input('user') user: User;
-  @Input('self') self: boolean = false;
-  objects: LearningObject[];
+  @Input() user: User;
+  @Input() self = false;
+  objects: LearningObject[] = Array(5).fill(new LearningObject());
+  loading = false;
 
   constructor(
     private learningObjectService: LearningObjectService,
     private auth: AuthService,
-    private http: Http,
     private router: Router,
-    private notifications: NotificationService,
-    private route: ActivatedRoute,
-    private userService: UserService
+    private notifications: ToasterService
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe(val => {
-      this.objects = val.learningObjects;
-    });
-    this.getUser();
   }
 
-  private getUser() {
-    this.userService.getUser(this.user.username).then(val => {
-      this.user = val;
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.getUsersLearningObjects();
   }
 
@@ -60,7 +38,9 @@ export class UserInformationComponent implements OnInit, OnChanges {
   }
 
   async getUsersLearningObjects() {
+    this.loading = true;
     this.objects = await this.learningObjectService.getUsersLearningObjects(this.user.username);
+    this.loading = false;
   }
   /**
    * Sends email verification email

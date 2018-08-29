@@ -7,7 +7,6 @@ import {
 } from '@angular/router';
 import { AuthService } from './auth.service';
 import { CookieService } from 'ngx-cookie';
-import { User } from '@cyber4all/clark-entity';
 
 /**
  * Defines an AuthGuard which contains the logic for determining of a user can activate a route protected by the guard.
@@ -31,18 +30,24 @@ export class AuthGuard implements CanActivate {
     if (c) {
       return this.auth.validate().then(
         val => {
+          this.auth.isLoggedIn.subscribe(status => {
+            if (!status) {
+              this.router.navigate(['home'], {
+              });
+            }
+          });
           return true;
         },
         error => {
           this.router.navigate(['/auth/login'], {
-            queryParams: { redirectRoute: state.url }
+            queryParams: { redirectUrl: state.url }
           });
           return false;
         }
       );
     } else {
       this.router.navigate(['/auth/login'], {
-        queryParams: { redirectRoute: state.url }
+        queryParams: { redirectUrl: state.url }
       });
       return false;
     }

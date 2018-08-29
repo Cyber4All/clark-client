@@ -1,5 +1,5 @@
 import { User } from '@cyber4all/clark-entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
@@ -8,7 +8,6 @@ import {
 } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { USER_ROUTES } from '@env/route';
 import { UserService } from '../../core/user.service';
 
 @Injectable()

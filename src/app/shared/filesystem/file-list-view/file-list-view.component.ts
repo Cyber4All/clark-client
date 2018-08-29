@@ -8,13 +8,11 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import {
-  DirectoryNode,
-  LearningObjectFile
-} from 'app/shared/filesystem/DirectoryTree';
-import { getIcon } from 'app/shared/filesystem/file-icons';
+import { DirectoryNode, LearningObjectFile } from '../DirectoryTree';
+import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
+import { TimeFunctions } from '../../../onion/content-upload/app/shared/time-functions';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -22,12 +20,14 @@ import { DescriptionUpdate } from '../file-browser/file-browser.component';
   styleUrls: ['file-list-view.component.scss']
 })
 export class FileListViewComponent implements OnInit, OnDestroy {
-  @Input() canManage = false;
+  @Input()
+  canManage = false;
   @Input()
   node$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(
     null
   );
-  @Output() emitPath: EventEmitter<string> = new EventEmitter<string>();
+  @Output()
+  emitPath: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   emitDesc: EventEmitter<DescriptionUpdate> = new EventEmitter<
     DescriptionUpdate
@@ -39,6 +39,9 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   preview = true;
 
   getIcon = (extension: string) => getIcon(extension);
+
+  getTimestampAge = (timestamp: string) =>
+    TimeFunctions.getTimestampAge(+timestamp);
 
   constructor() {}
 
@@ -62,6 +65,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
         })
     );
   }
+
   /**
    * Emits desired path if not clicking an input field
    *

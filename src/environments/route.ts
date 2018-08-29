@@ -1,4 +1,4 @@
-import { environment } from './environment';
+import { environment } from '@env/environment';
 
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
@@ -8,6 +8,9 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/profile`;
+  },
+  SEARCH_USERS(query: {}) {
+    return `${environment.apiURL}/users/search?text=` + query;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
@@ -19,7 +22,7 @@ export const USER_ROUTES = {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects`;
+    )}/learning-objects?children=true`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -103,6 +106,9 @@ export const USER_ROUTES = {
   },
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
+  },
+  SET_CHILDREN(username, learningObjectName) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(username)}/${encodeURIComponent(learningObjectName)}/children`;
   }
 };
 
@@ -125,9 +131,32 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username
     )}`;
+  },
+  GET_LEARNING_OBJECT_PARENTS(id: string) {
+    return `${environment.apiURL}/learning-objects/${id}/parents`;
   }
 };
 
+export const RATING_ROUTES = {
+  DELETE_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  },
+  EDIT_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  },
+  CREATE_RATING(learningObjectAuthor: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
+  },
+  GET_LEARNING_OBJECT_RATINGS(learningObjectAuthor: string, learningObjectName: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
+  },
+  FLAG_LEARNING_OBJECT_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}/flags`;
+  },
+  GET_USER_RATINGS(username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/ratings`;
+  },
+};
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
 };

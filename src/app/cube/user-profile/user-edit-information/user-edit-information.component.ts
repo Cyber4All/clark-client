@@ -12,39 +12,40 @@ import {
 } from '@angular/core';
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
-import { NotificationService } from '../../../shared/notifications';
-import { User } from '@cyber4all/clark-entity';
-import { Subscription, Observable } from 'rxjs';
+import { ToasterService } from '../../../shared/toaster';
+import { Subscription, Observable, Subject } from 'rxjs';
+import { COPY } from './user-edit-information.copy';
+
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
-  selector: 'app-user-edit-information',
+  selector: 'cube-app-user-edit-information',
   templateUrl: './user-edit-information.component.html',
   styleUrls: ['./user-edit-information.component.scss']
 })
 
 export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
+  copy = COPY;
+  isDestroyed$ = new Subject<void>();
   elementRef: any;
-  @Input('user') user;
-  @Input('self') self: boolean = false;
+  @Input() user;
+  @Input() self = false;
   @Output('close') close = new EventEmitter<boolean>();
-  @ViewChild('confirmNewPasswordInput', { read: ElementRef })
-  confirmNewPasswordInput: ElementRef;
-  @ViewChild('originalPasswordInput', { read: ElementRef })
-  originalPasswordInput: ElementRef;
+
+  @ViewChild('organization', { read: ElementRef })
+  organization: ElementRef;
 
   counter = 140;
 
-  newPassword = '';
-  confirmPassword = '';
-
-  isPasswordMatch;
+  organizationsList = [];
+  isValidOrganization: boolean;
 
   editInfo = {
     firstname: '',
     lastname: '',
     email: '',
     organization: '',
-    password: '',
     bio: ''
   };
 
@@ -53,68 +54,32 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     password: ''
   };
 
-  sub: Subscription; // open subscription to close
-  sub2: Subscription; // open subscription to close
+  // array of subscriptions to destroy on component destroy
+  subs: Subscription[] = [];
 
   constructor(
     private userService: UserService,
-    private noteService: NotificationService,
+    private noteService: ToasterService,
     private auth: AuthService
   ) {}
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub2 = Observable.fromEvent(this.originalPasswordInput.nativeElement, 'input')
-    .debounceTime(650)
-    .subscribe(val => {
-      this.isCorrectPassword().then(res => {
-        if (res) {
-          this.noteService.notify(
-            'Valid Entry',
-            'Password is correct',
-            'good',
-            'far fa-check'
-          );
-        } else {
-          this.noteService.notify(
-            'Invalid Entry',
-            'Password is incorrect',
-            'bad',
-            'far fa-times'
-          );
-        }
-      });
-    });
-    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.sub = Observable.fromEvent(this.confirmNewPasswordInput.nativeElement, 'input')
-      .debounceTime(650)
+    Observable.fromEvent(this.organization.nativeElement, 'input')
+      .takeUntil(this.isDestroyed$)
+      .debounceTime(400)
       .subscribe(val => {
-        if (this.confirmNewPassword()) {
-          this.noteService.notify(
-            'Valid Entry',
-            'Passwords match',
-            'good',
-            'far fa-check'
-          );
-        } else {
-          this.noteService.notify(
-            'Invalid Entry',
-            'Passwords must match',
-            'bad',
-            'far fa-times'
-          );
-        }
+          this.getOrganizations();
       });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.user) {
       this.editInfo = {
-        firstname: this.user.name ? this.user.name.split(' ')[0] : '',
-        lastname: this.user.name ? this.user.name.substring(this.user.name.indexOf(' ') + 1) : '',
+        firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
+        lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
         email: this.user.email || '',
-        organization: this.user.organization || '',
-        password: this.confirmPassword,
+        organization: this.toUpper(this.user.organization) || '',
         bio: this.user.bio || ''
       };
     }
@@ -125,40 +90,24 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
    * @private
    * @memberof UserEditInformationComponent
    */
-  private async save() {
-    // If the new password fields do not match, the user cannot save changes.
-    // If the user does not wish to change their password, the fields will
-    // match when empty.
-    if (this.confirmNewPassword()) {
-      // If the user doesn't provide an email in this form, we need to
-      // get the account's email in order to update the password.
-      await this.saveUserEdits();
-      // If a new password is not provided, do not update password.
-    } else {
-      this.noteService.notify(
-        'Invalid Entry',
-        'Passwords must match',
-        'bad',
-        'far fa-times'
-      );
-    }
-  }
-
-  private async saveUserEdits() {
+  async save() {
     const edits: UserEdit = {
       name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
-      password: this.editInfo.password.trim(),
       bio: this.editInfo.bio.trim()
     };
-    try {
-      await this.userService.editUserInfo(edits);
-      await this.auth.validate();
-      this.close.emit(true);
-      this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
-    } catch (e) {
-      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
+    if (await this.checkOrganization()) {
+      try {
+        await this.userService.editUserInfo(edits);
+        await this.auth.validate();
+        this.close.emit(true);
+        this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
+      } catch (e) {
+        this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
+      }
+    } else {
+      this.noteService.notify('Invalid Organization!', 'Please select a provided orgnization from the dropdown!', 'bad', 'far fa-times');
     }
   }
 
@@ -167,42 +116,69 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     this.counter = 140 - inputLength;
   }
 
-  async isCorrectPassword() {
-    this.isPasswordMatch = false;
-    this.userInfo.username = this.user.username;
-    try {
-      // Provide checkPassword with an object that contains username
-      // and user-provided password
-      this.isPasswordMatch = await this.auth.checkPassword(this.userInfo);
-    } catch (e) {
-      this.noteService.notify(
-        'Invalid Entry',
-        'Password is incorrect',
-        'bad',
-        'far fa-times'
-      );
-    }
-    return this.isPasswordMatch;
+  getOrganizations() {
+    this.auth.getOrganizations(this.editInfo.organization).then(val => {
+        // Display top 5 matching organizations
+        for (let i = 0; i < 5; i++) {
+          if (val[i]) {
+            this.organizationsList[i] = val[i]['institution'];
+          }
+        }
+        // If no results, destroy results display
+        if (!val[0]) {
+          this.organizationsList = [];
+        }
+        // If no query, destroy results display
+        if (this.editInfo.organization === '') {
+          this.organizationsList = [];
+        }
+    });
   }
 
-  confirmNewPassword() {
-    if (this.newPassword === this.confirmPassword) {
-      this.editInfo.password = this.confirmPassword;
+  chooseOrganization(organization: string) {
+    this.editInfo.organization = organization;
+  }
+
+  private toUpper(str) {
+    return str
+        .toLowerCase()
+        .split(' ')
+        .map(function(word) {
+            return word[0].toUpperCase() + word.substr(1);
+        })
+        .join(' ');
+  }
+
+  checkOrganization() {
+    // If field is empty, return false
+    if (this.editInfo.organization === '') {
+      return false;
+    }
+    // Allow the user to enter an org that does not exist in our
+    // database when empty results are returned
+    if (this.organizationsList.length > 0) {
+      for (let i = 0; i < this.organizationsList.length; i++) {
+        if (this.editInfo.organization === this.organizationsList[i]) {
+          return true;
+        }
+      }
+      return false;
+    } else {
       return true;
     }
-    return false;
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
-    this.sub2.unsubscribe();
+     this.isDestroyed$.next();
+     this.isDestroyed$.unsubscribe();
   }
 }
 
-export type UserEdit = {
+
+
+export interface UserEdit {
   name: string;
   email: string;
   organization: string;
-  password: string;
   bio: string;
-};
+}

@@ -1,24 +1,19 @@
 import { OrganizationListComponent } from './organization-list/organization-list.component';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { DetailsComponent } from './learning-object-details/details/details.component';
+import { DetailsComponent } from './details/details.component';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
-import { LoginComponent } from '../auth/login/login.component';
-import { RegisterComponent } from '../auth/register/register.component';
 import { RouterComponent } from './shared/breadcrumb/router.component';
 import { AuthGuard } from '../core/auth-guard.service';
-import { AuthResolve } from '../auth/auth.resolver';
 import { CubeComponent } from './cube.component';
 import { CollectionComponent } from './collections/collection.component';
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
-import { DashboardResolver } from '../onion/dashboard/dashboard.resolver';
-import { UserProfileLearningObjectsResolver } from './user-profile/learning-objects.resolver';
 
 // Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {
@@ -44,8 +39,7 @@ const cube_routes: Routes = [
         children: [{ path: '', component: CartComponent }, detailRoute]
       },
       { path: 'users/:username', component: UserProfileComponent, resolve: {
-        user: UserResolver,
-        learningObjects: UserProfileLearningObjectsResolver
+        user: UserResolver
       }},
       { path: 'users/:username/preferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' },
         canActivate: [AuthGuard]

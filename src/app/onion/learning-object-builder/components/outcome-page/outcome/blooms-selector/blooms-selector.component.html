@@ -1,6 +1,6 @@
 <div class="outcome_bloom">
     <div class="squares">
-      <div class="square" [ngClass]="{'active': level === bloomValue}" *ngFor="let level of levels" (click)="toggleActiveSquare($event)"
+      <div class="square" id="square" [ngClass]="{'active': level === bloomValue}" *ngFor="let level of levels" (click)="toggleActiveSquare($event)"
         [attr.data]="level">
         <div class="square-inner">
           <div class="icon">

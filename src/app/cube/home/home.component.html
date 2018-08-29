@@ -2,12 +2,12 @@
   <div class="img-viewport">
     <div class="search-viewport">
       <div class="search-contents">
-        <div class="feature-text">Cybersecurity curriculum at your fingertips.</div>
+        <div id="home-title" class="feature-text">{{ copy.HERO }}</div>
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input autofocus type="text" class="search-input" placeholder="Searching across {{ learningObjectService.totalLearningObjects }} learning objects" [(ngModel)]="query.text" name="query">
-            <div class="browselink" routerLink="/browse">Browse All</div>
-            <button type="button" class="button bad" (click)="search()" style="margin-top: 15px;">Search</button>
+            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" placeholder="Searching across {{ learningObjectService.totalLearningObjects }} learning objects" [(ngModel)]="query.text" name="query">
+            <div class="browselink" routerLink="/browse">{{ copy.BROWSE }}</div>
+            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{ copy.SEARCH }}</button>
           </div>
         </form>
       </div>
@@ -16,11 +16,11 @@
   <!-- <div class="home-banner"></div> -->
 </section>
 <div class="whois">
-  <div class="feature-text">What is C.L.A.R.K.?</div>
-  <span>CLARK is a prototype curriculum management platform that will host a diverse cybersecurity learning objects. It was created because there is a demonstrated need for a high-quality and high-availability repository for curricular and ancillary resources in the cybersecurity education community.</span>
+  <div class="feature-text">{{ copy.WHATISTITLE }}</div>
+  <span>{{ copy.WHATIS }}</span>
 </div>
 <div class="featured-viewport">
   <cube-featured></cube-featured>
-    <div class="feature-text">Contribute your freely accessible cybersecurity material for others to use.</div>
-    <div class="button bad" (click)="goToContribute()">Contribute to CLARK</div>
+    <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
+    <div id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</div>
 </div>

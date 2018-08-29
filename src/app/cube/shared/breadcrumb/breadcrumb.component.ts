@@ -19,7 +19,8 @@ const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
         <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{ breadcrumb.label }}</a>
       </li>
     </ol>
-  `
+  `,
+  styleUrls: ['breadcrumb.component.scss']
 })
 export class BreadcrumbComponent implements OnInit {
 
