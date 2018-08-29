@@ -1,7 +1,7 @@
 <section class="metadata-wrapper">
   <div class="header">
     <div class="back"></div>
-    <div class="title" id="basic-information-title">Basic Information
+    <div id="basic-information-title" class="title">{{ copy.TITLE }}
     </div>
     <div></div>
   </div>
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <input #userSearchInput type="text" aria-label="user textbox" class="search-input" id="user-search" placeholder="Search all users" [(ngModel)]="query.text">
+      <input id="user-search" #userSearchInput type="text" aria-label="user textbox" class="search-input" placeholder="{{ copy.COLLABPLACEHOLDER }}" [(ngModel)]="query.text">
       <div id="container">
         <ul>
           <li *ngFor="let user of searchResults; let i = index;">
@@ -44,23 +44,23 @@
       </div>
     </div>
     <div class="input-group">
-      <div class="label" id="length-label">
-        What is the Length of this learning object?
+      <div id="length-label" class="label">
+        {{ copy.LENGTH }}
       </div>
       <div class="select-wrapper">
         <select [(ngModel)]="learningObject.length" name="type" class="flex-g1 vert-center">
-          <option value="nanomodule">Nanomodule - up to 1 hour</option>
-          <option value="micromodule">Micromodule - between 1 and 4 hours</option>
-          <option value="module">Module - between 4 and 10 hours</option>
-          <option value="unit">Unit - over 10 hours</option>
-          <option value="course">Course (15 weeks)</option>
+          <option value="nanomodule">{{ copy.NANO }}</option>
+          <option value="micromodule">{{ copy.MICRO }}</option>
+          <option value="module">{{ copy.MOD }}</option>
+          <option value="unit">{{ copy.UNIT }}</option>
+          <option value="course">{{ copy.COURSE }}</option>
         </select>
       </div>
     </div>
 
     <div class="input-group">
-      <div class="label" id="level-label">
-        What levels is this content suited for?
+      <div id="level-label" class="label">
+        {{ copy.LEVELS }}
       </div>
       <div class="level-list">
         <div class="level button" id="level-selection" [ngClass]="{selected: learningObject.levels.includes(level)}" *ngFor="let level of academicLevels"

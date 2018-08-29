@@ -6,7 +6,8 @@ import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ChangeDetectorRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from '../../core/auth.service';
+import { COPY } from './dashboard.copy';
 import { trigger, style, animate, transition } from '@angular/animations';
 
 interface DashboardLearningObject extends LearningObject {
@@ -62,6 +63,7 @@ interface DashboardLearningObject extends LearningObject {
 })
 export class DashboardComponent implements OnInit {
   @ViewChildren('learningObjectElement') learningObjectElements: ElementRef[];
+  copy = COPY;
   public tips = TOOLTIP_TEXT;
   learningObjects: DashboardLearningObject[] = [];
   focusedLearningObject: LearningObject; // learning object that has a popup up menu on display for it

@@ -5,6 +5,7 @@ import {
 } from '../../../shared/filesystem/DirectoryTree';
 import { Material } from '@cyber4all/clark-entity/dist/learning-object';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { COPY } from './file-details.copy';
 
 @Component({
   selector: 'onion-file-details',
@@ -12,6 +13,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   styleUrls: ['file-details.component.scss']
 })
 export class FileDetailsComponent implements OnInit, OnChanges {
+  copy = COPY;
   @Input() length: string;
   @Input() materials: Material;
 

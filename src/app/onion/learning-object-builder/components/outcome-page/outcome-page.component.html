@@ -1,6 +1,6 @@
 <div class="outcome-container-wrapper">
   <div class="section">
-    <div class="title sticky" id="outcome-title">Learning Outcome
+    <div id="ouctome-title" class="title sticky">{{ copy.TITLE }}
       <span tip="A learning outcome is a precise statement of student outcomes of the Learning Object based on the Bloom's taxonomy">
         <i class="fas fa-question-circle"></i>
       </span>
@@ -11,7 +11,7 @@
             <onion-outcome-component [submitted]="submitted" [outcome]="activeOutcome" [index]="outcomeIndex" (deleteIndex)="deleteOutcome()"></onion-outcome-component>
         </div>
       </ng-container>
-      <div class="text" *ngIf="learningObject.outcomes.length == 0">You don't have any Learning Outcomes yet!</div>
+      <div class="text" *ngIf="learningObject.outcomes.length == 0">{{ copy.EMPTY }}</div>
     </div>
   </div>
 </div>

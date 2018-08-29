@@ -2,6 +2,7 @@ import { LearningObjectService } from '../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
+import { COPY } from './home.copy';
 
 
 @Component({
@@ -10,6 +11,7 @@ import { Query } from '../../shared/interfaces/query';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  copy = COPY;
   query: Query = {
     text: '',
     currPage: 1,
