@@ -33,7 +33,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   saved = false;
   url: string;
   error = false;
-  userIsAuthor = false;
 
   contributorsList = [];
 
@@ -111,7 +110,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   async addToCart(download?: boolean) {
     const userName = await this.auth.name;
     this.error = false;
-    this.userIsAuthor = (this.author == userName);
+    var userIsAuthor = (this.learningObject.author.name == userName);
 
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
@@ -121,23 +120,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     try {
-      if (this.userIsAuthor) {
-        throw "The User is the Author, cannot add to cart";
-      }
-      const val = await this.cartService.addToCart(
-        this.author,
-        this.learningObjectName
-      );
+      if (userIsAuthor) {
+        const val = await this.cartService.addToCart(
+          this.author,
+          this.learningObjectName
+        );
 
-      this.saved = this.cartService.has(this.learningObject);
+        this.saved = this.cartService.has(this.learningObject);
 
-      if (!this.saved) {
-        this.animateSaves();
+        if (!this.saved) {
+          this.animateSaves();
+        }
       }
     } catch (error) {
       console.log(error);
-      if (!this.userIsAuthor)
-        this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
+      this.noteService.notify('Error!', 'There was an error adding to your cart', 'bad', 'far fa-times');
     }
 
     this.addingToLibrary = false;
