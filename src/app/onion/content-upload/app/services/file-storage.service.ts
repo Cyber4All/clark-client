@@ -133,7 +133,7 @@ export class FileStorageService {
 export function encodeFilePath(path: string): string {
   const escapedSlash = /%2F/g;
   const replacementChar = '%2F';
-  if (escapedSlash.test(path){
+  if (escapedSlash.test(path)) {
     path = path.replace(escapedSlash, `"%2F"`);
   }
   const sanitized = path.replace(/\//g, replacementChar);
