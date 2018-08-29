@@ -95,7 +95,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   openFileOptions(params: {event: MouseEvent, item: any}): void {
-    console.log(params.event);
     this.contextMenuService.show.next({
       anchorElement: params.event.currentTarget,
       contextMenu: this.fileOptions,
