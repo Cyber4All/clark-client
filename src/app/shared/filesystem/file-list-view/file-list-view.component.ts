@@ -44,6 +44,8 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   getTimestampAge = (timestamp: string) => TimeFunctions.getTimestampAge(+timestamp);
 
   getFolderTimestamp = (node: DirectoryNode = this.node$.getValue(), timestamp: number = 0): number => {
+    // This is currently the only way to get this value, but we should be mindful that there may be a performance
+    // cost that comes through this type of iteration in the browser.
     const derivedTimestamp = node.getFiles().map(x => parseInt(x.date, 10)).sort((a, b) => a < b ? 1 : -1)[0];
     timestamp = timestamp > derivedTimestamp ? timestamp : derivedTimestamp;
 
