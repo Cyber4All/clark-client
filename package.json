@@ -1,7 +1,11 @@
 {
   "name": "cube",
   "displayName": "CyberCuBE: Curriculum Bank Enumeration",
+<<<<<<< HEAD
+  "version": "1.4.2",
+=======
   "version": "1.4.1",
+>>>>>>> 783a55459d03b25ae26639c627ddaebe552c46ea
   "license": "MIT",
   "scripts": {
     "ng": "ng",
