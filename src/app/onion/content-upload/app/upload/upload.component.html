@@ -1,6 +1,14 @@
 <div class="back-button" routerLink="/onion/dashboard">
   <i class="far fa-chevron-left"></i>Back to Dashboard
 </div>
+<div *ngIf="disabled" class="disabled">
+  <div class="disabled-inner">
+    <div class="image">
+      😢
+    </div>
+    Unfortunately uploading materials to CLARK is disabled through the labor day weekend. We're working tirelessly to restore this service and we apologize for any inconvenience this causes.
+  </div>
+</div>
 <div class="manage-materials">
   <div class="title">
     {{ learningObjectName }}
