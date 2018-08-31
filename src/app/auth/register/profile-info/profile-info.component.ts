@@ -3,9 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../register.component';
-import { Subscription } from 'rxjs';
-
-import 'rxjs/add/observable/fromEvent';
+import { Subscription, fromEvent } from 'rxjs';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -36,8 +34,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(
-      Observable.fromEvent(this.usernameInput.nativeElement, 'input')
+    this.subs.push(fromEvent(this.usernameInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
@@ -57,8 +54,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.subs.push(
-      Observable.fromEvent(this.passwordInput.nativeElement, 'input')
+    this.subs.push(fromEvent(this.passwordInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
@@ -66,8 +62,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.subs.push(
-      Observable.fromEvent(this.passwordVerifyInput.nativeElement, 'input')
+    this.subs.push(fromEvent(this.passwordVerifyInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
