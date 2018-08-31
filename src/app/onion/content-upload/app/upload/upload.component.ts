@@ -96,6 +96,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
+  disabled = true;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -119,7 +121,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .takeUntil(this.unsubscribe$)
       .subscribe(() => {
         this.handleDrop();
-        this.save(true);
+        if (!this.disabled) {
+          this.save(true);
+        } else {
+          alert('Uploads are currently disabled!');
+        }
       });
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
@@ -136,7 +142,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     fromEvent(document.getElementsByTagName('body')[0], 'dragover')
       .takeUntil(this.unsubscribe$)
       .subscribe(() => {
-        this.toggleDrag(true);
+        if (!this.disabled) {
+          this.toggleDrag(true);
+        }
       });
   }
 
