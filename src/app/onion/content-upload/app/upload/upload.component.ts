@@ -20,8 +20,7 @@ import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
-import { Observable, Subject } from 'rxjs';
-import 'rxjs/add/observable/fromEvent';
+import { fromEvent, Subject } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
@@ -134,7 +133,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
-    Observable.fromEvent(document.getElementsByTagName('body')[0], 'dragover')
+    fromEvent(document.getElementsByTagName('body')[0], 'dragover')
       .takeUntil(this.unsubscribe$)
       .subscribe(() => {
         this.toggleDrag(true);
