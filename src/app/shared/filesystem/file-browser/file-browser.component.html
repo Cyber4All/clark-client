@@ -23,6 +23,6 @@
     <span>or drag and drop files and folders here</span>
   </div>
   <clark-file-list-view *ngIf="((currentNode$| async)?.children.length || (currentNode$| async)?.files.length)"
-    class="full-width" [node$]="currentNode$" [canManage]="canManage" (emitPath)="openFolder($event)" (emitDesc)="emitDesc($event)">
+    class="full-width" [node$]="currentNode$" [canManage]="canManage" (emitPath)="openFolder($event)" (emitDesc)="emitDesc($event)" (emitContextOpen)="meatballClick.emit($event)">
   </clark-file-list-view>
 </div>

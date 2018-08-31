@@ -14,9 +14,8 @@ import {
 } from '@angular/core';
 import { ModalService } from '../../../../../shared/modals';
 
-import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs';
 import { COPY } from './outcome.copy';
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 import { LearningObjectErrorStoreService } from '../../../errorStore';
@@ -88,7 +87,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
     // pass the outcome text to the suggestion component
     this.outcomeSuggestionText = this.outcome._text;
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    Observable.fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
+    fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
       this.outcomeSuggestionText = val;
     });
   }

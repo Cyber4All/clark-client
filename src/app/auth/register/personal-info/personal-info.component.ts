@@ -9,12 +9,11 @@ import {
   EventEmitter
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../register.component';
 import { Subscription } from 'rxjs/Subscription';
 
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -43,7 +42,7 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(Observable.fromEvent(this.emailInput.nativeElement, 'input')
+    this.subs.push(fromEvent(this.emailInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
@@ -65,7 +64,7 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
       })
     );
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(Observable.fromEvent(this.organization.nativeElement, 'input')
+    this.subs.push(fromEvent(this.organization.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(400)
       .subscribe(val => {

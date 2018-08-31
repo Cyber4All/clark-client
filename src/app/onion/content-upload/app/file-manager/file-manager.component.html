@@ -1,4 +1,4 @@
-<clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$" [handleRemove$]="removal$" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
+<clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$" [handleRemove$]="removal$" (meatballClick)="openFileOptions($event)" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
   canManage="true"></clark-file-browser>
 
 <!-- New Options Context Menu -->
