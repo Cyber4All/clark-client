@@ -14,7 +14,6 @@ import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../register.component';
 import { Subscription } from 'rxjs/Subscription';
 
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({

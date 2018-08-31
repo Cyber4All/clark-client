@@ -11,7 +11,6 @@ import {
   ViewChild } from '@angular/core';
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { OutcomeService } from '../../core/outcome.service';
 import {
