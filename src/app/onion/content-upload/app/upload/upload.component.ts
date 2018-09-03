@@ -109,6 +109,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
+  disabled = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -138,11 +140,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
     fromEvent(document.getElementsByTagName('body')[0], 'dragover')
       .takeUntil(this.unsubscribe$)
-      .subscribe(event => {
-
-        // @ts-ignore
+      .subscribe((event: any) => {
         const types = event.dataTransfer.types;
-        if (types.filter(x => x === 'Files').length >= 1) {
+        if (types.filter(x => x === 'Files').length >= 1 && !this.disabled) {
           this.toggleDrag(true);
         }
       });
