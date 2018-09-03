@@ -8,6 +8,7 @@
     background: rgba(0, 0, 0, 0.1);
     display: inline-flex;
     align-self: center;
+    margin-bottom: 0;
 
     .inner {
         background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
@@ -17,17 +18,40 @@
         bottom: 0;
         border-radius: 6px;
         transition: all 0.2s ease;
+        overflow: hidden;
+
+        &:after {
+            content: '';
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
+            width: 60px;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            position: absolute;
+            opacity: 0;
+        }
     }
 
-    &:after {
-        content: '';
+    &:not(.done) .inner:after {
+        animation: pulse 3s linear forwards infinite;
+        opacity: 0.3;
+    }
+
+    &.done .inner {
+        background: $green;
     }
 }
 
 @keyframes pulse {
     0% {
+        left: -60px;
+
+    } 50% {
+        left: calc(100% + 60px);
 
     } 100% {
+        left: calc(100% + 60px);
 
     }
 }

@@ -51,7 +51,7 @@
 </div>
 <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (addedFile)="addFile($event)"
   (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)" (complete)="dzComplete($event)"
-  (queueComplete)="queueComplete(event)" (error)="handleError($event)" (canceled)="handleCanceled($event)">
+  (queueComplete)="queueComplete($event)" (error)="handleError($event)" (canceled)="handleCanceled($event)">
   <div class="uploader-content">
     <div class="uploader-icon">
       <i class='far fa-arrow-up'></i>

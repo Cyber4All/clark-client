@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { getIcon } from '../../../../../shared/filesystem/file-icons';
 
 import 'rxjs/add/operator/takeUntil';
+import { DZFile } from '../upload.component';
 
 @Component({
   selector: 'onion-file-upload-status',
@@ -9,7 +10,7 @@ import 'rxjs/add/operator/takeUntil';
   styleUrls: ['./file-upload-status.component.scss']
 })
 export class FileUploadStatusComponent implements OnInit {
-  @Input() files: { id: string, name: string };
+  @Input() files: DZFile;
 
   getIcon = (extension: string) => getIcon(extension);
 

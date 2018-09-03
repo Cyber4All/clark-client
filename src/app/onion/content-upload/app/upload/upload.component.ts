@@ -281,13 +281,16 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   uploadProgress(event) {
     const file = event[0];
     const index = this.inProgressUploadsMap.get(file.upload.uuid);
-    this.inProgressUploads[index].progress = event[1];
+    this.inProgressUploads[index].progress = (event[2] / file.size) * 100;
   }
 
   dzComplete(event) {
     try {
-      const req: XMLHttpRequest = event.xhr;
-      console.log('LOFILE: ', JSON.parse(req.response));
+      const progressCheck = this.inProgressUploads.filter((x) => x.progress < 100);
+      if (!progressCheck.length) {
+        this.inProgressUploads = [];
+        this.inProgressUploadsMap = new Map();
+      }
     } catch (e) {
       console.log(e);
     }
