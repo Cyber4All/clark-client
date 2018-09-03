@@ -10,7 +10,7 @@ export const environment = {
     withCredentials: true,
     chunking: true,
     // 5MB Chunk Size
-    chunkSize: 5000000,
+    chunkSize: 6000000,
     timeout: 900000 // 15 minutes timeout
   }
 };
