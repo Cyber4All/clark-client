@@ -8,10 +8,13 @@ import { USER_ROUTES } from '@env/route';
 export const environment = {
   production: false,
   DROPZONE_CONFIG: {
-    url: USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT,
-    maxFilesize: 100000,
+    url: USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(''),
+    maxFilesize: null,
     acceptedFiles: '',
     autoQueue: true,
-    withCredentials: true
+    withCredentials: true,
+    chunking: true,
+    // 5MB Chunk Size (Minimum for AWS)
+    chunkSize: 1000000
   }
 };

@@ -22,13 +22,13 @@ import {
   File,
   FolderDescription
 } from '@cyber4all/clark-entity/dist/learning-object';
-import * as uuid from 'uuid';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 import { fromEvent, Subject } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
+import { USER_ROUTES } from '@env/route';
 
 type LearningObjectFile = File;
 
@@ -84,12 +84,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   config: DropzoneConfigInterface = {
     ...environment.DROPZONE_CONFIG,
-    renameFile: this.renameFile,
-    params: {
-      learningObjectID: ''
-    },
-    chunking: true,
-    chunkSize: 100
+    renameFile: this.renameFile
   };
 
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
@@ -135,7 +130,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .takeUntil(this.unsubscribe$)
       .subscribe(() => {
         this.handleDrop();
-        this.save(true);
       });
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
@@ -225,6 +219,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+        this.learningObject.id
+      );
       this.retrieving = false;
       // FIXME: Add folder descriptions to entity
       // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
@@ -269,45 +266,48 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async addFile(file: DZFile) {
     await file;
-    file = this.setFullPath(file);
     if (!file.accepted) {
       this.dzError = 'File not accepted';
       this.showFileError(file.name);
-      return;
+    } else {
+      const queue = this.queuedUploads$.getValue();
+      queue.push(file);
+      this.queuedUploads$.next(queue);
     }
-
-    const pastFileLimit = this.pastFileLimit(file.size);
-    if (pastFileLimit) {
-      this.showFileError(file.name);
-      return;
-    }
-
-    const queue = this.queuedUploads$.getValue();
-    queue.push(file);
-
-    this.queuedUploads$.next(queue);
   }
 
-  /**
-   * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;
-   *
-   * @private
-   * @param {DZFile} file
-   * @returns
-   * @memberof UploadComponent
-   */
-  private setFullPath(file: DZFile) {
-    let path;
-    if (file.fullPath || file.webkitRelativePath) {
-      path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+  fileSending(event) {
+    console.log('DZEVENT: ', event);
+    const file: DZFile = event[0];
+    (<FormData>event[2]).append('fullPath', file.fullPath);
+  }
+
+  uploadProgress(event) {
+    console.log('UPLOAD PROGRESS: ', event);
+  }
+
+  dzComplete(event) {
+    console.log('DZ COMPLETE: ', event);
+    const req: XMLHttpRequest = event.xhr;
+    console.log('LOFILE: ', JSON.parse(req.response));
+  }
+
+  handleError(event) {
+    console.log('ERROR: ', event);
+  }
+
+  handleCanceled(event) {
+    console.log('CANCELED : ', event);
+  }
+
+  async queueComplete(event) {
+    try {
+      this.learningObject = await this.learningObjectService.getLearningObject(
+        this.learningObjectName
+      );
+    } catch (e) {
+      console.log(e);
     }
-    if (this.openPath) {
-      path = `${this.openPath}/${path ? path : file.name}`;
-    }
-    if (path) {
-      file.fullPath = path;
-    }
-    return file;
   }
 
   /**
@@ -326,21 +326,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.openPath) {
       path = `${this.openPath}/${path ? path : file.name}`;
     }
-    if (!path) {
+    if (path) {
+      file.fullPath = path;
+    } else {
       path = file.name;
     }
+
     return path.trim();
-  }
-
-  onUploadSuccess($event) {
-    console.log('FINISH UPLOADED: ', $event);
-  }
-  chunksUploaded($event) {
-    console.log('CHUNKS UPLOADED: ', $event);
-  }
-
-  progress($event) {
-    console.log('PROGRESS: ', $event);
   }
 
   /**
@@ -357,34 +349,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       'bad',
       ''
     );
-  }
-
-  /**
-   * Checks if user has reached upload size limit
-   *
-   * @private
-   * @param {number} addedSize
-   * @returns
-   * @memberof UploadComponent
-   */
-  private pastFileLimit(addedSize: number) {
-    const BYTE_TO_MB = 1000000;
-    let size = addedSize / BYTE_TO_MB;
-    const queue = this.queuedUploads$.value;
-    if (queue.length) {
-      size +=
-        queue
-          .map(file => file.size)
-          .reduce((total, currentSize) => total + currentSize) / BYTE_TO_MB;
-    }
-    if (size > environment.DROPZONE_CONFIG.maxFilesize) {
-      this.dzError = `Exceeded max upload size of ${
-        environment.DROPZONE_CONFIG.maxFilesize
-      }mb`;
-      return true;
-    }
-
-    return false;
   }
 
   /**
@@ -428,30 +392,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Check to see if file exists in array of Learning Object Material Files
-   * If exists update else add
-   *
-   * @param {LearningObjectFile[]} loFiles
-   * @memberof UploadComponent
-   */
-  updateFiles(loFiles: LearningObjectFile[]) {
-    for (const newFile of loFiles) {
-      for (let i = 0; i < this.learningObject.materials.files.length; i++) {
-        const oldFile = this.learningObject.materials.files[i];
-        if (newFile.url === oldFile.url) {
-          newFile.description = oldFile.description;
-          this.learningObject.materials.files[i] = newFile;
-          loFiles.pop();
-        }
-      }
-    }
-    this.learningObject.materials.files = [
-      ...loFiles,
-      ...this.learningObject.materials.files
-    ];
-  }
-
-  /**
    * On submission, if there are scheduled deletions files within scheduled deletions get deleted
    * any added files get uploaded, then learning object is updated and user is navigated to
    * content view.
@@ -461,24 +401,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   async save(stayOnPage?: boolean) {
     try {
       this.saving = true;
-      const learningObjectFiles = await this.upload();
-
-      this.uploading$.next(false);
-
-      this.updateFiles(learningObjectFiles);
 
       this.fixURLs();
       try {
         await this.saveLearningObject();
         this.saving = false;
-        this.uploading$.next(false);
         this.updateFileSubscription();
         if (!stayOnPage) {
           this.router.navigate(['/onion/dashboard']);
         }
       } catch (e) {
         this.saving = false;
-        this.uploading$.next(false);
         this.notificationService.notify(
           'Could not update your materials.',
           `${e}`,
@@ -489,7 +422,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     } catch (e) {
       this.saving = false;
       console.log(e);
-      this.uploading$.next(false);
       this.notificationService.notify(
         'Could not upload your materials.',
         `${e}`,
@@ -497,52 +429,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         'far fa-times'
       );
     }
-  }
-
-  /**
-   * Sends files to API to be uploaded to S3
-   * and returns an array of learning object files.
-   *
-   * @returns {Promise<LearningObjectFile[]>}
-   * @memberof UploadComponent
-   */
-  async upload(): Promise<LearningObjectFile[]> {
-    this.saving = true;
-    const queue = this.queuedUploads$.getValue();
-
-    if (queue.length >= 1) {
-      this.uploading$.next(true);
-      const failed: DZFile[] = [];
-
-      const uploaded: LearningObjectFile[] = await Promise.all(
-        queue.map((file, index) =>
-          this.fileStorageService
-            .upload(this.learningObject, file)
-            .then(loFile => {
-              queue.splice(index, 1);
-              this.queuedUploads$.next(queue);
-              return loFile;
-            })
-            .catch(e => {
-              file.status = 'failed';
-              failed.push(file);
-              return null;
-            })
-        )
-      )
-        .then(files => files.filter(obj => obj))
-        .catch(e => {
-          console.log(e);
-          return null;
-        });
-
-      this.queuedUploads$.next(failed ? failed : []);
-
-      return uploaded;
-    }
-    this.saving = false;
-    this.uploading$.next(false);
-    return Promise.resolve([]);
   }
 
   /**
@@ -631,12 +517,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Initiates a save of the learning object in it's current state in the component
    */
-  async saveLearningObject(): Promise<{}> {
-    this.saving = true;
-    return this.learningObjectService.save(this.learningObject).then(() => {
-      this.saving = false;
-      return {}; // why?
-    });
+  async saveLearningObject(): Promise<void> {
+    try {
+      this.saving = true;
+      await this.learningObjectService.save(this.learningObject);
+    } catch (e) {
+      console.log(e);
+    }
+    this.saving = false;
   }
 
   /**
@@ -712,17 +600,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     return index;
-  }
-
-  /**
-   * Generates UUID
-   *
-   * @private
-   * @returns {string}
-   * @memberof UploadComponent
-   */
-  private getUUID(): string {
-    return uuid.v1();
   }
 
   ngOnDestroy() {
