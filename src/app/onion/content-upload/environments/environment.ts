@@ -14,7 +14,7 @@ export const environment = {
     autoQueue: true,
     withCredentials: true,
     chunking: true,
-    // 5MB Chunk Size
+    // 6MB Chunk Size
     chunkSize: 6000000,
     timeout: 900000, // 15 minutes timeout
     createImageThumbnails: false,
