@@ -305,6 +305,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      this.updateFileSubscription();
     } catch (e) {
       console.log(e);
     }
