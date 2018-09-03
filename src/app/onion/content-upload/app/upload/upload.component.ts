@@ -341,22 +341,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Displays error via notification service
-   *
-   * @private
-   * @param {string} name
-   * @memberof UploadComponent
-   */
-  private showFileError(name: string) {
-    this.notificationService.notify(
-      `${name} could not be added`,
-      this.dzError,
-      'bad',
-      ''
-    );
-  }
-
-  /**
    * Adds a link to learning object repository URLs
    *
    * @memberof UploadComponent
