@@ -1,0 +1,9 @@
+<div class="file-upload-status">
+  <div class="file" *ngFor="let f of files">
+    <div class="name">
+      <i class="fas {{ getIcon(f.extension) }}"></i> {{ f.name }}
+    </div>
+    <clark-progress [percentage]="f.progress || 0"></clark-progress>
+    <div>cancel</div>
+  </div>
+</div>

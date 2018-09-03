@@ -1,0 +1,31 @@
+@import '~_vars.scss';
+
+.progress {
+    width: 100%;
+    position: relative;
+    height: 4px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.1);
+
+    .inner {
+        background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+    &:after {
+        content: '';
+    }
+}
+
+@keyframes pulse {
+    0% {
+
+    } 100% {
+
+    }
+}

@@ -33,6 +33,7 @@
         [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)"
         (path)="openPath=$event">
       </onion-file-manager>
+      <onion-file-upload-status *ngIf="queuedUploads$.getValue().length" [files]="queuedUploads$.getValue()"></onion-file-upload-status>
     </div>
     <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
       <clark-url-manager [urls]="learningObject.materials.urls" (add)="addURL()" (remove)="removeURL($event)" (save)="saveLearningObject()"></clark-url-manager>
@@ -48,8 +49,6 @@
     </div>
   </div>
 </div>
-<upload-queue [@uploadQueue] *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$"
-  [uploading$]="uploading$" (upload)="save(true)"></upload-queue>
 <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (addedFile)="addFile($event)"
   (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)" (complete)="dzComplete($event)"
   (queueComplete)="queueComplete(event)" (error)="handleError($event)" (canceled)="handleCanceled($event)">

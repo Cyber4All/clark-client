@@ -25,6 +25,7 @@ import { UploadComponent } from './upload/upload.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
+import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
@@ -35,7 +36,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     UploadComponent,
     FileManagerComponent,
     UploadQueueComponent,
-    UrlManagerComponent
+    UrlManagerComponent,
+    FileUploadStatusComponent
   ],
   imports: [
     CommonModule,

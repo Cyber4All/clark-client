@@ -9,7 +9,7 @@ export const environment = {
   production: false,
   DROPZONE_CONFIG: {
     url: USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(''),
-    maxFilesize: null,
+    maxFilesize: 100000,
     acceptedFiles: '',
     autoQueue: true,
     withCredentials: true,
