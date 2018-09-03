@@ -29,6 +29,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
+import { getPaths } from '../../../../shared/filesystem/file-functions';
 
 type LearningObjectFile = File;
 
@@ -330,6 +331,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (path) {
       file.fullPath = path;
+      const rootFolder = getPaths(path)[0];
+      file.rootFolder = rootFolder;
     } else {
       path = file.name;
     }
