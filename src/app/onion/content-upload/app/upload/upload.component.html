@@ -48,8 +48,6 @@
     </div>
   </div>
 </div>
-<upload-queue [@uploadQueue] *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$"
-  [uploading$]="uploading$" (upload)="save(true)"></upload-queue>
 <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (addedFile)="addFile($event)"
   (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)" (complete)="dzComplete($event)"
   (queueComplete)="queueComplete(event)" (error)="handleError($event)" (canceled)="handleCanceled($event)">
