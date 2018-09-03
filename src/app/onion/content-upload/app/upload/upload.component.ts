@@ -29,6 +29,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
+import { getPaths } from '../../../../shared/filesystem/file-functions';
 
 type LearningObjectFile = File;
 
@@ -275,7 +276,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fileSending(event) {
     const file: DZFile = event[0];
-    (<FormData>event[2]).append('fullPath', file.fullPath);
+    if (file.fullPath) {
+      (<FormData>event[2]).append('fullPath', file.fullPath);
+    }
   }
 
   uploadProgress(event) {
@@ -333,27 +336,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (path) {
       file.fullPath = path;
+      const rootFolder = getPaths(path)[0];
+      file.rootFolder = rootFolder;
     } else {
       path = file.name;
     }
 
     return path.trim();
-  }
-
-  /**
-   * Displays error via notification service
-   *
-   * @private
-   * @param {string} name
-   * @memberof UploadComponent
-   */
-  private showFileError(name: string) {
-    this.notificationService.notify(
-      `${name} could not be added`,
-      this.dzError,
-      'bad',
-      ''
-    );
   }
 
   /**
