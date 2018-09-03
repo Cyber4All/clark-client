@@ -59,7 +59,7 @@ export type DZFile = {
     trigger('uploadQueue', [
       transition(':enter', [
         style({ bottom: '-20px', opacity: 0 }),
-        animate('200ms 400ms ease-out', style({ bottom: '20px', opacity: 1 }))
+        animate('200ms 200ms ease-out', style({ bottom: '20px', opacity: 1 }))
       ]),
       transition(':leave', [
         style({ bottom: '20px', opacity: 1 }),
@@ -125,13 +125,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']);
 
-    this.fileAdded$
-      .debounceTime(250)
-      .takeUntil(this.unsubscribe$)
-      .subscribe(() => {
-        this.handleDrop();
-      });
-
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
     this.triggerSave$
       .takeUntil(this.unsubscribe$)
@@ -145,9 +138,23 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
     fromEvent(document.getElementsByTagName('body')[0], 'dragover')
       .takeUntil(this.unsubscribe$)
-      .subscribe(() => {
-        this.toggleDrag(true);
+      .subscribe(event => {
+
+        // @ts-ignore
+        const types = event.dataTransfer.types;
+        if (types.filter(x => x === 'Files').length >= 1) {
+          this.toggleDrag(true);
+        }
       });
+
+       // create an observable from the dragover event and subscribe to it to show the dropzone popover
+    fromEvent(document.getElementsByTagName('body')[0], 'dragleave')
+    .takeUntil(this.unsubscribe$)
+    .subscribe(event => {
+      if (event.target.classList.contains('uploader')) {
+        this.toggleDrag(false);
+      }
+    });
   }
 
   /**
