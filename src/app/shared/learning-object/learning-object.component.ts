@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Rendere
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { AuthService } from '../../core/auth.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'learning-object-component',
@@ -13,6 +14,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() link;
   @Input() loading: boolean;
   @Input() owned? = false;
+
+  canDownload = false;
 
   constructor(private hostEl: ElementRef, private renderer: Renderer2, private cart: CartV2Service, public auth: AuthService) {}
 
@@ -26,7 +29,29 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+    if (environment.production) {
+      this.checkWhitelist();
+    } else {
+      this.canDownload = true;
+    }
+  }
+
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+  private async checkWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      const whitelist: string[] = object.whitelist;
+      const username = this.auth.username;
+      if (whitelist.includes(username)) {
+        this.canDownload = true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   goals() {
     const punc = ['.', '!', '?'];

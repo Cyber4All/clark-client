@@ -13,11 +13,9 @@ import {
 } from '@angular/core';
 import { OutcomeService } from '../../core/outcome.service';
 import { LearningOutcome } from '@cyber4all/clark-entity';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription, fromEvent } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -90,7 +88,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.subs.push(
-      Observable.fromEvent(this.searchInput.nativeElement, 'input')
+      fromEvent(this.searchInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {

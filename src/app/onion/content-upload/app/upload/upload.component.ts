@@ -11,24 +11,31 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
-import { DropzoneDirective } from 'ngx-dropzone-wrapper';
+import {
+  DropzoneDirective,
+  DropzoneConfigInterface
+} from 'ngx-dropzone-wrapper';
 import { ToasterService } from '../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
-import * as uuid from 'uuid';
+import {
+  File,
+  FolderDescription
+} from '@cyber4all/clark-entity/dist/learning-object';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
-import { Observable, Subject } from 'rxjs';
-import 'rxjs/add/observable/fromEvent';
+import { fromEvent, Subject } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
+import { USER_ROUTES } from '@env/route';
+import { getPaths } from '../../../../shared/filesystem/file-functions';
+import { AuthService } from '../../../../core/auth.service';
 
 type LearningObjectFile = File;
 
-export type File = {
+// tslint:disable-next-line:interface-over-type-literal
+export type DZFile = {
   id?: string;
   accepted: boolean;
   fullPath: string;
@@ -39,6 +46,7 @@ export type File = {
 };
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
@@ -52,7 +60,7 @@ export type File = {
     trigger('uploadQueue', [
       transition(':enter', [
         style({ bottom: '-20px', opacity: 0 }),
-        animate('200ms 400ms ease-out', style({ bottom: '20px', opacity: 1 }))
+        animate('200ms 200ms ease-out', style({ bottom: '20px', opacity: 1 }))
       ]),
       transition(':leave', [
         style({ bottom: '20px', opacity: 1 }),
@@ -65,7 +73,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
-  private filePathMap: Map<string, string> = new Map<string, string>();
   private dzError = '';
   learningObjectName: string;
 
@@ -77,25 +84,33 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   saving = false;
   retrieving = false;
 
+  config: DropzoneConfigInterface = {
+    ...environment.DROPZONE_CONFIG,
+    renameFile: this.renameFile
+  };
+
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
   >([]);
-  folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  queuedUploads$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
+  folderMeta$: BehaviorSubject<FolderDescription[]> = new BehaviorSubject<
+    FolderDescription[]
   >([]);
-
+  inProgressUploads = [];
+  inProgressUploadsMap = new Map<string, number>();
   tips = TOOLTIP_TEXT;
 
-  learningObject: LearningObject = new LearningObject(null, '');
+  learningObject: LearningObject;
 
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   confirmDeletion$ = new Subject<boolean>();
   triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
+  fileAdded$ = new Subject<void>();
 
   openPath: string;
+
+  disabled = true;
 
   constructor(
     private router: Router,
@@ -104,24 +119,16 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private fileStorageService: FileStorageService,
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.checkWhitelist();
     this.learningObjectName = this.route.snapshot.params.learningObjectName;
     this.learningObjectName
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']);
-
-    // Listen for queuedUploads trigger and, if the current value is an array with length > 0, close dropzone popover and save
-    this.queuedUploads$
-      .filter(x => x !== [] && x.length > 0)
-      .debounceTime(250)
-      .takeUntil(this.unsubscribe$)
-      .subscribe(() => {
-        this.handleDrop();
-        this.save(true);
-      });
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
     this.triggerSave$
@@ -134,11 +141,23 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
-    Observable.fromEvent(document.getElementsByTagName('body')[0], 'dragover')
+    fromEvent(document.getElementsByTagName('body')[0], 'dragover')
       .takeUntil(this.unsubscribe$)
-      .subscribe(() => {
-        this.toggleDrag(true);
+      .subscribe((event: any) => {
+        const types = event.dataTransfer.types;
+        if (types.filter(x => x === 'Files').length >= 1 && !this.disabled) {
+          this.toggleDrag(true);
+        }
       });
+
+       // create an observable from the dragover event and subscribe to it to show the dropzone popover
+    fromEvent(document.getElementsByTagName('body')[0], 'dragleave')
+    .takeUntil(this.unsubscribe$)
+    .subscribe((event: any) => {
+      if (event.target.classList.contains('uploader')) {
+        this.toggleDrag(false);
+      }
+    });
   }
 
   /**
@@ -210,6 +229,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.learningObject = await this.learningObjectService.getLearningObject(
         this.learningObjectName
       );
+      this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+        this.learningObject.id
+      );
       this.retrieving = false;
       // FIXME: Add folder descriptions to entity
       // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
@@ -243,53 +265,79 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private updateFolderMeta() {
-    this.folderMeta$.next(this.learningObject.materials['folderDescriptions']);
+    this.folderMeta$.next(this.learningObject.materials.folderDescriptions);
   }
 
   /**
    * Fired when file is added. Verifies limit hasn't been reached and adds to queued files & filesystem
    *
-   * @param {File} file
+   * @param {DZFile} file
    * @memberof UploadComponent
    */
-  async addFile(file) {
+  async addFile(file: DZFile) {
     await file;
-    file = this.setFullPath(file);
-    if (!file.accepted) {
-      this.dzError = 'File not accepted';
-      this.showFileError(file.name);
-      return;
+    this.inProgressUploads.push(file);
+    this.inProgressUploadsMap.set(
+      file.upload.uuid,
+      this.inProgressUploads.length - 1
+    );
+    this.fileAdded$.next();
+  }
+
+  fileSending(event) {
+    const file: DZFile = event[0];
+    if (file.fullPath) {
+      (<FormData>event[2]).append('fullPath', file.fullPath);
     }
+  }
 
-    const pastFileLimit = this.pastFileLimit(file.size);
-    if (pastFileLimit) {
-      this.showFileError(file.name);
-      return;
+  uploadProgress(event) {
+    const file = event[0];
+    const index = this.inProgressUploadsMap.get(file.upload.uuid);
+    this.inProgressUploads[index].progress = (event[2] / file.size) * 100;
+  }
+
+  dzComplete(event) {
+    try {
+      const progressCheck = this.inProgressUploads.filter((x) => x.progress < 100);
+      if (!progressCheck.length) {
+        this.inProgressUploads = [];
+        this.inProgressUploadsMap = new Map();
+      }
+    } catch (e) {
+      console.log(e);
     }
+  }
 
-    file.id = this.getUUID();
-    const isFolder = this.isFolder(file);
+  handleError(event) {
+    console.log('ERROR: ', event);
+  }
 
-    if (isFolder) {
-      this.mapToPath(file);
+  handleCanceled(event) {
+    console.log('CANCELED : ', event);
+  }
+
+  async queueComplete(event) {
+    try {
+      this.learningObject = await this.learningObjectService.getLearningObject(
+        this.learningObjectName
+      );
+      this.updateFileSubscription();
+    } catch (e) {
+      console.log(e);
     }
-
-    const queue = this.queuedUploads$.getValue();
-    queue.push(file);
-
-    this.queuedUploads$.next(queue);
   }
 
   /**
    * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;
    *
    * @private
-   * @param {any} file
+   * @param {DZFile} file
    * @returns
    * @memberof UploadComponent
    */
-  private setFullPath(file) {
-    let path;
+  private renameFile(file: any): string {
+    let path: string;
     if (file.fullPath || file.webkitRelativePath) {
       path = file.fullPath ? file.fullPath : file.webkitRelativePath;
     }
@@ -298,74 +346,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (path) {
       file.fullPath = path;
-    }
-    return file;
-  }
-
-  /**
-   * Check upload is folder or not
-   *
-   * @param {File} file
-   * @returns {boolean}
-   * @memberof UploadComponent
-   */
-  private isFolder(file: File): boolean {
-    if (!file.fullPath) {
-      return false;
-    }
-    const paths: string[] = getPaths(file.fullPath);
-    if (paths.length > 0) {
-      return true;
-    }
-    return false;
-  }
-
-  private mapToPath(file) {
-    const path = getPaths(file.fullPath).join('/');
-    this.filePathMap.set(file.id, path);
-  }
-
-  /**
-   * Displays error via notification service
-   *
-   * @private
-   * @param {string} name
-   * @memberof UploadComponent
-   */
-  private showFileError(name: string) {
-    this.notificationService.notify(
-      `${name} could not be added`,
-      this.dzError,
-      'bad',
-      ''
-    );
-  }
-
-  /**
-   * Checks if user has reached upload size limit
-   *
-   * @private
-   * @param {number} addedSize
-   * @returns
-   * @memberof UploadComponent
-   */
-  private pastFileLimit(addedSize: number) {
-    const BYTE_TO_MB = 1000000;
-    let size = addedSize / BYTE_TO_MB;
-    const queue = this.queuedUploads$.getValue();
-    if (queue.length) {
-      size +=
-        queue.map(file => file.size).reduce((total, size) => total + size) /
-        BYTE_TO_MB;
-    }
-    if (size > environment.DROPZONE_CONFIG.maxFilesize) {
-      this.dzError = `Exceeded max upload size of ${
-        environment.DROPZONE_CONFIG.maxFilesize
-      }mb`;
-      return true;
+      const rootFolder = getPaths(path)[0];
+      file.rootFolder = rootFolder;
+    } else {
+      path = file.name;
     }
 
-    return false;
+    return path.trim();
   }
 
   /**
@@ -409,30 +396,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Check to see if file exists in array of Learning Object Material Files
-   * If exists update else add
-   *
-   * @param {File[]} loFiles
-   * @memberof UploadComponent
-   */
-  updateFiles(loFiles: File[]) {
-    for (const newFile of loFiles) {
-      for (let i = 0; i < this.learningObject.materials.files.length; i++) {
-        const oldFile = this.learningObject.materials.files[i];
-        if (newFile.url === oldFile.url) {
-          newFile.description = oldFile.description;
-          this.learningObject.materials.files[i] = newFile;
-          loFiles.pop();
-        }
-      }
-    }
-    this.learningObject.materials.files = [
-      ...loFiles,
-      ...this.learningObject.materials.files
-    ];
-  }
-
-  /**
    * On submission, if there are scheduled deletions files within scheduled deletions get deleted
    * any added files get uploaded, then learning object is updated and user is navigated to
    * content view.
@@ -442,24 +405,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   async save(stayOnPage?: boolean) {
     try {
       this.saving = true;
-      const learningObjectFiles = await this.upload();
-
-      this.uploading$.next(false);
-
-      this.updateFiles(learningObjectFiles);
 
       this.fixURLs();
       try {
         await this.saveLearningObject();
         this.saving = false;
-        this.uploading$.next(false);
         this.updateFileSubscription();
         if (!stayOnPage) {
           this.router.navigate(['/onion/dashboard']);
         }
       } catch (e) {
         this.saving = false;
-        this.uploading$.next(false);
         this.notificationService.notify(
           'Could not update your materials.',
           `${e}`,
@@ -470,7 +426,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     } catch (e) {
       this.saving = false;
       console.log(e);
-      this.uploading$.next(false);
       this.notificationService.notify(
         'Could not upload your materials.',
         `${e}`,
@@ -478,34 +433,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         'far fa-times'
       );
     }
-  }
-
-  /**
-   * Sends files to API to be uploaded to S3
-   * and returns an array of learning object files.
-   *
-   * @returns {Promise<LearningObjectFile[]>}
-   * @memberof UploadComponent
-   */
-  async upload(): Promise<LearningObjectFile[]> {
-    this.saving = true;
-    const queue = this.queuedUploads$.getValue();
-
-    if (queue.length >= 1) {
-      this.uploading$.next(true);
-
-      const learningObjectFiles = await this.fileStorageService.upload(
-        this.learningObject,
-        queue,
-        this.filePathMap
-      );
-      this.queuedUploads$.next([]);
-
-      return learningObjectFiles;
-    }
-    this.saving = false;
-    this.uploading$.next(false);
-    return Promise.resolve([]);
   }
 
   /**
@@ -561,7 +488,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  async handleEdit(file): Promise<void> {
+  async handleEdit(file: LearningObjectFile | any): Promise<void> {
     try {
       if (!file.isFolder) {
         const index = this.findFile(file.path);
@@ -579,7 +506,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             path: file.path,
             description: file.description
           };
-          this.learningObject.materials['folderDescriptions'].push(
+          this.learningObject.materials.folderDescriptions.push(
             folderDescription
           );
         }
@@ -594,12 +521,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Initiates a save of the learning object in it's current state in the component
    */
-  async saveLearningObject(): Promise<{}> {
-    this.saving = true;
-    return this.learningObjectService.save(this.learningObject).then(() => {
-      this.saving = false;
-      return {}; // why?
-    });
+  async saveLearningObject(): Promise<void> {
+    try {
+      this.saving = true;
+      await this.learningObjectService.save(this.learningObject);
+    } catch (e) {
+      console.log(e);
+    }
+    this.saving = false;
   }
 
   /**
@@ -666,7 +595,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private findFolder(path: string): number {
     let index = -1;
-    const folders = this.learningObject.materials['folderDescriptions'];
+    const folders = this.learningObject.materials.folderDescriptions;
     for (let i = 0; i < folders.length; i++) {
       const folderPath = folders[i].path;
       if (folderPath === path) {
@@ -677,15 +606,19 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     return index;
   }
 
-  /**
-   * Generates UUID
-   *
-   * @private
-   * @returns {string}
-   * @memberof UploadComponent
-   */
-  private getUUID(): string {
-    return uuid.v1();
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+  private async checkWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      const whitelist: string[] = object.whitelist;
+      const username = this.authService.username;
+      if (whitelist.includes(username)) {
+        this.disabled = false;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   ngOnDestroy() {
