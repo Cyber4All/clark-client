@@ -6,6 +6,8 @@
     height: 4px;
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-self: center;
 
     .inner {
         background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));

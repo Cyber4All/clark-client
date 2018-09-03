@@ -93,8 +93,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   folderMeta$: BehaviorSubject<FolderDescription[]> = new BehaviorSubject<
     FolderDescription[]
   >([]);
-  queuedUploads$: BehaviorSubject<DZFile[]> = new BehaviorSubject<DZFile[]>([]);
-
+  inProgressUploads = [];
+  inProgressUploadsMap = new Map<string, number>();
   tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject;
@@ -104,6 +104,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   confirmDeletion$ = new Subject<boolean>();
   triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
+  fileAdded$ = new Subject<void>();
 
   openPath: string;
 
@@ -123,14 +124,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']);
 
-    // Listen for queuedUploads trigger and, if the current value is an array with length > 0, close dropzone popover and save
-    this.queuedUploads$
-      .filter(x => x !== [] && x.length > 0)
-      .debounceTime(250)
-      .takeUntil(this.unsubscribe$)
-      .subscribe(() => {
-        this.handleDrop();
-      });
+    this.fileAdded$.takeUntil(this.unsubscribe$).subscribe(() => {
+      this.handleDrop();
+    });
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
     this.triggerSave$
@@ -266,30 +262,31 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async addFile(file: DZFile) {
     await file;
-    if (!file.accepted) {
-      this.dzError = 'File not accepted';
-      this.showFileError(file.name);
-    } else {
-      const queue = this.queuedUploads$.getValue();
-      queue.push(file);
-      this.queuedUploads$.next(queue);
-    }
+    this.inProgressUploads.push(file);
+    this.inProgressUploadsMap.set(
+      file.upload.uuid,
+      this.inProgressUploads.length - 1
+    );
   }
 
   fileSending(event) {
-    console.log('DZEVENT: ', event);
     const file: DZFile = event[0];
     (<FormData>event[2]).append('fullPath', file.fullPath);
   }
 
   uploadProgress(event) {
-    console.log('UPLOAD PROGRESS: ', event);
+    const file = event[0];
+    const index = this.inProgressUploadsMap.get(file.upload.uuid);
+    this.inProgressUploads[index].progress = event[1];
   }
 
   dzComplete(event) {
-    console.log('DZ COMPLETE: ', event);
-    const req: XMLHttpRequest = event.xhr;
-    console.log('LOFILE: ', JSON.parse(req.response));
+    try {
+      const req: XMLHttpRequest = event.xhr;
+      console.log('LOFILE: ', JSON.parse(req.response));
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   handleError(event) {
