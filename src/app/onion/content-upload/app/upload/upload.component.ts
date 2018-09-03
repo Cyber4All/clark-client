@@ -276,7 +276,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fileSending(event) {
     const file: DZFile = event[0];
-    (<FormData>event[2]).append('fullPath', file.fullPath);
+    if (file.fullPath) {
+      (<FormData>event[2]).append('fullPath', file.fullPath);
+    }
   }
 
   uploadProgress(event) {
