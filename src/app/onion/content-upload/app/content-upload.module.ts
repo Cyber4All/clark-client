@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 // Other
 import { routes } from './content-upload.routes';
@@ -17,7 +17,6 @@ import { FileStorageService } from './services/file-storage.service';
 
 // Components
 import { FileManagerComponent } from './file-manager/file-manager.component';
-import { UploadQueueComponent } from './file-manager/upload-queue/upload-queue.component';
 
 import { ContentUploadComponent } from './content-upload.component';
 import { UploadComponent } from './upload/upload.component';
@@ -35,7 +34,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     ContentUploadComponent,
     UploadComponent,
     FileManagerComponent,
-    UploadQueueComponent,
     UrlManagerComponent,
     FileUploadStatusComponent
   ],

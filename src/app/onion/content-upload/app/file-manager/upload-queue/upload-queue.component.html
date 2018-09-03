@@ -1,8 +1,0 @@
-<div class="queue-container">
-  <div class="queue-body" [ngClass]="{collapsed: collapsed}">
-    <div class="status" *ngIf="uploading$.getValue()">Uploading {{ (folders?.length) + (files?.length) }} item{{ (folders?.length)
-      + (files?.length) !== 1 ? 's' : '' }} to CLARK...
-      <i class="far fa-spinner-third fa-spin"></i>
-    </div>
-  </div>
-</div>
