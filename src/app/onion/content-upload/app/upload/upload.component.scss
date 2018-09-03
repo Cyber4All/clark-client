@@ -289,10 +289,17 @@
   background: white;
   padding: 20px;
   box-sizing: border-box;
+  max-height: 500px;
+  overflow-y: scroll;
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.05);
 
   .title {
     font-size: 20px;
     margin-bottom: 10px;
+  }
+
+  &:after {
+
   }
 }
 
