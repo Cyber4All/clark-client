@@ -124,9 +124,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']);
 
-    this.fileAdded$.takeUntil(this.unsubscribe$).subscribe(() => {
-      this.handleDrop();
-    });
+    this.fileAdded$
+      .debounceTime(250)
+      .takeUntil(this.unsubscribe$)
+      .subscribe(() => {
+        this.handleDrop();
+      });
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
     this.triggerSave$
@@ -267,6 +270,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       file.upload.uuid,
       this.inProgressUploads.length - 1
     );
+    this.fileAdded$.next();
   }
 
   fileSending(event) {
