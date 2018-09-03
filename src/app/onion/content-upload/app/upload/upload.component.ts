@@ -150,7 +150,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
        // create an observable from the dragover event and subscribe to it to show the dropzone popover
     fromEvent(document.getElementsByTagName('body')[0], 'dragleave')
     .takeUntil(this.unsubscribe$)
-    .subscribe(event => {
+    .subscribe((event: any) => {
       if (event.target.classList.contains('uploader')) {
         this.toggleDrag(false);
       }
