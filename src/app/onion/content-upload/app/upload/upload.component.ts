@@ -30,6 +30,7 @@ import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../shared/filesystem/file-functions';
+import { AuthService } from '../../../../core/auth.service';
 
 type LearningObjectFile = File;
 
@@ -109,7 +110,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
-  disabled = false;
+  disabled = true;
 
   constructor(
     private router: Router,
@@ -118,10 +119,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private fileStorageService: FileStorageService,
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.checkWhitelist();
     this.learningObjectName = this.route.snapshot.params.learningObjectName;
     this.learningObjectName
       ? this.fetchLearningObject()
@@ -601,6 +604,21 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     return index;
+  }
+
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+  private async checkWhitelist() {
+    try {
+      const response = await fetch(environment.whiteListURL);
+      const object = await response.json();
+      const whitelist: string[] = object.whitelist;
+      const username = this.authService.username;
+      if (whitelist.includes(username)) {
+        this.disabled = false;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   ngOnDestroy() {
