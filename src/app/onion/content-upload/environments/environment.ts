@@ -9,12 +9,12 @@ export const environment = {
   production: false,
   DROPZONE_CONFIG: {
     url: USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(''),
-    maxFilesize: null,
+    maxFilesize: 100000000,
     acceptedFiles: '',
     autoQueue: true,
     withCredentials: true,
     chunking: true,
-    // 5MB Chunk Size (Minimum for AWS)
-    chunkSize: 1000000
+    // 5MB Chunk Size
+    chunkSize: 10000000
   }
 };
