@@ -86,7 +86,6 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   truncateText(text: string, max: number = 150, margin: number = 10): string {
     // remove any HTML characters from text
     text = this.stripHtml(text);
-    console.log(text);
 
     // check to see if we need to truncate, IE is the text shorter than max + margin
     if (text.length <= max + margin) {
