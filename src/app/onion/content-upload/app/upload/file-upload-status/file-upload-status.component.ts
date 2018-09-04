@@ -13,6 +13,9 @@ export class FileUploadStatusComponent implements OnInit {
   @Input()
   files: DZFile[] = [];
 
+  @Input()
+  folders: { name: string, items: string, progress: number, folder: true }[];
+
   getIcon = (extension: string) => getIcon(extension);
 
   constructor() {}

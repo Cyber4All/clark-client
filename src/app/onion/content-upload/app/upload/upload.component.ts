@@ -87,7 +87,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   // @ts-ignore The ngx-dropzone doesn't believe generatePreview is a valid config option
   config: DropzoneConfigInterface = {
     ...environment.DROPZONE_CONFIG,
-    renameFile: this.renameFile
+    renameFile: (file: any) => {
+      return this.renameFile(file);
+    }
   };
 
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
@@ -96,8 +98,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   folderMeta$: BehaviorSubject<FolderDescription[]> = new BehaviorSubject<
     FolderDescription[]
   >([]);
-  inProgressUploads = [];
-  inProgressUploadsMap = new Map<string, number>();
+
+  inProgressFileUploads = [];
+  inProgressFolderUploads = [];
+  inProgressUploadsMap: Map<string, number>;
   tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject;
@@ -121,7 +125,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
     private authService: AuthService
-  ) {}
+  ) {
+    this.inProgressUploadsMap = new Map<string, number>();
+  }
 
   ngOnInit() {
     this.checkWhitelist();
@@ -276,11 +282,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async addFile(file: DZFile) {
     try {
-      this.inProgressUploads.push(file);
-      this.inProgressUploadsMap.set(
-        file.upload.uuid,
-        this.inProgressUploads.length - 1
-      );
+      if (!file.rootFolder) {
+        // this is a file addition
+        this.inProgressFileUploads.push(file);
+        this.inProgressUploadsMap.set(file.upload.uuid, this.inProgressFileUploads.length - 1);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -296,8 +302,22 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   uploadProgress(event) {
     try {
       const file = event[0];
-      const index = this.inProgressUploadsMap.get(file.upload.uuid);
-      this.inProgressUploads[index].progress = Math.max((event[2] / file.size) * 100, 100);
+      const newProgress = (event[2] / file.size) * 100;
+      console.log('progress of ' + file.name, newProgress, '\n');
+      let index;
+
+      if (file.rootFolder) {
+        // this is a folder update
+        index = this.inProgressUploadsMap.get(file.rootFolder);
+        const currentProgress = this.inProgressFolderUploads[index].progress;
+        this.inProgressFolderUploads[index].progress = Math.ceil((currentProgress + (newProgress ? newProgress : 0)) / 2);
+        console.log('calculated folder progress', this.inProgressFolderUploads[index].progress);
+      } else {
+        // this is a file update
+        index = this.inProgressUploadsMap.get(file.upload.uuid);
+        this.inProgressFileUploads[index].progress = Math.ceil(newProgress);
+      }
+
     } catch (error) {
       console.log(error);
     }
@@ -305,9 +325,15 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dzComplete(event) {
     try {
-      const progressCheck = this.inProgressUploads.filter((x) => x.progress < 100 || typeof x.progress === 'undefined');
+      const progressCheck = 
+        this.inProgressFileUploads.filter(x => x.progress < 100)
+        .concat(
+          this.inProgressFolderUploads.filter(x => x.progress < 100)
+        );
+
       if (!progressCheck.length) {
-        this.inProgressUploads = [];
+        this.inProgressFileUploads = [];
+        this.inProgressFolderUploads = [];
         this.inProgressUploadsMap = new Map();
       }
     } catch (e) {
@@ -343,22 +369,45 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private renameFile(file: any): string {
-    let path: string;
-    if (file.fullPath || file.webkitRelativePath) {
-      path = file.fullPath ? file.fullPath : file.webkitRelativePath;
-    }
-    if (this.openPath) {
-      path = `${this.openPath}/${path ? path : file.name}`;
-    }
-    if (path) {
-      file.fullPath = path;
-      const rootFolder = getPaths(path)[0];
-      file.rootFolder = rootFolder;
-    } else {
-      path = file.name;
-    }
+    try {
+      let path: string;
+      if (file.fullPath || file.webkitRelativePath) {
+        path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+      }
+      if (this.openPath) {
+        path = `${this.openPath}/${path ? path : file.name}`;
+      }
+      if (path) {
+        file.fullPath = path;
+        const rootFolder = getPaths(path)[0];
+        file.rootFolder = rootFolder;
 
-    return path.trim();
+        const index = this.inProgressUploadsMap.get(rootFolder);
+        let folder = this.inProgressFolderUploads[index];
+
+        if (folder) {
+          folder.items++;
+          this.inProgressFolderUploads[index] = folder;
+        } else {
+          folder = {
+            items: 1,
+            progress: 0,
+            name: file.rootFolder,
+            folder: true
+          };
+
+          this.inProgressFolderUploads.push(folder);
+          this.inProgressUploadsMap.set(rootFolder, this.inProgressFolderUploads.length - 1);
+        }
+        console.log(this.inProgressFolderUploads);
+      } else {
+        path = file.name;
+      }
+
+      return path.trim();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
