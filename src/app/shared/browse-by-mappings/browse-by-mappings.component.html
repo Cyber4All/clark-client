@@ -1,8 +1,8 @@
 <div class="wrapper">
   <div class="top">
       <div class="title">
-        Standard Outcomes
-        <div>Search Learning Objects by their mapped standard outcomes</div>
+        {{ copy.TITLE }}
+        <div>{{ copy.INTRO }}</div>
       </div>
       <div class="source">
         <div class="mappings-spinner" *ngIf="mappingsQueryInProgress"><i class="far fa-spinner-third"></i></div>
@@ -14,7 +14,7 @@
     <div class="text-filter">
       <input #mappingSearchInput type="text" id="mappingsFilter" [(ngModel)]="mappingService.filterText" placeholder="Outcome text includes...">
       <div class="selected-mappings">
-        <span *ngIf="showMappedOutcomesTitle">Mapped Outcomes: </span>
+        <span *ngIf="showMappedOutcomesTitle && mappings.length">Mapped Outcomes: </span>
         <div class="pill" *ngFor="let m of mappings" (click)="removeOutcome(m)">
           {{ m.author + ' - ' + m.name }} <i class="far fa-times"></i>
         </div>
@@ -22,9 +22,9 @@
     </div>
     <div class="list">
       <div class="none" *ngIf="this.queriedMappings.length === 0">
-        <div class="empty-source" *ngIf="mappingService.author === ''">Select a source from the dropdown list to get started!</div>
-        <div class="no-query" *ngIf="mappingService.author !== '' && mappingService.filterText === ''">Now enter some text into the above text box that your standard outcome should include!</div>
-        <div class="bad-query" *ngIf="mappingsQueryError && mappingService.author !== '' && mappingService.filterText !== ''">Whoops! We couldn't find any standard outcomes matching that query!</div>
+        <div class="empty-source" *ngIf="mappingService.author === ''">{{ copy.STEP1 }}</div>
+        <div class="no-query" *ngIf="mappingService.author !== '' && mappingService.filterText === ''">{{ copy.STEP2 }}</div>
+        <div class="bad-query" *ngIf="mappingsQueryError && mappingService.author !== '' && mappingService.filterText !== ''">{{ copy.ERROR }}</div>
       </div>
       <virtual-scroll *ngIf="this.queriedMappings.length > 0" [ngStyle]="{height: (dimensions.h) ? dimensions.h + 'px' : '400px'}" [items]="queriedMappings" (update)="viewportItems = $event">
         <div class="map" *ngFor="let m of viewportItems">

@@ -13,9 +13,9 @@ import {
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
 import { ToasterService } from '../../../shared/toaster';
-import { Subscription, Observable, Subject } from 'rxjs';
+import { Subscription, Observable, Subject, fromEvent } from 'rxjs';
+import { COPY } from './user-edit-information.copy';
 
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -25,6 +25,7 @@ import 'rxjs/add/operator/debounceTime';
 })
 
 export class UserEditInformationComponent implements OnInit, OnChanges, OnDestroy {
+  copy = COPY;
   isDestroyed$ = new Subject<void>();
   elementRef: any;
   @Input() user;
@@ -63,7 +64,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    Observable.fromEvent(this.organization.nativeElement, 'input')
+    fromEvent(this.organization.nativeElement, 'input')
       .takeUntil(this.isDestroyed$)
       .debounceTime(400)
       .subscribe(val => {

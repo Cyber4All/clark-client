@@ -1,14 +1,13 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { AcademicLevel, User, LearningObject } from '@cyber4all/clark-entity';
+import { AcademicLevel, User } from '@cyber4all/clark-entity';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { UserService } from '../../../../../core/user.service';
 import { AuthService } from '../../../../../core/auth.service';
-import { runInThisContext } from 'vm';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
 import { Query } from '../../../../../shared/interfaces/query';
+import { COPY } from './metadata.copy';
 
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 // TODO: Apply .bad to input if the form is submitted and it's not valid
@@ -19,6 +18,7 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: [ 'metadata.component.scss' ]
 })
 export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
+  copy = COPY;
   @Input() isNew;
   @Input() learningObject;
   @ViewChild('userSearchInput', { read: ElementRef })
@@ -51,13 +51,15 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(Observable.fromEvent(this.userSearchInput.nativeElement, 'input')
+    this.subs.push(fromEvent(this.userSearchInput.nativeElement, 'input')
       .debounceTime(650)
       .subscribe(val => {
         this.search();
       })
     );
-      if (this.learningObject.contributors) {
+      if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+        const arr = this.learningObject.contributors;
+        this.learningObject.contributors  = arr.map(member => User.instantiate(member));
         this.selectedAuthors = this.learningObject.contributors;
       }
   }
@@ -105,6 +107,11 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   removeAuthor(user) {
     for (let i = 0; i < this.selectedAuthors.length; i++) {
       if (user.username === this.selectedAuthors[i].username) {
+        // If contributors list already exits, remove from that list
+        if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+          const index = this.learningObject.contributors.indexOf(user);
+          this.learningObject.contributors.splice(index, 1);
+        }
         this.selectedAuthors.splice(i, 1);
       }
     }

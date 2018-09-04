@@ -1,7 +1,7 @@
 {
   "name": "cube",
   "displayName": "CyberCuBE: Curriculum Bank Enumeration",
-  "version": "1.2.2",
+  "version": "1.5.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -9,6 +9,7 @@
     "build": "ng build",
     "test": "node_modules/.bin/jest --verbose  --coverage",
     "lint": "ng lint",
+    "app": "cd .. cd ",
     "e2e": "cypress open"
   },
   "dependencies": {
@@ -71,7 +72,7 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.10.0",
     "typescript": "^2.7.2",
-    "ts-jest": "^22.4.2",
+    "ts-jest": "^23.1.4",
     "jest": "^22.4.3"
   },
   "prettier": {

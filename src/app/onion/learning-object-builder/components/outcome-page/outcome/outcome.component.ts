@@ -1,7 +1,5 @@
-import { Subject } from 'rxjs/Subject';
 import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
 import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
-import { LearningObject } from '@cyber4all/clark-entity';
 import {
   Component,
   OnInit,
@@ -14,11 +12,10 @@ import {
   OnChanges,
   ViewChild
 } from '@angular/core';
-import { MappingsFilterService } from '../../../../../core/mappings-filter.service';
 import { ModalService } from '../../../../../shared/modals';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
+import { fromEvent } from 'rxjs';
+import { COPY } from './outcome.copy';
 import 'rxjs/add/operator/debounceTime';
 
 import { LearningObjectErrorStoreService } from '../../../errorStore';
@@ -32,6 +29,7 @@ import { SuggestionService } from './standard-outcomes/suggestion/services/sugge
   providers: [SuggestionService]
 })
 export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
+  copy = COPY;
   @Input() outcome;
   @Input() index;
   @Input() submitted: number;
@@ -89,7 +87,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
     // pass the outcome text to the suggestion component
     this.outcomeSuggestionText = this.outcome._text;
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    Observable.fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
+    fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
       this.outcomeSuggestionText = val;
     });
   }

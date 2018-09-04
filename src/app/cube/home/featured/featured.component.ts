@@ -2,6 +2,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
 import { Query, OrderBy, SortType } from '../../../shared/interfaces/query';
+import { COPY } from './featured.copy';
 
 @Component({
   selector: 'cube-featured',
@@ -9,8 +10,9 @@ import { Query, OrderBy, SortType } from '../../../shared/interfaces/query';
   styleUrls: ['./featured.component.scss']
 })
 export class FeaturedComponent implements OnInit {
+  copy = COPY;
   learningObjects: LearningObject[] = Array(5);
-  query: Query= {
+  query: Query = {
     limit: 5,
     orderBy: OrderBy.Date,
     sortType: SortType.Descending

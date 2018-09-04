@@ -1,0 +1,41 @@
+@import '~_vars.scss';
+
+.parent-listing {
+  padding: 6px;
+  background-color: white;
+
+  .type {
+    font-size: 12px;
+    color: white;
+    padding: 2px 4px;
+  } // FIXME: These styles aren't DRY
+  &.nanomodule {
+    .type {
+      background: $nanomodule-color;
+    }
+  }
+
+  &.micromodule {
+    .type {
+      background: $micromodule-color;
+    }
+  }
+
+  &.module {
+    .type {
+      background: $module-color;
+    }
+  }
+
+  &.unit {
+    .type {
+      background: $unit-color;
+    }
+  }
+
+  &.course {
+    .type {
+      background: $course-color;
+    }
+  }
+}

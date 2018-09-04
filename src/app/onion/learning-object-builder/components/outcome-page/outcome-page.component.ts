@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Input, Output, OnChanges } from '@angular/core';
+import { COPY } from './outcome-page.copy';
 
 @Component({
   selector: 'onion-learning-object-outcome-container',
@@ -6,7 +7,7 @@ import { Component, EventEmitter, OnInit, Input, Output, OnChanges } from '@angu
   styleUrls: [ 'outcome-page.component.scss' ]
 })
 export class LearningObjectOutcomePageComponent implements OnChanges, OnInit {
-
+  copy = COPY;
   @Input() learningObject;
   @Input() submitted;
   @Input() outcomeIndex;

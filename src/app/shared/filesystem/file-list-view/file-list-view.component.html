@@ -1,20 +1,29 @@
-<div *ngIf = "preview">
-  <div class="wrapper dz-clickable">
+<div *ngIf="preview">
+  <div class="wrapper">
     <div class="grid-row header">
       <div class>Name</div>
       <div class>Description</div>
+      <div class>Date</div>
+      <div *ngIf="canManage" class="placeholder">
+      </div>
     </div>
     <!-- Render Folders -->
     <div (click)="openFolder(folder.name, $event)" class="grid-row folder" *ngFor="let folder of (node$ | async)?.children" [contextMenu]="fileOptions"
       [contextMenuSubject]="folder">
       <div class="text-contained inline-flex">
         <i class="fas fa-folder icon"></i>
-        {{ folder.name }}
+        {{ folder.name }} ({{ folder.files.length }} item{{ folder.files.length !== 1 ? 's' : '' }})
       </div>
       <div class="text-contained description">
-        <span *ngIf="!canManage">{{ folder.description }}</span>
-        <input #folderDesc (click)="setEditable(folder)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="folder.description ? folder.description: ''"
-          [formControl]="descriptionControl" />
+        <span>{{ folder.description || 'No description here!' }}</span>
+        <!-- <input #folderDesc (click)="setEditable(folder)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="folder.description ? folder.description: ''"
+          [formControl]="descriptionControl" /> -->
+      </div>
+      <div class="text-contained">
+        {{ getTimestampAge(getFolderTimestamp(folder)) }}
+      </div>
+      <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: folder}); $event.stopPropagation()">
+        <div></div>
       </div>
     </div>
     <!-- Render Files -->
@@ -24,14 +33,20 @@
         {{ file.name }}
       </div>
       <div class="text-contained description">
-        <span *ngIf="!canManage">{{ file.description }}</span>
-        <input #fileDesc (click)="setEditable(file)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="file.description ? file.description: ''"
-          [formControl]="descriptionControl" />
+        <span>{{ file.description || 'No description here!' }}</span>
+        <!-- <input #fileDesc (click)="setEditable(file)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="file.description ? file.description: ''"
+          [formControl]="descriptionControl" /> -->
+      </div>
+      <div class="text-contained">
+        {{ getTimestampAge(file.date) }}
+      </div>
+      <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: file}); $event.stopPropagation()">
+        <div></div>
       </div>
     </div>
   </div>
 </div>
-<div class="preview" *ngIf = "!preview">
+<div class="preview" *ngIf="!preview">
   <clark-file-preview></clark-file-preview>
-  <button (click)="returnToFileView()" class="button good">Return to file view </button> 
+  <button (click)="returnToFileView()" class="button good">Return to file view </button>
 </div>

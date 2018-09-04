@@ -1,5 +1,5 @@
 
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import { SortType, OrderBy } from '../../shared/interfaces/query';
 import { ModalService, ModalListElement, Position} from '../../shared/modals';
 import { Router } from '@angular/router';
@@ -9,13 +9,13 @@ import { LearningObjectService } from '../learning-object.service';
 import { ActivatedRoute } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { lengths } from '@cyber4all/clark-taxonomy';
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 import {
   SuggestionService
  } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
  import { FilterSection } from '../../shared/filter/filter.component';
+ import { COPY } from './browse.copy';
 
 
 @Component({
@@ -25,6 +25,7 @@ import {
   providers: [ SuggestionService ]
 })
 export class BrowseComponent implements OnInit, OnDestroy {
+  copy = COPY;
   learningObjects: LearningObject[] = Array(20).fill(new LearningObject);
 
   query: Query = {

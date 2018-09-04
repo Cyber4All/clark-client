@@ -1,21 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie';
 import { User } from '@cyber4all/clark-entity';
-import { Subject } from 'rxjs/Subject';
-import { NavigationEnd, RouterEvent } from '@angular/router';
-import { Http, Headers, ResponseContentType } from '@angular/http';
-import { map } from 'rxjs/operator/map';
-// import * as io from 'socket.io';
+import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
   user: User = undefined;
-  // isLoggedIn = new Subject<boolean>();
   headers = new Headers();
   httpHeaders = new HttpHeaders();
   inUse: object;
