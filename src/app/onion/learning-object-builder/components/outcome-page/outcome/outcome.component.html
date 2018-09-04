@@ -18,6 +18,7 @@
     <!-- TODO: .outcome_bloom convert to component due to SRP/CCP -->
     <onion-blooms-selector [default]="outcome._bloom" (bloom)="registerBloomsLevel($event)"></onion-blooms-selector>
     <div class="outcome_input">
+      <a href="http://about.clark.center/tutorial/#Outcomes" target="blank" style="display: inline-flex; align-self: center;"><i class="fas fa-question-circle"></i></a>
       <div class="vert-center">Students will be able to </div>
       <div class="select-wrapper">
         <select style="display: inline" [(ngModel)]="outcome._verb">
