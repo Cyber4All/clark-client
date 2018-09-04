@@ -63,7 +63,9 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
   },
-  POST_FILE_TO_LEARNING_OBJECT: `${environment.contentManagerURL}/files`,
+  POST_FILE_TO_LEARNING_OBJECT(id: string) {
+    return `${environment.contentManagerURL}/learning-objects/${id}/files`;
+  },
   DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, filename) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
@@ -108,7 +110,9 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/validate-captcha`;
   },
   SET_CHILDREN(username, learningObjectName) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(username)}/${encodeURIComponent(learningObjectName)}/children`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      username
+    )}/${encodeURIComponent(learningObjectName)}/children`;
   }
 };
 
@@ -138,24 +142,57 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 };
 
 export const RATING_ROUTES = {
-  DELETE_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  DELETE_RATING(
+    learningObjectAuthor: string,
+    learningObjectName: string,
+    ratingId: string
+  ) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectAuthor
+    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
+      ratingId
+    )}`;
   },
-  EDIT_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}`;
+  EDIT_RATING(
+    learningObjectAuthor: string,
+    learningObjectName: string,
+    ratingId: string
+  ) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectAuthor
+    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
+      ratingId
+    )}`;
   },
   CREATE_RATING(learningObjectAuthor: string, learningObjectName: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectAuthor
+    )}/${encodeURIComponent(learningObjectName)}/ratings`;
   },
-  GET_LEARNING_OBJECT_RATINGS(learningObjectAuthor: string, learningObjectName: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings`;
+  GET_LEARNING_OBJECT_RATINGS(
+    learningObjectAuthor: string,
+    learningObjectName: string
+  ) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectAuthor
+    )}/${encodeURIComponent(learningObjectName)}/ratings`;
   },
-  FLAG_LEARNING_OBJECT_RATING(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectAuthor)}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(ratingId)}/flags`;
+  FLAG_LEARNING_OBJECT_RATING(
+    learningObjectAuthor: string,
+    learningObjectName: string,
+    ratingId: string
+  ) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectAuthor
+    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
+      ratingId
+    )}/flags`;
   },
   GET_USER_RATINGS(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/ratings`;
-  },
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/ratings`;
+  }
 };
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
