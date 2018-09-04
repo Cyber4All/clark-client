@@ -1,20 +1,16 @@
 <div class="file-upload-status">
-    <div class="file folder" *ngFor="let f of filterFolders()">
-      <div class="name">
-        <span *ngIf="f.extension">
-          <i class="fas {{ getIcon(f.extension) }}"></i>
-        </span>
-        <span *ngIf="!f.extension">
-          <i class="fas fa-folder"></i>
-        </span>
-        {{ f.name }} ({{f.items}} {{ f.items === 1 ? 'item' : 'items'}})
+    <virtual-scroll [items]="filterFiles().concat(filterFolders())" (update)="viewportItems = $event">
+      <div class="file folder" *ngFor="let f of viewportItems">
+        <div class="name">
+          <span *ngIf="!f.items">
+            <i class="fas {{ getIcon(f.extension) }}"></i>
+          </span>
+          <span *ngIf="f.items >= 0">
+            <i class="fas fa-folder"></i>
+          </span>
+          {{ f.name }} ({{f.items}} {{ f.items === 1 ? 'item' : 'items'}})
+        </div>
+        <clark-progress [percentage]="f.progress || 0"></clark-progress>
       </div>
-      <clark-progress [percentage]="f.progress || 0"></clark-progress>
-    </div>
-  <div class="file" *ngFor="let f of filterFiles()">
-    <div class="name">
-       {{ f.name }}
-    </div>
-    <clark-progress [percentage]="f.progress || 0"></clark-progress>
-  </div>
+    </virtual-scroll>
 </div>

@@ -297,7 +297,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const file = event[0];
       const index = this.inProgressUploadsMap.get(file.upload.uuid);
-      this.inProgressUploads[index].progress = (event[2] / file.size) * 100;
+      this.inProgressUploads[index].progress = Math.max((event[2] / file.size) * 100, 100);
     } catch (error) {
       console.log(error);
     }

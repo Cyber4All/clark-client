@@ -45,7 +45,7 @@ export class FileUploadStatusComponent implements OnInit {
       let folder = folders[index];
       if (folder) {
         folder.items++;
-        folder.progress += (file.progress ? file.progress : 0) / folder.items;
+        folder.progress = (folder.progress + (file.progress ? file.progress : 0)) / 2;
         folders[index] = folder;
       } else {
         folder = {
@@ -55,10 +55,6 @@ export class FileUploadStatusComponent implements OnInit {
         };
         folders.push(folder);
         folderMap.set(file.rootFolder, folders.length - 1);
-      }
-
-      if (folders.length >= 10) {
-        return folders;
       }
     }
     return folders;
