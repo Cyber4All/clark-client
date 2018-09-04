@@ -38,7 +38,9 @@ export class FileUploadStatusComponent implements OnInit {
   filterFolders() {
     const folders: { items: number; progress: number; name: string }[] = [];
     const folderMap = new Map<string, number>();
-    for (const file of this.files.filter(f => f.rootFolder)) {
+    const files = this.files.filter(f => f.rootFolder);
+
+    for (const file of files) {
       const index = folderMap.get(file.rootFolder);
       let folder = folders[index];
       if (folder) {
@@ -53,6 +55,10 @@ export class FileUploadStatusComponent implements OnInit {
         };
         folders.push(folder);
         folderMap.set(file.rootFolder, folders.length - 1);
+      }
+
+      if (folders.length >= 10) {
+        return folders;
       }
     }
     return folders;

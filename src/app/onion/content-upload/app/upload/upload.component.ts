@@ -84,6 +84,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   saving = false;
   retrieving = false;
 
+  // @ts-ignore The ngx-dropzone doesn't believe generatePreview is a valid config option
   config: DropzoneConfigInterface = {
     ...environment.DROPZONE_CONFIG,
     renameFile: this.renameFile
@@ -106,7 +107,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   confirmDeletion$ = new Subject<boolean>();
   triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
-  fileAdded$ = new Subject<void>();
 
   openPath: string;
 
@@ -275,13 +275,15 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async addFile(file: DZFile) {
-    await file;
-    this.inProgressUploads.push(file);
-    this.inProgressUploadsMap.set(
-      file.upload.uuid,
-      this.inProgressUploads.length - 1
-    );
-    this.fileAdded$.next();
+    try {
+      this.inProgressUploads.push(file);
+      this.inProgressUploadsMap.set(
+        file.upload.uuid,
+        this.inProgressUploads.length - 1
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   fileSending(event) {
@@ -292,14 +294,18 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   uploadProgress(event) {
-    const file = event[0];
-    const index = this.inProgressUploadsMap.get(file.upload.uuid);
-    this.inProgressUploads[index].progress = (event[2] / file.size) * 100;
+    try {
+      const file = event[0];
+      const index = this.inProgressUploadsMap.get(file.upload.uuid);
+      this.inProgressUploads[index].progress = (event[2] / file.size) * 100;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   dzComplete(event) {
     try {
-      const progressCheck = this.inProgressUploads.filter((x) => x.progress < 100);
+      const progressCheck = this.inProgressUploads.filter((x) => x.progress < 100 || typeof x.progress === 'undefined');
       if (!progressCheck.length) {
         this.inProgressUploads = [];
         this.inProgressUploadsMap = new Map();
