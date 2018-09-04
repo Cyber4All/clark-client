@@ -307,10 +307,15 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (file.rootFolder) {
         // this is a folder update
+        // locate the folder in the array
         index = this.inProgressUploadsMap.get(file.rootFolder);
-        const currentProgress = this.inProgressFolderUploads[index].progress;
-        this.inProgressFolderUploads[index].progress = Math.ceil((currentProgress + (newProgress ? newProgress : 0)) / 2);
-        console.log(currentProgress, newProgress, this.inProgressFolderUploads[index].progress);
+        const folder = this.inProgressFolderUploads[index];
+
+        // set this files progress
+        folder.allProgress.set(file.fullPath, newProgress);
+
+        // calculate the folders overall progress
+        folder.progress = Math.ceil(Array.from(folder.allProgress.values() as number[]).reduce((x, y) => x + y) / folder.items);
       } else {
         // this is a file update
         index = this.inProgressUploadsMap.get(file.upload.uuid);
@@ -324,7 +329,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dzComplete(event) {
     try {
-      const progressCheck = 
+      const progressCheck =
         this.inProgressFileUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
         .concat(
           this.inProgressFolderUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
@@ -386,14 +391,18 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (folder) {
           folder.items++;
+          folder.allProgress.set(file.fullPath, 0);
           this.inProgressFolderUploads[index] = folder;
         } else {
           folder = {
             items: 1,
             progress: 0,
             name: file.rootFolder,
-            folder: true
+            folder: true,
+            allProgress: new Map()
           };
+
+          folder.allProgress.set(file.fullPath, 0);
 
           this.inProgressFolderUploads.push(folder);
           this.inProgressUploadsMap.set(rootFolder, this.inProgressFolderUploads.length - 1);
