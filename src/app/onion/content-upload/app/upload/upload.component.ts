@@ -14,7 +14,7 @@ import { FileStorageService } from '../services/file-storage.service';
 import {
   DropzoneDirective,
   DropzoneConfigInterface
-} from 'ngx-dropzone-wrapper';
+} from '@cyber4all/ngx-dropzone-wrapper';
 import { ToasterService } from '../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
