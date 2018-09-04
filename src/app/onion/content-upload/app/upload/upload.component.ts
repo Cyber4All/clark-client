@@ -302,8 +302,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   uploadProgress(event) {
     try {
       const file = event[0];
-      const newProgress = (event[2] / file.size) * 100;
-      console.log('progress of ' + file.name, newProgress, '\n');
+      const newProgress = Math.min(100, (event[2] / file.size) * 100);
       let index;
 
       if (file.rootFolder) {
@@ -311,7 +310,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         index = this.inProgressUploadsMap.get(file.rootFolder);
         const currentProgress = this.inProgressFolderUploads[index].progress;
         this.inProgressFolderUploads[index].progress = Math.ceil((currentProgress + (newProgress ? newProgress : 0)) / 2);
-        console.log('calculated folder progress', this.inProgressFolderUploads[index].progress);
+        console.log(currentProgress, newProgress, this.inProgressFolderUploads[index].progress);
       } else {
         // this is a file update
         index = this.inProgressUploadsMap.get(file.upload.uuid);
@@ -326,9 +325,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   dzComplete(event) {
     try {
       const progressCheck = 
-        this.inProgressFileUploads.filter(x => x.progress < 100)
+        this.inProgressFileUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
         .concat(
-          this.inProgressFolderUploads.filter(x => x.progress < 100)
+          this.inProgressFolderUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
         );
 
       if (!progressCheck.length) {
@@ -399,7 +398,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           this.inProgressFolderUploads.push(folder);
           this.inProgressUploadsMap.set(rootFolder, this.inProgressFolderUploads.length - 1);
         }
-        console.log(this.inProgressFolderUploads);
       } else {
         path = file.name;
       }
