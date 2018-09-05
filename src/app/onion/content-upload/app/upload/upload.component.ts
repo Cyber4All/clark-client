@@ -114,7 +114,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
-  disabled = true;
+  disabled = false;
 
   constructor(
     private router: Router,
@@ -129,7 +129,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.checkWhitelist();
+    if (this.disabled) {
+      this.checkWhitelist();
+    }
     this.learningObjectName = this.route.snapshot.params.learningObjectName;
     this.learningObjectName
       ? this.fetchLearningObject()
