@@ -103,6 +103,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
 
     try {
+      // when the user downloads an object it tries to add it to their library
       if (!this.userIsAuthor) {
         await this.cartService.addToCart(this.learningObject.author.username, this.learningObject.name);
 
