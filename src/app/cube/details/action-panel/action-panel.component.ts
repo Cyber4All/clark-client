@@ -49,6 +49,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   contributorsList = [];
   iframeParent = iframeParentID;
   error = false;
+  userIsAuthor = false;
 
   public tips = TOOLTIP_TEXT;
 
@@ -80,12 +81,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
+    const userName= this.auth.username;
+    this.userIsAuthor = (this.learningObject.author.username === userName);
   }
 
   async addToCart(download?: boolean) {
-    const userName = await this.auth.name;
     this.error = false;
-    const userIsAuthor = (this.learningObject.author.name === userName);
 
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
@@ -102,7 +103,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
 
     try {
-      if (!userIsAuthor) {
+      if (!this.userIsAuthor) {
         await this.cartService.addToCart(this.learningObject.author.username, this.learningObject.name);
 
         this.saved = this.cartService.has(this.learningObject);

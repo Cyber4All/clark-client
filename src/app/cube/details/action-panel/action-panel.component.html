@@ -13,7 +13,7 @@
       </span>
       <span *ngIf="!canDownload">Not available for download</span>
     </div>
-    <div [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" id="save-to-library" (click)="addToCart()">
+    <div *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" id="save-to-library" (click)="addToCart()">
       {{ saved ? 'Saved to your library!' : 'Save to Library' }}
       <span *ngIf="addingToLibrary">
         <i class="fal fa-spinner-third fa-spin"></i>
