@@ -16,6 +16,9 @@ export class FileUploadStatusComponent implements OnInit {
   @Input()
   folders: { name: string, items: string, progress: number, folder: true }[];
 
+  // this variable is recreated by virtual scroll plugin but this is needed to avoid build error
+  viewportItems: any[];
+
   getIcon = (extension: string) => getIcon(extension);
 
   constructor() {}
@@ -30,6 +33,14 @@ export class FileUploadStatusComponent implements OnInit {
    */
   filterFiles() {
     return this.files.filter(file => !file.rootFolder);
+  }
+
+  /**
+   * Concat files and foldesr array
+   */
+  makeArray() {
+    // these types are in fact compatable
+    return this.files.concat(this.folders as any);
   }
 
   /**

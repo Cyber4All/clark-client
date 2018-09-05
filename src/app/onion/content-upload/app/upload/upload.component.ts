@@ -101,7 +101,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   inProgressFileUploads = [];
   inProgressFolderUploads = [];
-  inProgressUploadsMap: Map<string, number>;
+  inProgressUploadsMap: Map<string, number> = new Map<string, number>();
   tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject;
@@ -126,7 +126,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.inProgressUploadsMap = new Map<string, number>();
   }
 
   ngOnInit() {
