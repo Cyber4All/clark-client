@@ -14,7 +14,7 @@ import { FileStorageService } from '../services/file-storage.service';
 import {
   DropzoneDirective,
   DropzoneConfigInterface
-} from 'ngx-dropzone-wrapper';
+} from '@cyber4all/ngx-dropzone-wrapper';
 import { ToasterService } from '../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -84,9 +84,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   saving = false;
   retrieving = false;
 
+  // @ts-ignore The ngx-dropzone doesn't believe generatePreview is a valid config option
   config: DropzoneConfigInterface = {
     ...environment.DROPZONE_CONFIG,
-    renameFile: this.renameFile
+    renameFile: (file: any) => {
+      return this.renameFile(file);
+    }
   };
 
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
@@ -95,8 +98,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   folderMeta$: BehaviorSubject<FolderDescription[]> = new BehaviorSubject<
     FolderDescription[]
   >([]);
-  inProgressUploads = [];
-  inProgressUploadsMap = new Map<string, number>();
+
+  inProgressFileUploads = [];
+  inProgressFolderUploads = [];
+  inProgressUploadsMap: Map<string, number> = new Map<string, number>();
   tips = TOOLTIP_TEXT;
 
   learningObject: LearningObject;
@@ -106,7 +111,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   confirmDeletion$ = new Subject<boolean>();
   triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
-  fileAdded$ = new Subject<void>();
 
   openPath: string;
 
@@ -121,7 +125,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.checkWhitelist();
@@ -275,13 +280,15 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async addFile(file: DZFile) {
-    await file;
-    this.inProgressUploads.push(file);
-    this.inProgressUploadsMap.set(
-      file.upload.uuid,
-      this.inProgressUploads.length - 1
-    );
-    this.fileAdded$.next();
+    try {
+      if (!file.rootFolder) {
+        // this is a file addition
+        this.inProgressFileUploads.push(file);
+        this.inProgressUploadsMap.set(file.upload.uuid, this.inProgressFileUploads.length - 1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   fileSending(event) {
@@ -292,16 +299,44 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   uploadProgress(event) {
-    const file = event[0];
-    const index = this.inProgressUploadsMap.get(file.upload.uuid);
-    this.inProgressUploads[index].progress = (event[2] / file.size) * 100;
+    try {
+      const file = event[0];
+      const newProgress = Math.min(100, (event[2] / file.size) * 100);
+      let index;
+
+      if (file.rootFolder) {
+        // this is a folder update
+        // locate the folder in the array
+        index = this.inProgressUploadsMap.get(file.rootFolder);
+        const folder = this.inProgressFolderUploads[index];
+
+        // set this files progress
+        folder.allProgress.set(file.fullPath, newProgress);
+
+        // calculate the folders overall progress
+        folder.progress = Math.ceil(Array.from(folder.allProgress.values() as number[]).reduce((x, y) => x + y) / folder.items);
+      } else {
+        // this is a file update
+        index = this.inProgressUploadsMap.get(file.upload.uuid);
+        this.inProgressFileUploads[index].progress = Math.ceil(newProgress);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   dzComplete(event) {
     try {
-      const progressCheck = this.inProgressUploads.filter((x) => x.progress < 100);
+      const progressCheck =
+        this.inProgressFileUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
+        .concat(
+          this.inProgressFolderUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
+        );
+
       if (!progressCheck.length) {
-        this.inProgressUploads = [];
+        this.inProgressFileUploads = [];
+        this.inProgressFolderUploads = [];
         this.inProgressUploadsMap = new Map();
       }
     } catch (e) {
@@ -337,22 +372,48 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private renameFile(file: any): string {
-    let path: string;
-    if (file.fullPath || file.webkitRelativePath) {
-      path = file.fullPath ? file.fullPath : file.webkitRelativePath;
-    }
-    if (this.openPath) {
-      path = `${this.openPath}/${path ? path : file.name}`;
-    }
-    if (path) {
-      file.fullPath = path;
-      const rootFolder = getPaths(path)[0];
-      file.rootFolder = rootFolder;
-    } else {
-      path = file.name;
-    }
+    try {
+      let path: string;
+      if (file.fullPath || file.webkitRelativePath) {
+        path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+      }
+      if (this.openPath) {
+        path = `${this.openPath}/${path ? path : file.name}`;
+      }
+      if (path) {
+        file.fullPath = path;
+        const rootFolder = getPaths(path)[0];
+        file.rootFolder = rootFolder;
 
-    return path.trim();
+        const index = this.inProgressUploadsMap.get(rootFolder);
+        let folder = this.inProgressFolderUploads[index];
+
+        if (folder) {
+          folder.items++;
+          folder.allProgress.set(file.fullPath, 0);
+          this.inProgressFolderUploads[index] = folder;
+        } else {
+          folder = {
+            items: 1,
+            progress: 0,
+            name: file.rootFolder,
+            folder: true,
+            allProgress: new Map()
+          };
+
+          folder.allProgress.set(file.fullPath, 0);
+
+          this.inProgressFolderUploads.push(folder);
+          this.inProgressUploadsMap.set(rootFolder, this.inProgressFolderUploads.length - 1);
+        }
+      } else {
+        path = file.name;
+      }
+
+      return path.trim();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
