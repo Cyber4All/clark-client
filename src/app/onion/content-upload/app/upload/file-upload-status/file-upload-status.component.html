@@ -1,5 +1,5 @@
 <div class="file-upload-status">
-    <virtual-scroll [items]="makeArray()" [style.height]="folders.concat(files).length > 5 ? 5 * 33 + 'px' : folders.concat(files).length * 33 + 'px'" (update)="viewportItems = $event">
+    <virtual-scroll [items]="makeArray()" [style.height]="makeArray().length > 5 ? 5 * 33 + 'px' : makeArray().length * 33 + 'px'" (update)="viewportItems = $event">
       <div class="file" *ngFor="let f of viewportItems">
         <div class="name">
           <span *ngIf="!f?.folder">
