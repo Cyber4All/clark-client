@@ -1,63 +1,80 @@
-<div class="content-upload-component">
-  <div class="container">
-    <div class="inner-wrapper padded-bottom">
-      <div class="header">
-        <div class="back" routerLink="/onion/dashboard">
-          <div>
-            <i class="far fa-arrow-to-left"></i>Back to Dashboard</div>
-        </div>
-        <div class="title">
-          Manage Materials
-          <a href="http://about.clark.center/tutorial/#Materials" target="blank"><i class="fas fa-question-circle"></i></a>
-        </div>
-        <div class="back right" [routerLink]="['/onion/learning-object-builder', learningObject.name ]">
-          <div>
-            Back to Learning Object
-            <i class="far fa-arrow-to-right"></i>
-          </div>
-        </div>
-      </div>
-
-      <onion-file-manager [dropzone] (addedFile)="addFile($event)" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()"
-        (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event">
-      </onion-file-manager>
+<div class="back-button" routerLink="/onion/dashboard">
+  <i class="far fa-chevron-left"></i>Back to Dashboard
+</div>
+<div *ngIf="disabled" class="disabled">
+  <div class="disabled-inner">
+    <div class="image">
+      😢
     </div>
-    <div class="inner-wrapper">
-      <div class="section">
-        <div class="title">Urls</div>
-      </div>
-      <div [ngClass]="{'empty-section': learningObject.materials.urls.length == 0}">
-        <div class="text" *ngIf="learningObject.materials.urls.length == 0">You don't have any URLs yet!</div>
-        <div class="section url-wrapper" *ngFor="let url of learningObject.materials.urls; let i = index;">
-          <div class="link input-wrapper">
-            <input placeholder="Title" type="text" [(ngModel)]="learningObject.materials.urls[i].title" name="url.title.{{ i }}">
-            <input placeholder="https://example.com" type="text" [(ngModel)]="learningObject.materials.urls[i].url" name="url.url.{{ i }}">
-          </div>
-          <div class="button bad icon-only" (click)="removeURL(i)">
-            <i class="far fa-times"></i>
-          </div>
-        </div>
-        <div class="btn-group to-right">
-          <div (click)="addURL()" class="button good">Add URL
-            <i class="far fa-plus"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="inner-wrapper notes">
-      <div class="section">
-        <div class="title">Notes</div>
-      </div>
-      <div class="notes">
-        <textarea rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
-      </div>
-    </div>
-    <div class="btn-group to-right final">
-      <button *ngIf="!queuedUploads$.getValue().length" type="button" (click)="save()" class="button good" [disabled]="submitting">Save
-        <i class="fas fa-check"></i>
-      </button>
+    Unfortunately, uploading materials to CLARK is disabled through the labor day weekend. We are working tirelessly to restore this service and apologize for any inconvenience this causes.
+    <div class="btn-group center">
+      <a routerLink="/onion/dashboard"><button class="button good">Return to Dashboard</button></a>
     </div>
   </div>
-  <upload-queue *ngIf="queuedUploads$.getValue().length" class="upload-queue" [queuedUploads$]="queuedUploads$" [uploading$]="uploading$"
-    (upload)="save(true)"></upload-queue>
 </div>
+<div class="manage-materials">
+  <div class="title">
+    {{ learningObjectName }}
+    <a href="http://about.clark.center/tutorial/#Materials" target="blank"><i class="fas fa-question-circle"></i></a>
+  </div>
+  <div class="tabs">
+    <ul id="materials-title">
+      <li [ngClass]="{'active': slide === 1}" (click)="changeSlide(1)">Materials</li>
+      <li [ngClass]="{'active': slide === 2}" (click)="changeSlide(2)">URLs</li>
+      <li [ngClass]="{'active': slide === 3}" (click)="changeSlide(3)">Notes</li>
+    </ul>
+    <div class="server-status" [ngClass]="{'saving': saving}">
+      <ng-container *ngIf="!saving; else savingTemplate">
+        <span>
+          Saved <i class="far fa-check"></i>
+        </span>
+      </ng-container>
+      <ng-template #savingTemplate>
+        <span>
+          Saving <i class="far fa-spinner-third fa-spin"></i>
+        </span>
+      </ng-template>
+    </div>
+  </div>
+  <div class="materials-slides">
+    <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
+      <!-- This element has a dropzone tag as a backup in case the browser doesn't support the dragover event or something goes wrong -->
+      <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [confirmDeletion]="confirmDeletion$" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event"></onion-file-manager>
+    </div>
+    <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
+      <clark-url-manager [urls]="learningObject.materials.urls" (add)="addURL()" (remove)="removeURL($event)" (save)="saveLearningObject()"></clark-url-manager>
+    </div>
+    <div [@fadeIn] *ngIf="slide === 3" class="slide slide3">
+      <div class="topbar">
+        <div class="slide-title">Notes</div>
+      </div>
+      <div class="notes">
+        <textarea aria-label="Learning Object notes" rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes"
+          placeholder="Add any notes on copyright, grant acknowledgments, etc." (input)="triggerSave$.next()"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="inProgressFileUploads?.length || inProgressFolderUploads?.length" [@uploadQueue] class="upload-queue">
+  <div class="title">Uploading files...</div>
+  <onion-file-upload-status [files]="inProgressFileUploads" [folders]="inProgressFolderUploads"></onion-file-upload-status>
+</div>
+<div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()" (addedFile)="addFile($event)"
+  (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)" (complete)="dzComplete($event)"
+  (queueComplete)="queueComplete($event)" (error)="handleError($event)" (canceled)="handleCanceled($event)">
+  <div class="uploader-content">
+    <div class="uploader-icon">
+      <i class='far fa-arrow-up'></i>
+    </div>
+    <div class="uploader-text">
+      <div>Drop files and folders here</div>
+      to add them to {{ (!openPath) ? 'your learning object' : '\'' + openPath + '\''}}!
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <div [@fadeIn] class="loading">
+    <i class="far fa-spinner-third fa-spin"></i>
+  </div>
+</ng-template>

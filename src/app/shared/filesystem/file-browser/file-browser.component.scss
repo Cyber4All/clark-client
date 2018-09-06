@@ -1,19 +1,23 @@
 @import '~_vars.scss';
+
 .top-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 15px 0 5px;
 }
 
-.view-switcher {
-  .button {
-    text-align: center;
-    margin: 0 5px;
-  }
-  .button.icon {
-    margin: 0;
-  }
+.button {
+  text-align: center;
+  margin: 0 5px;
+  background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+  color: white;
+  box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  font-weight: normal;
+  border: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .icon-clean {
@@ -25,11 +29,8 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background: #f9f9f9;
   border-radius: 4px;
-  padding: 10px;
-  min-height: 200px;
-  cursor: pointer;
+  padding: 10px 0;
   max-height: 500px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -42,14 +43,21 @@
 }
 
 .file-breadcrumb {
+
   .link {
     font-size: 20px;
     font-weight: 700;
-    margin: 5px;
-    padding: 0 7px;
+    margin: 5px 0;
+    padding: 0;
     border-radius: 4px;
   }
-  & :hover {
+
+  &:not(:first-child) > * {
+    margin: 5px;
+    padding: 0 7px;
+  }
+
+  &:hover {
     cursor: pointer;
     background: #e9e9e9;
   }
@@ -64,13 +72,16 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+
   .description-input {
     margin-bottom: 10px;
   }
+
   input {
     width: 100%;
     padding: 0 10px;
   }
+
   .buttons {
     display: grid;
     align-items: center;
@@ -91,13 +102,6 @@
   padding: 1px 15px;
 }
 
-.button.new {
-  background: $blue-accent;
-  color: #fff;
-  padding: 8px 30px;
-  font-weight: 600;
-}
-
 .inline-flex {
   display: flex;
   flex-direction: row;
@@ -115,6 +119,7 @@
 }
 
 .context-item {
+
   .option {
     font-size: 18px;
   }
@@ -133,7 +138,24 @@ div.dropzone-message {
   margin: auto;
   align-self: center;
   font-weight: 200;
-  font-size: 26px;
-  color: #a5a3a3;
-  pointer-events: none;
+  font-size: 20px;
+  // color: desaturate(lighten($bright-blue, 15), 30);
+  color: lighten($dark-text, 20);
+
+  & > .svg-inline--fa {
+    font-size: 60px;
+    // color: $bright-blue;
+    margin-bottom: 10px;
+    color: inherit;
+  }
+
+  .empty-title {
+    font-size: 30px;
+    margin-bottom: 15px;
+    // font-weight: normal;
+  }
+
+  .button {
+    margin-bottom: 15px;
+  }
 }

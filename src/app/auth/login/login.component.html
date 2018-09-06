@@ -3,7 +3,7 @@
     <div class="top">
       <div class="error" > {{ loginFailure || '' }} </div>
       <div class="title_wrapper" routerLink="/home">
-        <div class="auth-title">C.L.A.R.K.</div>
+        <div class="auth-title">CLARK</div>
         <div class="auth-title light">Cybersecurity Labs and Resource Knowledge-base</div>
       </div>
       <form (ngSubmit)="submit()">
@@ -16,7 +16,7 @@
           <i class="far fa-key"></i>
         </div>
         <div class="forgot" routerLink="../forgot-password">Forgot password?</div>
-        <button type="type" class="auth-button">
+        <button type="type" id="auth-button" class="auth-button">
           <div class="mask"></div>
           <div class="text" *ngIf = "!loading">Login</div>
           <span *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i>
@@ -26,7 +26,7 @@
     </div>
     <div class="bottom-link" routerLink="../register">
       Don't have an account yet?
-      <span>Register!</span>
+      <span id="bottom-login-link">Register!</span>
     </div>
   </div>
 </div>

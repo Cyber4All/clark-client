@@ -6,13 +6,13 @@
     <div class="inner flex h left-right">
       <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
         <div class="logo-image"></div>
-        <div class="logo-link">C.L.A.R.K.</div>
+        <div id="clark-logo" class="logo-link">CLARK</div>
         <div *ngIf="version" class="version-label">{{version}}</div>
       </div>
       <div class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
         <div class="clark-search-inner">
           <clark-search [focus]="searchFocusSubject" [blur]="searchBlurSubject" (didFocus)="showSearch();" (didBlur)="hideSearch()"></clark-search>
-          <div class="close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
+          <div class="close" id="search-close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
         </div>
       </div>
       <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
@@ -21,16 +21,16 @@
 
       <ng-template #userTemplate>
         <ng-container *ngIf="loggedin">
-          <div class="contributor" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
-          <div class="right library" routerLink="/library"></div>
+          <div class="contributor" id="contributor-link" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
+          <div class="right library" id="library-link" routerLink="/library"></div>
           <div class="left flex h flex-end user-menu" (click)="userDropdown($event)">
-            <div class="navbar-gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
+            <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
             <i class="fas fa-chevron-down"></i>
           </div>
         </ng-container>
         <ng-container *ngIf="!loggedin">
-          <div class="login flex h flex-end" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
-          <div class="register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
+          <div class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
+          <div class="register" id="clark-register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
         </ng-container>
       </ng-template>
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { COPY } from './description.copy';
 
 @Component({
   selector: 'onion-learning-object-description',
@@ -7,8 +8,8 @@ import { EventEmitter } from '@angular/core';
   `
   <div class="description-wrapper">
       <div class="input-group">
-        <div class="label">How would you describe this learning object?
-        <span tip="The description is a high level overview of the Learning Object that can be returned in search results">
+        <div id="description-label" class="label">{{ copy.QUESTION }}
+        <span tip="{{ copy.TIP }}">
           <a href="http://about.clark.center/tutorial/#Descriptions" target="blank"><i class="fas fa-question-circle"></i></a>
         </span>
         </div>
@@ -34,6 +35,7 @@ import { EventEmitter } from '@angular/core';
   ]
 })
 export class LearningObjectDescriptionComponent implements OnInit {
+  copy = COPY;
   @Input() learningObject;
   @Output() textOutput = new EventEmitter();
 

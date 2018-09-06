@@ -1,0 +1,16 @@
+<div class="file-upload-status">
+    <virtual-scroll [items]="makeArray()" [style.height]="makeArray().length > 5 ? 5 * 33 + 'px' : makeArray().length * 33 + 'px'" (update)="viewportItems = $event">
+      <div class="file" *ngFor="let f of viewportItems">
+        <div class="name">
+          <span *ngIf="!f?.folder">
+            <i class="fas {{ getIcon(f.extension) }}"></i>
+          </span>
+          <span *ngIf="f?.folder">
+            <i class="fas fa-folder"></i>
+          </span>
+          {{ f.name }} <span *ngIf="f?.folder">({{f.items}} {{ f.items === 1 ? 'item' : 'items'}})</span>
+        </div>
+        <clark-progress [percentage]="f.progress || 0"></clark-progress>
+      </div>
+    </virtual-scroll>
+</div>

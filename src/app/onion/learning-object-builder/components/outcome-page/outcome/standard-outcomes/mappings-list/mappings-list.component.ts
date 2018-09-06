@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SuggestionService } from '../suggestion/services/suggestion.service';
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
+import { COPY } from './mappings-list.copy';
 
 /**
  * Displays a list of outcomes that the user has mapped to their outcome.
@@ -15,7 +16,7 @@ import { OutcomeSuggestion } from '@cyber4all/clark-entity';
   styleUrls: ['mappings-list.component.scss']
 })
 export class MappingsListComponent implements OnInit {
-
+  copy = COPY;
   @Input() mappings: Array<OutcomeSuggestion> = [];
 
   constructor(public service: SuggestionService) { }

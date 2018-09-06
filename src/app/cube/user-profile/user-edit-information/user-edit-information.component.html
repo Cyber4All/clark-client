@@ -1,4 +1,4 @@
-<div class="title">Edit Profile</div>
+<div id="edit-profile-title" class="title">{{ copy.TITLE }}</div>
 <form>
     <div class="h-group">
         <div class="input firstname" [ngClass]="{'active': editInfo.firstname !== ''}">
@@ -24,26 +24,11 @@
         </li>
       </ul>
     </div>
-    <div class="gravatar-header">C.L.A.R.K. uses Gravatar</div>
-    <div class="gravatar-text">Don't have an account?<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
+    <div class="gravatar-header">{{ copy.GRAVATARTITLE }}</div>
+    <div class="gravatar-text">{{ copy.GRAVATARC2A }}<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
     <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
       <input name="email" type="text" placeholder="Email address" [(ngModel)]="editInfo.email" />
       <i class="far fa-at"></i>
-    </div>
-    <p>Change Password</p>
-    <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input #originalPasswordInput name="password" type="password" placeholder="Enter Password" [(ngModel)]="userInfo.password" />
-      <i class="fas fa-key"></i>
-    </div>
-    <div [hidden]='!this.isPasswordMatch' id='new-password'>
-      <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-        <input name="new password" type="password" placeholder="Enter New Password" [(ngModel)]="newPassword" />
-        <i class="fas fa-key"></i>
-      </div>
-      <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-        <input #confirmNewPasswordInput name="confirm password" type="password" placeholder="Confirm New Password" [(ngModel)]="confirmPassword" />
-        <i class="fas fa-key"></i>
-      </div>
     </div>
     <p>Add a bio</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
@@ -52,9 +37,9 @@
       </textarea>
       <span id="bio-icon"><i class="fas fa-user-alt"></i></span>
     </div>
-    <p id="character-counter">Characters Remaining: {{ counter }}</p>
+    <p id="character-counter">{{ copy.CHARACTERS }} {{ counter }}</p>
     <div class="btn-group to-right">
-        <div class="button good" (click)="save()">Save Changes <i class="far fa-save"></i></div>
-        <div class="button bad" (click)="close.emit(false)">Discard Changes <i class="far fa-times"></i></div>
+        <div id="save-changes" class="button good" (click)="save()">{{ copy.SAVE }} <i class="far fa-save"></i></div>
+        <div id="discard-changes" class="button bad" (click)="close.emit(false)">{{ copy.DISCARD }} <i class="far fa-times"></i></div>
     </div>
 </form>
