@@ -344,17 +344,11 @@ export class DashboardComponent implements OnInit {
     if (!learningObject.published && this.auth.user.emailVerified) {
       list.push(
         new ModalListElement(
-          '<i class="far fa-eye"></i>Publish',
+          '<i class="far fa-eye"></i>Submit for Review',
           'toggle published'
         )
       );
     } else if (this.auth.user.emailVerified) {
-      list.push(
-        new ModalListElement(
-          '<i class="far fa-eye-slash"></i>Unpublish',
-          'toggle published'
-        )
-      );
       list.push(
         new ModalListElement(
           '<i class="far fa-cube"></i>View in CUBE',
