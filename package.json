@@ -1,7 +1,7 @@
 {
-  "name": "cube",
-  "displayName": "CyberCuBE: Curriculum Bank Enumeration",
-  "version": "1.6.3",
+  "name": "clark",
+  "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
+  "version": "1.6.5",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
