@@ -21,16 +21,17 @@
       </div>
     </div>
     <div class="right">
+    <!--
       <div *ngIf="!isNew" class="published-toggle">
         <div class='toggle-label' id="toggle-label" [ngClass]="{'published': learningObject.published}">
-          {{ (this.learningObject.published) ? 'published' : 'unpublished' }}
+          {{ (this.learningObject.published) ? 'submitted' : 'submit for review' }}
         </div>
-        <div class="toggleSwitch" id="toggle-switch" (click)="togglePublished($event)" [ngClass]="{'on': learningObject.published, 'disabled': !auth.user.emailVerified}"
+        <div class="toggleSwitch" id="toggle-switch" (click)="togglePublished($event)" [ngClass]="{'on': learningObject.published, 'disabled': !auth.user.emailVerified || learningObject.published}"
           tip='{{ tips.UNVERIFIED_PUBLISH }}' tipLocation='above' tipDisabled="{{ auth.user.emailVerified }}">
           <div class="handle"></div>
           <div class="bg"></div>
         </div>
-      </div>
+      </div> -->
       <div class="btn-group to-right">
         <button class="button good save-button" id="save-learning-object" (click)="validate() && save(false)">Save Learning Object
           <i class="far fa-check"></i>
