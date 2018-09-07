@@ -87,17 +87,25 @@ export class LearningObjectBuilderComponent implements OnInit {
           'learningObjectName'
         ];
       }
+      // fetch this learning object from route reolver (returns LO or returns undefined)
       this.learningObject = this.route.snapshot.data['learningObject'];
+      if (!this.learningObject) {
+        console.log ('test');
+        this.router.navigate(['/onion/dashboard'])
+      }
+        
     } else {
       this.isNew = true;
     }
+    
   }
 
   /**
    * Saves Learning Object
    * If new creates LearningObject else updates existing LearningObject
    * If will upload navigates to content upload else navigates back to dashboard
-   *
+   *'
+
    * @param {boolean} willUpload
    * @memberof LearningObjectBuilderComponent
    */
