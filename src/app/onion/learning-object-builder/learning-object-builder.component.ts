@@ -103,7 +103,7 @@ export class LearningObjectBuilderComponent implements OnInit {
    */
   async save(willUpload: boolean) {
     if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
-      if (!(await this.showPublishingDialog())) {
+      if (!(await this.showSubmissionDialog())) {
         return;
       }
     }
@@ -176,7 +176,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     }
   }
 
-  private async showPublishingDialog(): Promise<boolean> {
+  private async showSubmissionDialog(): Promise<boolean> {
     const text = this.auth.user.emailVerified
       ? 'You can submit this learning object for review by the NCCP review team now, or save it for later. If you don\'t submit now, you can submit from your Dashboard at a later time.'
       : 'You must have a verfied email address to submit learning objects! Would you like to verfiy your email now?';
@@ -420,15 +420,5 @@ export class LearningObjectBuilderComponent implements OnInit {
           this.activePage + modifier === PAGES.OUTCOMES ? 0 : undefined
       }
     });
-  }
-
-  togglePublished(event) {
-    if (this.auth.user.emailVerified) {
-      if (this.learningObject.published) {
-        this.learningObject.unpublish();
-      } else {
-        this.learningObject.publish();
-      }
-    }
   }
 }
