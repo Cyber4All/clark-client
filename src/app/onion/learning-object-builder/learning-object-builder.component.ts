@@ -91,13 +91,13 @@ export class LearningObjectBuilderComponent implements OnInit {
       this.learningObject = this.route.snapshot.data['learningObject'];
       if (!this.learningObject) {
         console.log ('test');
-        this.router.navigate(['/onion/dashboard'])
+        this.router.navigate(['/onion/dashboard']);
       }
-        
+
     } else {
       this.isNew = true;
     }
-    
+
   }
 
   /**
