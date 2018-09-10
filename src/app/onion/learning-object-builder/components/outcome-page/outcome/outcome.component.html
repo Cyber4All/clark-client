@@ -25,7 +25,7 @@
         </select>
       </div>
       <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->
-      <input id="outcome-text" #outcomeInput class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(index);"
+      <input id="outcome-text" #outcomeInput class="outcome-input" type="text" placeholder="Outcome Text" aria-label="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(index);"
         [(ngModel)]="outcome._text" [ngClass]="{'bad': errorStore.error === 'outcometext'}" (blur)="updateSidebarText()" />
     </div>
   </div>
