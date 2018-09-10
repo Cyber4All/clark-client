@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { RATING_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
-import { User } from '../../../node_modules/@cyber4all/clark-entity';
 
 
 @Injectable()

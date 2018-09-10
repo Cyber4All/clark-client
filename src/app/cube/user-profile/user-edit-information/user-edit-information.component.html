@@ -2,16 +2,16 @@
 <form>
     <div class="h-group">
         <div class="input firstname" [ngClass]="{'active': editInfo.firstname !== ''}">
-          <input name="firstname" type="text" placeholder="First name" [(ngModel)]="editInfo.firstname" />
+          <input name="firstname" type="text" placeholder="First name" aria-label="First Name" [(ngModel)]="editInfo.firstname" />
           <i class="far fa-id-card"></i>
         </div>
         <div class="input lastname" [ngClass]="{'active': editInfo.lastname !== ''}">
-          <input name="lastname" type="text" placeholder="Last name" [(ngModel)]="editInfo.lastname" />
+          <input name="lastname" type="text" placeholder="Last name" aria-label="Last Name" [(ngModel)]="editInfo.lastname" />
           <i class="far fa-id-card"></i>
         </div>
     </div>
     <div class="input organization" id="organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input #organization name="organization" type="text" placeholder="Organization" [(ngModel)]="editInfo.organization" />
+      <input #organization name="organization" type="text" placeholder="Organization" aria-label="Organization" [(ngModel)]="editInfo.organization" />
       <i class="far fa-building"></i>
     </div>
     <div id="container">
@@ -27,12 +27,12 @@
     <div class="gravatar-header">{{ copy.GRAVATARTITLE }}</div>
     <div class="gravatar-text">{{ copy.GRAVATARC2A }}<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
     <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
-      <input name="email" type="text" placeholder="Email address" [(ngModel)]="editInfo.email" />
+      <input name="email" type="text" placeholder="Email address" aria-label="Email Address" [(ngModel)]="editInfo.email" />
       <i class="far fa-at"></i>
     </div>
     <p>Add a bio</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Enter Bio" [(ngModel)]="editInfo.bio" 
+      <textarea (keyup)="handleCounter($event)" name="bio" type="text" placeholder="Enter Bio" [(ngModel)]="editInfo.bio"
       maxlength="140" rows="5" cols="50">
       </textarea>
       <span id="bio-icon"><i class="fas fa-user-alt"></i></span>

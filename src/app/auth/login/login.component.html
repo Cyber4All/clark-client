@@ -8,11 +8,11 @@
       </div>
       <form (ngSubmit)="submit()">
         <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
-          <input name="username" type="text" placeholder="Username" [(ngModel)]="authInfo.username" [autofocus]/>
+          <input name="username" type="text" placeholder="Username" aria-label="Username" [(ngModel)]="authInfo.username" [autofocus]/>
           <i class="far fa-user"></i>
         </div>
         <div class="input password" [ngClass]="{'active': authInfo.password !== ''}">
-          <input name="password" type="password" placeholder="Password" [(ngModel)]="authInfo.password" />
+          <input name="password" type="password" placeholder="Password" aria-label="Password" [(ngModel)]="authInfo.password" />
           <i class="far fa-key"></i>
         </div>
         <div class="forgot" routerLink="../forgot-password">Forgot password?</div>
