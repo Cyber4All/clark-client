@@ -90,7 +90,6 @@ export class LearningObjectBuilderComponent implements OnInit {
       // fetch this learning object from route reolver (returns LO or returns undefined)
       this.learningObject = this.route.snapshot.data['learningObject'];
       if (!this.learningObject) {
-        console.log ('test');
         this.router.navigate(['/onion/dashboard']);
       }
 
