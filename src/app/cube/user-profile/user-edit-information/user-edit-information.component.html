@@ -39,7 +39,7 @@
     </div>
     <p id="character-counter">{{ copy.CHARACTERS }} {{ counter }}</p>
     <div class="btn-group to-right">
-        <div id="save-changes" class="button good" (click)="save()">{{ copy.SAVE }} <i class="far fa-save"></i></div>
-        <div id="discard-changes" class="button bad" (click)="close.emit(false)">{{ copy.DISCARD }} <i class="far fa-times"></i></div>
+        <button id="save-changes" class="button good" (click)="save()">{{ copy.SAVE }} <i class="far fa-save"></i></button>
+        <button id="discard-changes" class="button bad" (click)="close.emit(false)">{{ copy.DISCARD }} <i class="far fa-times"></i></button>
     </div>
 </form>

@@ -25,9 +25,9 @@
   <ng-container *ngIf="!objects || !objects.length">
     <div class="no-objects">{{ copy.NOOBJECTS(self) }}</div>
     <div *ngIf="self" class="btn-group center">
-      <div id="profile-create-learning-object" class="button good" routerLink="/onion/dashboard">{{ copy.CREATE }}
+      <button id="profile-create-learning-object" class="button good" routerLink="/onion/dashboard">{{ copy.CREATE }}
         <i class="fas fa-plus"></i>
-      </div>
+      </button>
     </div>
   </ng-container>
 </div>
