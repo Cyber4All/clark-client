@@ -91,7 +91,8 @@ import { ProgressComponent } from './progress/progress.component';
     RatingStarsComponent,
     NewRatingComponent,
     LearningObjectRatingsComponent,
-    ProgressComponent
+    ProgressComponent,
+    VirtualScrollModule
   ]
 })
 export class SharedModule {}

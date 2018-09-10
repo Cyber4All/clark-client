@@ -6,7 +6,8 @@ Raven
   .config('https://388e985e535a4dbd8ff593abde4b41c5@sentry.io/287724', {
     shouldSendCallback: function () {
       return environment.production;
-    }
+    },
+    release: '0e4fdef81448dcfa0e16ecc4433ff3997aa53572'
   })
   .install();
 

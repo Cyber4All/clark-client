@@ -54,9 +54,9 @@
     </div>
   </div>
 </div>
-<div *ngIf="inProgressUploads?.length" [@uploadQueue] class="upload-queue">
+<div *ngIf="inProgressFileUploads?.length || inProgressFolderUploads?.length" [@uploadQueue] class="upload-queue">
   <div class="title">Uploading files...</div>
-  <onion-file-upload-status [files]="inProgressUploads"></onion-file-upload-status>
+  <onion-file-upload-status [files]="inProgressFileUploads" [folders]="inProgressFolderUploads"></onion-file-upload-status>
 </div>
 <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()" (addedFile)="addFile($event)"
   (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)" (complete)="dzComplete($event)"
