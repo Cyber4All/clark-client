@@ -17,7 +17,7 @@
           <div class="rating">
             <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
             <a *ngIf="canRate"  (click)="showRatingPopup()">Write a review</a>
-            <span class="emailNotVerified" *ngIf="!canRate" tip="Please log in and verify your email to rate this learning object.">
+            <span class="emailNotVerified" *ngIf="!canRate && !owned" tip="Please log in and verify your email to rate this learning object.">
               <i class="far fa-question-circle"></i>
             </span>
           </div>

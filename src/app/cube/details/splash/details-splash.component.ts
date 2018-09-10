@@ -11,6 +11,7 @@ export class DetailsSplashComponent {
   @Input() ratings: any[];
   @Input() averageRating: number;
   @Input() canRate: boolean;
+  @Input() owned: boolean;
   @Output() showNewRating: EventEmitter<boolean> = new EventEmitter();
 
   /**
