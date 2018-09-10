@@ -47,7 +47,7 @@
 
   <!-- Overlay under mobile slideout -->
   <div class="slideout-underlay" *ngIf="!hideNavbar" [ngClass]="{'active': menuOpen || searchDown, 'underNav': !isMobile || searchDown}" (click)="menuOpen = false; hideSearch();"></div>
-  
+
   <!-- Mobile menu slideout -->
   <div class="slideout" *ngIf="!hideNavbar && isMobile" [ngClass]="{'active': menuOpen}">
     <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">
@@ -71,8 +71,8 @@
     </div>
     <div class="slideout-section auth" *ngIf="!loggedin">
       <div class="btn-group vertical">
-        <div class="button good" routerLink="/auth/register">Register</div>
-        <div class="button neutral on-white" routerLink="/auth/login">Log In</div>
+        <button class="button good" routerLink="/auth/register">Register</button>
+        <button class="button neutral on-white" routerLink="/auth/login">Log In</button>
       </div>
     </div>
   </div>
