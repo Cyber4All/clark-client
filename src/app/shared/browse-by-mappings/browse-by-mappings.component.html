@@ -12,7 +12,7 @@
   </div>
   <div class="mappings">
     <div class="text-filter">
-      <input #mappingSearchInput type="text" id="mappingsFilter" [(ngModel)]="mappingService.filterText" placeholder="Outcome text includes...">
+      <input #mappingSearchInput type="text" id="mappingsFilter" [(ngModel)]="mappingService.filterText" placeholder="Outcome text includes..." aria-label="Outcome Text Includes" >
       <div class="selected-mappings">
         <span *ngIf="showMappedOutcomesTitle && mappings.length">Mapped Outcomes: </span>
         <div class="pill" *ngFor="let m of mappings" (click)="removeOutcome(m)">

@@ -27,6 +27,7 @@ import { Component, OnInit } from '@angular/core';
                 type="text"
                 placeholder="Outcome Name"
                 name="name-filter"
+                aria-label="Outcome Name"
                 [ngModel]="_name"
                 (ngModelChange)="nameChanged($event)"
             />
