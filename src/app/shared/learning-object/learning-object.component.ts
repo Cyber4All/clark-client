@@ -116,6 +116,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   }
 
   stripHtml(str: string): string {
+    // The top regex is used for matching tags such as <br />
+    // The bottom regex will catch tags such as </p>
+    str = str.replace(/<[0-z\s\'\"=]*[\/]+>/gi, ' ');
     return str.replace(/<[\/]*[0-z\s\'\"=]+>/gi, ' ');
   }
 
