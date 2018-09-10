@@ -3,17 +3,17 @@
   <div class="auth-title light" id="personal-header">Tell Us About Yourself</div><hr/>
   <div class="h-group">
     <div class="input firstname">
-      <input id="input-firstname" name="firstname" type="text" placeholder="First name" formControlName="firstname"/>
+      <input id="input-firstname" name="firstname" type="text" placeholder="First name" aria-label="First Name" formControlName="firstname"/>
       <i class="far fa-id-card"></i>
     </div>
     <div class="input lastname">
-      <input id="input-lastname"  name="lastname" type="text" placeholder="Last name" formControlName="lastname" />
+      <input id="input-lastname"  name="lastname" type="text" placeholder="Last name" aria-label="Last Name" formControlName="lastname" />
       <i class="far fa-id-card"></i>
     </div>
   </div>
 
   <div class="input email">
-    <input id="input-email" #emailInput name="email" type="text" placeholder="Email address" formControlName="email"/>
+    <input id="input-email" #emailInput name="email" type="text" placeholder="Email address" aria-label="Email Address" formControlName="email"/>
     <i class="far fa-at"></i>
     <div class="icon-right">
       <ng-container *ngIf="querying">
@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="input organization">
-    <input #organization name="organization" id="organization" type="text" placeholder="Organization" formControlName="organization"/>
+    <input #organization name="organization" id="organization" type="text" placeholder="Organization" aria-label="Organization" formControlName="organization"/>
     <i class="far fa-building"></i>
   </div>
   <div id="container">
