@@ -11,7 +11,7 @@
       <div class="label" id="name-label">
         What is this learning object named?
       </div>
-      <input class="name-field" id="object-name-field" type="text" autofocus name="name" placeholder="Learning Object Name" [(ngModel)]="learningObject.name" #name="ngModel"
+      <input class="name-field" id="object-name-field" type="text" autofocus name="name" placeholder="Learning Object Name" aria-label="Learning Object Name" [(ngModel)]="learningObject.name" #name="ngModel"
         [ngClass]="{'bad': errorStore.error === 'name' }" />
     </div>
     <div class="input-group">
