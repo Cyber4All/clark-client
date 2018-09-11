@@ -29,7 +29,7 @@ import { updateShorthandPropertyAssignment } from "../../node_modules/typescript
 // Login help method 
 Cypress.Commands.add('login', () => {
      // Click sign in button 
-     cy.contains('Sign in').click();
+     cy.get('#clark-sign-in').click({ force: true });
 
      // Assert URL 
      cy.url().should('include', 'login');
@@ -37,7 +37,7 @@ Cypress.Commands.add('login', () => {
      // Enter login info 
      cy.get('input[name=username]').type('cypress');
      cy.get('input[name=password]').type('Clarktesting1!');
-     cy.get('.auth-button').click();
+     cy.get('#auth-button').click();
 });
 
 // Method that prevents uncaught exceptions from failing otherwise working tests

@@ -69,4 +69,10 @@ $course-color: #1e4b25;
       opacity: 1;
     }
   }
+
+  &.disabled {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }

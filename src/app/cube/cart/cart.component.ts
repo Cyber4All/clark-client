@@ -3,10 +3,10 @@ import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../learning-object.service';
-import { Observable } from 'rxjs/Observable';
 import { environment } from '@env/environment';
 import { AuthService } from '../../core/auth.service';
 import { Subscription } from 'rxjs';
+import { COPY } from './cart.copy';
 
 @Component({
   selector: 'cube-cart',
@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+  copy = COPY;
   private subscriptions: Subscription[] = [];
   cartItems: LearningObject[] = [];
   downloading = [];

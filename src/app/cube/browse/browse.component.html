@@ -2,37 +2,37 @@
   <div class="browse-columns">
     <div class="sidebar-wrapper" [ngClass]="{'active': filtersDownMobile}">
       <div class="column-title">
-        Filters
-        <div class="filters-clear-all" (click)="clearAllFilters()">Clear all filters</div>
+        {{ copy.FILTERS }}
+        <div class="filters-clear-all" id="filters-clear-all" (click)="clearAllFilters()">{{ copy.CLEARFILTERS }}</div>
       </div>
       <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [filters]="filters" (add)="addFilter($event.category, $event.filter)" (remove)="removeFilter($event.category, $event.filter)">
         <!-- <ng-template><clark-mappings-filter (add)="addFilter($event.category, $event.filter)"></clark-mappings-filter></ng-template> -->
       </clark-filter>
 
       <div class="btn-group to-right">
-          <div (click)="applyFilters(); toggleFilters();" class="button good">Appy</div>
-        <div (click)="closeFilters();" class="button neutral">Cancel</div>
+          <button (click)="applyFilters(); toggleFilters();" class="button good">Appy</button>
+        <button (click)="closeFilters();" class="button neutral">Cancel</button>
       </div>
     </div>
-    <div class="content">
-      <div class="column-title">
-        <span>Results {{this.learningObjectService.totalLearningObjects ? '(' + this.learningObjectService.totalLearningObjects + ')' : '0'}}
-          <span class="clear-search" (click)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">Clear Search</span>
+    <div class="content" id="content">
+      <div class="column-title" id="column-title">
+        <span>{{ copy.RESULTS }} {{this.learningObjectService.totalLearningObjects ? '(' + this.learningObjectService.totalLearningObjects + ')' : '0'}}
+          <span class="clear-search" id="clear-search" (click)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </span>
           <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
         </span>
-        <div class="results-options">
+        <div class="results-options" id="results-options">
           <div class="mobile-filters" (click)="toggleFilters()">
-            Filters <i class="far fa-sliders-h"></i>
+            {{ copy.FILTERS }} <i class="far fa-sliders-h"></i>
           </div>
-          <div class="sort" (click)="showSortMenu($event)">
-            <div *ngIf="query.orderBy" class="removeSort" (click)="clearSort($event);" tip="Clear sorting criteria" tipLocation="above">
-              <i class="far fa-times"></i>
+          <div class="sort" id="sort" (click)="showSortMenu($event)">
+            <div *ngIf="query.orderBy" class="removeSort" id="removeSort" (click)="clearSort($event);" tip="Clear sorting criteria" tipLocation="above">
+              <i class="far fa-times" id="times"></i>
             </div>
             <span>{{ (query.orderBy) ? sortString : 'Sort'}}</span><i class="far fa-chevron-down"></i>
           </div>
         </div>
       </div>
-      <h3 *ngIf="!learningObjects || learningObjects.length==0">No Results</h3>
+      <h3 *ngIf="!learningObjects || learningObjects.length==0">{{ copy.NORESULTS }}</h3>
       <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
     </div>
   </div>

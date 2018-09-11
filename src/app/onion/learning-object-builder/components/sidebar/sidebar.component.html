@@ -1,23 +1,23 @@
 <div class="sidebar-wrapper">
-  <div class="title">Learning Object 
+  <div class="title" id="sidebar-title">Learning Object 
     <span tip="{{ tips.LEARNING_OBJECT }}" tipLocation="side">
       <i class="fas fa-question-circle"></i>
     </span>
   </div>
   <ng-container *ngFor="let link of links; let i = index">
     <div class="menu-item" [ngClass]="{'active': activeIndex === i, 'parent': link.children }" (click)="link.action(i, self, (link.children ? true : false))">
-      <div class="menu-item-inner">{{ link.name }}</div>
+      <div class="menu-item-inner" id="sidebar-item-link" >{{ link.name }}</div>
       <i class="fas fa-chevron-right"></i>
     </div>
     <div *ngIf="link.children" class="menu-item-group" [ngClass]="{'open': activeIndex === i || forceOutcomesOpen}">
-      <div *ngFor="let childlink of link.children; let childi = index" class="menu-item" [ngClass]="{'active': (activeChildIndex === childi && !childlink.externalAction), 'externalAction': childlink.externalAction}" (click)="childlink.action(childi, self)">
+      <div *ngFor="let childlink of link.children; let childi = index" class="menu-item" id="child-link" [ngClass]="{'active': (activeChildIndex === childi && !childlink.externalAction), 'externalAction': childlink.externalAction}" (click)="childlink.action(childi, self)">
         <div class="menu-item-inner"><i *ngIf="childlink.externalAction" [ngClass]="{'fas fa-plus': childlink.externalAction}"></i>{{ childlink.name }}</div>
         <i class="fas fa-chevron-right"></i>
       </div>  
     </div>
   </ng-container>
   <div *ngIf="isEmailVerified">
-    <div class="menu-item" (click)="uploadMaterials()">3. Upload Materials <i class="fas fa-external-link"></i></div>
+    <div class="menu-item" id="upload-material-link" (click)="uploadMaterials()">3. Upload Materials <i class="fas fa-external-link"></i></div>
   </div>
   <div *ngIf="!isEmailVerified" tip="{{ tips.UNVERIFIED_UPLOAD }}" tipLocation="above">
     <div class="menu-item disabled">3. Upload Materials

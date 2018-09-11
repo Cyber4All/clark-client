@@ -1,19 +1,19 @@
-<div class="title">{{ user.name | titlecase }}</div>
+<div class="title" id="profile-title">{{ user.name | titlecase }}</div>
 <div class="info">
   <div class="bio">
     <div>{{ user.bio }}</div>
   </div>
-  <div class="organization">
+  <div class="organization" id="organization-link">
     <a [routerLink]="['/organization', user.organization]">{{ user.organization | titlecase }}</a>
   </div>
   <div class="email">
-    <a href="mailto: {{ user.email }}">{{ user.email }}</a>
+    <a id="email-link" href="mailto: {{ user.email }}">{{ user.email }}</a>
   </div>
   <div *ngIf="self && !user.emailVerified" class="verify-email button good" (click)="sendEmailVerification()">
-    Verify your email
+    {{ copy.EMAILVERIFY }}
   </div>
 </div>
-<div *ngIf="objects && objects.length > 0" class="section-title">Learning Objects</div>
+<div *ngIf="objects && objects.length > 0" class="section-title">{{ copy.LEARNINGOBJECTS }}</div>
 <div class="learning-objects">
   <ng-container *ngIf="objects && objects.length > 0">
     <div *ngFor="let l of objects">
@@ -23,14 +23,14 @@
     </div>
   </ng-container>
   <ng-container *ngIf="!objects || !objects.length">
-    <div class="no-objects">{{ self ? 'You don\'t have' : 'This user doesn\'t' }} any learning objects yet!</div>
+    <div class="no-objects">{{ copy.NOOBJECTS(self) }}</div>
     <div *ngIf="self" class="btn-group center">
-      <div class="button good" routerLink="/onion/dashboard">Create a Learning Object!
+      <button id="profile-create-learning-object" class="button good" routerLink="/onion/dashboard">{{ copy.CREATE }}
         <i class="fas fa-plus"></i>
-      </div>
+      </button>
     </div>
   </ng-container>
 </div>
 <section id="card-printer" *ngIf="self">
-  <button class="print-cards button neutral on-white" (click)="printCards()">Print Clark Cards</button>
+  <button id="clark-card-link" class="print-cards button neutral on-white" (click)="printCards()">{{ copy.PRINT }}</button>
 </section>

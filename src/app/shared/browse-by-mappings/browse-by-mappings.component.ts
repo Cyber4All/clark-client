@@ -11,13 +11,13 @@ import {
   ViewChild } from '@angular/core';
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 import { OutcomeService } from '../../core/outcome.service';
 import {
   SuggestionService
 } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
 import { ModalListElement, ModalService, Position } from '../modals';
+import { COPY } from './browse-by-mappings.copy';
 
 @Component({
   selector: 'clark-browse-by-mappings-component',
@@ -25,6 +25,7 @@ import { ModalListElement, ModalService, Position } from '../modals';
   styleUrls: ['./browse-by-mappings.component.scss']
 })
 export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnChanges {
+  copy = COPY;
   // Inputs
   @Input() dimensions = {}; // should be of format {w?: number (in pixels), h?: number (in pixels)}
   @Input() source: string;

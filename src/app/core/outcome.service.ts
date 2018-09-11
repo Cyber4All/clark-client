@@ -28,7 +28,6 @@ export class OutcomeService {
     return this.http.get(environment.suggestionUrl + '/outcomes/sources', { headers: this.headers })
       .toPromise()
       .then(res => {
-        console.log(res);
         if (res.ok) {
           return res.json();
         }

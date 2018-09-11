@@ -8,7 +8,6 @@ import {
 } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { USER_ROUTES } from '@env/route';
 import { UserService } from '../../core/user.service';
 
 @Injectable()

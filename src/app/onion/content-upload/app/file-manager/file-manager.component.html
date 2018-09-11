@@ -1,4 +1,4 @@
-<clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$" [handleRemove$]="removal$" (containerClick)="handleContainerClick($event)" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
+<clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$" [handleRemove$]="removal$" (meatballClick)="openFileOptions($event)" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
   canManage="true"></clark-file-browser>
 
 <!-- New Options Context Menu -->
@@ -7,7 +7,7 @@
     <div class="context-item">
       <div class="option">
         <i class="fas fa-file icon  icon-left light"></i>
-        File Upload
+        File
       </div>
     </div>
   </ng-template>
@@ -15,7 +15,7 @@
     <div class="context-item">
       <div class="option">
         <i class="fas fa-folder  icon icon-left light"></i>
-        Folder Upload
+        Folder
       </div>
     </div>
   </ng-template>
@@ -34,7 +34,7 @@
       </div>
     </div>
   </ng-template>
-  <ng-template contextMenuItem (execute)="deleteFile($event.item)">
+  <ng-template contextMenuItem (execute)="triggerDelete($event.item)">
     <div *ngIf="!editDescription" class="context-item bad">
       <div>
         Delete
@@ -50,7 +50,7 @@
       <form #decriptionInput="ngForm" (submit)="saveDescription(description.value, item); closeContextMenu()">
         <div class="description-input">
           <input #description name="description" ([ngModel])="item?.description" type="text" name="file-description" placeholder="Enter description"
-            [value]="item?.description ? item?.description : ''" />
+          aria-label="Enter Description" [value]="item?.description ? item?.description : ''" />
         </div>
         <div class="buttons">
           <button type="button" class="button bad slim" (click)="closeContextMenu()">

@@ -20,5 +20,8 @@
       "@env/*": [ "environments/*" ]
     },
     "types": [ "jest" ]
-  }
+  },
+  "exclude": [
+    "*.copy.ts"
+  ]
 }

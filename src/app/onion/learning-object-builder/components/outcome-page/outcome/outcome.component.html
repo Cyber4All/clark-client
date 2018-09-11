@@ -1,6 +1,6 @@
-<!-- TODO: 
+<!-- TODO:
   * Evaluate all SRP/CCP groupings for components
-  * 
+  *
 -->
 
 <div class="container" [attr.valid]="validate()">
@@ -8,9 +8,9 @@
     <div class="left"></div>
     <div class="right">
       <div class="ctrl_buttons">
-        <div class="button bad icon-only" (click)="deleteOutcome()">
+        <button class="button bad icon-only" (click)="deleteOutcome()">
           <i class="far fa-times"></i>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -18,14 +18,14 @@
     <!-- TODO: .outcome_bloom convert to component due to SRP/CCP -->
     <onion-blooms-selector [default]="outcome._bloom" (bloom)="registerBloomsLevel($event)"></onion-blooms-selector>
     <div class="outcome_input">
-      <div class="vert-center">Students will be able to </div>
+      <div class="vert-center">{{ copy.PREFIX }} </div>
       <div class="select-wrapper">
         <select style="display: inline" [(ngModel)]="outcome._verb">
           <option *ngFor="let v of classverbs[outcome._bloom]; let i = index" [attr.value]="v" [attr.selected]="i == 0 ? true : null">{{ v }}</option>
         </select>
       </div>
       <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->
-      <input #outcomeInput class="outcome-input" type="text" placeholder="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(index);"
+      <input id="outcome-text" #outcomeInput class="outcome-input" type="text" placeholder="Outcome Text" aria-label="Outcome Text" #outcomeValidate="ngModel" (focus)="updateFocus(index);"
         [(ngModel)]="outcome._text" [ngClass]="{'bad': errorStore.error === 'outcometext'}" (blur)="updateSidebarText()" />
     </div>
   </div>
