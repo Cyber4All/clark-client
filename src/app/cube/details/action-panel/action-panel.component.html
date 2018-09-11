@@ -4,7 +4,7 @@
     <i class="fas fa-exclamation"></i>Review Pending
   </div>
   <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
-    <div tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
+    <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
       class="button good" id="download-button" (click)="addToCart(true)">
       <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
         <span *ngIf="downloading">
@@ -12,13 +12,13 @@
         </span>
       </span>
       <span *ngIf="!canDownload">Not available for download</span>
-    </div>
-    <div *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" id="save-to-library" (click)="addToCart()">
+    </button>
+    <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" id="save-to-library" (click)="addToCart()">
       {{ saved ? 'Saved to your library!' : 'Save to Library' }}
       <span *ngIf="addingToLibrary">
         <i class="fal fa-spinner-third fa-spin"></i>
       </span>
-    </div>
+    </button>
   </div>
   <ng-container *ngIf="!auth.user">
     <div class="login-msg" id="login-msg">Please
