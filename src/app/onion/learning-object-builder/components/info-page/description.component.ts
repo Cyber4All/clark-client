@@ -10,7 +10,7 @@ import { COPY } from './description.copy';
       <div class="input-group">
         <div id="description-label" class="label">{{ copy.QUESTION }}
         <span tip="{{ copy.TIP }}">
-          <i class="fas fa-question-circle"></i>
+          <a href="http://about.clark.center/tutorial/#Descriptions" target="blank"><i class="fas fa-question-circle"></i></a>
         </span>
         </div>
         <div class="goals list">

@@ -2,7 +2,6 @@
   <div class="section">
     <div id="ouctome-title" class="title sticky">{{ copy.TITLE }}
       <span tip="A learning outcome is a precise statement of student outcomes of the Learning Object based on the Bloom's taxonomy">
-        <i class="fas fa-question-circle"></i>
       </span>
     </div>
     <div class="outcomes" [ngClass]="{'empty-section': learningObject.outcomes.length == 0}">
@@ -11,7 +10,10 @@
             <onion-outcome-component [submitted]="submitted" [outcome]="activeOutcome" [index]="outcomeIndex" (deleteIndex)="deleteOutcome()"></onion-outcome-component>
         </div>
       </ng-container>
-      <div class="text" *ngIf="learningObject.outcomes.length == 0">{{ copy.EMPTY }}</div>
+      <div class="text" *ngIf="learningObject.outcomes.length == 0">
+        {{ copy.EMPTY }}
+        <a href="http://about.clark.center/tutorial/#Outcomes" target="blank"><i class="fas fa-question-circle"></i></a>
+    </div>
     </div>
   </div>
 </div>
