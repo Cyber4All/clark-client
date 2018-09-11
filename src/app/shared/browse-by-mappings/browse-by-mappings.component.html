@@ -6,8 +6,8 @@
       </div>
       <div class="source">
         <div class="mappings-spinner" *ngIf="mappingsQueryInProgress"><i class="far fa-spinner-third"></i></div>
-        <div class="button neutral" (click)="showSources($event)">{{(mappingService.author && mappingService.author !== '') ? mappingService.author : '- Source -'}} <i class="far fa-sort"></i></div>
-        <div class="button good" (click)="close()">Done <i class="far fa-check"></i></div>
+        <button class="button neutral" (click)="showSources($event)">{{(mappingService.author && mappingService.author !== '') ? mappingService.author : '- Source -'}} <i class="far fa-sort"></i></button>
+        <button class="button good" (click)="close()">Done <i class="far fa-check"></i></button>
       </div>
   </div>
   <div class="mappings">
