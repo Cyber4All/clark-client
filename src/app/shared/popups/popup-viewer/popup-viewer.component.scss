@@ -1,0 +1,60 @@
+@import '~_vars.scss';
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > div {
+        position: relative;
+    }
+
+    .popup-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        transform: scale(1);
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.4);
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+:host > .overlay > ::ng-deep * {
+    padding: 20px;
+    box-sizing: border-box;
+    min-width: 400px;
+    max-width: 60%;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.02);
+
+    .modal-title {
+        color: $blue-accent;
+        font-weight: bold;
+        font-size: 26px;
+        text-align: center;
+
+        &.bad {
+            color: $error-red;
+        }
+    }
+
+    .modal-text {
+        font-size: 16px;
+        margin: 20px auto;
+        text-align: center;
+    }
+}
