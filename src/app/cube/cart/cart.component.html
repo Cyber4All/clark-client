@@ -11,21 +11,21 @@
         <div class="author">{{object.author.name | titlecase}}</div>
       </div>
       <div class="actions">
-        <div *ngIf="canDownload" class="button icon-only good" [ngClass]="{'disabled': !canDownload || downloading[i]}" (click)="downloadObject($event, object, i)">
+        <button *ngIf="canDownload" class="button icon-only good" [ngClass]="{'disabled': !canDownload || downloading[i]}" (click)="downloadObject($event, object, i)">
           <span *ngIf="!downloading[i]">
             <i class="far fa-download"></i>
           </span>
           <span *ngIf="downloading[i]">
             <i class="fal fa-spinner-third fa-spin "></i>
           </span>
-        </div>
-        <div id="remove-library-item" class="button icon-only bad" (click)="removeItem($event, object)">
+        </button>
+        <button id="remove-library-item" class="button icon-only bad" (click)="removeItem($event, object)">
           <i class="far fa-times"></i>
-        </div>
+        </button>
       </div>
     </div>
   </div>
-  
+
   <div *ngIf="!cartService.cartItems.length" class="no-objects">
     {{ copy.EMPTY }}
     <br/>Get started
