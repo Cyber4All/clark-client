@@ -1,4 +1,4 @@
-@import "~_vars.scss";
+@import '~_vars.scss';
 
 $top-height: 500px;
 $banner-height: 90px;
@@ -29,7 +29,7 @@ $banner-height: 90px;
 .top {
 
   .img-viewport {
-    background: url('/assets/servers.jpg') no-repeat;
+    background: url('/assets/images/servers.jpg') no-repeat;
     background-size: cover;
     background-position: center;
     width: 100%;
