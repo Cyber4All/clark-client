@@ -3,7 +3,7 @@ import { SuggestionModule } from './components/outcome-page/outcome/standard-out
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { DndModule } from 'ng2-dnd';
 import { LearningObjectBuilderComponent } from './learning-object-builder.component';
 import { TextEditorComponent } from './components/text-editor.component';
@@ -29,7 +29,7 @@ import { InfoPageComponent } from './components/info-page/info-page.component';
     FormsModule,
     SuggestionModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     CKEditorModule,
     OnionRoutingModule,
     DndModule.forRoot(),

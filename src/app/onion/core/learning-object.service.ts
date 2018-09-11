@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { CookieService } from 'ngx-cookie';
@@ -10,10 +10,10 @@ import { AuthService } from '../../core/auth.service';
 @Injectable()
 export class LearningObjectService {
   learningObjects: LearningObject[] = [];
-  private headers: Headers = new Headers();
+  private headers: HttpHeaders = new HttpHeaders();
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private auth: AuthService,
     private cookies: CookieService
   ) {
@@ -42,8 +42,8 @@ export class LearningObjectService {
         { object: learningObject },
         { headers: this.headers, withCredentials: true }
       )
-      .toPromise().then(res => {
-        return LearningObject.instantiate(res.json());
+      .toPromise().then((res: any) => {
+        return LearningObject.instantiate(res);
       });
     // TODO: Verify this response gives the learning object name
   }
@@ -62,10 +62,8 @@ export class LearningObjectService {
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
-      .then(response => {
-        const object = response.json();
-        const learningObject = LearningObject.instantiate(object);
-        return learningObject;
+      .then((response: any) => {
+        return LearningObject.instantiate(response);
       });
   }
 
@@ -80,9 +78,8 @@ export class LearningObjectService {
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
-      .then(response => {
+      .then((response: any) => {
         return response
-          .json()
           .map(object => LearningObject.instantiate(object));
       });
   }
@@ -105,7 +102,7 @@ export class LearningObjectService {
       .patch(
         route,
         { learningObject: learningObject },
-        { headers: this.headers, withCredentials: true }
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
   }

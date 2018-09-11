@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { USER_ROUTES } from '@env/route';
 import 'rxjs/add/operator/toPromise';
-import { Http, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../../../core/auth.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Injectable()
 export class FileStorageService {
-  private headers: Headers = new Headers();
+  private headers: HttpHeaders = new HttpHeaders();
 
-  constructor(private http: Http, private auth: AuthService) {
+  constructor(private http: HttpClient, private auth: AuthService) {
     this.headers.append('Content-Type', 'application/json');
   }
 

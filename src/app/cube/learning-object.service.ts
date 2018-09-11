@@ -1,6 +1,6 @@
 import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { LearningObject, User} from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
@@ -16,7 +16,7 @@ export class LearningObjectService {
 
   public totalLearningObjects: number;
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -60,8 +60,8 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .toPromise()
-      .then(response => {
-        const res = response.json();
+      .then((response: any) => {
+        const res = response;
         const objects = res.objects;
         this.totalLearningObjects = res.total;
         return objects.map(object => LearningObject.instantiate(object));
@@ -86,8 +86,8 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .toPromise()
-      .then(res => {
-        const learningObject = LearningObject.instantiate(res.json());
+      .then((res: any) => {
+        const learningObject = LearningObject.instantiate(res);
         // If contributors exist on this learning object, instantiate them
         if (learningObject['contributors'] && learningObject['contributors'].length > 0) {
           const arr = learningObject['contributors'];
@@ -104,9 +104,8 @@ export class LearningObjectService {
     return this.http
       .get(route, { withCredentials: true })
       .toPromise()
-      .then(val => {
+      .then((val: any) => {
         return val
-          .json()
           .map(l => LearningObject.instantiate(l));
       });
   }

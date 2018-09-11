@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Injectable, Output } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 import { environment } from '@env/environment';
@@ -22,9 +23,9 @@ export class SuggestionService {
   // String of currently selected author
   author = '';
 
-  private headers = new Headers();
+  private headers = new HttpHeaders();
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     this.headers.append('Content-Type', 'application/json');
   }
 
@@ -49,10 +50,10 @@ export class SuggestionService {
         headers: this.headers
       })
       .toPromise()
-      .then(res => {
-        const outcomes = res.json().outcomes;
-        if (res.ok) {
-          this.total = Math.ceil(res.json().total / +filter.limit);
+      .then((res: any) => {
+        const outcomes = res.outcomes;
+        if (res) {
+          this.total = Math.ceil(res.total / +filter.limit);
           this.suggestion.next(outcomes);
         }
       });

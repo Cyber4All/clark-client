@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 export class UserService {
   socket;
   socketWatcher: Observable<string>;
-  constructor(private http: Http, private auth: AuthService) {
+  constructor(private http: HttpClient, private auth: AuthService) {
   }
 
   editUserInfo(user: UserEdit): Promise<any> {
@@ -34,8 +34,8 @@ export class UserService {
           })
           .toPromise()
           .then(
-            val => {
-              return val.json() ? true : false;
+            (val: any) => {
+              return val ? true : false;
             },
             error => {
               console.error(error);
@@ -54,8 +54,8 @@ export class UserService {
         }
       )
       .toPromise()
-      .then(val => {
-        const arr = val.json();
+      .then((val: any) => {
+        const arr = val;
         return arr.map(member => User.instantiate(member));
       });
   }
@@ -65,8 +65,8 @@ export class UserService {
     return this.http
       .get(route)
       .toPromise()
-      .then(val => {
-        const arr = val.json();
+      .then((val: any) => {
+        const arr = val;
         return arr.map(member => User.instantiate(member));
       });
   }
@@ -92,8 +92,8 @@ export class UserService {
           })
           .toPromise()
           .then(
-            val => {
-              const user = val.json();
+            (val: any) => {
+              const user = val;
               return user ? User.instantiate(user) : null;
             },
             error => {

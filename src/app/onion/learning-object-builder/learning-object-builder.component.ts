@@ -130,6 +130,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           }
         })
         .catch(err => {
+          console.log(err)
           const error =
             typeof err['_body'] === 'string'
               ? err['_body']
