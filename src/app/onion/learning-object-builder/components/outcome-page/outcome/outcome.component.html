@@ -21,7 +21,7 @@
       <div class="vert-center">{{ copy.PREFIX }} </div>
       <div class="select-wrapper">
         <select style="display: inline" [(ngModel)]="outcome._verb">
-          <option *ngFor="let v of classverbs[outcome._bloom]; let i = index" [attr.value]="v" [attr.selected]="i == 0 ? true : null">{{ v }}</option>
+          <option *ngFor="let v of classVerbs[outcome._bloom]; let i = index" [attr.value]="v" [attr.selected]="i == 0 ? true : null">{{ v }}</option>
         </select>
       </div>
       <!-- TODO: .outcome-input should grow to fill flex row of .outcome_input && rename classes -->

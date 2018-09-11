@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { COPY } from './description.copy';
 
@@ -22,26 +22,24 @@ import { COPY } from './description.copy';
   `,
   styles: [
     `
-    textarea {
-      padding: 10px;
-      padding-bottom: 0;
-      resize: vertical;
-    }
-    textarea.full-width {
-      max-width: 800px;
-      width: 100%;
-    }
+      textarea {
+        padding: 10px 10px 0;
+        resize: vertical;
+      }
+
+      textarea.full-width {
+        max-width: 800px;
+        width: 100%;
+      }
     `
   ]
 })
-export class LearningObjectDescriptionComponent implements OnInit {
+export class LearningObjectDescriptionComponent {
   copy = COPY;
   @Input() learningObject;
   @Output() textOutput = new EventEmitter();
 
   constructor() { }
-
-  ngOnInit() { }
 
   bindEditorOutput(event) {
     if ( event !== '') {
