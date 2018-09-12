@@ -23,9 +23,8 @@ import { PersonalInfoComponent } from './register/personal-info/personal-info.co
 import { ProfileInfoComponent } from './register/profile-info/profile-info.component';
 import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.component';
 import { ModalModule } from '../shared/modals';
-import {
-  ToasterModule
-} from '../shared/toaster';
+import { ToasterModule } from '../shared/toaster';
+import { EmailVerifiedComponent } from './email-verified/email-verified.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,8 @@ import {
     RecaptchaDirective,
     PersonalInfoComponent,
     ProfileInfoComponent,
-    GravatarInfoComponent
+    GravatarInfoComponent,
+    EmailVerifiedComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +47,7 @@ import {
     HttpClientModule,
     SharedModule,
     ModalModule,
-    ToasterModule,
+    ToasterModule
   ],
   providers: [CanResetPasswordGuard, AuthResolve]
 })
