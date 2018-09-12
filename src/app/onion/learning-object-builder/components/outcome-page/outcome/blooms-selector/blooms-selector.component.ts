@@ -11,7 +11,6 @@ export class BloomsSelectorComponent implements OnInit, OnChanges {
   @Input() default;
   @Output('bloom') bloom = new EventEmitter<string>();
   bloomValue;
-  classverbs: { [level: string]: Set<string> };
 
   constructor(private el: ElementRef) { }
 
