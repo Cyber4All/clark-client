@@ -1,14 +1,6 @@
 import { SuggestionService } from './services/suggestion.service';
-import {
-  Component, Input, KeyValueDiffers, OnInit, OnDestroy,
-  OnChanges, SimpleChanges
-} from '@angular/core';
+import { Component, Input, KeyValueDiffers, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { OutcomeSuggestion, StandardOutcome } from '@cyber4all/clark-entity';
-
-/*
-  TODO: Automatically check or hide standards that are currently mapped from the suggestion view
-  TODO: Uncheck/unhide an outcome that is deselected from the mappings-list view
-*/
 
 @Component({
   selector: 'onion-suggestion-component',

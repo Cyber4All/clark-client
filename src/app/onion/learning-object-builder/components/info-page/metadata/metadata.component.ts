@@ -19,7 +19,6 @@ import 'rxjs/add/operator/debounceTime';
 })
 export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   copy = COPY;
-  @Input() isNew;
   @Input() learningObject;
   @ViewChild('userSearchInput', { read: ElementRef })
   userSearchInput: ElementRef;
@@ -40,7 +39,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
 
   public tips = TOOLTIP_TEXT;
-  validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
   academicLevels = Object.values(AcademicLevel);
 
   constructor(
@@ -53,7 +51,7 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     this.subs.push(fromEvent(this.userSearchInput.nativeElement, 'input')
       .debounceTime(650)
-      .subscribe(val => {
+      .subscribe(() => {
         this.search();
       })
     );
