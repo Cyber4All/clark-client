@@ -11,17 +11,19 @@ import {
     ComponentFactoryResolver,
     Injector,
     ComponentRef,
-    EmbeddedViewRef
+    EmbeddedViewRef,
+    HostListener
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'clark-popup',
   template: `<div class="clark-popup"></div>`,
 })
 export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
-    // 
+    // grab the #popupInner element to be used as the popup body
     @ContentChild('popupInner') content: ElementRef;
 
     // event emitter to signal the popups closure to it's origin component
@@ -31,6 +33,13 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
     viewer: ComponentRef<PopupViewerComponent>;
 
     componentDestroyed$: Subject<void> = new Subject();
+
+    // listen for keyup event and, if it's the escape key, close the popup
+    @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
+        if (event.keyCode === 27) {
+            this.close();
+        }
+    }
 
     constructor(
         private componentFactoryResolver: ComponentFactoryResolver,

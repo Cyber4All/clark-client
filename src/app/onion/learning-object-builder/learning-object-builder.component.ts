@@ -47,6 +47,8 @@ export class LearningObjectBuilderComponent implements OnInit {
 
   validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
 
+  submitToCollection = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -247,7 +249,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     } else {
       switch (publish) {
         case 'accept':
-          this.learningObject.publish();
+          this.submitToCollection = true;
           return true;
         case 'reject':
           this.learningObject.unpublish();
@@ -256,6 +258,31 @@ export class LearningObjectBuilderComponent implements OnInit {
           return false;
       }
     }
+  }
+
+  addToCollection(collection?: string) {
+    if (collection) {
+      this.service.togglePublished(this.learningObject).then(() => {
+        // success
+        this.notificationService.notify(
+          'Success!',
+          `Learning object submitted${ (collection) ? ' to ' + collection + ' collection' : '' }!`,
+          'good',
+          'far fa-check'
+        );
+      }).catch (err => {
+        // error
+        console.error(err);
+        this.notificationService.notify(
+          'Error!',
+          `Error submitting learning object to collection!`,
+          'bad',
+          'far fa-times'
+        );
+      });
+    }
+
+    this.submitToCollection = false;
   }
 
   toggleLevel(level: AcademicLevel) {

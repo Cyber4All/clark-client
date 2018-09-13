@@ -71,3 +71,9 @@
     <button tip="{{ tips.LEARNING_OBJECT }}" tipDelay="500" tipLocation="bottom" (click)="newLearningObject()" class="button neutral bright">{{ copy.CREATE }}</button>
   </div>
 </ng-template>
+
+<clark-popup *ngIf="submitToCollection" (closed)="submitToCollection = false">
+  <div #popupInner>
+    <clark-collection-selector (choice)="togglePublished(true, $event)"></clark-collection-selector>
+  </div>
+</clark-popup>

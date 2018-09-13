@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PopupComponent } from './popup.component';
 import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
+import { CollectionSelectorComponent } from './templates/collection-selector/collection-selector.component';
 
 @NgModule({
   imports: [
@@ -9,10 +10,12 @@ import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
   ],
   declarations: [
     PopupComponent,
-    PopupViewerComponent
+    PopupViewerComponent,
+    CollectionSelectorComponent
   ],
   exports: [
-    PopupComponent
+    PopupComponent,
+    CollectionSelectorComponent
   ],
   entryComponents: [
     PopupViewerComponent

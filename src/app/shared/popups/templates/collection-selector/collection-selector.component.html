@@ -1,0 +1,16 @@
+<div class="collection-selection-popup">
+  <div class="modal-title">Submit this learning object<br>to a collection?</div>
+  <div class="collection-chooser">
+    <div class="nccp" (click)="choice.emit('nccp');">
+      <div class="logo"></div>
+      <div class="image-label">NSA NCCP</div>
+    </div>
+    <div class="gencyber" (click)="choice.emit('gencyber');">
+      <div class="logo"></div>
+      <div class="image-label">GenCyber</div>
+    </div>
+  </div>
+  <div class="btn-group center">
+    <div class="button good" (click)="choice.emit(undefined)">No thanks, this learning object is stand-alone </div>
+  </div>
+</div>

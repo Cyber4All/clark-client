@@ -1,0 +1,77 @@
+@import '~_vars.scss';
+
+.collection-chooser {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 280px);
+  grid-gap: 50px;
+  justify-content: center;
+  margin-bottom: 25px;
+
+  & > div {
+    // card view
+    background: white;
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+    height: 350px;
+    cursor: pointer;
+    transform: scale(1);
+    opacity: 0.7;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.01);
+      opacity: 1;
+      box-shadow: 0 0 25px 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .logo {
+    width: 100%;
+    background: linear-gradient(
+      45deg,
+      darken($blue-accent, 10),
+      lighten($blue-accent, 10)
+    );
+
+    &:after {
+      content: '';
+      width: 200px;
+      margin: auto;
+      display: block;
+      padding-bottom: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+  }
+
+  .image-label {
+    font-size: 20px;
+    text-align: center;
+    color: $dark-text;
+    margin-top: 10px;
+  }
+
+  .nccp .logo:after {
+    background-image: url('/assets/images/nsa.png');
+  }
+
+  .gencyber .logo {
+    background: linear-gradient(
+      45deg,
+      darken($error-red, 10),
+      lighten($error-red, 10)
+    );
+
+    &:after {
+      background-image: url('/assets/images/gencyber.png');
+    }
+  }
+}
+
+:host {
+    // resize the popup
+    max-width: 700px;
+    width: 90vw;
+    display: block;
+  }
