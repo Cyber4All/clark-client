@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build": "ng build",
     "test": "node_modules/.bin/jest --verbose  --coverage",
     "lint": "ng lint",
     "app": "cd .. cd ",
