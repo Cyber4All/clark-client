@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 // Other
 import { routes } from './content-upload.routes';
-import { DropzoneModule } from 'ngx-dropzone-wrapper';
-import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
-import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { DropzoneModule } from '@cyber4all/ngx-dropzone-wrapper';
+import { DROPZONE_CONFIG } from '@cyber4all/ngx-dropzone-wrapper';
+import { DropzoneConfigInterface } from '@cyber4all/ngx-dropzone-wrapper';
 import { environment } from '../environments/environment';
 
 // Services
@@ -17,7 +17,6 @@ import { FileStorageService } from './services/file-storage.service';
 
 // Components
 import { FileManagerComponent } from './file-manager/file-manager.component';
-import { UploadQueueComponent } from './file-manager/upload-queue/upload-queue.component';
 
 import { ContentUploadComponent } from './content-upload.component';
 import { UploadComponent } from './upload/upload.component';
@@ -25,6 +24,7 @@ import { UploadComponent } from './upload/upload.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
+import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
@@ -34,8 +34,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     ContentUploadComponent,
     UploadComponent,
     FileManagerComponent,
-    UploadQueueComponent,
-    UrlManagerComponent
+    UrlManagerComponent,
+    FileUploadStatusComponent
   ],
   imports: [
     CommonModule,

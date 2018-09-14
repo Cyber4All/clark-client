@@ -1,5 +1,4 @@
-import { quizzes, instructions } from '@cyber4all/clark-taxonomy';
-import { verbs, assessments, levels } from '@cyber4all/clark-taxonomy';
+import { verbs, levels } from '@cyber4all/clark-taxonomy';
 import {
   Component,
   OnInit,
@@ -14,9 +13,8 @@ import {
 } from '@angular/core';
 import { ModalService } from '../../../../../shared/modals';
 
-import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs';
 import { COPY } from './outcome.copy';
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 import { LearningObjectErrorStoreService } from '../../../errorStore';
@@ -40,16 +38,12 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
 
 
   suggestOpen = false;
-  openSearch = false;
   suggestIndex: number;
   mappings: Array<Object>;
   bloomLevels;
   outcomeSuggestionText = '';
 
-  classverbs: { [level: string]: Set<string> };
-  testquizstrategies: { [level: string]: Set<string> };
-  classassessmentstrategies: { [level: string]: Set<string> };
-  instructionalstrategies: { [level: string]: Set<string> };
+  classVerbs: { [level: string]: Set<string> };
 
   constructor(
     private suggestionService: SuggestionService,
@@ -59,21 +53,18 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   ) {}
 
   setupView(first?: boolean) {
-    // FIXME: classverbs should be sorted at the API
-    this.classverbs = this.sortVerbs();
+    // FIXME: classVerbs should be sorted at the API
+    this.classVerbs = this.sortVerbs();
     if (first && !this.outcome._text) {
       // THIS CHECK ONLY PASSES BECAUSE VALIDATION PREVENTS SAVING OUTCOMES WITHOUT TEXT
-      this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
+      this.outcome._verb = Array.from(this.classVerbs[this.outcome._bloom].values())[0];
     }
 
-    this.suggestionService.udpateMappings(this.outcome._mappings);
+    this.suggestionService.updateMappings(this.outcome._mappings);
   }
 
   ngOnInit() {
     this.bloomLevels = levels;
-    this.testquizstrategies = quizzes;
-    this.classassessmentstrategies = assessments;
-    this.instructionalstrategies = instructions;
 
     this.suggestionService.mappedSubject.subscribe(val => {
       this.mappings = val;
@@ -82,13 +73,13 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
       }
     });
 
-    this.suggestionService.udpateMappings(this.outcome._mappings);
+    this.suggestionService.updateMappings(this.outcome._mappings);
     this.setupView(true);
 
     // pass the outcome text to the suggestion component
     this.outcomeSuggestionText = this.outcome._text;
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    Observable.fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
+    fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
       this.outcomeSuggestionText = val;
     });
   }
@@ -128,7 +119,7 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
 
   registerBloomsLevel(level) {
     this.outcome._bloom = level;
-    this.outcome._verb = Array.from(this.classverbs[this.outcome._bloom].values())[0];
+    this.outcome._verb = Array.from(this.classVerbs[this.outcome._bloom].values())[0];
   }
 
   updateFocus(i) {
@@ -136,47 +127,9 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
       this.suggestOpen = false;
     }
   }
-  suggestionLoad(i) {
-    this.suggestOpen = !this.suggestOpen;
-    this.suggestIndex = i;
-  }
 
   deleteOutcome() {
     this.deleteIndex.emit(this.index);
-  }
-
-  openBloomsInfo(index: number) {}
-
-  newInstructionalStrategy(i) {
-    const newStrategy = this.outcome.addStrategy();
-    newStrategy.instruction = this.instructionalstrategies[
-      this.outcome._bloom
-    ][0];
-    newStrategy.text = '';
-  }
-
-  newQuestion(i) {
-    const newQuestion = this.outcome.addAssessment();
-    newQuestion.plan = this.classassessmentstrategies[this.outcome._bloom][0];
-    newQuestion.text = '';
-  }
-
-  deleteStrategy(i, s) {
-    this.outcome.removeStrategy(s);
-  }
-
-  deleteQuestion(i, s) {
-    this.outcome.removeAssessment(s);
-  }
-
-  bindEditorOutput(event, type, i, s) {
-    if (type === 'question') {
-      this.outcome.assessments[s].text = event;
-    } else {
-      if (type === 'strategy') {
-        this.outcome.strategies[s].text = event;
-      }
-    }
   }
 
   validate(): boolean {
@@ -184,18 +137,11 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
     if (this.outcome._bloom === '') {
       return false;
     }
-    if (this.outcome._text === '' || this.outcome._verb === '') {
-      return false;
-    }
-    return true;
+    return !(this.outcome._text === '' || this.outcome._verb === '');
   }
 
   ngOnDestroy() {
     this.suggestionService.mappedSubject.unsubscribe();
-  }
-
-  updateMappings(mappings) {
-    this.suggestionService.udpateMappings(mappings);
   }
 
   updateSidebarText() {

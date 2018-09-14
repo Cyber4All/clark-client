@@ -4,11 +4,10 @@ import { AcademicLevel, User } from '@cyber4all/clark-entity';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { UserService } from '../../../../../core/user.service';
 import { AuthService } from '../../../../../core/auth.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
 import { Query } from '../../../../../shared/interfaces/query';
 import { COPY } from './metadata.copy';
 
-import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/debounceTime';
 
 // TODO: Apply .bad to input if the form is submitted and it's not valid
@@ -20,7 +19,6 @@ import 'rxjs/add/operator/debounceTime';
 })
 export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   copy = COPY;
-  @Input() isNew;
   @Input() learningObject;
   @ViewChild('userSearchInput', { read: ElementRef })
   userSearchInput: ElementRef;
@@ -41,7 +39,6 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
 
   public tips = TOOLTIP_TEXT;
-  validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
   academicLevels = Object.values(AcademicLevel);
 
   constructor(
@@ -52,9 +49,9 @@ export class LearningObjectMetadataComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(Observable.fromEvent(this.userSearchInput.nativeElement, 'input')
+    this.subs.push(fromEvent(this.userSearchInput.nativeElement, 'input')
       .debounceTime(650)
-      .subscribe(val => {
+      .subscribe(() => {
         this.search();
       })
     );

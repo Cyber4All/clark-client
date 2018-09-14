@@ -29,7 +29,7 @@ export class FileDetailsComponent implements OnInit, OnChanges {
    */
   emit(): void {
     const files = this.materials.files;
-    const folderMeta = this.materials['folderDescriptions'];
+    const folderMeta = this.materials.folderDescriptions;
     this.files$.next(files);
     this.folderMeta$.next(folderMeta);
   }

@@ -6,13 +6,13 @@
       </div>
       <div class="source">
         <div class="mappings-spinner" *ngIf="mappingsQueryInProgress"><i class="far fa-spinner-third"></i></div>
-        <div class="button neutral" (click)="showSources($event)">{{(mappingService.author && mappingService.author !== '') ? mappingService.author : '- Source -'}} <i class="far fa-sort"></i></div>
-        <div class="button good" (click)="close()">Done <i class="far fa-check"></i></div>
+        <button class="button neutral" (click)="showSources($event)">{{(mappingService.author && mappingService.author !== '') ? mappingService.author : '- Source -'}} <i class="far fa-sort"></i></button>
+        <button class="button good" (click)="close()">Done <i class="far fa-check"></i></button>
       </div>
   </div>
   <div class="mappings">
     <div class="text-filter">
-      <input #mappingSearchInput type="text" id="mappingsFilter" [(ngModel)]="mappingService.filterText" placeholder="Outcome text includes...">
+      <input #mappingSearchInput type="text" id="mappingsFilter" [(ngModel)]="mappingService.filterText" placeholder="Outcome text includes..." aria-label="Outcome Text Includes" >
       <div class="selected-mappings">
         <span *ngIf="showMappedOutcomesTitle && mappings.length">Mapped Outcomes: </span>
         <div class="pill" *ngFor="let m of mappings" (click)="removeOutcome(m)">
