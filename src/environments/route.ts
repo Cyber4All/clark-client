@@ -44,14 +44,13 @@ export const USER_ROUTES = {
     )}/publish`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(
-    learningObjectId: string,
-    collectionName: string
+    learningObjectId: string
   ) {
     return `${
       environment.apiURL
-    }/collections/learning-objects/${encodeURIComponent(
+    }/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}?collection=${encodeURIComponent(collectionName)}`;
+    )}/collections`;
   },
   UNPUBLISH_LEARNING_OBJECT(username, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(

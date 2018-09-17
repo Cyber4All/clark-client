@@ -197,12 +197,11 @@ export class LearningObjectService {
     collectionName: string
   ): Promise<any> {
     return this.http
-      .post(
+      .patch(
         USER_ROUTES.ADD_LEARNING_OBJET_TO_COLLECTION(
-          learningObjectId,
-          collectionName
+          learningObjectId
         ),
-        {},
+        { collection: collectionName },
         { withCredentials: true }
       )
       .toPromise();
