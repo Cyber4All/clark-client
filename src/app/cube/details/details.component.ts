@@ -92,8 +92,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.isOwnObject = false;
       }
 
-      this.learningObject.collection = 'GenCyber';
-
       this.getLearningObjectRatings();
     } catch (e) {
       console.log(e);
