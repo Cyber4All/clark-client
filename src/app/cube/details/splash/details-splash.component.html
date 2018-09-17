@@ -25,7 +25,7 @@
         </div>
         <div class="collection">
           <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/' + collectionImage + ')'}"></div>
-          <div class="collection-name">{{ learningObject.collection }}</div>
+          <div class="collection-name">{{ collections.get(learningObject.collection)}}</div>
         </div>
     </div>
   </div>

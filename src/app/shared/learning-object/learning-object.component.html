@@ -8,7 +8,7 @@
       <button *ngIf="(auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
     </div>
     <div *ngIf="!loading" class="collection" [ngClass]="{'gencyber': learningObject.collection?.toLowerCase() === 'gencyber'}">
-      {{ learningObject.collection }}
+      {{ collections.get(learningObject.collection) }}
     </div>
     <div class="details">
       <div class="author">

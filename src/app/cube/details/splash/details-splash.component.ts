@@ -14,6 +14,8 @@ export class DetailsSplashComponent {
   @Input() owned: boolean;
   @Output() showNewRating: EventEmitter<boolean> = new EventEmitter();
 
+  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber']])
+
   /**
    * Emits an event to parent component to signal the ratings popup to open
    */
@@ -26,7 +28,7 @@ export class DetailsSplashComponent {
    */
   get collectionImage() {
     // FIXME this should not be done with an if-statement, switch case or potentially API side
-    if (this.learningObject.collection === 'GenCyber') {
+    if (this.learningObject.collection === 'gencyber') {
       return 'gencyber.png';
     } else {
       return 'nsa.png';
