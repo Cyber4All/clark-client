@@ -1,5 +1,6 @@
 import { Output, EventEmitter } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { OutcomeService } from '../../../../../../../core/outcome.service';
 
 @Component({
     selector: 'onion-suggestion-filter',
@@ -73,14 +74,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SuggestionFilterComponent implements OnInit {
 
-    sources = [
-        'CAE Cyber Defense',
-        'CAE Cyber Ops',
-        'CS2013',
-        'NCWF',
-        'NCWF KSAs',
-        'NCWF Tasks',
-        'CSEC'];
+    sources: string[];
     // FIXME: Fetch dates from API
     dates = [
         'Any',
@@ -93,7 +87,9 @@ export class SuggestionFilterComponent implements OnInit {
     @Output() date = new EventEmitter<number>();
     @Output() name = new EventEmitter<string>();
 
-    constructor() { }
+    constructor(private outcomeService: OutcomeService) {
+        this.outcomeService.getSources().then(s => this.sources = s);
+    }
 
     ngOnInit() { }
 
