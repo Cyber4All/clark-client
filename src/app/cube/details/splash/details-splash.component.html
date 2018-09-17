@@ -23,6 +23,10 @@
           </div>
           <div [ngClass]="learningObject.length" class="type">{{ learningObject.length }}</div>
         </div>
+        <div class="collection">
+          <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/' + collectionImage + ')'}"></div>
+          <div class="collection-name">{{ learningObject.collection }}</div>
+        </div>
     </div>
   </div>
 </div>

@@ -20,4 +20,16 @@ export class DetailsSplashComponent {
   showRatingPopup() {
     this.showNewRating.emit(true);
   }
+
+  /**
+   * Retrieve image for collection based on collection property in learning object
+   */
+  get collectionImage() {
+    // FIXME this should not be done with an if-statement, switch case or potentially API side
+    if (this.learningObject.collection === 'GenCyber') {
+      return 'gencyber.png';
+    } else {
+      return 'nsa.png';
+    }
+  }
 }
