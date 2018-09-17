@@ -125,8 +125,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     if (this.disabled) {
@@ -157,14 +156,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-       // create an observable from the dragover event and subscribe to it to show the dropzone popover
+    // create an observable from the dragover event and subscribe to it to show the dropzone popover
     fromEvent(document.getElementsByTagName('body')[0], 'dragleave')
-    .takeUntil(this.unsubscribe$)
-    .subscribe((event: any) => {
-      if (event.target.classList.contains('uploader')) {
-        this.toggleDrag(false);
-      }
-    });
+      .takeUntil(this.unsubscribe$)
+      .subscribe((event: any) => {
+        if (event.target.classList.contains('uploader')) {
+          this.toggleDrag(false);
+        }
+      });
   }
 
   /**
@@ -286,7 +285,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!file.rootFolder) {
         // this is a file addition
         this.inProgressFileUploads.push(file);
-        this.inProgressUploadsMap.set(file.upload.uuid, this.inProgressFileUploads.length - 1);
+        this.inProgressUploadsMap.set(
+          file.upload.uuid,
+          this.inProgressFileUploads.length - 1
+        );
       }
     } catch (error) {
       console.log(error);
@@ -316,13 +318,16 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         folder.allProgress.set(file.fullPath, newProgress);
 
         // calculate the folders overall progress
-        folder.progress = Math.ceil(Array.from(folder.allProgress.values() as number[]).reduce((x, y) => x + y) / folder.items);
+        folder.progress = Math.ceil(
+          Array.from(folder.allProgress.values() as number[]).reduce(
+            (x, y) => x + y
+          ) / folder.items
+        );
       } else {
         // this is a file update
         index = this.inProgressUploadsMap.get(file.upload.uuid);
         this.inProgressFileUploads[index].progress = Math.ceil(newProgress);
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -330,10 +335,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dzComplete(event) {
     try {
-      const progressCheck =
-        this.inProgressFileUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
+      const progressCheck = this.inProgressFileUploads
+        .filter(x => typeof x.progress !== 'number' || x.progress < 100)
         .concat(
-          this.inProgressFolderUploads.filter(x => typeof x.progress !== 'number' || x.progress < 100)
+          this.inProgressFolderUploads.filter(
+            x => typeof x.progress !== 'number' || x.progress < 100
+          )
         );
 
       if (!progressCheck.length) {
@@ -360,6 +367,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.learningObjectName
       );
       this.updateFileSubscription();
+      await this.learningObjectService.updateReadme(
+        this.authService.username,
+        this.learningObject.id
+      );
     } catch (e) {
       console.log(e);
     }
@@ -406,7 +417,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           folder.allProgress.set(file.fullPath, 0);
 
           this.inProgressFolderUploads.push(folder);
-          this.inProgressUploadsMap.set(rootFolder, this.inProgressFolderUploads.length - 1);
+          this.inProgressUploadsMap.set(
+            rootFolder,
+            this.inProgressFolderUploads.length - 1
+          );
         }
       } else {
         path = file.name;
@@ -535,6 +549,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.saving = true;
         await this.deleteFromMaterials(params.files);
         this.deleteFiles(params.files);
+        await this.learningObjectService.updateReadme(
+          this.authService.username,
+          this.learningObject.id
+        );
         this.updateFileSubscription();
         this.confirmDeletion$.next(true);
         this.saving = false;
