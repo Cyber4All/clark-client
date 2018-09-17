@@ -43,6 +43,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   showAddRating = false;
   windowWidth: number;
   loggedin = false;
+  showDownloadModal = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -130,6 +131,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       .downloadLearningObject(author, learningObjectName)
       .takeUntil(this.isDestroyed$);
 
+    this.toggleDownloadModal(true);
+
     loaded.subscribe(finished => {
       if (finished) {
         this.downloading = false;
@@ -143,6 +146,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
 
     this.noteService.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+  }
+
+  toggleDownloadModal(val?: boolean) {
+    this.showDownloadModal = val;
   }
 
   shareButton(event, type) {
