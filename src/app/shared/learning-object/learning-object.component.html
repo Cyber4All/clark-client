@@ -5,7 +5,7 @@
   <div class="learning-object-content">
     <div class="title">
       {{ truncateText(learningObject.name, 45) }}
-      <button *ngIf="(auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
+      <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
     </div>
     <div class="details">
       <div class="author">
