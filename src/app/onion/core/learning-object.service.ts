@@ -42,7 +42,8 @@ export class LearningObjectService {
         { object: learningObject },
         { headers: this.headers, withCredentials: true }
       )
-      .toPromise().then(res => {
+      .toPromise()
+      .then(res => {
         return LearningObject.instantiate(res.json());
       });
     // TODO: Verify this response gives the learning object name
@@ -176,8 +177,34 @@ export class LearningObjectService {
   }
 
   setChildren(learningObjectName: string, children: string[]): Promise<any> {
-    const route = USER_ROUTES.SET_CHILDREN(this.auth.user.username, learningObjectName);
+    const route = USER_ROUTES.SET_CHILDREN(
+      this.auth.user.username,
+      learningObjectName
+    );
 
-    return this.http.post(route, { children }, { withCredentials: true }).toPromise();
+    return this.http
+      .post(route, { children }, { withCredentials: true })
+      .toPromise();
+  }
+
+  /**
+   * Adds specified learning object to specified collection
+   * @param learningObjectId id of learning object to be added to collection
+   * @param collectionName name of collection in which to insert learning object
+   */
+  addToCollection(
+    learningObjectId: string,
+    collectionName: string
+  ): Promise<any> {
+    return this.http
+      .post(
+        USER_ROUTES.ADD_LEARNING_OBJET_TO_COLLECTION(
+          learningObjectId,
+          collectionName
+        ),
+        {},
+        { withCredentials: true }
+      )
+      .toPromise();
   }
 }

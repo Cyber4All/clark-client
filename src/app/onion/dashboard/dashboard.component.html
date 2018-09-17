@@ -74,6 +74,6 @@
 
 <clark-popup *ngIf="submitToCollection" (closed)="submitToCollection = false">
   <div #popupInner>
-    <clark-collection-selector (choice)="togglePublished(true, $event)"></clark-collection-selector>
+    <clark-collection-selector (choice)="addToCollection($event)"></clark-collection-selector>
   </div>
 </clark-popup>

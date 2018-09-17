@@ -262,6 +262,51 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
+   * Publishes a learning object and adds it to a specified collection
+   * @param collection the name of the collection to add this learning object to
+   */
+  addToCollection(collection?: string) {
+    if (collection) {
+      // first, attempt to publish
+      this.learningObjectService.togglePublished(this.focusedLearningObject).then(() => {
+        // publishing was a success, attempt to add to collection
+        this.learningObjectService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
+          // success
+          this.notificationService.notify(
+            'Success!',
+            `Learning object submitted to ${collection} collection successfully!`,
+            'good',
+            'far fa-check'
+          );
+          this.focusedLearningObject.publish();
+        }).catch (err => {
+          // error
+          console.error(err);
+          this.notificationService.notify(
+            'Error!',
+            `Error submitting learning object to ${collection} collection!`,
+            'bad',
+            'far fa-times'
+          );
+        });
+      }).catch(error => {
+        // failed to publish
+        this.notificationService.notify(
+          'Error!',
+          error._body,
+          'bad',
+          'far fa-times'
+        );
+        console.error(error);
+      });
+    } else {
+      console.error('No collection defined!');
+    }
+
+    this.submitToCollection = false;
+  }
+
+  /**
    * Opens the learning object builder component
    */
   newLearningObject() {
