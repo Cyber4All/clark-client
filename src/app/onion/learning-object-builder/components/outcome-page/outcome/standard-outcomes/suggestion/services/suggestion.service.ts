@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { LearningObject } from '@cyber4all/clark-entity';
-import { Injectable, Output } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 import { environment } from '@env/environment';
@@ -17,7 +16,6 @@ export class SuggestionService {
 
   // String of current text used to filter outcomes
   filterText = '';
-
 
   // String of currently selected author
   author = '';
@@ -102,7 +100,7 @@ export class SuggestionService {
     return false;
   }
 
-  udpateMappings(mappings) {
+  updateMappings(mappings) {
     this.mappedStandards = mappings;
     this.mappedSubject.next(mappings);
   }

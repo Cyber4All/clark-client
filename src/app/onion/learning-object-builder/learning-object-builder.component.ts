@@ -5,12 +5,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { LearningObjectService } from '../core/learning-object.service';
 import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity';
-import {
-  verbs,
-  assessments,
-  quizzes,
-  instructions
-} from '@cyber4all/clark-taxonomy';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObjectStoreService } from './store';
 import { LearningObjectErrorStoreService } from './errorStore';
@@ -35,17 +29,9 @@ export class LearningObjectBuilderComponent implements OnInit {
 
   learningObject: LearningObject = new LearningObject();
 
-  classverbs: { [level: string]: Set<string> } = verbs;
-  testquizstrategies: { [level: string]: Set<string> } = quizzes;
-  classassessmentstrategies: { [level: string]: Set<string> } = assessments;
-  instructionalstrategies: { [level: string]: Set<string> } = instructions;
-  academicLevels = Object.values(AcademicLevel);
-
   learningObjectName: string;
   isNew = false;
   submitted = 0;
-
-  validName = /([A-Za-z0-9_()`~!@#$%^&*+={[\]}\\|:;"'<,.>?/-]+\s*)+/i;
 
   submitToCollection = false;
 
@@ -112,7 +98,7 @@ export class LearningObjectBuilderComponent implements OnInit {
    */
   async save(willUpload: boolean) {
     if (!willUpload && (this.isNew || !this.auth.user.emailVerified)) {
-      if (!(await this.showPublishingDialog())) {
+      if (!(await this.showSubmissionDialog())) {
         return;
       }
     }
@@ -185,7 +171,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     }
   }
 
-  private async showPublishingDialog(): Promise<boolean> {
+  private async showSubmissionDialog(): Promise<boolean> {
     const text = this.auth.user.emailVerified
       ? 'You can submit this learning object for review by the NCCP review team now, or save it for later. If you don\'t submit now, you can submit from your Dashboard at a later time.'
       : 'You must have a verfied email address to submit learning objects! Would you like to verfiy your email now?';
@@ -293,14 +279,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       this.learningObject.addLevel(level);
     }
   }
-  /**
-   * Adds new LearningGoal to LearningObject
-   *
-   * @memberof LearningObjectBuilderComponent
-   */
-  newGoal(): void {
-    this.learningObject.addGoal('');
-  }
+
   /**
    * Adds new LearningOutcome to LearningObject
    *
@@ -311,9 +290,6 @@ export class LearningObjectBuilderComponent implements OnInit {
     return newOutcome;
   }
 
-  deleteGoal(i) {
-    this.learningObject.removeGoal(i);
-  }
   /**
    * Deletes LearningOutcome from LearningObject
    *
@@ -323,47 +299,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   deleteOutcome(index: number): void {
     this.learningObject.removeOutcome(index);
   }
-  /**
-   * Deletes InstructionalStrategy from LearningObject's LearningOutcomes
-   *
-   * @param {number} index
-   * @param {number} s
-   * @memberof LearningObjectBuilderComponent
-   */
-  deleteStrategy(index: number, s: number): void {
-    this.learningObject.outcomes[index].removeStrategy(s);
-  }
-  /**
-   * Deletes AssessmentPlan from LearningObject's LearningOutcomes
-   *
-   * @param {number} index
-   * @param {number} s
-   * @memberof LearningObjectBuilderComponent
-   */
-  deleteQuestion(index: number, s: number): void {
-    this.learningObject.outcomes[index].removeAssessment(s);
-  }
 
-  /**
-   * Captures output and binds the textEditor's text from the textEditorComponent to the learningObject
-   *
-   * @param {number} event
-   * @param {number} type
-   * @param {number} i
-   * @param {number} s
-   * @memberof LearningObjectBuilderComponent
-   */
-  bindEditorOutput(event, type: string, i?: number, s?: number): void {
-    if (type === 'question') {
-      this.learningObject.outcomes[i].assessments[s].text = event;
-    } else if (type === 'strategy') {
-      this.learningObject.outcomes[i].strategies[s].text = event;
-    } else {
-      if (event !== '') {
-        this.learningObject.goals[0].text = event;
-      }
-    }
-  }
 
   showFormErrors() {
     this.submitted++;
@@ -454,15 +390,5 @@ export class LearningObjectBuilderComponent implements OnInit {
           this.activePage + modifier === PAGES.OUTCOMES ? 0 : undefined
       }
     });
-  }
-
-  togglePublished(event) {
-    if (this.auth.user.emailVerified) {
-      if (this.learningObject.published) {
-        this.learningObject.unpublish();
-      } else {
-        this.learningObject.publish();
-      }
-    }
   }
 }

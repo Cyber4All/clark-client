@@ -89,9 +89,9 @@ export class LearningObjectService {
       .then(res => {
         const learningObject = LearningObject.instantiate(res.json());
         // If contributors exist on this learning object, instantiate them
-        if (learningObject['contributors'] && learningObject['contributors'].length > 0) {
-          const arr = learningObject['contributors'];
-          learningObject['contributors'] = arr.map(member => User.instantiate(member));
+        if (learningObject.contributors && learningObject.contributors.length > 0) {
+          // @ts-ignore clark-entity should be updated so that contributors is an array of users, not an array of strings
+          learningObject.contributors = learningObject.contributors.map(member => User.instantiate(member));
         }
         return learningObject;
       });
