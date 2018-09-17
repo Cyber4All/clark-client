@@ -201,9 +201,9 @@ export class DashboardComponent implements OnInit {
               .then(async () => {
                 this.notificationService.notify(
                   'Done!',
-                  'New Learning Object(s) deleted!',
+                  'Learning Object(s) deleted!',
                   'good',
-                  'far fa-times'
+                  'far fa-check'
                 );
                 this.learningObjects = await this.getLearningObjects();
               })
@@ -220,7 +220,7 @@ export class DashboardComponent implements OnInit {
                 this.clearSelected();
                 this.notificationService.notify(
                   'Done!',
-                  'New Learning Object(s) deleted!',
+                  'Learning Object(s) deleted!',
                   'good',
                   'far fa-times'
                 );
