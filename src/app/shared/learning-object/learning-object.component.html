@@ -3,9 +3,12 @@
     <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
   </div>
   <div class="learning-object-content">
+    <div *ngIf="!loading" class="collection">
+      <div class="collection-name">{{ learningObject.collection }}</div>
+      <button *ngIf="(auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
+    </div>
     <div class="title">
       {{ truncateText(learningObject.name, 45) }}
-      <button *ngIf="(auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
     </div>
     <div class="details">
       <div class="author">
