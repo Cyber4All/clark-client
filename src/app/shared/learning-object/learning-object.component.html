@@ -1,14 +1,16 @@
 <div class="learning-object" id="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
   <div class="image">
+    <div *ngIf="!loading" class="collection" [ngClass]="{'gencyber': learningObject.collection?.toLowerCase() === 'gencyber'}">
+      <div>
+        {{ collections.get(learningObject.collection) }}
+      </div>
+    </div>
     <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
   </div>
   <div class="learning-object-content">
     <div class="title">
       {{ truncateText(learningObject.name, 45) }}
       <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
-    </div>
-    <div *ngIf="!loading" class="collection" [ngClass]="{'gencyber': learningObject.collection?.toLowerCase() === 'gencyber'}">
-      {{ collections.get(learningObject.collection) }}
     </div>
     <div class="details">
       <div class="author">

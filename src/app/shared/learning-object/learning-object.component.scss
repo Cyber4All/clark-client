@@ -211,6 +211,44 @@
             opacity: 0.05;
             mask: $cube-pattern repeat;
         }
+
+        .collection {
+            position: absolute;
+            color: $dark-text;
+            text-transform: capitalize;
+            font-size: 10px;
+            font-weight: bold;
+            background: orange;
+            top: 8px;
+            left: 0;
+            box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+
+            div {
+                padding: 2px 12px 2px 8px;
+                position: relative;
+
+                &:after {
+                    content: '';
+                    width: 15px;
+                    height: 16px;
+                    position: absolute;
+                    background: orange;
+                    border-radius: 5px;
+                    transform: rotate(45deg);
+                    right: -8px;
+                    top: 1px;
+                }
+            }
+
+            &.gencyber {
+                background: $error-red;
+                color: white;
+
+                div:after {
+                    background: $error-red;
+                }
+            }
+        }
     }
 
     .learning-object-content {
@@ -218,22 +256,6 @@
         min-width: 0;
         width: 100%;
         position: relative;
-
-        .collection {
-            padding: 3px 8px;
-            border-radius: 3px;
-            display: inline-block;
-            position: relative;
-            color: white;
-            text-transform: capitalize;
-            font-size: 12px;
-            font-weight: 300;
-            background: $blue-accent;
-
-            &.gencyber {
-                background: $error-red;
-            }
-        }
 
         .title {
             font-size: 16px;
