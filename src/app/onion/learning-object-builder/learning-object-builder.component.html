@@ -56,3 +56,8 @@
   </div>
 </div>
 <button class="next button neutral on-white" id="builder-next" (click)="advanceSection()">Next</button>
+<clark-popup *ngIf="submitToCollection" (closed)="submitToCollection = false">
+  <div #popupInner>
+    <clark-collection-selector (choice)="addToCollection($event)"></clark-collection-selector>
+  </div>
+</clark-popup>

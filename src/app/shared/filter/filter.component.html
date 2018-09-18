@@ -21,6 +21,9 @@
     <ng-container *ngSwitchCase="'select-many'">
       <ng-container [ngTemplateOutlet]="selectMany" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
     </ng-container>
+    <ng-container *ngSwitchCase="'select-one'">
+      <ng-container [ngTemplateOutlet]="selectOne" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
+    </ng-container>
     <ng-container *ngSwitchCase="'dropdown-one'">
       dropdown-one hasn't been implemented yet :0
     </ng-container>
@@ -33,6 +36,18 @@
     <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of filters">
       <span tip="{{f.toolTip ? f.toolTip : ''}}" tipDisabled="{{!f.toolTip}}" tipLocation="right">
         <clark-checkbox [setValue]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.name)" (checkboxUnchecked)="removeFilter(name, f.name)"></clark-checkbox>
+        <span>{{ f.name }}</span>
+      </span>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Select One -->
+<ng-template #selectOne let-filters="filters" let-name="name">
+  <div class="filter-section-type select-many" id="filter-section-type">
+    <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of filters">
+      <span tip="{{f.toolTip ? f.toolTip : ''}}" tipDisabled="{{!f.toolTip}}" tipLocation="right">
+        <clark-checkbox [setValue]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.name, true)" (checkboxUnchecked)="removeFilter(name, f.name)"></clark-checkbox>
         <span>{{ f.name }}</span>
       </span>
     </div>

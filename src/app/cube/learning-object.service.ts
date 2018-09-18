@@ -1,8 +1,8 @@
-import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { LearningObject, User} from '@cyber4all/clark-entity';
+import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 
 import * as querystring from 'querystring';
@@ -44,10 +44,14 @@ export class LearningObjectService {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
-      if (queryClone.standardOutcomes && queryClone.standardOutcomes.length && typeof queryClone.standardOutcomes[0] !== 'string') {
-        queryClone.standardOutcomes = (<string[]>queryClone.standardOutcomes).map(
-          o => o['id']
-        );
+      if (
+        queryClone.standardOutcomes &&
+        queryClone.standardOutcomes.length &&
+        typeof queryClone.standardOutcomes[0] !== 'string'
+      ) {
+        queryClone.standardOutcomes = (<string[]>(
+          queryClone.standardOutcomes
+        )).map(o => o['id']);
       }
       const queryString = querystring.stringify(queryClone);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
@@ -89,14 +93,19 @@ export class LearningObjectService {
       .then(res => {
         const learningObject = LearningObject.instantiate(res.json());
         // If contributors exist on this learning object, instantiate them
-        if (learningObject['contributors'] && learningObject['contributors'].length > 0) {
-          const arr = learningObject['contributors'];
-          learningObject['contributors'] = arr.map(member => User.instantiate(member));
+        if (
+          learningObject.contributors &&
+          learningObject.contributors.length > 0
+        ) {
+          learningObject.contributors = learningObject.contributors.map(
+            // @ts-ignore FIXME clark-entity should be updated so that contributors is an array of users, not an array of strings
+            member => User.instantiate(member)
+          );
         }
         return learningObject;
       });
   }
-  getUsersLearningObjects(username: string ): Promise<LearningObject[]> {
+  getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(
       username
     );
@@ -105,9 +114,7 @@ export class LearningObjectService {
       .get(route, { withCredentials: true })
       .toPromise()
       .then(val => {
-        return val
-          .json()
-          .map(l => LearningObject.instantiate(l));
+        return val.json().map(l => LearningObject.instantiate(l));
       });
   }
 }
