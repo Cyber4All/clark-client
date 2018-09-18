@@ -149,7 +149,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   toggleDownloadModal(val?: boolean) {
-    this.showDownloadModal = val;
+    if (!val) {
+      this.showDownloadModal = val;
+    } else if (!localStorage.getItem('downloadWarning')) {
+      this.showDownloadModal = val;
+      localStorage.setItem('downloadWarning', 'true');
+    }
   }
 
   shareButton(event, type) {

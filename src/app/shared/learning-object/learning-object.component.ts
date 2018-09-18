@@ -18,6 +18,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber']])
 
   canDownload = false;
+  showDownloadModal = false;
 
   constructor(private hostEl: ElementRef, private renderer: Renderer2, private cart: CartV2Service, public auth: AuthService) {}
 
@@ -134,5 +135,16 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     e.stopPropagation();
     this.cart.downloadLearningObject(this.learningObject.author.username, this.learningObject.name)
       .take(1);
+
+      this.toggleDownloadModal(true);
+  }
+
+  toggleDownloadModal(val?: boolean) {
+    if (!val) {
+      this.showDownloadModal = val;
+    } else if (!localStorage.getItem('downloadWarning')) {
+      this.showDownloadModal = val;
+      localStorage.setItem('downloadWarning', 'true');
+    }
   }
 }
