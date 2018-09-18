@@ -61,10 +61,12 @@ export class BrowseComponent implements OnInit, OnDestroy {
       values: [
         // FIXME this should be dynamically populated from API
         {
-          name: 'NSA NCCP'
+          name: 'NSA NCCP',
+          value: 'nccp'
         },
         {
-          name: 'GenCyber'
+          name: 'GenCyber',
+          value: 'gencyber'
         }
       ]
     },
@@ -92,7 +94,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
   filterInput: Observable<string>;
 
   filtersDownMobile = false;
-  tempFilters: {name: string, value: string, active?: boolean}[] = [];
   windowWidth: number;
 
   unsubscribe: Subject<void> = new Subject();
@@ -199,7 +200,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   closeFilters() {
-    this.tempFilters = [];
     this.toggleFilters();
   }
 
@@ -207,41 +207,21 @@ export class BrowseComponent implements OnInit, OnDestroy {
    * This is used only on modal layouts, injects the tempFilter storage into the query object and sends it
    */
   applyFilters() {
-    for (let i = 0, l = this.tempFilters.length; i < l; i++) {
-      const o = this.tempFilters[i];
-      this.modifyFilter(o.name, o.value, o.active);
-    }
-
-    this.tempFilters = [];
     this.performSearch();
   }
 
   addFilter(key: string, value: string, clearFirst?: boolean) {
-    if (!this.filtersDownMobile) {
       this.modifyFilter(key, value, true, clearFirst);
-      this.performSearch(true);
-    } else {
-      this.tempFilters.push({name: key, value, active: true});
-    }
+      if (!this.filtersDownMobile) {
+        this.performSearch(true);
+      }
   }
 
   removeFilter(key: string, value: string) {
-    if (!this.filtersDownMobile) {
       this.modifyFilter(key, value);
-      this.performSearch(true);
-    } else {
-      for (let i = 0, l = this.tempFilters.length; i < l; i++) {
-        const f = this.tempFilters[i];
-
-        if (f.name === key && f.value === value) {
-          this.tempFilters.splice(i, 1);
-          return;
-        }
+      if (!this.filtersDownMobile) {
+        this.performSearch(true);
       }
-
-      // we didn't find it
-      this.tempFilters.push({name: key, value, active: false});
-    }
   }
 
   clearAllFilters(sendFilters: boolean = true) {
@@ -252,8 +232,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
         }
       }
     }
-
-    this.tempFilters = [];
 
     if (sendFilters) {
       this.performSearch(true);
@@ -271,7 +249,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
               this.filters[i].values[k].active = false;
             }
 
-            if (this.filters[i].values[k].name === value) {
+            if (this.filters[i].values[k].name === value || this.filters[i].values[k].value === value) {
               // found the correct filter
               this.filters[i].values[k].active = active;
 
@@ -312,7 +290,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
         if (active.length) {
           // there are filters in this category
-          this.query[category.name] = active.map(v => v.name);
+          this.query[category.name] = active.map(v => v.value || v.name);
         } else {
           this.query[category.name] = [];
         }

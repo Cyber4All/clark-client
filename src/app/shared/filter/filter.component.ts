@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, EventEmitter, Output, TemplateRef, ContentChildren, QueryList, AfterContentInit
+  Component, Input, EventEmitter, Output, TemplateRef, ContentChildren, QueryList, AfterContentInit
 } from '@angular/core';
 
 @Component({
@@ -7,7 +7,7 @@ import {
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit, AfterContentInit {
+export class FilterComponent implements AfterContentInit {
   @Input() filters: FilterSection[];
   @Input() display: 'horizontal' | 'vertical' = 'horizontal';
 
@@ -15,11 +15,6 @@ export class FilterComponent implements OnInit, AfterContentInit {
   @Output() remove: EventEmitter<{category: string, filter: string}> = new EventEmitter();
 
   @ContentChildren(TemplateRef) template: QueryList<TemplateRef<any>>;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   ngAfterContentInit() {
     const indexes = [];
@@ -63,6 +58,7 @@ export interface FilterSection {
   canSearch?: boolean;
   values?: {
     name: string;
+    value?: string;
     active?: boolean;
     toolTip?: string;
   }[];
