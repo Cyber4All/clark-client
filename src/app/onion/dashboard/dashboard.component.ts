@@ -560,7 +560,7 @@ export class DashboardComponent implements OnInit {
       const confirmation = await this.modalService
         .makeDialogMenu(
           'confirmChildren',
-          "Confirm object's children",
+          'Confirm object\'s children',
           confirmationMessage,
           false,
           undefined,
@@ -589,7 +589,7 @@ export class DashboardComponent implements OnInit {
           .then(val => {
             this.notificationService.notify(
               'Success!',
-              "Learning Object's children updated successfully!",
+              'Learning Object\'s children updated successfully!',
               'good',
               'far fa-check'
             );
@@ -606,7 +606,7 @@ export class DashboardComponent implements OnInit {
 
             this.notificationService.notify(
               'Error!',
-              "An error occurred and the Learning Object's children could not be updated",
+              'An error occurred and the Learning Object\'s children could not be updated',
               'bad',
               'far fa-times'
             );
@@ -681,12 +681,12 @@ export class DashboardComponent implements OnInit {
           additions.length > 1
             ? additions
                 .slice(0, additions.length - 1)
-                .map(n => "'" + n + "'")
+                .map(n => '\'' + n + '\'')
                 .join(', ') +
-              " and '" +
+              ' and \'' +
               additions[additions.length - 1] +
-              "'"
-            : "'" + additions[additions.length - 1] + "'"
+              '\''
+            : '\'' + additions[additions.length - 1] + '\''
         } ${removals.length ? '' : 'to'} `
       : '';
 
@@ -695,12 +695,12 @@ export class DashboardComponent implements OnInit {
           removals.length > 1
             ? removals
                 .slice(0, removals.length - 1)
-                .map(n => "'" + n + "'")
+                .map(n => '\'' + n + '\'')
                 .join(', ') +
-              " and '" +
+              ' and \'' +
               removals[removals.length - 1] +
-              "'"
-            : "'" + removals[removals.length - 1] + "'"
+              '\''
+            : '\'' + removals[removals.length - 1] + '\''
         } from `
       : '';
 

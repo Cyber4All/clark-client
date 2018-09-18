@@ -82,7 +82,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
-    const userName= this.auth.username;
+    const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
   }
 
