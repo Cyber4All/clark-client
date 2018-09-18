@@ -206,4 +206,9 @@ export class LearningObjectService {
       )
       .toPromise();
   }
+
+  updateReadme(username: string, id: string): Promise<any> {
+    const route = USER_ROUTES.UPDATE_PDF(username, id);
+    return this.http.patch(route, {}, { withCredentials: true }).toPromise();
+  }
 }
