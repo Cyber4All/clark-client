@@ -52,7 +52,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
           if (!this.result) {
             this.register.setInUseUsername(this.result);
           } else {
-            this.usernameError = 'This username already exists in our system!';
+            this.usernameError = 'This username already exists in our system. Please pick another username.';
             this.register.error(this.usernameError);
             this.register.setInUseUsername(this.result);
           }
