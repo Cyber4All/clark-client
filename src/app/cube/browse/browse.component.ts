@@ -98,6 +98,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   unsubscribe: Subject<void> = new Subject();
 
+  shouldResetPage = false;
+
   @HostListener('window:resize', ['$event']) handelResize(event) {
     this.windowWidth = event.target.innerWidth;
   }
@@ -161,6 +163,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const page = +this.query.currPage - 1;
     if (page > 0) {
       this.query.currPage = page;
+      this.shouldResetPage = false;
       this.performSearch();
 
     }
@@ -171,6 +174,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const page = +this.query.currPage + 1;
     if (page <= this.pageCount) {
       this.query.currPage = page;
+      this.shouldResetPage = false;
       this.performSearch();
     }
   }
@@ -179,6 +183,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   goToPage(page) {
     if (page > 0 && page <= this.pageCount) {
       this.query.currPage = +page;
+      this.shouldResetPage = false;
       this.performSearch();
 
     }
@@ -296,6 +301,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
         }
       }
 
+      // if we're adding a filter that isn't a page change, reset the currPage in query to 1
+      if (this.shouldResetPage) {
+        this.query.currPage = 1;
+      } else {
+        this.shouldResetPage = true;
+      }
+
       this.router.navigate(['browse'], {queryParams: this.removeObjFalsy(this.query)});
     }
   }
@@ -355,10 +367,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
         // add it to filter list to force checkbox
         if (Array.isArray(val)) {
           for (let k = 0, j = val.length; k < j; k++) {
-            this.addFilter(key, val[k]);
+            this.modifyFilter(key, val[k], true);
           }
         } else {
-          this.addFilter(key, val);
+          this.modifyFilter(key, val, true);
         }
       }
     }
