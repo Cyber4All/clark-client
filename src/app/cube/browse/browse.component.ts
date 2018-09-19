@@ -55,12 +55,28 @@ export class BrowseComponent implements OnInit, OnDestroy {
   filtering = false;
   filters: FilterSection[] = [
     {
+      name: 'collection',
+      type: 'select-one',
+      canSearch: false,
+      values: [
+        // FIXME this should be dynamically populated from API
+        {
+          name: 'NSA NCCP',
+          value: 'nccp'
+        },
+        {
+          name: 'GenCyber',
+          value: 'gencyber'
+        }
+      ]
+    },
+    {
       name: 'length',
       type: 'select-many',
       canSearch: false,
       values: [
         ...
-        Array.from(lengths).map(l => ({name: l, initial: false, toolTip: this.tooltipText[l.toLowerCase()]})),
+        Array.from(lengths).map(l => ({name: l, toolTip: this.tooltipText[l.toLowerCase()]})),
       ]
     },
     {
@@ -69,7 +85,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       canSearch: false,
       values: [
         ...
-        Object.values(AcademicLevel).map(l => ({name: l.toLowerCase(), initial: false, toolTip: this.tooltipText[l.toLowerCase()]})),
+        Object.values(AcademicLevel).map(l => ({name: l.toLowerCase(), toolTip: this.tooltipText[l.toLowerCase()]})),
       ]
     }
   ];
@@ -78,7 +94,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
   filterInput: Observable<string>;
 
   filtersDownMobile = false;
-  tempFilters: {name: string, value: string, active?: boolean}[] = [];
   windowWidth: number;
 
   unsubscribe: Subject<void> = new Subject();
@@ -185,7 +200,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   closeFilters() {
-    this.tempFilters = [];
     this.toggleFilters();
   }
 
@@ -193,41 +207,21 @@ export class BrowseComponent implements OnInit, OnDestroy {
    * This is used only on modal layouts, injects the tempFilter storage into the query object and sends it
    */
   applyFilters() {
-    for (let i = 0, l = this.tempFilters.length; i < l; i++) {
-      const o = this.tempFilters[i];
-      this.modifyFilter(o.name, o.value, o.active);
-    }
-
-    this.tempFilters = [];
     this.performSearch();
   }
 
-  addFilter(key: string, value: string) {
-    if (!this.filtersDownMobile) {
-      this.modifyFilter(key, value, true);
-      this.performSearch(true);
-    } else {
-      this.tempFilters.push({name: key, value, active: true});
-    }
+  addFilter(key: string, value: string, clearFirst?: boolean) {
+      this.modifyFilter(key, value, true, clearFirst);
+      if (!this.filtersDownMobile) {
+        this.performSearch(true);
+      }
   }
 
   removeFilter(key: string, value: string) {
-    if (!this.filtersDownMobile) {
       this.modifyFilter(key, value);
-      this.performSearch(true);
-    } else {
-      for (let i = 0, l = this.tempFilters.length; i < l; i++) {
-        const f = this.tempFilters[i];
-
-        if (f.name === key && f.value === value) {
-          this.tempFilters.splice(i, 1);
-          return;
-        }
+      if (!this.filtersDownMobile) {
+        this.performSearch(true);
       }
-
-      // we didn't find it
-      this.tempFilters.push({name: key, value, active: false});
-    }
   }
 
   clearAllFilters(sendFilters: boolean = true) {
@@ -239,24 +233,37 @@ export class BrowseComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.tempFilters = [];
-
     if (sendFilters) {
       this.performSearch(true);
     }
   }
 
-  private modifyFilter(key: string, value: string, active = false) {
+  private modifyFilter(key: string, value: string, active = false, clearFirst?: boolean) {
     for (let i = 0, l = this.filters.length; i < l; i++) {
       if (this.filters[i].name === key) {
         // found the correct filter category
         if (this.filters[i].values) {
-          for (let k = 0, j = this.filters[i].type.length; k < j; k++) {
-            if (this.filters[i].values[k].name === value) {
+          for (let k = 0, j = this.filters[i].values.length; k < j; k++) {
+            if (clearFirst && active) {
+              // for each iteration set to false if this is a select-one instance vs a select-many instance
+              this.filters[i].values[k].active = false;
+            }
+
+            if (this.filters[i].values[k].name === value || this.filters[i].values[k].value === value) {
+              // found the correct filter
               this.filters[i].values[k].active = active;
-              return;
+
+              if (!clearFirst) {
+                // if we don't need to see every filter in this category, jsut return now
+                // for efficiency
+                return;
+              }
             }
           }
+
+          // if clearFirst is true, inner return won't be fired, this will prevent iterating
+          // accross unneccessary categories
+          return;
         }
       }
     }
@@ -283,7 +290,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
         if (active.length) {
           // there are filters in this category
-          this.query[category.name] = active.map(v => v.name);
+          this.query[category.name] = active.map(v => v.value || v.name);
         } else {
           this.query[category.name] = [];
         }

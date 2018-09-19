@@ -35,7 +35,6 @@ export class LearningObjectService {
       this.auth.user.username
     );
 
-    console.log(learningObject);
     return this.http
       .post(
         route,
@@ -184,6 +183,24 @@ export class LearningObjectService {
 
     return this.http
       .post(route, { children }, { withCredentials: true })
+      .toPromise();
+  }
+
+  /**
+   * Adds specified learning object to specified collection
+   * @param learningObjectId id of learning object to be added to collection
+   * @param collectionName name of collection in which to insert learning object
+   */
+  addToCollection(
+    learningObjectId: string,
+    collectionName: string
+  ): Promise<any> {
+    return this.http
+      .patch(
+        USER_ROUTES.ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId),
+        { collection: collectionName },
+        { withCredentials: true }
+      )
       .toPromise();
   }
 
