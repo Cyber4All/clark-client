@@ -91,17 +91,8 @@ export class LearningObjectService {
       .get(route)
       .toPromise()
       .then(res => {
-        const learningObject = LearningObject.instantiate(res.json());
-        // If contributors exist on this learning object, instantiate them
-        if (
-          learningObject.contributors &&
-          learningObject.contributors.length > 0
-        ) {
-          learningObject.contributors = learningObject.contributors.map(
-            // @ts-ignore FIXME clark-entity should be updated so that contributors is an array of users, not an array of strings
-            member => User.instantiate(member)
-          );
-        }
+        const response = res.json();
+        const learningObject = LearningObject.instantiate(response);
         return learningObject;
       });
   }
