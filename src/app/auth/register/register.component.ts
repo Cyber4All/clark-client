@@ -249,46 +249,68 @@ export class RegisterComponent implements OnInit {
    pageValidate() {
     switch (this.page) {
       case 1:
-        if (
-          this.regForm.controls['firstname'].value === null ||
-          this.regForm.controls['lastname'].value === null ||
-          this.regForm.controls['email'].value === null ||
-          this.regForm.controls['organization'].value === null
-        ) {
-          this.error('Please fill in all fields!');
-          this.check = false;
-        } else if (!this.getvalidEmail()) {
-          this.error('Please enter a valid email!');
-          this.check = false;
-        } else if (this.inUseEmail) {
-          this.error('This email is already taken');
-          this.check = false;
-        } else {
-          this.check = true;
-        }
+        this.check = this.validatePageOne();
         break;
       case 2:
-        if (
-          this.regForm.controls['password'].value !==
-          this.regForm.controls['verifypassword'].value
-        ) {
-          this.error('Passwords do not match!');
-          this.check = false;
-        } else if (
-          this.regForm.controls['username'].value === null ||
-          this.regForm.controls['password'].value === null ||
-          this.regForm.controls['verifypassword'].value === null
-        ) {
-          this.error('Please fill in all fields!');
-          this.check = false;
-        } else if (this.inUseUsername) {
-          this.error('This username is already taken');
-          this.check = false;
-        } else {
-          this.check = true;
-        }
+        this.check = this.validatePageTwo();
         break;
     }
+  }
+
+  /**
+   * Validates the form on page one
+   * @return true if form on page one is valid, false otherwise
+   */
+  validatePageOne(): boolean {
+    if (
+      this.regForm.controls['firstname'].value === null ||
+      this.regForm.controls['lastname'].value === null ||
+      this.regForm.controls['email'].value === null ||
+      this.regForm.controls['organization'].value === null
+    ) {
+      this.error('Please fill in all fields!');
+      return false;
+    } else if (!this.getvalidEmail()) {
+      this.error('Please enter a valid email!');
+      return false;
+    } else if (this.inUseEmail) {
+      this.error('This email is already taken');
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Validates the form on page two
+   * @return true if form on page two is valid, false otherwise
+   */
+  validatePageTwo(): boolean {
+    if (
+      this.regForm.controls['password'].value !==
+      this.regForm.controls['verifypassword'].value
+    ) {
+      this.error('Passwords do not match!');
+      return false;
+    } else if (
+      this.regForm.controls['username'].value === null ||
+      this.regForm.controls['password'].value === null ||
+      this.regForm.controls['verifypassword'].value === null
+    ) {
+      this.error('Please fill in all fields!');
+      return false;
+    } else if (this.inUseUsername) {
+      this.error('This username is already taken');
+      return false;
+    } else if (
+      this.regForm.controls['username'].value.length < 3 ||
+      this.regForm.controls['username'].value.length > 20
+    ) {
+      this.error('Usernames must be at least 3 characters long and no longer than 20 characters.');
+      return false;
+    }
+
+    return true;
   }
 
   navigate(index: number) {
