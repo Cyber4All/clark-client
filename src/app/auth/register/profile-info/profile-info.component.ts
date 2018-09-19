@@ -25,7 +25,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   // flags
   querying = false;
-  usernameError = false;
+  usernameError: string = undefined;
   passwordError = false;
   passwordVerifyError = false;
 
@@ -38,16 +38,22 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
       .map(x => x['currentTarget'].value)
       .debounceTime(650)
       .subscribe(val => {
+        if (val.length < 3 || val.length > 20) {
+          this.usernameError = 'Usernames must be at least 3 characters long and no longer than 20 characters.';
+          this.register.error(this.usernameError);
+          this.register.setInUseUsername(this.result);
+          return;
+        }
         this.querying = true;
-        this.usernameError = false;
+        this.usernameError = undefined;
         this.auth.identifiersInUse(val).then((res: any) => {
           this.querying = false;
           this.result = res.inUse;
           if (!this.result) {
             this.register.setInUseUsername(this.result);
           } else {
-            this.usernameError = true;
-            this.register.error('This username is already taken');
+            this.usernameError = 'This username already exists in our system!';
+            this.register.error(this.usernameError);
             this.register.setInUseUsername(this.result);
           }
         });

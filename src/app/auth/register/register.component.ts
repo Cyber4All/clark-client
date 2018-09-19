@@ -284,6 +284,12 @@ export class RegisterComponent implements OnInit {
         } else if (this.inUseUsername) {
           this.error('This username is already taken');
           this.check = false;
+        } else if (
+          this.regForm.controls['username'].value.length < 3 ||
+          this.regForm.controls['username'].value.length > 20
+        ) {
+          this.error('Usernames must be at least 3 characters long and no longer than 20 characters!');
+          this.check = false;
         } else {
           this.check = true;
         }
