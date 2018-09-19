@@ -27,6 +27,7 @@ import { Component, OnInit } from '@angular/core';
                 type="text"
                 placeholder="Outcome Name"
                 name="name-filter"
+                aria-label="Outcome Name"
                 [ngModel]="_name"
                 (ngModelChange)="nameChanged($event)"
             />
@@ -42,26 +43,32 @@ import { Component, OnInit } from '@angular/core';
             margin-bottom: 30px;
         }`,
         `.flex-item {
-            flex: 1;
-            display: flex;
-            margin-left: 20px;
-        }
-        .flex-item:nth-of-type(1) { margin-left: 0 }
-        input, select {
-            flex: 1;
-        }
-        select {
-            background: white;
-        }
-        .select-wrapper .svg-inline--fa {
-            z-index: 1;
-        }
-        label {
-            padding-top: 5px;
-            margin-right: 5px;
-            margin-right: 10px;
-        }
-        `
+        flex: 1;
+        display: flex;
+        margin-left: 20px;
+      }
+
+      .flex-item:nth-of-type(1) {
+        margin-left: 0
+      }
+
+      input, select {
+        flex: 1;
+      }
+
+      select {
+        background: white;
+      }
+
+      .select-wrapper .svg-inline--fa {
+        z-index: 1;
+      }
+
+      label {
+        padding-top: 5px;
+        margin-right: 10px;
+      }
+      `
     ]
 })
 export class SuggestionFilterComponent implements OnInit {

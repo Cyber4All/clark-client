@@ -19,7 +19,6 @@ export class SuggestionService {
   // String of current text used to filter outcomes
   filterText = '';
 
-
   // String of currently selected author
   author = '';
 
@@ -103,7 +102,7 @@ export class SuggestionService {
     return false;
   }
 
-  udpateMappings(mappings) {
+  updateMappings(mappings) {
     this.mappedStandards = mappings;
     this.mappedSubject.next(mappings);
   }

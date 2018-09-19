@@ -33,6 +33,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ratings: Rating[] = [];
   averageRating = 0;
   showAddRating = false;
+  isOwnObject = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -71,6 +72,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.auth.isLoggedIn.takeUntil(this.isDestroyed$).subscribe(val => {
       this.loggedin = val;
+
+      if (!this.loggedin) {
+        this.isOwnObject = false;
+      }
     });
   }
 
@@ -80,6 +85,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         author,
         name
       );
+
+      if (this.auth.user.username === this.learningObject.author.username) {
+        this.isOwnObject = true;
+      } else {
+        this.isOwnObject = false;
+      }
 
       this.getLearningObjectRatings();
     } catch (e) {

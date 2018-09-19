@@ -173,8 +173,18 @@ export class LearningObjectService {
   }
 
   setChildren(learningObjectName: string, children: string[]): Promise<any> {
-    const route = USER_ROUTES.SET_CHILDREN(this.auth.user.username, learningObjectName);
+    const route = USER_ROUTES.SET_CHILDREN(
+      this.auth.user.username,
+      learningObjectName
+    );
 
-    return this.http.post(route, { children }, { withCredentials: true }).toPromise();
+    return this.http
+      .post(route, { children }, { withCredentials: true })
+      .toPromise();
+  }
+
+  updateReadme(username: string, id: string): Promise<any> {
+    const route = USER_ROUTES.UPDATE_PDF(username, id);
+    return this.http.patch(route, {}, { withCredentials: true }).toPromise();
   }
 }

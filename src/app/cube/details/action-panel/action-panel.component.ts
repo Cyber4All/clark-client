@@ -49,6 +49,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   contributorsList = [];
   iframeParent = iframeParentID;
   error = false;
+  userIsAuthor = false;
 
   public tips = TOOLTIP_TEXT;
 
@@ -80,6 +81,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
+    const userName= this.auth.username;
+    this.userIsAuthor = (this.learningObject.author.username === userName);
   }
 
   async addToCart(download?: boolean) {
@@ -100,12 +103,14 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await this.cartService.addToCart(this.learningObject.author.username, this.learningObject.name);
+      if (!this.userIsAuthor) {
+        await this.cartService.addToCart(this.learningObject.author.username, this.learningObject.name);
 
-      this.saved = this.cartService.has(this.learningObject);
+        this.saved = this.cartService.has(this.learningObject);
 
-      if (!this.saved) {
-        this.animateSaves();
+        if (!this.saved) {
+          this.animateSaves();
+        }
       }
     } catch (error) {
       console.log(error);
