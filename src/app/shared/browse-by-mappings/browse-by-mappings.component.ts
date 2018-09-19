@@ -40,16 +40,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
 
   @ViewChild('mappingSearchInput', {read: ElementRef}) mappingsSearchInput: ElementRef;
 
-  // TODO: sources should be fetched from an API route to allow dynamic configuration
-  sources = [
-    'CAE Cyber Defense',
-    'CAE Cyber Ops',
-    'CS2013',
-    'NCWF',
-    'NCWF KSAs',
-    'NCWF Tasks',
-    'CSEC'
-  ];
+  sources: string[];
 
   mappingsQueryInProgress = false;
 
@@ -69,7 +60,9 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
     private modalService: ModalService,
     private outcomeService: OutcomeService,
     public mappingService: SuggestionService
-  ) { }
+  ) {
+    this.outcomeService.getSources().then(s => this.sources = s);
+  }
 
   ngOnInit() {
     this.mappingService.author = this.sources[0];

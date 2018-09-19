@@ -1,5 +1,10 @@
 <div class="learning-object" id="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
   <div class="image">
+    <div *ngIf="!loading" class="collection" [ngClass]="{'gencyber': learningObject.collection?.toLowerCase() === 'gencyber'}">
+      <div>
+        {{ collections.get(learningObject.collection) }}
+      </div>
+    </div>
     <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
   </div>
   <div class="learning-object-content">
@@ -18,3 +23,15 @@
     <div class="goals" *ngIf="this.learningObject.goals[0]?.text" [innerHtml]="goals()"></div>
   </div>
 </div>
+
+<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
+  <div style="max-width: 600px;" #popupInner>
+    <div class="modal-title">Notice about large files!</div>
+    <div class='modal-text'>
+      To keep download times short files over 100 megabytes are not included in the download package. You can find links to download them inside the 'ReadMe' PDF.
+    </div>
+    <div class="btn-group center">
+      <button class="button good" (click)="toggleDownloadModal(false)">Ok, got it!</button>
+    </div>
+  </div>
+</clark-popup>

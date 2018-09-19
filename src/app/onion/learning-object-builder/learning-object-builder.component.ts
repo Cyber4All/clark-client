@@ -33,6 +33,8 @@ export class LearningObjectBuilderComponent implements OnInit {
   isNew = false;
   submitted = 0;
 
+  submitToCollection = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -104,6 +106,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     this.learningObject.date = Date.now().toString();
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
+      // editing
       this.service
         .save(this.learningObject)
         .then(success => {
@@ -136,6 +139,7 @@ export class LearningObjectBuilderComponent implements OnInit {
           );
         });
     } else {
+      // creating
       this.service
         .create(this.learningObject)
         .then(newObject => {
@@ -172,7 +176,7 @@ export class LearningObjectBuilderComponent implements OnInit {
 
   private async showSubmissionDialog(): Promise<boolean> {
     const text = this.auth.user.emailVerified
-      ? 'You can submit this learning object for review by the NCCP review team now, or save it for later. If you don\'t submit now, you can submit from your Dashboard at a later time.'
+      ? 'You can submit this learning object for review now, or save it for later. If you don\'t submit now, you can submit from your Dashboard at a later time.'
       : 'You must have a verfied email address to submit learning objects! Would you like to verfiy your email now?';
 
     const buttons = [
@@ -234,7 +238,8 @@ export class LearningObjectBuilderComponent implements OnInit {
     } else {
       switch (publish) {
         case 'accept':
-          this.learningObject.publish();
+          // TODO refactor this flow
+          this.submitToCollection = true;
           return true;
         case 'reject':
           this.learningObject.unpublish();
@@ -243,6 +248,50 @@ export class LearningObjectBuilderComponent implements OnInit {
           return false;
       }
     }
+  }
+
+  /**
+   * Publishes a learning object and adds it to a specified collection
+   * @param collection the name of the collection to add this learning object to
+   */
+  addToCollection(collection?: string) {
+    if (collection) {
+      // first, attempt to publish
+      this.service.togglePublished(this.learningObject).then(() => {
+        // publishing was a success, attempt to add to collection
+        this.service.addToCollection(this.learningObject.id, collection).then(() => {
+          // success
+          this.notificationService.notify(
+            'Success!',
+            `Learning object submitted to ${collection} collection successfully!`,
+            'good',
+            'far fa-check'
+          );
+        }).catch (err => {
+          // error
+          console.error(err);
+          this.notificationService.notify(
+            'Error!',
+            `Error submitting learning object to ${collection} collection!`,
+            'bad',
+            'far fa-times'
+          );
+        });
+      }).catch(error => {
+        // failed to publish
+        this.notificationService.notify(
+          'Error!',
+          error._body,
+          'bad',
+          'far fa-times'
+        );
+        console.error(error);
+      });
+    } else {
+      console.error('No collection defined!');
+    }
+
+    this.submitToCollection = false;
   }
 
   toggleLevel(level: AcademicLevel) {

@@ -43,6 +43,15 @@ export const USER_ROUTES = {
       learningObjectName
     )}/publish`;
   },
+  ADD_LEARNING_OBJET_TO_COLLECTION(
+    learningObjectId: string
+  ) {
+    return `${
+      environment.apiURL
+    }/learning-objects/${encodeURIComponent(
+      learningObjectId
+    )}/collections`;
+  },
   UNPUBLISH_LEARNING_OBJECT(username, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username

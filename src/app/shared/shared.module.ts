@@ -32,6 +32,7 @@ import { NewRatingComponent } from './new-rating/new-rating.component';
 import { LearningObjectRatingsComponent } from './learning-object-ratings/learning-object-ratings.component';
 import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
+import { PopupModule } from './popups/popup.module';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -40,7 +41,7 @@ import { ProgressComponent } from './progress/progress.component';
  */
 @NgModule({
   imports: [
-    CommonModule,
+  CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
@@ -49,7 +50,8 @@ import { ProgressComponent } from './progress/progress.component';
     ModalModule,
     ToasterModule,
     ContextMenuModule,
-    TooltipModule
+    TooltipModule,
+    PopupModule
   ],
   providers: [],
   declarations: [
@@ -92,7 +94,8 @@ import { ProgressComponent } from './progress/progress.component';
     NewRatingComponent,
     LearningObjectRatingsComponent,
     ProgressComponent,
-    VirtualScrollModule
+    VirtualScrollModule,
+    PopupModule
   ]
 })
 export class SharedModule {}

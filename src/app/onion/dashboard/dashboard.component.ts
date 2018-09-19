@@ -62,7 +62,8 @@ interface DashboardLearningObject extends LearningObject {
   ]
 })
 export class DashboardComponent implements OnInit {
-  @ViewChildren('learningObjectElement') learningObjectElements: ElementRef[];
+  @ViewChildren('learningObjectElement')
+  learningObjectElements: ElementRef[];
   copy = COPY;
   public tips = TOOLTIP_TEXT;
   learningObjects: DashboardLearningObject[] = [];
@@ -78,6 +79,8 @@ export class DashboardComponent implements OnInit {
   showCancel = false;
   showSubmit = false;
   allowRowClick = false;
+
+  submitToCollection = false;
 
   // these functions get reassigned as certain events take place in the dashboard
   cancelAction = () => {};
@@ -108,25 +111,37 @@ export class DashboardComponent implements OnInit {
       .then((learningObjects: LearningObject[]) => {
         this.loading = false;
         // parse through deep copy of returned array
-        const arr: DashboardLearningObject[] = Array.from(learningObjects.map(l => {
-          l.parents = [];
-          return l as DashboardLearningObject;
-        }));
+        const arr: DashboardLearningObject[] = Array.from(
+          learningObjects.map(l => {
+            l.parents = [];
+            return l as DashboardLearningObject;
+          })
+        );
 
-        const lengths = ['nanomodule', 'micromodule', 'module', 'unit', 'course'];
+        const lengths = [
+          'nanomodule',
+          'micromodule',
+          'module',
+          'unit',
+          'course'
+        ];
 
         arr.sort((a, b) => {
           return lengths.indexOf(a.length) <= lengths.indexOf(b.length) ? 1 : 0;
         });
 
-        // @ts-ignore typescript doesn't like arr.map...
-        const m: Map<string, DashboardLearningObject> = new Map(arr.map(l => [l.id, l]));
+        const m: Map<string, DashboardLearningObject> = new Map(
+          // @ts-ignore typescript doesn't like arr.map...
+          arr.map(l => [l.id, l])
+        );
 
         for (let i = 0, l = arr.length; i < l; i++) {
           const lo = arr[i];
           if (lo.children && lo.children.length) {
             for (const c of lo.children as DashboardLearningObject[]) {
-              m.get(c.id).parents ? m.get(c.id).parents.push(lo.name) : m.get(c.id).parents = [lo.name];
+              m.get(c.id).parents
+                ? m.get(c.id).parents.push(lo.name)
+                : (m.get(c.id).parents = [lo.name]);
             }
           }
         }
@@ -192,7 +207,7 @@ export class DashboardComponent implements OnInit {
                 );
                 this.learningObjects = await this.getLearningObjects();
               })
-              .catch(async(err) => {
+              .catch(async err => {
                 console.log(err);
               });
           } else {
@@ -217,11 +232,21 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  async togglePublished() {
+  async togglePublished(force?: boolean, collection?: string) {
     try {
+      if (!force) {
+        this.submitToCollection = true;
+        return;
+      }
+      this.submitToCollection = false;
       await this.learningObjectService.togglePublished(
         this.focusedLearningObject
       );
+
+      if (collection) {
+        // TODO post request here
+      }
+
       this.learningObjects = await this.getLearningObjects();
     } catch (e) {
       const err = e._body
@@ -234,6 +259,51 @@ export class DashboardComponent implements OnInit {
         'far fa-times'
       );
     }
+  }
+
+  /**
+   * Publishes a learning object and adds it to a specified collection
+   * @param collection the name of the collection to add this learning object to
+   */
+  addToCollection(collection?: string) {
+    if (collection) {
+      // first, attempt to publish
+      this.learningObjectService.togglePublished(this.focusedLearningObject).then(() => {
+        // publishing was a success, attempt to add to collection
+        this.learningObjectService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
+          // success
+          this.notificationService.notify(
+            'Success!',
+            `Learning object submitted to ${collection} collection successfully!`,
+            'good',
+            'far fa-check'
+          );
+          this.focusedLearningObject.publish();
+        }).catch (err => {
+          // error
+          console.error(err);
+          this.notificationService.notify(
+            'Error!',
+            `Error submitting learning object to ${collection} collection!`,
+            'bad',
+            'far fa-times'
+          );
+        });
+      }).catch(error => {
+        // failed to publish
+        this.notificationService.notify(
+          'Error!',
+          error._body,
+          'bad',
+          'far fa-times'
+        );
+        console.error(error);
+      });
+    } else {
+      console.error('No collection defined!');
+    }
+
+    this.submitToCollection = false;
   }
 
   /**
@@ -294,8 +364,10 @@ export class DashboardComponent implements OnInit {
     if ((!this.freezeSelected && !this.freezeFocused) || force) {
       this.allSelected = !this.allSelected;
       if (this.allSelected) {
-        // @ts-ignore
-        this.selected = new Map(this.learningObjects.map((x, i) => [x.id, { index: i, object: x }]));
+        this.selected = new Map(
+          // @ts-ignore
+          this.learningObjects.map((x, i) => [x.id, { index: i, object: x }])
+        );
       } else {
         this.selected = new Map();
       }
@@ -427,7 +499,11 @@ export class DashboardComponent implements OnInit {
       this.focusedLearningObject.children &&
       this.focusedLearningObject.children.length
     ) {
-      for (let i = 0, l = this.focusedLearningObject.children.length; i < l; i++) {
+      for (
+        let i = 0, l = this.focusedLearningObject.children.length;
+        i < l;
+        i++
+      ) {
         const c = this.focusedLearningObject.children[i] as LearningObject;
         this.selected.set(c.id, { index: 0, object: c });
       }
@@ -452,7 +528,9 @@ export class DashboardComponent implements OnInit {
     const names = Array.from(this.selected.values()).map(l => l.object.name);
 
     // create a deep copy of the array resulting from iterating the list of current children and mapping their names
-    const current: string[] = Array.from((this.focusedLearningObject.children as LearningObject[]).map(l => l.name));
+    const current: string[] = Array.from(
+      (this.focusedLearningObject.children as LearningObject[]).map(l => l.name)
+    );
 
     // check if no changes
     if (JSON.stringify(current) === JSON.stringify(names)) {
@@ -465,9 +543,12 @@ export class DashboardComponent implements OnInit {
       const [additions, removals] = this.parseChildrenChanges(names, current);
 
       if (additions.length || removals.length !== current.length) {
-        const [addMessage, removeMessage] = this.buildAddRemoveMessages(additions, removals);
+        const [addMessage, removeMessage] = this.buildAddRemoveMessages(
+          additions,
+          removals
+        );
 
-          confirmationMessage = `Just to confirm, you want to ${addMessage} ${removeMessage} '${
+        confirmationMessage = `Just to confirm, you want to ${addMessage} ${removeMessage} '${
           this.focusedLearningObject.name
         }'?`;
       } else {
@@ -500,26 +581,36 @@ export class DashboardComponent implements OnInit {
         .toPromise();
 
       if (confirmation === 'confirm') {
-        const ids = this.learningObjects.filter(l => names.includes(l.name)).map(l => l.id);
-        this.learningObjectService.setChildren(this.focusedLearningObject.name, ids).then(val => {
-          this.notificationService.notify(
-            'Success!',
-            'Learning Object\'s children updated successfully!',
-            'good',
-            'far fa-check'
-          );
+        const ids = this.learningObjects
+          .filter(l => names.includes(l.name))
+          .map(l => l.id);
+        this.learningObjectService
+          .setChildren(this.focusedLearningObject.name, ids)
+          .then(val => {
+            this.notificationService.notify(
+              'Success!',
+              'Learning Object\'s children updated successfully!',
+              'good',
+              'far fa-check'
+            );
 
-          this.clearSelected(true);
-          this.cancelAddChildren();
+            this.clearSelected(true);
+            this.cancelAddChildren();
 
-          this.getLearningObjects().then(objects => { this.learningObjects = objects });
-        }).catch(error => {
-          console.log(error);
+            this.getLearningObjects().then(objects => {
+              this.learningObjects = objects;
+            });
+          })
+          .catch(error => {
+            console.log(error);
 
-          this.notificationService.notify(
-            'Error!', 'An error occurred and the Learning Object\'s children could not be updated', 'bad', 'far fa-times'
-          );
-        });
+            this.notificationService.notify(
+              'Error!',
+              'An error occurred and the Learning Object\'s children could not be updated',
+              'bad',
+              'far fa-times'
+            );
+          });
       }
     }
   }
@@ -546,7 +637,10 @@ export class DashboardComponent implements OnInit {
    * @param changes
    * @param exisiting
    */
-  parseChildrenChanges(changes: string[], exisiting: string[]): [string[], string[]] {
+  parseChildrenChanges(
+    changes: string[],
+    exisiting: string[]
+  ): [string[], string[]] {
     // store additions here
     const additions = [];
 
@@ -575,26 +669,42 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Takes two arrays of LO names, one of additions and one of removals, and 
+   * Takes two arrays of LO names, one of additions and one of removals, and
    * constructs a gramatically correct addition and subtraction message
    */
-  buildAddRemoveMessages(additions: string[], removals: string[]): [string, string] {
+  buildAddRemoveMessages(
+    additions: string[],
+    removals: string[]
+  ): [string, string] {
     const addMessage = additions.length
       ? `add ${
-        additions.length > 1 ?
-          additions.slice(0, additions.length - 1).map(n => '\'' + n + '\'').join(', ') + ' and \'' + additions[additions.length - 1] + '\''
-          : '\'' + additions[additions.length - 1] + '\''} ${removals.length ? '' : 'to'
-        } `
+          additions.length > 1
+            ? additions
+                .slice(0, additions.length - 1)
+                .map(n => '\'' + n + '\'')
+                .join(', ') +
+              ' and \'' +
+              additions[additions.length - 1] +
+              '\''
+            : '\'' + additions[additions.length - 1] + '\''
+        } ${removals.length ? '' : 'to'} `
       : '';
 
     const removeMessage = removals.length
       ? `and remove ${
-        removals.length > 1 ?
-          removals.slice(0, removals.length - 1).map(n => '\'' + n + '\'').join(', ') + ' and \'' + removals[removals.length - 1] + '\''
-          : '\'' + removals[removals.length - 1] + '\''} from `
+          removals.length > 1
+            ? removals
+                .slice(0, removals.length - 1)
+                .map(n => '\'' + n + '\'')
+                .join(', ') +
+              ' and \'' +
+              removals[removals.length - 1] +
+              '\''
+            : '\'' + removals[removals.length - 1] + '\''
+        } from `
       : '';
 
-      return [addMessage, removeMessage];
+    return [addMessage, removeMessage];
   }
 
   objectChildrenNames(learningObject: LearningObject): string[] {
