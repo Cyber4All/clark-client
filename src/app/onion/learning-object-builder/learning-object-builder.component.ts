@@ -413,4 +413,19 @@ export class LearningObjectBuilderComponent implements OnInit {
       }
     });
   }
+
+  public async sendEmailVerification() {
+    try {
+      await this.auth.sendEmailVerification(this.auth.user.email).toPromise();
+      await this.auth.validate();
+      this.notificationService.notify(
+        `Email sent to ${this.auth.user.email}`,
+        `Please check your inbox and spam.`,
+        'good',
+        'far fa-check'
+      );
+    } catch (e) {
+      this.notificationService.notify(`Could not send email`, `${e}`, 'bad', '');
+    }
+  }
 }
