@@ -5,15 +5,13 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   templateUrl: './cookies.component.html',
   styleUrls: ['./cookies.component.scss']
 })
-export class CookiesComponent implements OnInit {
+export class CookiesComponent {
 
   @Output() setAgreement: EventEmitter<boolean> = new EventEmitter();
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  /**
+   * Emits agreement event to parent component
+   */
   dismiss() {
     this.setAgreement.emit(true);
   }

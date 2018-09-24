@@ -92,6 +92,10 @@ export class ClarkComponent {
     return false;
   }
 
+  /**
+   * Stores cookie agreement value in localStorage and hides banner
+   * @param val the value to store in cookieAgreement (always true at this point)
+   */
   setCookieAgreement(val: boolean) {
     localStorage.setItem('cookieAgreement', val + '');
     this.cookiesAgreement = val;
