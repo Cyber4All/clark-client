@@ -14,7 +14,6 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
-import { DashboardResolver } from './dashboard/dashboard.resolver';
 import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver'
 
 /**
@@ -43,6 +42,6 @@ import { LearningObjectResolve } from './learning-object-builder/learning-object
     ModalModule,
     ToasterModule,
   ],
-  providers: [ DashboardResolver, LearningObjectResolve ]
+  providers: [ LearningObjectResolve ]
 })
 export class OnionModule { }
