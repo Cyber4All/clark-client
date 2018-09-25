@@ -1,0 +1,24 @@
+<div class="dashboard-item">
+  <div class="row-item">
+    <div>
+      <clark-checkbox [setValue]="selected" (action)="toggleSelect($event)"></clark-checkbox>
+    </div>
+    <div>
+      <div class="status" [ngClass]="learningObject.status" tip="{{ states.get(learningObject.status)?.tip }}" tipDisabled="{{ !states.get(learningObject.status)?.tip }}" tipLocation="above">
+        <i class="fas {{ states.get(learningObject.status)?.icon || 'fa-eye-slash' }}"></i>
+      </div>
+    </div>
+    <div>{{ learningObject.name }}</div>
+    <div>{{ learningObject.length }}</div>
+    <div>{{ learningObject.date | date:'medium' }}</div>
+    <div>
+      <div class="meatball" [ngClass]="{'open': meatballOpen}">
+        <div class="icon">
+          <i class="far fa-times"></i>
+        </div>
+        <div class="orb"></div>
+      </div>
+    </div>
+  </div>
+</div>
+

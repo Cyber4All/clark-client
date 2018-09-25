@@ -95,7 +95,8 @@ import { PopupModule } from './popups/popup.module';
     LearningObjectRatingsComponent,
     ProgressComponent,
     VirtualScrollModule,
-    PopupModule
+    PopupModule,
+    ContextMenuModule
   ]
 })
 export class SharedModule {}

@@ -1,4 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
+import { AuthService } from 'app/core/auth.service';
+
+export interface DashboardLearningObject extends LearningObject {
+  status: string;
+  parents: string[];
+}
 
 @Component({
   selector: 'clark-dashboard',
@@ -6,10 +15,151 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  learningObjects: DashboardLearningObject[];
 
-  constructor() { }
+  focusedLearningObject: DashboardLearningObject;
+  greetingTime: string; // morning, afternoon, or evening depending on user's clock
 
-  ngOnInit() {
+  // flags
+  loading = false;
+  allSelected = false;
+
+  // collections
+  // selected simply means the checkbox next to the object is checked
+  selected: Map<string, { index: number; object: LearningObject }> = new Map();
+  // hidden means that the object is downloaded byt not visible
+  hidden: Map<string, { reason: string; object: LearningObject }> = new Map();
+  // frozen means that the object is visible but can't be mutated, EG no meatball menu and no checkbox
+  frozen: Map<string, { reason: string; object: LearningObject }> = new Map();
+
+  constructor(
+    private learningObjectService: LearningObjectService,
+    private cd: ChangeDetectorRef,
+    public auth: AuthService, // used in markup
+  ) {
+    const hours = new Date().getHours();
+    if (hours >= 17) {
+      this.greetingTime = 'evening';
+    } else if (hours >= 12) {
+      this.greetingTime = 'afternoon';
+    } else {
+      this.greetingTime = 'morning';
+    }
+  }
+
+  async ngOnInit() {
+    this.learningObjects = await this.getLearningObjects();
+  }
+
+  /**
+   * Fetches loggedin user's learning objects from API and builds the heirarchy structure
+   *@returns DashboardLearningObject[]
+   * @memberof DashboardComponent
+   */
+  async getLearningObjects(): Promise<DashboardLearningObject[]> {
+    this.loading = true;
+    return this.learningObjectService
+      .getLearningObjects()
+      .then((learningObjects: LearningObject[]) => {
+        this.loading = false;
+        // deep copy list of learningObjects and initialize empty parents array
+        const arr: DashboardLearningObject[] = Array.from(
+          learningObjects.map(l => {
+            l.parents = [];
+            l.status = ['unpublished', 'waiting', 'review', 'denied', 'published'][Math.floor(Math.random() * 5)]; // TODO remove this
+            return l as DashboardLearningObject;
+          })
+        );
+
+        const lengths = Array.from(LengthsSet.values());
+
+        arr.sort((a, b) => {
+          return lengths.indexOf(a.length) <= lengths.indexOf(b.length) ? 1 : 0;
+        });
+
+        const m: Map<string, DashboardLearningObject> = new Map(
+          // @ts-ignore typescript doesn't like arr.map...
+          arr.map(l => [l.id, l])
+        );
+
+        for (let i = 0, l = arr.length; i < l; i++) {
+          const lo = arr[i];
+          if (lo.children && lo.children.length) {
+            for (const c of lo.children as DashboardLearningObject[]) {
+              m.get(c.id).parents
+                ? m.get(c.id).parents.push(lo.name)
+                : (m.get(c.id).parents = [lo.name]);
+            }
+          }
+        }
+
+        return learningObjects as DashboardLearningObject[];
+      })
+      .catch(err => {
+        this.loading = false;
+        console.error(err);
+        return Promise.reject('');
+      });
+  }
+
+  /**
+   * Decides based on the value whether to select or deselect the learning object
+   * @param l learning object to be selected
+   * @param value boolean, true if object is selected, false otherwise
+   * @param index the index of the learning object in the master array
+   */
+  toggleSelect(l: DashboardLearningObject, value: boolean, index: number) {
+    if (value) {
+      this.selectLearningObject(l, index);
+    } else {
+      this.deselectLearningObject(l);
+    }
+
+    console.log('selected', this.selected);
+  }
+
+  /**
+   * Selects all learning objects (duh)
+   */
+  selectAll() {
+    this.allSelected = !this.allSelected;
+    if (this.allSelected) {
+      this.selected = new Map(
+        // @ts-ignore
+        this.learningObjects.map((x, i) => [x.id, { index: i, object: x }])
+      );
+      this.cd.detectChanges();
+    } else {
+      this.selected = new Map();
+    }
+
+    console.log(this.selected);
+  }
+
+   /**
+   * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+   * @param l Learning Object to be selected
+   */
+  selectLearningObject(l: LearningObject, index: number) {
+    this.selected.set(l.id, { index, object: l });
+    this.cd.detectChanges();
+
+    if ( this.selected.size === this.learningObjects.length && !this.allSelected ) {
+      this.allSelected = true;
+    }
+  }
+
+  /**
+   * Fired on select of a Learning Object, takes the object and removes it from the list of selected Learning Objects
+   * @param l Learning Object to be deselected
+   */
+  deselectLearningObject(l: LearningObject) {
+    this.selected.delete(l.id);
+    this.cd.detectChanges();
+
+    if (this.selected.size < this.learningObjects.length && this.allSelected) {
+      this.allSelected = false;
+    }
   }
 
 }

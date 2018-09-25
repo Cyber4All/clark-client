@@ -1,0 +1,118 @@
+@import '~_vars.scss';
+
+$dark-text: #545e64;
+$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+
+.dashboard {
+
+    .splash {
+        background: $light-blue-gradient;
+        color: white;
+        padding: 65px 20px 120px;
+        position: relative;
+
+        .greeting {
+            font-size: 28px;
+            font-weight: bold;
+
+            span {
+                text-transform: capitalize;
+            }
+        }
+
+        &:after {
+            content: '';
+            background: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.04;
+            mask: $cube-pattern repeat;
+        }
+    }
+
+    .list {
+        max-width: $max-width;
+        position: relative;
+        margin: auto;
+        box-sizing: border-box;
+        background: white;
+        border-radius: 3px;
+        box-shadow: 0 5px 10px 0 rgba(84, 84, 100, 0.19);
+        margin-top: -80px;
+
+        .list-top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+
+            .header {
+                font-size: 26px;
+                color: $dark-text;
+            }
+        }
+    }
+
+    .list-body {
+
+        .column-headers,
+        ::ng-deep .row-item {
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 20px 60px 2fr 1fr 1fr 50px;
+            grid-gap: 0 20px;
+            align-items: center;
+        }
+
+        ::ng-deep .row-item {
+            & > div {
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+        }
+
+        .column-headers {
+            font-weight: bold;
+            font-size: 14px;
+            color: $dark-text;
+            opacity: 0.46;
+            padding-top: 20px;
+            padding-bottom: 10px;
+        }
+    }
+}
+
+// FIXME this can be removed when the new button styles are applied cross-application
+::ng-deep .button {
+    border: 0;
+    padding: 10px 20px 10px 25px;
+
+    &.good {
+        background: $light-blue-gradient;
+    }
+
+    &.neutral {
+        color: $dark-text;
+    }
+}
+
+.loading-template {
+    text-align: center;
+    color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.60);
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+
+
+    .svg-inline--fa {
+        color: $bright-blue;
+        font-size: 30px;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+}

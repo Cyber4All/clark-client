@@ -1,3 +1,36 @@
-<p>
-  dashboard works!
-</p>
+<div class="dashboard" [ngClass]="{'disabled': disabled}">
+  <div class="splash">
+    <div class="inner">
+      <div class="greeting">Good {{ greetingTime }}, <span>{{ auth.user.name.split(' ')[0] }}</span>!</div>
+    </div>
+  </div>
+  <div class="list">
+    <div class="list-top">
+      <header class="header">Your Learning Objects</header>
+      <div class="btn-group to-right">
+        <button routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
+        <button class="button neutral">Filter <i class="fas fa-sort"></i></button>
+      </div>
+    </div>
+    <div *ngIf="!loading; else loadingTemplate" class="list-body">
+      <div class="column-headers">
+        <div>
+          <clark-checkbox [setValue]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
+        </div>
+        <div>Status</div>
+        <div>Name</div>
+        <div>Type</div>
+        <div>Date</div>
+        <div><!-- meatball --></div>
+      </div>
+      <clark-dashboard-item *ngFor="let l of learningObjects; let i = index" [learningObject]="l" [selected]="this.selected.get(l.id) !== undefined" (select)="toggleSelect(l, $event, i)"></clark-dashboard-item>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <span class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading learning objects...
+  </span>
+</ng-template>
