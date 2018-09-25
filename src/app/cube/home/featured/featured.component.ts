@@ -15,7 +15,8 @@ export class FeaturedComponent implements OnInit {
   query: Query = {
     limit: 5,
     orderBy: OrderBy.Date,
-    sortType: SortType.Descending
+    sortType: SortType.Descending,
+    released: true
   };
   loading = false;
 
