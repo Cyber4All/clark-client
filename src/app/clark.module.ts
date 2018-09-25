@@ -22,8 +22,7 @@ import { UnsupportedComponent } from './unsupported.component';
     ClarkRoutingModule,
     SharedModule,
     CoreModule.forRoot(),
-    BrowserAnimationsModule,
-    SharedModule
+    BrowserAnimationsModule
   ],
   declarations: [
     ClarkComponent,
