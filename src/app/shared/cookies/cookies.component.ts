@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { GLOBAL } from '@env/strings';
 
 @Component({
   selector: 'clark-cookies',
@@ -6,6 +7,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./cookies.component.scss']
 })
 export class CookiesComponent {
+  strings = GLOBAL;
 
   @Output() setAgreement: EventEmitter<boolean> = new EventEmitter();
 
