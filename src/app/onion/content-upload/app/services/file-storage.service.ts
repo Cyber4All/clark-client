@@ -8,10 +8,8 @@ import { File } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Injectable()
 export class FileStorageService {
-  private headers: HttpHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient, private auth: AuthService) {
-    this.headers.append('Content-Type', 'application/json');
   }
 
   /**
@@ -30,7 +28,7 @@ export class FileStorageService {
     );
 
     return this.http
-      .delete(route, { headers: this.headers, withCredentials: true })
+      .delete(route, { withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 }

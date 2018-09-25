@@ -20,7 +20,7 @@ export class UserService {
         USER_ROUTES.EDIT_USER_INFO,
         { user },
         {
-          withCredentials: true
+          withCredentials: true, responseType: 'text'
         }
       )
       .toPromise();
