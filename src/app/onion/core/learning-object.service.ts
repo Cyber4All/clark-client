@@ -132,7 +132,7 @@ export class LearningObjectService {
           id: learningObject.id,
           published: !learningObject.published
         },
-        { headers: this.headers, withCredentials: true }
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
   }
@@ -149,7 +149,7 @@ export class LearningObjectService {
       learningObjectName
     );
     return this.http
-      .delete(route, { headers: this.headers, withCredentials: true })
+      .delete(route, { headers: this.headers, withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 
@@ -167,7 +167,7 @@ export class LearningObjectService {
     );
 
     return this.http
-      .delete(route, { headers: this.headers, withCredentials: true })
+      .delete(route, { headers: this.headers, withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 
@@ -178,7 +178,7 @@ export class LearningObjectService {
     );
 
     return this.http
-      .post(route, { children }, { withCredentials: true })
+      .post(route, { children }, { withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 
@@ -195,13 +195,13 @@ export class LearningObjectService {
       .patch(
         USER_ROUTES.ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId),
         { collection: collectionName },
-        { withCredentials: true }
+        { withCredentials: true, responseType: 'text' }
       )
       .toPromise();
   }
 
   updateReadme(username: string, id: string): Promise<any> {
     const route = USER_ROUTES.UPDATE_PDF(username, id);
-    return this.http.patch(route, {}, { withCredentials: true }).toPromise();
+    return this.http.patch(route, {}, { withCredentials: true, responseType: 'text' }).toPromise();
   }
 }

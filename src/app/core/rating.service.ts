@@ -15,7 +15,7 @@ export class RatingService {
         RATING_ROUTES.CREATE_RATING(learningObjectAuthor, learningObjectName),
         newRating,
         {
-          withCredentials: true
+          withCredentials: true, responseType: 'text'
         }
       )
       .toPromise();
@@ -27,7 +27,7 @@ export class RatingService {
         RATING_ROUTES.EDIT_RATING(learningObjectAuthor, learningObjectName, ratingId),
         rating,
         {
-          withCredentials: true
+          withCredentials: true, responseType: 'text'
         }
       )
       .toPromise();
@@ -38,7 +38,7 @@ export class RatingService {
       .delete(
         RATING_ROUTES.DELETE_RATING(learningObjectAuthor, learningObjectName, ratingId),
         {
-          withCredentials: true
+          withCredentials: true, responseType: 'text'
         }
       )
       .toPromise();
