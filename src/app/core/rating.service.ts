@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { RATING_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class RatingService {
 
-  constructor(private http: Http, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   createRating(learningObjectAuthor: string, learningObjectName: string, newRating: {number: number, comment: string }) {
     return this.http
@@ -53,8 +53,8 @@ export class RatingService {
         }
       )
       .toPromise()
-      .then(res => {
-        const data = res.json();
+      .then((res: any) => {
+        const data = res;
         // assign id param to the value of _id and remove _id
         data.ratings = data.ratings.map(r => {
           const x = ({...r, id: r.id ? r.id : r._id });

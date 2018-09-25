@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
 
 import {UrlSerializer} from '@angular/router';
 import { CustomUrlSerializer } from './core/custom-url-serliazer';
@@ -17,7 +16,6 @@ import { UnsupportedComponent } from './unsupported.component';
 @NgModule({
   imports: [
     BrowserModule,
-    HttpModule,
     HttpClientModule,
     ClarkRoutingModule,
     SharedModule,
