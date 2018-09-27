@@ -17,11 +17,9 @@ export class AuthService {
   isLoggedIn = new BehaviorSubject<boolean>(false);
   socket;
   socketWatcher: Observable<string>;
+  whitelist;
 
-  constructor(
-    private http: HttpClient,
-    private cookies: CookieService
-  ) {
+  constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
       this.validate().then(
         val => {
@@ -33,6 +31,7 @@ export class AuthService {
         }
       );
     }
+    this.fetchWhitelist();
   }
 
   private changeStatus(status: boolean) {
@@ -324,13 +323,18 @@ export class AuthService {
   // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
   private async checkWhitelist() {
     try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
+      if (this.whitelist === undefined) {
+        await this.fetchWhitelist();
+      }
       const username = this.username;
-      return whitelist.includes(username);
+      return this.whitelist.includes(username);
     } catch (e) {
       console.log(e);
     }
+  }
+  private async fetchWhitelist() {
+    const response = await fetch(environment.whiteListURL);
+    const object = await response.json();
+    this.whitelist = object.whitelist;
   }
 }
