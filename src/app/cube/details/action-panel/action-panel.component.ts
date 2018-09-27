@@ -86,10 +86,14 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   checkDownloadAuthorization() {
-    this.canDownload = !(this.learningObject.lock 
+    // Check that the object does not contain a download lock and the user is logged in
+    this.canDownload = !(this.learningObject.lock
       && this.learningObject.lock.restrictions.includes(Restriction.DOWNLOAD))
-      && this.auth.isLoggedIn.value
-    if (!this.canDownload) this.checkWhitelist();
+      && this.auth.isLoggedIn.value;
+    // If the object is restricted, check if the user is on the whitelist
+    if (!this.canDownload) {
+      this.checkWhitelist();
+    }
   }
 
   async addToCart(download?: boolean) {
