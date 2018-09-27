@@ -66,7 +66,7 @@ export class LearningObjectService {
         const res = response.json();
         const total = res.total;
         const learningObjects = res.objects.map(object => LearningObject.instantiate(object));
-        return { learningObjects, total }
+        return { learningObjects, total };
       });
   }
 
