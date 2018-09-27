@@ -27,6 +27,7 @@ import {
 export class BrowseComponent implements OnInit, OnDestroy {
   copy = COPY;
   learningObjects: LearningObject[] = Array(20).fill(new LearningObject);
+  totalLearningObjects = 0;
 
   query: Query = {
     text: '',
@@ -383,6 +384,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     try {
       const { learningObjects, total } = await this.learningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
+      this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
       this.loading = false;
     } catch (e) {
