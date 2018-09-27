@@ -73,27 +73,13 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-    if (true) {
-      this.checkDownloadAuthorization();
-    } else {
-      this.canDownload = true;
-    }
+    this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
+      this.canDownload = isAuthorized;
+    });
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
-  }
-
-  checkDownloadAuthorization() {
-    // Check that the object does not contain a download lock and the user is logged in
-    this.canDownload = !(this.learningObject.lock
-      && this.learningObject.lock.restrictions.includes(Restriction.DOWNLOAD))
-      && this.auth.isLoggedIn.value;
-    // If the object is restricted, check if the user is on the whitelist
-    if (!this.canDownload) {
-      this.checkWhitelist();
-    }
   }
 
   async addToCart(download?: boolean) {
@@ -217,21 +203,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   removeFromCart() {
     this.cartService.removeFromCart(this.learningObject.author.username, this.learningObject.name);
-  }
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.auth.username;
-      if (whitelist.includes(username)) {
-        this.canDownload = true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   private buildLocation(encoded?: boolean) {
