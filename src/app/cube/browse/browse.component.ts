@@ -47,7 +47,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
     course: 'a Learning Object 15 weeks in length'
   };
 
-
   loading = false;
   mappingsPopup = false;
 
@@ -382,8 +381,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
-      this.learningObjects = await this.learningObjectService.getLearningObjects(query);
-      this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
+      const { learningObjects, total } = await this.learningObjectService.getLearningObjects(query);
+      this.learningObjects = learningObjects;
+      this.pageCount = Math.ceil(total / +this.query.limit);
       this.loading = false;
     } catch (e) {
        console.log(`Error: ${e}`);

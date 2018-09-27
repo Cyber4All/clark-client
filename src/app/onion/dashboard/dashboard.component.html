@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="rows" #learningObjectElement *ngFor="let l of learningObjects">
-          <div [ngClass]="{published: l.published, unpublished: !l.published && !l.lock, locked: l.lock, 'disabled': (freezeSelected && selected.get(l.id)) || (freezeFocused && hidden.get(l.id)), 'child': (selectingParent && selected.get(l.id)) || (freezeFocused && l.id !== focusedLearningObject.id), 'clickable': allowRowClick}" class="row" (click)="allowRowClick ? rowClick() : undefined">
+          <div [ngClass]="{published: l.published, unpublished: !l.published, 'disabled': (freezeSelected && selected.get(l.id)) || (freezeFocused && hidden.get(l.id)), 'child': (selectingParent && selected.get(l.id)) || (freezeFocused && l.id !== focusedLearningObject.id), 'clickable': allowRowClick}" class="row" (click)="allowRowClick ? rowClick() : undefined">
             <clark-checkbox [setValue]="allSelected || objectIsSelected(l.id)" [disabled]="freezeSelected || (freezeFocused && l.id === focusedLearningObject.id)" (checkboxChecked)="selectLearningObject(l)" (checkboxUnchecked)="deselectLearningObject(l)"></clark-checkbox>
             <div class="cells">
               <div class="cell">
