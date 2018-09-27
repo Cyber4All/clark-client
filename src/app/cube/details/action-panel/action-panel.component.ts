@@ -8,6 +8,7 @@ import { RatingService } from '../../../core/rating.service';
 import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
+import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -69,17 +70,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private cartService: CartV2Service,
     private renderer: Renderer2,
     private noteService: ToasterService,
-    private ratingService: RatingService,
-    private modalService: ModalService
   ) {}
 
   ngOnInit() {
-    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-    if (environment.production) {
-      this.checkWhitelist();
-    } else {
-      this.canDownload = true;
-    }
+    this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
+      this.canDownload = isAuthorized;
+    });
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
@@ -207,21 +203,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   removeFromCart() {
     this.cartService.removeFromCart(this.learningObject.author.username, this.learningObject.name);
-  }
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.auth.username;
-      if (whitelist.includes(username)) {
-        this.canDownload = true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   private buildLocation(encoded?: boolean) {
