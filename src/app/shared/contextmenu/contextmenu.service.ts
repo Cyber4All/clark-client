@@ -28,7 +28,6 @@ export class ContextMenuService implements OnDestroy {
   /**
    * Creates a new ContextMenuViewerComponent, set's the components instance variables, and stores it in a map for later
    * @param el {ElementRef} the HTML content of the context menu
-   * @param anchor {}
    */
   register(el: ElementRef): [string, EventEmitter<string>] {
     // generate unique id for context menu

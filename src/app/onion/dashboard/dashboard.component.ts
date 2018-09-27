@@ -3,6 +3,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
+import { ToasterService } from '../../shared/toaster/toaster.service';
 
 export interface DashboardLearningObject extends LearningObject {
   status: string;
@@ -35,7 +36,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private learningObjectService: LearningObjectService,
     private cd: ChangeDetectorRef,
-    public auth: AuthService, // used in markup
+    private notificationService: ToasterService,
+    public auth: AuthService, // used in markup,
   ) {
     const hours = new Date().getHours();
     if (hours >= 17) {
@@ -52,7 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Fetches loggedin user's learning objects from API and builds the heirarchy structure
+   * Fetches logged-in user's learning objects from API and builds the hierarchy structure
    *@returns DashboardLearningObject[]
    * @memberof DashboardComponent
    */
@@ -113,8 +115,6 @@ export class DashboardComponent implements OnInit {
     } else {
       this.deselectLearningObject(l);
     }
-
-    console.log('selected', this.selected);
   }
 
   /**
@@ -131,8 +131,6 @@ export class DashboardComponent implements OnInit {
     } else {
       this.selected = new Map();
     }
-
-    console.log(this.selected);
   }
 
    /**
@@ -158,6 +156,50 @@ export class DashboardComponent implements OnInit {
 
     if (this.selected.size < this.learningObjects.length && this.allSelected) {
       this.allSelected = false;
+    }
+  }
+
+  /**
+   * Forcibly clears the selected map and resets the allSelected variable
+   */
+  clearSelected() {
+    this.selected = new Map();
+    this.allSelected = false;
+  }
+
+  delete(multiple: boolean = false) {
+    if (!multiple) {
+      this.learningObjectService
+        .delete(this.focusedLearningObject.name)
+        .then(async () => {
+          this.notificationService.notify(
+            'Done!',
+            'Learning Object(s) deleted!',
+            'good',
+            'far fa-check'
+          );
+          this.learningObjects = await this.getLearningObjects();
+        })
+        .catch(async err => {
+          console.log(err);
+        });
+    } else {
+      this.learningObjectService
+      // TODO: Verify selected is an array of names
+        .deleteMultiple(
+          Array.from(this.selected.values()).map(s => s.object.name)
+        )
+        .then(async () => {
+          this.clearSelected();
+          this.notificationService.notify(
+            'Done!',
+            'Learning Object(s) deleted!',
+            'good',
+            'far fa-times'
+          );
+          this.learningObjects = await this.getLearningObjects();
+        })
+        .catch(err => {});
     }
   }
 
