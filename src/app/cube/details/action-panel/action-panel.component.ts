@@ -8,6 +8,7 @@ import { RatingService } from '../../../core/rating.service';
 import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
+import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -69,14 +70,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private cartService: CartV2Service,
     private renderer: Renderer2,
     private noteService: ToasterService,
-    private ratingService: RatingService,
-    private modalService: ModalService
   ) {}
 
   ngOnInit() {
     // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-    if (environment.production) {
-      this.checkWhitelist();
+    if (true) {
+      this.checkDownloadAuthorization();
     } else {
       this.canDownload = true;
     }
@@ -84,6 +83,13 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
+  }
+
+  checkDownloadAuthorization() {
+    this.canDownload = !(this.learningObject.lock 
+      && this.learningObject.lock.restrictions.includes(Restriction.DOWNLOAD))
+      && this.auth.isLoggedIn.value
+    if (!this.canDownload) this.checkWhitelist();
   }
 
   async addToCart(download?: boolean) {
