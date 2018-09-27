@@ -15,7 +15,8 @@ export class FeaturedComponent implements OnInit {
   query: Query = {
     limit: 5,
     orderBy: OrderBy.Date,
-    sortType: SortType.Descending
+    sortType: SortType.Descending,
+    released: true
   };
   loading = false;
 
@@ -31,7 +32,7 @@ export class FeaturedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.learningObjects = await this.learningObjectService.getLearningObjects(this.query);
+      this.learningObjects = (await this.learningObjectService.getLearningObjects(this.query)).learningObjects;
       this.loading = false;
     } catch (e) {
       this.loading = false;
