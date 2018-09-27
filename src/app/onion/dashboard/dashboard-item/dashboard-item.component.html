@@ -12,7 +12,7 @@
     <div>{{ learningObject.length }}</div>
     <div>{{ learningObject.date | date:'medium' }}</div>
     <div>
-      <div class="meatball" [ngClass]="{'open': meatballOpen}">
+      <div class="meatball" [ngClass]="{'open': meatballOpen}" (click)="this.toggleContextMenu($event)">
         <div class="icon">
           <i class="far fa-times"></i>
         </div>
@@ -22,3 +22,15 @@
   </div>
 </div>
 
+<clark-context-menu (id)="itemMenu = $event" (close)="meatballOpen = false">
+  <div #contextMenu>
+    <ul>
+      <li><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="learningObject.length !== 'nanomodule'"><i class="far fa-project-diagram"></i>Edit Children</li>
+      <li><i class="far fa-upload"></i>Manage Materials</li>
+      <li><i class="far fa-eye"></i>Submit for Review</li>
+      <li><i class="far fa-cube"></i>View in CUBE</li>
+      <li class="bad"><i class="far fa-trash-alt"></i>Delete</li>
+    </ul>
+  </div>
+</clark-context-menu>

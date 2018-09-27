@@ -4,10 +4,9 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild
 } from '@angular/core';
 import { DashboardLearningObject } from '../dashboard.component';
-import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
+import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -15,8 +14,6 @@ import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
   styleUrls: ['./dashboard-item.component.scss']
 })
 export class DashboardItemComponent implements OnInit {
-  @ViewChild(ContextMenuComponent)
-  public contextMenu: ContextMenuComponent;
 
   @Input()
   learningObject: DashboardLearningObject;
@@ -28,13 +25,30 @@ export class DashboardItemComponent implements OnInit {
   @Output()
   select: EventEmitter<boolean> = new EventEmitter();
 
+  itemMenu: string;
+  meatballAnchor: HTMLElement;
+
   // map of state strings to icons and tooltips
   states: Map<string, { icon: string; tip: string }>;
 
   // flags
   meatballOpen = false;
 
-  constructor(private contextMenuService: ContextMenuService) {}
+  constructor(private contextMenuService: ContextMenuService ) {}
+
+  toggleContextMenu(event: MouseEvent) {
+    if (this.itemMenu) {
+      if (!this.meatballOpen) {
+        this.contextMenuService.open(this.itemMenu, event.currentTarget as HTMLElement, {top: 5, left: 10});
+      } else {
+        this.contextMenuService.destroy(this.itemMenu);
+      }
+
+      this.meatballOpen = !this.meatballOpen;
+    } else {
+      console.error('Error! Attempted to open an unregistered context menu!');
+    }
+  }
 
   ngOnInit() {
     // TODO move the tooltips to a copy file

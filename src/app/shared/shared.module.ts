@@ -33,6 +33,7 @@ import { LearningObjectRatingsComponent } from './learning-object-ratings/learni
 import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
+import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -51,7 +52,8 @@ import { PopupModule } from './popups/popup.module';
     ToasterModule,
     ContextMenuModule,
     TooltipModule,
-    PopupModule
+    PopupModule,
+    ClarkContextMenuModule.forRoot()
   ],
   providers: [],
   declarations: [
@@ -74,7 +76,7 @@ import { PopupModule } from './popups/popup.module';
     NewRatingComponent,
     LearningObjectRatingsComponent,
     ReportRatingComponent,
-    ProgressComponent
+    ProgressComponent,
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -96,7 +98,8 @@ import { PopupModule } from './popups/popup.module';
     ProgressComponent,
     VirtualScrollModule,
     PopupModule,
-    ContextMenuModule
+    ContextMenuModule,
+    ClarkContextMenuModule,
   ]
 })
 export class SharedModule {}

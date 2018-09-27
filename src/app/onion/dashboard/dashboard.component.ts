@@ -66,7 +66,6 @@ export class DashboardComponent implements OnInit {
         const arr: DashboardLearningObject[] = Array.from(
           learningObjects.map(l => {
             l.parents = [];
-            l.status = ['unpublished', 'waiting', 'review', 'denied', 'published'][Math.floor(Math.random() * 5)]; // TODO remove this
             return l as DashboardLearningObject;
           })
         );
