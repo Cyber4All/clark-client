@@ -16,7 +16,7 @@
     </div>
     <div class="content" id="content">
       <div class="column-title" id="column-title">
-        <span>{{ copy.RESULTS }} {{this.learningObjectService.totalLearningObjects ? '(' + this.learningObjectService.totalLearningObjects + ')' : '0'}}
+        <span>{{ copy.RESULTS }} ({{this.totalLearningObjects}})
           <span class="clear-search" id="clear-search" (click)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </span>
           <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
         </span>
