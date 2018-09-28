@@ -5,9 +5,12 @@
         <div id="home-title" class="feature-text">{{ copy.HERO }}</div>
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" aria-label="Search Across Learning Objects" placeholder="Searching across {{ learningObjectService.totalLearningObjects }} learning objects" [(ngModel)]="query.text" name="query">
+            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" aria-label="Search Across Learning Objects"
+              placeholder="Searching across {{ learningObjectService.totalLearningObjects }} learning objects"
+              [(ngModel)]="query.text" name="query">
             <div class="browselink" routerLink="/browse">{{ copy.BROWSE }}</div>
-            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{ copy.SEARCH }}</button>
+            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{
+              copy.SEARCH }}</button>
           </div>
         </form>
       </div>
@@ -15,12 +18,13 @@
   </div>
   <!-- <div class="home-banner"></div> -->
 </section>
+<div class="featured-viewport">
+  <cube-featured></cube-featured>
+  <cube-org-collections></cube-org-collections>
+  <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
+  <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
+</div>
 <div class="whois">
   <div class="feature-text">{{ copy.WHATISTITLE }}</div>
   <span>{{ copy.WHATIS }}</span>
-</div>
-<div class="featured-viewport">
-  <cube-featured></cube-featured>
-    <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
-    <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
 </div>
