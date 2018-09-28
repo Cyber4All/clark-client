@@ -24,13 +24,13 @@
 
 <clark-context-menu (id)="itemMenu = $event" (close)="meatballOpen = false">
   <div #contextMenu>
-    <ul>
-      <li><i class="far fa-pencil"></i>Edit</li>
+    <ul (click)="toggleContextMenu($event)">
+      <li [routerLink]="['/onion/learning-object-builder', learningObject.name]"><i class="far fa-pencil"></i>Edit</li>
       <li *ngIf="learningObject.length !== 'nanomodule'"><i class="far fa-project-diagram"></i>Edit Children</li>
-      <li><i class="far fa-upload"></i>Manage Materials</li>
+      <li [routerLink]="['/onion/content/upload', learningObject.name]"><i class="far fa-upload"></i>Manage Materials</li>
       <li><i class="far fa-eye"></i>Submit for Review</li>
-      <li><i class="far fa-cube"></i>View in CUBE</li>
-      <li class="bad"><i class="far fa-trash-alt"></i>Delete</li>
+      <li *ngIf="learningObject.status === 'published'" [routerLink]="['/details', learningObject.author.username, learningObject.name]"><i class="far fa-cube"></i>View in CUBE</li>
+      <li class="bad" (click)="delete.emit()"><i class="far fa-trash-alt"></i>Delete</li>
     </ul>
   </div>
 </clark-context-menu>

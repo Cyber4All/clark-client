@@ -24,6 +24,8 @@ export class DashboardItemComponent implements OnInit {
 
   @Output()
   select: EventEmitter<boolean> = new EventEmitter();
+  @Output()
+  delete: EventEmitter<void> = new EventEmitter();
 
   itemMenu: string;
   meatballAnchor: HTMLElement;

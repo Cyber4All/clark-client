@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   // flags
   loading = false;
   allSelected = false;
+  deleteConfirmation: Iterator<any>;
 
   // collections
   // selected simply means the checkbox next to the object is checked
@@ -167,10 +168,21 @@ export class DashboardComponent implements OnInit {
     this.allSelected = false;
   }
 
-  delete(multiple: boolean = false) {
-    if (!multiple) {
+  test() {
+    alert('yay')
+  }
+
+  async *delete(...objects: DashboardLearningObject[]) {
+    const confirm = yield;
+
+    if (!confirm) {
+      return;
+    }
+
+    if (objects.length === 1) {
+      // single deletion
       this.learningObjectService
-        .delete(this.focusedLearningObject.name)
+        .delete(objects[0].name)
         .then(async () => {
           this.notificationService.notify(
             'Done!',
@@ -184,10 +196,11 @@ export class DashboardComponent implements OnInit {
           console.log(err);
         });
     } else {
+      // multiple deletion
       this.learningObjectService
       // TODO: Verify selected is an array of names
         .deleteMultiple(
-          Array.from(this.selected.values()).map(s => s.object.name)
+          Array.from(objects.map(s => s.object.name))
         )
         .then(async () => {
           this.clearSelected();
@@ -201,6 +214,10 @@ export class DashboardComponent implements OnInit {
         })
         .catch(err => {});
     }
+
+    this.deleteConfirmation = undefined;
+
+    return;
   }
 
 }
