@@ -38,6 +38,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     standardOutcomes: [],
     orderBy: undefined,
     sortType: undefined,
+    collection: ''
   };
 
   tooltipText = {
