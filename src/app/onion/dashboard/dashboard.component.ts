@@ -4,6 +4,7 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
+import { LearningObjectStatus } from '@env/environment';
 
 export interface DashboardLearningObject extends LearningObject {
   status: string;
@@ -69,6 +70,9 @@ export class DashboardComponent implements OnInit {
         const arr: DashboardLearningObject[] = Array.from(
           learningObjects.map(l => {
             l.parents = [];
+            if (!l.status) {
+              l.status = LearningObjectStatus.UNPUBLISHED;
+            }
             return l as DashboardLearningObject;
           })
         );

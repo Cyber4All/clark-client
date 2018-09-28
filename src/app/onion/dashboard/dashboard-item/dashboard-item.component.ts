@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { DashboardLearningObject } from '../dashboard.component';
 import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
+import { LearningObjectStatus } from '@env/environment';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -56,7 +57,7 @@ export class DashboardItemComponent implements OnInit {
     // TODO move the tooltips to a copy file
     this.states = new Map([
       [
-        'denied',
+        LearningObjectStatus.DENIED,
         {
           icon: 'fa-ban',
           tip:
@@ -64,14 +65,14 @@ export class DashboardItemComponent implements OnInit {
         }
       ],
       [
-        'published',
+        LearningObjectStatus.PUBLISHED,
         {
           icon: 'fa-eye',
           tip: 'This learning object is published and can be browsed for.'
         }
       ],
       [
-        'review',
+        LearningObjectStatus.UNDER_REVIEW,
         {
           icon: 'fa-sync',
           tip:
@@ -81,7 +82,7 @@ export class DashboardItemComponent implements OnInit {
         }
       ],
       [
-        'waiting',
+        LearningObjectStatus.WAITING,
         {
           icon: 'fa-hourglass',
           tip:
@@ -91,7 +92,7 @@ export class DashboardItemComponent implements OnInit {
         }
       ],
       [
-        'unpublished',
+        LearningObjectStatus.UNPUBLISHED,
         {
           icon: 'fa-eye-slash',
           tip:
