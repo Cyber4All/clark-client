@@ -122,6 +122,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
+    
     });
   }
 
@@ -276,7 +277,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Executes a search by reading throuhg the query object and mapping it to query parameters and then re-navigating to the component
+   * Executes a search by reading through the query object and mapping it to query parameters and then re-navigating to the component
    * @param delay if true, triggers a debounced subject, which will call performSearch again with no delay
    */
   performSearch(delay: boolean = false) {
