@@ -168,10 +168,17 @@ export class DashboardComponent implements OnInit {
     this.allSelected = false;
   }
 
-  test() {
-    alert('yay')
-  }
 
+  /**
+   * Delete a learning object after asking confirmation.
+   *
+   * This is a generator function.
+   * The confirmation modal is shown from the markup by setting the deleteConfirmation variable
+   * to the return value of this function and then immediately calling the .next() function,
+   * IE deleteConfirmation = delete(l); deleteConfirmation.next();
+   * To confirm or deny the confirmation, call deleteConfirmation.next(true) or deleteConfirmation.next(false)
+   * @param objects {DashboardLearningObject[]} list of objects to be deleted
+   */
   async *delete(...objects: DashboardLearningObject[]) {
     const confirm = yield;
 
