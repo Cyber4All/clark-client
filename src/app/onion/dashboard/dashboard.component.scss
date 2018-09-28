@@ -97,6 +97,114 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
     &.neutral {
         color: $dark-text;
     }
+
+    &.shadow {
+        box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+    }
+}
+
+$unpublished-color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.36);
+
+.filter-menu {
+    li {
+        position: relative;
+        color: $dark-text;
+
+        .indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            background: $dark-text;
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .svg-inline--fa,
+        .icon {
+            margin-left: 15px;
+        }
+
+        &:hover {
+            color: white;
+            background: $dark-text;
+
+            .indicator {
+                background: white;
+            }
+        }
+
+        &.waiting {
+            color: #5ec9da;
+
+            .indicator {
+                background: #5ec9da;
+            }
+
+            &:hover {
+                color: white;
+                background: #5ec9da;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.review {
+            color: #f5a623;
+
+            .indicator {
+                background: #f5a623;
+            }
+
+            &:hover {
+                color: white;
+                background: #f5a623;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.published {
+            color: $green;
+
+            .indicator {
+                background: $green;
+            }
+
+            &:hover {
+                color: white;
+                background: $green;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.denied {
+            color: saturate($error-red, 15);
+
+            .indicator {
+                background: saturate($error-red, 15);
+            }
+
+            &:hover {
+                color: white;
+                background: saturate($error-red, 15);
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+    }
 }
 
 .loading-template {

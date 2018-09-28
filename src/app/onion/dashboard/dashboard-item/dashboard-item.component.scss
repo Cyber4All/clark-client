@@ -6,8 +6,17 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
     border-top: 2px solid rgba(red($dark-text), green($dark-text), blue($dark-text), 0.12);
     transition: background 0.1s ease;
 
-    &:hover {
+    &:not(.disabled):hover {
         background: rgba(red($dark-text), green($dark-text), blue($dark-text) + 10, 0.08);
+    }
+
+    &.disabled {
+        pointer-events: none;
+    }
+
+    &.shrink {
+        padding-left: 50px;
+        padding-right: 50px;
     }
 }
 
@@ -44,9 +53,6 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
     }
 }
-
-// context menu styles
-
 
 // meatball styles from this point downward
 .meatball {

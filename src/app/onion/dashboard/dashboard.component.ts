@@ -5,6 +5,7 @@ import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
 import { LearningObjectStatus } from '@env/environment';
+import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
 
 export interface DashboardLearningObject extends LearningObject {
   status: string;
@@ -19,27 +20,39 @@ export interface DashboardLearningObject extends LearningObject {
 export class DashboardComponent implements OnInit {
   learningObjects: DashboardLearningObject[];
 
-  focusedLearningObject: DashboardLearningObject;
   greetingTime: string; // morning, afternoon, or evening depending on user's clock
+  childrenConfirmationMessage: string;
+  focusedLearningObject: DashboardLearningObject;
+  filterMenu: string;
+
+  // popup generator handlers
+  deleteConfirmation: Iterator<any>;
+  childrenConfirmation: Iterator<any>;
+
 
   // flags
   loading = false;
   allSelected = false;
-  deleteConfirmation: Iterator<any>;
+  editingChildren = false;
+  filterMenuDown = false;
+  submitToCollection = false;
 
   // collections
   // selected simply means the checkbox next to the object is checked
   selected: Map<string, { index: number; object: LearningObject }> = new Map();
   // hidden means that the object is downloaded byt not visible
-  hidden: Map<string, { reason: string; object: LearningObject }> = new Map();
-  // frozen means that the object is visible but can't be mutated, EG no meatball menu and no checkbox
-  frozen: Map<string, { reason: string; object: LearningObject }> = new Map();
+  hidden: Map<string, Map<string, DashboardLearningObject>> = new Map();
+  // disabled means that the object is visible but can't be mutated, EG no meatball menu and no checkbox
+  disabled: Map<string, Map<string, DashboardLearningObject>> = new Map();
+  // filters applied to dashboard objects (status filters)
+  filters: Map<string, boolean> = new Map();
 
   constructor(
     private learningObjectService: LearningObjectService,
     private cd: ChangeDetectorRef,
     private notificationService: ToasterService,
-    public auth: AuthService, // used in markup,
+    private contextMenuService: ContextMenuService,
+    public auth: AuthService // used in markup,
   ) {
     const hours = new Date().getHours();
     if (hours >= 17) {
@@ -53,6 +66,32 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.learningObjects = await this.getLearningObjects();
+  }
+
+  /**
+   * Hide or show the filter dropdown menu
+   * @param event {MouseEvent} the mouse event from clicking
+   */
+  toggleFilterMenu(event: MouseEvent) {
+    if (this.filterMenu) {
+      if (!this.filterMenuDown) {
+        this.contextMenuService.open(this.filterMenu, (event.currentTarget as HTMLElement), { top: 10, left: 5 });
+      } else {
+        this.contextMenuService.destroy(this.filterMenu);
+      }
+    } else {
+      console.error('Error! Attempted to open an unregistered context menu');
+    }
+
+    this.filterMenuDown = !this.filterMenuDown;
+  }
+
+  toggleFilter(filter: string) {
+    if (this.filters.get(filter)) {
+      this.filters.delete(filter);
+    } else {
+      this.filters.set(filter, true);
+    }
   }
 
   /**
@@ -123,7 +162,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Selects all learning objects (duh)
+   * Selects all learning objects
    */
   selectAll() {
     this.allSelected = !this.allSelected;
@@ -138,7 +177,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-   /**
+  /**
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
    * @param l Learning Object to be selected
    */
@@ -146,7 +185,10 @@ export class DashboardComponent implements OnInit {
     this.selected.set(l.id, { index, object: l });
     this.cd.detectChanges();
 
-    if ( this.selected.size === this.learningObjects.length && !this.allSelected ) {
+    if (
+      this.selected.size === this.learningObjects.length &&
+      !this.allSelected
+    ) {
       this.allSelected = true;
     }
   }
@@ -172,7 +214,6 @@ export class DashboardComponent implements OnInit {
     this.allSelected = false;
   }
 
-
   /**
    * Delete a learning object after asking confirmation.
    *
@@ -197,33 +238,45 @@ export class DashboardComponent implements OnInit {
         .then(async () => {
           this.notificationService.notify(
             'Done!',
-            'Learning Object(s) deleted!',
+            'Learning Object deleted!',
             'good',
             'far fa-check'
           );
           this.learningObjects = await this.getLearningObjects();
         })
-        .catch(async err => {
+        .catch(err => {
           console.log(err);
+          this.notificationService.notify(
+            'Error!',
+            'Learning Object could not be deleted!',
+            'bad',
+            'far fa-times'
+          );
         });
     } else {
       // multiple deletion
       this.learningObjectService
-      // TODO: Verify selected is an array of names
-        .deleteMultiple(
-          Array.from(objects.map(s => s.object.name))
-        )
+        // TODO: Verify selected is an array of names
+        .deleteMultiple(Array.from(objects.map(s => s.object.name)))
         .then(async () => {
           this.clearSelected();
           this.notificationService.notify(
             'Done!',
-            'Learning Object(s) deleted!',
+            'Learning Objects deleted!',
             'good',
-            'far fa-times'
+            'far fa-chexk'
           );
           this.learningObjects = await this.getLearningObjects();
         })
-        .catch(err => {});
+        .catch(err => {
+          console.log(err);
+          this.notificationService.notify(
+            'Error!',
+            'Learning Objects could not be deleted!',
+            'bad',
+            'far fa-times'
+          );
+        });
     }
 
     this.deleteConfirmation = undefined;
@@ -231,4 +284,360 @@ export class DashboardComponent implements OnInit {
     return;
   }
 
+  /**
+   * Modify UI for addition of children
+   * @param object {DashboardLearningObject} object to which children should be addeds
+   */
+  editChildren(object: DashboardLearningObject) {
+    this.editingChildren = true;
+    this.focusedLearningObject = object;
+    // forcible deselect any selected objects to repurpose the checkboxes for editing children
+    this.clearSelected();
+
+    const lengths = Array.from(LengthsSet.values());
+    const objectLengthIndex = lengths.indexOf(object.length);
+
+    // disabled the object we're adding to
+    this.disableLearningObject(object, 'children');
+
+    // loop through all objects, hide if they're ineligible, select if they're already children
+    for (let i = 0, l = this.learningObjects.length; i < l; i++) {
+      const tempObject = this.learningObjects[i];
+
+      if (
+        object.id !== tempObject.id &&
+        lengths.indexOf(tempObject.length) >= objectLengthIndex
+      ) {
+        // this object is ineligible to be a child, hide it
+        this.hideLearningObject(tempObject, 'children');
+      } else if (tempObject.parents.includes(object.name)) {
+        // this object is already a child, select it
+        this.selectLearningObject(tempObject, i);
+      }
+    }
+  }
+
+  /**
+   * Cancel the editChildren process by flipping the editingChildrenFlag, clearing the selected list,
+   * and removing any children-related disabled/hidden entries
+   */
+  cancelEditChildren() {
+    this.editingChildren = false;
+    this.clearSelected();
+
+    this.invalidateHiddenReason('children');
+    this.invalidateDisabledReason('children');
+  }
+
+  /**
+   * Finish adding children by checking for changes and canceling if there are none, or confirming the children changes and then
+   * sending changes to service.
+   *
+   * This is a generator function.
+   * The confirmation modal is shown from the markup by setting the childrenConfirmation variable
+   * to the return value of this function and then immediately calling the .next() function,
+   * IE childrenConfirmation = delete(l); childrenConfirmation.next();
+   * To confirm or deny the confirmation, call childrenConfirmation.next(true) or childrenConfirmation.next(false)
+   * @param objects {DashboardLearningObject[]} list of objects to be deleted
+   */
+  async *finishAddChildren() {
+    const names = Array.from(this.selected.values()).map(l => l.object.name);
+
+    // create a deep copy of the array resulting from iterating the list of current children and mapping their names
+    const current: string[] = Array.from(
+      (this.focusedLearningObject.children as LearningObject[]).map(l => l.name)
+    );
+
+    // check if no changes
+    if (JSON.stringify(current) === JSON.stringify(names)) {
+      // no changes
+      this.cancelEditChildren();
+      return;
+    } else {
+      // build a confirmation string
+      const [additions, removals] = this.parseChildrenChanges(names, current);
+
+      if (additions.length || removals.length !== current.length) {
+        const [addMessage, removeMessage] = this.buildAddRemoveMessages(
+          additions,
+          removals
+        );
+
+        this.childrenConfirmationMessage = `Just to confirm, you want to ${addMessage} ${removeMessage} '${
+          this.focusedLearningObject.name
+        }'?`;
+      } else {
+        this.childrenConfirmationMessage = `Just to confirm, you want to remove all children from '${
+          this.focusedLearningObject.name
+        }'?`;
+      }
+
+      // wait for respone from popup
+      const confirmation = yield;
+
+      if (confirmation) {
+        const ids = this.learningObjects
+          .filter(l => names.includes(l.name))
+          .map(l => l.id);
+        this.learningObjectService
+          .setChildren(this.focusedLearningObject.name, ids)
+          .then(val => {
+            this.notificationService.notify(
+              'Success!',
+              'Learning Object\'s children updated successfully!',
+              'good',
+              'far fa-check'
+            );
+
+            this.cancelEditChildren();
+
+            this.getLearningObjects().then(objects => {
+              this.learningObjects = objects;
+            });
+          })
+          .catch(error => {
+            console.log(error);
+
+            this.notificationService.notify(
+              'Error!',
+              'An error occurred and the Learning Object\'s children could not be updated',
+              'bad',
+              'far fa-times'
+            );
+          });
+      }
+    }
+  }
+
+  /**
+   * Takes a list of changes (the currently selected map of LO names) and a list of the already existing LO names in the
+   * focusedObject's children and returns an array of names that were added and another array of names that were removed
+   * @param changes {string[]} list of learning object names currently selected
+   * @param exisiting {string[]} list of learning object names already present in a learning object's children array
+   * @return {[string, string]} Array where first value is a list of additions and second value is a list of removals
+   */
+  parseChildrenChanges(
+    changes: string[],
+    exisiting: string[]
+  ): [string[], string[]] {
+    // store additions here
+    const additions = [];
+
+    // store removals here
+    let removals = [];
+
+    const spliceIndexes: number[] = [];
+
+    // loop through currently selected ids and determine if they were added
+    for (let i = 0, l = changes.length; i < l; i++) {
+      if (changes.includes(exisiting[i])) {
+        // this was unchanged, store index to remove after iteration complete
+        spliceIndexes.push(i);
+      } else {
+        // must be an addition
+        additions.push(changes[i]);
+      }
+    }
+
+    exisiting = exisiting.filter((_, i) => !spliceIndexes.includes(i));
+
+    // at this point, anything left in the current array is a removal
+    removals = exisiting;
+
+    return [additions, removals];
+  }
+
+  /**
+   * Takes two arrays of LO names, one of additions and one of removals, and
+   * constructs a gramatically correct addition and subtraction message
+   */
+  buildAddRemoveMessages(
+    additions: string[],
+    removals: string[]
+  ): [string, string] {
+    const addMessage = additions.length
+      ? `add ${
+          additions.length > 1
+            ? additions
+                .slice(0, additions.length - 1)
+                .map(n => '\'' + n + '\'')
+                .join(', ') +
+              ' and \'' +
+              additions[additions.length - 1] +
+              '\''
+            : '\'' + additions[additions.length - 1] + '\''
+        } ${removals.length ? '' : 'to'} `
+      : '';
+
+    const removeMessage = removals.length
+      ? `and remove ${
+          removals.length > 1
+            ? removals
+                .slice(0, removals.length - 1)
+                .map(n => '\'' + n + '\'')
+                .join(', ') +
+              ' and \'' +
+              removals[removals.length - 1] +
+              '\''
+            : '\'' + removals[removals.length - 1] + '\''
+        } from `
+      : '';
+
+    return [addMessage, removeMessage];
+  }
+
+  /**
+   * Takes a learning object and returns a list of it's children's names or an empty list
+   * @return {string[]}
+   */
+  objectChildrenNames(learningObject: LearningObject): string[] {
+    if (learningObject.children && learningObject.children.length) {
+      return (learningObject.children as LearningObject[]).map(l => l.name);
+    } else {
+      return [];
+    }
+  }
+
+  /**
+   * Hide a learning object for a specific reason by adding it to the hidden Map
+   * @param l {DashboardLearningObject} the object to hide
+   * @param reason {string} a unique one-word description of why that object is hidden (used as key)
+   */
+  hideLearningObject(l: DashboardLearningObject, reason: string) {
+    const currentHiddenObject = this.hidden.get(l.id);
+
+    if (!currentHiddenObject) {
+      // this object isn't already hidden, just add a new map
+      this.hidden.set(l.id, new Map([[reason, l]]));
+    } else if (!currentHiddenObject.get(reason)) {
+      // this object is already hidden, grab the map object and add this reason to it
+      currentHiddenObject.set(reason, l);
+      this.hidden.set(l.id, currentHiddenObject);
+    }
+  }
+
+  /**
+   * Disables a learning object for a specific reason by adding it to the disabled Map
+   * @param l {DashboardLearningObject} the object to be disabled
+   * @param reason {string} a unique one-word description of why that object is hidden (used as key)
+   */
+  disableLearningObject(l: DashboardLearningObject, reason: string) {
+    const currentDisabledObject = this.hidden.get(l.id);
+
+    if (!currentDisabledObject) {
+      // this object isn't already hidden, just add a new map
+      this.disabled.set(l.id, new Map([[reason, l]]));
+    } else if (!currentDisabledObject.get(reason)) {
+      // this object is already hidden, grab the map object and add this reason to it
+      currentDisabledObject.set(reason, l);
+      this.disabled.set(l.id, currentDisabledObject);
+    }
+  }
+
+  /**
+   * Iterate the hidden Map and remove any entries with specified reason
+   * @param reason {string} the reason to be invalidated
+   */
+  invalidateHiddenReason(reason: string) {
+    const markedToDelete: string[] = [];
+
+    this.hidden.forEach((el, key) => {
+      el.delete(reason);
+
+      // we've removed all reasons, this object shouldn't be disabled anymore
+      if (el.size === 0) {
+        markedToDelete.push(key);
+      }
+    });
+
+    if (markedToDelete.length) {
+      for (const id of markedToDelete) {
+        this.hidden.delete(id);
+      }
+    }
+  }
+
+  /**
+   * Iterate the disabled Map and remove any entries with specified reason
+   * @param reason {string} the reason to be invalidated
+   */
+  invalidateDisabledReason(reason: string) {
+    const markedToDelete: string[] = [];
+
+    this.disabled.forEach((el, key) => {
+      el.delete(reason);
+      // we've removed all reasons, this object shouldn't be disabled anymore
+      if (el.size === 0) {
+        markedToDelete.push(key);
+      }
+    });
+
+    if (markedToDelete.length) {
+      for (const id of markedToDelete) {
+        this.disabled.delete(id);
+      }
+    }
+  }
+
+  /**
+   * Publishes a learning object and adds it to a specified collection
+   * @param collection {string} the name of the collection to add this learning object to
+   */
+  addToCollection(collection?: string) {
+    if (collection) {
+      // first, attempt to publish
+      this.learningObjectService.togglePublished(this.focusedLearningObject).then(() => {
+        // publishing was a success, attempt to add to collection
+        this.learningObjectService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
+          // success
+          this.notificationService.notify(
+            'Success!',
+            `Learning object submitted to ${collection} collection successfully!`,
+            'good',
+            'far fa-check'
+          );
+          this.focusedLearningObject.publish();
+          this.focusedLearningObject.status = 'waiting';
+          this.focusedLearningObject.collection = collection;
+          this.cd.detectChanges();
+        }).catch (err => {
+          // error
+          console.error(err);
+          this.notificationService.notify(
+            'Error!',
+            `Error submitting learning object to ${collection} collection!`,
+            'bad',
+            'far fa-times'
+          );
+        });
+      }).catch(error => {
+        // failed to publish
+        this.notificationService.notify(
+          'Error!',
+          error._body,
+          'bad',
+          'far fa-times'
+        );
+        console.error(error);
+      });
+    } else {
+      console.error('No collection defined!');
+    }
+
+    this.submitToCollection = false;
+  }
+
+  /**
+   * Cancel a submission while in waiting status
+   * @param l {DashboardLearningObject} learning object to be unpublished
+   */
+  cancelSubmission(l: DashboardLearningObject) {
+    this.learningObjectService.togglePublished(l).then(async (val) => {
+      l.unpublish();
+      l.status = 'unpublished';
+      this.cd.detectChanges();
+    }).catch(err => {
+      console.error(err);
+    });
+  }
 }

@@ -1,4 +1,4 @@
-<div class="dashboard" [ngClass]="{'disabled': disabled}">
+<div class="dashboard">
   <div class="splash">
     <div class="inner">
       <div class="greeting">Good {{ greetingTime }}, <span>{{ auth.user.name.split(' ')[0] }}</span>!</div>
@@ -6,24 +6,41 @@
   </div>
   <div class="list">
     <div class="list-top">
-      <header class="header">Your Learning Objects</header>
+      <header class="header">Your Learning Objects <span *ngIf="editingChildren"> - Editing Children</span></header>
       <div class="btn-group to-right">
-        <button routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
-        <button class="button neutral">Filter <i class="fas fa-sort"></i></button>
+        <button *ngIf="!editingChildren" routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
+        <button *ngIf="!editingChildren" class="button neutral" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu($event)">Filter <i class="fas fa-sort"></i></button>
+        <button *ngIf="editingChildren" class="button green" (click)="childrenConfirmation = finishAddChildren(); childrenConfirmation.next()">Save Children <i class="fas fa-check"></i></button>
+        <button *ngIf="editingChildren" class="button bad" (click)="cancelEditChildren()">Cancel <i class="far fa-ban"></i></button>
       </div>
     </div>
     <div *ngIf="!loading; else loadingTemplate" class="list-body">
       <div class="column-headers">
         <div>
-          <clark-checkbox [setValue]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
+          <clark-checkbox *ngIf="!editingChildren" [setValue]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
         </div>
         <div>Status</div>
         <div>Name</div>
         <div>Type</div>
         <div>Date</div>
-        <div><!-- meatball --></div>
+        <div><!-- meatball placeholder --></div>
       </div>
-      <clark-dashboard-item *ngFor="let l of learningObjects; let i = index" [learningObject]="l" [selected]="this.selected.get(l.id) !== undefined" (select)="toggleSelect(l, $event, i)" (delete)="deleteConfirmation = delete(l); deleteConfirmation.next()"></clark-dashboard-item>
+      <clark-dashboard-item 
+        *ngFor="let l of learningObjects; let i = index"
+        [learningObject]="l"
+        [status]="l.status"
+        [disabled]="disabled.get(l.id)"
+        [hidden]="hidden.get(l.id)" 
+        [selected]="this.selected.get(l.id) !== undefined"
+        [small]="editingChildren && !this.disabled.get(l.id)"
+        [meatball]="!editingChildren"
+        (select)="toggleSelect(l, $event, i)" 
+        (delete)="deleteConfirmation = delete(l); deleteConfirmation.next();"
+        (editChildren)="editChildren(l)"
+        (submit)="submitToCollection = true; focusedLearningObject = l;"
+        (cancelSubmission)="cancelSubmission(l)"
+        >
+      </clark-dashboard-item>
     </div>
   </div>
 </div>
@@ -35,6 +52,36 @@
   </span>
 </ng-template>
 
+<!-- Filter Context Menu -->
+<clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
+    <div #contextMenu class="filter-menu">
+      <ul>
+        <li class="unpublished" (click)="toggleFilter('unpublished')">
+          <div *ngIf="filters.get('unpublished')" class="indicator"></div>
+          <i class="far fa-eye-slash"></i>Unpublished
+        </li>
+        <li class="waiting" (click)="toggleFilter('waiting')">
+          <div *ngIf="filters.get('waiting')" class="indicator"></div>
+          <i class="far fa-hourglass"></i>Waiting for Review
+        </li>
+        <li class="review" (click)="toggleFilter('review')">
+          <div *ngIf="filters.get('review')" class="indicator"></div>
+          <i class="far fa-sync"></i>Under Review
+        </li>
+        <li class="published" (click)="toggleFilter('published')">
+          <div *ngIf="filters.get('published')" class="indicator"></div>
+          <i class="far fa-eye"></i>Published
+        </li>
+        <li class="denied" (click)="toggleFilter('denied')">
+          <div *ngIf="filters.get('denied')" class="indicator"></div>
+          <i class="far fa-ban"></i>Denied
+        </li>
+      </ul>
+    </div>
+</clark-context-menu>
+
+
+<!-- Delete Confirmation Popup -->
 <clark-popup *ngIf="deleteConfirmation" (closed)="deleteConfirmation = undefined">
   <div #popupInner class="popup-inner">
     <div class="modal-title">Are you sure?</div>
@@ -43,6 +90,25 @@
       <button class="button bad" (click)="deleteConfirmation?.next(true)">Yep, do it! <i class="far fa-trash"></i></button>
       <button class="button neutral" (click)="deleteConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
     </div>
+  </div>
+</clark-popup>
+
+<!-- Children Confirmation Popup -->
+<clark-popup *ngIf="childrenConfirmation" (closed)="childrenConfirmation = undefined">
+  <div #popupInner class="popup-inner">
+    <div class="modal-title">Just to confirm...</div>
+      <div class="modal-text">{{ childrenConfirmationMessage }}</div>
+      <div class="btn-group center">
+        <button class="button good" (click)="childrenConfirmation?.next(true); childrenConfirmation = undefined;">Yep, do it! <i class="far fa-check"></i></button>
+        <button class="button neutral" (click)="childrenConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
+      </div>
+  </div>
+</clark-popup>
+
+<!-- Collection Submission Popup -->
+<clark-popup *ngIf="submitToCollection" (closed)="submitToCollection = false">
+  <div #popupInner>
+    <clark-collection-selector (choice)="addToCollection($event)"></clark-collection-selector>
   </div>
 </clark-popup>
 
