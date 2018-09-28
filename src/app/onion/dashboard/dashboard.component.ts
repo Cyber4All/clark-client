@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
 
   // collections
   // selected simply means the checkbox next to the object is checked
-  selected: Map<string, { index: number; object: LearningObject }> = new Map();
+  selected: Map<string, { index: number; object: DashboardLearningObject }> = new Map();
   // hidden means that the object is downloaded byt not visible
   hidden: Map<string, Map<string, DashboardLearningObject>> = new Map();
   // disabled means that the object is visible but can't be mutated, EG no meatball menu and no checkbox
@@ -181,7 +181,7 @@ export class DashboardComponent implements OnInit {
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
    * @param l Learning Object to be selected
    */
-  selectLearningObject(l: LearningObject, index: number) {
+  selectLearningObject(l: DashboardLearningObject, index: number) {
     this.selected.set(l.id, { index, object: l });
     this.cd.detectChanges();
 
@@ -224,7 +224,7 @@ export class DashboardComponent implements OnInit {
    * To confirm or deny the confirmation, call deleteConfirmation.next(true) or deleteConfirmation.next(false)
    * @param objects {DashboardLearningObject[]} list of objects to be deleted
    */
-  async *delete(...objects: DashboardLearningObject[]) {
+  async *delete(objects: DashboardLearningObject[]) {
     const confirm = yield;
 
     if (!confirm) {
@@ -257,7 +257,7 @@ export class DashboardComponent implements OnInit {
       // multiple deletion
       this.learningObjectService
         // TODO: Verify selected is an array of names
-        .deleteMultiple(Array.from(objects.map(s => s.object.name)))
+        .deleteMultiple(objects.map(s => s.name))
         .then(async () => {
           this.clearSelected();
           this.notificationService.notify(
@@ -639,5 +639,13 @@ export class DashboardComponent implements OnInit {
     }).catch(err => {
       console.error(err);
     });
+  }
+
+  /**
+   * Return a list of the selected learning object's
+   * @return {DashboardLearningObjects[]} List of selected learning object's
+   */
+  getSelectedObjects(): DashboardLearningObject[] {
+    return Array.from(this.selected.values()).map(x => x.object);
   }
 }

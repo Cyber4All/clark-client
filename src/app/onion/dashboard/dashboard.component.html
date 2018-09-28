@@ -10,6 +10,7 @@
       <div class="btn-group to-right">
         <button *ngIf="!editingChildren" routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
         <button *ngIf="!editingChildren" class="button neutral" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu($event)">Filter <i class="fas fa-sort"></i></button>
+        <button *ngIf="!editingChildren && selected.size" class="button bad" (click)="deleteConfirmation = delete(getSelectedObjects()); deleteConfirmation.next()">Delete Selected <i class="far fa-trash"></i></button>
         <button *ngIf="editingChildren" class="button green" (click)="childrenConfirmation = finishAddChildren(); childrenConfirmation.next()">Save Children <i class="fas fa-check"></i></button>
         <button *ngIf="editingChildren" class="button bad" (click)="cancelEditChildren()">Cancel <i class="far fa-ban"></i></button>
       </div>
