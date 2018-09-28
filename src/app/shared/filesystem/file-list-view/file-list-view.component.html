@@ -4,6 +4,7 @@
       <div class>Name</div>
       <div class>Description</div>
       <div class>Date</div>
+      <div class>Filesize</div>
       <div *ngIf="canManage" class="placeholder">
       </div>
     </div>
@@ -40,6 +41,11 @@
       <div class="text-contained">
         {{ getTimestampAge(file.date) }}
       </div>
+      <!-- Filesize
+            remove comment and insert server filesize value before pipe
+      <div class="text-contained">
+          {{ 4358273948 | fileSize }}
+      </div> -->
       <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: file}); $event.stopPropagation()">
         <div></div>
       </div>

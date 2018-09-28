@@ -61,7 +61,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subToDescription();
 
-    
+
   }
 
   /**
