@@ -224,17 +224,17 @@ export class DashboardComponent implements OnInit {
    * To confirm or deny the confirmation, call deleteConfirmation.next(true) or deleteConfirmation.next(false)
    * @param objects {DashboardLearningObject[]} list of objects to be deleted
    */
-  async *delete(objects: DashboardLearningObject[]) {
+  async *delete(objects: DashboardLearningObject[] | DashboardLearningObject) {
     const confirm = yield;
 
     if (!confirm) {
       return;
     }
 
-    if (objects.length === 1) {
+    if (!Array.isArray(objects) || objects.length === 1) {
       // single deletion
       this.learningObjectService
-        .delete(objects[0].name)
+        .delete((objects as DashboardLearningObject).name)
         .then(async () => {
           this.notificationService.notify(
             'Done!',
@@ -264,7 +264,7 @@ export class DashboardComponent implements OnInit {
             'Done!',
             'Learning Objects deleted!',
             'good',
-            'far fa-chexk'
+            'far fa-check'
           );
           this.learningObjects = await this.getLearningObjects();
         })

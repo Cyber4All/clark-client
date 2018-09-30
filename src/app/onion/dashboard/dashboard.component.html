@@ -16,41 +16,60 @@
       </div>
     </div>
     <div *ngIf="!loading; else loadingTemplate" class="list-body">
-      <div class="column-headers">
-        <div>
-          <clark-checkbox *ngIf="!editingChildren" [setValue]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
+      <div *ngIf="learningObjects?.length; else emptyTemplate">
+        <div class="column-headers">
+          <div>
+            <clark-checkbox *ngIf="!editingChildren" [setValue]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
+          </div>
+          <div>Status</div>
+          <div>Name</div>
+          <div>Type</div>
+          <div>Date</div>
+          <div><!-- meatball placeholder --></div>
         </div>
-        <div>Status</div>
-        <div>Name</div>
-        <div>Type</div>
-        <div>Date</div>
-        <div><!-- meatball placeholder --></div>
+        <clark-dashboard-item 
+          *ngFor="let l of learningObjects; let i = index"
+          [learningObject]="l"
+          [status]="l.status"
+          [disabled]="disabled.get(l.id)"
+          [hidden]="hidden.get(l.id)" 
+          [selected]="this.selected.get(l.id) !== undefined"
+          [small]="editingChildren && !this.disabled.get(l.id)"
+          [meatball]="!editingChildren"
+          (select)="toggleSelect(l, $event, i)" 
+          (delete)="deleteConfirmation = delete(l); deleteConfirmation.next();"
+          (editChildren)="editChildren(l)"
+          (submit)="submitToCollection = true; focusedLearningObject = l;"
+          (cancelSubmission)="cancelSubmission(l)"
+          >
+        </clark-dashboard-item>
       </div>
-      <clark-dashboard-item 
-        *ngFor="let l of learningObjects; let i = index"
-        [learningObject]="l"
-        [status]="l.status"
-        [disabled]="disabled.get(l.id)"
-        [hidden]="hidden.get(l.id)" 
-        [selected]="this.selected.get(l.id) !== undefined"
-        [small]="editingChildren && !this.disabled.get(l.id)"
-        [meatball]="!editingChildren"
-        (select)="toggleSelect(l, $event, i)" 
-        (delete)="deleteConfirmation = delete(l); deleteConfirmation.next();"
-        (editChildren)="editChildren(l)"
-        (submit)="submitToCollection = true; focusedLearningObject = l;"
-        (cancelSubmission)="cancelSubmission(l)"
-        >
-      </clark-dashboard-item>
     </div>
   </div>
 </div>
 
 <ng-template #loadingTemplate>
-  <span class="loading-template">
+  <div class="loading-template">
     <i class="far fa-spinner-third fa-spin"></i>
     Loading learning objects...
-  </span>
+  </div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+  <div class="empty-template">
+    <div class="top">
+      <i class="fal fa-box-open"></i>
+      <div class="top-message">
+        Nothing here!
+      </div>
+    </div>
+    <div class="empty-text">
+      Once you've made some learning objects they'll show up here.
+    </div>
+    <div class="btn-group center">
+      <button class="button good" routerLink="/onion/learning-object-builder">Create a Learning Object <i class="fas fa-plus"></i></button>
+    </div>
+  </div>
 </ng-template>
 
 <!-- Filter Context Menu -->
