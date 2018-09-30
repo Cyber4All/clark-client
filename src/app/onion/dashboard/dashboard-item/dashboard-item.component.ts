@@ -9,6 +9,7 @@ import {
 import { DashboardLearningObject } from '../dashboard.component';
 import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
 import { LearningObjectStatus } from '@env/environment';
+import { AuthService } from '../../../core/auth.service';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -64,7 +65,7 @@ export class DashboardItemComponent implements OnChanges {
   meatballOpen = false;
   showStatus = true;
 
-  constructor(private contextMenuService: ContextMenuService ) {}
+  constructor(private contextMenuService: ContextMenuService, private auth: AuthService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
@@ -144,11 +145,11 @@ export class DashboardItemComponent implements OnChanges {
     const permissions = {
       edit: ['unpublished', 'published', 'denied'],
       editChildren: ['unpublished', 'published', 'denied', this.learningObject.length !== 'nanomodule'],
-      manageMaterials: ['unpublished', 'published', 'denied'],
-      submit: ['unpublished', 'denied'],
-      view: ['published'],
+      manageMaterials: ['unpublished', 'published', 'denied', this.verifiedEmail],
+      submit: ['unpublished', 'denied', this.verifiedEmail],
+      view: ['published', this.verifiedEmail],
       delete: ['unpublished', 'denied'],
-      cancelSubmission: ['waiting']
+      cancelSubmission: ['waiting', this.verifiedEmail]
     };
 
     const p = permissions[action];
@@ -158,6 +159,14 @@ export class DashboardItemComponent implements OnChanges {
     }
 
     return p.includes(this.status);
+  }
+
+  /**
+   * Check the logged in user's email verification status
+   * @return {boolean} true if loggedin user has verified their email, false otherwise
+   */
+  get verifiedEmail(): boolean {
+    return this.auth.user.emailVerified;
   }
 
   /**

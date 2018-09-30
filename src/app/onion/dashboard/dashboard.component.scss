@@ -49,6 +49,8 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
             flex-direction: row;
             justify-content: space-between;
             padding: 20px;
+            position: relative;
+            z-index: 2;
 
             .header {
                 font-size: 26px;
