@@ -8,13 +8,15 @@ import { HomeComponent } from './home.component';
 import { FeaturedComponent } from './featured/featured.component';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
+import { OrgCollectionsComponent } from './org-collections/org-collections.component';
 
 @NgModule({
   imports: [FormsModule, CommonModule, SharedModule, CubeSharedModule, RouterModule],
   exports: [HomeComponent],
   declarations: [
     HomeComponent,
-    FeaturedComponent
+    FeaturedComponent,
+    OrgCollectionsComponent
   ],
   providers: [],
 })

@@ -13,11 +13,12 @@ $banner-height: 90px;
 .whois {
   display: flex;
   flex-direction: column;
-  background: $blue-gradient;
-  padding: 100px 20px;
   justify-content: center;
   align-items: center;
-  color: white !important;
+  color: $dark-text;
+  padding-bottom: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
 
   span {
     max-width: $max-width;
@@ -75,7 +76,7 @@ $banner-height: 90px;
           display: inline-block;
           text-align: right;
           // max-width: 500px;
-            width: 100%;
+          width: 100%;
 
           .search-input {
             padding: 12px;
@@ -148,16 +149,16 @@ $banner-height: 90px;
     position: relative;
 
     &:after {
-        content: '';
-        top: 0;
-        height: 2px;
-        background: black;
-        opacity: 0.1;
-        width: 50%;
-        margin: auto;
-        left: 0;
-        right: 0;
-        position: absolute;
+      content: '';
+      top: 0;
+      height: 2px;
+      background: black;
+      opacity: 0.1;
+      width: 50%;
+      margin: auto;
+      left: 0;
+      right: 0;
+      position: absolute;
     }
   }
 
@@ -184,7 +185,7 @@ $banner-height: 90px;
 
   &:hover {
     text-decoration: underline;
-    }
+  }
 }
 
 @media (max-width: 750px) {
