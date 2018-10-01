@@ -40,14 +40,33 @@ export class ContextMenuComponent
 
   menuId: string;
 
+  /**
+   * Close context menu on scroll
+   * @param event {WindowScrollEvent}
+   */
   @HostListener('window:scroll', ['$event']) handleScroll() {
     this.contextMenuService.destroy(this.menuId);
     this.close.emit();
   }
 
+  /**
+   * Close context menu on window resize
+   * @param event {WindowEvent}
+   */
   @HostListener('window:resize', ['$event']) handleResize() {
     this.contextMenuService.destroy(this.menuId);
     this.close.emit();
+  }
+
+  /**
+   * Close context menu on escape key
+   * @param event {KeyboardEvent}
+   */
+  @HostListener('window:keyup', ['$event']) handleEscape(event: KeyboardEvent) {
+    if (event.keyCode === 27) {
+      this.contextMenuService.destroy(this.menuId);
+      this.close.emit();
+    }
   }
 
 

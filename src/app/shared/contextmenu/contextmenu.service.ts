@@ -97,7 +97,7 @@ export class ContextMenuService implements OnDestroy {
       }
 
       // check height
-      if (top + contextElement.offsetHeight >= window.innerHeight + window.scrollY) {
+      if (top + contextElement.offsetHeight >= window.innerHeight) {
         contextElement.style.top = (top - contextElement.offsetHeight) - anchor.offsetHeight - (offset.top) + 'px';
       }
 

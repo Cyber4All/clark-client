@@ -81,7 +81,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   deleteConfirmation: Iterator<any>;
   childrenConfirmation: Iterator<any>;
 
-
   // flags
   loading = false;
   allSelected = false;
