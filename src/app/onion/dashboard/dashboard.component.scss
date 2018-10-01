@@ -98,7 +98,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 }
 
 // FIXME this can be removed when the new button styles are applied cross-application
-::ng-deep .button {
+button {
     border: 0;
     padding: 10px 20px 10px 25px;
 

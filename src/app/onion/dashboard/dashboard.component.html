@@ -53,14 +53,14 @@
 </div>
 
 <ng-template #loadingTemplate>
-  <div class="loading-template">
+  <div [@nonListItem] class="loading-template">
     <i class="far fa-spinner-third fa-spin"></i>
     Loading learning objects...
   </div>
 </ng-template>
 
 <ng-template #emptyTemplate>
-  <div class="empty-template">
+  <div [@nonListItem] class="empty-template">
     <div class="top">
       <i class="fal fa-box-open"></i>
       <div class="top-message">

@@ -125,7 +125,7 @@ export class DashboardItemComponent implements OnChanges {
   toggleContextMenu(event: MouseEvent) {
     if (this.itemMenu) {
       if (!this.meatballOpen) {
-        this.contextMenuService.open(this.itemMenu, event.currentTarget as HTMLElement, {top: 5, left: 10});
+        this.contextMenuService.open(this.itemMenu, event.currentTarget as HTMLElement, {top: 2, left: 10});
       } else {
         this.contextMenuService.destroy(this.itemMenu);
       }

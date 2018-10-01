@@ -49,6 +49,17 @@ export interface DashboardLearningObject extends LearningObject {
         animate('300ms ease-out', style({width: '100%', 'padding-left': '20px', 'padding-right': '20px', 'opacity': 1})),
         query( '@greeting', animateChild() )
       ])
+    ]),
+    // loading template and empty banner
+    trigger('nonListItem', [
+      transition(':enter', [
+        style({'transform': 'translateY(-20px)', opacity: 0}),
+        animate('200ms 100ms', style({'transform': 'translateY(0px)', opacity: 1}))
+      ]),
+      transition(':leave', [
+        style({'transform': 'translateY(0px)', opacity: 1}),
+        animate('200ms', style({'transform': 'translateY(20px)', opacity: 0}))
+      ]),
     ])
   ]
 })
