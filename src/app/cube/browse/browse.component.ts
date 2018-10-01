@@ -68,6 +68,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
         {
           name: 'GenCyber',
           value: 'gencyber'
+        },
+        {
+          name: 'Security Injections',
+          value: 'secinj'
         }
       ]
     },

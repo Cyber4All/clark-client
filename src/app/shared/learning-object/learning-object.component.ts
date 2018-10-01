@@ -15,7 +15,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() loading: boolean;
   @Input() owned ? = false;
 
-  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber']]);
+  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber'], ['secinj', 'Security Injections']]);
 
   canDownload = false;
   showDownloadModal = false;

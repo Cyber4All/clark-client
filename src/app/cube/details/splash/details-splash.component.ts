@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { setCurrentInjector } from '@angular/core/src/di/injector';
 
 @Component({
   selector: 'cube-details-splash',
@@ -14,7 +15,7 @@ export class DetailsSplashComponent {
   @Input() owned: boolean;
   @Output() showNewRating: EventEmitter<boolean> = new EventEmitter();
 
-  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber']]);
+  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber'], ['secinj', 'Security Injections']]);
 
   /**
    * Emits an event to parent component to signal the ratings popup to open
@@ -27,11 +28,15 @@ export class DetailsSplashComponent {
    * Retrieve image for collection based on collection property in learning object
    */
   get collectionImage() {
-    // FIXME this should not be done with an if-statement, switch case or potentially API side
-    if (this.learningObject.collection === 'gencyber') {
-      return 'gencyber.png';
-    } else {
-      return 'nsa.png';
+    // FIXME this should potentially be done API side
+    console.log(this.learningObject.collection);
+    switch (this.learningObject.collection) {
+      case 'gencyber':
+        return 'gencyber.png';
+      case 'nccp':
+        return 'nsa.png';
+      case 'secinj':
+        return 'secinj.png';
     }
   }
 }
