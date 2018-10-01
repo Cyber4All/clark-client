@@ -13,12 +13,12 @@ $banner-height: 90px;
 .whois {
   display: flex;
   flex-direction: column;
-  /* background: linear-gradient(45deg, #1d2f43, #3b608b); */
-  padding-bottom: 60px;
   justify-content: center;
   align-items: center;
   color: $dark-text;
-  padding: 20px;
+  padding-bottom: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
 
   span {
     max-width: $max-width;
