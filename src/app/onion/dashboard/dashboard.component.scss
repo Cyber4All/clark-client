@@ -106,6 +106,15 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
     }
 }
 
+.filters-button {
+
+    span {
+        padding-right: 10px;
+        color: $error-red;
+        cursor: pointer;
+    }
+}
+
 $unpublished-color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.36);
 
 .filter-menu {

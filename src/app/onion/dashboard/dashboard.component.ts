@@ -98,6 +98,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.filterMenuDown = !this.filterMenuDown;
   }
 
+  /**
+   * Add or remove filter from filters list
+   * @param filter {string} the filter to be toggled
+   */
   toggleFilter(filter: string) {
     if (this.filters.get(filter)) {
       this.filters.delete(filter);
@@ -105,6 +109,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.filters.set(filter, true);
     }
 
+    this.filtersModified$.next();
+  }
+
+  /**
+   * Remove all applied filters
+   */
+  clearFilters() {
+    this.filters = new Map();
     this.filtersModified$.next();
   }
 
