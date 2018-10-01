@@ -1,4 +1,4 @@
 export const COPY = {
-    TITLE: `Recenty Released`,
+    TITLE: `Recently Released`,
     VIEWALL: 'View All'
 };

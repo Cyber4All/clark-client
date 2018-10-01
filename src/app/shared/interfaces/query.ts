@@ -20,6 +20,7 @@ export interface Query {
     | string[]
     | { id: string; name: string; date: string; outcome: string }[];
   released?: boolean;
+  collection?: string;
 }
 
 export interface MappingQuery extends Query {
