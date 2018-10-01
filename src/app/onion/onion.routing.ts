@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { UserVerifiedGuard } from '../core/user-verified.guard';
 import { OnionComponent } from './onion.component';
-import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
+import { LearningObjectResolve } from './old-learning-object-builder/learning-object.resolver';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -34,10 +34,3 @@ const onion_routes: Routes = [
   }
 ];
 export const OnionRoutingModule: ModuleWithProviders = RouterModule.forChild(onion_routes);
-/*
-@NgModule({
-  imports: [RouterModule.forChild(onion_routes)],
-  import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
-exports: [RouterModule]
-})
-export class OnionRoutingModule { }*/

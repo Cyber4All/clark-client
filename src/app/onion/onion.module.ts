@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { OnionRoutingModule } from './onion.routing';
 import { OnionComponent } from './onion.component';
-import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
+import { LearningObjectBuilderModule } from './old-learning-object-builder/learning-object-builder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 // Other
@@ -15,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { DashboardResolver } from './dashboard/dashboard.resolver';
-import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver'
+import { LearningObjectResolve } from './old-learning-object-builder/learning-object.resolver';
+import { LearningObjectBuilderComponent } from './learning-object-builder/learning-object-builder.component'
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -27,7 +28,8 @@ import { LearningObjectResolve } from './learning-object-builder/learning-object
   // Specifys the components included in this module
   declarations: [
     OnionComponent,
-    DashboardComponent
+    DashboardComponent,
+    LearningObjectBuilderComponent
   ],
   // Specifys all modules to be imported
   imports: [

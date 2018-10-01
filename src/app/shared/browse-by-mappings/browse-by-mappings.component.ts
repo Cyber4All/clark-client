@@ -15,7 +15,7 @@ import 'rxjs/add/operator/debounceTime';
 import { OutcomeService } from '../../core/outcome.service';
 import {
   SuggestionService
-} from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
+} from '../../onion/old-learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
 import { ModalListElement, ModalService, Position } from '../modals';
 import { COPY } from './browse-by-mappings.copy';
 
