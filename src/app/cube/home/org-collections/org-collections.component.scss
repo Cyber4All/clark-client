@@ -4,12 +4,12 @@
   width: 200px;
   height: 100px;
   margin: 20px;
-  color: black;
+  color: $dark-text;
   background: white;
   border-radius: 3px;
   box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.05);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   border: 1px solid rgba(0, 0, 0, 0.1);
   outline: none;
   cursor: pointer;
@@ -25,7 +25,18 @@
   
 
 }
+ img{
+   position:relative;
+ }
 
+ .nsa{
+  width:65px;
+  height:65px;
+ }
+
+ .gencyber{
+   width: 100px;
+ }
 .title {
   display: flex;
   flex-direction: row;
@@ -47,6 +58,7 @@
     margin-top: 40px;
     text-align: center;
     flex: 2;
+    color: $dark-text;
   }
 
   h1 {

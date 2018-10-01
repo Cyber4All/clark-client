@@ -3,10 +3,12 @@
 </div>
 
 <div class="card-container">
-  <div class="rectangle" [routerLink]="['../browse']" [queryParams]="{ currPage: 1, limit : 20, collection: nccp}">
+  <div class="rectangle" [routerLink]="['../browse']" [queryParams]="{ currPage: 1, limit : 20, collection: 'nccp'}">
+    <img class = "nsa" src = "../../../../assets/images/nsa.png">
     <div class="collection">{{copy.COLLECTION1}}</div>
   </div>
-  <div class="rectangle">
-    <div class=" collection" [routerLink]="['../browse']" [queryParams]="{ currPage: 1, limit : 20, collection: gencyber}">{{copy.COLLECTION2}}</div>
+  <div class="rectangle" [routerLink]="['../browse']" [queryParams]="{ currPage: 1, limit : 20, collection: 'gencyber'}">
+      <img class = "gencyber" src = "../../../../assets/images/gencyber.png">
+    <div class=" collection" >{{copy.COLLECTION2}}</div>
   </div>
 </div>

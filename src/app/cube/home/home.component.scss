@@ -17,7 +17,8 @@ $banner-height: 90px;
   padding-bottom: 60px;
   justify-content: center;
   align-items: center;
-  color: black;
+  color: $dark-text;
+  padding: 20px;
 
   span {
     max-width: $max-width;
