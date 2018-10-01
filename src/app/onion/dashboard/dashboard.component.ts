@@ -18,6 +18,7 @@ export interface DashboardLearningObject extends LearningObject {
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  // TODO: leave animations with routing?
   animations: [
     trigger('list', [
       transition(':enter', [
@@ -39,12 +40,8 @@ export interface DashboardLearningObject extends LearningObject {
     trigger('greeting', [
       transition(':enter', [
         style({ top: '-20px', opacity: 0 }),
-        animate('200ms 300ms ease-out', style({ top: '0px', opacity: 1 }))
+        animate('200ms 100ms ease-out', style({ top: '0px', opacity: 1 }))
       ]),
-      transition(':leave', [
-        style({ top: '0px', opacity: 1 }),
-        animate('200ms 200ms ease-out', style({ top: '-20px', opacity: 0 }))
-      ])
     ]),
     trigger('splash', [
       transition(':enter', [

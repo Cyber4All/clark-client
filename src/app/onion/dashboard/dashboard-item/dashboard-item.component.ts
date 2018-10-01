@@ -176,4 +176,16 @@ export class DashboardItemComponent implements OnChanges {
   toggleSelect(val) {
     this.select.emit(val !== '-');
   }
+
+   /**
+   * Takes a learning object and returns a list of it's children's names or an empty list
+   * @return {string[]}
+   */
+  objectChildrenNames(learningObject: DashboardLearningObject): string[] {
+    if (learningObject.children && learningObject.children.length) {
+      return (learningObject.children as DashboardLearningObject[]).map(l => l.name);
+    } else {
+      return [];
+    }
+  }
 }
