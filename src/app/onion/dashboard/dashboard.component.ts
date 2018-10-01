@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
@@ -6,6 +6,7 @@ import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
 import { LearningObjectStatus } from '@env/environment';
 import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
+import { Subject } from 'rxjs';
 
 export interface DashboardLearningObject extends LearningObject {
   status: string;
@@ -17,13 +18,17 @@ export interface DashboardLearningObject extends LearningObject {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   learningObjects: DashboardLearningObject[];
 
   greetingTime: string; // morning, afternoon, or evening depending on user's clock
-  childrenConfirmationMessage: string;
+  childrenConfirmationMessage: string; // string generated for children confirmation modal
   focusedLearningObject: DashboardLearningObject;
   filterMenu: string;
+
+  // Observables
+  destroyed$: Subject<void> = new Subject();
+  filtersModified$: Subject<void> = new Subject();
 
   // popup generator handlers
   deleteConfirmation: Iterator<any>;
@@ -65,7 +70,14 @@ export class DashboardComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // retrieve list of users learning objects
     this.learningObjects = await this.getLearningObjects();
+
+    // monitor filters for change and refresh query
+    this.filtersModified$.takeUntil(this.destroyed$).debounceTime(400).subscribe(async () => {
+      const filters = {status: Array.from(this.filters.keys())};
+      this.learningObjects = await this.getLearningObjects(filters);
+    });
   }
 
   /**
@@ -92,6 +104,8 @@ export class DashboardComponent implements OnInit {
     } else {
       this.filters.set(filter, true);
     }
+
+    this.filtersModified$.next();
   }
 
   /**
@@ -99,10 +113,10 @@ export class DashboardComponent implements OnInit {
    *@returns DashboardLearningObject[]
    * @memberof DashboardComponent
    */
-  async getLearningObjects(): Promise<DashboardLearningObject[]> {
+  async getLearningObjects(filters?: any): Promise<DashboardLearningObject[]> {
     this.loading = true;
     return this.learningObjectService
-      .getLearningObjects()
+      .getLearningObjects(filters)
       .then((learningObjects: LearningObject[]) => {
         this.loading = false;
         // deep copy list of learningObjects and initialize empty parents array
@@ -667,5 +681,10 @@ export class DashboardComponent implements OnInit {
    */
   getSelectedObjects(): DashboardLearningObject[] {
     return Array.from(this.selected.values()).map(x => x.object);
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }
