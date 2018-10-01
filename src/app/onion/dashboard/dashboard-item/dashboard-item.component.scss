@@ -83,20 +83,20 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
     .orb:before {
         content: '';
-        margin-left: -12px;
+        margin-left: -10px;
     }
 
     .orb:after {
         content: '';
-        margin-left: 12px;
+        margin-left: 10px;
     }
 
     .orb,
     .orb:after,
     .orb:before {
         position: absolute;
-        width: 6px;
-        height: 6px;
+        width: 5px;
+        height: 5px;
         background: $dark-text;
         border-radius: 50%;
         z-index: 1;
@@ -120,7 +120,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         width: 45px;
         height: 45px;
         background: white;
-        box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.04);
         border-radius: 50%;
         z-index: 0;
         opacity: 0;
@@ -160,6 +160,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
             opacity: 1;
             transform: scale(1);
             background: $light-blue-gradient;
+            box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
         }
     }
 }
