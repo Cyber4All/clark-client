@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
@@ -7,6 +7,7 @@ import { ToasterService } from '../../shared/toaster/toaster.service';
 import { LearningObjectStatus } from '@env/environment';
 import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
 import { Subject } from 'rxjs';
+import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 
 export interface DashboardLearningObject extends LearningObject {
   status: string;
@@ -16,10 +17,48 @@ export interface DashboardLearningObject extends LearningObject {
 @Component({
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('list', [
+      transition(':enter', [
+        style({ opacity: 0, top: '-20px' }),
+        animate('500ms 600ms ease-out', style({opacity: 1, top: '0px'})),
+        query( '@listItem', animateChild(), {optional: true} )
+      ]),
+    ]),
+    trigger('listItem', [
+      transition('* => *', [
+        query(':enter', style({ opacity: 0 }), {optional: true}),
+        query(':enter', [
+          stagger('60ms', [
+            animate('600ms 200ms ease', style({opacity: 1}))
+          ])
+        ], {optional: true})
+      ])
+    ]),
+    trigger('greeting', [
+      transition(':enter', [
+        style({ top: '-20px', opacity: 0 }),
+        animate('200ms 300ms ease-out', style({ top: '0px', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ top: '0px', opacity: 1 }),
+        animate('200ms 200ms ease-out', style({ top: '-20px', opacity: 0 }))
+      ])
+    ]),
+    trigger('splash', [
+      transition(':enter', [
+        style({width: '0px', 'padding-left': '0px', 'padding-right': '0px', opacity: 0}),
+        animate('300ms ease-out', style({width: '100%', 'padding-left': '20px', 'padding-right': '20px', 'opacity': 1})),
+        query( '@greeting', animateChild() )
+      ])
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   learningObjects: DashboardLearningObject[];
+
+  @ViewChild('listInner') listInnerElement: ElementRef;
 
   greetingTime: string; // morning, afternoon, or evening depending on user's clock
   childrenConfirmationMessage: string; // string generated for children confirmation modal
@@ -71,13 +110,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     // retrieve list of users learning objects
-    this.learningObjects = await this.getLearningObjects();
+    this.loading = true;
+    setTimeout(async() => {
+      this.learningObjects = await this.getLearningObjects();
+    }, 1100);
 
     // monitor filters for change and refresh query
     this.filtersModified$.takeUntil(this.destroyed$).debounceTime(400).subscribe(async () => {
       const filters = {status: Array.from(this.filters.keys())};
       this.learningObjects = await this.getLearningObjects(filters);
     });
+  }
+
+  getInnerHeight(): number {
+    return (document.getElementsByClassName('.list-inner')[0] as HTMLElement).offsetHeight;
   }
 
   /**
@@ -696,6 +742,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // subscription clean up
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
   }

@@ -10,8 +10,10 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         color: white;
         padding: 65px 20px 120px;
         position: relative;
+        overflow: hidden;
 
         .greeting {
+            position: relative;
             font-size: 28px;
             font-weight: bold;
 
@@ -43,6 +45,8 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         box-shadow: 0 5px 10px 0 rgba(84, 84, 100, 0.19);
         margin-top: -80px;
         min-height: 500px;
+        overflow: hidden;
+        margin-bottom: 20px;
 
         .list-top {
             display: flex;
@@ -84,6 +88,11 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
             opacity: 0.46;
             padding-top: 20px;
             padding-bottom: 10px;
+        }
+
+        clark-dashboard-item {
+            position: relative;
+            display: block;
         }
     }
 }
