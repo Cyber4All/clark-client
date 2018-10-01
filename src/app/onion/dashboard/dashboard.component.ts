@@ -255,28 +255,48 @@ export class DashboardComponent implements OnInit {
         });
     } else {
       // multiple deletion
-      this.learningObjectService
-        // TODO: Verify selected is an array of names
-        .deleteMultiple(objects.map(s => s.name))
-        .then(async () => {
-          this.clearSelected();
-          this.notificationService.notify(
-            'Done!',
-            'Learning Objects deleted!',
-            'good',
-            'far fa-check'
-          );
-          this.learningObjects = await this.getLearningObjects();
-        })
-        .catch(err => {
-          console.log(err);
-          this.notificationService.notify(
-            'Error!',
-            'Learning Objects could not be deleted!',
-            'bad',
-            'far fa-times'
-          );
-        });
+      const canDelete = objects.filter(s => ['unpublished', 'denied'].includes(s.status));
+
+      if (canDelete.length) {
+        this.learningObjectService
+          // TODO: Verify selected is an array of names
+          .deleteMultiple(canDelete.map(s => s.name))
+          .then(async () => {
+            this.clearSelected();
+            if (canDelete.length === objects.length) {
+              this.notificationService.notify(
+                'Done!',
+                'Learning Objects deleted!',
+                'good',
+                'far fa-check'
+              );
+            } else {
+              this.notificationService.notify(
+                'Warning!',
+                'Some learning objects couldn\'t be deleted! You can only delete learning objects that haven\'t been published.',
+                'warning',
+                'fas fa-exclamation'
+              );
+            }
+            this.learningObjects = await this.getLearningObjects();
+          })
+          .catch(err => {
+            console.log(err);
+            this.notificationService.notify(
+              'Error!',
+              'Learning Objects could not be deleted!',
+              'bad',
+              'far fa-times'
+            );
+          });
+      } else {
+        this.notificationService.notify(
+          'Warning!',
+          'Learning objects couldn\'t be deleted! You can only delete learning objects that haven\'t been published.',
+          'warning',
+          'fas fa-exclamation'
+        );
+      }
     }
 
     this.deleteConfirmation = undefined;
