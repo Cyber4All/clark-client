@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import { LoginComponent } from './login.component';
 import { CookieService } from 'ngx-cookie';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -13,7 +13,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpModule ],
+      imports: [ RouterTestingModule, HttpClientModule ],
       providers: [ AuthService, ActivatedRoute, CookieService ],
       declarations: [ LoginComponent ]
     })

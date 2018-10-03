@@ -2,8 +2,7 @@ import { TestBed, inject, ComponentFixture } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService, CookieOptionsProvider, CookieModule } from 'ngx-cookie';
 import { UserService } from '../../../core/user.service';
-import { HttpModule } from '@angular/http';
-import { NotificationService } from '../../../shared/notifications';
+import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { UserEditInformationComponent } from './user-edit-information.component';
 import { AuthService } from '../../../core/auth.service';
 
@@ -14,8 +13,8 @@ describe('UserEditInformationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModule, HttpClientModule, CookieModule.forRoot()],
-      providers: [CookieService, UserService, AuthService, CookieOptionsProvider, NotificationService],
+      imports: [HttpClientModule, CookieModule.forRoot()],
+      providers: [CookieService, UserService, AuthService, CookieOptionsProvider, ToasterService],
       declarations: [ UserEditInformationComponent ]
     })
     .compileComponents();

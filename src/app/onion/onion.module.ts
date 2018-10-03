@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { OnionRoutingModule } from './onion.routing';
 import { OnionComponent } from './onion.component';
@@ -34,7 +33,6 @@ import { LearningObjectResolve } from './learning-object-builder/learning-object
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     SharedModule,
     OnionRoutingModule,
     OnionCoreModule,
