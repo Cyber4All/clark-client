@@ -27,6 +27,7 @@ import {
 export class BrowseComponent implements OnInit, OnDestroy {
   copy = COPY;
   learningObjects: LearningObject[] = Array(20).fill(new LearningObject);
+  totalLearningObjects = 0;
 
   query: Query = {
     text: '',
@@ -37,6 +38,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     standardOutcomes: [],
     orderBy: undefined,
     sortType: undefined,
+    collection: ''
   };
 
   tooltipText = {
@@ -46,7 +48,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
     unit: 'a Learning Object over 10 hours in length',
     course: 'a Learning Object 15 weeks in length'
   };
-
 
   loading = false;
   mappingsPopup = false;
@@ -382,8 +383,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
-      this.learningObjects = await this.learningObjectService.getLearningObjects(query);
-      this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
+      const { learningObjects, total } = await this.learningObjectService.getLearningObjects(query);
+      this.learningObjects = learningObjects;
+      this.totalLearningObjects = total;
+      this.pageCount = Math.ceil(total / +this.query.limit);
       this.loading = false;
     } catch (e) {
        console.log(`Error: ${e}`);

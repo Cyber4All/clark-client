@@ -40,7 +40,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(query?: Query): Promise<LearningObject[]> {
+  getLearningObjects(query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);

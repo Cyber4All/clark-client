@@ -17,12 +17,14 @@ export class HomeComponent implements OnInit {
     currPage: 1,
     limit: 30
   };
-  placeholderText: string;
+  placeholderText = 'Searching across ... learning objects';
 
   constructor(public learningObjectService: LearningObjectService, private router: Router) { }
 
   ngOnInit() {
-    this.placeholderText = 'Searching ' + this.learningObjectService.totalLearningObjects + ' learning objects of cybersecurity curriculum';
+    this.learningObjectService.getLearningObjects({text: '', currPage: 1, limit: 0}).then((res) => {
+      this.placeholderText = 'Searching across ' + res.total + ' learning objects';
+    });
   }
 
   keyDownSearch(event) {

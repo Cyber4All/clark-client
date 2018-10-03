@@ -1,5 +1,4 @@
-import { Input, Output, EventEmitter, Component, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Input, Output, EventEmitter, Component, OnChanges } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
@@ -10,9 +9,7 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
         [(ngModel)]="editorContent"
         [config]="config"
         [readonly]="false"
-        (change)="onChange($event)"
-        (focus)="onFocus($event)"
-        (blur)="onBlur($event)"
+        (change)="onChange()"
         debounce="500"
         >
     </ckeditor>
@@ -36,7 +33,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   constructor() {
 
   }
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.editorContent = this.savedContent;
   }
   ngOnInit() {
@@ -68,11 +65,8 @@ export class TextEditorComponent implements OnInit, OnChanges {
 
     }
   }
-  onFocus(event) {
-  }
-  onBlur(event) {
-  }
-  onChange(editorContent) {
+
+  onChange() {
     this.textOutput.emit(this.editorContent);
   }
 
