@@ -33,6 +33,7 @@ import { LearningObjectRatingsComponent } from './learning-object-ratings/learni
 import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
+import { CookiesComponent } from './cookies/cookies.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -74,7 +75,8 @@ import { PopupModule } from './popups/popup.module';
     NewRatingComponent,
     LearningObjectRatingsComponent,
     ReportRatingComponent,
-    ProgressComponent
+    ProgressComponent,
+    CookiesComponent
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -95,7 +97,8 @@ import { PopupModule } from './popups/popup.module';
     LearningObjectRatingsComponent,
     ProgressComponent,
     VirtualScrollModule,
-    PopupModule
+    PopupModule,
+    CookiesComponent
   ]
 })
 export class SharedModule {}
