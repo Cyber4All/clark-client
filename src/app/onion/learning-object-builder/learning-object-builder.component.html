@@ -1,4 +1,7 @@
 <!-- Back Button -->
+<div *ngIf="!auth.user.emailVerified" class="email-banner">
+  Your email is unverified, some functionality will be unavailable.  <a class="link-email-banner" (click)="sendEmailVerification()">Click here to verify</a>.
+</div>
 <div class="back" routerLink="/onion/dashboard">
   <div>
     <i id="back-to-dashboard" class="far fa-arrow-to-left"></i>
