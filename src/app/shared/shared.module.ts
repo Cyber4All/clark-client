@@ -34,6 +34,7 @@ import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
+import { CookiesComponent } from './cookies/cookies.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -77,6 +78,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     LearningObjectRatingsComponent,
     ReportRatingComponent,
     ProgressComponent,
+    CookiesComponent
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -100,6 +102,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     PopupModule,
     ContextMenuModule,
     ClarkContextMenuModule,
+    CookiesComponent
   ]
 })
 export class SharedModule {}

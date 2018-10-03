@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { OnionRoutingModule } from './onion.routing';
 import { OnionComponent } from './onion.component';
@@ -35,7 +34,6 @@ import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-ite
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     SharedModule,
     OnionRoutingModule,
     OnionCoreModule,

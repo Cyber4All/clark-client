@@ -1,7 +1,8 @@
 import { USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { Http, Headers, ResponseContentType } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ResponseContentType } from '@angular/http';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
 import { BehaviorSubject } from 'rxjs';
@@ -10,11 +11,11 @@ export const iframeParentID = 'learning-object-download';
 @Injectable()
 export class CartV2Service {
   private user;
-  private headers = new Headers();
+  private headers = new HttpHeaders();
 
   public cartItems: Array<LearningObject> = [];
 
-  constructor(private http: Http, private auth: AuthService) {
+  constructor(private http: HttpClient, private auth: AuthService) {
     this.updateUser();
   }
 
@@ -23,7 +24,7 @@ export class CartV2Service {
     this.user = this.auth.user || undefined;
 
     // reset headers with new users auth token
-    this.headers = new Headers();
+    this.headers = new HttpHeaders();
     // this.headers.append('Content-Type', 'application/json');
   }
 
@@ -42,9 +43,8 @@ export class CartV2Service {
         headers: this.headers
       })
       .toPromise()
-      .then(val => {
+      .then((val: any) => {
         this.cartItems = val
-          .json()
           .map(object => LearningObject.instantiate(object));
         return this.cartItems;
       });
@@ -69,9 +69,9 @@ export class CartV2Service {
         { headers: this.headers, withCredentials: true }
       )
       .toPromise()
-      .then(async val => {
+      .then(async (val: any) => {
         try {
-          this.cartItems = val.json().map(object => LearningObject.instantiate(object));
+          this.cartItems = val.map(object => LearningObject.instantiate(object));
           return this.cartItems;
         } catch (error) {
           return Promise.reject('Error! ' + error);
@@ -97,9 +97,8 @@ export class CartV2Service {
         { headers: this.headers, withCredentials: true }
       )
       .toPromise()
-      .then(val => {
+      .then((val: any) => {
         this.cartItems = val
-          .json()
           .map(object => LearningObject.instantiate(object));
         return this.cartItems;
       });
@@ -127,12 +126,12 @@ export class CartV2Service {
     this.http
       .get(USER_ROUTES.GET_CART(this.user.username) + '?download=true', {
         headers: this.headers,
-        responseType: ResponseContentType.Blob,
+        responseType: 'blob',
         withCredentials: true
       })
       .subscribe(
         res => {
-          importedSaveAs(res.blob(), `${Date.now()}.zip`);
+          importedSaveAs(res, `${Date.now()}.zip`);
         },
         err => err,
         () => {}
