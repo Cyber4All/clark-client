@@ -14,8 +14,6 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  public totalLearningObjects: number;
-
   constructor(private http: HttpClient) {}
 
   observeFiltered(): Observable<LearningObject[]> {
@@ -66,8 +64,7 @@ export class LearningObjectService {
       .toPromise()
       .then((response: any) => {
         const objects = response.objects;
-        this.totalLearningObjects = response.total;
-        return objects.map(object => LearningObject.instantiate(object));
+        return { learningObjects: objects.map(object => LearningObject.instantiate(object)), total: response.total};
       });
   }
 
