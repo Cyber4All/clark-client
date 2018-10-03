@@ -33,27 +33,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-    if (environment.production) {
-      this.checkWhitelist();
-    } else {
-      this.canDownload = true;
-    }
-  }
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.auth.username;
-      if (whitelist.includes(username)) {
-        this.canDownload = true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
+      this.canDownload = isAuthorized;
+    });
   }
 
   goals() {

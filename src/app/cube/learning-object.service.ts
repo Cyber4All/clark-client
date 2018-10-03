@@ -14,8 +14,6 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  public totalLearningObjects: number;
-
   constructor(private http: Http) {}
 
   observeFiltered(): Observable<LearningObject[]> {
@@ -40,7 +38,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(query?: Query): Promise<LearningObject[]> {
+  getLearningObjects(query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
@@ -66,9 +64,9 @@ export class LearningObjectService {
       .toPromise()
       .then(response => {
         const res = response.json();
-        const objects = res.objects;
-        this.totalLearningObjects = res.total;
-        return objects.map(object => LearningObject.instantiate(object));
+        const total = res.total;
+        const learningObjects = res.objects.map(object => LearningObject.instantiate(object));
+        return { learningObjects, total };
       });
   }
 

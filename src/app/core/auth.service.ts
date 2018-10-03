@@ -3,9 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie';
-import { User } from '@cyber4all/clark-entity';
+import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Injectable()
 export class AuthService {
@@ -16,11 +17,9 @@ export class AuthService {
   isLoggedIn = new BehaviorSubject<boolean>(false);
   socket;
   socketWatcher: Observable<string>;
+  whitelist;
 
-  constructor(
-    private http: HttpClient,
-    private cookies: CookieService
-  ) {
+  constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
       this.validate().then(
         val => {
@@ -32,6 +31,7 @@ export class AuthService {
         }
       );
     }
+    this.fetchWhitelist();
   }
 
   private changeStatus(status: boolean) {
@@ -301,5 +301,40 @@ export class AuthService {
           throw error;
         }
       );
+  }
+
+  async userCanDownload(learningObject: LearningObject): Promise<boolean> {
+    if (environment.production) {
+      // Check that the object does not contain a download lock and the user is logged in
+      const canDownload = !(learningObject.lock
+        && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD))
+        && this.isLoggedIn.value;
+      // If the object is restricted, check if the user is on the whitelist
+      if (!canDownload) {
+        return await this.checkWhitelist();
+      }
+      return canDownload;
+    } else {
+      return true;
+    }
+  }
+
+
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+  private async checkWhitelist() {
+    try {
+      if (this.whitelist === undefined) {
+        await this.fetchWhitelist();
+      }
+      const username = this.username;
+      return this.whitelist.includes(username);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  private async fetchWhitelist() {
+    const response = await fetch(environment.whiteListURL);
+    const object = await response.json();
+    this.whitelist = object.whitelist;
   }
 }
