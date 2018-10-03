@@ -62,7 +62,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   constructor() {
     // set which extensions can be previewed and how
-    this.previewable.set('microsoft', ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']);
+    this.previewable.set('microsoft', ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ott', 'oth', 'odm']);
     this.previewable.set('browser', ['pdf']);
   }
 
