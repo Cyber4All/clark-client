@@ -1,4 +1,4 @@
 export const COPY = {
-    TITLE: `Recenty Updated Learning Objects`,
+    TITLE: `Recently Released`,
     VIEWALL: 'View All'
 };
