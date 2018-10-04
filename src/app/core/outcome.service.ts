@@ -28,11 +28,7 @@ export class OutcomeService {
   getSources(): Promise<string[]> {
     return this.http.get(environment.suggestionUrl + '/outcomes/sources', { headers: this.headers })
       .toPromise()
-      .then((res: any) => {
-        if (res.ok) {
-          return res;
-        }
-      });
+      .then((res: any) => res);
   }
 
   private formatFilter(filter) {
