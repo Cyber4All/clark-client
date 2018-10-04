@@ -13,16 +13,14 @@ import { COPY } from './home.copy';
 export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
-    text: '',
-    currPage: 1,
-    limit: 30
+    limit: 1
   };
   placeholderText = 'Searching across ... learning objects';
 
   constructor(public learningObjectService: LearningObjectService, private router: Router) { }
 
   ngOnInit() {
-    this.learningObjectService.getLearningObjects({text: '', currPage: 1, limit: 0}).then((res) => {
+    this.learningObjectService.getLearningObjects(this.query).then((res) => {
       this.placeholderText = 'Searching across ' + res.total + ' learning objects';
     });
   }
