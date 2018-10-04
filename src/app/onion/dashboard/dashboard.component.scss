@@ -78,6 +78,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
             & > div {
                 padding-top: 20px;
                 padding-bottom: 20px;
+                text-transform: capitalize;
             }
         }
 
