@@ -79,10 +79,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     LearningObjectRatingsComponent,
     ReportRatingComponent,
     ProgressComponent,
-<<<<<<< HEAD
     CookiesComponent
-=======
->>>>>>> dashboard-enhancement
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -104,12 +101,9 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     ProgressComponent,
     VirtualScrollModule,
     PopupModule,
-<<<<<<< HEAD
-    CookiesComponent
-=======
+    CookiesComponent,
     ContextMenuModule,
     ClarkContextMenuModule,
->>>>>>> dashboard-enhancement
   ]
 })
 export class SharedModule {}
