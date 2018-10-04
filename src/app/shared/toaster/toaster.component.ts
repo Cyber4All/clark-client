@@ -83,7 +83,7 @@ export class ToasterComponent implements OnChanges, AfterViewChecked {
         }, timeout);
     }
 
-    close(el, duration = 4200) {
+    close(el, duration = 6200) {
         
         setTimeout(() => {
             el['show'] = false;

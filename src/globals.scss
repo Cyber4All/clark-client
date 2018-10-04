@@ -314,6 +314,11 @@ body {
     color: white;
   }
 
+  &.warning {
+    background: gradient(#f5a623, lighten(#f5a623, 2), 45deg);
+    color: white;
+  }
+
   // this is a blue alert style notification, .alert was taken by bootstrap grr
   &.alerting {
     background: gradient(darken($blue-accent, 5), $blue-accent, 45deg);

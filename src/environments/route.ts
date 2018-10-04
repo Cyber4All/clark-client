@@ -1,4 +1,5 @@
 import { environment } from '@env/environment';
+import * as querystring from 'querystring';
 
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
@@ -18,11 +19,11 @@ export const USER_ROUTES = {
   LOGOUT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
-  GET_MY_LEARNING_OBJECTS(username) {
+  GET_MY_LEARNING_OBJECTS(username, query: any) {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects?children=true`;
+    )}/learning-objects?children=true&${querystring.stringify(query)}`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(

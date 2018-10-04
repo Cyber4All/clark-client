@@ -34,6 +34,8 @@ import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
 import { CookiesComponent } from './cookies/cookies.component';
+import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
+
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -52,7 +54,8 @@ import { CookiesComponent } from './cookies/cookies.component';
     ToasterModule,
     ContextMenuModule,
     TooltipModule,
-    PopupModule
+    PopupModule,
+    ClarkContextMenuModule.forRoot()
   ],
   providers: [],
   declarations: [
@@ -98,7 +101,9 @@ import { CookiesComponent } from './cookies/cookies.component';
     ProgressComponent,
     VirtualScrollModule,
     PopupModule,
-    CookiesComponent
+    CookiesComponent,
+    ContextMenuModule,
+    ClarkContextMenuModule,
   ]
 })
 export class SharedModule {}
