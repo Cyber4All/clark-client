@@ -4,8 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { OnionRoutingModule } from './onion.routing';
-import { OnionComponent } from './onion.component';
-import { LearningObjectBuilderModule } from './old-learning-object-builder/learning-object-builder.module';
+import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 // Other
@@ -24,6 +23,7 @@ import { NavbarService } from '../core/navbar.service';
 import { BuilderNavbarComponent } from './learning-object-builder/components/builder-navbar/builder-navbar.component';
 
 
+import { OnionComponent } from './onion.component';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -51,7 +51,7 @@ import { BuilderNavbarComponent } from './learning-object-builder/components/bui
     SharedModule,
     OnionRoutingModule,
     OnionCoreModule,
-    LearningObjectBuilderModule.forRoot(),
+    LearningObjectBuilderModule,
     HttpClientModule,
     ModalModule,
     ToasterModule,
