@@ -713,9 +713,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
       }).catch(error => {
         // failed to publish
+        console.log(error);
         this.notificationService.notify(
           'Error!',
-          error._body,
+          error.error,
           'bad',
           'far fa-times'
         );

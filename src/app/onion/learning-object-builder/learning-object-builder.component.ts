@@ -283,7 +283,7 @@ export class LearningObjectBuilderComponent implements OnInit {
         // failed to publish
         this.notificationService.notify(
           'Error!',
-          error._body,
+          error.error,
           'bad',
           'far fa-times'
         );
