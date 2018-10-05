@@ -182,24 +182,6 @@ export class LearningObjectService {
       .toPromise();
   }
 
-  /**
-   * Adds specified learning object to specified collection
-   * @param learningObjectId id of learning object to be added to collection
-   * @param collectionName name of collection in which to insert learning object
-   */
-  addToCollection(
-    learningObjectId: string,
-    collectionName: string
-  ): Promise<any> {
-    return this.http
-      .patch(
-        USER_ROUTES.ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId),
-        { collection: collectionName },
-        { withCredentials: true, responseType: 'text' }
-      )
-      .toPromise();
-  }
-
   updateReadme(username: string, id: string): Promise<any> {
     const route = USER_ROUTES.UPDATE_PDF(username, id);
     return this.http.patch(route, {}, { withCredentials: true, responseType: 'text' }).toPromise();

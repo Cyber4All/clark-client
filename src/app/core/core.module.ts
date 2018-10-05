@@ -8,7 +8,6 @@ import { AuthService } from './auth.service';
 import { CartV2Service } from './cartv2.service';
 import { OutcomeService } from './outcome.service';
 import { CookieModule } from 'ngx-cookie';
-import { ClickOutsideModule } from 'ng-click-outside';
 
 import { RatingService } from './rating.service';
 import { ToasterModule } from '../shared/toaster';
@@ -17,7 +16,7 @@ import { UserService } from './user.service';
 import { MessagesService } from './messages.service';
 import { RavenErrorHandler } from './error-handler';
 import { ContextMenuModule } from 'ngx-contextmenu';
-import { environment } from '@env/environment';
+import { CollectionService } from './collection.service';
 
 @NgModule({
   imports: [
@@ -36,6 +35,7 @@ export class CoreModule {
         AuthGuard,
         AuthService,
         CartV2Service,
+        CollectionService,
         UserService,
         OutcomeService,
         MessagesService,
