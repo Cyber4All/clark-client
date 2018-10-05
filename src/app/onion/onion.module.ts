@@ -16,7 +16,14 @@ import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { DashboardResolver } from './dashboard/dashboard.resolver';
 import { LearningObjectResolve } from './old-learning-object-builder/learning-object.resolver';
-import { LearningObjectBuilderComponent } from './learning-object-builder/learning-object-builder.component'
+import { LearningObjectBuilderComponent } from './learning-object-builder/learning-object-builder.component';
+import { InfoPageComponent } from './learning-object-builder/components/info-page/info-page.component';
+import { OutcomePageComponent } from './learning-object-builder/components/outcome-page/outcome-page.component';
+import { MaterialsPageComponent } from './learning-object-builder/components/materials-page/materials-page.component';
+import { NavbarService } from '../core/navbar.service';
+import { BuilderNavbarComponent } from './learning-object-builder/components/builder-navbar/builder-navbar.component';
+
+
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -29,7 +36,11 @@ import { LearningObjectBuilderComponent } from './learning-object-builder/learni
   declarations: [
     OnionComponent,
     DashboardComponent,
-    LearningObjectBuilderComponent
+    LearningObjectBuilderComponent,
+    BuilderNavbarComponent,
+    InfoPageComponent,
+    OutcomePageComponent,
+    MaterialsPageComponent
   ],
   // Specifys all modules to be imported
   imports: [

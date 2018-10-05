@@ -17,6 +17,7 @@ import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { NavbarService } from '../../core/navbar.service';
 
 @Component({
   selector: 'clark-navbar',
@@ -61,7 +62,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     private modalCtrl: ModalService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    public nav: NavbarService
   ) {
     this.windowWidth = window.innerWidth;
 

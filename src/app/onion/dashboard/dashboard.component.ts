@@ -9,6 +9,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { AuthService } from '../../core/auth.service';
 import { COPY } from './dashboard.copy';
 import { trigger, style, animate, transition } from '@angular/animations';
+import { NavbarService } from '../../core/navbar.service';
 
 interface DashboardLearningObject extends LearningObject {
   parents: string[];
@@ -93,11 +94,13 @@ export class DashboardComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: ToasterService,
     private app: ChangeDetectorRef,
-    private auth: AuthService
+    private auth: AuthService,
+    public nav: NavbarService
   ) {}
 
   async ngOnInit() {
     this.learningObjects = await this.getLearningObjects();
+    this.nav.show();
   }
   /**
    * Fetches and sets LearningObject[]
