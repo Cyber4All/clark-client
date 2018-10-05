@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import { LearningObject } from '@cyber4all/clark-entity';
-import { CookieService } from 'ngx-cookie';
 
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { AuthService } from '../../core/auth.service';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route'
 
 export interface Collection {
   name: string;
@@ -16,7 +13,7 @@ export interface Collection {
 @Injectable()
 export class CollectionService {
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient) { }
 
   /**
    * Retrieve a list of collections
