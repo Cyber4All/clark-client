@@ -1,70 +1,92 @@
 @import '~_vars.scss';
 
+.modal-title {
+  color: $dark-text !important;
+  margin-bottom: 0 !important;
+}
+
 .collection-chooser {
   padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(2, 280px);
-  grid-gap: 50px;
-  justify-content: center;
+  margin: auto;
   margin-bottom: 25px;
+  width: 100%;
 
-  & > div {
-    // card view
-    background: white;
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
-    height: 350px;
-    cursor: pointer;
-    transform: scale(1);
-    opacity: 0.7;
-    transition: all 0.2s ease;
-
-    &:hover {
-      transform: scale(1.01);
-      opacity: 1;
-      box-shadow: 0 0 25px 2px rgba(0, 0, 0, 0.1);
-    }
-  }
-
-  .logo {
+  ul {
+    max-width: 550px;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
     width: 100%;
-    background: linear-gradient(
-      45deg,
-      darken($blue-accent, 10),
-      lighten($blue-accent, 10)
-    );
+    max-height: 400px;
+    overflow-y: auto;
 
-    &:after {
-      content: '';
-      width: 200px;
-      margin: auto;
-      display: block;
-      padding-bottom: 100%;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-    }
-  }
+    li {
+      $logo-height: 45px;
 
-  .image-label {
-    font-size: 20px;
-    text-align: center;
-    color: $dark-text;
-    margin-top: 10px;
-  }
+      position: relative;
+      display: grid;
+      grid-template-columns: $logo-height 1fr;
+      grid-gap: 15px;
+      align-items: center;
+      padding: 13px 10px 13px 0;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px;
+      cursor: pointer;
+      background: white;
+      transition: all 0.1s ease;
 
-  .nccp .logo:after {
-    background-image: url('/assets/images/nsa.png');
-  }
+      &:not(:last-child) {
+        border-bottom: 1px solid lighten($placeholder, 10);
+      }
 
-  .gencyber .logo {
-    background: linear-gradient(
-      45deg,
-      darken($error-red, 10),
-      lighten($error-red, 10)
-    );
+      .logo {
+        height: $logo-height;
+        background-size: contain;
+        // border-radius: 50%;
+        overflow: hidden;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
 
-    &:after {
-      background-image: url('/assets/images/gencyber.png');
+      &.selected {
+        &:after {
+          content: 'SELECTED';
+          position: absolute;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          color: $bright-blue;
+          right: 10px;
+        }
+      }
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      // collection-specific styles
+      &.nccp {
+
+        &.no-logo .logo {
+          background-color: $blue-accent;
+        }
+      }
+
+      &.gencyber {
+
+        &.no-logo .logo {
+          background-color: $error-red;
+        }
+      }
+
+      &.secinj {
+
+        &.no-logo .logo {
+          background-color: #f9dd80;
+          color: $dark-text;
+        }
+      }
     }
   }
 }
@@ -74,4 +96,29 @@
     max-width: 700px;
     width: 90vw;
     display: block;
+}
+
+.loading-template,
+.none-template {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 18px;
+  color: lighten($dark-text, 40);
+  margin-bottom: 50px;
+
+  .svg-inline--fa,
+  .icon {
+    margin: auto;
+    font-size: 25px;
+    color: $bright-blue;
+    display: block;
+    margin-bottom: 5px;
   }
+}
+
+.none-template {
+  .svg-inline--fa,
+  .icon {
+    color: $error-red;
+  }
+}

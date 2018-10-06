@@ -20,7 +20,7 @@ export class CollectionService {
    * @return {Collection[]} list of collections
    */
   getCollections(): Promise<Collection[]> {
-    return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTIONS).toPromise().then((val: Collection[]) => {
+    return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTIONS, { withCredentials: true }).toPromise().then((val: Collection[]) => {
       return val;
     });
   }
