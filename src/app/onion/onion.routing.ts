@@ -7,9 +7,9 @@ import { AuthGuard } from '../core/auth-guard.service';
 import { UserVerifiedGuard } from '../core/user-verified.guard';
 import { OnionComponent } from './onion.component';
 import { LearningObjectResolve } from './old-learning-object-builder/learning-object.resolver';
-import { InfoPageComponent } from './learning-object-builder/components/info-page/info-page.component';
-import { OutcomePageComponent } from './learning-object-builder/components/outcome-page/outcome-page.component';
-import { MaterialsPageComponent } from './learning-object-builder/components/materials-page/materials-page.component';
+import { InfoPageComponent } from './learning-object-builder/pages/info-page/info-page.component';
+import { OutcomePageComponent } from './learning-object-builder/pages/outcome-page/outcome-page.component';
+import { MaterialsPageComponent } from './learning-object-builder/pages/materials-page/materials-page.component';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
