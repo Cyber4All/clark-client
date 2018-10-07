@@ -13,7 +13,7 @@ export class CollectionSelectorComponent implements OnInit {
   // highlights collection if one is already present
   @Input() currentCollection: string;
 
-  // fire when the user selects a choice
+  // fires when the user selects a choice
   @Output() choice: EventEmitter<string> = new EventEmitter();
 
   // flags

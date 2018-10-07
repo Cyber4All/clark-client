@@ -17,7 +17,7 @@
     padding: 20px;
     box-sizing: border-box;
     width: 100%;
-    max-height: 400px;
+    max-height: 375px;
     overflow-y: auto;
 
     li {
@@ -37,16 +37,22 @@
       transition: all 0.1s ease;
 
       &:not(:last-child) {
-        border-bottom: 1px solid lighten($placeholder, 10);
+        border-bottom: 1px solid lighten($placeholder, 15);
       }
 
       .logo {
         height: $logo-height;
         background-size: contain;
-        // border-radius: 50%;
         overflow: hidden;
         background-position: center;
         background-repeat: no-repeat;
+      }
+
+      &.no-logo {
+
+        .logo {
+          border-radius: 2px;
+        }
       }
 
       &.selected {
@@ -69,22 +75,29 @@
       &.nccp {
 
         &.no-logo .logo {
-          background-color: $blue-accent;
+          background-color: $nccp;
         }
       }
 
       &.gencyber {
 
         &.no-logo .logo {
-          background-color: $error-red;
+          background-color: $gencyber;
         }
       }
 
       &.secinj {
 
         &.no-logo .logo {
-          background-color: #f9dd80;
+          background-color: $secinj;
           color: $dark-text;
+        }
+      }
+
+      &.c5 {
+
+        &.no-logo .logo {
+          background-color: $c5;
         }
       }
     }
