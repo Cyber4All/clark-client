@@ -7,6 +7,9 @@ import { AuthGuard } from '../core/auth-guard.service';
 import { UserVerifiedGuard } from '../core/user-verified.guard';
 import { OnionComponent } from './onion.component';
 import { LearningObjectResolve } from './old-learning-object-builder/learning-object.resolver';
+import { InfoPageComponent } from './learning-object-builder/components/info-page/info-page.component';
+import { OutcomePageComponent } from './learning-object-builder/components/outcome-page/outcome-page.component';
+import { MaterialsPageComponent } from './learning-object-builder/components/materials-page/materials-page.component';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -19,7 +22,13 @@ const onion_routes: Routes = [
   {
     path: '', component: OnionComponent, children: [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard] },
+      { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard],
+        children: [
+          { path: '', component: InfoPageComponent },
+          { path: 'info', component: InfoPageComponent },
+          { path: 'outcomes', component: OutcomePageComponent },
+          { path: 'materials', component: MaterialsPageComponent }
+        ] },
       { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard], resolve: {
         learningObject: LearningObjectResolve
       } },

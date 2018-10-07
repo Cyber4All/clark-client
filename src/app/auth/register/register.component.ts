@@ -17,6 +17,7 @@ import {
   query,
   stagger
 } from '@angular/animations';
+import { NavbarService } from '../../core/navbar.service';
 
 @Component({
   selector: 'clark-register',
@@ -129,7 +130,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public nav: NavbarService
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
@@ -138,7 +140,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.nav.hide(); // hides nav bar
+  }
 
   submit() {
     this.updateObjValues();

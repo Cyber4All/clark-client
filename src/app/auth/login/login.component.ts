@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
+import { NavbarService } from '../../core/navbar.service';
 
 @Component({
   selector: 'clark-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public nav: NavbarService
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
@@ -30,7 +32,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.nav.hide(); // hides navbar
+    console.log('Login navbar visible ' + this.nav.visible);
+  }
 
   submit() {
     this.loginFailure = undefined;
