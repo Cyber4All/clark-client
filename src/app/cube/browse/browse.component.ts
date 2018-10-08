@@ -16,6 +16,7 @@ import {
  } from '../../onion/old-learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
  import { FilterSection } from '../../shared/filter/filter.component';
  import { COPY } from './browse.copy';
+import { AuthService, AUTH_GROUP } from '../../core/auth.service';
 
 
 @Component({
@@ -38,7 +39,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
     standardOutcomes: [],
     orderBy: undefined,
     sortType: undefined,
-    collection: ''
+    collection: '',
+    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
   };
 
   tooltipText = {
@@ -106,12 +108,17 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, public mappingService: SuggestionService) {
+    private router: Router, private modalService: ModalService, public mappingService: SuggestionService,
+    private auth: AuthService) {
       this.windowWidth = window.innerWidth;
       this.learningObjects = Array(20).fill(new LearningObject);
   }
 
   ngOnInit() {
+    this.auth.group.subscribe(group => {
+      this.query.released = group !== AUTH_GROUP.ADMIN ? true : undefined;
+      this.fetchLearningObjects(this.query);
+    });
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>().debounceTime(650);
     this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {

@@ -146,6 +146,7 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
       name
     )}/learning-objects`;
   },
+  GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username
