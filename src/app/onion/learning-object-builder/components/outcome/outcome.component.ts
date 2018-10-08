@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { levels } from '@cyber4all/clark-taxonomy';
 
 @Component({
   selector: 'clark-outcome',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./outcome.component.scss']
 })
 export class OutcomeComponent implements OnInit {
+  outcomeLevels = Array.from(levels.values());
 
   constructor() { }
 

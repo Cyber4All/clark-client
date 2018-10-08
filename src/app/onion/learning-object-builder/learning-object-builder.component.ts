@@ -13,7 +13,6 @@ export class LearningObjectBuilderComponent implements OnInit {
   constructor( public nav: NavbarService ) { }
 
   ngOnInit() {
-
     // hides clark nav bar from builder
     this.nav.hide();
     console.log(this.nav.visible);

@@ -1,3 +1,17 @@
 <div class="outcome-component">
-  <clark-outcome-typeahead (selectedVerb)="doAlert($event)" (selectedCategory)="doAlert($event)" (enteredText)="doAlert($event)"></clark-outcome-typeahead>
+  <div class="level-select">
+    <div *ngFor="let l of outcomeLevels" class="level">
+      <div class="icon">
+        <span *ngIf="l === 'Remember and Understand'"><i class="far fa-cloud"></i></span>
+        <span *ngIf="l === 'Apply and Analyze'"><i class="far fa-cloud"></i></span>
+        <span *ngIf="l === 'Remember and Understand'"><i class="far fa-cloud"></i></span>
+      </div>
+      <div class="level-text">
+        {{ l }}
+      </div>
+    </div>
+  </div>
+  <div class="outcome-text">
+    <clark-outcome-typeahead (selectedVerb)="doAlert($event)" (selectedCategory)="doAlert($event)" (enteredText)="doAlert($event)"></clark-outcome-typeahead>
+  </div>
 </div>

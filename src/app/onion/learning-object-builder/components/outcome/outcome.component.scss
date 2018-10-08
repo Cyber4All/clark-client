@@ -1,0 +1,31 @@
+@import '~_vars.scss';
+
+.outcome-component {
+  padding: 80px 20px;
+  box-sizing: border-box;
+  background: #f8f9fd;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .level-select {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+
+    .level {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 12px 2px rgba(0, 0, 0, 0.04);
+      text-align: center;
+      color: $dark-text;
+    }
+  }
+
+  .outcome-text {
+    margin-top: 60px;
+  }
+}
