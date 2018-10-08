@@ -1,27 +1,56 @@
 @import '~_vars.scss';
 
 .outcome-component {
-  padding: 80px 20px;
+  padding: 40px 20px;
   box-sizing: border-box;
   background: #f8f9fd;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+
+  .outcome-title {
+    width: 100%;
+    font-size: 18px;
+    color: $dark-text;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
 
   .level-select {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
+    grid-gap: 15px;
+    width: 100%;
 
     .level {
       background: white;
-      padding: 10px;
+      padding: 25px 15px;
       border-radius: 5px;
       box-shadow: 0 2px 12px 2px rgba(0, 0, 0, 0.04);
       text-align: center;
-      color: $dark-text;
+      font-weight: 500;
+      font-size: 16px;
+      color: darken($placeholder, 10);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 2px solid white;
+
+      .svg-inline--fa,
+      .icon {
+        font-size: 40px;
+      }
+
+      &:hover:not(.active) {
+        transform: scale(1.03);
+        color: $dark-text;
+      }
+
+      &.active {
+        color: $bright-blue;
+        border-color: $bright-blue;
+      }
     }
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Outp
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { verbs, levels } from '@cyber4all/clark-taxonomy';
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'clark-outcome-typeahead',
