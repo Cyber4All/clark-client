@@ -8,6 +8,12 @@ import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
+export enum AUTH_GROUP {
+  ADMIN,
+  USER,
+  VISITOR
+}
+
 @Injectable()
 export class AuthService {
   user: User = undefined;
@@ -18,6 +24,7 @@ export class AuthService {
   socket;
   socketWatcher: Observable<string>;
   whitelist;
+  group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
 
   constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
@@ -71,6 +78,7 @@ export class AuthService {
       .then(
         (val: any) => {
           this.user = this.makeUserFromCookieResponse(val);
+          this.assignUserToGroup();
         },
         error => {
           throw error;
@@ -104,6 +112,7 @@ export class AuthService {
         val => {
           this.user = this.makeUserFromCookieResponse(val);
           this.changeStatus(true);
+          this.assignUserToGroup();
           return this.user;
         },
         error => {
@@ -124,6 +133,7 @@ export class AuthService {
       .then(val => {
         this.user = undefined;
         this.changeStatus(false);
+        this.group.next(AUTH_GROUP.VISITOR);
       });
   }
 
@@ -336,5 +346,15 @@ export class AuthService {
     const response = await fetch(environment.whiteListURL);
     const object = await response.json();
     this.whitelist = object.whitelist;
+  }
+
+  /**
+   * Checks if the username of the currently logged in user is on the whitelist.
+   * If they are then they are an admin, else they are a normal user.
+   */
+  private assignUserToGroup() {
+    this.checkWhitelist().then(isListed => {
+      this.group.next(isListed ? AUTH_GROUP.ADMIN : AUTH_GROUP.USER);
+    });
   }
 }
