@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { takeUntil, map, filter } from 'rxjs/operators';
+import { BuilderStore } from '../../builder-store.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-info-page',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InfoPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: BuilderStore) { }
 
   ngOnInit() {
+    // listen for outcome events and update component stores
+    this.store.event.pipe(
+      filter(x => x.type === 'object'),
+      map(x => x.payload),
+    ).subscribe((payload: LearningObject) => {
+      console.log('payload', payload);
+    });
+
+    if (this.store.learningObject) {
+      // assignment here
+    }
   }
 
 }

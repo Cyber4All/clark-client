@@ -10,6 +10,7 @@ import { OutcomePageComponent } from './pages/outcome-page/outcome-page.componen
 import { MaterialsPageComponent } from './pages/materials-page/materials-page.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
+import { BuilderStore } from './builder-store.service';
 
 @NgModule({
   imports: [
@@ -19,12 +20,15 @@ import { SharedModule } from 'app/shared/shared.module';
   ],
   declarations: [
     LearningObjectBuilderComponent,
+    BuilderNavbarComponent,
+    // outcome components
     OutcomeComponent,
     OutcomeTypeaheadComponent,
-    BuilderNavbarComponent,
+    // pages
     InfoPageComponent,
     OutcomePageComponent,
     MaterialsPageComponent
   ],
+  providers: [BuilderStore]
 })
 export class LearningObjectBuilderModule { }

@@ -1,5 +1,5 @@
 <div class="outcome-component">
-  <div class="outcome-title">{{ text || 'Learning Outcome ' + outcomeNumber }}</div>
+  <div class="outcome-title">{{ verb + ' ' + text || 'Learning Outcome ' + outcomeNumber }}</div>
   <div class="level-select">
     <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': level === l}" (click)="level = l">
       <div class="icon">
@@ -13,6 +13,6 @@
     </div>
   </div>
   <div class="outcome-text">
-    <clark-outcome-typeahead (selectedVerb)="verb = $event" (selectedCategory)="level = $event" (enteredText)="text = $event"></clark-outcome-typeahead>
+    <clark-outcome-typeahead [outcome]="outcome" (selectedVerb)="verb = $event;" (selectedCategory)="level = $event;" (enteredText)="text = $event;"></clark-outcome-typeahead>
   </div>
 </div>

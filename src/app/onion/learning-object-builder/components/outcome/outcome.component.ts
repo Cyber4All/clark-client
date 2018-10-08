@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { levels } from '@cyber4all/clark-taxonomy';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 
@@ -13,13 +13,27 @@ export class OutcomeComponent implements OnInit {
 
   outcomeLevels = Array.from(levels.values());
 
+  @Output() selectedVerb: EventEmitter<string> = new EventEmitter();
+  @Output() selectedLevel: EventEmitter<string> = new EventEmitter();
+  @Output() textChanged: EventEmitter<string> = new EventEmitter();
+
   private _localText: string;
   private _localVerb: string;
   private _localLevel: string;
 
+  // flags
+  initialized = false;
+
   constructor() { }
 
   ngOnInit() {
+    if (this.outcome) {
+      this.text = this.outcome.text;
+      this.verb =  this.outcome.verb;
+      this.level = this.outcome.bloom;
+    }
+
+    this.initialized = true;
   }
 
   get outcomeNumber(): number {
@@ -52,6 +66,10 @@ export class OutcomeComponent implements OnInit {
    */
   set text(val: string) {
     this._localText = val;
+
+    if (this.initialized) {
+      this.textChanged.emit(val);
+    }
   }
 
   /**
@@ -59,6 +77,10 @@ export class OutcomeComponent implements OnInit {
    */
   set level(val: string) {
     this._localLevel = val;
+
+    if (this.initialized) {
+      this.selectedLevel.emit(val);
+    }
   }
 
   /**
@@ -66,5 +88,10 @@ export class OutcomeComponent implements OnInit {
    */
   set verb(val: string) {
     this._localVerb = val;
+
+    if (this.initialized) {
+      this.selectedVerb.emit(val);
+    }
   }
+
 }
