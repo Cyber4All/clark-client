@@ -1,6 +1,6 @@
 import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
@@ -14,7 +14,7 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -62,11 +62,9 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .toPromise()
-      .then(response => {
-        const res = response.json();
-        const total = res.total;
-        const learningObjects = res.objects.map(object => LearningObject.instantiate(object));
-        return { learningObjects, total };
+      .then((response: any) => {
+        const objects = response.objects;
+        return { learningObjects: objects.map(object => LearningObject.instantiate(object)), total: response.total};
       });
   }
 
@@ -88,9 +86,13 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .toPromise()
-      .then(res => {
-        const response = res.json();
-        const learningObject = LearningObject.instantiate(response);
+      .then((res: any) => {
+        const learningObject = LearningObject.instantiate(res);
+        // If contributors exist on this learning object, instantiate them
+        if (learningObject['contributors'] && learningObject['contributors'].length > 0) {
+          const arr = learningObject['contributors'];
+          learningObject['contributors'] = arr.map((member: any) => User.instantiate(member));
+        }
         return learningObject;
       });
   }
@@ -102,8 +104,9 @@ export class LearningObjectService {
     return this.http
       .get(route, { withCredentials: true })
       .toPromise()
-      .then(val => {
-        return val.json().map(l => LearningObject.instantiate(l));
+      .then((val: any) => {
+        return val
+          .map(l => LearningObject.instantiate(l));
       });
   }
 }

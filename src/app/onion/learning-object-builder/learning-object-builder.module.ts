@@ -9,11 +9,13 @@ import { InfoPageComponent } from './pages/info-page/info-page.component';
 import { OutcomePageComponent } from './pages/outcome-page/outcome-page.component';
 import { MaterialsPageComponent } from './pages/materials-page/materials-page.component';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    SharedModule
   ],
   declarations: [
     LearningObjectBuilderComponent,

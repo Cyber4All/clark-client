@@ -1,0 +1,56 @@
+@import '~_vars.scss';
+
+$dark-text: rgb(83, 94, 100);
+$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+
+.full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+}
+
+// begin default context menu styles
+::ng-deep .context-menu {
+  display: block;
+  position: fixed;
+  min-width: 200px;
+  background: white;
+  padding: 10px 0;
+  border-radius: 3px;
+  box-sizing: border-box;
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style-type: none;
+      padding: 6px 15px;
+      color: $dark-text;
+      cursor: pointer;
+
+      .svg-inline--fa,
+      .icon {
+        margin-right: 10px;
+      }
+
+      &:hover {
+        background: $light-blue-gradient;
+        color: white;
+      }
+
+      &.bad {
+        color: $error-red;
+
+        &:hover {
+          background: $error-red;
+          color: white;
+        }
+      }
+    }
+  }
+}

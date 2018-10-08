@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { Headers, Http, Response } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Headers, Response } from '@angular/http';
 import * as querystring from 'querystring';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class OutcomeService {
 
-  private headers: Headers = new Headers();
+  private headers: HttpHeaders = new HttpHeaders();
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     this.headers.append('Content-Type', 'application/json');
   }
 
@@ -17,9 +18,9 @@ export class OutcomeService {
     const query = querystring.stringify(this.formatFilter(filter));
     return this.http.get(environment.suggestionUrl + '/outcomes?' + query, { headers: this.headers })
       .toPromise()
-      .then(res => {
+      .then((res: any) => {
         if (res.ok) {
-          return res.json();
+          return res;
         }
       });
   }
@@ -27,11 +28,7 @@ export class OutcomeService {
   getSources(): Promise<string[]> {
     return this.http.get(environment.suggestionUrl + '/outcomes/sources', { headers: this.headers })
       .toPromise()
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      });
+      .then((res: any) => res);
   }
 
   private formatFilter(filter) {

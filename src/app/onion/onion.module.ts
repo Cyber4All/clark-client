@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { OnionRoutingModule } from './onion.routing';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
@@ -13,10 +12,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
-import { DashboardResolver } from './dashboard/dashboard.resolver';
-import { LearningObjectResolve } from './old-learning-object-builder/learning-object.resolver';
-
-
+import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component'
 import { OnionComponent } from './onion.component';
 
 /**
@@ -29,14 +25,14 @@ import { OnionComponent } from './onion.component';
   // Specifys the components included in this module
   declarations: [
     OnionComponent,
-    DashboardComponent
+    DashboardComponent,
+    DashboardItemComponent
   ],
   // Specifys all modules to be imported
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     SharedModule,
     OnionRoutingModule,
     OnionCoreModule,
@@ -44,7 +40,6 @@ import { OnionComponent } from './onion.component';
     HttpClientModule,
     ModalModule,
     ToasterModule,
-  ],
-  providers: [ DashboardResolver, LearningObjectResolve ]
+  ]
 })
 export class OnionModule { }

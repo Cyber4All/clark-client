@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { CookieService } from 'ngx-cookie';
@@ -10,10 +10,10 @@ import { AuthService } from '../../core/auth.service';
 @Injectable()
 export class LearningObjectService {
   learningObjects: LearningObject[] = [];
-  private headers: Headers = new Headers();
+  private headers: HttpHeaders = new HttpHeaders();
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private auth: AuthService,
     private cookies: CookieService
   ) {
@@ -41,9 +41,8 @@ export class LearningObjectService {
         { object: learningObject },
         { headers: this.headers, withCredentials: true }
       )
-      .toPromise()
-      .then(res => {
-        return LearningObject.instantiate(res.json());
+      .toPromise().then((res: any) => {
+        return LearningObject.instantiate(res);
       });
     // TODO: Verify this response gives the learning object name
   }
@@ -62,10 +61,8 @@ export class LearningObjectService {
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
-      .then(response => {
-        const object = response.json();
-        const learningObject = LearningObject.instantiate(object);
-        return learningObject;
+      .then((response: any) => {
+        return LearningObject.instantiate(response);
       });
   }
 
@@ -75,14 +72,13 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(): Promise<LearningObject[]> {
-    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.auth.user.username);
+  getLearningObjects(filters?: any): Promise<LearningObject[]> {
+    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.auth.user.username, filters);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
-      .then(response => {
+      .then((response: any) => {
         return response
-          .json()
           .map(object => LearningObject.instantiate(object));
       });
   }
@@ -105,7 +101,7 @@ export class LearningObjectService {
       .patch(
         route,
         { learningObject: learningObject },
-        { headers: this.headers, withCredentials: true }
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
   }
@@ -136,7 +132,7 @@ export class LearningObjectService {
           id: learningObject.id,
           published: !learningObject.published
         },
-        { headers: this.headers, withCredentials: true }
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
   }
@@ -153,7 +149,7 @@ export class LearningObjectService {
       learningObjectName
     );
     return this.http
-      .delete(route, { headers: this.headers, withCredentials: true })
+      .delete(route, { headers: this.headers, withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 
@@ -171,7 +167,7 @@ export class LearningObjectService {
     );
 
     return this.http
-      .delete(route, { headers: this.headers, withCredentials: true })
+      .delete(route, { headers: this.headers, withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 
@@ -182,7 +178,7 @@ export class LearningObjectService {
     );
 
     return this.http
-      .post(route, { children }, { withCredentials: true })
+      .post(route, { children }, { withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 
@@ -199,13 +195,13 @@ export class LearningObjectService {
       .patch(
         USER_ROUTES.ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId),
         { collection: collectionName },
-        { withCredentials: true }
+        { withCredentials: true, responseType: 'text' }
       )
       .toPromise();
   }
 
   updateReadme(username: string, id: string): Promise<any> {
     const route = USER_ROUTES.UPDATE_PDF(username, id);
-    return this.http.patch(route, {}, { withCredentials: true }).toPromise();
+    return this.http.patch(route, {}, { withCredentials: true, responseType: 'text' }).toPromise();
   }
 }
