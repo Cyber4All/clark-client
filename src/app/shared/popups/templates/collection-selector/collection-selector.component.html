@@ -1,13 +1,28 @@
 <div class="collection-selection-popup">
-  <div class="modal-title">Select a collection for this learning object!</div>
-  <div class="collection-chooser">
-    <div class="nccp" (click)="choice.emit('nccp');">
-      <div class="logo"></div>
-      <div class="image-label">NSA NCCP</div>
+  <div class="modal-title">Select a Collection</div>
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <div *ngIf="collections; else noneTemplate" class="collection-chooser">
+      <ul>
+        <li class="{{ c.abvName }}" [ngClass]="{'no-logo': !c.hasLogo, 'selected': currentCollection === c.abvName}" *ngFor="let c of collections" (click)="choice.emit(c.abvName)">
+          <div class="logo" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
+          <div class="name">{{ c.name }}</div>
+        </li>
+      </ul>
     </div>
-    <div class="gencyber" (click)="choice.emit('gencyber');">
-      <div class="logo"></div>
-      <div class="image-label">GenCyber</div>
+  </ng-container>
+
+  <!-- loading -->
+  <ng-template #loadingTemplate>
+    <div class="loading-template">
+      <span><i class="far fa-spinner-third fa-spin"></i></span>
+      Loading collections...
     </div>
-  </div>
+  </ng-template>
+
+  <ng-template #noneTemplate>
+    <div class="none-template">
+      <span><i class="far fa-times"></i></span>
+      No collections found! This is probably an error.
+    </div>
+  </ng-template>
 </div>
