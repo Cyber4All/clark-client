@@ -10,6 +10,8 @@ import { OutcomePageComponent } from './pages/outcome-page/outcome-page.componen
 import { MaterialsPageComponent } from './pages/materials-page/materials-page.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
+import { WrapperComponent } from './pages/info-page/wrapper/wrapper.component';
+import { MetadataComponent } from './pages/info-page/metadata/metadata.component';
 
 @NgModule({
   imports: [
@@ -24,7 +26,9 @@ import { SharedModule } from 'app/shared/shared.module';
     BuilderNavbarComponent,
     InfoPageComponent,
     OutcomePageComponent,
-    MaterialsPageComponent
+    MaterialsPageComponent,
+    WrapperComponent,
+    MetadataComponent
   ],
 })
 export class LearningObjectBuilderModule { }

@@ -1,0 +1,26 @@
+/*This is the stylesheet for the basic informationn metadata */
+@import "~_vars.scss";
+
+/*style for the reusable container that houses the metadata*/
+.metadata-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  //background-color: ivory;
+  padding:30px 0px 40px;
+  text-indent: 20px;
+  margin-left: 20px;
+}
+
+/*Style for all titles within the resuable containers*/
+.title {
+  color: #2c7cda;
+  font-size: 18px;
+  font-weight: 600;
+}
+/*Style for all directions within the resuable containers*/
+.directions {
+  color: #737373;
+  font-size: 16px;
+}
