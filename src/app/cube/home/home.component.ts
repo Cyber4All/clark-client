@@ -14,7 +14,8 @@ import { AuthService, AUTH_GROUP } from '../../core/auth.service';
 export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
-    limit: 1
+    limit: 1,
+    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
   };
   placeholderText = 'Searching across ... learning objects';
 
