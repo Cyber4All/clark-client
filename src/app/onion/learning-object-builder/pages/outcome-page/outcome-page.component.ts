@@ -58,6 +58,9 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
    * @memberof OutcomePageComponent
    */
   set outcomes(outcomes: Map<string, LearningOutcome>) {
+    if (!this._outcomes.size && outcomes.size && !this.activeOutcome) {
+      this.activeOutcome = outcomes.values().next().value.id;
+    }
     this._outcomes = outcomes;
   }
 
@@ -67,6 +70,10 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     if (outcome.verb && outcome.bloom) {
       this.store.execute(actions.MUTATE_OUTCOME, { id, params });
     }
+  }
+
+  newOutcome() {
+    this.store.execute(actions.CREATE_OUTCOME, {});
   }
 
   ngOnDestroy() {

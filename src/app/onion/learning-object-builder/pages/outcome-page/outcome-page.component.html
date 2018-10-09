@@ -1,4 +1,8 @@
 <div class="test">
+  <div class="top">
+    <div class="title">Learning Outcomes</div>
+    <button class="button good" (click)="newOutcome()">New <i class="far fa-plus"></i></button>
+  </div>
   <ng-container *ngIf="iterableOutcomes?.length">
     <clark-outcome *ngFor="let o of iterableOutcomes" 
       [outcome]="o"

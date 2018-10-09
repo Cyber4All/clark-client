@@ -1,30 +1,27 @@
-<div class="outcome-component" [ngClass]="{'active': active}">
+<div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}">
   <div class="outcome-header">{{ outcome.verb + ' ' + outcome.text || 'Learning Outcome ' + outcomeNumber }}</div>
-  <ng-container *ngIf="active">
-    <div class="level-select">
-      <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom === l}" (click)="emitLevel(l)">
-        <div class="icon">
-          <span *ngIf="l === 'Remember and Understand'"><i class="fal fa-cloud"></i></span>
-          <span *ngIf="l === 'Apply and Analyze'"><i class="fal fa-bolt"></i></span>
-          <span *ngIf="l === 'Evaluate and Synthesize'"><i class="fal fa-balance-scale-right"></i></span>
-        </div>
-        <div class="level-text">
-          {{ l.replace('and', '&') }}
-        </div>
+  <div class="level-select">
+    <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom === l}" (click)="emitLevel(l)">
+      <div class="icon">
+        <span *ngIf="l === 'Remember and Understand'"><i class="fal fa-cloud"></i></span>
+        <span *ngIf="l === 'Apply and Analyze'"><i class="fal fa-bolt"></i></span>
+        <span *ngIf="l === 'Evaluate and Synthesize'"><i class="fal fa-balance-scale-right"></i></span>
+      </div>
+      <div class="level-text">
+        {{ l.replace('and', '&') }}
       </div>
     </div>
-    <div class="outcome-text">
-      <clark-outcome-typeahead [outcome]="outcome" (selectedVerb)="emitVerb($event)" (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)"></clark-outcome-typeahead>
-    </div>
-    <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
-      <div class="outcome-header">Maps to: </div>
-      <div class="pills">
-        <div *ngFor="let m of outcome.mappings" class="pill">
-          {{ m.author }} - {{ m.name }}
-  
-          <i class="fal fa-times"></i>
-        </div>
+  </div>
+  <div class="outcome-text">
+    <clark-outcome-typeahead [outcome]="outcome" (selectedVerb)="emitVerb($event)" (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)"></clark-outcome-typeahead>
+  </div>
+  <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
+    <div class="outcome-header">Maps to: </div>
+    <div class="pills">
+      <div *ngFor="let m of outcome.mappings" class="pill">
+        {{ m.author }} - {{ m.name }}
+        <i class="fal fa-times"></i>
       </div>
     </div>
-  </ng-container>
+  </div>
 </div>

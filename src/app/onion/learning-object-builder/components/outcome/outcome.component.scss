@@ -1,28 +1,41 @@
 @import '~_vars.scss';
 
 .outcome-component {
-  padding: 40px 20px;
+  padding: 30px 25px;
   box-sizing: border-box;
   background: #f8f9fd;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   box-shadow: 0 0 16px 2px rgba(0, 0, 0, 0.15);
   z-index: 2;
   position: relative;
+  transition: all 0.2s ease;
+  overflow: hidden;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: $bright-blue;
+    width: 5px;
+    transition: all 0.2s ease;
+    opacity: 1;
+  }
 
   &:not(.active) {
     background: white;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid lighten($placeholder, 20);
+    border-top: 1px solid lighten($placeholder, 15);
     box-shadow: none;
     z-index: 1;
 
-    .outcome-header {
-      margin-bottom: 0;
+    &:after {
+      left: -6px;
+      opacity: 0;
     }
   }
 
@@ -51,7 +64,7 @@
       color: darken($placeholder, 10);
       transition: all 0.2s ease;
       cursor: pointer;
-      border: 2px solid white;
+      border: 3px solid white;
 
       .svg-inline--fa,
       .icon {
@@ -72,6 +85,7 @@
 
   .outcome-text {
     margin-top: 60px;
+    height: 41px;
   }
 
   .outcome-mappings {

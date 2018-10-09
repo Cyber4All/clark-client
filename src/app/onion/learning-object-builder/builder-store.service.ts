@@ -127,11 +127,11 @@ export class BuilderStore {
    * Executes a specific action handler based on the passed action parameter
    *
    * @param {number} action predefined action from the BUILDER_ACTIONS enum
-   * @param {*} data data that should be passed to action handler
+   * @param {*} [data] (optional) data that should be passed to action handler
    * @returns {Promise<any>}
    * @memberof BuilderStore
    */
-  async execute(action: number, data: any): Promise<any> {
+  async execute(action: number, data?: any): Promise<any> {
     switch (action) {
       case BUILDER_ACTIONS.CREATE_OUTCOME:
         return await this.createOutcome();
