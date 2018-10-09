@@ -3,6 +3,7 @@ import { LearningOutcome } from '@cyber4all/clark-entity';
 import { BuilderStore, BUILDER_ACTIONS as actions } from '../../builder-store.service';
 import { Subject } from 'rxjs';
 import { takeUntil, map, filter } from 'rxjs/operators';
+import { trigger, transition, style, stagger, animate, query, animateChild } from '@angular/animations';
 
 @Component({
   selector: 'clark-outcome-page',
@@ -58,10 +59,12 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
    * @memberof OutcomePageComponent
    */
   set outcomes(outcomes: Map<string, LearningOutcome>) {
-    if (!this._outcomes.size && outcomes.size && !this.activeOutcome) {
-      this.activeOutcome = outcomes.values().next().value.id;
-    }
     this._outcomes = outcomes;
+    if (outcomes.size && !this.activeOutcome) {
+      setTimeout(() => {
+        this.activeOutcome = outcomes.values().next().value.id;
+      }, 100);
+    }
   }
 
   mutateOutcome(id: string, params: any) {
@@ -73,7 +76,11 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   }
 
   newOutcome() {
-    this.store.execute(actions.CREATE_OUTCOME, {});
+    this.store.execute(actions.CREATE_OUTCOME, {}).then(id => {
+      setTimeout(() => {
+        this.activeOutcome = id;
+      }, 100);
+    });
   }
 
   ngOnDestroy() {

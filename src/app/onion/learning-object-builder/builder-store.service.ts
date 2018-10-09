@@ -138,7 +138,7 @@ export class BuilderStore {
       case BUILDER_ACTIONS.DELETE_OUTCOME:
         return await this.deleteOutcome(data.id);
       case BUILDER_ACTIONS.MUTATE_OUTCOME:
-        return this.mutateOutcome(data.id, data.params);
+        return await this.mutateOutcome(data.id, data.params);
       default:
         console.error('Error! Invalid action taken!');
         return;
@@ -150,7 +150,14 @@ export class BuilderStore {
   ///////////////////////////////
 
   private async createOutcome() {
-    throw new Error('Not yet implemented!');
+    const outcome = new LearningOutcome(this.learningObject);
+    outcome.id = genId();
+
+    this.outcomes.set(outcome.id, outcome);
+    this.event.next({type: 'outcome', payload: this.outcomes});
+    // TODO service call here
+
+    return outcome.id;
   }
 
   private async deleteOutcome(id: string) {
@@ -158,7 +165,7 @@ export class BuilderStore {
   }
 
   private async mutateOutcome(id: string, params: {verb?: string, bloom?: string, text?: string}) {
-    let outcome = this.outcomes.get(id);
+    const outcome = this.outcomes.get(id);
 
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
@@ -193,3 +200,28 @@ export class BuilderStore {
     throw new Error('Not yet implemented!');
   }
 }
+
+/**
+   * Generate a unique id for each context menu
+   */
+  function genId() {
+    // TODO remove this
+    const S4 = function() {
+      // tslint:disable-next-line:no-bitwise
+      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    };
+    return (
+      S4() +
+      S4() +
+      '-' +
+      S4() +
+      '-' +
+      S4() +
+      '-' +
+      S4() +
+      '-' +
+      S4() +
+      S4() +
+      S4()
+    );
+  }

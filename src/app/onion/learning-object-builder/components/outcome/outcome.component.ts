@@ -9,9 +9,9 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
   styleUrls: ['./outcome.component.scss'],
   animations: [
     trigger('outcome', [
-      state('open', style({ 'height': '*' })),
-      state('closed', style({ 'height': '86px' })),
-      transition('* => *', animate('350ms ease'))
+      state('open', style({ height: '*' })),
+      state('closed', style({ height: '84px' })),
+      transition('* <=> *', animate('350ms ease')),
     ])
   ]
 })
