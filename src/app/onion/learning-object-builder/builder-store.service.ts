@@ -149,7 +149,6 @@ export class BuilderStore {
   //  BUILDER ACTION HANDLERS  //
   ///////////////////////////////
 
-
   private async createOutcome() {
     throw new Error('Not yet implemented!');
   }
@@ -161,25 +160,19 @@ export class BuilderStore {
   private async mutateOutcome(id: string, params: {verb?: string, bloom?: string, text?: string}) {
     let outcome = this.outcomes.get(id);
 
-
-    if (Object.keys(params).includes('text')) {
-      // TODO debounce this
-    } else if  (Object.keys(params).includes('verb') && typeof params.verb === 'undefined') {
-      outcome = new LearningOutcome(this.learningObject);
-      outcome.id = id;
-      this.outcomes.set(id, outcome);
-    } else {
-      if (params.bloom && params.bloom !== outcome.bloom) {
-        outcome.bloom = params.bloom;
-        outcome.verb = Array.from(verbs[params.bloom].values())[0];
-      } else if (params.verb) {
-        outcome.verb = params.verb;
-      }
-
-      // @ts-ignore
-      this.outcomes.set(outcome.id, LearningOutcome.instantiate(this.learningObject, outcome));
-      this.event.next({ type: 'outcome', payload: this.outcomes });
+    if (params.bloom && params.bloom !== outcome.bloom) {
+      outcome.bloom = params.bloom;
+      outcome.verb = Array.from(verbs[params.bloom].values())[0];
+    } else if (params.verb) {
+      outcome.verb = params.verb;
+    } else if (typeof params.text === 'string') {
+      // TODO debounce here
+      outcome.text = params.text;
     }
+
+      this.outcomes.set(outcome.id, outcome);
+      this.event.next({type: 'outcome', payload: this.outcomes});
+
 
     // TODO delayed service interaction here
   }

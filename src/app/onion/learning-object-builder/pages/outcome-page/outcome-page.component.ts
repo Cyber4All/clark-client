@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import { BuilderStore, BUILDER_ACTIONS as actions } from '../../builder-store.service';
 import { Subject } from 'rxjs';
@@ -11,13 +11,15 @@ import { takeUntil, map, filter } from 'rxjs/operators';
 })
 export class OutcomePageComponent implements OnInit, OnDestroy {
   private _outcomes: Map<string, LearningOutcome> = new Map();
-  private _outcomesIterable: LearningOutcome[] = [];
   destroyed$: Subject<void> = new Subject();
 
-  constructor(private store: BuilderStore) {}
+  // flags
+  activeOutcome: string;
+
+  constructor(private store: BuilderStore, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
-    // listen for outcome events and update component stores
+    // listen for outcome events and update component store
     this.store.event.pipe(
       filter(x => x.type === 'outcome'),
       map(x => x.payload),
@@ -47,7 +49,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
    * @memberof OutcomePageComponent
    */
   get iterableOutcomes() {
-    return this._outcomesIterable;
+    return Array.from(this._outcomes.values());
   }
 
   /**
@@ -57,7 +59,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
    */
   set outcomes(outcomes: Map<string, LearningOutcome>) {
     this._outcomes = outcomes;
-    this._outcomesIterable = Array.from(outcomes.values());
   }
 
   mutateOutcome(id: string, params: any) {

@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Output, EventEmitter, Input } from '@angular/core';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, filter, takeUntil } from 'rxjs/operators';
 import { verbs, levels } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/takeUntil';
 import { LearningOutcome } from '@cyber4all/clark-entity';
+import { BuilderStore } from '../../../builder-store.service';
 
 @Component({
   selector: 'clark-outcome-typeahead',
@@ -38,8 +39,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
     this.toggleMenu(false);
   }
 
-  constructor() {
-  }
+  constructor(private store: BuilderStore) { }
 
   ngOnInit() {
     // initialize typeahead with current outcome values
@@ -50,6 +50,20 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
 
       this.goodVerb = this.isGoodVerb(this.verb);
     }
+
+    this.store.event.pipe(
+      filter(x => x.type === 'outcome'),
+      map(x => x.payload),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(payload => {
+      if (payload.get(this.outcome.id).bloom !== this.category) {
+        // reset component with new bloom and verb
+        this.category = this.outcome.bloom;
+        this.verb = this.outcome.verb;
+
+        this.goodVerb = true;
+      }
+    });
 
     // listen for 'input' events on the input and parse verb & category (level)
     this.input$
@@ -69,15 +83,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
             // emit changes to parent
             this.selectedVerb.emit(this.verb);
           }
-        } else {
-          // we've already set a verb
-          if (this.text === '') {
-            // we've backspaced everything, set the verb as text and clear the verb
-            this.text = this.verb;
-            this.verb = undefined;
-            this.goodVerb = undefined;
-            this.selectedVerb.emit(this.verb);
-          }
+
         }
 
         this.enteredText.emit(this.text);
