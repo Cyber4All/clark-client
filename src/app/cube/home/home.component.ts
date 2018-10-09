@@ -14,9 +14,7 @@ import { AuthService, AUTH_GROUP } from '../../core/auth.service';
 export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
-    text: '',
-    currPage: 1,
-    limit: 0,
+    limit: 1,
     released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
   };
   placeholderText = 'Searching across ... learning objects';
@@ -27,14 +25,7 @@ export class HomeComponent implements OnInit {
     private auth: AuthService) { }
 
   ngOnInit() {
-    this.auth.group.subscribe(group => {
-      this.query.released = group !== AUTH_GROUP.ADMIN ? true : undefined;
-      this.fetchLearningObjects(this.query);
-    });
-    this.fetchLearningObjects(this.query);
-  }
-  fetchLearningObjects(query: Query) {
-    this.learningObjectService.getLearningObjects(query).then((res) => {
+    this.learningObjectService.getLearningObjects(this.query).then((res) => {
       this.placeholderText = 'Searching across ' + res.total + ' learning objects';
     });
   }
