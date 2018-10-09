@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { COPY } from './home.copy';
+import { AuthService, AUTH_GROUP } from '../../core/auth.service';
 
 
 @Component({
@@ -15,18 +16,28 @@ export class HomeComponent implements OnInit {
   query: Query = {
     text: '',
     currPage: 1,
-    limit: 30
+    limit: 0,
+    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
   };
   placeholderText = 'Searching across ... learning objects';
 
-  constructor(public learningObjectService: LearningObjectService, private router: Router) { }
+  constructor(
+    public learningObjectService: LearningObjectService,
+    private router: Router,
+    private auth: AuthService) { }
 
   ngOnInit() {
-    this.learningObjectService.getLearningObjects({text: '', currPage: 1, limit: 0}).then((res) => {
+    this.auth.group.subscribe(group => {
+      this.query.released = group !== AUTH_GROUP.ADMIN ? true : undefined;
+      this.fetchLearningObjects(this.query);
+    });
+    this.fetchLearningObjects(this.query);
+  }
+  fetchLearningObjects(query: Query) {
+    this.learningObjectService.getLearningObjects(query).then((res) => {
       this.placeholderText = 'Searching across ' + res.total + ' learning objects';
     });
   }
-
   keyDownSearch(event) {
     if (event.keyCode === 13) {
       this.search();

@@ -8,6 +8,7 @@ import { LearningObjectStatus } from '@env/environment';
 import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
 import { Subject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
+import { CollectionService } from '../../core/collection.service';
 
 export interface DashboardLearningObject extends LearningObject {
   status: string;
@@ -100,6 +101,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private learningObjectService: LearningObjectService,
+    private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
     private notificationService: ToasterService,
     private contextMenuService: ContextMenuService,
@@ -687,7 +689,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       // first, attempt to publish
       this.learningObjectService.publish(this.focusedLearningObject).then(() => {
         // publishing was a success, attempt to add to collection
-        this.learningObjectService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
+        this.collectionService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
           // success
           this.notificationService.notify(
             'Success!',
@@ -711,9 +713,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
       }).catch(error => {
         // failed to publish
+        console.log(error);
         this.notificationService.notify(
           'Error!',
-          error._body,
+          error.error,
           'bad',
           'far fa-times'
         );
