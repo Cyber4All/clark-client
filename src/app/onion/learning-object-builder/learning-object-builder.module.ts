@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { WrapperComponent } from './pages/info-page/wrapper/wrapper.component';
 import { MetadataComponent } from './pages/info-page/metadata/metadata.component';
+import { BuilderStore } from './builder-store.service';
 
 @NgModule({
   imports: [
@@ -21,14 +22,17 @@ import { MetadataComponent } from './pages/info-page/metadata/metadata.component
   ],
   declarations: [
     LearningObjectBuilderComponent,
+    BuilderNavbarComponent,
+    // outcome components
     OutcomeComponent,
     OutcomeTypeaheadComponent,
-    BuilderNavbarComponent,
+    // pages
     InfoPageComponent,
     OutcomePageComponent,
     MaterialsPageComponent,
     WrapperComponent,
     MetadataComponent
   ],
+  providers: [BuilderStore]
 })
 export class LearningObjectBuilderModule { }

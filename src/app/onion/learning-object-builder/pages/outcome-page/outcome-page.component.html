@@ -1,3 +1,12 @@
-<p>
-  outcome-page works!
-</p>
+<div class="test">
+  <ng-container *ngIf="iterableOutcomes?.length">
+    <clark-outcome *ngFor="let o of iterableOutcomes" 
+      [outcome]="o"
+      [totalOutcomes]="iterableOutcomes.length"
+      (textChanged)="mutateOutcome(o.id, { text: $event })"
+      (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
+      (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
+    >
+    </clark-outcome>
+  </ng-container>
+</div>

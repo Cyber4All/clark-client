@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Outp
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { verbs, levels } from '@cyber4all/clark-taxonomy';
+import 'rxjs/add/operator/takeUntil';
+import { LearningOutcome } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-outcome-typeahead',
@@ -11,6 +13,8 @@ import { verbs, levels } from '@cyber4all/clark-taxonomy';
 export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
 
   @ViewChild('verbElement') verbElement: ElementRef;
+
+  @Input() outcome: LearningOutcome;
 
   verb: string;
   category: string;
@@ -38,6 +42,15 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // initialize typeahead with current outcome values
+    if (this.outcome) {
+      this.verb = this.outcome.verb;
+      this.text = this.outcome.text;
+      this.category = this.outcome.bloom;
+
+      this.goodVerb = this.isGoodVerb(this.verb);
+    }
+
     // listen for 'input' events on the input and parse verb & category (level)
     this.input$
       .pipe(map((event) => (event.target as HTMLInputElement).value.trim()))
@@ -52,6 +65,9 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
             this.verb = val.substring(0, index);
             this.text = val.substring(index).trim();
             this.goodVerb = this.isGoodVerb(this.verb);
+
+            // emit changes to parent
+            this.selectedVerb.emit(this.verb);
           }
         } else {
           // we've already set a verb
@@ -60,11 +76,11 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
             this.text = this.verb;
             this.verb = undefined;
             this.goodVerb = undefined;
+            this.selectedVerb.emit(this.verb);
           }
         }
 
-        // emit changes to parent component
-        this.emit();
+        this.enteredText.emit(this.text);
     });
   }
 
@@ -87,7 +103,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
     this.verb = verb;
     this.toggleMenu(false);
 
-    this.emit();
+    this.selectedVerb.emit(this.verb);
   }
 
   /**
@@ -112,7 +128,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
   /**
    * Emit selected verb, selected category, and current text to parent component
    */
-  emit() {
+  emitAll() {
     this.selectedVerb.emit(this.getVerb());
     this.selectedCategory.emit(this.category);
     this.enteredText.emit(this.text);

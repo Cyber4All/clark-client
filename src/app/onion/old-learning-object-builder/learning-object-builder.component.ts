@@ -256,36 +256,36 @@ export class LearningObjectBuilderComponent implements OnInit {
   addToCollection(collection?: string) {
     if (collection) {
       // first, attempt to publish
-      this.service.togglePublished(this.learningObject).then(() => {
-        // publishing was a success, attempt to add to collection
-        this.service.addToCollection(this.learningObject.id, collection).then(() => {
-          // success
-          this.notificationService.notify(
-            'Success!',
-            `Learning object submitted to ${collection} collection successfully!`,
-            'good',
-            'far fa-check'
-          );
-        }).catch (err => {
-          // error
-          console.error(err);
-          this.notificationService.notify(
-            'Error!',
-            `Error submitting learning object to ${collection} collection!`,
-            'bad',
-            'far fa-times'
-          );
-        });
-      }).catch(error => {
-        // failed to publish
-        this.notificationService.notify(
-          'Error!',
-          error._body,
-          'bad',
-          'far fa-times'
-        );
-        console.error(error);
-      });
+      // this.service.togglePublished(this.learningObject).then(() => {
+      //   // publishing was a success, attempt to add to collection
+      //   this.service.addToCollection(this.learningObject.id, collection).then(() => {
+      //     // success
+      //     this.notificationService.notify(
+      //       'Success!',
+      //       `Learning object submitted to ${collection} collection successfully!`,
+      //       'good',
+      //       'far fa-check'
+      //     );
+      //   }).catch (err => {
+      //     // error
+      //     console.error(err);
+      //     this.notificationService.notify(
+      //       'Error!',
+      //       `Error submitting learning object to ${collection} collection!`,
+      //       'bad',
+      //       'far fa-times'
+      //     );
+      //   });
+      // }).catch(error => {
+      //   // failed to publish
+      //   this.notificationService.notify(
+      //     'Error!',
+      //     error._body,
+      //     'bad',
+      //     'far fa-times'
+      //   );
+      //   console.error(error);
+      // });
     } else {
       console.error('No collection defined!');
     }

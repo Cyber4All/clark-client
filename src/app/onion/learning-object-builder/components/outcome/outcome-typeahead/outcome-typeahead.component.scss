@@ -1,10 +1,11 @@
+@import '~_vars.scss';
+
 $blue: #1875e1;
 
 .typeahead {
     width: 500px;
     font-family: 'Arial', sans-serif;
     position: relative;
-    margin: 100px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -22,25 +23,26 @@ $blue: #1875e1;
         appearance: none;
         border: 0;
         width: 100%;
-        padding: 8px 0px 6px;
+        padding: 8px 0 6px;
         border-bottom: 2px solid $blue;
         outline: 0;
         font-size: 18px;
         font-family: 'Arial', sans-serif;
         margin: 0;
         flex-grow: 2;
+        background: transparent;
 
         &.withVerb {
             padding-left: 0.3em;
         }
 
         &.bad {
-            border-bottom-color: red;
+            border-bottom-color: $error-red;
         }
     }
 
     .verb {
-        background: linear-gradient(45deg, $blue, #599ded); 
+        background: linear-gradient(45deg, $blue, #599ded);
         color: white;
         padding: 8px 12px;
         font-size: 18px;
@@ -49,7 +51,7 @@ $blue: #1875e1;
         bottom: 0;
         display: inline-flex;
         align-items: center;
-        border-radius: 4px 4px 0px 0px;
+        border-radius: 4px 4px 0 0;
         cursor: pointer;
 
         .svg-inline--fa {
@@ -58,12 +60,18 @@ $blue: #1875e1;
         }
 
         &.bad {
-            background: red;
+            background: $error-red;
         }
     }
 
     .menu {
         box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        top: 45px;
+        background: white;
+        max-height: 300px;
+        overflow-y: auto;
+        min-width: 250px;
 
         ul {
             margin: 0;
