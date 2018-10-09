@@ -10,9 +10,9 @@ import { OutcomePageComponent } from './pages/outcome-page/outcome-page.componen
 import { MaterialsPageComponent } from './pages/materials-page/materials-page.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
-import { WrapperComponent } from './pages/info-page/wrapper/wrapper.component';
 import { MetadataComponent } from './pages/info-page/metadata/metadata.component';
 import { BuilderStore } from './builder-store.service';
+//import { TextEditorComponent } from './components/text-editor.component';
 
 @NgModule({
   imports: [
@@ -30,8 +30,10 @@ import { BuilderStore } from './builder-store.service';
     InfoPageComponent,
     OutcomePageComponent,
     MaterialsPageComponent,
-    WrapperComponent,
-    MetadataComponent
+    //Metadata for the Basic Info Page
+    MetadataComponent,
+  //texteditor
+  //TextEditorComponent
   ],
   providers: [BuilderStore]
 })
