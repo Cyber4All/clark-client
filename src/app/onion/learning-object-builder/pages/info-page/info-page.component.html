@@ -1,4 +1,44 @@
-<p>
-  info-page works!
-</p>
-<clark-info-page-wrapper></clark-info-page-wrapper>
+<div class="content-wrapper">
+  <div id="basic-information-title">
+    {{copy.TITLE}}
+  </div>
+  <clark-info-page-metadata>
+    <div title>{{copy.NAME}}</div>
+    <div directions>{{copy.NAMEPLACEHOLDER}}</div>
+    <div data>
+      <input class="name-field" type="text" autofocus name="name" placeholder="Learning Object Name" />
+    </div>
+  </clark-info-page-metadata>
+  <hr>
+  <clark-info-page-metadata>
+    <div title>{{copy.LENGTH}}</div>
+    <div directions>{{copy.CHOOSE}}</div>
+    <div data>
+      <div class="select-wrapper" id="select">
+        <select name="type">
+          <option value="nanomodule">{{ copy.NANO }}</option>
+          <option value="micromodule">{{ copy.MICRO }}</option>
+          <option value="module">{{ copy.MOD }}</option>
+          <option value="unit">{{ copy.UNIT }}</option>
+          <option value="course">{{ copy.COURSE }}</option>
+        </select>
+      </div>
+    </div>
+  </clark-info-page-metadata>
+  <hr>
+  <clark-info-page-metadata>
+    <div title>{{copy.LEVELS}}</div>
+    <div directions>{{copy.SELECT}}</div>
+    <div data>
+
+    </div>
+  </clark-info-page-metadata>
+  <hr>
+  <clark-info-page-metadata>
+    <div title>{{copy.QUESTION}}</div>
+    <div directions>{{copy.TIP}}</div>
+    <div data>
+      <textarea class = "full-width"></textarea>
+    </div>
+  </clark-info-page-metadata>
+</div>
