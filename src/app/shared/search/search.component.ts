@@ -138,7 +138,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (text.length) {
       searchbar.blur();
       this.didBlur.emit();
-      this.router.navigate(['/browse'], { queryParams: { text }});
+      this.router.navigate(['/browse'], { queryParams: { text, currPage: 1 }});
     }
 
     this.close.emit();
