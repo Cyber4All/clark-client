@@ -115,10 +115,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.auth.group.subscribe(group => {
-      this.query.released = group !== AUTH_GROUP.ADMIN ? true : undefined;
-      this.fetchLearningObjects(this.query);
-    });
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>().debounceTime(650);
     this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
@@ -127,6 +123,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
     // whenever the queryParams change, map them to the query object and perform the search
     this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
+      this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     });

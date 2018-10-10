@@ -2,7 +2,7 @@
   <div class="search-options">
     <div *ngIf="selected == 1" class="keyword-search input">
       <form (submit)="performSearch(searchInput)">
-        <input #searchInput id="clark-search-input" type="search" placeholder="Search..." aria-label="Search" (focus)="didFocus.emit()" />
+        <input #searchInput id="clark-search-input" type="search" placeholder="Search..." aria-label="Search" (focus)="didFocus.emit()" [value]="searchValue" />
         <div class="icon" (click)="performSearch(searchInput)"><i class="far fa-search"></i></div>
       </form>
     </div>
