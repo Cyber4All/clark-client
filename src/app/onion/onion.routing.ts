@@ -22,16 +22,21 @@ const onion_routes: Routes = [
   {
     path: '', component: OnionComponent, children: [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard],
+      { path: 'learning-object-builder',
+        loadChildren: 'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule'
+      },
+      /* { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard],
         children: [
           { path: '', component: InfoPageComponent },
           { path: 'info', component: InfoPageComponent },
           { path: 'outcomes', component: OutcomePageComponent },
           { path: 'materials', component: MaterialsPageComponent }
-        ] },
+        ]
+      },
       { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard], resolve: {
         learningObject: LearningObjectResolve
-      } },
+      } }, */
+
       // Load Neutrino module
       // TODO: content should redirect, only show child routes
       { path: 'content',

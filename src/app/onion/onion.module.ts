@@ -12,7 +12,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
-import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component'
+import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component';
 import { OnionComponent } from './onion.component';
 
 /**
@@ -34,12 +34,12 @@ import { OnionComponent } from './onion.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    OnionRoutingModule,
     OnionCoreModule,
-    LearningObjectBuilderModule,
     HttpClientModule,
     ModalModule,
     ToasterModule,
+    LearningObjectBuilderModule,
+    OnionRoutingModule
   ]
 })
 export class OnionModule { }
