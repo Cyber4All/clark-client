@@ -13,13 +13,15 @@ import { SharedModule } from 'app/shared/shared.module';
 import { MetadataComponent } from './pages/info-page/metadata/metadata.component';
 import { BuilderStore } from './builder-store.service';
 import { ContentUploadModule } from './pages/materials-page/content-upload/app/content-upload.module';
+import { BuilderRoutingModule } from './learning-object-builder.routing';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     SharedModule,
-    ContentUploadModule
+    ContentUploadModule,
+    BuilderRoutingModule
   ],
   declarations: [
     LearningObjectBuilderComponent,

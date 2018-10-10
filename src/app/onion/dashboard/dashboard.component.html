@@ -29,16 +29,16 @@
             <div><!-- meatball placeholder --></div>
           </div>
           <div  [@listItem]="learningObjects.length">
-            <clark-dashboard-item 
+            <clark-dashboard-item
               *ngFor="let l of learningObjects; let i = index"
               [learningObject]="l"
               [status]="l.status"
               [disabled]="disabled.get(l.id)"
-              [hidden]="hidden.get(l.id)" 
+              [hidden]="hidden.get(l.id)"
               [selected]="this.selected.get(l.id) !== undefined"
               [small]="editingChildren && !this.disabled.get(l.id)"
               [meatball]="!editingChildren"
-              (select)="toggleSelect(l, $event, i)" 
+              (select)="toggleSelect(l, $event, i)"
               (delete)="deleteConfirmation = delete(l); deleteConfirmation.next();"
               (editChildren)="editChildren(l)"
               (submit)="submitToCollection = true; focusedLearningObject = l;"
