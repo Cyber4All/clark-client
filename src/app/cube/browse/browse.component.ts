@@ -17,6 +17,7 @@ import {
  import { FilterSection } from '../../shared/filter/filter.component';
  import { COPY } from './browse.copy';
 import { AuthService, AUTH_GROUP } from '../../core/auth.service';
+import { CollectionService } from '../../core/collection.service';
 
 
 @Component({
@@ -61,17 +62,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       name: 'collection',
       type: 'select-one',
       canSearch: false,
-      values: [
-        // FIXME this should be dynamically populated from API
-        {
-          name: 'NSA NCCP',
-          value: 'nccp'
-        },
-        {
-          name: 'GenCyber',
-          value: 'gencyber'
-        }
-      ]
+      values: []
     },
     {
       name: 'length',
@@ -109,12 +100,17 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
     private router: Router, private modalService: ModalService, public mappingService: SuggestionService,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private collectionService: CollectionService,
+    ) {
       this.windowWidth = window.innerWidth;
       this.learningObjects = Array(20).fill(new LearningObject);
   }
 
   ngOnInit() {
+    this.collectionService.getCollections().then(collections => {
+      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
+    });
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>().debounceTime(650);
     this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
