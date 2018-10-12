@@ -6,6 +6,10 @@
   width: 100%;
   margin-bottom: 25px;
   box-shadow: 0 2px 4px 0 rgba(136, 135, 135, 0.3);
+  z-index: 2;
+  position: fixed;
+  left: 0;
+  right: 0;
 
   .top,
   .bottom {
@@ -46,7 +50,7 @@
         a {
           display: block;
           text-decoration: none;
-          color: black;
+          color: darken($placeholder, 20);
           padding: 0 15px 10px;
           position: relative;
 

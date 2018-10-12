@@ -1,5 +1,5 @@
 <div class="builder-template-columns">
-  <div class="columns">
+  <div class="columns" [@columns]="3">
     <div *ngIf="leftCol?.nativeElement" class="left-column column">
       <div class="content">
         <ng-content select="[left]"></ng-content>
