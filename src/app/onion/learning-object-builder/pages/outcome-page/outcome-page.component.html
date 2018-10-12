@@ -1,20 +1,28 @@
-<div class="test">
-  <div class="top">
-    <div class="title">Learning Outcomes</div>
-    <button class="button good" (click)="newOutcome()">New <i class="far fa-plus"></i></button>
+<clark-column-wrapper>
+  <div left #left>
+    Scaffold Information will go here
   </div>
-  <ng-container *ngIf="iterableOutcomes?.length">
-    <div [@outcomeListItem]="iterableOutcomes.length">
-      <clark-outcome *ngFor="let o of iterableOutcomes" 
-        [outcome]="o"
-        [totalOutcomes]="iterableOutcomes.length"
-        [active]="activeOutcome === o.id"
-        (textChanged)="mutateOutcome(o.id, { text: $event })"
-        (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
-        (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
-        (click)="activeOutcome = o.id"
-      >
-      </clark-outcome>
+  <div main #main>
+    <div class="top">
+      <div class="title">Learning Outcomes</div>
+      <button class="button good" (click)="newOutcome()">New <i class="far fa-plus"></i></button>
     </div>
-  </ng-container>
-</div>
+    <ng-container *ngIf="iterableOutcomes?.length">
+      <div [@outcomeListItem]="iterableOutcomes.length">
+        <clark-outcome *ngFor="let o of iterableOutcomes" 
+          [outcome]="o"
+          [totalOutcomes]="iterableOutcomes.length"
+          [active]="activeOutcome === o.id"
+          (textChanged)="mutateOutcome(o.id, { text: $event })"
+          (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
+          (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
+          (click)="activeOutcome = o.id"
+        >
+        </clark-outcome>
+      </div>
+    </ng-container>
+  </div>
+  <div right #right>
+    Standard Outcomes will go here
+  </div>
+</clark-column-wrapper>

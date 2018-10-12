@@ -1,0 +1,19 @@
+<div class="builder-template-columns">
+  <div class="columns">
+    <div *ngIf="leftCol?.nativeElement" class="left-column">
+      <div class="content">
+        <ng-content select="[left]"></ng-content>
+      </div>
+    </div>
+    <div *ngIf="mainCol?.nativeElement" class="main-column">
+      <div class="content">
+        <ng-content select="[main]"></ng-content>
+      </div>
+    </div>
+    <div *ngIf="rightCol?.nativeElement" class="right-column">
+      <div class="content">
+        <ng-content select="[right]"></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

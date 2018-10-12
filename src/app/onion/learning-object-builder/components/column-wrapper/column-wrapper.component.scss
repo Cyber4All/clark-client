@@ -1,0 +1,15 @@
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) minmax(700px, 2fr) minmax(290px, 340px);
+  grid-gap: 20px;
+  margin: 0 25px;
+
+  .content {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 0;
+  }
+}
