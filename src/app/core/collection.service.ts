@@ -12,7 +12,7 @@ export interface Collection {
 
 @Injectable()
 export class CollectionService {
-
+  private collections: Collection[];
   constructor(private http: HttpClient) { }
 
   /**
@@ -20,9 +20,15 @@ export class CollectionService {
    * @return {Collection[]} list of collections
    */
   getCollections(): Promise<Collection[]> {
-    return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTIONS, { withCredentials: true }).toPromise().then((val: Collection[]) => {
-      return val;
-    });
+    return this.collections
+      ? Promise.resolve(this.collections)
+      : this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTIONS, { withCredentials: true })
+          .toPromise()
+          .then((collections: Collection[]) => {
+            this.collections = collections;
+            console.log(collections);
+            return collections;
+          });
   }
 
   /**

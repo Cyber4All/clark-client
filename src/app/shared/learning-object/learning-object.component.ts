@@ -3,6 +3,7 @@ import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { AuthService } from '../../core/auth.service';
 import { environment } from '@env/environment';
+import { CollectionService } from '../../core/collection.service';
 
 @Component({
   selector: 'learning-object-component',
@@ -15,12 +16,18 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() loading: boolean;
   @Input() owned ? = false;
 
-  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber']]);
+  collections;
 
   canDownload = false;
   showDownloadModal = false;
 
-  constructor(private hostEl: ElementRef, private renderer: Renderer2, private cart: CartV2Service, public auth: AuthService) {}
+  constructor(
+    private hostEl: ElementRef,
+    private renderer: Renderer2,
+    private cart: CartV2Service,
+    public auth: AuthService,
+    private collectionService: CollectionService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.loading) {
@@ -35,6 +42,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
       this.canDownload = isAuthorized;
+    });
+    this.collectionService.getCollections().then(collections => {
+      this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
     });
   }
 
