@@ -143,7 +143,7 @@ export class DashboardItemComponent implements OnChanges {
    */
   actionPermissions(action: string) {
     const permissions = {
-      edit: ['unpublished', 'published', 'denied'],
+      edit: ['unpublished', 'published', 'denied', 'waiting', 'review'],
       editChildren: ['unpublished', 'published', 'denied', this.learningObject.length !== 'nanomodule'],
       manageMaterials: ['unpublished', 'published', 'denied', this.verifiedEmail],
       submit: ['unpublished', 'denied', this.verifiedEmail],
