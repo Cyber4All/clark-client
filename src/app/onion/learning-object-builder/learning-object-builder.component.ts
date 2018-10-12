@@ -128,10 +128,9 @@ export class LearningObjectBuilderComponent implements OnInit {
           }
         })
         .catch(err => {
-          console.log(err)
           const error =
-            typeof err['_body'] === 'string'
-              ? err['_body']
+            typeof err.error === 'string'
+              ? err.error
               : 'Error saving Learning Object';
           this.notificationService.notify(
             'Error!',
@@ -163,8 +162,8 @@ export class LearningObjectBuilderComponent implements OnInit {
         })
         .catch(err => {
           const error =
-            typeof err['_body'] === 'string'
-              ? err['_body']
+            typeof err.error === 'string'
+              ? err.error
               : 'Error creating Learning Object';
           this.notificationService.notify(
             'Error!',
