@@ -14,6 +14,7 @@ import { BuilderStore } from './builder-store.service';
 // import { ContentUploadModule } from './pages/materials-page/content-upload/app/content-upload.module';
 import { BuilderRoutingModule } from './learning-object-builder.routing';
 import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapper.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapp
     SharedModule,
     // ContentUploadModule,
     BuilderRoutingModule,
+    FormsModule
   ],
   declarations: [
     LearningObjectBuilderComponent,

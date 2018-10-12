@@ -5,6 +5,7 @@ import { USER_ROUTES } from '@env/route';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { verbs } from '@cyber4all/clark-taxonomy';
+import { LearningObjectProperties } from '@cyber4all/clark-entity/dist/learning-object';
 
 /**
  * Defines a list of actions the builder can take
@@ -18,8 +19,7 @@ export enum BUILDER_ACTIONS {
   MUTATE_OUTCOME = 2,
   MAP_STANDARD_OUTCOME = 3,
   UNMAP_STANDARD_OUTCOME = 4,
-  SET_NAME = 5,
-  TOGGLE_ACADEMIC_LEVEL = 6
+  MUTATE_OBJECT = 5
 }
 
 /**
@@ -85,18 +85,16 @@ export class BuilderStore {
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(name: string): Promise<LearningObject> {
+  async fetch(name: string): Promise<LearningObject> {
     // TODO replace this code with a call to the onion's LearningObjectService
-    return this.http
+    const res: any = await this.http
       .get(USER_ROUTES.GET_LEARNING_OBJECT(this.auth.username, name), {
         withCredentials: true
       })
-      .toPromise()
-      .then((res: any) => {
-        this.learningObject = LearningObject.instantiate(res);
-        this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
-        return this.learningObject;
-      });
+      .toPromise();
+    this.learningObject = LearningObject.instantiate(res);
+    this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
+    return this.learningObject;
   }
 
   /**
@@ -133,6 +131,8 @@ export class BuilderStore {
    */
   async execute(action: number, data?: any): Promise<any> {
     switch (action) {
+      case BUILDER_ACTIONS.MUTATE_OBJECT:
+        return await this.mutateObject(data);
       case BUILDER_ACTIONS.CREATE_OUTCOME:
         return await this.createOutcome();
       case BUILDER_ACTIONS.DELETE_OUTCOME:
@@ -182,7 +182,6 @@ export class BuilderStore {
       this.outcomes.set(outcome.id, outcome);
       this.event.next({type: 'outcome', payload: this.outcomes});
 
-
     // TODO delayed service interaction here
   }
 
@@ -194,17 +193,20 @@ export class BuilderStore {
     throw new Error('Not yet implemented!');
   }
 
-  private setName(name: string) {
-    throw new Error('Not yet implemented!');
-  }
+  // TODO type this parameter
+  private mutateObject(data: any) {
+    const dataProperties = Object.keys(data);
 
-  private toggleAcademicLevel(level: string) {
-    throw new Error('Not yet implemented!');
+    for (const k of dataProperties) {
+      this.learningObject[k] = data[k];
+    }
+
+    // TODO debounced service call here
   }
 }
 
 /**
-   * Generate a unique id for each context menu
+   * Generate a unique id
    */
   function genId() {
     // TODO remove this

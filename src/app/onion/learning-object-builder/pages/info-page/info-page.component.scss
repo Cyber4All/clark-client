@@ -15,10 +15,9 @@ hr {
 }
 
 // This is styling for the input field for the learning object name
-input.name-field {
+input {
   margin-top: 15px;
   padding: 7px;
-  color: #9f9f9f;
   font-size: 16px;
   border: 0;
   width: 522px;
@@ -32,30 +31,28 @@ input.name-field {
 }
 
 // This is styling for the academic levels list
-.level-list {
+.levels {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 5px;
+  margin-top: 20px;
 
-  .level {
-    text-transform: none;
-    cursor: pointer;
-    margin-right: 10px;
-    background: #fff;
-    color: $blue-accent;
-    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
-    padding: 5px 10px;
+  .pill {
+    color: $bright-blue;
+    background: white;
     border-radius: 2px;
-    border: 3px solid transparent;
-    margin-top: 10px;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    padding: 4px 9px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
 
-    .selected {
-      background: $blue-accent;
-      color: #fff;
-      box-shadow: none;
+    &.selected {
+      box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(45deg, darken($bright-blue, 10), $bright-blue);
+      color: white;
     }
   }
 }

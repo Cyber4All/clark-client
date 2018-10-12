@@ -3,7 +3,7 @@
     Scaffold Information will go here
   </div>
   <div main #main>
-    <div class="content-wrapper">
+    <div *ngIf="learningObject; else loadingTemplate" class="content-wrapper">
       <div class="title">
         {{copy.TITLE}}
       </div>
@@ -11,7 +11,7 @@
         <div title>{{copy.NAME}}</div>
         <div directions>{{copy.NAMEPLACEHOLDER}}</div>
         <div data>
-          <input class="name-field" type="text" autofocus name="name" placeholder="Learning Object Name" />
+          <input class="name-field" type="text" autofocus name="name" placeholder="Learning Object Name" (ngModelChange)="mutateLearningObject({ name: $event })" [(ngModel)]="learningObject.name" />
         </div>
       </clark-info-page-metadata>
       <hr>
@@ -20,7 +20,7 @@
         <div directions>{{copy.CHOOSE}}</div>
         <div data>
           <div class="select-wrapper">
-            <select name="type">
+            <select name="type" [(ngModel)]="learningObject.length" (ngModelChange)="mutateLearningObject({ length: $event}) ">
               <option value="nanomodule">{{ copy.NANO }}</option>
               <option value="micromodule">{{ copy.MICRO }}</option>
               <option value="module">{{ copy.MOD }}</option>
@@ -35,7 +35,11 @@
         <div title>{{copy.LEVELS}}</div>
         <div directions>{{copy.SELECT}}</div>
         <div data>
-    
+          <div class="levels">
+            <div *ngFor="let level of academicLevels" class="pill" [ngClass]="{'selected': selectedLevels.includes(level)}" (click)="toggleLevel(level)">
+              {{ level }}
+            </div>
+          </div>
         </div>
       </clark-info-page-metadata>
       <hr>
@@ -49,3 +53,10 @@
     </div>
   </div>
 </clark-column-wrapper>
+
+<ng-template #loadingTemplate>
+  <div class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading...
+  </div>
+</ng-template>
