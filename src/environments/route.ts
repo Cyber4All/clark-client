@@ -152,6 +152,18 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   },
   GET_LEARNING_OBJECT_PARENTS(id: string) {
     return `${environment.apiURL}/learning-objects/${id}/parents`;
+  },
+  DOWNLOAD_FILE(params: {
+    username: string;
+    loId: string;
+    fileId: string;
+    open?: boolean;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.fileId}/files/${params.fileId}/download${
+      params.open ? '?open=true' : ''
+    }`;
   }
 };
 
