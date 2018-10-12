@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { RATING_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class RatingService {
 
-  constructor(private http: Http, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   createRating(learningObjectAuthor: string, learningObjectName: string, newRating: {number: number, comment: string }) {
     return this.http
@@ -15,7 +15,7 @@ export class RatingService {
         RATING_ROUTES.CREATE_RATING(learningObjectAuthor, learningObjectName),
         newRating,
         {
-          withCredentials: true
+          withCredentials: true, responseType: 'text'
         }
       )
       .toPromise();
@@ -27,7 +27,7 @@ export class RatingService {
         RATING_ROUTES.EDIT_RATING(learningObjectAuthor, learningObjectName, ratingId),
         rating,
         {
-          withCredentials: true
+          withCredentials: true, responseType: 'text'
         }
       )
       .toPromise();
@@ -38,7 +38,7 @@ export class RatingService {
       .delete(
         RATING_ROUTES.DELETE_RATING(learningObjectAuthor, learningObjectName, ratingId),
         {
-          withCredentials: true
+          withCredentials: true, responseType: 'text'
         }
       )
       .toPromise();
@@ -53,8 +53,8 @@ export class RatingService {
         }
       )
       .toPromise()
-      .then(res => {
-        const data = res.json();
+      .then((res: any) => {
+        const data = res;
         // assign id param to the value of _id and remove _id
         data.ratings = data.ratings.map(r => {
           const x = ({...r, id: r.id ? r.id : r._id });

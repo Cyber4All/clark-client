@@ -3,15 +3,47 @@ import { Component } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
 import { ModalService, ModalListElement } from './shared/modals';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
-  styleUrls: ['./clark.component.scss']
+  styleUrls: ['./clark.component.scss'],
+  animations: [
+    trigger('banner', [
+      transition(':enter', [
+        style({
+          bottom: '-100px',
+          opacity: 0
+        }),
+        animate(
+          '300ms 1500ms ease-out',
+          style({
+            bottom: '0',
+            opacity: 1
+          })
+        )
+      ]),
+      transition(':leave', [
+        style({
+          bottom: '0',
+            opacity: 1
+        }),
+        animate(
+          '300ms ease-out',
+          style({
+            bottom: '-100px',
+          opacity: 0
+          })
+        )
+      ])
+    ])
+  ]
 })
 export class ClarkComponent {
   connectedToSocket: boolean;
   isSupportedBrowser: boolean;
+  cookiesAgreement: boolean;
 
   constructor(private authService: AuthService, private cartService: CartV2Service, private modal: ModalService, private router: Router) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
@@ -28,6 +60,10 @@ export class ClarkComponent {
           this.authService.destroySocket();
         }
       });
+
+      if (localStorage.getItem('cookieAgreement')) {
+        this.cookiesAgreement = true;
+      }
   }
 
   /**
@@ -54,5 +90,14 @@ export class ClarkComponent {
     }
 
     return false;
+  }
+
+  /**
+   * Stores cookie agreement value in localStorage and hides banner
+   * @param val the value to store in cookieAgreement (always true at this point)
+   */
+  setCookieAgreement(val: boolean) {
+    localStorage.setItem('cookieAgreement', val + '');
+    this.cookiesAgreement = val;
   }
 }

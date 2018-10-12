@@ -1,5 +1,17 @@
 @import '~_vars.scss';
 
+.content {
+  padding: 0;
+
+  .sub-content {
+    margin-top: 0;
+  }
+}
+
+.inner {
+  padding-top: 0;
+}
+
 .flex {
   display: flex;
 

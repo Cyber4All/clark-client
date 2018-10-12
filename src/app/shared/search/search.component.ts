@@ -9,10 +9,10 @@ import {
   Input,
   OnDestroy
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { COPY } from './search.copy';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-search',
@@ -33,11 +33,14 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Output() didBlur: EventEmitter<any> = new EventEmitter();
   @Output() close: EventEmitter<any> = new EventEmitter();
 
-  subs: Subscription[] = [];
+  searchValue = '';
 
+  // flags
   selected = 1;
   selectedSource: string;
   toggled = false;
+
+  destroyed$: Subject<void> = new Subject();
 
   // This is passed to the mappings-filter component, which will subscribe to it. On event, the component will close all dropdowns
   closeMappingsDropdown: Subject<any> = new Subject();
@@ -47,24 +50,45 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     'Search for learning objects by organization, user, or keyword/phrase.' :
     'Search for learning objects by mapped standard outcomes';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     if (this.focus) {
-      this.subs.push(this.focus.subscribe({
+      this.focus.pipe(
+        takeUntil(this.destroyed$)
+      ).subscribe({
         next: () => {
           this.performFocus();
         }
-      }));
+      });
     }
 
     if (this.blur) {
-      this.subs.push(this.blur.subscribe({
+      this.blur.pipe(
+        takeUntil(this.destroyed$)
+      ).subscribe({
         next: () => {
           this.performBlur();
         }
-      }));
+      });
     }
+
+    // force search bar to reflect current search on browse page when navigating by url query parameters
+    this.router.events.pipe(
+      filter(x => x instanceof NavigationEnd),
+      takeUntil(this.destroyed$)
+    ).subscribe((x: NavigationEnd) => {
+      const textParam = this.route.snapshot.queryParamMap.get('text');
+
+      // if we're on the browse page, check query params for new text paran and repopulate
+      if (x.url.match(/\/browse.*/)) {
+        if (textParam) {
+          this.searchValue = textParam;
+        } else {
+          this.searchValue = '';
+        }
+      }
+    });
   }
 
   toggle(active: number) {
@@ -114,7 +138,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (text.length) {
       searchbar.blur();
       this.didBlur.emit();
-      this.router.navigate(['/browse'], { queryParams: { text }});
+      this.router.navigate(['/browse'], { queryParams: { text, currPage: 1 }});
     }
 
     this.close.emit();
@@ -140,13 +164,8 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subs.length) {
-      for (let i = 0, l = this.subs.length; i < l; i++) {
-        this.subs[i].unsubscribe();
-      }
-
-      this.subs = [];
-    }
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 
 }

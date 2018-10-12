@@ -1,6 +1,7 @@
 import { LOmocks } from './learning-object.mock';
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { LearningObject } from '@cyber4all/clark-entity';

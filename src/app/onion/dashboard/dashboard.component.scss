@@ -1,94 +1,291 @@
 @import '~_vars.scss';
 
-.top {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+$dark-text: #545e64;
+$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
 
-  .title {
-    font-weight: bold;
-    color: $blue-accent;
-    font-size: 26px;
-  }
+.dashboard {
 
-  .button {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-}
+    .splash {
+        background: $light-blue-gradient;
+        color: white;
+        padding: 65px 20px 120px;
+        position: relative;
+        overflow: hidden;
 
-.faux-table {
-  margin-top: 30px;
+        .greeting {
+            position: relative;
+            font-size: 28px;
+            font-weight: bold;
 
-  .placeholder {
-    min-width: 30px;
-  }
+            span {
+                text-transform: capitalize;
+            }
+        }
 
-  .row {
-    overflow: hidden;
-    transition: all 0.2s ease;
-
-    &.columns {
-      padding-left: 21px;
+        &:after {
+            content: '';
+            background: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.04;
+            mask: $cube-pattern repeat;
+        }
     }
 
-    &.hide {
-      display: none;
+    .list {
+        max-width: $max-width;
+        position: relative;
+        margin: auto;
+        box-sizing: border-box;
+        background: white;
+        border-radius: 3px;
+        box-shadow: 0 5px 10px 0 rgba(84, 84, 100, 0.19);
+        margin-top: -80px;
+        min-height: 500px;
+        overflow: hidden;
+        margin-bottom: 20px;
+
+        .list-top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+
+            .header {
+                font-size: 26px;
+                color: $dark-text;
+            }
+        }
     }
 
-    &.disabled {
-      opacity: 0.4;
-      pointer-events: none;
+    .list-body {
+
+        .column-headers,
+        ::ng-deep .row-item {
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 20px 60px 2fr 1fr 1fr 50px;
+            grid-gap: 0 20px;
+            align-items: center;
+        }
+
+        ::ng-deep .row-item {
+            & > div {
+                padding-top: 20px;
+                padding-bottom: 20px;
+                text-transform: capitalize;
+            }
+        }
+
+        .column-headers {
+            font-weight: bold;
+            font-size: 14px;
+            color: $dark-text;
+            opacity: 0.46;
+            padding-top: 20px;
+            padding-bottom: 10px;
+        }
+
+        clark-dashboard-item {
+            position: relative;
+            display: block;
+        }
+    }
+}
+
+// FIXME this can be removed when the new button styles are applied cross-application
+button {
+    border: 0;
+    padding: 10px 20px 10px 25px;
+
+    &.good {
+        background: $light-blue-gradient;
     }
 
-    &.child {
-      transform: scale(0.95);
+    &.neutral {
+        color: $dark-text;
     }
 
-    &.clickable {
-      cursor: pointer;
+    &.shadow {
+        box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+    }
+}
 
-      &:hover {
-        transform: scale(1.02);
-      }
+.filters-button {
+
+    span {
+        padding-right: 10px;
+        color: $error-red;
+        cursor: pointer;
+    }
+}
+
+$unpublished-color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.36);
+
+.filter-menu {
+    li {
+        position: relative;
+        color: $dark-text;
+
+        .indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            background: $dark-text;
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .svg-inline--fa,
+        .icon {
+            margin-left: 15px;
+        }
+
+        &:hover {
+            color: white;
+            background: $dark-text;
+
+            .indicator {
+                background: white;
+            }
+        }
+
+        &.waiting {
+            color: #5ec9da;
+
+            .indicator {
+                background: #5ec9da;
+            }
+
+            &:hover {
+                color: white;
+                background: #5ec9da;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.review {
+            color: #f5a623;
+
+            .indicator {
+                background: #f5a623;
+            }
+
+            &:hover {
+                color: white;
+                background: #f5a623;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.published {
+            color: $green;
+
+            .indicator {
+                background: $green;
+            }
+
+            &:hover {
+                color: white;
+                background: $green;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.denied {
+            color: saturate($error-red, 15);
+
+            .indicator {
+                background: saturate($error-red, 15);
+            }
+
+            &:hover {
+                color: white;
+                background: saturate($error-red, 15);
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+    }
+}
+
+.loading-template {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.60);
+    font-size: 20px;
+    padding: 20px;
+
+
+    .svg-inline--fa {
+        color: $bright-blue;
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+}
+
+.empty-template {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.60);
+    font-size: 16px;
+
+    .top {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        color: $dark-text;
+        font-size: 30px;
+        margin-bottom: 10px;
+
+        .svg-inline--fa {
+            font-size: 50px;
+            margin-right: 10px;
+        }
     }
 
-    .row-counter {
-      color: $bright-blue;
-      padding-left: 15px;
-      cursor: default;
+    button {
+        margin-top: 20px;
     }
-  }
-}
-
-.published {
-  border-left: 6px solid $green;
-}
-
-.unpublished {
-  border-left: 6px solid $error-red;
-}
-
-.locked {
-  border-left: 6px solid #f39c12;
-}
-
-.builder-link {
-  color: #333;
-}
-
-.dashboard-loading {
-  margin-top: 40px;
-  text-align: center;
-
-  .svg-inline--fa {
-    color: $blue-accent;
-    font-size: 30px;
-  }
-}
-
-.no-lo {
-  margin-top: 40px;
 }
