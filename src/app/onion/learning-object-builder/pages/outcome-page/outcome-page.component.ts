@@ -83,6 +83,16 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     });
   }
 
+  deleteOutcome(id: string) {
+    this.store.execute(actions.DELETE_OUTCOME, { id }).then(() => {
+      if (this.iterableOutcomes.length) {
+        setTimeout(() => {
+          this.activeOutcome = this.iterableOutcomes[this.iterableOutcomes.length - 1].id;
+        }, 100);
+      }
+    });
+  }
+
   ngOnDestroy() {
     // observable cleanup on component destroy
     this.destroyed$.next();

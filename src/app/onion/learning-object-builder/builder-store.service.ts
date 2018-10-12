@@ -161,7 +161,9 @@ export class BuilderStore {
   }
 
   private async deleteOutcome(id: string) {
-    throw new Error('Not yet implemented!');
+    // TODO service call here
+    this.outcomes.delete(id);
+    this.event.next({ type: 'outcome', payload: this.outcomes });
   }
 
   private async mutateOutcome(id: string, params: {verb?: string, bloom?: string, text?: string}) {

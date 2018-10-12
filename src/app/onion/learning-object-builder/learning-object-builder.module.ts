@@ -17,10 +17,10 @@ import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapp
 
 @NgModule({
   imports: [
-    CommonModule,
+  CommonModule,
     SharedModule,
     // ContentUploadModule,
-    BuilderRoutingModule
+    BuilderRoutingModule,
   ],
   declarations: [
     LearningObjectBuilderComponent,

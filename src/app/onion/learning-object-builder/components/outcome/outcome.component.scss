@@ -45,6 +45,34 @@
     font-weight: 600;
     margin-bottom: 30px;
   }
+  
+  .outcome-delete {
+    cursor: pointer;
+    color: $error-red;
+    padding: 3px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    transition: all 0.2s ease;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 30px;
+
+    span {
+      margin-right: 5px;
+      display: none;
+    }
+
+    &:hover {
+
+      span {
+        display: inline;
+      }
+    }
+  }
 
   .level-select {
     display: grid;

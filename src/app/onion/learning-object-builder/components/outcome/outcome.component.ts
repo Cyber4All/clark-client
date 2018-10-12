@@ -25,6 +25,7 @@ export class OutcomeComponent {
   @Output() selectedVerb: EventEmitter<string> = new EventEmitter();
   @Output() selectedLevel: EventEmitter<string> = new EventEmitter();
   @Output() textChanged: EventEmitter<string> = new EventEmitter();
+  @Output() deleted: EventEmitter<void> = new EventEmitter();
 
   constructor() { }
 
@@ -38,6 +39,10 @@ export class OutcomeComponent {
 
   emitText(val) {
     this.textChanged.emit(val);
+  }
+
+  emitDeletion() {
+    this.deleted.emit();
   }
 
   get outcomeNumber(): number {

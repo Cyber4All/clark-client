@@ -16,6 +16,7 @@
           (textChanged)="mutateOutcome(o.id, { text: $event })"
           (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
           (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
+          (deleted)="deleteOutcome(o.id)"
           (click)="activeOutcome = o.id"
         >
         </clark-outcome>
