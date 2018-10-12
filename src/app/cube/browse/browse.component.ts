@@ -110,6 +110,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.collectionService.getCollections().then(collections => {
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
+    }).catch(e => {
+      throw e;
     });
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>().debounceTime(650);

@@ -2,7 +2,6 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Rendere
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { AuthService } from '../../core/auth.service';
-import { environment } from '@env/environment';
 import { CollectionService } from '../../core/collection.service';
 
 @Component({
@@ -16,7 +15,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() loading: boolean;
   @Input() owned ? = false;
 
-  collections;
+  collections = new Map<string, string>();
 
   canDownload = false;
   showDownloadModal = false;

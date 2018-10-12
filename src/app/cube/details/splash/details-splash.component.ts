@@ -15,7 +15,7 @@ export class DetailsSplashComponent implements OnInit {
   @Input() owned: boolean;
   @Output() showNewRating: EventEmitter<boolean> = new EventEmitter();
 
-  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber']]);
+  collections = new Map();
 
   constructor(private collectionService: CollectionService) { }
 
@@ -40,7 +40,7 @@ export class DetailsSplashComponent implements OnInit {
       case 'gencyber':
         return 'gencyber.png';
       case 'nccp':
-        return 'nsa.png';
+        return 'nccp.png';
       case 'secinj':
         return 'secinj.png';
       case 'c5':
