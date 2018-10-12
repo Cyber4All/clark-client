@@ -1,10 +1,21 @@
-<!-- builder-navbar.component.html -->
-<div >
-  <a routerLink="onion/dashboard"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-</div>
-<div>
-  <!-- update routerLinkActive with class used to show that link is active -->
-  <a routerLink="info" routerLinkActive="">Basic Information </a>
-  <a routerLink="outcomes" routerLinkActive="">Learning Outcomes </a>
-  <a routerLink="materials" routerLinkActive="">Upload Materials </a>
+<div class="builder-navbar-wrapper">
+  <div class="top">
+    <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> New Learning Object</a>
+  </div>
+  <div class="bottom">
+    <div class="bottom-left menu">
+      <!-- update routerLinkActive with class used to show that link is active -->
+      <ul>
+        <li>
+          <a routerLink="info" routerLinkActive="active">Basic Information</a>
+        </li>
+        <li>
+          <a routerLink="outcomes" routerLinkActive="active">Learning Outcomes</a>
+        </li>
+        <li>
+          <a routerLink="materials" routerLinkActive="active">Upload Materials</a>
+        </li>
+      </ul>
+    </div>
+  </div>     
 </div>

@@ -1,16 +1,16 @@
 <div class="builder-template-columns">
   <div class="columns">
-    <div *ngIf="leftCol?.nativeElement" class="left-column">
+    <div *ngIf="leftCol?.nativeElement" class="left-column column">
       <div class="content">
         <ng-content select="[left]"></ng-content>
       </div>
     </div>
-    <div *ngIf="mainCol?.nativeElement" class="main-column">
+    <div *ngIf="mainCol?.nativeElement" class="main-column column">
       <div class="content">
         <ng-content select="[main]"></ng-content>
       </div>
     </div>
-    <div *ngIf="rightCol?.nativeElement" class="right-column">
+    <div *ngIf="rightCol?.nativeElement" class="right-column column">
       <div class="content">
         <ng-content select="[right]"></ng-content>
       </div>
