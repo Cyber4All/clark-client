@@ -161,7 +161,7 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.username
-    )}/learning-objects/${params.fileId}/files/${params.fileId}/download${
+    )}/learning-objects/${params.loId}/files/${params.fileId}/download${
       params.open ? '?open=true' : ''
     }`;
   }
