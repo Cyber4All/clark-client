@@ -7,7 +7,7 @@
       <div class="title">Learning Outcomes</div>
       <button class="button good" (click)="newOutcome()">New <i class="far fa-plus"></i></button>
     </div>
-    <ng-container *ngIf="iterableOutcomes?.length">
+    <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
       <div [@outcomeListItem]="iterableOutcomes.length">
         <clark-outcome *ngFor="let o of iterableOutcomes" 
           [outcome]="o"
@@ -26,3 +26,10 @@
     Standard Outcomes will go here
   </div>
 </clark-column-wrapper>
+
+<ng-template #noOutcomesTemplate>
+  <div class="no-outcomes">
+    <i class="far fa-box-open"></i>
+    <div>No outcomes yet!</div>
+  </div>
+</ng-template>
