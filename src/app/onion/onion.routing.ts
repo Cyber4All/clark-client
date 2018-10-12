@@ -4,12 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LearningObjectBuilderComponent } from './learning-object-builder/learning-object-builder.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
-import { UserVerifiedGuard } from '../core/user-verified.guard';
 import { OnionComponent } from './onion.component';
-import { LearningObjectResolve } from './old-learning-object-builder/learning-object.resolver';
-import { InfoPageComponent } from './learning-object-builder/pages/info-page/info-page.component';
-import { OutcomePageComponent } from './learning-object-builder/pages/outcome-page/outcome-page.component';
-import { MaterialsPageComponent } from './learning-object-builder/pages/materials-page/materials-page.component';
+import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -23,7 +19,7 @@ const onion_routes: Routes = [
     path: '', component: OnionComponent, children: [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'learning-object-builder',
-        loadChildren: 'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule'
+        loadChildren: () => LearningObjectBuilderModule
       },
       /* { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard],
         children: [
@@ -39,8 +35,8 @@ const onion_routes: Routes = [
 
       // Load Neutrino module
       // TODO: content should redirect, only show child routes
-      { path: 'content',
-      loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule', canActivate: [UserVerifiedGuard] },
+      // { path: 'content',
+      //   loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule', canActivate: [UserVerifiedGuard] },
 
       // else redirect to DashboardComponent
       { path: '**', redirectTo: 'dashboard' }
