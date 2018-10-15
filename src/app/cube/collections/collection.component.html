@@ -1,12 +1,13 @@
 <div class="splash">
   <div class="inner">
     <div class="header">
-      <div class="name">{{ (collection | async).name }}</div>
+      <div class="name">{{ (collection | async)?.name }}</div>
     </div>
   </div>
 </div>
 <section class="collection-container">
-  <div *ngIf="(collection | async) as collection" class="collection-content">
-    <learning-object-component learningObjectCard *ngFor="let l of collection.learningObjects" [learningObject]="l"></learning-object-component>
+
+  <div class="browse-link">
+    Click <a [routerLink]="['/browse']" [queryParams]="{ collection: key }">here</a> to view learning object's in this collection.
   </div>
 </section>

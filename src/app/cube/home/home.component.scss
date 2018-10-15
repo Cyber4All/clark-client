@@ -133,12 +133,102 @@ $banner-height: 90px;
 }
 
 .featured-viewport {
-  padding: 100px 20px;
+  padding: 100px 20px 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
+.collection-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  width: 100%;
+  margin-top: 60px;
+  padding: 0 20px 25px;
+  .collection-viewport {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // TODO: Set as variable shared between this and featured
+    max-width: 1375px;
+    // text stuff
+    font-weight: 200;
+    
+    color: $dark-text;
+    text-align: center;
+    .title {
+      width: 100%;
+      text-align: left;
+      padding-left: 12px;
+      font-size: 33px;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    }
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-top: 0;
+      .featured-collections {
+        margin-bottom: 25px;
+        position: relative;
+        width: 100%;
+        text-align: left;
+        .description {
+          font-size: 16px;
+        }
+      }
+      .card-container {
+        width: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        margin-top: 10px;
+    
+        .collection-card {
+          background: white;
+          border-radius: 3px;
+          box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.05);
+          padding: 16px;
+          display: flex;
+          flex-flow: column nowrap;
+          margin: 0 40px;
+          font-weight: normal;
+          width: 200px;
+          cursor: pointer;
+          .collection-image {
+            position: relative;
+            width: 125px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: auto auto;
+            &:after {
+              content: '';
+              display: block;
+              padding-bottom: 100%;
+            }
+          }
+          .collection-name {
+            text-align: center;
+            width: 100%;
+            margin-top: 50px;
+            color: black;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+.call-to-action {
+  padding: 0 20px 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .feature-text {
     padding-top: 45px;
     margin: 65px auto 30px;

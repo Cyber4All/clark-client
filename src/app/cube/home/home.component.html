@@ -5,15 +5,16 @@
         <div id="home-title" class="feature-text">{{ copy.HERO }}</div>
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" aria-label="Search Across Learning Objects" placeholder="{{placeholderText}}" [(ngModel)]="query.text" name="query">
+            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" aria-label="Search Across Learning Objects"
+              placeholder="{{placeholderText}}" [(ngModel)]="query.text" name="query">
             <div class="browselink" routerLink="/browse">{{ copy.BROWSE }}</div>
-            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{ copy.SEARCH }}</button>
+            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{
+              copy.SEARCH }}</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  <!-- <div class="home-banner"></div> -->
 </section>
 <div class="whois">
   <div class="feature-text">{{ copy.WHATISTITLE }}</div>
@@ -21,6 +22,24 @@
 </div>
 <div class="featured-viewport">
   <cube-featured></cube-featured>
-    <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
-    <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
 </div>
+<section class="collection-wrapper">
+  <div class="collection-viewport">
+    <div class="title">Featured Collections</div>
+    <div class="content">
+      <div class="featured-collections">
+        <p class="description">{{ copy.COLLECTION_BLURB }}</p>
+      </div>
+      <div class="card-container">
+        <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.abvName}}">
+          <img class="collection-image" src="/assets/images/collections/{{c.abvName}}.png" alt="{{ c.name }} logo">
+          <div class="collection-name">{{ c.name }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="call-to-action">
+  <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
+  <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
+</section>
