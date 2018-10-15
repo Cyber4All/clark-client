@@ -15,12 +15,15 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
     ])
   ]
 })
-export class OutcomeComponent {
+export class OutcomeComponent implements OnInit {
   @Input() outcome: LearningOutcome;
   @Input() totalOutcomes: number;
   @Input() active: boolean;
 
   outcomeLevels = Array.from(levels.values());
+
+  // this value keeps track of the index of newly created outcomes, it will be incorrect when loading existing outcomes
+  outcomeNumber = 1;
 
   @Output() selectedVerb: EventEmitter<string> = new EventEmitter();
   @Output() selectedLevel: EventEmitter<string> = new EventEmitter();
@@ -28,6 +31,11 @@ export class OutcomeComponent {
   @Output() deleted: EventEmitter<void> = new EventEmitter();
 
   constructor() { }
+
+  ngOnInit() {
+    // set the outcomeNumber to however many outcomes are currently in the outcomes array
+    this.outcomeNumber = this.totalOutcomes;
+  }
 
   emitVerb(val) {
     this.selectedVerb.emit(val);
@@ -44,9 +52,4 @@ export class OutcomeComponent {
   emitDeletion() {
     this.deleted.emit();
   }
-
-  get outcomeNumber(): number {
-    return (this.totalOutcomes || 1);
-  }
-
 }
