@@ -147,7 +147,7 @@ export class DashboardItemComponent implements OnChanges {
       editChildren: ['unpublished', 'published', 'denied', 'waiting', 'review', this.learningObject.length !== 'nanomodule'],
       manageMaterials: ['unpublished', 'published', 'denied', 'waiting', 'review', this.verifiedEmail],
       submit: ['unpublished', 'denied', this.verifiedEmail],
-      view: ['published', this.verifiedEmail],
+      view: ['published'],
       delete: ['unpublished', 'denied'],
       cancelSubmission: ['waiting', this.verifiedEmail]
     };
