@@ -1,6 +1,6 @@
 <div class="learning-object" id="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
   <div class="image">
-    <div *ngIf="!loading" class="collection" [ngClass]="{'gencyber': learningObject.collection?.toLowerCase() === 'gencyber'}">
+    <div *ngIf="!loading" class="collection">
       <div>
         {{ collections.get(learningObject.collection) }}
       </div>
