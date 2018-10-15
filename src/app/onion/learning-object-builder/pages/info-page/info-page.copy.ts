@@ -13,4 +13,4 @@ export const COPY = {
     SELECT: 'Select as many levels as are appropriate.',
     QUESTION: 'How would you describe this learning object?',
     TIP: 'Be descriptive! You\'ll have a chance to enter notes later.',
-}
+};

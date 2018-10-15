@@ -1,0 +1,118 @@
+@import '~_vars.scss';
+
+.top-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+.view-switcher {
+  .button {
+    text-align: center;
+    margin: 0 5px;
+  }
+
+  .button.icon {
+    margin: 0;
+  }
+}
+.icon-clean {
+  margin: 0;
+}
+.flex-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background: #f9f9f9;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+  max-height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.empty {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.file-breadcrumb {
+  .link {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 5px;
+    padding: 0 7px;
+    border-radius: 4px;
+  }
+  & :hover {
+    cursor: pointer;
+    background: #e9e9e9;
+  }
+}
+.full-width {
+  width: 100%;
+}
+.context-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  .description-input {
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .buttons {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+  }
+}
+.context-item.stacked {
+  flex-direction: column;
+}
+.context-item.bad {
+  color: #cf4739;
+}
+
+.button.slim {
+  padding: 1px 15px;
+}
+.button.new {
+  background: $blue-accent;
+  color: #fff;
+  padding: 8px 30px;
+  font-weight: 600;
+}
+.inline-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.inline-flex.right {
+  flex: 1;
+  justify-content: flex-end;
+}
+.icon-left {
+  margin: 0;
+  margin-right: 10px;
+}
+
+.context-item {
+  .option {
+    font-size: 18px;
+  }
+}
+.icon.light {
+  color: #808e9b;
+}
+
+.help {
+  text-align: center;
+}

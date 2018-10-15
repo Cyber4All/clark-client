@@ -1,0 +1,24 @@
+@import '~_vars.scss';
+.dropzone {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.dropzone-message {
+  margin: auto;
+  align-self: center;
+  font-weight: 200;
+  font-size: 26px;
+  color: #a5a3a3;
+  pointer-events: none;
+}
+
+::ng-deep .dz-progress,
+::ng-deep .dz-message,
+::ng-deep .dz-success-mark,
+::ng-deep .dz-error-mark,
+::ng-deep .dz-preview {
+  display: none !important;
+}
