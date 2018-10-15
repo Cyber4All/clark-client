@@ -31,7 +31,7 @@
         <p class="description">{{ copy.COLLECTION_BLURB }}</p>
       </div>
       <div class="card-container">
-        <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.abvName}}">
+        <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.name}}">
           <img class="collection-image" src="/assets/images/collections/{{c.abvName}}.png" alt="{{ c.name }} logo">
           <div class="collection-name">{{ c.name }}</div>
         </div>

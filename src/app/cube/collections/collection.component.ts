@@ -10,9 +10,7 @@ import { CollectionService } from 'app/core/collection.service';
 export class CollectionComponent implements OnInit {
   key: string;
   collection;
-  myStyle;
-  width = 100;
-  height = 100;
+
   constructor(
     private route: ActivatedRoute,
     private collectionService: CollectionService
@@ -25,11 +23,7 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  fetchCollection(name: string) {
-    this.collection = this.collectionService.getCollections()
-      .then(collections => collections.filter(c => c.abvName === name)[0])
-      .catch(e => {
-        throw e;
-      });
+  async fetchCollection(name: string) {
+    this.collection = await this.collectionService.getCollectionMetadata(name);
   }
 }

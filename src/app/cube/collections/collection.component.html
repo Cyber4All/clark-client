@@ -1,12 +1,16 @@
 <div class="splash">
   <div class="inner">
     <div class="header">
-      <div class="name">{{ (collection | async)?.name }}</div>
+      <div class="name">{{ collection?.name }}</div>
     </div>
   </div>
 </div>
 <section class="collection-container">
 
+  <div class="description">
+    <div class="title">Description</div>
+    <p [innerHtml]="collection?.description"></p>
+  </div>
   <div class="browse-link">
     Click <a [routerLink]="['/browse']" [queryParams]="{ collection: key }">here</a> to view learning object's in this collection.
   </div>
