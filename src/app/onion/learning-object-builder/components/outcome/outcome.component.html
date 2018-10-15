@@ -1,5 +1,5 @@
 <div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}">
-  <div class="outcome-header">{{ outcome.verb + ' ' + outcome.text || 'Learning Outcome ' + outcomeNumber }}</div>
+  <div class="outcome-header">{{outcome.verb ? outcome.verb + ' ' + outcome.text : 'Learning Outcome ' + outcomeNumber }}</div>
   <div *ngIf="!!active" class="outcome-delete" (click)="emitDeletion()">
     <span>Delete Outcome</span>
     <i class="far fa-trash"></i>

@@ -70,9 +70,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   mutateOutcome(id: string, params: any) {
     const outcome = this.outcomes.get(id);
 
-    if (outcome.verb && outcome.bloom) {
-      this.store.execute(actions.MUTATE_OUTCOME, { id, params });
-    }
+    this.store.execute(actions.MUTATE_OUTCOME, { id, params });
   }
 
   newOutcome() {

@@ -61,7 +61,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
         this.category = this.outcome.bloom;
         this.verb = this.outcome.verb;
 
-        this.goodVerb = true;
+        this.goodVerb = this.isGoodVerb(this.verb);
       }
     });
 
@@ -74,9 +74,10 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
 
         if (!this.verb) {
           // we haven't set a verb yet, let's set the verb now
-          if (index) {
+          if (index >= 0) {
             // make sure we're doing this after a 'space' character
             this.verb = val.substring(0, index);
+            this.verb = this.verb.charAt(0).toUpperCase() + this.verb.substring(1); // capitalize the first letter of the verb
             this.text = val.substring(index).trim();
             this.goodVerb = this.isGoodVerb(this.verb);
 
@@ -121,8 +122,9 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
     const levelsArray = Array.from(levels.values());
     for (let i = 0, l = levelsArray.length; i < l; i++) {
       // for this level, grab it's verbs and check if the current verb is in that list
-      if (Array.from(verbs[levelsArray[i]].values()).includes(verb)) {
+      if (Array.from(verbs[levelsArray[i]].values()).includes(verb.charAt(0).toUpperCase() + verb.substring(1))) {
         this.category = levelsArray[i];
+        this.selectedCategory.emit(this.category);
         return true;
       }
     }

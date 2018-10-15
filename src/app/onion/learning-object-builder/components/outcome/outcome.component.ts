@@ -46,7 +46,7 @@ export class OutcomeComponent {
   }
 
   get outcomeNumber(): number {
-    return (this.totalOutcomes || 0) + 1;
+    return (this.totalOutcomes || 1);
   }
 
 }
