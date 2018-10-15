@@ -11,18 +11,18 @@ import { MaterialsPageComponent } from './pages/materials-page/materials-page.co
 import { SharedModule } from 'app/shared/shared.module';
 import { MetadataComponent } from './pages/info-page/metadata/metadata.component';
 import { BuilderStore } from './builder-store.service';
-// import { ContentUploadModule } from './pages/materials-page/content-upload/app/content-upload.module';
 import { BuilderRoutingModule } from './learning-object-builder.routing';
 import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapper.component';
 import { FormsModule } from '@angular/forms';
+import { ContentUploadModule } from './components/content-upload/app/content-upload.module';
 
 @NgModule({
   imports: [
-  CommonModule,
+    CommonModule,
     SharedModule,
-    // ContentUploadModule,
     BuilderRoutingModule,
-    FormsModule
+    FormsModule,
+    ContentUploadModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
