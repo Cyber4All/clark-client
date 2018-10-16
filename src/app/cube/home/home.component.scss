@@ -34,7 +34,7 @@ $banner-height: 90px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
-    width: 60%;
+    width: 50%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
@@ -52,6 +52,7 @@ $banner-height: 90px;
       }
       .label {
         font-size: 18px;
+        font-weight: normal;
       }
     }
     .released {
@@ -59,7 +60,7 @@ $banner-height: 90px;
         content: '';
         top: 0;
         height: 100%;
-        background: white;
+        background: rgba(255, 255, 255, 0.25);
         opacity: 0.8;
         width: 2px;
         margin: auto;
@@ -190,6 +191,7 @@ $banner-height: 90px;
   justify-content: center;
   width: 100%;
   margin-top: 60px;
+  margin-bottom: 150px;
   padding: 0 20px 25px;
   .collection-viewport {
     width: 100%;
@@ -268,39 +270,55 @@ $banner-height: 90px;
   }
 }
 .call-to-action {
-  padding: 0 20px 100px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  padding-left: 80px;
   .feature-text {
-    padding-top: 45px;
-    margin: 65px auto 30px;
     text-shadow: 0 2px transparent;
     color: $dark-text;
     text-align: center;
     position: relative;
-
-    &:after {
-        content: '';
-        top: 0;
-        height: 2px;
-        background: black;
-        opacity: 0.1;
-        width: 50%;
-        margin: auto;
-        left: 0;
-        right: 0;
-        position: absolute;
-    }
+    text-align: left;
   }
 
   .button {
-    margin: auto;
+    margin: 0 auto 0 0;
     font-size: 18px;
     display: inline-flex;
     flex-direction: row;
     justify-content: center;
+  }
+}
+.bottom-banner {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  background: lighten($wrapper-background, 4);
+  .whatis-wrapper {
+    padding-right: 80px;
+    width: 100%;
+    border-right: 1px solid rgb(240, 244, 247);
+    text-shadow: 0 2px transparent;
+    color: $dark-text;
+    text-align: left;
+    .title {
+      font-size: 33px;
+      margin-bottom: 8px;
+    }
+    .text {
+      font-size: 22px;
+      font-weight: 200;
+    }
+  }
+  .call-to-action {
+    width: 100%;
+    border-left: 1px solid rgb(240, 244, 247);
+  }
+  .whatis-wrapper, .call-to-action {
+    max-width: calc(1370px/2);
+    padding: 60px;
   }
 }
 
