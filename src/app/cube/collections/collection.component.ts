@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CollectionService } from './collection.service';
+import { CollectionService } from 'app/core/collection.service';
 
 @Component({
   selector: 'cube-collection',
@@ -8,24 +8,26 @@ import { CollectionService } from './collection.service';
   styleUrls: ['collection.component.scss']
 })
 export class CollectionComponent implements OnInit {
-  name;
+  key: string;
   collection;
-  myStyle;
-  width = 100;
-  height = 100;
+
   constructor(
     private route: ActivatedRoute,
-    private collectionProvider: CollectionService,
+    private collectionService: CollectionService
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      params['name'] ? this.name = params['name'] : this.name = '';
-      this.fetchCollection(this.name);
+      this.key = params.name;
+      this.fetchCollection(params.name);
     });
   }
 
-  fetchCollection(name: string) {
-    this.collection = this.collectionProvider.fetchCollection(name);
+  async fetchCollection(name: string) {
+    this.collection = await this.collectionService.getCollectionMetadata(name);
+  }
+
+  getKey() {
+    return this.collection.abvName;
   }
 }
