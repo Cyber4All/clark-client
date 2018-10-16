@@ -17,5 +17,14 @@
 
   .column {
     margin-bottom: 20px;
+
+    &.main-column {
+      margin-top: 30px;
+    }
+  }
+
+  .scroll-wrapper {
+    overflow: auto;
+    transform: translateY(-30px);
   }
 }
