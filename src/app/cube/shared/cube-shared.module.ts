@@ -14,7 +14,6 @@ import { UserResolver } from '../core/user.resolver';
 import { RouterModule } from '@angular/router';
 
 // 3rd Party Modules
-import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
@@ -25,7 +24,6 @@ import { SharedModule } from '../../shared/shared.module';
     CommonModule,
     RouterModule,
     FormsModule,
-    VirtualScrollModule,
     ClickOutsideModule,
     // TODO: Push down to feature feature modules if not all need to use it
     SharedModule

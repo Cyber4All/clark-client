@@ -138,6 +138,10 @@ export class BuilderStore {
         return await this.deleteOutcome(data.id);
       case BUILDER_ACTIONS.MUTATE_OUTCOME:
         return await this.mutateOutcome(data.id, data.params);
+      case BUILDER_ACTIONS.MAP_STANDARD_OUTCOME:
+        return await this.mapStandardOutcomeMapping(data.id, data.standardOutcome);
+      case BUILDER_ACTIONS.UNMAP_STANDARD_OUTCOME:
+        return await this.unmapStandardOutcomeMapping(data.id, data.standardOutcome);
       default:
         console.error('Error! Invalid action taken!');
         return;
@@ -184,12 +188,29 @@ export class BuilderStore {
     // TODO delayed service interaction here
   }
 
-  private mapStandardOutcomeMapping(id: string, standardOutcomeId: string) {
-    throw new Error('Not yet implemented!');
+  private async mapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
+    const outcome = this.outcomes.get(id);
+    outcome.mappings.push(standardOutcome);
+
+    this.outcomes.set(outcome.id, outcome);
+    this.event.next({type: 'outcome', payload: this.outcomes});
+
+    // TODO service call here
   }
 
-  private unmapStandardOutcomeMapping(id: string, standardOutcomeId: string) {
-    throw new Error('Not yet implemented!');
+  private unmapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
+    const outcome = this.outcomes.get(id);
+    const mappedOutcomes = outcome.mappings;
+
+    for (let i = 0, l = mappedOutcomes.length; i < l; i++) {
+      if (mappedOutcomes[i].id === standardOutcome.id) {
+        outcome.mappings.splice(i, 1);
+        break;
+      }
+    }
+
+    this.outcomes.set(outcome.id, outcome);
+    this.event.next({type: 'outcome', payload: this.outcomes});
   }
 
   // TODO type this parameter

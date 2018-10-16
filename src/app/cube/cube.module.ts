@@ -28,7 +28,6 @@ import { UserInformationComponent } from './user-profile/user-information/user-i
 import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
 
 // Other
-import { VirtualScrollModule } from 'angular2-virtual-scroll';
 // TODO: is ng-click-outside being used?
 import { ClickOutsideModule } from 'ng-click-outside';
 
@@ -64,7 +63,6 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     CommonModule,
     // 3rd Party imports
     ClickOutsideModule,
-    VirtualScrollModule,
     // Local module imports
     CubeCoreModule,
     CubeSharedModule,

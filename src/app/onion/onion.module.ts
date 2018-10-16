@@ -6,6 +6,8 @@ import { OnionRoutingModule } from './onion.routing';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+
 // Other
 import { OnionCoreModule } from './core/core.module';
 import { SharedModule } from '../shared/shared.module';
@@ -26,7 +28,7 @@ import { OnionComponent } from './onion.component';
   declarations: [
     OnionComponent,
     DashboardComponent,
-    DashboardItemComponent
+    DashboardItemComponent,
   ],
   // Specifys all modules to be imported
   imports: [
@@ -39,7 +41,8 @@ import { OnionComponent } from './onion.component';
     ModalModule,
     ToasterModule,
     LearningObjectBuilderModule,
-    OnionRoutingModule
+    OnionRoutingModule,
+    VirtualScrollerModule
   ]
 })
 export class OnionModule { }

@@ -26,7 +26,7 @@
         <div class="no-query" *ngIf="mappingService.author !== '' && mappingService.filterText === ''">{{ copy.STEP2 }}</div>
         <div class="bad-query" *ngIf="mappingsQueryError && mappingService.author !== '' && mappingService.filterText !== ''">{{ copy.ERROR }}</div>
       </div>
-      <virtual-scroll *ngIf="this.queriedMappings.length > 0" [ngStyle]="{height: (dimensions.h) ? dimensions.h + 'px' : '400px'}" [items]="queriedMappings" (update)="viewportItems = $event">
+      <!-- <virtual-scroll *ngIf="this.queriedMappings.length > 0" [ngStyle]="{height: (dimensions.h) ? dimensions.h + 'px' : '400px'}" [items]="queriedMappings" (update)="viewportItems = $event">
         <div class="map" *ngFor="let m of viewportItems">
           <div class="mapping-top">
             <div class="mapping-name">{{ m.author.toUpperCase() + ' - ' + m.name }}</div>
@@ -37,7 +37,7 @@
               <clark-checkbox [setValue]="checkOutcomes(m)" (checkboxChecked)="addOutcome(m)" (checkboxUnchecked)="removeOutcome(m)"></clark-checkbox>
           </div>
         </div>
-      </virtual-scroll>
+      </virtual-scroll> -->
     </div>
   </div>
 </div>

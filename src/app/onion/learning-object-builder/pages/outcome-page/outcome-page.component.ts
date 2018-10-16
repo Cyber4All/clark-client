@@ -1,9 +1,20 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { LearningOutcome } from '@cyber4all/clark-entity';
-import { BuilderStore, BUILDER_ACTIONS as actions } from '../../builder-store.service';
+import {
+  BuilderStore,
+  BUILDER_ACTIONS as actions
+} from '../../builder-store.service';
 import { Subject } from 'rxjs';
 import { takeUntil, map, filter } from 'rxjs/operators';
-import { trigger, transition, style, stagger, animate, query, animateChild } from '@angular/animations';
+import {
+  trigger,
+  transition,
+  style,
+  stagger,
+  animate,
+  query,
+  animateChild
+} from '@angular/animations';
 
 @Component({
   selector: 'clark-outcome-page',
@@ -21,13 +32,15 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for outcome events and update component store
-    this.store.event.pipe(
-      filter(x => x.type === 'outcome'),
-      map(x => x.payload),
-      takeUntil(this.destroyed$)
-    ).subscribe((payload: Map<string, LearningOutcome>) => {
-      this.outcomes = payload;
-    });
+    this.store.event
+      .pipe(
+        filter(x => x.type === 'outcome'),
+        map(x => x.payload),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((payload: Map<string, LearningOutcome>) => {
+        this.outcomes = payload;
+      });
 
     if (this.store.outcomes) {
       this.outcomes = this.store.outcomes;
@@ -85,10 +98,24 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     this.store.execute(actions.DELETE_OUTCOME, { id }).then(() => {
       if (this.iterableOutcomes.length) {
         setTimeout(() => {
-          this.activeOutcome = this.iterableOutcomes[this.iterableOutcomes.length - 1].id;
+          this.activeOutcome = this.iterableOutcomes[
+            this.iterableOutcomes.length - 1
+          ].id;
         }, 100);
       }
     });
+  }
+
+  toggleStandardOutcome(data: {
+    standardOutcome: LearningOutcome;
+    value: boolean;
+  }) {
+    this.store.execute(
+      data.value
+        ? actions.MAP_STANDARD_OUTCOME
+        : actions.UNMAP_STANDARD_OUTCOME,
+      { id: this.activeOutcome, standardOutcome: data.standardOutcome }
+    );
   }
 
   ngOnDestroy() {

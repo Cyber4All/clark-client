@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
-import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ToasterModule } from './toaster';
 // Shared CLARK Modules
@@ -35,6 +34,7 @@ import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
 import { CookiesComponent } from './cookies/cookies.component';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
 
 /**
@@ -48,7 +48,6 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    VirtualScrollModule,
     ClickOutsideModule,
     ModalModule,
     ToasterModule,
@@ -99,7 +98,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     NewRatingComponent,
     LearningObjectRatingsComponent,
     ProgressComponent,
-    VirtualScrollModule,
+    VirtualScrollerModule,
     PopupModule,
     CookiesComponent,
     ContextMenuModule,

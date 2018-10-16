@@ -4,15 +4,20 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  OnDestroy
+  OnDestroy,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import { OutcomeService } from 'app/core/outcome.service';
-import { BuilderStore } from '../../builder-store.service';
+import {
+  BuilderStore,
+  BUILDER_ACTIONS as actions
+} from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';
 
-interface SuggestedOutcome extends LearningOutcome {
+export interface SuggestedOutcome extends LearningOutcome {
   suggested?: boolean;
 }
 
@@ -26,17 +31,28 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   activeOutcome: string;
 
+  @Output()
+  toggleMapping: EventEmitter<{
+    standardOutcome: LearningOutcome;
+    value: boolean;
+  }> = new EventEmitter();
+
   searchStringValue = '';
   searchString$: BehaviorSubject<string> = new BehaviorSubject('');
+
+  suggestStringValue = '';
   suggestString$: Subject<string> = new Subject();
+
   componentDestroyed$: Subject<void> = new Subject();
 
   suggestions: SuggestedOutcome[] = [];
   searchResults: SuggestedOutcome[] = [];
 
+  selectedOutcomeIDs: string[] = [];
+
   activeOutcomeSubscription: Subscription;
 
-  loading = false;
+  loading = undefined;
 
   constructor(
     private outcomeService: OutcomeService,
@@ -54,7 +70,13 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
 
       // grab full selected outcome from activeOutcome id and suggest outcomes for it
       const currentOutcome = this.store.outcomes.get(this.activeOutcome);
-      this.suggestString$.next(currentOutcome.verb + ' ' + currentOutcome.text);
+      this.suggestStringValue = currentOutcome.verb + ' ' + currentOutcome.text;
+      this.suggestString$.next(this.suggestStringValue);
+      this.selectedOutcomeIDs = currentOutcome.mappings.map(x => x.id);
+
+      // toggle the loading flag to true to give a longer representation of loading
+      // this is necessary to provide instant feedback (the query is debounced 1 second)
+      this.loading = 'suggest';
 
       // subscribe to the store service and filter out the activeOutcome
       this.activeOutcomeSubscription = this.store.event
@@ -67,7 +89,16 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
         )
         .subscribe((outcome: LearningOutcome) => {
           // this outcome is the currently selected outcome, this function fires everytime the outcome's text changes
-          this.suggestString$.next(outcome.verb + ' ' + outcome.text);
+          const tempSuggestString = outcome.verb + ' ' + outcome.text;
+
+          // if the text has changed, requery for suggestions
+          if (this.suggestStringValue !== tempSuggestString) {
+            this.suggestStringValue = tempSuggestString;
+            this.suggestString$.next(this.suggestStringValue);
+          }
+
+          // update the selected outcomes list
+          this.selectedOutcomeIDs = outcome.mappings.map(x => x.id);
         });
     }
   }
@@ -85,8 +116,9 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
           this.searchResults = [];
         } else {
           // perform search
-          this.loading = true;
-          this.outcomeService.getOutcomes({
+          this.loading = 'search';
+          this.outcomeService
+            .getOutcomes({
               text: this.searchStringValue
             })
             .then(results => {
@@ -101,7 +133,7 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
                 this.searchResults = results.outcomes;
               }
 
-              this.loading = false;
+              this.loading = undefined;
             });
         }
       });
@@ -114,15 +146,22 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe((val: string) => {
         if (val && val !== '') {
-          this.loading = true;
+          this.loading = 'suggest';
           this.outcomeService
             .suggestOutcomes(this.store.learningObject, { text: val })
             .then(results => {
-              this.suggestions = results;
-              this.loading = false;
+              this.suggestions = results.map(o => {
+                o.suggested = true;
+                return o;
+              });
+              this.loading = undefined;
             });
         }
       });
+  }
+
+  toggleStandardOutcome(standardOutcome: LearningOutcome, value: boolean) {
+    this.toggleMapping.emit({ standardOutcome, value });
   }
 
   ngOnDestroy() {

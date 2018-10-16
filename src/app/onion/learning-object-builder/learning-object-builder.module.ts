@@ -16,6 +16,7 @@ import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapp
 import { FormsModule } from '@angular/forms';
 import { ContentUploadModule } from './components/content-upload/app/content-upload.module';
 import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
+import { OutcomesListItemComponent } from './components/standard-outcomes/outcomes-list-item/outcomes-list-item.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { StandardOutcomesComponent } from './components/standard-outcomes/standa
     MaterialsPageComponent,
     ColumnWrapperComponent,
     StandardOutcomesComponent,
+    OutcomesListItemComponent,
   ],
   providers: [BuilderStore]
 })
