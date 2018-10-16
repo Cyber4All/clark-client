@@ -5,7 +5,7 @@
   <div main #main>
     <div class="top">
       <div class="title">Learning Outcomes</div>
-      <button class="button good" (click)="newOutcome()">New <i class="far fa-plus"></i></button>
+      <button class="button good" (click)="newOutcome()">New <i class="fas fa-plus"></i></button>
     </div>
     <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
       <div [@outcomeListItem]="iterableOutcomes.length">
