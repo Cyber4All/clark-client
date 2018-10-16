@@ -15,6 +15,7 @@ import { BuilderRoutingModule } from './learning-object-builder.routing';
 import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapper.component';
 import { FormsModule } from '@angular/forms';
 import { ContentUploadModule } from './components/content-upload/app/content-upload.module';
+import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { ContentUploadModule } from './components/content-upload/app/content-upl
     OutcomePageComponent,
     MaterialsPageComponent,
     ColumnWrapperComponent,
+    StandardOutcomesComponent,
   ],
   providers: [BuilderStore]
 })

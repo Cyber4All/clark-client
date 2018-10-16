@@ -178,8 +178,8 @@ export class BuilderStore {
       outcome.text = params.text;
     }
 
-      this.outcomes.set(outcome.id, outcome);
-      this.event.next({type: 'outcome', payload: this.outcomes});
+    this.outcomes.set(outcome.id, outcome);
+    this.event.next({type: 'outcome', payload: this.outcomes});
 
     // TODO delayed service interaction here
   }
