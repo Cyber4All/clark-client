@@ -26,4 +26,8 @@ export class CollectionComponent implements OnInit {
   async fetchCollection(name: string) {
     this.collection = await this.collectionService.getCollectionMetadata(name);
   }
+
+  getKey() {
+    return this.collection.abvName;
+  }
 }

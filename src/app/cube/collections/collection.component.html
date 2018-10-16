@@ -12,6 +12,6 @@
     <p [innerHtml]="collection?.description"></p>
   </div>
   <div class="browse-link">
-    Click <a [routerLink]="['/browse']" [queryParams]="{ collection: key }">here</a> to view learning object's in this collection.
+    Click <a [routerLink]="['/browse']" [queryParams]="{ collection: getKey() }">here</a> to view learning object's in this collection.
   </div>
 </section>
