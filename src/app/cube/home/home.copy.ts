@@ -12,5 +12,9 @@ export const COPY = {
     CALLTOACTIONTEXT: `Contribute your freely accessible cybersecurity material for others to use.`,
     CALLTOACTION: `Contribute to CLARK`,
 
-    COLLECTION_BLURB: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`
+    COLLECTION_BLURB: `Learning Objects can be grouped into Collections within CLARK.
+     This is a way to group learning objects beyond just their authors.
+     Each collection is unique, and supported by its own community.
+     Here you will find our first two featured collections.
+     Click the cards to visit the collection's CLARK page and learn more about them.`
 };
