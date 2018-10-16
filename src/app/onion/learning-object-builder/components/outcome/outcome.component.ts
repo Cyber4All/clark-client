@@ -24,8 +24,8 @@ import {
   animations: [
     trigger('outcome', [
       state('open', style({ height: '*' })),
-      state('closed', style({ height: '84px' })),
-      transition('* <=> *', animate('350ms ease'))
+      state('*', style({ height: '84px' })),
+      transition('* <=> *', animate('350ms ease')),
     ])
   ]
 })

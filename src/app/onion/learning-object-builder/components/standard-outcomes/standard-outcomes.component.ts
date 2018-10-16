@@ -70,13 +70,21 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
 
       // grab full selected outcome from activeOutcome id and suggest outcomes for it
       const currentOutcome = this.store.outcomes.get(this.activeOutcome);
-      this.suggestStringValue = currentOutcome.verb + ' ' + currentOutcome.text;
-      this.suggestString$.next(this.suggestStringValue);
-      this.selectedOutcomeIDs = currentOutcome.mappings.map(x => x.id);
 
-      // toggle the loading flag to true to give a longer representation of loading
-      // this is necessary to provide instant feedback (the query is debounced 1 second)
-      this.loading = 'suggest';
+      if (currentOutcome.verb && currentOutcome.verb !== '') {
+        // don't perform suggestion queryies on a blank outcome
+        this.suggestStringValue = currentOutcome.verb + ' ' + currentOutcome.text;
+        this.suggestString$.next(this.suggestStringValue);
+        this.selectedOutcomeIDs = currentOutcome.mappings.map(x => x.id);
+
+        // toggle the loading flag to true to give a longer representation of loading
+        // this is necessary to provide instant feedback (the query is debounced 1 second)
+        this.loading = 'suggest';
+      } else {
+        this.suggestions = [];
+        this.suggestStringValue = '';
+      }
+
 
       // subscribe to the store service and filter out the activeOutcome
       this.activeOutcomeSubscription = this.store.event

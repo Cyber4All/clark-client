@@ -1,4 +1,4 @@
-import { Component, OnInit, ContentChild, ElementRef, AfterViewInit, ContentChildren, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ContentChild, ElementRef, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate, query, stagger, animateChild } from '@angular/animations';
 
 @Component({
@@ -9,20 +9,27 @@ import { trigger, state, style, transition, animate, query, stagger, animateChil
     trigger('columns', [
       transition('* => *', [
         query(':enter', [
-          style({ 'transform': 'translateY(-200px)', opacity: 0 }),
-        ], { optional: true }),
-        query(':enter', [
           stagger('250ms', [
-            animate('450ms ease', style({ 'transform': 'translateY(0px)', opacity: 1 }))
+            animateChild()
           ])
         ], { optional: true }),
         query(':leave', [
           stagger('250ms', [
-            animate('450ms ease', style({ 'transform': 'translateY(-200px)', opacity: 0 }))
+            animateChild()
           ])
         ], { optional: true }),
       ])
     ]),
+    trigger('column', [
+      transition(':enter', [
+        style({ 'transform': 'translateY(-200px)', opacity: 0 }),
+        animate('450ms ease', style({ 'transform': 'translateY(0px)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ 'transform': 'translateY(0px)', opacity: 1 }),
+        animate('450ms ease', style({ 'transform': 'translateY(-200px)', opacity: 0 }))
+      ])
+    ])
   ]
 })
 export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy {

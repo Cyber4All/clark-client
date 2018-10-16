@@ -24,7 +24,7 @@
       </div>
     </ng-container>
   </div>
-  <div right #right>
+  <div *ngIf="outcomes.size" right #right>
     <clark-standard-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-standard-outcomes>
   </div>
 </clark-column-wrapper>

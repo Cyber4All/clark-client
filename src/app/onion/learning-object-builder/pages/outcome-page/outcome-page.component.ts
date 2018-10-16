@@ -6,20 +6,11 @@ import {
 } from '../../builder-store.service';
 import { Subject } from 'rxjs';
 import { takeUntil, map, filter } from 'rxjs/operators';
-import {
-  trigger,
-  transition,
-  style,
-  stagger,
-  animate,
-  query,
-  animateChild
-} from '@angular/animations';
 
 @Component({
   selector: 'clark-outcome-page',
   templateUrl: './outcome-page.component.html',
-  styleUrls: ['./outcome-page.component.scss']
+  styleUrls: ['./outcome-page.component.scss'],
 })
 export class OutcomePageComponent implements OnInit, OnDestroy {
   private _outcomes: Map<string, LearningOutcome> = new Map();
