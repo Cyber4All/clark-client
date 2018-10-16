@@ -5,7 +5,7 @@ $footer-height: 250px;
 footer {
   width: 100%;
   color: whitesmoke;
-  background: $blue-gradient;
+  background: linear-gradient(45deg, #393f4d, #1d1e22);
   display: flex;
   flex-flow: column;
   align-items: center;

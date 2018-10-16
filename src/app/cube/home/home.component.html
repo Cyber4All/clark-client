@@ -5,9 +5,11 @@
         <div id="home-title" class="feature-text">{{ copy.HERO }}</div>
         <form (keydown)="keyDownSearch($event)">
           <div>
-            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" aria-label="Search Across Learning Objects" placeholder="{{placeholderText}}" [(ngModel)]="query.text" name="query">
+            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" aria-label="Search Across Learning Objects"
+              placeholder="{{placeholderText}}" [(ngModel)]="query.text" name="query">
             <div class="browselink" routerLink="/browse">{{ copy.BROWSE }}</div>
-            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{ copy.SEARCH }}</button>
+            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{
+              copy.SEARCH }}</button>
           </div>
         </form>
       </div>
@@ -15,12 +17,20 @@
   </div>
   <!-- <div class="home-banner"></div> -->
 </section>
-<div class="whois">
-  <div class="feature-text">{{ copy.WHATISTITLE }}</div>
-  <span>{{ copy.WHATIS }}</span>
-</div>
+<section class="info-banner">
+  <div class="counter-wrapper">
+    <div class="released">
+      <div class="counter">43</div>
+      <div class="label">Learning Objects Released</div>
+    </div>
+    <div class="under-review">
+      <div class="counter">687</div>
+      <div class="label">Learning Objects Under Review</div>
+    </div>
+  </div>
+</section>
 <div class="featured-viewport">
   <cube-featured></cube-featured>
-    <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
-    <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
+  <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
+  <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
 </div>

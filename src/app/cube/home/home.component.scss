@@ -26,6 +26,50 @@ $banner-height: 90px;
   }
 }
 
+.info-banner {
+  background: $blue-gradient;
+  width: 100%;
+  padding: 10px;
+  .counter-wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    
+    .released, .under-review {
+      text-shadow: 0 2px transparent;
+      text-align: center;
+      position: relative;
+      margin: auto;
+      width: 100%;
+      height: 100%;
+      color: white;
+      .counter {
+        font-size: 50px;
+      }
+      .label {
+        font-size: 18px;
+      }
+    }
+    .released {
+      &:after {
+        content: '';
+        top: 0;
+        height: 100%;
+        background: white;
+        opacity: 0.8;
+        width: 2px;
+        margin: auto;
+        right: 0;
+        position: absolute;
+      }
+    } 
+  }
+}
+
 .top {
 
   .img-viewport {
