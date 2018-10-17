@@ -35,11 +35,17 @@ export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, LearningOutcome> = new Map();
 
+  // manages a cache of data that needs to be saved (debounced)
   private saveCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
+  // fired when this service is destroyed
   private destroyed$: Subject<void> = new Subject();
 
-  public event: Subject<{type: string, payload: any}> = new Subject();
+  // fired when this service needs to propagate changes to the learning object down to children components
+  public learningObjectEvent: BehaviorSubject<LearningObject> = new BehaviorSubject(undefined);
+
+  // fired when this service needs to propagate changes to the learning object down to children components
+  public outcomeEvent: Subject<Map<string, LearningOutcome>> = new BehaviorSubject(undefined);
 
   constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
     // subscribe to our saveCache$ observable and initiate calls to save object after a debounce
@@ -60,7 +66,7 @@ export class BuilderStore {
    * @readonly
    * @memberof BuilderStore
    */
-  get learningObject() {
+  private get learningObject() {
     return this._learningObject;
   }
 
@@ -69,7 +75,7 @@ export class BuilderStore {
    *
    * @memberof BuilderStore
    */
-  get outcomes() {
+  private get outcomes() {
     return this._outcomesMap;
   }
 
@@ -79,9 +85,9 @@ export class BuilderStore {
    * @param {LearningObject} object the object to set
    * @memberof BuilderStore
    */
-  set learningObject(object: LearningObject) {
+  private set learningObject(object: LearningObject) {
     this._learningObject = object;
-    this.event.next({type: 'object', payload: this.learningObject});
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -89,9 +95,9 @@ export class BuilderStore {
    *
    * @memberof BuilderStore
    */
-  set outcomes(map: Map<string, LearningOutcome>) {
+  private set outcomes(map: Map<string, LearningOutcome>) {
     this._outcomesMap = map;
-    this.event.next({type: 'outcome', payload: this.outcomes});
+    this.outcomeEvent.next(this.outcomes);
   }
 
   /**
@@ -173,7 +179,7 @@ export class BuilderStore {
     outcome.id = genId();
 
     this.outcomes.set(outcome.id, outcome);
-    this.event.next({type: 'outcome', payload: this.outcomes});
+    this.outcomeEvent.next(this.outcomes);
     // TODO service call here
 
     return outcome.id;
@@ -182,7 +188,7 @@ export class BuilderStore {
   private async deleteOutcome(id: string) {
     // TODO service call here
     this.outcomes.delete(id);
-    this.event.next({ type: 'outcome', payload: this.outcomes });
+    this.outcomeEvent.next(this.outcomes);
   }
 
   private async mutateOutcome(id: string, params: {verb?: string, bloom?: string, text?: string}) {
@@ -199,7 +205,7 @@ export class BuilderStore {
     }
 
     this.outcomes.set(outcome.id, outcome);
-    this.event.next({type: 'outcome', payload: this.outcomes});
+    this.outcomeEvent.next(this.outcomes);
 
     // TODO delayed service interaction here
   }
@@ -209,7 +215,7 @@ export class BuilderStore {
     outcome.mappings.push(standardOutcome);
 
     this.outcomes.set(outcome.id, outcome);
-    this.event.next({type: 'outcome', payload: this.outcomes});
+    this.outcomeEvent.next(this.outcomes);
 
     // TODO service call here
   }
@@ -226,7 +232,7 @@ export class BuilderStore {
     }
 
     this.outcomes.set(outcome.id, outcome);
-    this.event.next({type: 'outcome', payload: this.outcomes});
+    this.outcomeEvent.next(this.outcomes);
 
     // TODO service call here
   }

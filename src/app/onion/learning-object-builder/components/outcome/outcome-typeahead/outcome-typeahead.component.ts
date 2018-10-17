@@ -51,12 +51,10 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
       this.goodVerb = this.isGoodVerb(this.verb);
     }
 
-    this.store.event.pipe(
-      filter(x => x.type === 'outcome'),
-      map(x => x.payload),
+    this.store.outcomeEvent.pipe(
       takeUntil(this.componentDestroyed$)
-    ).subscribe(payload => {
-      if (payload.get(this.outcome.id).bloom !== this.category) {
+    ).subscribe((payload: Map<string, LearningOutcome>) => {
+      if (payload && payload.get(this.outcome.id).bloom !== this.category) {
         // reset component with new bloom and verb
         this.category = this.outcome.bloom;
         this.verb = this.outcome.verb;

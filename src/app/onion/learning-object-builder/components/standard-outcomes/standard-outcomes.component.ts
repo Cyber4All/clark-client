@@ -68,45 +68,33 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
         this.activeOutcomeSubscription.unsubscribe();
       }
 
-      // grab full selected outcome from activeOutcome id and suggest outcomes for it
-      const currentOutcome = this.store.outcomes.get(this.activeOutcome);
-
-      if (currentOutcome.verb && currentOutcome.verb !== '') {
-        // don't perform suggestion queryies on a blank outcome
-        this.suggestStringValue = currentOutcome.verb + ' ' + currentOutcome.text;
-        this.suggestString$.next(this.suggestStringValue);
-        this.selectedOutcomeIDs = currentOutcome.mappings.map(x => x.id);
-
-        // toggle the loading flag to true to give a longer representation of loading
-        // this is necessary to provide instant feedback (the query is debounced 1 second)
-        this.loading = 'suggest';
-      } else {
-        this.suggestions = [];
-        this.suggestStringValue = '';
-      }
-
-
       // subscribe to the store service and filter out the activeOutcome
-      this.activeOutcomeSubscription = this.store.event
+      this.activeOutcomeSubscription = this.store.outcomeEvent
         .pipe(
           takeUntil(this.componentDestroyed$),
           filter(
-            x => x.type === 'outcome' && x.payload.get(this.activeOutcome)
+            x => x && !!x.get(this.activeOutcome)
           ),
-          map(x => x.payload.get(this.activeOutcome))
+          map(x => x.get(this.activeOutcome))
         )
         .subscribe((outcome: LearningOutcome) => {
           // this outcome is the currently selected outcome, this function fires everytime the outcome's text changes
-          const tempSuggestString = outcome.verb + ' ' + outcome.text;
+          if (outcome.verb && outcome.verb !== '') {
+            // don't perform suggestions on an empty verb
+            const tempSuggestString = outcome.verb + ' ' + outcome.text;
 
-          // if the text has changed, requery for suggestions
-          if (this.suggestStringValue !== tempSuggestString) {
-            this.suggestStringValue = tempSuggestString;
-            this.suggestString$.next(this.suggestStringValue);
+            // if the text has changed, requery for suggestions
+            if (this.suggestStringValue !== tempSuggestString) {
+              this.suggestStringValue = tempSuggestString;
+              this.suggestString$.next(this.suggestStringValue);
+            }
+
+            // update the selected outcomes list
+            this.selectedOutcomeIDs = outcome.mappings.map(x => x.id);
+          } else {
+            this.suggestions = [];
+            this.suggestStringValue = '';
           }
-
-          // update the selected outcomes list
-          this.selectedOutcomeIDs = outcome.mappings.map(x => x.id);
         });
     }
   }
@@ -156,7 +144,7 @@ export class StandardOutcomesComponent implements OnInit, OnChanges, OnDestroy {
         if (val && val !== '') {
           this.loading = 'suggest';
           this.outcomeService
-            .suggestOutcomes(this.store.learningObject, { text: val })
+            .suggestOutcomes(this.store.learningObjectEvent.getValue(), { text: val })
             .then(results => {
               this.suggestions = results.map(o => {
                 o.suggested = true;

@@ -24,20 +24,14 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for outcome events and update component stores
-    this.store.event.pipe(
-      filter(x => x.type === 'object'),
-      map(x => x.payload),
+    this.store.learningObjectEvent.pipe(
       takeUntil(this.destroyed$)
     ).subscribe((payload: LearningObject) => {
-      this.learningObject = payload;
-      this.selectedLevels = payload.levels;
+      if (payload) {
+        this.learningObject = payload;
+        this.selectedLevels = payload.levels;
+      }
     });
-
-    if (this.store.learningObject) {
-      // assignment here
-      this.learningObject = this.store.learningObject;
-      this.selectedLevels = this.store.learningObject.levels;
-    }
   }
 
   mutateLearningObject(data: any) {

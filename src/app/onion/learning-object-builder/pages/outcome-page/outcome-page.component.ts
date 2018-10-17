@@ -5,7 +5,7 @@ import {
   BUILDER_ACTIONS as actions
 } from '../../builder-store.service';
 import { Subject } from 'rxjs';
-import { takeUntil, map, filter } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-outcome-page',
@@ -23,19 +23,15 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for outcome events and update component store
-    this.store.event
+    this.store.outcomeEvent
       .pipe(
-        filter(x => x.type === 'outcome'),
-        map(x => x.payload),
         takeUntil(this.destroyed$)
       )
       .subscribe((payload: Map<string, LearningOutcome>) => {
-        this.outcomes = payload;
+        if (payload) {
+          this.outcomes = payload;
+        }
       });
-
-    if (this.store.outcomes) {
-      this.outcomes = this.store.outcomes;
-    }
   }
 
   /**

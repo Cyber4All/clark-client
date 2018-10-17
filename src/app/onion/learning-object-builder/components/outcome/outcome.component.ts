@@ -3,9 +3,7 @@ import {
   OnInit,
   EventEmitter,
   Input,
-  Output,
-  OnChanges,
-  SimpleChanges
+  Output
 } from '@angular/core';
 import { levels } from '@cyber4all/clark-taxonomy';
 import { LearningOutcome } from '@cyber4all/clark-entity';
