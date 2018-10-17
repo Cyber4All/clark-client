@@ -1,6 +1,7 @@
 @import '~_vars.scss';
 
-$blue: #1875e1;
+$dark-text: #545e64;
+$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
 
 .typeahead {
     width: 500px;
@@ -24,13 +25,15 @@ $blue: #1875e1;
         border: 0;
         width: 100%;
         padding: 8px 0 6px;
-        border-bottom: 2px solid $blue;
+        border-bottom: 2px solid $bright-blue;
         outline: 0;
-        font-size: 18px;
+        font-size: 15px;
         font-family: 'Arial', sans-serif;
         margin: 0;
+        margin-left: -1px;
         flex-grow: 2;
         background: transparent;
+        color: $dark-text;
 
         &.withVerb {
             padding-left: 0.3em;
@@ -42,10 +45,10 @@ $blue: #1875e1;
     }
 
     .verb {
-        background: linear-gradient(45deg, $blue, #599ded);
+        background: $light-blue-gradient;
         color: white;
         padding: 8px 12px;
-        font-size: 18px;
+        font-size: 15px;
         top: 0;
         left: -8px;
         bottom: 0;
@@ -84,7 +87,7 @@ $blue: #1875e1;
                 cursor: pointer;
 
                 &.selected {
-                    color: $blue;
+                    color: $bright-blue;
                 }
 
                 &:not(:last-child) {
@@ -93,7 +96,7 @@ $blue: #1875e1;
 
                 &:hover {
                     color: white;
-                    background: $blue;
+                    background: $bright-blue;
                 }
             }
         }

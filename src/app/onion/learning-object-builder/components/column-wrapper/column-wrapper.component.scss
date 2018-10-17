@@ -1,8 +1,8 @@
 
 .columns {
   display: grid;
-  grid-template-columns: minmax(240px, 340px) minmax(700px, 2fr) minmax(290px, 340px);
-  grid-gap: 20px;
+  grid-template-columns: minmax(240px, 340px) minmax(705px, 100vw) minmax(290px, 340px);
+  grid-gap: 5px;
   margin: 0 25px;
   position: absolute;
   top: 160px;
@@ -26,5 +26,6 @@
   .scroll-wrapper {
     overflow: auto;
     transform: translateY(-30px);
+    padding: 0 20px;
   }
 }
