@@ -47,7 +47,7 @@
         <div title>{{copy.QUESTION}}</div>
         <div directions>{{copy.TIP}}</div>
         <div data>
-          <textarea class="full-width"></textarea>
+          <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event})"></onion-learning-object-description>
         </div>
       </clark-info-page-metadata>
     </div>

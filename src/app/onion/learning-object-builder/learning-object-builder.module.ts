@@ -17,6 +17,9 @@ import { FormsModule } from '@angular/forms';
 import { ContentUploadModule } from './components/content-upload/app/content-upload.module';
 import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
 import { OutcomesListItemComponent } from './components/standard-outcomes/outcomes-list-item/outcomes-list-item.component';
+import { TextEditorComponent } from './components/text-editor.component';
+import { LearningObjectDescriptionComponent } from './components/description.component';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 @NgModule({
   imports: [
@@ -24,7 +27,8 @@ import { OutcomesListItemComponent } from './components/standard-outcomes/outcom
     SharedModule,
     BuilderRoutingModule,
     FormsModule,
-    ContentUploadModule
+    ContentUploadModule,
+    CKEditorModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
@@ -41,6 +45,8 @@ import { OutcomesListItemComponent } from './components/standard-outcomes/outcom
     ColumnWrapperComponent,
     StandardOutcomesComponent,
     OutcomesListItemComponent,
+    LearningObjectDescriptionComponent,
+    TextEditorComponent
   ],
   providers: [BuilderStore]
 })

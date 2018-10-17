@@ -222,6 +222,8 @@ export class BuilderStore {
       this.learningObject[k] = data[k];
     }
 
+    console.log(this.learningObject.goals[0].text);
+
     // TODO debounced service call here
   }
 }
