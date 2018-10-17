@@ -14,8 +14,8 @@ const builder_routes: Routes = [
       { path: '', redirectTo: 'info', pathMatch: 'full' },
       { path: 'info', component: InfoPageComponent },
       { path: 'outcomes', component: OutcomePageComponent },
-      // { path: 'materials', component: MaterialsPageComponent }
-      { path: 'materials', loadChildren: () => ContentUploadModule },
+      { path: 'materials', component: MaterialsPageComponent }
+      // { path: 'materials', loadChildren: () => ContentUploadModule },
     ]
   }
 ];
