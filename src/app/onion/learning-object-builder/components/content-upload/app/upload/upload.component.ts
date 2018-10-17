@@ -131,10 +131,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.disabled) {
       this.checkWhitelist();
     }
-    this.learningObjectName = this.route.snapshot.params.learningObjectName;
-    this.learningObjectName
+    this.learningObjectName = 'Learning Object '; // this.route.snapshot.params.learningObjectName;
+    /* this.learningObjectName
       ? this.fetchLearningObject()
-      : this.router.navigate(['/onion/dashboard']);
+      : this.router.navigate(['/onion/dashboard']); */
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
     this.triggerSave$

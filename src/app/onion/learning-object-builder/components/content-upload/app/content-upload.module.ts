@@ -46,7 +46,13 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     ContextMenuModule,
     routes
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule,
+    UploadComponent,
+    FileManagerComponent,
+    FileUploadStatusComponent,
+    UrlManagerComponent
+  ],
   providers: [
     LearningObjectService,
     FileStorageService,

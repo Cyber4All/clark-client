@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UploadComponent } from './upload/upload.component';
 
 export const router: Routes = [
-  { path: 'upload/:learningObjectName', component: UploadComponent }
+  // { path: 'upload/:learningObjectName', component: UploadComponent }
 ];
 
 export const routes: ModuleWithProviders = RouterModule.forChild(router);
