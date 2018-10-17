@@ -3,8 +3,10 @@ import { LearningObject, LearningOutcome } from '@cyber4all/clark-entity';
 import { HttpClient } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from 'app/core/auth.service';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { verbs } from '@cyber4all/clark-taxonomy';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -33,9 +35,24 @@ export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, LearningOutcome> = new Map();
 
-  event: Subject<{type: string, payload: any}> = new Subject();
+  private saveCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  private destroyed$: Subject<void> = new Subject();
+
+  public event: Subject<{type: string, payload: any}> = new Subject();
+
+  constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
+    // subscribe to our saveCache$ observable and initiate calls to save object after a debounce
+    this.saveCache$.pipe(
+      debounceTime(650),
+      takeUntil(this.destroyed$)
+    ).subscribe(cache => {
+      if (cache !== undefined) {
+        // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
+        this.saveObject(cache);
+      }
+    });
+  }
 
   /**
    * Retrieve stored learning object
@@ -85,7 +102,6 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   async fetch(name: string): Promise<LearningObject> {
-    // TODO replace this code with a call to the onion's LearningObjectService
     const res: any = await this.http
       .get(USER_ROUTES.GET_LEARNING_OBJECT(this.auth.username, name), {
         withCredentials: true
@@ -211,6 +227,8 @@ export class BuilderStore {
 
     this.outcomes.set(outcome.id, outcome);
     this.event.next({type: 'outcome', payload: this.outcomes});
+
+    // TODO service call here
   }
 
   // TODO type this parameter
@@ -222,7 +240,23 @@ export class BuilderStore {
       this.learningObject[k] = data[k];
     }
 
-    // TODO debounced service call here
+    this.saveObject(data, true);
+  }
+
+  ///////////////////////////
+  //  SERVICE INTERACTION  //
+  ///////////////////////////
+
+  private saveObject(data: any, delay?: boolean) {
+    const value = this.saveCache$.getValue();
+    const newValue = value ? Object.assign(value, data) : data;
+
+    if (delay) {
+      this.saveCache$.next(newValue);
+    } else {
+      // TODO service call here
+      this.saveCache$.next(undefined);
+    }
   }
 }
 
