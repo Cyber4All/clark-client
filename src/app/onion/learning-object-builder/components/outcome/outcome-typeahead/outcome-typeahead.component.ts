@@ -82,12 +82,16 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
             this.goodVerb = this.isGoodVerb(this.verb);
 
             // emit changes to parent
-            this.selectedVerb.emit(this.verb);
+            if (this.goodVerb) {
+              this.selectedVerb.emit(this.verb);
+            }
           }
 
         }
 
-        this.enteredText.emit(this.text);
+        if (this.goodVerb) {
+          this.enteredText.emit(this.text);
+        }
     });
   }
 
@@ -110,7 +114,9 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
     this.verb = verb;
     this.toggleMenu(false);
 
-    this.selectedVerb.emit(this.verb);
+    if (this.goodVerb) {
+      this.selectedVerb.emit(this.verb);
+    }
   }
 
   /**
@@ -131,15 +137,6 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
 
     this.category = undefined;
     return false;
-  }
-
-  /**
-   * Emit selected verb, selected category, and current text to parent component
-   */
-  emitAll() {
-    this.selectedVerb.emit(this.getVerb());
-    this.selectedCategory.emit(this.category);
-    this.enteredText.emit(this.text);
   }
 
   /**

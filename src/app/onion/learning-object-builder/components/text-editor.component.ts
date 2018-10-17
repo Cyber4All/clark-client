@@ -1,9 +1,8 @@
-import { Input, Output, EventEmitter, Component, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Input, Output, EventEmitter, Component, OnChanges, SimpleChanges } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
-  selector: 'text-editor',
+  selector: 'clark-text-editor',
   template: `
   <div *ngIf="showBox">
     <ckeditor
@@ -11,14 +10,11 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
         [config]="config"
         [readonly]="false"
         (change)="onChange($event)"
-        (focus)="onFocus($event)"
-        (blur)="onBlur($event)"
         debounce="500"
         >
     </ckeditor>
   </div>
   <!-- <div class="btn-group to-right"><div class = "button neutral on-white" (click)="toggleBox()">{{buttonText}}</div></div>-->
-
   `,
   styles: ['#cke_bottom_detail, .cke_bottom { display: none; }']
 })
@@ -68,10 +64,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
 
     }
   }
-  onFocus(event) {
-  }
-  onBlur(event) {
-  }
+
   onChange(editorContent) {
     this.textOutput.emit(this.editorContent);
   }
