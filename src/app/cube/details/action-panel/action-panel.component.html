@@ -1,17 +1,17 @@
 <div class="inner">
-  <div *ngIf="!canDownload" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete."
+  <div *ngIf="!isReleased" class="download-warning" tip="This learning object is pending review by the NCCP Review Team and may be downloaded when the review is complete."
     tipLocation="top">
     <i class="fas fa-exclamation"></i>Review Pending
   </div>
-  <div class="btn-group vertical" [ngClass]="{'no-download': !canDownload}">
-    <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{canDownload}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
+  <div class="btn-group vertical" [ngClass]="{'no-download': !isReleased}">
+    <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{isReleased || !loggedin}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
       class="button good" id="download-button" (click)="addToCart(true)">
-      <span *ngIf="canDownload">{{!downloading ? 'Download Now' : 'Downloading'}}
+      <span *ngIf="isReleased">{{!downloading ? 'Download Now' : 'Downloading'}}
         <span *ngIf="downloading">
           <i class="fal fa-spinner-third fa-spin"></i>
         </span>
       </span>
-      <span *ngIf="!canDownload">Not available for download</span>
+      <span *ngIf="!isReleased">Not available for download</span>
     </button>
     <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" id="save-to-library" (click)="addToCart()">
       {{ saved ? 'Saved to your library!' : 'Save to Library' }}
