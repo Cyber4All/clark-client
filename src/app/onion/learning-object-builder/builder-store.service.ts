@@ -20,7 +20,9 @@ export enum BUILDER_ACTIONS {
   MUTATE_OUTCOME = 2,
   MAP_STANDARD_OUTCOME = 3,
   UNMAP_STANDARD_OUTCOME = 4,
-  MUTATE_OBJECT = 5
+  MUTATE_OBJECT = 5,
+  ADD_MATERIALS = 6,
+  DELETE_MATERIALS = 7
 }
 
 /**
@@ -45,7 +47,7 @@ export class BuilderStore {
   public learningObjectEvent: BehaviorSubject<LearningObject> = new BehaviorSubject(undefined);
 
   // fired when this service needs to propagate changes to the learning object down to children components
-  public outcomeEvent: Subject<Map<string, LearningOutcome>> = new BehaviorSubject(undefined);
+  public outcomeEvent: BehaviorSubject<Map<string, LearningOutcome>> = new BehaviorSubject(undefined);
 
   constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
     // subscribe to our saveCache$ observable and initiate calls to save object after a debounce
