@@ -5,14 +5,44 @@ import { ActivatedRoute } from '@angular/router';
 
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { trigger, transition, style, animate, query, stagger, animateChild} from '@angular/animations';
 
-
+export const builderTransitions = trigger('builderTransition', [
+  transition('* <=> *', [
+    // hide all entering columns and the navbar if it's entering
+    query(':enter .column, :enter .builder-navbar-wrapper', [
+      style({ opacity: 0 })
+    ], { optional: true }),
+    // set any entering outcomes to the closed position
+    query(':enter @outcome', style({ height: '84px' }), { optional: true }),
+    // animate any leaving columns off staggered
+    query(':leave .column', [
+      animateChild(),
+      stagger('150ms', [
+        style({ 'transform': 'translateY(0px)', opacity: 1 }),
+        animate('300ms ease', style({ 'transform': 'translateY(-200px)', opacity: 0 }))
+      ])
+    ], { optional: true }),
+    // animate the entering navbar on
+    query(':enter .builder-navbar-wrapper', [
+      style({ 'transform': 'translateY(-200px)', opacity: 0 }),
+      animate('350ms ease', style({ 'transform': 'translateY(0px)', opacity: 1 }))
+    ], { optional: true }),
+    // animate any entering columns on staggered
+    query(':enter .column', [
+      stagger('200ms ease', [
+        style({ 'transform': 'translateY(-200px)', opacity: 0 }),
+        animate('350ms ease', style({ 'transform': 'translateY(0px)', opacity: 1 }))
+      ])
+    ], { optional: true }),
+  ])
+])
 
 @Component({
   selector: 'clark-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss'],
+  animations: [ builderTransitions ]
 })
 export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   // fires when the component is destroyed
@@ -42,6 +72,10 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     // clear subscriptions before component is destroyed
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
+  }
+
+  getState(outlet: any) {
+    return outlet.activatedRouteData.state;
   }
 
 }

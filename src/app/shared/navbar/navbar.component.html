@@ -1,5 +1,5 @@
 <clark-message></clark-message>
-<ng-container *ngIf="nav.visible">
+<div *ngIf="nav.visible">
   <app-contextmenu [content]="modalCtrl.contextMenuContent"></app-contextmenu>
   <app-dialogmenu [content]="modalCtrl.dialogMenuContent"></app-dialogmenu>
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
@@ -76,4 +76,4 @@
       </div>
     </div>
   </div>
-</ng-container>
+</div>

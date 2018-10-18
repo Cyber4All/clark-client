@@ -8,20 +8,18 @@
       <button class="button good" (click)="newOutcome()">New <i class="fas fa-plus"></i></button>
     </div>
     <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
-      <div [@outcomeListItem]="iterableOutcomes.length">
-        <clark-outcome *ngFor="let o of iterableOutcomes" 
-          [outcome]="o"
-          [totalOutcomes]="iterableOutcomes.length"
-          [active]="activeOutcome === o.id"
-          (textChanged)="mutateOutcome(o.id, { text: $event })"
-          (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
-          (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
-          (deleted)="deleteOutcome(o.id)"
-          (unmap)="toggleStandardOutcome($event)"
-          (click)="activeOutcome = o.id"
-        >
-        </clark-outcome>
-      </div>
+      <clark-outcome *ngFor="let o of iterableOutcomes" 
+        [outcome]="o"
+        [totalOutcomes]="iterableOutcomes.length"
+        [active]="activeOutcome === o.id"
+        (textChanged)="mutateOutcome(o.id, { text: $event })"
+        (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
+        (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
+        (deleted)="deleteOutcome(o.id)"
+        (unmap)="toggleStandardOutcome($event)"
+        (click)="activeOutcome = o.id"
+      >
+      </clark-outcome>
     </ng-container>
   </div>
   <div *ngIf="outcomes.size" right #right>

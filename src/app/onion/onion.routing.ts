@@ -17,9 +17,9 @@ import { LearningObjectBuilderModule } from './learning-object-builder/learning-
 const onion_routes: Routes = [
   {
     path: '', component: OnionComponent, children: [
-      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { state: 'dashboard' } },
       { path: 'learning-object-builder',
-        loadChildren: () => LearningObjectBuilderModule
+        loadChildren: () => LearningObjectBuilderModule, data: {state: 'builder'}
       },
       /* { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard],
         children: [

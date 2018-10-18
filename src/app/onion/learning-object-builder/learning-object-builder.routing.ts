@@ -12,9 +12,9 @@ const builder_routes: Routes = [
   { path: '', component: LearningObjectBuilderComponent,
     children: [
       { path: '', redirectTo: 'info', pathMatch: 'full' },
-      { path: 'info', component: InfoPageComponent },
-      { path: 'outcomes', component: OutcomePageComponent },
-      { path: 'materials', component: MaterialsPageComponent }
+      { path: 'info', component: InfoPageComponent, data: { state: 'info' } },
+      { path: 'outcomes', component: OutcomePageComponent, data: { state: 'outcomes' } },
+      { path: 'materials', component: MaterialsPageComponent, data: { state: 'materials' } }
       // { path: 'materials', loadChildren: () => ContentUploadModule },
     ]
   }
