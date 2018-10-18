@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs';
-import { trigger, transition, style, animate, query, stagger, animateChild} from '@angular/animations';
+import { trigger, transition, style, animate, query, stagger, animateChild, group, sequence} from '@angular/animations';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* <=> *', [
@@ -13,14 +13,11 @@ export const builderTransitions = trigger('builderTransition', [
     query(':enter .column, :enter .builder-navbar-wrapper', [
       style({ opacity: 0 })
     ], { optional: true }),
-    // set any entering outcomes to the closed position
-    query(':enter @outcome', style({ height: '84px' }), { optional: true }),
     // animate any leaving columns off staggered
     query(':leave .column', [
-      animateChild(),
       stagger('150ms', [
         style({ 'transform': 'translateY(0px)', opacity: 1 }),
-        animate('300ms ease', style({ 'transform': 'translateY(-200px)', opacity: 0 }))
+        animate('1300ms ease', style({ 'transform': 'translateY(-200px)', opacity: 0 }))
       ])
     ], { optional: true }),
     // animate the entering navbar on
@@ -33,10 +30,13 @@ export const builderTransitions = trigger('builderTransition', [
       stagger('200ms ease', [
         style({ 'transform': 'translateY(-200px)', opacity: 0 }),
         animate('350ms ease', style({ 'transform': 'translateY(0px)', opacity: 1 }))
-      ])
+      ]),
     ], { optional: true }),
+    query('@outcome', [
+      animateChild({ delay: '1s' })
+    ], { optional: true })
   ])
-])
+]);
 
 @Component({
   selector: 'clark-learning-object-builder',
