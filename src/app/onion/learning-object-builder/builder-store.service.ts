@@ -45,7 +45,10 @@ export class BuilderStore {
   public learningObjectEvent: BehaviorSubject<LearningObject> = new BehaviorSubject(undefined);
 
   // fired when this service needs to propagate changes to the learning object down to children components
-  public outcomeEvent: Subject<Map<string, LearningOutcome>> = new BehaviorSubject(undefined);
+  public outcomeEvent: BehaviorSubject<Map<string, LearningOutcome>> = new BehaviorSubject(undefined);
+
+  // true when there is a save operation in progress or while there are changes that are cached but not yet saved
+  public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
     // subscribe to our saveCache$ observable and initiate calls to save object after a debounce
@@ -108,12 +111,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   async fetch(name: string): Promise<LearningObject> {
-    const res: any = await this.http
-      .get(USER_ROUTES.GET_LEARNING_OBJECT(this.auth.username, name), {
-        withCredentials: true
-      })
-      .toPromise();
-    this.learningObject = LearningObject.instantiate(res);
+    this.learningObject = await this.learningObjectService.getLearningObject(name);
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
     return this.learningObject;
   }
@@ -200,7 +198,6 @@ export class BuilderStore {
     } else if (params.verb) {
       outcome.verb = params.verb;
     } else if (typeof params.text === 'string') {
-      // TODO debounce here
       outcome.text = params.text;
     }
 
@@ -253,15 +250,25 @@ export class BuilderStore {
   //  SERVICE INTERACTION  //
   ///////////////////////////
 
-  private saveObject(data: any, delay?: boolean) {
+  private async saveObject(data: any, delay?: boolean) {
     const value = this.saveCache$.getValue();
-    const newValue = value ? Object.assign(value, data) : data;
+
+    this.serviceInteraction.next(true);
 
     if (delay) {
+      const newValue = value ? Object.assign(value, data) : data;
       this.saveCache$.next(newValue);
     } else {
-      // TODO service call here
+      // clear the cache before submission so that any late arrivals will be cached for the next query
       this.saveCache$.next(undefined);
+
+      // send cached changes to server
+      this.learningObjectService.save(this.learningObject.id, value).then(() => {
+        this.serviceInteraction.next(false);
+      }).catch((err) => {
+        console.log('Error! ', err);
+        this.serviceInteraction.next(false);
+      });
     }
   }
 }

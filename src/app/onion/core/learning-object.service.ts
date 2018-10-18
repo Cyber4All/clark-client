@@ -53,7 +53,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
    */
-  getLearningObject(learningObjectName: string): Promise<any> {
+  getLearningObject(learningObjectName: string): Promise<LearningObject> {
     const route = USER_ROUTES.GET_LEARNING_OBJECT(
       this.auth.user.username,
       learningObjectName
@@ -92,15 +92,16 @@ export class LearningObjectService {
    * @returns {Promise<{}>}
    * @memberof LearningObjectService
    */
-  save(learningObject: LearningObject): Promise<{}> {
+  // TODO type this parameter
+  save(id: string, learningObject: any): Promise<{}> {
     const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(
       this.auth.user.username,
-      learningObject.id || learningObject._id
+      id
     );
     return this.http
       .patch(
         route,
-        { learningObject: learningObject },
+        { id, learningObject },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
