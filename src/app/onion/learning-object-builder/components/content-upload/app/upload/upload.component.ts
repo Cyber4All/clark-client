@@ -5,7 +5,8 @@ import {
   ViewChild,
   ChangeDetectorRef,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
+  Input
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -31,6 +32,11 @@ import { ModalService, ModalListElement } from '../../../../../../shared/modals'
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
 import { AuthService } from '../../../../../../core/auth.service';
+
+import {
+  BuilderStore,
+  BUILDER_ACTIONS as actions
+} from '../../../../builder-store.service';
 
 type LearningObjectFile = File;
 
@@ -104,7 +110,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   inProgressUploadsMap: Map<string, number> = new Map<string, number>();
   tips = TOOLTIP_TEXT;
 
-  learningObject: LearningObject;
+  // Learning object will be an input
+  @Input () learningObject: LearningObject;
 
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -124,7 +131,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: BuilderStore
   ) {}
 
   ngOnInit() {
