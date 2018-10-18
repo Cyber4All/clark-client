@@ -17,7 +17,7 @@ export const builderTransitions = trigger('builderTransition', [
     query(':leave .column', [
       stagger('150ms', [
         style({ 'transform': 'translateY(0px)', opacity: 1 }),
-        animate('1300ms ease', style({ 'transform': 'translateY(-200px)', opacity: 0 }))
+        animate('300ms ease', style({ 'transform': 'translateY(-200px)', opacity: 0 }))
       ])
     ], { optional: true }),
     // animate the entering navbar on
@@ -33,7 +33,7 @@ export const builderTransitions = trigger('builderTransition', [
       ]),
     ], { optional: true }),
     query('@outcome', [
-      animateChild({ delay: '1s' })
+      animateChild()
     ], { optional: true })
   ])
 ]);
