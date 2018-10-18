@@ -1,9 +1,12 @@
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
 import { ModalService, ModalListElement } from './shared/modals';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { PopupComponent } from './shared/popups/popup.component';
 
 @Component({
   selector: 'clark-root',
@@ -40,12 +43,18 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class ClarkComponent {
+export class ClarkComponent implements OnInit {
   connectedToSocket: boolean;
   isSupportedBrowser: boolean;
   cookiesAgreement: boolean;
 
-  constructor(private authService: AuthService, private cartService: CartV2Service, private modal: ModalService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private cartService: CartV2Service,
+    private modal: ModalService,
+    private router: Router,
+    private popup: PopupComponent
+  ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
       this.connectedToSocket = false;
@@ -64,6 +73,30 @@ export class ClarkComponent {
       if (localStorage.getItem('cookieAgreement')) {
         this.cookiesAgreement = true;
       }
+  }
+
+  ngOnInit(): void {
+    setInterval(async () => {
+      try {
+        await this.authService.checkClientVersion();
+      } catch (e) {
+        this.popup = new PopupComponent();
+
+        // const shouldRefresh = await this.modal.makeDialogMenu(
+        //   'updateRequired',
+        //   'A New Version of CLARK is Available!',
+        //   'Please refresh your browser window to see our latest changes!',
+        //   false,
+        //   'title-good',
+        //   'center',
+        //   [new ModalListElement('Refresh page', 'refresh', 'green')]
+        // )
+        // .toPromise();
+        // if (shouldRefresh === 'refresh') {
+        //   window.location.reload();
+        // }
+      }
+    }, 10000);
   }
 
   /**
