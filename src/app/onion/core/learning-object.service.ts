@@ -82,6 +82,7 @@ export class LearningObjectService {
           .map(object => LearningObject.instantiate(object));
       });
   }
+
   /**
    * Sends updated Learning Object to API for updating.
    * Returns null success.
@@ -93,7 +94,14 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   // TODO type this parameter
-  save(id: string, learningObject: any): Promise<{}> {
+  save(learningObject: { id?: string, _id?: string, [key: string]: any }): Promise<{}> {
+    const id = learningObject.id || learningObject._id;
+
+    // verify that an id was included
+    if (!id) {
+      throw new Error('Error! No learning object id specified!');
+    }
+
     const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(
       this.auth.user.username,
       id
@@ -106,6 +114,7 @@ export class LearningObjectService {
       )
       .toPromise();
   }
+
   /**
    * Sends updated Learning Object to API for updating.
    * Returns null success.
@@ -137,6 +146,7 @@ export class LearningObjectService {
       )
       .toPromise();
   }
+
   /**
    * Sends Learning Object's ID to API for deletion
    *

@@ -12,7 +12,7 @@ import { DirectoryNode, LearningObjectFile } from '../DirectoryTree';
 import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
-import { TimeFunctions } from '../../../onion/content-upload/app/shared/time-functions';
+import { TimeFunctions } from '../../../onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -60,8 +60,6 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subToDescription();
-
-    
   }
 
   /**

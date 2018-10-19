@@ -15,9 +15,9 @@ export class LearningObjectResolve implements Resolve<LearningObject> {
       const name = route.params['learningObjectName'];
       return this.loService.getLearningObject(name).then(learningObject => {
         return learningObject;
-        }).catch(err => {
-          return;
-        });
+      }).catch(err => {
+        return undefined;
+      });
     } else {
       return new LearningObject();
     }

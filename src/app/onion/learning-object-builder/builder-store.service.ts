@@ -264,8 +264,11 @@ export class BuilderStore {
       // clear the cache before submission so that any late arrivals will be cached for the next query
       this.saveCache$.next(undefined);
 
+      // append learning object id to payload
+      value.id = this.learningObject.id;
+
       // send cached changes to server
-      this.learningObjectService.save(this.learningObject.id, value).then(() => {
+      this.learningObjectService.save(value).then(() => {
         this.serviceInteraction.next(false);
       }).catch((err) => {
         console.log('Error! ', err);

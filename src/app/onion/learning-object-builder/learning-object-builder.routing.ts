@@ -5,7 +5,6 @@ import { InfoPageComponent } from './pages/info-page/info-page.component';
 import { OutcomePageComponent } from './pages/outcome-page/outcome-page.component';
 import { MaterialsPageComponent } from './pages/materials-page/materials-page.component';
 import { LearningObjectBuilderComponent } from './learning-object-builder.component';
-import { ContentUploadModule } from '../content-upload/app/content-upload.module';
 
 
 const builder_routes: Routes = [
@@ -15,7 +14,6 @@ const builder_routes: Routes = [
       { path: 'info', component: InfoPageComponent, data: { state: 'info' } },
       { path: 'outcomes', component: OutcomePageComponent, data: { state: 'outcomes' } },
       { path: 'materials', component: MaterialsPageComponent, data: { state: 'materials' } }
-      // { path: 'materials', loadChildren: () => ContentUploadModule },
     ]
   }
 ];
