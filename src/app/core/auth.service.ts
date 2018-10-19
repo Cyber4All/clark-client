@@ -322,19 +322,24 @@ export class AuthService {
   async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
 
-      if (!this.isLoggedIn.getValue()) {
-        // user isn't logged in
-        return DOWNLOAD_STATUS.NO_AUTH;
-      }
-
       // Check that the object does not contain a download lock and the user is logged in
       const restricted = learningObject.lock && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD);
 
       // If the object is restricted, check if the user is on the whitelist
       if (restricted) {
-        return await this.checkWhitelist();
+        if (await this.checkWhitelist()) {
+          return DOWNLOAD_STATUS.CAN_DOWNLOAD;
+        } else {
+          return DOWNLOAD_STATUS.NOT_RELEASED;
+        }
       }
-      return restricted ? DOWNLOAD_STATUS.NOT_RELEASED : DOWNLOAD_STATUS.CAN_DOWNLOAD;
+
+      if (!this.isLoggedIn.getValue()) {
+        // user isn't logged in
+        return DOWNLOAD_STATUS.NO_AUTH;
+      }
+
+      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
     } else {
       return DOWNLOAD_STATUS.CAN_DOWNLOAD;
     }
