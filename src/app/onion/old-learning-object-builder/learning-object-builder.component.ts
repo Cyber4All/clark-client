@@ -108,7 +108,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (!this.isNew) {
       // editing
       this.service
-        .save(this.learningObject)
+        .save(this.learningObject.id, this.learningObject)
         .then(success => {
           if (!willUpload) {
             this.notificationService.notify(

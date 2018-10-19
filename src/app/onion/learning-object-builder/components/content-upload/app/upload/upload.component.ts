@@ -37,6 +37,7 @@ import {
   BuilderStore,
   BUILDER_ACTIONS as actions
 } from '../../../../builder-store.service';
+import { takeUntil } from 'rxjs/operators';
 
 type LearningObjectFile = File;
 
@@ -140,6 +141,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.checkWhitelist();
     }
     this.learningObjectName = 'Learning Object '; // this.route.snapshot.params.learningObjectName;
+    this.store.learningObjectEvent.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((payload: LearningObject) => {
+      if (payload) {
+        this.learningObject = payload;
+      }
+    });
     /* this.learningObjectName
       ? this.fetchLearningObject()
       : this.router.navigate(['/onion/dashboard']); */
@@ -613,7 +621,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   async saveLearningObject(): Promise<void> {
     try {
       this.saving = true;
-      await this.learningObjectService.save(this.learningObject);
+      await this.learningObjectService.save(this.learningObject.id, this.learningObject);
     } catch (e) {
       console.log(e);
     }

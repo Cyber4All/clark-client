@@ -605,7 +605,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   async saveLearningObject(): Promise<void> {
     try {
       this.saving = true;
-      await this.learningObjectService.save(this.learningObject);
+      await this.learningObjectService.save(this.learningObject.id, this.learningObject);
     } catch (e) {
       console.log(e);
     }
