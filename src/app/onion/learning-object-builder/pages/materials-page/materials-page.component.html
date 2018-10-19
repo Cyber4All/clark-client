@@ -1,8 +1,8 @@
-<clark-column-wrapper>
-  <div left #left permanent>
+<clark-column-wrapper [columns]="'lm'">
+  <div left>
     Scaffold Information will go here
   </div>
-  <div main #main>
+  <div main>
     <!-- upload content here -->
     <app-upload [learningObject]="learningObject"></app-upload>
   </div>

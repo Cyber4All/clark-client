@@ -1,8 +1,8 @@
 <clark-column-wrapper>
-  <div left #left>
+  <div left>
     Scaffold Information will go here
   </div>
-  <div main #main>
+  <div main>
     <div class="top">
       <div class="title">Learning Outcomes</div>
       <button class="button good" (click)="newOutcome()">New <i class="fas fa-plus"></i></button>
@@ -22,7 +22,7 @@
       </clark-outcome>
     </ng-container>
   </div>
-  <div *ngIf="outcomes.size" right #right>
+  <div *ngIf="outcomes.size" right>
     <clark-standard-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-standard-outcomes>
   </div>
 </clark-column-wrapper>
