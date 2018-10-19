@@ -52,7 +52,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   iframeParent = iframeParentID;
   error = false;
   userIsAuthor = false;
-  
+
   public tips = TOOLTIP_TEXT;
 
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
