@@ -6,7 +6,9 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   AfterViewInit,
-  Input
+  Input,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -76,12 +78,11 @@ export type DZFile = {
     ])
   ]
 })
-export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
   private dzError = '';
-  learningObjectName: string;
 
   slide = 1;
   animationDirection: 'prev' | 'next' = 'next';
@@ -136,21 +137,27 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private store: BuilderStore
   ) {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    // listen for changes on the input learning object
+    if (changes.learningObject && changes.learningObject.currentValue) {
+
+      // update the 4
+      this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+        this.learningObject.id
+      );
+
+      if (!this.learningObject.materials['folderDescriptions']) {
+        this.learningObject.materials['folderDescriptions'] = [];
+      }
+      this.updateFileSubscription();
+      this.updateFolderMeta();
+    }
+  }
+
   ngOnInit() {
     if (this.disabled) {
       this.checkWhitelist();
     }
-    this.learningObjectName = 'Learning Object '; // this.route.snapshot.params.learningObjectName;
-    this.store.learningObjectEvent.pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe((payload: LearningObject) => {
-      if (payload) {
-        this.learningObject = payload;
-      }
-    });
-    /* this.learningObjectName
-      ? this.fetchLearningObject()
-      : this.router.navigate(['/onion/dashboard']); */
 
     // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
     this.triggerSave$
@@ -245,32 +252,32 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @private
    * @memberof ViewComponent
    */
-  private async fetchLearningObject() {
-    try {
-      this.retrieving = true;
-      this.learningObject = await this.learningObjectService.getLearningObject(
-        this.learningObjectName
-      );
-      this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
-        this.learningObject.id
-      );
-      this.retrieving = false;
-      // FIXME: Add folder descriptions to entity
-      // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
-      if (!this.learningObject.materials['folderDescriptions']) {
-        this.learningObject.materials['folderDescriptions'] = [];
-      }
-      this.updateFileSubscription();
-      this.updateFolderMeta();
-    } catch (e) {
-      this.notificationService.notify(
-        `Could not fetch Learning Object`,
-        `${e}`,
-        `bad`,
-        ``
-      );
-    }
-  }
+  // private async fetchLearningObject() {
+  //   try {
+  //     this.retrieving = true;
+  //     this.learningObject = await this.learningObjectService.getLearningObject(
+  //       this.learningObjectName
+  //     );
+      // this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+      //   this.learningObject.id
+      // );
+  //     this.retrieving = false;
+  //     // FIXME: Add folder descriptions to entity
+  //     // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
+  //     if (!this.learningObject.materials['folderDescriptions']) {
+  //       this.learningObject.materials['folderDescriptions'] = [];
+  //     }
+  //     this.updateFileSubscription();
+  //     this.updateFolderMeta();
+  //   } catch (e) {
+  //     this.notificationService.notify(
+  //       `Could not fetch Learning Object`,
+  //       `${e}`,
+  //       `bad`,
+  //       ``
+  //     );
+  //   }
+  // }
   /**
    * Updates next valid on files$
    *
@@ -380,7 +387,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   async queueComplete(event) {
     try {
       this.learningObject = await this.learningObjectService.getLearningObject(
-        this.learningObjectName
+        this.learningObject.name
       );
       this.updateFileSubscription();
       await this.learningObjectService.updateReadme(
@@ -621,7 +628,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   async saveLearningObject(): Promise<void> {
     try {
       this.saving = true;
-      await this.learningObjectService.save(this.learningObject.id, this.learningObject);
+      await this.learningObjectService.save(this.learningObject);
     } catch (e) {
       console.log(e);
     }

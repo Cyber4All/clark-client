@@ -10,7 +10,7 @@ export class LearningObjectResolve implements Resolve<LearningObject> {
     private loService: LearningObjectService
   ) {}
 
-  /*
+
   resolve(route: ActivatedRouteSnapshot) {
     if (route.params['learningObjectName']) {
       const name = route.params['learningObjectName'];
@@ -22,5 +22,5 @@ export class LearningObjectResolve implements Resolve<LearningObject> {
     } else {
       return new LearningObject();
     }
-  } */
+  }
 }
