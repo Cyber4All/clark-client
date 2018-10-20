@@ -16,10 +16,18 @@
     </div>
   </div>
 </section>
-<div class="whois">
-  <div class="feature-text">{{ copy.WHATISTITLE }}</div>
-  <span>{{ copy.WHATIS }}</span>
-</div>
+<section class="info-banner">
+  <div class="counter-wrapper">
+    <div class="released">
+      <div class="counter">{{ releasedCounter }}</div>
+      <div class="label">Learning Objects Released</div>
+    </div>
+    <div class="under-review">
+      <div class="counter" *ngIf="totalCounter && releasedCounter">{{ totalCounter - releasedCounter }}</div>
+      <div class="label">Learning Objects Under Review</div>
+    </div>
+  </div>
+</section>
 <div class="featured-viewport">
   <cube-featured></cube-featured>
 </div>
@@ -39,7 +47,14 @@
     </div>
   </div>
 </section>
-<section class="call-to-action">
-  <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
-  <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
+
+<section class="bottom-banner">
+  <div class="whatis-wrapper">
+      <div class="title">{{ copy.WHATISTITLE }}</div>
+      <div class="text">{{ copy.WHATIS }}</div>
+  </div>
+  <div class="call-to-action">
+    <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
+    <button id="contribute-to-clark" class="button bad" (click)="goToContribute()">{{ copy.CALLTOACTION }}</button>
+  </div>
 </section>

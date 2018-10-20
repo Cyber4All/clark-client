@@ -1,17 +1,18 @@
-<div class="splash">
+<section class="hero">
   <div class="inner">
-    <div class="header">
-      <div class="name">{{ collection?.name }}</div>
+    <div class="logos">
+      <div class="collection-logo" [ngClass]="collection?.abvName"></div>
     </div>
+    <div class="name" *ngIf="collection?.abvName === 'nccp'">{{ collection?.name }}</div>
+    <div class="long-name">{{ collection?.fullName }}</div>
   </div>
-</div>
+  <div class="logo"></div>
+</section>
 <section class="collection-container">
-
   <div class="description">
-    <div class="title">Description</div>
+    <div class="heading">Description</div>
     <p [innerHtml]="collection?.description"></p>
   </div>
-  <div class="browse-link">
-    Click <a [routerLink]="['/browse']" [queryParams]="{ collection: getKey() }">here</a> to view learning object's in this collection.
-  </div>
+  
+  <cube-featured [collection]="key"></cube-featured>
 </section>

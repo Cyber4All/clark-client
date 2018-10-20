@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionService } from 'app/core/collection.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'cube-collection',
   templateUrl: 'collection.component.html',
   styleUrls: ['collection.component.scss']
 })
-export class CollectionComponent implements OnInit {
-  key: string;
+export class CollectionComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<void>();
+  key = new Subject<string>();
   collection;
 
   constructor(
@@ -17,17 +20,22 @@ export class CollectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.key = params.name;
-      this.fetchCollection(params.name);
-    });
+    this.route.params
+      .pipe(
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(params => {
+        this.fetchCollection(params.name);
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 
   async fetchCollection(name: string) {
     this.collection = await this.collectionService.getCollectionMetadata(name);
-  }
-
-  getKey() {
-    return this.collection.abvName;
+    this.key.next(this.collection.abvName);
   }
 }
