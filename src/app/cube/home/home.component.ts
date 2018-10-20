@@ -18,8 +18,10 @@ export class HomeComponent implements OnInit {
     limit: 1,
     released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
   };
-  placeholderText = 'Searching across ... learning objects';
+  placeholderText = this.copy.SEARCH_PLACEHOLDER;
   collections: Collection[];
+  releasedCounter: number;
+  totalCounter: number;
 
   constructor(
     public learningObjectService: LearningObjectService,
@@ -29,8 +31,11 @@ export class HomeComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.learningObjectService.getLearningObjects(this.query).then((res) => {
-      this.placeholderText = 'Searching across ' + res.total + ' learning objects';
+    this.learningObjectService.getLearningObjects({ limit: 1, released: true }).then((res) => {
+      this.releasedCounter = res.total;
+    });
+    this.learningObjectService.getLearningObjects({ limit: 1 }).then((res) => {
+      this.totalCounter = res.total;
     });
     this.collectionService.getCollections()
       .then(collections => {

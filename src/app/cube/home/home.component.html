@@ -19,11 +19,11 @@
 <section class="info-banner">
   <div class="counter-wrapper">
     <div class="released">
-      <div class="counter">43</div>
+      <div class="counter">{{ releasedCounter }}</div>
       <div class="label">Learning Objects Released</div>
     </div>
     <div class="under-review">
-      <div class="counter">687</div>
+      <div class="counter" *ngIf="totalCounter && releasedCounter">{{ totalCounter - releasedCounter }}</div>
       <div class="label">Learning Objects Under Review</div>
     </div>
   </div>

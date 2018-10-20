@@ -1,97 +1,112 @@
 @import '~_vars.scss';
 $sidebar-width: 350px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
+.heading {
+    font-weight: 200;
+    font-size: 33px;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    color: #333;
+}
 .collection-container {
     max-width: $max-width;
+    padding-bottom: 100px;
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 50px;
     .description {
-        background: #fff;
-        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        padding: 20px;
         border-radius: 2px;
         color: $dark-text;
         margin-bottom: 40px;
-
-        .title {
-          color: black;
-          font-size: 22px;
-          margin-bottom: 20px;
+        .heading {
+            padding-left: 12px;
         }
-
-        ul {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: space-between;
-        }
-
-        li {
-          font-size: 18px;
-          width: 45%;
-          margin-bottom: 10px;
-
-          .svg-inline--fa {
-            margin-top: 3px;
-            margin-right: 15px;
-          }
+        p {
+            padding: 20px;
         }
     }
 }
-
-.splash {
-    width: 100%;
-    height: 250px;
-    background: $blue-gradient;
-    padding: 50px 0px;
+.hero {
+    height: 500px;
+    background: url('/assets/images/clouds.jpg');
+    background-size: cover;
+    background-position: center bottom;
     position: relative;
-    margin-bottom: 50px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
-    &:after {
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    &:before {
         content: '';
-        background: white;
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        opacity: 0.03;
-        mask: $cube-pattern repeat;
+        background: linear-gradient(45deg, darken($blue-accent, 10), lighten($blue-accent, 10));
+        opacity: 0.1;
+        z-index: 1;
     }
-    
-    .inner {
-        text-align: center;
-        margin: auto;
-        padding: 20px;
-        box-sizing: border-box;
-        .name {
-            font-size: 60px;
-            color: white;
-            text-shadow: 0px 0px rgba(0, 0, 0, 0.2);
+
+    .angle {
+        content: '';
+        background: $blue-accent;
+        z-index: 2;
+        left: 0;
+        right: 0;
+        position: absolute;
+        transform: rotate(-2deg);
+    }
+
+    .collection-logo {
+        width: 120px;        
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        &.nccp {
+            background-image: url('/assets/images/collections/nccp.png');
         }
-        .type {
-            margin-top: 5px;
-            padding: 3px;
-            border-radius: 1px;
-            display: inline-block;
-            position: relative;
-            color: white;
-            text-transform: capitalize;
-            font-size: 14px;
-            font-weight: 300;
-            &:before {
-                content: "";
-                border-radius: 50%;
-                width: 10px;
-                height: 10px;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-                position: absolute;
-            }
+        &.c5 {
+            background-image: url('/assets/images/collections/c5.png');
         }
+        &:after {
+            content: '';
+            display: block;
+            padding-bottom: 100%;
+        }
+    }
+
+    .logos {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        & > *:first-child {
+            margin-right: 0px;
+        }
+    }
+
+    .name {
+        color: white;
+        font-size: 60px;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .long-name {
+        color: white;
+        font-size: 24px;
+        text-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+        font-weight: normal;
     }
 }
 

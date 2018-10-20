@@ -3,13 +3,12 @@
 $top-height: 500px;
 $banner-height: 90px;
 
-::ng-deep .feature-text {
+.feature-text {
   font-weight: 200;
   font-size: 33px;
   margin-bottom: 25px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 }
-
 .whois {
   display: flex;
   flex-direction: column;
@@ -48,10 +47,10 @@ $banner-height: 90px;
       height: 100%;
       color: white;
       .counter {
-        font-size: 50px;
+        font-size: 40px;
       }
       .label {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: normal;
       }
     }
@@ -237,7 +236,7 @@ $banner-height: 90px;
           background: white;
           border-radius: 3px;
           box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.05);
-          padding: 18px;
+          padding: 16px;
           display: flex;
           flex-flow: column nowrap;
           margin: 0 40px;
@@ -262,7 +261,7 @@ $banner-height: 90px;
             width: 100%;
             margin-top: 50px;
             color: black;
-            font-size: 16px;
+            font-size: 18px;
           }
         }
       }
@@ -341,6 +340,9 @@ $banner-height: 90px;
 
 @media (max-width: 750px) {
 
+  .info-banner {
+    display: none;
+  }
   .img-viewport {
     padding-top: 60px !important;
     padding-bottom: 60px !important;
@@ -356,7 +358,46 @@ $banner-height: 90px;
     padding-bottom: 40px !important;
   }
 
-  ::ng-deep .feature-text {
-    font-size: 26px !important;
+  .collection-wrapper {
+    margin: 0;
+    .collection-viewport {
+      .title {
+        text-align: center;
+        margin-bottom: 8px;
+      }
+      .content {
+        flex-flow: column nowrap;
+        .featured-collections {
+          .description {
+            text-align: center;
+          }
+        }
+        .card-container {
+          flex-flow: row wrap;
+          .collection-card {
+            margin-bottom: 15px;
+          }
+        }
+      }
+    }
   }
+
+  .bottom-banner {
+    flex-flow: column nowrap;
+    .whatis-wrapper {
+      border-right: 0;
+      border-bottom: 1px solid rgb(240, 244, 247);
+    }
+    .call-to-action {
+      border-left: 0;
+      border-top: 1px solid rgb(240, 244, 247);
+      .feature-text {
+        text-align: center;
+      }
+      .button.bad {
+        margin: 0;
+      }
+    }
+  }
+
 }
