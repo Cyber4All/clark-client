@@ -2,8 +2,8 @@ export const COPY = {
     HERO: `Effective cybersecurity curriculum at your fingertips`,
     SEARCH_PLACEHOLDER: 'Search Learning Objects by author, title, or keywords',
     WHATISTITLE: `What is C.L.A.R.K.?`,
-    WHATIS: `CLARK is a digital library that hosts a diverse collection of cybersecurity learning objects. 
-    It was created because there is a demonstrated need for a high-quality and high-availability repository for 
+    WHATIS: `CLARK is a digital library that hosts a diverse collection of cybersecurity learning objects.
+    It was created because there is a demonstrated need for a high-quality and high-availability repository for
     curricular and ancillary resources in the cybersecurity education community.`,
 
     BROWSE: 'Browse All',
