@@ -1,3 +1,12 @@
 <clark-navbar *ngIf = "isSupportedBrowser"></clark-navbar>
 <router-outlet></router-outlet>
+<clark-popup *ngIf="isOldVersion" (closed)="isOldVersion = false">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">A New Version of CLARK is Available!</div>
+        <div class="modal-text">Please refresh your browser to see our latest changes!</div>
+        <div class="btn-group center">
+          <button class="button good" (click)="reloadPage()">Refresh page <i class="fas fa-sync-alt"></i></button>
+        </div>
+    </div>
+</clark-popup>
 <clark-cookies [@banner] *ngIf="!cookiesAgreement" (setAgreement)="setCookieAgreement($event)"></clark-cookies>
