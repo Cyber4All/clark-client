@@ -20,6 +20,7 @@ import { OutcomesListItemComponent } from './components/standard-outcomes/outcom
 import { TextEditorComponent } from './components/text-editor.component';
 import { LearningObjectDescriptionComponent } from './components/description.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
     StandardOutcomesComponent,
     OutcomesListItemComponent,
     LearningObjectDescriptionComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    ScaffoldComponent
   ],
   providers: [BuilderStore]
 })

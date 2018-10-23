@@ -1,0 +1,22 @@
+@import "~_vars.scss";
+
+.title {
+  font-size: 16px;
+  color: #646464;
+  text-align: center;
+  padding: 30px 30px;
+}
+.icon {
+  color: #4290ea;
+  font-size: 40px;
+}
+div {
+  &.icon {
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top:50px;
+  }
+}
