@@ -12,6 +12,7 @@ import {
 import { OutcomeSuggestion } from '@cyber4all/clark-entity';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
+import { fromEvent } from 'rxjs';
 import { OutcomeService } from '../../core/outcome.service';
 import {
   SuggestionService
@@ -97,6 +98,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
         // (EG inside the learning outcome component in object builder)
         this.bindFilterInput();
       } catch (error) {
+        console.log(error);
         // if this is true, we know to try again when a source is selected
         this.mappingsFilterInputError = true;
       }
@@ -104,8 +106,7 @@ export class BrowseByMappingsComponent implements OnInit, AfterViewChecked, OnCh
   }
 
   bindFilterInput() {
-    this.mappingsFilterInput = Observable
-      .fromEvent(this.mappingsSearchInput.nativeElement, 'input')
+    this.mappingsFilterInput = fromEvent(this.mappingsSearchInput.nativeElement, 'input')
       .map(x => x['currentTarget'].value).debounceTime(650);
 
       // listen for user to stop typing in the text input and perform query

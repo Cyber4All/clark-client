@@ -9,6 +9,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObjectStoreService } from './store';
 import { LearningObjectErrorStoreService } from './errorStore';
 import { AuthService } from 'app/core/auth.service';
+import { CollectionService } from 'app/core/collection.service';
 
 enum PAGES {
   INFO,
@@ -39,6 +40,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private service: LearningObjectService,
+    private collectionService: CollectionService,
     private modalService: ModalService,
     private notificationService: ToasterService,
     private store: LearningObjectStoreService,
@@ -126,10 +128,9 @@ export class LearningObjectBuilderComponent implements OnInit {
           }
         })
         .catch(err => {
-          console.log(err)
           const error =
-            typeof err['_body'] === 'string'
-              ? err['_body']
+            typeof err.error === 'string'
+              ? err.error
               : 'Error saving Learning Object';
           this.notificationService.notify(
             'Error!',
@@ -161,8 +162,8 @@ export class LearningObjectBuilderComponent implements OnInit {
         })
         .catch(err => {
           const error =
-            typeof err['_body'] === 'string'
-              ? err['_body']
+            typeof err.error === 'string'
+              ? err.error
               : 'Error creating Learning Object';
           this.notificationService.notify(
             'Error!',
@@ -259,7 +260,7 @@ export class LearningObjectBuilderComponent implements OnInit {
       // first, attempt to publish
       this.service.togglePublished(this.learningObject).then(() => {
         // publishing was a success, attempt to add to collection
-        this.service.addToCollection(this.learningObject.id, collection).then(() => {
+        this.collectionService.addToCollection(this.learningObject.id, collection).then(() => {
           // success
           this.notificationService.notify(
             'Success!',
@@ -281,7 +282,7 @@ export class LearningObjectBuilderComponent implements OnInit {
         // failed to publish
         this.notificationService.notify(
           'Error!',
-          error._body,
+          error.error,
           'bad',
           'far fa-times'
         );
