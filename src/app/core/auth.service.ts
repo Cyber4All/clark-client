@@ -65,7 +65,7 @@ export class AuthService {
   }
 
   checkClientVersion(): Promise<void> {
-    // Application display name and Version information
+    // Application version information
     const { version: appVersion } = require('../../../package.json');
     return this.http
       .get(environment.apiURL + '/clientversion/' + appVersion,
