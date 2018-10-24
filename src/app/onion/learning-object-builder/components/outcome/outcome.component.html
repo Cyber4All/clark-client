@@ -1,11 +1,11 @@
 <div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}">
-  <div class="outcome-header">{{outcome.verb ? outcome.verb + ' ' + outcome.text : 'Learning Outcome ' + outcomeNumber }}</div>
+  <div class="outcome-header">{{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome ' + outcomeNumber }}</div>
   <div *ngIf="!!active" class="outcome-delete" (click)="emitDeletion()">
     <span>Delete Outcome</span>
     <i class="far fa-trash"></i>
   </div>
   <div class="level-select">
-    <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom === l}" (click)="emitLevel(l)">
+    <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom.toLowerCase() === l.toLowerCase()}" (click)="emitLevel(l)">
       <div class="icon">
         <span *ngIf="l === 'Remember and Understand'"><i class="fal fa-cloud"></i></span>
         <span *ngIf="l === 'Apply and Analyze'"><i class="fal fa-bolt"></i></span>

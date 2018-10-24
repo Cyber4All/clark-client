@@ -67,6 +67,13 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     }
   }
 
+  setActiveOutcome(id: string) {
+    if (id !== this.activeOutcome) {
+      this.store.sendOutcomeCache();
+      this.activeOutcome = id;
+    }
+  }
+
   mutateOutcome(id: string, params: any) {
     const outcome = this.outcomes.get(id);
 

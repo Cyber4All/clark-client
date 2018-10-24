@@ -44,12 +44,8 @@ export const USER_ROUTES = {
       learningObjectName
     )}/publish`;
   },
-  ADD_LEARNING_OBJET_TO_COLLECTION(
-    learningObjectId: string
-  ) {
-    return `${
-      environment.apiURL
-    }/learning-objects/${encodeURIComponent(
+  ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/collections`;
   },
@@ -82,6 +78,11 @@ export const USER_ROUTES = {
     )}/learning-objects/${encodeURIComponent(
       learningObjectName
     )}/files/${encodeURIComponent(filename)}`;
+  },
+  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectId
+    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
   GET_CART(username) {
     // CUBE

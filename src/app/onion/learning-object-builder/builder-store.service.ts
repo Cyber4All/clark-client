@@ -38,7 +38,9 @@ export class BuilderStore {
   private _outcomesMap: Map<string, LearningOutcome> = new Map();
 
   // manages a cache of data that needs to be saved (debounced)
-  private saveCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
+  private objectCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
+
+  private outcomeCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   // fired when this service is destroyed
   private destroyed$: Subject<void> = new Subject();
@@ -53,14 +55,25 @@ export class BuilderStore {
   public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
-    // subscribe to our saveCache$ observable and initiate calls to save object after a debounce
-    this.saveCache$.pipe(
+    // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
+    this.objectCache$.pipe(
       debounceTime(650),
       takeUntil(this.destroyed$)
     ).subscribe(cache => {
       if (cache !== undefined) {
         // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
         this.saveObject(cache);
+      }
+    });
+
+    // subscribe to our outcomeCache$ observable and initiate calls to save outcome after a debounce
+    this.outcomeCache$.pipe(
+      debounceTime(650),
+      takeUntil(this.destroyed$)
+    ).subscribe(cache => {
+      if (cache !== undefined) {
+        // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
+        this.saveOutcome(cache);
       }
     });
   }
@@ -170,6 +183,18 @@ export class BuilderStore {
     }
   }
 
+  /**
+   *
+   *
+   * @memberof BuilderStore
+   */
+  sendOutcomeCache() {
+    const currentCacheValue = this.outcomeCache$.getValue();
+    if (currentCacheValue) {
+      this.saveOutcome(currentCacheValue);
+    }
+  }
+
   ///////////////////////////////
   //  BUILDER ACTION HANDLERS  //
   ///////////////////////////////
@@ -180,7 +205,8 @@ export class BuilderStore {
 
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
-    // TODO service call here
+
+    // TODO service interaction here
 
     return outcome.id;
   }
@@ -206,7 +232,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // TODO delayed service interaction here
+    this.saveOutcome({ id: outcome.id, bloom: outcome.bloom, verb: outcome.verb, text: outcome.text }, true);
   }
 
   private async mapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
@@ -216,7 +242,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // TODO service call here
+    this.saveOutcome({ id: outcome.id, mappings: outcome.mappings.map(x => x.id) }, true);
   }
 
   private unmapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
@@ -233,7 +259,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // TODO service call here
+    this.saveOutcome({ id: outcome.id, mappings: outcome.mappings.map(x => x.id) }, true);
   }
 
   // TODO type this parameter
@@ -253,22 +279,56 @@ export class BuilderStore {
   ///////////////////////////
 
   private async saveObject(data: any, delay?: boolean) {
-    const value = this.saveCache$.getValue();
+    const value = this.objectCache$.getValue();
 
     this.serviceInteraction.next(true);
 
     if (delay) {
       const newValue = value ? Object.assign(value, data) : data;
-      this.saveCache$.next(newValue);
+      this.objectCache$.next(newValue);
     } else {
       // clear the cache before submission so that any late arrivals will be cached for the next query
-      this.saveCache$.next(undefined);
+      this.objectCache$.next(undefined);
 
       // append learning object id to payload
       value.id = this.learningObject.id;
 
+      console.log('saving object changes', value);
+
       // send cached changes to server
       this.learningObjectService.save(value).then(() => {
+        this.serviceInteraction.next(false);
+      }).catch((err) => {
+        console.log('Error! ', err);
+        this.serviceInteraction.next(false);
+      });
+    }
+  }
+
+  private async saveOutcome(data: any, delay?: boolean) {
+    if (delay) {
+      const id = data.id;
+
+      // ensure that an outcome id is spepcified
+      if (!id) {
+        throw new Error('Error! No outcome id specified for mutation!');
+      }
+
+      // retrieve current cached Map from storage and get the current cached value for given id
+      const value = this.outcomeCache$.getValue();
+
+      const newValue = value ? Object.assign(value, data) : data;
+      this.outcomeCache$.next(newValue);
+    } else {
+      // clear the cache here so that new requests start a new cache
+      this.outcomeCache$.next(undefined);
+
+      delete data.id;
+
+      console.log('saving outcome', data);
+
+      // service call
+      this.learningObjectService.saveOutcome(this.learningObject.id, data).then(() => {
         this.serviceInteraction.next(false);
       }).catch((err) => {
         console.log('Error! ', err);

@@ -17,7 +17,7 @@
         (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
         (deleted)="deleteOutcome(o.id)"
         (unmap)="toggleStandardOutcome($event)"
-        (click)="activeOutcome = o.id"
+        (click)="setActiveOutcome(o.id)"
       >
       </clark-outcome>
     </ng-container>
