@@ -13,6 +13,7 @@ const builder_routes: Routes = [
       { path: '', redirectTo: 'info', pathMatch: 'full' },
       { path: 'info', component: InfoPageComponent, data: { state: 'info' } },
       { path: 'outcomes', component: OutcomePageComponent, data: { state: 'outcomes' } },
+      { path: 'outcomes/:learningOutcomeId', component: OutcomePageComponent, data: { state: 'outcomes' } },
       { path: 'materials', component: MaterialsPageComponent, data: { state: 'materials' } }
     ]
   }
