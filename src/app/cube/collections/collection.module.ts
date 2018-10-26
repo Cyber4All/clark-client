@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SharedModule } from '../../shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { SharedModule } from '../../shared/shared.module';
     FormsModule,
     HttpClientModule,
     CubeSharedModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
   exports: [],
   declarations: [CollectionComponent],
