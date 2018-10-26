@@ -76,11 +76,8 @@ export class ClarkComponent implements OnInit {
         this.errorMessage = e.error.split('.');
         this.isOldVersion = true;
       }
-    }, 1000); // 10 minute interval
+    }, 600000); // 10 minute interval
   }
-
-
-  //600000
 
   /**
    * Checks if the user is unverified and if they are establishes connection to gateway via socket
