@@ -75,7 +75,7 @@ export class AuthService {
       })
       .toPromise()
       .then(
-        (val) => {
+        () => {
           return Promise.resolve();
         },
         (error) => {

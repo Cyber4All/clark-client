@@ -2,8 +2,8 @@
 <router-outlet></router-outlet>
 <clark-popup *ngIf="isOldVersion" (closed)="isOldVersion = false">
     <div #popupInner class="popup-inner">
-      <div class="modal-title">A New Version of CLARK is Available!</div>
-        <div class="modal-text">Please refresh your browser to see our latest changes!</div>
+      <div class="modal-title">{{ errorMessage[0] }}</div>
+        <div class="modal-text">{{ errorMessage[1] }}</div>
         <div class="btn-group center">
           <button class="button good" (click)="reloadPage()">Refresh page <i class="fas fa-sync-alt"></i></button>
         </div>

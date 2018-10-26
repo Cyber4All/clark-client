@@ -45,6 +45,7 @@ export class ClarkComponent implements OnInit {
   isSupportedBrowser: boolean;
   cookiesAgreement: boolean;
   isOldVersion = false;
+  errorMessage: string;
 
   constructor(
     private authService: AuthService,
@@ -77,6 +78,7 @@ export class ClarkComponent implements OnInit {
       try {
         await this.authService.checkClientVersion();
       } catch (e) {
+        this.errorMessage = e.error.split('.');
         this.isOldVersion = true;
       }
     }, 600000); // 10 minute interval
