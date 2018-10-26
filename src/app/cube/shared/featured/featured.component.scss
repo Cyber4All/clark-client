@@ -1,5 +1,11 @@
 @import '~_vars.scss';
 
+.feature-text {
+  font-weight: 200;
+  font-size: 33px;
+  margin-bottom: 25px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
 .title {
   display: flex;
   flex-direction: row;
@@ -19,7 +25,7 @@
 
   .feature-text {
     margin-bottom: 0px;
-    text-align: center;
+    text-align: left;
     flex: 2;
   }
 
@@ -76,6 +82,9 @@
 }
 
 @media(max-width: 750px) {
+  .feature-text {
+    text-align: center !important;
+  }
   .title {
     flex-direction: column !important;
     justify-content: center !important;

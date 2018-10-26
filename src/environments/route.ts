@@ -147,6 +147,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     )}/learning-objects`;
   },
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
+  GET_COLLECTION_META(name: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
+  },
   GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username
