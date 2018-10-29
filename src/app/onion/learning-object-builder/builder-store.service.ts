@@ -353,8 +353,6 @@ export class BuilderStore {
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 
-      delete data.id;
-
       console.log('saving outcome', data);
 
       // service call
