@@ -16,8 +16,8 @@ hr {
 
 // This is styling for the input field for the learning object name
 input {
-  margin-top: 15px;
   padding: 7px;
+  padding-left: 0;
   font-size: 16px;
   border: 0;
   width: 522px;
@@ -26,7 +26,6 @@ input {
 }
 
 .select-wrapper {
-  margin-top: 30px;
   display: inline-flex;
 }
 
@@ -36,7 +35,6 @@ input {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin-top: 20px;
 
   .pill {
     color: $bright-blue;
@@ -57,11 +55,23 @@ input {
   }
 }
 
-// This is styling for the text area
-textarea {
-  padding: 10px 10px 0;
-  resize: vertical;
-  margin-top: 20px;
-  width: 90%;
-  height: 200px;
+.contributors-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 15px;
+
+  .svg-inline--fa,
+  .icon {
+    color: $bright-blue;
+  }
+
+  & > * {
+    margin-right: 6px;
+  }
+}
+
+.contributors-list__pill {
+  display: block;
 }

@@ -45,7 +45,14 @@ export class UserService {
       : Promise.resolve(false);
   }
 
-  searchUsers(query: {}) {
+  /**
+   * Performs a text search and returns a list of matching users
+   *
+   * @param {string} query the text string to query by
+   * @returns {Promise<User[]} array of users matching the text query
+   * @memberof UserService
+   */
+  searchUsers(query: string): Promise<User[]> {
     return this.http
       .get(
         USER_ROUTES.SEARCH_USERS(query),
@@ -56,6 +63,7 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
+        console.log(arr);
         return arr.map(member => User.instantiate(member));
       });
   }

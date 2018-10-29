@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LearningObject, LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome, User } from '@cyber4all/clark-entity';
 import { HttpClient } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from 'app/core/auth.service';
@@ -15,14 +15,16 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
  * @enum {number}
  */
 export enum BUILDER_ACTIONS {
-  CREATE_OUTCOME = 0,
-  DELETE_OUTCOME = 1,
-  MUTATE_OUTCOME = 2,
-  MAP_STANDARD_OUTCOME = 3,
-  UNMAP_STANDARD_OUTCOME = 4,
-  MUTATE_OBJECT = 5,
-  ADD_MATERIALS = 6,
-  DELETE_MATERIALS = 7
+  CREATE_OUTCOME,
+  DELETE_OUTCOME,
+  MUTATE_OUTCOME,
+  MAP_STANDARD_OUTCOME,
+  UNMAP_STANDARD_OUTCOME,
+  MUTATE_OBJECT,
+  ADD_MATERIALS,
+  DELETE_MATERIALS,
+  ADD_CONTRIBUTOR,
+  REMOVE_CONTRIBUTOR
 }
 
 /**
@@ -177,6 +179,10 @@ export class BuilderStore {
         return await this.mapStandardOutcomeMapping(data.id, data.standardOutcome);
       case BUILDER_ACTIONS.UNMAP_STANDARD_OUTCOME:
         return await this.unmapStandardOutcomeMapping(data.id, data.standardOutcome);
+      case BUILDER_ACTIONS.ADD_CONTRIBUTOR:
+        return await this.addContributor(data.user);
+      case BUILDER_ACTIONS.REMOVE_CONTRIBUTOR:
+        return await this.removeContributor(data.user);
       default:
         console.error('Error! Invalid action taken!');
         return;
@@ -274,12 +280,30 @@ export class BuilderStore {
     this.saveObject(data, true);
   }
 
+  private addContributor(user: User) {
+    this.learningObject.contributors.push(user);
+
+    this.saveObject({ contributors: this.learningObject.contributors.map(x => x.id) });
+  }
+
+  private removeContributor(user: User) {
+    // TODO send array of ids to server
+    const index = this.learningObject.contributors.map(x => x.username).indexOf(user.username);
+    if (index >= 0) {
+      this.learningObject.contributors.splice(index, 1);
+
+      this.saveObject({ contributors: this.learningObject.contributors.map(x => x.id) });
+    } else {
+      console.error('Error removing contributor! User not found in contributors array!');
+    }
+  }
+
   ///////////////////////////
   //  SERVICE INTERACTION  //
   ///////////////////////////
 
   private async saveObject(data: any, delay?: boolean) {
-    const value = this.objectCache$.getValue();
+    let value = this.objectCache$.getValue();
 
     this.serviceInteraction.next(true);
 
@@ -290,6 +314,12 @@ export class BuilderStore {
       // clear the cache before submission so that any late arrivals will be cached for the next query
       this.objectCache$.next(undefined);
 
+      if (!value) {
+        // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
+        // in this case we'll use the current data instead
+        value = data;
+      }
+
       // append learning object id to payload
       value.id = this.learningObject.id;
 
@@ -299,7 +329,7 @@ export class BuilderStore {
       this.learningObjectService.save(value).then(() => {
         this.serviceInteraction.next(false);
       }).catch((err) => {
-        console.log('Error! ', err);
+        console.error('Error! ', err);
         this.serviceInteraction.next(false);
       });
     }
@@ -331,7 +361,7 @@ export class BuilderStore {
       this.learningObjectService.saveOutcome(this.learningObject.id, data).then(() => {
         this.serviceInteraction.next(false);
       }).catch((err) => {
-        console.log('Error! ', err);
+        console.error('Error! ', err);
         this.serviceInteraction.next(false);
       });
     }

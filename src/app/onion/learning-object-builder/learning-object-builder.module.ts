@@ -20,6 +20,8 @@ import { OutcomesListItemComponent } from './components/standard-outcomes/outcom
 import { TextEditorComponent } from './components/text-editor.component';
 import { LearningObjectDescriptionComponent } from './components/description.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
+import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 
 @NgModule({
   imports: [
@@ -46,7 +48,9 @@ import { CKEditorModule } from 'ng2-ckeditor';
     StandardOutcomesComponent,
     OutcomesListItemComponent,
     LearningObjectDescriptionComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    UserDropdownComponent,
+    ContributorPillComponent
   ],
   providers: [BuilderStore]
 })

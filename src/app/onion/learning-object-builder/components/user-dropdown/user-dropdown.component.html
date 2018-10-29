@@ -1,0 +1,33 @@
+<div class="user-dropdown">
+  <input type="text" aria-label="user search" class="user-dropdown__search-input" placeholder="Search for authors" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
+  <ul *ngIf="showDropdown" class="user-dropdown__list">
+      <ng-container *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"></ng-container>
+  </ul>
+</div>
+
+<ng-template #resultsTemplate>
+  <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">
+    <virtual-scroller #searchResultsScroller [items]="searchResults">
+      <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (click)="toggleAuthor(user)">
+        <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': selectedAuthors.includes(user.username)}">
+          <span *ngIf="!selectedAuthors.includes(user.username)"><i class="fas fa-plus"></i></span>
+          <span *ngIf="selectedAuthors.includes(user.username)"><i class="fas fa-times"></i></span>
+        </span>
+        <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
+        {{ user.username }} - {{ user.name | titlecase }} from {{ user.organization | titlecase }}
+      </li>
+    </virtual-scroller>
+  </ng-container>
+</ng-template>
+
+<ng-template #loadingTemplate>
+  <span class="user-dropdown__message">
+    <i class="far fa-spinner-third fa-spin"></i>
+  </span>
+</ng-template>
+
+<ng-template #noResultsTemplate>
+  <span class="user-dropdown__message">
+    No results!
+  </span>
+</ng-template>

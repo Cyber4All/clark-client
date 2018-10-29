@@ -6,11 +6,11 @@ import { EventEmitter } from '@angular/core';
   template:
   `
   <div class="description-wrapper">
-    <div id="description-label" class="label">How woud you describe this learning object?
+    <!-- <div id="description-label" class="label">How woud you describe this learning object?
     <span tip="The description is a high level overview of the Learning Object that can be returned in search results">
       <a href="http://about.clark.center/tutorial/#Descriptions" target="blank"><i class="fas fa-question-circle"></i></a>
     </span>
-    </div>
+    </div> -->
     <div class="goals list">
       <clark-text-editor [(savedContent)] = "learningObject.goals[0].text"
       editorPlaceholder = "Enter description here" (textOutput) = "bindEditorOutput($event)" name="description"></clark-text-editor>
