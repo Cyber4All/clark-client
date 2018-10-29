@@ -65,6 +65,38 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
       }
 
+      .academic-levels {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          margin-bottom: 5px;
+          .title {
+            width: 100%;
+            color: black;
+            font-size: 22px;
+            padding-left: 10px;
+          }
+          .level {
+            text-transform: none;
+            cursor: pointer;
+            margin-right: 10px;
+            background: $blue-accent;
+            color: #fff;
+            box-shadow: none;
+            padding: 5px 10px;
+            border-radius: 2px;
+            border: 3px solid transparent;
+            margin-top: 10px;
+            user-select: none;
+            &:hover, &:focus {
+              text-decoration: none;
+              outline: none;
+            }
+          }
+      }
+
       .outcomes {
         background: desaturate(lighten($blue-accent, 55), 20);
       }
