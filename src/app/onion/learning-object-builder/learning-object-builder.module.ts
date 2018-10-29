@@ -22,6 +22,7 @@ import { LearningObjectDescriptionComponent } from './components/description.com
 import { CKEditorModule } from 'ng2-ckeditor';
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
+import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { ContributorPillComponent } from './components/contributor-pill/contribu
     LearningObjectDescriptionComponent,
     TextEditorComponent,
     UserDropdownComponent,
-    ContributorPillComponent
+    ContributorPillComponent,
+    ScaffoldComponent
   ],
   providers: [BuilderStore]
 })
