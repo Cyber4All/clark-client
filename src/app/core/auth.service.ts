@@ -86,6 +86,28 @@ export class AuthService {
       );
   }
 
+  checkClientVersion(): Promise<void> {
+    // Application version information
+    const { version: appVersion } = require('../../../package.json');
+    return this.http
+      .get(environment.apiURL + '/clientversion/' + appVersion,
+      {
+        withCredentials: true,
+        responseType: 'text'
+      })
+      .toPromise()
+      .then(
+        () => {
+          return Promise.resolve();
+        },
+        (error) => {
+          if (error.status === 426) {
+            return Promise.reject(error);
+          }
+        }
+      );
+  }
+
   refreshToken(): Promise<void> {
     return this.http
       .get(environment.apiURL + '/users/tokens/refresh', {
