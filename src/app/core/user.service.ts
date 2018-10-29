@@ -63,7 +63,6 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        console.log(arr);
         return arr.map(member => User.instantiate(member));
       });
   }
