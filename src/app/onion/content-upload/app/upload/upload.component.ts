@@ -28,7 +28,7 @@ import { fromEvent, Subject } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
-import { USER_ROUTES } from '@env/route';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { getPaths } from '../../../../shared/filesystem/file-functions';
 import { AuthService } from '../../../../core/auth.service';
 
@@ -262,7 +262,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private updateFileSubscription() {
-    this.files$.next(<LearningObjectFile[]>this.learningObject.materials.files);
+    this.files$.next(<LearningObjectFile[]>(
+      this.learningObject.materials.files.map(file => {
+        file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+          username: this.learningObject.author.username,
+          loId: this.learningObject.id,
+          fileId: file.id,
+          open: true
+        });
+        return file;
+      })
+    ));
   }
   /**
    * Updates next value on folderMeta
