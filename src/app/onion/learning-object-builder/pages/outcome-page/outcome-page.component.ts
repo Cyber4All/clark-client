@@ -6,6 +6,7 @@ import {
 } from '../../builder-store.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'clark-outcome-page',
@@ -18,10 +19,19 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   // flags
   activeOutcome: string;
+  // passed outcome id from query params
+  passedId: string;
 
-  constructor(private store: BuilderStore, private cd: ChangeDetectorRef) {}
+  constructor(private store: BuilderStore, private cd: ChangeDetectorRef, private route: ActivatedRoute ) {}
 
   ngOnInit() {
+    // subscribe to params from activated route
+    this.route.paramMap.takeUntil(this.destroyed$).subscribe(params => {
+      this.passedId = params.get('id');
+      console.log('ID: ' + this.passedId ); // joel's dumb log
+
+    });
+
     // listen for outcome events and update component store
     this.store.outcomeEvent
       .pipe(
@@ -61,20 +71,15 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   set outcomes(outcomes: Map<string, LearningOutcome>) {
     this._outcomes = outcomes;
     if (outcomes.size && !this.activeOutcome) {
-      this.activeOutcome = outcomes.values().next().value.id;
-    }
-  }
-
-  setActiveOutcome(id: string) {
-    if (id !== this.activeOutcome) {
-      this.store.sendOutcomeCache();
-      this.activeOutcome = id;
+      setTimeout(() => {
+        this.activeOutcome = outcomes.values().next().value.id;
+      }, 100);
     }
   }
 
   mutateOutcome(id: string, params: any) {
     const outcome = this.outcomes.get(id);
-
+    console.log('current outcome id: ' + this.activeOutcome ); // joel's dumb log
     this.store.execute(actions.MUTATE_OUTCOME, { id, params });
   }
 
