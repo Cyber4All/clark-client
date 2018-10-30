@@ -53,7 +53,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
       this.text = this.outcome.text;
       this.category = this.outcome.bloom;
 
-      this.goodVerb = this.isGoodVerb(this.verb);
+      this.goodVerb = this.isGoodVerb(this.verb, true);
     }
 
     this.store.outcomeEvent.pipe(
@@ -64,7 +64,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
         this.category = this.outcome.bloom;
         this.verb = this.outcome.verb;
 
-        this.goodVerb = this.isGoodVerb(this.verb);
+        this.goodVerb = this.isGoodVerb(this.verb, true);
       }
     });
 
@@ -128,13 +128,15 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
    * @param verb {string} verb to be checked
    * @return {boolean} true if verb is found, false otherwise
    */
-  isGoodVerb(verb: string): boolean {
+  isGoodVerb(verb: string, noEmit?: boolean): boolean {
     const levelsArray = Array.from(levels.values());
     for (let i = 0, l = levelsArray.length; i < l; i++) {
       // for this level, grab it's verbs and check if the current verb is in that list
       if (Array.from(verbs[levelsArray[i]].values()).includes(verb.charAt(0).toUpperCase() + verb.substring(1))) {
         this.category = levelsArray[i];
-        this.selectedCategory.emit(this.category);
+        if (!noEmit) {
+          this.selectedCategory.emit(this.category);
+        }
         return true;
       }
     }

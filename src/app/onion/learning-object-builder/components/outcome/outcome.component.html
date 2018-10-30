@@ -1,20 +1,18 @@
- <div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
-    <div class="outcome-header">{{outcome.verb ? outcome.verb + ' ' + outcome.text : 'Learning Outcome ' +
-      outcomeNumber }}</div>
-    <div *ngIf="!!active" class="outcome-delete" (click)="emitDeletion()">
-      <span>Delete Outcome</span>
-      <i class="far fa-trash"></i>
-    </div>
-    <div class="level-select">
-      <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom === l}" (click)="emitLevel(l)">
-        <div class="icon">
-          <span *ngIf="l === 'Remember and Understand'"><i class="fal fa-cloud"></i></span>
-          <span *ngIf="l === 'Apply and Analyze'"><i class="fal fa-bolt"></i></span>
-          <span *ngIf="l === 'Evaluate and Synthesize'"><i class="fal fa-balance-scale-right"></i></span>
-        </div>
-        <div class="level-text">
-          {{ l.replace('and', '&') }}
-        </div>
+<div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}"  [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
+  <div class="outcome-header">{{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome ' + outcomeNumber }}</div>
+  <div *ngIf="!!active" class="outcome-delete" (click)="emitDeletion()">
+    <span>Delete Outcome</span>
+    <i class="far fa-trash"></i>
+  </div>
+  <div class="level-select">
+    <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom.toLowerCase() === l.toLowerCase()}" (click)="emitLevel(l)">
+      <div class="icon">
+        <span *ngIf="l === 'Remember and Understand'"><i class="fal fa-cloud"></i></span>
+        <span *ngIf="l === 'Apply and Analyze'"><i class="fal fa-bolt"></i></span>
+        <span *ngIf="l === 'Evaluate and Synthesize'"><i class="fal fa-balance-scale-right"></i></span>
+      </div>
+      <div class="level-text">
+        {{ l.replace('and', '&') }}
       </div>
     </div>
     <div class="outcome-text">

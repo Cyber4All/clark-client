@@ -41,7 +41,8 @@ export class LearningObjectService {
         { object: learningObject },
         { headers: this.headers, withCredentials: true }
       )
-      .toPromise().then((res: any) => {
+      .toPromise()
+      .then((res: any) => {
         return LearningObject.instantiate(res);
       });
     // TODO: Verify this response gives the learning object name
@@ -73,13 +74,15 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getLearningObjects(filters?: any): Promise<LearningObject[]> {
-    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(this.auth.user.username, filters);
+    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(
+      this.auth.user.username,
+      filters
+    );
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
       .then((response: any) => {
-        return response
-          .map(object => LearningObject.instantiate(object));
+        return response.map(object => LearningObject.instantiate(object));
       });
   }
 
@@ -94,7 +97,11 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   // TODO type this parameter
-  save(learningObject: { id?: string, _id?: string, [key: string]: any }): Promise<{}> {
+  save(learningObject: {
+    id?: string;
+    _id?: string;
+    [key: string]: any;
+  }): Promise<{}> {
     const id = learningObject.id || learningObject._id;
 
     // verify that an id was included
@@ -113,6 +120,28 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
+  }
+
+  /**
+   * Modify an outcome by sending a partial learning outcome
+   *
+   * @param {string} learningObjectId the id of the source learning object
+   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
+  saveOutcome(
+    learningObjectId: string,
+    outcome: { id: string; [key: string]: any }
+  ): Promise<any> {
+    const outcomeId = outcome.id;
+    delete outcome.id;
+
+    return this.http.patch(
+      USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId),
+      { outcome },
+      { withCredentials: true }
+    ).toPromise();
   }
 
   /**
@@ -160,7 +189,11 @@ export class LearningObjectService {
       learningObjectName
     );
     return this.http
-      .delete(route, { headers: this.headers, withCredentials: true, responseType: 'text' })
+      .delete(route, {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'text'
+      })
       .toPromise();
   }
 
@@ -178,7 +211,11 @@ export class LearningObjectService {
     );
 
     return this.http
-      .delete(route, { headers: this.headers, withCredentials: true, responseType: 'text' })
+      .delete(route, {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'text'
+      })
       .toPromise();
   }
 
@@ -189,12 +226,18 @@ export class LearningObjectService {
     );
 
     return this.http
-      .post(route, { children }, { withCredentials: true, responseType: 'text' })
+      .post(
+        route,
+        { children },
+        { withCredentials: true, responseType: 'text' }
+      )
       .toPromise();
   }
 
   updateReadme(username: string, id: string): Promise<any> {
     const route = USER_ROUTES.UPDATE_PDF(username, id);
-    return this.http.patch(route, {}, { withCredentials: true, responseType: 'text' }).toPromise();
+    return this.http
+      .patch(route, {}, { withCredentials: true, responseType: 'text' })
+      .toPromise();
   }
 }

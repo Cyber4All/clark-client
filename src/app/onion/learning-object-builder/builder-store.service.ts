@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LearningObject, LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome, User } from '@cyber4all/clark-entity';
 import { HttpClient } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from 'app/core/auth.service';
@@ -15,14 +15,16 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
  * @enum {number}
  */
 export enum BUILDER_ACTIONS {
-  CREATE_OUTCOME = 0,
-  DELETE_OUTCOME = 1,
-  MUTATE_OUTCOME = 2,
-  MAP_STANDARD_OUTCOME = 3,
-  UNMAP_STANDARD_OUTCOME = 4,
-  MUTATE_OBJECT = 5,
-  ADD_MATERIALS = 6,
-  DELETE_MATERIALS = 7
+  CREATE_OUTCOME,
+  DELETE_OUTCOME,
+  MUTATE_OUTCOME,
+  MAP_STANDARD_OUTCOME,
+  UNMAP_STANDARD_OUTCOME,
+  MUTATE_OBJECT,
+  ADD_MATERIALS,
+  DELETE_MATERIALS,
+  ADD_CONTRIBUTOR,
+  REMOVE_CONTRIBUTOR
 }
 
 /**
@@ -37,8 +39,11 @@ export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, LearningOutcome> = new Map();
 
-  // manages a cache of data that needs to be saved (debounced)
-  private saveCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
+  // manages a cache of object data that needs to be saved (debounced)
+  private objectCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
+
+  // manages a cache of outcome data that needs to be saved (debounced)
+  private outcomeCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   // fired when this service is destroyed
   private destroyed$: Subject<void> = new Subject();
@@ -52,15 +57,29 @@ export class BuilderStore {
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
   public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  // true if an object can be saved (has a name) and that name is unique amongst that user's learning objects, false otherwise
+  public saveable: boolean;
+
   constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
-    // subscribe to our saveCache$ observable and initiate calls to save object after a debounce
-    this.saveCache$.pipe(
+    // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
+    this.objectCache$.pipe(
       debounceTime(650),
       takeUntil(this.destroyed$)
     ).subscribe(cache => {
       if (cache !== undefined) {
         // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
         this.saveObject(cache);
+      }
+    });
+
+    // subscribe to our outcomeCache$ observable and initiate calls to save outcome after a debounce
+    this.outcomeCache$.pipe(
+      debounceTime(650),
+      takeUntil(this.destroyed$)
+    ).subscribe(cache => {
+      if (cache !== undefined) {
+        // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
+        this.saveOutcome(cache);
       }
     });
   }
@@ -115,6 +134,7 @@ export class BuilderStore {
   async fetch(name: string): Promise<LearningObject> {
     this.learningObject = await this.learningObjectService.getLearningObject(name);
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
+    this.saveable = true;
     return this.learningObject;
   }
 
@@ -126,7 +146,9 @@ export class BuilderStore {
    */
   makeNew(): LearningObject {
     this.learningObject = new LearningObject(this.auth.user);
+    this.learningObject.goals = [{ text: '' }]; // initialzie empty description
     this.outcomes = new Map();
+    this.saveable = false;
     return this.learningObject;
   }
 
@@ -164,9 +186,25 @@ export class BuilderStore {
         return await this.mapStandardOutcomeMapping(data.id, data.standardOutcome);
       case BUILDER_ACTIONS.UNMAP_STANDARD_OUTCOME:
         return await this.unmapStandardOutcomeMapping(data.id, data.standardOutcome);
+      case BUILDER_ACTIONS.ADD_CONTRIBUTOR:
+        return await this.addContributor(data.user);
+      case BUILDER_ACTIONS.REMOVE_CONTRIBUTOR:
+        return await this.removeContributor(data.user);
       default:
         console.error('Error! Invalid action taken!');
         return;
+    }
+  }
+
+  /**
+   *
+   *
+   * @memberof BuilderStore
+   */
+  sendOutcomeCache() {
+    const currentCacheValue = this.outcomeCache$.getValue();
+    if (currentCacheValue) {
+      this.saveOutcome(currentCacheValue);
     }
   }
 
@@ -180,7 +218,8 @@ export class BuilderStore {
 
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
-    // TODO service call here
+
+    // TODO service interaction here
 
     return outcome.id;
   }
@@ -206,7 +245,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // TODO delayed service interaction here
+    this.saveOutcome({ id: outcome.id, bloom: outcome.bloom, verb: outcome.verb, text: outcome.text }, true);
   }
 
   private async mapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
@@ -216,7 +255,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // TODO service call here
+    this.saveOutcome({ id: outcome.id, mappings: outcome.mappings.map(x => x.id) }, true);
   }
 
   private unmapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
@@ -233,7 +272,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // TODO service call here
+    this.saveOutcome({ id: outcome.id, mappings: outcome.mappings.map(x => x.id) }, true);
   }
 
   // TODO type this parameter
@@ -248,30 +287,96 @@ export class BuilderStore {
     this.saveObject(data, true);
   }
 
+  private addContributor(user: User) {
+    this.learningObject.contributors.push(user);
+
+    this.saveObject({ contributors: this.learningObject.contributors.map(x => x.id) });
+  }
+
+  private removeContributor(user: User) {
+    // TODO send array of ids to server
+    const index = this.learningObject.contributors.map(x => x.username).indexOf(user.username);
+    if (index >= 0) {
+      this.learningObject.contributors.splice(index, 1);
+
+      this.saveObject({ contributors: this.learningObject.contributors.map(x => x.id) });
+    } else {
+      console.error('Error removing contributor! User not found in contributors array!');
+    }
+  }
+
   ///////////////////////////
   //  SERVICE INTERACTION  //
   ///////////////////////////
 
   private async saveObject(data: any, delay?: boolean) {
-    const value = this.saveCache$.getValue();
+    let value = this.objectCache$.getValue();
 
     this.serviceInteraction.next(true);
 
     if (delay) {
       const newValue = value ? Object.assign(value, data) : data;
-      this.saveCache$.next(newValue);
+      this.objectCache$.next(newValue);
     } else {
-      // clear the cache before submission so that any late arrivals will be cached for the next query
-      this.saveCache$.next(undefined);
+      // check to see if the learning object name is empty, if it is update saveable to false and don't clear cache
+      if (this.learningObject.name && this.learningObject.name !== '') {
+        // clear the cache before submission so that any late arrivals will be cached for the next query
+        this.objectCache$.next(undefined);
 
-      // append learning object id to payload
-      value.id = this.learningObject.id;
+        if (!value) {
+          // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
+          // in this case we'll use the current data instead
+          value = data;
+        }
 
-      // send cached changes to server
-      this.learningObjectService.save(value).then(() => {
+        // boolean, true if name changed, false otherwise
+        const nameChange = !!value.name;
+
+        // append learning object id to payload
+        value.id = this.learningObject.id;
+
+        console.log('saving object changes', value);
+
+        // send cached changes to server
+        return this.learningObjectService.save(value).then(() => {
+          this.serviceInteraction.next(false);
+          this.saveable = true;
+        }).catch((err) => {
+          console.error('Error! ', err);
+          this.serviceInteraction.next(false);
+        });
+      } else {
+        this.saveable = false;
+        this.serviceInteraction.next(false);
+      }
+    }
+  }
+
+  private async saveOutcome(data: any, delay?: boolean) {
+    if (delay) {
+      const id = data.id;
+
+      // ensure that an outcome id is spepcified
+      if (!id) {
+        throw new Error('Error! No outcome id specified for mutation!');
+      }
+
+      // retrieve current cached Map from storage and get the current cached value for given id
+      const value = this.outcomeCache$.getValue();
+
+      const newValue = value ? Object.assign(value, data) : data;
+      this.outcomeCache$.next(newValue);
+    } else {
+      // clear the cache here so that new requests start a new cache
+      this.outcomeCache$.next(undefined);
+
+      console.log('saving outcome', data);
+
+      // service call
+      this.learningObjectService.saveOutcome(this.learningObject.id, data).then(() => {
         this.serviceInteraction.next(false);
       }).catch((err) => {
-        console.log('Error! ', err);
+        console.error('Error! ', err);
         this.serviceInteraction.next(false);
       });
     }

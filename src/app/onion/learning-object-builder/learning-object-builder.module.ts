@@ -20,6 +20,8 @@ import { OutcomesListItemComponent } from './components/standard-outcomes/outcom
 import { TextEditorComponent } from './components/text-editor.component';
 import { LearningObjectDescriptionComponent } from './components/description.component';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
+import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 
 @NgModule({
@@ -48,6 +50,8 @@ import { ScaffoldComponent } from './components/scaffold/scaffold.component';
     OutcomesListItemComponent,
     LearningObjectDescriptionComponent,
     TextEditorComponent,
+    UserDropdownComponent,
+    ContributorPillComponent,
     ScaffoldComponent
   ],
   providers: [BuilderStore]

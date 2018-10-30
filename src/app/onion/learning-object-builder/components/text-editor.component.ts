@@ -14,7 +14,6 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
         >
     </ckeditor>
   </div>
-  <!-- <div class="btn-group to-right"><div class = "button neutral on-white" (click)="toggleBox()">{{buttonText}}</div></div>-->
   `,
   styles: ['#cke_bottom_detail, .cke_bottom { display: none; }']
 })

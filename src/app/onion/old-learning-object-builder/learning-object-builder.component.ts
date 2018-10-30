@@ -108,7 +108,7 @@ export class LearningObjectBuilderComponent implements OnInit {
     if (!this.isNew) {
       // editing
       this.service
-        .save(this.learningObject.id)// deleted  this.learningObject argument because it expects one argument, not two
+        .save(this.learningObject)
         .then(success => {
           if (!willUpload) {
             this.notificationService.notify(

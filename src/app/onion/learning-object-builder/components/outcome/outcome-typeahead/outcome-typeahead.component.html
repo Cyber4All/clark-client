@@ -1,7 +1,7 @@
 <div class="typeahead">
   <div class="input">
     <div #verbElement *ngIf="verb" class="verb" [ngClass]="{'bad': !goodVerb}" (click)="toggleMenu(true, $event)">
-      {{ verb }}
+      {{ verb | titlecase }}
       <i class="fas fa-angle-down"></i>
     </div>
     <input [ngClass]="{'withVerb': verb, 'bad': verb && !goodVerb}" placeholder="Outcome text" type="text" (input)="input$.next($event)" [value]="text" />
@@ -9,7 +9,7 @@
   <div *ngIf="menu" class="menu" (click)="$event.stopPropagation()">
     <ul>
       <li *ngFor="let v of verbsInSelectedCategory" (click)="setVerb(v)" [ngClass]="{'selected': verb === v}">
-        {{ v }}
+        {{ v | titlecase }}
       </li>
     </ul>
   </div>
