@@ -9,10 +9,10 @@
         <li>
           <a routerLink="info" routerLinkActive="active">Basic Information</a>
         </li>
-        <li>
+        <li [@route] *ngIf="canRoute('outcomes')">
           <a routerLink="outcomes" routerLinkActive="active">Learning Outcomes</a>
         </li>
-        <li>
+        <li [@route] *ngIf="canRoute('materials')">
           <a routerLink="materials" routerLinkActive="active">Materials</a>
         </li>
       </ul>
