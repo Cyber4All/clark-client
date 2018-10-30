@@ -9,6 +9,7 @@ import { AuthService } from '../../core/auth.service';
 import { RatingService } from '../../core/rating.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
 import { ModalService, ModalListElement } from '../../shared/modals';
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -90,6 +91,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.learningObject = await this.learningObjectService.getLearningObject(
         author,
         name
+      );
+      this.learningObject.materials.files = this.learningObject.materials.files.map(
+        file => {
+          file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+            username: this.learningObject.author.username,
+            loId: this.learningObject.id,
+            fileId: file.id,
+            open: true
+          });
+          return file;
+        }
       );
 
       if (

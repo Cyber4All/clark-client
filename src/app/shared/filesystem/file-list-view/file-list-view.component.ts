@@ -13,6 +13,8 @@ import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { TimeFunctions } from '../../../onion/content-upload/app/shared/time-functions';
+import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -39,6 +41,9 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   descriptionControl = new FormControl();
   preview = true;
 
+  microsoftPreviewUrl = 'https://view.officeapps.live.com/op/embed.aspx?src=';
+  previewable: Map<string, string[]> = new Map();
+
   getIcon = (extension: string) => getIcon(extension);
 
   getTimestampAge = (timestamp: string) => TimeFunctions.getTimestampAge(+timestamp);
@@ -56,12 +61,14 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     return timestamp;
   }
 
-  constructor() {}
+  constructor(private auth: AuthService) {
+    // set which extensions can be previewed and how
+    this.previewable.set('microsoft', ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ott', 'oth', 'odm']);
+    this.previewable.set('browser', ['pdf']);
+  }
 
   ngOnInit(): void {
     this.subToDescription();
-
-    
   }
 
   /**
@@ -82,6 +89,22 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     );
   }
 
+  previewUrl(ext: string): string {
+    let returnType: string;
+
+    if (this.auth.isLoggedIn.getValue()) {
+      this.previewable.forEach((exts: string[], key: string) => {
+        if (exts.includes(ext.replace('.', ''))) {
+          // send a space character here to evaluate truthy but not affect the final preview url
+          returnType = (key === 'microsoft')  ? this.microsoftPreviewUrl : ' ';
+          return;
+        }
+      });
+    }
+
+    return returnType;
+  }
+
   /**
    * Emits desired path if not clicking an input field
    *
@@ -95,8 +118,15 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  openFile(path: string, $event: any): void {
-    this.preview = false;
+  openFile(file: File): void {
+    const url = this.previewUrl(file.extension);
+    if (url) {
+      console.log(url + file.url);
+      window.open(url + file.url, '_blank');
+      this.preview = true;
+    } else {
+      this.preview = false;
+    }
   }
 
   returnToFileView() {
