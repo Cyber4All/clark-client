@@ -329,22 +329,39 @@ export class BuilderStore {
           value = data;
         }
 
-        // boolean, true if name changed, false otherwise
-        const nameChange = !!value.name;
+        if (!this.learningObject.id && value.name && value.name !== '') {
+          // this is a new learning object and we've been given a saveable nam
 
-        // append learning object id to payload
-        value.id = this.learningObject.id;
+          // append status property to data
+          value.status = 'unpublished';
 
-        console.log('saving object changes', value);
+          // create the object
+          this.learningObjectService.create(value).then((object: LearningObject) => {
+            this.learningObject = object;
+            this.serviceInteraction.next(false);
+            this.saveable = true;
+          }).catch((err) => {
+            console.error('Error! ', err);
+            this.serviceInteraction.next(false);
+            this.saveable = false;
+          });
+        } else if (this.learningObject.id) {
+          // this is an existing object and we can save it (has a saveable name)
 
-        // send cached changes to server
-        return this.learningObjectService.save(value).then(() => {
-          this.serviceInteraction.next(false);
-          this.saveable = true;
-        }).catch((err) => {
-          console.error('Error! ', err);
-          this.serviceInteraction.next(false);
-        });
+          // append learning object id to payload
+          value.id = this.learningObject.id;
+
+          console.log('saving object changes', value);
+
+          // send cached changes to server
+          this.learningObjectService.save(value).then(() => {
+            this.serviceInteraction.next(false);
+            this.saveable = true;
+          }).catch((err) => {
+            console.error('Error! ', err);
+            this.serviceInteraction.next(false);
+          });
+        }
       } else {
         this.saveable = false;
         this.serviceInteraction.next(false);
