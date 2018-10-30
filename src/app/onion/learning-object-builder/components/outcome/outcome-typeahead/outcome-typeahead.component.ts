@@ -28,15 +28,20 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
 
   menu = false;
 
+  //Create event emitters
   @Output() selectedVerb: EventEmitter<string> = new EventEmitter();
   @Output() selectedCategory: EventEmitter<string> = new EventEmitter();
   @Output() enteredText: EventEmitter<string> = new EventEmitter();
+  //this event emitter helps to change the overflow value from hidden to visible when the dropdown button is clicked
+  @Output() overflowValue: EventEmitter<any> = new EventEmitter();
 
   /**
    * Listen for click aways from the dropdown menu
    */
   @HostListener('document:click', ['$event']) clickout() {
     this.toggleMenu(false);
+    //when there are clicks away from the dropdown menu, the overflow is set to hidden (false)
+    this.overflowValue.emit(false);
   }
 
   constructor(private store: BuilderStore) { }
@@ -99,8 +104,9 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
   toggleMenu(value, event?) {
     if (event) {
       event.stopPropagation();
+      //when the dropdown menu is clicked, the overflow value is set to visible (true)
+      this.overflowValue.emit(true);
     }
-
     this.menu = value;
   }
 
