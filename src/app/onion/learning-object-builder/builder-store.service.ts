@@ -39,9 +39,10 @@ export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, LearningOutcome> = new Map();
 
-  // manages a cache of data that needs to be saved (debounced)
+  // manages a cache of object data that needs to be saved (debounced)
   private objectCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
+  // manages a cache of outcome data that needs to be saved (debounced)
   private outcomeCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   // fired when this service is destroyed
@@ -55,6 +56,9 @@ export class BuilderStore {
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
   public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  // true if an object can be saved (has a name) and that name is unique amongst that user's learning objects, false otherwise
+  public saveable: boolean;
 
   constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
@@ -130,6 +134,7 @@ export class BuilderStore {
   async fetch(name: string): Promise<LearningObject> {
     this.learningObject = await this.learningObjectService.getLearningObject(name);
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
+    this.saveable = true;
     return this.learningObject;
   }
 
@@ -141,7 +146,9 @@ export class BuilderStore {
    */
   makeNew(): LearningObject {
     this.learningObject = new LearningObject(this.auth.user);
+    this.learningObject.goals = [{ text: '' }]; // initialzie empty description
     this.outcomes = new Map();
+    this.saveable = false;
     return this.learningObject;
   }
 
@@ -311,27 +318,54 @@ export class BuilderStore {
       const newValue = value ? Object.assign(value, data) : data;
       this.objectCache$.next(newValue);
     } else {
-      // clear the cache before submission so that any late arrivals will be cached for the next query
-      this.objectCache$.next(undefined);
+      // check to see if the learning object name is empty, if it is update saveable to false and don't clear cache
+      if (this.learningObject.name && this.learningObject.name !== '') {
+        // clear the cache before submission so that any late arrivals will be cached for the next query
+        this.objectCache$.next(undefined);
 
-      if (!value) {
-        // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
-        // in this case we'll use the current data instead
-        value = data;
+        if (!value) {
+          // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
+          // in this case we'll use the current data instead
+          value = data;
+        }
+
+        if (!this.learningObject.id && value.name && value.name !== '') {
+          // this is a new learning object and we've been given a saveable nam
+
+          // append status property to data
+          value.status = 'unpublished';
+
+          // create the object
+          this.learningObjectService.create(value).then((object: LearningObject) => {
+            this.learningObject = object;
+            this.serviceInteraction.next(false);
+            this.saveable = true;
+          }).catch((err) => {
+            console.error('Error! ', err);
+            this.serviceInteraction.next(false);
+            this.saveable = false;
+          });
+        } else if (this.learningObject.id) {
+          // this is an existing object and we can save it (has a saveable name)
+
+          // append learning object id to payload
+          value.id = this.learningObject.id;
+
+          console.log('saving object changes', value);
+
+          // send cached changes to server
+          this.learningObjectService.save(value).then(() => {
+            this.serviceInteraction.next(false);
+            this.saveable = true;
+          }).catch((err) => {
+            console.error('Error! ', err);
+            this.serviceInteraction.next(false);
+          });
+        }
+      } else {
+        this.saveable = false;
+        this.serviceInteraction.next(false);
       }
-
-      // append learning object id to payload
-      value.id = this.learningObject.id;
-
-      console.log('saving object changes', value);
-
-      // send cached changes to server
-      this.learningObjectService.save(value).then(() => {
-        this.serviceInteraction.next(false);
-      }).catch((err) => {
-        console.error('Error! ', err);
-        this.serviceInteraction.next(false);
-      });
     }
   }
 

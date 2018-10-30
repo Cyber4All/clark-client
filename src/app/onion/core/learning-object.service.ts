@@ -54,10 +54,9 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
    */
-  getLearningObject(learningObjectName: string): Promise<LearningObject> {
+  getLearningObject(learningObjectId: string): Promise<LearningObject> {
     const route = USER_ROUTES.GET_LEARNING_OBJECT(
-      this.auth.user.username,
-      learningObjectName
+      learningObjectId
     );
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })

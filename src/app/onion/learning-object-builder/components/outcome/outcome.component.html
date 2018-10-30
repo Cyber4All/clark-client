@@ -1,4 +1,4 @@
-<div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}">
+<div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}"  [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
   <div class="outcome-header">{{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome ' + outcomeNumber }}</div>
   <div *ngIf="!!active" class="outcome-delete" (click)="emitDeletion()">
     <span>Delete Outcome</span>
@@ -15,19 +15,21 @@
         {{ l.replace('and', '&') }}
       </div>
     </div>
-  </div>
-  <div class="outcome-text">
-    <clark-outcome-typeahead [outcome]="outcome" (selectedVerb)="emitVerb($event)" (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)"></clark-outcome-typeahead>
-  </div>
-  <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
-    <div class="outcome-header">Maps to: </div>
-    <div class="pills">
-      <div *ngFor="let m of outcome.mappings" class="pill">
-        {{ m.author }} - {{ m.name }}
-        <span (click)="removeMapping(m)">
-          <i class="fal fa-times"></i>
-        </span>
+    <div class="outcome-text">
+      <clark-outcome-typeahead (overflowValue)="setOverflow($event)" [outcome]="outcome" (selectedVerb)="emitVerb($event)"
+        (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)" class="absolute-position">
+      </clark-outcome-typeahead>
+    </div>
+    <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
+      <div class="outcome-header">Maps to: </div>
+      <div class="pills">
+        <div *ngFor="let m of outcome.mappings" class="pill">
+          {{ m.author }} - {{ m.name }}
+          <span (click)="removeMapping(m)">
+            <i class="fal fa-times"></i>
+          </span>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<!-- [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}" -->
