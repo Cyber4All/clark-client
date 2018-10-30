@@ -53,11 +53,11 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
     this.route.paramMap.takeUntil(this.destroyed$).subscribe(params => {
-      const name = params.get('name');
+      const id = params.get('learningObjectId');
 
       // if name parameter found, instruct store to fetch full learning object
-      if (name) {
-        this.store.fetch(name);
+      if (id) {
+        this.store.fetch(id);
       } else {
         // otherwise instruct store to initialize and store a blank learning object
         this.store.makeNew();

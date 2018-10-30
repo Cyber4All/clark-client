@@ -54,10 +54,8 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/${encodeURIComponent(learningObjectName)}/unpublish`;
   },
-  GET_LEARNING_OBJECT(username, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
+  GET_LEARNING_OBJECT(id) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
   },
   DELETE_LEARNING_OBJECT(username, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
