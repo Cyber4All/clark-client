@@ -252,8 +252,12 @@ export class AuthService {
   }
 
   makeUserFromCookieResponse(val: any): User {
-    const user = User.instantiate(val);
-    return user;
+    try {
+      const user = User.instantiate(val);
+      return user;
+    } catch {
+      return val as User;
+    }
   }
 
   establishSocket() {

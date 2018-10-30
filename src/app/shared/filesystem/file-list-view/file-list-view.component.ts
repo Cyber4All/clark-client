@@ -14,6 +14,7 @@ import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { TimeFunctions } from '../../../onion/content-upload/app/shared/time-functions';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -60,7 +61,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     return timestamp;
   }
 
-  constructor() {
+  constructor(private auth: AuthService) {
     // set which extensions can be previewed and how
     this.previewable.set('microsoft', ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ott', 'oth', 'odm']);
     this.previewable.set('browser', ['pdf']);
@@ -91,13 +92,15 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   previewUrl(ext: string): string {
     let returnType: string;
 
-    this.previewable.forEach((exts: string[], key: string) => {
-      if (exts.includes(ext.replace('.', ''))) {
-        // send a space character here to evaluate truthy but not affect the final preview url
-        returnType = (key === 'microsoft')  ? this.microsoftPreviewUrl : ' ';
-        return;
-      }
-    });
+    if (this.auth.isLoggedIn.getValue()) {
+      this.previewable.forEach((exts: string[], key: string) => {
+        if (exts.includes(ext.replace('.', ''))) {
+          // send a space character here to evaluate truthy but not affect the final preview url
+          returnType = (key === 'microsoft')  ? this.microsoftPreviewUrl : ' ';
+          return;
+        }
+      });
+    }
 
     return returnType;
   }
