@@ -309,7 +309,7 @@ export class BuilderStore {
   //  SERVICE INTERACTION  //
   ///////////////////////////
 
-  private async saveObject(data: any, delay?: boolean) {
+  private async saveObject(data: any, delay?: boolean): Promise<any> {
     let value = this.objectCache$.getValue();
 
     this.serviceInteraction.next(true);
