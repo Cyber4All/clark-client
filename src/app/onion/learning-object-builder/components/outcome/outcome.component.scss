@@ -1,8 +1,18 @@
-@import '~_vars.scss';
+@import "~_vars.scss";
 
 $dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+$light-blue-gradient: linear-gradient(
+  45deg,
+  darken($bright-blue, 10),
+  lighten($bright-blue, 5)
+);
 
+.relative-wrap {
+  position: relative;
+}
+// .absolute-position{
+//   position: absolute;
+// }
 .outcome-component {
   padding: 30px 25px;
   box-sizing: border-box;
@@ -11,7 +21,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  position: relative;
+   position: relative;
   transition: all 0.2s ease;
   overflow: hidden;
   background: white;
@@ -20,7 +30,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   cursor: pointer;
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     bottom: 0;
@@ -71,7 +81,6 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
     }
 
     &:hover {
-
       span {
         display: inline;
       }

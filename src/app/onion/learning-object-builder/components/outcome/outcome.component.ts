@@ -14,6 +14,8 @@ import {
   animate,
   state
 } from '@angular/animations';
+import { ClickOutsideModule } from 'ng-click-outside';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'clark-outcome',
@@ -28,6 +30,8 @@ import {
   ]
 })
 export class OutcomeComponent implements OnInit {
+  hiddenOverflow = true;
+
   @Input()
   outcome: LearningOutcome;
   @Input()
@@ -55,19 +59,37 @@ export class OutcomeComponent implements OnInit {
   @Output()
   deleted: EventEmitter<void> = new EventEmitter();
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     // set the outcomeNumber to however many outcomes are currently in the outcomes array
     this.outcomeNumber = this.totalOutcomes;
   }
 
+  /**
+   * By default, the overflow should be set to hidden, but when
+   * the dropdown button containing all the verbs is clicked, overflow should be set to visible
+   * The overflow value is changed using ngStyle
+   * @param visibleOverflow 
+   */
+  setOverflow(visibleOverflow) {
+    if (visibleOverflow) {
+      //set overflow to visible when the dropdown menu is clicked
+      this.hiddenOverflow = false;
+    } else {
+      //set overflow to hidden by default
+      this.hiddenOverflow = true;
+    }
+  }
+
   emitVerb(val) {
     this.selectedVerb.emit(val);
+
   }
 
   emitLevel(val) {
     this.selectedLevel.emit(val);
+
   }
 
   emitText(val) {
@@ -79,6 +101,6 @@ export class OutcomeComponent implements OnInit {
   }
 
   removeMapping(standardOutcome: LearningOutcome) {
-    this.unmap.emit({ standardOutcome, value: false});
+    this.unmap.emit({ standardOutcome, value: false });
   }
 }
