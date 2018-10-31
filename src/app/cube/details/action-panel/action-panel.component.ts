@@ -1,7 +1,7 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
-import { AuthService } from '../../../core/auth.service';
+import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { RatingService } from '../../../core/rating.service';
@@ -32,7 +32,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private isDestroyed$ = new Subject<void>();
-  canDownload = false;
+  downloadStatus: DOWNLOAD_STATUS = 0;
   downloading = false;
   addingToLibrary = false;
   author: string;
@@ -73,14 +73,28 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
-      this.canDownload = isAuthorized;
+    this.auth.isLoggedIn.subscribe(val => {
+      this.loggedin = val;
+      this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
+        this.downloadStatus = isAuthorized;
+      });
     });
+
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
   }
+
+  get canDownload(): boolean {
+    return this.downloadStatus === DOWNLOAD_STATUS.CAN_DOWNLOAD;
+  }
+
+  get isReleased(): boolean {
+    return this.downloadStatus !== DOWNLOAD_STATUS.NOT_RELEASED;
+  }
+
+
 
   async addToCart(download?: boolean) {
     this.error = false;
@@ -145,12 +159,13 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   toggleDownloadModal(val?: boolean) {
-    if (!val) {
-      this.showDownloadModal = val;
-    } else if (!localStorage.getItem('downloadWarning')) {
-      this.showDownloadModal = val;
-      localStorage.setItem('downloadWarning', 'true');
-    }
+    this.showDownloadModal = val;
+    // if (!val) {
+    //   this.showDownloadModal = val;
+    // } else if (!localStorage.getItem('downloadWarning')) {
+    //   this.showDownloadModal = val;
+    //   localStorage.setItem('downloadWarning', 'true');
+    // }
   }
 
   shareButton(event, type) {

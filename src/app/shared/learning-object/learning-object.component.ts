@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Renderer2 } from '@angular/core';
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { AuthService } from '../../core/auth.service';
+import { AuthService, DOWNLOAD_STATUS } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
 
 @Component({
@@ -39,9 +39,12 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
-      this.canDownload = isAuthorized;
+    this.auth.isLoggedIn.subscribe(() => {
+      this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
+        this.canDownload = isAuthorized === DOWNLOAD_STATUS.CAN_DOWNLOAD;
+      });
     });
+
     this.collectionService.getCollections().then(collections => {
       this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
     });
