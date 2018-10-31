@@ -8,9 +8,7 @@ import { File } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Injectable()
 export class FileStorageService {
-
-  constructor(private http: HttpClient, private auth: AuthService) {
-  }
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
    * Sends learning object ID and file name to API for deletion.
@@ -20,11 +18,11 @@ export class FileStorageService {
    * @returns {Promise<{}>}
    * @memberof FileStorageService
    */
-  delete(learningObject: LearningObject, filename: string): Promise<{}> {
+  delete(learningObject: LearningObject, fileId: string): Promise<{}> {
     const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT(
       this.auth.user.username,
       learningObject.id,
-      filename
+      fileId
     );
 
     return this.http

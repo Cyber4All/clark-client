@@ -55,9 +55,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getLearningObject(learningObjectId: string): Promise<LearningObject> {
-    const route = USER_ROUTES.GET_LEARNING_OBJECT(
-      learningObjectId
-    );
+    const route = USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
@@ -136,11 +134,13 @@ export class LearningObjectService {
     const outcomeId = outcome.id;
     delete outcome.id;
 
-    return this.http.patch(
-      USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId),
-      { outcome },
-      { withCredentials: true }
-    ).toPromise();
+    return this.http
+      .patch(
+        USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId),
+        { outcome },
+        { withCredentials: true }
+      )
+      .toPromise();
   }
 
   /**
@@ -233,10 +233,32 @@ export class LearningObjectService {
       .toPromise();
   }
 
-  updateReadme(username: string, id: string): Promise<any> {
+  updateReadme(username: string, id: string): any {
     const route = USER_ROUTES.UPDATE_PDF(username, id);
+    return this.http.patch(
+      route,
+      {},
+      { withCredentials: true, responseType: 'text' }
+    );
+  }
+
+  updateFileDescription(
+    username: string,
+    objectId: string,
+    fileId: string,
+    description: string
+  ): Promise<any> {
+    const route = USER_ROUTES.UPDATE_FILE_DESCRIPTION(
+      username,
+      objectId,
+      fileId
+    );
     return this.http
-      .patch(route, {}, { withCredentials: true, responseType: 'text' })
+      .patch(
+        route,
+        { description },
+        { withCredentials: true, responseType: 'text' }
+      )
       .toPromise();
   }
 }
