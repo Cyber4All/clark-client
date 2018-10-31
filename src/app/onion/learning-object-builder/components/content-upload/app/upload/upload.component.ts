@@ -257,9 +257,9 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
   //     this.learningObject = await this.learningObjectService.getLearningObject(
   //       this.learningObjectName
   //     );
-      // this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
-      //   this.learningObject.id
-      // );
+  //     this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+  //       this.learningObject.id
+  //     );
   //     this.retrieving = false;
   //     // FIXME: Add folder descriptions to entity
   //     // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
@@ -566,7 +566,7 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
           this.authService.username,
           this.learningObject.id
         );
-        await this.fetchLearningObject();
+        // await this.fetchLearningObject();
         this.saving = false;
       } catch (e) {
         console.log(e);
@@ -590,7 +590,7 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
           file.id,
           file.description
         );
-        this.fetchLearningObject();
+        // this.fetchLearningObject();
       } else {
         const index = this.findFolder(file.path);
         if (index > -1) {

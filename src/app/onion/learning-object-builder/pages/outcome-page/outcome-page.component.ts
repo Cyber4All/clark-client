@@ -71,8 +71,15 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   set outcomes(outcomes: Map<string, LearningOutcome>) {
     this._outcomes = outcomes;
     if (outcomes.size && !this.activeOutcome) {
+      this.activeOutcome = outcomes.values().next().value.id;
+    }
+  }
+   setActiveOutcome(id: string) {
+    if (id !== this.activeOutcome) {
+      this.store.sendOutcomeCache();
+      this.activeOutcome = id;
       setTimeout(() => {
-        this.activeOutcome = outcomes.values().next().value.id;
+        this.activeOutcome = this.outcomes.values().next().value.id;
       }, 100);
     }
   }
