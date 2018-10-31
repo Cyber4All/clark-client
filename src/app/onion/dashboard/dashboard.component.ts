@@ -313,27 +313,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     if (!Array.isArray(objects) || objects.length === 1) {
-      // single deletion
-      this.learningObjectService
-        .delete((objects as DashboardLearningObject).name)
-        .then(async () => {
-          this.notificationService.notify(
-            'Done!',
-            'Learning Object deleted!',
-            'good',
-            'far fa-check'
-          );
-          this.learningObjects = await this.getLearningObjects();
-        })
-        .catch(err => {
-          console.log(err);
-          this.notificationService.notify(
-            'Error!',
-            'Learning Object could not be deleted!',
-            'bad',
-            'far fa-times'
-          );
-        });
+      // Delete one learning object using checkbox and top button (Array of length 1)
+      if (Array.isArray(objects) && objects.length === 1) {
+        this.learningObjectService
+          .delete(objects[0].name)
+          .then(async () => {
+            this.notificationService.notify(
+              'Done!',
+              'Learning Object deleted!',
+              'good',
+              'far fa-check'
+            );
+            this.learningObjects = await this.getLearningObjects();
+          })
+          .catch(err => {
+            console.log(err);
+            this.notificationService.notify(
+              'Error!',
+              'Learning Object could not be deleted!',
+              'bad',
+              'far fa-times'
+            );
+          });
+      } else {
+        // single deletion (Not an array)
+        this.learningObjectService
+          .delete((objects as DashboardLearningObject).name)
+          .then(async () => {
+            this.notificationService.notify(
+              'Done!',
+              'Learning Object deleted!',
+              'good',
+              'far fa-check'
+            );
+            this.learningObjects = await this.getLearningObjects();
+          })
+          .catch(err => {
+            console.log(err);
+            this.notificationService.notify(
+              'Error!',
+              'Learning Object could not be deleted!',
+              'bad',
+              'far fa-times'
+            );
+          });
+      }
     } else {
       // multiple deletion
       const canDelete = objects.filter(s => ['unpublished', 'denied'].includes(s.status));
