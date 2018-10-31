@@ -4,7 +4,8 @@
       <div class="image">
         😢
       </div>
-      Unfortunately, uploading materials to CLARK is disabled through the labor day weekend. We are working tirelessly to restore this service and apologize for any inconvenience this causes.
+      Unfortunately, uploading materials to CLARK is disabled through the labor day weekend. We are working tirelessly
+      to restore this service and apologize for any inconvenience this causes.
     </div>
   </div>
   <div class="manage-materials">
@@ -30,18 +31,20 @@
     <div class="materials-slides">
       <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
         <!-- This element has a dropzone tag as a backup in case the browser doesn't support the dragover event or something goes wrong -->
-        <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [confirmDeletion]="confirmDeletion$" [files$]="files$" [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)" (path)="openPath=$event"></onion-file-manager>
+        <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [confirmDeletion]="confirmDeletion$" [files$]="files$"
+          [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)"
+          (path)="openPath=$event"></onion-file-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
-        <clark-url-manager [urls]="learningObject.materials.urls" (add)="addURL()" (remove)="removeURL($event)" (save)="saveLearningObject()"></clark-url-manager>
+        <clark-url-manager [urls]="(learningObject$|async)?.materials?.urls" (add)="addURL()" (remove)="removeURL($event)"></clark-url-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 3" class="slide slide3">
         <div class="topbar">
           <div class="slide-title">Notes</div>
         </div>
         <div class="notes">
-          <textarea aria-label="Learning Object notes" rows="8" type="text" [(ngModel)]="learningObject.materials.notes" name="learningObjectNotes"
-            placeholder="Add any notes on copyright, grant acknowledgments, etc." (input)="triggerSave$.next()"></textarea>
+          <textarea aria-label="Learning Object notes" rows="8" type="text" [value]="(learningObject$|async)?.materials.notes"
+            (keyup)="updateNotes($event.target.value)" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
         </div>
       </div>
     </div>
@@ -50,9 +53,9 @@
     <div class="title">Uploading files...</div>
     <onion-file-upload-status [files]="inProgressFileUploads" [folders]="inProgressFolderUploads"></onion-file-upload-status>
   </div>
-  <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()" (addedFile)="addFile($event)"
-    (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)" (complete)="dzComplete($event)"
-    (queueComplete)="queueComplete($event)" (error)="handleError($event)" (canceled)="handleCanceled($event)">
+  <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()"
+    (addedFile)="addFile($event)" (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)"
+    (complete)="dzComplete($event)" (queueComplete)="queueComplete($event)" (error)="handleError($event)" (canceled)="handleCanceled($event)">
     <div class="uploader-content">
       <div class="uploader-icon">
         <i class='far fa-arrow-up'></i>

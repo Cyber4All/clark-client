@@ -24,7 +24,12 @@ export enum BUILDER_ACTIONS {
   ADD_MATERIALS,
   DELETE_MATERIALS,
   ADD_CONTRIBUTOR,
-  REMOVE_CONTRIBUTOR
+  REMOVE_CONTRIBUTOR,
+  ADD_URL,
+  REMOVE_URL,
+  UPDATE_MATERIAL_NOTES,
+  UPDATE_FILE_DESCRIPTION,
+  UPDATE_FOLDER_DESCRIPTION
 }
 
 /**
@@ -49,39 +54,53 @@ export class BuilderStore {
   private destroyed$: Subject<void> = new Subject();
 
   // fired when this service needs to propagate changes to the learning object down to children components
-  public learningObjectEvent: BehaviorSubject<LearningObject> = new BehaviorSubject(undefined);
+  public learningObjectEvent: BehaviorSubject<
+    LearningObject
+  > = new BehaviorSubject(undefined);
 
   // fired when this service needs to propagate changes to the learning object down to children components
-  public outcomeEvent: BehaviorSubject<Map<string, LearningOutcome>> = new BehaviorSubject(undefined);
+  public outcomeEvent: BehaviorSubject<
+    Map<string, LearningOutcome>
+  > = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
-  public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
 
   // true if an object can be saved (has a name) and that name is unique amongst that user's learning objects, false otherwise
   public saveable: boolean;
 
-  constructor(private http: HttpClient, private auth: AuthService, private learningObjectService: LearningObjectService) {
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    private learningObjectService: LearningObjectService
+  ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
-    this.objectCache$.pipe(
-      debounceTime(650),
-      takeUntil(this.destroyed$)
-    ).subscribe(cache => {
-      if (cache !== undefined) {
-        // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
-        this.saveObject(cache);
-      }
-    });
+    this.objectCache$
+      .pipe(
+        debounceTime(650),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(cache => {
+        if (cache !== undefined) {
+          // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
+          this.saveObject(cache);
+        }
+      });
 
     // subscribe to our outcomeCache$ observable and initiate calls to save outcome after a debounce
-    this.outcomeCache$.pipe(
-      debounceTime(650),
-      takeUntil(this.destroyed$)
-    ).subscribe(cache => {
-      if (cache !== undefined) {
-        // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
-        this.saveOutcome(cache);
-      }
-    });
+    this.outcomeCache$
+      .pipe(
+        debounceTime(650),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(cache => {
+        if (cache !== undefined) {
+          // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
+          this.saveOutcome(cache);
+        }
+      });
   }
 
   /**
@@ -125,14 +144,16 @@ export class BuilderStore {
   }
 
   /**
-   * Retrieve a learning object from the service by name
+   * Retrieve a learning object from the service by id
    *
-   * @param {string} name
+   * @param {string} id
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  async fetch(name: string): Promise<LearningObject> {
-    this.learningObject = await this.learningObjectService.getLearningObject(name);
+  async fetch(id: string): Promise<LearningObject> {
+    this.learningObject = await this.learningObjectService.getLearningObject(
+      id
+    );
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
     this.saveable = true;
     return this.learningObject;
@@ -161,7 +182,11 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private parseOutcomes(outcomes: LearningOutcome[]) {
-    return new Map(outcomes.map((outcome): [string, LearningOutcome] => [outcome.id, outcome]));
+    return new Map(
+      outcomes.map(
+        (outcome): [string, LearningOutcome] => [outcome.id, outcome]
+      )
+    );
   }
 
   /**
@@ -172,7 +197,7 @@ export class BuilderStore {
    * @returns {Promise<any>}
    * @memberof BuilderStore
    */
-  async execute(action: number, data?: any): Promise<any> {
+  async execute(action: BUILDER_ACTIONS, data?: any): Promise<any> {
     switch (action) {
       case BUILDER_ACTIONS.MUTATE_OBJECT:
         return await this.mutateObject(data);
@@ -183,17 +208,38 @@ export class BuilderStore {
       case BUILDER_ACTIONS.MUTATE_OUTCOME:
         return await this.mutateOutcome(data.id, data.params);
       case BUILDER_ACTIONS.MAP_STANDARD_OUTCOME:
-        return await this.mapStandardOutcomeMapping(data.id, data.standardOutcome);
+        return await this.mapStandardOutcomeMapping(
+          data.id,
+          data.standardOutcome
+        );
       case BUILDER_ACTIONS.UNMAP_STANDARD_OUTCOME:
-        return await this.unmapStandardOutcomeMapping(data.id, data.standardOutcome);
+        return await this.unmapStandardOutcomeMapping(
+          data.id,
+          data.standardOutcome
+        );
       case BUILDER_ACTIONS.ADD_CONTRIBUTOR:
         return await this.addContributor(data.user);
       case BUILDER_ACTIONS.REMOVE_CONTRIBUTOR:
         return await this.removeContributor(data.user);
+      case BUILDER_ACTIONS.ADD_URL:
+        return await this.addUrl();
+      case BUILDER_ACTIONS.REMOVE_URL:
+        return await this.removeUrl(data);
+      case BUILDER_ACTIONS.UPDATE_FILE_DESCRIPTION:
+        return await this.updateFileDescription(data.id, data.description);
+      case BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION:
+        return await this.updateFolderDescription(data.index, data.description);
       default:
         console.error('Error! Invalid action taken!');
         return;
     }
+  }
+
+  removeUrl(index: string): any {
+    throw new Error('Method not implemented.');
+  }
+  addUrl(): any {
+    throw new Error('Method not implemented.');
   }
 
   /**
@@ -228,7 +274,10 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
   }
 
-  private async mutateOutcome(id: string, params: {verb?: string, bloom?: string, text?: string}) {
+  private async mutateOutcome(
+    id: string,
+    params: { verb?: string; bloom?: string; text?: string }
+  ) {
     const outcome = this.outcomes.get(id);
 
     if (params.bloom && params.bloom !== outcome.bloom) {
@@ -243,20 +292,37 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.saveOutcome({ id: outcome.id, bloom: outcome.bloom, verb: outcome.verb, text: outcome.text }, true);
+    this.saveOutcome(
+      {
+        id: outcome.id,
+        bloom: outcome.bloom,
+        verb: outcome.verb,
+        text: outcome.text
+      },
+      true
+    );
   }
 
-  private async mapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
+  private async mapStandardOutcomeMapping(
+    id: string,
+    standardOutcome: LearningOutcome
+  ) {
     const outcome = this.outcomes.get(id);
     outcome.mappings.push(standardOutcome);
 
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.saveOutcome({ id: outcome.id, mappings: outcome.mappings.map(x => x.id) }, true);
+    this.saveOutcome(
+      { id: outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      true
+    );
   }
 
-  private unmapStandardOutcomeMapping(id: string, standardOutcome: LearningOutcome) {
+  private unmapStandardOutcomeMapping(
+    id: string,
+    standardOutcome: LearningOutcome
+  ) {
     const outcome = this.outcomes.get(id);
     const mappedOutcomes = outcome.mappings;
 
@@ -270,7 +336,10 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.saveOutcome({ id: outcome.id, mappings: outcome.mappings.map(x => x.id) }, true);
+    this.saveOutcome(
+      { id: outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      true
+    );
   }
 
   // TODO type this parameter
@@ -288,20 +357,44 @@ export class BuilderStore {
   private addContributor(user: User) {
     this.learningObject.contributors.push(user);
 
-    this.saveObject({ contributors: this.learningObject.contributors.map(x => x.id) });
+    this.saveObject({
+      contributors: this.learningObject.contributors.map(x => x.id)
+    });
   }
 
   private removeContributor(user: User) {
     // TODO send array of ids to server
-    const index = this.learningObject.contributors.map(x => x.username).indexOf(user.username);
+    const index = this.learningObject.contributors
+      .map(x => x.username)
+      .indexOf(user.username);
     if (index >= 0) {
       this.learningObject.contributors.splice(index, 1);
 
-      this.saveObject({ contributors: this.learningObject.contributors.map(x => x.id) });
+      this.saveObject({
+        contributors: this.learningObject.contributors.map(x => x.id)
+      });
     } else {
-      console.error('Error removing contributor! User not found in contributors array!');
+      console.error(
+        'Error removing contributor! User not found in contributors array!'
+      );
     }
   }
+
+  async updateFileDescription(fileId: any, description: any): Promise<any> {
+    await this.learningObjectService.updateFileDescription(
+      this.learningObject.author.username,
+      this.learningObject.id,
+      fileId,
+      description
+    );
+    const object = await this.fetch(this.learningObject.id);
+    this.learningObject = object;
+  }
+
+  async updateFolderDescription(
+    index: number,
+    description: any
+  ): Promise<any> {}
 
   ///////////////////////////
   //  SERVICE INTERACTION  //
@@ -335,15 +428,18 @@ export class BuilderStore {
           value.status = 'unpublished';
 
           // create the object
-          this.learningObjectService.create(value).then((object: LearningObject) => {
-            this.learningObject = object;
-            this.serviceInteraction.next(false);
-            this.saveable = true;
-          }).catch((err) => {
-            console.error('Error! ', err);
-            this.serviceInteraction.next(false);
-            this.saveable = false;
-          });
+          this.learningObjectService
+            .create(value)
+            .then((object: LearningObject) => {
+              this.learningObject = object;
+              this.serviceInteraction.next(false);
+              this.saveable = true;
+            })
+            .catch(err => {
+              console.error('Error! ', err);
+              this.serviceInteraction.next(false);
+              this.saveable = false;
+            });
         } else if (this.learningObject.id) {
           // this is an existing object and we can save it (has a saveable name)
 
@@ -353,13 +449,16 @@ export class BuilderStore {
           console.log('saving object changes', value);
 
           // send cached changes to server
-          this.learningObjectService.save(value).then(() => {
-            this.serviceInteraction.next(false);
-            this.saveable = true;
-          }).catch((err) => {
-            console.error('Error! ', err);
-            this.serviceInteraction.next(false);
-          });
+          this.learningObjectService
+            .save(value)
+            .then(() => {
+              this.serviceInteraction.next(false);
+              this.saveable = true;
+            })
+            .catch(err => {
+              console.error('Error! ', err);
+              this.serviceInteraction.next(false);
+            });
         }
       } else {
         this.saveable = false;
@@ -389,37 +488,40 @@ export class BuilderStore {
       console.log('saving outcome', data);
 
       // service call
-      this.learningObjectService.saveOutcome(this.learningObject.id, data).then(() => {
-        this.serviceInteraction.next(false);
-      }).catch((err) => {
-        console.error('Error! ', err);
-        this.serviceInteraction.next(false);
-      });
+      this.learningObjectService
+        .saveOutcome(this.learningObject.id, data)
+        .then(() => {
+          this.serviceInteraction.next(false);
+        })
+        .catch(err => {
+          console.error('Error! ', err);
+          this.serviceInteraction.next(false);
+        });
     }
   }
 }
 
 /**
-   * Generate a unique id.
-   * Used for learning outcomes that are blank and cannot be published. Replaced once saveable with an ID from the service
-   */
-  function genId() {
-    const S4 = function() {
-      // tslint:disable-next-line:no-bitwise
-      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    };
-    return (
-      S4() +
-      S4() +
-      '-' +
-      S4() +
-      '-' +
-      S4() +
-      '-' +
-      S4() +
-      '-' +
-      S4() +
-      S4() +
-      S4()
-    );
-  }
+ * Generate a unique id.
+ * Used for learning outcomes that are blank and cannot be published. Replaced once saveable with an ID from the service
+ */
+function genId() {
+  const S4 = function() {
+    // tslint:disable-next-line:no-bitwise
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  };
+  return (
+    S4() +
+    S4() +
+    '-' +
+    S4() +
+    '-' +
+    S4() +
+    '-' +
+    S4() +
+    '-' +
+    S4() +
+    S4() +
+    S4()
+  );
+}

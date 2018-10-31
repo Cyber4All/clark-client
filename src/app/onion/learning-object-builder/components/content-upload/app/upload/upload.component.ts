@@ -7,13 +7,9 @@ import {
   OnDestroy,
   AfterViewInit,
   Input,
-  OnChanges,
-  SimpleChanges
+  Output,
+  EventEmitter
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { LearningObject } from '@cyber4all/clark-entity';
-import { LearningObjectService } from '../../../../../core/learning-object.service';
-import { FileStorageService } from '../services/file-storage.service';
 import {
   DropzoneDirective,
   DropzoneConfigInterface
@@ -23,26 +19,24 @@ import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import {
   File,
-  FolderDescription
+  FolderDescription,
+  LearningObject
 } from '@cyber4all/clark-entity/dist/learning-object';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Removal } from '../../../../../../shared/filesystem/file-browser/file-browser.component';
-import { fromEvent, Subject } from 'rxjs';
+import { fromEvent } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/take';
 import {
   ModalService,
   ModalListElement
 } from '../../../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
-import { AuthService } from '../../../../../../core/auth.service';
-
-import {
-  BuilderStore,
-  BUILDER_ACTIONS as actions
-} from '../../../../builder-store.service';
-import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'app/core/auth.service';
+import { FileStorageService } from '../services/file-storage.service';
 
 type LearningObjectFile = File;
 
@@ -81,19 +75,45 @@ export type DZFile = {
     ])
   ]
 })
-export class UploadComponent
-  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
-  private dzError = '';
+  @Input()
+  error$: Observable<string>;
+  @Input()
+  learningObject$: Observable<LearningObject> = new Observable<
+    LearningObject
+  >();
+
+  @Output()
+  filesDeleted: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  uploadComplete: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  urlAdded: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  urlRemoved: EventEmitter<number> = new EventEmitter<number>();
+  @Output()
+  fileDescriptionUpdated: EventEmitter<{
+    id: string;
+    description: string;
+  }> = new EventEmitter<{ id: string; description: string }>();
+  @Output()
+  folderDescriptionUpdated: EventEmitter<{
+    index: number;
+    description: string;
+  }> = new EventEmitter<{ index: number; description: string }>();
+  @Output()
+  notesUpdated: EventEmitter<string> = new EventEmitter<string>();
+
+  notes$: Subject<string> = new Subject<string>();
 
   slide = 1;
   animationDirection: 'prev' | 'next' = 'next';
   showDragMenu = false;
   dropped = false;
 
-  saving = false;
   retrieving = false;
 
   // @ts-ignore The ngx-dropzone doesn't believe generatePreview is a valid config option
@@ -116,13 +136,6 @@ export class UploadComponent
   inProgressUploadsMap: Map<string, number> = new Map<string, number>();
   tips = TOOLTIP_TEXT;
 
-  // Learning object will be an input
-  @Input()
-  learningObject: LearningObject;
-
-  uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
 
   openPath: string;
@@ -130,43 +143,38 @@ export class UploadComponent
   disabled = false;
 
   constructor(
-    private router: Router,
-    private learningObjectService: LearningObjectService,
-    private fileStorageService: FileStorageService,
+    // FIXME: REMOVE WHEN WHITELIST LOGIC IS REMOVED
+    private authService: AuthService,
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
-    private authService: AuthService
+    private fileStorage: FileStorageService
   ) {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    // listen for changes on the input learning object
-    if (changes.learningObject && changes.learningObject.currentValue) {
-      // update the 4
-      this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
-        this.learningObject.id
-      );
-
-      if (!this.learningObject.materials['folderDescriptions']) {
-        this.learningObject.materials['folderDescriptions'] = [];
-      }
-      this.updateFileSubscription();
-      this.updateFolderMeta();
-    }
-  }
 
   ngOnInit() {
     if (this.disabled) {
       this.checkWhitelist();
     }
+    this.learningObject$.takeUntil(this.unsubscribe$).subscribe(object => {
+      if (object) {
+        this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
+        this.files$.next(object.materials.files);
+        this.folderMeta$.next(object.materials.folderDescriptions);
+      }
+    });
 
-    // when this event fires, after a debounce, save the learning object (used on inputs to prevent multiple HTTP queries while typing)
-    this.triggerSave$
+    this.notes$
       .takeUntil(this.unsubscribe$)
       .debounceTime(650)
-      .subscribe(() => {
-        this.saveLearningObject();
+      .subscribe(notes => {
+        this.notesUpdated.emit(notes);
       });
+
+    this.error$.takeUntil(this.unsubscribe$).subscribe(err => {
+      if (err) {
+        this.notificationService.notify('Error!', err, 'bad', 'far fa-times');
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -242,28 +250,8 @@ export class UploadComponent
    * @memberof UploadComponent
    */
   openDZ() {
-    // this.dzDirectiveRef.dropzone().clickableElements[0].click();
     // @ts-ignore
     document.querySelector('.dz-hidden-input').click();
-  }
-
-  /**
-   * Updates next valid on files$
-   *
-   * @private
-   * @memberof UploadComponent
-   */
-  private updateFileSubscription() {
-    this.files$.next(<LearningObjectFile[]>this.learningObject.materials.files);
-  }
-  /**
-   * Updates next value on folderMeta
-   *
-   * @private
-   * @memberof UploadComponent
-   */
-  private updateFolderMeta() {
-    this.folderMeta$.next(this.learningObject.materials.folderDescriptions);
   }
 
   /**
@@ -272,18 +260,14 @@ export class UploadComponent
    * @param {DZFile} file
    * @memberof UploadComponent
    */
-  async addFile(file: DZFile) {
-    try {
-      if (!file.rootFolder) {
-        // this is a file addition
-        this.inProgressFileUploads.push(file);
-        this.inProgressUploadsMap.set(
-          file.upload.uuid,
-          this.inProgressFileUploads.length - 1
-        );
-      }
-    } catch (error) {
-      console.log(error);
+  addFile(file: DZFile) {
+    if (!file.rootFolder) {
+      // this is a file addition
+      this.inProgressFileUploads.push(file);
+      this.inProgressUploadsMap.set(
+        file.upload.uuid,
+        this.inProgressFileUploads.length - 1
+      );
     }
   }
 
@@ -297,53 +281,45 @@ export class UploadComponent
   }
 
   uploadProgress(event) {
-    try {
-      const file = event[0];
-      const newProgress = Math.min(100, (event[2] / file.size) * 100);
-      let index;
+    const file = event[0];
+    const newProgress = Math.min(100, (event[2] / file.size) * 100);
+    let index;
 
-      if (file.rootFolder) {
-        // this is a folder update
-        // locate the folder in the array
-        index = this.inProgressUploadsMap.get(file.rootFolder);
-        const folder = this.inProgressFolderUploads[index];
+    if (file.rootFolder) {
+      // this is a folder update
+      // locate the folder in the array
+      index = this.inProgressUploadsMap.get(file.rootFolder);
+      const folder = this.inProgressFolderUploads[index];
 
-        // set this files progress
-        folder.allProgress.set(file.fullPath, newProgress);
+      // set this files progress
+      folder.allProgress.set(file.fullPath, newProgress);
 
-        // calculate the folders overall progress
-        folder.progress = Math.ceil(
-          Array.from(folder.allProgress.values() as number[]).reduce(
-            (x, y) => x + y
-          ) / folder.items
-        );
-      } else {
-        // this is a file update
-        index = this.inProgressUploadsMap.get(file.upload.uuid);
-        this.inProgressFileUploads[index].progress = Math.ceil(newProgress);
-      }
-    } catch (error) {
-      console.log(error);
+      // calculate the folders overall progress
+      folder.progress = Math.ceil(
+        Array.from(folder.allProgress.values() as number[]).reduce(
+          (x, y) => x + y
+        ) / folder.items
+      );
+    } else {
+      // this is a file update
+      index = this.inProgressUploadsMap.get(file.upload.uuid);
+      this.inProgressFileUploads[index].progress = Math.ceil(newProgress);
     }
   }
 
-  dzComplete(event) {
-    try {
-      const progressCheck = this.inProgressFileUploads
-        .filter(x => typeof x.progress !== 'number' || x.progress < 100)
-        .concat(
-          this.inProgressFolderUploads.filter(
-            x => typeof x.progress !== 'number' || x.progress < 100
-          )
-        );
+  dzComplete() {
+    const progressCheck = this.inProgressFileUploads
+      .filter(x => typeof x.progress !== 'number' || x.progress < 100)
+      .concat(
+        this.inProgressFolderUploads.filter(
+          x => typeof x.progress !== 'number' || x.progress < 100
+        )
+      );
 
-      if (!progressCheck.length) {
-        this.inProgressFileUploads = [];
-        this.inProgressFolderUploads = [];
-        this.inProgressUploadsMap = new Map();
-      }
-    } catch (e) {
-      console.log(e);
+    if (!progressCheck.length) {
+      this.inProgressFileUploads = [];
+      this.inProgressFolderUploads = [];
+      this.inProgressUploadsMap = new Map();
     }
   }
 
@@ -355,19 +331,8 @@ export class UploadComponent
     console.log('CANCELED : ', event);
   }
 
-  async queueComplete(event) {
-    try {
-      this.learningObject = await this.learningObjectService.getLearningObject(
-        this.learningObject.name
-      );
-      this.updateFileSubscription();
-      await this.learningObjectService.updateReadme(
-        this.learningObject.author.username,
-        this.learningObject.id
-      );
-    } catch (e) {
-      console.log(e);
-    }
+  queueComplete() {
+    this.uploadComplete.emit();
   }
 
   /**
@@ -379,51 +344,51 @@ export class UploadComponent
    * @memberof UploadComponent
    */
   private renameFile(file: any): string {
-    try {
-      let path: string;
-      if (file.fullPath || file.webkitRelativePath) {
-        path = file.fullPath ? file.fullPath : file.webkitRelativePath;
-      }
-      if (this.openPath) {
-        path = `${this.openPath}/${path ? path : file.name}`;
-      }
-      if (path) {
-        file.fullPath = path;
-        const rootFolder = getPaths(path)[0];
-        file.rootFolder = rootFolder;
-
-        const index = this.inProgressUploadsMap.get(rootFolder);
-        let folder = this.inProgressFolderUploads[index];
-
-        if (folder) {
-          folder.items++;
-          folder.allProgress.set(file.fullPath, 0);
-          this.inProgressFolderUploads[index] = folder;
-        } else {
-          folder = {
-            items: 1,
-            progress: 0,
-            name: file.rootFolder,
-            folder: true,
-            allProgress: new Map()
-          };
-
-          folder.allProgress.set(file.fullPath, 0);
-
-          this.inProgressFolderUploads.push(folder);
-          this.inProgressUploadsMap.set(
-            rootFolder,
-            this.inProgressFolderUploads.length - 1
-          );
-        }
-      } else {
-        path = file.name;
-      }
-
-      return path.trim();
-    } catch (error) {
-      console.error(error);
+    let path: string;
+    this.error$.next('COULD NOT ADD URL');
+    if (file.fullPath || file.webkitRelativePath) {
+      this.error$.next('COULD NOT ADD URL');
+      path = file.fullPath ? file.fullPath : file.webkitRelativePath;
+      this.error$.next('COULD NOT ADD URL');
     }
+    this.error$.next('COULD NOT ADD URL');
+    if (this.openPath) {
+      path = `${this.openPath}/${path ? path : file.name}`;
+    }
+    if (path) {
+      file.fullPath = path;
+      const rootFolder = getPaths(path)[0];
+      file.rootFolder = rootFolder;
+
+      const index = this.inProgressUploadsMap.get(rootFolder);
+      let folder = this.inProgressFolderUploads[index];
+
+      if (folder) {
+        folder.items++;
+        folder.allProgress.set(file.fullPath, 0);
+        this.inProgressFolderUploads[index] = folder;
+      } else {
+        folder = {
+          items: 1,
+          progress: 0,
+          name: file.rootFolder,
+          folder: true,
+          allProgress: new Map()
+        };
+
+        folder.allProgress.set(file.fullPath, 0);
+
+        this.inProgressFolderUploads.push(folder);
+        this.inProgressUploadsMap.set(
+          rootFolder,
+          this.inProgressFolderUploads.length - 1
+        );
+      }
+    } else {
+      path = file.name;
+    }
+
+    return path.trim();
   }
 
   /**
@@ -432,7 +397,7 @@ export class UploadComponent
    * @memberof UploadComponent
    */
   addURL() {
-    this.learningObject.materials.urls.push({ title: '', url: '' });
+    this.urlAdded.emit();
   }
 
   /**
@@ -443,68 +408,29 @@ export class UploadComponent
    * @memberof UploadComponent
    */
   removeURL(index) {
-    if (this.learningObject.materials.urls.length > 0) {
-      return this.learningObject.materials.urls.splice(index, 1);
-    }
-    return null;
+    this.urlRemoved.emit(index);
   }
 
-  /**
-   * Corrects malformed URLs and removes empty URLs
-   *
-   * @memberof UploadComponent
-   */
-  fixURLs() {
-    for (let i = 0; i < this.learningObject.materials.urls.length; i++) {
-      const url = this.learningObject.materials.urls[i];
-      if (!url.title || !url.url) {
-        this.removeURL(i);
-      } else if (!url.url.match(/https?:\/\/.+/i)) {
-        url.url = `http://${url.url}`;
-        this.learningObject.materials.urls[i] = url;
-      }
-    }
+  updateNotes(notes: string) {
+    this.notes$.next(notes ? notes.trim() : '');
   }
 
-  /**
-   * On submission, if there are scheduled deletions files within scheduled deletions get deleted
-   * any added files get uploaded, then learning object is updated and user is navigated to
-   * content view.
-   *
-   * @memberof UploadComponent
-   */
-  async save(stayOnPage?: boolean) {
-    try {
-      this.saving = true;
-
-      this.fixURLs();
-      try {
-        await this.saveLearningObject();
-        this.saving = false;
-        this.updateFileSubscription();
-        if (!stayOnPage) {
-          this.router.navigate(['/onion/dashboard']);
-        }
-      } catch (e) {
-        this.saving = false;
-        this.notificationService.notify(
-          'Could not update your materials.',
-          `${e}`,
-          'bad',
-          'far fa-times'
-        );
-      }
-    } catch (e) {
-      this.saving = false;
-      console.log(e);
-      this.notificationService.notify(
-        'Could not upload your materials.',
-        `${e}`,
-        'bad',
-        'far fa-times'
-      );
-    }
-  }
+  // /**
+  //  * Corrects malformed URLs and removes empty URLs
+  //  *
+  //  * @memberof UploadComponent
+  //  */
+  // fixURLs() {
+  //   for (let i = 0; i < this.learningObject.materials.urls.length; i++) {
+  //     const url = this.learningObject.materials.urls[i];
+  //     if (!url.title || !url.url) {
+  //       this.removeURL(i);
+  //     } else if (!url.url.match(/https?:\/\/.+/i)) {
+  //       url.url = `http://${url.url}`;
+  //       this.learningObject.materials.urls[i] = url;
+  //     }
+  //   }
+  // }
 
   /**
    * Sends a list of files to API for deletion & Updates learning object
@@ -530,16 +456,12 @@ export class UploadComponent
 
     if (confirmed === 'confirm') {
       try {
-        this.saving = true;
-        await this.deleteFiles(files);
-        await this.learningObjectService.updateReadme(
-          this.learningObject.author.username,
-          this.learningObject.id
+        const object = await this.learningObject$.take(1).toPromise();
+        await Promise.all(
+          files.map(fileId => this.fileStorage.delete(object, fileId))
         );
-        this.saving = false;
-      } catch (e) {
-        console.log(e);
-      }
+        this.filesDeleted.emit();
+      } catch (e) {}
     }
   }
 
@@ -553,60 +475,21 @@ export class UploadComponent
   async handleEdit(file: LearningObjectFile | any): Promise<void> {
     try {
       if (!file.isFolder) {
-        await this.learningObjectService.updateFileDescription(
-          this.learningObject.author.username,
-          this.learningObject.id,
-          file.id,
-          file.description
-        );
+        this.fileDescriptionUpdated.emit({
+          id: file.id,
+          description: file.description
+        });
       } else {
-        const index = this.findFolder(file.path);
-        if (index > -1) {
-          this.learningObject.materials['folderDescriptions'][
-            index
-          ].description = file.description;
-        } else {
-          const folderDescription = {
-            path: file.path,
-            description: file.description
-          };
-          this.learningObject.materials.folderDescriptions.push(
-            folderDescription
-          );
-        }
-        this.updateFolderMeta();
+        const index = await this.findFolder(file.path);
+        console.log('IDNEXL ', index);
+        this.folderDescriptionUpdated.emit({
+          index,
+          description: file.description
+        });
       }
     } catch (e) {
       console.log(e);
     }
-  }
-
-  /**
-   * Initiates a save of the learning object in it's current state in the component
-   */
-  async saveLearningObject(): Promise<void> {
-    try {
-      this.saving = true;
-      await this.learningObjectService.save(this.learningObject);
-    } catch (e) {
-      console.log(e);
-    }
-    this.saving = false;
-  }
-
-  /**
-   * Deletes files from S3
-   *
-   * @private
-   * @param {string[]} files
-   * @memberof UploadComponent
-   */
-  private async deleteFiles(fileIds: string[]) {
-    this.saving = true;
-    await Promise.all(
-      fileIds.map(id => this.fileStorageService.delete(this.learningObject, id))
-    );
-    this.saving = false;
   }
 
   /**
@@ -617,9 +500,10 @@ export class UploadComponent
    * @returns {number}
    * @memberof UploadComponent
    */
-  private findFolder(path: string): number {
+  private async findFolder(path: string): Promise<number> {
     let index = -1;
-    const folders = this.learningObject.materials.folderDescriptions;
+    const object = await this.learningObject$.take(1).toPromise();
+    const folders = object.materials.folderDescriptions;
     for (let i = 0; i < folders.length; i++) {
       const folderPath = folders[i].path;
       if (folderPath === path) {
@@ -636,7 +520,7 @@ export class UploadComponent
       const response = await fetch(environment.whiteListURL);
       const object = await response.json();
       const whitelist: string[] = object.whitelist;
-      const username = this.learningObject.author.username;
+      const username = this.authService.username;
       if (whitelist.includes(username)) {
         this.disabled = false;
       }

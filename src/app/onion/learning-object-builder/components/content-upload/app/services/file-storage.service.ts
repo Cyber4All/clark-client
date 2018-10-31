@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { USER_ROUTES } from '@env/route';
 import 'rxjs/add/operator/toPromise';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../../../../../core/auth.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Injectable()
 export class FileStorageService {
