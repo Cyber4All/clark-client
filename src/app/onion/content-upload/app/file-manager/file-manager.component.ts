@@ -10,9 +10,7 @@ import {
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
-import {
-  DirectoryNode
-} from '../../../../shared/filesystem/DirectoryTree';
+import { DirectoryNode } from '../../../../shared/filesystem/DirectoryTree';
 import { Removal } from '../../../../shared/filesystem/file-browser/file-browser.component';
 import 'rxjs/add/operator/takeUntil';
 
@@ -30,46 +28,35 @@ export type FileEdit = {
   styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
-  @ViewChild('fileOptions') public fileOptions: ContextMenuComponent;
-  @ViewChild('newOptions') public newOptions: ContextMenuComponent;
+  @ViewChild('fileOptions')
+  public fileOptions: ContextMenuComponent;
+  @ViewChild('newOptions')
+  public newOptions: ContextMenuComponent;
 
   @Input()
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
     LearningObjectFile[]
   >([]);
-  @Input() folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  @Input() confirmDeletion: Subject<boolean> = new Subject<boolean>();
+  @Input()
+  folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  @Input()
+  confirmDeletion: Subject<boolean> = new Subject<boolean>();
   @Output()
-  fileDeleted: EventEmitter<{
-    files: string[];
-    removal: Removal;
-  }> = new EventEmitter<{ files: string[]; removal: Removal }>();
-  @Output() fileEdited: EventEmitter<FileEdit> = new EventEmitter<FileEdit>();
-  @Output() openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() path: EventEmitter<string> = new EventEmitter<string>();
+  fileDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output()
+  fileEdited: EventEmitter<FileEdit> = new EventEmitter<FileEdit>();
+  @Output()
+  openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output()
+  path: EventEmitter<string> = new EventEmitter<string>();
 
-  removal$: BehaviorSubject<Removal> = new BehaviorSubject<Removal>(
-    null
-  );
+  removal$: BehaviorSubject<Removal> = new BehaviorSubject<Removal>(null);
   editDescription: boolean;
-
-  filesMarkedForDelete: {removal: Removal, scheduledDeletions: string[]}[] = [];
 
   componentDestroyed$ = new Subject<void>();
 
   constructor(private contextMenuService: ContextMenuService) {}
-  ngOnInit(): void {
-    // This obserbale emits when the user confirms deletion of a file
-    // at which point we should delete all files that are marked for deletion
-    this.confirmDeletion.takeUntil(this.componentDestroyed$).subscribe(shouldDelete => {
-      if (shouldDelete) {
-        this.deleteMarked();
-      }
-
-      // these files are deleted and this array can be emptied now
-      this.filesMarkedForDelete = [];
-    });
-  }
+  ngOnInit(): void {}
 
   /**
    * Triggers new options context menu
@@ -94,7 +81,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @param {MouseEvent} $event
    * @memberof FileManagerComponent
    */
-  openFileOptions(params: {event: MouseEvent, item: any}): void {
+  openFileOptions(params: { event: MouseEvent; item: any }): void {
     this.contextMenuService.show.next({
       anchorElement: params.event.currentTarget,
       contextMenu: this.fileOptions,
@@ -150,67 +137,39 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * Marks files for deletion in filesystem and emits deletion event up to parent
    */
   triggerDelete(file) {
-    let removal: Removal;
     let scheduledDeletions: string[] = [];
 
     if (!(file instanceof DirectoryNode)) {
-      scheduledDeletions = [file.fullPath ? file.fullPath : file.name];
-      removal = {
-        type: 'file',
-        path: file.fullPath ? file.fullPath : file.name
-      };
+      scheduledDeletions = [file.id];
     } else {
       const folder = file;
-      removal = { type: 'folder', path: folder.getPath() };
-      scheduledDeletions = this.getFilePaths(folder);
+      scheduledDeletions = this.getFileIds(folder);
     }
 
-    this.filesMarkedForDelete.push({removal, scheduledDeletions});
-
-    this.fileDeleted.emit({ removal, files: scheduledDeletions });
-  }
-
-
-  /**
-   * Iterates the filesMarkedForDelete array and deletes each
-   */
-  deleteMarked() {
-    for (const x of this.filesMarkedForDelete) {
-      this.deleteFile(x.removal);
-    }
+    this.fileDeleted.emit(scheduledDeletions);
   }
 
   /**
-   * Deletes file from Filesystem and emits array of files to be deleted
-   *
-   * @param {any} removal instance of Removal
-   * @memberof FileManagerComponent
-   */
-  deleteFile(removal: Removal) {
-    this.removal$.next(removal);
-  }
-
-  /**
-   * Recursively gets all paths of files in folder
+   * Recursively gets all ids of files in folder
    *
    * @param {DirectoryNode} folder
    * @returns {string[]}
    * @memberof FileManagerComponent
    */
-  getFilePaths(folder: DirectoryNode): string[] {
+  getFileIds(folder: DirectoryNode): string[] {
     const children = folder.getChildren();
     const files = folder.getFiles();
     if (!children.length && !files.length) {
       return [];
     }
-    let filePaths = [];
+    let fileIds = [];
     for (const file of files) {
-      filePaths.push(file.fullPath);
+      fileIds.push(file.id);
     }
     for (const child of children) {
-      filePaths = [...filePaths, ...this.getFilePaths(child)];
+      fileIds = [...fileIds, ...this.getFileIds(child)];
     }
-    return filePaths;
+    return fileIds;
   }
   /**
    * Opens Folder upload dialog

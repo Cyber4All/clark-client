@@ -44,12 +44,8 @@ export const USER_ROUTES = {
       learningObjectName
     )}/publish`;
   },
-  ADD_LEARNING_OBJET_TO_COLLECTION(
-    learningObjectId: string
-  ) {
-    return `${
-      environment.apiURL
-    }/learning-objects/${encodeURIComponent(
+  ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/collections`;
   },
@@ -76,12 +72,12 @@ export const USER_ROUTES = {
   POST_FILE_TO_LEARNING_OBJECT(id: string) {
     return `${environment.contentManagerURL}/learning-objects/${id}/files`;
   },
-  DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, filename) {
+  DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, id) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${encodeURIComponent(
       learningObjectName
-    )}/files/${encodeURIComponent(filename)}`;
+    )}/files/${encodeURIComponent(id)}`;
   },
   GET_CART(username) {
     // CUBE
