@@ -79,9 +79,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     if (id !== this.activeOutcome) {
       this.store.sendOutcomeCache();
       this.activeOutcome = id;
-      setTimeout(() => {
-        this.activeOutcome = this.outcomes.values().next().value.id;
-      }, 100);
     }
   }
 
