@@ -32,6 +32,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     // subscribe to params from activated route
     this.route.paramMap.takeUntil(this.destroyed$).subscribe(params => {
       this.passedId = params.get('id');
+      this.setActiveOutcome(this.passedId);
       console.log('ID: ' + this.passedId); // joel's super smart log <3
     });
 
