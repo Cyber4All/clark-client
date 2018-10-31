@@ -219,8 +219,6 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // TODO service interaction here
-
     return outcome.id;
   }
 
@@ -309,7 +307,8 @@ export class BuilderStore {
   //  SERVICE INTERACTION  //
   ///////////////////////////
 
-  private async saveObject(data: any, delay?: boolean) {
+  // TODO break this into separate functions
+  private async saveObject(data: any, delay?: boolean): Promise<any> {
     let value = this.objectCache$.getValue();
 
     this.serviceInteraction.next(true);
