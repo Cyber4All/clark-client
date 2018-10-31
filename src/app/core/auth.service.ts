@@ -8,6 +8,12 @@ import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
+export enum DOWNLOAD_STATUS {
+  CAN_DOWNLOAD = 0,
+  NO_AUTH = 1,
+  NOT_RELEASED = 2
+}
+
 export enum AUTH_GROUP {
   ADMIN,
   USER,
@@ -339,19 +345,29 @@ export class AuthService {
       );
   }
 
-  async userCanDownload(learningObject: LearningObject): Promise<boolean> {
+  async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
+
       // Check that the object does not contain a download lock and the user is logged in
-      const canDownload = !(learningObject.lock
-        && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD))
-        && this.isLoggedIn.value;
+      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD);
+
       // If the object is restricted, check if the user is on the whitelist
-      if (!canDownload) {
-        return await this.checkWhitelist();
+      if (restricted) {
+        if (await this.checkWhitelist()) {
+          return DOWNLOAD_STATUS.CAN_DOWNLOAD;
+        } else {
+          return DOWNLOAD_STATUS.NOT_RELEASED;
+        }
       }
-      return canDownload;
+
+      if (!this.isLoggedIn.getValue()) {
+        // user isn't logged in
+        return DOWNLOAD_STATUS.NO_AUTH;
+      }
+
+      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
     } else {
-      return true;
+      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
     }
   }
 
