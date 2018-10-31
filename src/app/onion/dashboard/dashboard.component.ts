@@ -687,7 +687,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   addToCollection(collection?: string) {
     if (collection) {
       // first, attempt to publish
-      this.learningObjectService.togglePublished(this.focusedLearningObject).then(() => {
+      this.learningObjectService.publish(this.focusedLearningObject).then(() => {
         // publishing was a success, attempt to add to collection
         this.collectionService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
           // success
@@ -734,7 +734,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {DashboardLearningObject} learning object to be unpublished
    */
   cancelSubmission(l: DashboardLearningObject) {
-    this.learningObjectService.togglePublished(l).then(async (val) => {
+    this.learningObjectService.unpublish(l).then(async (val) => {
       l.unpublish();
       l.status = 'unpublished';
       this.cd.detectChanges();

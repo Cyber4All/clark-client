@@ -258,7 +258,7 @@ export class LearningObjectBuilderComponent implements OnInit {
   addToCollection(collection?: string) {
     if (collection) {
       // first, attempt to publish
-      this.service.togglePublished(this.learningObject).then(() => {
+      this.service.publish(this.learningObject).then(() => {
         // publishing was a success, attempt to add to collection
         this.collectionService.addToCollection(this.learningObject.id, collection).then(() => {
           // success
