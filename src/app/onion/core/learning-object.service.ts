@@ -184,6 +184,23 @@ export class LearningObjectService {
 
   updateReadme(username: string, id: string): Promise<any> {
     const route = USER_ROUTES.UPDATE_PDF(username, id);
-    return this.http.patch(route, {}, { withCredentials: true, responseType: 'text' }).toPromise();
+  updateFileDescription(
+    username: string,
+    objectId: string,
+    fileId: string,
+    description: string
+  ): Promise<any> {
+    const route = USER_ROUTES.UPDATE_FILE_DESCRIPTION(
+      username,
+      objectId,
+      fileId
+    );
+    return this.http
+      .patch(
+        route,
+        { description },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .toPromise();
   }
 }

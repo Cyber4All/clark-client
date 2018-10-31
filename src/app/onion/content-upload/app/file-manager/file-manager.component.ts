@@ -16,11 +16,12 @@ import 'rxjs/add/operator/takeUntil';
 
 type LearningObjectFile = File;
 
-export type FileEdit = {
-  path: string;
+export interface FileEdit {
+  id?: string;
+  path?: string;
   description: string;
   isFolder?: boolean;
-};
+}
 
 @Component({
   selector: 'onion-file-manager',
@@ -119,12 +120,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       return;
     }
     const edit: FileEdit = {
+      id: '',
       path: '',
       description: description
     };
 
     if (!(file instanceof DirectoryNode)) {
-      edit.path = file.fullPath ? file.fullPath : file.name;
+      edit.id = file.id;
     } else {
       edit.path = file.getPath();
       edit.isFolder = true;

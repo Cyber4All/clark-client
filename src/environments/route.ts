@@ -124,6 +124,11 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${id}/pdf`;
+  },
+  UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${objectId}/files/${encodeURIComponent(fileId)}`;
   }
 };
 

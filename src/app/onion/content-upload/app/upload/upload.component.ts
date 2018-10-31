@@ -551,42 +551,45 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // /**
-  //  * Adds description to file or folderMeat
-  //  *
-  //  * @param {any} file
-  //  * @returns {Promise<void>}
-  //  * @memberof UploadComponent
-  //  */
-  // async handleEdit(file: LearningObjectFile | any): Promise<void> {
-  //   try {
-  //     if (!file.isFolder) {
-  //       const index = this.findFile(file.path);
-  //       this.learningObject.materials.files[index].description =
-  //         file.description;
-  //       this.updateFileSubscription();
-  //     } else {
-  //       const index = this.findFolder(file.path);
-  //       if (index > -1) {
-  //         this.learningObject.materials['folderDescriptions'][
-  //           index
-  //         ].description = file.description;
-  //       } else {
-  //         const folderDescription = {
-  //           path: file.path,
-  //           description: file.description
-  //         };
-  //         this.learningObject.materials.folderDescriptions.push(
-  //           folderDescription
-  //         );
-  //       }
-  //       this.updateFolderMeta();
-  //     }
-  //     await this.saveLearningObject();
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
+  /**
+   * Adds description to file or folderMeat
+   *
+   * @param {any} file
+   * @returns {Promise<void>}
+   * @memberof UploadComponent
+   */
+  async handleEdit(file: LearningObjectFile | any): Promise<void> {
+    try {
+      if (!file.isFolder) {
+        await this.learningObjectService.updateFileDescription(
+          this.learningObject.author.username,
+          this.learningObject.id,
+          file.id,
+          file.description
+        );
+        this.fetchLearningObject();
+      } else {
+        const index = this.findFolder(file.path);
+        if (index > -1) {
+          this.learningObject.materials['folderDescriptions'][
+            index
+          ].description = file.description;
+        } else {
+          const folderDescription = {
+            path: file.path,
+            description: file.description
+          };
+          this.learningObject.materials.folderDescriptions.push(
+            folderDescription
+          );
+        }
+        this.updateFolderMeta();
+        // await this.saveLearningObject();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   /**
    * Initiates a save of the learning object in it's current state in the component
