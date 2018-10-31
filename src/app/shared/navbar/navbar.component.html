@@ -1,5 +1,5 @@
 <clark-message></clark-message>
-<div *ngIf="nav.visible">
+<div *ngIf="nav.visible" [@simpleFadeAnimation]="'in'">
   <app-contextmenu [content]="modalCtrl.contextMenuContent"></app-contextmenu>
   <app-dialogmenu [content]="modalCtrl.dialogMenuContent"></app-dialogmenu>
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">

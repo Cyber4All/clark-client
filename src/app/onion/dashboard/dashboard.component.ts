@@ -56,11 +56,11 @@ export interface DashboardLearningObject extends LearningObject {
     trigger('nonListItem', [
       transition(':enter', [
         style({'transform': 'translateY(-20px)', opacity: 0}),
-        animate('200ms 100ms', style({'transform': 'translateY(0px)', opacity: 1}))
+        animate('200ms 100ms', style({opacity: 1}))
       ]),
       transition(':leave', [
         style({'transform': 'translateY(0px)', opacity: 1}),
-        animate('200ms', style({'transform': 'translateY(20px)', opacity: 0}))
+        animate('130ms ease', style({'transform': 'translateY(20px)', opacity: 0}))
       ]),
     ])
   ]
