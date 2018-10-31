@@ -120,7 +120,7 @@ export class LearningObjectService {
         route,
         {
           id: learningObject.id,
-          published: !learningObject.published
+          published: true
         },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
@@ -142,7 +142,7 @@ export class LearningObjectService {
         route,
         {
           id: learningObject.id,
-          published: !learningObject.published
+          published: false
         },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
