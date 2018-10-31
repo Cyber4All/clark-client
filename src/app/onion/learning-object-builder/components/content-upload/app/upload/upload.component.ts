@@ -117,7 +117,6 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
 
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  confirmDeletion$ = new Subject<boolean>();
   triggerSave$ = new Subject<void>();
   unsubscribe$ = new Subject<void>();
 
@@ -320,6 +319,8 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
 
   fileSending(event) {
     const file: DZFile = event[0];
+    // @ts-ignore
+    (<FormData>event[2]).append('size', file.size);
     if (file.fullPath) {
       (<FormData>event[2]).append('fullPath', file.fullPath);
     }
@@ -541,10 +542,7 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
    * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  async handleDeletion(params: {
-    files: string[];
-    removal: Removal;
-  }): Promise<void> {
+  async handleDeletion(files: string[]): Promise<void> {
     const confirmed = await this.modalService
       .makeDialogMenu(
         'materialDelete',
@@ -562,22 +560,13 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
 
     if (confirmed === 'confirm') {
       try {
-        if (params.removal.type === 'folder') {
-          const index = this.findFolder(params.removal.path);
-          (<any[]>this.learningObject.materials['folderDescriptions']).splice(
-            index,
-            1
-          );
-        }
         this.saving = true;
-        await this.deleteFromMaterials(params.files);
-        this.deleteFiles(params.files);
+        await this.deleteFiles(files);
         await this.learningObjectService.updateReadme(
           this.authService.username,
           this.learningObject.id
         );
-        this.updateFileSubscription();
-        this.confirmDeletion$.next(true);
+        await this.fetchLearningObject();
         this.saving = false;
       } catch (e) {
         console.log(e);
@@ -595,10 +584,13 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
   async handleEdit(file: LearningObjectFile | any): Promise<void> {
     try {
       if (!file.isFolder) {
-        const index = this.findFile(file.path);
-        this.learningObject.materials.files[index].description =
-          file.description;
-        this.updateFileSubscription();
+        await this.learningObjectService.updateFileDescription(
+          this.learningObject.author.username,
+          this.learningObject.id,
+          file.id,
+          file.description
+        );
+        this.fetchLearningObject();
       } else {
         const index = this.findFolder(file.path);
         if (index > -1) {
@@ -615,8 +607,8 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
           );
         }
         this.updateFolderMeta();
+        // await this.saveLearningObject();
       }
-      await this.saveLearningObject();
     } catch (e) {
       console.log(e);
     }
@@ -636,57 +628,18 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
   }
 
   /**
-   * Deletes file from materials
-   *
-   * @private
-   * @param {string[]} paths
-   * @returns {Promise<any>}
-   * @memberof UploadComponent
-   */
-  private deleteFromMaterials(paths: string[]): Promise<any> {
-    for (const path of paths) {
-      const index = this.findFile(path);
-      this.learningObject.materials.files.splice(index, 1);
-    }
-    return this.saveLearningObject();
-  }
-
-  /**
    * Deletes files from S3
    *
    * @private
    * @param {string[]} files
    * @memberof UploadComponent
    */
-  private async deleteFiles(files: string[]) {
+  private async deleteFiles(fileIds: string[]) {
     this.saving = true;
-    for (const file of files) {
-      await this.fileStorageService.delete(this.learningObject, file);
-    }
+    await Promise.all(
+      fileIds.map(id => this.fileStorageService.delete(this.learningObject, id))
+    );
     this.saving = false;
-  }
-
-  /**
-   * Finds index of file
-   *
-   * @private
-   * @param {string} path
-   * @returns {number}
-   * @memberof UploadComponent
-   */
-  private findFile(path: string): number {
-    let index = -1;
-    const files = this.learningObject.materials.files;
-    for (let i = 0; i < files.length; i++) {
-      const filePath = files[i]['fullPath']
-        ? files[i]['fullPath']
-        : files[i].name;
-      if (filePath === path) {
-        index = i;
-        break;
-      }
-    }
-    return index;
   }
 
   /**
