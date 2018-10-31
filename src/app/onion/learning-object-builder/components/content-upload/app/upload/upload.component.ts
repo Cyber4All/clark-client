@@ -10,7 +10,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from '../../../../../core/learning-object.service';
 import { FileStorageService } from '../services/file-storage.service';
@@ -30,7 +30,10 @@ import { Removal } from '../../../../../../shared/filesystem/file-browser/file-b
 import { fromEvent, Subject } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
-import { ModalService, ModalListElement } from '../../../../../../shared/modals';
+import {
+  ModalService,
+  ModalListElement
+} from '../../../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
 import { AuthService } from '../../../../../../core/auth.service';
@@ -78,7 +81,8 @@ export type DZFile = {
     ])
   ]
 })
-export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+export class UploadComponent
+  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
@@ -113,7 +117,8 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
   tips = TOOLTIP_TEXT;
 
   // Learning object will be an input
-  @Input () learningObject: LearningObject;
+  @Input()
+  learningObject: LearningObject;
 
   uploading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -126,20 +131,17 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
     private fileStorageService: FileStorageService,
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
-    private authService: AuthService,
-    private store: BuilderStore
+    private authService: AuthService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     // listen for changes on the input learning object
     if (changes.learningObject && changes.learningObject.currentValue) {
-
       // update the 4
       this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
         this.learningObject.id
@@ -245,38 +247,6 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
     document.querySelector('.dz-hidden-input').click();
   }
 
-  /**
-   * Fetches Learning Object by name
-   *
-   * @private
-   * @memberof ViewComponent
-   */
-  // private async fetchLearningObject() {
-  //   try {
-  //     this.retrieving = true;
-  //     this.learningObject = await this.learningObjectService.getLearningObject(
-  //       this.learningObjectName
-  //     );
-  //     this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
-  //       this.learningObject.id
-  //     );
-  //     this.retrieving = false;
-  //     // FIXME: Add folder descriptions to entity
-  //     // ADD FOLDER DESCRIPTION PROP IF NOT EXIST
-  //     if (!this.learningObject.materials['folderDescriptions']) {
-  //       this.learningObject.materials['folderDescriptions'] = [];
-  //     }
-  //     this.updateFileSubscription();
-  //     this.updateFolderMeta();
-  //   } catch (e) {
-  //     this.notificationService.notify(
-  //       `Could not fetch Learning Object`,
-  //       `${e}`,
-  //       `bad`,
-  //       ``
-  //     );
-  //   }
-  // }
   /**
    * Updates next valid on files$
    *
@@ -392,7 +362,7 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
       );
       this.updateFileSubscription();
       await this.learningObjectService.updateReadme(
-        this.authService.username,
+        this.learningObject.author.username,
         this.learningObject.id
       );
     } catch (e) {
@@ -563,10 +533,9 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
         this.saving = true;
         await this.deleteFiles(files);
         await this.learningObjectService.updateReadme(
-          this.authService.username,
+          this.learningObject.author.username,
           this.learningObject.id
         );
-        // await this.fetchLearningObject();
         this.saving = false;
       } catch (e) {
         console.log(e);
@@ -590,7 +559,6 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
           file.id,
           file.description
         );
-        // this.fetchLearningObject();
       } else {
         const index = this.findFolder(file.path);
         if (index > -1) {
@@ -607,7 +575,6 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
           );
         }
         this.updateFolderMeta();
-        // await this.saveLearningObject();
       }
     } catch (e) {
       console.log(e);
@@ -669,7 +636,7 @@ export class UploadComponent implements OnChanges, OnInit, AfterViewInit, OnDest
       const response = await fetch(environment.whiteListURL);
       const object = await response.json();
       const whitelist: string[] = object.whitelist;
-      const username = this.authService.username;
+      const username = this.learningObject.author.username;
       if (whitelist.includes(username)) {
         this.disabled = false;
       }
