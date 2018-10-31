@@ -28,9 +28,10 @@
     </div>
     <!-- Render Files -->
     <div class="grid-row file" *ngFor="let file of (node$ | async)?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
-      <div (click)="openFile(file.name, $event)" class="text-contained inline-flex">
+      <div (click)="openFile(file)" class="text-contained inline-flex" [ngClass]="{'hover-react': previewUrl(file.extension)}">
         <i class="fas {{ getIcon(file.extension) }} icon"></i>
         {{ file.name }}
+        <span class="external-link-icon" *ngIf="previewUrl(file.extension)"><i class="far fa-external-link"></i></span>
       </div>
       <div class="text-contained description">
         <span>{{ file.description || 'No description here!' }}</span>

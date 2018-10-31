@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
 import { ModalService, ModalListElement } from './shared/modals';
@@ -40,10 +40,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class ClarkComponent {
+export class ClarkComponent implements OnInit {
   connectedToSocket: boolean;
   isSupportedBrowser: boolean;
   cookiesAgreement: boolean;
+  isOldVersion = false;
+  errorMessage: string;
 
   constructor(private authService: AuthService, private cartService: CartV2Service, private modal: ModalService, private router: Router) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
@@ -64,6 +66,17 @@ export class ClarkComponent {
       if (localStorage.getItem('cookieAgreement')) {
         this.cookiesAgreement = true;
       }
+  }
+
+  ngOnInit(): void {
+    setInterval(async () => {
+      try {
+        await this.authService.checkClientVersion();
+      } catch (e) {
+        this.errorMessage = e.error.split('.');
+        this.isOldVersion = true;
+      }
+    }, 600000); // 10 minute interval
   }
 
   /**
@@ -90,6 +103,10 @@ export class ClarkComponent {
     }
 
     return false;
+  }
+
+  reloadPage() {
+    location.reload();
   }
 
   /**

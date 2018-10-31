@@ -1,12 +1,18 @@
-<div class="splash">
+<section class="hero">
   <div class="inner">
-    <div class="header">
-      <div class="name">{{ (collection | async).name }}</div>
+    <div class="logos">
+      <div class="collection-logo" [ngClass]="collection?.abvName"></div>
     </div>
+    <div class="name" *ngIf="collection?.abvName === 'nccp'">{{ collection?.name }}</div>
+    <div class="long-name">{{ collection?.fullName }}</div>
   </div>
-</div>
+  <div class="logo"></div>
+</section>
 <section class="collection-container">
-  <div *ngIf="(collection | async) as collection" class="collection-content">
-    <learning-object-component learningObjectCard *ngFor="let l of collection.learningObjects" [learningObject]="l"></learning-object-component>
+  <div class="description">
+    <div class="heading">Description</div>
+    <p [innerHtml]="collection?.description"></p>
   </div>
+  
+  <cube-featured [collection]="key"></cube-featured>
 </section>
