@@ -105,23 +105,13 @@ export class LearningObjectService {
       )
       .toPromise();
   }
+
   /**
-   * Sends updated Learning Object to API for updating.
-   * Returns null success.
-   * Returns error on error
-   *
-   * @param {string} id
-   * @param {LearningObject} learningObject
-   * @returns {Promise<{}>}
-   * @memberof LearningObjectService
+   * Publish a learning object
+   * @param {learningObject} learningObject the learning object to be published
    */
-  togglePublished(learningObject: LearningObject): Promise<{}> {
-    const route = !learningObject.published
-      ? USER_ROUTES.PUBLISH_LEARNING_OBJECT(
-          this.auth.user.username,
-          learningObject.name
-        )
-      : USER_ROUTES.UNPUBLISH_LEARNING_OBJECT(
+  publish(learningObject: LearningObject): Promise<{}> {
+    const route = USER_ROUTES.PUBLISH_LEARNING_OBJECT(
           this.auth.user.username,
           learningObject.name
         );
@@ -130,7 +120,29 @@ export class LearningObjectService {
         route,
         {
           id: learningObject.id,
-          published: !learningObject.published
+          published: true
+        },
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
+      )
+      .toPromise();
+  }
+
+  /**
+   * Unpublish a learning object
+   * @param {learningObject} learningObject the learning object to be unpublished
+   */
+  unpublish(learningObject: LearningObject) {
+    const route = USER_ROUTES.UNPUBLISH_LEARNING_OBJECT(
+      this.auth.user.username,
+      learningObject.name
+    );
+
+    return this.http
+      .patch(
+        route,
+        {
+          id: learningObject.id,
+          published: false
         },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
