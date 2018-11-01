@@ -3,7 +3,7 @@
 
 <!-- New Options Context Menu -->
 <context-menu (close)="toggleEditDescription(false)" #newOptions>
-  <ng-template contextMenuItem (execute)="openFileDialog(true)">
+  <ng-template contextMenuItem (execute)="openFileDialog()">
     <div class="context-item">
       <div class="option">
         <i class="fas fa-file icon  icon-left light"></i>
@@ -11,7 +11,7 @@
       </div>
     </div>
   </ng-template>
-  <ng-template contextMenuItem (execute)="openFolderDialog(true)">
+  <ng-template contextMenuItem (execute)="openFolderDialog()">
     <div class="context-item">
       <div class="option">
         <i class="fas fa-folder  icon icon-left light"></i>
