@@ -12,7 +12,7 @@
       [contextMenuSubject]="folder">
       <div class="text-contained inline-flex">
         <i class="fas fa-folder icon"></i>
-        {{ folder.name }} ({{ folder.files.length }} item{{ folder.files.length !== 1 ? 's' : '' }})
+        {{ folder.name }} {{ getItemCount(folder) }}
       </div>
       <div class="text-contained description">
         <span>{{ folder.description || 'No description here!' }}</span>

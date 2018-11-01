@@ -157,4 +157,10 @@ export class FileListViewComponent implements OnInit, OnDestroy {
       sub.unsubscribe();
     }
   }
+
+  getItemCount(folder) {
+    return folder.files.length === 0
+      ? ''
+      : `(${folder.files.length} item${folder.files.length !== 1 ? 's' : ''})`;
+  }
 }
