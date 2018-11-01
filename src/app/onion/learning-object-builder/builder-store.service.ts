@@ -55,7 +55,7 @@ export class BuilderStore {
   public outcomeEvent: BehaviorSubject<Map<string, LearningOutcome>> = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
-  public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   // true if an object can be saved (has a name) and that name is unique amongst that user's learning objects, false otherwise
   public saveable: boolean;
@@ -312,7 +312,7 @@ export class BuilderStore {
   private async saveObject(data: any, delay?: boolean) {
     let value = this.objectCache$.getValue();
 
-    this.serviceInteraction.next(true);
+    this.serviceInteraction$.next(true);
 
     if (delay) {
       const newValue = value ? Object.assign(value, data) : data;
@@ -339,15 +339,15 @@ export class BuilderStore {
 
         // send cached changes to server
         return this.learningObjectService.save(value).then(() => {
-          this.serviceInteraction.next(false);
+          this.serviceInteraction$.next(false);
           this.saveable = true;
         }).catch((err) => {
           console.error('Error! ', err);
-          this.serviceInteraction.next(false);
+          this.serviceInteraction$.next(false);
         });
       } else {
         this.saveable = false;
-        this.serviceInteraction.next(false);
+        this.serviceInteraction$.next(false);
       }
     }
   }
@@ -374,10 +374,10 @@ export class BuilderStore {
 
       // service call
       this.learningObjectService.saveOutcome(this.learningObject.id, data).then(() => {
-        this.serviceInteraction.next(false);
+        this.serviceInteraction$.next(false);
       }).catch((err) => {
         console.error('Error! ', err);
-        this.serviceInteraction.next(false);
+        this.serviceInteraction$.next(false);
       });
     }
   }

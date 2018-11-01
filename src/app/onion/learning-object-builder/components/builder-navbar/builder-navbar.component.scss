@@ -11,11 +11,12 @@
   left: 0;
   right: 0;
 
+  
   .top,
   .bottom {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
   }
 
@@ -31,6 +32,14 @@
       .icon {
         margin-right: 10px;
       }
+    }
+
+    .saving{
+      color:#908f8f;
+      position: relative;
+      left: 40px;
+      align-self: flex-end;
+      padding-bottom: 2px;
     }
   }
 

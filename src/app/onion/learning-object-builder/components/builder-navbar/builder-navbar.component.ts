@@ -3,6 +3,9 @@ import { Routes, ActivatedRoute } from '@angular/router';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
+import { runInThisContext } from 'vm';
+import { CompileTemplateMetadata } from '@angular/compiler';
+
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -23,9 +26,27 @@ import { AuthService } from 'app/core/auth.service';
 })
 export class BuilderNavbarComponent implements OnInit {
 
-  constructor(private store: BuilderStore, private auth: AuthService) { }
+  isSaving = false;
+
+  //Dependency Injection
+  //This component depends on both the Builder Store Service and Auth Service 
+  constructor(private store: BuilderStore, private auth: AuthService) {
+    this.store.serviceInteraction$.subscribe(params => {
+      //indicate that changes are being saved
+      if (params) {
+        this.isSaving = true;
+      }
+      //indicate that changes are saved
+      else {
+        this.isSaving = false;
+      }
+    });
+  }
+
+
 
   ngOnInit() {
+    this.isSaving = false;
   }
 
   canRoute(route: string) {
@@ -36,5 +57,6 @@ export class BuilderNavbarComponent implements OnInit {
         return !!(this.auth.user.emailVerified && this.store.saveable);
     }
   }
+
 
 }
