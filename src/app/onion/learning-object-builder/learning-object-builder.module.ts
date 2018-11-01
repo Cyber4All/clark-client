@@ -24,6 +24,8 @@ import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 import { ToasterModule } from 'app/shared/toaster';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LearningObjectValidator } from './learning-object.validator';
 
 @NgModule({
   imports: [
@@ -33,7 +35,8 @@ import { ToasterModule } from 'app/shared/toaster';
     FormsModule,
     ContentUploadModule,
     CKEditorModule,
-    ToasterModule.forRoot()
+    ToasterModule.forRoot(),
+    ReactiveFormsModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
@@ -56,6 +59,6 @@ import { ToasterModule } from 'app/shared/toaster';
     ContributorPillComponent,
     ScaffoldComponent
   ],
-  providers: [BuilderStore]
+  providers: [BuilderStore, LearningObjectValidator]
 })
 export class LearningObjectBuilderModule {}

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { LearningObject, LearningOutcome, User } from '@cyber4all/clark-entity';
-import { HttpClient } from '@angular/common/http';
-import { USER_ROUTES } from '@env/route';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { verbs } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { LearningObjectValidator } from './learning-object.validator';
 
 /**
  * Defines a list of actions the builder can take
@@ -68,14 +67,7 @@ export class BuilderStore {
     false
   );
 
-  // true if an object can be saved (has a name) and that name is unique amongst that user's learning objects, false otherwise
-  public saveable: boolean;
-
-  constructor(
-    private http: HttpClient,
-    private auth: AuthService,
-    private learningObjectService: LearningObjectService
-  ) {
+  constructor(private auth: AuthService, private learningObjectService: LearningObjectService, private validator: LearningObjectValidator) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
       .pipe(
@@ -131,6 +123,10 @@ export class BuilderStore {
   private set learningObject(object: LearningObject) {
     this._learningObject = object;
     this.learningObjectEvent.next(this.learningObject);
+
+    if (object.status === 'published') {
+      this.validator.submissionMode = true;
+    }
   }
 
   /**
@@ -155,7 +151,6 @@ export class BuilderStore {
       id
     );
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
-    this.saveable = true;
     return this.learningObject;
   }
 
@@ -169,7 +164,6 @@ export class BuilderStore {
     this.learningObject = new LearningObject(this.auth.user);
     this.learningObject.goals = [{ text: '' }]; // initialzie empty description
     this.outcomes = new Map();
-    this.saveable = false;
     return this.learningObject;
   }
 
@@ -404,65 +398,53 @@ export class BuilderStore {
   private async saveObject(data: any, delay?: boolean): Promise<any> {
     let value = this.objectCache$.getValue();
 
-    this.serviceInteraction.next(true);
-
-    if (delay) {
+    if (delay || this.serviceInteraction.getValue()) {
       const newValue = value ? Object.assign(value, data) : data;
       this.objectCache$.next(newValue);
     } else {
-      // check to see if the learning object name is empty, if it is update saveable to false and don't clear cache
-      if (this.learningObject.name && this.learningObject.name !== '') {
-        // clear the cache before submission so that any late arrivals will be cached for the next query
-        this.objectCache$.next(undefined);
+      // don't attempt to save if object isn't saveable, but keep cache so that we can try again later
+      if (!this.validator.saveable()) {
+        return;
+      }
 
-        if (!value) {
-          // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
-          // in this case we'll use the current data instead
-          value = data;
-        }
+      this.serviceInteraction.next(true);
 
-        if (!this.learningObject.id && value.name && value.name !== '') {
-          // this is a new learning object and we've been given a saveable nam
+      // clear the cache before submission so that any late arrivals will be cached for the next query
+      this.objectCache$.next(undefined);
 
-          // append status property to data
-          value.status = 'unpublished';
+      if (!value) {
+        // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
+        // in this case we'll use the current data instead
+        value = data;
+      }
 
-          // create the object
-          this.learningObjectService
-            .create(value)
-            .then((object: LearningObject) => {
-              this.learningObject = object;
-              this.serviceInteraction.next(false);
-              this.saveable = true;
-            })
-            .catch(err => {
-              console.error('Error! ', err);
-              this.serviceInteraction.next(false);
-              this.saveable = false;
-            });
-        } else if (this.learningObject.id) {
-          // this is an existing object and we can save it (has a saveable name)
+      if (!this.learningObject.id && this.validator.checkValidProperty('name')) {
+        // this is a new learning object and we've been given a saveable name
 
-          // append learning object id to payload
-          value.id = this.learningObject.id;
+        // append status property to data
+        value.status = 'unpublished';
 
-          console.log('saving object changes', value);
+        // create the object
+        this.learningObjectService.create(value).then((object: LearningObject) => {
+          this.learningObject = object;
+          this.serviceInteraction.next(false);
+        }).catch((err) => {
+          console.error('Error! ', err);
+          this.serviceInteraction.next(false);
+        });
+      } else if (this.learningObject.id) {
+        // this is an existing object and we can save it (has a saveable name)
 
-          // send cached changes to server
-          this.learningObjectService
-            .save(value)
-            .then(() => {
-              this.serviceInteraction.next(false);
-              this.saveable = true;
-            })
-            .catch(err => {
-              console.error('Error! ', err);
-              this.serviceInteraction.next(false);
-            });
-        }
-      } else {
-        this.saveable = false;
-        this.serviceInteraction.next(false);
+        // append learning object id to payload
+        value.id = this.learningObject.id;
+
+        // send cached changes to server
+        this.learningObjectService.save(value).then(() => {
+          this.serviceInteraction.next(false);
+        }).catch((err) => {
+          console.error('Error! ', err);
+          this.serviceInteraction.next(false);
+        });
       }
     }
   }
@@ -484,8 +466,6 @@ export class BuilderStore {
     } else {
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
-
-      console.log('saving outcome', data);
 
       // service call
       this.learningObjectService

@@ -19,29 +19,11 @@ const onion_routes: Routes = [
     path: '', component: OnionComponent, children: [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { state: 'dashboard' } },
       { path: 'learning-object-builder',
-        loadChildren: () => LearningObjectBuilderModule, data: {state: 'builder'}
+        loadChildren: () => LearningObjectBuilderModule, canActivate: [AuthGuard], data: {state: 'builder'}
       },
       { path: 'learning-object-builder/:learningObjectId',
-        loadChildren: () => LearningObjectBuilderModule, data: {state: 'builder'}
+        loadChildren: () => LearningObjectBuilderModule, canActivate: [AuthGuard], data: {state: 'builder'}
       },
-      /* { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard],
-        children: [
-          { path: '', component: InfoPageComponent },
-          { path: 'info', component: InfoPageComponent },
-          { path: 'outcomes', component: OutcomePageComponent },
-          { path: 'materials', component: MaterialsPageComponent }
-        ]
-      },
-      { path: 'learning-object-builder/:learningObjectName', component: LearningObjectBuilderComponent, canActivate: [AuthGuard], resolve: {
-        learningObject: LearningObjectResolve
-      } }, */
-
-      // Load Neutrino module
-      // TODO: content should redirect, only show child routes
-      // { path: 'content',
-      //   loadChildren: 'app/onion/content-upload/app/content-upload.module#ContentUploadModule', canActivate: [UserVerifiedGuard] },
-
-      // else redirect to DashboardComponent
       { path: '**', redirectTo: 'dashboard' }
     ]
   }

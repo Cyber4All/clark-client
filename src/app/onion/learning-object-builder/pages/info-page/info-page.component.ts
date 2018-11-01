@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { takeUntil, map, filter } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import {
   BuilderStore,
   BUILDER_ACTIONS as actions
@@ -8,6 +8,8 @@ import { LearningObject, User } from '@cyber4all/clark-entity';
 import { COPY } from './info-page.copy';
 import { Subject } from 'rxjs/Subject';
 import { AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
+import { LearningObjectValidator } from '../../learning-object.validator';
+import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'clark-info-page',
@@ -21,9 +23,11 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   selectedLevels: string[] = [];
   academicLevels = Object.values(AcademicLevel);
 
+  formGroup = new FormGroup({});
+
   destroyed$: Subject<void> = new Subject();
 
-  constructor(private store: BuilderStore) {}
+  constructor(private store: BuilderStore, public validator: LearningObjectValidator) {}
 
   ngOnInit() {
     // listen for outcome events and update component stores
@@ -31,11 +35,25 @@ export class InfoPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((payload: LearningObject) => {
         if (payload) {
+          // re-initialize our state variables
           this.learningObject = payload;
           this.selectedLevels = payload.levels;
+
+          // re-initialize our form group
+          this.formGroup = new FormGroup({
+            name: new FormControl(this.learningObject.name, [
+              // validate name
+              (() => {
+                return (control: AbstractControl): { [key: string]: any } | null => {
+                  return this.validator.validateName(control.value);
+                };
+              })()
+            ])
+          });
         }
       });
   }
+
 
   mutateLearningObject(data: any) {
     this.store.execute(actions.MUTATE_OBJECT, data);

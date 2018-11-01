@@ -12,4 +12,7 @@
   </div>
 
   <ng-content select="[data]"></ng-content>
+  <div *ngIf="error" class="metadata-container__error">
+    {{ error }}
+  </div>
 </div>

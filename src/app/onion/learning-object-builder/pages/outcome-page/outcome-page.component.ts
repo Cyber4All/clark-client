@@ -33,7 +33,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     this.route.paramMap.takeUntil(this.destroyed$).subscribe(params => {
       this.passedId = params.get('id');
       this.setActiveOutcome(this.passedId);
-      console.log('ID: ' + this.passedId); // joel's super smart log <3
     });
 
     // listen for outcome events and update component store
@@ -76,7 +75,8 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
       this.activeOutcome = outcomes.values().next().value.id;
     }
   }
-   setActiveOutcome(id: string) {
+
+  setActiveOutcome(id: string) {
     if (id !== this.activeOutcome) {
       this.store.sendOutcomeCache();
       this.activeOutcome = id;
@@ -85,7 +85,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   mutateOutcome(id: string, params: any) {
     const outcome = this.outcomes.get(id);
-    console.log('current outcome id: ' + this.activeOutcome); // joel's super smart log <3
     this.store.execute(actions.MUTATE_OUTCOME, { id, params });
   }
 

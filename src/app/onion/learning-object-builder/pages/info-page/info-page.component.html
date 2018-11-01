@@ -4,15 +4,15 @@
   </div>
   <div main>
     <div *ngIf="learningObject; else loadingTemplate" class="content-wrapper">
-      <form>
+      <form [formGroup]="formGroup ">
         <div class="title">
           {{copy.TITLE}}
         </div>
-        <clark-info-page-metadata>
+        <clark-info-page-metadata [error]="(formGroup.get('name').touched || formGroup.get('name').dirty) ? validator.get('name') : undefined">
           <div title>{{copy.NAME}}</div>
           <div directions>{{copy.NAMEPLACEHOLDER}}</div>
           <div data>
-            <input required class="name-field" type="text" autofocus name="name" placeholder="Learning Object Name" (ngModelChange)="mutateLearningObject({ name: $event })" [(ngModel)]="learningObject.name" />
+            <input class="name-field" type="text" autofocus name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" formControlName="name" />
           </div>
         </clark-info-page-metadata>
         <hr />
@@ -35,7 +35,7 @@
           <div directions>{{copy.CHOOSE}}</div>
           <div data>
             <div class="select-wrapper">
-              <select name="type" [(ngModel)]="learningObject.length" (ngModelChange)="mutateLearningObject({ length: $event}) ">
+              <select name="type" (ngModelChange)="mutateLearningObject({ length: $event })" [ngModel]="learningObject.length" [ngModelOptions]="{standalone: true}">
                 <option value="nanomodule">{{ copy.NANO }}</option>
                 <option value="micromodule">{{ copy.MICRO }}</option>
                 <option value="module">{{ copy.MOD }}</option>
@@ -58,11 +58,11 @@
           </div>
         </clark-info-page-metadata>
         <hr>
-        <clark-info-page-metadata>
+        <clark-info-page-metadata [error]="validator.submissionMode ? validator.get('description') : undefined">
           <div title>{{copy.QUESTION}}</div>
           <div directions>{{copy.TIP}}</div>
           <div data>
-            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event})"></onion-learning-object-description>
+            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="validator.validateDescription($event); mutateLearningObject({description: $event})"></onion-learning-object-description>
           </div>
         </clark-info-page-metadata>
       </form>

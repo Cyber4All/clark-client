@@ -28,7 +28,7 @@ export const onionTransitions = trigger('onionTransitions', [
     query(':enter', [
       style({ opacity: 0, transform: 'scale(0.97)' }),
       // fade and scale the dashboard back in
-      animate('350ms ease', style({ opacity: 1, transform: 'scale(1)' })),
+      animate('350ms 200ms ease', style({ opacity: 1, transform: 'scale(1)' })),
     ]),
   ])
 ]);

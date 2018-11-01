@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'clark-info-page-metadata',
@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./metadata.component.scss']
 })
 export class MetadataComponent implements OnInit {
-  
+
+  @Input() error: any[];
+
   constructor() { }
 
   ngOnInit() {
