@@ -70,14 +70,14 @@ export class OutcomeComponent implements OnInit {
    * By default, the overflow should be set to hidden, but when
    * the dropdown button containing all the verbs is clicked, overflow should be set to visible
    * The overflow value is changed using ngStyle
-   * @param visibleOverflow 
+   * @param visibleOverflow
    */
   setOverflow(visibleOverflow) {
     if (visibleOverflow) {
-      //set overflow to visible when the dropdown menu is clicked
+      // set overflow to visible when the dropdown menu is clicked
       this.hiddenOverflow = false;
     } else {
-      //set overflow to hidden by default
+      // set overflow to hidden by default
       this.hiddenOverflow = true;
     }
   }

@@ -21,6 +21,9 @@ const onion_routes: Routes = [
       { path: 'learning-object-builder',
         loadChildren: () => LearningObjectBuilderModule, data: {state: 'builder'}
       },
+      { path: 'learning-object-builder/:learningObjectId',
+        loadChildren: () => LearningObjectBuilderModule, data: {state: 'builder'}
+      },
       /* { path: 'learning-object-builder', component: LearningObjectBuilderComponent, canActivate: [AuthGuard],
         children: [
           { path: '', component: InfoPageComponent },

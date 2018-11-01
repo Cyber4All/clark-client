@@ -54,10 +54,8 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/${encodeURIComponent(learningObjectName)}/unpublish`;
   },
-  GET_LEARNING_OBJECT(username, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
+  GET_LEARNING_OBJECT(id) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
   },
   DELETE_LEARNING_OBJECT(username, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -72,12 +70,12 @@ export const USER_ROUTES = {
   POST_FILE_TO_LEARNING_OBJECT(id: string) {
     return `${environment.contentManagerURL}/learning-objects/${id}/files`;
   },
-  DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, filename) {
+  DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, id) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${encodeURIComponent(
       learningObjectName
-    )}/files/${encodeURIComponent(filename)}`;
+    )}/files/${encodeURIComponent(id)}`;
   },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
@@ -129,6 +127,11 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${id}/pdf`;
+  },
+  UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${objectId}/files/${encodeURIComponent(fileId)}`;
   }
 };
 

@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
@@ -9,23 +16,29 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./url-manager.component.scss']
 })
 export class UrlManagerComponent implements OnInit, OnDestroy {
+  @Input()
+  urls: any[] = [];
 
-  @Input() urls: any[];
-
-  @Output() add: EventEmitter<void> = new EventEmitter();
-  @Output() remove: EventEmitter<number> = new EventEmitter();
-  @Output() save: EventEmitter<void> = new EventEmitter();
+  @Output()
+  add: EventEmitter<void> = new EventEmitter();
+  @Output()
+  remove: EventEmitter<number> = new EventEmitter();
+  @Output()
+  save: EventEmitter<void> = new EventEmitter();
 
   triggerSave$ = new Subject();
   componentDestroyed$ = new Subject();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     // listen for events on the triggerSave subject and, after 650ms of no events, emit an event to the parent component
-    this.triggerSave$.takeUntil(this.componentDestroyed$).debounceTime(650).subscribe(() => {
-      this.save.emit();
-    });
+    this.triggerSave$
+      .takeUntil(this.componentDestroyed$)
+      .debounceTime(650)
+      .subscribe(() => {
+        this.save.emit();
+      });
   }
 
   /**

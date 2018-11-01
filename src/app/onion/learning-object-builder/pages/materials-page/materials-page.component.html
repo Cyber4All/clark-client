@@ -4,6 +4,9 @@
   </div>
   <div main>
     <!-- upload content here -->
-    <app-upload [learningObject]="learningObject"></app-upload>
+    <app-upload [learningObject$]="learningObject$" [error$]="error$" (filesDeleted)="handleFileDeletion()"
+      (uploadComplete)="handleUploadComplete()" (urlAdded)="handleUrlAdded()" (urlRemoved)="handleUrlRemoved($event)"
+      (fileDescriptionUpdated)="handleFileDescriptionUpdate($event)" (folderDescriptionUpdated)="handleFolderDescriptionUpdate($event)"
+      (notesUpdated)="handleNotesUpdate($event)"></app-upload>
   </div>
 </clark-column-wrapper>

@@ -6,11 +6,12 @@ import {
 } from '../../builder-store.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'clark-outcome-page',
   templateUrl: './outcome-page.component.html',
-  styleUrls: ['./outcome-page.component.scss'],
+  styleUrls: ['./outcome-page.component.scss']
 })
 export class OutcomePageComponent implements OnInit, OnDestroy {
   private _outcomes: Map<string, LearningOutcome> = new Map();
@@ -18,15 +19,26 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   // flags
   activeOutcome: string;
+  // passed outcome id from query params
+  passedId: string;
 
-  constructor(private store: BuilderStore, private cd: ChangeDetectorRef) {}
+  constructor(
+    private store: BuilderStore,
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    // subscribe to params from activated route
+    this.route.paramMap.takeUntil(this.destroyed$).subscribe(params => {
+      this.passedId = params.get('id');
+      this.setActiveOutcome(this.passedId);
+      console.log('ID: ' + this.passedId); // joel's super smart log <3
+    });
+
     // listen for outcome events and update component store
     this.store.outcomeEvent
-      .pipe(
-        takeUntil(this.destroyed$)
-      )
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((payload: Map<string, LearningOutcome>) => {
         if (payload) {
           this.outcomes = payload;
@@ -64,8 +76,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
       this.activeOutcome = outcomes.values().next().value.id;
     }
   }
-
-  setActiveOutcome(id: string) {
+   setActiveOutcome(id: string) {
     if (id !== this.activeOutcome) {
       this.store.sendOutcomeCache();
       this.activeOutcome = id;
@@ -74,7 +85,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   mutateOutcome(id: string, params: any) {
     const outcome = this.outcomes.get(id);
-
+    console.log('current outcome id: ' + this.activeOutcome); // joel's super smart log <3
     this.store.execute(actions.MUTATE_OUTCOME, { id, params });
   }
 

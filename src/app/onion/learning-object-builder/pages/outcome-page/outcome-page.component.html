@@ -8,7 +8,7 @@
       <button class="button good" (click)="newOutcome()">New <i class="fas fa-plus"></i></button>
     </div>
     <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
-      <clark-outcome *ngFor="let o of iterableOutcomes" 
+      <clark-outcome *ngFor="let o of iterableOutcomes"
         [outcome]="o"
         [totalOutcomes]="iterableOutcomes.length"
         [active]="activeOutcome === o.id"

@@ -8,7 +8,7 @@ export const environment = {
   apiURL: 'http://localhost:3000',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'http://localhost:7000',
-  contentManagerURL: 'http://localhost:5005',
+  contentManagerURL: 'http://localhost:5000',
   whiteListURL:
     'https://raw.githubusercontent.com/Cyber4All/clark-client/master/whitelist/whitelist.json'
 };

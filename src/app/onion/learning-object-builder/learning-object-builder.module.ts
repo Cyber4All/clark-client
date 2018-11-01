@@ -23,6 +23,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
+import { ToasterModule } from 'app/shared/toaster';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { ScaffoldComponent } from './components/scaffold/scaffold.component';
     BuilderRoutingModule,
     FormsModule,
     ContentUploadModule,
-    CKEditorModule
+    CKEditorModule,
+    ToasterModule.forRoot()
   ],
   declarations: [
     LearningObjectBuilderComponent,
@@ -56,4 +58,4 @@ import { ScaffoldComponent } from './components/scaffold/scaffold.component';
   ],
   providers: [BuilderStore]
 })
-export class LearningObjectBuilderModule { }
+export class LearningObjectBuilderModule {}
