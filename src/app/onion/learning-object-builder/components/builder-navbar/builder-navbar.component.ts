@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Routes, ActivatedRoute } from '@angular/router';
-import { trigger, transition, style, animate, state } from '@angular/animations';
+import { Component, , OnDestroy } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObjectValidator } from '../../learning-object.validator';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -22,11 +23,23 @@ import { LearningObjectValidator } from '../../learning-object.validator';
     ])
   ]
 })
-export class BuilderNavbarComponent implements OnInit {
+export class BuilderNavbarComponent implements OnDestroy {
+  isSaving = false;
 
-  constructor(private store: BuilderStore, private auth: AuthService, private validator: LearningObjectValidator) { }
+  destroyed$: Subject<void> = new Subject();
 
-  ngOnInit() {
+  constructor(private store: BuilderStore, private auth: AuthService, private validator: LearningObjectValidator) {
+    // subscribe to the serviceInteraction observable to display in the client when the application
+    // is interacting with the service
+    this.store.serviceInteraction$.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(params => {
+      if (params) {
+        this.isSaving = true;
+      } else {
+        this.isSaving = false;
+      }
+    });
   }
 
   canRoute(route: string) {
@@ -38,4 +51,8 @@ export class BuilderNavbarComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
 }

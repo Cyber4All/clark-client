@@ -63,9 +63,7 @@ export class BuilderStore {
   > = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
-  public serviceInteraction: BehaviorSubject<boolean> = new BehaviorSubject(
-    false
-  );
+  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private auth: AuthService, private learningObjectService: LearningObjectService, private validator: LearningObjectValidator) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
@@ -398,7 +396,7 @@ export class BuilderStore {
   private async saveObject(data: any, delay?: boolean): Promise<any> {
     let value = this.objectCache$.getValue();
 
-    if (delay || this.serviceInteraction.getValue()) {
+    if (delay || this.serviceInteraction$.getValue()) {
       const newValue = value ? Object.assign(value, data) : data;
       this.objectCache$.next(newValue);
     } else {
@@ -407,7 +405,7 @@ export class BuilderStore {
         return;
       }
 
-      this.serviceInteraction.next(true);
+      this.serviceInteraction$.next(true);
 
       // clear the cache before submission so that any late arrivals will be cached for the next query
       this.objectCache$.next(undefined);
@@ -418,7 +416,7 @@ export class BuilderStore {
         value = data;
       }
 
-      if (!this.learningObject.id && this.validator.checkValidProperty('name')) {
+      if (!this.learningObject.id) {
         // this is a new learning object and we've been given a saveable name
 
         // append status property to data
@@ -427,12 +425,12 @@ export class BuilderStore {
         // create the object
         this.learningObjectService.create(value).then((object: LearningObject) => {
           this.learningObject = object;
-          this.serviceInteraction.next(false);
+          this.serviceInteraction$.next(false);
         }).catch((err) => {
           console.error('Error! ', err);
-          this.serviceInteraction.next(false);
+          this.serviceInteraction$.next(false);
         });
-      } else if (this.learningObject.id) {
+      } else {
         // this is an existing object and we can save it (has a saveable name)
 
         // append learning object id to payload
@@ -440,10 +438,10 @@ export class BuilderStore {
 
         // send cached changes to server
         this.learningObjectService.save(value).then(() => {
-          this.serviceInteraction.next(false);
+          this.serviceInteraction$.next(false);
         }).catch((err) => {
           console.error('Error! ', err);
-          this.serviceInteraction.next(false);
+          this.serviceInteraction$.next(false);
         });
       }
     }
@@ -468,15 +466,12 @@ export class BuilderStore {
       this.outcomeCache$.next(undefined);
 
       // service call
-      this.learningObjectService
-        .saveOutcome(this.learningObject.id, data)
-        .then(() => {
-          this.serviceInteraction.next(false);
-        })
-        .catch(err => {
-          console.error('Error! ', err);
-          this.serviceInteraction.next(false);
-        });
+      this.learningObjectService.saveOutcome(this.learningObject.id, data).then(() => {
+        this.serviceInteraction$.next(false);
+      }).catch((err) => {
+        console.error('Error! ', err);
+        this.serviceInteraction$.next(false);
+      });
     }
   }
 }
