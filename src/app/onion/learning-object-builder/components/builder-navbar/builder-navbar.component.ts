@@ -1,4 +1,4 @@
-import { Component, , OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';

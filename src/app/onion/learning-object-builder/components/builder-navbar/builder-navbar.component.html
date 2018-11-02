@@ -1,11 +1,9 @@
 <div class="builder-navbar-wrapper">
   <div class="top">
     <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> New Learning Object</a>
-    <div *ngIf="isSaving" class="saving">Saving changes . . . </div>
-    <div *ngIf="!isSaving" class="saving">All changes saved</div>
   </div>
   <div class="bottom">
-    <div class="bottom-left menu">
+    <div class="builder-navbar-wrapper__bottom-left-menu">
       <!-- update routerLinkActive with class used to show that link is active -->
       <ul>
         <li>
@@ -18,6 +16,10 @@
           <a routerLink="materials" routerLinkActive="active">Materials</a>
         </li>
       </ul>
+      <div class="builder-navbar-wrapper__saving-indicator">
+        <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator">Saving changes . . . </span>
+        <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator">All changes saved</span>
+      </div>
     </div>
   </div>
 </div>

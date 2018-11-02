@@ -11,7 +11,7 @@
   left: 0;
   right: 0;
 
-  
+
   .top,
   .bottom {
     display: flex;
@@ -33,63 +33,65 @@
         margin-right: 10px;
       }
     }
-
-    .saving{
-      color:#908f8f;
-      position: relative;
-      left: 40px;
-      align-self: flex-end;
-      padding-bottom: 2px;
-    }
   }
+}
 
-  .menu {
+.builder-navbar-wrapper__bottom-left-menu {
+  display: flex;
+  flex-direction: row;
 
-    ul {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      margin: 0;
-      padding: 0;
+  ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 
-      li {
-        list-style-type: none;
-        font-size: 18px;
+    li {
+      list-style-type: none;
+      font-size: 18px;
 
-        a {
-          display: block;
-          text-decoration: none;
-          color: darken($placeholder, 20);
-          padding: 0 15px 10px;
-          position: relative;
+      a {
+        display: block;
+        text-decoration: none;
+        color: darken($placeholder, 20);
+        padding: 0 15px 10px;
+        position: relative;
+
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: $bright-blue;
+          transform: translateY(3px);
+          opacity: 0;
+          transition: 0.2s all ease;
+        }
+
+        &.active {
+          color: $bright-blue;
 
           &:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: $bright-blue;
-            transform: translateY(3px);
-            opacity: 0;
-            transition: 0.2s all ease;
-          }
-
-          &.active {
-            color: $bright-blue;
-
-            &:after {
-              transform: translateY(0);
-              opacity: 1;
-            }
+            transform: translateY(0);
+            opacity: 1;
           }
         }
+      }
 
-        &:not(:last-child) {
-          margin-right: 15px;
-        }
+      &:not(:last-child) {
+        margin-right: 15px;
       }
     }
   }
+}
+
+.builder-navbar-wrapper__saving-indicator {
+  color: darken($placeholder, 30);
+  margin-left: 30px;
+  font-size: 16px;
+  text-decoration: underline;
+  padding-top: 1px;
 }
