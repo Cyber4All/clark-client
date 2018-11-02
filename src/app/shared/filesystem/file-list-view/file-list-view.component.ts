@@ -15,6 +15,7 @@ import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { TimeFunctions } from '../../../onion/content-upload/app/shared/time-functions';
 import { File } from '@cyber4all/clark-entity/dist/learning-object';
 import { AuthService } from 'app/core/auth.service';
+import * as querystring from 'querystring';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -150,6 +151,15 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   updateDescription(description: string) {
     description = description.trim();
     this.emitDesc.emit({ description, file: this.editableFile });
+  }
+
+  downloadSingleFile(file: File) {
+    const [ baseUrl, paramString ] = file.url.split('?');
+
+    // if the url contains a query parameter instructing the service to open the file instead of download, remove it
+    const urlParameters = paramString ? paramString.split('&').map(x => x.split('=')).filter(x => x[0] !== 'open') : [];
+
+    window.open(baseUrl + '?' + querystring.stringify(urlParameters));
   }
 
   ngOnDestroy() {

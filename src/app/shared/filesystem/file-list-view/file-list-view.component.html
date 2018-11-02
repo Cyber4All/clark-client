@@ -4,7 +4,7 @@
       <div class>Name</div>
       <div class>Description</div>
       <div class>Date</div>
-      <div *ngIf="canManage" class="placeholder">
+      <div *ngIf="canManage || auth.isLoggedIn.getValue()" class="placeholder">
       </div>
     </div>
     <!-- Render Folders -->
@@ -41,6 +41,7 @@
       <div class="text-contained">
         {{ getTimestampAge(file.date) }}
       </div>
+      <div *ngIf="!canManage && auth.isLoggedIn.getValue()" class="file-download" (click)="downloadSingleFile(file)"><i class="far fa-download"></i></div>
       <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: file}); $event.stopPropagation()">
         <div></div>
       </div>

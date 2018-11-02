@@ -130,3 +130,15 @@ input {
   font-size: 10px;
   margin-left: 5px;
 }
+
+.file-download {
+  color: $dark-text;
+  transition: all 0.2s ease;
+  transform: s cale(1);
+  cursor: pointer;
+
+  &:hover {
+    color: $bright-blue;
+    transform: scale(1.05);
+  }
+}
