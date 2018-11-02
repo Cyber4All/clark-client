@@ -241,7 +241,29 @@ export class LearningObjectService {
       { withCredentials: true, responseType: 'text' }
     );
   }
-
+  /**
+   * Fetches Learning Object's Materials
+   *
+   * @param {string} username
+   * @param {string} objectId
+   * @param {string} description
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
+  getMaterials(username: string, objectId: string): Promise<any> {
+    const route = USER_ROUTES.GET_MATERIALS(username, objectId);
+    return this.http.get(route, { withCredentials: true }).toPromise();
+  }
+  /**
+   * Makes request to update file description
+   *
+   * @param {string} username
+   * @param {string} objectId
+   * @param {string} fileId
+   * @param {string} description
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
   updateFileDescription(
     username: string,
     objectId: string,
