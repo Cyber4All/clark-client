@@ -33,9 +33,9 @@ import { LearningObjectRatingsComponent } from './learning-object-ratings/learni
 import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
+import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
 import { CookiesComponent } from './cookies/cookies.component';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
-
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -79,6 +79,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     LearningObjectRatingsComponent,
     ReportRatingComponent,
     ProgressComponent,
+    FileSizePipe,
     CookiesComponent
   ],
   exports: [
