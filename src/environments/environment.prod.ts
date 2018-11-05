@@ -7,3 +7,11 @@ export const environment = {
   whiteListURL:
     'https://raw.githubusercontent.com/Cyber4All/clark-client/master/whitelist/whitelist.json'
 };
+
+export enum LearningObjectStatus {
+  PUBLISHED = 'published',
+  UNDER_REVIEW = 'review',
+  WAITING = 'waiting',
+  DENIED = 'denied',
+  UNPUBLISHED = 'unpublished'
+}

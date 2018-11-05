@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Renderer2 } from '@angular/core';
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { AuthService } from '../../core/auth.service';
-import { environment } from '@env/environment';
+import { AuthService, DOWNLOAD_STATUS } from '../../core/auth.service';
+import { CollectionService } from '../../core/collection.service';
 
 @Component({
   selector: 'learning-object-component',
@@ -15,12 +15,18 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() loading: boolean;
   @Input() owned ? = false;
 
-  collections = new Map([['nccp', 'NSA NCCP'], ['gencyber', 'GenCyber']]);
+  collections = new Map<string, string>();
 
   canDownload = false;
   showDownloadModal = false;
 
-  constructor(private hostEl: ElementRef, private renderer: Renderer2, private cart: CartV2Service, public auth: AuthService) {}
+  constructor(
+    private hostEl: ElementRef,
+    private renderer: Renderer2,
+    private cart: CartV2Service,
+    public auth: AuthService,
+    private collectionService: CollectionService,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.loading) {
@@ -33,27 +39,15 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-    if (environment.production) {
-      this.checkWhitelist();
-    } else {
-      this.canDownload = true;
-    }
-  }
+    this.auth.isLoggedIn.subscribe(() => {
+      this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
+        this.canDownload = isAuthorized === DOWNLOAD_STATUS.CAN_DOWNLOAD;
+      });
+    });
 
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.auth.username;
-      if (whitelist.includes(username)) {
-        this.canDownload = true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    this.collectionService.getCollections().then(collections => {
+      this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
+    });
   }
 
   goals() {

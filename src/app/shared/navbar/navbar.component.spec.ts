@@ -7,7 +7,7 @@ import { AuthService } from '../../core/auth.service';
 import { NavbarComponent } from './navbar.component';
 import { CookieService } from 'ngx-cookie';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -15,7 +15,7 @@ describe('NavbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpModule, ActivatedRoute ],
+      imports: [ RouterTestingModule, HttpClientModule, ActivatedRoute ],
       providers: [ ModalService, CartV2Service, AuthService, CookieService ],
       declarations: [ NavbarComponent ]
     })

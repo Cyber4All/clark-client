@@ -1,21 +1,21 @@
 
-import { Observable, Subject } from 'rxjs/Rx';
-import { SortType, OrderBy } from '../../shared/interfaces/query';
-import { ModalService, ModalListElement, Position} from '../../shared/modals';
-import { Router } from '@angular/router';
-import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { LearningObjectService } from '../learning-object.service';
-import { ActivatedRoute } from '@angular/router';
-import { Query } from '../../shared/interfaces/query';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AcademicLevel, LearningObject } from '@cyber4all/clark-entity/dist/learning-object';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
+import { Observable, Subject } from 'rxjs/Rx';
+import { AuthService, AUTH_GROUP } from '../../core/auth.service';
+import { CollectionService } from '../../core/collection.service';
 import {
   SuggestionService
- } from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
- import { FilterSection } from '../../shared/filter/filter.component';
- import { COPY } from './browse.copy';
+} from '../../onion/learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
+import { FilterSection } from '../../shared/filter/filter.component';
+import { OrderBy, Query, SortType } from '../../shared/interfaces/query';
+import { ModalListElement, ModalService, Position } from '../../shared/modals';
+import { LearningObjectService } from '../learning-object.service';
+import { COPY } from './browse.copy';
 
 
 @Component({
@@ -27,6 +27,7 @@ import {
 export class BrowseComponent implements OnInit, OnDestroy {
   copy = COPY;
   learningObjects: LearningObject[] = Array(20).fill(new LearningObject);
+  totalLearningObjects = 0;
 
   query: Query = {
     text: '',
@@ -37,6 +38,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
     standardOutcomes: [],
     orderBy: undefined,
     sortType: undefined,
+    collection: '',
+    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
   };
 
   tooltipText = {
@@ -47,8 +50,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     course: 'a Learning Object 15 weeks in length'
   };
 
-
-  loading = false;
+  loading = true;
   mappingsPopup = false;
 
   pageCount: number;
@@ -58,17 +60,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       name: 'collection',
       type: 'select-one',
       canSearch: false,
-      values: [
-        // FIXME this should be dynamically populated from API
-        {
-          name: 'NSA NCCP',
-          value: 'nccp'
-        },
-        {
-          name: 'GenCyber',
-          value: 'gencyber'
-        }
-      ]
+      values: []
     },
     {
       name: 'length',
@@ -105,7 +97,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, public mappingService: SuggestionService) {
+    private router: Router, private modalService: ModalService, public mappingService: SuggestionService,
+    private auth: AuthService,
+    private collectionService: CollectionService,
+    ) {
       this.windowWidth = window.innerWidth;
       this.learningObjects = Array(20).fill(new LearningObject);
   }
@@ -118,7 +113,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
     });
 
     // whenever the queryParams change, map them to the query object and perform the search
-    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
+    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
+      const collections = await this.collectionService.getCollections();
+      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
+      this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     });
@@ -382,8 +380,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
-      this.learningObjects = await this.learningObjectService.getLearningObjects(query);
-      this.pageCount = Math.ceil(this.learningObjectService.totalLearningObjects / +this.query.limit);
+      const { learningObjects, total } = await this.learningObjectService.getLearningObjects(query);
+      this.learningObjects = learningObjects;
+      this.totalLearningObjects = total;
+      this.pageCount = Math.ceil(total / +this.query.limit);
       this.loading = false;
     } catch (e) {
        console.log(`Error: ${e}`);

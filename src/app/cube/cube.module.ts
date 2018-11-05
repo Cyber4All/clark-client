@@ -1,6 +1,6 @@
 // Core
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -59,7 +59,7 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
   ],
   imports: [
     // Angular imports
-    HttpModule,
+    HttpClientModule,
     FormsModule,
     CommonModule,
     // 3rd Party imports

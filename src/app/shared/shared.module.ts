@@ -34,6 +34,8 @@ import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
 import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
+import { CookiesComponent } from './cookies/cookies.component';
+import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -52,7 +54,8 @@ import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
     ToasterModule,
     ContextMenuModule,
     TooltipModule,
-    PopupModule
+    PopupModule,
+    ClarkContextMenuModule.forRoot()
   ],
   providers: [],
   declarations: [
@@ -76,7 +79,8 @@ import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
     LearningObjectRatingsComponent,
     ReportRatingComponent,
     ProgressComponent,
-    FileSizePipe
+    FileSizePipe,
+    CookiesComponent
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -97,7 +101,10 @@ import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
     LearningObjectRatingsComponent,
     ProgressComponent,
     VirtualScrollModule,
-    PopupModule
+    PopupModule,
+    CookiesComponent,
+    ContextMenuModule,
+    ClarkContextMenuModule,
   ]
 })
 export class SharedModule {}

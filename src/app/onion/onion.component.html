@@ -3,10 +3,8 @@
 <app-dialogmenu [content]="modalService.dialogMenuContent"></app-dialogmenu>
 <div class="outer-wrapper" *ngIf="authService.status">
   <div class="content">
-    <div class="inner">
-      <div class="outlet sub-content">
-        <router-outlet></router-outlet>
-      </div>
+    <div class="outlet sub-content">
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

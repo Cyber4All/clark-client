@@ -6,6 +6,12 @@
         <div class="title">Description</div>
         <p [innerHtml]="learningObject.goals[0].text"></p>
       </div>
+
+      <section class="academic-levels">
+        <div class="title">Academic Levels</div>
+        <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }">{{ l | titlecase}}</a>
+      </section>
+
       <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
       <cube-children-detail-view *ngIf="learningObject.children?.length > 0" [length]="learningObject.length" [children]="learningObject.children"></cube-children-detail-view>
       <div class="materials">

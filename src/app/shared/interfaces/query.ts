@@ -19,6 +19,8 @@ export interface Query {
   standardOutcomes?:
     | string[]
     | { id: string; name: string; date: string; outcome: string }[];
+  released?: boolean;
+  collection?: string;
 }
 
 export interface MappingQuery extends Query {

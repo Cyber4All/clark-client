@@ -1,0 +1,45 @@
+<div *ngIf="!hidden" class="dashboard-item" [ngClass]="{'disabled': disabled, 'shrink': small}">
+  <div class="row-item">
+    <div>
+      <clark-checkbox *ngIf="!disabled" [setValue]="selected" (action)="toggleSelect($event)"></clark-checkbox>
+    </div>
+    <div>
+      <div class="status" [ngClass]="learningObject.status" tip="{{ states.get(learningObject.status)?.tip }}" tipDisabled="{{ !states.get(learningObject.status)?.tip }}" tipLocation="above">
+        <span *ngIf="learningObject.status === 'unpublished'"><i class="fas fa-eye-slash"></i></span>
+        <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
+        <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
+        <span *ngIf="learningObject.status === 'published'"><i class="fas fa-eye"></i></span>
+        <span *ngIf="learningObject.status === 'denied'"><i class="fas fa-ban"></i></span>
+      </div>
+    </div>
+    <div>
+      {{ learningObject.name }}
+      <span *ngIf="learningObject.parents?.length" tip="{{ learningObject.parents.join(', ') }}" tipLocation="above" class="hierarchy-parents">{{ learningObject.parents.length }} parent{{ learningObject.parents.length !== 1 ? 's' : '' }}</span>
+      <span *ngIf="learningObject.children?.length" tip="{{ objectChildrenNames(learningObject).join(', ') }}" tipLocation="above" class="hierarchy-children">{{ learningObject.children.length }} {{ learningObject.children.length !== 1 ? 'children' : 'child' }}</span>
+    </div>
+    <div>{{ learningObject.length | titlecase }}</div>
+    <div>{{ learningObject.date | date:'medium' }}</div>
+    <div>
+      <div *ngIf="!disabled && meatball" class="meatball" [ngClass]="{'open': meatballOpen}" (click)="this.toggleContextMenu($event)">
+        <div class="icon">
+          <i class="far fa-times"></i>
+        </div>
+        <div class="orb"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<clark-context-menu (id)="itemMenu = $event" (close)="meatballOpen = false">
+  <div #contextMenu>
+    <ul (click)="toggleContextMenu($event)">
+      <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.name]"><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="actionPermissions('editChildren')" (click)="editChildren.emit()"><i class="far fa-project-diagram"></i>Edit Children</li>
+      <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/content/upload', learningObject.name]"><i class="far fa-upload"></i>Manage Materials</li>
+      <li *ngIf="actionPermissions('submit')" (click)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
+      <li *ngIf="actionPermissions('view')" [routerLink]="['/details', learningObject.author.username, learningObject.name]"><i class="far fa-cube"></i>View in CUBE</li>
+      <li *ngIf="actionPermissions('delete')" class="bad" (click)="delete.emit()"><i class="far fa-trash-alt"></i>Delete</li>
+      <li *ngIf="actionPermissions('cancelSubmission')" class="bad" (click)="cancelSubmission.emit()"><i class="far fa-ban"></i>Cancel Submission</li>
+    </ul>
+  </div>
+</clark-context-menu>

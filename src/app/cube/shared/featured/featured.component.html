@@ -1,9 +1,8 @@
 <div class="title">
-  <div class="spacer"></div>
   <div class="feature-text">{{ copy.TITLE }}</div>
-  <div id="view-all" class="view-all" [routerLink]="['/browse', '']">{{ copy.VIEWALL }}
+  <a id="view-all" class="view-all" [routerLink]="['/browse']" [queryParams]="{ collection: this.query.collection }">{{ copy.VIEWALL }}
     <i class="far fa-angle-right"></i>
-  </div>
+  </a>
 </div>
 
 <div class="card-container">

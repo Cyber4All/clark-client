@@ -3,9 +3,22 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie';
-import { User } from '@cyber4all/clark-entity';
+import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
+
+export enum DOWNLOAD_STATUS {
+  CAN_DOWNLOAD = 0,
+  NO_AUTH = 1,
+  NOT_RELEASED = 2
+}
+
+export enum AUTH_GROUP {
+  ADMIN,
+  USER,
+  VISITOR
+}
 
 @Injectable()
 export class AuthService {
@@ -16,11 +29,10 @@ export class AuthService {
   isLoggedIn = new BehaviorSubject<boolean>(false);
   socket;
   socketWatcher: Observable<string>;
+  whitelist;
+  group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
 
-  constructor(
-    private http: HttpClient,
-    private cookies: CookieService
-  ) {
+  constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
       this.validate().then(
         val => {
@@ -32,6 +44,7 @@ export class AuthService {
         }
       );
     }
+    this.fetchWhitelist();
   }
 
   private changeStatus(status: boolean) {
@@ -71,9 +84,32 @@ export class AuthService {
       .then(
         (val: any) => {
           this.user = this.makeUserFromCookieResponse(val);
+          this.assignUserToGroup();
         },
         error => {
           throw error;
+        }
+      );
+  }
+
+  checkClientVersion(): Promise<void> {
+    // Application version information
+    const { version: appVersion } = require('../../../package.json');
+    return this.http
+      .get(environment.apiURL + '/clientversion/' + appVersion,
+        {
+          withCredentials: true,
+          responseType: 'text'
+        })
+      .toPromise()
+      .then(
+        () => {
+          return Promise.resolve();
+        },
+        (error) => {
+          if (error.status === 426) {
+            return Promise.reject(error);
+          }
         }
       );
   }
@@ -104,6 +140,7 @@ export class AuthService {
         val => {
           this.user = this.makeUserFromCookieResponse(val);
           this.changeStatus(true);
+          this.assignUserToGroup();
           return this.user;
         },
         error => {
@@ -124,6 +161,7 @@ export class AuthService {
       .then(val => {
         this.user = undefined;
         this.changeStatus(false);
+        this.group.next(AUTH_GROUP.VISITOR);
       });
   }
 
@@ -144,7 +182,7 @@ export class AuthService {
 
   // checkPassword is used when changing a password in the user-edit-information.component
   checkPassword(password: string): Promise<any> {
-      return this.http
+    return this.http
       .post<User>(
         environment.apiURL + '/users/password',
         { password },
@@ -220,8 +258,12 @@ export class AuthService {
   }
 
   makeUserFromCookieResponse(val: any): User {
-    const user = User.instantiate(val);
-    return user;
+    try {
+      const user = User.instantiate(val);
+      return user;
+    } catch {
+      return val as User;
+    }
   }
 
   establishSocket() {
@@ -246,7 +288,7 @@ export class AuthService {
     }
     return this.socketWatcher;
     */
-   return new Observable();
+    return new Observable();
   }
 
   destroySocket() {
@@ -270,36 +312,78 @@ export class AuthService {
       });
   }
 
-  printCards() {
-    // tslint:disable-next-line:max-line-length
-    const nameSplit = this.name.split(' ');
-    const firstname = nameSplit[0];
-    const lastname = nameSplit.slice(1, nameSplit.length).join(' ');
-    this.http
-      .get(
-        `${environment.apiURL}/users/${encodeURIComponent(
-          this.username
-        )}/cards?fname=${encodeURIComponent(
-          firstname
-        )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
-          this.user.organization
-        )}`,
-        { responseType: 'blob' }
-      )
-      .toPromise()
-      .then(
-        blob => {
-          const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+  printCards(username: string, name: string, organization: string) {
+    const uppercase = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
+    // Format user information
+    const nameSplit = name.split(' ');
+    const firstname = uppercase(nameSplit[0]);
+    const lastname = uppercase(nameSplit.slice(1, nameSplit.length).join(' '));
+    const org = organization.split(' ').map(word => uppercase(word)).join(' ');
 
-          const data = window.URL.createObjectURL(pdfBlob);
-          const iframe = document.createElement('iframe');
-          iframe.setAttribute('src', data);
-          iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
-          document.getElementById('card-printer').appendChild(iframe);
-        },
-        error => {
-          throw error;
+    // Create and click a tag to open new tab
+    const newlink = document.createElement('a');
+    newlink.setAttribute('target', '_blank');
+    newlink.setAttribute('href', `https://api-gateway.clark.center/users/${encodeURIComponent(
+      username
+    )}/cards?fname=${encodeURIComponent(
+      firstname
+    )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
+      org
+    )}`);
+    newlink.click();
+  }
+  async userCanDownload(learningObject: LearningObject): Promise<number> {
+    if (environment.production) {
+
+      // Check that the object does not contain a download lock and the user is logged in
+      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD);
+
+      // If the object is restricted, check if the user is on the whitelist
+      if (restricted) {
+        if (await this.checkWhitelist()) {
+          return DOWNLOAD_STATUS.CAN_DOWNLOAD;
+        } else {
+          return DOWNLOAD_STATUS.NOT_RELEASED;
         }
-      );
+      }
+
+      if (!this.isLoggedIn.getValue()) {
+        // user isn't logged in
+        return DOWNLOAD_STATUS.NO_AUTH;
+      }
+
+      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
+    } else {
+      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
+    }
+  }
+
+
+  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
+  private async checkWhitelist() {
+    try {
+      if (this.whitelist === undefined) {
+        await this.fetchWhitelist();
+      }
+      const username = this.username;
+      return this.whitelist.includes(username);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  private async fetchWhitelist() {
+    const response = await fetch(environment.whiteListURL);
+    const object = await response.json();
+    this.whitelist = object.whitelist;
+  }
+
+  /**
+   * Checks if the username of the currently logged in user is on the whitelist.
+   * If they are then they are an admin, else they are a normal user.
+   */
+  private assignUserToGroup() {
+    this.checkWhitelist().then(isListed => {
+      this.group.next(isListed ? AUTH_GROUP.ADMIN : AUTH_GROUP.USER);
+    });
   }
 }

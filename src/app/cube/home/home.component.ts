@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { COPY } from './home.copy';
+import { AuthService, AUTH_GROUP } from '../../core/auth.service';
+import { CollectionService, Collection } from '../../core/collection.service';
 
 
 @Component({
@@ -13,18 +15,36 @@ import { COPY } from './home.copy';
 export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
-    text: '',
-    currPage: 1,
-    limit: 30
+    limit: 1,
+    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
   };
-  placeholderText: string;
+  placeholderText = this.copy.SEARCH_PLACEHOLDER;
+  collections: Collection[];
+  releasedCounter: number;
+  totalCounter: number;
 
-  constructor(public learningObjectService: LearningObjectService, private router: Router) { }
+  constructor(
+    public learningObjectService: LearningObjectService,
+    private router: Router,
+    private auth: AuthService,
+    private collectionService: CollectionService
+    ) { }
 
   ngOnInit() {
-    this.placeholderText = 'Searching ' + this.learningObjectService.totalLearningObjects + ' learning objects of cybersecurity curriculum';
+    this.learningObjectService.getLearningObjects({ limit: 1, released: true }).then((res) => {
+      this.releasedCounter = res.total;
+    });
+    this.learningObjectService.getLearningObjects({ limit: 1 }).then((res) => {
+      this.totalCounter = res.total;
+    });
+    this.collectionService.getCollections()
+      .then(collections => {
+        this.collections = collections.filter(c => c.abvName !== 'secinj' && c.abvName !== 'gencyber');
+      })
+      .catch(e => {
+        console.error(e.message);
+      });
   }
-
   keyDownSearch(event) {
     if (event.keyCode === 13) {
       this.search();

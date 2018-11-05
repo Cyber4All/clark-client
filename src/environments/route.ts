@@ -1,4 +1,5 @@
 import { environment } from '@env/environment';
+import * as querystring from 'querystring';
 
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
@@ -18,11 +19,11 @@ export const USER_ROUTES = {
   LOGOUT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
-  GET_MY_LEARNING_OBJECTS(username) {
+  GET_MY_LEARNING_OBJECTS(username, query: any) {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects?children=true`;
+    )}/learning-objects?children=true&${querystring.stringify(query)}`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -145,6 +146,10 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
       name
     )}/learning-objects`;
   },
+  GET_COLLECTIONS: `${environment.apiURL}/collections`,
+  GET_COLLECTION_META(name: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
+  },
   GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username
@@ -152,6 +157,18 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   },
   GET_LEARNING_OBJECT_PARENTS(id: string) {
     return `${environment.apiURL}/learning-objects/${id}/parents`;
+  },
+  DOWNLOAD_FILE(params: {
+    username: string;
+    loId: string;
+    fileId: string;
+    open?: boolean;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.loId}/files/${params.fileId}/download${
+      params.open ? '?open=true' : ''
+    }`;
   }
 };
 
