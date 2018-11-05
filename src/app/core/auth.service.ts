@@ -97,10 +97,10 @@ export class AuthService {
     const { version: appVersion } = require('../../../package.json');
     return this.http
       .get(environment.apiURL + '/clientversion/' + appVersion,
-      {
-        withCredentials: true,
-        responseType: 'text'
-      })
+        {
+          withCredentials: true,
+          responseType: 'text'
+        })
       .toPromise()
       .then(
         () => {
@@ -182,7 +182,7 @@ export class AuthService {
 
   // checkPassword is used when changing a password in the user-edit-information.component
   checkPassword(password: string): Promise<any> {
-      return this.http
+    return this.http
       .post<User>(
         environment.apiURL + '/users/password',
         { password },
@@ -288,7 +288,7 @@ export class AuthService {
     }
     return this.socketWatcher;
     */
-   return new Observable();
+    return new Observable();
   }
 
   destroySocket() {
@@ -312,39 +312,26 @@ export class AuthService {
       });
   }
 
-  printCards() {
-    // tslint:disable-next-line:max-line-length
-    const nameSplit = this.name.split(' ');
-    const firstname = nameSplit[0];
-    const lastname = nameSplit.slice(1, nameSplit.length).join(' ');
-    this.http
-      .get(
-        `${environment.apiURL}/users/${encodeURIComponent(
-          this.username
-        )}/cards?fname=${encodeURIComponent(
-          firstname
-        )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
-          this.user.organization
-        )}`,
-        { responseType: 'blob' }
-      )
-      .toPromise()
-      .then(
-        blob => {
-          const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+  printCards(username: string, name: string, organization: string) {
+    const uppercase = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
+    // Format user information
+    const nameSplit = name.split(' ');
+    const firstname = uppercase(nameSplit[0]);
+    const lastname = uppercase(nameSplit.slice(1, nameSplit.length).join(' '));
+    const org = organization.split(' ').map(word => uppercase(word)).join(' ');
 
-          const data = window.URL.createObjectURL(pdfBlob);
-          const iframe = document.createElement('iframe');
-          iframe.setAttribute('src', data);
-          iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
-          document.getElementById('card-printer').appendChild(iframe);
-        },
-        error => {
-          throw error;
-        }
-      );
+    // Create and click a tag to open new tab
+    const newlink = document.createElement('a');
+    newlink.setAttribute('target', '_blank');
+    newlink.setAttribute('href', `https://api-gateway.clark.center/users/${encodeURIComponent(
+      username
+    )}/cards?fname=${encodeURIComponent(
+      firstname
+    )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
+      org
+    )}`);
+    newlink.click();
   }
-
   async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
 
