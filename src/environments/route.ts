@@ -132,6 +132,11 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${objectId}/files/${encodeURIComponent(fileId)}`;
+  },
+  GET_MATERIALS(username: string, objectId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${objectId}/materials`;
   }
 };
 

@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
+import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Component({
   selector: 'clark-materials-page',
@@ -12,6 +13,7 @@ import 'rxjs/add/operator/take';
   styleUrls: ['./materials-page.component.scss']
 })
 export class MaterialsPageComponent implements OnInit, OnDestroy {
+  saving$: Subject<boolean> = new Subject<boolean>();
   error$: Subject<string> = new Subject<string>();
   learningObject$: Observable<LearningObject>;
   destroyed$: Subject<void> = new Subject();
@@ -30,29 +32,33 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   }
 
   async handleFileDeletion() {
+    // Refresh object or materials
     console.log('FILES DELETED');
   }
 
   async handleUploadComplete() {
+    // Refresh object or materials
     console.log('UPLOAD COMPLETE');
-    const object = await this.learningObject$.take(1).toPromise();
-    const name = object.name;
-    // this.learningObject$ = this.store.fetch(name);
   }
 
   handleUrlAdded() {
     this.store.execute(BUILDER_ACTIONS.ADD_URL);
   }
 
-  handleUrlRemoved() {
-    this.store.execute(BUILDER_ACTIONS.REMOVE_URL);
+  handleUrlUpdated(data: { index: number; url: Url }) {
+    this.store.execute(BUILDER_ACTIONS.UPDATE_URL, data);
+  }
+
+  handleUrlRemoved(index: number) {
+    this.store.execute(BUILDER_ACTIONS.REMOVE_URL, index);
   }
 
   handleFileDescriptionUpdate(fileMeta: { id: string; description: string }) {
     this.store.execute(BUILDER_ACTIONS.UPDATE_FILE_DESCRIPTION, fileMeta);
   }
   handleFolderDescriptionUpdate(folderMeta: {
-    index: number;
+    path?: string;
+    index?: number;
     description: string;
   }) {
     this.store.execute(BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION, folderMeta);

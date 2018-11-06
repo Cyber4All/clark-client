@@ -20,7 +20,8 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import {
   File,
   FolderDescription,
-  LearningObject
+  LearningObject,
+  Url
 } from '@cyber4all/clark-entity/dist/learning-object';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { fromEvent } from 'rxjs';
@@ -80,7 +81,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   dzDirectiveRef: DropzoneDirective;
 
   @Input()
-  error$: Observable<string>;
+  error$: Subject<string> = new Subject<string>();
+  @Input()
+  saving$: Observable<boolean> = new Observable<boolean>();
   @Input()
   learningObject$: Observable<LearningObject> = new Observable<
     LearningObject
@@ -93,6 +96,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   urlAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output()
+  urlUpdated: EventEmitter<{ index: string; url: Url }> = new EventEmitter<{
+    index: string;
+    url: Url;
+  }>();
+  @Output()
   urlRemoved: EventEmitter<number> = new EventEmitter<number>();
   @Output()
   fileDescriptionUpdated: EventEmitter<{
@@ -101,7 +109,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }> = new EventEmitter<{ id: string; description: string }>();
   @Output()
   folderDescriptionUpdated: EventEmitter<{
-    index: number;
+    path?: string;
+    index?: number;
     description: string;
   }> = new EventEmitter<{ index: number; description: string }>();
   @Output()
@@ -327,10 +336,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('ERROR: ', event);
   }
 
-  handleCanceled(event) {
-    console.log('CANCELED : ', event);
-  }
-
   queueComplete() {
     this.uploadComplete.emit();
   }
@@ -394,6 +399,15 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   addURL() {
     this.urlAdded.emit();
+  }
+
+  /**
+   * Emits url updates
+   *
+   * @memberof UploadComponent
+   */
+  updateUrl(data: { index: string; url: Url }) {
+    this.urlUpdated.emit(data);
   }
 
   /**
@@ -477,11 +491,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       } else {
         const index = await this.findFolder(file.path);
-        console.log('IDNEXL ', index);
-        this.folderDescriptionUpdated.emit({
-          index,
-          description: file.description
-        });
+        if (index > -1) {
+          this.folderDescriptionUpdated.emit({
+            index,
+            description: file.description
+          });
+        } else {
+          this.folderDescriptionUpdated.emit({
+            path: file.path,
+            description: file.description
+          });
+        }
       }
     } catch (e) {
       console.log(e);

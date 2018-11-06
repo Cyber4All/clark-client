@@ -6,6 +6,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { verbs } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectValidator, OBJECT_ERRORS } from './validators/learning-object.validator'
+import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 
 /**
  * Defines a list of actions the builder can take
@@ -25,6 +26,7 @@ export enum BUILDER_ACTIONS {
   ADD_CONTRIBUTOR,
   REMOVE_CONTRIBUTOR,
   ADD_URL,
+  UPDATE_URL,
   REMOVE_URL,
   UPDATE_MATERIAL_NOTES,
   UPDATE_FILE_DESCRIPTION,
@@ -63,9 +65,15 @@ export class BuilderStore {
   > = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
-  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
 
-  constructor(private auth: AuthService, private learningObjectService: LearningObjectService, private validator: LearningObjectValidator) {
+  constructor(
+    private auth: AuthService,
+    private learningObjectService: LearningObjectService,
+    private validator: LearningObjectValidator
+  ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
       .pipe(
@@ -215,23 +223,24 @@ export class BuilderStore {
         return await this.removeContributor(data.user);
       case BUILDER_ACTIONS.ADD_URL:
         return await this.addUrl();
+      case BUILDER_ACTIONS.UPDATE_URL:
+        return await this.updateUrl(data.index, data.url);
       case BUILDER_ACTIONS.REMOVE_URL:
         return await this.removeUrl(data);
+      case BUILDER_ACTIONS.UPDATE_MATERIAL_NOTES:
+        return await this.updateNotes(data);
       case BUILDER_ACTIONS.UPDATE_FILE_DESCRIPTION:
         return await this.updateFileDescription(data.id, data.description);
       case BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION:
-        return await this.updateFolderDescription(data.index, data.description);
+        return await this.updateFolderDescription({
+          path: data.path,
+          index: data.index,
+          description: data.description
+        });
       default:
         console.error('Error! Invalid action taken!');
         return;
     }
-  }
-
-  removeUrl(index: string): any {
-    throw new Error('Method not implemented.');
-  }
-  addUrl(): any {
-    throw new Error('Method not implemented.');
   }
 
   /**
@@ -374,6 +383,76 @@ export class BuilderStore {
     }
   }
 
+  /**
+   * Adds Url to Learning Object's materials
+   *
+   * @memberof BuilderStore
+   */
+  addUrl(): void {
+    this.learningObject.materials.urls.push({ url: '', title: '' });
+  }
+
+  /**
+   * Updates Url at given index
+   *
+   * @param {number} index
+   * @param {Url} url
+   * @memberof BuilderStore
+   */
+  async updateUrl(index: number, url: Url): Promise<any> {
+    if (!url.url.match(/https?:\/\/.+/i)) {
+      url.url = `http://${url.url}`;
+    }
+    this.learningObject.materials.urls[index] = url;
+
+    this.learningObject.materials = await this.learningObjectService.getMaterials(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
+    this.saveObject(this.learningObject.materials.urls);
+  }
+
+  /**
+   * Removes Url from Learning Object's materials at given index
+   *
+   * @param {number} index
+   * @memberof BuilderStore
+   */
+  async removeUrl(index: number): Promise<any> {
+    if (index !== undefined) {
+      this.learningObject.materials.urls.splice(index, 1);
+    }
+    this.learningObject.materials = await this.learningObjectService.getMaterials(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
+    this.saveObject(this.learningObject.materials.urls);
+  }
+
+  /**
+   * Updates Learning Object's material notes
+   *
+   * @param {string} notes
+   * @returns {*}
+   * @memberof BuilderStore
+   */
+  async updateNotes(notes: string): Promise<any> {
+    this.learningObject.materials.notes = notes;
+    this.learningObject.materials = await this.learningObjectService.getMaterials(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
+    this.saveObject(this.learningObject.materials.notes);
+  }
+
+  /**
+   * Updates description for file and re-fetches Learning Object
+   *
+   * @param {*} fileId
+   * @param {*} description
+   * @returns {Promise<any>}
+   * @memberof BuilderStore
+   */
   async updateFileDescription(fileId: any, description: any): Promise<any> {
     await this.learningObjectService.updateFileDescription(
       this.learningObject.author.username,
@@ -381,14 +460,42 @@ export class BuilderStore {
       fileId,
       description
     );
-    const object = await this.fetch(this.learningObject.id);
-    this.learningObject = object;
+    this.learningObject.materials = await this.learningObjectService.getMaterials(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
   }
 
-  async updateFolderDescription(
-    index: number,
-    description: any
-  ): Promise<any> {}
+  /**
+   * Updates folder description if index is provided. Else creates adds new folder description
+   *
+   * @param {string} [path]
+   * @param {number} [index]
+   * @param {string} description
+   * @returns {Promise<any>}
+   * @memberof BuilderStore
+   */
+  async updateFolderDescription(params: {
+    path?: string;
+    index?: number;
+    description: string;
+  }): Promise<any> {
+    if (params.index !== undefined) {
+      this.learningObject.materials.folderDescriptions[
+        params.index
+      ].description = params.description;
+    } else {
+      this.learningObject.materials.folderDescriptions.push({
+        path: params.path,
+        description: params.description
+      });
+    }
+    await this.saveObject(this.learningObject.materials.folderDescriptions);
+    this.learningObject.materials = await this.learningObjectService.getMaterials(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
+  }
 
   ///////////////////////////
   //  SERVICE INTERACTION  //
@@ -482,12 +589,15 @@ export class BuilderStore {
       this.outcomeCache$.next(undefined);
 
       // service call
-      this.learningObjectService.saveOutcome(this.learningObject.id, data).then(() => {
-        this.serviceInteraction$.next(false);
-      }).catch((err) => {
-        console.error('Error! ', err);
-        this.serviceInteraction$.next(false);
-      });
+      this.learningObjectService
+        .saveOutcome(this.learningObject.id, data)
+        .then(() => {
+          this.serviceInteraction$.next(false);
+        })
+        .catch(err => {
+          console.error('Error! ', err);
+          this.serviceInteraction$.next(false);
+        });
     }
   }
 }

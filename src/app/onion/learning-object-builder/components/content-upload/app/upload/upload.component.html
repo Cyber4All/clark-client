@@ -15,8 +15,8 @@
         <li [ngClass]="{'active': slide === 2}" (click)="changeSlide(2)">URLs</li>
         <li [ngClass]="{'active': slide === 3}" (click)="changeSlide(3)">Notes</li>
       </ul>
-      <div class="server-status" [ngClass]="{'saving': saving}">
-        <ng-container *ngIf="!saving; else savingTemplate">
+      <div class="server-status" [ngClass]="{'saving': (saving | async)}">
+        <ng-container *ngIf="!(saving|async); else savingTemplate">
           <span>
             Saved <i class="far fa-check"></i>
           </span>
@@ -36,7 +36,8 @@
           (path)="openPath=$event"></onion-file-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
-        <clark-url-manager [urls]="(learningObject$|async)?.materials?.urls" (add)="addURL()" (remove)="removeURL($event)"></clark-url-manager>
+        <clark-url-manager [urls]="(learningObject$|async)?.materials?.urls" (add)="addURL()" (update)="updateUrl($event)"
+          (remove)="removeURL($event)"></clark-url-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 3" class="slide slide3">
         <div class="topbar">
