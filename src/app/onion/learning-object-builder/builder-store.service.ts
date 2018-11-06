@@ -5,7 +5,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { verbs } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { LearningObjectValidator } from './learning-object.validator';
+import { LearningObjectValidator, OBJECT_ERRORS } from './validators/learning-object.validator'
 
 /**
  * Defines a list of actions the builder can take
@@ -293,6 +293,8 @@ export class BuilderStore {
       },
       true
     );
+
+    return outcome;
   }
 
   private async mapStandardOutcomeMapping(
@@ -351,7 +353,7 @@ export class BuilderStore {
 
     this.saveObject({
       contributors: this.learningObject.contributors.map(x => x.id)
-    });
+    }, true);
   }
 
   private removeContributor(user: User) {
@@ -364,7 +366,7 @@ export class BuilderStore {
 
       this.saveObject({
         contributors: this.learningObject.contributors.map(x => x.id)
-      });
+      }, true);
     } else {
       console.error(
         'Error removing contributor! User not found in contributors array!'
@@ -401,7 +403,7 @@ export class BuilderStore {
       this.objectCache$.next(newValue);
     } else {
       // don't attempt to save if object isn't saveable, but keep cache so that we can try again later
-      if (!this.validator.saveable()) {
+      if (!this.validator.saveable) {
         return;
       }
 
@@ -422,13 +424,20 @@ export class BuilderStore {
         // append status property to data
         value.status = 'unpublished';
 
+        console.log('creating', value);
+
         // create the object
         this.learningObjectService.create(value).then((object: LearningObject) => {
           this.learningObject = object;
           this.serviceInteraction$.next(false);
         }).catch((err) => {
-          console.error('Error! ', err);
           this.serviceInteraction$.next(false);
+          if (err.status === 409) {
+            // tried to save an object with a name that already exists
+            this.validator.errors.saveErrors.set('name', OBJECT_ERRORS.EXISTING_NAME);
+            return;
+          }
+          console.error('Error! ', err);
         });
       } else {
         // this is an existing object and we can save it (has a saveable name)
@@ -436,12 +445,19 @@ export class BuilderStore {
         // append learning object id to payload
         value.id = this.learningObject.id;
 
+        console.log('saving', value);
+
         // send cached changes to server
         this.learningObjectService.save(value).then(() => {
           this.serviceInteraction$.next(false);
         }).catch((err) => {
-          console.error('Error! ', err);
           this.serviceInteraction$.next(false);
+          if (err.status === 409) {
+            // tried to save an object with a name that already exists
+            this.validator.errors.saveErrors.set('name', OBJECT_ERRORS.EXISTING_NAME);
+            return;
+          }
+          console.error('Error! ', err);
         });
       }
     }

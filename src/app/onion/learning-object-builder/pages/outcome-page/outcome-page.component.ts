@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import {
   BuilderStore,
@@ -7,6 +7,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { LearningObjectValidator } from '../../validators/learning-object.validator';
 
 @Component({
   selector: 'clark-outcome-page',
@@ -24,7 +25,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: BuilderStore,
-    private cd: ChangeDetectorRef,
+    private validator: LearningObjectValidator,
     private route: ActivatedRoute
   ) {}
 
@@ -84,12 +85,17 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   }
 
   mutateOutcome(id: string, params: any) {
-    const outcome = this.outcomes.get(id);
-    this.store.execute(actions.MUTATE_OUTCOME, { id, params });
+    this.store.execute(actions.MUTATE_OUTCOME, { id, params }).then((outcome: LearningOutcome) => {
+      this.validator.validateOutcome(outcome);
+    });
   }
 
   newOutcome() {
     this.store.execute(actions.CREATE_OUTCOME, {}).then(id => {
+      // TODO remove this
+      // validate the new outcome?
+      const outcome = this.store.outcomeEvent.getValue().get(id);
+      this.validator.validateOutcome(outcome);
       setTimeout(() => {
         this.activeOutcome = id;
       }, 100);

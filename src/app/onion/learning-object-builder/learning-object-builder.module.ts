@@ -25,7 +25,8 @@ import { ContributorPillComponent } from './components/contributor-pill/contribu
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 import { ToasterModule } from 'app/shared/toaster';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LearningObjectValidator } from './learning-object.validator';
+import { LearningObjectValidator } from './validators/learning-object.validator';
+import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 
 @NgModule({
   imports: [
@@ -59,6 +60,6 @@ import { LearningObjectValidator } from './learning-object.validator';
     ContributorPillComponent,
     ScaffoldComponent
   ],
-  providers: [BuilderStore, LearningObjectValidator]
+  providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
 })
 export class LearningObjectBuilderModule {}

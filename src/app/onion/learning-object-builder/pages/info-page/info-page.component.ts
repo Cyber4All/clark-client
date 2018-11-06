@@ -8,7 +8,7 @@ import { LearningObject, User } from '@cyber4all/clark-entity';
 import { COPY } from './info-page.copy';
 import { Subject } from 'rxjs/Subject';
 import { AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
-import { LearningObjectValidator } from '../../learning-object.validator';
+import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
@@ -81,6 +81,7 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     }
 
     this.mutateLearningObject({ levels: this.selectedLevels });
+    this.validator.validateAcademicLevels(this.selectedLevels);
   }
 
   ngOnDestroy() {

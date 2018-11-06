@@ -14,8 +14,8 @@ import {
   animate,
   state
 } from '@angular/animations';
-import { ClickOutsideModule } from 'ng-click-outside';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { LearningObjectValidator } from '../../validators/learning-object.validator';
+import { LearningOutcomeValidator } from '../../validators/learning-outcome.validator';
 
 @Component({
   selector: 'clark-outcome',
@@ -59,7 +59,7 @@ export class OutcomeComponent implements OnInit {
   @Output()
   deleted: EventEmitter<void> = new EventEmitter();
 
-  constructor() { }
+  constructor(public validator: LearningObjectValidator, public outcomeValidator: LearningOutcomeValidator) { }
 
   ngOnInit() {
     // set the outcomeNumber to however many outcomes are currently in the outcomes array

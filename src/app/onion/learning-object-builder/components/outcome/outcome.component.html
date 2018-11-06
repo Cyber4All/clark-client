@@ -23,6 +23,9 @@
       (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)" class="absolute-position">
     </clark-outcome-typeahead>
   </div>
+  <div *ngIf="outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-error">
+    {{ validator.getOutcome(outcome.id) }}
+  </div>
   <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
     <div class="outcome-header">Maps to: </div>
     <div class="pills">

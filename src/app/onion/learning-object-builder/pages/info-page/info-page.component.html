@@ -46,7 +46,7 @@
           </div>
         </clark-info-page-metadata>
         <hr>
-        <clark-info-page-metadata>
+        <clark-info-page-metadata [error]="validator.get('levels')">
           <div title>{{copy.LEVELS}}</div>
           <div directions>{{copy.SELECT}}</div>
           <div data>

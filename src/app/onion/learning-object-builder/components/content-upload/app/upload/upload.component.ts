@@ -345,13 +345,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private renameFile(file: any): string {
     let path: string;
-    this.error$.next('COULD NOT ADD URL');
     if (file.fullPath || file.webkitRelativePath) {
-      this.error$.next('COULD NOT ADD URL');
       path = file.fullPath ? file.fullPath : file.webkitRelativePath;
-      this.error$.next('COULD NOT ADD URL');
     }
-    this.error$.next('COULD NOT ADD URL');
     if (this.openPath) {
       path = `${this.openPath}/${path ? path : file.name}`;
     }

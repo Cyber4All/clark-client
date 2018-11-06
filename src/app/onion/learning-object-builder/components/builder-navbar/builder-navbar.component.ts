@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
-import { LearningObjectValidator } from '../../learning-object.validator';
+import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -45,9 +45,9 @@ export class BuilderNavbarComponent implements OnDestroy {
   canRoute(route: string) {
     switch (route) {
       case 'outcomes':
-        return this.validator.saveable();
+        return this.validator.saveable;
       case 'materials':
-        return !!(this.auth.user.emailVerified && this.validator.saveable());
+        return !!(this.auth.user.emailVerified && this.validator.saveable);
     }
   }
 
