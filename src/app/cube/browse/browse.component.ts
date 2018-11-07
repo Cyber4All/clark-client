@@ -16,6 +16,8 @@ import { CollectionService } from '../../core/collection.service';
 import { OrderBy, Query, SortType } from '../../shared/interfaces/query';
 import { ModalListElement, ModalService, Position } from '../../shared/modals';
 import { LearningObjectService } from '../learning-object.service';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'cube-browse',
