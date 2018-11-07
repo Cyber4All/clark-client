@@ -14,9 +14,10 @@ import {
 import { OutcomeService } from '../../core/outcome.service';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import {  Subject, fromEvent } from 'rxjs';
-import { takeUntil, debounceTime, map } from 'rxjs/operators'
+import { takeUntil, debounceTime, map, filter } from 'rxjs/operators'
 
 import 'rxjs/add/operator/debounceTime';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'clark-mappings-filter',
@@ -53,6 +54,9 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   // this array is fetched from the outcome service and populated
   possibleSources = [];
 
+  // if set, this is the last outcome that was emitted as an addition
+  focusedOutcome: LearningOutcome;
+
   filter: { name?: string, author?: string, date?: string, filterText?: string } = {};
 
 
@@ -85,7 +89,17 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.closeDropdowns(true);
   }
 
-  constructor(private outcomeService: OutcomeService) { }
+  constructor(private outcomeService: OutcomeService, private router: Router) {
+    this.router.events.pipe(
+      takeUntil(this.destroyed$),
+      filter(x => x instanceof NavigationEnd),
+    ).subscribe((val: NavigationEnd) => {
+      if (/browse/.test(val.urlAfterRedirects) && !/standardOutcome/.test(val.urlAfterRedirects)) {
+        // we've cleared the input, remove the pill
+        this.clear();
+      }
+    })
+  }
 
   ngOnInit() {
     // listen for events on the search input and call search functions or clear results list
@@ -184,6 +198,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
    * @memberof MappingsFilterComponent
    */
   addOutcome(outcome: LearningOutcome) {
+    this.focusedOutcome = outcome;
     this.add.emit({ category: 'mappings', filter: outcome.id });
   }
 
@@ -194,6 +209,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
    * @memberof MappingsFilterComponent
    */
   removeOutcome(outcome: LearningOutcome) {
+    this.focusedOutcome = undefined;
     this.remove.emit({ category: 'mappings', filter: outcome.id });
   }
   
@@ -229,6 +245,11 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.resultsDown = this.sourcesDown = false;
     }
+  }
+
+  clear() {
+    this.searchInput.nativeElement.value = '';
+    this.removeOutcome(this.focusedOutcome);
   }
 
   /**
