@@ -164,6 +164,20 @@ export class BuilderStore {
   }
 
   /**
+   * Retrieves materials for learning object
+   *
+   * @returns {Promise<void>}
+   * @memberof BuilderStore
+   */
+  async fetchMaterials(): Promise<void> {
+    this.learningObject.materials = await this.learningObjectService.getMaterials(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
+    this.learningObjectEvent.next(this.learningObject);
+  }
+
+  /**
    * Creates and stores a new blank learning object
    *
    * @returns {LearningObject} new blank learning object
@@ -464,11 +478,7 @@ export class BuilderStore {
       fileId,
       description
     );
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
-    this.learningObjectEvent.next(this.learningObject);
+    await this.fetchMaterials();
   }
 
   /**
@@ -499,11 +509,7 @@ export class BuilderStore {
       'materials.folderDescriptions': this.learningObject.materials
         .folderDescriptions
     });
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
-    this.learningObjectEvent.next(this.learningObject);
+    await this.fetchMaterials();
   }
 
   ///////////////////////////
