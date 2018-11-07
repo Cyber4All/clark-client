@@ -130,7 +130,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     ...environment.DROPZONE_CONFIG,
     renameFile: (file: any) => {
       return this.renameFile(file);
-    }
+    },
+    autoQueue: false,
+    parallelChunkUploads: true
   };
 
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
@@ -269,14 +271,28 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {DZFile} file
    * @memberof UploadComponent
    */
-  addFile(file: DZFile) {
-    if (!file.rootFolder) {
-      // this is a file addition
-      this.inProgressFileUploads.push(file);
-      this.inProgressUploadsMap.set(
-        file.upload.uuid,
-        this.inProgressFileUploads.length - 1
-      );
+  async addFile(file: DZFile) {
+    try {
+      if (!file.rootFolder) {
+        // this is a file addition
+        this.inProgressFileUploads.push(file);
+        this.inProgressUploadsMap.set(
+          file.upload.uuid,
+          this.inProgressFileUploads.length - 1
+        );
+        if (file.upload.chunked) {
+          // Request multipart upload
+          const learningObject = await this.learningObject$.toPromise();
+          await this.fileStorage.initMultipart({
+            learningObject,
+            fileId: file.upload.uuid,
+            filePath: file.fullPath ? file.fullPath : file.name
+          });
+        }
+      }
+      this.dzDirectiveRef.dropzone().processFile(file);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -316,7 +332,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  dzComplete() {
+  async dzComplete(file) {
     const progressCheck = this.inProgressFileUploads
       .filter(x => typeof x.progress !== 'number' || x.progress < 100)
       .concat(
@@ -329,6 +345,25 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.inProgressFileUploads = [];
       this.inProgressFolderUploads = [];
       this.inProgressUploadsMap = new Map();
+    }
+    if (file.upload.chunked) {
+      try {
+        const fileMeta = {
+          dzuuid: file.upload.uuid,
+          name: file.name,
+          size: file.size,
+          fullPath: file.fullPath,
+          mimetype: file.type
+        };
+        const learningObject = await this.learningObject$.toPromise();
+        await this.fileStorage.finalizeMultipart({
+          fileMeta,
+          learningObject,
+          fileId: file.upload.uuid
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 

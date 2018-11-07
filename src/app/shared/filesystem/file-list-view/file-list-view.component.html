@@ -12,7 +12,7 @@
       [contextMenuSubject]="folder">
       <div class="text-contained inline-flex">
         <i class="fas fa-folder icon"></i>
-        {{ folder.name }} ({{ folder.files.length }} item{{ folder.files.length !== 1 ? 's' : '' }})
+        {{ folder.name }}
       </div>
       <div class="text-contained description">
         <span>{{ folder.description || 'No description here!' }}</span>
@@ -28,9 +28,10 @@
     </div>
     <!-- Render Files -->
     <div class="grid-row file" *ngFor="let file of (node$ | async)?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
-      <div (click)="openFile(file.name, $event)" class="text-contained inline-flex">
+      <div (click)="openFile(file)" class="text-contained inline-flex" [ngClass]="{'hover-react': previewUrl(file.extension)}">
         <i class="fas {{ getIcon(file.extension) }} icon"></i>
         {{ file.name }}
+        <span class="external-link-icon" *ngIf="previewUrl(file.extension)"><i class="far fa-external-link"></i></span>
       </div>
       <div class="text-contained description">
         <span>{{ file.description || 'No description here!' }}</span>
