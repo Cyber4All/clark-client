@@ -128,6 +128,24 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${id}/pdf`;
+  },
+  INIT_MULTIPART(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
+  },
+  FINALIZE_MULTIPART(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
   }
 };
 
