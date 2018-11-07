@@ -89,7 +89,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     ...environment.DROPZONE_CONFIG,
     renameFile: (file: any) => {
       return this.renameFile(file);
-    }
+    },
+    autoQueue: false,
+    parallelChunkUploads: true
   };
 
   files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
