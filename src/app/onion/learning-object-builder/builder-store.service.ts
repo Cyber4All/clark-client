@@ -399,6 +399,7 @@ export class BuilderStore {
    */
   addUrl(): void {
     this.learningObject.materials.urls.push({ url: '', title: '' });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -413,7 +414,10 @@ export class BuilderStore {
       url.url = `http://${url.url}`;
     }
     this.learningObject.materials.urls[index] = url;
-    this.saveObject(this.learningObject.materials.urls);
+    await this.saveObject({
+      'materials.urls': this.learningObject.materials.urls
+    });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -426,7 +430,10 @@ export class BuilderStore {
     if (index !== undefined) {
       this.learningObject.materials.urls.splice(index, 1);
     }
-    this.saveObject(this.learningObject.materials.urls);
+    await this.saveObject({
+      'materials.urls': this.learningObject.materials.urls
+    });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -438,7 +445,8 @@ export class BuilderStore {
    */
   async updateNotes(notes: string): Promise<any> {
     this.learningObject.materials.notes = notes;
-    this.saveObject(this.learningObject.materials.notes);
+    await this.saveObject({ 'materials.notes': notes });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -460,6 +468,7 @@ export class BuilderStore {
       this.learningObject.author.username,
       this.learningObject.id
     );
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -486,11 +495,15 @@ export class BuilderStore {
         description: params.description
       });
     }
-    await this.saveObject(this.learningObject.materials.folderDescriptions);
+    await this.saveObject({
+      'materials.folderDescriptions': this.learningObject.materials
+        .folderDescriptions
+    });
     this.learningObject.materials = await this.learningObjectService.getMaterials(
       this.learningObject.author.username,
       this.learningObject.id
     );
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   ///////////////////////////
