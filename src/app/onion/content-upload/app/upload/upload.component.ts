@@ -301,7 +301,16 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           file.upload.uuid,
           this.inProgressFileUploads.length - 1
         );
+        if (file.upload.chunked) {
+          // Request multipart upload
+          await this.fileStorageService.initMultipart({
+            learningObject: this.learningObject,
+            fileId: file.upload.uuid,
+            filePath: file.fullPath ? file.fullPath : file.name
+          });
+        }
       }
+      this.dzDirectiveRef.dropzone().processFile(file);
     } catch (error) {
       console.log(error);
     }
@@ -347,23 +356,37 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  dzComplete(event) {
-    try {
-      const progressCheck = this.inProgressFileUploads
-        .filter(x => typeof x.progress !== 'number' || x.progress < 100)
-        .concat(
-          this.inProgressFolderUploads.filter(
-            x => typeof x.progress !== 'number' || x.progress < 100
-          )
-        );
+  async dzComplete(file) {
+    const progressCheck = this.inProgressFileUploads
+      .filter(x => typeof x.progress !== 'number' || x.progress < 100)
+      .concat(
+        this.inProgressFolderUploads.filter(
+          x => typeof x.progress !== 'number' || x.progress < 100
+        )
+      );
 
-      if (!progressCheck.length) {
-        this.inProgressFileUploads = [];
-        this.inProgressFolderUploads = [];
-        this.inProgressUploadsMap = new Map();
+    if (!progressCheck.length) {
+      this.inProgressFileUploads = [];
+      this.inProgressFolderUploads = [];
+      this.inProgressUploadsMap = new Map();
+    }
+    if (file.upload.chunked) {
+      try {
+        const fileMeta = {
+          dzuuid: file.upload.uuid,
+          name: file.name,
+          size: file.size,
+          fullPath: file.fullPath,
+          mimetype: file.type
+        };
+        await this.fileStorageService.finalizeMultipart({
+          fileMeta,
+          learningObject: this.learningObject,
+          fileId: file.upload.uuid
+        });
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   }
 
