@@ -14,9 +14,9 @@
   </div>
   <div class="section url-wrapper">
     <div *ngFor="let url of urls; let i = index;" class="link input-wrapper">
-      <input aria-label="URL Title" placeholder="Title" type="text" (ngModel)="urls[i].title" name="url.title.{{ i }}"
+      <input aria-label="URL Title" placeholder="Title" type="text" [value]="urls[i].title" (ngModel)="urls[i].title" name="url.title.{{ i }}"
         (input)="updateTitle(i, $event.target.value)">
-      <input aria-label="URL" placeholder="https://example.com" type="text" (ngModel)="urls[i].url" name="url.url.{{ i }}"
+      <input aria-label="URL" placeholder="https://example.com" type="text" [value]="urls[i].url" (ngModel)="urls[i].url" name="url.url.{{ i }}"
         (input)="updateUrl(i, $event.target.value)">
       <button class="button bad icon-only" (click)="removeURL(i)">
         <i class="far fa-times"></i>
