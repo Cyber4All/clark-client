@@ -282,7 +282,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         if (file.upload.chunked) {
           // Request multipart upload
-          const learningObject = await this.learningObject$.toPromise();
+          const learningObject = await this.learningObject$.take(1).toPromise();
           await this.fileStorage.initMultipart({
             learningObject,
             fileId: file.upload.uuid,
@@ -292,7 +292,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.dzDirectiveRef.dropzone().processFile(file);
     } catch (error) {
-      console.log(error);
+      this.error$.next(error);
     }
   }
 
@@ -355,7 +355,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           fullPath: file.fullPath,
           mimetype: file.type
         };
-        const learningObject = await this.learningObject$.toPromise();
+        const learningObject = await this.learningObject$.take(1).toPromise();
         await this.fileStorage.finalizeMultipart({
           fileMeta,
           learningObject,
@@ -506,7 +506,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           files.map(fileId => this.fileStorage.delete(object, fileId))
         );
         this.filesDeleted.emit();
-      } catch (e) {}
+      } catch (e) {
+        this.error$.next(e);
+      }
     }
   }
 
