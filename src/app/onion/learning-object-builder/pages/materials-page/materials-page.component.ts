@@ -33,38 +33,80 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
 
   async handleFileDeletion() {
     // Refresh object or materials
-    console.log('FILES DELETED');
+    try {
+      await this.store.fetchMaterials();
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
 
   async handleUploadComplete() {
     // Refresh object or materials
-    console.log('UPLOAD COMPLETE');
+    try {
+      await this.store.fetchMaterials();
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
 
-  handleUrlAdded() {
-    this.store.execute(BUILDER_ACTIONS.ADD_URL);
+  async handleUrlAdded() {
+    try {
+      await this.store.execute(BUILDER_ACTIONS.ADD_URL);
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
 
-  handleUrlUpdated(data: { index: number; url: Url }) {
-    this.store.execute(BUILDER_ACTIONS.UPDATE_URL, data);
+  async handleUrlUpdated(data: { index: number; url: Url }) {
+    try {
+      await this.store.execute(BUILDER_ACTIONS.UPDATE_URL, data);
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
 
-  handleUrlRemoved(index: number) {
-    this.store.execute(BUILDER_ACTIONS.REMOVE_URL, index);
+  async handleUrlRemoved(index: number) {
+    try {
+      await this.store.execute(BUILDER_ACTIONS.REMOVE_URL, index);
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
 
-  handleFileDescriptionUpdate(fileMeta: { id: string; description: string }) {
-    this.store.execute(BUILDER_ACTIONS.UPDATE_FILE_DESCRIPTION, fileMeta);
+  async handleFileDescriptionUpdate(fileMeta: {
+    id: string;
+    description: string;
+  }) {
+    try {
+      await this.store.execute(
+        BUILDER_ACTIONS.UPDATE_FILE_DESCRIPTION,
+        fileMeta
+      );
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
-  handleFolderDescriptionUpdate(folderMeta: {
+
+  async handleFolderDescriptionUpdate(folderMeta: {
     path?: string;
     index?: number;
     description: string;
   }) {
-    this.store.execute(BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION, folderMeta);
+    try {
+      await this.store.execute(
+        BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION,
+        folderMeta
+      );
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
 
-  handleNotesUpdate(notes: string) {
-    this.store.execute(BUILDER_ACTIONS.UPDATE_MATERIAL_NOTES, notes);
+  async handleNotesUpdate(notes: string) {
+    try {
+      await this.store.execute(BUILDER_ACTIONS.UPDATE_MATERIAL_NOTES, notes);
+    } catch (e) {
+      this.error$.next(e);
+    }
   }
 }
