@@ -13,8 +13,8 @@ import {
 } from '@angular/core';
 import { OutcomeService } from '../../core/outcome.service';
 import { LearningOutcome } from '@cyber4all/clark-entity';
-import { Subscription, fromEvent } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
+import {  Subject, fromEvent } from 'rxjs';
+import { takeUntil, debounceTime, map } from 'rxjs/operators'
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -39,7 +39,8 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   outcomes: {source: string, outcomes: LearningOutcome[]}[];
 
-  subs: Subscription[] = [];
+  // fired when the component is destroyed
+  destroyed$: Subject<void> = new Subject();
 
   // flags
   focused = false;
@@ -49,7 +50,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   resultsDown = false;
   sourcesDown = false;
 
-  // TODO: sources should be fetched from an API route to allow dynamic configuration
+  // this array is fetched from the outcome service and populated
   possibleSources = [];
 
   filter: { name?: string, author?: string, date?: string, filterText?: string } = {};
@@ -87,46 +88,57 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private outcomeService: OutcomeService) { }
 
   ngOnInit() {
-    this.subs.push(
-      fromEvent(this.searchInput.nativeElement, 'input')
-      .map(x => x['currentTarget'].value)
-      .debounceTime(650)
-      .subscribe(val => {
-        if (val && val !== '') {
-          this.loading = this.resultsDown = true;
-          this.filter.filterText = val;
-          this.getOutcomes(this.filter);
-        } else {
-          this.loading = this.resultsDown = false;
-          this.outcomes = [];
-        }
-      })
-    );
+    // listen for events on the search input and call search functions or clear results list
+    fromEvent(this.searchInput.nativeElement, 'input').pipe(
+      map(x => x['currentTarget'].value),
+      takeUntil(this.destroyed$),
+      debounceTime(650)
+    )
+    .subscribe(val => {
+      if (val && val !== '') {
+        this.loading = this.resultsDown = true;
+        this.filter.filterText = val;
+        this.getOutcomes(this.filter);
+      } else {
+        this.loading = this.resultsDown = false;
+        this.outcomes = [];
+      }
+    })
 
+    // listen for the instruction to close from the parent and close dropdowns
     if (this.close) {
-      this.subs.push(this.close.subscribe({
+      this.close.pipe(
+        takeUntil(this.destroyed$)
+      ).subscribe({
         next: () => {
           this.closeDropdowns();
         }
-      }));
+      });
     }
 
+    // listen for the instruction to focus the search input from the parent and handle it
     if (this.focus) {
-      this.subs.push(this.focus.subscribe({
+      this.focus.pipe(
+        takeUntil(this.destroyed$)
+      ).subscribe({
         next: () => {
           this.searchInput.nativeElement.focus();
         }
-      }));
+      });
     }
 
+    // listen for the instruction to blur the search input from the parent and handle it
     if (this.blur) {
-      this.subs.push(this.blur.subscribe({
+      this.blur.pipe(
+        takeUntil(this.destroyed$)
+      ).subscribe({
         next: () => {
           this.searchInput.nativeElement.blur();
         }
-      }));
+      });
     }
 
+    // fetch list of sources
     this.outcomeService.getSources().then(val => {
       this.possibleSources = val;
     });
@@ -148,14 +160,12 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  ngOnDestroy() {
-    for (let i = 0, l = this.subs.length; i < l; i++) {
-      this.subs[i].unsubscribe();
-    }
-
-    this.subs = [];
-  }
-
+  /**
+   * Handles the focus event on the search input. Initiates the results dropdown if needed and emits the event to the parent
+   *
+   * @param {string} inputValue
+   * @memberof MappingsFilterComponent
+   */
   focusInput(inputValue: string) {
     if (inputValue && inputValue !== '' && !this.resultsDown) {
       this.resultsDown = true;
@@ -167,15 +177,33 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.didFocus.emit();
   }
 
+  /**
+   * Emits the addition of an outcome to the parent components and sets it as the focused outcome
+   *
+   * @param {LearningOutcome} outcome
+   * @memberof MappingsFilterComponent
+   */
   addOutcome(outcome: LearningOutcome) {
     this.add.emit({ category: 'mappings', filter: outcome.id });
   }
 
+  /**
+   * * Emits the removal of an outcome to the parent component and removes the focused outcome
+   *
+   * @param {LearningOutcome} outcome the otucome to remove
+   * @memberof MappingsFilterComponent
+   */
   removeOutcome(outcome: LearningOutcome) {
     this.remove.emit({ category: 'mappings', filter: outcome.id });
   }
-
-  preventClose(event: MouseEvent, dropdown: 'results' | 'sources') {
+  
+  /**
+   * Prevents the closure of a dropdown
+   *
+   * @param {('results' | 'sources')} dropdown the dropdown to prevent closure of
+   * @memberof MappingsFilterComponent
+   */
+  preventClose(dropdown: 'results' | 'sources') {
     if (dropdown === 'results') {
       this.clickedInsideResults = true;
     } else {
@@ -183,6 +211,12 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  /**
+   * Closes dropdowns (like search results and the sources list)
+   *
+   * @param {boolean} [step] if true, closes only first open dropdown, otherwise forces all dropdowns to close
+   * @memberof MappingsFilterComponent
+   */
   closeDropdowns(step?: boolean) {
     this.clickedInsideResults = this.clickedInsideSources = false;
 
@@ -197,13 +231,28 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private getOutcomes(filter) {
+  /**
+   * Fetch outcomes from service with any selected filters
+   *
+   * @private
+   * @param {{ name?: string, author?: string, date?: string, filterText?: string }} filter
+   * @memberof MappingsFilterComponent
+   */
+  private getOutcomes(filter: { name?: string, author?: string, date?: string, filterText?: string }) {
     this.outcomeService.getOutcomes(filter).then((res: {total: number, outcomes: LearningOutcome[]}) => {
       this.loading = false;
       this.outcomes = this.separateOutcomes(res.outcomes);
     });
   }
 
+  /**
+   * Takes an array of outcomes and separates them by source
+   *
+   * @private
+   * @param {LearningOutcome[]} outcomes
+   * @returns {{source: string, outcomes: LearningOutcome[]}[]}
+   * @memberof MappingsFilterComponent
+   */
   private separateOutcomes(outcomes: LearningOutcome[]): {source: string, outcomes: LearningOutcome[]}[] {
     const results: {source: string, outcomes: LearningOutcome[]}[] = [];
     const sources = [];
@@ -221,6 +270,11 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     return results;
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 
 }
