@@ -103,13 +103,6 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Clears the organization results, which removes the list items from the DOM.
-   */
-  closeOrganizationList() {
-    this.organizationsList = [];
-  }
-
   private checkOrganization() {
     if (this.organizationsList.length > 0) {
       // Check if current query matches any org within the results
