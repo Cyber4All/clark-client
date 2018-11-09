@@ -297,21 +297,6 @@ export class AuthService {
     }
   }
 
-  getOrganizations(query: string) {
-    return this.http
-      .get(
-        environment.apiURL + `/users/organizations?query=${encodeURIComponent(query)}`,
-        {
-          headers: this.httpHeaders,
-          withCredentials: true
-        }
-      )
-      .toPromise()
-      .then(val => {
-        return val;
-      });
-  }
-
   printCards(username: string, name: string, organization: string) {
     const uppercase = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
     // Format user information
