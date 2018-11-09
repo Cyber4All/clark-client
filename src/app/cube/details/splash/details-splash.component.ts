@@ -45,6 +45,8 @@ export class DetailsSplashComponent implements OnInit {
         return 'secinj.png';
       case 'c5':
         return 'c5.png';
+      case 'cae_community':
+        return 'cae_community.png';
     }
   }
 }
