@@ -35,7 +35,6 @@ export class CollectionSelectorComponent implements OnInit {
   async loadCollections(): Promise<Collection[]> {
     this.loading = true;
     return  this.collectionService.getCollections().then(val => {
-      console.log(val);
       this.loading = false;
       return val;
     }).catch(error => {
