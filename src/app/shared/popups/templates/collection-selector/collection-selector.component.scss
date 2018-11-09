@@ -6,9 +6,11 @@
 }
 
 .modal-sub {
-  color: $dark-text !important;
+  color: lighten($dark-text, 10);
   margin-bottom: 0 !important;
-  font-size: 20px;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
 }
 
 .collection-chooser {
