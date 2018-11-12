@@ -17,6 +17,8 @@ import {
   sequence
 } from '@angular/animations';
 import { ToasterService } from 'app/shared/toaster';
+import { LearningObjectValidator } from './validators/learning-object.validator';
+import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* <=> *', [
@@ -74,7 +76,9 @@ export const builderTransitions = trigger('builderTransition', [
   selector: 'clark-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss'],
-  animations: [builderTransitions]
+  animations: [builderTransitions],
+  // these are provided here so that they'll destroy when navigating away
+  providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
 })
 export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   // fires when the component is destroyed

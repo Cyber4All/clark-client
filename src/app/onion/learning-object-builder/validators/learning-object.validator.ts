@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { LearningOutcomeErrorGroup, LearningOutcomeValidator } from './learning-outcome.validator';
-import { LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningOutcome, LearningObject } from '@cyber4all/clark-entity';
 
 export const OBJECT_ERRORS = {
   NO_NAME: 'Learning object must have a name',
   SHORT_NAME: 'A learning object\'s name must be longer than 3 characters',
   EXISTING_NAME: 'A learning object with this name already exists',
   NO_DESCRIPTION: 'A learning object must have a description',
-  NO_LEVELS: 'A learning object must have academic levels'
+  NO_LEVELS: 'A learning object must have academic levels',
+  NO_OUTCOMES: 'A learning object must have learning outcomes'
 };
 
 export const OUTCOME_ERRORS = {
@@ -116,7 +117,6 @@ export class LearningObjectValidator {
    * @memberof LearningObjectValidator
    */
   get saveable(): boolean {
-    // console.log(!this.errors.saveErrors.size && !this.outcomeErrors.saveErrors.size);
     return !this.errors.saveErrors.size;
   }
 
@@ -132,6 +132,26 @@ export class LearningObjectValidator {
   }
 
   /**
+   * Calls validator functions directly on relevant properties of a learning object and stores the results
+   *
+   * @param {LearningObject} object
+   * @memberof LearningObjectValidator
+   */
+  validateLearningObject(object: LearningObject) {
+    this.validateName(object.name);
+    this.validateAcademicLevels(object.levels);
+    this.validateDescription(object.goals[0].text);
+
+    if (object.outcomes && object.outcomes.length) {
+      for (const o of object.outcomes) {
+        this.validateOutcome(o);
+      }
+    } else {
+      this.errors.setError('submit', 'outcomes', OBJECT_ERRORS.NO_OUTCOMES);
+    }
+  }
+
+  /**
    * Returns the current error for the passed property. If submissionMode is true and
    * there is no error for the property in the saveErrors Map, the submitErrors map is checked
    *
@@ -143,6 +163,7 @@ export class LearningObjectValidator {
     let error = this.errors.saveErrors.get(property);
 
     if (this.submissionMode) {
+      // if we're submitting and we haven't found a save error, check the submit errors
       if (!error) {
         error = this.errors.submitErrors.get(property);
       }
@@ -315,10 +336,12 @@ export class LearningObjectValidator {
     }
 
     if (error) {
+      // add error to map
       this.outcomeValidator.errors.setOutcomeError(errorType, outcome.id, error);
 
       if (errorType === 'submit') {
         // since we're evaluating all save errors first, if we hit a submit error, clear any save errors from the map
+        this.errors.deleteError('outcomes');
         this.outcomeValidator.errors.deleteOutcomeError(outcome.id, 'save');
       }
 

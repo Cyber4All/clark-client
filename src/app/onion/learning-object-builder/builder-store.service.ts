@@ -157,6 +157,7 @@ export class BuilderStore {
       id
     );
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
+    this.validator.validateLearningObject(this.learningObject);
     return this.learningObject;
   }
 
@@ -170,6 +171,7 @@ export class BuilderStore {
     this.learningObject = new LearningObject(this.auth.user);
     this.learningObject.goals = [{ text: '' }]; // initialzie empty description
     this.outcomes = new Map();
+    this.validator.validateLearningObject(this.learningObject);
     return this.learningObject;
   }
 
@@ -388,7 +390,7 @@ export class BuilderStore {
    *
    * @memberof BuilderStore
    */
-  addUrl(): void {
+  private addUrl(): void {
     this.learningObject.materials.urls.push({ url: '', title: '' });
   }
 
@@ -399,7 +401,7 @@ export class BuilderStore {
    * @param {Url} url
    * @memberof BuilderStore
    */
-  async updateUrl(index: number, url: Url): Promise<any> {
+  private async updateUrl(index: number, url: Url): Promise<any> {
     if (!url.url.match(/https?:\/\/.+/i)) {
       url.url = `http://${url.url}`;
     }
@@ -418,7 +420,7 @@ export class BuilderStore {
    * @param {number} index
    * @memberof BuilderStore
    */
-  async removeUrl(index: number): Promise<any> {
+  private async removeUrl(index: number): Promise<any> {
     if (index !== undefined) {
       this.learningObject.materials.urls.splice(index, 1);
     }
@@ -436,7 +438,7 @@ export class BuilderStore {
    * @returns {*}
    * @memberof BuilderStore
    */
-  async updateNotes(notes: string): Promise<any> {
+  private async updateNotes(notes: string): Promise<any> {
     this.learningObject.materials.notes = notes;
     this.learningObject.materials = await this.learningObjectService.getMaterials(
       this.learningObject.author.username,
@@ -453,7 +455,7 @@ export class BuilderStore {
    * @returns {Promise<any>}
    * @memberof BuilderStore
    */
-  async updateFileDescription(fileId: any, description: any): Promise<any> {
+  private async updateFileDescription(fileId: any, description: any): Promise<any> {
     await this.learningObjectService.updateFileDescription(
       this.learningObject.author.username,
       this.learningObject.id,
@@ -475,7 +477,7 @@ export class BuilderStore {
    * @returns {Promise<any>}
    * @memberof BuilderStore
    */
-  async updateFolderDescription(params: {
+  private async updateFolderDescription(params: {
     path?: string;
     index?: number;
     description: string;
@@ -501,10 +503,26 @@ export class BuilderStore {
   //  SERVICE INTERACTION  //
   ///////////////////////////
 
-  // TODO break this into separate functions
+  /**
+   * Attempts to submit the stored learning object for review
+   *
+   * @memberof BuilderStore
+   */
+  public submitForReview(): Promise<boolean> {
+    if (this.validator.saveable && this.validator.submittable) {
+      // do submission
+      return Promise.resolve(true);
+    } else {
+      this.validator.submissionMode = true;
+      return Promise.resolve(false);
+    }
+  }
+
   private async saveObject(data: any, delay?: boolean): Promise<any> {
     let value = this.objectCache$.getValue();
 
+    // if delay is true, combine the new properties with the object in the cache exit
+    // the cache subject will automatically call this function again without a delay property
     if (delay || this.serviceInteraction$.getValue()) {
       const newValue = value ? Object.assign(value, data) : data;
       this.objectCache$.next(newValue);
@@ -531,8 +549,6 @@ export class BuilderStore {
         // append status property to data
         value.status = 'unpublished';
 
-        console.log('creating', value);
-
         // create the object
         this.learningObjectService.create(value).then((object: LearningObject) => {
           this.learningObject = object;
@@ -552,8 +568,6 @@ export class BuilderStore {
         // append learning object id to payload
         value.id = this.learningObject.id;
 
-        console.log('saving', value);
-
         // send cached changes to server
         this.learningObjectService.save(value).then(() => {
           this.serviceInteraction$.next(false);
@@ -571,6 +585,8 @@ export class BuilderStore {
   }
 
   private async saveOutcome(data: any, delay?: boolean) {
+    // if delay is true, combine the new properties with the object in the cache exit
+    // the cache subject will automatically call this function again without a delay property
     if (delay) {
       const id = data.id;
 
@@ -607,7 +623,7 @@ export class BuilderStore {
  * Used for learning outcomes that are blank and cannot be published. Replaced once saveable with an ID from the service
  */
 function genId() {
-  const S4 = function() {
+  const S4 = () => {
     // tslint:disable-next-line:no-bitwise
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   };

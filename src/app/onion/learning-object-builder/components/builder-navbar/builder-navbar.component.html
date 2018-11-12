@@ -1,25 +1,24 @@
 <div class="builder-navbar-wrapper">
   <div class="top">
     <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> New Learning Object</a>
+    <button class="button good" (click)="triggerSubmit()">Submit for Review</button>
   </div>
-  <div class="bottom">
-    <div class="builder-navbar-wrapper__bottom-left-menu">
-      <!-- update routerLinkActive with class used to show that link is active -->
-      <ul>
-        <li>
-          <a routerLink="info" routerLinkActive="active">Basic Information</a>
-        </li>
-        <li [@route] *ngIf="canRoute('outcomes')">
-          <a routerLink="outcomes" routerLinkActive="active">Learning Outcomes</a>
-        </li>
-        <li [@route] *ngIf="canRoute('materials')">
-          <a routerLink="materials" routerLinkActive="active">Materials</a>
-        </li>
-      </ul>
-      <div class="builder-navbar-wrapper__saving-indicator">
-        <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator">Saving changes . . . </span>
-        <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator">All changes saved</span>
-      </div>
+  <div class="builder-navbar-wrapper__bottom-left-menu">
+    <!-- update routerLinkActive with class used to show that link is active -->
+    <ul>
+      <li>
+        <a routerLink="info" routerLinkActive="active">Basic Information</a>
+      </li>
+      <li [@route] *ngIf="canRoute('outcomes')">
+        <a routerLink="outcomes" routerLinkActive="active">Learning Outcomes</a>
+      </li>
+      <li [@route] *ngIf="canRoute('materials')">
+        <a routerLink="materials" routerLinkActive="active">Materials</a>
+      </li>
+    </ul>
+    <div class="builder-navbar-wrapper__saving-indicator">
+      <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator">Saving changes . . . </span>
+      <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator">All changes saved</span>
     </div>
   </div>
 </div>

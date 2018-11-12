@@ -1,10 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { BuilderStore } from '../../builder-store.service';
+import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -35,6 +36,8 @@ export class BuilderNavbarComponent implements OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
   constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
     private store: BuilderStore,
     private auth: AuthService,
     private validator: LearningObjectValidator
@@ -52,6 +55,13 @@ export class BuilderNavbarComponent implements OnDestroy {
       });
   }
 
+  /**
+   * Returns a boolean indicating whether a route should be shown in the navbar based on validation and email verification
+   *
+   * @param {'outcomes' | 'materials'} route
+   * @returns
+   * @memberof BuilderNavbarComponent
+   */
   canRoute(route: string) {
     switch (route) {
       case 'outcomes':
@@ -59,6 +69,56 @@ export class BuilderNavbarComponent implements OnDestroy {
       case 'materials':
         return !!(this.auth.user.emailVerified && this.validator.saveable);
     }
+  }
+
+  /**
+   * Makes a call to the BuilderStore to begin the submission process
+   *
+   * @memberof BuilderNavbarComponent
+   */
+  triggerSubmit() {
+    const errorPages = new Map<string, boolean>();
+    const currentRoute = this.activatedRoute.snapshot.children[0].url[0].path;
+
+    this.store.submitForReview().then((didSubmit: boolean) => {
+      if (!didSubmit) {
+        // check for outcome errors
+        if (
+          this.validator.get('outcomes') ||
+          this.validator.outcomeValidator.errors.submitErrors.size
+        ) {
+          errorPages.set('outcomes', true);
+        }
+
+        // check for submission errors not related to outcomes
+        if (
+          this.validator.errors.submitErrors.size > 1 ||
+          (this.validator.errors.submitErrors.size === 1 &&
+            !this.validator.get('outcomes'))
+        ) {
+          errorPages.set('info', true);
+        }
+
+        if (errorPages.size && !errorPages.get(currentRoute)) {
+          // we've found errors on other pages and none on our current page, so route to that page
+          const target = ['./' + Array.from(errorPages.keys())[0]];
+
+          if (
+            target[0] === './outcomes' &&
+            this.validator.outcomeValidator.errors.submitErrors.size
+          ) {
+            // route directly to bad outcome if possible
+            target.push(
+              Array.from(
+                this.validator.outcomeValidator.errors.submitErrors.keys()
+              )[0]
+            );
+          }
+
+          this.router.navigate(target, { relativeTo: this.activatedRoute });
+        }
+      }
+    });
   }
 
   ngOnDestroy() {

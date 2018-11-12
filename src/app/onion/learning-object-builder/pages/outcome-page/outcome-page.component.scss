@@ -3,13 +3,6 @@
 $dark-text: #545e64;
 $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
 
-.test {
-  width: 700px;
-  background: white;
-  position: relative;
-  margin-left: 350px;
-}
-
 .title {
   font-size: 20px;
   color: $dark-text;
