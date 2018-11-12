@@ -32,13 +32,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   @Input() self = false;
   @Output('close') close = new EventEmitter<boolean>();
 
-  @ViewChild('organization', { read: ElementRef })
-  organization: ElementRef;
-
   counter = 140;
-
-  organizationsList = [];
-  isValidOrganization: boolean;
 
   editInfo = {
     firstname: '',
@@ -62,15 +56,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     private auth: AuthService
   ) {}
 
-  ngOnInit() {
-    // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    fromEvent(this.organization.nativeElement, 'input')
-      .takeUntil(this.isDestroyed$)
-      .debounceTime(400)
-      .subscribe(val => {
-          this.getOrganizations();
-      });
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.user) {
@@ -96,46 +82,19 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       organization: this.editInfo.organization.trim(),
       bio: this.editInfo.bio.trim()
     };
-    if (await this.checkOrganization()) {
-      try {
-        await this.userService.editUserInfo(edits);
-        await this.auth.validate();
-        this.close.emit(true);
-        this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
-      } catch (e) {
-        this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
-      }
-    } else {
-      this.noteService.notify('Invalid Organization!', 'Please select a provided orgnization from the dropdown!', 'bad', 'far fa-times');
+    try {
+      await this.userService.editUserInfo(edits);
+      await this.auth.validate();
+      this.close.emit(true);
+      this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
+    } catch (e) {
+      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
     }
   }
 
   handleCounter(e) {
     const inputLength = this.editInfo.bio.length;
     this.counter = 140 - inputLength;
-  }
-
-  getOrganizations() {
-    this.auth.getOrganizations(this.editInfo.organization).then(val => {
-        // Display top 5 matching organizations
-        for (let i = 0; i < 5; i++) {
-          if (val[i]) {
-            this.organizationsList[i] = val[i]['institution'];
-          }
-        }
-        // If no results, destroy results display
-        if (!val[0]) {
-          this.organizationsList = [];
-        }
-        // If no query, destroy results display
-        if (this.editInfo.organization === '') {
-          this.organizationsList = [];
-        }
-    });
-  }
-
-  chooseOrganization(organization: string) {
-    this.editInfo.organization = organization;
   }
 
   private toUpper(str) {
@@ -146,25 +105,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
             return word[0].toUpperCase() + word.substr(1);
         })
         .join(' ');
-  }
-
-  checkOrganization() {
-    // If field is empty, return false
-    if (this.editInfo.organization === '') {
-      return false;
-    }
-    // Allow the user to enter an org that does not exist in our
-    // database when empty results are returned
-    if (this.organizationsList.length > 0) {
-      for (let i = 0; i < this.organizationsList.length; i++) {
-        if (this.editInfo.organization === this.organizationsList[i]) {
-          return true;
-        }
-      }
-      return false;
-    } else {
-      return true;
-    }
   }
 
   ngOnDestroy() {

@@ -8,6 +8,12 @@ import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
+export enum DOWNLOAD_STATUS {
+  CAN_DOWNLOAD = 0,
+  NO_AUTH = 1,
+  NOT_RELEASED = 2
+}
+
 export enum AUTH_GROUP {
   ADMIN,
   USER,
@@ -86,6 +92,28 @@ export class AuthService {
       );
   }
 
+  checkClientVersion(): Promise<void> {
+    // Application version information
+    const { version: appVersion } = require('../../../package.json');
+    return this.http
+      .get(environment.apiURL + '/clientversion/' + appVersion,
+        {
+          withCredentials: true,
+          responseType: 'text'
+        })
+      .toPromise()
+      .then(
+        () => {
+          return Promise.resolve();
+        },
+        (error) => {
+          if (error.status === 426) {
+            return Promise.reject(error);
+          }
+        }
+      );
+  }
+
   refreshToken(): Promise<void> {
     return this.http
       .get(environment.apiURL + '/users/tokens/refresh', {
@@ -154,7 +182,7 @@ export class AuthService {
 
   // checkPassword is used when changing a password in the user-edit-information.component
   checkPassword(password: string): Promise<any> {
-      return this.http
+    return this.http
       .post<User>(
         environment.apiURL + '/users/password',
         { password },
@@ -230,8 +258,12 @@ export class AuthService {
   }
 
   makeUserFromCookieResponse(val: any): User {
-    const user = User.instantiate(val);
-    return user;
+    try {
+      const user = User.instantiate(val);
+      return user;
+    } catch {
+      return val as User;
+    }
   }
 
   establishSocket() {
@@ -256,7 +288,7 @@ export class AuthService {
     }
     return this.socketWatcher;
     */
-   return new Observable();
+    return new Observable();
   }
 
   destroySocket() {
@@ -265,67 +297,49 @@ export class AuthService {
     }
   }
 
-  getOrganizations(query: string) {
-    return this.http
-      .get(
-        environment.apiURL + `/users/organizations?query=${encodeURIComponent(query)}`,
-        {
-          headers: this.httpHeaders,
-          withCredentials: true
-        }
-      )
-      .toPromise()
-      .then(val => {
-        return val;
-      });
+  printCards(username: string, name: string, organization: string) {
+    const uppercase = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
+    // Format user information
+    const nameSplit = name.split(' ');
+    const firstname = uppercase(nameSplit[0]);
+    const lastname = uppercase(nameSplit.slice(1, nameSplit.length).join(' '));
+    const org = organization.split(' ').map(word => uppercase(word)).join(' ');
+
+    // Create and click a tag to open new tab
+    const newlink = document.createElement('a');
+    newlink.setAttribute('target', '_blank');
+    newlink.setAttribute('href', `https://api-gateway.clark.center/users/${encodeURIComponent(
+      username
+    )}/cards?fname=${encodeURIComponent(
+      firstname
+    )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
+      org
+    )}`);
+    newlink.click();
   }
-
-  printCards() {
-    // tslint:disable-next-line:max-line-length
-    const nameSplit = this.name.split(' ');
-    const firstname = nameSplit[0];
-    const lastname = nameSplit.slice(1, nameSplit.length).join(' ');
-    this.http
-      .get(
-        `${environment.apiURL}/users/${encodeURIComponent(
-          this.username
-        )}/cards?fname=${encodeURIComponent(
-          firstname
-        )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
-          this.user.organization
-        )}`,
-        { responseType: 'blob' }
-      )
-      .toPromise()
-      .then(
-        blob => {
-          const pdfBlob = new Blob([blob], { type: 'application/pdf' });
-
-          const data = window.URL.createObjectURL(pdfBlob);
-          const iframe = document.createElement('iframe');
-          iframe.setAttribute('src', data);
-          iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
-          document.getElementById('card-printer').appendChild(iframe);
-        },
-        error => {
-          throw error;
-        }
-      );
-  }
-
-  async userCanDownload(learningObject: LearningObject): Promise<boolean> {
+  async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
+
       // Check that the object does not contain a download lock and the user is logged in
-      const canDownload = !(learningObject.lock
-        && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD))
-        && this.isLoggedIn.value;
+      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD);
+
       // If the object is restricted, check if the user is on the whitelist
-      if (!canDownload) {
-        return await this.checkWhitelist();
+      if (restricted) {
+        if (await this.checkWhitelist()) {
+          return DOWNLOAD_STATUS.CAN_DOWNLOAD;
+        } else {
+          return DOWNLOAD_STATUS.NOT_RELEASED;
+        }
       }
-      return canDownload;
+
+      if (!this.isLoggedIn.getValue()) {
+        // user isn't logged in
+        return DOWNLOAD_STATUS.NO_AUTH;
+      }
+
+      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
     } else {
-      return true;
+      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
     }
   }
 

@@ -28,14 +28,4 @@
     <input #organization name="organization" id="organization" type="text" placeholder="Organization" aria-label="Organization" formControlName="organization"/>
     <i class="far fa-building"></i>
   </div>
-  <div id="container">
-    <ul>
-      <li *ngFor="let organization of organizationsList" (click)="chooseOrganization(organization)">
-        <span id="plus">
-          <i class="fas fa-check"></i>
-        </span>
-        {{ organization }}
-      </li>
-    </ul>
-  </div>
 </form>

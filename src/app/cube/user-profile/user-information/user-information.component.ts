@@ -63,6 +63,6 @@ export class UserInformationComponent implements OnInit, OnChanges {
   }
 
   printCards() {
-    this.auth.printCards();
+    this.auth.printCards(this.user.username, this.user.name, this.user.organization);
   }
 }

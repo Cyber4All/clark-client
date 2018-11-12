@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
+import { FeaturedComponent } from './featured/featured.component';
 
 
 @NgModule({
@@ -31,12 +32,14 @@ import { SharedModule } from '../../shared/shared.module';
   exports: [
     FooterComponent,
     BreadcrumbComponent,
-    EscapeHtmlPipe
+    EscapeHtmlPipe,
+    FeaturedComponent
   ],
   declarations: [
     FooterComponent,
     BreadcrumbComponent,
-    EscapeHtmlPipe
+    EscapeHtmlPipe,
+    FeaturedComponent
   ],
   providers: [ProfileGuard, UserResolver]
 })

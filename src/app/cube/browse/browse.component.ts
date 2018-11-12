@@ -1,13 +1,7 @@
 
-import { Observable, Subject } from 'rxjs/Rx';
-import { SortType, OrderBy } from '../../shared/interfaces/query';
-import { ModalService, ModalListElement, Position} from '../../shared/modals';
-import { Router } from '@angular/router';
-import { LearningObject, AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { LearningObjectService } from '../learning-object.service';
-import { ActivatedRoute } from '@angular/router';
-import { Query } from '../../shared/interfaces/query';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AcademicLevel, LearningObject } from '@cyber4all/clark-entity/dist/learning-object';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
@@ -16,8 +10,12 @@ import {
  } from '../../onion/old-learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
  import { FilterSection } from '../../shared/filter/filter.component';
  import { COPY } from './browse.copy';
+import { Observable, Subject } from 'rxjs/Rx';
 import { AuthService, AUTH_GROUP } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
+import { OrderBy, Query, SortType } from '../../shared/interfaces/query';
+import { ModalListElement, ModalService, Position } from '../../shared/modals';
+import { LearningObjectService } from '../learning-object.service';
 
 
 @Component({
@@ -52,7 +50,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     course: 'a Learning Object 15 weeks in length'
   };
 
-  loading = false;
+  loading = true;
   mappingsPopup = false;
 
   pageCount: number;
@@ -108,11 +106,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.collectionService.getCollections().then(collections => {
-      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
-    }).catch(e => {
-      throw e;
-    });
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>().debounceTime(650);
     this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
@@ -120,7 +113,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
     });
 
     // whenever the queryParams change, map them to the query object and perform the search
-    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(params => {
+    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
+      const collections = await this.collectionService.getCollections();
+      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
       this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);

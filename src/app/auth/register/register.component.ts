@@ -93,10 +93,9 @@ export class RegisterComponent implements OnInit {
   slide: boolean;
   loading = false;
   verified = false;
-  check: boolean;
+  isValidPage: boolean;
   inUseEmail = false;
   inUseUsername = false;
-  isValidOrganization;
 
   tipText = [
     {
@@ -114,7 +113,6 @@ export class RegisterComponent implements OnInit {
   ];
 
   elements = ['Personal Information', 'User Information', 'Preview'];
-  organizationsList = [];
 
   @HostListener('window:keyup', ['$event'])
     keyup(event) {
@@ -214,11 +212,7 @@ export class RegisterComponent implements OnInit {
   // navigation
    next() {
     this.pageValidate(); // Validate page before allowing access to the next
-     if (this.page === 1 && this.check) {
-        if (!this.isValidOrganization) {
-          this.error('Invalid Organization');
-        }
-        this.check = this.isValidOrganization;
+     if (this.page === 1 && this.isValidPage) {
         this.slidePage();
      } else {
        this.slidePage();
@@ -226,12 +220,12 @@ export class RegisterComponent implements OnInit {
   }
 
   private slidePage() {
-    if (this.check) {
+    if (this.isValidPage) {
       this.slide = !this.slide;
     }
-    if (this.page === 1 && this.check) {
+    if (this.page === 1 && this.isValidPage) {
       this.page = 2;
-    } else if (this.page === 2 && this.check) {
+    } else if (this.page === 2 && this.isValidPage) {
       this.page = 3;
     }
   }
@@ -240,9 +234,6 @@ export class RegisterComponent implements OnInit {
   back() {
     this.fall = !this.fall;
     if (this.page === 2) {
-      // When navigating back to page 1, make sure that
-      // organization results are cleared.
-      this.organizationsList = [];
       this.page = 1;
     } else if (this.page === 3) {
       this.page = 2;
@@ -253,10 +244,10 @@ export class RegisterComponent implements OnInit {
    pageValidate() {
     switch (this.page) {
       case 1:
-        this.check = this.validatePageOne();
+        this.isValidPage = this.validatePageOne();
         break;
       case 2:
-        this.check = this.validatePageTwo();
+        this.isValidPage = this.validatePageTwo();
         break;
     }
   }
@@ -356,9 +347,5 @@ export class RegisterComponent implements OnInit {
 
   setInUseUsername(inUse: boolean) {
     this.inUseUsername = inUse;
-  }
-
-  setOrganizationStatus(hasResults: boolean) {
-    this.isValidOrganization = hasResults;
   }
 }

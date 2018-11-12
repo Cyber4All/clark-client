@@ -14,16 +14,6 @@
       <input #organization name="organization" type="text" placeholder="Organization" aria-label="Organization" [(ngModel)]="editInfo.organization" />
       <i class="far fa-building"></i>
     </div>
-    <div id="container">
-      <ul>
-        <li *ngFor="let organization of organizationsList" (click)="chooseOrganization(organization)">
-          <span id="plus">
-            <i class="fas fa-check"></i>
-          </span>
-          {{ organization }}
-        </li>
-      </ul>
-    </div>
     <div class="gravatar-header">{{ copy.GRAVATARTITLE }}</div>
     <div class="gravatar-text">{{ copy.GRAVATARC2A }}<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
     <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
