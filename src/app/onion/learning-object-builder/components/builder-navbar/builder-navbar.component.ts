@@ -31,16 +31,17 @@ import { Router, ActivatedRoute } from '@angular/router';
   ]
 })
 export class BuilderNavbarComponent implements OnDestroy {
-  isSaving = false;
+  isSaving: boolean;
+  showSubmission: boolean;
 
   destroyed$: Subject<void> = new Subject();
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private store: BuilderStore,
     private auth: AuthService,
-    private validator: LearningObjectValidator
+    private validator: LearningObjectValidator,
+    public store: BuilderStore,
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -80,8 +81,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     const errorPages = new Map<string, boolean>();
     const currentRoute = this.activatedRoute.snapshot.children[0].url[0].path;
 
-    this.store.submitForReview().then((didSubmit: boolean) => {
-      if (!didSubmit) {
+    this.store.submitForReview().then((canSubmit: boolean) => {
+      if (!canSubmit) {
         // check for outcome errors
         if (
           this.validator.get('outcomes') ||
@@ -117,8 +118,23 @@ export class BuilderNavbarComponent implements OnDestroy {
 
           this.router.navigate(target, { relativeTo: this.activatedRoute });
         }
+      } else {
+        this.showSubmission = true;
       }
     });
+  }
+
+  submitForReview(collection?: string) {
+    if (collection) {
+      this.store.submitForReview(collection).then(val => {
+        this.showSubmission = false;
+      }).catch(error => {
+        console.error(error);
+        this.showSubmission = false;
+      });
+    } else {
+      console.error('Error! No collection specified!');
+    }
   }
 
   ngOnDestroy() {

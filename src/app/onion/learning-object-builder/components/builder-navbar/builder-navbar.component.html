@@ -22,3 +22,9 @@
     </div>
   </div>
 </div>
+
+<clark-popup *ngIf="showSubmission" (closed)="showSubmission = false">
+  <div #popupInner>
+    <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"></clark-collection-selector>
+  </div>
+</clark-popup>

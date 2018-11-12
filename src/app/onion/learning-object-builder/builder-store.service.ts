@@ -10,6 +10,7 @@ import {
   OBJECT_ERRORS
 } from './validators/learning-object.validator';
 import { Url } from '@cyber4all/clark-entity/dist/learning-object';
+import { CollectionService } from 'app/core/collection.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -75,6 +76,7 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
+    private collectionService: CollectionService,
     private validator: LearningObjectValidator
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
@@ -519,13 +521,23 @@ export class BuilderStore {
   ///////////////////////////
 
   /**
-   * Attempts to submit the stored learning object for review
-   *
+   * Checks for submittable object, returns true if it's submittable and false otherwise
+   *@param {string} [collection]
    * @memberof BuilderStore
    */
-  public submitForReview(): Promise<boolean> {
+  public submitForReview(collection?: string): Promise<boolean> {
     if (this.validator.saveable && this.validator.submittable) {
-      // do submission
+      this.validator.submissionMode = false;
+
+      // if we passed a collection property, attempt the submission
+      if (collection) {
+        return this.collectionService.addToCollection(this.learningObject.id, collection).then(val => {
+          return true;
+        }).catch(error => {
+          throw new Error(error);
+        });
+      }
+
       return Promise.resolve(true);
     } else {
       this.validator.submissionMode = true;

@@ -12,9 +12,7 @@ import {
   animate,
   query,
   stagger,
-  animateChild,
-  group,
-  sequence
+  animateChild
 } from '@angular/animations';
 import { ToasterService } from 'app/shared/toaster';
 import { LearningObjectValidator } from './validators/learning-object.validator';
