@@ -5,6 +5,9 @@ import { USER_ROUTES } from '@env/route';
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+export const CHUNK_SIZE = 6000000; // 6MB
+export const UPLOAD_TIMEOUT = 900000; // 15 minutes timeout
+
 export const environment = {
   production: false,
   DROPZONE_CONFIG: {
@@ -15,8 +18,8 @@ export const environment = {
     withCredentials: true,
     chunking: true,
     // 6MB Chunk Size
-    chunkSize: 6000000,
-    timeout: 900000, // 15 minutes timeout
+    chunkSize: CHUNK_SIZE,
+    timeout: UPLOAD_TIMEOUT, //
     createImageThumbnails: false,
     generatePreviews: false
   },

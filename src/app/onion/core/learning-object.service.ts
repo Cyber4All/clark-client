@@ -149,9 +149,9 @@ export class LearningObjectService {
    */
   publish(learningObject: LearningObject): Promise<{}> {
     const route = USER_ROUTES.PUBLISH_LEARNING_OBJECT(
-          this.auth.user.username,
-          learningObject.name
-        );
+      this.auth.user.username,
+      learningObject.name
+    );
     return this.http
       .patch(
         route,

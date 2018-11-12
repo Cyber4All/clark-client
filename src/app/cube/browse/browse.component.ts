@@ -1,7 +1,9 @@
-
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AcademicLevel, LearningObject } from '@cyber4all/clark-entity/dist/learning-object';
+import {
+  AcademicLevel,
+  LearningObject
+} from '@cyber4all/clark-entity/dist/learning-object';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
@@ -22,11 +24,11 @@ import { LearningObjectService } from '../learning-object.service';
   selector: 'cube-browse',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss'],
-  providers: [ SuggestionService ]
+  providers: [SuggestionService]
 })
 export class BrowseComponent implements OnInit, OnDestroy {
   copy = COPY;
-  learningObjects: LearningObject[] = Array(20).fill(new LearningObject);
+  learningObjects: LearningObject[] = Array(20).fill(new LearningObject());
   totalLearningObjects = 0;
 
   query: Query = {
@@ -67,8 +69,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
       type: 'select-many',
       canSearch: false,
       values: [
-        ...
-        Array.from(lengths).map(l => ({name: l, toolTip: this.tooltipText[l.toLowerCase()]})),
+        ...Array.from(lengths).map(l => ({
+          name: l,
+          toolTip: this.tooltipText[l.toLowerCase()]
+        }))
       ]
     },
     {
@@ -76,8 +80,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
       type: 'select-many',
       canSearch: false,
       values: [
-        ...
-        Object.values(AcademicLevel).map(l => ({name: l.toLowerCase(), toolTip: this.tooltipText[l.toLowerCase()]})),
+        ...Object.values(AcademicLevel).map(l => ({
+          name: l.toLowerCase(),
+          toolTip: this.tooltipText[l.toLowerCase()]
+        }))
       ]
     }
   ];
@@ -92,17 +98,22 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   shouldResetPage = false;
 
-  @HostListener('window:resize', ['$event']) handelResize(event) {
+  @HostListener('window:resize', ['$event'])
+  handelResize(event) {
     this.windowWidth = event.target.innerWidth;
   }
 
-  constructor(public learningObjectService: LearningObjectService, private route: ActivatedRoute,
-    private router: Router, private modalService: ModalService, public mappingService: SuggestionService,
+  constructor(
+    public learningObjectService: LearningObjectService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: ModalService,
+    public mappingService: SuggestionService,
     private auth: AuthService,
-    private collectionService: CollectionService,
-    ) {
-      this.windowWidth = window.innerWidth;
-      this.learningObjects = Array(20).fill(new LearningObject);
+    private collectionService: CollectionService
+  ) {
+    this.windowWidth = window.innerWidth;
+    this.learningObjects = Array(20).fill(new LearningObject());
   }
 
   ngOnInit() {
@@ -113,13 +124,19 @@ export class BrowseComponent implements OnInit, OnDestroy {
     });
 
     // whenever the queryParams change, map them to the query object and perform the search
-    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
-      const collections = await this.collectionService.getCollections();
-      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
-      this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
-      this.makeQuery(params);
-      this.fetchLearningObjects(this.query);
-    });
+    this.route.queryParams
+      .takeUntil(this.unsubscribe)
+      .subscribe(async params => {
+        const collections = await this.collectionService.getCollections();
+        this.filters[0].values = collections.map(c => ({
+          name: c.name,
+          value: c.abvName
+        }));
+        this.query.released =
+          this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
+        this.makeQuery(params);
+        this.fetchLearningObjects(this.query);
+      });
   }
 
   get isMobile(): boolean {
@@ -163,7 +180,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.query.currPage = page;
       this.shouldResetPage = false;
       this.performSearch();
-
     }
   }
 
@@ -183,19 +199,22 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.query.currPage = +page;
       this.shouldResetPage = false;
       this.performSearch();
-
     }
   }
 
   clearSearch() {
     this.query.text = '';
     this.query.standardOutcomes = [];
-    this.router.navigate(['browse'], {queryParams: {}});
+    this.router.navigate(['browse'], { queryParams: {} });
   }
 
   get sortString() {
-    return (this.query.orderBy) ? this.query.orderBy.replace(/_/g, '')
-      + ' (' + ((this.query.sortType > 0) ? 'Asc' : 'Desc') + ')' : '';
+    return this.query.orderBy
+      ? this.query.orderBy.replace(/_/g, '') +
+          ' (' +
+          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+          ')'
+      : '';
   }
 
   toggleFilters() {
@@ -214,17 +233,17 @@ export class BrowseComponent implements OnInit, OnDestroy {
   }
 
   addFilter(key: string, value: string, clearFirst?: boolean) {
-      this.modifyFilter(key, value, true, clearFirst);
-      if (!this.filtersDownMobile) {
-        this.performSearch(true);
-      }
+    this.modifyFilter(key, value, true, clearFirst);
+    if (!this.filtersDownMobile) {
+      this.performSearch(true);
+    }
   }
 
   removeFilter(key: string, value: string) {
-      this.modifyFilter(key, value);
-      if (!this.filtersDownMobile) {
-        this.performSearch(true);
-      }
+    this.modifyFilter(key, value);
+    if (!this.filtersDownMobile) {
+      this.performSearch(true);
+    }
   }
 
   clearAllFilters(sendFilters: boolean = true) {
@@ -241,7 +260,12 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
   }
 
-  private modifyFilter(key: string, value: string, active = false, clearFirst?: boolean) {
+  private modifyFilter(
+    key: string,
+    value: string,
+    active = false,
+    clearFirst?: boolean
+  ) {
     for (let i = 0, l = this.filters.length; i < l; i++) {
       if (this.filters[i].name === key) {
         // found the correct filter category
@@ -252,7 +276,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
               this.filters[i].values[k].active = false;
             }
 
-            if (this.filters[i].values[k].name === value || this.filters[i].values[k].value === value) {
+            if (
+              this.filters[i].values[k].name === value ||
+              this.filters[i].values[k].value === value
+            ) {
               // found the correct filter
               this.filters[i].values[k].active = active;
 
@@ -306,38 +333,65 @@ export class BrowseComponent implements OnInit, OnDestroy {
         this.shouldResetPage = true;
       }
 
-      this.router.navigate(['browse'], {queryParams: this.removeObjFalsy(this.query)});
+      this.router.navigate(['browse'], {
+        queryParams: this.removeObjFalsy(this.query)
+      });
     }
   }
 
   showSortMenu(event) {
-    const currSort = (this.query.orderBy) ?
-      this.query.orderBy.replace(/_/g, '') + '-' + ((this.query.sortType > 0) ? 'asc' : 'desc') : undefined;
-      const sub = this.modalService.makeContextMenu(
+    const currSort = this.query.orderBy
+      ? this.query.orderBy.replace(/_/g, '') +
+        '-' +
+        (this.query.sortType > 0 ? 'asc' : 'desc')
+      : undefined;
+    const sub = this.modalService
+      .makeContextMenu(
         'SortContextMenu',
         'dropdown',
         [
-          new ModalListElement('Date (Newest first)', 'date-desc', (currSort === 'date-desc') ? 'active' : undefined),
-          new ModalListElement('Date (Oldest first)', 'date-asc', (currSort === 'date-asc') ? 'active' : undefined),
-          new ModalListElement('Name (desc)', 'name-desc', (currSort === 'name-desc') ? 'active' : undefined),
-          new ModalListElement('Name (asc)', 'name-asc', (currSort === 'name-asc') ? 'active' : undefined),
+          new ModalListElement(
+            'Date (Newest first)',
+            'date-desc',
+            currSort === 'date-desc' ? 'active' : undefined
+          ),
+          new ModalListElement(
+            'Date (Oldest first)',
+            'date-asc',
+            currSort === 'date-asc' ? 'active' : undefined
+          ),
+          new ModalListElement(
+            'Name (desc)',
+            'name-desc',
+            currSort === 'name-desc' ? 'active' : undefined
+          ),
+          new ModalListElement(
+            'Name (asc)',
+            'name-asc',
+            currSort === 'name-asc' ? 'active' : undefined
+          )
         ],
         true,
         null,
         new Position(
-          this.modalService.offset(event.currentTarget).left - (190 - event.currentTarget.offsetWidth),
-          this.modalService.offset(event.currentTarget).top + 50))
-        .subscribe(val => {
-          if (val !== 'null' && val.length) {
-            const dir = val.split('-')[1];
-            const sort = val.split('-')[0];
-            this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-            this.query.sortType = (dir === 'asc') ? SortType.Ascending : SortType.Descending;
+          this.modalService.offset(event.currentTarget).left -
+            (190 - event.currentTarget.offsetWidth),
+          this.modalService.offset(event.currentTarget).top + 50
+        )
+      )
+      .subscribe(val => {
+        if (val !== 'null' && val.length) {
+          const dir = val.split('-')[1];
+          const sort = val.split('-')[0];
+          this.query.orderBy =
+            sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+          this.query.sortType =
+            dir === 'asc' ? SortType.Ascending : SortType.Descending;
 
-            this.performSearch();
-          }
-          sub.unsubscribe();
-        });
+          this.performSearch();
+        }
+        sub.unsubscribe();
+      });
   }
 
   clearSort(event) {
@@ -376,17 +430,20 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   async fetchLearningObjects(query: Query) {
     this.loading = true;
-    this.learningObjects = Array(20).fill(new LearningObject);
+    this.learningObjects = Array(20).fill(new LearningObject());
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
-      const { learningObjects, total } = await this.learningObjectService.getLearningObjects(query);
+      const {
+        learningObjects,
+        total
+      } = await this.learningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
       this.loading = false;
     } catch (e) {
-       console.log(`Error: ${e}`);
+      console.log(`Error: ${e}`);
     }
   }
 
@@ -399,7 +456,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const output = Object.assign({}, obj);
 
     for (let i = 0, l = keys.length; i < l; i++) {
-      if (!output[keys[i]] || (Array.isArray(output[keys[i]]) && output[keys[i]].length === 0)) {
+      if (
+        !output[keys[i]] ||
+        (Array.isArray(output[keys[i]]) && output[keys[i]].length === 0)
+      ) {
         delete output[keys[i]];
       }
     }
@@ -410,5 +470,4 @@ export class BrowseComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
   }
-
 }

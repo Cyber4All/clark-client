@@ -5,7 +5,10 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { verbs } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { LearningObjectValidator, OBJECT_ERRORS } from './validators/learning-object.validator'
+import {
+  LearningObjectValidator,
+  OBJECT_ERRORS
+} from './validators/learning-object.validator';
 import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 
 /**
@@ -159,6 +162,20 @@ export class BuilderStore {
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
     this.validator.validateLearningObject(this.learningObject);
     return this.learningObject;
+  }
+
+  /**
+   * Retrieves materials for learning object
+   *
+   * @returns {Promise<void>}
+   * @memberof BuilderStore
+   */
+  async fetchMaterials(): Promise<void> {
+    this.learningObject.materials = await this.learningObjectService.getMaterials(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -362,9 +379,12 @@ export class BuilderStore {
   private addContributor(user: User) {
     this.learningObject.contributors.push(user);
 
-    this.saveObject({
-      contributors: this.learningObject.contributors.map(x => x.id)
-    }, true);
+    this.saveObject(
+      {
+        contributors: this.learningObject.contributors.map(x => x.id)
+      },
+      true
+    );
   }
 
   private removeContributor(user: User) {
@@ -375,9 +395,12 @@ export class BuilderStore {
     if (index >= 0) {
       this.learningObject.contributors.splice(index, 1);
 
-      this.saveObject({
-        contributors: this.learningObject.contributors.map(x => x.id)
-      }, true);
+      this.saveObject(
+        {
+          contributors: this.learningObject.contributors.map(x => x.id)
+        },
+        true
+      );
     } else {
       console.error(
         'Error removing contributor! User not found in contributors array!'
@@ -392,6 +415,7 @@ export class BuilderStore {
    */
   private addUrl(): void {
     this.learningObject.materials.urls.push({ url: '', title: '' });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -406,12 +430,10 @@ export class BuilderStore {
       url.url = `http://${url.url}`;
     }
     this.learningObject.materials.urls[index] = url;
-
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
-    this.saveObject(this.learningObject.materials.urls);
+    await this.saveObject({
+      'materials.urls': this.learningObject.materials.urls
+    });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -424,11 +446,10 @@ export class BuilderStore {
     if (index !== undefined) {
       this.learningObject.materials.urls.splice(index, 1);
     }
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
-    this.saveObject(this.learningObject.materials.urls);
+    await this.saveObject({
+      'materials.urls': this.learningObject.materials.urls
+    });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -440,11 +461,8 @@ export class BuilderStore {
    */
   private async updateNotes(notes: string): Promise<any> {
     this.learningObject.materials.notes = notes;
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
-    this.saveObject(this.learningObject.materials.notes);
+    await this.saveObject({ 'materials.notes': notes });
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -462,10 +480,7 @@ export class BuilderStore {
       fileId,
       description
     );
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
+    await this.fetchMaterials();
   }
 
   /**
@@ -492,11 +507,11 @@ export class BuilderStore {
         description: params.description
       });
     }
-    await this.saveObject(this.learningObject.materials.folderDescriptions);
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
+    await this.saveObject({
+      'materials.folderDescriptions': this.learningObject.materials
+        .folderDescriptions
+    });
+    await this.fetchMaterials();
   }
 
   ///////////////////////////
@@ -550,18 +565,24 @@ export class BuilderStore {
         value.status = 'unpublished';
 
         // create the object
-        this.learningObjectService.create(value).then((object: LearningObject) => {
-          this.learningObject = object;
-          this.serviceInteraction$.next(false);
-        }).catch((err) => {
-          this.serviceInteraction$.next(false);
-          if (err.status === 409) {
-            // tried to save an object with a name that already exists
-            this.validator.errors.saveErrors.set('name', OBJECT_ERRORS.EXISTING_NAME);
-            return;
-          }
-          console.error('Error! ', err);
-        });
+        this.learningObjectService
+          .create(value)
+          .then((object: LearningObject) => {
+            this.learningObject = object;
+            this.serviceInteraction$.next(false);
+          })
+          .catch(err => {
+            this.serviceInteraction$.next(false);
+            if (err.status === 409) {
+              // tried to save an object with a name that already exists
+              this.validator.errors.saveErrors.set(
+                'name',
+                OBJECT_ERRORS.EXISTING_NAME
+              );
+              return;
+            }
+            console.error('Error! ', err);
+          });
       } else {
         // this is an existing object and we can save it (has a saveable name)
 
@@ -569,17 +590,23 @@ export class BuilderStore {
         value.id = this.learningObject.id;
 
         // send cached changes to server
-        this.learningObjectService.save(value).then(() => {
-          this.serviceInteraction$.next(false);
-        }).catch((err) => {
-          this.serviceInteraction$.next(false);
-          if (err.status === 409) {
-            // tried to save an object with a name that already exists
-            this.validator.errors.saveErrors.set('name', OBJECT_ERRORS.EXISTING_NAME);
-            return;
-          }
-          console.error('Error! ', err);
-        });
+        this.learningObjectService
+          .save(value)
+          .then(() => {
+            this.serviceInteraction$.next(false);
+          })
+          .catch(err => {
+            this.serviceInteraction$.next(false);
+            if (err.status === 409) {
+              // tried to save an object with a name that already exists
+              this.validator.errors.saveErrors.set(
+                'name',
+                OBJECT_ERRORS.EXISTING_NAME
+              );
+              return;
+            }
+            console.error('Error! ', err);
+          });
       }
     }
   }

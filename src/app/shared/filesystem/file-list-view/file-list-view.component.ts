@@ -34,7 +34,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   emitDesc: EventEmitter<DescriptionUpdate> = new EventEmitter<
     DescriptionUpdate
   >();
-  @Output() emitContextOpen: EventEmitter<{event: MouseEvent, item: any}> = new EventEmitter();
+  @Output()
+  emitContextOpen: EventEmitter<{
+    event: MouseEvent;
+    item: any;
+  }> = new EventEmitter();
 
   private subscriptions: Subscription[] = [];
   private editableFile: LearningObjectFile | DirectoryNode;
@@ -46,12 +50,19 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   getIcon = (extension: string) => getIcon(extension);
 
-  getTimestampAge = (timestamp: string) => TimeFunctions.getTimestampAge(+timestamp);
+  getTimestampAge = (timestamp: string) =>
+    TimeFunctions.getTimestampAge(+timestamp);
 
-  getFolderTimestamp = (node: DirectoryNode = this.node$.getValue(), timestamp: number = 0): number => {
+  getFolderTimestamp = (
+    node: DirectoryNode = this.node$.getValue(),
+    timestamp: number = 0
+  ): number => {
     // This is currently the only way to get this value, but we should be mindful that there may be a performance
     // cost that comes through this type of iteration in the browser.
-    const derivedTimestamp = node.getFiles().map(x => parseInt(x.date, 10)).sort((a, b) => a < b ? 1 : -1)[0];
+    const derivedTimestamp = node
+      .getFiles()
+      .map(x => parseInt(x.date, 10))
+      .sort((a, b) => (a < b ? 1 : -1))[0];
     timestamp = timestamp > derivedTimestamp ? timestamp : derivedTimestamp;
 
     for (const folder of node.getChildren()) {
@@ -59,11 +70,22 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     }
 
     return timestamp;
-  }
+  };
 
   constructor(private auth: AuthService) {
     // set which extensions can be previewed and how
-    this.previewable.set('microsoft', ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ott', 'oth', 'odm']);
+    this.previewable.set('microsoft', [
+      'doc',
+      'docx',
+      'xls',
+      'xlsx',
+      'ppt',
+      'pptx',
+      'odt',
+      'ott',
+      'oth',
+      'odm'
+    ]);
     this.previewable.set('browser', ['pdf']);
   }
 
@@ -96,7 +118,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
       this.previewable.forEach((exts: string[], key: string) => {
         if (exts.includes(ext.replace('.', ''))) {
           // send a space character here to evaluate truthy but not affect the final preview url
-          returnType = (key === 'microsoft')  ? this.microsoftPreviewUrl : ' ';
+          returnType = key === 'microsoft' ? this.microsoftPreviewUrl : ' ';
           return;
         }
       });
