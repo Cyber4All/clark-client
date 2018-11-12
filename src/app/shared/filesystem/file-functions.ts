@@ -19,3 +19,19 @@ export function getPaths(path: string, removeLast: boolean = true): string[] {
   }
   return paths;
 }
+
+/**
+ * Gets file extension
+ *
+ * @export
+ * @param {LearningObjectFile} file
+ * @returns
+ */
+export function getExtension(file: LearningObjectFile) {
+  let ext = file.extension;
+  if (!ext) {
+    const extMatch = file.name.match(/(\.[^.]*$|$)/);
+    ext = extMatch ? extMatch[0] : '';
+  }
+  return ext;
+}
