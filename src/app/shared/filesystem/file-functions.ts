@@ -35,3 +35,16 @@ export function getExtension(file: LearningObjectFile) {
   }
   return ext;
 }
+
+const viewableInBrowser = ['.pdf'];
+
+/**
+ * Checks if extension is in the viewableInBrowser array
+ *
+ * @export
+ * @param {string} extension
+ * @returns
+ */
+export function canViewInBrowser(file: LearningObjectFile) {
+  return viewableInBrowser.includes(getExtension(file));
+}
