@@ -10,6 +10,7 @@ import { RatingService } from '../../core/rating.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { canViewInBrowser } from 'app/shared/filesystem/file-functions';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -98,7 +99,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
             username: this.learningObject.author.username,
             loId: this.learningObject.id,
             fileId: file.id,
-            open: true
+            open: canViewInBrowser(file)
           });
           return file;
         }
