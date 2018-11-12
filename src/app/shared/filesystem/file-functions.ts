@@ -1,3 +1,5 @@
+import { LearningObjectFile } from './DirectoryTree';
+
 /**
  * Breaks Path string into array of paths. Removes last element assuming last element is file name.
  *
