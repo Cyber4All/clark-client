@@ -47,15 +47,10 @@ export class CollectionSelectorComponent implements OnInit {
 
   select(collection: string) {
     this.currentCollection = collection;
-    console.log(this.licenseAccepted)
   }
 
   submit() {
     this.choice.emit(this.currentCollection);
-  }
-
-  checkLicense(event) {
-    console.log(event);
   }
 
 }
