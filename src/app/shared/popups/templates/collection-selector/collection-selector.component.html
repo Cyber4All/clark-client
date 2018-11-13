@@ -4,11 +4,18 @@
   <ng-container *ngIf="!loading; else loadingTemplate">
     <div *ngIf="collections; else noneTemplate" class="collection-chooser">
       <ul>
-        <li class="{{ c.abvName }}" [ngClass]="{'no-logo': !c.hasLogo, 'selected': currentCollection === c.abvName}" *ngFor="let c of collections" (click)="choice.emit(c.abvName)">
+        <li class="{{ c.abvName }}" [ngClass]="{'no-logo': !c.hasLogo, 'selected': currentCollection === c.abvName}" *ngFor="let c of collections" (click)="select(c.abvName)">
           <div class="logo" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
           <div class="name">{{ c.name }}</div>
         </li>
       </ul>
+      <div class="license-selection">
+        <input type="checkbox" name="license-agreement" id="license-agreement" [(ngModel)]="licenseAccepted"/>
+        <span class="statement">I agree to submit this Learning Object and all of its materials under the Creative Commons 3.0 license</span>
+      </div>
+      <div class="submit-btn btn-group center">
+        <button class="button good" [ngClass]="{'disabled': !licenseAccepted || currentCollection == ''}" [disabled]="!licenseAccepted || currentCollection == ''" (click)="submit()">Submit for Review</button>
+      </div>
     </div>
   </ng-container>
 
