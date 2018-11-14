@@ -184,6 +184,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.error$.takeUntil(this.unsubscribe$).subscribe(err => {
       if (err) {
+        if (err['error']) {
+          err = err['error'];
+        }
         this.notificationService.notify('Error!', err, 'bad', 'far fa-times');
       }
     });
