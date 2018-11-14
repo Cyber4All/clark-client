@@ -373,6 +373,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Displays error message and aborts upload if chunked upload
+   *
+   * @param {*} events
+   * @memberof UploadComponent
+   */
   async handleError(events) {
     // Timeout was needed to prevent issues with parallel chunk uploads which would all error out at the same time
     const file = await new Promise<any>(resolve => {
@@ -383,6 +389,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.error$.next(`Could not upload ${file.name}.`);
       if (file.upload.chunked) {
         this.abortMultipartUpload(file);
+      }
     }
   }
 
@@ -400,8 +407,22 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       fileId: file.upload.uuid
     });
   }
+
+  /**
+   * Fired when DZDropzone emits queuecomplete
+   *
+   * @memberof UploadComponent
+   */
   queueComplete() {
     this.uploadErrors = {};
+  }
+
+  /**
+   * Fired when DZDropzone emits success
+   *
+   * @memberof UploadComponent
+   */
+  uploadSuccess() {
     this.uploadComplete.emit();
   }
 
