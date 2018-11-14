@@ -478,14 +478,19 @@ export class BuilderStore {
    * @returns {Promise<any>}
    * @memberof BuilderStore
    */
-  private async updateFileDescription(fileId: any, description: any): Promise<any> {
+  private async updateFileDescription(
+    fileId: any,
+    description: any
+  ): Promise<any> {
+    const index = this.findFile(fileId);
+    this.learningObject.materials.files[index].description = description;
     await this.learningObjectService.updateFileDescription(
       this.learningObject.author.username,
       this.learningObject.id,
       fileId,
       description
     );
-    await this.fetchMaterials();
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
