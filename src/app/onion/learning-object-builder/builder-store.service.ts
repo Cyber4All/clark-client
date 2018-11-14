@@ -521,7 +521,7 @@ export class BuilderStore {
       'materials.folderDescriptions': this.learningObject.materials
         .folderDescriptions
     });
-    await this.fetchMaterials();
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
