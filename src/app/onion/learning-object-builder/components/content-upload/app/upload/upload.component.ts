@@ -373,8 +373,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  handleError(events) {
-    const file = events[0];
+  async handleError(events) {
+    // Timeout was needed to prevent issues with parallel chunk uploads which would all error out at the same time
+    const file = await new Promise<any>(resolve => {
+      setTimeout(() => resolve(events[0]), 800);
+    });
     if (!this.uploadErrors[file.upload.uuid]) {
       this.uploadErrors[file.upload.uuid] = 1;
       this.error$.next(`Could not upload ${file.name}.`);
