@@ -366,6 +366,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           learningObject,
           fileId: file.upload.uuid
         });
+        this.uploadComplete.emit();
       } catch (e) {
         console.log(e);
       }
