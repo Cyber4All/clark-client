@@ -259,6 +259,8 @@ export class BuilderStore {
           index: data.index,
           description: data.description
         });
+      case BUILDER_ACTIONS.DELETE_FILE:
+        return await this.removeFile(data.fileId);
       default:
         console.error('Error! Invalid action taken!');
         return;
