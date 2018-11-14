@@ -91,7 +91,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   >();
 
   @Output()
-  filesDeleted: EventEmitter<void> = new EventEmitter<void>();
+  fileDeleted: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   uploadComplete: EventEmitter<void> = new EventEmitter<void>();
   @Output()
@@ -514,9 +514,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       try {
         const object = await this.learningObject$.take(1).toPromise();
         await Promise.all(
-          files.map(fileId => this.fileStorage.delete(object, fileId))
+          files.map(async fileId => {
+            await this.fileStorage.delete(object, fileId);
+            this.fileDeleted.emit(fileId);
+          })
         );
-        this.filesDeleted.emit();
       } catch (e) {
         this.error$.next(e);
       }

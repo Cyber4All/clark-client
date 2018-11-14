@@ -34,7 +34,8 @@ export enum BUILDER_ACTIONS {
   REMOVE_URL,
   UPDATE_MATERIAL_NOTES,
   UPDATE_FILE_DESCRIPTION,
-  UPDATE_FOLDER_DESCRIPTION
+  UPDATE_FOLDER_DESCRIPTION,
+  DELETE_FILE
 }
 
 /**
@@ -516,6 +517,38 @@ export class BuilderStore {
     await this.fetchMaterials();
   }
 
+  /**
+   * Removes file for array of file meta
+   *
+   * @private
+   * @param {string} fileId
+   * @memberof BuilderStore
+   */
+  private async removeFile(fileId: string) {
+    const index = this.findFile(fileId);
+    this.learningObject.materials.files.splice(index, 1);
+    this.learningObjectEvent.next(this.learningObject);
+  }
+
+  /**
+   * Returns index of file
+   *
+   * @private
+   * @param {string} fileId
+   * @returns {number}
+   * @memberof BuilderStore
+   */
+  private findFile(fileId: string): number {
+    let index = -1;
+    for (let i = 0; i < this.learningObject.materials.files.length; i++) {
+      const file = this.learningObject.materials.files[i];
+      if (file.id === fileId) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
   ///////////////////////////
   //  SERVICE INTERACTION  //
   ///////////////////////////
