@@ -351,7 +351,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.inProgressFolderUploads = [];
       this.inProgressUploadsMap = new Map();
     }
-    if (file.upload.chunked) {
+    if (file.upload.chunked && file.status !== 'error') {
       try {
         const fileMeta = {
           dzuuid: file.upload.uuid,
