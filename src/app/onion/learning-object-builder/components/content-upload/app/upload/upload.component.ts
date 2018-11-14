@@ -77,6 +77,7 @@ export type DZFile = {
   ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+  private uploadErrors = {};
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
@@ -272,6 +273,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async addFile(file: DZFile) {
+    delete this.uploadErrors[file.upload.uuid];
     try {
       if (!file.rootFolder) {
         // this is a file addition
@@ -367,11 +369,16 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  handleError(event) {
-    console.log('ERROR: ', event);
+  handleError(events) {
+    const file = events[0];
+    if (!this.uploadErrors[file.upload.uuid]) {
+      this.uploadErrors[file.upload.uuid] = 1;
+      this.error$.next(`Could not upload ${file.name}.`);
+    }
   }
 
   queueComplete() {
+    this.uploadErrors = {};
     this.uploadComplete.emit();
   }
 
