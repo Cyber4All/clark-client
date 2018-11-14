@@ -67,6 +67,32 @@ export class FileStorageService {
   }
 
   /**
+   * Sends request to abort multipart upload
+   *
+   * @param {{
+   *     learningObject: LearningObject;
+   *     fileId: string;
+   *     fileMeta: any;
+   *   }} params
+   * @returns {Promise<any>}
+   * @memberof FileStorageService
+   */
+  abortMultipart(params: {
+    learningObject: LearningObject;
+    fileId: string;
+  }): Promise<any> {
+    const route = USER_ROUTES.ABORT_MULTIPART({
+      fileId: params.fileId,
+      username: this.auth.user.username,
+      objectId: params.learningObject.id
+    });
+
+    return this.http
+      .delete(route, { withCredentials: true, responseType: 'text' })
+      .toPromise();
+  }
+
+  /**
    * Sends learning object ID and file name to API for deletion.
    *
    * @param {string} learningObjectID
