@@ -381,9 +381,25 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.uploadErrors[file.upload.uuid]) {
       this.uploadErrors[file.upload.uuid] = 1;
       this.error$.next(`Could not upload ${file.name}.`);
+      if (file.upload.chunked) {
+        this.abortMultipartUpload(file);
     }
   }
 
+  /**
+   * Cancels multipart upload
+   *
+   * @private
+   * @param {*} file
+   * @memberof UploadComponent
+   */
+  private async abortMultipartUpload(file: any) {
+    const learningObject = await this.learningObject$.take(1).toPromise();
+    this.fileStorage.abortMultipart({
+      learningObject,
+      fileId: file.upload.uuid
+    });
+  }
   queueComplete() {
     this.uploadErrors = {};
     this.uploadComplete.emit();
