@@ -14,7 +14,7 @@ import { trigger, transition, style, animate } from '@angular/animations'
     ])
   ]
 })
-export class ConnectionRetryComponent implements OnInit {
+export class ConnectionRetryComponent {
 
   count = 59;
 
