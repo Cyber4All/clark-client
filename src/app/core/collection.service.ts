@@ -39,6 +39,7 @@ export class CollectionService {
         return collections;
       }).catch(error => {
         this.loading$.next(false);
+        return [];
       })
   }
 
