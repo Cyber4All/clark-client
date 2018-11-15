@@ -53,20 +53,6 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
 
   goals() {
     const punc = ['.', '!', '?'];
-    // convert goals to an array of strings containing the goal text
-    // let goalsArray = this.learningObject.goals.map(g => g.text);
-
-    // // insert an 'and' before the last goal if there's more than one
-    // if (goalsArray.length > 1) {
-    //     goalsArray[goalsArray.length - 1] = ' and ' + goalsArray[goalsArray.length - 1];
-    // }
-
-    // replace all sentence-ending periods (only remove periods at the end of goals)
-    // goalsArray = goalsArray.map(g => g.replace(/\.+\s*$/gm, ''));
-
-    // join all of the formatted goals with a comma and a space and convert to lower case;
-    // const goalsString = goalsArray.join(', ');
-    // return newly formatted string with the first character capitalized and a period at the end
     const goalsString = this.learningObject.goals[0].text;
     const final = this.truncateText(
       goalsString.charAt(0).toUpperCase() + goalsString.substring(1),

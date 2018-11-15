@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   releasedCounter: number;
   totalCounter: number;
   loadingCounter = 2;
+  counterError: boolean;
 
   constructor(
     public learningObjectService: LearningObjectService,
@@ -36,17 +37,21 @@ export class HomeComponent implements OnInit {
     this.learningObjectService.getLearningObjects({ limit: 1, released: true }).then((res) => {
       this.releasedCounter = res.total;
       this.loadingCounter--;
+      this.counterError = false;
     }).catch(error => {
       this.loadingCounter--;
+      this.counterError = true;
     });
 
     this.learningObjectService.getLearningObjects({ limit: 1 }).then((res) => {
       this.totalCounter = res.total;
       this.loadingCounter--;
+      this.counterError = false;
     }).catch(error => {
       this.loadingCounter--;
+      this.counterError = true;
     });
-    
+
     this.collectionService.getCollections()
       .then(collections => {
         this.collections = collections.filter(c => c.abvName === 'nccp' || c.abvName === 'c5');

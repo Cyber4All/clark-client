@@ -19,13 +19,21 @@
 <section class="info-banner">
   <div class="counter-wrapper">
     <div class="released">
-      <div *ngIf="!loadingCounter; else spinnerTemplate" class="counter">{{ releasedCounter }}</div>
+      <div *ngIf="!loadingCounter; else spinnerTemplate" class="counter">
+        <span *ngIf="!counterError">{{ releasedCounter }}</span>
+        <span *ngIf="counterError" tip="There was an error retrieving learning object counts">
+          <i class="fas fa-exclamation-triangle"></i>
+        </span>
+      </div>
       <div class="label">Learning Objects Released</div>
     </div>
     <div class="under-review">
       <ng-container *ngIf="!loadingCounter; else spinnerTemplate">
-        <div class="counter" *ngIf="totalCounter && releasedCounter">
-          {{ totalCounter - releasedCounter }}
+        <div class="counter" *ngIf="(totalCounter && releasedCounter) || counterError">
+          <span *ngIf="!counterError">{{ totalCounter - releasedCounter }}</span>
+          <span *ngIf="counterError" tip="There was an error retrieving learning object counts">
+            <i class="fas fa-exclamation-triangle"></i>
+          </span>
         </div>
       </ng-container>
       <div class="label">Learning Objects Under Review</div>
