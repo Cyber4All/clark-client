@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
   }
 
   handleError(status: number) {
-    if ([500, 502, 503, 504].includes(status)) {
+    if ([502, 503, 504].includes(status)) {
       this.retryConnection = true;
     }
   }

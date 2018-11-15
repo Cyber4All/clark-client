@@ -48,6 +48,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
 
     this.collectionService.getCollections().then(collections => {
       this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
+    }).catch(error => {
     });
   }
 

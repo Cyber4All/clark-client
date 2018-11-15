@@ -11,8 +11,12 @@
 <section class="collection-container">
   <div class="description">
     <div class="heading">Description</div>
-    <p [innerHtml]="collection?.description"></p>
+    <p *ngIf="!error; else errorTemplate" [innerHtml]="collection?.description"></p>
   </div>
   
   <cube-featured [collection]="key"></cube-featured>
 </section>
+
+<ng-template #errorTemplate>
+  {{ error }}
+</ng-template>

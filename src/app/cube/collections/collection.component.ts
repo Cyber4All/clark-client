@@ -13,6 +13,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();
   key = new Subject<string>();
   collection;
+  error: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +36,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
   }
 
   async fetchCollection(name: string) {
-    this.collection = await this.collectionService.getCollectionMetadata(name);
-    this.key.next(this.collection.abvName);
+    try {
+      this.collection = await this.collectionService.getCollectionMetadata(name);
+      this.key.next(this.collection.abvName);
+    } catch (error) {
+      this.error = 'There was a problem retrieving this collection. Please reload and try again.'
+    }
   }
 }
