@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   collections: Collection[];
   releasedCounter: number;
   totalCounter: number;
+  loadingCounter = 2;
 
   constructor(
     public learningObjectService: LearningObjectService,
@@ -31,12 +32,21 @@ export class HomeComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+
     this.learningObjectService.getLearningObjects({ limit: 1, released: true }).then((res) => {
       this.releasedCounter = res.total;
+      this.loadingCounter--;
+    }).catch(error => {
+      this.loadingCounter--;
     });
+
     this.learningObjectService.getLearningObjects({ limit: 1 }).then((res) => {
       this.totalCounter = res.total;
+      this.loadingCounter--;
+    }).catch(error => {
+      this.loadingCounter--;
     });
+    
     this.collectionService.getCollections()
       .then(collections => {
         this.collections = collections.filter(c => c.abvName === 'nccp' || c.abvName === 'c5');
