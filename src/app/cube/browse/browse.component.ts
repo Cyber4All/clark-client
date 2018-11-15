@@ -53,6 +53,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
   loading = true;
   mappingsPopup = false;
 
+  error: string;
+
   pageCount: number;
   filtering = false;
   filters: FilterSection[] = [
@@ -114,11 +116,18 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
     // whenever the queryParams change, map them to the query object and perform the search
     this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
-      const collections = await this.collectionService.getCollections();
-      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
-      this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
-      this.makeQuery(params);
-      this.fetchLearningObjects(this.query);
+      try {
+        const collections = await this.collectionService.getCollections();
+        this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
+        this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
+        this.makeQuery(params);
+        this.fetchLearningObjects(this.query);
+      } catch (error) {
+        console.log(error);
+        this.loading = false;
+        this.error = 'There was an error retrieving this learning object!';
+        console.log(error);
+      }
     });
   }
 
@@ -379,15 +388,12 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.learningObjects = Array(20).fill(new LearningObject);
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
-    try {
-      const { learningObjects, total } = await this.learningObjectService.getLearningObjects(query);
-      this.learningObjects = learningObjects;
-      this.totalLearningObjects = total;
-      this.pageCount = Math.ceil(total / +this.query.limit);
-      this.loading = false;
-    } catch (e) {
-       console.log(`Error: ${e}`);
-    }
+    const { learningObjects, total } = await this.learningObjectService.getLearningObjects(query);
+    this.learningObjects = learningObjects;
+    this.totalLearningObjects = total;
+    this.pageCount = Math.ceil(total / +this.query.limit);
+    this.loading = false;
+    this.error = undefined;
   }
 
   /**

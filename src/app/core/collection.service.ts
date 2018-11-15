@@ -16,9 +16,13 @@ export interface Collection {
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
+
+  private error: boolean;
+  
   constructor(private http: HttpClient) {
     this.fetchCollections()
       .catch(e => {
+        this.error = true;
         throw e;
       });
   }
@@ -33,7 +37,9 @@ export class CollectionService {
         this.collections = collections;
         this.loading$.next(false);
         return collections;
-      });
+      }).catch(error => {
+        this.loading$.next(false);
+      })
   }
 
   /**
@@ -41,17 +47,28 @@ export class CollectionService {
    * @return {Collection[]} list of collections
    */
   async getCollections(): Promise<Collection[]> {
+    if (this.error) {
+      return this.fetchCollections().then(() => {
+        this.error = false;
+        return this.collections;
+      })
+    }
+
     if (this.loading$.value) {
       // If the service is loading collections, create a promise that will
       // resolve the collections once the value of loading is false
-      const p = new Promise<Collection[]>(resolve => {
+      const p = new Promise<Collection[]>((resolve, reject) => {
         this.loading$
           .pipe(
             skipWhile(val => val === true)
           )
           .subscribe(val => {
-            resolve(this.collections);
-          });
+            if (this.error) {
+              reject(new Error('Error retrieving collections!'));
+            } else {
+              resolve(this.collections);
+            }
+          })
       });
       return await p;
     } else {

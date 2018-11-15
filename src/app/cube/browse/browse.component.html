@@ -33,7 +33,7 @@
         </div>
       </div>
       <h3 *ngIf="!learningObjects || learningObjects.length==0">{{ copy.NORESULTS }}</h3>
-      <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
+      <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading" [error]="error"></learning-object-component>
     </div>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">

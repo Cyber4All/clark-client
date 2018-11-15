@@ -297,6 +297,7 @@
 
     .image {
         background: linear-gradient(45deg, lighten($dark-text, 15), lighten($dark-text, 25));
+        height: 110px;
 
         .initials {
             background: transparent;
