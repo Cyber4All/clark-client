@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit {
   loadingCounter = 2;
   counterError: boolean;
 
+  retryConnection: boolean;
+
   constructor(
     public learningObjectService: LearningObjectService,
     private router: Router,
@@ -36,28 +38,35 @@ export class HomeComponent implements OnInit {
 
     this.learningObjectService.getLearningObjects({ limit: 1, released: true }).then((res) => {
       this.releasedCounter = res.total;
+
       this.loadingCounter--;
       this.counterError = false;
+      this.retryConnection = false;
     }).catch(error => {
       this.loadingCounter--;
       this.counterError = true;
+      this.handleError(error.status);
     });
 
     this.learningObjectService.getLearningObjects({ limit: 1 }).then((res) => {
       this.totalCounter = res.total;
+
       this.loadingCounter--;
       this.counterError = false;
+      this.retryConnection = false;
     }).catch(error => {
       this.loadingCounter--;
       this.counterError = true;
+      this.handleError(error.status);
     });
 
     this.collectionService.getCollections()
       .then(collections => {
         this.collections = collections.filter(c => c.abvName === 'nccp' || c.abvName === 'c5');
       })
-      .catch(e => {
-        console.error(e.message);
+      .catch(error => {
+        console.error(error.message);
+        this.handleError(error.status);
       });
   }
   keyDownSearch(event) {
@@ -75,6 +84,12 @@ export class HomeComponent implements OnInit {
   }
   goToContribute() {
     this.router.navigate(['/onion']);
+  }
+
+  handleError(status: number) {
+    if ([500, 502, 503, 504].includes(status)) {
+      this.retryConnection = true;
+    }
   }
 
 }

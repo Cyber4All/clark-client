@@ -36,6 +36,8 @@ import { PopupModule } from './popups/popup.module';
 import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
 import { CookiesComponent } from './cookies/cookies.component';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
+import { ConnectionRetryComponent } from './connection-retry/connection-retry.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -44,7 +46,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
  */
 @NgModule({
   imports: [
-  CommonModule,
+    CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
@@ -80,7 +82,8 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     ReportRatingComponent,
     ProgressComponent,
     FileSizePipe,
-    CookiesComponent
+    CookiesComponent,
+    ConnectionRetryComponent
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -105,6 +108,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     CookiesComponent,
     ContextMenuModule,
     ClarkContextMenuModule,
+    ConnectionRetryComponent
   ]
 })
 export class SharedModule {}

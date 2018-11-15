@@ -1,0 +1,5 @@
+<div class="connection-retry" [@enter]>
+  <i class="fas fa-exclamation-triangle"></i>
+  Failed to connect to learning object service! Retrying in: <span>{{ count }}</span>
+  <button class="button neutral" (click)="reload()">Retry Now</button>
+</div>

@@ -1,0 +1,37 @@
+@import '~_vars.scss';
+
+$background: rgb(237, 145, 8);
+// $background: saturate($error-red, 10);
+
+.connection-retry {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(45deg, darken(saturate($background, 10), 8), lighten($background, 0));
+  padding: 0 40px;
+  text-align: center;
+  color: white;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  z-index: 99999999999999999;
+
+  .svg-inline--fa,
+  .icon {
+    margin-right: 10px;
+  }
+
+  span {
+    width: 25px;
+    text-align: left;
+    margin-left: 5px;
+  }
+
+  button {
+    color: $background !important;
+    margin-left: 10px;
+  }
+}
