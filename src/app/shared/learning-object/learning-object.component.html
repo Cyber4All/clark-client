@@ -1,27 +1,29 @@
-<div class="learning-object" id="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
-  <div class="image">
-    <div *ngIf="!loading" class="collection">
-      <div>
-        {{ collections.get(learningObject.collection) }}
+<div class="learning-object" id="learning-object" [ngClass]="!error ? learningObject.length : 'error'" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
+  <ng-container *ngIf="!error; else errorTemplate">
+    <div class="image">
+      <div *ngIf="!loading" class="collection">
+        <div>
+          {{ collections.get(learningObject.collection) }}
+        </div>
       </div>
+      <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
     </div>
-    <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
-  </div>
-  <div class="learning-object-content">
-    <div class="title">
-      {{ truncateText(learningObject.name, 45) }}
-      <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
-    </div>
-    <div class="details">
-      <div class="author">
-        {{ learningObject.author.name | titlecase }} | {{ learningObject.author.organization }}
+    <div class="learning-object-content">
+      <div class="title">
+        {{ truncateText(learningObject.name, 45) }}
+        <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
       </div>
-      <div class="date">
-        Updated {{ date | date:'mediumDate' }}
+      <div class="details">
+        <div class="author">
+          {{ learningObject.author.name | titlecase }} | {{ learningObject.author.organization }}
+        </div>
+        <div class="date">
+          Updated {{ date | date:'mediumDate' }}
+        </div>
       </div>
+      <div class="goals" *ngIf="this.learningObject.goals[0]?.text" [innerHtml]="goals()"></div>
     </div>
-    <div class="goals" *ngIf="this.learningObject.goals[0]?.text" [innerHtml]="goals()"></div>
-  </div>
+  </ng-container>
 </div>
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
@@ -35,3 +37,16 @@
     </div>
   </div>
 </clark-popup>
+
+<ng-template #errorTemplate>
+  <div class="error">
+    <div class="image">
+      <div class="initials">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+    </div>
+    <div class="learning-object-content">
+      {{ error }}
+    </div>
+  </div>
+</ng-template>

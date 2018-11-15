@@ -13,6 +13,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() learningObject: LearningObject;
   @Input() link;
   @Input() loading: boolean;
+  @Input() error: string;
   @Input() owned ? = false;
 
   collections = new Map<string, string>();

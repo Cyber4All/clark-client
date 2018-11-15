@@ -292,6 +292,30 @@
     }
  }
 
+ // error state
+ .error {
+
+    .image {
+        background: linear-gradient(45deg, lighten($dark-text, 15), lighten($dark-text, 25));
+
+        .initials {
+            background: transparent;
+            font-size: 40px;
+        }
+    }
+
+    .learning-object-content {
+        color: darken($placeholder, 20);
+        text-align: center;
+        font-size: 16px;
+        display: inline-flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
  @keyframes loading {
      0% {
         left: -200px;

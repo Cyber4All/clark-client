@@ -23,6 +23,7 @@ export class FeaturedComponent implements OnInit {
     released: true
   };
   loading = false;
+  error: string;
 
   constructor(private learningObjectService: LearningObjectService) {
     this.learningObjects = this.learningObjects.fill(new LearningObject());
@@ -52,8 +53,10 @@ export class FeaturedComponent implements OnInit {
     try {
       this.learningObjects = (await this.learningObjectService.getLearningObjects(this.query)).learningObjects;
       this.loading = false;
+      this.error = undefined;
     } catch (e) {
       this.loading = false;
+      this.error = 'There was an error retrieving this learning object!';
     }
   }
 

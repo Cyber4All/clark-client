@@ -6,6 +6,6 @@
 </div>
 
 <div class="card-container">
-    <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" learningObjectCard [loading]="loading">
+    <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" learningObjectCard [loading]="loading" [error]="error">
     </learning-object-component>
 </div>
