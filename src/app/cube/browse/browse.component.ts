@@ -123,7 +123,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
         this.makeQuery(params);
         this.fetchLearningObjects(this.query);
       } catch (error) {
-        console.log(error);
         this.loading = false;
         this.error = 'There was an error retrieving this learning object!';
         console.log(error);
