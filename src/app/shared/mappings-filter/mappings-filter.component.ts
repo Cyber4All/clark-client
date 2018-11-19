@@ -256,11 +256,11 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
    * Fetch outcomes from service with any selected filters
    *
    * @private
-   * @param {{ name?: string, author?: string, date?: string, filterText?: string }} filter
+   * @param {{ name?: string, author?: string, date?: string, filterText?: string }} outcomeFilter
    * @memberof MappingsFilterComponent
    */
-  private getOutcomes(filter: { name?: string, author?: string, date?: string, filterText?: string }) {
-    this.outcomeService.getOutcomes(filter).then((res: {total: number, outcomes: LearningOutcome[]}) => {
+  private getOutcomes(outcomeFilter: { name?: string, author?: string, date?: string, filterText?: string }) {
+    this.outcomeService.getOutcomes(outcomeFilter).then((res: {total: number, outcomes: LearningOutcome[]}) => {
       this.loading = false;
       this.outcomes = this.separateOutcomes(res.outcomes);
     });
