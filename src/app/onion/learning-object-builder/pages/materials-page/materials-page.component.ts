@@ -31,10 +31,10 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     this.destroyed$.unsubscribe();
   }
 
-  async handleFileDeletion() {
+  async handleFileDeletion(fileId: string) {
     // Refresh object or materials
     try {
-      await this.store.fetchMaterials();
+      await this.store.execute(BUILDER_ACTIONS.DELETE_FILE, { fileId });
     } catch (e) {
       this.error$.next(e);
     }

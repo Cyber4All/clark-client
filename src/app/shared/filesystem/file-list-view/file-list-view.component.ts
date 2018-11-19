@@ -116,7 +116,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
     if (this.auth.isLoggedIn.getValue()) {
       this.previewable.forEach((exts: string[], key: string) => {
-        if (exts.includes(ext.replace('.', ''))) {
+        if (ext && exts.includes(ext.replace('.', ''))) {
           // send a space character here to evaluate truthy but not affect the final preview url
           returnType = key === 'microsoft' ? this.microsoftPreviewUrl : ' ';
           return;

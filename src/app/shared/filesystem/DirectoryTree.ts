@@ -11,6 +11,10 @@ export type LearningObjectFile = File;
 export class DirectoryTree {
   private _root: DirectoryNode;
   private lastNode: DirectoryNode;
+  private fileMap: Map<string, { path: string; file: string }> = new Map<
+    string,
+    { path: string; file: string }
+  >();
   private pathMap: Map<string, number> = new Map<string, number>();
   constructor() {
     this._root = new DirectoryNode('', '', null);
@@ -22,7 +26,22 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   public addFiles(files: LearningObjectFile[]) {
-    for (const file of files) {
+    // Returns new files and files that have had their metadata changed
+    const getUpdatedFiles = (fileList: LearningObjectFile[]) =>
+      fileList.filter(file => {
+        const mappedFile = this.fileMap.get(file.id);
+        if (mappedFile && mappedFile.file === JSON.stringify(file)) {
+          return false;
+        }
+        return true;
+      });
+
+    const newFiles = getUpdatedFiles(files);
+    for (const file of newFiles) {
+      this.fileMap.set(file.id, {
+        path: file.fullPath ? file.fullPath : file.name,
+        file: JSON.stringify(file)
+      });
       if (!file.fullPath) {
         this._root.addFile(file);
       } else {
@@ -36,6 +55,24 @@ export class DirectoryTree {
         }
       }
     }
+    this.cleanFilesystem(files);
+  }
+
+  /**
+   * Removes cached files that are no longer in the array of files
+   *
+   * @private
+   * @param {LearningObjectFile[]} files
+   * @memberof DirectoryTree
+   */
+  private cleanFilesystem(files: LearningObjectFile[]) {
+    const fileIds = files.map(file => file.id);
+    this.fileMap.forEach((mappedFile, mappedId) => {
+      if (!fileIds.includes(mappedId)) {
+        this.removeFile(mappedFile.path);
+        this.fileMap.delete(mappedId);
+      }
+    });
   }
   private buildSubTree(paths: string[]) {
     const last_touched_node_paths = getPaths(this.lastNode.getPath(), false);

@@ -77,6 +77,7 @@ export type DZFile = {
   ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+  private uploadErrors = {};
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
@@ -90,7 +91,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   >();
 
   @Output()
-  filesDeleted: EventEmitter<void> = new EventEmitter<void>();
+  fileDeleted: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   uploadComplete: EventEmitter<void> = new EventEmitter<void>();
   @Output()
@@ -183,6 +184,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.error$.takeUntil(this.unsubscribe$).subscribe(err => {
       if (err) {
+        if (err['error']) {
+          err = err['error'];
+        }
         this.notificationService.notify('Error!', err, 'bad', 'far fa-times');
       }
     });
@@ -272,6 +276,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async addFile(file: DZFile) {
+    delete this.uploadErrors[file.upload.uuid];
     try {
       if (!file.rootFolder) {
         // this is a file addition
@@ -346,7 +351,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.inProgressFolderUploads = [];
       this.inProgressUploadsMap = new Map();
     }
-    if (file.upload.chunked) {
+    if (file.upload.chunked && file.status !== 'error') {
       try {
         const fileMeta = {
           dzuuid: file.upload.uuid,
@@ -361,17 +366,63 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           learningObject,
           fileId: file.upload.uuid
         });
+        this.uploadComplete.emit();
       } catch (e) {
         console.log(e);
       }
     }
   }
 
-  handleError(event) {
-    console.log('ERROR: ', event);
+  /**
+   * Displays error message and aborts upload if chunked upload
+   *
+   * @param {*} events
+   * @memberof UploadComponent
+   */
+  async handleError(events) {
+    // Timeout was needed to prevent issues with parallel chunk uploads which would all error out at the same time
+    const file = await new Promise<any>(resolve => {
+      setTimeout(() => resolve(events[0]), 800);
+    });
+    if (!this.uploadErrors[file.upload.uuid]) {
+      this.uploadErrors[file.upload.uuid] = 1;
+      this.error$.next(`Could not upload ${file.name}.`);
+      if (file.upload.chunked) {
+        this.abortMultipartUpload(file);
+      }
+    }
   }
 
+  /**
+   * Cancels multipart upload
+   *
+   * @private
+   * @param {*} file
+   * @memberof UploadComponent
+   */
+  private async abortMultipartUpload(file: any) {
+    const learningObject = await this.learningObject$.take(1).toPromise();
+    this.fileStorage.abortMultipart({
+      learningObject,
+      fileId: file.upload.uuid
+    });
+  }
+
+  /**
+   * Fired when DZDropzone emits queuecomplete
+   *
+   * @memberof UploadComponent
+   */
   queueComplete() {
+    this.uploadErrors = {};
+  }
+
+  /**
+   * Fired when DZDropzone emits success
+   *
+   * @memberof UploadComponent
+   */
+  uploadSuccess() {
     this.uploadComplete.emit();
   }
 
@@ -503,9 +554,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       try {
         const object = await this.learningObject$.take(1).toPromise();
         await Promise.all(
-          files.map(fileId => this.fileStorage.delete(object, fileId))
+          files.map(async fileId => {
+            await this.fileStorage.delete(object, fileId);
+            this.fileDeleted.emit(fileId);
+          })
         );
-        this.filesDeleted.emit();
       } catch (e) {
         this.error$.next(e);
       }

@@ -101,7 +101,7 @@ export class FileBrowserComponent implements OnInit {
     );
   }
   /**
-   * Subscribe to path chhanges
+   * Subscribe to path changes
    *
    * @private
    * @memberof FileBrowserComponent

@@ -34,7 +34,8 @@ export enum BUILDER_ACTIONS {
   REMOVE_URL,
   UPDATE_MATERIAL_NOTES,
   UPDATE_FILE_DESCRIPTION,
-  UPDATE_FOLDER_DESCRIPTION
+  UPDATE_FOLDER_DESCRIPTION,
+  DELETE_FILE
 }
 
 /**
@@ -261,6 +262,8 @@ export class BuilderStore {
           index: data.index,
           description: data.description
         });
+      case BUILDER_ACTIONS.DELETE_FILE:
+        return await this.removeFile(data.fileId);
       default:
         console.error('Error! Invalid action taken!');
         return;
@@ -488,14 +491,19 @@ export class BuilderStore {
    * @returns {Promise<any>}
    * @memberof BuilderStore
    */
-  private async updateFileDescription(fileId: any, description: any): Promise<any> {
+  private async updateFileDescription(
+    fileId: any,
+    description: any
+  ): Promise<any> {
+    const index = this.findFile(fileId);
+    this.learningObject.materials.files[index].description = description;
     await this.learningObjectService.updateFileDescription(
       this.learningObject.author.username,
       this.learningObject.id,
       fileId,
       description
     );
-    await this.fetchMaterials();
+    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -526,9 +534,41 @@ export class BuilderStore {
       'materials.folderDescriptions': this.learningObject.materials
         .folderDescriptions
     });
-    await this.fetchMaterials();
+    this.learningObjectEvent.next(this.learningObject);
   }
 
+  /**
+   * Removes file for array of file meta
+   *
+   * @private
+   * @param {string} fileId
+   * @memberof BuilderStore
+   */
+  private async removeFile(fileId: string) {
+    const index = this.findFile(fileId);
+    this.learningObject.materials.files.splice(index, 1);
+    this.learningObjectEvent.next(this.learningObject);
+  }
+
+  /**
+   * Returns index of file
+   *
+   * @private
+   * @param {string} fileId
+   * @returns {number}
+   * @memberof BuilderStore
+   */
+  private findFile(fileId: string): number {
+    let index = -1;
+    for (let i = 0; i < this.learningObject.materials.files.length; i++) {
+      const file = this.learningObject.materials.files[i];
+      if (file.id === fileId) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
   ///////////////////////////
   //  SERVICE INTERACTION  //
   ///////////////////////////
