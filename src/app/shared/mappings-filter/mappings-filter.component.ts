@@ -14,7 +14,7 @@ import {
 import { OutcomeService } from '../../core/outcome.service';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import {  Subject, fromEvent } from 'rxjs';
-import { takeUntil, debounceTime, map, filter } from 'rxjs/operators'
+import { takeUntil, debounceTime, map, filter } from 'rxjs/operators';
 
 import 'rxjs/add/operator/debounceTime';
 import { Router, NavigationEnd } from '@angular/router';
@@ -98,7 +98,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
         // we've cleared the input, remove the pill
         this.clear();
       }
-    })
+    });
   }
 
   ngOnInit() {
@@ -117,7 +117,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
         this.loading = this.resultsDown = false;
         this.outcomes = [];
       }
-    })
+    });
 
     // listen for the instruction to close from the parent and close dropdowns
     if (this.close) {
@@ -212,7 +212,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
     this.focusedOutcome = undefined;
     this.remove.emit({ category: 'mappings', filter: outcome.id });
   }
-  
+
   /**
    * Prevents the closure of a dropdown
    *
@@ -256,11 +256,11 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
    * Fetch outcomes from service with any selected filters
    *
    * @private
-   * @param {{ name?: string, author?: string, date?: string, filterText?: string }} filter
+   * @param {{ name?: string, author?: string, date?: string, filterText?: string }} outcomeFilter
    * @memberof MappingsFilterComponent
    */
-  private getOutcomes(filter: { name?: string, author?: string, date?: string, filterText?: string }) {
-    this.outcomeService.getOutcomes(filter).then((res: {total: number, outcomes: LearningOutcome[]}) => {
+  private getOutcomes(outcomeFilter: { name?: string, author?: string, date?: string, filterText?: string }) {
+    this.outcomeService.getOutcomes(outcomeFilter).then((res: {total: number, outcomes: LearningOutcome[]}) => {
       this.loading = false;
       this.outcomes = this.separateOutcomes(res.outcomes);
     });
