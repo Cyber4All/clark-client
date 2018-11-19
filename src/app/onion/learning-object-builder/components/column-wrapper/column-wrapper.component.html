@@ -1,7 +1,7 @@
 <div class="builder-template-columns">
   <div #columnWrapper class="columns" [ngStyle]="{'top': columnOffset + 'px'}" [ngClass]="{'no-right': !rightColumn, 'no-left': !leftColumn}">
     <div *ngIf="showColumn('l')" class="left-column column">
-      <div class="content scaffold">
+      <div class="content">
         <ng-content select="[left]"></ng-content>
       </div>
     </div>
