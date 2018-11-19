@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome } from '@cyber4all/clark-entity';
 import { CookieService } from 'ngx-cookie';
 
 import { USER_ROUTES } from '@env/route';
@@ -94,18 +94,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   // TODO type this parameter
-  save(learningObject: {
-    id?: string;
-    _id?: string;
-    [key: string]: any;
-  }): Promise<{}> {
-    const id = learningObject.id || learningObject._id;
-
-    // verify that an id was included
-    if (!id) {
-      throw new Error('Error! No learning object id specified!');
-    }
-
+  save(id: string, learningObject: { [key: string]: any }): Promise<{}> {
     const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(
       this.auth.user.username,
       id
@@ -113,7 +102,7 @@ export class LearningObjectService {
     return this.http
       .patch(
         route,
-        { id, learningObject },
+        { learningObject },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
@@ -140,6 +129,12 @@ export class LearningObjectService {
         { outcome },
         { withCredentials: true }
       )
+      .toPromise();
+  }
+
+  deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
+    return this.http
+      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
       .toPromise();
   }
 
@@ -290,6 +285,23 @@ export class LearningObjectService {
       .patch(
         route,
         { description },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .toPromise();
+  }
+
+  /**
+   * Create an outcome for a source learning object
+   *
+   * @param {LearningObject} source the learningObject
+   * @param {LearningOutcome} outcome
+   * @memberof LearningObjectService
+   */
+  addLearningOutcome(sourceId: string, outcome: LearningOutcome): Promise<any> {
+    return this.http
+      .post(
+        USER_ROUTES.CREATE_AN_OUTCOME(sourceId),
+        { source: sourceId, outcome },
         { withCredentials: true, responseType: 'text' }
       )
       .toPromise();

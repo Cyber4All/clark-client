@@ -49,6 +49,9 @@ export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, LearningOutcome> = new Map();
 
+  // keep track of outcomes that exist locally haven't been saved to service yet
+  private newOutcomes: Map<string, any> = new Map();
+
   // manages a cache of object data that needs to be saved (debounced)
   private objectCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
@@ -284,6 +287,9 @@ export class BuilderStore {
     const outcome = new LearningOutcome(this.learningObject);
     outcome.id = genId();
 
+    // this outcome needs to be created in the API, not modified, so store it in newOutcomes map
+    this.newOutcomes.set(outcome.id, true);
+
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
@@ -291,9 +297,17 @@ export class BuilderStore {
   }
 
   private async deleteOutcome(id: string) {
-    // TODO service call here
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
+
+    // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
+    this.serviceInteraction$.next(true);
+    this.learningObjectService.deleteOutcome(this.learningObject.id, id).then(val => {
+      this.serviceInteraction$.next(false);
+    }).catch(error => {
+      console.error(error);
+      this.serviceInteraction$.next(false);
+    });
   }
 
   private async mutateOutcome(
@@ -390,7 +404,6 @@ export class BuilderStore {
   }
 
   private removeContributor(user: User) {
-    // TODO send array of ids to server
     const index = this.learningObject.contributors
       .map(x => x.username)
       .indexOf(user.username);
@@ -598,12 +611,9 @@ export class BuilderStore {
       } else {
         // this is an existing object and we can save it (has a saveable name)
 
-        // append learning object id to payload
-        value.id = this.learningObject.id;
-
         // send cached changes to server
         this.learningObjectService
-          .save(value)
+          .save(this.learningObject.id, value)
           .then(() => {
             this.serviceInteraction$.next(false);
           })
@@ -624,6 +634,9 @@ export class BuilderStore {
   }
 
   private async saveOutcome(data: any, delay?: boolean) {
+    const cache = this.objectCache$.getValue();
+    const newValue = cache ? Object.assign(cache, data) : data;
+
     // if delay is true, combine the new properties with the object in the cache exit
     // the cache subject will automatically call this function again without a delay property
     if (delay) {
@@ -635,31 +648,68 @@ export class BuilderStore {
       }
 
       // retrieve current cached Map from storage and get the current cached value for given id
-      const value = this.outcomeCache$.getValue();
-
-      const newValue = value ? Object.assign(value, data) : data;
       this.outcomeCache$.next(newValue);
     } else {
+
+      // if the outcome isn't saveable or there was no data given to the function, do nothing
+      if (!this.validator.outcomeValidator.outcomeSaveable(newValue.id) || !newValue) {
+        console.log(newValue.id, 'outcome not saveable');
+        return;
+      }
+
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 
-      // service call
-      this.learningObjectService
-        .saveOutcome(this.learningObject.id, data)
-        .then(() => {
-          this.serviceInteraction$.next(false);
-        })
-        .catch(err => {
-          console.error('Error! ', err);
-          this.serviceInteraction$.next(false);
-        });
+      if (this.newOutcomes.get(newValue.id)) {
+        // this is a new outcome that hasn't been saved, create it
+        const tempId = newValue.id;
+        delete newValue.id;
+
+        this.learningObjectService.addLearningOutcome(this.learningObject.id, newValue)
+          .then((id: string) => {
+            this.serviceInteraction$.next(false);
+
+            // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
+            this.newOutcomes.delete(tempId);
+
+            // retrieve the outcome from the map keyed by it's temp ID and then delete that entry;=
+            const outcome = this.outcomes.get(tempId);
+            this.outcomes.delete(tempId);
+
+            // reset outcomes temp id with the new id from API
+            outcome.id = id;
+
+            // store the temporary id in the outcome so that the page component know's which outcome to keep focused
+            outcome.tempId = tempId;
+
+            // re-enter outcome into map
+            this.outcomes.set(id, outcome);
+            this.outcomeEvent.next(this.outcomes);
+          })
+          .catch(err => {
+            console.error('Error! ', err);
+            this.serviceInteraction$.next(false);
+          });
+      } else {
+        // this is an existing outcome, modify it
+        this.learningObjectService
+          .saveOutcome(this.learningObject.id, newValue)
+          .then(() => {
+            this.serviceInteraction$.next(false);
+          })
+          .catch(err => {
+            console.error('Error! ', err);
+            this.serviceInteraction$.next(false);
+          });
+      }
+
     }
   }
 }
 
 /**
- * Generate a unique id.
- * Used for learning outcomes that are blank and cannot be published. Replaced once saveable with an ID from the service
+ * Generate a unique id. (straight from stack overflow)
+ * Used for learning outcomes that are blank and cannot be saved. Replaced once saveable with an ID from the service
  */
 function genId() {
   const S4 = () => {

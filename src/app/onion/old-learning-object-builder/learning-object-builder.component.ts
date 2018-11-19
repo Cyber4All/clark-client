@@ -107,36 +107,36 @@ export class LearningObjectBuilderComponent implements OnInit {
     this.learningObject.name = this.learningObject.name.trim();
     if (!this.isNew) {
       // editing
-      this.service
-        .save(this.learningObject)
-        .then(success => {
-          if (!willUpload) {
-            this.notificationService.notify(
-              'Done!',
-              'Learning Object saved!',
-              'good',
-              'far fa-check'
-            );
-            this.isNew = false;
-            this.learningObjectName = this.learningObject.name;
-          } else {
-            this.router.navigate([
-              `/onion/content/upload/${this.learningObjectName}`
-            ]);
-          }
-        })
-        .catch(err => {
-          const error =
-            typeof err['_body'] === 'string'
-              ? err['_body']
-              : 'Error saving Learning Object';
-          this.notificationService.notify(
-            'Error!',
-            error,
-            'bad',
-            'far fa-times'
-          );
-        });
+      // this.service
+      //   .save(this.learningObject)
+      //   .then(success => {
+      //     if (!willUpload) {
+      //       this.notificationService.notify(
+      //         'Done!',
+      //         'Learning Object saved!',
+      //         'good',
+      //         'far fa-check'
+      //       );
+      //       this.isNew = false;
+      //       this.learningObjectName = this.learningObject.name;
+      //     } else {
+      //       this.router.navigate([
+      //         `/onion/content/upload/${this.learningObjectName}`
+      //       ]);
+      //     }
+      //   })
+      //   .catch(err => {
+      //     const error =
+      //       typeof err['_body'] === 'string'
+      //         ? err['_body']
+      //         : 'Error saving Learning Object';
+      //     this.notificationService.notify(
+      //       'Error!',
+      //       error,
+      //       'bad',
+      //       'far fa-times'
+      //     );
+      //   });
     } else {
       // creating
       this.service

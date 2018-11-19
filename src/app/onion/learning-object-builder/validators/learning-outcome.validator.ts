@@ -42,11 +42,11 @@ export class LearningOutcomeValidator {
   errors = new LearningOutcomeErrorGroup();
 
   outcomeSaveable(id: string) {
-    return !!this.errors.saveErrors.get(id);
+    return !this.errors.saveErrors.get(id);
   }
 
   outcomeSubmittable(id: string) {
-    return !!this.errors.submitErrors.get(id);
+    return !this.errors.submitErrors.get(id);
   }
 
   get submittable(): boolean {
