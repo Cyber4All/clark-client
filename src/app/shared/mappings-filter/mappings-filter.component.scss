@@ -1,7 +1,30 @@
 @import '~_vars.scss';
 
+$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+
 .mappings-filter {
     position: relative;
+}
+
+.mappings-filter__pill {
+    background: $light-blue-gradient;
+    color: white !important;
+    position: absolute;
+    align-items: center;
+    font-size: 12px;
+    border-radius: 2px;
+    z-index: 1;
+    cursor: text;
+
+    &:before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: white;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-right: 5px;
+    }
 }
 
 .search-bar {
@@ -16,6 +39,10 @@
         outline: 0;
         padding-left: 5px;
         padding: 10px;
+
+        &.transparent {
+            opacity: 0;
+        }
     }
 
     & > *:not(input) {
