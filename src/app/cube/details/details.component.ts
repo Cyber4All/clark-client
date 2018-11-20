@@ -2,7 +2,7 @@ import { iframeParentID } from '../../core/cartv2.service';
 import { LearningObjectService } from '../learning-object.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/user.service';
 import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../../core/auth.service';
@@ -11,6 +11,7 @@ import { ToasterService } from '../../shared/toaster/toaster.service';
 import { ModalService, ModalListElement } from '../../shared/modals';
 import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { canViewInBrowser } from 'app/shared/filesystem/file-functions';
+import { HttpErrorResponse } from '@angular/common/http';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -61,7 +62,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private ratingService: RatingService,
     private toastService: ToasterService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -85,6 +87,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.isOwnObject = false;
       }
     });
+
   }
 
   async fetchLearningObject(author: string, name: string) {
@@ -116,6 +119,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       this.getLearningObjectRatings();
     } catch (e) {
+
+      /**
+       * TODO: change status to 404 when issue #149 is closed
+       * if server error is thrown, navigate to not-found page
+       */
+
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === 500) {
+          this.router.navigate(['not-found']);
+          console.log('error handling is correct but the routing is not'); // joel's dumb log
+        }
+      }
       console.log(e);
     }
   }
