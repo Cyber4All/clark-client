@@ -584,9 +584,17 @@ export class BuilderStore {
 
       // if we passed a collection property, attempt the submission
       if (collection) {
-        return this.collectionService.addToCollection(this.learningObject.id, collection).then(val => {
-          return true;
+        // first attempt to publish, if that succeeds attempt to submit to collection
+        return this.learningObjectService.publish(this.learningObject).then(() => {
+          // now attempt to add to collection
+          return this.collectionService.addToCollection(this.learningObject.id, collection).then(() => {
+            return true;
+          }).catch(error => {
+            console.error(error);
+            throw new Error('This learning object could not be submitted');
+          });
         }).catch(error => {
+          console.error(error);
           throw new Error(error);
         });
       }

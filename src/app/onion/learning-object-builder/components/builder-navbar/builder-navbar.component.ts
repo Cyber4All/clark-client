@@ -155,8 +155,10 @@ export class BuilderNavbarComponent implements OnDestroy {
     if (collection) {
       this.store.submitForReview(collection).then(val => {
         this.showSubmission = false;
+        this.toasterService.notify('Success!', 'Learning object submitted successfully!', 'good', 'far fa-check');
       }).catch(error => {
         console.error(error);
+        this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
         this.showSubmission = false;
       });
     } else {
