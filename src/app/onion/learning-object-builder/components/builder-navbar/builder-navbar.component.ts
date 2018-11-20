@@ -11,29 +11,15 @@ import { ToasterService } from 'app/shared/toaster';
 @Component({
   selector: 'onion-builder-navbar',
   templateUrl: './builder-navbar.component.html',
-  styleUrls: ['./builder-navbar.component.scss'],
-  animations: [
-    trigger('route', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(25px)' }),
-        animate(
-          '250ms ease',
-          style({ opacity: 1, transform: 'translateY(0px)' })
-        )
-      ]),
-      transition(':leave', [
-        style({ opacity: 1, transform: 'translateY(0px)' }),
-        animate(
-          '300ms ease',
-          style({ opacity: 0, transform: 'translateY(15px)' })
-        )
-      ])
-    ])
-  ]
+  styleUrls: ['./builder-navbar.component.scss']
 })
 export class BuilderNavbarComponent implements OnDestroy {
   isSaving: boolean;
   showSubmission: boolean;
+
+  initialRouteStates: Map<string, boolean> = new Map();
+  firstRouteChanges: Set<string>  = new Set();
+  routesClicked: Set<string> = new Set();
 
   destroyed$: Subject<void> = new Subject();
 
@@ -66,12 +52,48 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @memberof BuilderNavbarComponent
    */
   canRoute(route: string) {
+    let result: boolean;
+
     switch (route) {
       case 'outcomes':
-        return this.validator.saveable;
+        result = this.validator.saveable;
+        break;
       case 'materials':
-        return !!(this.auth.user.emailVerified && this.validator.saveable);
+        result = !!(this.auth.user.emailVerified && this.validator.saveable);
+        break;
     }
+
+    if (!this.initialRouteStates.has(route)) {
+      // set the initial route state, used for checking whether a route is "new" or not
+      this.initialRouteStates.set(route, result);
+    }
+
+    if (result) {
+      // as soon as a route becomes active, add it to the firstRouteChanges set.
+      // used for checking whether a route is "new" or not
+      this.firstRouteChanges.add(route);
+    }
+
+    return result;
+  }
+
+  /**
+   * Returns whether the passed route is "new", aka was the route disabled due to validation but is now enabled and hasn't been navigated to
+   * @param {string} route
+   * @returns {boolean}
+   * @memberof BuilderNavbarComponent
+   */
+  isNewRoute(route: string) {
+    return !this.initialRouteStates.get(route) && this.firstRouteChanges.has(route) && !this.routesClicked.has(route);
+  }
+
+  /**
+   * Add the passed route to the set of clicked routes
+   * @param {string} route
+   * @memberof BuilderNavbarComponent
+   */
+  triggerRouteClick(route: string) {
+    this.routesClicked.add(route);
   }
 
   /**

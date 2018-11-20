@@ -7,13 +7,13 @@
     <!-- update routerLinkActive with class used to show that link is active -->
     <ul>
       <li>
-        <a routerLink="info" routerLinkActive="active">Basic Information</a>
+        <ng-container [ngTemplateOutlet]="navItemTemplate" [ngTemplateOutletContext]="{ disabled: false, link: 'info', text: 'Basic Information' }"></ng-container>
       </li>
-      <li [@route] *ngIf="canRoute('outcomes')">
-        <a routerLink="outcomes" routerLinkActive="active">Learning Outcomes</a>
+      <li>
+        <ng-container [ngTemplateOutlet]="navItemTemplate" [ngTemplateOutletContext]="{ disabled: !canRoute('outcomes'), link: 'outcomes', text: 'Learning Outcomes' }"></ng-container>
       </li>
-      <li [@route] *ngIf="canRoute('materials')">
-        <a routerLink="materials" routerLinkActive="active">Materials</a>
+      <li>
+        <ng-container [ngTemplateOutlet]="navItemTemplate" [ngTemplateOutletContext]="{ disabled: !canRoute('materials'), link: 'materials', text: 'Materials' }"></ng-container>
       </li>
     </ul>
     <div class="builder-navbar-wrapper__saving-indicator">
@@ -28,3 +28,8 @@
     <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"></clark-collection-selector>
   </div>
 </clark-popup>
+
+<ng-template #navItemTemplate let-link="link" let-disabled="disabled" let-text="text">
+  <a *ngIf="!disabled" [ngClass]="{'new': isNewRoute(link)}" routerLink="{{ link }}" routerLinkActive="active" (click)="triggerRouteClick(link)">{{ text }}</a>
+  <a *ngIf="disabled" class="disabled" tip="Please give this learning object a name before adding outcomes or uploading materials" tipLocation="above">{{ text }}</a>
+</ng-template>

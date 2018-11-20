@@ -98,6 +98,27 @@ button {
             opacity: 1;
           }
         }
+
+        &.disabled {
+          opacity: 0.6;
+          cursor: default;
+        }
+
+        &.new {
+          color: $bright-blue;
+
+          &:before {
+            content: '';
+            position: absolute;
+            height: 6px;
+            width: 6px;
+            background: $bright-blue;
+            border-radius: 50%;
+            right: 0;
+            top: 11px;
+            margin: auto;
+          }
+        }
       }
 
       &:not(:last-child) {
