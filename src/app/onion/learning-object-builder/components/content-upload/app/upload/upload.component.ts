@@ -154,6 +154,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   disabled = false;
 
+  private uploadIds = {
+
+  }
+
   constructor(
     // FIXME: REMOVE WHEN WHITELIST LOGIC IS REMOVED
     private authService: AuthService,
@@ -288,11 +292,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (file.upload.chunked) {
           // Request multipart upload
           const learningObject = await this.learningObject$.take(1).toPromise();
-          await this.fileStorage.initMultipart({
+          const uploadId  = await this.fileStorage.initMultipart({
             learningObject,
             fileId: file.upload.uuid,
             filePath: file.fullPath ? file.fullPath : file.name
           });
+          this.uploadIds[file.upload.uuid] = uploadId;
         }
       }
       this.dzDirectiveRef.dropzone().processFile(file);
@@ -307,6 +312,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     (<FormData>event[2]).append('size', file.size);
     if (file.fullPath) {
       (<FormData>event[2]).append('fullPath', file.fullPath);
+    }
+    if(file.upload.chunked){
+      const uploadId = this.uploadIds[file.upload.uuid];
+      (<FormData>event[2]).append('uploadId', uploadId);
     }
   }
 
@@ -360,11 +369,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           fullPath: file.fullPath,
           mimetype: file.type
         };
+        const uploadId = this.uploadIds[file.upload.uuid];
         const learningObject = await this.learningObject$.take(1).toPromise();
         await this.fileStorage.finalizeMultipart({
           fileMeta,
           learningObject,
-          fileId: file.upload.uuid
+          fileId: file.upload.uuid,
+          uploadId
         });
         this.uploadComplete.emit();
       } catch (e) {
@@ -402,8 +413,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private async abortMultipartUpload(file: any) {
     const learningObject = await this.learningObject$.take(1).toPromise();
+    const uploadId = this.uploadIds[file.upload.uuid];
+
     this.fileStorage.abortMultipart({
       learningObject,
+      uploadId,
       fileId: file.upload.uuid
     });
   }
