@@ -128,7 +128,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       if (e instanceof HttpErrorResponse) {
         if (e.status === 500) {
           this.router.navigate(['not-found']);
-          console.log('error handling is correct but the routing is not'); // joel's dumb log
         }
       }
       console.log(e);
