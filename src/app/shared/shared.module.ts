@@ -80,7 +80,7 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     ReportRatingComponent,
     ProgressComponent,
     FileSizePipe,
-    CookiesComponent
+    CookiesComponent,
   ],
   exports: [
     BrowseByMappingsComponent,

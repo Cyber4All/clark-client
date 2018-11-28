@@ -1,0 +1,15 @@
+@import "../vars";
+@import "../globals.scss";
+
+.huge {
+  font-size: 60px;
+}
+
+.not-found-logo {
+  width: 180px;
+  display: block;
+  margin: 0 auto;
+}
+.not-found.top {
+  padding-top: 500px;
+}
