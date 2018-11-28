@@ -35,16 +35,6 @@ export class DetailsSplashComponent implements OnInit {
    * Retrieve image for collection based on collection property in learning object
    */
   get collectionImage() {
-    // FIXME this should not be done with an if-statement, switch case or potentially API side
-    switch (this.learningObject.collection) {
-      case 'gencyber':
-        return 'gencyber.png';
-      case 'nccp':
-        return 'nccp.png';
-      case 'secinj':
-        return 'secinj.png';
-      case 'c5':
-        return 'c5.png';
-    }
+    return `${this.learningObject.collection}.png`;
   }
 }

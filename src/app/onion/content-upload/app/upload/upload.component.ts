@@ -29,7 +29,10 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/filter';
 import { ModalService, ModalListElement } from '../../../../shared/modals';
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { getPaths } from '../../../../shared/filesystem/file-functions';
+import {
+  getPaths,
+  canViewInBrowser
+} from '../../../../shared/filesystem/file-functions';
 import { AuthService } from '../../../../core/auth.service';
 
 type LearningObjectFile = File;
@@ -268,7 +271,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           username: this.learningObject.author.username,
           loId: this.learningObject.id,
           fileId: file.id,
-          open: true
+          open: canViewInBrowser(file)
         });
         return file;
       })

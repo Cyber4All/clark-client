@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
     });
     this.collectionService.getCollections()
       .then(collections => {
-        this.collections = collections.filter(c => c.abvName !== 'secinj' && c.abvName !== 'gencyber');
+        this.collections = collections.filter(c => c.abvName === 'nccp' || c.abvName === 'c5');
       })
       .catch(e => {
         console.error(e.message);

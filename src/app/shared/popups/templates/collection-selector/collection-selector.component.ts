@@ -18,6 +18,7 @@ export class CollectionSelectorComponent implements OnInit {
 
   // flags
   loading = false;
+  licenseAccepted = false;
 
   constructor(private collectionService: CollectionService) { }
 
@@ -42,6 +43,14 @@ export class CollectionSelectorComponent implements OnInit {
       this.loading = false;
       return [];
     });
+  }
+
+  select(collection: string) {
+    this.currentCollection = collection;
+  }
+
+  submit() {
+    this.choice.emit(this.currentCollection);
   }
 
 }
