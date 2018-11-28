@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
+import { NotFoundComponent } from './not-found.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { UnsupportedComponent } from './unsupported.component';
   declarations: [
     ClarkComponent,
     UnsupportedComponent,
+    NotFoundComponent,
 ],
   bootstrap: [ClarkComponent],
   providers: [{provide: UrlSerializer, useClass: CustomUrlSerializer}]
