@@ -29,7 +29,7 @@
     </div>
     <!-- Render Files -->
     <div class="grid-row file" *ngFor="let file of (node$ | async)?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
-      <div (click)="openFile(file)" class="text-contained inline-flex" [ngClass]="{'hover-react': previewUrl(file.extension)}">
+      <div (click)="openFile(file)" class="text-contained inline-flex" [ngClass]="{'hover-react': previewUrl(file.extension)}" tip="{{ file.name }}" tipLocation="above">
         <i class="fas {{ getIcon(file.extension) }} icon"></i>
         {{ file.name }}
         <span class="external-link-icon" *ngIf="previewUrl(file.extension)"><i class="far fa-external-link"></i></span>
