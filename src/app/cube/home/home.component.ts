@@ -58,8 +58,4 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/browse'], {queryParams:  {text: this.query.text }});
     }
   }
-  goToContribute() {
-    this.router.navigate(['/onion']);
-  }
-
 }
