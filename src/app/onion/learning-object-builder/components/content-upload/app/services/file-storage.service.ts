@@ -33,7 +33,7 @@ export class FileStorageService {
 
     return this.http
       .post(route, { filePath: params.filePath }, { withCredentials: true })
-      .toPromise();
+      .toPromise().then((res: {uploadId: string})=>res.uploadId);
   }
 
   /**
@@ -42,6 +42,7 @@ export class FileStorageService {
    * @param {{
    *     learningObject: LearningObject;
    *     fileId: string;
+   *     uploadId: string;
    *   }} params
    * @returns {Promise<any>}
    * @memberof FileStorageService
@@ -49,6 +50,7 @@ export class FileStorageService {
   finalizeMultipart(params: {
     learningObject: LearningObject;
     fileId: string;
+    uploadId: string;
     fileMeta: any;
   }): Promise<any> {
     const route = USER_ROUTES.FINALIZE_MULTIPART({
@@ -60,7 +62,7 @@ export class FileStorageService {
     return this.http
       .patch(
         route,
-        { fileMeta: params.fileMeta },
+        { fileMeta: params.fileMeta, uploadId: params.uploadId },
         { withCredentials: true, responseType: 'text' }
       )
       .toPromise();
@@ -72,6 +74,7 @@ export class FileStorageService {
    * @param {{
    *     learningObject: LearningObject;
    *     fileId: string;
+   *     uploadId: string;
    *     fileMeta: any;
    *   }} params
    * @returns {Promise<any>}
@@ -80,15 +83,16 @@ export class FileStorageService {
   abortMultipart(params: {
     learningObject: LearningObject;
     fileId: string;
+    uploadId:string;
   }): Promise<any> {
     const route = USER_ROUTES.ABORT_MULTIPART({
       fileId: params.fileId,
       username: this.auth.user.username,
       objectId: params.learningObject.id
     });
-
+    // @ts-ignore Sending body is legal
     return this.http
-      .delete(route, { withCredentials: true, responseType: 'text' })
+      .delete(route,{uploadId: params.uploadId},{ withCredentials: true, responseType: 'text' })
       .toPromise();
   }
 
