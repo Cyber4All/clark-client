@@ -316,9 +316,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     if (!Array.isArray(objects) || objects.length === 1) {
-      // single deletion
       this.learningObjectService
-        .delete((objects as DashboardLearningObject).name)
+        .delete(Array.isArray(objects) ? objects[0].name : objects.name)
         .then(async () => {
           this.notificationService.notify(
             'Done!',

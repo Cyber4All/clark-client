@@ -1,3 +1,5 @@
+import { LearningObjectFile } from './DirectoryTree';
+
 /**
  * Breaks Path string into array of paths. Removes last element assuming last element is file name.
  *
@@ -16,4 +18,33 @@ export function getPaths(path: string, removeLast: boolean = true): string[] {
     paths.pop();
   }
   return paths;
+}
+
+/**
+ * Gets file extension
+ *
+ * @export
+ * @param {LearningObjectFile} file
+ * @returns
+ */
+export function getExtension(file: LearningObjectFile) {
+  let ext = file.extension;
+  if (!ext) {
+    const extMatch = file.name.match(/(\.[^.]*$|$)/);
+    ext = extMatch ? extMatch[0] : '';
+  }
+  return ext;
+}
+
+const viewableInBrowser = ['.pdf'];
+
+/**
+ * Checks if extension is in the viewableInBrowser array
+ *
+ * @export
+ * @param {string} extension
+ * @returns
+ */
+export function canViewInBrowser(file: LearningObjectFile) {
+  return viewableInBrowser.includes(getExtension(file));
 }

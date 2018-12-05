@@ -79,7 +79,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     ReportRatingComponent,
     ProgressComponent,
     FileSizePipe,
-    CookiesComponent
+    CookiesComponent,
   ],
   exports: [
     BrowseByMappingsComponent,
