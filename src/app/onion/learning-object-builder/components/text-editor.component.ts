@@ -1,5 +1,4 @@
-import { Input, Output, EventEmitter, Component, OnChanges, SimpleChanges } from '@angular/core';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Input, Output, EventEmitter, Component, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clark-text-editor',
@@ -10,7 +9,7 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
         [config]="config"
         [readonly]="false"
         (change)="onChange($event)"
-        debounce="500"
+        (focus)="touched.emit()"
         >
     </ckeditor>
   </div>
@@ -18,12 +17,15 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
   styles: ['#cke_bottom_detail, .cke_bottom { display: none; }']
 })
 export class TextEditorComponent implements OnInit, OnChanges {
-  @Output() textOutput: EventEmitter<String> = new EventEmitter<String>();
-  @Input() savedContent: String;
-  @Input() editorPlaceholder: String;
-  editorContent: String;
+  @Input() savedContent: string;
+  @Input() editorPlaceholder: string;
+
+  @Output() textOutput: EventEmitter<string> = new EventEmitter();
+  @Output() touched: EventEmitter<void> = new EventEmitter();
+
+  editorContent: string;
   counter: any;
-  buttonText: String;
+  buttonText: string;
 
   showBox: Boolean = true;
   config: any;
@@ -34,6 +36,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.editorContent = this.savedContent;
   }
+
   ngOnInit() {
     this.counter = {
       showParagraphs: false,
@@ -64,8 +67,8 @@ export class TextEditorComponent implements OnInit, OnChanges {
     }
   }
 
-  onChange(editorContent) {
-    this.textOutput.emit(this.editorContent);
+  onChange() {
+    this.textOutput.emit(this.editorContent || '');
   }
 
   toggleBox() {

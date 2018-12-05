@@ -7,7 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MetadataComponent implements OnInit {
 
-  @Input() error: any[];
+  @Input() error: string;
+  @Input() warning: boolean;
 
   constructor() { }
 

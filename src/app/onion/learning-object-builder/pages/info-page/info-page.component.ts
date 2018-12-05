@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import {
   BuilderStore,
@@ -24,10 +24,12 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   academicLevels = Object.values(AcademicLevel);
 
   formGroup = new FormGroup({});
+  descriptionTouched: boolean;
+  descriptionDirty: boolean;
 
   destroyed$: Subject<void> = new Subject();
 
-  constructor(private store: BuilderStore, public validator: LearningObjectValidator) {}
+  constructor(private store: BuilderStore, public validator: LearningObjectValidator, public cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     // listen for outcome events and update component stores
@@ -56,6 +58,11 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
 
   mutateLearningObject(data: any) {
+    if (data.description !== this.learningObject.goals[0]) {
+      this.descriptionDirty = true;
+    } else {
+      this.descriptionDirty = false;
+    }
     this.store.execute(actions.MUTATE_OBJECT, data);
   }
 

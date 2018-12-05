@@ -46,7 +46,7 @@
           </div>
         </clark-info-page-metadata>
         <hr>
-        <clark-info-page-metadata [error]="validator.get('levels')">
+        <clark-info-page-metadata [error]="validator.get('levels')" [warning]="!validator.submissionMode">
           <div title>{{copy.LEVELS}}</div>
           <div directions>{{copy.SELECT}}</div>
           <div data>
@@ -58,11 +58,11 @@
           </div>
         </clark-info-page-metadata>
         <hr>
-        <clark-info-page-metadata [error]="validator.submissionMode ? validator.get('description') : undefined">
+        <clark-info-page-metadata [error]="descriptionTouched || validator.submissionMode ? validator.get('description') : undefined" [warning]="!validator.submissionMode">
           <div title>{{copy.QUESTION}}</div>
           <div directions>{{copy.TIP}}</div>
           <div data>
-            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="validator.validateDescription($event); mutateLearningObject({description: $event})"></onion-learning-object-description>
+            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="validator.validateDescription($event); mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
           </div>
         </clark-info-page-metadata>
       </form>

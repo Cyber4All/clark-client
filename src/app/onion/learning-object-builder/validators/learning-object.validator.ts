@@ -161,12 +161,12 @@ export class LearningObjectValidator {
    */
   get(property: string): string {
     let error = this.errors.saveErrors.get(property);
+    let type = 'save';
 
-    if (this.submissionMode) {
-      // if we're submitting and we haven't found a save error, check the submit errors
-      if (!error) {
-        error = this.errors.submitErrors.get(property);
-      }
+    // if we haven't found a save error, check the submit errors
+    if (!error) {
+      error = this.errors.submitErrors.get(property);
+      type = 'submit';
     }
 
     return error;

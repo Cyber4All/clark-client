@@ -1,5 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
-import { EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'onion-learning-object-description',
@@ -12,7 +11,7 @@ import { EventEmitter } from '@angular/core';
     </span>
     </div> -->
     <div class="goals list">
-      <clark-text-editor [(savedContent)] = "learningObject.goals[0].text"
+      <clark-text-editor (touched)="touched.emit()" [(savedContent)] = "learningObject.goals[0].text"
       editorPlaceholder = "Enter description here" (textOutput) = "bindEditorOutput($event)" name="description"></clark-text-editor>
     </div>
   </div>
@@ -33,9 +32,9 @@ import { EventEmitter } from '@angular/core';
 })
 export class LearningObjectDescriptionComponent {
   @Input() learningObject;
-  @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  @Output() touched: EventEmitter<void> = new EventEmitter();
+  @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
   bindEditorOutput(event) {
     this.learningObject.goals[0].text = event;
