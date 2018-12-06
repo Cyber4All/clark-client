@@ -71,11 +71,19 @@ button {
       font-size: 18px;
 
       a {
-        display: block;
+        display: flex;
         text-decoration: none;
         color: darken($placeholder, 20);
         padding: 0 15px 10px;
         position: relative;
+        flex-direction: row;
+        align-items: center;
+
+        .svg-inline--fa,
+        .icon {
+          margin-right: 5px;
+          font-size: 12px;
+        }
 
         &:after {
           content: '';

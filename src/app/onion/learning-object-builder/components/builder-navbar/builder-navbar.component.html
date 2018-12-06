@@ -31,5 +31,5 @@
 
 <ng-template #navItemTemplate let-link="link" let-disabled="disabled" let-text="text">
   <a *ngIf="!disabled" [ngClass]="{'new': isNewRoute(link)}" routerLink="{{ link }}" routerLinkActive="active" (click)="triggerRouteClick(link)">{{ text }}</a>
-  <a *ngIf="disabled" class="disabled" tip="Please give this learning object a name before adding outcomes or uploading materials" tipLocation="above">{{ text }}</a>
+  <a *ngIf="disabled" class="disabled" tip="Please give this learning object a name before adding outcomes or uploading materials" tipLocation="above"><i class="fas fa-lock"></i>{{ text }}</a>
 </ng-template>
