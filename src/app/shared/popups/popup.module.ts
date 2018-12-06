@@ -4,6 +4,7 @@ import { PopupComponent } from './popup.component';
 import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
 import { CollectionSelectorComponent } from './templates/collection-selector/collection-selector.component';
 import { FormsModule } from '@angular/forms';
+import { DownloadNoticeComponent } from './templates/download-notice/download-notice.component';
 
 @NgModule({
   imports: [
@@ -13,11 +14,13 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     PopupComponent,
     PopupViewerComponent,
-    CollectionSelectorComponent
+    CollectionSelectorComponent,
+    DownloadNoticeComponent
   ],
   exports: [
     PopupComponent,
-    CollectionSelectorComponent
+    CollectionSelectorComponent,
+    DownloadNoticeComponent
   ],
   entryComponents: [
     PopupViewerComponent
