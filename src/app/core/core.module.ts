@@ -21,7 +21,7 @@ import { CollectionService } from './collection.service';
 
 @NgModule({
   imports: [
-  CookieModule.forRoot(),
+    CookieModule.forRoot(),
     ModalModule.forRoot(),
     ToasterModule.forRoot(),
     ContextMenuModule.forRoot()
