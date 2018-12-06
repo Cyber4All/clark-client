@@ -13,6 +13,7 @@ import { RatingService } from './rating.service';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { UserService } from './user.service';
+import { UserAgentService } from './user-agent.service';
 import { MessagesService } from './messages.service';
 import { RavenErrorHandler } from './error-handler';
 import { ContextMenuModule } from 'ngx-contextmenu';
@@ -41,6 +42,7 @@ export class CoreModule {
         MessagesService,
         UserVerifiedGuard,
         RatingService,
+        UserAgentService,
         { provide: ErrorHandler, useClass: RavenErrorHandler }
       ]
     };
