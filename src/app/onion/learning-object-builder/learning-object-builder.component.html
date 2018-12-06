@@ -3,3 +3,19 @@
   <onion-builder-navbar *ngIf="true"></onion-builder-navbar>
   <router-outlet #o="outlet"></router-outlet>
 </div>
+<!-- TODO implenent this and fix animation bug -->
+<!-- <div [@serviceInteraction]="showServiceInteraction ? 'open' : 'closed'" class="service-indicator">
+  <ng-container *ngIf="!serviceInteraction; else loadingTemplate">
+    <span>
+      <i class="far fa-check"></i>
+      Saved!
+    </span>
+  </ng-container>
+</div>
+
+<ng-template #loadingTemplate>
+  <span>
+    <i class="fas fa-spinner-third fa-spin"></i>
+    Saving...
+  </span>
+</ng-template> -->

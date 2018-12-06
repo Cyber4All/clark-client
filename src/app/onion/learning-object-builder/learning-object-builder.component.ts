@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import {
   trigger,
   transition,
+  state,
   style,
   animate,
   query,
@@ -19,7 +20,7 @@ import { LearningObjectValidator } from './validators/learning-object.validator'
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 
 export const builderTransitions = trigger('builderTransition', [
-  transition('* <=> *', [
+  transition('* => *', [
     // hide all entering columns and the navbar if it's entering
     query(
       ':enter .column, :enter .builder-navbar-wrapper',
@@ -59,8 +60,7 @@ export const builderTransitions = trigger('builderTransition', [
         stagger('200ms ease', [
           style({ transform: 'translateY(-200px)', opacity: 0 }),
           animate(
-            '350ms ease',
-            style({ transform: 'translateY(0px)', opacity: 1 })
+            '350ms ease', style({ transform: 'translateY(0px)', opacity: 1 })
           )
         ])
       ],
@@ -74,20 +74,32 @@ export const builderTransitions = trigger('builderTransition', [
   selector: 'clark-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss'],
-  animations: [builderTransitions],
-  // these are provided here so that they'll destroy when navigating away
+  animations: [
+    builderTransitions,
+    trigger('serviceInteraction', [
+      state('open', style({ opacity: '1',  transform: 'translateY(-20px)' })),
+      state('closed', style({ opacity: '0', transform: 'translateY(0px)' })),
+      transition('* => *', animate('300ms ease'))
+    ]),
+  ],
+  // these are provided here so that they'll be destroyed when navigating away
   providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
 })
 export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   // fires when the component is destroyed
   destroyed$: Subject<void> = new Subject();
 
+  serviceInteraction: boolean;
+  showServiceInteraction: boolean;
+  removeServiceIndicator: NodeJS.Timer;
+
   // tslint:disable-next-line:max-line-length
   constructor(
     private store: BuilderStore,
     private route: ActivatedRoute,
     private nav: NavbarService,
-    private noteService: ToasterService
+    private builderStore: BuilderStore,
+    public noteService: ToasterService,
   ) {}
 
   ngOnInit() {
@@ -104,17 +116,32 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.builderStore.serviceInteraction$.takeUntil(this.destroyed$).subscribe(val => {
+      if (val) {
+        this.serviceInteraction = true;
+        this.showServiceInteraction = true;
+      } else {
+        this.serviceInteraction = false;
+
+        clearTimeout(this.removeServiceIndicator);
+
+        this.removeServiceIndicator = setTimeout(() => {
+          this.showServiceInteraction = false;
+        }, 2000);
+      }
+    });
+
     // hides clark nav bar from builder
     this.nav.hide();
+  }
+
+  getState(outlet: any) {
+    return outlet.activatedRouteData.state;
   }
 
   ngOnDestroy() {
     // clear subscriptions before component is destroyed
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
-  }
-
-  getState(outlet: any) {
-    return outlet.activatedRouteData.state;
   }
 }

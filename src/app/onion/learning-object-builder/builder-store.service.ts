@@ -705,6 +705,8 @@ export class BuilderStore {
         return;
       }
 
+      this.serviceInteraction$.next(true);
+
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 

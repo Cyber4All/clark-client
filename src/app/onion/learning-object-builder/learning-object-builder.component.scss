@@ -1,0 +1,25 @@
+@import '~_vars.scss';
+
+.service-indicator {
+  position: fixed;
+  right: 25px;
+  bottom: 0;
+  opacity: 0;
+  padding: 4px 10px;
+  text-align: left;
+  color: white;
+  min-width: 150px;
+  background: linear-gradient(45deg, #1875e1, #4290ea);
+  border-radius: 2px;
+  z-index: 2;
+
+  .svg-inline--fa,
+  .icon {
+    font-size: 10px;
+    margin-right: 10px;
+  }
+}
+
+.service-indicator--saved {
+  background: linear-gradient(45deg, darken(saturate($green, 10), 5), saturate(lighten($green, 10), 10));
+}
