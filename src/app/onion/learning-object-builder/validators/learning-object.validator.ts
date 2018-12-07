@@ -161,12 +161,10 @@ export class LearningObjectValidator {
    */
   get(property: string): string {
     let error = this.errors.saveErrors.get(property);
-    let type = 'save';
 
     // if we haven't found a save error, check the submit errors
     if (!error) {
       error = this.errors.submitErrors.get(property);
-      type = 'submit';
     }
 
     return error;
@@ -177,16 +175,14 @@ export class LearningObjectValidator {
    * there is no error for the id in the outcomes saveErrors Map, the outcomes submitErrors map is checked
    *
    * @param {string} property
-   * @returns {string | undefined}
+   * @returns {string | undefined} either returns undefined or an array where the first index is the error and the second index is the type (save or submit)
    * @memberof LearningObjectValidator
    */
-  getOutcome(id: string) {
+  getOutcome(id: string): string | undefined {
     let error = this.outcomeValidator.errors.saveErrors.get(id);
 
-    if (this.submissionMode) {
-      if (!error) {
-        error = this.outcomeValidator.errors.submitErrors.get(id);
-      }
+    if (!error) {
+      error = this.outcomeValidator.errors.submitErrors.get(id);
     }
 
     return error;

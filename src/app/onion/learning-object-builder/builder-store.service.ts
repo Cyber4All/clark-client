@@ -701,7 +701,6 @@ export class BuilderStore {
 
       // if the outcome isn't saveable or there was no data given to the function, do nothing
       if (!this.validator.outcomeValidator.outcomeSaveable(newValue.id) || !newValue) {
-        console.log(newValue.id, 'outcome not saveable');
         return;
       }
 
@@ -735,6 +734,14 @@ export class BuilderStore {
             // re-enter outcome into map
             this.outcomes.set(id, outcome);
             this.outcomeEvent.next(this.outcomes);
+
+            const outcomeError = this.validator.getOutcome(tempId);
+            const outcomeErrorType = this.validator.outcomeValidator.errors.saveErrors.has(tempId) ? 'save' : 'submit';
+
+            if (outcomeError) {
+              this.validator.outcomeValidator.errors.deleteOutcomeError(tempId);
+              this.validator.outcomeValidator.errors.setOutcomeError(outcomeErrorType, id, outcomeError);
+            }
           })
           .catch(err => {
             console.error('Error! ', err);

@@ -125,7 +125,7 @@ export class BuilderNavbarComponent implements OnDestroy {
         }
 
         // notify user
-        this.toasterService.notify('Error!', 'Please correct the highlighted errors and try again!', 'bad', 'far fa-times');
+        this.toasterService.notify('Error!', 'Please correct the errors and try again!', 'bad', 'far fa-times');
 
         if (errorPages.size && !errorPages.get(currentRoute)) {
           // we've found errors on other pages and none on our current page, so route to that page

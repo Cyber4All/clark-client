@@ -23,8 +23,11 @@
       (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)" class="absolute-position">
     </clark-outcome-typeahead>
   </div>
-  <div *ngIf="outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-error">
-    {{ validator.getOutcome(outcome.id) }}
+  <div *ngIf="outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-component__outcome-error" [ngClass]="{'outcome-error--warning': !validator.submissionMode}">
+    {{ validator.getOutcome(outcome.id) ? validator.getOutcome(outcome.id) : undefined }}
+  </div>
+  <div *ngIf="!outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-component__no-save">
+    This outcome can't be saved until a level and verb are selected!
   </div>
   <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
     <div class="outcome-header">Maps to: </div>

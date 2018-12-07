@@ -3,7 +3,8 @@ import {
   OnInit,
   EventEmitter,
   Input,
-  Output
+  Output,
+  ChangeDetectorRef
 } from '@angular/core';
 import { levels } from '@cyber4all/clark-taxonomy';
 import { LearningOutcome } from '@cyber4all/clark-entity';
@@ -25,7 +26,7 @@ import { LearningOutcomeValidator } from '../../validators/learning-outcome.vali
     trigger('outcome', [
       state('open', style({ height: '*' })),
       state('*', style({ height: '84px' })),
-      transition('* <=> *', animate('350ms ease')),
+      transition('* <=> *', animate('350ms ease'))
     ])
   ]
 })
@@ -59,7 +60,11 @@ export class OutcomeComponent implements OnInit {
   @Output()
   deleted: EventEmitter<void> = new EventEmitter();
 
-  constructor(public validator: LearningObjectValidator, public outcomeValidator: LearningOutcomeValidator) { }
+  constructor(
+    private cd: ChangeDetectorRef,
+    public validator: LearningObjectValidator,
+    public outcomeValidator: LearningOutcomeValidator
+  ) {}
 
   ngOnInit() {
     // set the outcomeNumber to however many outcomes are currently in the outcomes array
@@ -84,12 +89,10 @@ export class OutcomeComponent implements OnInit {
 
   emitVerb(val) {
     this.selectedVerb.emit(val);
-
   }
 
   emitLevel(val) {
     this.selectedLevel.emit(val);
-
   }
 
   emitText(val) {

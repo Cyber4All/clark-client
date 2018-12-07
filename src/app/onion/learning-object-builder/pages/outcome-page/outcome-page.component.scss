@@ -56,6 +56,11 @@ button {
     margin-top: 5px;
   }
 
+  .no-outcomes__error {
+    color: $error-red;
+    margin-top: 20px;
+  }
+
   .svg-inline--fa,
   .icon {
     color: $bright-blue;

@@ -115,6 +115,23 @@ $light-blue-gradient: linear-gradient(
     height: 41px;
   }
 
+  .outcome-component__outcome-error,
+  .outcome-component__no-save {
+    margin-top: 10px;
+  }
+
+  .outcome-component__outcome-error {
+    color: $error-red;
+
+    &.outcome-error--warning {
+      color: orange;
+    }
+  }
+
+  .outcome-component__no-save {
+    color: orange;
+  }
+
   .outcome-mappings {
     width: 100%;
     margin-top: 30px;
