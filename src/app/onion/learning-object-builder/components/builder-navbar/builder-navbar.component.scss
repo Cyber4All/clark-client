@@ -53,6 +53,38 @@ button {
       }
     }
   }
+
+  .top__right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    & > *:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .top__status {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    border: 1px solid $placeholder;
+  }
+
+  .status__image {
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+  }
 }
 
 .builder-navbar-wrapper__bottom-left-menu {

@@ -1,12 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
+import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'app/shared/toaster';
+import { CollectionService, Collection } from 'app/core/collection.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -16,6 +17,9 @@ import { ToasterService } from 'app/shared/toaster';
 export class BuilderNavbarComponent implements OnDestroy {
   isSaving: boolean;
   showSubmission: boolean;
+
+  learningObject: LearningObject;
+  collection: Collection;
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string>  = new Set();
@@ -29,6 +33,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private auth: AuthService,
     private validator: LearningObjectValidator,
     private toasterService: ToasterService,
+    private collectionService: CollectionService,
     public store: BuilderStore,
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
@@ -42,6 +47,17 @@ export class BuilderNavbarComponent implements OnDestroy {
           this.isSaving = false;
         }
       });
+
+    this.store.learningObjectEvent.pipe(
+      filter(val => typeof val !== 'undefined'),
+      takeUntil(this.destroyed$)
+    ).subscribe(val => {
+      this.learningObject = val;
+      this.collectionService.getCollection(this.learningObject.collection).then(col => {
+        console.log(col);
+        this.collection = col;
+      });
+    });
   }
 
   /**
@@ -151,6 +167,10 @@ export class BuilderNavbarComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Submits a learning object to a collection for review and publishes the object
+   * @param {string} collection the name of the collection to submit to
+   */
   submitForReview(collection?: string) {
     if (collection) {
       this.store.submitForReview(collection).then(val => {

@@ -78,6 +78,16 @@ export class CollectionService {
       .toPromise();
   }
 
+  getCollection(abvName: string): Promise<Collection> {
+    return this.getCollections().then(val => {
+      for (const x of val) {
+        if (x.abvName === abvName) {
+          return x;
+        }
+      }
+    });
+  }
+
   getCollectionMetadata(name: string) {
     return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTION_META(name))
       .toPromise();

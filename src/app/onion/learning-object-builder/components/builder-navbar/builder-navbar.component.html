@@ -1,7 +1,17 @@
 <div class="builder-navbar-wrapper">
   <div class="top">
-    <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> New Learning Object</a>
-    <button class="button good" (click)="triggerSubmit()">Submit for Review</button>
+    <div class="top__left">
+      <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> New Learning Object</a>
+    </div>
+    <div class="top__right">
+      <div class="top__status" tipLocation="bottom">
+        <div class="status__label">
+          {{ learningObject?.status || 'unpublished' }}
+        </div>
+        <div *ngIf="learningObject?.collection" [style.background-image]="'url(assets/images/collections/' + learningObject?.collection + '.png)'" class="status__image"></div>
+      </div>
+      <button class="button good" (click)="triggerSubmit()">Submit <i class="far fa-arrow-right"></i></button>
+    </div>
   </div>
   <div class="builder-navbar-wrapper__bottom-left-menu">
     <!-- update routerLinkActive with class used to show that link is active -->
