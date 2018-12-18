@@ -141,11 +141,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
       author
     )}/${encodeURIComponent(learningObjectName)}`;
   },
-  GET_COLLECTION(name: string) {
-    return `${environment.apiURL}/collections/${encodeURIComponent(
-      name
-    )}/learning-objects`;
-  },
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_META(name: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
