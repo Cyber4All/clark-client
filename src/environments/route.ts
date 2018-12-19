@@ -199,9 +199,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
   },
   GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}`;
+    )}/learning-objects`;
   },
   GET_LEARNING_OBJECT_PARENTS(id: string) {
     return `${environment.apiURL}/learning-objects/${id}/parents`;
