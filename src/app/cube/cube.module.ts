@@ -37,7 +37,6 @@ import {
 } from '../shared/toaster';
 import { CollectionModule } from './collections/collection.module';
 import { DetailsModule } from './details/details.module';
-import { UserProfileLearningObjectsResolver } from './user-profile/learning-objects.resolver';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -74,6 +73,6 @@ import { UserProfileLearningObjectsResolver } from './user-profile/learning-obje
     CollectionModule,
     DetailsModule,
   ],
-  providers: [LearningObjectService, UserProfileLearningObjectsResolver]
+  providers: [LearningObjectService]
 })
 export class CubeModule {}
