@@ -151,7 +151,7 @@ export class AuthService {
 
   async register(user: User): Promise<User> {
     try {
-      const val = await this.http.post(environment.apiURL + '/users', user, {
+      await this.http.post(environment.apiURL + '/users', user, {
         withCredentials: true,
         responseType: 'text'
       }).toPromise();
