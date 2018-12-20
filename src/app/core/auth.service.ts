@@ -35,10 +35,10 @@ export class AuthService {
   constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
       this.validate().then(
-        val => {
+        _ => {
           this.changeStatus(true);
         },
-        error => {
+        _ => {
           this.cookies.remove('presence');
           this.changeStatus(false);
         }
@@ -77,123 +77,103 @@ export class AuthService {
     return this.user ? this.user.username : undefined;
   }
 
-  validate(): Promise<void> {
-    return this.http
-      .get(environment.apiURL + '/users/tokens', { withCredentials: true })
-      .toPromise()
-      .then(
-        (val: any) => {
-          this.user = this.makeUserFromCookieResponse(val);
-          this.assignUserToGroup();
-        },
-        error => {
-          throw error;
-        }
-      );
+  async validate(): Promise<void> {
+    try {
+      const response = await this.http
+        .get(environment.apiURL + '/users/tokens', { withCredentials: true })
+        .toPromise();
+      this.user = this.makeUserFromCookieResponse(response);
+      this.assignUserToGroup();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  checkClientVersion(): Promise<void> {
+  async checkClientVersion(): Promise<void> {
     // Application version information
     const { version: appVersion } = require('../../../package.json');
-    return this.http
-      .get(environment.apiURL + '/clientversion/' + appVersion,
-        {
+    try {
+      await this.http
+        .get(environment.apiURL + '/clientversion/' + appVersion, {
           withCredentials: true,
           responseType: 'text'
         })
-      .toPromise()
-      .then(
-        () => {
-          return Promise.resolve();
-        },
-        (error) => {
-          if (error.status === 426) {
-            return Promise.reject(error);
-          }
-        }
-      );
+        .toPromise();
+      return Promise.resolve();
+    } catch (error) {
+      if (error.status === 426) {
+        return Promise.reject(error);
+      }
+    }
   }
 
-  refreshToken(): Promise<void> {
-    return this.http
-      .get(environment.apiURL + '/users/tokens/refresh', {
-        withCredentials: true
-      })
-      .toPromise()
-      .then(
-        val => {
-          this.user = this.makeUserFromCookieResponse(val);
-        },
-        error => {
-          throw error;
-        }
-      );
+  async refreshToken(): Promise<void> {
+    try {
+      const val = await this.http
+        .get(environment.apiURL + '/users/tokens/refresh', {
+          withCredentials: true
+        })
+        .toPromise();
+      this.user = this.makeUserFromCookieResponse(val);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  login(user: { username: string; password: string }): Promise<any> {
-    return this.http
-      .post<User>(environment.apiURL + '/users/tokens', user, {
-        withCredentials: true
-      })
-      .toPromise()
-      .then(
-        val => {
-          this.user = this.makeUserFromCookieResponse(val);
-          this.changeStatus(true);
-          this.assignUserToGroup();
-          return this.user;
-        },
-        error => {
-          this.changeStatus(false);
-          this.user = undefined;
-          throw error;
-        }
-      );
+  async login(user: { username: string; password: string }): Promise<any> {
+    try {
+      const val = await this.http
+        .post<User>(environment.apiURL + '/users/tokens', user, {
+          withCredentials: true
+        })
+        .toPromise();
+      this.user = this.makeUserFromCookieResponse(val);
+      this.changeStatus(true);
+      this.assignUserToGroup();
+      return this.user;
+    } catch (error) {
+      this.changeStatus(false);
+      this.user = undefined;
+      throw error;
+    }
   }
 
-  logout(username: string = this.user.username): Promise<void> {
-    return this.http
+  async logout(username: string = this.user.username): Promise<void> {
+    const val = await this.http
       .delete(environment.apiURL + '/users/' + username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
       })
-      .toPromise()
-      .then(val => {
-        this.user = undefined;
-        this.changeStatus(false);
-        this.group.next(AUTH_GROUP.VISITOR);
-      });
+      .toPromise();
+    this.user = undefined;
+    this.changeStatus(false);
+    this.group.next(AUTH_GROUP.VISITOR);
   }
 
-  register(user: User): Promise<User> {
-    return this.http.post(environment.apiURL + '/users', user, {
-      withCredentials: true,
-      responseType: 'text'
-    }).toPromise().then(val => {
+  async register(user: User): Promise<User> {
+    try {
+      const val = await this.http.post(environment.apiURL + '/users', user, {
+        withCredentials: true,
+        responseType: 'text'
+      }).toPromise();
       this.user = user;
       this.changeStatus(true);
       return this.user;
-    }, error => {
+    } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
       throw error;
-    });
+    }
   }
 
   // checkPassword is used when changing a password in the user-edit-information.component
-  checkPassword(password: string): Promise<any> {
-    return this.http
-      .post<User>(
-        environment.apiURL + '/users/password',
-        { password },
-        {
-          withCredentials: true
-        }
-      )
-      .toPromise()
-      .then(val => {
-        return val;
-      });
+  async checkPassword(password: string): Promise<any> {
+    const val = await this.http
+      .post<User>(environment.apiURL + '/users/password', { password }, {
+        withCredentials: true
+      })
+      .toPromise();
+    return val;
   }
 
   initiateResetPassword(email: string): Observable<any> {
@@ -220,21 +200,16 @@ export class AuthService {
     );
   }
 
-  identifiersInUse(username: string) {
-    return this.http
-      .get(
-        environment.apiURL + '/users/identifiers/active?username=' + username,
-        {
-          headers: this.httpHeaders,
-          withCredentials: true
-          // responseType: 'text'
-        }
-      )
-      .toPromise()
-      .then(val => {
-        this.inUse = val;
-        return this.inUse;
-      });
+  async identifiersInUse(username: string) {
+    const val = await this.http
+      .get(environment.apiURL + '/users/identifiers/active?username=' + username, {
+        headers: this.httpHeaders,
+        withCredentials: true
+        // responseType: 'text'
+      })
+      .toPromise();
+    this.inUse = val;
+    return this.inUse;
   }
 
   makeRedirectURL(url: string) {
