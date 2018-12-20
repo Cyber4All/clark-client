@@ -82,7 +82,6 @@ export class AuthService {
         .get(environment.apiURL + '/users/tokens', { withCredentials: true })
         .toPromise();
       this.user = this.makeUserFromCookieResponse(response);
-      console.log(this.user);
       this.assignUserToGroup();
     } catch (error) {
       throw error;
