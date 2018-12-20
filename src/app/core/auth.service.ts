@@ -15,10 +15,10 @@ export enum DOWNLOAD_STATUS {
 }
 
 export enum AUTH_GROUP {
-  ADMIN,
-  REVIEWER,
+  VISITOR,
   USER,
-  VISITOR
+  REVIEWER,
+  ADMIN
 }
 
 @Injectable()
@@ -320,14 +320,23 @@ export class AuthService {
   }
 
   /**
+   * Identifies if the user should have access to learning objects not yet released.
+   */
+  hasPrivelagedAccess(): boolean {
+    return this.group.getValue() > AUTH_GROUP.USER;
+  }
+
+  /**
    * Assigns an authorization group to a user based on their access groups.
    * The highest priority group will be assigned.
    */
   private assignUserToGroup() {
-    if (this.user['accessGroups'].includes('admin')) {
-      this.group.next(AUTH_GROUP.ADMIN);
-    } else if (this.user['accessGroups'].includes('reviewer')) {
-      this.group.next(AUTH_GROUP.REVIEWER);
+    if (this.user['accessGroups']) {
+      if (this.user['accessGroups'] && this.user['accessGroups'].includes('admin')) {
+        this.group.next(AUTH_GROUP.ADMIN);
+      } else if (this.user['accessGroups'].includes('reviewer')) {
+        this.group.next(AUTH_GROUP.REVIEWER);
+      }
     } else {
       this.group.next(AUTH_GROUP.USER);
     }
