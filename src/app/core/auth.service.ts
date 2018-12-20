@@ -138,7 +138,7 @@ export class AuthService {
   }
 
   async logout(username: string = this.user.username): Promise<void> {
-    const val = await this.http
+     await this.http
       .delete(environment.apiURL + '/users/' + username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
