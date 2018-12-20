@@ -204,7 +204,6 @@ export class AuthService {
       .get(environment.apiURL + '/users/identifiers/active?username=' + username, {
         headers: this.httpHeaders,
         withCredentials: true
-        // responseType: 'text'
       })
       .toPromise();
     this.inUse = val;
