@@ -7,7 +7,6 @@ import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
-import { userInfo } from 'os';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -211,14 +210,6 @@ export class AuthService {
       .toPromise();
     this.inUse = val;
     return this.inUse;
-  }
-
-  makeRedirectURL(url: string) {
-    if (!url.match(/https?:\/\/.+/i)) {
-      return `http://${url}`;
-    } else {
-      return url;
-    }
   }
 
   updateInfo(user: {

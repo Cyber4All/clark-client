@@ -6,7 +6,7 @@ import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 import { Observable, Subject } from 'rxjs/Rx';
-import { AuthService, AUTH_GROUP } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
 import {
   SuggestionService
