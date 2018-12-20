@@ -310,16 +310,6 @@ export class AuthService {
   }
 
   /**
-   * Identifies if the user should be given access only to Learning Objects that are released.
-   *
-   * @returns {boolean} if the user should be given access.
-   */
-  shouldAccessReleased(): boolean {
-    const authGroup = this.group.getValue();
-    return authGroup === AUTH_GROUP.ADMIN || authGroup === AUTH_GROUP.REVIEWER ? undefined : true;
-  }
-
-  /**
    * Identifies if the user should have access to learning objects not yet released.
    */
   hasPrivelagedAccess(): boolean {
