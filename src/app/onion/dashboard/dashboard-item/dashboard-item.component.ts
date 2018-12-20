@@ -10,6 +10,7 @@ import { DashboardLearningObject } from '../dashboard.component';
 import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
 import { LearningObjectStatus } from '@env/environment';
 import { AuthService } from '../../../core/auth.service';
+import { CollectionService } from 'app/core/collection.service';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -65,56 +66,12 @@ export class DashboardItemComponent implements OnChanges {
   meatballOpen = false;
   showStatus = true;
 
-  constructor(private contextMenuService: ContextMenuService, private auth: AuthService) {}
+  constructor(private contextMenuService: ContextMenuService, private auth: AuthService, private collectionService: CollectionService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
-    // TODO move the tooltips to a copy file
-      this.states = new Map([
-        [
-          LearningObjectStatus.DENIED,
-          {
-            icon: 'fa-ban',
-            tip:
-              'This learning object was rejected. Contact your review team for further information'
-          }
-        ],
-        [
-          LearningObjectStatus.PUBLISHED,
-          {
-            icon: 'fa-eye',
-            tip: 'This learning object is published and can be browsed for.'
-          }
-        ],
-        [
-          LearningObjectStatus.UNDER_REVIEW,
-          {
-            icon: 'fa-sync',
-            tip:
-              'This object is currently under review by the ' +
-              this.learningObject.collection +
-              ' review team, It is not yet published and cannot be edited until the review process is complete.'
-          }
-        ],
-        [
-          LearningObjectStatus.WAITING,
-          {
-            icon: 'fa-hourglass',
-            tip:
-              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
-              this.learningObject.collection +
-              ' review team'
-          }
-        ],
-        [
-          LearningObjectStatus.UNPUBLISHED,
-          {
-            icon: 'fa-eye-slash',
-            tip:
-              'This learning object is visible only to you. Submit it for review to make it publicly available.'
-          }
-        ]
-      ]);
+      // TODO move the tooltips to a copy file
+      this.buildTooltip()
     }
   }
 
@@ -187,5 +144,58 @@ export class DashboardItemComponent implements OnChanges {
     } else {
       return [];
     }
+  }
+
+  buildTooltip() {
+    this.collectionService.getCollection(this.learningObject.collection).then(val => {
+      this.states = new Map([
+        [
+          LearningObjectStatus.DENIED,
+          {
+            icon: 'fa-ban',
+            tip:
+              'This learning object was rejected. Contact your review team for further information'
+          }
+        ],
+        [
+          LearningObjectStatus.PUBLISHED,
+          {
+            icon: 'fa-eye',
+            tip:
+              'This learning object is published to the ' + 
+                (val ? val.name : '') +
+              ' collection and can be browsed for.'
+          }
+        ],
+        [
+          LearningObjectStatus.UNDER_REVIEW,
+          {
+            icon: 'fa-sync',
+            tip:
+              'This object is currently under review by the ' +
+                (val ? val.name : '') +
+              ' review team, It is not yet published and cannot be edited until the review process is complete.'
+          }
+        ],
+        [
+          LearningObjectStatus.WAITING,
+          {
+            icon: 'fa-hourglass',
+            tip:
+              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
+                (val ? val.name : '') +
+              ' review team'
+          }
+        ],
+        [
+          LearningObjectStatus.UNPUBLISHED,
+          {
+            icon: 'fa-eye-slash',
+            tip:
+              'This learning object is visible only to you. Submit it for review to make it publicly available.'
+          }
+        ]
+      ]);
+    });
   }
 }

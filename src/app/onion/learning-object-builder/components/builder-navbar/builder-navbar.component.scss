@@ -24,9 +24,95 @@ button {
   }
 }
 
+.top-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 10px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 15px;
+  background: rgb(189, 193, 195);
+
+  &.waiting {
+      background: #5ec9da;
+  }
+
+  &.review {
+      background: #f5a623;
+  }
+
+  &.published {
+      background: $green;
+  }
+
+  &.denied {
+      background: saturate($error-red, 15);
+  }
+
+  &:hover {
+      box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.top__status {
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(189, 193, 195);
+  transition: all 0.2s ease;
+  box-shadow: none;
+
+  &.waiting {
+      background: #5ec9da;
+  }
+
+  &.review {
+      background: #f5a623;
+  }
+
+  &.published {
+      background: $green;
+  }
+
+  &.denied {
+      background: saturate($error-red, 15);
+  }
+
+  &:hover {
+      box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.top__collection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .collection__image {
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+  }
+}
+
 .builder-navbar-wrapper {
   background: white;
   padding: 35px 25px 0;
+  // padding: 65px 25px 0;
   width: 100%;
   margin-bottom: 25px;
   box-shadow: 0 2px 4px 0 rgba(136, 135, 135, 0.3);
@@ -61,29 +147,33 @@ button {
     justify-content: flex-end;
 
     & > *:not(:last-child) {
-      margin-right: 10px;
+      margin-right: 15px;
     }
-  }
 
-  .top__status {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    text-transform: uppercase;
-    font-size: 14px;
-    padding: 4px 12px;
-    border-radius: 2px;
-    border: 1px solid $placeholder;
-  }
+    .button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
 
-  .status__image {
-    width: 30px;
-    height: 30px;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-left: 10px;
+      .button__cancel {
+        background: white;
+        color: $error-red;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        margin-right: 10px;
+        cursor: pointer;
+
+        .svg-inline--fa,
+        .icon {
+          margin-left: 0;
+        }
+      }
+    }
   }
 }
 

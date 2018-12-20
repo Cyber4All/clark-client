@@ -8,6 +8,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObjectStatus } from '@env/environment';
+import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -16,14 +18,24 @@ import { LearningObject } from '@cyber4all/clark-entity';
 })
 export class BuilderNavbarComponent implements OnDestroy {
   isSaving: boolean;
+  editing: boolean;
+  submissionError: boolean;
+
   showSubmission: boolean;
+  showSubmissionOptions: boolean;
+
+  // this is the id of the context menu after being registered with the ContextMenuService
+  submissionOptionsMenu: string;
 
   learningObject: LearningObject;
   collection: Collection;
 
   initialRouteStates: Map<string, boolean> = new Map();
-  firstRouteChanges: Set<string>  = new Set();
+  firstRouteChanges: Set<string> = new Set();
   routesClicked: Set<string> = new Set();
+
+  // map of state strings to icons and tooltips
+  states: Map<string, { tip: string }>;
 
   destroyed$: Subject<void> = new Subject();
 
@@ -31,9 +43,10 @@ export class BuilderNavbarComponent implements OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private auth: AuthService,
-    private validator: LearningObjectValidator,
     private toasterService: ToasterService,
     private collectionService: CollectionService,
+    private contextMenuService: ContextMenuService,
+    public validator: LearningObjectValidator,
     public store: BuilderStore,
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
@@ -54,10 +67,33 @@ export class BuilderNavbarComponent implements OnDestroy {
     ).subscribe(val => {
       this.learningObject = val;
       this.collectionService.getCollection(this.learningObject.collection).then(col => {
-        console.log(col);
         this.collection = col;
+        this.buildTooltip();
       });
     });
+
+    // check to see if we're editing a learning object or creating a new one by checking for an id in the url
+    this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
+  }
+
+  /**
+   * Toggles display of a context menu for the submitted options
+   *
+   * @param {MouseEvent} event
+   * @memberof BuilderNavbarComponent
+   */
+  toggleSubmissionOptionsMenu(event: MouseEvent) {
+    if (this.submissionOptionsMenu) {
+      if (!this.showSubmissionOptions) {
+        this.contextMenuService.open(this.submissionOptionsMenu, (event.currentTarget as HTMLElement), { top: 5, left: 0 });
+      } else {
+        this.contextMenuService.destroy(this.submissionOptionsMenu);
+      }
+
+      this.showSubmissionOptions = !this.showSubmissionOptions;
+    } else {
+      console.error('Error! Attempted to open an unregistered context menu');
+    }
   }
 
   /**
@@ -133,10 +169,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
         // check for submission errors not related to outcomes
         if (
-          this.validator.errors.submitErrors.size > 1 ||
-          (this.validator.errors.submitErrors.size === 1 &&
-            !this.validator.get('outcomes'))
-        ) {
+          this.validator.errors.submitErrors.size > 1 || (this.validator.errors.submitErrors.size === 1 && !this.validator.get('outcomes'))) {
           errorPages.set('info', true);
         }
 
@@ -168,6 +201,59 @@ export class BuilderNavbarComponent implements OnDestroy {
   }
 
   /**
+   * Build the states map for the status tooltips and icons
+   *
+   * @memberof BuilderNavbarComponent
+   */
+  buildTooltip() {
+    this.collectionService.getCollection(this.learningObject.collection).then(val => {
+      this.states = new Map([
+        [
+          LearningObjectStatus.DENIED,
+          {
+            tip:
+              'This learning object was rejected. Contact your review team for further information'
+          }
+        ],
+        [
+          LearningObjectStatus.PUBLISHED,
+          {
+            tip:
+              'This learning object is published to the ' +
+              (val ? val.name : '') +
+              ' collection and can be browsed for.'
+          }
+        ],
+        [
+          LearningObjectStatus.UNDER_REVIEW,
+          {
+            tip:
+              'This object is currently under review by the ' +
+              (val ? val.name : '') +
+              ' review team, It is not yet published and cannot be edited until the review process is complete.'
+          }
+        ],
+        [
+          LearningObjectStatus.WAITING,
+          {
+            tip:
+              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
+              (val ? val.name : '') +
+              ' review team'
+          }
+        ],
+        [
+          LearningObjectStatus.UNPUBLISHED,
+          {
+            tip:
+              'This learning object is visible only to you. Submit it for review to make it publicly available.'
+          }
+        ]
+      ]);
+    });
+  }
+
+  /**
    * Submits a learning object to a collection for review and publishes the object
    * @param {string} collection the name of the collection to submit to
    */
@@ -184,6 +270,13 @@ export class BuilderNavbarComponent implements OnDestroy {
     } else {
       console.error('Error! No collection specified!');
     }
+  }
+
+  /**
+   * Return a learning object to unpublished status
+   */
+  cancelSubmission() {
+    this.store.cancelSubmission()
   }
 
   ngOnDestroy() {

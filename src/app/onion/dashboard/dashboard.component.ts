@@ -149,11 +149,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       } else {
         this.contextMenuService.destroy(this.filterMenu);
       }
-    } else {
-      console.error('Error! Attempted to open an unregistered context menu');
-    }
 
-    this.filterMenuDown = !this.filterMenuDown;
+      this.filterMenuDown = !this.filterMenuDown;
+    } else {
+      console.error('Error! Attempted to use an unregistered context menu');
+    }
   }
 
   /**
@@ -736,7 +736,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {DashboardLearningObject} learning object to be unpublished
    */
   cancelSubmission(l: DashboardLearningObject) {
-    this.learningObjectService.unpublish(l).then(async (val) => {
+    this.learningObjectService.unpublish(l).then(async () => {
       l.unpublish();
       l.status = 'unpublished';
       this.cd.detectChanges();

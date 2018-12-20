@@ -569,6 +569,7 @@ export class BuilderStore {
     }
     return index;
   }
+
   ///////////////////////////
   //  SERVICE INTERACTION  //
   ///////////////////////////
@@ -580,7 +581,7 @@ export class BuilderStore {
    */
   public submitForReview(collection?: string): Promise<boolean> {
     if (this.validator.saveable && this.validator.submittable) {
-      this.validator.submissionMode = false;
+      this.validator.submissionMode = true;
 
       // if we passed a collection property, attempt the submission
       if (collection) {
@@ -588,6 +589,9 @@ export class BuilderStore {
         return this.learningObjectService.publish(this.learningObject).then(() => {
           // now attempt to add to collection
           return this.collectionService.addToCollection(this.learningObject.id, collection).then(() => {
+            this.learningObject.status = 'waiting';
+            this.learningObject.collection = collection;
+            this.learningObjectEvent.next(this._learningObject);
             return true;
           }).catch(error => {
             console.error(error);
@@ -604,6 +608,17 @@ export class BuilderStore {
       this.validator.submissionMode = true;
       return Promise.resolve(false);
     }
+  }
+
+  public cancelSubmission(): Promise<void> {
+    return this.learningObjectService.unpublish(this.learningObject).then(async () => {
+      this.learningObject.unpublish();
+      this.learningObject.status = 'unpublished';
+      this.validator.submissionMode = false;
+      this.learningObjectEvent.next(this.learningObject);
+    }).catch(err => {
+      console.error(err);
+    })
   }
 
   private async saveObject(data: any, delay?: boolean): Promise<any> {
