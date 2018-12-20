@@ -39,7 +39,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     orderBy: undefined,
     sortType: undefined,
     collection: '',
-    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
+    released: this.auth.shouldAccessReleased()
   };
 
   tooltipText = {
@@ -116,7 +116,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
       const collections = await this.collectionService.getCollections();
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
-      this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
+      this.query.released = this.auth.shouldAccessReleased();
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     });

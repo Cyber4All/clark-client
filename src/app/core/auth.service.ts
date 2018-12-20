@@ -7,6 +7,7 @@ import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
+import { userInfo } from 'os';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -16,6 +17,7 @@ export enum DOWNLOAD_STATUS {
 
 export enum AUTH_GROUP {
   ADMIN,
+  REVIEWER,
   USER,
   VISITOR
 }
@@ -29,7 +31,6 @@ export class AuthService {
   isLoggedIn = new BehaviorSubject<boolean>(false);
   socket;
   socketWatcher: Observable<string>;
-  whitelist;
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
 
   constructor(private http: HttpClient, private cookies: CookieService) {
@@ -44,7 +45,6 @@ export class AuthService {
         }
       );
     }
-    this.fetchWhitelist();
   }
 
   private changeStatus(status: boolean) {
@@ -83,6 +83,7 @@ export class AuthService {
         .get(environment.apiURL + '/users/tokens', { withCredentials: true })
         .toPromise();
       this.user = this.makeUserFromCookieResponse(response);
+      console.log(this.user);
       this.assignUserToGroup();
     } catch (error) {
       throw error;
@@ -294,13 +295,12 @@ export class AuthService {
   }
   async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
-
       // Check that the object does not contain a download lock and the user is logged in
       const restricted = learningObject.lock && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD);
 
-      // If the object is restricted, check if the user is on the whitelist
+      // If the object is restricted, check if the user is a reviewer or admin
       if (restricted) {
-        if (await this.checkWhitelist()) {
+        if (this.user['accessGroups'].includes('admin') || this.user['accessGroups'].includes('reviewer')) {
           return DOWNLOAD_STATUS.CAN_DOWNLOAD;
         } else {
           return DOWNLOAD_STATUS.NOT_RELEASED;
@@ -318,32 +318,27 @@ export class AuthService {
     }
   }
 
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      if (this.whitelist === undefined) {
-        await this.fetchWhitelist();
-      }
-      const username = this.username;
-      return this.whitelist.includes(username);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  private async fetchWhitelist() {
-    const response = await fetch(environment.whiteListURL);
-    const object = await response.json();
-    this.whitelist = object.whitelist;
+  /**
+   * Identifies if the user should be given access only to Learning Objects that are released.
+   *
+   * @returns {boolean} if the user should be given access.
+   */
+  shouldAccessReleased(): boolean {
+    const authGroup = this.group.getValue();
+    return authGroup === AUTH_GROUP.ADMIN || authGroup === AUTH_GROUP.REVIEWER ? undefined : true;
   }
 
   /**
-   * Checks if the username of the currently logged in user is on the whitelist.
-   * If they are then they are an admin, else they are a normal user.
+   * Assigns an authorization group to a user based on their access groups.
+   * The highest priority group will be assigned.
    */
   private assignUserToGroup() {
-    this.checkWhitelist().then(isListed => {
-      this.group.next(isListed ? AUTH_GROUP.ADMIN : AUTH_GROUP.USER);
-    });
+    if (this.user['accessGroups'].includes('admin')) {
+      this.group.next(AUTH_GROUP.ADMIN);
+    } else if (this.user['accessGroups'].includes('reviewer')) {
+      this.group.next(AUTH_GROUP.REVIEWER);
+    } else {
+      this.group.next(AUTH_GROUP.USER);
+    }
   }
 }
