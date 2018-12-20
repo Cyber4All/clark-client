@@ -75,7 +75,6 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   goToItem(object: LearningObject) {
-    // FIXME: Remove access via private properties
     this.router.navigate(['/details/', object.author.username, object.name]);
   }
 
