@@ -37,22 +37,20 @@ export const USER_ROUTES = {
       learningObjectName
     )}`;
   },
-  PUBLISH_LEARNING_OBJECT(username, learningObjectName) {
+  SUBMIT_LEARNING_OBJECT(learningObjectId: string) {
     return `${
       environment.apiURL
-    }/users/${username}/learning-objects/${encodeURIComponent(
-      learningObjectName
-    )}/publish`;
+    }/learning-objects/${learningObjectId}/submission`
+  },
+  UNSUBMIT_LEARNING_OBJECT(learningObjectId: string) {
+    return `${
+      environment.apiURL
+    }/learning-objects/${learningObjectId}/submission`
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/collections`;
-  },
-  UNPUBLISH_LEARNING_OBJECT(username, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}/unpublish`;
   },
   GET_LEARNING_OBJECT(id) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;

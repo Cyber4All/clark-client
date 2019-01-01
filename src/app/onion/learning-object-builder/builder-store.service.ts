@@ -585,21 +585,14 @@ export class BuilderStore {
 
       // if we passed a collection property, attempt the submission
       if (collection) {
-        // first attempt to publish, if that succeeds attempt to submit to collection
-        return this.learningObjectService.publish(this.learningObject).then(() => {
-          // now attempt to add to collection
-          return this.collectionService.addToCollection(this.learningObject.id, collection).then(() => {
-            this.learningObject.status = 'waiting';
-            this.learningObject.collection = collection;
-            this.learningObjectEvent.next(this._learningObject);
-            return true;
-          }).catch(error => {
-            console.error(error);
-            throw new Error('This learning object could not be submitted');
-          });
+        return this.collectionService.submit(this.learningObject.id, collection).then(() => {
+          this.learningObject.status = 'waiting';
+          this.learningObject.collection = collection;
+          this.learningObjectEvent.next(this._learningObject);
+          return true;
         }).catch(error => {
           console.error(error);
-          throw new Error(error);
+          throw new Error('This learning object could not be submitted');
         });
       }
 
@@ -611,7 +604,7 @@ export class BuilderStore {
   }
 
   public cancelSubmission(): Promise<void> {
-    return this.learningObjectService.unpublish(this.learningObject).then(async () => {
+    return this.collectionService.unsubmit(this.learningObject.id).then(val => {
       this.learningObject.unpublish();
       this.learningObject.status = 'unpublished';
       this.validator.submissionMode = false;

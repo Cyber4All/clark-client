@@ -140,42 +140,34 @@ export class LearningObjectService {
 
   /**
    * Publish a learning object
-   * @param {learningObject} learningObject the learning object to be published
+   * @param {LearningObject} learningObject the learning object to be published
+   * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
-  publish(learningObject: LearningObject): Promise<{}> {
-    const route = USER_ROUTES.PUBLISH_LEARNING_OBJECT(
-      this.auth.user.username,
-      learningObject.name
+  submit(learningObject: LearningObject, collection: string): Promise<{}> {
+    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT(
+      learningObject.id
     );
     return this.http
-      .patch(
+      .post(
         route,
-        {
-          id: learningObject.id,
-          published: true
-        },
+        { collection },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();
   }
 
   /**
-   * Unpublish a learning object
+   * Unsubmit a learning object
    * @param {learningObject} learningObject the learning object to be unpublished
    */
-  unpublish(learningObject: LearningObject) {
-    const route = USER_ROUTES.UNPUBLISH_LEARNING_OBJECT(
-      this.auth.user.username,
-      learningObject.name
+  unsubmit(learningObject: LearningObject) {
+    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(
+      learningObject.id
     );
 
     return this.http
-      .patch(
+      .delete(
         route,
-        {
-          id: learningObject.id,
-          published: false
-        },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .toPromise();

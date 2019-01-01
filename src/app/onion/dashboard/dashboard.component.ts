@@ -686,43 +686,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Publishes a learning object and adds it to a specified collection
    * @param collection {string} the name of the collection to add this learning object to
    */
-  addToCollection(collection?: string) {
+  async addToCollection(collection?: string) {
     if (collection) {
-      // first, attempt to publish
-      this.learningObjectService.publish(this.focusedLearningObject).then(() => {
-        // publishing was a success, attempt to add to collection
-        this.collectionService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
-          // success
-          this.notificationService.notify(
-            'Success!',
-            `Learning object submitted to ${collection} collection successfully!`,
-            'good',
-            'far fa-check'
-          );
-          this.focusedLearningObject.publish();
-          this.focusedLearningObject.status = 'waiting';
-          this.focusedLearningObject.collection = collection;
-          this.cd.detectChanges();
-        }).catch (err => {
-          // error
-          console.error(err);
-          this.notificationService.notify(
-            'Error!',
-            `Error submitting learning object to ${collection} collection!`,
-            'bad',
-            'far fa-times'
-          );
-        });
-      }).catch(error => {
-        // failed to publish
-        console.log(error);
+      this.collectionService.submit(this.focusedLearningObject.id, collection).then(() => {
+        this.focusedLearningObject.publish();
+        this.focusedLearningObject.status = 'waiting';
+        this.focusedLearningObject.collection = collection;
+        this.cd.detectChanges();
+      }).catch (err => {
+        // error
+        console.error(err);
         this.notificationService.notify(
           'Error!',
-          error.error,
+          `Error submitting learning object to ${collection} collection!`,
           'bad',
           'far fa-times'
         );
-        console.error(error);
       });
     } else {
       console.error('No collection defined!');
@@ -736,7 +715,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {DashboardLearningObject} learning object to be unpublished
    */
   cancelSubmission(l: DashboardLearningObject) {
-    this.learningObjectService.unpublish(l).then(async () => {
+    this.collectionService.unsubmit(l.id).then(async () => {
       l.unpublish();
       l.status = 'unpublished';
       this.cd.detectChanges();
