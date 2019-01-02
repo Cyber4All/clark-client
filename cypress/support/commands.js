@@ -1,4 +1,3 @@
-import { updateShorthandPropertyAssignment } from "../../node_modules/typescript";
 
 // ***********************************************
 // This example commands.js shows you how to
