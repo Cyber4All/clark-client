@@ -1,10 +1,4 @@
 <div class="builder-navbar-wrapper">
-    <div *ngIf="false" class="top-banner" [attr.class]="'status ' + learningObject?.status">
-      <div class="top-banner__label">
-        {{ learningObject?.status || 'unpublished' }}
-      </div>
-      <div *ngIf="learningObject?.collection" [style.background-image]="'url(assets/images/collections/' + learningObject?.collection + '.png)'" class="top-banner"></div>
-    </div>
   <div class="top">
     <div class="top__left">
       <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> {{ editing ? 'Edit' : 'New' }} Learning Object</a>

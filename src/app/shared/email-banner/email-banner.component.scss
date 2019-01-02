@@ -1,0 +1,16 @@
+@import '~_vars.scss';
+
+.email-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 40px;
+  color: white;
+  text-align: center;
+  background: $error-red;
+
+  button {
+    margin-left: 10px;
+  }
+}

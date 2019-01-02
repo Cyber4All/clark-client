@@ -150,6 +150,12 @@ body {
     color: white;
     background: $error-red;
     border-color: $error-red;
+
+    &.white {
+      background: white;
+      border-color: white;
+      color: $error-red;
+    }
   }
 
   &.green {

@@ -36,6 +36,7 @@ import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
 import { CookiesComponent } from './cookies/cookies.component';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { EmailBannerComponent } from './email-banner/email-banner.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -80,6 +81,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     ProgressComponent,
     FileSizePipe,
     CookiesComponent,
+    EmailBannerComponent,
   ],
   exports: [
     BrowseByMappingsComponent,
@@ -104,6 +106,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     CookiesComponent,
     ContextMenuModule,
     ClarkContextMenuModule,
+    EmailBannerComponent,
   ]
 })
 export class SharedModule {}

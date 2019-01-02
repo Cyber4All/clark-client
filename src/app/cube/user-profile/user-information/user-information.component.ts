@@ -42,6 +42,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
     this.objects = await this.learningObjectService.getUsersLearningObjects(this.user.username);
     this.loading = false;
   }
+
   /**
    * Sends email verification email
    *
@@ -49,14 +50,17 @@ export class UserInformationComponent implements OnInit, OnChanges {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.sendEmailVerification(this.user.email).toPromise();
       await this.auth.validate();
-      this.notifications.notify(
-        `Email sent to ${this.user.email}`,
-        `Please check your inbox and spam.`,
-        'good',
-        'far fa-check'
-      );
+
+      if (!this.auth.user.emailVerified) {
+        await this.auth.sendEmailVerification(this.user.email).toPromise();
+        this.notifications.notify(
+          `Success!`,
+          `Email sent to ${this.user.email}. Please check your inbox and spam.`,
+          'good',
+          'far fa-check'
+        );
+      }
     } catch (e) {
       this.notifications.notify(`Could not send email`, `${e}`, 'bad', '');
     }
