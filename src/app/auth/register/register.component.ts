@@ -17,6 +17,7 @@ import {
   query,
   stagger
 } from '@angular/animations';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-register',
@@ -81,7 +82,7 @@ export class RegisterComponent implements OnInit {
     captcha: new FormControl()
   });
 
-  siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
+  siteKey = environment.siteKey;
 
   passwordVerify = '';
   registerFailure;

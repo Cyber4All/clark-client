@@ -5,7 +5,8 @@ export const environment = {
   suggestionUrl: 'https://api-outcome-suggestion.clark.center',
   contentManagerURL: 'https://api-learning-objects.clark.center',
   whiteListURL:
-    'https://raw.githubusercontent.com/Cyber4All/clark-client/master/whitelist/whitelist.json'
+    'https://raw.githubusercontent.com/Cyber4All/clark-client/master/whitelist/whitelist.json',
+  siteKey: '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV'
 };
 
 export enum LearningObjectStatus {

@@ -10,7 +10,8 @@ export const environment = {
   suggestionUrl: 'http://localhost:7000',
   contentManagerURL: 'http://localhost:5000',
   whiteListURL:
-    'https://raw.githubusercontent.com/Cyber4All/clark-client/master/whitelist/whitelist.json'
+    'https://raw.githubusercontent.com/Cyber4All/clark-client/master/whitelist/whitelist.json',
+  siteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 };
 
 export enum LearningObjectStatus {
