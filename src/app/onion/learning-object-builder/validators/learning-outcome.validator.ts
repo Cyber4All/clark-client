@@ -46,7 +46,7 @@ export class LearningOutcomeValidator {
   }
 
   outcomeSubmittable(id: string) {
-    return !this.errors.submitErrors.get(id);
+    return !this.outcomeSaveable(id) || !this.errors.submitErrors.get(id);
   }
 
   get submittable(): boolean {

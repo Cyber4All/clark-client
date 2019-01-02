@@ -165,8 +165,14 @@ export class BuilderStore {
     this.learningObject = await this.learningObjectService.getLearningObject(
       id
     );
+
+    if (this.learningObject.status && !['unpublished', 'denied'].includes(this.learningObject.status)) {
+      // this learning object is submitted, ensure submission mode is on
+      this.validator.submissionMode = true;
+    }
+
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
-    this.validator.validateLearningObject(this.learningObject);
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
     return this.learningObject;
   }
 
@@ -296,10 +302,13 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
+
     return outcome.id;
   }
 
   private async deleteOutcome(id: string) {
+    // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
 
@@ -330,6 +339,8 @@ export class BuilderStore {
 
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
+
+    this.validator.validateOutcome(outcome);
 
     this.saveOutcome(
       {

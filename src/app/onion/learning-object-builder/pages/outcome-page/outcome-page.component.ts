@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'clark-outcome-page',
@@ -24,6 +25,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   passedId: string;
 
   constructor(
+    private toaster: ToasterService,
     private store: BuilderStore,
     private validator: LearningObjectValidator,
     private route: ActivatedRoute
@@ -125,6 +127,12 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
             this.iterableOutcomes.length - 1
           ].id;
         }, 100);
+      }
+    }).catch(error => {
+      if (typeof error === 'string') {
+        this.toaster.notify('Error saving learning object!', error, 'bad', 'far fa-times');
+      } else {
+        console.error(error);
       }
     });
   }

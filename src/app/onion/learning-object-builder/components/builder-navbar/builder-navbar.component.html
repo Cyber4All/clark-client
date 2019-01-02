@@ -22,11 +22,11 @@
         <span *ngIf="learningObject?.status === 'denied'"><i class="fas fa-ban"></i></span>
       </div>
       <ng-container *ngIf="!learningObject?.status || ['unpublished', 'denied'].includes(learningObject?.status); else submittedButtonTemplate">
-        <button class="button" [ngClass]="{'good': !validator.submissionMode, 'bad': validator.submissionMode}" (click)="triggerSubmit()">
-          <div *ngIf="validator.submissionMode" class="button__cancel" tip="Cancel Submission" tipLocation="bottom" (click)="$event.stopPropagation(); validator.submissionMode = false;">
+        <button class="button" [ngClass]="{'good': !submissionError, 'bad': validator.submissionMode && submissionError}" (click)="triggerSubmit()">
+          <div *ngIf="validator.submissionMode && submissionError" class="button__cancel" tip="Cancel Submission" tipLocation="bottom" (click)="$event.stopPropagation(); validator.submissionMode = false;">
             <i class="far fa-times"></i>
           </div>
-          {{ validator.submissionMode ? 'Try Again' : 'Submit' }} 
+          {{ validator.submissionMode && submissionError ? 'Try Again' : 'Submit' }} 
           <i class="far fa-arrow-right"></i>
         </button>
       </ng-container>

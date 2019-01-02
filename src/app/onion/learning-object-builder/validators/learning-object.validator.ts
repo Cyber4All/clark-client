@@ -137,13 +137,13 @@ export class LearningObjectValidator {
    * @param {LearningObject} object
    * @memberof LearningObjectValidator
    */
-  validateLearningObject(object: LearningObject) {
+  validateLearningObject(object: LearningObject, outcomes?: Map<string, LearningOutcome>) {
     this.validateName(object.name);
     this.validateAcademicLevels(object.levels);
     this.validateDescription(object.goals[0].text);
 
-    if (object.outcomes && object.outcomes.length) {
-      for (const o of object.outcomes) {
+    if (outcomes && outcomes.size) {
+      for (const o of Array.from(outcomes.values())) {
         this.validateOutcome(o);
       }
     } else {
@@ -297,7 +297,7 @@ export class LearningObjectValidator {
   }
 
   /**
-   *  Validate a learning oultcome
+   *  Validate a learning outcome
    *
    * @param {string} id the id of the learning outcome
    * @param {string} bloom
