@@ -16,7 +16,7 @@
         <span *ngIf="learningObject?.status === 'denied'"><i class="fas fa-ban"></i></span>
       </div>
       <ng-container *ngIf="!learningObject?.status || ['unpublished', 'denied'].includes(learningObject?.status); else submittedButtonTemplate">
-        <button class="button" [ngClass]="{'good': !submissionError, 'bad': validator.submissionMode && submissionError}" (click)="triggerSubmit()">
+        <button class="button" [ngClass]="{'good': !submissionError, 'bad': validator.submissionMode && submissionError, 'disabled': !auth.user.emailVerified}" (click)="auth.user.emailVerified && triggerSubmit()">
           <div *ngIf="validator.submissionMode && submissionError" class="button__cancel" tip="Cancel Submission" tipLocation="bottom" (click)="$event.stopPropagation(); validator.submissionMode = false;">
             <i class="far fa-times"></i>
           </div>
@@ -25,7 +25,7 @@
         </button>
       </ng-container>
       <ng-template #submittedButtonTemplate>
-        <button class="button good" (click)="toggleSubmissionOptionsMenu($event)" [ngClass]="{'shadow': showSubmissionOptions}">
+        <button class="button good" (click)="toggleSubmissionOptionsMenu($event)" [ngClass]="{'shadow': showSubmissionOptions, 'disabled': !auth.user.emailVerified}">
           Submitted <i class=" far fa-angle-down"></i>
         </button>
       </ng-template>
