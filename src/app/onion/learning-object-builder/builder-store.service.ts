@@ -635,7 +635,7 @@ export class BuilderStore {
       this.objectCache$.next(newValue);
     } else {
       // don't attempt to save if object isn't saveable, but keep cache so that we can try again later
-      if (!this.validator.saveable) {
+      if (!this.validator.saveable || (this.validator.submissionMode && !this.validator.submittable)) {
         return;
       }
 
