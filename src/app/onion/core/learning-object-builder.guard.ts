@@ -12,7 +12,7 @@ export class LearningObjectBuilderGuard implements CanActivate {
     console.log(next.paramMap);
 
     return this.learningObjectService.getLearningObject(next.paramMap.get('learningObjectId')).then(learningObject => {
-      if (learningObject.status && ['published', 'waiting', 'review'].includes(learningObject.status)) {
+      if (learningObject.status && learningObject.status === 'published') {
         return false;
       }
       return true;
