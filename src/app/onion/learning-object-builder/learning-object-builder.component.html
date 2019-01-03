@@ -3,7 +3,6 @@
   <onion-builder-navbar *ngIf="true"></onion-builder-navbar>
   <router-outlet #o="outlet"></router-outlet>
 </div>
-<clark-email-banner *ngIf="!auth.user.emailVerified"></clark-email-banner>
 
 <!-- TODO implenent this and fix animation bug -->
 <div [@serviceInteraction]="showServiceInteraction && canShowServiceInteraction ? 'open' : 'closed'" class="service-indicator">

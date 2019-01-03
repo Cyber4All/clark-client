@@ -18,7 +18,6 @@ import {
 import { ToasterService } from 'app/shared/toaster';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
-import { AuthService } from 'app/core/auth.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -101,8 +100,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private nav: NavbarService,
     private builderStore: BuilderStore,
-    public noteService: ToasterService,
-    public auth: AuthService
+    public noteService: ToasterService
   ) {}
 
   ngOnInit() {
