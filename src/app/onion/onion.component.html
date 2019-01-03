@@ -8,4 +8,4 @@
     </div>
   </div>
 </div>
-<clark-email-banner></clark-email-banner>
+<clark-email-banner *ngIf="!authService.user.emailVerified"></clark-email-banner>
