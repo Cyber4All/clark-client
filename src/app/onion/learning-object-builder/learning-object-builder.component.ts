@@ -90,7 +90,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
   serviceInteraction: boolean;
-  canShowServiceInteraction: boolean;
   showServiceInteraction: boolean;
   removeServiceIndicator: NodeJS.Timer;
 
@@ -133,12 +132,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
     // hides clark nav bar from builder
     this.nav.hide();
-
-    setTimeout(() => {
-      // TODO this boolean is here as a hack to fix a bug wherein the service interaction popup
-      // animates at the same time as the columns and becomes invisible
-      this.canShowServiceInteraction = true;
-    }, 2000)
   }
 
   getState(outlet: any) {

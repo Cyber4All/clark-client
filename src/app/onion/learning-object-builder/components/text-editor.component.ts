@@ -27,14 +27,22 @@ export class TextEditorComponent implements OnInit, OnChanges {
   counter: any;
   buttonText: string;
 
-  showBox: Boolean = true;
+  // this flag is set to true to prevent loading an existing description triggering a save operation. when false, the emit onChanges will take no action except to toggle it back to true
+  initialized = true;
+  showBox = true;
   config: any;
 
-  constructor() {
+  constructor() {}
 
-  }
   ngOnChanges(changes: SimpleChanges) {
-    this.editorContent = this.savedContent;
+    if (changes.savedContent) {
+      this.editorContent = changes.savedContent.currentValue;
+
+      // this is it's first change which means we're loading an existing value, prevent emit
+      if (changes.savedContent.firstChange) {
+        this.initialized = false;
+      }
+    }
   }
 
   ngOnInit() {
@@ -68,7 +76,11 @@ export class TextEditorComponent implements OnInit, OnChanges {
   }
 
   onChange() {
-    this.textOutput.emit(this.editorContent || '');
+    if (this.initialized) {
+      this.textOutput.emit(this.editorContent || '');
+    } else {
+      this.initialized = true;
+    }
   }
 
   toggleBox() {

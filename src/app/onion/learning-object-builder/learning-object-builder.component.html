@@ -5,7 +5,7 @@
 </div>
 
 <!-- TODO implenent this and fix animation bug -->
-<div [@serviceInteraction]="showServiceInteraction && canShowServiceInteraction ? 'open' : 'closed'" class="service-indicator">
+<div [@serviceInteraction]="showServiceInteraction ? 'open' : 'closed'" class="service-indicator">
   <ng-container *ngIf="!serviceInteraction; else loadingTemplate">
     <span>
       <i class="far fa-check"></i>
