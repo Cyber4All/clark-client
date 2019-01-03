@@ -673,6 +673,7 @@ export class BuilderStore {
               );
               return;
             }
+            console.error('Error! ', err);
           });
       } else {
         // this is an existing object and we can save it (has a saveable name)
