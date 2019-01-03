@@ -5,17 +5,17 @@
   right: 25px;
   bottom: 0;
   opacity: 0;
-  padding: 4px 10px;
+  padding: 8px 10px;
   text-align: left;
   color: white;
-  min-width: 150px;
-  background: linear-gradient(45deg, #1875e1, #4290ea);
-  border-radius: 2px;
+  min-width: 200px;
+  background: linear-gradient(45deg, $bright-blue, saturate(lighten($bright-blue, 10), 10));
+  border-radius: 4px;
   z-index: 2;
 
   .svg-inline--fa,
   .icon {
-    font-size: 10px;
+    font-size: 14px;
     margin-right: 10px;
   }
 }

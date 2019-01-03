@@ -35,7 +35,7 @@ export const builderTransitions = trigger('builderTransition', [
         stagger('150ms', [
           style({ transform: 'translateY(0px)', opacity: 1 }),
           animate(
-            '300ms ease',
+            '250ms ease',
             style({ transform: 'translateY(-200px)', opacity: 0 })
           )
         ])
@@ -48,7 +48,7 @@ export const builderTransitions = trigger('builderTransition', [
       [
         style({ transform: 'translateY(-200px)', opacity: 0 }),
         animate(
-          '350ms ease',
+          '300ms ease',
           style({ transform: 'translateY(0px)', opacity: 1 })
         )
       ],
@@ -58,10 +58,10 @@ export const builderTransitions = trigger('builderTransition', [
     query(
       ':enter .column',
       [
-        stagger('200ms ease', [
+        stagger('150ms ease', [
           style({ transform: 'translateY(-200px)', opacity: 0 }),
           animate(
-            '350ms ease', style({ transform: 'translateY(0px)', opacity: 1 })
+            '300ms ease', style({ transform: 'translateY(0px)', opacity: 1 })
           )
         ])
       ],
@@ -76,12 +76,12 @@ export const builderTransitions = trigger('builderTransition', [
   templateUrl: './learning-object-builder.component.html',
   styleUrls: ['./learning-object-builder.component.scss'],
   animations: [
-    builderTransitions,
     trigger('serviceInteraction', [
       state('open', style({ opacity: '1',  transform: 'translateY(-20px)' })),
       state('closed', style({ opacity: '0', transform: 'translateY(0px)' })),
       transition('* => *', animate('300ms ease'))
     ]),
+    builderTransitions,
   ],
   // these are provided here so that they'll be destroyed when navigating away
   providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
@@ -91,6 +91,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
   serviceInteraction: boolean;
+  canShowServiceInteraction: boolean;
   showServiceInteraction: boolean;
   removeServiceIndicator: NodeJS.Timer;
 
@@ -120,21 +121,26 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
     this.builderStore.serviceInteraction$.takeUntil(this.destroyed$).subscribe(val => {
       if (val) {
+        clearTimeout(this.removeServiceIndicator);
         this.serviceInteraction = true;
         this.showServiceInteraction = true;
       } else {
         this.serviceInteraction = false;
 
-        clearTimeout(this.removeServiceIndicator);
-
         this.removeServiceIndicator = setTimeout(() => {
           this.showServiceInteraction = false;
-        }, 2000);
+        }, 3000);
       }
     });
 
     // hides clark nav bar from builder
     this.nav.hide();
+
+    setTimeout(() => {
+      // TODO this boolean is here as a hack to fix a bug wherein the service interaction popup
+      // animates at the same time as the columns and becomes invisible
+      this.canShowServiceInteraction = true;
+    }, 2000)
   }
 
   getState(outlet: any) {

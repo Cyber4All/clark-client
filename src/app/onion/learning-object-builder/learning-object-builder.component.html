@@ -6,11 +6,11 @@
 <clark-email-banner *ngIf="!auth.user.emailVerified"></clark-email-banner>
 
 <!-- TODO implenent this and fix animation bug -->
-<!-- <div [@serviceInteraction]="showServiceInteraction ? 'open' : 'closed'" class="service-indicator">
+<div [@serviceInteraction]="showServiceInteraction && canShowServiceInteraction ? 'open' : 'closed'" class="service-indicator">
   <ng-container *ngIf="!serviceInteraction; else loadingTemplate">
     <span>
       <i class="far fa-check"></i>
-      Saved!
+      Changes saved!
     </span>
   </ng-container>
 </div>
@@ -18,6 +18,6 @@
 <ng-template #loadingTemplate>
   <span>
     <i class="fas fa-spinner-third fa-spin"></i>
-    Saving...
+    Saving changes...
   </span>
-</ng-template> -->
+</ng-template>
