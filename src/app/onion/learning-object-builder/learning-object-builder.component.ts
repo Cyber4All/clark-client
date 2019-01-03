@@ -93,6 +93,8 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   showServiceInteraction: boolean;
   removeServiceIndicator: NodeJS.Timer;
 
+  errorMessage: string = 'please';
+
   // tslint:disable-next-line:max-line-length
   constructor(
     private store: BuilderStore,
@@ -101,7 +103,8 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
     public noteService: ToasterService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
@@ -136,6 +139,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   }
 
   get errorState(): boolean {
+    this.errorMessage = this.validator.nextError;
     return !this.validator.saveable || (this.validator.submissionMode && !this.validator.submittable);
   }
 

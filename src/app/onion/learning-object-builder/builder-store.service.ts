@@ -673,7 +673,6 @@ export class BuilderStore {
               );
               return;
             }
-            console.error('Error! ', err);
           });
       } else {
         // this is an existing object and we can save it (has a saveable name)
@@ -697,6 +696,10 @@ export class BuilderStore {
             console.error('Error! ', err);
           });
       }
+    }
+
+    if (this.outcomeCache$.getValue()) {
+      this.saveOutcome(this.outcomeCache$.getValue());
     }
   }
 
@@ -779,6 +782,9 @@ export class BuilderStore {
           });
       }
 
+      if (this.objectCache$.getValue()) {
+        this.saveObject(this.objectCache$.getValue());
+      }
     }
   }
 }

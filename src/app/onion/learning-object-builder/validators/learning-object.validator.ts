@@ -110,6 +110,32 @@ export class LearningObjectValidator {
   constructor(public outcomeValidator: LearningOutcomeValidator) {}
 
   /**
+   * Retrieves the first string error for a learning object, checks save errors first, then checks submit errors if
+   * no save errors found and submissionMode is true
+   *
+   * @readonly
+   * @type {string}
+   * @memberof LearningObjectValidator
+   */
+  get nextError(): string {
+    let error: string = this.errors.saveErrors.values().next().value;
+
+    if (!error) {
+      error = this.outcomeValidator.errors.saveErrors.values().next().value;
+    }
+
+    if (!error && this.submissionMode) {
+      error = this.errors.submitErrors.values().next().value;
+    }
+
+    if (!error && this.submissionMode) {
+      error = this.outcomeValidator.errors.submitErrors.values().next().value;
+    }
+
+    return error;
+  }
+
+  /**
    * Returns a boolean that reflects whether or not this object has any errors
    * that would prevent it from being saved.
    *
