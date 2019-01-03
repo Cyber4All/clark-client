@@ -18,6 +18,10 @@
     font-size: 14px;
     margin-right: 10px;
   }
+
+  &.service-indicator--error {
+    background: $error-red;
+  }
 }
 
 .service-indicator--saved {

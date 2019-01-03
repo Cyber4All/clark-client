@@ -99,6 +99,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private nav: NavbarService,
     private builderStore: BuilderStore,
+    private validator: LearningObjectValidator,
     public noteService: ToasterService
   ) {}
 
@@ -132,6 +133,10 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
     // hides clark nav bar from builder
     this.nav.hide();
+  }
+
+  get errorState(): boolean {
+    return !this.validator.saveable || (this.validator.submissionMode && !this.validator.submittable);
   }
 
   getState(outlet: any) {
