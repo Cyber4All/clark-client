@@ -3,15 +3,15 @@
   <div id="library-count" class="count">{{cartItems.length || 0}} item{{(cartItems.length != 1) ? 's' : ''}}</div>
 
   <div *ngIf="cartItems" class="cart">
-    <div *ngFor="let object of cartItems; let i = index;" class="object" (click)="goToItem(object)">
+    <div *ngFor="let object of cartItems; let i = index;" class="object">
       <div>
-        <div class="name">{{object.name}}
+        <div class="name" (click)="goToItem(object)">{{object.name}}
           <span class="length " [ngClass]="object.length">{{ object.length }}</span>
         </div>
         <div class="author">{{object.author.name | titlecase}}</div>
       </div>
       <div class="actions">
-        <button *ngIf="canDownload" class="button icon-only good" [ngClass]="{'disabled': !canDownload || downloading[i]}" (click)="downloadObject($event, object, i)">
+        <button *ngIf="canDownload" class="button icon-only good" [ngClass]="{'disabled': downloading[i]}" (click)="downloadObject($event, object, i)">
           <span *ngIf="!downloading[i]">
             <i class="far fa-download"></i>
           </span>

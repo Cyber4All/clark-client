@@ -76,7 +76,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DropzoneDirective)
   dzDirectiveRef: DropzoneDirective;
 
-  private dzError = '';
   learningObjectName: string;
 
   slide = 1;
@@ -132,7 +131,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     if (this.disabled) {
-      this.checkWhitelist();
+      this.checkAccessGroup();
     }
     this.learningObjectName = this.route.snapshot.params.learningObjectName;
     this.learningObjectName
@@ -702,19 +701,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     return index;
   }
 
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.authService.username;
-      if (whitelist.includes(username)) {
-        this.disabled = false;
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  private async checkAccessGroup() {
+    this.disabled = !this.authService.hasPrivelagedAccess();
   }
 
   ngOnDestroy() {

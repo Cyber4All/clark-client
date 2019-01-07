@@ -19,7 +19,5 @@ export const environment = {
     timeout: 900000, // 15 minutes timeout
     createImageThumbnails: false,
     generatePreviews: false
-  },
-  whiteListURL:
-    'https://raw.githubusercontent.com/Cyber4All/clark-client/master/whitelist/whitelist.json'
+  }
 };
