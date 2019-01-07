@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 import {
   SuggestionService
- } from '../../onion/old-learning-object-builder/components/outcome-page/outcome/standard-outcomes/suggestion/services/suggestion.service';
+ } from '../../onion/core/suggestion.service';
  import { FilterSection } from '../../shared/filter/filter.component';
  import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs/Rx';
