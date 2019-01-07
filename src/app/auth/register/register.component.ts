@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit {
     captcha: new FormControl()
   });
 
-  siteKey = environment.siteKey;
+  siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
 
   passwordVerify = '';
   registerFailure;
@@ -137,7 +137,12 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+     // If development/testing set verified to true in order to skip reCaptcha check in e2e tests
+     if (environment.production === false) {
+      this.verified = true;
+    }
+  }
 
   submit() {
     this.updateObjValues();

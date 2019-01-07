@@ -27,16 +27,16 @@
 
 // Login help method 
 Cypress.Commands.add('login', () => {
-     // Click sign in button 
-     cy.get('#clark-sign-in').click({ force: true });
+    // Click sign in button 
+    cy.get('#clark-sign-in').click({ force: true });
 
-     // Assert URL 
-     cy.url().should('include', 'login');
+    // Assert URL 
+    cy.url().should('include', 'login');
 
-     // Enter login info 
-     cy.get('input[name=username]').type('cypress');
-     cy.get('input[name=password]').type('Clarktesting1!');
-     cy.get('#auth-button').click();
+    // Enter login info 
+    cy.get('input[name=username]').type('testaccount');
+    cy.get('input[name=password]').type('password12345!');
+    cy.get('#auth-button').click();
 });
 
 // Method that prevents uncaught exceptions from failing otherwise working tests

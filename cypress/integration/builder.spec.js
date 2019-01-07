@@ -5,7 +5,7 @@
  //     Instead, refence all selections by id.
  // *********************************************************************
  
- describe('Browse', () => {
+ describe('Builder', () => {
 
     let objects
  
