@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LearningOutcomeErrorGroup, LearningOutcomeValidator } from './learning-outcome.validator';
+import { LearningOutcomeValidator } from './learning-outcome.validator';
 import { LearningOutcome, LearningObject } from '@cyber4all/clark-entity';
 
 export const OBJECT_ERRORS = {
@@ -166,7 +166,7 @@ export class LearningObjectValidator {
   validateLearningObject(object: LearningObject, outcomes?: Map<string, LearningOutcome>) {
     this.validateName(object.name);
     this.validateAcademicLevels(object.levels);
-    this.validateDescription(object.goals[0].text);
+    this.validateDescription(object.description);
 
     if (outcomes && outcomes.size) {
       for (const o of Array.from(outcomes.values())) {

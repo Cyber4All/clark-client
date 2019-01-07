@@ -9,12 +9,11 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
+
 import { DirectoryNode } from '../../../../../../shared/filesystem/DirectoryTree';
 import { Removal } from '../../../../../../shared/filesystem/file-browser/file-browser.component';
 import 'rxjs/add/operator/takeUntil';
-
-type LearningObjectFile = File;
+import { LearningObject } from '@cyber4all/clark-entity';
 
 export interface FileEdit {
   id?: string;
@@ -35,8 +34,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   public newOptions: ContextMenuComponent;
 
   @Input()
-  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
+  files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
+    LearningObject.Material.File[]
   >([]);
   @Input()
   folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
@@ -108,13 +107,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * Emits file edit
    *
    * @param {string} description
-   * @param {(LearningObjectFile | DirectoryNode)} file
+   * @param {(LearningObject.Material.File | DirectoryNode)} file
    * @returns
    * @memberof FileManagerComponent
    */
   saveDescription(
     description: string,
-    file: LearningObjectFile | DirectoryNode
+    file: LearningObject.Material.File | DirectoryNode
   ) {
     if (!file || !description) {
       return;

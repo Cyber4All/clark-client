@@ -22,7 +22,7 @@ export class GravatarInfoComponent implements OnInit {
 
   ngOnInit() {
     this.imgUrl = this.getGravatarImage();
-    this.user = User.instantiate(
+    this.user = new User(
       {
         name: this.group.value.firstname + ' ' + this.group.value.lastname,
         ...this.group.value

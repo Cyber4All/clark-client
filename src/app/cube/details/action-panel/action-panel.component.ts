@@ -2,13 +2,9 @@ import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
 import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
-import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { RatingService } from '../../../core/rating.service';
-import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
-import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
 // TODO move this to clark entity?
 export interface Rating {

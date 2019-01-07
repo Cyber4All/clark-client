@@ -152,13 +152,12 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-    const u = new User(
-      this.regInfo.username,
-      `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
-      this.regInfo.email.trim(),
-      this.regInfo.organization.trim(),
-      this.regInfo.password
-    );
+    const u = new User({
+      username: this.regInfo.username,
+      name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
+      email: this.regInfo.email.trim(),
+      organization: this.regInfo.organization.trim(),
+    });
 
     this.auth.register(u).then(
       () => {

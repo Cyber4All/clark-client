@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LearningObject, LearningOutcome, User } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -9,7 +9,6 @@ import {
   LearningObjectValidator,
   OBJECT_ERRORS
 } from './validators/learning-object.validator';
-import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 import { CollectionService } from 'app/core/collection.service';
 
 /**
@@ -139,7 +138,7 @@ export class BuilderStore {
     this._learningObject = object;
     this.learningObjectEvent.next(this.learningObject);
 
-    if (object.status === 'published') {
+    if (![LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(object.status)) {
       this.validator.submissionMode = true;
     }
   }
@@ -166,7 +165,7 @@ export class BuilderStore {
       id
     );
 
-    if (this.learningObject.status && !['unpublished', 'denied'].includes(this.learningObject.status)) {
+    if (this.learningObject.status && ![LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(this.learningObject.status)) {
       // this learning object is submitted, ensure submission mode is on
       this.validator.submissionMode = true;
     }
@@ -197,8 +196,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   makeNew(): LearningObject {
-    this.learningObject = new LearningObject(this.auth.user);
-    this.learningObject.goals = [{ text: '' }]; // initialzie empty description
+    this.learningObject = new LearningObject({ author: this.auth.user });
     this.outcomes = new Map();
     this.validator.validateLearningObject(this.learningObject);
     return this.learningObject;
@@ -357,7 +355,7 @@ export class BuilderStore {
 
   private async mapStandardOutcomeMapping(
     id: string,
-    standardOutcome: LearningOutcome
+    standardOutcome: StandardOutcome
   ) {
     const outcome = this.outcomes.get(id);
     outcome.mappings.push(standardOutcome);
@@ -454,7 +452,7 @@ export class BuilderStore {
    * @param {Url} url
    * @memberof BuilderStore
    */
-  private async updateUrl(index: number, url: Url): Promise<any> {
+  private async updateUrl(index: number, url: LearningObject.Material.Url): Promise<any> {
     if (!url.url.match(/https?:\/\/.+/i)) {
       url.url = `http://${url.url}`;
     }
@@ -597,7 +595,7 @@ export class BuilderStore {
       // if we passed a collection property, attempt the submission
       if (collection) {
         return this.collectionService.submit(this.learningObject.id, collection).then(() => {
-          this.learningObject.status = 'waiting';
+          this.learningObject.status = LearningObject.Status.WAITING;
           this.learningObject.collection = collection;
           this.learningObjectEvent.next(this._learningObject);
           return true;
@@ -617,7 +615,7 @@ export class BuilderStore {
   public cancelSubmission(): Promise<void> {
     return this.collectionService.unsubmit(this.learningObject.id).then(val => {
       this.learningObject.unpublish();
-      this.learningObject.status = 'unpublished';
+      this.learningObject.status = LearningObject.Status.UNRELEASED;
       this.validator.submissionMode = false;
       this.learningObjectEvent.next(this.learningObject);
     }).catch(err => {
@@ -654,7 +652,7 @@ export class BuilderStore {
         // this is a new learning object and we've been given a saveable name
 
         // append status property to data
-        value.status = 'unpublished';
+        value.status = LearningObject.Status.UNRELEASED;
 
         // create the object
         this.learningObjectService
@@ -752,6 +750,7 @@ export class BuilderStore {
             outcome.id = id;
 
             // store the temporary id in the outcome so that the page component know's which outcome to keep focused
+            // @ts-ignore this is a temporary property and won't be saved
             outcome.tempId = tempId;
 
             // re-enter outcome into map

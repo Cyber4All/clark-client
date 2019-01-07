@@ -8,9 +8,9 @@ import {
 } from '@angular/core';
 import { DashboardLearningObject } from '../dashboard.component';
 import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
-import { LearningObjectStatus } from '@env/environment';
 import { AuthService } from '../../../core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -59,8 +59,8 @@ export class DashboardItemComponent implements OnChanges {
   // id of the context menu returned from the context-menu component
   itemMenu: string;
 
-  // map of state strings to icons and tooltips
-  states: Map<string, { icon: string; tip: string }>;
+  // map of state strings to tooltips
+  states: Map<string, { tip: string }>;
 
   // flags
   meatballOpen = false;
@@ -100,12 +100,12 @@ export class DashboardItemComponent implements OnChanges {
    */
   actionPermissions(action: string) {
     const permissions = {
-      edit: ['unpublished', 'waiting', 'review', 'denied',],
-      editChildren: ['unpublished', 'published', 'denied', 'waiting', 'review', this.learningObject.length !== 'nanomodule'],
-      manageMaterials: ['unpublished', 'waiting', 'review', 'denied', this.verifiedEmail],
-      submit: ['unpublished', 'denied', this.verifiedEmail],
-      view: ['published'],
-      delete: ['unpublished', 'denied'],
+      edit: ['unreleased', 'waiting', 'review', 'denied',],
+      editChildren: ['unreleased', 'released', 'denied', 'waiting', 'review', this.learningObject.length !== 'nanomodule'],
+      manageMaterials: ['unreleased', 'waiting', 'review', 'denied', this.verifiedEmail],
+      submit: ['unreleased', 'denied', this.verifiedEmail],
+      view: ['released'],
+      delete: ['unreleased', 'denied'],
       cancelSubmission: ['waiting', this.verifiedEmail]
     };
 
@@ -150,17 +150,15 @@ export class DashboardItemComponent implements OnChanges {
     this.collectionService.getCollection(this.learningObject.collection).then(val => {
       this.states = new Map([
         [
-          LearningObjectStatus.DENIED,
+          LearningObject.Status.REJECTED,
           {
-            icon: 'fa-ban',
             tip:
               'This learning object was rejected. Contact your review team for further information'
           }
         ],
         [
-          LearningObjectStatus.PUBLISHED,
+          LearningObject.Status.RELEASED,
           {
-            icon: 'fa-eye',
             tip:
               'This learning object is published to the ' + 
                 (val ? val.name : '') +
@@ -168,9 +166,8 @@ export class DashboardItemComponent implements OnChanges {
           }
         ],
         [
-          LearningObjectStatus.UNDER_REVIEW,
+          LearningObject.Status.REVIEW,
           {
-            icon: 'fa-sync',
             tip:
               'This object is currently under review by the ' +
                 (val ? val.name : '') +
@@ -178,9 +175,8 @@ export class DashboardItemComponent implements OnChanges {
           }
         ],
         [
-          LearningObjectStatus.WAITING,
+          LearningObject.Status.WAITING,
           {
-            icon: 'fa-hourglass',
             tip:
               'This learning object is waiting to be reviewed by the next available reviewer from the ' +
                 (val ? val.name : '') +
@@ -188,9 +184,8 @@ export class DashboardItemComponent implements OnChanges {
           }
         ],
         [
-          LearningObjectStatus.UNPUBLISHED,
+          LearningObject.Status.UNRELEASED,
           {
-            icon: 'fa-eye-slash',
             tip:
               'This learning object is visible only to you. Submit it for review to make it publicly available.'
           }

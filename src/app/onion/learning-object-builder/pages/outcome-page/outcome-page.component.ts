@@ -50,6 +50,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
             for (let i = 0, l = arr.length; i < l; i++) {
               const o = arr[i];
 
+              //@ts-ignore tempId here is a temporary non-saveable property used to uniquely identify outcomes created on the fly that haven't been saved yet
               if (o.tempId && o.tempId === this.activeOutcome) {
                 // this is the same outcome as the active outcome, reset the activeOutcome id
                 this.activeOutcome = o.id;

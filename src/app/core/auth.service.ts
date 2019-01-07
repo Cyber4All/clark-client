@@ -6,7 +6,6 @@ import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -259,7 +258,7 @@ export class AuthService {
 
   makeUserFromCookieResponse(val: any): User {
     try {
-      const user = User.instantiate(val);
+      const user = new User(val);
       return user;
     } catch {
       return val as User;
@@ -321,7 +320,7 @@ export class AuthService {
     if (environment.production) {
 
       // Check that the object does not contain a download lock and the user is logged in
-      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD);
+      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(LearningObject.Restriction.DOWNLOAD);
 
       // If the object is restricted, check if the user is on the whitelist
       if (restricted) {

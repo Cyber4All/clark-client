@@ -18,11 +18,8 @@ import { ToasterService } from '../../../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import {
-  File,
-  FolderDescription,
   LearningObject,
-  Url
-} from '@cyber4all/clark-entity/dist/learning-object';
+} from '@cyber4all/clark-entity';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { fromEvent } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
@@ -38,8 +35,6 @@ import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
 import { AuthService } from 'app/core/auth.service';
 import { FileStorageService } from '../services/file-storage.service';
-
-type LearningObjectFile = File;
 
 // tslint:disable-next-line:interface-over-type-literal
 export type DZFile = {
@@ -97,9 +92,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   urlAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output()
-  urlUpdated: EventEmitter<{ index: string; url: Url }> = new EventEmitter<{
+  urlUpdated: EventEmitter<{ index: string; url: LearningObject.Material.Url }> = new EventEmitter<{
     index: string;
-    url: Url;
+    url: LearningObject.Material.Url;
   }>();
   @Output()
   urlRemoved: EventEmitter<number> = new EventEmitter<number>();
@@ -136,11 +131,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     parallelChunkUploads: true
   };
 
-  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
+  files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
+  LearningObject.Material.File[]
   >([]);
-  folderMeta$: BehaviorSubject<FolderDescription[]> = new BehaviorSubject<
-    FolderDescription[]
+  folderMeta$: BehaviorSubject<LearningObject.Material.FolderDescription[]> = new BehaviorSubject<
+  LearningObject.Material.FolderDescription[]
   >([]);
 
   inProgressFileUploads = [];
@@ -506,7 +501,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    *
    * @memberof UploadComponent
    */
-  updateUrl(data: { index: string; url: Url }) {
+  updateUrl(data: { index: string; url: LearningObject.Material.Url }) {
     this.urlUpdated.emit(data);
   }
 
@@ -586,7 +581,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  async handleEdit(file: LearningObjectFile | any): Promise<void> {
+  async handleEdit(file: LearningObject.Material.File | any): Promise<void> {
     try {
       if (!file.isFolder) {
         this.fileDescriptionUpdated.emit({

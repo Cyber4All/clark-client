@@ -8,7 +8,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { LearningObjectStatus } from '@env/environment';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 
 @Component({
@@ -209,14 +208,14 @@ export class BuilderNavbarComponent implements OnDestroy {
     this.collectionService.getCollection(this.learningObject.collection).then(val => {
       this.states = new Map([
         [
-          LearningObjectStatus.DENIED,
+          LearningObject.Status.REJECTED,
           {
             tip:
               'This learning object was rejected. Contact your review team for further information'
           }
         ],
         [
-          LearningObjectStatus.PUBLISHED,
+          LearningObject.Status.RELEASED,
           {
             tip:
               'This learning object is published to the ' +
@@ -225,7 +224,7 @@ export class BuilderNavbarComponent implements OnDestroy {
           }
         ],
         [
-          LearningObjectStatus.UNDER_REVIEW,
+          LearningObject.Status.REVIEW,
           {
             tip:
               'This object is currently under review by the ' +
@@ -234,7 +233,7 @@ export class BuilderNavbarComponent implements OnDestroy {
           }
         ],
         [
-          LearningObjectStatus.WAITING,
+          LearningObject.Status.WAITING,
           {
             tip:
               'This learning object is waiting to be reviewed by the next available reviewer from the ' +
@@ -243,7 +242,7 @@ export class BuilderNavbarComponent implements OnDestroy {
           }
         ],
         [
-          LearningObjectStatus.UNPUBLISHED,
+          LearningObject.Status.UNRELEASED,
           {
             tip:
               'This learning object is visible only to you. Submit it for review to make it publicly available.'

@@ -7,16 +7,15 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningOutcome, StandardOutcome } from '@cyber4all/clark-entity';
 import { OutcomeService } from 'app/core/outcome.service';
 import {
-  BuilderStore,
-  BUILDER_ACTIONS as actions
+  BuilderStore
 } from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';
 
-export interface SuggestedOutcome extends LearningOutcome {
+export interface SuggestedOutcome extends StandardOutcome {
   suggested?: boolean;
 }
 
@@ -32,7 +31,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
 
   @Output()
   toggleMapping: EventEmitter<{
-    standardOutcome: LearningOutcome;
+    standardOutcome: StandardOutcome;
     value: boolean;
   }> = new EventEmitter();
 
@@ -116,7 +115,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     }
   }
 
-  toggleStandardOutcome(standardOutcome: LearningOutcome, value: boolean) {
+  toggleStandardOutcome(standardOutcome: StandardOutcome, value: boolean) {
     this.toggleMapping.emit({ standardOutcome, value });
   }
 
@@ -136,6 +135,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
             // if we have suggestions, tag any of the search results that are also suggestions
             const suggestedIds: string[] = this.suggestions.map(o => o.id);
             this.searchResults = results.outcomes.map(o => {
+              // @ts-ignore temporary non-saveable property indicating whether or not this outcome was BOTH suggested and retrieved from the search result
               o.suggested = suggestedIds.includes(o.id);
               return o;
             });
@@ -157,6 +157,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
         })
         .then(results => {
           this.suggestions = results.map(o => {
+            // @ts-ignore temporary non-saveable property indicating whether or not this outcome was BOTH suggested and retrieved from the search result
             o.suggested = true;
             return o;
           });

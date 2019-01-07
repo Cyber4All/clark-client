@@ -12,7 +12,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { OutcomeService } from '../../core/outcome.service';
-import { LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningOutcome, StandardOutcome } from '@cyber4all/clark-entity';
 import {  Subject, fromEvent } from 'rxjs';
 import { takeUntil, debounceTime, map, filter } from 'rxjs/operators';
 
@@ -38,7 +38,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Output() remove: EventEmitter<{ category: string, filter: string }> = new EventEmitter();
   @Output() toggleSource: EventEmitter<string> = new EventEmitter();
 
-  outcomes: {source: string, outcomes: LearningOutcome[]}[];
+  outcomes: {source: string, outcomes: StandardOutcome[]}[];
 
   // fired when the component is destroyed
   destroyed$: Subject<void> = new Subject();
@@ -260,7 +260,7 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
    * @memberof MappingsFilterComponent
    */
   private getOutcomes(outcomeFilter: { name?: string, author?: string, date?: string, filterText?: string }) {
-    this.outcomeService.getOutcomes(outcomeFilter).then((res: {total: number, outcomes: LearningOutcome[]}) => {
+    this.outcomeService.getOutcomes(outcomeFilter).then((res: {total: number, outcomes: StandardOutcome[]}) => {
       this.loading = false;
       this.outcomes = this.separateOutcomes(res.outcomes);
     });
@@ -274,8 +274,8 @@ export class MappingsFilterComponent implements OnInit, OnDestroy, OnChanges {
    * @returns {{source: string, outcomes: LearningOutcome[]}[]}
    * @memberof MappingsFilterComponent
    */
-  private separateOutcomes(outcomes: LearningOutcome[]): {source: string, outcomes: LearningOutcome[]}[] {
-    const results: {source: string, outcomes: LearningOutcome[]}[] = [];
+  private separateOutcomes(outcomes: StandardOutcome[]): {source: string, outcomes: StandardOutcome[]}[] {
+    const results: {source: string, outcomes: StandardOutcome[]}[] = [];
     const sources = [];
 
     for (let i = 0, l = outcomes.length; i < l; i++) {

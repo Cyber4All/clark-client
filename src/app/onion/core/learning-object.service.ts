@@ -43,7 +43,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((res: any) => {
-        return LearningObject.instantiate(res);
+        return new LearningObject(res);
       });
     // TODO: Verify this response gives the learning object name
   }
@@ -60,7 +60,7 @@ export class LearningObjectService {
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
       .then((response: any) => {
-        return LearningObject.instantiate(response);
+        return new LearningObject(response);
       });
   }
 
@@ -79,7 +79,7 @@ export class LearningObjectService {
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
       .then((response: any) => {
-        return response.map(object => LearningObject.instantiate(object));
+        return response.map(object => new LearningObject(object));
       });
   }
 

@@ -11,10 +11,9 @@ import {
   DirectoryNode,
   DirectoryTree
 } from '../DirectoryTree';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-type LearningObjectFile = File;
 
 // tslint:disable-next-line:interface-over-type-literal
 export type Removal = {
@@ -25,7 +24,7 @@ export type Removal = {
 // tslint:disable-next-line:interface-over-type-literal
 export type DescriptionUpdate = {
   description: string;
-  file: LearningObjectFile | DirectoryNode;
+  file: LearningObject.Material.File | DirectoryNode;
 };
 
 @Component({
@@ -36,8 +35,8 @@ export type DescriptionUpdate = {
 export class FileBrowserComponent implements OnInit {
   @Input() canManage = false;
   @Input()
-  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
+  files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
+    LearningObject.Material.File[]
   >([]);
   @Input() folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   @Input()
@@ -195,7 +194,7 @@ export class FileBrowserComponent implements OnInit {
   /**
    * Emit updated description and file
    *
-   * @param {{ description: string; file: LearningObjectFile }} value
+   * @param {{ description: string; file: LearningObject.Material.File }} value
    * @memberof FileBrowserComponent
    */
   emitDesc(value: DescriptionUpdate): void {

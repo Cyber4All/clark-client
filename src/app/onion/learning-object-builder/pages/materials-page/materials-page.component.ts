@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
-import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Component({
   selector: 'clark-materials-page',
@@ -57,7 +56,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  async handleUrlUpdated(data: { index: number; url: Url }) {
+  async handleUrlUpdated(data: { index: number; url: LearningObject.Material.Url }) {
     try {
       await this.store.execute(BUILDER_ACTIONS.UPDATE_URL, data);
     } catch (e) {

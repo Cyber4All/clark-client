@@ -1,9 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  AcademicLevel,
-  LearningObject
-} from '@cyber4all/clark-entity/dist/learning-object';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
@@ -80,7 +77,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       type: 'select-many',
       canSearch: false,
       values: [
-        ...Object.values(AcademicLevel).map(l => ({
+        ...Object.values(LearningObject.Level).map(l => ({
           name: l.toLowerCase(),
           toolTip: this.tooltipText[l.toLowerCase()]
         }))
