@@ -1,4 +1,5 @@
 import { Component, OnInit, ContentChild, ElementRef, AfterViewInit, ViewChild, OnDestroy, Input } from '@angular/core';
+import { MessagesService } from 'app/core/messages.service';
 
 @Component({
   selector: 'clark-column-wrapper',
@@ -10,15 +11,19 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
 
   @Input() columns = 'lmr';
 
+  messageBar: boolean;
+
   columnOffset: number;
   columnHeight: number;
 
-  constructor() {}
+  constructor(private messagesService: MessagesService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.messageBar = !!(await this.messagesService.getStatus());
+
     // calculate the height of the scroll wrapper
     this.columnOffset = (this.columnWrapper.nativeElement as HTMLElement).offsetTop;
-    this.columnHeight = window.innerHeight - this.columnOffset + 30; // this +30 offsets the wrappers -30 offset
+    this.columnHeight = window.innerHeight - this.columnOffset - (this.messageBar ? (document.querySelector('clark-message .wrapper') as HTMLElement).offsetHeight : 0) + 30; // this +30 offsets the wrappers -30 offset
 
     // set overflow of body to hidden to prevent parent scrolling
     if (this.columnHeight >= 560) {

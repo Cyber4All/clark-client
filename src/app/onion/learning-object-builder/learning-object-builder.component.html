@@ -4,7 +4,7 @@
   <router-outlet #o="outlet"></router-outlet>
 </div>
 
-<!-- TODO implenent this and fix animation bug -->
+<!-- NOTE for unkown reasons this animation will break if it attempts to popup while the columns are animating on for the first time. Currently this is a non issue due to timing. -->
 <div [@serviceInteraction]="showServiceInteraction || errorState ? 'open' : 'closed'" class="service-indicator" [ngClass]="{'service-indicator--error': errorState}">
   <ng-container *ngIf="!serviceInteraction || errorState; else loadingTemplate">
     <ng-container *ngIf="!errorState; else errorStateTemplate">

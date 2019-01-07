@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';

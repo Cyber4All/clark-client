@@ -18,6 +18,7 @@ import {
 import { ToasterService } from 'app/shared/toaster';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
+import { MessagesService } from 'app/core/messages.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -103,8 +104,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
     public noteService: ToasterService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
