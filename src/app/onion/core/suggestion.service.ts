@@ -1,8 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { LearningObject } from '@cyber4all/clark-entity';
-import { Injectable, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Subject } from 'rxjs/Subject';
 import { environment } from '@env/environment';
