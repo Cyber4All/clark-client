@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User } from '@cyber4all/clark-entity';
 import { NavbarService } from '../../core/navbar.service';
 
 @Component({
