@@ -742,19 +742,25 @@ export class BuilderStore {
             // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
             this.newOutcomes.delete(tempId);
 
-            // retrieve the outcome from the map keyed by it's temp ID and then delete that entry;=
-            const outcome = this.outcomes.get(tempId);
+            // retrieve the outcome from the map keyed by it's temp ID, convert it to a plain object, and then delete that entry;
+            const outcome = this.outcomes.get(tempId).toPlainObject();
             this.outcomes.delete(tempId);
+
+            // remove the outcomes current id property
+            delete outcome.id;
 
             // reset outcomes temp id with the new id from API
             outcome.id = id;
 
+            // re-create a learning outcome from the plain object
+            const newOutcome = new LearningOutcome(outcome);
+
             // store the temporary id in the outcome so that the page component know's which outcome to keep focused
             // @ts-ignore this is a temporary property and won't be saved
-            outcome.tempId = tempId;
+            newOutcome.tempId = tempId;
 
             // re-enter outcome into map
-            this.outcomes.set(id, outcome);
+            this.outcomes.set(id, newOutcome);
             this.outcomeEvent.next(this.outcomes);
 
             const outcomeError = this.validator.getOutcome(tempId);
