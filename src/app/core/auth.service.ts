@@ -161,18 +161,24 @@ export class AuthService {
   }
 
   register(user: User): Promise<User> {
-    return this.http.post(environment.apiURL + '/users', user, {
+    return this.http
+      .post(environment.apiURL + '/users', user.toPlainObject(), {
       withCredentials: true,
       responseType: 'text'
-    }).toPromise().then(val => {
+      })
+      .toPromise()
+      .then(
+        val => {
       this.user = user;
       this.changeStatus(true);
       return this.user;
-    }, error => {
+        },
+        error => {
       this.changeStatus(false);
       this.user = undefined;
       throw error;
-    });
+  }
+      );
   }
 
   // checkPassword is used when changing a password in the user-edit-information.component
