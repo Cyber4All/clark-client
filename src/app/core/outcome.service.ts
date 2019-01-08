@@ -50,7 +50,7 @@ export class OutcomeService {
       author: filter.author !== '' ? filter.author : undefined,
       date: filter.date !== '' ? filter.date : undefined,
       name: filter.name !== '' ? filter.name : undefined,
-      text: filter.text
+      text: filter.text || filter.filterText
     };
   }
 }
