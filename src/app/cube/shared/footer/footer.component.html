@@ -4,17 +4,22 @@
       <p class="notice-title">{{ copy.NOTICETITLE }}</p>
       <p>{{ copy.NOTICE }}</p>
     </div>
-    <div class="nsa-wrapper">
-      <img alt="National Security Agency Logo" src="assets/images/nsa.png" />
-      <p>{{ copy.SUPPORTEDBY }}</p>
-    </div>
   </div>
+  <section class="logo-container">
+      <div class="logo-wrapper">
+        <img alt="National Security Agency Logo" src="assets/images/nsa.png" />
+      </div>
+    <div class="logo-wrapper">
+      <a href="https://towson.edu" class="tu-logo" target="_blank"></a>
+    </div>
+  </section>
+  <p>{{ copy.SUPPORTEDBY }}</p>
   <div class="small-links">
     <a id="clark-about" href="http://about.clark.center" target="_blank">{{ copy.TEAM }}</a>
-    <a id="clark-stats" href="https://datastudio.google.com/open/1jbVUWbqt4_L11PzrPZYNS5d4hbB5VojN" target="_blank">{{ copy.USAGE }}</a>
+    <a id="clark-stats" href="https://datastudio.google.com/open/1jbVUWbqt4_L11PzrPZYNS5d4hbB5VojN" target="_blank">{{
+      copy.USAGE }}</a>
     <a id="clark-troubleshoot" href="http://help.clark.center" target="_blank">Troubleshooting</a>
     <a href="mailto:skaza@towson.edu?subject=CLARK Help">{{ copy.HELP }}</a>
     <a id="clark-tutorial" href="http://about.clark.center/tutorial" target="_blank">{{ copy.TUTORIAL }}</a>
   </div>
 </footer>
-

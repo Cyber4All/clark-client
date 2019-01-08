@@ -22,30 +22,28 @@ footer {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-
-    .nsa-wrapper {
-      margin-top: 50px;
-      text-align: center;
-      display: flex;
-      flex-flow: column;
-      align-items: center;
-
-      p {
-        color: whitesmoke;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-self: center;
-      }
+  }
+  .logo-container {
+    width: 50%;
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 15px;
+    margin-top: 25px;
+  }
+  .logo-wrapper {
+    width: 50%;
+    &:first-child {
+      text-align: right;
+      padding-right: 15px;
     }
-
+    &:last-child {
+      padding-left: 15px;
+    }
     img {
-      margin-bottom: 10px;
-      height: 75px;
-      width: 75px;
+      height: 100px;
+      width: 100px;
     }
   }
-
   .small-links {
     position: relative;
     box-sizing: border-box;
@@ -79,6 +77,16 @@ footer {
     .notice-title {
       font-size: 14px;
     }
+  }
+  .tu-logo {
+    background: url(http://towson.edu/_resources/images/icons-tu.svgz) no-repeat 0 -488px;
+    width: 130px;
+    height: 100px;
+    display: block;
+    line-height: 168px;
+    text-indent: 300%;
+    overflow: hidden;
+    // transform: scale(0.5);
   }
 }
 
