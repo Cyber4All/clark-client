@@ -19,6 +19,11 @@
         <i class="fal fa-spinner-third fa-spin"></i>
       </span>
     </button>
+
+    <button (click)="clark.center" class="button neutral on-white" id="edit-button" type="submit"> 
+      {{ 'Revise' }}
+    </button>
+    
   </div>
   <ng-container *ngIf="!auth.user">
     <div class="login-msg" id="login-msg">Please
