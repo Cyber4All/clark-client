@@ -6,7 +6,7 @@ import { lengths } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 import { Observable, Subject } from 'rxjs/Rx';
-import { AuthService, AUTH_GROUP } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
 import {
   SuggestionService
@@ -39,7 +39,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     orderBy: undefined,
     sortType: undefined,
     collection: '',
-    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
+    released: this.auth.hasPrivelagedAccess() ? undefined : true
   };
 
   tooltipText = {
@@ -116,7 +116,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
       const collections = await this.collectionService.getCollections();
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
-      this.query.released = this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
+      this.query.released = this.auth.hasPrivelagedAccess() ? undefined : true;
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     });
