@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
+import { SubmittableLearningObject, LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -399,7 +399,16 @@ export class BuilderStore {
     // TODO optimize this
     for (const k of dataProperties) {
       this.learningObject[k] = data[k];
+      console.log(this.learningObject[k]);
     }
+
+    try {
+      new SubmittableLearningObject(this.learningObject);
+    } catch (error) {
+      console.error(error);
+      alert('YA DONE MESSED UP AARON');
+    }
+
 
     this.saveObject(data, true);
   }
