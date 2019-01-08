@@ -291,7 +291,7 @@ export class BuilderStore {
   ///////////////////////////////
 
   private async createOutcome() {
-    const outcome = new LearningOutcome(this.learningObject);
+    const outcome = new LearningOutcome();
     outcome.id = genId();
 
     // this outcome needs to be created in the API, not modified, so store it in newOutcomes map
