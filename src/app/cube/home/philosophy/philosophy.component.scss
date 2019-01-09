@@ -3,6 +3,9 @@
 .philosophy {
   padding: 60px;
   background: white;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
 
   .philosophy__title {
     text-align: center;
@@ -27,6 +30,8 @@
   flex-flow: row wrap;
   justify-content: space-evenly;
   margin: 45px 0 25px;
+  width: 100%;
+  max-width: 1250px;
   
   .values__wrapper {
     display: flex;
@@ -69,14 +74,21 @@
 }
 @media (max-width: 750px) {
   
+  .philosophy__title {
+    margin-bottom: 0 !important;
+  }
   .philosophy__values {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto auto;
+    margin: 25px 0 0;
   }
   .values__wrapper {
     margin-top: 25px;
     width: 100%;
+    &:after {
+      display: none;
+    }
   }
   .values__wrapper:last-of-type {
     grid-column: 1 / span 2;
