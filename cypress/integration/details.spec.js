@@ -63,17 +63,17 @@ describe('Details', () => {
         cy.wait(1000);
 
         // ensure that when not logged in, option doesn't exist
-        cy.get('.rating > a').should('not.exist');
+        cy.get('#write-review').should('not.exist');
 
         // login
-        cy.login();
+        cy.verifiedlogin();
 
         cy.wait(1000);
 
         // Click left-most card
         cy.get('.learning-object').first().click({ force: true }, { multiple: true });
 
-        cy.get('.rating > a').first().click({ force: true }, {  multiple: true });
+        cy.get('#write-review').click({ force: true }, {  multiple: true });
 
         cy.get('.new-rating-wrapper').should('be.visible').should('have.class', 'active');
         cy.get('.new-rating').should('be.visible');
@@ -123,7 +123,7 @@ describe('Details', () => {
         // Remove item from library 
         cy.get('#remove-library-item').click({ force: true });
 
-        cy.get('#library-count').contains('1');
+        cy.get('#library-count').contains('0');
     });
 
 

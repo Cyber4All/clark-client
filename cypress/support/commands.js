@@ -39,6 +39,20 @@ Cypress.Commands.add('login', () => {
     cy.get('#auth-button').click();
 });
 
+// Login help method (verified email)
+Cypress.Commands.add('verifiedlogin', () => {
+    // Click sign in button 
+    cy.get('#clark-sign-in').click({ force: true });
+
+    // Assert URL 
+    cy.url().should('include', 'login');
+
+    // Enter login info 
+    cy.get('input[name=username]').type('emailtestaccount');
+    cy.get('input[name=password]').type('password');
+    cy.get('#auth-button').click();
+});
+
 // Method that prevents uncaught exceptions from failing otherwise working tests
 // This is referenced in the learning object builder testing
 Cypress.on('uncaught:exception', (err, runnable) => {
