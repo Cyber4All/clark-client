@@ -42,24 +42,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((payload: Map<string, LearningOutcome>) => {
         if (payload) {
-          if (!payload.get(this.activeOutcome)) {
-            // the active outcome had a temp id but has been saved and assigned a new id
-            const arr = Array.from(payload.values());
-
-            // we need to fine the outcome in the new array that has the tempId property that matches the current activeOutcome value
-            for (let i = 0, l = arr.length; i < l; i++) {
-              const o = arr[i];
-
-              //@ts-ignore tempId here is a temporary non-saveable property used to uniquely identify outcomes created on the fly that haven't been saved yet
-              if (o.tempId && o.tempId === this.activeOutcome) {
-                // this is the same outcome as the active outcome, reset the activeOutcome id
-                this.activeOutcome = o.id;
-                break;
-              }
-            }
-          }
-
-          // now reset our outcomes map
+          // reset our outcomes map
           this.outcomes = payload;
         }
       });
@@ -113,7 +96,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     this.store.execute(actions.CREATE_OUTCOME, {}).then(id => {
       // TODO remove this
       const outcome = this.store.outcomeEvent.getValue().get(id);
-      this.validator.validateOutcome(outcome);
+      // this.validator.validateOutcome(outcome);
       setTimeout(() => {
         this.activeOutcome = id;
       }, 100);

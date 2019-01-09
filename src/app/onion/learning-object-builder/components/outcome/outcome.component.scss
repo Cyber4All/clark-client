@@ -92,6 +92,7 @@ $light-blue-gradient: linear-gradient(
       transition: all 0.2s ease;
       cursor: pointer;
       border: 3px solid white;
+      text-transform: capitalize;
 
       .svg-inline--fa,
       .icon {

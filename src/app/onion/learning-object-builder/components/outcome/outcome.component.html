@@ -9,9 +9,9 @@
     <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom.toLowerCase() === l.toLowerCase()}"
       (click)="emitLevel(l)">
       <div class="icon">
-        <span *ngIf="l === 'Remember and Understand'"><i class="fal fa-cloud"></i></span>
-        <span *ngIf="l === 'Apply and Analyze'"><i class="fal fa-bolt"></i></span>
-        <span *ngIf="l === 'Evaluate and Synthesize'"><i class="fal fa-balance-scale-right"></i></span>
+        <span *ngIf="l === 'remember and understand'"><i class="fal fa-cloud"></i></span>
+        <span *ngIf="l === 'apply and analyze'"><i class="fal fa-bolt"></i></span>
+        <span *ngIf="l === 'evaluate and synthesize'"><i class="fal fa-balance-scale-right"></i></span>
       </div>
       <div class="level-text">
         {{ l.replace('and', '&') }}

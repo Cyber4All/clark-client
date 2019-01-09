@@ -50,6 +50,7 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnDestroy() {
+    // remove any lingering styles from the document body
     document.body.style.overflow = 'visible';
   }
 }

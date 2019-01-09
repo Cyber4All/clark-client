@@ -3,7 +3,7 @@ import { SubmittableLearningObject, LearningObject, LearningOutcome, User, Stand
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { verbs } from '@cyber4all/clark-taxonomy';
+import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import {
   LearningObjectValidator,
@@ -39,7 +39,7 @@ export enum BUILDER_ACTIONS {
 
 /**
  * A central storage repository for communication between learning object builder components.
- * Maintains a redux-like store for all possible actions as well as handlers for accepting those actions.
+ * Maintains a stateful, single-source store for all possible actions as well as handlers for accepting those actions.
  *
  * @export
  * @class BuilderStore
@@ -47,7 +47,7 @@ export enum BUILDER_ACTIONS {
 @Injectable()
 export class BuilderStore {
   private _learningObject: LearningObject;
-  private _outcomesMap: Map<string, LearningOutcome> = new Map();
+  private _outcomesMap: Map<string, LearningOutcome | Partial<LearningOutcome>> = new Map();
 
   // keep track of outcomes that exist locally haven't been saved to service yet
   private newOutcomes: Map<string, any> = new Map();
@@ -68,7 +68,7 @@ export class BuilderStore {
 
   // fired when this service needs to propagate changes to the learning object down to children components
   public outcomeEvent: BehaviorSubject<
-    Map<string, LearningOutcome>
+    Map<string, LearningOutcome | Partial<LearningOutcome>>
   > = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
@@ -148,7 +148,7 @@ export class BuilderStore {
    *
    * @memberof BuilderStore
    */
-  private set outcomes(map: Map<string, LearningOutcome>) {
+  private set outcomes(map: Map<string, LearningOutcome | Partial<LearningOutcome>>) {
     this._outcomesMap = map;
     this.outcomeEvent.next(this.outcomes);
   }
@@ -171,7 +171,7 @@ export class BuilderStore {
     }
 
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
+    this.validator.validateLearningObject(this.learningObject);
     return this.learningObject;
   }
 
@@ -291,7 +291,7 @@ export class BuilderStore {
   ///////////////////////////////
 
   private async createOutcome() {
-    const outcome = new LearningOutcome();
+    const outcome: Partial<LearningOutcome> = { bloom: '', verb: '', text: '' };
     outcome.id = genId();
 
     // this outcome needs to be created in the API, not modified, so store it in newOutcomes map
@@ -300,7 +300,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
+    this.validator.validateLearningObject(this.learningObject);
 
     return outcome.id;
   }
@@ -328,7 +328,7 @@ export class BuilderStore {
 
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
-      outcome.verb = Array.from(verbs[params.bloom].values())[0];
+      outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
     } else if (params.verb) {
       outcome.verb = params.verb;
     } else if (typeof params.text === 'string') {
@@ -338,14 +338,16 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateOutcome(outcome);
+    // this.validator.validateOutcome(outcome);
 
     this.saveOutcome(
       {
         id: outcome.id,
         bloom: outcome.bloom,
         verb: outcome.verb,
-        text: outcome.text
+        text: outcome.text,
+        // @ts-ignore we're using serviceid here as a temporary property so it's valid
+        serviceId: outcome.serviceId
       },
       true
     );
@@ -399,16 +401,7 @@ export class BuilderStore {
     // TODO optimize this
     for (const k of dataProperties) {
       this.learningObject[k] = data[k];
-      console.log(this.learningObject[k]);
     }
-
-    try {
-      new SubmittableLearningObject(this.learningObject);
-    } catch (error) {
-      console.error(error);
-      alert('YA DONE MESSED UP AARON');
-    }
-
 
     this.saveObject(data, true);
   }
@@ -715,7 +708,7 @@ export class BuilderStore {
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
 
-    // if delay is true, combine the new properties with the object in the cache exit
+    // if delay is true, combine the new properties with the object in the cache subject
     // the cache subject will automatically call this function again without a delay property
     if (delay) {
       const id = data.id;
@@ -741,44 +734,24 @@ export class BuilderStore {
 
       if (this.newOutcomes.get(newValue.id)) {
         // this is a new outcome that hasn't been saved, create it
-        const tempId = newValue.id;
-        delete newValue.id;
 
         this.learningObjectService.addLearningOutcome(this.learningObject.id, newValue)
-          .then((id: string) => {
+          .then((serviceId: string) => {
             this.serviceInteraction$.next(false);
 
             // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
-            this.newOutcomes.delete(tempId);
+            this.newOutcomes.delete(newValue.id);
 
-            // retrieve the outcome from the map keyed by it's temp ID, convert it to a plain object, and then delete that entry;
-            const outcome = this.outcomes.get(tempId).toPlainObject();
-            this.outcomes.delete(tempId);
-
-            // remove the outcomes current id property
-            delete outcome.id;
-
-            // reset outcomes temp id with the new id from API
-            outcome.id = id;
-
-            // re-create a learning outcome from the plain object
-            const newOutcome = new LearningOutcome(outcome);
+            // retrieve the outcome from the map keyed by it's temp ID, and then delete that entry;
+            const outcome: Partial<LearningOutcome> = this.outcomes.get(newValue.id)
 
             // store the temporary id in the outcome so that the page component know's which outcome to keep focused
             // @ts-ignore this is a temporary property and won't be saved
-            newOutcome.tempId = tempId;
+            outcome.serviceId = serviceId;
 
             // re-enter outcome into map
-            this.outcomes.set(id, newOutcome);
+            this.outcomes.set(newValue.id, outcome);
             this.outcomeEvent.next(this.outcomes);
-
-            const outcomeError = this.validator.getOutcome(tempId);
-            const outcomeErrorType = this.validator.outcomeValidator.errors.saveErrors.has(tempId) ? 'save' : 'submit';
-
-            if (outcomeError) {
-              this.validator.outcomeValidator.errors.deleteOutcomeError(tempId);
-              this.validator.outcomeValidator.errors.setOutcomeError(outcomeErrorType, id, outcomeError);
-            }
           })
           .catch(err => {
             console.error('Error! ', err);
@@ -786,8 +759,22 @@ export class BuilderStore {
           });
       } else {
         // this is an existing outcome, modify it
+        // deep copy the value to modify it before sending it to the service
+        const updateValue = Object.assign(newValue);
+
+        // if this item has a serviceId property, it was created during this session and thus it's ID property was generated here
+        // and doesn't correspond with it's id in the database. Replace the id property with the serviceId property before sending
+        if (updateValue.serviceId) {
+          updateValue.id = updateValue.serviceId;
+        }
+
+        // delete any lingering serviceId properties before sending to service
+        delete updateValue.serviceId;
+
+        console.log(newValue, updateValue);
+
         this.learningObjectService
-          .saveOutcome(this.learningObject.id, newValue)
+          .saveOutcome(this.learningObject.id, updateValue)
           .then(() => {
             this.serviceInteraction$.next(false);
           })

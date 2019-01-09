@@ -17,8 +17,8 @@ export class MessagesService {
             return Promise.resolve(this._message);
         } else {
             return this.http.get(MISC_ROUTES.CHECK_STATUS, { withCredentials: true }).toPromise().then((val: any) => {
-                this._message = val;
-                return val;
+                this._message = val && val.length ? val : undefined;
+                return this._message;
             });
         }
     }
