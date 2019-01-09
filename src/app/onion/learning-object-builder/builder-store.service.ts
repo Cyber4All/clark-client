@@ -47,7 +47,7 @@ export enum BUILDER_ACTIONS {
 @Injectable()
 export class BuilderStore {
   private _learningObject: LearningObject;
-  private _outcomesMap: Map<string, LearningOutcome | Partial<LearningOutcome>> = new Map();
+  private _outcomesMap: Map<string, Partial<LearningOutcome>> = new Map();
 
   // keep track of outcomes that exist locally haven't been saved to service yet
   private newOutcomes: Map<string, any> = new Map();
@@ -68,7 +68,7 @@ export class BuilderStore {
 
   // fired when this service needs to propagate changes to the learning object down to children components
   public outcomeEvent: BehaviorSubject<
-    Map<string, LearningOutcome | Partial<LearningOutcome>>
+    Map<string, Partial<LearningOutcome>>
   > = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
@@ -148,7 +148,7 @@ export class BuilderStore {
    *
    * @memberof BuilderStore
    */
-  private set outcomes(map: Map<string, LearningOutcome | Partial<LearningOutcome>>) {
+  private set outcomes(map: Map<string, Partial<LearningOutcome>>) {
     this._outcomesMap = map;
     this.outcomeEvent.next(this.outcomes);
   }
@@ -171,7 +171,7 @@ export class BuilderStore {
     }
 
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
-    this.validator.validateLearningObject(this.learningObject);
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
     return this.learningObject;
   }
 
@@ -198,7 +198,7 @@ export class BuilderStore {
   makeNew(): LearningObject {
     this.learningObject = new LearningObject({ author: this.auth.user });
     this.outcomes = new Map();
-    this.validator.validateLearningObject(this.learningObject);
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
     return this.learningObject;
   }
 
@@ -300,7 +300,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateLearningObject(this.learningObject);
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     return outcome.id;
   }
@@ -338,7 +338,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    // this.validator.validateOutcome(outcome);
+    this.validator.validateLearningOutcome(outcome)
 
     this.saveOutcome(
       {
@@ -398,9 +398,20 @@ export class BuilderStore {
   private mutateObject(data: any) {
     const dataProperties = Object.keys(data);
 
+    const learningObject: Partial<LearningObject> = this.learningObject.toPlainObject();
+
     // TODO optimize this
     for (const k of dataProperties) {
-      this.learningObject[k] = data[k];
+      learningObject[k] = data[k];
+    }
+
+    this.validator.validateLearningObject(learningObject, this.outcomes);
+
+    console.log(Array.from(this.validator.errors.saveErrors.values()));
+
+    if (!this.validator.get('name')) {
+      console.log('here');
+      this.learningObject = new LearningObject(learningObject);
     }
 
     this.saveObject(data, true);
@@ -591,6 +602,10 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   public submitForReview(collection?: string): Promise<boolean> {
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
+
+    console.log(Array.from(this.validator.errors.submitErrors.values()));
+
     if (this.validator.saveable && this.validator.submittable) {
       this.validator.submissionMode = true;
 

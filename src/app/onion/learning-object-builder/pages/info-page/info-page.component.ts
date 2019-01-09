@@ -8,7 +8,6 @@ import { LearningObject, User } from '@cyber4all/clark-entity';
 import { COPY } from './info-page.copy';
 import { Subject } from 'rxjs/Subject';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'clark-info-page',
@@ -22,7 +21,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   selectedLevels: string[] = [];
   academicLevels = Object.values(LearningObject.Level);
 
-  formGroup = new FormGroup({});
   descriptionTouched: boolean;
   descriptionDirty: boolean;
 
@@ -39,18 +37,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
           // re-initialize our state variables
           this.learningObject = payload;
           this.selectedLevels = payload.levels || [];
-
-          // re-initialize our form group
-          this.formGroup = new FormGroup({
-            name: new FormControl(this.learningObject.name, [
-              // validate name
-              (() => {
-                return (control: AbstractControl): { [key: string]: any } | null => {
-                  return this.validator.validateName(control.value);
-                };
-              })()
-            ])
-          });
         }
       });
   }
@@ -87,7 +73,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     }
 
     this.mutateLearningObject({ levels: this.selectedLevels });
-    this.validator.validateAcademicLevels(this.selectedLevels);
   }
 
   ngOnDestroy() {

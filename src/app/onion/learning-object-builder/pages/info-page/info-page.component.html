@@ -4,11 +4,11 @@
   </div>
   <div main>
     <div *ngIf="learningObject; else loadingTemplate" class="content-wrapper">
-      <form [formGroup]="formGroup ">
+      <form>
         <div class="title">
           {{copy.TITLE}}
         </div>
-        <clark-info-page-metadata [error]="(formGroup.get('name').touched || formGroup.get('name').dirty) ? validator.get('name') : undefined">
+        <clark-info-page-metadata [error]="validator.get('name') || undefined">
           <div title>{{copy.NAME}}</div>
           <div directions>{{copy.NAMEPLACEHOLDER}}</div>
           <div data>
@@ -62,7 +62,7 @@
           <div title>{{copy.QUESTION}}</div>
           <div directions>{{copy.TIP}}</div>
           <div data>
-            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="validator.validateDescription($event); mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
+            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
           </div>
         </clark-info-page-metadata>
       </form>

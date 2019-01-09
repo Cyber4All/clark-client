@@ -88,7 +88,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   mutateOutcome(id: string, params: any) {
     this.store.execute(actions.MUTATE_OUTCOME, { id, params }).then((outcome: LearningOutcome) => {
-      this.validator.validateOutcome(outcome);
+      this.validator.validateLearningOutcome(outcome);
     });
   }
 
@@ -96,7 +96,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     this.store.execute(actions.CREATE_OUTCOME, {}).then(id => {
       // TODO remove this
       const outcome = this.store.outcomeEvent.getValue().get(id);
-      // this.validator.validateOutcome(outcome);
+      this.validator.validateLearningOutcome(outcome);
       setTimeout(() => {
         this.activeOutcome = id;
       }, 100);
