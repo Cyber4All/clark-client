@@ -20,10 +20,18 @@
       </span>
     </button>
 
+    <span class="btn-group vertical" *ngIf="isViewable">
+      <button class="button neutral on-white" id="edit-button" type="submit"> 
+        <a (click)="openAdminApp()">Revise</a>
+
+      </button>
+    </span>
+    <!--
     <button (click)="clark.center" class="button neutral on-white" id="edit-button" type="submit"> 
-      {{ 'Revise' }}
+      Revise
     </button>
-    
+  -->
+
   </div>
   <ng-container *ngIf="!auth.user">
     <div class="login-msg" id="login-msg">Please

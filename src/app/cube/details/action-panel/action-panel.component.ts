@@ -1,7 +1,7 @@
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
-import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
+import { AuthService, DOWNLOAD_STATUS, AUTH_GROUP } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { RatingService } from '../../../core/rating.service';
@@ -9,6 +9,7 @@ import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
+import { COPY } from 'app/cube/browse/browse.copy';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -30,6 +31,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
   @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
+  
 
   private isDestroyed$ = new Subject<void>();
   downloadStatus: DOWNLOAD_STATUS = 0;
@@ -45,6 +47,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
+  authGroup: AUTH_GROUP = 0;
+  isViewable: boolean = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -80,6 +84,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       });
     });
 
+    this.isViewable = this.auth.hasViewableAccess();
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
@@ -93,8 +98,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   get isReleased(): boolean {
     return this.downloadStatus !== DOWNLOAD_STATUS.NOT_RELEASED;
   }
-
-
 
   async addToCart(download?: boolean) {
     this.error = false;
@@ -249,6 +252,11 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get isMobile() {
     return this.windowWidth <= 750;
+  }
+
+  openAdminApp() {
+    const route = `${environment.adminAppUrl}/objects/details/${this.learningObject.id}`;
+    window.open(route)
   }
 
   ngOnDestroy() {

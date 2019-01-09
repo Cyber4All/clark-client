@@ -18,6 +18,7 @@ export enum AUTH_GROUP {
   VISITOR,
   USER,
   REVIEWER,
+  EDITOR,
   ADMIN
 }
 
@@ -315,6 +316,12 @@ export class AuthService {
   }
 
   /**
+   * Identifies if the user should be able to see the "revise" button on the action panel of a learning object.
+   */
+  hasViewableAccess(): boolean {
+    return this.group.getValue() > AUTH_GROUP.REVIEWER;
+  }
+  /**
    * Assigns an authorization group to a user based on their access groups.
    * The highest priority group will be assigned.
    */
@@ -322,7 +329,10 @@ export class AuthService {
     if (this.user['accessGroups']) {
       if (this.user['accessGroups'] && this.user['accessGroups'].includes('admin')) {
         this.group.next(AUTH_GROUP.ADMIN);
-      } else if (this.user['accessGroups'].includes('reviewer')) {
+      } else if (this.user['accessGroups'].includes('editor')) {
+          this.group.next(AUTH_GROUP.EDITOR);
+        }
+       else if (this.user['accessGroups'].includes('reviewer')) {
         this.group.next(AUTH_GROUP.REVIEWER);
       }
     } else {
