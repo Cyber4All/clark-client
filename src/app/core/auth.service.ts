@@ -332,7 +332,7 @@ export class AuthService {
       } else if (this.user['accessGroups'].includes('editor')) {
           this.group.next(AUTH_GROUP.EDITOR);
         }
-       else if (this.user['accessGroups'].includes('reviewer')) {
+      else { (this.user['accessGroups'].includes('reviewer')) 
         this.group.next(AUTH_GROUP.REVIEWER);
       }
     } else {

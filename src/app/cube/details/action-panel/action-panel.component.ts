@@ -31,7 +31,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
   @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
-  
 
   private isDestroyed$ = new Subject<void>();
   downloadStatus: DOWNLOAD_STATUS = 0;
@@ -48,7 +47,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   loggedin = false;
   showDownloadModal = false;
   authGroup: AUTH_GROUP = 0;
-  isViewable: boolean = false;
+  isViewable = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -256,7 +255,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   openAdminApp() {
     const route = `${environment.adminAppUrl}/objects/details/${this.learningObject.id}`;
-    window.open(route)
+    window.open(route);
   }
 
   ngOnDestroy() {
