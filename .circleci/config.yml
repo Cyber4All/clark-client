@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Clone e2eBox Repository 
           command: >-
-            cd .. && git clone https://${github_username}:${github_password}@github.com/nvisal1/CLARK-e2eBox.git
+           ls && cd .. && git clone https://${github_username}:${github_password}@github.com/nvisal1/CLARK-e2eBox.git
 
       - run: 
           name: Install Docker Compose
