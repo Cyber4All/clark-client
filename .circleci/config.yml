@@ -24,12 +24,12 @@ jobs:
       - run:
           name: Clone e2eBox Repository 
           command: >-
+            ls
             cd .. && git clone https://${github_username}:${github_password}@github.com/nvisal1/CLARK-e2eBox.git
 
       - run: 
           name: Install Docker Compose
           command: |
-            ls
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
@@ -37,8 +37,8 @@ jobs:
       - run:
           name: Run e2e Tests
           command: |
-            cd .. && ls
-            cd ../CLARK-e2eBox && docker-compose run cypress ./node_modules/.bin/cypress run --spec cypress/integration/register.spec.js  --record --key ${cypress_dashboard_key} \ --config baseUrl=http://127.0.0.1:4200
+            ls
+            cd CLARK-e2eBox && docker-compose run cypress ./node_modules/.bin/cypress run --spec cypress/integration/register.spec.js  --record --key ${cypress_dashboard_key} \ --config baseUrl=http://127.0.0.1:4200
   deploy:
     <<: *defaults
     steps:
