@@ -20,9 +20,7 @@ jobs:
           paths: ./
   test:
     <<: *defaults
-    steps:
-      environment:
-            
+    steps:  
       - run:
           name: Clone e2eBox Repository 
           command: >-
