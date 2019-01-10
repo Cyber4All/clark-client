@@ -1,0 +1,15 @@
+<div class="chart-wrapper">
+  <div class="chart">
+    <div class="title">
+      {{chart.title}}
+    </div>
+    <canvas baseChart [data]="chart.data" [labels]="chart.labels" [colors]="chart.colors" [options]="chart.options"
+      [legend]="chart.legend" [chartType]="chart.type"></canvas>
+    <div class="legend">
+      <div *ngFor="let key of chart.labels; let i=index;" class="key">
+        <div class="color" [style.backgroundColor]="chart.colors[0].backgroundColor[i]"></div>
+        <div class="label">{{key | titlecase}}</div>
+      </div>
+    </div>
+  </div>
+</div>
