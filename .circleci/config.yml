@@ -46,7 +46,6 @@ jobs:
       - run:
           name: Run e2e Tests
           command: |
-            ps -ef | grep Xvfb | grep -v grep | awk '{print $2}' | xargs kill -9 &&
             cd ../CLARK-e2eBox && docker-compose run cypress ./node_modules/.bin/cypress run --spec cypress/integration/register.spec.js  --record --key ${cypress_dashboard_key} \ --config baseUrl=http://127.0.0.1:4200
   deploy:
     <<: *defaults
