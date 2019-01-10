@@ -21,6 +21,8 @@ jobs:
   test:
     <<: *defaults
     steps:  
+      - attach_workspace : 
+          at: ~/clark-client
       - run:
           name: Clone e2eBox Repository 
           command: >-
