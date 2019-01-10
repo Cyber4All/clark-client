@@ -7,14 +7,19 @@ import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { PhilosophyComponent } from './philosophy/philosophy.component';
+import { UsageStatsModule } from './usage-stats/usage-stats.module';
 
 @NgModule({
-  imports: [FormsModule, CommonModule, SharedModule, CubeSharedModule, RouterModule],
-  exports: [HomeComponent],
-  declarations: [
-    HomeComponent,
-    PhilosophyComponent
+  imports: [
+    FormsModule,
+    CommonModule,
+    SharedModule,
+    CubeSharedModule,
+    UsageStatsModule,
+    RouterModule
   ],
-  providers: [],
+  exports: [HomeComponent],
+  declarations: [HomeComponent, PhilosophyComponent],
+  providers: []
 })
-export class HomeModule { }
+export class HomeModule {}
