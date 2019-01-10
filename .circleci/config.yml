@@ -16,8 +16,9 @@ jobs:
           name: Build Application
           command: yarn ng build --prod --aot=false --build-optimizer=false
       - persist_to_workspace: 
-          root: dist
-          paths: ./
+          root: ./
+          paths: 
+            - ./
   test:
     <<: *defaults
     steps:  
