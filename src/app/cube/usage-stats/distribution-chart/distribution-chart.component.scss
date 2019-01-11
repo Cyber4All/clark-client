@@ -1,0 +1,20 @@
+.chart-wrapper {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: #FFF;
+  padding: 20px;
+  border-radius: 2px;
+}
+
+.chart {
+  .title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  canvas {
+    margin-bottom: 15px;
+  }
+}

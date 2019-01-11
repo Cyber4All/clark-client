@@ -1,0 +1,9 @@
+<div class="chart-wrapper">
+  <div class="chart">
+    <div class="title">
+      {{chart?.title}}
+    </div>
+    <canvas baseChart [data]="chart?.data" [labels]="chart?.labels" [colors]="chart?.colors" [options]="chart?.options"
+      [legend]="chart?.legend" [chartType]="chart?.type"></canvas>
+  </div>
+</div>
