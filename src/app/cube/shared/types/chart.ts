@@ -26,11 +26,17 @@ interface ChartLayout {
   padding: ChartPadding | number;
 }
 
+interface ChartLegendOptions {
+  display?: boolean;
+  position?: 'top' | 'bottom';
+}
+
 interface ChartOptions {
   maintainAspectRatio?: boolean;
   responsive?: boolean;
   scales?: ScaleOptions;
   layout?: ChartLayout;
+  legend?: ChartLegendOptions;
 }
 interface CartesianPoint {
   x: number;
