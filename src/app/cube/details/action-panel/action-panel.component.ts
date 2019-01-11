@@ -82,7 +82,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       });
     });
 
-    this.isViewable = this.auth.hasViewableAccess();
+    this.isViewable = this.auth.hasEditorAccess();
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;

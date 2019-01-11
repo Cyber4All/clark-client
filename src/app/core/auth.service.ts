@@ -309,16 +309,16 @@ export class AuthService {
   }
 
   /**
-   * Identifies if the user should have access to learning objects not yet released.
+   * Identifies if the current logged in user has reviewer priviledges.
    */
-  hasPrivelagedAccess(): boolean {
+  hasReviewerAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.USER;
   }
 
   /**
-   * Identifies if the current logged in user is allowed to see/view certain things on website.
+   * Identifies if the current logged in user has editor priviledges.
    */
-  public hasViewableAccess(): boolean {
+  public hasEditorAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.REVIEWER;
   }
   /**
