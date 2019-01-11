@@ -1,0 +1,28 @@
+@import '~_vars.scss';
+
+$row-gap: 25px;
+
+.container {
+  padding: 25px 15px
+}
+
+.header {
+  margin-bottom: 25px;
+  font-size: 22px;
+}
+
+.stat-counters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  grid-column-gap: 25px;
+  grid-row-gap: $row-gap;
+  margin-bottom: $row-gap;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-column-gap: 25px;
+  grid-row-gap: $row-gap;
+  margin-bottom: $row-gap;
+}

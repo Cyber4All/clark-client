@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="header">
+    <span>CLARK Usage Statistics</span>
+  </div>
+  <div *ngIf="counterStats?.length" class="stat-counters">
+    <cube-counter-block *ngFor="let stat of counterStats" [stat]="stat"></cube-counter-block>
+  </div>
+  <div class="charts">
+    <cube-distribution-chart class="chart" [chart]="outcomeDistributionChart"></cube-distribution-chart>
+    <cube-distribution-chart class="chart" [chart]="lengthDistributionChart"></cube-distribution-chart>
+  </div>
+  <cube-heat-map></cube-heat-map>
+</div>
