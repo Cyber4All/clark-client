@@ -5,7 +5,7 @@ import { Query } from '../../shared/interfaces/query';
 import { COPY } from './home.copy';
 import { AuthService } from '../../core/auth.service';
 import { CollectionService, Collection } from '../../core/collection.service';
-import { UsageStats } from './usage-stats/types';
+import { UsageStats } from '../shared/types';
 
 @Component({
   selector: 'cube-home',
@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
       }
     },
     users: {
+      total: 382,
       organizations: 232
     }
   };

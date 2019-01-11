@@ -7,7 +7,7 @@ import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { PhilosophyComponent } from './philosophy/philosophy.component';
-import { UsageStatsModule } from './usage-stats/usage-stats.module';
+import { StatCountersComponent } from './stat-counters/stat-counters.component';
 
 @NgModule({
   imports: [
@@ -15,11 +15,10 @@ import { UsageStatsModule } from './usage-stats/usage-stats.module';
     CommonModule,
     SharedModule,
     CubeSharedModule,
-    UsageStatsModule,
     RouterModule
   ],
   exports: [HomeComponent],
-  declarations: [HomeComponent, PhilosophyComponent],
+  declarations: [HomeComponent, PhilosophyComponent, StatCountersComponent],
   providers: []
 })
 export class HomeModule {}

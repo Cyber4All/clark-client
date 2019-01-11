@@ -26,6 +26,11 @@ $banner-height: 90px;
   }
 }
 
+.info-banner {
+  background: $blue-gradient;
+  width: 100%;
+  padding: 10px;
+}
 
 .top {
 
@@ -316,7 +321,7 @@ $banner-height: 90px;
 
 @media (max-width: 750px) {
 
-  .usage-stats {
+  .info-banner {
     display: none;
   }
 
