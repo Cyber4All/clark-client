@@ -46,7 +46,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
-  authGroup: AUTH_GROUP = 0;
   isViewable = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
@@ -253,6 +252,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     return this.windowWidth <= 750;
   }
 
+  // Navigates the route from client to admin perspective
   openAdminApp() {
     const route = `${environment.adminAppUrl}/objects/details/${this.learningObject.id}`;
     window.open(route);

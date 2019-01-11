@@ -316,9 +316,9 @@ export class AuthService {
   }
 
   /**
-   * Identifies if the user should be able to see the "revise" button on the action panel of a learning object.
+   * Identifies if the current logged in user is allowed to see/view certain things on website.
    */
-  hasViewableAccess(): boolean {
+  public hasViewableAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.REVIEWER;
   }
   /**
