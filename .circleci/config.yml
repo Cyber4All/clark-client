@@ -47,7 +47,7 @@ jobs:
           name: Run e2e Tests
           command: |
             cd ../CLARK-e2eBox
-            docker-compose run cypress ./node_modules/.bin/cypress run --spec 'cypress/integration/register.spec.js' --record --key ${cypress_dashboard_key} \ --config baseUrl=http://clark-client:4200
+            docker-compose run cypress ./node_modules/.bin/cypress run --record --key ${cypress_dashboard_key} \ --config baseUrl=http://clark-client:4200
   deploy:
     <<: *defaults
     steps:
