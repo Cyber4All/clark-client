@@ -1,0 +1,40 @@
+.counter-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+
+  .stat-block {
+    text-shadow: 0 2px transparent;
+    text-align: center;
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    color: white;
+
+    .counter {
+      font-size: 36px;
+    }
+
+    .label {
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    &:not(:last-of-type):after {
+      content: '';
+      top: 0;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.25);
+      opacity: 0.8;
+      width: 2px;
+      margin: auto;
+      right: 0;
+      position: absolute;
+    }
+  }
+
+}
