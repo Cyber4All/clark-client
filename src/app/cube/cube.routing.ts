@@ -17,37 +17,65 @@ import { UserResolver } from './core/user.resolver';
 
 // Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {
-  path: 'details/:username/:learningObjectName', component: DetailsComponent, data: { breadcrumb: 'Details' }
+  path: 'details/:username/:learningObjectName',
+  component: DetailsComponent,
+  data: { breadcrumb: 'Details' }
 };
 const cube_routes: Routes = [
   {
-    path: '', component: CubeComponent, children: [
+    path: '',
+    component: CubeComponent,
+    children: [
       detailRoute,
       { path: 'home', component: HomeComponent },
       { path: 'c/:name', component: CollectionComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {
-        path: 'browse/:query', component: RouterComponent, data: { breadcrumb: 'Browse', blockForCrumbs: true },
+        path: 'browse/:query',
+        component: RouterComponent,
+        data: { breadcrumb: 'Browse', blockForCrumbs: true },
         children: [{ path: '', component: BrowseComponent }, detailRoute]
       },
       {
-        path: 'browse', component: RouterComponent, data: { breadcrumb: 'Browse' },
+        path: 'browse',
+        component: RouterComponent,
+        data: { breadcrumb: 'Browse' },
         children: [{ path: '', component: BrowseComponent }, detailRoute]
       },
       {
-        path: 'library', component: RouterComponent, canActivate: [AuthGuard],
+        path: 'library',
+        component: RouterComponent,
+        canActivate: [AuthGuard],
         children: [{ path: '', component: CartComponent }, detailRoute]
       },
-      { path: 'users/:username', component: UserProfileComponent, resolve: {
-        user: UserResolver
-      }},
-      { path: 'users/:username/preferences', component: UserPreferencesComponent, data: { breadcrumb: 'Preferences' },
+      {
+        path: 'system/usage',
+        loadChildren: 'app/cube/usage-stats/usage-stats.module#UsageStatsModule'
+      },
+      {
+        path: 'users/:username',
+        component: UserProfileComponent,
+        resolve: {
+          user: UserResolver
+        }
+      },
+      {
+        path: 'users/:username/preferences',
+        component: UserPreferencesComponent,
+        data: { breadcrumb: 'Preferences' },
         canActivate: [AuthGuard]
       },
       // Catch All
-      { path: '**', component: UserProfileComponent, pathMatch: 'full', canActivate: [ProfileGuard] },
+      {
+        path: '**',
+        component: UserProfileComponent,
+        pathMatch: 'full',
+        canActivate: [ProfileGuard]
+      }
     ]
   }
 ];
 
-export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(cube_routes);
+export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(
+  cube_routes
+);
