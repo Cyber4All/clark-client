@@ -8,11 +8,20 @@
 }
 
 .chart {
-  .title {
-    font-size: 18px;
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-size: 18px;
+      color: #333;
+    }
+
     margin-bottom: 15px;
-    color: #333;
+
   }
+
 
   canvas {
     margin-bottom: 15px;
@@ -26,8 +35,17 @@
   }
 
   .chart {
-    .title {
-      text-align: center;
+    .header {
+      display: block;
+
+      .title {
+        text-align: center;
+      }
+
+      .learn-more {
+        display: none;
+      }
     }
+
   }
 }

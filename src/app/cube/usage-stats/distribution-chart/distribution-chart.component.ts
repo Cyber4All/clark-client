@@ -8,6 +8,7 @@ import { PieChart, DoughnutChart } from 'app/cube/shared/types';
 })
 export class DistributionChartComponent implements OnInit {
   @Input() chart: PieChart | DoughnutChart;
+  @Input() moreInfoLink: string;
   @Output() chartNotHovered: EventEmitter<void> = new EventEmitter<void>();
   constructor() {}
 

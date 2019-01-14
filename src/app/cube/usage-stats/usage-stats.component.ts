@@ -36,8 +36,10 @@ export class UsageStatsComponent implements OnInit {
   };
 
   outcomeDistributionChart: PieChart;
+  outcomeLearnMoreLink = 'http://about.clark.center/tutorial/#Uploading';
 
   lengthDistributionChart: PieChart;
+  lengthLearnMoreLink = 'http://about.clark.center/tutorial/#Uploading';
 
   counterStats: CounterStat[] = [];
 
