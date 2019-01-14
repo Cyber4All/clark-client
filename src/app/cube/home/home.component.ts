@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { COPY } from './home.copy';
-import { AuthService, AUTH_GROUP } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { CollectionService, Collection } from '../../core/collection.service';
 
 
@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
     limit: 1,
-    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
+    released: this.auth.hasPrivelagedAccess() ? undefined : true
   };
   placeholderText = this.copy.SEARCH_PLACEHOLDER;
   collections: Collection[];

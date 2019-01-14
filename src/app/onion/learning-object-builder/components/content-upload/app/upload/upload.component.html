@@ -1,13 +1,4 @@
 <div class="inner">
-  <div *ngIf="disabled" class="disabled">
-    <div class="disabled-inner">
-      <div class="image">
-        😢
-      </div>
-      Unfortunately, uploading materials to CLARK is disabled through the labor day weekend. We are working tirelessly
-      to restore this service and apologize for any inconvenience this causes.
-    </div>
-  </div>
   <div class="manage-materials">
     <div class="tabs">
       <ul id="materials-title">
@@ -56,8 +47,7 @@
   </div>
   <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()"
     (addedFile)="addFile($event)" (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)"
-    (complete)="dzComplete($event)" (success)="uploadSuccess()" (queueComplete)="queueComplete($event)" (error)="handleError($event)"
-    (canceled)="handleCanceled($event)">
+    (complete)="dzComplete($event)" (success)="uploadSuccess()" (queueComplete)="queueComplete($event)" (error)="handleError($event)">
     <div class="uploader-content">
       <div class="uploader-icon">
         <i class='far fa-arrow-up'></i>

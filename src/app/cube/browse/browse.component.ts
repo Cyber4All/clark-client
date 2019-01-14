@@ -10,7 +10,7 @@ import {
  import { FilterSection } from '../../shared/filter/filter.component';
  import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs/Rx';
-import { AuthService, AUTH_GROUP } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
 import { OrderBy, Query, SortType } from '../../shared/interfaces/query';
 import { ModalListElement, ModalService, Position } from '../../shared/modals';
@@ -38,7 +38,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     orderBy: undefined,
     sortType: undefined,
     collection: '',
-    released: this.auth.group.value !== AUTH_GROUP.ADMIN ? true : undefined
+    released: this.auth.hasPrivelagedAccess() ? undefined : true
   };
 
   tooltipText = {
@@ -121,19 +121,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
     });
 
     // whenever the queryParams change, map them to the query object and perform the search
-    this.route.queryParams
-      .takeUntil(this.unsubscribe)
-      .subscribe(async params => {
-        const collections = await this.collectionService.getCollections();
-        this.filters[0].values = collections.map(c => ({
-          name: c.name,
-          value: c.abvName
-        }));
-        this.query.released =
-          this.auth.group.getValue() !== AUTH_GROUP.ADMIN ? true : undefined;
-        this.makeQuery(params);
-        this.fetchLearningObjects(this.query);
-      });
+    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
+      const collections = await this.collectionService.getCollections();
+      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
+      this.query.released = this.auth.hasPrivelagedAccess() ? undefined : true;
+      this.makeQuery(params);
+      this.fetchLearningObjects(this.query);
+    });
   }
 
   get isMobile(): boolean {
