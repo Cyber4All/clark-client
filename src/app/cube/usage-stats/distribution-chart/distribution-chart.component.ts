@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PieChart, DoughnutChart } from 'app/cube/shared/types';
 
 @Component({
@@ -8,7 +8,11 @@ import { PieChart, DoughnutChart } from 'app/cube/shared/types';
 })
 export class DistributionChartComponent implements OnInit {
   @Input() chart: PieChart | DoughnutChart;
+  @Output() chartNotHovered: EventEmitter<void> = new EventEmitter<void>();
   constructor() {}
 
   ngOnInit() {}
+  handleMouseleave() {
+    this.chartNotHovered.emit();
+  }
 }
