@@ -106,7 +106,9 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
             }
 
             // update the selected outcomes list
-            this.selectedOutcomeIDs = outcome.mappings.map(x => x.id);
+            if (outcome.mappings) {
+              this.selectedOutcomeIDs = outcome.mappings.map(x => x.id);
+            }
           } else {
             this.suggestions = [];
             this.suggestStringValue = '';

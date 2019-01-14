@@ -291,7 +291,7 @@ export class BuilderStore {
   ///////////////////////////////
 
   private async createOutcome() {
-    const outcome: Partial<LearningOutcome> = { bloom: '', verb: '', text: '' };
+    const outcome: Partial<LearningOutcome> = { bloom: '', verb: '', text: '', mappings: [] };
     outcome.id = genId();
 
     // this outcome needs to be created in the API, not modified, so store it in newOutcomes map
