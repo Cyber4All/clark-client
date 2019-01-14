@@ -4,23 +4,6 @@
       {{chart?.title}}
     </div>
     <canvas baseChart [data]="chart?.data" [labels]="chart?.labels" [colors]="chart?.colors" [options]="chart?.options"
-      [legend]="chart?.legend" [chartType]="chart?.type"></canvas>
+      [legend]="chart?.legend" [chartType]="chart?.type" (mouseleave)="handleMouseleave()"></canvas>
   </div>
-</div>
-
-<div class="printer-friendly">
-  <div class="header">
-    {{chart?.title}}
-  </div>
-  <div class="data-wrapper">
-    <div class="data" *ngFor="let label of chart?.labels; let i=index;">
-      <div class="stat-label">
-        {{label}}
-      </div>
-      <div class="value">
-        {{chart?.data[i]}}
-      </div>
-    </div>
-  </div>
-
 </div>
