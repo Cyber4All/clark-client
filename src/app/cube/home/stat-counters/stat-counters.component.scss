@@ -38,3 +38,39 @@
   }
 
 }
+
+@media screen and (max-width: 950px) {
+  .counter-wrapper {
+    .stat-block {
+      .counter {
+        font-size: 28px;
+      }
+
+      .label {
+        font-size: 14px;
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 850px) {
+  .counter-wrapper {
+    .stat-block {
+
+      // Hid last 2
+      &:nth-last-of-type(1),
+      &:nth-last-of-type(2) {
+        display: none;
+      }
+
+      // Remove bar from ending block
+      &:nth-last-of-type(3) {
+        &::after {
+          content: none;
+        }
+      }
+    }
+  }
+
+}
