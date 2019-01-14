@@ -46,7 +46,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
-  isViewable = false;
+  isButtonViewable = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -82,7 +82,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       });
     });
 
-    this.isViewable = this.auth.hasEditorAccess();
+    this.isButtonViewable = this.auth.hasEditorAccess();
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
