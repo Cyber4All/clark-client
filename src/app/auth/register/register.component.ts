@@ -140,14 +140,11 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-<<<<<<< HEAD
     this.nav.hide(); // hides nav bar
-=======
      // If development/testing set verified to true in order to skip reCaptcha check in e2e tests
      if (environment.production === false) {
       this.verified = true;
     }
->>>>>>> docker-e2e
   }
 
   submit() {
