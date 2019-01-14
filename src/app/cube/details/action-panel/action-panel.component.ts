@@ -78,6 +78,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   get isReleased(): boolean {
+    // FIXME status should be accessed as learningObject.status and should be compared to the enum in clark-entity
     return this.learningObject['status'] === 'released';
   }
 
