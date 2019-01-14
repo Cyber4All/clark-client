@@ -4,7 +4,6 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
-import { LearningObjectStatus } from '@env/environment';
 import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
 import { Subject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';

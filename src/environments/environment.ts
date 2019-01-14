@@ -10,11 +10,3 @@ export const environment = {
   suggestionUrl: 'http://localhost:7000',
   contentManagerURL: 'http://localhost:5000'
 };
-
-export enum LearningObjectStatus {
-  PUBLISHED = 'published',
-  UNDER_REVIEW = 'review',
-  WAITING = 'waiting',
-  DENIED = 'denied',
-  UNPUBLISHED = 'unpublished'
-}
