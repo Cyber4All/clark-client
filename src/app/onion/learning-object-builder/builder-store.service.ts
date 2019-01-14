@@ -400,17 +400,13 @@ export class BuilderStore {
 
     const learningObject: Partial<LearningObject> = this.learningObject.toPlainObject();
 
-    // TODO optimize this
     for (const k of dataProperties) {
       learningObject[k] = data[k];
     }
 
     this.validator.validateLearningObject(learningObject, this.outcomes);
 
-    console.log(Array.from(this.validator.errors.saveErrors.values()));
-
     if (!this.validator.get('name')) {
-      console.log('here');
       this.learningObject = new LearningObject(learningObject);
     }
 
@@ -604,8 +600,6 @@ export class BuilderStore {
   public submitForReview(collection?: string): Promise<boolean> {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
-    console.log(Array.from(this.validator.errors.submitErrors.values()));
-
     if (this.validator.saveable && this.validator.submittable) {
       this.validator.submissionMode = true;
 
@@ -785,8 +779,6 @@ export class BuilderStore {
 
         // delete any lingering serviceId properties before sending to service
         delete updateValue.serviceId;
-
-        console.log(newValue, updateValue);
 
         this.learningObjectService
           .saveOutcome(this.learningObject.id, updateValue)

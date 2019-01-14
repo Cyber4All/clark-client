@@ -66,6 +66,7 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
   toggleLevel(level: string) {
     const index = this.selectedLevels.indexOf(level);
+
     if (index >= 0) {
       this.selectedLevels.splice(index, 1);
     } else {
