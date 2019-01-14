@@ -30,6 +30,12 @@ interface ChartLegendOptions {
   display?: boolean;
   position?: 'top' | 'bottom';
 }
+interface ChartHoverOptions {
+  onHover?: Function;
+}
+interface ChartAnimationOptions {
+  onComplete?: Function;
+}
 
 interface ChartOptions {
   maintainAspectRatio?: boolean;
@@ -37,6 +43,8 @@ interface ChartOptions {
   scales?: ScaleOptions;
   layout?: ChartLayout;
   legend?: ChartLegendOptions;
+  hover?: ChartHoverOptions;
+  animation?: ChartAnimationOptions;
 }
 interface CartesianPoint {
   x: number;
