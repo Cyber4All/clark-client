@@ -44,12 +44,8 @@ export const USER_ROUTES = {
       learningObjectName
     )}/publish`;
   },
-  ADD_LEARNING_OBJET_TO_COLLECTION(
-    learningObjectId: string
-  ) {
-    return `${
-      environment.apiURL
-    }/learning-objects/${encodeURIComponent(
+  ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/collections`;
   },
@@ -222,4 +218,9 @@ export const RATING_ROUTES = {
 };
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
+};
+
+export const STATS_ROUTES = {
+  LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
+  USERS_STATS: `${environment.apiURL}/users/stats`
 };
