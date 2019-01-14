@@ -18,3 +18,47 @@
     margin-bottom: 15px;
   }
 }
+
+.printer-friendly {
+  display: none;
+
+  .header {
+    background-color: #3b608b;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+    border: 1px solid #333;
+    text-align: center;
+    padding: 5px 0;
+  }
+
+  .data-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-row-gap: 5px;
+  }
+
+  .data {
+    margin-bottom: 10px;
+
+    .stat-label {
+      margin-right: 5px;
+      font-size: 15px;
+    }
+
+    .value {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+}
+
+@media print {
+  .chart-wrapper {
+    display: none;
+  }
+
+  .printer-friendly {
+    display: block;
+  }
+}

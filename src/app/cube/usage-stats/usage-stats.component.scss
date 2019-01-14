@@ -26,3 +26,13 @@ $row-gap: 25px;
   grid-row-gap: $row-gap;
   margin-bottom: $row-gap;
 }
+
+@media print {
+  .container {
+    padding: 25px 0;
+  }
+
+  .heat-map {
+    display: none;
+  }
+}
