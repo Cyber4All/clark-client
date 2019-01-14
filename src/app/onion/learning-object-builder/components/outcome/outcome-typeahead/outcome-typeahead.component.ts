@@ -132,7 +132,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
     const levelsArray = Array.from(levels.values());
     for (let i = 0, l = levelsArray.length; i < l; i++) {
       // for this level, grab it's verbs and check if the current verb is in that list
-      if (taxonomy.taxons[levelsArray[i]].verbs.includes(verb)) {
+      if (taxonomy.taxons[levelsArray[i]].verbs.includes(verb.toLowerCase())) {
         this.category = levelsArray[i];
         if (!noEmit) {
           this.selectedCategory.emit(this.category);
