@@ -30,6 +30,19 @@ $banner-height: 90px;
   background: $blue-gradient;
   width: 100%;
   padding: 10px;
+
+  .view-all {
+    text-align: right;
+
+    a {
+      color: #FFF;
+      font-size: 18px;
+
+      .text {
+        margin-right: 15px;
+      }
+    }
+  }
 }
 
 .top {

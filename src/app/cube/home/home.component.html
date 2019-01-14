@@ -17,6 +17,10 @@
   </div>
 </section>
 <section class="info-banner">
+  <div class="view-all">
+    <a [routerLink]="['/system/usage']">
+      <span class="text">View All</span><i class="far fa-angle-right"></i></a>
+  </div>
   <cube-stat-counters [stats]="usageStats"></cube-stat-counters>
 </section>
 <div class="featured-viewport">
