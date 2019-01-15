@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LearningObject, User } from '@cyber4all/clark-entity';
+import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../../../core/auth.service';
@@ -41,6 +42,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
+  isEditButtonViewable = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -69,8 +71,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.hasDownloadAccess = this.auth.hasPrivelagedAccess() || this.isReleased;
+    this.hasDownloadAccess = this.auth.hasReviewerAccess() || this.isReleased;
 
+    this.isEditButtonViewable = this.auth.hasEditorAccess();
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
@@ -82,8 +85,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     // The OR clause here is to help handle the migration of the published status to released
     return this.learningObject['status'] === 'released' || this.learningObject['status'] === 'published';
   }
-
-
 
   async addToCart(download?: boolean) {
     this.error = false;
@@ -238,6 +239,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get isMobile() {
     return this.windowWidth <= 750;
+  }
+
+  // Navigates the route from client to admin perspective
+  openAdminApp() {
+    const route = `${environment.adminAppUrl}/objects/details/${this.learningObject.id}`;
+    window.open(route);
   }
 
   ngOnDestroy() {
