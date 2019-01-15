@@ -71,7 +71,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.hasDownloadAccess = this.auth.hasPrivelagedAccess() || this.isReleased;
+    this.hasDownloadAccess = this.auth.hasReviewerAccess() || this.isReleased;
 
     this.isEditButtonViewable = this.auth.hasEditorAccess();
     this.url = this.buildLocation();
