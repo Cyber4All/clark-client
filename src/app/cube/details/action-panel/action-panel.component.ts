@@ -1,15 +1,11 @@
-import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
+import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
-import { AuthService, DOWNLOAD_STATUS, AUTH_GROUP } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { RatingService } from '../../../core/rating.service';
-import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
+import { AuthService } from '../../../core/auth.service';
+import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
-import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
-import { COPY } from 'app/cube/browse/browse.copy';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -33,7 +29,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private isDestroyed$ = new Subject<void>();
-  downloadStatus: DOWNLOAD_STATUS = 0;
+  hasDownloadAccess = false;
   downloading = false;
   addingToLibrary = false;
   author: string;
@@ -75,12 +71,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.auth.isLoggedIn.subscribe(val => {
-      this.loggedin = val;
-      this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
-        this.downloadStatus = isAuthorized;
-      });
-    });
+    this.hasDownloadAccess = this.auth.hasPrivelagedAccess() || this.isReleased;
 
     this.isEditButtonViewable = this.auth.hasEditorAccess();
     this.url = this.buildLocation();
@@ -89,12 +80,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.userIsAuthor = (this.learningObject.author.username === userName);
   }
 
-  get canDownload(): boolean {
-    return this.downloadStatus === DOWNLOAD_STATUS.CAN_DOWNLOAD;
-  }
-
   get isReleased(): boolean {
-    return this.downloadStatus !== DOWNLOAD_STATUS.NOT_RELEASED;
+    // FIXME status should be accessed as learningObject.status and should be compared to the enum in clark-entity
+    // The OR clause here is to help handle the migration of the published status to released
+    return this.learningObject['status'] === 'released' || this.learningObject['status'] === 'published';
   }
 
   async addToCart(download?: boolean) {
