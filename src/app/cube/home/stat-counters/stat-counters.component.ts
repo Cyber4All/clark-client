@@ -8,6 +8,8 @@ import { UsageStats } from 'app/cube/shared/types';
 })
 export class StatCountersComponent implements OnInit {
   @Input() stats: UsageStats;
+  @Input() objectStatsLoading = true;
+  @Input() userStatsLoading = true;
   constructor() {}
 
   ngOnInit() {}

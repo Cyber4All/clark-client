@@ -22,6 +22,9 @@ export class HomeComponent implements OnInit {
   placeholderText = this.copy.SEARCH_PLACEHOLDER;
   collections: Collection[];
 
+  objectStatsLoaded = false;
+  userStatsLoaded = false;
+
   usageStats: UsageStats = {
     objects: {
       released: 0,
@@ -59,10 +62,12 @@ export class HomeComponent implements OnInit {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.underReview = stats.total - stats.released;
       this.usageStats.objects.downloads = stats.downloads;
+      this.objectStatsLoaded = true;
     });
     this.statsService.getUserStats().then(stats => {
       this.usageStats.users.total = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
+      this.userStatsLoaded = true;
     });
     this.collectionService
       .getCollections()
