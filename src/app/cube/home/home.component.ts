@@ -6,6 +6,7 @@ import { COPY } from './home.copy';
 import { AuthService } from '../../core/auth.service';
 import { CollectionService, Collection } from '../../core/collection.service';
 import { UsageStats } from '../shared/types';
+import { UsageStatsService } from '../shared/usage-stats/usage-stats.service';
 
 @Component({
   selector: 'cube-home',
@@ -25,23 +26,23 @@ export class HomeComponent implements OnInit {
     objects: {
       released: 0,
       underReview: 0,
-      downloads: 1032,
+      downloads: 0,
       lengths: {
-        nanomodule: 500,
-        micromodule: 128,
-        module: 89,
-        unit: 20,
-        course: 12
+        nanomodule: 0,
+        micromodule: 0,
+        module: 0,
+        unit: 0,
+        course: 0
       },
       outcomes: {
-        remember_and_understand: 230,
-        apply_and_analyze: 421,
-        evaluate_and_synthesize: 78
+        remember_and_understand: 0,
+        apply_and_analyze: 0,
+        evaluate_and_synthesize: 0
       }
     },
     users: {
-      total: 382,
-      organizations: 232
+      total: 0,
+      organizations: 0
     }
   };
 
@@ -49,18 +50,19 @@ export class HomeComponent implements OnInit {
     public learningObjectService: LearningObjectService,
     private router: Router,
     private auth: AuthService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private statsService: UsageStatsService
   ) {}
 
   ngOnInit() {
-    this.learningObjectService
-      .getLearningObjects({ limit: 1, released: true })
-      .then(res => {
-        this.usageStats.objects.released = res.total;
-      });
-    this.learningObjectService.getLearningObjects({ limit: 1 }).then(res => {
-      this.usageStats.objects.underReview =
-        res.total - this.usageStats.objects.released;
+    this.statsService.getLearningObjectStats().then(stats => {
+      this.usageStats.objects.released = stats.released;
+      this.usageStats.objects.underReview = stats.total - stats.released;
+      this.usageStats.objects.downloads = stats.downloads;
+    });
+    this.statsService.getUserStats().then(stats => {
+      this.usageStats.users.total = stats.accounts;
+      this.usageStats.users.organizations = stats.organizations;
     });
     this.collectionService
       .getCollections()

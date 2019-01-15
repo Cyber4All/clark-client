@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { UsageStats, PieChart } from '../shared/types';
+import {
+  UsageStats,
+  PieChart,
+  LearningObjectStats,
+  UserStats
+} from '../shared/types';
 import { CounterStat } from './counter-block/counter-block.component';
+import { UsageStatsService } from '../shared/usage-stats/usage-stats.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -11,27 +17,29 @@ let CHART_HOVERED = false;
   styleUrls: ['usage-stats.component.scss']
 })
 export class UsageStatsComponent implements OnInit {
+  outcomeDistributionReady = false;
+  lengthDistributionReady = false;
   usageStats: UsageStats = {
     objects: {
-      released: 95,
-      underReview: 705,
-      downloads: 1032,
+      released: 0,
+      underReview: 0,
+      downloads: 0,
       lengths: {
-        nanomodule: 500,
-        micromodule: 128,
-        module: 89,
-        unit: 20,
-        course: 12
+        nanomodule: 0,
+        micromodule: 0,
+        module: 0,
+        unit: 0,
+        course: 0
       },
       outcomes: {
-        remember_and_understand: 230,
-        apply_and_analyze: 421,
-        evaluate_and_synthesize: 78
+        remember_and_understand: 0,
+        apply_and_analyze: 0,
+        evaluate_and_synthesize: 0
       }
     },
     users: {
-      total: 382,
-      organizations: 232
+      total: 0,
+      organizations: 0
     }
   };
 
@@ -43,12 +51,36 @@ export class UsageStatsComponent implements OnInit {
 
   counterStats: CounterStat[] = [];
 
-  constructor() {}
+  objectStats: LearningObjectStats;
+  userStats: UserStats;
+
+  constructor(private statsService: UsageStatsService) {}
 
   ngOnInit() {
-    this.buildCounterStats();
-    this.buildOutcomeDistributionChart();
-    this.buildLengthDistributionChart();
+    this.statsService.getLearningObjectStats().then(stats => {
+      this.usageStats.objects.released = stats.released;
+      this.usageStats.objects.underReview = stats.total - stats.released;
+      this.usageStats.objects.downloads = stats.downloads;
+      this.usageStats.objects.lengths = {
+        nanomodule: stats.lengths.nanomodule,
+        micromodule: stats.lengths.micromodule,
+        module: stats.lengths.module,
+        unit: stats.lengths.unit,
+        course: stats.lengths.course
+      };
+      this.usageStats.objects.outcomes = {
+        remember_and_understand: stats.blooms_distribution.remember,
+        apply_and_analyze: stats.blooms_distribution.apply,
+        evaluate_and_synthesize: stats.blooms_distribution.evaluate
+      };
+      this.buildCounterStats();
+      this.buildOutcomeDistributionChart();
+      this.buildLengthDistributionChart();
+    });
+    this.statsService.getUserStats().then(stats => {
+      this.usageStats.users.total = stats.accounts;
+      this.usageStats.users.organizations = stats.organizations;
+    });
   }
 
   /**
@@ -129,6 +161,7 @@ export class UsageStatsComponent implements OnInit {
         }
       ]
     };
+    this.lengthDistributionReady = true;
   }
   /**
    * Constructs chart for Outcome bloom distribution
@@ -172,6 +205,7 @@ export class UsageStatsComponent implements OnInit {
         }
       ]
     };
+    this.outcomeDistributionReady = true;
   }
 
   /**
