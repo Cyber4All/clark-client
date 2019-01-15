@@ -19,7 +19,6 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { FeaturedComponent } from './featured/featured.component';
-import { UsageStatsService } from './usage-stats/usage-stats.service';
 
 @NgModule({
   imports: [
@@ -43,6 +42,6 @@ import { UsageStatsService } from './usage-stats/usage-stats.service';
     EscapeHtmlPipe,
     FeaturedComponent
   ],
-  providers: [ProfileGuard, UserResolver, UsageStatsService]
+  providers: [ProfileGuard, UserResolver]
 })
 export class CubeSharedModule {}

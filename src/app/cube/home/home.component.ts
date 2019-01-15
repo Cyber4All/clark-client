@@ -6,7 +6,7 @@ import { COPY } from './home.copy';
 import { AuthService } from '../../core/auth.service';
 import { CollectionService, Collection } from '../../core/collection.service';
 import { UsageStats } from '../shared/types';
-import { UsageStatsService } from '../shared/usage-stats/usage-stats.service';
+import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 
 @Component({
   selector: 'cube-home',
