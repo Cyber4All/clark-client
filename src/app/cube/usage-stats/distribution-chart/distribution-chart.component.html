@@ -1,5 +1,8 @@
 <div class="chart-wrapper">
-  <div class="chart">
+  <div *ngIf="!chart" class="loading">
+    <i class="fal fa-spinner-third fa-spin"></i>
+  </div>
+  <div *ngIf="chart" class="chart">
     <div class="header">
       <div class="title">
         {{chart?.title}}
