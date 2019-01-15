@@ -12,7 +12,6 @@ export interface CounterStat {
 })
 export class CounterBlockComponent implements OnInit {
   @Input() stat: CounterStat;
-
   constructor() {}
 
   ngOnInit() {}

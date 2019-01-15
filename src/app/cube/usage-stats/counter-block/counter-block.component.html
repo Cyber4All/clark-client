@@ -3,6 +3,7 @@
     <span>{{stat?.title}}</span>
   </div>
   <div class="number">
-    <span>{{stat?.value}}</span>
+    <span *ngIf="stat?.value === -1"><i class="fal fa-spinner-third fa-spin"></i></span>
+    <span *ngIf="stat?.value > -1">{{stat?.value}}</span>
   </div>
 </div>
