@@ -42,7 +42,7 @@ export class UsageStatsComponent implements OnInit {
   };
 
   outcomeDistributionChart: PieChart;
-  outcomeLearnMoreLink = 'http://about.clark.center/tutorial/#Uploading';
+  outcomeLearnMoreLink = 'https://cft.vanderbilt.edu/guides-sub-pages/blooms-taxonomy';
 
   lengthDistributionChart: PieChart;
   lengthLearnMoreLink = 'http://about.clark.center/tutorial/#Uploading';
