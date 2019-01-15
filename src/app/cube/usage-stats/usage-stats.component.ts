@@ -84,7 +84,8 @@ export class UsageStatsComponent implements OnInit {
   }
 
   /**
-   *
+   * Adds CounterStat for (Learning Objects Released, Learning Objects Under Review, Users, Affiliated Organizations, and Downloads)
+   * to array of counter stats
    *
    * @private
    * @memberof UsageStatsComponent
