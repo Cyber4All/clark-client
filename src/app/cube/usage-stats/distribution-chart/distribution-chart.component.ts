@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PieChart, DoughnutChart } from 'app/cube/shared/types';
+import { PieChart, DoughnutChart } from '../types';
 
 @Component({
   selector: 'cube-distribution-chart',

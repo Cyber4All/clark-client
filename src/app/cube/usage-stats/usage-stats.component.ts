@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  UsageStats,
-  PieChart,
-  LearningObjectStats,
-  UserStats
-} from '../shared/types';
+import { UsageStats, LearningObjectStats, UserStats } from '../shared/types';
 import { CounterStat } from './counter-block/counter-block.component';
-import { UsageStatsService } from '../shared/usage-stats/usage-stats.service';
+import { PieChart } from './types';
+import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
