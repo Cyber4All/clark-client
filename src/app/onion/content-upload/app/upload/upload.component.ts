@@ -702,7 +702,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async checkAccessGroup() {
-    this.disabled = !this.authService.hasPrivelagedAccess();
+    this.disabled = !this.authService.hasReviewerAccess();
   }
 
   ngOnDestroy() {

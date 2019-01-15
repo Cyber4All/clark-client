@@ -79,7 +79,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private async checkAccessGroup() {
-    this.canDownload = this.authService.hasPrivelagedAccess();
+    this.canDownload = this.authService.hasReviewerAccess();
   }
 
   ngOnDestroy() {
