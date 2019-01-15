@@ -294,7 +294,8 @@ $banner-height: 90px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  background: lighten($wrapper-background, 4);
+  background: white;
+  border-bottom: 2px solid rgb(240, 244, 247);
   .whatis-wrapper {
     padding-right: 80px;
     width: 100%;

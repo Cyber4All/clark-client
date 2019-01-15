@@ -9,7 +9,7 @@ export const COPY = {
     to foster the knowledge and skills of individuals who may ultimately join the U.S. Government, is an important Federal
     purpose. Consistent with the Call for Proposals and the terms of the grant, in making these materials publicly available
     the U.S. Government authorizes others to reproduce, publish and use them in furtherance of this Federal purpose.`,
-    SUPPORTEDBY: 'The CLARK System is supported by the National Security Agency under NSA Grant H9830-17-1-0405',
+    SUPPORTEDBY: 'The CLARK System at Towson University is supported by the National Security Agency under NSA Grant H9830-17-1-0405',
     TEAM: 'Meet the Team',
     USAGE: 'Usage Statistics',
     HELP: 'Ask for Help',
