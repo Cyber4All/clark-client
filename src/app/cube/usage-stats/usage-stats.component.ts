@@ -15,27 +15,29 @@ let CHART_HOVERED = false;
 export class UsageStatsComponent implements OnInit {
   outcomeDistributionReady = false;
   lengthDistributionReady = false;
+
+  // Default values are set to -1 (invalid value) to trigger loading spinner
   usageStats: UsageStats = {
     objects: {
-      released: 0,
-      underReview: 0,
-      downloads: 0,
+      released: -1,
+      underReview: -1,
+      downloads: -1,
       lengths: {
-        nanomodule: 0,
-        micromodule: 0,
-        module: 0,
-        unit: 0,
-        course: 0
+        nanomodule: -1,
+        micromodule: -1,
+        module: -1,
+        unit: -1,
+        course: -1
       },
       outcomes: {
-        remember_and_understand: 0,
-        apply_and_analyze: 0,
-        evaluate_and_synthesize: 0
+        remember_and_understand: -1,
+        apply_and_analyze: -1,
+        evaluate_and_synthesize: -1
       }
     },
     users: {
-      total: 0,
-      organizations: 0
+      total: -1,
+      organizations: -1
     }
   };
 
@@ -53,6 +55,7 @@ export class UsageStatsComponent implements OnInit {
   constructor(private statsService: UsageStatsService) {}
 
   ngOnInit() {
+    this.buildCounterStats();
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.underReview = stats.total - stats.released;
@@ -76,6 +79,7 @@ export class UsageStatsComponent implements OnInit {
     this.statsService.getUserStats().then(stats => {
       this.usageStats.users.total = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
+      this.buildCounterStats();
     });
   }
 
@@ -87,6 +91,8 @@ export class UsageStatsComponent implements OnInit {
    * @memberof UsageStatsComponent
    */
   private buildCounterStats() {
+    // Empty the array to avoid pushing duplicates
+    this.counterStats = [];
     this.counterStats.push(
       ...[
         {
