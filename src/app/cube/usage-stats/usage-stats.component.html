@@ -2,14 +2,14 @@
   <div class="header">
     <span>CLARK Usage Statistics</span>
   </div>
-  <div *ngIf="counterStats?.length" class="stat-counters">
+  <div class="stat-counters">
     <cube-counter-block *ngFor="let stat of counterStats" [stat]="stat"></cube-counter-block>
   </div>
   <div class="charts">
-    <cube-distribution-chart *ngIf="outcomeDistributionReady" class="chart" [chart]="outcomeDistributionChart"
-      [moreInfoLink]="outcomeLearnMoreLink" (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
-    <cube-distribution-chart *ngIf="lengthDistributionReady" class="chart" [chart]="lengthDistributionChart"
-      [moreInfoLink]="lengthLearnMoreLink" (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
+    <cube-distribution-chart class="chart" [chart]="outcomeDistributionChart" [moreInfoLink]="outcomeLearnMoreLink"
+      (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
+    <cube-distribution-chart class="chart" [chart]="lengthDistributionChart" [moreInfoLink]="lengthLearnMoreLink"
+      (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
   </div>
   <div class="heat-map-wrapper">
     <cube-heat-map class="heat-map"></cube-heat-map>
