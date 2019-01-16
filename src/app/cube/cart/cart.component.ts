@@ -1,11 +1,9 @@
 import { Router } from '@angular/router';
 import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { LearningObjectService } from '../learning-object.service';
-import { environment } from '@env/environment';
 import { AuthService } from '../../core/auth.service';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { COPY } from './cart.copy';
 
 @Component({
@@ -13,9 +11,9 @@ import { COPY } from './cart.copy';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   copy = COPY;
-  private subscriptions: Subscription[] = [];
+  destroyed$ = new Subject<void>();
   cartItems: LearningObject[] = [];
   downloading = [];
   iframeParent = iframeParentID;
@@ -23,19 +21,14 @@ export class CartComponent implements OnInit {
 
   constructor(
     public cartService: CartV2Service,
-    private learningObjectService: LearningObjectService,
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadCart();
-    // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-    if (environment.production) {
-      this.checkWhitelist();
-    } else {
-      this.canDownload = true;
-    }
+    // TODO: This should check on an object by object basis if the user has download access
+    this.checkAccessGroup();
   }
 
   async loadCart() {
@@ -52,7 +45,7 @@ export class CartComponent implements OnInit {
     }
   }
 
-  async removeItem(event, object) {
+  async removeItem(event: MouseEvent, object: LearningObject) {
     event.stopPropagation();
     const author = object.author.username;
     const learningObjectName = object.name;
@@ -66,38 +59,31 @@ export class CartComponent implements OnInit {
     }
   }
 
-  downloadObject(event, object: LearningObject, index: number) {
+  downloadObject(event: MouseEvent, object: LearningObject, index: number) {
     event.stopPropagation();
     this.downloading[index] = true;
-    const loaded = this.cartService.downloadLearningObject(
-      object.author.username,
-      object.name
-    );
-    this.subscriptions.push(
-      loaded.subscribe(finished => {
+    this.cartService.downloadLearningObject(
+        object.author.username,
+        object.name
+      )
+      .takeUntil(this.destroyed$)
+      .subscribe(finished => {
         if (finished) {
           this.downloading[index] = false;
         }
-      })
-    );
+      });
   }
 
-  goToItem(object) {
-    this.router.navigate(['/details/', object._author._username, object._name]);
+  goToItem(object: LearningObject) {
+    this.router.navigate(['/details/', object.author.username, object.name]);
   }
 
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.authService.username;
-      if (whitelist.includes(username)) {
-        this.canDownload = true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
+  private async checkAccessGroup() {
+    this.canDownload = this.authService.hasPrivelagedAccess();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }

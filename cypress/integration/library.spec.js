@@ -26,7 +26,7 @@ describe('Library', () => {
         // Assert library URL 
         cy.url().should('include', 'library');
 
-        // Return to home page 
+        // Go to browse page
         cy.get('#browse-message').click({ force: true });
 
         // Assert home URL

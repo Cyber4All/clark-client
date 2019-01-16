@@ -147,8 +147,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
-  disabled = false;
-
   private uploadIds = {
 
   }
@@ -165,9 +163,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.disabled) {
-      this.checkWhitelist();
-    }
     this.learningObject$.takeUntil(this.unsubscribe$).subscribe(object => {
       let solution = false;
       if (object) {
@@ -210,7 +205,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .takeUntil(this.unsubscribe$)
       .subscribe((event: any) => {
         const types = event.dataTransfer.types;
-        if (types.filter(x => x === 'Files').length >= 1 && !this.disabled) {
+        if (types.filter(x => x === 'Files').length >= 1) {
           this.toggleDrag(true);
         }
       });
@@ -640,21 +635,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     return index;
-  }
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.authService.username;
-      if (whitelist.includes(username)) {
-        this.disabled = false;
-      }
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   ngOnDestroy() {
