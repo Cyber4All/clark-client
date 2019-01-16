@@ -37,11 +37,11 @@ footer {
       padding-right: 15px;
     }
     &:last-child {
+      text-align: left;
       padding-left: 15px;
     }
     img {
       height: 100px;
-      width: 100px;
     }
   }
   .small-links {
@@ -78,16 +78,6 @@ footer {
     .notice-title {
       font-size: 14px;
     }
-  }
-  .tu-logo {
-    background: url(http://towson.edu/_resources/images/icons-tu.svgz) no-repeat 0 -488px;
-    width: 130px;
-    height: 100px;
-    display: block;
-    line-height: 168px;
-    text-indent: 300%;
-    overflow: hidden;
-    // transform: scale(0.5);
   }
 }
 

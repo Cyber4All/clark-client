@@ -20,8 +20,7 @@ export class PhilosophyComponent implements OnInit {
       title: 'Easy In',
       items: [
         'Bloom\'s Taxonomy',
-        // 'Mutually Beneficial',
-        // 'Better Learning Outcomes',
+        'Mutually Beneficial',
         'Easy Updates'
       ],
       icon: 'far fa-cloud-upload'
