@@ -24,7 +24,9 @@
             "styles": [
               "src/globals.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/chart.js/src/chart.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -37,12 +39,10 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }]
             }
           }
         },
