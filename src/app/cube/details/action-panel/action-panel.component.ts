@@ -81,9 +81,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   get isReleased(): boolean {
-    // FIXME status should be accessed as learningObject.status and should be compared to the enum in clark-entity
-    // The OR clause here is to help handle the migration of the published status to released
-    return this.learningObject['status'] === 'released' || this.learningObject['status'] === 'published';
+    return this.learningObject['status'] === LearningObject.Status.RELEASED;
   }
 
   async addToCart(download?: boolean) {

@@ -164,21 +164,16 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.learningObject$.takeUntil(this.unsubscribe$).subscribe(object => {
-      let solution = false;
       if (object) {
         this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
         this.files$.next(object.materials.files);
         this.folderMeta$.next(object.materials.folderDescriptions);
-        this.files$.forEach(val => {
-          val.forEach(file => {
-            if (file.name.toLowerCase().indexOf('solution') >= 0)
-              solution = true;
-          });
-        });
-        if (solution)
-          this.solutionUpload = true;
-        else
-          this.solutionUpload = false;
+        this.solutionUpload = false;
+        this.files$.value.forEach(file => {
+          if (file.name.toLowerCase().indexOf('solution') >= 0) {
+            this.solutionUpload = true;
+          }
+        })
       }
     });
 
