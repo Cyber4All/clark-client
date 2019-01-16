@@ -1,0 +1,30 @@
+.counter-wrapper {
+  background: #FFF;
+  border-radius: 2px;
+  padding: 10px 15px;
+
+  .title {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .number {
+    font-weight: 600;
+    font-size: 30px;
+  }
+}
+
+@media print {
+  .counter-wrapper {
+    padding: 0;
+
+    .title {
+      margin-bottom: 0;
+    }
+
+    .number {
+      font-size: 20px;
+    }
+  }
+}
