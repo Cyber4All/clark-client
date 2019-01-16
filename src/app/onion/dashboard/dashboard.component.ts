@@ -307,7 +307,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   async *delete(objects: DashboardLearningObject[] | DashboardLearningObject) {
     const confirm = yield;
-
     if (!confirm) {
       return;
     }
@@ -323,6 +322,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             'far fa-check'
           );
           this.learningObjects = await this.getLearningObjects();
+          this.clearSelected();
         })
         .catch(err => {
           console.log(err);
