@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../../../core/auth.service';
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
+import { takeUntil } from 'rxjs-compat/operator/takeUntil';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -44,7 +45,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   showDownloadModal = false;
   isEditButtonViewable = false;
 
-  userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
+  userRating: { user?: User, number?: number, comment?: string, date?: string } = {};
 
   contributorsList = [];
   iframeParent = iframeParentID;
@@ -68,12 +69,15 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private cartService: CartV2Service,
     private renderer: Renderer2,
     private noteService: ToasterService,
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.auth.group
+      .takeUntil(this.isDestroyed$)
+      .subscribe(() => {
+        this.isEditButtonViewable = this.auth.hasEditorAccess();
+      });
     this.hasDownloadAccess = this.auth.hasReviewerAccess() || this.isReleased;
-
-    this.isEditButtonViewable = this.auth.hasEditorAccess();
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
