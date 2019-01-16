@@ -73,7 +73,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.group
-      .takeUntil(this.isDestroyed$)
+      .pipe(takeUntil(this.isDestroyed$))
       .subscribe(() => {
         this.isEditButtonViewable = this.auth.hasEditorAccess();
       });
