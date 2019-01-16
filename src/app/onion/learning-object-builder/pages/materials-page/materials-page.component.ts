@@ -23,11 +23,12 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     this.learningObject$ = this.store.learningObjectEvent.pipe(
       takeUntil(this.destroyed$)
     );
-  }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.unsubscribe();
+    this.saving$.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(val => {
+      this.store.serviceInteraction$.next(val);
+    });
   }
 
   async handleFileDeletion(fileId: string) {
@@ -107,5 +108,10 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.error$.next(e);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }
