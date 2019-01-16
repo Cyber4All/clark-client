@@ -23,7 +23,7 @@
     "@angular/platform-browser": "^6.0.4",
     "@angular/platform-browser-dynamic": "^6.0.4",
     "@angular/router": "^6.0.4",
-    "@cyber4all/clark-entity": "^4.0.0-rc.122.0",
+    "@cyber4all/clark-entity": "^4.0.0-rc.14.0",
     "@cyber4all/clark-taxonomy": "^4.0.0",
     "@cyber4all/ngx-dropzone-wrapper": "^6.2.1",
     "@nguniversal/express-engine": "^7.0.2",
