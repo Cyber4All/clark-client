@@ -337,6 +337,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async dzComplete(file) {
+    this.saving$.next(true);
     const progressCheck = this.inProgressFileUploads
       .filter(x => typeof x.progress !== 'number' || x.progress < 100)
       .concat(
@@ -372,6 +373,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(e);
       }
     }
+    this.saving$.next(false);
   }
 
   /**
