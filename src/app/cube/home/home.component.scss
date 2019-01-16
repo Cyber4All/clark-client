@@ -9,6 +9,7 @@ $banner-height: 90px;
   margin-bottom: 25px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 }
+
 .whois {
   display: flex;
   flex-direction: column;
@@ -29,44 +30,18 @@ $banner-height: 90px;
   background: $blue-gradient;
   width: 100%;
   padding: 10px;
-  .counter-wrapper {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    
-    .released, .under-review {
-      text-shadow: 0 2px transparent;
-      text-align: center;
-      position: relative;
-      margin: auto;
-      width: 100%;
-      height: 100%;
-      color: white;
-      .counter {
-        font-size: 40px;
-      }
-      .label {
-        font-size: 16px;
-        font-weight: normal;
+
+  .view-all {
+    text-align: right;
+
+    a {
+      color: #FFF;
+      font-size: 18px;
+
+      .text {
+        margin-right: 15px;
       }
     }
-    .released {
-      &:after {
-        content: '';
-        top: 0;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.25);
-        opacity: 0.8;
-        width: 2px;
-        margin: auto;
-        right: 0;
-        position: absolute;
-      }
-    } 
   }
 }
 
@@ -119,7 +94,7 @@ $banner-height: 90px;
           display: inline-block;
           text-align: right;
           // max-width: 500px;
-            width: 100%;
+          width: 100%;
 
           .search-input {
             padding: 12px;
@@ -192,6 +167,7 @@ $banner-height: 90px;
   margin-top: 60px;
   margin-bottom: 150px;
   padding: 0 20px 25px;
+
   .collection-viewport {
     width: 100%;
     display: flex;
@@ -201,9 +177,10 @@ $banner-height: 90px;
     max-width: 1375px;
     // text stuff
     font-weight: 200;
-    
+
     color: $dark-text;
     text-align: center;
+
     .title {
       width: 100%;
       text-align: left;
@@ -211,27 +188,31 @@ $banner-height: 90px;
       font-size: 33px;
       text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
     }
+
     .content {
       display: flex;
       flex-direction: row;
       align-items: center;
       padding-top: 0;
+
       .featured-collections {
         margin-bottom: 25px;
         position: relative;
         width: 100%;
         text-align: left;
+
         .description {
           font-size: 16px;
         }
       }
+
       .card-container {
         width: 100%;
         display: flex;
         flex-flow: row nowrap;
         justify-content: center;
         margin-top: 10px;
-    
+
         .collection-card {
           background: white;
           border-radius: 3px;
@@ -243,6 +224,7 @@ $banner-height: 90px;
           font-weight: normal;
           width: 200px;
           cursor: pointer;
+
           .collection-image {
             position: relative;
             width: 125px;
@@ -250,12 +232,14 @@ $banner-height: 90px;
             background-position: center;
             background-repeat: no-repeat;
             margin: auto;
+
             &:after {
               content: '';
               display: block;
               padding-bottom: 100%;
             }
           }
+
           .collection-name {
             text-align: center;
             width: 100%;
@@ -268,12 +252,14 @@ $banner-height: 90px;
     }
   }
 }
+
 .call-to-action {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding-left: 80px;
+
   .feature-text {
     text-shadow: 0 2px transparent;
     color: $dark-text;
@@ -290,12 +276,14 @@ $banner-height: 90px;
     justify-content: center;
   }
 }
+
 .bottom-banner {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   background: white;
   border-bottom: 2px solid rgb(240, 244, 247);
+
   .whatis-wrapper {
     padding-right: 80px;
     width: 100%;
@@ -303,20 +291,25 @@ $banner-height: 90px;
     text-shadow: 0 2px transparent;
     color: $dark-text;
     text-align: left;
+
     .title {
       font-size: 33px;
       margin-bottom: 8px;
     }
+
     .text {
       font-size: 22px;
       font-weight: 200;
     }
   }
+
   .call-to-action {
     width: 100%;
     border-left: 1px solid rgb(240, 244, 247);
   }
-  .whatis-wrapper, .call-to-action {
+
+  .whatis-wrapper,
+  .call-to-action {
     max-width: calc(1370px/2);
     padding: 60px;
   }
@@ -336,7 +329,7 @@ $banner-height: 90px;
 
   &:hover {
     text-decoration: underline;
-    }
+  }
 }
 
 @media (max-width: 750px) {
@@ -344,6 +337,7 @@ $banner-height: 90px;
   .info-banner {
     display: none;
   }
+
   .img-viewport {
     padding-top: 60px !important;
     padding-bottom: 60px !important;
@@ -361,20 +355,25 @@ $banner-height: 90px;
 
   .collection-wrapper {
     margin: 0;
+
     .collection-viewport {
       .title {
         text-align: center;
         margin-bottom: 8px;
       }
+
       .content {
         flex-flow: column nowrap;
+
         .featured-collections {
           .description {
             text-align: center;
           }
         }
+
         .card-container {
           flex-flow: row wrap;
+
           .collection-card {
             margin-bottom: 15px;
           }
@@ -385,16 +384,20 @@ $banner-height: 90px;
 
   .bottom-banner {
     flex-flow: column nowrap;
+
     .whatis-wrapper {
       border-right: 0;
       border-bottom: 1px solid rgb(240, 244, 247);
     }
+
     .call-to-action {
       border-left: 0;
       border-top: 1px solid rgb(240, 244, 247);
+
       .feature-text {
         text-align: center;
       }
+
       .button.bad {
         margin: 0;
       }
