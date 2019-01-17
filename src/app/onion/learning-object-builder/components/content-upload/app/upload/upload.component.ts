@@ -79,7 +79,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   error$: Subject<string> = new Subject<string>();
   @Input()
-  saving$: Observable<boolean> = new Observable<boolean>();
+  saving$: Subject<boolean> = new Subject<boolean>();
   @Input()
   learningObject$: Observable<LearningObject> = new Observable<
     LearningObject
@@ -563,6 +563,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .toPromise();
 
     if (confirmed === 'confirm') {
+      this.saving$.next(true);
       try {
         const object = await this.learningObject$.take(1).toPromise();
         await Promise.all(
@@ -574,6 +575,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       } catch (e) {
         this.error$.next(e);
       }
+      this.saving$.next(false);
     }
   }
 
