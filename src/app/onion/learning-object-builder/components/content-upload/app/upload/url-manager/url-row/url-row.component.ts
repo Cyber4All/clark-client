@@ -3,27 +3,18 @@ import {
   OnInit,
   Input,
   Output,
-  EventEmitter,
-  OnDestroy
+  EventEmitter
 } from '@angular/core';
-import { UrlManagerComponent } from '../url-manager.component';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/debounceTime';
-import { Subject } from 'rxjs/Subject';
 import { Url } from '@cyber4all/clark-entity/dist/learning-object';
-import { url } from 'inspector';
-import { Validators, Validator } from '@angular/forms';
-import { LearningObjectValidator } from '../../../../../../validators/learning-object.validator';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 
 @Component({
-  selector: 'clark-title-of-url',
-  templateUrl: './title-of-url.component.html',
-  styleUrls: ['./title-of-url.component.scss']
+  selector: 'clark-url-row',
+  templateUrl: './url-row.component.html',
+  styleUrls: ['./url-row.component.scss']
 })
 
-export class TitleOfUrlComponent implements OnInit {
+export class UrlRowComponent implements OnInit {
 
   titleText: string;
   urlLink: string;
@@ -37,7 +28,7 @@ export class TitleOfUrlComponent implements OnInit {
 
   @Output()
   updateUrl: EventEmitter<{ index: number; title: string; url: string }> = new EventEmitter();
-  constructor(public validator: LearningObjectValidator) {
+  constructor() {
     
   }
   ngOnInit() {

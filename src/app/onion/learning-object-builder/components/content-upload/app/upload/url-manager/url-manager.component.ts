@@ -10,9 +10,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
 import { Url } from '@cyber4all/clark-entity/dist/learning-object';
-import { TitleOfUrlComponent } from "./title-of-url/title-of-url.component";
-import { Title } from '@angular/platform-browser';
-import { url } from 'inspector';
+
 
 @Component({
   selector: 'clark-url-manager',
@@ -74,7 +72,6 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
         if (update.url !== undefined) {
           url.url = update.url;
         }
-        console.log(url);
         this.update.emit({ url, index: update.index });
       });
   }
@@ -90,7 +87,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
 
   /**
    * Function that emits an event when the user enters in both the 
-   * title and url field which also uses objects to store the information entered from the user
+   * title and url field 
    * @param event
    */
   updateUrl(event: object) {

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TitleOfUrlComponent } from "./title-of-url.component";
+import { UrlRowComponent } from "./url-row.component";
 
-describe('TitleOfUrlComponent', () => {
-  let component: TitleOfUrlComponent;
-  let fixture: ComponentFixture<TitleOfUrlComponent>;
+describe('UrlRowComponent', () => {
+  let component: UrlRowComponent;
+  let fixture: ComponentFixture<UrlRowComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TitleOfUrlComponent ]
+      declarations: [ UrlRowComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TitleOfUrlComponent);
+    fixture = TestBed.createComponent(UrlRowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
