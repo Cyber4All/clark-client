@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
     limit: 1,
-    released: this.auth.hasPrivelagedAccess() ? undefined : true
+    released: this.auth.hasReviewerAccess() ? undefined : true
   };
   placeholderText = this.copy.SEARCH_PLACEHOLDER;
   collections: Collection[];

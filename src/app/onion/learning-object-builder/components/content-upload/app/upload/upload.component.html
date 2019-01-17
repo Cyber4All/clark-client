@@ -9,10 +9,13 @@
     </div>
     <div class="materials-slides">
       <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
+        <div *ngIf="solutionUpload" class="solutions-warning">
+          Note: While the upload of solution files are not prohibited, they won't be included during a learning object's download.
+        </div>
         <!-- This element has a dropzone tag as a backup in case the browser doesn't support the dragover event or something goes wrong -->
         <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [confirmDeletion]="confirmDeletion$" [files$]="files$"
           [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)"
-          (path)="openPath=$event"></onion-file-manager>
+          (path)="openPath=$event" (solutionUpload)="handleSolution($event)"></onion-file-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
         <clark-url-manager [urls]="(learningObject$|async)?.materials?.urls" (add)="addURL()" (update)="updateUrl($event)"

@@ -17,6 +17,7 @@ export enum AUTH_GROUP {
   VISITOR,
   USER,
   REVIEWER,
+  EDITOR,
   ADMIN
 }
 
@@ -303,12 +304,18 @@ export class AuthService {
   }
 
   /**
-   * Identifies if the user should have access to learning objects not yet released.
+   * Identifies if the current logged in user has reviewer priviledges.
    */
-  hasPrivelagedAccess(): boolean {
+  hasReviewerAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.USER;
   }
 
+  /**
+   * Identifies if the current logged in user has editor priviledges.
+   */
+  public hasEditorAccess(): boolean {
+    return this.group.getValue() > AUTH_GROUP.REVIEWER;
+  }
   /**
    * Assigns an authorization group to a user based on their access groups.
    * The highest priority group will be assigned.
@@ -317,7 +324,9 @@ export class AuthService {
     if (this.user['accessGroups']) {
       if (this.user['accessGroups'] && this.user['accessGroups'].includes('admin')) {
         this.group.next(AUTH_GROUP.ADMIN);
-      } else if (this.user['accessGroups'].includes('reviewer')) {
+      } else if (this.user['accessGroups'].includes('editor')) {
+          this.group.next(AUTH_GROUP.EDITOR);
+        } else { (this.user['accessGroups'].includes('reviewer'));
         this.group.next(AUTH_GROUP.REVIEWER);
       }
     } else {

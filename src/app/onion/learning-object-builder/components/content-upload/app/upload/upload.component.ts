@@ -151,6 +151,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  solutionUpload = false;
+
   constructor(
     // FIXME: REMOVE WHEN WHITELIST LOGIC IS REMOVED
     private authService: AuthService,
@@ -166,6 +168,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
         this.files$.next(object.materials.files);
         this.folderMeta$.next(object.materials.folderDescriptions);
+        this.solutionUpload = false;
+        this.files$.value.forEach(file => {
+          if (file.name.toLowerCase().indexOf('solution') >= 0) {
+            this.solutionUpload = true;
+          }
+        })
       }
     });
 

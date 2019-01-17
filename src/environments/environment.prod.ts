@@ -3,5 +3,14 @@ export const environment = {
   apiURL: 'https://api-gateway.clark.center',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'https://api-outcome-suggestion.clark.center',
-  contentManagerURL: 'https://api-learning-objects.clark.center'
+  contentManagerURL: 'https://api-learning-objects.clark.center',
+  adminAppUrl: 'https://admin.clark.center'
 };
+
+export enum LearningObjectStatus {
+  PUBLISHED = 'published',
+  UNDER_REVIEW = 'review',
+  WAITING = 'waiting',
+  DENIED = 'denied',
+  UNPUBLISHED = 'unpublished'
+}

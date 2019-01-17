@@ -8,5 +8,14 @@ export const environment = {
   apiURL: 'http://localhost:3000',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'http://localhost:7000',
-  contentManagerURL: 'http://localhost:5000'
+  contentManagerURL: 'http://localhost:5000',
+  adminAppUrl: 'http://localhost:4100'
 };
+
+export enum LearningObjectStatus {
+  PUBLISHED = 'published',
+  UNDER_REVIEW = 'review',
+  WAITING = 'waiting',
+  DENIED = 'denied',
+  UNPUBLISHED = 'unpublished'
+}
