@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LearningObject, LearningOutcome, User } from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil, isEmpty } from 'rxjs/operators';
 import { verbs } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import {
@@ -11,6 +11,10 @@ import {
 } from './validators/learning-object.validator';
 import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 import { CollectionService } from 'app/core/collection.service';
+import { Title } from '@angular/platform-browser';
+import { Validators } from '@angular/forms';
+import { $ } from 'protractor';
+import { VALID } from '@angular/forms/src/model';
 
 /**
  * Defines a list of actions the builder can take
@@ -449,20 +453,25 @@ export class BuilderStore {
 
   /**
    * Updates Url at given index
-   *
+   * Also checks for valid Url and title field input against the supplied regex pattern
    * @param {number} index
    * @param {Url} url
    * @memberof BuilderStore
    */
   private async updateUrl(index: number, url: Url): Promise<any> {
-    if (!url.url.match(/https?:\/\/.+/i)) {
-      url.url = `http://${url.url}`;
-    }
-    this.learningObject.materials.urls[index] = url;
-    await this.saveObject({
-      'materials.urls': this.learningObject.materials.urls
-    });
-    this.learningObjectEvent.next(this.learningObject);
+    var exp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    if (url.url.match(exp) && url.title !== '') {
+      url.title = `${url.title}`;
+      url.url = `${url.url}`;
+      this.learningObject.materials.urls[index] = url;
+      await this.saveObject({
+        'materials.urls': this.learningObject.materials.urls
+      });
+      this.learningObjectEvent.next(this.learningObject);
+    } else {
+      return null;
+    } 
+    
   }
 
   /**

@@ -1,0 +1,28 @@
+@import '~_vars.scss';
+@import '../url-manager.component.scss';
+
+.url-wrap { 
+
+    display:flex;
+    flex-direction:row; 
+
+    .title-field, .url-field { 
+        float: left;
+        width: 99%;
+    }
+  input {
+    padding: 10px;
+    appearance: none;
+    outline: 0;
+    border: 1px solid $placeholder;
+    border-radius: 1px;
+    width: 97%;
+    margin: 5px;
+
+        &:focus {
+            border-color: $bright-blue;
+        }
+    }
+}
+
+   
