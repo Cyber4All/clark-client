@@ -64,11 +64,12 @@ export class HomeComponent implements OnInit {
       this.usageStats.objects.downloads = stats.downloads;
       this.objectStatsLoaded = true;
     });
-    this.statsService.getUserStats().then(stats => {
-      this.usageStats.users.total = stats.accounts;
-      this.usageStats.users.organizations = stats.organizations;
-      this.userStatsLoaded = true;
-    });
+    // FIXME: Uncomment when user service is deployed
+    // this.statsService.getUserStats().then(stats => {
+    //   this.usageStats.users.total = stats.accounts;
+    //   this.usageStats.users.organizations = stats.organizations;
+    //   this.userStatsLoaded = true;
+    // });
     this.collectionService
       .getCollections()
       .then(collections => {
