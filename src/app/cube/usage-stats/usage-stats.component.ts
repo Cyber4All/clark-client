@@ -76,11 +76,12 @@ export class UsageStatsComponent implements OnInit {
       this.buildOutcomeDistributionChart();
       this.buildLengthDistributionChart();
     });
-    this.statsService.getUserStats().then(stats => {
-      this.usageStats.users.total = stats.accounts;
-      this.usageStats.users.organizations = stats.organizations;
-      this.buildCounterStats();
-    });
+    // FIXME: Uncomment when user service is deployed
+    // this.statsService.getUserStats().then(stats => {
+    //   this.usageStats.users.total = stats.accounts;
+    //   this.usageStats.users.organizations = stats.organizations;
+    //   this.buildCounterStats();
+    // });
   }
 
   /**
@@ -103,17 +104,18 @@ export class UsageStatsComponent implements OnInit {
           title: 'Learning Objects Under Review',
           value: this.usageStats.objects.underReview
         },
-        {
-          title: 'Users',
-          value: this.usageStats.users.total
-        },
-        {
-          title: 'Affiliated Organizations',
-          value: this.usageStats.users.organizations
-        },
+        // FIXME: Uncomment when user service is deployed
+        // {
+        //   title: 'Users',
+        //   value: this.usageStats.users.total
+        // },
+        // {
+        //   title: 'Affiliated Organizations',
+        //   value: this.usageStats.users.organizations
+        // },
         {
           title: 'Learning Objects Downloaded',
-          value: this.usageStats.objects.underReview
+          value: this.usageStats.objects.downloads
         }
       ]
     );
