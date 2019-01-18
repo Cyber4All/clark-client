@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import { DirectoryNode, LearningObjectFile } from '../DirectoryTree';
+import { DirectoryNode, } from '../DirectoryTree';
 import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { TimeFunctions } from '../../../onion/learning-object-builder/components/content-upload/app/shared/time-functions';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
@@ -41,7 +41,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   }> = new EventEmitter();
 
   private subscriptions: Subscription[] = [];
-  private editableFile: LearningObjectFile | DirectoryNode;
+  private editableFile: LearningObject.Material.File | DirectoryNode;
   descriptionControl = new FormControl();
   preview = true;
 
@@ -140,7 +140,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  openFile(file: File): void {
+  openFile(file: LearningObject.Material.File): void {
     const url = this.previewUrl(file.extension);
     if (url) {
       console.log(url + file.url);
@@ -157,10 +157,10 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   /**
    * Sets currently editable file
    *
-   * @param {LearningObjectFile} file
+   * @param {LearningObject.Material.File} file
    * @memberof FileListViewComponent
    */
-  setEditable(file: LearningObjectFile | DirectoryNode) {
+  setEditable(file: LearningObject.Material.File | DirectoryNode) {
     this.editableFile = file;
   }
   /**

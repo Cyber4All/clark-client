@@ -1,5 +1,5 @@
 
 [
-    "http://localhost:4200/home",
-    "http://localhost:4200/browse"
+    "http://clark-client:4200/home",
+    "http://clark-client:4200/browse"
 ]

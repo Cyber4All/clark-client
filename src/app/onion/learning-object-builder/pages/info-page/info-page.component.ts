@@ -7,9 +7,7 @@ import {
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { COPY } from './info-page.copy';
 import { Subject } from 'rxjs/Subject';
-import { AcademicLevel } from '@cyber4all/clark-entity/dist/learning-object';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'clark-info-page',
@@ -21,9 +19,8 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   learningObject: LearningObject;
 
   selectedLevels: string[] = [];
-  academicLevels = Object.values(AcademicLevel);
+  academicLevels = Object.values(LearningObject.Level);
 
-  formGroup = new FormGroup({});
   descriptionTouched: boolean;
   descriptionDirty: boolean;
 
@@ -39,26 +36,14 @@ export class InfoPageComponent implements OnInit, OnDestroy {
         if (payload) {
           // re-initialize our state variables
           this.learningObject = payload;
-          this.selectedLevels = payload.levels;
-
-          // re-initialize our form group
-          this.formGroup = new FormGroup({
-            name: new FormControl(this.learningObject.name, [
-              // validate name
-              (() => {
-                return (control: AbstractControl): { [key: string]: any } | null => {
-                  return this.validator.validateName(control.value);
-                };
-              })()
-            ])
-          });
+          this.selectedLevels = payload.levels || [];
         }
       });
   }
 
 
   mutateLearningObject(data: any) {
-    if (data.description !== this.learningObject.goals[0]) {
+    if (data.description !== this.learningObject.description) {
       this.descriptionDirty = true;
     } else {
       this.descriptionDirty = false;
@@ -81,6 +66,7 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
   toggleLevel(level: string) {
     const index = this.selectedLevels.indexOf(level);
+
     if (index >= 0) {
       this.selectedLevels.splice(index, 1);
     } else {
@@ -88,7 +74,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     }
 
     this.mutateLearningObject({ levels: this.selectedLevels });
-    this.validator.validateAcademicLevels(this.selectedLevels);
   }
 
   ngOnDestroy() {

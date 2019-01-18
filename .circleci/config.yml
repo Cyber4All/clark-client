@@ -16,14 +16,18 @@ jobs:
           name: Build Application
           command: yarn ng build --prod --aot=false --build-optimizer=false
       - persist_to_workspace: 
-          root: dist
-          paths: ./
+          root: ./
+          paths: 
+            - ./
   test:
     <<: *defaults
-    steps:
+    steps:  
       - attach_workspace : 
-          at: ~/clark-client/dist
-      - run: echo 'We need tests'
+          at: ~/clark-client
+      - run:
+          name: Run e2e Tests
+          command: |
+            echo "Test coming soon"
   deploy:
     <<: *defaults
     steps:

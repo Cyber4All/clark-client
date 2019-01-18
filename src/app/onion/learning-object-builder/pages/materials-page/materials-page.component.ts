@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
-import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 
 @Component({
   selector: 'clark-materials-page',
@@ -24,11 +23,12 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     this.learningObject$ = this.store.learningObjectEvent.pipe(
       takeUntil(this.destroyed$)
     );
-  }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.unsubscribe();
+    this.saving$.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(val => {
+      this.store.serviceInteraction$.next(val);
+    });
   }
 
   async handleFileDeletion(fileId: string) {
@@ -57,7 +57,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  async handleUrlUpdated(data: { index: number; url: Url }) {
+  async handleUrlUpdated(data: { index: number; url: LearningObject.Material.Url }) {
     try {
       await this.store.execute(BUILDER_ACTIONS.UPDATE_URL, data);
     } catch (e) {
@@ -108,5 +108,10 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.error$.next(e);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { CollectionComponent } from './collection.component';
-import { CollectionService } from './collection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,6 +19,5 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [],
   declarations: [CollectionComponent],
-  providers: [CollectionService],
 })
 export class CollectionModule { }

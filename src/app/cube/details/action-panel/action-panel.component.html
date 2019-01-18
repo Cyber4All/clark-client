@@ -3,15 +3,15 @@
     tipLocation="top">
     <i class="fas fa-exclamation"></i>Review Pending
   </div>
-  <div class="btn-group vertical" [ngClass]="{'no-download': !isReleased}">
-    <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{isReleased || !loggedin}}" [ngClass]="{'disabled': !auth.user || !canDownload || downloading}"
+  <div class="btn-group vertical" [ngClass]="{'review-pending': !isReleased}">
+    <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{hasDownloadAccess || !loggedin}}" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading}"
       class="button good" id="download-button" (click)="addToCart(true)">
-      <span *ngIf="isReleased">{{!downloading ? 'Download Now' : 'Downloading'}}
+      <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
         <span *ngIf="downloading">
           <i class="fal fa-spinner-third fa-spin"></i>
         </span>
       </span>
-      <span *ngIf="!isReleased">Not available for download</span>
+      <span *ngIf="!hasDownloadAccess">Not available for download</span>
     </button>
     <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" id="save-to-library" (click)="addToCart()">
       {{ saved ? 'Saved to your library!' : 'Save to Library' }}
@@ -19,6 +19,11 @@
         <i class="fal fa-spinner-third fa-spin"></i>
       </span>
     </button>
+    <span class="btn-group vertical" *ngIf="isEditButtonViewable">
+      <button class="button neutral on-white" id="edit-button" type="submit"> 
+        <a (click)="openAdminApp()">Revise</a>
+      </button>
+    </span>
   </div>
   <ng-container *ngIf="!auth.user">
     <div class="login-msg" id="login-msg">Please
@@ -59,12 +64,6 @@
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>
-    <div class="modal-title">Notice about large files!</div>
-    <div class='modal-text'>
-      To keep download times short files over 100 megabytes are not included in the download package. You can find links to download them inside the 'ReadMe' PDF.
-    </div>
-    <div class="btn-group center">
-      <button class="button good" (click)="toggleDownloadModal(false)">Ok, got it!</button>
-    </div>
+    <clark-download-notice (close)="toggleDownloadModal(false)"></clark-download-notice>
   </div>
 </clark-popup>

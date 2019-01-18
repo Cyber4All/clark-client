@@ -9,12 +9,11 @@ import {
   EventEmitter
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../register.component';
-import { Subscription } from 'rxjs/Subscription';
 
-import 'rxjs/add/operator/debounceTime';
+import { map, debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-personal-info',
@@ -33,40 +32,38 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   currentOrganization: string;
   organizationsList = [];
   isValid: boolean;
-  // array of subscriptions to destroy on component destroy
-  subs: Subscription[] = [];
+  
+  destroyed$: Subject<void> = new Subject();
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
   ngAfterViewInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(fromEvent(this.emailInput.nativeElement, 'input')
-      .map(x => x['currentTarget'].value)
-      .debounceTime(650)
-      .subscribe(val => {
-        this.querying = true;
-        this.emailError = false;
+    fromEvent(this.emailInput.nativeElement, 'input').pipe(
+      map(x => x['currentTarget'].value),
+      debounceTime(650),
+      takeUntil(this.destroyed$)
+    ).subscribe(val => {
+      this.querying = true;
+      this.emailError = false;
 
-        this.auth.identifiersInUse(val).then((res: any) => {
-          this.querying = false;
-          this.result = res.inUse;
-          if (!this.result) {
-            this.register.setInUseEmail(this.result);
-            this.emailError = false;
-          } else {
-            this.emailError = true;
-            this.register.error('This email is already taken');
-            this.register.setInUseEmail(this.result);
-          }
-        });
-      })
-    );
+      this.auth.identifiersInUse(val).then((res: any) => {
+        this.querying = false;
+        this.result = res.inUse;
+        if (!this.result) {
+          this.register.setInUseEmail(this.result);
+          this.emailError = false;
+        } else {
+          this.emailError = true;
+          this.register.error('This email is already taken');
+          this.register.setInUseEmail(this.result);
+        }
+      });
+    })
   }
 
   ngOnDestroy() {
-    // unsubscribe from all observables
-    for (let i = 0, l = this.subs.length; i < l; i++) {
-      this.subs[i].unsubscribe();
-    }
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }

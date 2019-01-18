@@ -18,11 +18,8 @@ import { ToasterService } from '../../../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import {
-  File,
-  FolderDescription,
   LearningObject,
-  Url
-} from '@cyber4all/clark-entity/dist/learning-object';
+} from '@cyber4all/clark-entity';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { fromEvent } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
@@ -38,8 +35,6 @@ import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
 import { AuthService } from 'app/core/auth.service';
 import { FileStorageService } from '../services/file-storage.service';
-
-type LearningObjectFile = File;
 
 // tslint:disable-next-line:interface-over-type-literal
 export type DZFile = {
@@ -84,7 +79,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   error$: Subject<string> = new Subject<string>();
   @Input()
-  saving$: Observable<boolean> = new Observable<boolean>();
+  saving$: Subject<boolean> = new Subject<boolean>();
   @Input()
   learningObject$: Observable<LearningObject> = new Observable<
     LearningObject
@@ -97,9 +92,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   urlAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output()
-  urlUpdated: EventEmitter<{ index: string; url: Url }> = new EventEmitter<{
+  urlUpdated: EventEmitter<{ index: string; url: LearningObject.Material.Url }> = new EventEmitter<{
     index: string;
-    url: Url;
+    url: LearningObject.Material.Url;
   }>();
   @Output()
   urlRemoved: EventEmitter<number> = new EventEmitter<number>();
@@ -136,11 +131,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     parallelChunkUploads: true
   };
 
-  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
+  files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
+  LearningObject.Material.File[]
   >([]);
-  folderMeta$: BehaviorSubject<FolderDescription[]> = new BehaviorSubject<
-    FolderDescription[]
+  folderMeta$: BehaviorSubject<LearningObject.Material.FolderDescription[]> = new BehaviorSubject<
+  LearningObject.Material.FolderDescription[]
   >([]);
 
   inProgressFileUploads = [];
@@ -152,11 +147,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
-  disabled = false;
-
   private uploadIds = {
 
   }
+
+  solutionUpload = false;
 
   constructor(
     // FIXME: REMOVE WHEN WHITELIST LOGIC IS REMOVED
@@ -168,14 +163,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.disabled) {
-      this.checkWhitelist();
-    }
     this.learningObject$.takeUntil(this.unsubscribe$).subscribe(object => {
       if (object) {
         this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
         this.files$.next(object.materials.files);
         this.folderMeta$.next(object.materials.folderDescriptions);
+        this.solutionUpload = false;
+        this.files$.value.forEach(file => {
+          if (file.name.toLowerCase().indexOf('solution') >= 0) {
+            this.solutionUpload = true;
+          }
+        })
       }
     });
 
@@ -202,7 +200,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .takeUntil(this.unsubscribe$)
       .subscribe((event: any) => {
         const types = event.dataTransfer.types;
-        if (types.filter(x => x === 'Files').length >= 1 && !this.disabled) {
+        if (types.filter(x => x === 'Files').length >= 1) {
           this.toggleDrag(true);
         }
       });
@@ -506,7 +504,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    *
    * @memberof UploadComponent
    */
-  updateUrl(data: { index: string; url: Url }) {
+  updateUrl(data: { index: string; url: LearningObject.Material.Url }) {
     this.urlUpdated.emit(data);
   }
 
@@ -565,6 +563,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .toPromise();
 
     if (confirmed === 'confirm') {
+      this.saving$.next(true);
       try {
         const object = await this.learningObject$.take(1).toPromise();
         await Promise.all(
@@ -576,6 +575,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       } catch (e) {
         this.error$.next(e);
       }
+      this.saving$.next(false);
     }
   }
 
@@ -586,7 +586,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  async handleEdit(file: LearningObjectFile | any): Promise<void> {
+  async handleEdit(file: LearningObject.Material.File | any): Promise<void> {
     try {
       if (!file.isFolder) {
         this.fileDescriptionUpdated.emit({
@@ -632,21 +632,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     return index;
-  }
-
-  // FIXME: Hotfix for white listing. Remove if functionality is extended or removed
-  private async checkWhitelist() {
-    try {
-      const response = await fetch(environment.whiteListURL);
-      const object = await response.json();
-      const whitelist: string[] = object.whitelist;
-      const username = this.authService.username;
-      if (whitelist.includes(username)) {
-        this.disabled = false;
-      }
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   ngOnDestroy() {

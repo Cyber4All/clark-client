@@ -1,4 +1,4 @@
-import { LearningObjectFile } from './DirectoryTree';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 /**
  * Breaks Path string into array of paths. Removes last element assuming last element is file name.
@@ -24,10 +24,10 @@ export function getPaths(path: string, removeLast: boolean = true): string[] {
  * Gets file extension
  *
  * @export
- * @param {LearningObjectFile} file
+ * @param {LearningObject.Material.File} file
  * @returns
  */
-export function getExtension(file: LearningObjectFile) {
+export function getExtension(file: LearningObject.Material.File) {
   let ext = file.extension;
   if (!ext) {
     const extMatch = file.name.match(/(\.[^.]*$|$)/);
@@ -45,6 +45,6 @@ const viewableInBrowser = ['.pdf'];
  * @param {string} extension
  * @returns
  */
-export function canViewInBrowser(file: LearningObjectFile) {
+export function canViewInBrowser(file: LearningObject.Material.File) {
   return viewableInBrowser.includes(getExtension(file));
 }

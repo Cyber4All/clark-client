@@ -29,19 +29,22 @@ export class TextEditorComponent implements OnInit, OnChanges {
 
   // this flag is set to true to prevent loading an existing description triggering a save operation. when false, the emit onChanges will take no action except to toggle it back to true
   initialized = true;
+  acceptExternalChanges = true;
   showBox = true;
   config: any;
 
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.savedContent) {
+    if (changes.savedContent && this.acceptExternalChanges) {
       this.editorContent = changes.savedContent.currentValue;
 
       // this is it's first change which means we're loading an existing value, prevent emit
       if (changes.savedContent.firstChange) {
         this.initialized = false;
       }
+
+      this.acceptExternalChanges = false;
     }
   }
 

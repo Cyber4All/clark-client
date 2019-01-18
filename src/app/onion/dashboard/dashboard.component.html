@@ -80,9 +80,9 @@
 <clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
   <div #contextMenu class="filter-menu">
     <ul>
-      <li class="unpublished" (click)="toggleFilter('unpublished')">
-        <div *ngIf="filters.get('unpublished')" class="indicator"></div>
-        <i class="far fa-eye-slash"></i>Unpublished
+      <li class="unreleased" (click)="toggleFilter('unreleased')">
+        <div *ngIf="filters.get('unreleased')" class="indicator"></div>
+        <i class="far fa-eye-slash"></i>Unreleased
       </li>
       <li class="waiting" (click)="toggleFilter('waiting')">
         <div *ngIf="filters.get('waiting')" class="indicator"></div>
@@ -92,9 +92,9 @@
         <div *ngIf="filters.get('review')" class="indicator"></div>
         <i class="far fa-sync"></i>Under Review
       </li>
-      <li class="published" (click)="toggleFilter('published')">
-        <div *ngIf="filters.get('published')" class="indicator"></div>
-        <i class="far fa-eye"></i>Published
+      <li class="released" (click)="toggleFilter('released')">
+        <div *ngIf="filters.get('released')" class="indicator"></div>
+        <i class="far fa-eye"></i>Released
       </li>
       <li class="denied" (click)="toggleFilter('denied')">
         <div *ngIf="filters.get('denied')" class="indicator"></div>

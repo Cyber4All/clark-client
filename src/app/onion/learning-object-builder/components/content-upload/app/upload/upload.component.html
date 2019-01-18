@@ -1,13 +1,4 @@
 <div class="inner">
-  <div *ngIf="disabled" class="disabled">
-    <div class="disabled-inner">
-      <div class="image">
-        😢
-      </div>
-      Unfortunately, uploading materials to CLARK is disabled through the labor day weekend. We are working tirelessly
-      to restore this service and apologize for any inconvenience this causes.
-    </div>
-  </div>
   <div class="manage-materials">
     <div class="tabs">
       <ul id="materials-title">
@@ -15,25 +6,16 @@
         <li [ngClass]="{'active': slide === 2}" (click)="changeSlide(2)">URLs</li>
         <li [ngClass]="{'active': slide === 3}" (click)="changeSlide(3)">Notes</li>
       </ul>
-      <div class="server-status" [ngClass]="{'saving': (saving | async)}">
-        <ng-container *ngIf="!(saving|async); else savingTemplate">
-          <span>
-            Saved <i class="far fa-check"></i>
-          </span>
-        </ng-container>
-        <ng-template #savingTemplate>
-          <span>
-            Saving <i class="far fa-spinner-third fa-spin"></i>
-          </span>
-        </ng-template>
-      </div>
     </div>
     <div class="materials-slides">
       <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
+        <div *ngIf="solutionUpload" class="solutions-warning">
+          Note: While the upload of solution files are not prohibited, they won't be included during a learning object's download.
+        </div>
         <!-- This element has a dropzone tag as a backup in case the browser doesn't support the dragover event or something goes wrong -->
         <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [confirmDeletion]="confirmDeletion$" [files$]="files$"
           [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeletion($event)" (fileEdited)="handleEdit($event)"
-          (path)="openPath=$event"></onion-file-manager>
+          (path)="openPath=$event" (solutionUpload)="handleSolution($event)"></onion-file-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
         <clark-url-manager [urls]="(learningObject$|async)?.materials?.urls" (add)="addURL()" (update)="updateUrl($event)"
@@ -56,8 +38,7 @@
   </div>
   <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()"
     (addedFile)="addFile($event)" (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)"
-    (complete)="dzComplete($event)" (success)="uploadSuccess()" (queueComplete)="queueComplete($event)" (error)="handleError($event)"
-    (canceled)="handleCanceled($event)">
+    (complete)="dzComplete($event)" (success)="uploadSuccess()" (queueComplete)="queueComplete($event)" (error)="handleError($event)">
     <div class="uploader-content">
       <div class="uploader-icon">
         <i class='far fa-arrow-up'></i>

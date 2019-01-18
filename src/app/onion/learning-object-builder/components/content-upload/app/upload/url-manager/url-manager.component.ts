@@ -9,7 +9,7 @@ import {
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
-import { Url } from '@cyber4all/clark-entity/dist/learning-object';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 
 @Component({
@@ -19,12 +19,12 @@ import { Url } from '@cyber4all/clark-entity/dist/learning-object';
 })
 export class UrlManagerComponent implements OnInit, OnDestroy {
   @Input()
-  urls: Url[] = [];
-  
+  urls: LearningObject.Material.Url[] = [];
+
   @Output()
   add: EventEmitter<void> = new EventEmitter();
   @Output()
-  update: EventEmitter<{ index: number; url: Url }> = new EventEmitter();
+  update: EventEmitter<{ index: number; url: LearningObject.Material.Url }> = new EventEmitter();
   @Output()
   remove: EventEmitter<number> = new EventEmitter();
   @Output()

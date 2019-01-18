@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LearningOutcomeErrorGroup, LearningOutcomeValidator } from './learning-outcome.validator';
-import { LearningOutcome, LearningObject } from '@cyber4all/clark-entity';
+import { LearningOutcomeValidator } from './learning-outcome.validator';
+import { LearningOutcome, LearningObject, SubmittableLearningOutcome, SubmittableLearningObject } from '@cyber4all/clark-entity';
 
 export const OBJECT_ERRORS = {
   NO_NAME: 'Learning object must have a name',
@@ -107,7 +107,7 @@ export class LearningObjectValidator {
   submissionMode: boolean;
   errors = new LearningObjectErrorGroup();
 
-  constructor(public outcomeValidator: LearningOutcomeValidator) {}
+  constructor(public outcomeValidator: LearningOutcomeValidator) { }
 
   /**
    * Retrieves the first string error for a learning object, checks save errors first, then checks submit errors if
@@ -163,17 +163,45 @@ export class LearningObjectValidator {
    * @param {LearningObject} object
    * @memberof LearningObjectValidator
    */
-  validateLearningObject(object: LearningObject, outcomes?: Map<string, LearningOutcome>) {
-    this.validateName(object.name);
-    this.validateAcademicLevels(object.levels);
-    this.validateDescription(object.goals[0].text);
+  validateLearningObject(object: Partial<LearningObject>, outcomes?: Map<string, Partial<LearningOutcome>>) {
+    let submitErrors;
+    this.errors.saveErrors.clear();
+    this.errors.submitErrors.clear();
 
-    if (outcomes && outcomes.size) {
-      for (const o of Array.from(outcomes.values())) {
-        this.validateOutcome(o);
+    try {
+      // submit errors
+      const testObject = new LearningObject(Object.assign(object.toPlainObject ? object.toPlainObject() : object, { 'outcomes':  outcomes ? Array.from(outcomes.values()) : undefined }));
+      // this is to explicitly test the validity of the objects name since the setter accepts empty strings
+      testObject.name = object.name;
+      submitErrors = SubmittableLearningObject.validateObject(testObject);
+      
+      for (let s in submitErrors) {
+        if (outcomes || s.toLowerCase() !== 'outcomes') {
+          this.errors.setError('submit', s, submitErrors[s]); 
+        }
       }
-    } else {
-      this.errors.setError('submit', 'outcomes', OBJECT_ERRORS.NO_OUTCOMES);
+    } catch (error) {
+      // TODO please this is disgusting
+      const property = error.message.split(' ')[0].toLowerCase();
+      this.errors.setError('save', property, error.message);
+    }
+  }
+
+  validateLearningOutcome(outcome: Partial<LearningOutcome>) {
+    let submitErrors;
+    this.outcomeValidator.errors.saveErrors.clear();
+    this.outcomeValidator.errors.submitErrors.clear();
+
+    try {
+      // submit errors
+      submitErrors = SubmittableLearningOutcome.validateOutcome(new LearningOutcome(outcome));
+      
+      for(let s in submitErrors) {
+        this.outcomeValidator.errors.setOutcomeError('submit', outcome.id, submitErrors[s]);
+      }
+    } catch(error) {
+      // save errors
+      this.outcomeValidator.errors.setOutcomeError('save', outcome.id, error.message);
     }
   }
 
@@ -237,141 +265,5 @@ export class LearningObjectValidator {
     }
 
     return true;
-  }
-
-  ///////////////////////////
-  //  VALIDATOR FUNCTIONS  //
-  ///////////////////////////
-
-  /* All of these functions should either return a LearningObjectError object or null
-  so that they can be used as FormGroup custom validators */
-
-  /**
-   * Validate a learning object's name
-   *
-   * @param {string} name
-   * @returns {LearningObjectError | null}
-   * @memberof LearningObjectValidator
-   */
-  validateName(name: string): LearningObjectError {
-    this.errors.deleteError('name');
-
-    let error;
-
-    if (!name) {
-      error = OBJECT_ERRORS.NO_NAME;
-    } else if (name.length < 3) {
-      error = OBJECT_ERRORS.SHORT_NAME;
-    }
-
-    if (error) {
-      this.errors.setError('save', 'name', error);
-      return { invalidName: { value: name, error } };
-    }
-
-    this.errors.deleteError('name');
-
-    return null;
-  }
-
-  /**
-   * Validate a learning object's description
-   *
-   * @param {string} description
-   * @returns {(LearningObjectError | null)}
-   * @memberof LearningObjectValidator
-   */
-  validateDescription(description: string): LearningObjectError {
-    this.errors.deleteError('description');
-
-    let error;
-
-    if (!description || description === '') {
-      error = OBJECT_ERRORS.NO_DESCRIPTION;
-    }
-
-    if (error) {
-      this.errors.setError('submit', 'description', error);
-      return { invalidDescription: { value: description, error } };
-    }
-
-    return null;
-  }
-
-  /**
-   * Validate a learning object's list of academic levels
-   *
-   * @param {string[]} levels
-   * @returns {LearningObjectError}
-   * @memberof LearningObjectValidator
-   */
-  validateAcademicLevels(levels: string[]): LearningObjectError {
-    this.errors.deleteError('levels');
-
-    let error;
-
-    if (!levels || !levels.length) {
-      error = OBJECT_ERRORS.NO_LEVELS;
-    }
-
-    if (error) {
-      this.errors.setError('submit', 'levels', error);
-      return { invalidLevels: { value: levels, error } };
-    }
-
-    return null;
-  }
-
-  /**
-   *  Validate a learning outcome
-   *
-   * @param {string} id the id of the learning outcome
-   * @param {string} bloom
-   * @param {string} verb
-   * @param {string} text
-   * @returns {LearningObjectError}
-   * @memberof LearningObjectValidator
-   */
-  validateOutcome(outcome: LearningOutcome): LearningObjectError {
-    if (!outcome.id) {
-      throw new Error('Error! No outcome id included!');
-    }
-
-    this.outcomeValidator.errors.deleteOutcomeError(outcome.id);
-
-    let error;
-    let errorType: 'save' | 'submit';
-    let errorValue: 'verb' | 'bloom' | 'text';
-
-    if (!outcome.bloom || outcome.bloom === '') {
-      error = OUTCOME_ERRORS.NO_BLOOM;
-      errorType = 'save';
-      errorValue = 'bloom';
-    } else if (!outcome.verb || outcome.verb === '') {
-      error = OUTCOME_ERRORS.NO_VERB;
-      errorType = 'save';
-      errorValue = 'verb';
-    } else if (!outcome.text || outcome.text === '') {
-      error = OUTCOME_ERRORS.NO_TEXT;
-      errorType = 'submit';
-      errorValue = 'text';
-    }
-
-    if (error) {
-      // add error to map
-      this.outcomeValidator.errors.setOutcomeError(errorType, outcome.id, error);
-
-      if (errorType === 'submit') {
-        // since we're evaluating all save errors first, if we hit a submit error, clear any save errors from the map
-        this.errors.deleteError('outcomes');
-        this.outcomeValidator.errors.deleteOutcomeError(outcome.id, 'save');
-      }
-
-      // return an object that can be handled by an Angular FormGroup
-      return { invalidOutcome: { value: outcome[errorValue], error } };
-    }
-
-    this.outcomeValidator.errors.deleteOutcomeError(outcome.id);
-    return null;
   }
 }

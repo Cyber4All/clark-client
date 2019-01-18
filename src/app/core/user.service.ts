@@ -63,7 +63,7 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(member => User.instantiate(member));
+        return arr.map(member => new  User(member));
       });
   }
 
@@ -74,7 +74,7 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(member => User.instantiate(member));
+        return arr.map(member => new User(member));
       });
   }
 
@@ -101,7 +101,7 @@ export class UserService {
           .then(
             (val: any) => {
               const user = val;
-              return user ? User.instantiate(user) : null;
+              return user ? new User(user) : null;
             },
             error => {
               return null;

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BrowseByMappingsComponent } from './browse-by-mappings.component';
+import { DownloadNoticeComponent } from './download-notice.component';
 
-describe('BrowseByMappingsComponent', () => {
-  let component: BrowseByMappingsComponent;
-  let fixture: ComponentFixture<BrowseByMappingsComponent>;
+describe('DownloadNoticeComponent', () => {
+  let component: DownloadNoticeComponent;
+  let fixture: ComponentFixture<DownloadNoticeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BrowseByMappingsComponent ]
+      declarations: [ DownloadNoticeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BrowseByMappingsComponent);
+    fixture = TestBed.createComponent(DownloadNoticeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

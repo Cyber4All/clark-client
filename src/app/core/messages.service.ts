@@ -4,13 +4,23 @@ import { MISC_ROUTES } from '@env/route';
 
 @Injectable()
 export class MessagesService {
-  constructor(private http: HttpClient) {}
+    private _message: Array<{}>;
+    
+    get message() {
+        return this._message;
+    }
 
-  getStatus(): Promise<Array<{}>> {
-      return this.http.get(MISC_ROUTES.CHECK_STATUS, {withCredentials:  true})
-      .toPromise().then((val: any) => {
-          return val;
-      });
-  }
+    constructor(private http: HttpClient) { }
+
+    getStatus(): Promise<Array<{}>> {
+        if (this._message) {
+            return Promise.resolve(this._message);
+        } else {
+            return this.http.get(MISC_ROUTES.CHECK_STATUS, { withCredentials: true }).toPromise().then((val: any) => {
+                this._message = val && val.length ? val : undefined;
+                return this._message;
+            });
+        }
+    }
 }
 

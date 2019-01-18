@@ -4,7 +4,6 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
-import { LearningObjectStatus } from '@env/environment';
 import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
 import { Subject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
@@ -12,7 +11,7 @@ import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
 
 export interface DashboardLearningObject extends LearningObject {
-  status: string;
+  status: LearningObject.Status;
   parents: string[];
 }
 
@@ -192,11 +191,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // deep copy list of learningObjects and initialize empty parents array
         const arr: DashboardLearningObject[] = Array.from(
           learningObjects.map(l => {
-            l.parents = [];
-            if (!l.status) {
-              l.status = LearningObjectStatus.UNPUBLISHED;
+            const newLo = l as DashboardLearningObject;
+            newLo.parents = [];
+
+            if (!newLo.status) {
+              newLo.status = LearningObject.Status.UNRELEASED;
             }
-            return l as DashboardLearningObject;
+            return newLo as DashboardLearningObject;
           })
         );
 
@@ -338,7 +339,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     } else {
       // multiple deletion
-      const canDelete = objects.filter(s => ['unpublished', 'denied'].includes(s.status));
+      const canDelete = objects.filter(s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status));
 
       if (canDelete.length) {
         this.learningObjectService
@@ -690,7 +691,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (collection) {
       this.collectionService.submit(this.focusedLearningObject.id, collection).then(() => {
         this.focusedLearningObject.publish();
-        this.focusedLearningObject.status = 'waiting';
+        this.focusedLearningObject.status = LearningObject.Status.WAITING;
         this.focusedLearningObject.collection = collection;
         this.cd.detectChanges();
       }).catch (err => {
@@ -717,7 +718,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   cancelSubmission(l: DashboardLearningObject) {
     this.collectionService.unsubmit(l.id).then(async () => {
       l.unpublish();
-      l.status = 'unpublished';
+      l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
     }).catch(err => {
       console.error(err);

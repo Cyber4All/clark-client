@@ -23,8 +23,8 @@
     "@angular/platform-browser": "^6.0.4",
     "@angular/platform-browser-dynamic": "^6.0.4",
     "@angular/router": "^6.0.4",
-    "@cyber4all/clark-entity": "^3.2.1-dev",
-    "@cyber4all/clark-taxonomy": "^2.0.1",
+    "@cyber4all/clark-entity": "^4.0.0-rc.14.0",
+    "@cyber4all/clark-taxonomy": "^4.0.0",
     "@cyber4all/ngx-dropzone-wrapper": "^6.2.1",
     "@nguniversal/express-engine": "^7.0.2",
     "@types/jest": "^23.1.1",
@@ -63,7 +63,7 @@
     "install-peers": "^1.0.2",
     "jasmine-core": "~3.2.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "jest": "^22.4.3",
+    "jest": "^23.6.0",
     "karma": "~3.0.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "~1.0.1",
@@ -71,10 +71,10 @@
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-html-reporter": "^1.2.0",
     "protractor": "~5.4.0",
+    "ts-jest": "^23.1.4",
     "ts-node": "~7.0.0",
     "tslint": "~5.10.0",
-    "typescript": "^2.7.2",
-    "ts-jest": "^23.1.4"
+    "typescript": "^2.7.2"
   },
   "prettier": {
     "singleQuote": true

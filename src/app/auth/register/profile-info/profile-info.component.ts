@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../core/auth.service';
 import { RegisterComponent } from '../register.component';
-import { Subscription, fromEvent } from 'rxjs';
-import 'rxjs/add/operator/debounceTime';
+import { fromEvent, Subject } from 'rxjs';
+
+import { takeUntil, debounceTime, map } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-profile-info',
@@ -20,61 +20,60 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   result: boolean;
 
-  // array of subscriptions to destroy on component destroy
-  subs: Subscription[] = [];
-
   // flags
   querying = false;
   usernameError: string = undefined;
   passwordError = false;
   passwordVerifyError = false;
 
+  destroyed$ = new Subject<void>();
+
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
 
   ngOnInit() {
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
-    this.subs.push(fromEvent(this.usernameInput.nativeElement, 'input')
-      .map(x => x['currentTarget'].value)
-      .debounceTime(650)
-      .subscribe(val => {
-        if (val.length < 3 || val.length > 20) {
-          this.usernameError = 'Usernames must be at least 3 characters long and no longer than 20 characters.';
+    fromEvent(this.usernameInput.nativeElement, 'input').pipe(
+      map(x => x['currentTarget'].value),
+      debounceTime(650),
+      takeUntil(this.destroyed$)
+    ).subscribe(val => {
+      if (val.length < 3 || val.length > 20) {
+        this.usernameError = 'Usernames must be at least 3 characters long and no longer than 20 characters.';
+        this.register.error(this.usernameError);
+        this.register.setInUseUsername(this.result);
+        return;
+      }
+      this.querying = true;
+      this.usernameError = undefined;
+      this.auth.identifiersInUse(val).then((res: any) => {
+        this.querying = false;
+        this.result = res.inUse;
+        if (!this.result) {
+          this.register.setInUseUsername(this.result);
+        } else {
+          this.usernameError = 'This username already exists in our system. Please pick another username.';
           this.register.error(this.usernameError);
           this.register.setInUseUsername(this.result);
-          return;
         }
-        this.querying = true;
-        this.usernameError = undefined;
-        this.auth.identifiersInUse(val).then((res: any) => {
-          this.querying = false;
-          this.result = res.inUse;
-          if (!this.result) {
-            this.register.setInUseUsername(this.result);
-          } else {
-            this.usernameError = 'This username already exists in our system. Please pick another username.';
-            this.register.error(this.usernameError);
-            this.register.setInUseUsername(this.result);
-          }
-        });
-      })
-    );
+      });
+    });
 
-    this.subs.push(fromEvent(this.passwordInput.nativeElement, 'input')
-      .map(x => x['currentTarget'].value)
-      .debounceTime(650)
-      .subscribe(val => {
+    fromEvent(this.passwordInput.nativeElement, 'input').pipe(
+      map(x => x['currentTarget'].value),
+      debounceTime(650),
+      takeUntil(this.destroyed$)
+    ).subscribe(val => {
         this.passwordError = !this.checkPassword(val);
       })
-    );
-
-    this.subs.push(fromEvent(this.passwordVerifyInput.nativeElement, 'input')
-      .map(x => x['currentTarget'].value)
-      .debounceTime(650)
-      .subscribe(val => {
+    
+    fromEvent(this.passwordVerifyInput.nativeElement, 'input').pipe(
+      map(x => x['currentTarget'].value),
+      debounceTime(650),
+      takeUntil(this.destroyed$)
+    ).subscribe(val => {
         this.passwordVerifyError = !this.checkPasswordsIdentical(val);
       })
-    );
   }
 
   /**
@@ -133,9 +132,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // unsubscribe from all observables
-    for (let i = 0, l = this.subs.length; i < l; i++) {
-      this.subs[i].unsubscribe();
-    }
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }

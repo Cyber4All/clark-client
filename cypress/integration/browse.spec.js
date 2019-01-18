@@ -49,18 +49,9 @@ describe('Browse', () => {
         // Pick filter options
         // Length
         cy.get('#clark-filter').children('#filter-section').children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').first().children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(1).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(2).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(3).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(4).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
         
         // Academic level
         cy.get('#clark-filter').children('#filter-section').eq(1).children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').first().children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').eq(1).children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(1).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').eq(1).children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(2).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').eq(1).children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(3).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').eq(1).children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(4).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
-        cy.get('#clark-filter').children('#filter-section').eq(1).children('#filter-section-inner').children('#filter-section-type').children('#filter-checkbox').eq(5).children('span').children('clark-checkbox').children('#checkbox').click({ force: true });
     });
 
     it('Clear search', () => {
@@ -120,12 +111,8 @@ describe('Browse', () => {
         cy.get('#filter-section-type #checkbox').first().click( { force: true }, { multiple: true });
         cy.wait(1000);
 
-        cy.url().should('include', 'length=nanomodule');
-
         // check clearing filters
         cy.get('#filters-clear-all').first().click({ force: true }, { multiple: true });
         cy.wait(1000);
-
-        cy.url().should('not.include', 'length=nanomodule')
     })
 });

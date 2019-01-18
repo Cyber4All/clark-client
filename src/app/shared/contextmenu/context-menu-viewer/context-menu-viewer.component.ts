@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 
 /**
  * This component is simply a wrapper for any content projected into it (from the ContextMenuService).
- * It signals click away closes to the service, but all other functionality is  managed directly by the service 
+ * It signals click away closes to the service, but all other functionality is  managed directly by the service
  * or from it's controller component.
  */
 @Component({

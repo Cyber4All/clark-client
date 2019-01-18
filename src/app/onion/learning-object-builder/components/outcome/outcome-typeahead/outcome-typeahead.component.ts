@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Output, EventEmitter, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, filter, takeUntil } from 'rxjs/operators';
-import { verbs, levels } from '@cyber4all/clark-taxonomy';
+import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/takeUntil';
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import { BuilderStore } from '../../../builder-store.service';
@@ -132,7 +132,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
     const levelsArray = Array.from(levels.values());
     for (let i = 0, l = levelsArray.length; i < l; i++) {
       // for this level, grab it's verbs and check if the current verb is in that list
-      if (Array.from(verbs[levelsArray[i]].values()).includes(verb.charAt(0).toUpperCase() + verb.substring(1))) {
+      if (taxonomy.taxons[levelsArray[i]].verbs.includes(verb.toLowerCase())) {
         this.category = levelsArray[i];
         if (!noEmit) {
           this.selectedCategory.emit(this.category);
@@ -157,7 +157,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
    * Return list of verbs in selected category
    */
   get verbsInSelectedCategory(): string[] {
-    return Array.from(verbs[this.category].values());
+    return taxonomy.taxons[this.category].verbs;
   }
 
   ngOnDestroy() {

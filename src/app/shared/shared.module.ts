@@ -9,7 +9,6 @@ import { ToasterModule } from './toaster';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
 // Components
-import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
@@ -59,7 +58,6 @@ import { EmailBannerComponent } from './email-banner/email-banner.component';
   ],
   providers: [],
   declarations: [
-    BrowseByMappingsComponent,
     NavbarComponent,
     MessageComponent,
     FileBrowserComponent,
@@ -84,7 +82,6 @@ import { EmailBannerComponent } from './email-banner/email-banner.component';
     EmailBannerComponent,
   ],
   exports: [
-    BrowseByMappingsComponent,
     NavbarComponent,
     FileBrowserComponent,
     FileListViewComponent,

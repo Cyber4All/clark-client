@@ -1,14 +1,11 @@
-import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
+import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LearningObject, User } from '@cyber4all/clark-entity';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, HostListener, Input } from '@angular/core';
 import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { RatingService } from '../../../core/rating.service';
-import { ModalService, ModalListElement } from '../../../shared/modals';
 import { Subject } from 'rxjs/Subject';
+import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
-import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -32,7 +29,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private isDestroyed$ = new Subject<void>();
-  downloadStatus: DOWNLOAD_STATUS = 0;
+  hasDownloadAccess = false;
   downloading = false;
   addingToLibrary = false;
   author: string;
@@ -45,6 +42,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
+  isEditButtonViewable = false;
 
   userRating: {user?: User, number?: number, comment?: string, date?: string} = {};
 
@@ -73,28 +71,18 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.auth.isLoggedIn.subscribe(val => {
-      this.loggedin = val;
-      this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
-        this.downloadStatus = isAuthorized;
-      });
-    });
+    this.hasDownloadAccess = this.auth.hasReviewerAccess() || this.isReleased;
 
+    this.isEditButtonViewable = this.auth.hasEditorAccess();
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
   }
 
-  get canDownload(): boolean {
-    return this.downloadStatus === DOWNLOAD_STATUS.CAN_DOWNLOAD;
-  }
-
   get isReleased(): boolean {
-    return this.downloadStatus !== DOWNLOAD_STATUS.NOT_RELEASED;
+    return this.learningObject['status'] === LearningObject.Status.RELEASED;
   }
-
-
 
   async addToCart(download?: boolean) {
     this.error = false;
@@ -249,6 +237,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get isMobile() {
     return this.windowWidth <= 750;
+  }
+
+  // Navigates the route from client to admin perspective
+  openAdminApp() {
+    const route = `${environment.adminAppUrl}/objects/details/${this.learningObject.id}`;
+    window.open(route);
   }
 
   ngOnDestroy() {

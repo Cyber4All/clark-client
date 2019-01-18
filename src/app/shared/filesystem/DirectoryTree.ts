@@ -1,6 +1,5 @@
 import { getPaths } from './file-functions';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
-export type LearningObjectFile = File;
+import { LearningObject } from '@cyber4all/clark-entity';
 
 /**
  * Class Representing Simple Filesystem
@@ -22,12 +21,12 @@ export class DirectoryTree {
   /**
    * Adds new Files to Directory Tree
    *
-   * @param {LearningObjectFile[]} files
+   * @param {LearningObject.Material.File[]} files
    * @memberof DirectoryTree
    */
-  public addFiles(files: LearningObjectFile[]) {
+  public addFiles(files: LearningObject.Material.File[]) {
     // Returns new files and files that have had their metadata changed
-    const getUpdatedFiles = (fileList: LearningObjectFile[]) =>
+    const getUpdatedFiles = (fileList: LearningObject.Material.File[]) =>
       fileList.filter(file => {
         const mappedFile = this.fileMap.get(file.id);
         if (mappedFile && mappedFile.file === JSON.stringify(file)) {
@@ -62,10 +61,10 @@ export class DirectoryTree {
    * Removes cached files that are no longer in the array of files
    *
    * @private
-   * @param {LearningObjectFile[]} files
+   * @param {LearningObject.Material.File[]} files
    * @memberof DirectoryTree
    */
-  private cleanFilesystem(files: LearningObjectFile[]) {
+  private cleanFilesystem(files: LearningObject.Material.File[]) {
     const fileIds = files.map(file => file.id);
     this.fileMap.forEach((mappedFile, mappedId) => {
       if (!fileIds.includes(mappedId)) {
@@ -212,7 +211,7 @@ export class DirectoryTree {
    * @param {string[]} paths Array of paths to file
    * @memberof DirectoryTree
    */
-  public removeFile(path: string): LearningObjectFile {
+  public removeFile(path: string): LearningObject.Material.File {
     const folderPath = getPaths(path);
     const fileName = path.split('/').pop();
     const node = this.traversePath(folderPath);
@@ -231,7 +230,7 @@ export class DirectoryTree {
 export class DirectoryNode {
   private name: string;
   private path: string;
-  private files: LearningObjectFile[];
+  private files: LearningObject.Material.File[];
   private parent: DirectoryNode;
   private children: DirectoryNode[];
   public description: string;
@@ -283,10 +282,10 @@ export class DirectoryNode {
   /**
    * Gets Files in Directory
    *
-   * @returns {LearningObjectFile[]}
+   * @returns {LearningObject.Material.File[]}
    * @memberof DirectoryNode
    */
-  public getFiles(): LearningObjectFile[] {
+  public getFiles(): LearningObject.Material.File[] {
     return this.files;
   }
   /**
@@ -312,10 +311,10 @@ export class DirectoryNode {
   /**
    * Add File to Node's files
    *
-   * @param {LearningObjectFile} newFile
+   * @param {LearningObject.Material.File} newFile
    * @memberof DirectoryNode
    */
-  public addFile(newFile: LearningObjectFile) {
+  public addFile(newFile: LearningObject.Material.File) {
     let canAdd = true;
     for (const file of this.files) {
       if (file.name === newFile.name) {
@@ -331,10 +330,10 @@ export class DirectoryNode {
    * Remove file from Node's files by filename
    *
    * @param {string} filename
-   * @returns {LearningObjectFile}
+   * @returns {LearningObject.Material.File}
    * @memberof DirectoryNode
    */
-  public removeFile(filename: string): LearningObjectFile {
+  public removeFile(filename: string): LearningObject.Material.File {
     const index = this.findFile(filename);
     const deleted = this.files[index];
     this.files.splice(index, 1);

@@ -64,7 +64,7 @@ export class LearningObjectService {
       .toPromise()
       .then((response: any) => {
         const objects = response.objects;
-        return { learningObjects: objects.map(object => LearningObject.instantiate(object)), total: response.total};
+        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total};
       });
   }
 
@@ -87,12 +87,7 @@ export class LearningObjectService {
       .get(route)
       .toPromise()
       .then((res: any) => {
-        const learningObject = LearningObject.instantiate(res);
-        // If contributors exist on this learning object, instantiate them
-        if (learningObject['contributors'] && learningObject['contributors'].length > 0) {
-          const arr = learningObject['contributors'];
-          learningObject['contributors'] = arr.map((member: any) => User.instantiate(member));
-        }
+        const learningObject = new LearningObject(res);
         return learningObject;
       });
   }
@@ -106,7 +101,7 @@ export class LearningObjectService {
       .toPromise()
       .then((val: any) => {
         return val
-          .map(l => LearningObject.instantiate(l));
+          .map(l => new LearningObject(l));
       });
   }
 }
