@@ -377,7 +377,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
     // if there are no filter values present in the params, clear filter values and do not reload page
     if (!filters) {
-      this.clearAllFilters(false);
+      this.clearAllFilters(true);
     }
   }
 
