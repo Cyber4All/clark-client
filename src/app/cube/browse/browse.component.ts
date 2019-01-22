@@ -114,6 +114,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
     // whenever the queryParams change, map them to the query object and perform the search
     this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
+      if (params.text && params.text !== this.query.text) {
+        this.clearAllFilters(true);
+      }
       const collections = await this.collectionService.getCollections();
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
       this.query.released = this.auth.hasReviewerAccess() ? undefined : true;
@@ -237,7 +240,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
     }
 
     if (sendFilters) {
-      this.performSearch(true);
+      this.performSearch();
     }
   }
 
@@ -353,13 +356,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
    */
   makeQuery(params: any) {
     const paramKeys = Object.keys(params);
-    let filters = false;
     // iterate params object
     for (let i = 0, l = paramKeys.length; i < l; i++) {
       const key = paramKeys[i];
-      if (key === 'length' || key === 'level' || key === 'collection') {
-        filters = true;
-      }
       if (Object.keys(this.query).includes(key)) {
         const val = params[key];
         // this parameter is a query param, add it to the query object
@@ -374,10 +373,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
           this.modifyFilter(key, val, true);
         }
       }
-    }
-    // if there are no filter values present in the params, clear filter values and do not reload page
-    if (!filters) {
-      this.clearAllFilters(true);
     }
   }
 
