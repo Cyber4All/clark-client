@@ -470,8 +470,6 @@ export class BuilderStore {
         'materials.urls': this.learningObject.materials.urls
       });
       this.learningObjectEvent.next(this.learningObject);
-    } else {
-      return null;
     } 
     
   }

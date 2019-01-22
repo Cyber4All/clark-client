@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { Url } from '@cyber4all/clark-entity/dist/learning-object';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class UrlRowComponent implements OnInit {
   titleText: string;
   urlLink: string;
   @Input()
-  url: Url = {
+  url: LearningObject.Material.Url = {
     title: '',
     url: ''
   };
