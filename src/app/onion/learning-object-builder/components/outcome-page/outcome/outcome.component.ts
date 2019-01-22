@@ -20,6 +20,7 @@ import 'rxjs/add/operator/debounceTime';
 import { LearningObjectErrorStoreService } from '../../../errorStore';
 import { LearningObjectStoreService } from '../../../store';
 import { SuggestionService } from './standard-outcomes/suggestion/services/suggestion.service';
+import { LearningOutcome, Outcome } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'onion-outcome-component',
@@ -29,7 +30,7 @@ import { SuggestionService } from './standard-outcomes/suggestion/services/sugge
 })
 export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDestroy {
   copy = COPY;
-  @Input() outcome;
+  @Input() outcome: LearningOutcome;
   @Input() index;
   @Input() submitted: number;
   @Output() deleteIndex: EventEmitter<Number> = new EventEmitter<Number>();
@@ -55,12 +56,15 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   setupView(first?: boolean) {
     // FIXME: classVerbs should be sorted at the API
     this.classVerbs = this.sortVerbs();
-    if (first && !this.outcome._text) {
-      // THIS CHECK ONLY PASSES BECAUSE VALIDATION PREVENTS SAVING OUTCOMES WITHOUT TEXT
-      this.outcome._verb = Array.from(this.classVerbs[this.outcome._bloom].values())[0];
+    if (first && !this.outcome.text) {
+      if (!this.outcome.bloom) {
+        this.outcome.bloom = Object.keys(this.classVerbs)[0];
+      }
+
+      this.outcome.verb = Array.from(this.classVerbs[this.outcome.bloom || 'Remember and Understand'].values())[0];
     }
 
-    this.suggestionService.updateMappings(this.outcome._mappings);
+    this.suggestionService.updateMappings(this.outcome.mappings);
   }
 
   ngOnInit() {
@@ -68,16 +72,13 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
 
     this.suggestionService.mappedSubject.subscribe(val => {
       this.mappings = val;
-      if (this.outcome) {
-        this.outcome._mappings = this.mappings;
-      }
     });
 
-    this.suggestionService.updateMappings(this.outcome._mappings);
+    this.suggestionService.updateMappings(this.outcome.mappings);
     this.setupView(true);
 
     // pass the outcome text to the suggestion component
-    this.outcomeSuggestionText = this.outcome._text;
+    this.outcomeSuggestionText = this.outcome.text;
     // listen for input events on the income input and send text to suggestion component after 650 ms of debounce
     fromEvent(this.outcomeInput.nativeElement, 'input').map(x => x['currentTarget'].value).debounceTime(650).subscribe(val => {
       this.outcomeSuggestionText = val;
@@ -118,8 +119,8 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
   }
 
   registerBloomsLevel(level) {
-    this.outcome._bloom = level;
-    this.outcome._verb = Array.from(this.classVerbs[this.outcome._bloom].values())[0];
+    this.outcome.bloom = level;
+    this.outcome.verb = Array.from(this.classVerbs[this.outcome.bloom].values())[0];
   }
 
   updateFocus(i) {
@@ -134,10 +135,10 @@ export class LearningObjectOutcomeComponent implements OnChanges, OnInit, OnDest
 
   validate(): boolean {
     // check bloom, text, and verb
-    if (this.outcome._bloom === '') {
+    if (this.outcome.bloom === '') {
       return false;
     }
-    return !(this.outcome._text === '' || this.outcome._verb === '');
+    return !(this.outcome.text === '' || this.outcome.verb === '');
   }
 
   ngOnDestroy() {
