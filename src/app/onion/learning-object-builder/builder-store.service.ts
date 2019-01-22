@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SubmittableLearningObject, LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import {
   OBJECT_ERRORS
 } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
+
 
 /**
  * Defines a list of actions the builder can take
@@ -456,20 +457,21 @@ export class BuilderStore {
 
   /**
    * Updates Url at given index
-   *
+   * Also checks for valid Url and title field input against the supplied regex pattern
    * @param {number} index
    * @param {Url} url
    * @memberof BuilderStore
    */
-  private async updateUrl(index: number, url: LearningObject.Material.Url): Promise<any> {
-    if (!url.url.match(/https?:\/\/.+/i)) {
-      url.url = `http://${url.url}`;
-    }
-    this.learningObject.materials.urls[index] = url;
-    await this.saveObject({
-      'materials.urls': this.learningObject.materials.urls
-    });
-    this.learningObjectEvent.next(this.learningObject);
+  private async updateUrl(index: number,  url: LearningObject.Material.Url): Promise<any> {
+    var exp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    if (url.url.match(exp) && url.title !== '') {
+      this.learningObject.materials.urls[index] = url;
+      await this.saveObject({
+        'materials.urls': this.learningObject.materials.urls
+      });
+      this.learningObjectEvent.next(this.learningObject);
+    } 
+    
   }
 
   /**

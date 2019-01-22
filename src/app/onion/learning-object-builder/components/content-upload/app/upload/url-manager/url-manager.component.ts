@@ -11,6 +11,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
 import { LearningObject } from '@cyber4all/clark-entity';
 
+
 @Component({
   selector: 'clark-url-manager',
   templateUrl: './url-manager.component.html',
@@ -29,6 +30,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
   @Output()
   save: EventEmitter<void> = new EventEmitter();
 
+
   triggerSave$ = new Subject();
   componentDestroyed$ = new Subject();
 
@@ -37,7 +39,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     title: string;
     url: string;
   }> = new Subject();
-
+  
   constructor() {}
 
   ngOnInit() {
@@ -81,19 +83,19 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     this.add.emit();
     this.triggerSave$.next();
   }
+  
 
   /**
-   * Sets next value of updateUrl by setting title from user input
+   * Function that emits an event when the user enters in both the 
+   * title and url field 
+   * @param event
    */
-  updateTitle(index: number, title: string) {
-    this.urlUpdated$.next({ index, title, url: undefined });
-  }
-
-  /**
-   * Sets next value of updateUrl by setting url from user input
-   */
-  updateUrl(index: number, url: string) {
-    this.urlUpdated$.next({ index, url, title: undefined });
+  updateUrl(event: object) {
+    const index: number = event['index'];
+    const url:   string = event['url'];
+    const title: string = event['title'];
+      this.urlUpdated$.next({index, url, title });
+      
   }
 
   /**
