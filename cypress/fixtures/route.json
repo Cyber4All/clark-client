@@ -1,5 +1,8 @@
 
-[
-    "http://clark-client:4200/home",
-    "http://clark-client:4200/browse"
-]
+{
+    "home": "",
+    "login": "auth/login",
+    "browse": "browse",
+    "dashboard": "onion/dashboard",
+    "builder": "onion/learning-object-builder"
+}

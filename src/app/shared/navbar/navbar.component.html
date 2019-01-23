@@ -15,7 +15,7 @@
           <div class="close" id="search-close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
         </div>
       </div>
-      <div class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
+      <div id="clark-user" class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
         <ng-container *ngIf="isMobile; else userTemplate" [ngTemplateOutlet]="mobileUserTemplate"></ng-container>
       </div>
 
@@ -23,7 +23,7 @@
         <ng-container *ngIf="loggedin">
           <div class="contributor" id="contributor-link" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
           <div class="right library" id="library-link" routerLink="/library"></div>
-          <div class="left flex h flex-end user-menu" (click)="userDropdown($event)">
+          <div id="clark-user-dropdown" class="left flex h flex-end user-menu" (click)="userDropdown($event)">
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
             <i class="fas fa-chevron-down"></i>
           </div>
