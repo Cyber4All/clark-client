@@ -198,7 +198,6 @@ export class BuilderStore {
   makeNew(): LearningObject {
     this.learningObject = new LearningObject({ author: this.auth.user });
     this.outcomes = new Map();
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
     return this.learningObject;
   }
 
@@ -300,7 +299,7 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
+    this.validator.validateLearningOutcome(outcome);
 
     return outcome.id;
   }
@@ -309,6 +308,8 @@ export class BuilderStore {
     // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
+
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
     this.serviceInteraction$.next(true);
@@ -338,7 +339,8 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateLearningOutcome(outcome)
+    // validateLearningObject here over validateLearningOutcome to remove a "must contain one valid outcome" error if it exists
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     this.saveOutcome(
       {

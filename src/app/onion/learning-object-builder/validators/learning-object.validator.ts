@@ -167,7 +167,9 @@ export class LearningObjectValidator {
     let submitErrors;
     this.errors.saveErrors.clear();
     this.errors.submitErrors.clear();
-
+    this.outcomeValidator.errors.saveErrors.clear();
+    this.outcomeValidator.errors.submitErrors.clear();
+    
     try {
       // submit errors
       const testObject = new LearningObject(Object.assign(object.toPlainObject ? object.toPlainObject() : object, { 'outcomes':  outcomes ? Array.from(outcomes.values()) : undefined }));
@@ -176,8 +178,16 @@ export class LearningObjectValidator {
       submitErrors = SubmittableLearningObject.validateObject(testObject);
       
       for (let s in submitErrors) {
-        if (outcomes || s.toLowerCase() !== 'outcomes') {
+        if (s.toLowerCase() !== 'outcomes' || typeof submitErrors[s] === 'string') {
           this.errors.setError('submit', s, submitErrors[s]); 
+        } else {
+          // these are outcome errors and should be stored in the outcomeValidator error Map
+          const outcomeErrors: [{ index: number, text: string }] = submitErrors[s];
+          const ids = Array.from(outcomes.keys());
+          
+          for (let i = 0, l = outcomeErrors.length; i < l; i++) {
+            this.outcomeValidator.errors.setOutcomeError('submit', ids[i], outcomeErrors[i].text);
+          }
         }
       }
     } catch (error) {
@@ -189,17 +199,18 @@ export class LearningObjectValidator {
 
   validateLearningOutcome(outcome: Partial<LearningOutcome>) {
     let submitErrors;
-    this.outcomeValidator.errors.saveErrors.clear();
-    this.outcomeValidator.errors.submitErrors.clear();
+    this.outcomeValidator.errors.saveErrors.delete(outcome.id);
+    this.outcomeValidator.errors.submitErrors.delete(outcome.id);
 
     try {
       // submit errors
       submitErrors = SubmittableLearningOutcome.validateOutcome(new LearningOutcome(outcome));
       
       for(let s in submitErrors) {
+        console.log(outcome.id, s, submitErrors[s])
         this.outcomeValidator.errors.setOutcomeError('submit', outcome.id, submitErrors[s]);
       }
-    } catch(error) {
+    } catch (error) {
       // save errors
       this.outcomeValidator.errors.setOutcomeError('save', outcome.id, error.message);
     }
