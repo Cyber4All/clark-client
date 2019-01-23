@@ -306,6 +306,9 @@ export class BuilderStore {
   }
 
   private async deleteOutcome(id: string) {
+    // grab the outcome that's about to be deleted
+    const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
+    
     // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
@@ -314,10 +317,12 @@ export class BuilderStore {
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
     this.serviceInteraction$.next(true);
-    this.learningObjectService.deleteOutcome(this.learningObject.id, id).then(val => {
+    // @ts-ignore the serviceId property is a temporary addition and is stripped before saving. It tracks the id assigned to a new outcome by the service on creation
+    this.learningObjectService.deleteOutcome(this.learningObject.id, outcome.serviceId || id).then(val => {
       this.serviceInteraction$.next(false);
     }).catch(error => {
       console.error(error);
+
       this.serviceInteraction$.next(false);
     });
   }
