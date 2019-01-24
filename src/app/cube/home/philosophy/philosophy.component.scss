@@ -91,11 +91,11 @@
     }
   }
 }
-@media (min-width: 821px) and (max-width: 994px) {
-  .values__wrapper:nth-last-child(2):after {
-    display: none;
-  }
-  .values__wrapper:last-child {
-    grid-column: 2 / span 2;
+@media (min-width: 821px) and (max-width: 1250px) {
+  .values__wrapper:nth-last-child(-n+2) {
+    grid-column: span 2;
+    &::after {
+      display: none;
+    }
   }
 }
