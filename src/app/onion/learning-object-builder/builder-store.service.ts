@@ -6,8 +6,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import {
-  LearningObjectValidator,
-  OBJECT_ERRORS
+  LearningObjectValidator
 } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
 
@@ -687,7 +686,7 @@ export class BuilderStore {
               // tried to save an object with a name that already exists
               this.validator.errors.saveErrors.set(
                 'name',
-                OBJECT_ERRORS.EXISTING_NAME
+                'A learning object with this name already exists!'
               );
               return;
             }
@@ -708,7 +707,7 @@ export class BuilderStore {
               // tried to save an object with a name that already exists
               this.validator.errors.saveErrors.set(
                 'name',
-                OBJECT_ERRORS.EXISTING_NAME
+                'A learning object with this name already exists!'
               );
               return;
             }
