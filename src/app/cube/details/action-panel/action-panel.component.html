@@ -19,11 +19,9 @@
         <i class="fal fa-spinner-third fa-spin"></i>
       </span>
     </button>
-    <span class="btn-group vertical" *ngIf="isEditButtonViewable">
-      <button class="button neutral on-white" id="edit-button" type="submit"> 
-        <a (click)="openAdminApp()">Revise</a>
-      </button>
-    </span>
+    <button *ngIf="isEditButtonViewable" class="button neutral on-white" (click)="openAdminApp()"> 
+      Revise
+    </button>
   </div>
   <ng-container *ngIf="!auth.user">
     <div class="login-msg" id="login-msg">Please
