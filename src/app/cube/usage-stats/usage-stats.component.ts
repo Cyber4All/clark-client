@@ -114,7 +114,7 @@ export class UsageStatsComponent implements OnInit {
         //   value: this.usageStats.users.organizations
         // },
         {
-          title: 'Learning Objects Downloaded',
+          title: 'Downloads',
           value: this.usageStats.objects.downloads
         }
       ]
