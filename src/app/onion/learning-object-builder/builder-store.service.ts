@@ -373,7 +373,8 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
 
     this.saveOutcome(
-      { id: outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      // @ts-ignore serviceId is a temporary property set to keep track of newly created learning
+      { id: outcome.serviceId || outcome.id, mappings: outcome.mappings.map(x => x.id) },
       true
     );
   }
@@ -396,7 +397,8 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
 
     this.saveOutcome(
-      { id: outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      // @ts-ignore serviceId is a temporary property set to keep track of newly created learning outcomes
+      { id: outcome.serviceId || outcome.id, mappings: outcome.mappings.map(x => x.id) },
       true
     );
   }

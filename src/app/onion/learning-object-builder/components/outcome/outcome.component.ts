@@ -88,15 +88,21 @@ export class OutcomeComponent implements OnInit {
   }
 
   emitVerb(val) {
-    this.selectedVerb.emit(val);
+    if (val) {
+      this.selectedVerb.emit(val);
+    }
   }
 
   emitLevel(val) {
-    this.selectedLevel.emit(val);
+    if (val) {
+      this.selectedLevel.emit(val);
+    }
   }
 
   emitText(val) {
-    this.textChanged.emit(val);
+    if (val) {
+      this.textChanged.emit(val);
+    }
   }
 
   emitDeletion() {

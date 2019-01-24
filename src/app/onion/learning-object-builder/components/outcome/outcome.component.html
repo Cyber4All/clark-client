@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="outcome-text">
-    <clark-outcome-typeahead (overflowValue)="setOverflow($event)" [outcome]="outcome" (selectedVerb)="emitVerb($event)"
+    <clark-outcome-typeahead (overflowValue)="setOverflow($event)" [verb]="outcome?.verb" [bloom]="outcome?.bloom" [text]="outcome?.text" (selectedVerb)="emitVerb($event)"
       (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)" class="absolute-position">
     </clark-outcome-typeahead>
   </div>
