@@ -90,12 +90,6 @@
       display: none;
     }
   }
-  .values__wrapper:last-of-type {
-    grid-column: 1 / span 2;
-    .values__list {
-      width: 75%;
-    }
-  }
 }
 @media (min-width: 821px) and (max-width: 994px) {
   .values__wrapper:nth-last-child(2):after {
