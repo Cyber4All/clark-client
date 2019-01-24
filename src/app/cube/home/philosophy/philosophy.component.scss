@@ -79,8 +79,8 @@
   }
   .philosophy__values {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
     margin: 25px 0 0;
   }
   .values__wrapper {
@@ -92,10 +92,10 @@
   }
 }
 @media (min-width: 821px) and (max-width: 1250px) {
-  .values__wrapper:nth-last-child(-n+2) {
-    grid-column: span 2;
-    &::after {
-      display: none;
-    }
+  .philosophy__values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    margin: 25px 0 0;
   }
 }
