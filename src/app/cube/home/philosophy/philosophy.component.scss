@@ -97,5 +97,8 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
     margin: 25px 0 0;
+    .values__wrapper:nth-child(3)::after {
+      display: none;
+    }
   }
 }
