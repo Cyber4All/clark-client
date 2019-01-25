@@ -59,6 +59,11 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           margin-left: 10px;
           opacity: 0.6;
         }
+        .collection-link {
+          padding-left: 5px; 
+          color: white;
+          opacity: 0.6;
+        }
       }
 
       .author {
