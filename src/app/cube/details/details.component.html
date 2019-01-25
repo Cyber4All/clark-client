@@ -17,7 +17,7 @@
       <div class="materials">
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
       </div>
-      <div class="disclaimer">
+      <div *ngIf="learningObject.collection === 'nccp'" class="disclaimer">
         <div class="title">Notice Regarding NSA NCCP Course Materials</div>
         <p>These course materials were created under a U.S. Government grant. The terms of the Call for Proposals advised the course
           creator that the materials would be made "publicly available for educational institutions" to educate and prepare their
