@@ -26,6 +26,15 @@ export class PhilosophyComponent implements OnInit {
       icon: 'far fa-cloud-upload'
     },
     {
+      title: 'Quality Curriculum',
+      items: [
+        'Peer Review',
+        'Active Curators',
+        'Clear Learning Outcomes'
+      ],
+      icon: 'far fa-check'
+    },
+    {
       title: 'Easy Out',
       items: [
         'Free Content',

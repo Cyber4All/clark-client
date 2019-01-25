@@ -17,16 +17,11 @@
   </div>
 </section>
 <section class="info-banner">
-  <div class="counter-wrapper">
-    <div class="released">
-      <div class="counter">{{ releasedCounter }}</div>
-      <div class="label">Learning Objects Released</div>
-    </div>
-    <div class="under-review">
-      <div class="counter" *ngIf="totalCounter && releasedCounter">{{ totalCounter - releasedCounter }}</div>
-      <div class="label">Learning Objects Under Review</div>
-    </div>
+  <div class="view-all">
+    <a [routerLink]="['/system/usage']">
+      <span class="text">View All</span><i class="far fa-angle-right"></i></a>
   </div>
+  <cube-stat-counters [stats]="usageStats" [objectStatsLoading]="!objectStatsLoaded" [userStatsLoading]="!userStatsLoaded"></cube-stat-counters>
 </section>
 <div class="featured-viewport">
   <cube-featured></cube-featured>
@@ -50,8 +45,8 @@
 
 <section class="bottom-banner">
   <div class="whatis-wrapper">
-      <div class="title">{{ copy.WHATISTITLE }}</div>
-      <div class="text">{{ copy.WHATIS }}</div>
+    <div class="title">{{ copy.WHATISTITLE }}</div>
+    <div class="text">{{ copy.WHATIS }}</div>
   </div>
   <div class="call-to-action">
     <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>

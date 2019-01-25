@@ -1,0 +1,9 @@
+<div class="counter-wrapper">
+  <div class="title">
+    <span>{{stat?.title}}</span>
+  </div>
+  <div class="number">
+    <span *ngIf="stat?.value === -1"><i class="fal fa-spinner-third fa-spin"></i></span>
+    <span *ngIf="stat?.value > -1">{{ stat?.value | number }}</span>
+  </div>
+</div>
