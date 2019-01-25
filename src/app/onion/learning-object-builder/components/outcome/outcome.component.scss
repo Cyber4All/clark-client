@@ -48,10 +48,26 @@ $light-blue-gradient: linear-gradient(
 
   .outcome-header {
     width: 100%;
-    font-size: 17px;
+    font-size: 16px;
     color: $dark-text;
     font-weight: 600;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .outcome-header__left {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-grow: 0;
+      overflow: hidden;
+    }
+
+    .outcome-header__right {
+      flex-shrink: 0;
+      flex-grow: 0;
+    }
   }
 
   .outcome-delete {
@@ -64,10 +80,8 @@ $light-blue-gradient: linear-gradient(
     justify-content: flex-end;
     align-items: center;
     transition: all 0.2s ease;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    height: 30px;
+    display: inline;
+    font-weight: normal;
 
     span {
       margin-right: 7px;

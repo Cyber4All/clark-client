@@ -1,27 +1,25 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
-import { map, filter, takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
 import 'rxjs/add/operator/takeUntil';
 import { LearningOutcome } from '@cyber4all/clark-entity';
-import { BuilderStore } from '../../../builder-store.service';
+import { text } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'clark-outcome-typeahead',
   templateUrl: './outcome-typeahead.component.html',
   styleUrls: ['./outcome-typeahead.component.scss']
 })
-export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
+export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('verbElement') verbElement: ElementRef;
 
-  @Input() outcome: LearningOutcome;
-
-  verb: string;
-  category: string;
+  @Input() verb: string;
+  @Input() bloom: string;
+  @Input() text: string;
 
   goodVerb: boolean;
-  text = '';
 
   input$ = new Subject<KeyboardEvent>();
   componentDestroyed$ = new Subject<void>();
@@ -40,38 +38,26 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
    */
   @HostListener('document:click', ['$event']) clickout() {
     this.toggleMenu(false);
-    //when there are clicks away from the dropdown menu, the overflow is set to hidden (false)
+    // when there are clicks away from the dropdown menu, the overflow is set to hidden (false)
     this.overflowValue.emit(false);
   }
 
-  constructor(private store: BuilderStore) { }
+  constructor() { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.bloom && changes.verb) {
+      this.goodVerb = true;
+    }
+  }
 
   ngOnInit() {
-    // initialize typeahead with current outcome values
-    if (this.outcome) {
-      this.verb = this.outcome.verb;
-      this.text = this.outcome.text;
-      this.category = this.outcome.bloom;
-
-      this.goodVerb = this.isGoodVerb(this.verb, true);
-    }
-
-    this.store.outcomeEvent.pipe(
-      takeUntil(this.componentDestroyed$)
-    ).subscribe((payload: Map<string, LearningOutcome>) => {
-      if (payload && payload.get(this.outcome.id).bloom !== this.category) {
-        // reset component with new bloom and verb
-        this.category = this.outcome.bloom;
-        this.verb = this.outcome.verb;
-
-        this.goodVerb = this.isGoodVerb(this.verb, true);
-      }
-    });
 
     // listen for 'input' events on the input and parse verb & category (level)
     this.input$
-      .pipe(map((event) => (event.target as HTMLInputElement).value.trim()))
-      .takeUntil(this.componentDestroyed$).subscribe((val: string) => {
+      .pipe(
+        map((event) => (event.target as HTMLInputElement).value.trim()),
+        takeUntil(this.componentDestroyed$)
+      ).subscribe((val: string) => {
         const index = val.indexOf(' ');
         this.text = val;
 
@@ -89,13 +75,19 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
               this.selectedVerb.emit(this.verb);
             }
           }
+        } else if (index === -1 && this.text.length === 0) {
+          // we've backspaced to the verb, remove the dropdown and put the text inline
+          this.text = this.verb;
 
+          this.verb = undefined;
+          this.bloom = undefined;
+          this.goodVerb = false;
         }
 
         if (this.goodVerb) {
           this.enteredText.emit(this.text);
         }
-    });
+      });
   }
 
   /**
@@ -133,15 +125,15 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
     for (let i = 0, l = levelsArray.length; i < l; i++) {
       // for this level, grab it's verbs and check if the current verb is in that list
       if (taxonomy.taxons[levelsArray[i]].verbs.includes(verb.toLowerCase())) {
-        this.category = levelsArray[i];
+        this.bloom = levelsArray[i];
         if (!noEmit) {
-          this.selectedCategory.emit(this.category);
+          this.selectedCategory.emit(this.bloom);
         }
         return true;
       }
     }
 
-    this.category = undefined;
+    this.bloom = undefined;
     return false;
   }
 
@@ -157,7 +149,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnDestroy {
    * Return list of verbs in selected category
    */
   get verbsInSelectedCategory(): string[] {
-    return taxonomy.taxons[this.category].verbs;
+    return taxonomy.taxons[this.bloom].verbs;
   }
 
   ngOnDestroy() {

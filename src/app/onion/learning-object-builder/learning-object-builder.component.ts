@@ -94,7 +94,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   showServiceInteraction: boolean;
   removeServiceIndicator: NodeJS.Timer;
 
-  errorMessage: string = 'please';
+  errorMessage: string;
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -140,6 +140,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   get errorState(): boolean {
     this.errorMessage = this.validator.nextError;
+
     return !this.validator.saveable || (this.validator.submissionMode && !this.validator.submittable);
   }
 

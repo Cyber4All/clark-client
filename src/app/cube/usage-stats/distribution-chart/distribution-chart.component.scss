@@ -1,0 +1,56 @@
+.chart-wrapper {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: #FFF;
+  padding: 20px;
+  border-radius: 2px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 50px;
+}
+
+.chart {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-size: 18px;
+      color: #333;
+    }
+
+    margin-bottom: 15px;
+
+  }
+
+
+  canvas {
+    margin-bottom: 15px;
+  }
+}
+
+@media print {
+  .chart-wrapper {
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .chart {
+    .header {
+      display: block;
+
+      .title {
+        text-align: center;
+      }
+
+      .learn-more {
+        display: none;
+      }
+    }
+
+  }
+}

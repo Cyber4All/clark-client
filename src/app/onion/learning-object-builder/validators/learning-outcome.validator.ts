@@ -19,21 +19,6 @@ export class LearningOutcomeErrorGroup {
       this.submitErrors.set(id, error);
     }
   }
-
-  deleteOutcomeError(id: string, type?: 'save' | 'submit') {
-    if (type) {
-      if (type === 'save') {
-        this.saveErrors.delete(id);
-      } else if (type === 'submit') {
-        this.submitErrors.delete(id);
-      }
-    } else {
-      // we didn't specify a type, so remove from the first one we find
-      if (!this.saveErrors.delete(id)) {
-        this.submitErrors.delete(id);
-      }
-    }
-  }
 }
 
 @Injectable()

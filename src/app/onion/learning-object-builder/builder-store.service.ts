@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { SubmittableLearningObject, LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import {
-  LearningObjectValidator,
-  OBJECT_ERRORS
+  LearningObjectValidator
 } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
+
 
 /**
  * Defines a list of actions the builder can take
@@ -198,7 +198,6 @@ export class BuilderStore {
   makeNew(): LearningObject {
     this.learningObject = new LearningObject({ author: this.auth.user });
     this.outcomes = new Map();
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
     return this.learningObject;
   }
 
@@ -300,22 +299,29 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
+    this.validator.validateLearningOutcome(outcome);
 
     return outcome.id;
   }
 
   private async deleteOutcome(id: string) {
+    // grab the outcome that's about to be deleted
+    const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
+    
     // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
 
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
+
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
     this.serviceInteraction$.next(true);
-    this.learningObjectService.deleteOutcome(this.learningObject.id, id).then(val => {
+    // @ts-ignore the serviceId property is a temporary addition and is stripped before saving. It tracks the id assigned to a new outcome by the service on creation
+    this.learningObjectService.deleteOutcome(this.learningObject.id, outcome.serviceId || id).then(val => {
       this.serviceInteraction$.next(false);
     }).catch(error => {
       console.error(error);
+
       this.serviceInteraction$.next(false);
     });
   }
@@ -338,7 +344,8 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateLearningOutcome(outcome)
+    // validateLearningObject here over validateLearningOutcome to remove a "must contain one valid outcome" error if it exists
+    this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     this.saveOutcome(
       {
@@ -366,7 +373,8 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
 
     this.saveOutcome(
-      { id: outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      // @ts-ignore serviceId is a temporary property set to keep track of newly created learning
+      { id: outcome.serviceId || outcome.id, mappings: outcome.mappings.map(x => x.id) },
       true
     );
   }
@@ -389,7 +397,8 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
 
     this.saveOutcome(
-      { id: outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      // @ts-ignore serviceId is a temporary property set to keep track of newly created learning outcomes
+      { id: outcome.serviceId || outcome.id, mappings: outcome.mappings.map(x => x.id) },
       true
     );
   }
@@ -456,20 +465,21 @@ export class BuilderStore {
 
   /**
    * Updates Url at given index
-   *
+   * Also checks for valid Url and title field input against the supplied regex pattern
    * @param {number} index
    * @param {Url} url
    * @memberof BuilderStore
    */
-  private async updateUrl(index: number, url: LearningObject.Material.Url): Promise<any> {
-    if (!url.url.match(/https?:\/\/.+/i)) {
-      url.url = `http://${url.url}`;
-    }
-    this.learningObject.materials.urls[index] = url;
-    await this.saveObject({
-      'materials.urls': this.learningObject.materials.urls
-    });
-    this.learningObjectEvent.next(this.learningObject);
+  private async updateUrl(index: number,  url: LearningObject.Material.Url): Promise<any> {
+    var exp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    if (url.url.match(exp) && url.title !== '') {
+      this.learningObject.materials.urls[index] = url;
+      await this.saveObject({
+        'materials.urls': this.learningObject.materials.urls
+      });
+      this.learningObjectEvent.next(this.learningObject);
+    } 
+    
   }
 
   /**
@@ -678,7 +688,7 @@ export class BuilderStore {
               // tried to save an object with a name that already exists
               this.validator.errors.saveErrors.set(
                 'name',
-                OBJECT_ERRORS.EXISTING_NAME
+                'A learning object with this name already exists!'
               );
               return;
             }
@@ -699,7 +709,7 @@ export class BuilderStore {
               // tried to save an object with a name that already exists
               this.validator.errors.saveErrors.set(
                 'name',
-                OBJECT_ERRORS.EXISTING_NAME
+                'A learning object with this name already exists!'
               );
               return;
             }

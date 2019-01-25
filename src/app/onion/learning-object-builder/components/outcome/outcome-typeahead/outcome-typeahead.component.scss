@@ -55,7 +55,10 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         display: inline-flex;
         align-items: center;
         border-radius: 4px 4px 0 0;
-        cursor: pointer;
+
+        &:not(.bad) {
+            cursor: pointer;
+        }
 
         .svg-inline--fa {
             font-size: 12px;

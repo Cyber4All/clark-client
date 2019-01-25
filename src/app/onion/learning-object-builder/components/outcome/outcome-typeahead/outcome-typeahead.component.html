@@ -1,8 +1,10 @@
 <div class="typeahead">
   <div class="input">
-    <div #verbElement *ngIf="verb" class="verb" [ngClass]="{'bad': !goodVerb}" (click)="toggleMenu(true, $event)">
+    <div #verbElement *ngIf="verb" class="verb" [ngClass]="{'bad': !goodVerb}" (click)="goodVerb && toggleMenu(true, $event)">
       {{ verb | titlecase }}
-      <i class="fas fa-angle-down"></i>
+      <span *ngIf="goodVerb">
+        <i class="fas fa-angle-down"></i>
+      </span>
     </div>
     <input [ngClass]="{'withVerb': verb, 'bad': verb && !goodVerb}" placeholder="Outcome text" type="text" (input)="input$.next($event)" [value]="text" />
   </div>

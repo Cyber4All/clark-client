@@ -2,21 +2,6 @@ import { Injectable } from '@angular/core';
 import { LearningOutcomeValidator } from './learning-outcome.validator';
 import { LearningOutcome, LearningObject, SubmittableLearningOutcome, SubmittableLearningObject } from '@cyber4all/clark-entity';
 
-export const OBJECT_ERRORS = {
-  NO_NAME: 'Learning object must have a name',
-  SHORT_NAME: 'A learning object\'s name must be longer than 3 characters',
-  EXISTING_NAME: 'A learning object with this name already exists',
-  NO_DESCRIPTION: 'A learning object must have a description',
-  NO_LEVELS: 'A learning object must have academic levels',
-  NO_OUTCOMES: 'A learning object must have learning outcomes'
-};
-
-export const OUTCOME_ERRORS = {
-  NO_VERB: 'A learning outcome must have a verb to save',
-  NO_BLOOM: 'A learning outcome must have a bloom level to save',
-  NO_TEXT: 'A learning outcome must have text to submit'
-};
-
 export interface LearningObjectError {
   [key: string]: {
     value: any,
@@ -36,7 +21,7 @@ export class LearningObjectErrorGroup {
   private _submitErrors: Map<string, string> = new Map();
 
   /**
-   * Return a  map containing all errors that prevent the Learning Object from saving
+   * Return a map containing all errors that prevent the Learning Object from saving
    *
    * @readonly
    * @memberof LearningObjectErrorGroup
@@ -167,7 +152,9 @@ export class LearningObjectValidator {
     let submitErrors;
     this.errors.saveErrors.clear();
     this.errors.submitErrors.clear();
-
+    this.outcomeValidator.errors.saveErrors.clear();
+    this.outcomeValidator.errors.submitErrors.clear();
+    
     try {
       // submit errors
       const testObject = new LearningObject(Object.assign(object.toPlainObject ? object.toPlainObject() : object, { 'outcomes':  outcomes ? Array.from(outcomes.values()) : undefined }));
@@ -176,8 +163,16 @@ export class LearningObjectValidator {
       submitErrors = SubmittableLearningObject.validateObject(testObject);
       
       for (let s in submitErrors) {
-        if (outcomes || s.toLowerCase() !== 'outcomes') {
+        if (s.toLowerCase() !== 'outcomes' || typeof submitErrors[s] === 'string') {
           this.errors.setError('submit', s, submitErrors[s]); 
+        } else {
+          // these are outcome errors and should be stored in the outcomeValidator error Map
+          const outcomeErrors: [{ index: number, text: string }] = submitErrors[s];
+          const ids = Array.from(outcomes.keys());
+          
+          for (let i = 0, l = outcomeErrors.length; i < l; i++) {
+            this.outcomeValidator.errors.setOutcomeError('submit', ids[outcomeErrors[i].index], outcomeErrors[i].text);
+          }
         }
       }
     } catch (error) {
@@ -189,8 +184,8 @@ export class LearningObjectValidator {
 
   validateLearningOutcome(outcome: Partial<LearningOutcome>) {
     let submitErrors;
-    this.outcomeValidator.errors.saveErrors.clear();
-    this.outcomeValidator.errors.submitErrors.clear();
+    this.outcomeValidator.errors.saveErrors.delete(outcome.id);
+    this.outcomeValidator.errors.submitErrors.delete(outcome.id);
 
     try {
       // submit errors
@@ -199,7 +194,7 @@ export class LearningObjectValidator {
       for(let s in submitErrors) {
         this.outcomeValidator.errors.setOutcomeError('submit', outcome.id, submitErrors[s]);
       }
-    } catch(error) {
+    } catch (error) {
       // save errors
       this.outcomeValidator.errors.setOutcomeError('save', outcome.id, error.message);
     }

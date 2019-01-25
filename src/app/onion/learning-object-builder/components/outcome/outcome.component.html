@@ -1,9 +1,14 @@
 <div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
-  <div class="outcome-header">{{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
-    + outcomeNumber }}</div>
-  <div *ngIf="!!active" class="outcome-delete" (click)="emitDeletion()">
-    <span>Delete Outcome</span>
-    <i class="far fa-trash"></i>
+  <div class="outcome-header">
+    <div class="outcome-header__left">
+        {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
+        + outcomeNumber }}
+    </div>
+    <div class="outcome-header__right">
+      <div *ngIf="!!active" class="outcome-delete" (click)="showDeleteConfirm = true" tip="Delete outcome" tipLocation="bottom">
+        <i class="far fa-trash-alt"></i>
+      </div>
+    </div>
   </div>
   <div class="level-select">
     <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom.toLowerCase() === l.toLowerCase()}"
@@ -19,7 +24,7 @@
     </div>
   </div>
   <div class="outcome-text">
-    <clark-outcome-typeahead (overflowValue)="setOverflow($event)" [outcome]="outcome" (selectedVerb)="emitVerb($event)"
+    <clark-outcome-typeahead (overflowValue)="setOverflow($event)" [verb]="outcome?.verb" [bloom]="outcome?.bloom" [text]="outcome?.text" (selectedVerb)="emitVerb($event)"
       (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)" class="absolute-position">
     </clark-outcome-typeahead>
   </div>
@@ -41,3 +46,14 @@
     </div>
   </div>
 </div>
+
+<clark-popup *ngIf="showDeleteConfirm" (closed)="showDeleteConfirm = false">
+  <div #popupInner>
+    <div class="modal-title bad">Are you sure?</div>
+    <div class="modal-text">You cannot undo this action!</div>
+    <div class="btn-group center">
+      <button class="button bad" (click)="emitDeletion()">Delete <i class="far fa-trash-alt"></i></button>
+      <button class="button neutral" (click)="showDeleteConfirm = false">Cancel <i class="far fa-ban"></i></button>
+    </div>
+  </div>
+</clark-popup>

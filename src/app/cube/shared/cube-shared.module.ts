@@ -19,7 +19,6 @@ import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { FeaturedComponent } from './featured/featured.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -43,4 +42,4 @@ import { FeaturedComponent } from './featured/featured.component';
   ],
   providers: [ProfileGuard, UserResolver]
 })
-export class CubeSharedModule { }
+export class CubeSharedModule {}

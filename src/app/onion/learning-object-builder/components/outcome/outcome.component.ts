@@ -25,7 +25,7 @@ import { LearningOutcomeValidator } from '../../validators/learning-outcome.vali
   animations: [
     trigger('outcome', [
       state('open', style({ height: '*' })),
-      state('*', style({ height: '84px' })),
+      state('*', style({ height: '60px' })),
       transition('* <=> *', animate('350ms ease'))
     ])
   ]
@@ -45,6 +45,8 @@ export class OutcomeComponent implements OnInit {
     standardOutcome: LearningOutcome;
     value: boolean;
   }> = new EventEmitter();
+
+  showDeleteConfirm = false;
 
   outcomeLevels = Array.from(levels.values());
 
@@ -88,15 +90,21 @@ export class OutcomeComponent implements OnInit {
   }
 
   emitVerb(val) {
-    this.selectedVerb.emit(val);
+    if (val) {
+      this.selectedVerb.emit(val);
+    }
   }
 
   emitLevel(val) {
-    this.selectedLevel.emit(val);
+    if (val) {
+      this.selectedLevel.emit(val);
+    }
   }
 
   emitText(val) {
-    this.textChanged.emit(val);
+    if (val) {
+      this.textChanged.emit(val);
+    }
   }
 
   emitDeletion() {

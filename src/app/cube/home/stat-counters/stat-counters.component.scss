@@ -1,0 +1,80 @@
+.counter-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+
+  .stat-block {
+    text-shadow: 0 2px transparent;
+    text-align: center;
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    color: white;
+
+    .counter {
+      font-size: 36px;
+    }
+
+    .label {
+      font-size: 16px;
+      font-weight: normal;
+    }
+
+    &:not(:last-of-type):after {
+      content: '';
+      top: 0;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.25);
+      opacity: 0.8;
+      width: 2px;
+      margin: auto;
+      right: 0;
+      position: absolute;
+    }
+  }
+
+}
+
+.loading {
+  font-size: 30px;
+}
+
+@media screen and (max-width: 950px) {
+  .counter-wrapper {
+    .stat-block {
+      .counter {
+        font-size: 28px;
+      }
+
+      .label {
+        font-size: 14px;
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 850px) {
+  .counter-wrapper {
+    .stat-block {
+
+      // Hid last 2
+      &:nth-last-of-type(1),
+      &:nth-last-of-type(2) {
+        display: none;
+      }
+
+      // Remove bar from ending block
+      &:nth-last-of-type(3) {
+        &::after {
+          content: none;
+        }
+      }
+    }
+  }
+
+}
