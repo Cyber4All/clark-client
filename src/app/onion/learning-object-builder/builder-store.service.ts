@@ -34,7 +34,7 @@ export enum BUILDER_ACTIONS {
   UPDATE_MATERIAL_NOTES,
   UPDATE_FILE_DESCRIPTION,
   UPDATE_FOLDER_DESCRIPTION,
-  DELETE_FILE
+  DELETE_FILES
 }
 
 /**
@@ -265,8 +265,8 @@ export class BuilderStore {
           index: data.index,
           description: data.description
         });
-      case BUILDER_ACTIONS.DELETE_FILE:
-        return await this.removeFile(data.fileId);
+      case BUILDER_ACTIONS.DELETE_FILES:
+        return await this.removeFiles(data.fileIds);
       default:
         console.error('Error! Invalid action taken!');
         return;
@@ -566,15 +566,17 @@ export class BuilderStore {
   }
 
   /**
-   * Removes file for array of file meta
+   * Removes files from array of file meta
    *
    * @private
-   * @param {string} fileId
+   * @param {string[]} fileIds
    * @memberof BuilderStore
    */
-  private async removeFile(fileId: string) {
+  private async removeFiles(fileIds: string[]) {
+    fileIds.forEach(fileId => {
     const index = this.findFile(fileId);
     this.learningObject.materials.files.splice(index, 1);
+    });
     this.learningObjectEvent.next(this.learningObject);
   }
 

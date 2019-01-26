@@ -4,7 +4,7 @@
   </div>
   <div main>
     <!-- upload content here -->
-    <app-upload [learningObject$]="learningObject$" [error$]="error$" [saving$]="saving$" (fileDeleted)="handleFileDeletion($event)"
+    <app-upload [learningObject$]="learningObject$" [error$]="error$" [saving$]="saving$" (filesDeleted)="handleFileDeletion($event)"
       (uploadComplete)="handleUploadComplete()" (urlAdded)="handleUrlAdded()" (urlUpdated)="handleUrlUpdated($event)"
       (urlRemoved)="handleUrlRemoved($event)" (fileDescriptionUpdated)="handleFileDescriptionUpdate($event)"
       (folderDescriptionUpdated)="handleFolderDescriptionUpdate($event)" (notesUpdated)="handleNotesUpdate($event)"></app-upload>

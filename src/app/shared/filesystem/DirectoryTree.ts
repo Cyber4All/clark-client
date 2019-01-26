@@ -66,12 +66,24 @@ export class DirectoryTree {
    */
   private cleanFilesystem(files: LearningObject.Material.File[]) {
     const fileIds = files.map(file => file.id);
+    const folderPaths = [];
     this.fileMap.forEach((mappedFile, mappedId) => {
       if (!fileIds.includes(mappedId)) {
         this.removeFile(mappedFile.path);
         this.fileMap.delete(mappedId);
+        const folderPath = getPaths(mappedFile.path).join('/');
+        if (!folderPaths.includes(folderPath)) {
+          folderPaths.push(folderPath);
+        }
       }
     });
+    for (const path of folderPaths) {
+      const paths = getPaths(path, false);
+      const node = this.traversePath(paths);
+      if (node) {
+        this.removeEmptyFolders(node);
+      }
+    }
   }
   private buildSubTree(paths: string[]) {
     const last_touched_node_paths = getPaths(this.lastNode.getPath(), false);
@@ -128,13 +140,9 @@ export class DirectoryTree {
 
     const parentPath = parent.getPath();
     const childPath = `${parentPath}/${currentPath}`;
-    const index = this.pathMap.get(childPath);
+    const index = this.pathMap.get(childPath) || 0;
     const children = parent.getChildren();
-    const node =
-      index !== undefined
-        ? children[index]
-        : this.findNodeAtLevel(currentPath, children);
-
+    const node = children[index] || this.findNodeAtLevel(currentPath, children);
     if (node) {
       return this.traversePath(paths, node);
     }
@@ -143,7 +151,7 @@ export class DirectoryTree {
     return null;
   }
   /**
-   * Finds Node within array of children and cahes location
+   * Finds Node within array of children and caches location
    *
    * @param {string} path
    * @param {DirectoryNode[]} elements
@@ -219,6 +227,21 @@ export class DirectoryTree {
       return node.removeFile(fileName);
     } else {
       throw new Error(`Node at path: ${folderPath.join('/')} does not exist`);
+    }
+  }
+
+  /**
+   * Recursively removes empty folders starting for leaf node
+   *
+   * @private
+   * @param {DirectoryNode} node
+   * @memberof DirectoryTree
+   */
+  private removeEmptyFolders(node: DirectoryNode): void {
+    if (!node.getChildren().length && !node.getFiles().length) {
+      const parent = node.getParent();
+      this.removeFolder(node.getPath());
+      this.removeEmptyFolders(parent);
     }
   }
 }
