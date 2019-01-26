@@ -23,6 +23,7 @@
       <div class="text-contained">
         {{ getTimestampAge(getFolderTimestamp(folder)) }}
       </div>
+      <div class="empty"></div>
       <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: folder}); $event.stopPropagation()">
         <div></div>
       </div>
