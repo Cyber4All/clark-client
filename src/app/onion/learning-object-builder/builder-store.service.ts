@@ -61,6 +61,9 @@ export class BuilderStore {
   // fired when this service is destroyed
   private destroyed$: Subject<void> = new Subject();
 
+  // false until a save operation is attempted, true after that
+  public touched: boolean;
+
   // fired when this service needs to propagate changes to the learning object down to children components
   public learningObjectEvent: BehaviorSubject<
     LearningObject
@@ -172,6 +175,7 @@ export class BuilderStore {
 
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
+    this.touched = true;
     return this.learningObject;
   }
 
@@ -646,6 +650,7 @@ export class BuilderStore {
 
   private async saveObject(data: any, delay?: boolean): Promise<any> {
     let value = this.objectCache$.getValue();
+    this.touched = true;
 
     // if delay is true, combine the new properties with the object in the cache exit
     // the cache subject will automatically call this function again without a delay property
@@ -724,6 +729,7 @@ export class BuilderStore {
   }
 
   private async saveOutcome(data: any, delay?: boolean) {
+    this.touched = true;
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
 

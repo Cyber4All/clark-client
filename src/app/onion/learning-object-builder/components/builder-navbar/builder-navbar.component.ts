@@ -107,10 +107,10 @@ export class BuilderNavbarComponent implements OnDestroy {
 
     switch (route) {
       case 'outcomes':
-        result = this.validator.saveable;
+        result = this.validator.saveable && this.store.touched;
         break;
       case 'materials':
-        result = !!(this.auth.user.emailVerified && this.validator.saveable);
+        result = !!(this.auth.user.emailVerified && this.validator.saveable && this.store.touched);
         break;
     }
 
