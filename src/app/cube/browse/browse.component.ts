@@ -122,9 +122,10 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
     // whenever the queryParams change, map them to the query object and perform the search
     this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
-      if (params.text && params.text !== this.query.text) {
-        this.clearAllFilters(true);
-      }
+      // FIXME: Filters should disapear on new search text
+      // if (params.text && params.text !== this.query.text) {
+      //   this.clearAllFilters(true);
+      // }
       const collections = await this.collectionService.getCollections();
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
       this.query.released = this.auth.hasReviewerAccess() ? undefined : true;
