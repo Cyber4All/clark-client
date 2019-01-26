@@ -86,7 +86,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   >();
 
   @Output()
-  fileDeleted: EventEmitter<string> = new EventEmitter<string>();
+  filesDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output()
   uploadComplete: EventEmitter<void> = new EventEmitter<void>();
   @Output()
@@ -569,9 +569,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         await Promise.all(
           files.map(async fileId => {
             await this.fileStorage.delete(object, fileId);
-            this.fileDeleted.emit(fileId);
           })
         );
+        this.filesDeleted.emit(files);
       } catch (e) {
         this.error$.next(e);
       }

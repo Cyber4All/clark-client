@@ -11,7 +11,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 
 import { DirectoryNode } from '../../../../../../shared/filesystem/DirectoryTree';
-import { Removal } from '../../../../../../shared/filesystem/file-browser/file-browser.component';
 import 'rxjs/add/operator/takeUntil';
 import { LearningObject } from '@cyber4all/clark-entity';
 
@@ -50,7 +49,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output()
   path: EventEmitter<string> = new EventEmitter<string>();
 
-  removal$: BehaviorSubject<Removal> = new BehaviorSubject<Removal>(null);
   editDescription: boolean;
 
   componentDestroyed$ = new Subject<void>();
