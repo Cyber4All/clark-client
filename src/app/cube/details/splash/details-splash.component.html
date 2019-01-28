@@ -23,10 +23,12 @@
           </div>
           <div [ngClass]="learningObject.length" class="type">{{ learningObject.length }}</div>
         </div>
-        <div class="collection">
-          <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/collections/' + collectionImage + ')'}"></div>
-          <div class="collection-name">{{ collections.get(learningObject.collection)}}</div>
-        </div>
+        <span [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{collections.get(learningObject.collection)}}">
+          <div class="collection">
+            <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/collections/' + collectionImage + ')'}"></div>
+            <div class="collection-name">{{ collections.get(learningObject.collection)}}</div>
+          </div>
+        </span>
     </div>
   </div>
 </div>
