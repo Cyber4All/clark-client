@@ -317,7 +317,7 @@ export class AuthService {
    */
   private assignUserToGroup() {
     if (!this.user['accessGroups']) {
-      throw new Error('The user must have an access group!');
+      return;
     }
     if (this.user['accessGroups'].includes('admin')) {
       this.group.next(AUTH_GROUP.ADMIN);
