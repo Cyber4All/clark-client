@@ -5,7 +5,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Component, OnInit, HostListener } from '@angular/core';
-import { AuthService } from '../../core/auth.service';
+import { AuthService, AuthUser } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import {
@@ -157,12 +157,13 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-    const u = new User({
+    const u = {
       username: this.regInfo.username,
       name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
       email: this.regInfo.email.trim(),
       organization: this.regInfo.organization.trim(),
-    });
+      password: this.regInfo.password
+    };
 
     this.auth.register(u).then(
       () => {
@@ -173,6 +174,7 @@ export class RegisterComponent implements OnInit {
         }
       },
       error => {
+        console.error('whoops', error);
         this.error(error.error.message);
       }
     );

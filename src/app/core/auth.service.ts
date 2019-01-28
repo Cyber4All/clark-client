@@ -149,9 +149,9 @@ export class AuthService {
     this.group.next(AUTH_GROUP.VISITOR);
   }
 
-  async register(user: User): Promise<User> {
+  async register(user: any): Promise<User> {
     try {
-      await this.http.post(environment.apiURL + '/users', user.toPlainObject(), {
+      await this.http.post(environment.apiURL + '/users', user, {
         withCredentials: true,
         responseType: 'text'
       }).toPromise();
