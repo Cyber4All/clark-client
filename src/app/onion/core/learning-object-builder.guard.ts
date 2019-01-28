@@ -10,8 +10,6 @@ export class LearningObjectBuilderGuard implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    console.log(next.paramMap);
-
     return this.learningObjectService.getLearningObject(next.paramMap.get('learningObjectId')).then(learningObject => {
       if (learningObject.status && learningObject.status === LearningObject.Status.RELEASED) {
         return false;
