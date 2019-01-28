@@ -164,6 +164,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   async fetch(id: string): Promise<LearningObject> {
+    this.touched = true;
     this.learningObject = await this.learningObjectService.getLearningObject(
       id
     );
@@ -175,7 +176,6 @@ export class BuilderStore {
 
     this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
-    this.touched = true;
     return this.learningObject;
   }
 
