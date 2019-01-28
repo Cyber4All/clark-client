@@ -26,7 +26,7 @@
         <div class="collection">
           <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/collections/' + collectionImage + ')'}"></div>
           <div class="collection-name">{{ collections.get(learningObject.collection)}}</div>
-          <span class="collection-link" tip="Click to view complete list of {{collections.get(learningObject.collection)}} learning objects." routerLink="/c/{{collections.get(learningObject.collection)}}">
+          <span *ngIf="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" class="collection-link" tip="Click to view complete list of {{collections.get(learningObject.collection)}} learning objects." routerLink="/c/{{collections.get(learningObject.collection)}}">
             <i class="far fa-question-circle"></i>
           </span>
         </div>
