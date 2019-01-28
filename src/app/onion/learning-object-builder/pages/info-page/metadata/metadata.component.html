@@ -1,0 +1,18 @@
+<div class="metadata-container">
+  <!-- ng-content allows us to change the content inside a component based on the app's needs. This is great for resuability. -->
+  <!-- In each ng-content, we associate a property, such as title, in each call for the component. -->
+  <!-- We then give that property to the place in the wrapper component's html where we want to project its code. -->
+  <!-- Currently, the basic information page is composed of three recurring properties: titles, directions, and the data that the user inputs -->
+  <div class="title">
+    <ng-content select="[title]"></ng-content>
+  </div>
+
+  <div class="directions">
+    <ng-content select="[directions]"></ng-content>
+  </div>
+
+  <ng-content select="[data]"></ng-content>
+  <div *ngIf="error" class="metadata-container__error" [ngClass]="{'metadata-container__error--warning': warning}">
+    {{ error }}
+  </div>
+</div>

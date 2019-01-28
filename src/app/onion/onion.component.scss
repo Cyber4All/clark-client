@@ -36,3 +36,8 @@ a:not(.no-link) {
   text-decoration: underline;
   color: $blue-accent;
 }
+
+::ng-deep clark-dashboard,
+::ng-deep clark-learning-object-builder {
+  display: block;
+}

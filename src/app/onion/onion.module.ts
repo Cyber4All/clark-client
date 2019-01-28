@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { OnionRoutingModule } from './onion.routing';
-import { OnionComponent } from './onion.component';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
 // Other
 import { OnionCoreModule } from './core/core.module';
@@ -13,8 +14,8 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
-import { LearningObjectResolve } from './learning-object-builder/learning-object.resolver';
-import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component'
+import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component';
+import { OnionComponent } from './onion.component';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -27,7 +28,7 @@ import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-ite
   declarations: [
     OnionComponent,
     DashboardComponent,
-    DashboardItemComponent
+    DashboardItemComponent,
   ],
   // Specifys all modules to be imported
   imports: [
@@ -35,13 +36,13 @@ import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-ite
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    OnionRoutingModule,
     OnionCoreModule,
-    LearningObjectBuilderModule.forRoot(),
     HttpClientModule,
     ModalModule,
     ToasterModule,
-  ],
-  providers: [ LearningObjectResolve ]
+    LearningObjectBuilderModule,
+    OnionRoutingModule,
+    VirtualScrollerModule
+  ]
 })
 export class OnionModule { }

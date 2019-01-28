@@ -37,27 +37,23 @@ export const USER_ROUTES = {
       learningObjectName
     )}`;
   },
-  PUBLISH_LEARNING_OBJECT(username, learningObjectName) {
+  SUBMIT_LEARNING_OBJECT(learningObjectId: string) {
     return `${
       environment.apiURL
-    }/users/${username}/learning-objects/${encodeURIComponent(
-      learningObjectName
-    )}/publish`;
+    }/learning-objects/${learningObjectId}/submission`
+  },
+  UNSUBMIT_LEARNING_OBJECT(learningObjectId: string) {
+    return `${
+      environment.apiURL
+    }/learning-objects/${learningObjectId}/submission`
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/collections`;
   },
-  UNPUBLISH_LEARNING_OBJECT(username, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}/unpublish`;
-  },
-  GET_LEARNING_OBJECT(username, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
+  GET_LEARNING_OBJECT(id) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
   },
   DELETE_LEARNING_OBJECT(username, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -72,12 +68,29 @@ export const USER_ROUTES = {
   POST_FILE_TO_LEARNING_OBJECT(id: string) {
     return `${environment.contentManagerURL}/learning-objects/${id}/files`;
   },
-  DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, filename) {
+  DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, id) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${encodeURIComponent(
       learningObjectName
-    )}/files/${encodeURIComponent(filename)}`;
+    )}/files/${encodeURIComponent(id)}`;
+  },
+  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectId
+    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
+  },
+  CREATE_AN_OUTCOME(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectId
+    )}/learning-outcomes`;
+  },
+  DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectId
+    )}/learning-outcomes/${encodeURIComponent(
+      outcomeId
+    )}`;
   },
   GET_CART(username) {
     // CUBE
@@ -124,6 +137,43 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${id}/pdf`;
+  },
+  UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${objectId}/files/${encodeURIComponent(fileId)}`;
+  },
+  GET_MATERIALS(username: string, objectId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${objectId}/materials`;
+  },
+  INIT_MULTIPART(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
+  },
+  FINALIZE_MULTIPART(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
+  },
+  ABORT_MULTIPART(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
   }
 };
 
@@ -142,9 +192,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
   },
   GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}`;
+    )}/learning-objects`;
   },
   GET_LEARNING_OBJECT_PARENTS(id: string) {
     return `${environment.apiURL}/learning-objects/${id}/parents`;

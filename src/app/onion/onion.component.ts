@@ -1,8 +1,37 @@
 import { ModalService, ModalListElement, Position } from '../shared/modals';
 import { ToasterService } from '../shared/toaster';
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth.service';
+import { trigger, transition, style, animate, animateChild, query, group } from '@angular/animations';
+
+export const onionTransitions = trigger('onionTransitions', [
+  transition('* => builder', [
+    group([
+      query(':enter', [
+        style({ opacity: 0 }),
+        // fade the builder on
+        animate('250ms ease', style({ opacity: 1 })),
+        // grab the animations for the entering builder and animate them
+        query('@builderTransition', [
+          animateChild()
+        ])
+      ]),
+      query(':leave', [
+        style({ opacity: 1, transform: 'scale(1)' }),
+        // fade and scale the dashboard out
+        animate('350ms ease', style({ opacity: 0, transform: 'scale(0.97)' }))
+      ], { optional: true }),
+    ]),
+  ]),
+  transition('builder => *', [
+    query(':enter', [
+      style({ opacity: 0, transform: 'scale(0.97)' }),
+      // fade and scale the dashboard back in
+      animate('350ms 200ms ease', style({ opacity: 1, transform: 'scale(1)' })),
+    ]),
+  ])
+]);
 
 /**
  * The entry component for the application. This component contains a router outlet for routing to other components.
@@ -13,7 +42,8 @@ import { AuthService } from '../core/auth.service';
 @Component({
   selector: 'onion-root',
   templateUrl: './onion.component.html',
-  styleUrls: ['./onion.component.scss']
+  styleUrls: ['./onion.component.scss'],
+  animations: [ onionTransitions ]
 })
 export class OnionComponent {
   activeRoute: string;
@@ -82,5 +112,9 @@ export class OnionComponent {
    */
   scroll(event) {
     this.modalService.close('context');
+  }
+
+  getState(outlet: any) {
+    return outlet.activatedRouteData.state;
   }
 }

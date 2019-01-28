@@ -8,12 +8,12 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import { DirectoryNode, LearningObjectFile } from '../DirectoryTree';
+import { DirectoryNode, } from '../DirectoryTree';
 import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
-import { TimeFunctions } from '../../../onion/content-upload/app/shared/time-functions';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { TimeFunctions } from '../../../onion/learning-object-builder/components/content-upload/app/shared/time-functions';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
@@ -34,10 +34,14 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   emitDesc: EventEmitter<DescriptionUpdate> = new EventEmitter<
     DescriptionUpdate
   >();
-  @Output() emitContextOpen: EventEmitter<{event: MouseEvent, item: any}> = new EventEmitter();
+  @Output()
+  emitContextOpen: EventEmitter<{
+    event: MouseEvent;
+    item: any;
+  }> = new EventEmitter();
 
   private subscriptions: Subscription[] = [];
-  private editableFile: LearningObjectFile | DirectoryNode;
+  private editableFile: LearningObject.Material.File | DirectoryNode;
   descriptionControl = new FormControl();
   preview = true;
 
@@ -46,12 +50,19 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   getIcon = (extension: string) => getIcon(extension);
 
-  getTimestampAge = (timestamp: string) => TimeFunctions.getTimestampAge(+timestamp);
+  getTimestampAge = (timestamp: string) =>
+    TimeFunctions.getTimestampAge(+timestamp);
 
-  getFolderTimestamp = (node: DirectoryNode = this.node$.getValue(), timestamp: number = 0): number => {
+  getFolderTimestamp = (
+    node: DirectoryNode = this.node$.getValue(),
+    timestamp: number = 0
+  ): number => {
     // This is currently the only way to get this value, but we should be mindful that there may be a performance
     // cost that comes through this type of iteration in the browser.
-    const derivedTimestamp = node.getFiles().map(x => parseInt(x.date, 10)).sort((a, b) => a < b ? 1 : -1)[0];
+    const derivedTimestamp = node
+      .getFiles()
+      .map(x => parseInt(x.date, 10))
+      .sort((a, b) => (a < b ? 1 : -1))[0];
     timestamp = timestamp > derivedTimestamp ? timestamp : derivedTimestamp;
 
     for (const folder of node.getChildren()) {
@@ -59,11 +70,22 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     }
 
     return timestamp;
-  }
+  };
 
   constructor(private auth: AuthService) {
     // set which extensions can be previewed and how
-    this.previewable.set('microsoft', ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ott', 'oth', 'odm']);
+    this.previewable.set('microsoft', [
+      'doc',
+      'docx',
+      'xls',
+      'xlsx',
+      'ppt',
+      'pptx',
+      'odt',
+      'ott',
+      'oth',
+      'odm'
+    ]);
     this.previewable.set('browser', ['pdf']);
   }
 
@@ -94,9 +116,9 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
     if (this.auth.isLoggedIn.getValue()) {
       this.previewable.forEach((exts: string[], key: string) => {
-        if (exts.includes(ext.replace('.', ''))) {
+        if (ext && exts.includes(ext.replace('.', ''))) {
           // send a space character here to evaluate truthy but not affect the final preview url
-          returnType = (key === 'microsoft')  ? this.microsoftPreviewUrl : ' ';
+          returnType = key === 'microsoft' ? this.microsoftPreviewUrl : ' ';
           return;
         }
       });
@@ -118,7 +140,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  openFile(file: File): void {
+  openFile(file: LearningObject.Material.File): void {
     const url = this.previewUrl(file.extension);
     if (url) {
       console.log(url + file.url);
@@ -135,10 +157,10 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   /**
    * Sets currently editable file
    *
-   * @param {LearningObjectFile} file
+   * @param {LearningObject.Material.File} file
    * @memberof FileListViewComponent
    */
-  setEditable(file: LearningObjectFile | DirectoryNode) {
+  setEditable(file: LearningObject.Material.File | DirectoryNode) {
     this.editableFile = file;
   }
   /**

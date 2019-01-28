@@ -4,14 +4,14 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
-import { LearningObjectStatus } from '@env/environment';
 import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
 import { Subject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
+import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
 
 export interface DashboardLearningObject extends LearningObject {
-  status: string;
+  status: LearningObject.Status;
   parents: string[];
 }
 
@@ -55,11 +55,11 @@ export interface DashboardLearningObject extends LearningObject {
     trigger('nonListItem', [
       transition(':enter', [
         style({'transform': 'translateY(-20px)', opacity: 0}),
-        animate('200ms 100ms', style({'transform': 'translateY(0px)', opacity: 1}))
+        animate('200ms 100ms', style({opacity: 1}))
       ]),
       transition(':leave', [
         style({'transform': 'translateY(0px)', opacity: 1}),
-        animate('200ms', style({'transform': 'translateY(20px)', opacity: 0}))
+        animate('130ms ease', style({'transform': 'translateY(20px)', opacity: 0}))
       ]),
     ])
   ]
@@ -105,6 +105,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private notificationService: ToasterService,
     private contextMenuService: ContextMenuService,
+    private nav: NavbarService,
     public auth: AuthService // used in markup,
   ) {
     const hours = new Date().getHours();
@@ -118,6 +119,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.nav.show();
     // retrieve list of users learning objects
     this.loading = true;
     setTimeout(async() => {
@@ -146,11 +148,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       } else {
         this.contextMenuService.destroy(this.filterMenu);
       }
-    } else {
-      console.error('Error! Attempted to open an unregistered context menu');
-    }
 
-    this.filterMenuDown = !this.filterMenuDown;
+      this.filterMenuDown = !this.filterMenuDown;
+    } else {
+      console.error('Error! Attempted to use an unregistered context menu');
+    }
   }
 
   /**
@@ -189,11 +191,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // deep copy list of learningObjects and initialize empty parents array
         const arr: DashboardLearningObject[] = Array.from(
           learningObjects.map(l => {
-            l.parents = [];
-            if (!l.status) {
-              l.status = LearningObjectStatus.UNPUBLISHED;
+            const newLo = l as DashboardLearningObject;
+            newLo.parents = [];
+
+            if (!newLo.status) {
+              newLo.status = LearningObject.Status.UNRELEASED;
             }
-            return l as DashboardLearningObject;
+            return newLo as DashboardLearningObject;
           })
         );
 
@@ -335,7 +339,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     } else {
       // multiple deletion
-      const canDelete = objects.filter(s => ['unpublished', 'denied'].includes(s.status));
+      const canDelete = objects.filter(s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status));
 
       if (canDelete.length) {
         this.learningObjectService
@@ -683,43 +687,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Publishes a learning object and adds it to a specified collection
    * @param collection {string} the name of the collection to add this learning object to
    */
-  addToCollection(collection?: string) {
+  async addToCollection(collection?: string) {
     if (collection) {
-      // first, attempt to publish
-      this.learningObjectService.publish(this.focusedLearningObject).then(() => {
-        // publishing was a success, attempt to add to collection
-        this.collectionService.addToCollection(this.focusedLearningObject.id, collection).then(() => {
-          // success
-          this.notificationService.notify(
-            'Success!',
-            `Learning object submitted to ${collection} collection successfully!`,
-            'good',
-            'far fa-check'
-          );
-          this.focusedLearningObject.publish();
-          this.focusedLearningObject.status = 'waiting';
-          this.focusedLearningObject.collection = collection;
-          this.cd.detectChanges();
-        }).catch (err => {
-          // error
-          console.error(err);
-          this.notificationService.notify(
-            'Error!',
-            `Error submitting learning object to ${collection} collection!`,
-            'bad',
-            'far fa-times'
-          );
-        });
-      }).catch(error => {
-        // failed to publish
-        console.log(error);
+      this.collectionService.submit(this.focusedLearningObject.id, collection).then(() => {
+        this.focusedLearningObject.publish();
+        this.focusedLearningObject.status = LearningObject.Status.WAITING;
+        this.focusedLearningObject.collection = collection;
+        this.cd.detectChanges();
+      }).catch (err => {
+        // error
+        console.error(err);
         this.notificationService.notify(
           'Error!',
-          error.error,
+          `Error submitting learning object to ${collection} collection!`,
           'bad',
           'far fa-times'
         );
-        console.error(error);
       });
     } else {
       console.error('No collection defined!');
@@ -733,9 +716,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {DashboardLearningObject} learning object to be unpublished
    */
   cancelSubmission(l: DashboardLearningObject) {
-    this.learningObjectService.unpublish(l).then(async (val) => {
+    this.collectionService.unsubmit(l.id).then(async () => {
       l.unpublish();
-      l.status = 'unpublished';
+      l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
     }).catch(err => {
       console.error(err);

@@ -1,0 +1,10 @@
+<div (mouseover)="showDropdown = true" (mouseleave)="showDropdown = false" class="contributor-pill">
+  <div class="contributor-pill__name">
+    {{ user.name | titlecase }}
+  </div>
+  <div *ngIf="showDropdown" class="contributor-pill__dropdown">
+    <div class="contributor-pill__dropdown-option" (click)="removeContributor.emit(user)">
+      <i class="far fa-times"></i> Remove
+    </div>
+  </div>
+</div>

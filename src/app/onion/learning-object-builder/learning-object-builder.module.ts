@@ -1,60 +1,68 @@
-import { LearningObjectOutcomeComponent } from './components/outcome-page/outcome/outcome.component';
-import { SuggestionModule } from './components/outcome-page/outcome/standard-outcomes/suggestion/suggestion.module';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+// angular modules
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { DndModule } from 'ng2-dnd';
-import { LearningObjectBuilderComponent } from './learning-object-builder.component';
-import { TextEditorComponent } from './components/text-editor.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
+// non-angular modules
+import { ToasterModule } from 'app/shared/toaster';
+import { BuilderRoutingModule } from './learning-object-builder.routing';
+import { SharedModule } from 'app/shared/shared.module';
+import { ContentUploadModule } from './components/content-upload/app/content-upload.module';
 import { CKEditorModule } from 'ng2-ckeditor';
 
-import { OnionRoutingModule } from '../onion.routing';
-import { SharedModule } from '../../shared/shared.module';
-import { BloomsSelectorComponent } from './components/outcome-page/outcome/blooms-selector/blooms-selector.component';
-import { StandardOutcomesComponent } from './components/outcome-page/outcome/standard-outcomes/standard-outcomes.component';
+// components
+import { LearningObjectBuilderComponent } from './learning-object-builder.component';
+import { OutcomeComponent } from './components/outcome/outcome.component';
+import { OutcomeTypeaheadComponent } from './components/outcome/outcome-typeahead/outcome-typeahead.component';
+import { BuilderNavbarComponent } from './components/builder-navbar/builder-navbar.component';
+import { InfoPageComponent } from './pages/info-page/info-page.component';
+import { OutcomePageComponent } from './pages/outcome-page/outcome-page.component';
+import { MaterialsPageComponent } from './pages/materials-page/materials-page.component';
+import { MetadataComponent } from './pages/info-page/metadata/metadata.component';
+import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapper.component';
+import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
+import { OutcomesListItemComponent } from './components/standard-outcomes/outcomes-list-item/outcomes-list-item.component';
+import { TextEditorComponent } from './components/text-editor.component';
+import { LearningObjectDescriptionComponent } from './components/description.component';
+import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
+import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
+import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 
-// Presentational Components
-import { LearningObjectMetadataComponent } from './components/info-page/metadata/metadata.component';
-import { LearningObjectDescriptionComponent } from './components/info-page/description.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-
-// Container Components
-import { LearningObjectOutcomePageComponent } from './components/outcome-page/outcome-page.component';
-import { InfoPageComponent } from './components/info-page/info-page.component';
+/*
+  NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
+  This is because those services should be singletons across the builder, but cease to exist when the builder is
+  destroyed (ie navigated away from).
+*/
 
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
+    BuilderRoutingModule,
     FormsModule,
-    SuggestionModule,
-    ReactiveFormsModule,
-    HttpClientModule,
+    ContentUploadModule,
     CKEditorModule,
-    OnionRoutingModule,
-    DndModule.forRoot(),
-    SharedModule
+    ToasterModule.forRoot(),
+    ReactiveFormsModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
-    TextEditorComponent,
-    BloomsSelectorComponent,
+    BuilderNavbarComponent,
+    OutcomeComponent,
+    OutcomeTypeaheadComponent,
+    MetadataComponent,
+    InfoPageComponent,
+    OutcomePageComponent,
+    MaterialsPageComponent,
+    ColumnWrapperComponent,
     StandardOutcomesComponent,
-    LearningObjectMetadataComponent,
+    OutcomesListItemComponent,
     LearningObjectDescriptionComponent,
-    LearningObjectOutcomeComponent,
-    LearningObjectMetadataComponent,
-    LearningObjectDescriptionComponent,
-    LearningObjectOutcomePageComponent,
-    SidebarComponent,
-    InfoPageComponent
+    TextEditorComponent,
+    UserDropdownComponent,
+    ContributorPillComponent,
+    ScaffoldComponent
   ],
-  exports: [LearningObjectBuilderComponent]
 })
-export class LearningObjectBuilderModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: LearningObjectBuilderModule
-    };
-  }
-}
+export class LearningObjectBuilderModule {}

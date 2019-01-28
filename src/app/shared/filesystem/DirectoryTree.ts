@@ -1,6 +1,5 @@
 import { getPaths } from './file-functions';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
-export type LearningObjectFile = File;
+import { LearningObject } from '@cyber4all/clark-entity';
 
 /**
  * Class Representing Simple Filesystem
@@ -11,6 +10,10 @@ export type LearningObjectFile = File;
 export class DirectoryTree {
   private _root: DirectoryNode;
   private lastNode: DirectoryNode;
+  private fileMap: Map<string, { path: string; file: string }> = new Map<
+    string,
+    { path: string; file: string }
+  >();
   private pathMap: Map<string, number> = new Map<string, number>();
   constructor() {
     this._root = new DirectoryNode('', '', null);
@@ -18,11 +21,26 @@ export class DirectoryTree {
   /**
    * Adds new Files to Directory Tree
    *
-   * @param {LearningObjectFile[]} files
+   * @param {LearningObject.Material.File[]} files
    * @memberof DirectoryTree
    */
-  public addFiles(files: LearningObjectFile[]) {
-    for (const file of files) {
+  public addFiles(files: LearningObject.Material.File[]) {
+    // Returns new files and files that have had their metadata changed
+    const getUpdatedFiles = (fileList: LearningObject.Material.File[]) =>
+      fileList.filter(file => {
+        const mappedFile = this.fileMap.get(file.id);
+        if (mappedFile && mappedFile.file === JSON.stringify(file)) {
+          return false;
+        }
+        return true;
+      });
+
+    const newFiles = getUpdatedFiles(files);
+    for (const file of newFiles) {
+      this.fileMap.set(file.id, {
+        path: file.fullPath ? file.fullPath : file.name,
+        file: JSON.stringify(file)
+      });
       if (!file.fullPath) {
         this._root.addFile(file);
       } else {
@@ -34,6 +52,36 @@ export class DirectoryTree {
           node = this.buildSubTree(paths);
           node.addFile(file);
         }
+      }
+    }
+    this.cleanFilesystem(files);
+  }
+
+  /**
+   * Removes cached files that are no longer in the array of files
+   *
+   * @private
+   * @param {LearningObject.Material.File[]} files
+   * @memberof DirectoryTree
+   */
+  private cleanFilesystem(files: LearningObject.Material.File[]) {
+    const fileIds = files.map(file => file.id);
+    const folderPaths = [];
+    this.fileMap.forEach((mappedFile, mappedId) => {
+      if (!fileIds.includes(mappedId)) {
+        this.removeFile(mappedFile.path);
+        this.fileMap.delete(mappedId);
+        const folderPath = getPaths(mappedFile.path).join('/');
+        if (!folderPaths.includes(folderPath)) {
+          folderPaths.push(folderPath);
+        }
+      }
+    });
+    for (const path of folderPaths) {
+      const paths = getPaths(path, false);
+      const node = this.traversePath(paths);
+      if (node) {
+        this.removeEmptyFolders(node);
       }
     }
   }
@@ -92,13 +140,9 @@ export class DirectoryTree {
 
     const parentPath = parent.getPath();
     const childPath = `${parentPath}/${currentPath}`;
-    const index = this.pathMap.get(childPath);
+    const index = this.pathMap.get(childPath) || 0;
     const children = parent.getChildren();
-    const node =
-      index !== undefined
-        ? children[index]
-        : this.findNodeAtLevel(currentPath, children);
-
+    const node = children[index] || this.findNodeAtLevel(currentPath, children);
     if (node) {
       return this.traversePath(paths, node);
     }
@@ -107,7 +151,7 @@ export class DirectoryTree {
     return null;
   }
   /**
-   * Finds Node within array of children and cahes location
+   * Finds Node within array of children and caches location
    *
    * @param {string} path
    * @param {DirectoryNode[]} elements
@@ -175,7 +219,7 @@ export class DirectoryTree {
    * @param {string[]} paths Array of paths to file
    * @memberof DirectoryTree
    */
-  public removeFile(path: string): LearningObjectFile {
+  public removeFile(path: string): LearningObject.Material.File {
     const folderPath = getPaths(path);
     const fileName = path.split('/').pop();
     const node = this.traversePath(folderPath);
@@ -183,6 +227,21 @@ export class DirectoryTree {
       return node.removeFile(fileName);
     } else {
       throw new Error(`Node at path: ${folderPath.join('/')} does not exist`);
+    }
+  }
+
+  /**
+   * Recursively removes empty folders starting for leaf node
+   *
+   * @private
+   * @param {DirectoryNode} node
+   * @memberof DirectoryTree
+   */
+  private removeEmptyFolders(node: DirectoryNode): void {
+    if (!node.getChildren().length && !node.getFiles().length) {
+      const parent = node.getParent();
+      this.removeFolder(node.getPath());
+      this.removeEmptyFolders(parent);
     }
   }
 }
@@ -194,7 +253,7 @@ export class DirectoryTree {
 export class DirectoryNode {
   private name: string;
   private path: string;
-  private files: LearningObjectFile[];
+  private files: LearningObject.Material.File[];
   private parent: DirectoryNode;
   private children: DirectoryNode[];
   public description: string;
@@ -246,10 +305,10 @@ export class DirectoryNode {
   /**
    * Gets Files in Directory
    *
-   * @returns {LearningObjectFile[]}
+   * @returns {LearningObject.Material.File[]}
    * @memberof DirectoryNode
    */
-  public getFiles(): LearningObjectFile[] {
+  public getFiles(): LearningObject.Material.File[] {
     return this.files;
   }
   /**
@@ -275,10 +334,10 @@ export class DirectoryNode {
   /**
    * Add File to Node's files
    *
-   * @param {LearningObjectFile} newFile
+   * @param {LearningObject.Material.File} newFile
    * @memberof DirectoryNode
    */
-  public addFile(newFile: LearningObjectFile) {
+  public addFile(newFile: LearningObject.Material.File) {
     let canAdd = true;
     for (const file of this.files) {
       if (file.name === newFile.name) {
@@ -294,10 +353,10 @@ export class DirectoryNode {
    * Remove file from Node's files by filename
    *
    * @param {string} filename
-   * @returns {LearningObjectFile}
+   * @returns {LearningObject.Material.File}
    * @memberof DirectoryNode
    */
-  public removeFile(filename: string): LearningObjectFile {
+  public removeFile(filename: string): LearningObject.Material.File {
     const index = this.findFile(filename);
     const deleted = this.files[index];
     this.files.splice(index, 1);

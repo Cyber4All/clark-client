@@ -1,9 +1,7 @@
-import { Input, Output, EventEmitter, Component, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Input, Output, EventEmitter, Component, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'text-editor',
+  selector: 'clark-text-editor',
   template: `
   <div *ngIf="showBox">
     <ckeditor
@@ -11,34 +9,45 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
         [config]="config"
         [readonly]="false"
         (change)="onChange($event)"
-        (focus)="onFocus($event)"
-        (blur)="onBlur($event)"
-        debounce="500"
+        (focus)="touched.emit()"
         >
     </ckeditor>
   </div>
-  <!-- <div class="btn-group to-right"><div class = "button neutral on-white" (click)="toggleBox()">{{buttonText}}</div></div>-->
-
   `,
   styles: ['#cke_bottom_detail, .cke_bottom { display: none; }']
 })
 export class TextEditorComponent implements OnInit, OnChanges {
-  @Output() textOutput: EventEmitter<String> = new EventEmitter<String>();
-  @Input() savedContent: String;
-  @Input() editorPlaceholder: String;
-  editorContent: String;
-  counter: any;
-  buttonText: String;
+  @Input() savedContent: string;
+  @Input() editorPlaceholder: string;
 
-  showBox: Boolean = true;
+  @Output() textOutput: EventEmitter<string> = new EventEmitter();
+  @Output() touched: EventEmitter<void> = new EventEmitter();
+
+  editorContent: string;
+  counter: any;
+  buttonText: string;
+
+  // this flag is set to true to prevent loading an existing description triggering a save operation. when false, the emit onChanges will take no action except to toggle it back to true
+  initialized = true;
+  acceptExternalChanges = true;
+  showBox = true;
   config: any;
 
-  constructor() {
+  constructor() {}
 
-  }
   ngOnChanges(changes: SimpleChanges) {
-    this.editorContent = this.savedContent;
+    if (changes.savedContent && this.acceptExternalChanges) {
+      this.editorContent = changes.savedContent.currentValue;
+
+      // this is it's first change which means we're loading an existing value, prevent emit
+      if (changes.savedContent.firstChange) {
+        this.initialized = false;
+      }
+
+      this.acceptExternalChanges = false;
+    }
   }
+
   ngOnInit() {
     this.counter = {
       showParagraphs: false,
@@ -68,12 +77,13 @@ export class TextEditorComponent implements OnInit, OnChanges {
 
     }
   }
-  onFocus(event) {
-  }
-  onBlur(event) {
-  }
-  onChange(editorContent) {
-    this.textOutput.emit(this.editorContent);
+
+  onChange() {
+    if (this.initialized) {
+      this.textOutput.emit(this.editorContent || '');
+    } else {
+      this.initialized = true;
+    }
   }
 
   toggleBox() {

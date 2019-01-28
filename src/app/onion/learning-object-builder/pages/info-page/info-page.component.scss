@@ -1,0 +1,77 @@
+@import '~_vars.scss';
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #444;
+  margin: 0 0 20px 25px;
+  padding-top: 20px;
+}
+
+// This is a line to separate the different areas in the basic information section
+hr {
+  border-bottom: 1px solid rgb(211, 208, 208);
+  margin: 0;
+}
+
+// This is styling for the input field for the learning object name
+input {
+  padding: 7px;
+  padding-left: 0;
+  font-size: 16px;
+  border: 0;
+  width: 522px;
+  outline: 0;
+  border-bottom: 2px solid #2c7cda;
+}
+
+.select-wrapper {
+  display: inline-flex;
+}
+
+// This is styling for the academic levels list
+.levels {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .pill {
+    color: $bright-blue;
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    padding: 4px 9px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+
+    &.selected {
+      box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(45deg, darken($bright-blue, 10), $bright-blue);
+      color: white;
+    }
+  }
+}
+
+.contributors-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 15px;
+
+  .svg-inline--fa,
+  .icon {
+    color: $bright-blue;
+  }
+
+  & > * {
+    margin-right: 6px;
+  }
+}
+
+.contributors-list__pill {
+  display: block;
+}

@@ -65,17 +65,38 @@ export class CollectionService {
    * @param {string} collectionName name of collection in which to insert learning object
    * @return {Promise<any>}
    */
-  addToCollection(
+  submit(
     learningObjectId: string,
     collectionName: string
   ): Promise<any> {
     return this.http
-      .patch(
-        USER_ROUTES.ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId),
+      .post(
+        USER_ROUTES.SUBMIT_LEARNING_OBJECT(learningObjectId),
         { collection: collectionName },
         { withCredentials: true, responseType: 'text' }
       )
       .toPromise();
+  }
+
+  unsubmit(
+    learningObjectId: string
+  ): Promise<any> {
+    return this.http
+      .delete(
+        USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(learningObjectId),
+        { withCredentials: true, responseType: 'text' }
+      )
+      .toPromise();
+  }
+
+  getCollection(abvName: string): Promise<Collection> {
+    return this.getCollections().then(val => {
+      for (const x of val) {
+        if (x.abvName === abvName) {
+          return x;
+        }
+      }
+    });
   }
 
   getCollectionMetadata(name: string) {

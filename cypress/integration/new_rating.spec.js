@@ -13,7 +13,7 @@ describe('New Rating', () => {
 
         // TODO all login code can be removed when pulling ratings from server
         // Click author name
-        cy.login();
+        cy.verifiedlogin();
 
         cy.wait(1000);
 

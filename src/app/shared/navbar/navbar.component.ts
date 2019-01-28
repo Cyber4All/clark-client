@@ -17,11 +17,34 @@ import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { NavbarService } from '../../core/navbar.service';
+
+// imports for animation
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 @Component({
   selector: 'clark-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
+  animations: [
+    trigger('simpleFadeAnimation', [
+      state('in', style({opacity: 1})),
+      // fade in
+      transition(':enter', [
+        style({opacity: 0}),
+        animate(200)
+      ]),
+      // fade out
+      transition(':leave',
+        animate('250ms ease', style({opacity: 0})))
+    ])
+  ]
 })
 export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   // FIXME: Convert 'class' to 'type' for consistancy
@@ -61,7 +84,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     private modalCtrl: ModalService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    public nav: NavbarService
   ) {
     this.windowWidth = window.innerWidth;
 

@@ -18,6 +18,6 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   exports: [],
-  declarations: [CollectionComponent]
+  declarations: [CollectionComponent],
 })
 export class CollectionModule { }

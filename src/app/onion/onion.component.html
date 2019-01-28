@@ -3,8 +3,9 @@
 <app-dialogmenu [content]="modalService.dialogMenuContent"></app-dialogmenu>
 <div class="outer-wrapper" *ngIf="authService.status">
   <div class="content">
-    <div class="outlet sub-content">
-      <router-outlet></router-outlet>
+    <div [@onionTransitions]="getState(o)" class="outlet sub-content">
+      <router-outlet #o="outlet"></router-outlet>
     </div>
   </div>
 </div>
+<clark-email-banner *ngIf="!authService.user.emailVerified"></clark-email-banner>

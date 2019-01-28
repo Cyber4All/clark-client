@@ -1,431 +1,356 @@
- /// <reference types="cypress" />
- // *********************************************************************
- // Important note about the use of selectors when writing Cypress tests:
- //     Do not select elements by class name as they are highly volatile.
- //     Instead, refence all selections by id.
- // *********************************************************************
- 
- describe('Browse', () => {
+/// <reference types="cypress" />
 
-    let objects
- 
-     beforeEach(() => {
-         // Return to home page before each test
-         cy.fixture('route.json').then((route) => {
-            cy.visit(route[0]);
+// *********************************************************************
+// Important note about the use of selectors when writing Cypress tests:
+//     Do not select elements by class name as they are highly volatile.
+//     Instead, refence all selections by id.
+// *********************************************************************
+
+describe('Learning Object Builder', () => {
+    let home, builder, dashboard;
+    let object, objectId;
+    const routes = ['info', 'outcomes', 'materials'];
+
+    before(() => {
+        // clear auth cookie for next test
+        cy.clearCookie('presence');
+
+        cy.fixture('route.json').then((route) => {
+            home = route['home'];
+            builder = route['builder'];
+            dashboard = route['dashboard'];
+
+            cy.visit(home);
+
+            // Log in as a user with a verified email
+            cy.verifiedLogin();
+
+            // clean up lingering test objects for next run
+            cy.visit(dashboard);
+
+            cy.deleteTestObject();
         });
-        cy.fixture('objects.json').then((object) => {
-            objects = object;
-        });
-     });   
-     // =============================================================
-     // /learning-object-builder testing
-     // =============================================================
-     it('Assert element within Basic Information step of builder', () => {
-        // Login 
-        cy.login();
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.fixture('objects.json').then((objects) => {
+            object = objects[objects.length - 1];
+        })
+    })
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
+    beforeEach(() => {
+        cy.viewport('macbook-13');
 
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
-
-        // Assert URL
-        cy.url().should('include', 'learning-object-builder');
-
-        // Assert title
-        cy.get('#basic-information-title');
-        
-        // Assert Learning Object name label
-        cy.get('#name-label');
-
-        // Assert contributors label
-        cy.get('#contributors-label');
-
-        // Assert length label
-        cy.get('#length-label');
-        
-        // Assert levels label
-        cy.get('#level-label');
-        
-        // Assert decription label
-        cy.get('#description-label');
+        // preserve auth cookie for each test
+        Cypress.Cookies.preserveOnce('presence');
     });
 
-    it('Trigger please enter a name for this learning object error', () => {
-        // Login 
-        cy.login();
+    it('checks that routing to builder occured successfully', () => {
+        cy.visit(builder);
 
-        // navigate to Your Dashboard - using navbar link
-        cy.get('#contributor-link').click({ force: true });
-        cy.contains('Your dashboard').click({ force: true });
+        cy.url().should('include', '/learning-object-builder');
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
-
-        // Click Next button without filling out step 1 form
-        cy.get('#builder-next').click({ force: true });
-
-        // Click Next button without filling out step 2 form 
-        cy.get('#builder-next').click({ force: true });
-
-        // Assert error message 
-        cy.get('#note-content');
+        // verify that the builder component was rendered to the screen
+        cy.get('clark-learning-object-builder');
     });
 
-    it('Trigger name already exists error', () => {
-        // Login 
-        cy.login();
+    it('checks that name input is focused', () => {
+        cy.visit(builder);
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
-
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
-
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
-        
-        // Enter Learning Object name
-        cy.get('#object-name-field').type(objects[0], { force: true });
-
-        // Click Next button without filling out step 1 form
-        cy.get('#builder-next').click({ force: true });
-
-        // Click Next button without filling out step 2 form 
-        cy.get('#builder-next').click({ force: true });
-
-        // Click Next button without filling out step 2 form 
-        cy.get('#builder-next').click({ force: true });
-
-        // Assert error message 
-        cy.get('#note-content');
+        cy.focused().should('have.attr', 'name', 'name');
     });
 
-    it('Successfully navigate to the manage materials page (step 3)', () => {
-        // Login 
-        cy.login();
+    it('should create a new object by inputing giving it a name', () => {
+        cy.visit(builder);
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        // enter a name for a learning object
+        cy.focused().type(object);
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
+        // wait for auto save
+        cy.wait(2000);
 
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
-        
-        // Enter Learning Object name
-        cy.get('#object-name-field').type(objects[1], { force: true });
+        // navigate to dashboard and search for an element containing the string of the object variable
+        cy.visit(dashboard);
 
-        // Click Next 
-        cy.get('#builder-next').click({ force: true });
-
-        // Click New Learning Outcome
-        cy.get('#child-link').click({ force: true });
-        
-        // Enter Outcome Name
-        cy.get('#outcome-text').type(objects[2], { force: true });
-
-        // Click Next button 
-        cy.get('#builder-next').click({ force: true });
-
-        // Assert page 3 header 
-        cy.get('#materials-title');
+        cy.contains(object);
     });
 
-    it('Delete created Learning Object', () => {
-        // Login 
-        cy.login();
+    it('should open an existing object', () => {
+        cy.visit(dashboard);
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.editTestObject();
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
+        // extract the objects id from the url to avoid going to the dashboard and clicking the context menu for each test
+        const url = cy.url().then(url => {
+            objectId = url.split('/')[url.split('/').length - 2];
+        })
 
-        // Click on options 
-        cy.get('#options').click({ force: true });
-        cy.get('#context-popup').children('ul').children('li').eq(3).click({ force: true });
-        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(0).click({force: true});
+        // check that the focused input is the name and that the focused input contains the string of the object variable
+        cy.focused().should('have.attr', 'name', 'name').should('have.value', object);
     });
 
-    it('Assert author dropdown', () => {
-        // Login 
-        cy.login();
+    it('should enter a description', () => {
+        cy.editTestObject(objectId);
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        // wait for animations
+        cy.wait(2000);
 
-        // Wait for page load
-        cy.wait(1000);
-
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
-
-        // Enter user query
-        cy.get('#user-search').type('N', { force: true });
-        
-        // Assert user results 
-        cy.get('#container').children('ul').children('li').first();
+        // using a should here will retry until this passes so it will automatically await properly
+        cy.get(".cke_wysiwyg_frame").should(function($iframe) {
+            const body = $iframe.contents().find("body").get(0);
+            // expect(body).to.be.ok
+            cy.wrap(body).type("<p>'this is dope as the pope using soap on a roap'</p>");
+        })
     });
 
-    it('Assert level options', () => {
-        // Login 
-        cy.login();
+    // TODO check name of contributor pill after insertion
+    it('should add a contributor to the object', () => {
+        cy.editTestObject(objectId);
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        // focus the contributor input and type 'test'
+        cy.get('clark-user-dropdown input[type=text]').should('have.value', '').type('test');
 
-        // Wait for page load
-        cy.wait(1000);
+        // select the item from the results containing 'testaccount'
+        cy.get('clark-user-dropdown li').contains('testaccount').click({ force: true });
 
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        // check that the contributor exists in the DOM
+        cy.get('clark-contributor-pill .contributor-pill').contains('Test Account');
 
-        // Select first level
-        cy.get('#level-selection').click({ force: true });
-        
+        // wait for autosave
+        cy.wait(2000);
+
+        cy.editTestObject(objectId);
+
+        // check that the contributor exists in the DOM
+        cy.get('clark-contributor-pill .contributor-pill').contains('Test Account');
     });
 
-    it('Assert items on the sidebar', () => {
-        // Login 
-        cy.login();
+    it('should remove a contributor from the object', () => {
+        cy.editTestObject(objectId);
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        // hover the contributor pill
+        cy.get('clark-contributor-pill .contributor-pill').contains('Test Account').trigger('mouseover');
 
-        // Wait for page load
-        cy.wait(1000);
+        // click the delete button in the hover menu
+        cy.get('.contributor-pill__dropdown-option').click({ force: true });
 
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        // wait for autosave
+        cy.wait(2000);
 
-        // Assert sidebar
-        // Assert title
-        cy.get('#sidebar-title');
 
-        // Assert menu item 1
-        cy.get('#sidebar-item-link');
+        cy.editTestObject(objectId);
 
-        // Assert menu item 3 (link to add new learning outcome)
-        cy.get('#child-link');
-
-        // Assert menu item 4
-        cy.get('#upload-material-link');
+        // ensure that contributor doesn't exist in DOM
+        cy.get('clark-contributor-pill .contributor-pill').should('not.exist');
     });
 
-    it('Add a new learning outcome and assert elements of the form', () => {
-        // Login 
-        cy.login();
+    it('should change the length of the test object to \'Course\'', () => {
+        cy.editTestObject(objectId)
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        // set selected length to Course
+        cy.get('select[name=type]').select('course');
 
-        // Wait for page load
-        cy.wait(1000);
+        // wait for autosave
+        cy.wait(2000);
 
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        cy.visit(dashboard);
 
-        // Click link to add new learning outcome
-        cy.get('#child-link').click({ force: true });
+        // check on dashboard that test object row is of length Course
+        cy.get('.row-item').contains(object).next().should('have.text', 'Course');
 
-        // Assert for header 
-        cy.get('#outcome-title');
-        
-        // Click Remember and Understand 
-        cy.get('#square').click({ force: true });
-        
-        // Click Mapped Outcomes 
-        cy.get('#mappings').click({ force: true });
+        cy.editTestObject(objectId)
 
-        // Click Search curricular guidelines for outcomes
-        cy.get('#search').click({ force: true });
-
-        // Click Suggested mappings
-        cy.get('#suggestions').click({ force: true });
+        // check that upon reloading the test object the length is still set to course
+        cy.get('select[name=type]').should('have.value', 'course')
     });
 
-    it('Trigger outcome text error' , () => {
-        // Login 
-        cy.login();
+    it('should add an academic level to the test object', () => {
+        cy.editTestObject(objectId);
 
-        // Navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        // select the first unselected level and click it
+        cy.get('.levels .pill:not(.selected)').eq(0).click({ force: true });
 
-        // Wait for page load
-        cy.wait(1000);
+        // check that there are now two pills selected
+        cy.get('.levels .pill.selected').should('have.length', 2);
 
-        // Click New +
-        cy.get('#create-new-learning-object').click({ force: true });
+        // wait for autosave
+        cy.wait(2000);
 
-        // Enter Learning Object name
-        cy.get('#object-name-field').type(objects[2], { force: true });
+        cy.editTestObject(objectId);
 
-        // Wait 
-        cy.wait(1000);
-
-        // click link to add new learning outcome
-        cy.get('#child-link').click({ force: true });
-
-        // Click Next button
-        cy.get('#builder-next').click({ force: true });
-
-        // Assert error 
-        cy.get('#note-content');
+        // check again that there are two levels selected
+        cy.get('.levels .pill.selected').should('have.length', 2);
     });
 
-    it('Assert description to publish error' , () => {
-        // Login 
-        cy.login();
+    it('should remove an academic level to the test object', () => {
+        cy.editTestObject(objectId);
 
-        // Navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        // select the first unselected academic level and click it
+        cy.get('.levels .pill.selected').eq(0).click({ force: true });
 
-        // Wait for page load
-        cy.wait(1000);
+        // verify that there is only one academic level selected now
+        cy.get('.levels .pill.selected').should('have.length', 1);
 
-        // Click first object in your Dashboard
-        cy.get('#builder-link').click({ force: true });
+        // wait for autosave
+        cy.wait(2000);
 
-        // Wait 
-        cy.wait(1000);
+        cy.editTestObject(objectId);
 
-        cy.get('#object-name-field').type(objects[3], { force: true });
-
-        // Assert Unpublised label
-        cy.get('#toggle-label').contains('unpublished');
-
-        // Click slider to change published status
-        cy.get('#toggle-switch').click({ force: true });
-
-        // Assert Published label
-        cy.get('#toggle-label').contains('published');
-
-        // Enter description
-        cy.get('iframe').eq(1).type('blah', { force: true });
-
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
-
-        // Create learning outcome
-        // Click link to add new learning outcome
-        cy.get('#child-link').click({ force: true });
-
-        // Enter Outcome Name
-        cy.get('#outcome-text').type(objects[2], { force: true });
-
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
-
-        // Assert error 
-        cy.get('#note-content');
+        // again verify that there is only one selected academic level
+        cy.get('.levels .pill.selected').should('have.length', 1);
     });
 
-    it('Navigate directly to the builder from navbar', () => {
-        // Login 
-        cy.login();
+    it('should route to Learning Outcomes page', () => {
+        cy.editTestObject(objectId);
 
-        // navigate to Your Dashboard - using navbar link
-        cy.get('#contributor-link').click({ force: true });
-        cy.contains('Create a Learning Object').click({ force: true });
+        cy.navigateBuilder('Learning Outcomes')
 
-        // Assert URL 
-        cy.url().should('include', '/onion/learning-object-builder');
+        cy.url().should('include', '/outcomes');
     });
 
-    it('Save a learning object', () => {
-        // Login 
-        cy.login();
+    it('should create a new blank outcome', () => {
+        cy.editTestObject(objectId);
 
-        // navigate to Your Dashboard - using navbar link
-        cy.get('#contributor-link').click({ force: true });
-        cy.contains('Create a Learning Object').click({ force: true });
+        cy.navigateBuilder('Learning Outcomes')
 
-        // Assert URL 
-        cy.url().should('include', '/onion/learning-object-builder');
+        // make sure that the object has no outcomes
+        cy.get('clark-outcome').should('not.exist');
 
-        // Enter learning object name 
-        cy.get('#object-name-field').type(objects[4], { force: true });
+        // select the new outcome button and click it
+        cy.get('.main-column .top .button.good').contains('New').click({ force: true });
 
-        // Click Save Learning Object button
-        cy.get('#save-learning-object').click({ force: true });
-
-        // Click Save for Later
-        // cy.get('#save-for-later').click({ force: true });
-        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(1).click({force: true});
-
-        // Assert Unpublished label 
-        cy.get('#toggle-label').contains('unpublished');
-
-        // Go to dashboard and assert new, unpublished object
-        cy.get('#back-to-dashboard').click({ force: true });
-
-        // Assert URL
-        cy.url().should('include', '/onion/dashboard');
-
-        cy.contains(objects[1], { force: true });
-
-        // Delete new object
-        cy.get('#options').click({ force: true });
-        cy.get('#context-popup').children('ul').children('li').eq(3).click({ force: true });
-        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(0).click({force: true});
+        // ensure that there's an instance of clark-outcome component in the DOM and that it's title is Learning Outcome 1
+        cy.get('clark-outcome').contains('Learning Outcome 1');
     });
 
-    it('Click dropzone for file upload', () => {
-        // Login 
-        cy.login();
+    it('should create a new outcome with typeahead', () => {
+        const testString = 'Understand parallel computing';
 
-        // navigate to Your Dashboard - using navbar link
-        cy.get('#contributor-link').click({ force: true });
-        cy.contains('Create a Learning Object').click({ force: true });
+        cy.editTestObject(objectId);
 
-        // Assert URL 
-        cy.url().should('include', '/onion/learning-object-builder');
+        cy.navigateBuilder('Learning Outcomes');
 
-        // Enter learning object name 
-        cy.get('#object-name-field').type(objects[6], { force: true });
+        // verify that there are no instances of clark-outcome component in DOM
+        cy.get('clark-outcome').should('not.exist');
 
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
+        // target amd click the new outcome button
+        cy.get('.main-column .top .button.good').contains('New').click({ force: true });
 
-        // Create learning outcome
-        // Click link to add new learning outcome
-        cy.get('#child-link').click({ force: true });
+        // verify that a new blank outcome was aded to the DOM
+        cy.get('clark-outcome').contains('Learning Outcome 1');
 
-        // Enter Outcome Name
-        cy.get('#outcome-text').type(objects[6], { force: true });
+        // target the newly added learning outcome's typeahead input and type our test string
+        cy.get('clark-outcome').contains('Learning Outcome 1').get('.outcome-text .typeahead input[type=text]').should('have.value', '').type(testString);
 
-        // Click next button
-        cy.get('#builder-next').click({ force: true });
+        // verify that the outcome now contains are test string as a title
+        cy.get('clark-outcome').contains(testString);
 
-        // Assert URL
-        cy.get('#new-file').click({ force: true });
+        // verify that the typeahead selected the correct blooms level
+        cy.get('.level-select .level.active').contains('remember & understand');
+
+        // verify that the typeahead verb contains 'Understand'
+        cy.get('.typeahead .verb').contains('Understand').click({ force: true });
+
+        // verify that the typeahead input contains test string minus the verb
+        cy.get('.typeahead input').should('have.value', testString.substring(testString.indexOf(' ') + 1));
+
+        // wait for autosave
+        cy.wait(2000);
+
+        cy.editTestObject(objectId);
+
+        cy.navigateBuilder('Learning Outcomes');
+
+        // ensure that the outcome saved correctly
+        cy.get('clark-outcome').contains(testString);
+
+        cy.get('.level-select .level.active').contains('remember & understand');
+
+        cy.get('.typeahead .verb').contains('Understand');
+
+        cy.get('.typeahead input').should('have.value', testString.substring(testString.indexOf(' ') + 1));
     });
 
-    it('Delete all objects', () => {
-        // Login 
-        cy.login();
+    it('should map a suggested standard outcome to an outcome', () => {
+        cy.editTestObject(objectId);
 
-        // navigate to Your Dashboard
-        cy.get('#contribute-to-clark').click({ force: true });
+        cy.navigateBuilder('Learning Outcomes');
 
-        // Assert URL 
-        cy.url().should('include', 'dashboard');
+        // click the first standard outcome in the right panel
+        cy.get('clark-standard-outcomes .results .outcomes-list-item').eq(0).click({ force: true });
 
-        // Click checkbox
-        cy.get('#checkbox').click({ force: true });
+        // verify that there is now one standard outcome selected
+        cy.get('clark-standard-outcomes .results .outcomes-list-item.selected').should('have.length', 1);
 
-        //Assert delete button has appeared
-        cy.get('#delete-selected').click({ force: true });
-        cy.get('#popup-dialog').children('#dialog-button').children('div').eq(0).click({force: true});
+        cy.get('clark-outcome').contains('K0063')
+
+        // wait for autosave
+        cy.wait(2000);
+
+        cy.editTestObject(objectId);
+
+        cy.navigateBuilder('Learning Outcomes');
+
+        // verify that there is now one standard outcome selected
+        cy.get('clark-standard-outcomes .results .outcomes-list-item.selected').should('have.length', 1);
+
+        cy.get('clark-outcome').contains('K0063')
     });
- });
+
+    it('should unmap a suggested standard outcome from an outcome', () => {
+        cy.editTestObject(objectId);
+
+        cy.navigateBuilder('Learning Outcomes');
+
+        // select and click the delete button in the test objects outcomes mapping
+        cy.get('clark-outcome .outcome-mappings .pill span').click({ force: true });
+
+        // verify that the outcome-mappings element is not in the DOM
+        cy.get('clark-outcome .outcome-mappings').should('not.exist');
+
+        // verify that there are no selected outcomes in the standard outcomes suggestion component
+        cy.get('clark-standard-outcomes .results .outcomes-list-item.selected').should('have.length', 0);
+
+        cy.wait(2000);
+
+        cy.editTestObject(objectId);
+
+        cy.navigateBuilder('Learning Outcomes');
+
+        // verify that the outcome-mappings element is not in the DOM
+        cy.get('clark-outcome .outcome-mappings').should('not.exist');
+
+        // verify that there are no selected outcomes in the standard outcomes suggestion component
+        cy.get('clark-standard-outcomes .results .outcomes-list-item.selected').should('have.length', 0);
+    })
+
+    it('should delete an outcome', () => {
+        cy.editTestObject(objectId);
+
+        cy.navigateBuilder('Learning Outcomes');
+
+        // select the delete button on the only outcome and click it
+        cy.get('clark-outcome').contains('Delete').click({ force: true });
+
+        // verify that there are no outcomes in the DOM
+        cy.get('clark-outcome').should('not.exist');
+
+        // wait for autosave
+        cy.wait(2000);
+
+        cy.editTestObject(objectId);
+
+        cy.navigateBuilder('Learning Outcomes');
+
+        // verify again that there are no outcomes in the DOM
+        cy.get('clark-outcome').should('not.exist');
+    });
+
+    it('should navigate to materials page', () => {
+        cy.editTestObject(objectId);
+
+        cy.navigateBuilder('Materials');
+
+        cy.url().should('include', 'materials');
+    });
+
+    after(() => { })
+});

@@ -1,20 +1,10 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import {
-  DirectoryNode,
-  DirectoryTree
-} from '../DirectoryTree';
-import { File } from '@cyber4all/clark-entity/dist/learning-object';
+import { DirectoryNode, DirectoryTree } from '../DirectoryTree';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-type LearningObjectFile = File;
 
 // tslint:disable-next-line:interface-over-type-literal
 export type Removal = {
@@ -25,7 +15,7 @@ export type Removal = {
 // tslint:disable-next-line:interface-over-type-literal
 export type DescriptionUpdate = {
   description: string;
-  file: LearningObjectFile | DirectoryNode;
+  file: LearningObject.Material.File | DirectoryNode;
 };
 
 @Component({
@@ -36,18 +26,16 @@ export type DescriptionUpdate = {
 export class FileBrowserComponent implements OnInit {
   @Input() canManage = false;
   @Input()
-  files$: BehaviorSubject<LearningObjectFile[]> = new BehaviorSubject<
-    LearningObjectFile[]
+  files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
+    LearningObject.Material.File[]
   >([]);
   @Input() folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  @Input()
-  handleRemove$: BehaviorSubject<Removal> = new BehaviorSubject<Removal>(null);
   @Output() path: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   containerClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output()
   newOptionsClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
-  @Output() 
+  @Output()
   meatballClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output()
   descriptionUpdated: EventEmitter<DescriptionUpdate> = new EventEmitter<
@@ -71,7 +59,6 @@ export class FileBrowserComponent implements OnInit {
     this.subToFiles();
     this.subToFolderMeta();
     this.subToPaths();
-    this.subToRemoval();
   }
   /**
    * Subscribe to file changes
@@ -101,7 +88,7 @@ export class FileBrowserComponent implements OnInit {
     );
   }
   /**
-   * Subscribe to path chhanges
+   * Subscribe to path changes
    *
    * @private
    * @memberof FileBrowserComponent
@@ -110,28 +97,6 @@ export class FileBrowserComponent implements OnInit {
     this.subscriptions.push(
       this.currentPath$.subscribe(() => {
         this.refreshNode();
-      })
-    );
-  }
-  /**
-   * Subscribe to removals and remove specified file or folder
-   *
-   * @private
-   * @memberof FileBrowserComponent
-   */
-  private subToRemoval(): void {
-    this.subscriptions.push(
-      this.handleRemove$.subscribe((removal: Removal) => {
-        if (removal) {
-          switch (removal.type) {
-            case 'file':
-              this.filesystem.removeFile(removal.path);
-              break;
-            case 'folder':
-              this.filesystem.removeFolder(removal.path);
-              break;
-          }
-        }
       })
     );
   }
@@ -195,7 +160,7 @@ export class FileBrowserComponent implements OnInit {
   /**
    * Emit updated description and file
    *
-   * @param {{ description: string; file: LearningObjectFile }} value
+   * @param {{ description: string; file: LearningObject.Material.File }} value
    * @memberof FileBrowserComponent
    */
   emitDesc(value: DescriptionUpdate): void {

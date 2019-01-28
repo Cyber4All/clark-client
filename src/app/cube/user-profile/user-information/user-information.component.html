@@ -13,12 +13,12 @@
     {{ copy.EMAILVERIFY }}
   </div>
 </div>
-<div *ngIf="objects && objects.length > 0" class="section-title">{{ copy.LEARNINGOBJECTS }}</div>
 <div class="learning-objects">
-  <ng-container *ngIf="objects && objects.length > 0">
+  <ng-container *ngIf="objects?.length > 0">
+    <div class="section-title">{{ copy.LEARNINGOBJECTS }}</div>
     <div *ngFor="let l of objects">
-      <learning-object-component *ngIf="l.published || loading" routerLink="/details/{{ l.author.username }}/{{l.name}}" [learningObject]="l"
-        [owned]="true" [loading]="loading">
+      <learning-object-component routerLink="/details/{{ l.author.username }}/{{l.name}}"
+        [learningObject]="l" [owned]="true" [loading]="loading">
       </learning-object-component>
     </div>
   </ng-container>

@@ -59,7 +59,7 @@ export class ModalService {
   }
 
   /**
-   * Creates a new context menu with the specified list at the specified position. NOTE: either an element or a position MUST be specified!
+   * Creates a new context menu with the specified list at the specified position. Either an element or a position MUST be specified!
    *
    * @param name name of the popup
    * @param classes any classes to be applied to the popup element

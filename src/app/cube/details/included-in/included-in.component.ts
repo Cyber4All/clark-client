@@ -25,7 +25,7 @@ export class DetailsIncludedInComponent implements OnInit, OnChanges {
 
   private loadParents() {
     this.service.fetchParents(this.learningObject['id']).then((data: any) => {
-      this.parents = data.map(learningObject => LearningObject.instantiate(learningObject));
+      this.parents = data.map(learningObject => new LearningObject(learningObject));
     }).catch(e => {
       console.error(e);
     });

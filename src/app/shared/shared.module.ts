@@ -4,13 +4,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
-import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ToasterModule } from './toaster';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
 // Components
-import { BrowseByMappingsComponent } from './browse-by-mappings/browse-by-mappings.component';
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
@@ -36,6 +34,8 @@ import { PopupModule } from './popups/popup.module';
 import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
 import { CookiesComponent } from './cookies/cookies.component';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { EmailBannerComponent } from './email-banner/email-banner.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -48,7 +48,6 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    VirtualScrollModule,
     ClickOutsideModule,
     ModalModule,
     ToasterModule,
@@ -59,7 +58,6 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
   ],
   providers: [],
   declarations: [
-    BrowseByMappingsComponent,
     NavbarComponent,
     MessageComponent,
     FileBrowserComponent,
@@ -81,9 +79,9 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     ProgressComponent,
     FileSizePipe,
     CookiesComponent,
+    EmailBannerComponent,
   ],
   exports: [
-    BrowseByMappingsComponent,
     NavbarComponent,
     FileBrowserComponent,
     FileListViewComponent,
@@ -100,11 +98,12 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
     NewRatingComponent,
     LearningObjectRatingsComponent,
     ProgressComponent,
-    VirtualScrollModule,
+    VirtualScrollerModule,
     PopupModule,
     CookiesComponent,
     ContextMenuModule,
     ClarkContextMenuModule,
+    EmailBannerComponent,
   ]
 })
 export class SharedModule {}

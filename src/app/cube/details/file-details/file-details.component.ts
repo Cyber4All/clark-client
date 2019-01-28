@@ -1,11 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import {
-  DirectoryTree,
-  DirectoryNode
-} from '../../../shared/filesystem/DirectoryTree';
-import { Material } from '@cyber4all/clark-entity/dist/learning-object';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { COPY } from './file-details.copy';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'onion-file-details',
@@ -15,7 +11,7 @@ import { COPY } from './file-details.copy';
 export class FileDetailsComponent implements OnInit, OnChanges {
   copy = COPY;
   @Input() length: string;
-  @Input() materials: Material;
+  @Input() materials: LearningObject.Material;
 
   files$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   folderMeta$: BehaviorSubject<any> = new BehaviorSubject<any>([]);

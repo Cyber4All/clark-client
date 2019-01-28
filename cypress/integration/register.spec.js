@@ -5,7 +5,7 @@
  //     Instead, refence all selections by id.
  // *********************************************************************
 
-describe('Browse', () => {
+describe('Register', () => {
 
     let regInfo; 
 
@@ -210,30 +210,7 @@ describe('Browse', () => {
         cy.get('#error');
     });
 
-    it('Click next arrow - trigger organization results to block next button', () => {
-        // Navigate to registration form
-        cy.get('#clark-register').click({ force: true });
-
-        // Fill in first name
-        cy.get('#input-firstname').type(regInfo[0], { force: true });
-
-        // Fill in last name
-        cy.get('#input-lastname').type(regInfo[1], { force: true });
-
-        // Fill in email 
-        cy.get('#input-email').type('invalid format', { force: true});
-
-        // Fill in organization
-        cy.get('#organization').type('Towson', { force: true });
-
-        // Wait for ui to appear
-        cy.wait(1000);
-
-        // Assert organization dropdown 
-        cy.get('#container');
-    });
-
-    it('Click next arrow - enter organization that is not in database', () => {
+    it('Click next arrow - enter organization', () => {
         // Navigate to registration form
         cy.get('#clark-register').click({ force: true });
 
@@ -250,32 +227,6 @@ describe('Browse', () => {
         cy.get('#organization').type('Neat', { force: true });
 
         cy.wait(1000);
-
-        // Click next button
-        cy.get('#button-next').click({ force: true });
-
-        // Assert step 2 header 
-        cy.get('#profile-title');
-    });
-
-    it('Click next arrow - enter organization that is in database', () => {
-        // Navigate to registration form
-        cy.get('#clark-register').click({ force: true });
-
-        // Fill in first name
-        cy.get('#input-firstname').type(regInfo[0], { force: true });
-
-        // Fill in last name
-        cy.get('#input-lastname').type(regInfo[1], { force: true });
-
-        // Fill in email
-        cy.get('#input-email').type(regInfo[2], { force: true });
-
-        // Fill in organization
-        cy.get('#organization').type('towson', { force: true });
-
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
 
         // Click next button
         cy.get('#button-next').click({ force: true });
@@ -326,9 +277,6 @@ describe('Browse', () => {
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
 
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force :true });
-
         // Click next button
         cy.get('#button-next').click({ force: true });
 
@@ -351,9 +299,6 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
-
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
 
         // Click next button on step 1
         cy.get('#button-next').click({ force: true });
@@ -383,9 +328,6 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
-
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
 
         // Click next button on step 1
         cy.get('#button-next').click({ force: true });
@@ -418,9 +360,6 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
-
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
 
         // Click next button on step 1
         cy.get('#button-next').click({ force: true });
@@ -456,9 +395,6 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
-
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
 
         // Click next button on step 1
         cy.get('#button-next').click({ force: true });
@@ -498,9 +434,6 @@ describe('Browse', () => {
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
 
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
-
         // Click next button on step 1
         cy.get('#button-next').click({ force: true });
 
@@ -539,9 +472,6 @@ describe('Browse', () => {
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
 
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
-
         // Click next button on step 1
         cy.get('#button-next').click({ force: true });
 
@@ -564,7 +494,7 @@ describe('Browse', () => {
         cy.get('#preview-title');
     });
 
-    it('Assert information displayed in step 3', () => {
+    it('Submit form and create user', () => {
         // Navigate to registration form
         cy.get('#clark-register').click({ force: true });
 
@@ -579,9 +509,6 @@ describe('Browse', () => {
 
         // Fill in organization
         cy.get('#organization').type(regInfo[3], { force: true });
-
-        // Select first organization from dropdown
-        cy.get('#container').children('ul').children('li').first().click({ force: true });
 
         // Click next button on step 1
         cy.get('#button-next').click({ force: true });
@@ -612,7 +539,22 @@ describe('Browse', () => {
         cy.get('#card-username').contains('Username: ' + regInfo[4]);
         // Email
         cy.get('#card-email').contains('Email: ' + regInfo[2]);
-        // Recaptcha
-        cy.get('#recaptcha');
+        // Submit new user request
+        cy.get('#button-submit').click({ force: true });
+        // Assert URL
+        cy.url().should('include', '/home');
+    });
+
+    it('Test login', () => {
+        // Click sign in button 
+        cy.get('#clark-sign-in').click({ force: true });
+
+        // Assert URL 
+        cy.url().should('include', 'login');
+
+        // Enter login info 
+        cy.get('input[name=username]').type('Cypress95');
+        cy.get('input[name=password]').type('password');
+        cy.get('#auth-button').click();
     });
 });

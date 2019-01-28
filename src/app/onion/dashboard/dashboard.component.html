@@ -29,16 +29,16 @@
             <div><!-- meatball placeholder --></div>
           </div>
           <div  [@listItem]="learningObjects.length">
-            <clark-dashboard-item 
+            <clark-dashboard-item
               *ngFor="let l of learningObjects; let i = index"
               [learningObject]="l"
               [status]="l.status"
               [disabled]="disabled.get(l.id)"
-              [hidden]="hidden.get(l.id)" 
+              [hidden]="hidden.get(l.id)"
               [selected]="this.selected.get(l.id) !== undefined"
               [small]="editingChildren && !this.disabled.get(l.id)"
               [meatball]="!editingChildren"
-              (select)="toggleSelect(l, $event, i)" 
+              (select)="toggleSelect(l, $event, i)"
               (delete)="deleteConfirmation = delete(l); deleteConfirmation.next();"
               (editChildren)="editChildren(l)"
               (submit)="submitToCollection = true; focusedLearningObject = l;"
@@ -80,9 +80,9 @@
 <clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
   <div #contextMenu class="filter-menu">
     <ul>
-      <li class="unpublished" (click)="toggleFilter('unpublished')">
-        <div *ngIf="filters.get('unpublished')" class="indicator"></div>
-        <i class="far fa-eye-slash"></i>Unpublished
+      <li class="unreleased" (click)="toggleFilter('unreleased')">
+        <div *ngIf="filters.get('unreleased')" class="indicator"></div>
+        <i class="far fa-eye-slash"></i>Unreleased
       </li>
       <li class="waiting" (click)="toggleFilter('waiting')">
         <div *ngIf="filters.get('waiting')" class="indicator"></div>
@@ -92,12 +92,12 @@
         <div *ngIf="filters.get('review')" class="indicator"></div>
         <i class="far fa-sync"></i>Under Review
       </li>
-      <li class="published" (click)="toggleFilter('published')">
-        <div *ngIf="filters.get('published')" class="indicator"></div>
-        <i class="far fa-eye"></i>Published
+      <li class="released" (click)="toggleFilter('released')">
+        <div *ngIf="filters.get('released')" class="indicator"></div>
+        <i class="far fa-eye"></i>Released
       </li>
-      <li class="denied" (click)="toggleFilter('denied')">
-        <div *ngIf="filters.get('denied')" class="indicator"></div>
+      <li class="denied" (click)="toggleFilter('rejected')">
+        <div *ngIf="filters.get('rejected')" class="indicator"></div>
         <i class="far fa-ban"></i>Denied
       </li>
     </ul>
@@ -135,4 +135,3 @@
     <clark-collection-selector [currentCollection]="focusedLearningObject.collection" (choice)="addToCollection($event)"></clark-collection-selector>
   </div>
 </clark-popup>
-

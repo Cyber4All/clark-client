@@ -4,11 +4,11 @@
       <clark-checkbox *ngIf="!disabled" [setValue]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     </div>
     <div>
-      <div class="status" [ngClass]="learningObject.status" tip="{{ states.get(learningObject.status)?.tip }}" tipDisabled="{{ !states.get(learningObject.status)?.tip }}" tipLocation="above">
-        <span *ngIf="learningObject.status === 'unpublished'"><i class="fas fa-eye-slash"></i></span>
+      <div class="status" [ngClass]="learningObject.status" tip="{{ states?.get(learningObject.status)?.tip }}" tipDisabled="{{ !states?.get(learningObject.status)?.tip }}" tipLocation="above">
+        <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
         <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
         <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
-        <span *ngIf="learningObject.status === 'published'"><i class="fas fa-eye"></i></span>
+        <span *ngIf="learningObject.status === 'released'"><i class="fas fa-eye"></i></span>
         <span *ngIf="learningObject.status === 'denied'"><i class="fas fa-ban"></i></span>
       </div>
     </div>
@@ -33,9 +33,9 @@
 <clark-context-menu (id)="itemMenu = $event" (close)="meatballOpen = false">
   <div #contextMenu>
     <ul (click)="toggleContextMenu($event)">
-      <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.name]"><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li *ngIf="actionPermissions('editChildren')" (click)="editChildren.emit()"><i class="far fa-project-diagram"></i>Edit Children</li>
-      <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/content/upload', learningObject.name]"><i class="far fa-upload"></i>Manage Materials</li>
+      <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
       <li *ngIf="actionPermissions('submit')" (click)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
       <li *ngIf="actionPermissions('view')" [routerLink]="['/details', learningObject.author.username, learningObject.name]"><i class="far fa-cube"></i>View in CUBE</li>
       <li *ngIf="actionPermissions('delete')" class="bad" (click)="delete.emit()"><i class="far fa-trash-alt"></i>Delete</li>

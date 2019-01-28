@@ -6,7 +6,6 @@ import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Restriction } from '@cyber4all/clark-entity/dist/learning-object';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -20,6 +19,10 @@ export enum AUTH_GROUP {
   REVIEWER,
   EDITOR,
   ADMIN
+}
+
+export interface AuthUser extends User {
+  accessGroups: string[];
 }
 
 @Injectable()
@@ -58,11 +61,7 @@ export class AuthService {
   }
 
   get firstName(): string {
-    return this.user.name
-      ? this.user.name.split(' ')[0]
-      : this.user.name
-        ? this.user.name.split(' ')[0]
-        : undefined;
+    return this.user ? this.user.firstName : undefined;
   }
 
   get email(): string {
@@ -82,7 +81,7 @@ export class AuthService {
       const response = await this.http
         .get(environment.apiURL + '/users/tokens', { withCredentials: true })
         .toPromise();
-      this.user = this.makeUserFromCookieResponse(response);
+      this.user = response as AuthUser;
       this.assignUserToGroup();
     } catch (error) {
       throw error;
@@ -114,7 +113,7 @@ export class AuthService {
           withCredentials: true
         })
         .toPromise();
-      this.user = this.makeUserFromCookieResponse(val);
+      this.user = val as AuthUser;
     } catch (error) {
       throw error;
     }
@@ -127,7 +126,7 @@ export class AuthService {
           withCredentials: true
         })
         .toPromise();
-      this.user = this.makeUserFromCookieResponse(val);
+      this.user = val as AuthUser;
       this.changeStatus(true);
       this.assignUserToGroup();
       return this.user;
@@ -139,7 +138,7 @@ export class AuthService {
   }
 
   async logout(username: string = this.user.username): Promise<void> {
-     await this.http
+    await this.http
       .delete(environment.apiURL + '/users/' + username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
@@ -150,7 +149,7 @@ export class AuthService {
     this.group.next(AUTH_GROUP.VISITOR);
   }
 
-  async register(user: User): Promise<User> {
+  async register(user: any): Promise<User> {
     try {
       await this.http.post(environment.apiURL + '/users', user, {
         withCredentials: true,
@@ -223,15 +222,6 @@ export class AuthService {
     });
   }
 
-  makeUserFromCookieResponse(val: any): User {
-    try {
-      const user = User.instantiate(val);
-      return user;
-    } catch {
-      return val as User;
-    }
-  }
-
   establishSocket() {
     /* if (!this.socketWatcher) {
       this.socketWatcher = new Observable(observer => {
@@ -286,7 +276,7 @@ export class AuthService {
   async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
       // Check that the object does not contain a download lock and the user is logged in
-      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(Restriction.DOWNLOAD);
+      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(LearningObject.Restriction.DOWNLOAD);
 
       // If the object is restricted, check if the user is a reviewer or admin
       if (restricted) {
@@ -326,14 +316,15 @@ export class AuthService {
    * The highest priority group will be assigned.
    */
   private assignUserToGroup() {
-    if (this.user['accessGroups']) {
-      if (this.user['accessGroups'] && this.user['accessGroups'].includes('admin')) {
-        this.group.next(AUTH_GROUP.ADMIN);
-      } else if (this.user['accessGroups'].includes('editor')) {
-          this.group.next(AUTH_GROUP.EDITOR);
-        } else { (this.user['accessGroups'].includes('reviewer'));
-        this.group.next(AUTH_GROUP.REVIEWER);
-      }
+    if (!this.user['accessGroups']) {
+      throw new Error('The user must have an access group!');
+    }
+    if (this.user['accessGroups'].includes('admin')) {
+      this.group.next(AUTH_GROUP.ADMIN);
+    } else if (this.user['accessGroups'].includes('editor')) {
+      this.group.next(AUTH_GROUP.EDITOR);
+    } else if (this.user['accessGroups'].includes('reviewer')) {
+      this.group.next(AUTH_GROUP.REVIEWER);
     } else {
       this.group.next(AUTH_GROUP.USER);
     }

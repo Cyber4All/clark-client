@@ -8,8 +8,9 @@ import {
 } from '@angular/core';
 import { DashboardLearningObject } from '../dashboard.component';
 import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
-import { LearningObjectStatus } from '@env/environment';
 import { AuthService } from '../../../core/auth.service';
+import { CollectionService } from 'app/core/collection.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -58,63 +59,19 @@ export class DashboardItemComponent implements OnChanges {
   // id of the context menu returned from the context-menu component
   itemMenu: string;
 
-  // map of state strings to icons and tooltips
-  states: Map<string, { icon: string; tip: string }>;
+  // map of state strings to tooltips
+  states: Map<string, { tip: string }>;
 
   // flags
   meatballOpen = false;
   showStatus = true;
 
-  constructor(private contextMenuService: ContextMenuService, private auth: AuthService) {}
+  constructor(private contextMenuService: ContextMenuService, private auth: AuthService, private collectionService: CollectionService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
-    // TODO move the tooltips to a copy file
-      this.states = new Map([
-        [
-          LearningObjectStatus.DENIED,
-          {
-            icon: 'fa-ban',
-            tip:
-              'This learning object was rejected. Contact your review team for further information'
-          }
-        ],
-        [
-          LearningObjectStatus.PUBLISHED,
-          {
-            icon: 'fa-eye',
-            tip: 'This learning object is published and can be browsed for.'
-          }
-        ],
-        [
-          LearningObjectStatus.UNDER_REVIEW,
-          {
-            icon: 'fa-sync',
-            tip:
-              'This object is currently under review by the ' +
-              this.learningObject.collection +
-              ' review team, It is not yet published and cannot be edited until the review process is complete.'
-          }
-        ],
-        [
-          LearningObjectStatus.WAITING,
-          {
-            icon: 'fa-hourglass',
-            tip:
-              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
-              this.learningObject.collection +
-              ' review team'
-          }
-        ],
-        [
-          LearningObjectStatus.UNPUBLISHED,
-          {
-            icon: 'fa-eye-slash',
-            tip:
-              'This learning object is visible only to you. Submit it for review to make it publicly available.'
-          }
-        ]
-      ]);
+      // TODO move the tooltips to a copy file
+      this.buildTooltip()
     }
   }
 
@@ -143,12 +100,12 @@ export class DashboardItemComponent implements OnChanges {
    */
   actionPermissions(action: string) {
     const permissions = {
-      edit: ['unpublished', 'published', 'denied', 'waiting', 'review'],
-      editChildren: ['unpublished', 'published', 'denied', 'waiting', 'review', this.learningObject.length !== 'nanomodule'],
-      manageMaterials: ['unpublished', 'published', 'denied', 'waiting', 'review', this.verifiedEmail],
-      submit: ['unpublished', 'denied', this.verifiedEmail],
-      view: ['published'],
-      delete: ['unpublished', 'denied'],
+      edit: ['unreleased', 'denied',],
+      editChildren: ['unreleased', 'denied', this.learningObject.length !== 'nanomodule'],
+      manageMaterials: ['unreleased', 'denied', this.verifiedEmail],
+      submit: ['unreleased', 'denied', this.verifiedEmail],
+      view: ['released'],
+      delete: ['unreleased', 'denied'],
       cancelSubmission: ['waiting', this.verifiedEmail]
     };
 
@@ -187,5 +144,53 @@ export class DashboardItemComponent implements OnChanges {
     } else {
       return [];
     }
+  }
+
+  buildTooltip() {
+    this.collectionService.getCollection(this.learningObject.collection).then(val => {
+      this.states = new Map([
+        [
+          LearningObject.Status.REJECTED,
+          {
+            tip:
+              'This learning object was rejected. Contact your review team for further information'
+          }
+        ],
+        [
+          LearningObject.Status.RELEASED,
+          {
+            tip:
+              'This learning object is published to the ' + 
+                (val ? val.name : '') +
+              ' collection and can be browsed for.'
+          }
+        ],
+        [
+          LearningObject.Status.REVIEW,
+          {
+            tip:
+              'This object is currently under review by the ' +
+                (val ? val.name : '') +
+              ' review team, It is not yet published and cannot be edited until the review process is complete.'
+          }
+        ],
+        [
+          LearningObject.Status.WAITING,
+          {
+            tip:
+              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
+                (val ? val.name : '') +
+              ' review team'
+          }
+        ],
+        [
+          LearningObject.Status.UNRELEASED,
+          {
+            tip:
+              'This learning object is visible only to you. Submit it for review to make it publicly available.'
+          }
+        ]
+      ]);
+    });
   }
 }

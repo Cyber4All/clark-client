@@ -1,0 +1,78 @@
+<clark-column-wrapper>
+  <div left>
+    <clark-scaffold></clark-scaffold>
+  </div>
+  <div main>
+    <div *ngIf="learningObject; else loadingTemplate" class="content-wrapper">
+      <form>
+        <div class="title">
+          {{copy.TITLE}}
+        </div>
+        <clark-info-page-metadata [error]="validator.get('name') || undefined">
+          <div title>{{copy.NAME}}</div>
+          <div directions>{{copy.NAMEPLACEHOLDER}}</div>
+          <div data>
+            <input class="name-field" autocomplete="off" type="text" autofocus name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" />
+          </div>
+        </clark-info-page-metadata>
+        <hr />
+        <clark-info-page-metadata>
+          <div title>Who else worked on this?</div>
+          <div directions>You can find users by their name, username, or email address.</div>
+          <div data>
+            <clark-user-dropdown [contributors]="learningObject.contributors" (addAuthor)="toggleContributor($event)" (removeAuthor)="toggleContributor($event)"></clark-user-dropdown>
+            <div *ngIf="learningObject.contributors?.length" class="contributors-list">
+              <span>
+                <i class="far fa-user-alt"></i>
+              </span>
+              <clark-contributor-pill class="contributors-list__pill" *ngFor="let c of learningObject.contributors" [user]="c" (removeContributor)="toggleContributor(c)"></clark-contributor-pill>
+            </div>
+          </div>
+        </clark-info-page-metadata>
+        <hr>
+        <clark-info-page-metadata>
+          <div title>{{copy.LENGTH}}</div>
+          <div directions>{{copy.CHOOSE}}</div>
+          <div data>
+            <div class="select-wrapper">
+              <select name="type" (ngModelChange)="mutateLearningObject({ length: $event })" [ngModel]="learningObject.length" [ngModelOptions]="{standalone: true}">
+                <option value="nanomodule">{{ copy.NANO }}</option>
+                <option value="micromodule">{{ copy.MICRO }}</option>
+                <option value="module">{{ copy.MOD }}</option>
+                <option value="unit">{{ copy.UNIT }}</option>
+                <option value="course">{{ copy.COURSE }}</option>
+              </select>
+            </div>
+          </div>
+        </clark-info-page-metadata>
+        <hr>
+        <clark-info-page-metadata [error]="validator.get('levels')" [warning]="!validator.submissionMode">
+          <div title>{{copy.LEVELS}}</div>
+          <div directions>{{copy.SELECT}}</div>
+          <div data>
+            <div class="levels">
+              <div *ngFor="let level of academicLevels" class="pill" [ngClass]="{'selected': selectedLevels.includes(level)}" (click)="toggleLevel(level)">
+                {{ level }}
+              </div>
+            </div>
+          </div>
+        </clark-info-page-metadata>
+        <hr>
+        <clark-info-page-metadata [error]="descriptionTouched || validator.submissionMode ? validator.get('description') : undefined" [warning]="!validator.submissionMode">
+          <div title>{{copy.QUESTION}}</div>
+          <div directions>{{copy.TIP}}</div>
+          <div data>
+            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
+          </div>
+        </clark-info-page-metadata>
+      </form>
+    </div>
+  </div>
+</clark-column-wrapper>
+
+<ng-template #loadingTemplate>
+  <div class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading...
+  </div>
+</ng-template>

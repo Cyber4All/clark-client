@@ -36,7 +36,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.36);
+    background: rgb(189, 193, 195);
     transition: all 0.2s ease;
     box-shadow: none;
 
@@ -48,7 +48,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         background: #f5a623;
     }
 
-    &.published {
+    &.released {
         background: $green;
     }
 

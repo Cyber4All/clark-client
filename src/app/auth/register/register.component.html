@@ -2,8 +2,8 @@
   <div class="content-box" [ngClass]="{'failed': registerFailure }">
     <div class="top">
       <div id="error" class="error"> {{ registerFailure || '' }} </div>
-      <div class="auth-title">CLARK</div>
-      <div class="auth-title light">Cybersecurity Labs and Resource Knowledge-base</div>
+      <div class="auth-title" id="registration-title">CLARK</div>
+      <div class="auth-title light" id="registration-light-header">Cybersecurity Labs and Resource Knowledge-base</div>
       <form [formGroup]="regForm" [@slideInRight]="slide" [@fallFromTop]="fall">
         <div *ngIf="this.page === 1">
           <clark-personal-info [group]="regForm" (hasResults)="setOrganizationStatus($event)"></clark-personal-info>

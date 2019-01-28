@@ -5,7 +5,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Component, OnInit, HostListener } from '@angular/core';
-import { AuthService } from '../../core/auth.service';
+import { AuthService, AuthUser } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@cyber4all/clark-entity';
 import {
@@ -17,6 +17,8 @@ import {
   query,
   stagger
 } from '@angular/animations';
+import { NavbarService } from '../../core/navbar.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-register',
@@ -127,7 +129,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public nav: NavbarService
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
@@ -136,7 +139,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.nav.hide(); // hides nav bar
+     // If development/testing set verified to true in order to skip reCaptcha check in e2e tests
+     if (environment.production === false) {
+      this.verified = true;
+    }
+  }
 
   submit() {
     this.updateObjValues();
@@ -148,13 +157,13 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-    const u = new User(
-      this.regInfo.username,
-      `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
-      this.regInfo.email.trim(),
-      this.regInfo.organization.trim(),
-      this.regInfo.password
-    );
+    const u = {
+      username: this.regInfo.username,
+      name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
+      email: this.regInfo.email.trim(),
+      organization: this.regInfo.organization.trim(),
+      password: this.regInfo.password
+    };
 
     this.auth.register(u).then(
       () => {
@@ -165,6 +174,7 @@ export class RegisterComponent implements OnInit {
         }
       },
       error => {
+        console.error('whoops', error);
         this.error(error.error.message);
       }
     );

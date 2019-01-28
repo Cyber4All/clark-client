@@ -1,0 +1,25 @@
+# ==========================================================================================
+# This is the second image that runs in the Docker-compose.yml
+# This image should only be run after the app is built 
+# The purpose of this image is to run Cypress (e2e) tests on the already-built application 
+# Because of this image, we do not need to list Cypress as a dependency for this application 
+# ==========================================================================================
+
+# base image
+FROM cypress/browsers:chrome65-ff57
+
+# set working directory
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
+
+# install cypress
+RUN npm install cypress@2.1.0
+
+# copy cypress files and folders
+COPY cypress /usr/src/app/cypress
+COPY cypress.json /usr/src/app/cypress.json
+
+WORKDIR /usr/src/app
+
+# confirm the cypress install
+RUN ./node_modules/.bin/cypress verify
