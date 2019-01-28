@@ -59,10 +59,10 @@
   </div>
 </clark-popup>
 
-<clark-context-menu (id)="submissionOptionsMenu = $event" (close)="toggleSubmissionOptionsMenu(undefined)">
+<clark-context-menu (id)="submissionOptionsMenu = $event" (close)="toggleSubmissionOptionsMenu($event)">
   <div #contextMenu>
     <ul>
-      <li class="bad" (click)="cancelSubmission(); toggleSubmissionOptionsMenu(undefined)">
+      <li class="bad" (click)="cancelSubmission(); toggleSubmissionOptionsMenu($event)">
         <i class="far fa-ban"></i> Cancel Submission
       </li>
     </ul>
