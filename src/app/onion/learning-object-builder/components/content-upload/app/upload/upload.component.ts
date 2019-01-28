@@ -377,7 +377,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.uploadComplete.emit();
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
   }
@@ -608,7 +608,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
