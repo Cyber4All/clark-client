@@ -33,7 +33,6 @@ import {
 } from '../../../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
-import { AuthService } from 'app/core/auth.service';
 import { FileStorageService } from '../services/file-storage.service';
 
 // tslint:disable-next-line:interface-over-type-literal
@@ -154,8 +153,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   solutionUpload = false;
 
   constructor(
-    // FIXME: REMOVE WHEN WHITELIST LOGIC IS REMOVED
-    private authService: AuthService,
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
@@ -522,23 +519,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   updateNotes(notes: string) {
     this.notes$.next(notes ? notes.trim() : '');
   }
-
-  // /**
-  //  * Corrects malformed URLs and removes empty URLs
-  //  *
-  //  * @memberof UploadComponent
-  //  */
-  // fixURLs() {
-  //   for (let i = 0; i < this.learningObject.materials.urls.length; i++) {
-  //     const url = this.learningObject.materials.urls[i];
-  //     if (!url.title || !url.url) {
-  //       this.removeURL(i);
-  //     } else if (!url.url.match(/https?:\/\/.+/i)) {
-  //       url.url = `http://${url.url}`;
-  //       this.learningObject.materials.urls[i] = url;
-  //     }
-  //   }
-  // }
 
   /**
    * Sends a list of files to API for deletion & Updates learning object

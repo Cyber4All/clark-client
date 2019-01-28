@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { USER_ROUTES } from '@env/route';
 import 'rxjs/add/operator/toPromise';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../../../../../core/auth.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class FileStorageService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   /**
    * Sends request to initiate multipart upload
@@ -27,13 +26,14 @@ export class FileStorageService {
   }): Promise<any> {
     const route = USER_ROUTES.INIT_MULTIPART({
       fileId: params.fileId,
-      username: this.auth.user.username,
+      username: params.learningObject.author.username,
       objectId: params.learningObject.id
     });
 
     return this.http
       .post(route, { filePath: params.filePath }, { withCredentials: true })
-      .toPromise().then((res: {uploadId: string})=>res.uploadId);
+      .toPromise()
+      .then((res: { uploadId: string }) => res.uploadId);
   }
 
   /**
@@ -55,7 +55,7 @@ export class FileStorageService {
   }): Promise<any> {
     const route = USER_ROUTES.FINALIZE_MULTIPART({
       fileId: params.fileId,
-      username: this.auth.user.username,
+      username: params.learningObject.author.username,
       objectId: params.learningObject.id
     });
 
@@ -83,16 +83,20 @@ export class FileStorageService {
   abortMultipart(params: {
     learningObject: LearningObject;
     fileId: string;
-    uploadId:string;
+    uploadId: string;
   }): Promise<any> {
     const route = USER_ROUTES.ABORT_MULTIPART({
       fileId: params.fileId,
-      username: this.auth.user.username,
+      username: params.learningObject.author.username,
       objectId: params.learningObject.id
     });
     // @ts-ignore Sending body is legal
     return this.http
-      .delete(route,{uploadId: params.uploadId},{ withCredentials: true, responseType: 'text' })
+      .delete(
+        route,
+        { uploadId: params.uploadId },
+        { withCredentials: true, responseType: 'text' }
+      )
       .toPromise();
   }
 
@@ -106,7 +110,7 @@ export class FileStorageService {
    */
   delete(learningObject: LearningObject, fileId: string): Promise<{}> {
     const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT(
-      this.auth.user.username,
+      learningObject.author.username,
       learningObject.id,
       fileId
     );
