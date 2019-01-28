@@ -21,6 +21,28 @@ export enum AUTH_GROUP {
   ADMIN
 }
 
+export class AuthUser extends User {
+  private _password: string;
+  get password(): string {
+    return this._password;
+  }
+  set password(password: string) {
+    this._password = password;
+  }
+  private _accessGroups: string[];
+  get accessGroups(): string[] {
+    return this._accessGroups;
+  }
+  set accessGroups(accessGroups: string[]) {
+    this._accessGroups = accessGroups;
+  }
+  constructor(user: Partial<AuthUser>) {
+    super(user);
+    this._password = user.password || '';
+    this._accessGroups = user.accessGroups || [];
+  }
+}
+
 @Injectable()
 export class AuthService {
   user: User = undefined;
@@ -220,7 +242,7 @@ export class AuthService {
 
   makeUserFromCookieResponse(val: any): User {
     try {
-      const user = new User(val);
+      const user = new AuthUser(val);
       return user;
     } catch {
       return val as User;
@@ -325,8 +347,8 @@ export class AuthService {
       if (this.user['accessGroups'] && this.user['accessGroups'].includes('admin')) {
         this.group.next(AUTH_GROUP.ADMIN);
       } else if (this.user['accessGroups'].includes('editor')) {
-          this.group.next(AUTH_GROUP.EDITOR);
-        } else { (this.user['accessGroups'].includes('reviewer'));
+        this.group.next(AUTH_GROUP.EDITOR);
+      } else { (this.user['accessGroups'].includes('reviewer'));
         this.group.next(AUTH_GROUP.REVIEWER);
       }
     } else {
