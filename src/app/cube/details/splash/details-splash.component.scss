@@ -60,6 +60,12 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           opacity: 0.6;
         }
       }
+      .collection-link {
+        cursor: pointer;
+      }
+      .collection-link:hover {
+        opacity: .6;
+      }
 
       .author {
         .link {
