@@ -238,7 +238,7 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   private removeEmptyFolders(node: DirectoryNode): void {
-    if (!node.getChildren().length && !node.getFiles().length) {
+    if (!node && !node.getChildren().length && !node.getFiles().length) {
       const parent = node.getParent();
       this.removeFolder(node.getPath());
       this.removeEmptyFolders(parent);
