@@ -138,7 +138,7 @@ export class AuthService {
   }
 
   async logout(username: string = this.user.username): Promise<void> {
-     await this.http
+    await this.http
       .delete(environment.apiURL + '/users/' + username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
@@ -316,14 +316,15 @@ export class AuthService {
    * The highest priority group will be assigned.
    */
   private assignUserToGroup() {
-    if (this.user['accessGroups']) {
-      if (this.user['accessGroups'] && this.user['accessGroups'].includes('admin')) {
-        this.group.next(AUTH_GROUP.ADMIN);
-      } else if (this.user['accessGroups'].includes('editor')) {
-        this.group.next(AUTH_GROUP.EDITOR);
-      } else { (this.user['accessGroups'].includes('reviewer'));
-        this.group.next(AUTH_GROUP.REVIEWER);
-      }
+    if (!this.user['accessGroups']) {
+      throw new Error('The user must have an access group!');
+    }
+    if (this.user['accessGroups'].includes('admin')) {
+      this.group.next(AUTH_GROUP.ADMIN);
+    } else if (this.user['accessGroups'].includes('editor')) {
+      this.group.next(AUTH_GROUP.EDITOR);
+    } else if (this.user['accessGroups'].includes('reviewer')) {
+      this.group.next(AUTH_GROUP.REVIEWER);
     } else {
       this.group.next(AUTH_GROUP.USER);
     }
