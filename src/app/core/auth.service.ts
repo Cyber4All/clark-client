@@ -21,26 +21,8 @@ export enum AUTH_GROUP {
   ADMIN
 }
 
-export class AuthUser extends User {
-  private _password: string;
-  get password(): string {
-    return this._password;
-  }
-  set password(password: string) {
-    this._password = password;
-  }
-  private _accessGroups: string[];
-  get accessGroups(): string[] {
-    return this._accessGroups;
-  }
-  set accessGroups(accessGroups: string[]) {
-    this._accessGroups = accessGroups;
-  }
-  constructor(user: Partial<AuthUser>) {
-    super(user);
-    this._password = user.password || '';
-    this._accessGroups = user.accessGroups || [];
-  }
+export interface AuthUser extends User {
+  accessGroups: string[];
 }
 
 @Injectable()
@@ -99,7 +81,7 @@ export class AuthService {
       const response = await this.http
         .get(environment.apiURL + '/users/tokens', { withCredentials: true })
         .toPromise();
-      this.user = this.makeUserFromCookieResponse(response);
+      this.user = response as AuthUser;
       this.assignUserToGroup();
     } catch (error) {
       throw error;
@@ -131,7 +113,7 @@ export class AuthService {
           withCredentials: true
         })
         .toPromise();
-      this.user = this.makeUserFromCookieResponse(val);
+      this.user = val as AuthUser;
     } catch (error) {
       throw error;
     }
@@ -144,7 +126,7 @@ export class AuthService {
           withCredentials: true
         })
         .toPromise();
-      this.user = this.makeUserFromCookieResponse(val);
+      this.user = val as AuthUser;
       this.changeStatus(true);
       this.assignUserToGroup();
       return this.user;
@@ -238,15 +220,6 @@ export class AuthService {
       withCredentials: true,
       responseType: 'text'
     });
-  }
-
-  makeUserFromCookieResponse(val: any): User {
-    try {
-      const user = new AuthUser(val);
-      return user;
-    } catch {
-      return val as User;
-    }
   }
 
   establishSocket() {
