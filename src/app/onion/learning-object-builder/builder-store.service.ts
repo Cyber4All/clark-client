@@ -338,7 +338,8 @@ export class BuilderStore {
 
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
-      outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
+      // FIXME we shouldn't be sorting these verbs client side
+      outcome.verb = taxonomy.taxons[params.bloom].verbs.sort()[0];
     } else if (params.verb) {
       outcome.verb = params.verb;
     } else if (typeof params.text === 'string') {

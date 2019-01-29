@@ -2,9 +2,6 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Outp
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
-import 'rxjs/add/operator/takeUntil';
-import { LearningOutcome } from '@cyber4all/clark-entity';
-import { text } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'clark-outcome-typeahead',
@@ -149,7 +146,8 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
    * Return list of verbs in selected category
    */
   get verbsInSelectedCategory(): string[] {
-    return taxonomy.taxons[this.bloom].verbs;
+    // FIXME we shouldn't be sorting these verbs client side
+    return (taxonomy.taxons[this.bloom].verbs as string[]).sort();
   }
 
   ngOnDestroy() {
