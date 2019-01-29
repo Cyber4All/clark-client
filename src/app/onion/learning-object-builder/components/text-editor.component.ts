@@ -40,7 +40,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
       this.editorContent = changes.savedContent.currentValue;
 
       // this is it's first change which means we're loading an existing value, prevent emit
-      if (changes.savedContent.firstChange) {
+      if (changes.savedContent.firstChange && changes.savedContent.currentValue) {
         this.initialized = false;
       }
 
