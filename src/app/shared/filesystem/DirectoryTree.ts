@@ -140,10 +140,14 @@ export class DirectoryTree {
 
     const parentPath = parent.getPath();
     const childPath = `${parentPath}/${currentPath}`;
-    const index = this.pathMap.get(childPath) || 0;
     const children = parent.getChildren();
-    const node = children[index] || this.findNodeAtLevel(currentPath, children);
-    if (node) {
+    const cachedIndex = this.pathMap.get(childPath);
+    const index = cachedIndex !== undefined ? cachedIndex : -1;
+    let node = children[index] || this.findNodeAtLevel(currentPath, children);
+    if (node && node.getName() === currentPath) {
+      return this.traversePath(paths, node);
+    } else if (node) {
+      node = this.findNodeAtLevel(currentPath, children);
       return this.traversePath(paths, node);
     }
 
@@ -238,13 +242,30 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   private removeEmptyFolders(node: DirectoryNode): void {
-    if (!node.getChildren().length && !node.getFiles().length) {
+    if (
+      !this.isRoot(node) &&
+      !node.getChildren().length &&
+      !node.getFiles().length
+    ) {
       const parent = node.getParent();
       this.removeFolder(node.getPath());
       this.removeEmptyFolders(parent);
     }
   }
+
+  /**
+   * Checks whether or not a node is the root by comparing the node's path to the root path
+   *
+   * @private
+   * @param {DirectoryNode} node [Node to check in directory tree]
+   * @returns {boolean}
+   * @memberof DirectoryTree
+   */
+  private isRoot(node: DirectoryNode): boolean {
+    return node.getPath() === this._root.getPath();
+  }
 }
+
 /**
  * Class representing simple Node in DirectoryTree
  *

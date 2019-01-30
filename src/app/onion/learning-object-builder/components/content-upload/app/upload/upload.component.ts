@@ -424,6 +424,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   queueComplete() {
     this.uploadErrors = {};
+    this.uploadComplete.emit();
   }
 
   /**
@@ -431,9 +432,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    *
    * @memberof UploadComponent
    */
-  uploadSuccess() {
-    this.uploadComplete.emit();
-  }
+  uploadSuccess() {}
 
   /**
    * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;

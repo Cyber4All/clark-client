@@ -1,7 +1,7 @@
 <div class="builder-navbar-wrapper">
   <div class="top">
     <div class="top__left">
-      <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> {{ editing ? 'Edit' : 'New' }} Learning Object</a>
+      <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> Back to Dashboard</a>
     </div>
     <div class="top__right">
       <div *ngIf="!['unreleased', 'rejected'].includes(learningObject?.status) && learningObject?.collection" class="top__collection" tip="This learning object has been submitted to the {{ collection.name }} collection." tipLocation="bottom" >
@@ -20,7 +20,7 @@
           <div *ngIf="validator.submissionMode && submissionError" class="button__cancel" tip="Cancel Submission" tipLocation="bottom" (click)="$event.stopPropagation(); validator.submissionMode = false;">
             <i class="far fa-times"></i>
           </div>
-          {{ validator.submissionMode && submissionError ? 'Try Again' : 'Submit' }} 
+          {{ validator.submissionMode && submissionError ? 'Try Again' : 'Submit for review' }} 
           <i class="far fa-arrow-right"></i>
         </button>
       </ng-container>
