@@ -143,8 +143,11 @@ export class DirectoryTree {
     const children = parent.getChildren();
     const cachedIndex = this.pathMap.get(childPath);
     const index = cachedIndex !== undefined ? cachedIndex : -1;
-    const node = children[index] || this.findNodeAtLevel(currentPath, children);
-    if (node) {
+    let node = children[index] || this.findNodeAtLevel(currentPath, children);
+    if (node && node.getName() === currentPath) {
+      return this.traversePath(paths, node);
+    } else if (node) {
+      node = this.findNodeAtLevel(currentPath, children);
       return this.traversePath(paths, node);
     }
 
@@ -239,7 +242,11 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   private removeEmptyFolders(node: DirectoryNode): void {
-    if (!this.isRoot(node) && !node.getChildren().length && !node.getFiles().length) {
+    if (
+      !this.isRoot(node) &&
+      !node.getChildren().length &&
+      !node.getFiles().length
+    ) {
       const parent = node.getParent();
       this.removeFolder(node.getPath());
       this.removeEmptyFolders(parent);
