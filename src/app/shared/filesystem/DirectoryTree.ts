@@ -140,9 +140,9 @@ export class DirectoryTree {
 
     const parentPath = parent.getPath();
     const childPath = `${parentPath}/${currentPath}`;
+    const children = parent.getChildren();
     const cachedIndex = this.pathMap.get(childPath);
     const index = cachedIndex !== undefined ? cachedIndex : -1;
-    const children = parent.getChildren();
     const node = children[index] || this.findNodeAtLevel(currentPath, children);
     if (node) {
       return this.traversePath(paths, node);
