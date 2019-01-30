@@ -55,7 +55,7 @@
 
 <clark-popup *ngIf="showSubmission" (closed)="showSubmission = false">
   <div #popupInner>
-    <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"></clark-collection-selector>
+    <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)" (cancel)="showSubmission = false"></clark-collection-selector>
   </div>
 </clark-popup>
 

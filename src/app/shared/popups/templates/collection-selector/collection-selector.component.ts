@@ -16,6 +16,9 @@ export class CollectionSelectorComponent implements OnInit {
   // fires when the user selects a choice
   @Output() choice: EventEmitter<string> = new EventEmitter();
 
+  // emits event to parent component to cancel submission
+  @Output() cancel: EventEmitter<void> = new EventEmitter();
+
   // flags
   loading = false;
   licenseAccepted = false;
