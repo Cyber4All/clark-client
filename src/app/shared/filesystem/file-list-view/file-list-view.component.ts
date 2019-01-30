@@ -143,7 +143,6 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   openFile(file: LearningObject.Material.File): void {
     const url = this.previewUrl(file.extension);
     if (url) {
-      console.log(url + file.url);
       window.open(url + file.url, '_blank');
       this.preview = true;
     } else {
