@@ -144,10 +144,10 @@ export class DirectoryTree {
     const cachedIndex = this.pathMap.get(childPath);
     const index = cachedIndex !== undefined ? cachedIndex : -1;
     let node = children[index] || this.findNodeAtLevel(currentPath, children);
-    if (node && node.getName() === currentPath) {
-      return this.traversePath(paths, node);
-    } else if (node) {
+    if (node && node.getName() !== currentPath) {
       node = this.findNodeAtLevel(currentPath, children);
+    }
+    if (node) {
       return this.traversePath(paths, node);
     }
 
