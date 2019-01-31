@@ -3,7 +3,7 @@ import { LearningObject, User } from '@cyber4all/clark-entity';
 import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { takeUntil } from 'rxjs/operators';
@@ -130,8 +130,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   download(author: string, learningObjectName: string) {
     this.downloading = true;
     const loaded = this.cartService
-      .downloadLearningObject(author, learningObjectName)
-      .takeUntil(this.isDestroyed$);
+      .downloadLearningObject(author, learningObjectName).pipe(
+      takeUntil(this.isDestroyed$));
 
     this.toggleDownloadModal(true);
 

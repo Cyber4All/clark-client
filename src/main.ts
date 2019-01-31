@@ -5,9 +5,9 @@ import { ClarkModule } from 'app/clark.module';
 import { environment } from '@env/environment';
 
 // Global rxjs imports
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+
+
+
 
 
 // Application display name and Version information

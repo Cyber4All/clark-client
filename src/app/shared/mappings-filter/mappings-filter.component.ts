@@ -16,7 +16,7 @@ import { LearningOutcome, StandardOutcome } from '@cyber4all/clark-entity';
 import {  Subject, fromEvent } from 'rxjs';
 import { takeUntil, debounceTime, map, filter } from 'rxjs/operators';
 
-import 'rxjs/add/operator/debounceTime';
+
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({

@@ -1,3 +1,5 @@
+
+import {take} from 'rxjs/operators';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, Renderer2 } from '@angular/core';
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@cyber4all/clark-entity';
@@ -113,8 +115,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   download(e) {
     // Stop the event propagation so that the routerLink of the parent doesn't trigger
     e.stopPropagation();
-    this.cart.downloadLearningObject(this.learningObject.author.username, this.learningObject.name)
-      .take(1);
+    this.cart.downloadLearningObject(this.learningObject.author.username, this.learningObject.name).pipe(
+      take(1));
 
       this.toggleDownloadModal(true);
   }

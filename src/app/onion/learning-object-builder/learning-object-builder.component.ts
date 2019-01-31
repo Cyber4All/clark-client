@@ -1,9 +1,11 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarService } from '../../core/navbar.service';
 import { BuilderStore } from './builder-store.service';
 import { ActivatedRoute } from '@angular/router';
 
-import 'rxjs/add/operator/takeUntil';
+
 import { Subject } from 'rxjs';
 import {
   trigger,
@@ -108,7 +110,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
-    this.route.paramMap.takeUntil(this.destroyed$).subscribe(params => {
+    this.route.paramMap.pipe(takeUntil(this.destroyed$)).subscribe(params => {
       const id = params.get('learningObjectId');
 
       // if name parameter found, instruct store to fetch full learning object
@@ -120,7 +122,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.builderStore.serviceInteraction$.takeUntil(this.destroyed$).subscribe(val => {
+    this.builderStore.serviceInteraction$.pipe(takeUntil(this.destroyed$)).subscribe(val => {
       if (val) {
         clearTimeout(this.removeServiceIndicator);
         this.serviceInteraction = true;

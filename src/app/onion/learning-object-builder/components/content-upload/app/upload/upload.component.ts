@@ -1,3 +1,5 @@
+
+import {takeUntil, debounceTime, take} from 'rxjs/operators';
 import { trigger, style, animate, transition } from '@angular/animations';
 import {
   Component,
@@ -20,13 +22,10 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import {
   LearningObject,
 } from '@cyber4all/clark-entity';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { fromEvent } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/take';
+import { BehaviorSubject ,  fromEvent ,  Observable ,  Subject } from 'rxjs';
+
+
+
 import {
   ModalService,
   ModalListElement
@@ -160,7 +159,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.learningObject$.takeUntil(this.unsubscribe$).subscribe(object => {
+    this.learningObject$.pipe(takeUntil(this.unsubscribe$)).subscribe(object => {
       if (object) {
         this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
         this.files$.next(object.materials.files);
@@ -174,14 +173,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    this.notes$
-      .takeUntil(this.unsubscribe$)
-      .debounceTime(650)
+    this.notes$.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(650),)
       .subscribe(notes => {
         this.notesUpdated.emit(notes);
       });
 
-    this.error$.takeUntil(this.unsubscribe$).subscribe(err => {
+    this.error$.pipe(takeUntil(this.unsubscribe$)).subscribe(err => {
       if (err) {
         if (err['error']) {
           err = err['error'];
@@ -193,8 +192,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
-    fromEvent(document.getElementsByTagName('body')[0], 'dragover')
-      .takeUntil(this.unsubscribe$)
+    fromEvent(document.getElementsByTagName('body')[0], 'dragover').pipe(
+      takeUntil(this.unsubscribe$))
       .subscribe((event: any) => {
         const types = event.dataTransfer.types;
         if (types.filter(x => x === 'Files').length >= 1) {
@@ -203,8 +202,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
-    fromEvent(document.getElementsByTagName('body')[0], 'dragleave')
-      .takeUntil(this.unsubscribe$)
+    fromEvent(document.getElementsByTagName('body')[0], 'dragleave').pipe(
+      takeUntil(this.unsubscribe$))
       .subscribe((event: any) => {
         if (event.target.classList.contains('uploader')) {
           this.toggleDrag(false);
@@ -286,7 +285,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         if (file.upload.chunked) {
           // Request multipart upload
-          const learningObject = await this.learningObject$.take(1).toPromise();
+          const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
           const uploadId  = await this.fileStorage.initMultipart({
             learningObject,
             fileId: file.upload.uuid,
@@ -365,7 +364,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           mimetype: file.type
         };
         const uploadId = this.uploadIds[file.upload.uuid];
-        const learningObject = await this.learningObject$.take(1).toPromise();
+        const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
         await this.fileStorage.finalizeMultipart({
           fileMeta,
           learningObject,
@@ -407,7 +406,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private async abortMultipartUpload(file: any) {
-    const learningObject = await this.learningObject$.take(1).toPromise();
+    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
     const uploadId = this.uploadIds[file.upload.uuid];
 
     this.fileStorage.abortMultipart({
@@ -544,7 +543,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if (confirmed === 'confirm') {
       this.saving$.next(true);
       try {
-        const object = await this.learningObject$.take(1).toPromise();
+        const object = await this.learningObject$.pipe(take(1)).toPromise();
         await Promise.all(
           files.map(async fileId => {
             await this.fileStorage.delete(object, fileId);
@@ -601,7 +600,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private async findFolder(path: string): Promise<number> {
     let index = -1;
-    const object = await this.learningObject$.take(1).toPromise();
+    const object = await this.learningObject$.pipe(take(1)).toPromise();
     const folders = object.materials.folderDescriptions;
     for (let i = 0; i < folders.length; i++) {
       const folderPath = folders[i].path;

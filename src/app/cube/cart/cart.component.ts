@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -65,8 +67,8 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.downloadLearningObject(
         object.author.username,
         object.name
-      )
-      .takeUntil(this.destroyed$)
+      ).pipe(
+      takeUntil(this.destroyed$))
       .subscribe(finished => {
         if (finished) {
           this.downloading[index] = false;

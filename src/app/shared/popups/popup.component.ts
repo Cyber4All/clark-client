@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import {
     Component,
     OnInit,
@@ -16,7 +18,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
-import 'rxjs/add/operator/takeUntil';
+
 
 @Component({
   selector: 'clark-popup',
@@ -58,7 +60,7 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
         this.viewer.hostView.detectChanges();
 
         // listen for the viewer to signal a close event and clean up here
-        this.viewer.instance.close.takeUntil(this.componentDestroyed$).subscribe(() => {
+        this.viewer.instance.close.pipe(takeUntil(this.componentDestroyed$)).subscribe(() => {
             this.close();
         });
 

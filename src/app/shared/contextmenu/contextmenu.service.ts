@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import {
   Injectable,
   ElementRef,
@@ -44,7 +46,7 @@ export class ContextMenuService implements OnDestroy {
     const closeSub = viewer.instance.close;
 
     // listen for the viewer to signal a close event and clean up here
-    closeSub.takeUntil(this.destroyed$)
+    closeSub.pipe(takeUntil(this.destroyed$))
       .subscribe((menuId: string) => {
         this.destroy(menuId);
       });

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription } from 'rxjs';
 import { DirectoryNode, DirectoryTree } from '../DirectoryTree';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { getPaths } from '../file-functions';

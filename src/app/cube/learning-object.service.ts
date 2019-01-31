@@ -1,7 +1,7 @@
 import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 
