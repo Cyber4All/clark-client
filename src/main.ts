@@ -4,12 +4,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ClarkModule } from 'app/clark.module';
 import { environment } from '@env/environment';
 
-// Global rxjs imports
-
-
-
-
-
 // Application display name and Version information
 const { version: appVersion, name: appName, displayName: appDisplayName } = require('../package.json');
 const VERSION_STORE = `${appName} version`;
