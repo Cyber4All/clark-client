@@ -1,3 +1,5 @@
+
+import {debounceTime} from 'rxjs/operators';
 import {
   Component,
   OnInit,
@@ -6,8 +8,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject ,  Subscription } from 'rxjs';
 import { DirectoryNode, } from '../DirectoryTree';
 import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
@@ -101,8 +102,8 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   private subToDescription() {
     this.subscriptions.push(
-      this.descriptionControl.valueChanges
-        .debounceTime(1000)
+      this.descriptionControl.valueChanges.pipe(
+        debounceTime(1000))
         .subscribe(description => {
           if (description) {
             this.updateDescription(description);

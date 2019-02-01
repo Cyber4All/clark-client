@@ -1,10 +1,12 @@
+
+import {takeUntil} from 'rxjs/operators';
 import { iframeParentID } from '../../core/cartv2.service';
 import { LearningObjectService } from '../learning-object.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/user.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { RatingService } from '../../core/rating.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
@@ -67,7 +69,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.route.params.takeUntil(this.isDestroyed$).subscribe(params => {
+    this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
       this.fetchLearningObject(
         params['username'],
         params['learningObjectName']
@@ -80,7 +82,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       '/' +
       this.route.snapshot.params['learningObjectName'];
 
-    this.auth.isLoggedIn.takeUntil(this.isDestroyed$).subscribe(val => {
+    this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
       this.loggedin = val;
 
       if (!this.loggedin) {

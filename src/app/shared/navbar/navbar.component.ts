@@ -15,8 +15,7 @@ import {
 
 import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import { Subscription ,  Subject } from 'rxjs';
 import { NavbarService } from '../../core/navbar.service';
 
 // imports for animation

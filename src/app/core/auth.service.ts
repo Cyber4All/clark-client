@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,

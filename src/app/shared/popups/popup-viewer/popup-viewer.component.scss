@@ -13,7 +13,7 @@
     align-items: center;
 
     & > div {
-        overflow: hidden;
+        overflow: auto;
         position: relative;
     }
 
@@ -40,7 +40,7 @@
     background: white;
     box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.02);
     min-width: 350px;
-    max-height: 80vh;
+    max-height: 95vh;
 
     .modal-title {
         color: $blue-accent;

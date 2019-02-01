@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
+import { Subject ,  Observable } from 'rxjs';
+
 
 @Component({
   selector: 'clark-materials-page',

@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy} from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { User } from '@cyber4all/clark-entity';
 import { ActivatedRoute } from '@angular/router';
-import { ISubscription } from 'rxjs/Subscription';
+import { SubscriptionLike as ISubscription } from 'rxjs';
 import { COPY } from './user-profile.copy';
 
 @Component({

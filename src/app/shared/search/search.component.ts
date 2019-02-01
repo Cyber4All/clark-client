@@ -10,7 +10,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { COPY } from './search.copy';
 import { takeUntil, filter } from 'rxjs/operators';
 

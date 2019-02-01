@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import {
   Component,
   ElementRef,
@@ -84,7 +86,7 @@ export class ContextMenuComponent
     [this.menuId, sub] = this.contextMenuService.register(this.menuElement);
 
     // listen for the service to close this context menu and emit an event to parent component
-    sub.takeUntil(this.destroyed$).subscribe(() => {
+    sub.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.close.emit();
     });
 
