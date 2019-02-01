@@ -1,8 +1,7 @@
 import { ModalListElement } from './modal-list-element';
 import { Position } from './position';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { nextTick } from 'q';
 
 @Injectable()

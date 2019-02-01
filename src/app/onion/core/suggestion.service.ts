@@ -1,8 +1,6 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/map';
-import { Subject } from 'rxjs/Subject';
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 

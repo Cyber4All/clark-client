@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { USER_ROUTES } from '@env/route';
-import 'rxjs/add/operator/toPromise';
+
 import { HttpClient } from '@angular/common/http';
 import { LearningObject } from '@cyber4all/clark-entity';
 

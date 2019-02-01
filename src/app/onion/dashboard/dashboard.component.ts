@@ -1,3 +1,5 @@
+
+import {debounceTime, takeUntil} from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
@@ -127,7 +129,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }, 1100);
 
     // monitor filters for change and refresh query
-    this.filtersModified$.takeUntil(this.destroyed$).debounceTime(400).subscribe(async () => {
+    this.filtersModified$.pipe(takeUntil(this.destroyed$), debounceTime(400), ).subscribe(async () => {
       const filters = {status: Array.from(this.filters.keys())};
       this.learningObjects = await this.getLearningObjects(filters);
     });

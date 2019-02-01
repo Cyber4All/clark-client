@@ -16,7 +16,7 @@ import { ToasterService } from '../../../shared/toaster';
 import { Subscription, Observable, Subject, fromEvent } from 'rxjs';
 import { COPY } from './user-edit-information.copy';
 
-import 'rxjs/add/operator/debounceTime';
+
 
 @Component({
   selector: 'cube-app-user-edit-information',

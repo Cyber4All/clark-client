@@ -1,3 +1,5 @@
+
+import {takeUntil, debounceTime} from 'rxjs/operators';
 import {
   Component,
   OnInit,
@@ -6,9 +8,9 @@ import {
   EventEmitter,
   OnDestroy
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/debounceTime';
+import { Subject } from 'rxjs';
+
+
 import { LearningObject } from '@cyber4all/clark-entity';
 
 
@@ -39,14 +41,14 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     title: string;
     url: string;
   }> = new Subject();
-  
+
   constructor() {}
 
   ngOnInit() {
     // listen for events on the triggerSave subject and, after 650ms of no events, emit an event to the parent component
-    this.triggerSave$
-      .takeUntil(this.componentDestroyed$)
-      .debounceTime(650)
+    this.triggerSave$.pipe(
+      takeUntil(this.componentDestroyed$),
+      debounceTime(650), )
       .subscribe(() => {
         this.save.emit();
       });
@@ -61,9 +63,9 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
    * @memberof UrlManagerComponent
    */
   private subToUrlUpdates() {
-    this.urlUpdated$
-      .takeUntil(this.componentDestroyed$)
-      .debounceTime(650)
+    this.urlUpdated$.pipe(
+      takeUntil(this.componentDestroyed$),
+      debounceTime(650), )
       .subscribe(update => {
         const url = this.urls[update.index];
         if (update.title !== undefined) {
@@ -83,11 +85,11 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     this.add.emit();
     this.triggerSave$.next();
   }
-  
+
 
   /**
-   * Function that emits an event when the user enters in both the 
-   * title and url field 
+   * Function that emits an event when the user enters in both the
+   * title and url field
    * @param event
    */
   updateUrl(event: object) {
@@ -95,7 +97,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     const url:   string = event['url'];
     const title: string = event['title'];
       this.urlUpdated$.next({index, url, title });
-      
+
   }
 
   /**

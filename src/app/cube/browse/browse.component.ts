@@ -1,15 +1,17 @@
+
+import {takeUntil, debounceTime} from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { lengths } from '@cyber4all/clark-taxonomy';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/takeUntil';
+
+
 import {
   SuggestionService
  } from '../../onion/core/suggestion.service';
  import { FilterSection } from '../../shared/filter/filter.component';
  import { COPY } from './browse.copy';
-import { Observable, Subject } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
 import { OrderBy, Query, SortType } from '../../shared/interfaces/query';
@@ -115,13 +117,13 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // used by the performSearch function (when delay is true) to add a debounce effect
-    this.searchDelaySubject = new Subject<void>().debounceTime(650);
+    this.searchDelaySubject = new Subject<void>().pipe(debounceTime(650));
     this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
       this.performSearch();
     });
 
     // whenever the queryParams change, map them to the query object and perform the search
-    this.route.queryParams.takeUntil(this.unsubscribe).subscribe(async params => {
+    this.route.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(async params => {
       // FIXME: Filters should disapear on new search text
       // if (params.text && params.text !== this.query.text) {
       //   this.clearAllFilters(true);

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Outp
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
-import 'rxjs/add/operator/takeUntil';
+
 import { LearningOutcome } from '@cyber4all/clark-entity';
 import { text } from '@angular/core/src/render3/instructions';
 

@@ -6,7 +6,7 @@ import {
 } from '../../builder-store.service';
 import { LearningObject, User } from '@cyber4all/clark-entity';
 import { COPY } from './info-page.copy';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 
 @Component({

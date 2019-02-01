@@ -1,3 +1,5 @@
+
+import {filter} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { COPY } from './footer.copy';
@@ -14,7 +16,7 @@ export class FooterComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       const root: ActivatedRoute = this.route.root;
       this.hideFooter = root.children[0].snapshot.data.hideNavbar;
     });
