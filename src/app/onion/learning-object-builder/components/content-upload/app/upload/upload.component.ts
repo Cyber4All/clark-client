@@ -147,7 +147,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private uploadIds = {
 
-  }
+  };
 
   solutionUpload = false;
 
@@ -169,13 +169,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           if (file.name.toLowerCase().indexOf('solution') >= 0) {
             this.solutionUpload = true;
           }
-        })
+        });
       }
     });
 
     this.notes$.pipe(
       takeUntil(this.unsubscribe$),
-      debounceTime(650),)
+      debounceTime(650), )
       .subscribe(notes => {
         this.notesUpdated.emit(notes);
       });
@@ -307,7 +307,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if (file.fullPath) {
       (<FormData>event[2]).append('fullPath', file.fullPath);
     }
-    if(file.upload.chunked){
+    if (file.upload.chunked) {
       const uploadId = this.uploadIds[file.upload.uuid];
       (<FormData>event[2]).append('uploadId', uploadId);
     }
