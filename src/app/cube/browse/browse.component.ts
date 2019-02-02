@@ -117,10 +117,14 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // used by the performSearch function (when delay is true) to add a debounce effect
-    this.searchDelaySubject = new Subject<void>().pipe(debounceTime(650));
-    this.searchDelaySubject.takeUntil(this.unsubscribe).subscribe(() => {
-      this.performSearch();
-    });
+    this.searchDelaySubject = new Subject<void>()
+      .pipe(
+        debounceTime(650),
+        takeUntil(this.unsubscribe)
+      )
+      .subscribe(() => {
+        this.performSearch();
+      });
 
     // whenever the queryParams change, map them to the query object and perform the search
     this.route.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(async params => {
