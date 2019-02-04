@@ -13,11 +13,11 @@
   <div class="child-box" *ngFor="let child of children" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
     <div class = "info">
       <div class = "top-row">
-        <div class = "child-title">{{learningobject}</div>
+        <div class = "child-title">{{learningobject}}</div>
       </div>
       <div class = "bottom-row">
         <div class = "child-length">{{learningobject.length}}</div>
-        <div class = "child-last-updated">1/2/2003</div>
+        <div class = "child-last-updated">{{learningobject.length}}</div>
       </div>
     </div>
     <div class="hamburger-handle" cdkDragHandle>
