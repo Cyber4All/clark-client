@@ -9,7 +9,7 @@ import { Component, Input, ComponentFactoryResolver, Injector, ApplicationRef, C
   styleUrls: ['./teleporter.component.scss']
 })
 export class TeleporterComponent implements AfterViewInit, OnDestroy {
-  // grab the #popupInner element to be used as the popup body
+  // grab the #teleporterPayload element to be used as the rendered body body
   @ContentChild('teleporterPayload') content: ElementRef;
 
   // true if this component is the root-component (ie, should this component render it's content or teleport it's content to root)
