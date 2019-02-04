@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 // non-angular modules
 import { ToasterModule } from 'app/shared/toaster';
@@ -44,7 +45,8 @@ import { ScaffoldComponent } from './components/scaffold/scaffold.component';
     ContentUploadModule,
     CKEditorModule,
     ToasterModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DragDropModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
