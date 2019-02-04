@@ -15,11 +15,6 @@ export class ScaffoldComponent implements OnInit {
     disabled: true; 
   }
   children = [
-    'Bronze age',
-    'Iron age',
-    'Middle ages',
-    'Early modern period',
-    'Long nineteenth century'
   ];
 
   drop(event: CdkDragDrop<string[]>) {
