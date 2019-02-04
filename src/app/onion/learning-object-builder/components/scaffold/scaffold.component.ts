@@ -12,7 +12,6 @@ export class ScaffoldComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    disabled: true; 
   }
   children = [
   ];
