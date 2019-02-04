@@ -1,4 +1,16 @@
-import { Component, Input, ComponentFactoryResolver, Injector, ApplicationRef, ContentChild, ElementRef, EmbeddedViewRef, ComponentRef, AfterViewInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  ComponentFactoryResolver,
+  Injector,
+  ApplicationRef,
+  ContentChild,
+  ElementRef,
+  EmbeddedViewRef,
+  ComponentRef,
+  AfterViewInit,
+  OnDestroy
+} from '@angular/core';
 
 /**
  * This component serves to take content through projection and render it at the document root instead of in it's nested position.
@@ -21,14 +33,16 @@ export class TeleporterComponent implements AfterViewInit, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     private appRef: ApplicationRef
-  ) { }
+  ) {}
 
   ngAfterViewInit() {
-    // if this component is the teleporter, create a second instance of this component, set it`s render flag to true, and render it at document root
+    // if this component is the teleporter, create a second instance of this component,
+    // set it`s render flag to true, and render it at document root
     if (!this.render) {
       // create a new PopupViewerComponent and project our content into it
-      this.viewer = this.componentFactoryResolver.resolveComponentFactory(TeleporterComponent)
-      .create(this.injector, [[this.content.nativeElement]]);
+      this.viewer = this.componentFactoryResolver
+        .resolveComponentFactory(TeleporterComponent)
+        .create(this.injector, [[this.content.nativeElement]]);
 
       // set the new instance's render flag to true so that we don't infinitely create instances of the component
       this.viewer.instance.render = true;
@@ -40,7 +54,8 @@ export class TeleporterComponent implements AfterViewInit, OnDestroy {
       this.appRef.attachView(this.viewer.hostView);
 
       // append viewer element to DOM
-      const domElem = (this.viewer.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+      const domElem = (this.viewer.hostView as EmbeddedViewRef<any>)
+        .rootNodes[0] as HTMLElement;
       document.body.appendChild(domElem);
     }
   }
@@ -52,5 +67,4 @@ export class TeleporterComponent implements AfterViewInit, OnDestroy {
       this.viewer.destroy();
     }
   }
-
 }
