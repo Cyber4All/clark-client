@@ -1,28 +1,101 @@
 @import "~_vars.scss";
 
-.text {
-  color: #646464;
-  text-align: left;
-  padding: 30px 30px;
-  &.title {
-    font-size: 16px;
+.header {
+  display: flex;
+  padding-top: 18px;
+  padding-left: 20px;  
+
+  .icon {
+    color: #4290ea;
+    font-size: 20px;
+    align-items: left;
+    justify-content: left;
   }
-  &#placeholder {
-    font-size: 14px;
-    padding: 0px 30px 30px 30px;  }
+  .title {
+    color: #646464;
+    text-align: left;
+    font-size: 20px; 
+    font-weight: 600;
+    margin: 0 0 10px 10px; 
+    align-items: left;
+    justify-content: left;
+  }
+
+  .edit{
+    color: #4290ea;
+    font-size: 20px;
+    margin-left: auto;
+    padding-right: 20px; 
+    cursor: pointer; 
+  }
 }
 
-.icon {
-  color: #4290ea;
-  font-size: 40px;
+.children-list {
+  width: 500px;
+  max-width: 100%;
+  min-height: 60px;
+  display: block;
+  background: white;
+  border-radius: 1px;
+  overflow: hidden;
 }
-div {
-  &.icon {
-    justify-content: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-top: 50px;
+
+.child-box {
+  padding: 20px 10px;
+  border-bottom: solid 1px#ccc;
+  color: rgba(0, 0, 0, 0.87);
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+
+  .top-row {
+    display: flex; 
+    flex-direction: column; 
+    .child-title {
+      color: #646464;
+      text-align: left;
+      font-size: 16px; 
+    }
+  }
+  .bottom-row{
+    display: flex; 
+    .child-length {
+      color: #646464;
+      text-align: left;
+      font-size: 14px; 
+    }
+    .child-last-updated {
+      color: #646464; 
+      font-size: 14px; 
+    }
   }
 }
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.child-box:last-child {
+  border: none;
+}
+
+.child-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+
