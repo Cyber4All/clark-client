@@ -1,9 +1,26 @@
-<div class = "icon">
-<div class = "far fa-project-diagram icon"></div>
+<div class = "header">
+  <div class = "icon">
+    <div class = "far fa-project-diagram icon"></div>
+  </div>
+  <div class = "title">
+    Children
+  </div>
+  <div class = "edit">
+    <button class = "far fa-pencil icon" onClick="edit()"></button>
+  </div>
 </div>
-<div class = "text title">
-  This learning object isn't part of any scaffolds yet!
-</div>
-<div class = "text" id = "placeholder">
-  But don't worry! This feature will be added in the next release to enable a more seamless way to edit your learning objects.
-</div>
+<div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
+  <div class="child-box" *ngFor="let child of children" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
+    <div class = "top-row">
+      <div class = "child-title">{{child}}
+      </div>
+    </div>
+    <div>
+      <div class = "bottom-row">
+        <div class = "child-length">Nanomodule</div>
+        <div class = "child-last-updated">1/2/2003</div>
+      </div>
+    </div>
+  </div>
+</div> 
+
