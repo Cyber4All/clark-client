@@ -7,7 +7,7 @@
 
   .icon {
     color: #4290ea;
-    font-size: 20px;
+    font-size: 20px; 
     align-items: left;
     justify-content: left;
   }
@@ -44,32 +44,47 @@
   padding: 20px 10px;
   border-bottom: solid 1px#ccc;
   color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  cursor: move;
   background: white;
 
-  .top-row {
-    display: flex; 
-    flex-direction: column; 
-    .child-title {
-      color: #646464;
-      text-align: left;
-      font-size: 16px; 
+  .info {
+    float: left; 
+    .top-row {
+      display: flex; 
+      .child-title {
+        color: #646464;
+        text-align: left;
+        font-size: 16px; 
+      }
+    }
+    .bottom-row{
+      display: flex; 
+      .child-length {
+        color: #646464;
+        text-align: left;
+        font-size: 14px; 
+      }
+      .child-last-updated {
+        color: #646464; 
+        font-size: 14px; 
+        padding-left: 20px;  
+      }
     }
   }
-  .bottom-row{
-    display: flex; 
-    .child-length {
-      color: #646464;
-      text-align: left;
-      font-size: 14px; 
-    }
-    .child-last-updated {
-      color: #646464; 
-      font-size: 14px; 
-    }
+  .hamburger-handle {
+    display: flex;  
+    color: #4290ea;
+    cursor: move;
+    width: 40px;
+    height: 40px;
+    font-size: 20px; 
+    margin-left: auto; 
+    float: right; 
+    padding-top: 15px; 
   }
 }
 
