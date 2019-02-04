@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TeleporterComponent } from './teleporter.component';
+import { TeleporterDestinationComponent } from './teleporter-destination/teleporter-destination.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -14,13 +15,14 @@ import { TeleporterComponent } from './teleporter.component';
   ],
   providers: [],
   declarations: [
-    TeleporterComponent
+    TeleporterComponent,
+    TeleporterDestinationComponent
   ],
   exports: [
     TeleporterComponent
   ],
   entryComponents: [
-    TeleporterComponent
+    TeleporterDestinationComponent
   ]
 })
 export class TeleporterModule {}
