@@ -85,7 +85,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   get isReleased(): boolean {
-    return this.learningObject['status'] === LearningObject.Status.RELEASED;
+    return this.learningObject.status === LearningObject.Status.RELEASED;
   }
 
   async addToCart(download?: boolean) {
