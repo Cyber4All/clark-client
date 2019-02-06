@@ -10,37 +10,6 @@
     <div class = "far fa-pencil"></div>
   </button>
 </div>
-<ng-container *ngIf="!editContent">
-  <div class="children-list">
-    <div class="child-box" *ngFor="let child of children">
-      <div class="info">
-        <div class="top-row">
-          <div class="child-title">{{child.name}}</div>
-        </div>
-        <div class="bottom-row">
-          <div class="child-length">{{child.length}}</div>
-          <div class="child-last-updated">{{child.date}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-container>
-<ng-container *ngIf="editContent">
-  <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
-    <div class="child-box" *ngFor="let child of children" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
-      <div class = "info">
-        <div class = "top-row">
-          <div class = "child-title">{{child.name}}</div>
-        </div>
-        <div class = "bottom-row">
-          <div class = "child-length">{{child.length}}</div>
-          <div class = "child-last-updated">{{child.date}}</div>
-        </div>
-      </div>
-      <div class="hamburger-handle" cdkDragHandle>
-        <i class="fas fa-bars"></i>
-      </div>
-    </div>
-  </div> 
-</ng-container>
+<clark-hierarchy></clark-hierarchy>
+
 
