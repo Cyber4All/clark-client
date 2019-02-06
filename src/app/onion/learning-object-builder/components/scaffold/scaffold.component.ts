@@ -8,16 +8,24 @@ import { LearningObject } from '@cyber4all/clark-entity';
   styleUrls: ['./scaffold.component.scss']
 })
 export class ScaffoldComponent implements OnInit {
-  @Input() learningObject: LearningObject;
+  @Input() learningObject: LearningObject; 
+
+  //boolean to indicate if edit is selected for the list 
+  editContent = false; 
+
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit() {  
   }
-  children = [
-  ];
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.children, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.learningObject.children, event.previousIndex, event.currentIndex);
   }
 
+  //toggle between edit and list view of children 
+  toggle(){
+    this.editContent = !this.editContent;
+  }
 }
+
+
