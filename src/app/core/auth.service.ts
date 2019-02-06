@@ -146,6 +146,7 @@ export class AuthService {
     this.user = undefined;
     this.changeStatus(false);
     this.group.next(AUTH_GROUP.VISITOR);
+    window.location.reload();
   }
 
   async register(user: any): Promise<User> {
