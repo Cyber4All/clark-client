@@ -16,7 +16,7 @@ import { COPY } from '../details.copy';
         (click)="toggleMappings(i)"
         [ngClass]="{ 'clickable': o.mappings.length > 0 }"
       >
-        <span class="title">{{ o.outcome }}</span>
+        <span class="title">{{ o.outcome.charAt(0).toUpperCase() + o.outcome.substring(1) }}</span>
         <span class="mappings-count">({{ o.mappings.length }}&nbsp;Mapped&nbsp;Outcomes)</span>
       </button>
       <ul *ngIf="showMappings[i]">
@@ -37,7 +37,7 @@ export class OutcomesDetailViewComponent {
   copy = COPY;
   @Input() outcomes;
   showMappings = [];
-
+   
   constructor() { }
 
   toggleMappings(index: number) {
