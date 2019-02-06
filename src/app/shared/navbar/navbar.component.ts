@@ -157,9 +157,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   logout() {
-    this.authService.logout().then(() => {
-      window.location.reload();
-    });
+    this.authService.logout();
   }
 
   /**
