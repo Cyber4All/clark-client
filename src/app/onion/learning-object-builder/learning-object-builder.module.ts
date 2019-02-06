@@ -29,6 +29,7 @@ import { LearningObjectDescriptionComponent } from './components/description.com
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
+import { HierarchyComponent } from './components/scaffold/hierarchy/hierarchy.component';
 
 /*
   NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
@@ -64,7 +65,8 @@ import { ScaffoldComponent } from './components/scaffold/scaffold.component';
     TextEditorComponent,
     UserDropdownComponent,
     ContributorPillComponent,
-    ScaffoldComponent
+    ScaffoldComponent,
+    HierarchyComponent
   ],
 })
 export class LearningObjectBuilderModule {}
