@@ -29,7 +29,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
-  private isDestroyed$ = new Subject<void>();
+  private destroyed$ = new Subject<void>();
   hasDownloadAccess = false;
   downloading = false;
   addingToLibrary = false;
@@ -73,7 +73,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.group
-      .pipe(takeUntil(this.isDestroyed$))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         this.isEditButtonViewable = this.auth.hasEditorAccess();
       });
@@ -131,7 +131,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.downloading = true;
     const loaded = this.cartService
       .downloadLearningObject(author, learningObjectName).pipe(
-      takeUntil(this.isDestroyed$));
+      takeUntil(this.destroyed$));
 
     this.toggleDownloadModal(true);
 
@@ -152,12 +152,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   toggleDownloadModal(val?: boolean) {
     this.showDownloadModal = val;
-    // if (!val) {
-    //   this.showDownloadModal = val;
-    // } else if (!localStorage.getItem('downloadWarning')) {
-    //   this.showDownloadModal = val;
-    //   localStorage.setItem('downloadWarning', 'true');
-    // }
   }
 
   shareButton(event, type) {
@@ -235,10 +229,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }, 400);
   }
 
-  scrollToRatings() {
-    document.body.scrollTop = document.documentElement.scrollTop = this.ratingsWrapper.nativeElement.offsetTop;
-  }
-
   get isMobile() {
     return this.windowWidth <= 750;
   }
@@ -250,7 +240,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isDestroyed$.next();
-    this.isDestroyed$.unsubscribe();
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }
