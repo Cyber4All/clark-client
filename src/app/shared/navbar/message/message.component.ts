@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessagesService } from '../../../core/messages.service';
+import { MessagesService, Message } from '../../../core/messages.service';
 
 @Component({
   selector: 'clark-message',
@@ -8,24 +8,24 @@ import { MessagesService } from '../../../core/messages.service';
 })
 export class MessageComponent implements OnInit {
 
-  showing: boolean = false;
+  showing = false;
   message: Message;
 
   constructor(private messages: MessagesService) { }
 
   ngOnInit() {
-    this.messages.getStatus().then(val => {
-      if (val.length) {
-        // message is set!
-        this.message = new Message(val[0]['_id'], 'error', val[0]['maintenanceMessage']);
-
+    this.messages.getStatus()
+      .then(message => {
+        this.message = message;
         const lastMessage = localStorage.getItem('maintenance');
 
         if (!lastMessage || this.message.id !== lastMessage) {
           this.open();
         }
-      }
-    });
+      })
+      .catch(e => {
+        // FIXME: Suppress the error until we design a better backend solution
+      });
   }
 
   open() {
@@ -39,18 +39,5 @@ export class MessageComponent implements OnInit {
 
   toggle() {
     this.showing = !this.showing;
-  }
-
-}
-
-export class Message {
-  id: string;
-  type: string;
-  message: string;
-
-  constructor(id, type, message) {
-    this.id = id;
-    this.type = type;
-    this.message = message;
   }
 }

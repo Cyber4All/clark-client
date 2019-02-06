@@ -40,12 +40,12 @@ export const USER_ROUTES = {
   SUBMIT_LEARNING_OBJECT(learningObjectId: string) {
     return `${
       environment.apiURL
-    }/learning-objects/${learningObjectId}/submission`
+    }/learning-objects/${learningObjectId}/submission`;
   },
   UNSUBMIT_LEARNING_OBJECT(learningObjectId: string) {
     return `${
       environment.apiURL
-    }/learning-objects/${learningObjectId}/submission`
+    }/learning-objects/${learningObjectId}/submission`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
