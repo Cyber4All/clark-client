@@ -59,12 +59,12 @@ export type DZFile = {
     ]),
     trigger('uploadQueue', [
       transition(':enter', [
-        style({ bottom: '-20px', opacity: 0 }),
-        animate('200ms 200ms ease-out', style({ bottom: '20px', opacity: 1 }))
+        style({ transform: 'translateY(20px)', opacity: 0 }),
+        animate('200ms 200ms ease-out', style({ transform: 'translateY(0px)', opacity: 1 }))
       ]),
       transition(':leave', [
-        style({ bottom: '20px', opacity: 1 }),
-        animate('200ms ease-out', style({ bottom: '-20px', opacity: 0 }))
+        style({ transform: 'translateY(-0px)', opacity: 1 }),
+        animate('200ms ease-out', style({ transform: 'translateY(20px)', opacity: 0 }))
       ])
     ])
   ]
