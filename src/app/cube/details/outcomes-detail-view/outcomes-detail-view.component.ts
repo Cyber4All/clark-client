@@ -37,7 +37,7 @@ export class OutcomesDetailViewComponent {
   copy = COPY;
   @Input() outcomes;
   showMappings = [];
-   
+
   constructor() { }
 
   toggleMappings(index: number) {
