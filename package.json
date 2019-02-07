@@ -10,8 +10,7 @@
     "test": "node_modules/.bin/jest --verbose  --coverage",
     "lint": "ng lint",
     "app": "cd .. cd ",
-    "e2e": "cypress open",
-    "postinstall": "ng build --prod --aot=false --build-optimizer=false"
+    "e2e": "cypress open"
   },
   "dependencies": {
     "@angular/animations": "^7.2.3",
