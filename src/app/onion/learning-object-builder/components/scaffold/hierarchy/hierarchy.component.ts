@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-hierarchy',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./hierarchy.component.scss']
 })
 export class HierarchyComponent implements OnInit {
+  @Input() editContent: boolean; 
+  @Input() learningObject: LearningObject; 
   constructor() { }
 
   ngOnInit() {

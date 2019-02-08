@@ -10,6 +10,13 @@
     <div class = "far fa-pencil"></div>
   </button>
 </div>
-<clark-hierarchy></clark-hierarchy>
+<div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
+    <clark-hierarchy 
+      *ngFor="let c of learningObject?.children" 
+      [editContent] = "editContent"
+      [learningObject] = "c"
+      >
+    </clark-hierarchy>
+</div>
 
 
