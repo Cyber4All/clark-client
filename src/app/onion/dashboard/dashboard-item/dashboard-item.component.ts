@@ -71,7 +71,7 @@ export class DashboardItemComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
       // TODO move the tooltips to a copy file
-      this.buildTooltip()
+      this.buildTooltip();
     }
   }
 
@@ -100,7 +100,7 @@ export class DashboardItemComponent implements OnChanges {
    */
   actionPermissions(action: string) {
     const permissions = {
-      edit: ['unreleased', 'denied',],
+      edit: ['unreleased', 'denied'],
       editChildren: ['unreleased', 'denied', this.learningObject.length !== 'nanomodule'],
       manageMaterials: ['unreleased', 'denied', this.verifiedEmail],
       submit: ['unreleased', 'denied', this.verifiedEmail],
@@ -160,9 +160,17 @@ export class DashboardItemComponent implements OnChanges {
           LearningObject.Status.RELEASED,
           {
             tip:
-              'This learning object is published to the ' + 
+              'This learning object is published to the ' +
                 (val ? val.name : '') +
               ' collection and can be browsed for.'
+          }
+        ],
+        [
+          LearningObject.Status.PROOFING,
+          {
+            tip:
+              'This learning object is currently undergoing proofing by the editorial team. ' +
+              'It is not yet published and cannot be edited until this process is complete.'
           }
         ],
         [
