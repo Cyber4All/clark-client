@@ -160,7 +160,7 @@ export class DashboardItemComponent implements OnChanges {
           LearningObject.Status.RELEASED,
           {
             tip:
-              'This learning object is published to the ' +
+              'This learning object is released in the ' +
                 (val ? val.name : '') +
               ' collection and can be browsed for.'
           }
@@ -170,7 +170,7 @@ export class DashboardItemComponent implements OnChanges {
           {
             tip:
               'This learning object is currently undergoing proofing by the editorial team. ' +
-              'It is not yet published and cannot be edited until this process is complete.'
+              'It is not yet released and cannot be edited until this process is complete.'
           }
         ],
         [
