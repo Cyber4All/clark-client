@@ -160,7 +160,7 @@ export class DashboardItemComponent implements OnChanges {
           LearningObject.Status.RELEASED,
           {
             tip:
-              'This learning object is published to the ' +
+              'This learning object is released in the ' +
                 (val ? val.name : '') +
               ' collection and can be browsed for.'
           }
