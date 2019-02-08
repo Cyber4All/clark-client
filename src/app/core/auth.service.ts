@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   get firstName(): string {
-    return this.user ? this.user.firstName : undefined;
+    return this.user ? this.user.name.split(' ')[0] : undefined;
   }
 
   get email(): string {
