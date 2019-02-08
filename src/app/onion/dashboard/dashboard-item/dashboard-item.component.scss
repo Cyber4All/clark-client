@@ -48,6 +48,10 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         background: #f5a623;
     }
 
+    &.proofing {
+        background: #bd5eda;
+    }
+
     &.released {
         background: $green;
     }
