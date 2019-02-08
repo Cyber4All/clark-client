@@ -54,7 +54,7 @@
       <ng-container *ngIf="loggedin; else noUserGreeting">
         <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
         <div class="right">
-          <div class="greeting">Howdy, {{ authService.firstName }}!</div>
+          <div class="greeting">Howdy, {{ authService.firstName | titlecase }}!</div>
           <a>View your profile</a>
         </div>
       </ng-container>
