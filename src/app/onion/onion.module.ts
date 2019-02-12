@@ -11,7 +11,6 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 // Other
 import { OnionCoreModule } from './core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component';
@@ -37,7 +36,6 @@ import { OnionComponent } from './onion.component';
     ReactiveFormsModule,
     SharedModule,
     OnionCoreModule,
-    HttpClientModule,
     ModalModule,
     ToasterModule,
     LearningObjectBuilderModule,

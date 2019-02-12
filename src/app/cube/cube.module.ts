@@ -1,6 +1,5 @@
 // Core
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -57,7 +56,6 @@ import { DetailsModule } from './details/details.module';
   ],
   imports: [
     // Angular imports
-    HttpClientModule,
     FormsModule,
     CommonModule,
     // 3rd Party imports

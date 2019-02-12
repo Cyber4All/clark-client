@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
 // This module
@@ -44,7 +43,6 @@ import { EmailVerifiedComponent } from './email-verified/email-verified.componen
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     SharedModule,
     ModalModule,
     ToasterModule
