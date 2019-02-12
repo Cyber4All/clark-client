@@ -21,11 +21,11 @@
     <div>{{ learningObject.length | titlecase }}</div>
     <div>{{ learningObject.date | date:'medium' }}</div>
     <div>
-      <div *ngIf="learningObject.status === 'review'; else meatball" style="text-align: center" tip="{{ states?.get(learningObject.status)?.tip }}" tipDisabled="{{ !states?.get(learningObject.status)?.tip }}" tipLocation="above">
-        <i class="fas fa-sync"></i>
+      <div *ngIf="learningObject.status === 'review'; else meatball" tip="{{ states?.get(learningObject.status)?.tip }}" tipDisabled="{{ !states?.get(learningObject.status)?.tip }}" tipLocation="above">
+        <ng-container *ngTemplateOutlet="meatball"></ng-container>
       </div>
       <ng-template #meatball>
-        <div *ngIf="!disabled && meatball" class="meatball" [ngClass]="{'open': meatballOpen}" (click)="this.toggleContextMenu($event)">
+        <div *ngIf="!disabled && meatball" class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': learningObject.status === 'review'}" (click)="learningObject.status !== 'review' && this.toggleContextMenu($event)">
           <div class="icon">
             <i class="far fa-times"></i>
           </div>
