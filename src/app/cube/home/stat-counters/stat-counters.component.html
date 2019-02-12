@@ -20,8 +20,7 @@
     <div *ngIf="!objectStatsLoading" class="counter">{{ stats?.objects?.downloads | number }}</div>
     <div class="label">Downloads</div>
   </div>
-  <!-- FIXME: Uncomment when user service is deployed -->
-  <!-- <div class="stat-block">
+  <div class="stat-block">
     <div class="loading" *ngIf="userStatsLoading">
       <i class="fal fa-spinner-third fa-spin"></i>
     </div>
@@ -34,5 +33,5 @@
     </div>
     <div *ngIf="!userStatsLoading" class="counter">{{ stats?.users?.organizations }}</div>
     <div class="label">Affiliated Organizations</div>
-  </div> -->
+  </div>
 </div>
