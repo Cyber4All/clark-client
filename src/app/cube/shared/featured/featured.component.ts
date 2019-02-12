@@ -20,7 +20,7 @@ export class FeaturedComponent implements OnInit {
     limit: 5,
     orderBy: OrderBy.Date,
     sortType: SortType.Descending,
-    released: true
+    status: [LearningObject.Status.RELEASED]
   };
   loading = false;
 
@@ -31,16 +31,12 @@ export class FeaturedComponent implements OnInit {
   ngOnInit() {
     if (this.collection) {
       this.loading = true;
-      this.collection
-        .pipe(
-          takeUntil(this.destroyed$)
-        )
-        .subscribe({
-          next: collection => {
-            this.query.collection = collection;
-            this.fetchLearningObjects();
-          }
-        });
+      this.collection.pipe(takeUntil(this.destroyed$)).subscribe({
+        next: collection => {
+          this.query.collection = collection;
+          this.fetchLearningObjects();
+        }
+      });
     } else {
       this.fetchLearningObjects();
     }
@@ -50,11 +46,12 @@ export class FeaturedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.learningObjects = (await this.learningObjectService.getLearningObjects(this.query)).learningObjects;
+      this.learningObjects = (await this.learningObjectService.getLearningObjects(
+        this.query
+      )).learningObjects;
       this.loading = false;
     } catch (e) {
       this.loading = false;
     }
   }
-
 }
