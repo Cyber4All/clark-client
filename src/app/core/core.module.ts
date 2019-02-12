@@ -19,9 +19,12 @@ import { MessagesService } from './messages.service';
 import { RavenErrorHandler } from './error-handler';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { CollectionService } from './collection.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 
 @NgModule({
   imports: [
+    HttpClientModule,
     CookieModule.forRoot(),
     ModalModule.forRoot(),
     ToasterModule.forRoot(),
@@ -45,7 +48,12 @@ export class CoreModule {
         RatingService,
         NavbarService,
         UserAgentService,
-        { provide: ErrorHandler, useClass: RavenErrorHandler }
+        { provide: ErrorHandler, useClass: RavenErrorHandler },
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: HttpConfigInterceptor,
+          multi: true
+        }
       ]
     };
   }
