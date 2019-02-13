@@ -40,7 +40,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
     orderBy: undefined,
     sortType: undefined,
     collection: '',
-    released: this.auth.hasReviewerAccess() ? undefined : true
   };
 
   tooltipText = {
@@ -134,7 +133,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
       // }
       const collections = await this.collectionService.getCollections();
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
-      this.query.released = this.auth.hasReviewerAccess() ? undefined : true;
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     });
