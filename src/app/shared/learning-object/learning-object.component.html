@@ -14,7 +14,12 @@
     </div>
     <div class="details">
       <div class="author">
-        {{ learningObject.author.name | titlecase }} | {{ learningObject.author.organization }}
+        {{ learningObject.author.name | titlecase }} 
+        <span *ngFor="let i of learningObject.contributors">
+          <span *ngIf="learningObject.contributors.length > 2" tip="{{ i.name | titlecase }}">
+            , {{ i.name }}
+          </span> 
+        </span>
       </div>
       <div class="date">
         Updated {{ date | date:'mediumDate' }}
