@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
-      this.usageStats.objects.underReview = stats.total - stats.released;
+      this.usageStats.objects.underReview = stats.total - stats.released - stats.working;
       this.usageStats.objects.downloads = stats.downloads;
       this.objectStatsLoaded = true;
     });
