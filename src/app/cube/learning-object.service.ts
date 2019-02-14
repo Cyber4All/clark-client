@@ -2,7 +2,7 @@ import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { LearningObject } from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 
 import * as querystring from 'querystring';
@@ -92,7 +92,7 @@ export class LearningObjectService {
       });
   }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_USERS_PUBLIC_LEARNING_OBJECTS(
+    const route = USER_ROUTES.LOAD_USER_PROFILE(
       username
     );
 
