@@ -253,6 +253,13 @@ export class LearningObjectService {
     return this.http.get(route, { withCredentials: true }).toPromise();
   }
   /**
+   * Fetches Learning Object's Children 
+   */
+  getChildren(learningObjectID: string): Promise<any> {
+    const route = USER_ROUTES.GET_CHILDREN(learningObjectID);
+    return this.http.get(route).toPromise(); 
+  }
+  /**
    * Makes request to update file description
    *
    * @param {string} username

@@ -8,7 +8,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
   styleUrls: ['./scaffold.component.scss']
 })
 export class ScaffoldComponent implements OnInit {
-  @Input() learningObject: LearningObject; 
+  @Input() children: LearningObject; 
 
   //boolean to indicate if edit is selected for the list 
   editContent = false; 
@@ -16,6 +16,7 @@ export class ScaffoldComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {  
+    this.children.getLearningObjects()
   }
 
   drop(event: CdkDragDrop<string[]>) {
