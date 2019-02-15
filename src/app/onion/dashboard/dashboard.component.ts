@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   toggleFilterMenu(event: MouseEvent) {
     if (this.filterMenu) {
-      if (!this.filterMenuDown) {
+      if (!this.filterMenuDown && event) {
         this.contextMenuService.open(this.filterMenu, (event.currentTarget as HTMLElement), { top: 10, left: 5 });
       } else {
         this.contextMenuService.destroy(this.filterMenu);
