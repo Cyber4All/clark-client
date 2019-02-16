@@ -25,8 +25,8 @@ export interface DashboardLearningObject extends LearningObject {
   animations: [
     trigger('list', [
       transition(':enter', [
-        style({ opacity: 0, top: '-20px' }),
-        animate('500ms 600ms ease-out', style({opacity: 1, top: '0px'})),
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('500ms 600ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
         query( '@listItem', animateChild(), {optional: true} )
       ]),
     ]),
@@ -42,8 +42,8 @@ export interface DashboardLearningObject extends LearningObject {
     ]),
     trigger('greeting', [
       transition(':enter', [
-        style({ top: '-20px', opacity: 0 }),
-        animate('200ms 100ms ease-out', style({ top: '0px', opacity: 1 }))
+        style({ transform: 'translateY(-20px)', opacity: 0 }),
+        animate('200ms 100ms ease-out', style({ transform: 'translateY(0px)', opacity: 1 }))
       ]),
     ]),
     trigger('splash', [
@@ -56,8 +56,8 @@ export interface DashboardLearningObject extends LearningObject {
     // loading template and empty banner
     trigger('nonListItem', [
       transition(':enter', [
-        style({'transform': 'translateY(-20px)', opacity: 0}),
-        animate('200ms 100ms', style({opacity: 1}))
+        style({transform: 'translateY(-20px)', opacity: 0}),
+        animate('200ms 100ms', style({opacity: 1, transform: 'translateY(0px)'}))
       ]),
       transition(':leave', [
         style({'transform': 'translateY(0px)', opacity: 1}),
