@@ -151,7 +151,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.contextMenuService.destroy(this.filterMenu);
       }
 
-      this.filterMenuDown = !this.filterMenuDown;
+      this.filterMenuDown = event ? true : false;
     } else {
       console.error('Error! Attempted to use an unregistered context menu');
     }
