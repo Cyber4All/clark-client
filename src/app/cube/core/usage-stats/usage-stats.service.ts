@@ -7,10 +7,16 @@ import { LearningObjectStats, UserStats } from 'app/cube/shared/types';
 export class UsageStatsService {
   constructor(private http: HttpClient) {}
 
-  getLearningObjectStats(): Promise<LearningObjectStats> {
-    return this.http
-      .get<LearningObjectStats>(STATS_ROUTES.LEARNING_OBJECT_STATS)
-      .toPromise();
+  async getLearningObjectStats(): Promise<LearningObjectStats> {
+    const [objects, library] = await Promise.all([
+      this.http
+        .get<Partial<LearningObjectStats>>(STATS_ROUTES.LEARNING_OBJECT_STATS)
+        .toPromise(),
+      this.http
+        .get<{ saves: number; downloads: number }>(STATS_ROUTES.LIBRARY_STATS)
+        .toPromise()
+    ]);
+    return { ...objects, ...library } as LearningObjectStats;
   }
   getUserStats(): Promise<UserStats> {
     return this.http.get<UserStats>(STATS_ROUTES.USERS_STATS).toPromise();
