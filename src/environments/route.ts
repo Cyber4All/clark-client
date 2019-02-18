@@ -10,6 +10,11 @@ export const USER_ROUTES = {
       username
     )}/profile`;
   },
+  LOAD_USER_PROFILE(username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/profile`;
+  },
   SEARCH_USERS(query: {}) {
     return `${environment.apiURL}/users/search?text=` + query;
   },
