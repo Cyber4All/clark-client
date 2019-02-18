@@ -36,6 +36,7 @@ import { CookiesComponent } from './cookies/cookies.component';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
+import { TeleporterModule } from './teleporter/teleporter.module';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -54,7 +55,8 @@ import { EmailBannerComponent } from './email-banner/email-banner.component';
     ContextMenuModule,
     TooltipModule,
     PopupModule,
-    ClarkContextMenuModule.forRoot()
+    ClarkContextMenuModule.forRoot(),
+    TeleporterModule
   ],
   providers: [],
   declarations: [
@@ -104,6 +106,7 @@ import { EmailBannerComponent } from './email-banner/email-banner.component';
     ContextMenuModule,
     ClarkContextMenuModule,
     EmailBannerComponent,
+    TeleporterModule
   ]
 })
 export class SharedModule {}

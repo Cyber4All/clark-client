@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { CollectionComponent } from './collection.component';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
@@ -12,12 +11,11 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
     CubeSharedModule,
     SharedModule,
     RouterModule
   ],
   exports: [],
-  declarations: [CollectionComponent],
+  declarations: [CollectionComponent]
 })
-export class CollectionModule { }
+export class CollectionModule {}

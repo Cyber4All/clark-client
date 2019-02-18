@@ -16,8 +16,8 @@ import { COPY } from '../details.copy';
         (click)="toggleMappings(i)"
         [ngClass]="{ 'clickable': o.mappings.length > 0 }"
       >
-        <span class="title">{{ o.outcome }}</span>
-        <span class="mappings-count">({{ o.mappings.length }}&nbsp;Mapped&nbsp;Outcomes)</span>
+        <span class="title">{{ o.outcome.charAt(0).toUpperCase() + o.outcome.substring(1) }}</span>
+        <span class="mappings-count">({{ o.mappings.length }}&nbsp;Mapped&nbsp;Outcome<span *ngIf="o.mappings.length !== 1">s</span>)</span>
       </button>
       <ul *ngIf="showMappings[i]">
         <div style="margin-top: 20px;"></div>

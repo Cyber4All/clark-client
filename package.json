@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.1.8",
+  "version": "2.7.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -10,8 +10,7 @@
     "test": "node_modules/.bin/jest --verbose  --coverage",
     "lint": "ng lint",
     "app": "cd .. cd ",
-    "e2e": "cypress open",
-    "postinstall": "ng build --prod --aot=false --build-optimizer=false"
+    "e2e": "cypress open"
   },
   "dependencies": {
     "@angular/animations": "^7.2.3",
@@ -52,7 +51,6 @@
     "rxjs-compat": "^6.0.0-rc.0",
     "socket.io": "^2.1.0",
     "tslib": "^1.9.0",
-    "typescript": "^3.2.4",
     "uuid": "^3.2.1",
     "zone.js": "^0.8.26"
   },
@@ -64,7 +62,6 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "^10.5.2",
     "codelyzer": "^4.3.0",
-    "cypress": "^3.1.4",
     "install-peers": "^1.0.2",
     "jasmine-core": "~3.2.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -76,6 +73,7 @@
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-html-reporter": "^1.2.0",
     "protractor": "~5.4.0",
+    "typescript": "3.2.4",
     "ts-jest": "^23.1.4",
     "ts-node": "~7.0.0",
     "tslint": "~5.10.0"

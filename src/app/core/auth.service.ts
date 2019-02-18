@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   get firstName(): string {
-    return this.user ? this.user.firstName : undefined;
+    return this.user ? this.user.name.split(' ')[0] : undefined;
   }
 
   get email(): string {
@@ -146,6 +146,7 @@ export class AuthService {
     this.user = undefined;
     this.changeStatus(false);
     this.group.next(AUTH_GROUP.VISITOR);
+    window.location.reload();
   }
 
   async register(user: any): Promise<User> {

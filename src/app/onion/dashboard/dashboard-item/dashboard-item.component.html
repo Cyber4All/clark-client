@@ -8,6 +8,7 @@
         <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
         <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
         <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
+        <span *ngIf="learningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
         <span *ngIf="learningObject.status === 'released'"><i class="fas fa-eye"></i></span>
         <span *ngIf="learningObject.status === 'denied'"><i class="fas fa-ban"></i></span>
       </div>
@@ -20,12 +21,17 @@
     <div>{{ learningObject.length | titlecase }}</div>
     <div>{{ learningObject.date | date:'medium' }}</div>
     <div>
-      <div *ngIf="!disabled && meatball" class="meatball" [ngClass]="{'open': meatballOpen}" (click)="this.toggleContextMenu($event)">
-        <div class="icon">
-          <i class="far fa-times"></i>
-        </div>
-        <div class="orb"></div>
+      <div *ngIf="learningObject.status === 'review'; else meatball" tip="{{ states?.get(learningObject.status)?.tip }}" tipDisabled="{{ !states?.get(learningObject.status)?.tip }}" tipLocation="above">
+        <ng-container *ngTemplateOutlet="meatball"></ng-container>
       </div>
+      <ng-template #meatball>
+        <div *ngIf="!disabled && meatball" class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': learningObject.status === 'review'}" (click)="learningObject.status !== 'review' && this.toggleContextMenu($event)">
+          <div class="icon">
+            <i class="far fa-times"></i>
+          </div>
+          <div class="orb"></div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

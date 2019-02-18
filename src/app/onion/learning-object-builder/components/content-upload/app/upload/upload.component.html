@@ -36,19 +36,22 @@
     <div class="title">Uploading files...</div>
     <onion-file-upload-status [files]="inProgressFileUploads" [folders]="inProgressFolderUploads"></onion-file-upload-status>
   </div>
-  <div class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()"
-    (addedFile)="addFile($event)" (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)"
-    (complete)="dzComplete($event)" (success)="uploadSuccess()" (queueComplete)="queueComplete($event)" (error)="handleError($event)">
-    <div class="uploader-content">
-      <div class="uploader-icon">
-        <i class='far fa-arrow-up'></i>
-      </div>
-      <div class="uploader-text">
-        <div>Drop files and folders here</div>
-        to add them to {{ (!openPath) ? 'your learning object' : '\'' + openPath + '\''}}!
+
+  <clark-teleporter>
+    <div #teleporterPayload class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config" (drop)="handleDrop()"
+      (addedFile)="addFile($event)" (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)" (uploadProgress)="uploadProgress($event)"
+      (complete)="dzComplete($event)" (success)="uploadSuccess()" (queueComplete)="queueComplete($event)" (error)="handleError($event)">
+      <div class="uploader-content">
+        <div class="uploader-icon">
+          <i class='far fa-arrow-up'></i>
+        </div>
+        <div class="uploader-text">
+          <div>Drop files and folders here</div>
+          to add them to {{ (!openPath) ? 'your learning object' : '\'' + openPath + '\''}}!
+        </div>
       </div>
     </div>
-  </div>
+  </clark-teleporter>
 
   <ng-template #loadingTemplate>
     <div [@fadeIn] class="loading">

@@ -48,6 +48,10 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         background: #f5a623;
     }
 
+    &.proofing {
+        background: #bd5eda;
+    }
+
     &.released {
         background: $green;
     }
@@ -169,6 +173,11 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
             background: $light-blue-gradient;
             box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
         }
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: .5;
     }
 }
 

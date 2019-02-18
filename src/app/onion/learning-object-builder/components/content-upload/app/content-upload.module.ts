@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 // Other
@@ -25,7 +24,7 @@ import { SharedModule } from '../../../../../shared/shared.module';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
 import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
-import { UrlRowComponent } from "./upload/url-manager/url-row/url-row.component";
+import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
   environment.DROPZONE_CONFIG;
@@ -43,7 +42,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     CommonModule,
     SharedModule,
     FormsModule,
-    HttpClientModule,
     DropzoneModule,
     ContextMenuModule,
     routes

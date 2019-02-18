@@ -10,6 +10,11 @@ export const USER_ROUTES = {
       username
     )}/profile`;
   },
+  LOAD_USER_PROFILE(username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/profile`;
+  },
   SEARCH_USERS(query: {}) {
     return `${environment.apiURL}/users/search?text=` + query;
   },
@@ -40,12 +45,12 @@ export const USER_ROUTES = {
   SUBMIT_LEARNING_OBJECT(learningObjectId: string) {
     return `${
       environment.apiURL
-    }/learning-objects/${learningObjectId}/submission`
+    }/learning-objects/${learningObjectId}/submission`;
   },
   UNSUBMIT_LEARNING_OBJECT(learningObjectId: string) {
     return `${
       environment.apiURL
-    }/learning-objects/${learningObjectId}/submission`
+    }/learning-objects/${learningObjectId}/submission`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
