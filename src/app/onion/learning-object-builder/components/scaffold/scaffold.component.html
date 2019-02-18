@@ -1,9 +1,22 @@
-<div class = "icon">
-<div class = "far fa-project-diagram icon"></div>
+
+<div class = "header">
+  <div class = "icon">
+    <div class = "far fa-project-diagram icon"></div>
+  </div>
+  <div class = "title">
+    Children
+  </div>
+  <button class = "edit" (click)="toggle()">
+    <div class = "far fa-pencil"></div>
+  </button>
 </div>
-<div class = "text title">
-  This learning object isn't part of any scaffolds yet!
+<div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
+    <clark-hierarchy 
+      *ngFor="let c of learningObject?.children" 
+      [editContent] = "editContent"
+      [learningObject] = "c"
+      >
+    </clark-hierarchy>
 </div>
-<div class = "text" id = "placeholder">
-  But don't worry! This feature will be added in the next release to enable a more seamless way to edit your learning objects.
-</div>
+
+

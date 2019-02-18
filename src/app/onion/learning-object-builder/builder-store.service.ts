@@ -194,6 +194,17 @@ export class BuilderStore {
   }
 
   /**
+   * Retrieves the learning objects children 
+   * 
+   */
+  async getChildren(): Promise<any> {
+    this._learningObject = await this.learningObjectService.getChildren(
+      this.learningObject.id
+    ); 
+    
+  }
+
+  /**
    * Creates and stores a new blank learning object
    *
    * @returns {LearningObject} new blank learning object

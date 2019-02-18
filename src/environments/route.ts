@@ -153,6 +153,9 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/${objectId}/materials`;
   },
+  GET_CHILDREN(learningObjectID: string){
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectID)}/children/summary`;
+  },
   INIT_MULTIPART(params: {
     username: string;
     objectId: string;
