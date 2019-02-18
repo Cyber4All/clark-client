@@ -186,13 +186,13 @@
     flex-direction: row;
     justify-content: flex-end;
     font-size: 16px;
-    cursor: pointer;
     flex-shrink: 0;
     right: 0;
     position: relative;
 
     & > * {
       @include vert-center;
+      cursor: pointer;
     }
 
     &.loggedin,
