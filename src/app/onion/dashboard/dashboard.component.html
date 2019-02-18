@@ -4,47 +4,49 @@
       <div [@greeting] class="greeting">Good {{ greetingTime }}, <span>{{ auth.user.name.split(' ')[0] }}</span>!</div>
     </div>
   </div>
-  <div [@list] class="list">
-    <div #listInner class="list-inner">
-      <div class="list-top">
-        <header class="header">Your Learning Objects <span *ngIf="editingChildren"> - Editing Children</span></header>
-        <div class="btn-group to-right">
-          <button *ngIf="!editingChildren" routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
-          <button *ngIf="!editingChildren" class="button neutral filters-button" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> Filter <i class="fas fa-sort"></i></button>
-          <button *ngIf="!editingChildren && selected.size" class="button bad" (click)="deleteConfirmation = delete(getSelectedObjects()); deleteConfirmation.next()">Delete Selected <i class="far fa-trash"></i></button>
-          <button *ngIf="editingChildren" class="button green" (click)="childrenConfirmation = finishAddChildren(); childrenConfirmation.next()">Save Children <i class="fas fa-check"></i></button>
-          <button *ngIf="editingChildren" class="button bad" (click)="cancelEditChildren()">Cancel <i class="far fa-ban"></i></button>
-        </div>
-      </div>
-      <div *ngIf="!loading; else loadingTemplate" class="list-body">
-        <div *ngIf="learningObjects?.length; else emptyTemplate">
-          <div class="column-headers">
-            <div>
-              <clark-checkbox *ngIf="!editingChildren" [setValue]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
-            </div>
-            <div>Status</div>
-            <div>Name</div>
-            <div>Type</div>
-            <div>Date</div>
-            <div><!-- meatball placeholder --></div>
+  <div [@list] class="list-wrapper">
+    <div class="list">
+      <div #listInner class="list-inner">
+        <div class="list-top">
+          <header class="header">Your Learning Objects <span *ngIf="editingChildren"> - Editing Children</span></header>
+          <div class="btn-group to-right">
+            <button *ngIf="!editingChildren" routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
+            <button *ngIf="!editingChildren" class="button neutral filters-button" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> Filter <i class="fas fa-sort"></i></button>
+            <button *ngIf="!editingChildren && selected.size" class="button bad" (click)="deleteConfirmation = delete(getSelectedObjects()); deleteConfirmation.next()">Delete Selected <i class="far fa-trash"></i></button>
+            <button *ngIf="editingChildren" class="button green" (click)="childrenConfirmation = finishAddChildren(); childrenConfirmation.next()">Save Children <i class="fas fa-check"></i></button>
+            <button *ngIf="editingChildren" class="button bad" (click)="cancelEditChildren()">Cancel <i class="far fa-ban"></i></button>
           </div>
-          <div  [@listItem]="learningObjects.length">
-            <clark-dashboard-item
-              *ngFor="let l of learningObjects; let i = index"
-              [learningObject]="l"
-              [status]="l.status"
-              [disabled]="disabled.get(l.id)"
-              [hidden]="hidden.get(l.id)"
-              [selected]="this.selected.get(l.id) !== undefined"
-              [small]="editingChildren && !this.disabled.get(l.id)"
-              [meatball]="!editingChildren"
-              (select)="toggleSelect(l, $event, i)"
-              (delete)="deleteConfirmation = delete(l); deleteConfirmation.next();"
-              (editChildren)="editChildren(l)"
-              (submit)="submitToCollection = true; focusedLearningObject = l;"
-              (cancelSubmission)="cancelSubmission(l)"
-              >
-            </clark-dashboard-item>
+        </div>
+        <div *ngIf="!loading; else loadingTemplate" class="list-body">
+          <div *ngIf="learningObjects?.length; else emptyTemplate">
+            <div class="column-headers">
+              <div>
+                <clark-checkbox *ngIf="!editingChildren" [setValue]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
+              </div>
+              <div>Status</div>
+              <div>Name</div>
+              <div>Type</div>
+              <div>Date</div>
+              <div><!-- meatball placeholder --></div>
+            </div>
+            <div  [@listItem]="learningObjects.length">
+              <clark-dashboard-item
+                *ngFor="let l of learningObjects; let i = index"
+                [learningObject]="l"
+                [status]="l.status"
+                [disabled]="disabled.get(l.id)"
+                [hidden]="hidden.get(l.id)"
+                [selected]="this.selected.get(l.id) !== undefined"
+                [small]="editingChildren && !this.disabled.get(l.id)"
+                [meatball]="!editingChildren"
+                (select)="toggleSelect(l, $event, i)"
+                (delete)="deleteConfirmation = delete(l); deleteConfirmation.next();"
+                (editChildren)="editChildren(l)"
+                (submit)="submitToCollection = true; focusedLearningObject = l;"
+                (cancelSubmission)="cancelSubmission(l)"
+                >
+              </clark-dashboard-item>
+            </div>
           </div>
         </div>
       </div>
