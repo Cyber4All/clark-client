@@ -16,6 +16,7 @@ export enum AUTH_GROUP {
   VISITOR,
   USER,
   REVIEWER,
+  CURATOR,
   EDITOR,
   ADMIN
 }
@@ -299,18 +300,29 @@ export class AuthService {
   }
 
   /**
-   * Identifies if the current logged in user has reviewer priviledges.
+   * Identifies if the current logged in user has reviewer privileges.
    */
   hasReviewerAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.USER;
   }
 
   /**
-   * Identifies if the current logged in user has editor priviledges.
+   * Identifies if the current logged in user has curator privileges
+   *
+   * @returns {boolean}
+   * @memberof AuthService
+   */
+  public hasCuratorAccess(): boolean {
+    return this.group.getValue() > AUTH_GROUP.CURATOR;
+  }
+
+  /**
+   * Identifies if the current logged in user has editor privileges.
    */
   public hasEditorAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.REVIEWER;
   }
+
   /**
    * Assigns an authorization group to a user based on their access groups.
    * The highest priority group will be assigned.
@@ -323,6 +335,8 @@ export class AuthService {
       this.group.next(AUTH_GROUP.ADMIN);
     } else if (this.user['accessGroups'].includes('editor')) {
       this.group.next(AUTH_GROUP.EDITOR);
+    } else if (this.user['accessGroups'].includes('curator')) {
+      this.group.next(AUTH_GROUP.CURATOR);
     } else if (this.user['accessGroups'].includes('reviewer')) {
       this.group.next(AUTH_GROUP.REVIEWER);
     } else {

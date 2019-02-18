@@ -1,6 +1,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
+import { AdminGuard } from 'app/core/admin.guard';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -11,7 +12,7 @@ import { AdminComponent } from './admin.component';
  */
 const admin_routes: Routes = [
   {
-    path: '', component: AdminComponent, 
+    path: '', component: AdminComponent, canActivate: [ AdminGuard ]
   }
 ];
 export const AdminRoutingModule: ModuleWithProviders = RouterModule.forChild(admin_routes);

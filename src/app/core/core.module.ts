@@ -21,6 +21,7 @@ import { ContextMenuModule } from 'ngx-contextmenu';
 import { CollectionService } from './collection.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
+import { AdminGuard } from './admin.guard';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ export class CoreModule {
       ngModule: CoreModule,
       providers: [
         AuthGuard,
+        AdminGuard,
         AuthService,
         CartV2Service,
         CollectionService,
