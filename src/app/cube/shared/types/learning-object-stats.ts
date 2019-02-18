@@ -1,7 +1,7 @@
 export interface LearningObjectStats {
   downloads: number;
   saves: number;
-  working: number;
+  review: number;
   total: number;
   released: number;
   lengths: {
