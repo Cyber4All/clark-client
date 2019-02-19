@@ -2,9 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
 import { AdminRoutingModule } from './admin.routing';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
+import { TopbarComponent } from './components/topbar/topbar.component';
+import { AnalyticsComponent } from './pages/analytics/analytics.component';
+import { UsersComponent } from './pages/users/users.component';
 
 @NgModule({
-  declarations: [AdminComponent],
+  declarations: [AdminComponent, SidebarComponent, LearningObjectsComponent, TopbarComponent, AnalyticsComponent, UsersComponent],
   imports: [
     CommonModule,
     AdminRoutingModule

@@ -27,9 +27,15 @@ $gencyber: $error-red;
 $secinj: #f9dd80;
 $c5: #983cbd;
 
+// status colors
+$waiting: #5EC9DA;
+$review: #F5A623;
+$proofing: #BD5EDA;
+$released: $green;
+
 // functions
 @function gradient($color1, $color2, $angle) {
-    @return linear-gradient($angle, $color1, $color2);
+  @return linear-gradient($angle, $color1, $color2);
 }
 
 // mixins

@@ -1,0 +1,76 @@
+@import '../../local-vars';
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+  cursor: pointer;
+}
+
+.sidebar__top {
+  padding-left: 25px;
+  color: $light-text;
+  font-size: 18px;
+  
+  .svg-inline--fa,
+  .icon {
+    margin-right: 10px;
+  }
+}
+
+.sidebar__bottom {
+  margin-top: 50px;
+}
+
+.sidebar__menu {
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    & > *:not(:last-child) {
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
+
+  li {
+    padding: 12px 25px; 
+    box-sizing: border-box;
+    color: $light-text;
+    list-style-type: none;
+    font-size: 18px;
+    position: relative;
+    transition: all 0.2s ease;
+
+    .svg-inline--fa,
+    .icon {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      color: $bright-blue;
+    }
+
+    &:before {
+      content: '';
+      width: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      position: absolute;
+      background: $bright-blue;
+      opacity: 0;
+      transition: inherit;
+    }
+  }
+
+  .sidebar__menu--active li {
+    background: rgba(red($bright-blue), green($bright-blue), blue($bright-blue), 0.15);
+    color: $bright-blue;
+
+    &:before {
+      opacity: 1;
+      width: 4px;
+    }
+  }
+}

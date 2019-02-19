@@ -1,3 +1,15 @@
-<p>
-  admin works!
-</p>
+<div class="admin">
+  <div class="admin__frame">
+    <div class="admin__sidebar">
+      <clark-admin-sidebar></clark-admin-sidebar>
+    </div>
+    <div class="admin__main-content">
+      <div class="main-content__topbar">
+        <clark-admin-topbar></clark-admin-topbar>
+      </div>
+      <div class="main-content__view">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
