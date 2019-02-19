@@ -110,6 +110,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           return file;
         }
       );
+      // FIXME: This filter should be removed when service logic is updated
       this.children = this.learningObject.children.filter(
         child => {
           return child.status === LearningObject.Status['RELEASED'] ||
