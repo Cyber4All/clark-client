@@ -1,0 +1,39 @@
+@import '../../local-vars';
+
+.admin__topbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar__search {
+  color: $light-text;
+  font-size: 16px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  transition: all 0.2s ease;
+  position: relative;
+
+  input {
+    appearance: none;
+    border: 0;
+    padding: 10px;
+    outline: 0;
+    transition: inherit;
+
+    &::placeholder {
+      color: $light-text;
+    }
+
+    &:focus {
+      color: $bright-blue;
+    }
+  }
+
+  input:focus + .svg-inline--fa,
+  input:focus + .icon {
+    color: $bright-blue;
+  }
+}
