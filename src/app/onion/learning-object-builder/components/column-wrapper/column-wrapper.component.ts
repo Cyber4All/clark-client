@@ -1,10 +1,18 @@
-import { Component, OnInit, ContentChild, ElementRef, AfterViewInit, ViewChild, OnDestroy, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  AfterViewInit,
+  ViewChild,
+  OnDestroy,
+  Input
+} from '@angular/core';
 import { MessagesService } from 'app/core/messages.service';
 
 @Component({
   selector: 'clark-column-wrapper',
   templateUrl: './column-wrapper.component.html',
-  styleUrls: ['./column-wrapper.component.scss'],
+  styleUrls: ['./column-wrapper.component.scss']
 })
 export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('columnWrapper') columnWrapper: ElementRef;
@@ -19,11 +27,24 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(private messagesService: MessagesService) {}
 
   async ngOnInit() {
-    this.messageBar = !!(await this.messagesService.getStatus());
+    try {
+      this.messageBar = !!(await this.messagesService.getStatus());
+    } catch (error) {
+      // FIXME this suppresses the error resulting in the lambda function for messages being disabled
+    }
 
     // calculate the height of the scroll wrapper
-    this.columnOffset = (this.columnWrapper.nativeElement as HTMLElement).offsetTop;
-    this.columnHeight = window.innerHeight - this.columnOffset - (this.messageBar ? (document.querySelector('clark-message .wrapper') as HTMLElement).offsetHeight : 0) + 30; // this +30 offsets the wrappers -30 offset
+    this.columnOffset = (this.columnWrapper
+      .nativeElement as HTMLElement).offsetTop;
+
+    this.columnHeight =
+      window.innerHeight -
+      this.columnOffset -
+      (this.messageBar
+        ? (document.querySelector('clark-message .wrapper') as HTMLElement)
+            .offsetHeight
+        : 0) +
+      30; // this +30 offsets the wrappers -30 offset
 
     // set overflow of body to hidden to prevent parent scrolling
     if (this.columnHeight >= 560) {

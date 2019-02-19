@@ -41,9 +41,6 @@ export class UserInformationComponent implements OnInit, OnChanges {
     this.objects = await this.learningObjectService.getUsersLearningObjects(
       this.user.username
     );
-    this.objects = this.objects.filter(
-      obj => obj.status === LearningObject.Status.RELEASED
-    );
     this.loading = false;
   }
 
