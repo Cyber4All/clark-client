@@ -1,6 +1,9 @@
 @import '~_vars.scss';
 
 @media (min-width: 751px) {
+    .toolTip { 
+        text-transform: lowercase;
+    }
     :host.card {
         min-height: 350px;
         height: auto;
@@ -25,6 +28,7 @@
                         overflow-x: hidden;
                         text-overflow: ellipsis;
                         width: 100%;
+
                     }
                 }
             }

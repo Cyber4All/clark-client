@@ -19,7 +19,10 @@
           <span *ngFor="let i of learningObject.contributors.slice(0,2)">
             , {{ i.name }}
           </span>
-          <span *ngIf="learningObject.contributors.length-2 > 0 "><span tip="{{ getContributors() }}">, +{{ learningObject.contributors.length - 2 }} more</span></span>
+          <span *ngIf="learningObject.contributors.length-2 > 0 ">
+            <span class="toolTip" tip="{{ getContributors() }}" >, and {{ learningObject.contributors.length - 2 }} other<span *ngIf="learningObject.contributors.length-2 > 2">s</span>
+          </span>
+        </span>
         </span>
       </div>
       <div class="date">

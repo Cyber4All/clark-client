@@ -114,14 +114,14 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   //Method for title case inside tool tip
   toTitleCase = function (str) {
     str = str.toLowerCase().split(' ');
-    for (var i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {
       str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
     }
     return str.join(' ');
   };
 
   getContributors() { 
-    return this.learningObject.contributors.map(x => this.toTitleCase(x.name + ' '));
+    return this.learningObject.contributors.map(x => this.toTitleCase(' ' + x.name));
   }
   download(e) {
     // Stop the event propagation so that the routerLink of the parent doesn't trigger
