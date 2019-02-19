@@ -32,6 +32,7 @@ export interface Rating {
 export class DetailsComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject<void>();
   learningObject: LearningObject;
+  children: LearningObject[];
   returnUrl: string;
   loggedin: boolean;
   ratings: Rating[] = [];
@@ -107,6 +108,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
             open: canViewInBrowser(file)
           });
           return file;
+        }
+      );
+      this.children = this.learningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+          child.status === LearningObject.Status['REVIEW'] ||
+          child.status === LearningObject.Status['PROOFING'] ||
+          child.status === LearningObject.Status['WAITING'];
         }
       );
 
