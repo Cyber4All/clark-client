@@ -11,6 +11,7 @@ import { AuthService } from '../../core/auth.service';
 export class LearningObjectRatingsComponent implements OnInit {
 
   @Input() ratings: {user: User, value: number, comment: string, date: string}[];
+  @Input() learningObjectOwners: string[];
   @Input() averageRating: number;
   @Input() loggedIn: boolean;
   @Output() editRating = new EventEmitter();
@@ -30,11 +31,16 @@ export class LearningObjectRatingsComponent implements OnInit {
     }
   }
 
-  isAuthor(index: number): boolean {
+  isRatingAuthor(index: number): boolean {
     if (this.ratings[index].user.username === this.auth.username) {
       return true;
     }
     return false;
+  }
+
+  isLearningObjectOwner(): boolean {
+    console.log(this.learningObjectOwners);
+    return this.learningObjectOwners.includes(this.auth.username);
   }
 
   submitEditRating(index: number) {

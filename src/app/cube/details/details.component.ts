@@ -37,6 +37,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   returnUrl: string;
   loggedin: boolean;
   ratings: Rating[] = [];
+  learningObjectOwners: string[];
   averageRating = 0;
   showAddRating = false;
   isOwnObject = false;
@@ -130,6 +131,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.isOwnObject = false;
       }
 
+      this.learningObjectOwners = this.learningObject.contributors.map(user => user.username);
+      this.learningObjectOwners.push(this.learningObject.author.username);
       this.getLearningObjectRatings();
     } catch (e) {
 
@@ -354,7 +357,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         learningObjectId: this.learningObject.id
       })
       .then(val => {
-        console.log(val);
         this.ratings = val.ratings;
         this.averageRating = val.avgValue;
         const u = this.auth.username;
