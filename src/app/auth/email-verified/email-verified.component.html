@@ -3,12 +3,19 @@
     <div class="top">
       <div class="auth-title">CLARK</div>
       <div class="auth-title light">Cybersecurity Labs and Resource Knowledge-base</div>
-      <div class="done">
+      <div class="done" *ngIf="isLoading">
+        Verifying your email...
+        <i class="far fa-spinner-third fa-spin"></i>
+      </div>
+      <div class="done" *ngIf="!isLoading">
         <i class="far fa-shield-check"></i>
         Your email address has been verified successfully!
       </div>
     </div>
-    <div class="bottom-link" routerLink="../login">
+    <div class="bottom-link" *ngIf="hasValidToken" routerLink="/home">
+      <span>Continue</span>
+    </div>
+    <div class="bottom-link" *ngIf="hasValidToken === false" routerLink="../login">
       Want to get started? <span>Sign in!</span>
     </div>
   </div>
