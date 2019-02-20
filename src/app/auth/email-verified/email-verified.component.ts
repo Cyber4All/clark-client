@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
-  selector: 'app-email-verified',
+  selector: 'clark-email-verified',
   styles: [
     `.message--in-progress {
       margin-bottom: 20px;
