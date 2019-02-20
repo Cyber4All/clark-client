@@ -239,6 +239,16 @@ export const RATING_ROUTES = {
       params.ratingId
     )}`;
   },
+  CREATE_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses`;
+  },
   CREATE_RATING(params: {
     learningObjectId: string;
   }) {
@@ -267,7 +277,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/ratings`;
-  }
+  },
 };
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`

@@ -29,12 +29,16 @@
           <span (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
         </ng-container>
         <ng-template #notOwnerOptions>
-          <span *ngIf="isLearningObjectOwner()" (click)="reportIndex = i; showReport = true;"><i class="far fa-comment-alt"></i>Respond</span>
+          <span *ngIf="isLearningObjectOwner()" (click)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
           <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
         </ng-template>
       </div>
+      <div *ngIf="isWritingResponse(i)">
+          <clark-new-rating-response [index]="i" (submit)="submitResponse($event)" (cancel)="cancelResponse($event)" ></clark-new-rating-response>
+      </div>
     </div>
   </div>
+
   <ng-template #noRatings>
     <div class="no-ratings">
       This learning object doesn't have any ratings yet!

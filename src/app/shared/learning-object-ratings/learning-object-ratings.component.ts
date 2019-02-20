@@ -16,10 +16,12 @@ export class LearningObjectRatingsComponent implements OnInit {
   @Input() loggedIn: boolean;
   @Output() editRating = new EventEmitter();
   @Output() deleteRating = new EventEmitter();
+  @Output() respondRating: EventEmitter<{comment: string}> = new EventEmitter();
   @Output() reportRating: EventEmitter<{concern: string, index: number, comment?: string}> = new EventEmitter();
 
   showReport = false;
   reportIndex: number;
+  showResponse = [];
 
   constructor(public userService: UserService, private auth: AuthService) { }
 
@@ -61,4 +63,22 @@ export class LearningObjectRatingsComponent implements OnInit {
     this.showReport = false;
   }
 
+  submitResponse(response: {index: number, comment: string}) {
+    this.respondRating.emit(response);
+  }
+
+  openResponse(index: number) {
+    this.showResponse.push(index);
+  }
+
+  isWritingResponse(index: number) {
+    return this.showResponse.includes(index);
+  }
+
+  cancelResponse(element: number) {
+    const index = this.showResponse.indexOf(element);
+    if (index > -1) {
+      this.showResponse.splice(index, 1);
+    }
+  }
 }

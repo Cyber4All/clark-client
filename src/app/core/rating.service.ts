@@ -9,6 +9,21 @@ export class RatingService {
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
+  createResponse(params: {
+    learningObjectId: string;
+    ratingId: string;
+    response: {comment: string}
+  }): Promise<any> {
+    return this.http.post(
+      RATING_ROUTES.CREATE_RESPONSE({
+        learningObjectId: params.learningObjectId,
+        ratingId: params.ratingId,
+      }),
+      params.response,
+      { withCredentials: true },
+    ).toPromise();
+  }
+
   createRating(params: {
     learningObjectId: string,
     rating: {value: number, comment: string };
@@ -89,17 +104,19 @@ export class RatingService {
   }
 
   flagLearningObjectRating(params: {
-    learningObjectId: string;
-    ratingId: string;
-    report: {concern: string, comment?: string}
-  }): Promise<any> {
-    return this.http.post(
-      RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING({
-        learningObjectId: params.learningObjectId,
-        ratingId: params.ratingId,
-      }),
-      params.report,
-      { withCredentials: true },
-    ).toPromise();
+      learningObjectId: string;
+      ratingId: string;
+      report: {concern: string, comment?: string}
+    }): Promise<any> {
+      return this.http.post(
+        RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING({
+          learningObjectId: params.learningObjectId,
+          ratingId: params.ratingId,
+        }),
+        params.report,
+        { withCredentials: true },
+      ).toPromise();
+    }
   }
-}
+
+

@@ -343,7 +343,45 @@ export class DetailsComponent implements OnInit, OnDestroy {
         'bad',
         'far fa-times'
       );
-      console.error('No ratingId specified');
+    }
+  }
+
+  submitResponse(response: {comment: string, index: number}) {
+    // locate target rating and then delete the index param from the response
+    const ratingId = this.ratings[response.index].id;
+    delete response.index;
+
+    if (ratingId) {
+      this.ratingService
+        .createResponse({
+          learningObjectId: this.learningObject.id,
+          ratingId,
+          response,
+        })
+        .catch(response => {
+            if (response.status === 200) {
+              this.toastService.notify(
+                'Success!',
+                'Response submitted successfully!',
+                'good',
+                'far fa-check'
+              );
+            } else {
+              this.toastService.notify(
+                'Error!',
+                'An error occured and your response could not be submitted',
+                'bad',
+                'far fa-times'
+              );
+            }
+        });
+    } else {
+      this.toastService.notify(
+        'Error!',
+        'An error occured and your response could not be submitted',
+        'bad',
+        'far fa-times'
+      );
     }
   }
 
