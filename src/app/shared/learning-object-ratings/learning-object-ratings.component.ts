@@ -39,7 +39,6 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   isLearningObjectOwner(): boolean {
-    console.log(this.learningObjectOwners);
     return this.learningObjectOwners.includes(this.auth.username);
   }
 

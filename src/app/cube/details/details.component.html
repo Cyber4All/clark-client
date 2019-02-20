@@ -33,7 +33,7 @@
         <button *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}"
           class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' :
           'Write a'}} review <i class="far fa-pencil"></i></button>
-        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [learningObjectOwners]="learningObjctOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
+        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
           (deleteRating)="deleteRating($event)" (reportRating)="reportRating($event)"></clark-learning-object-ratings>
       </div>
     </div>
