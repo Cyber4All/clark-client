@@ -44,10 +44,15 @@ export class RatingService {
       .toPromise();
   }
 
-  getLearningObjectRatings(learningObjectAuthor: string, learningObjectName: string): Promise<any> {
+
+  getLearningObjectRatings(params: {
+    learningObjectId: string;
+  }): Promise<any> {
     return this.http
       .get(
-        RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS(learningObjectAuthor, learningObjectName),
+        RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS({
+          learningObjectId: params.learningObjectId,
+        }),
         {
           withCredentials: true
         }

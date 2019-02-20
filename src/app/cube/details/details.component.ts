@@ -354,13 +354,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   private async getLearningObjectRatings() {
     this.ratingService
-      .getLearningObjectRatings(
-        this.learningObject.author.username,
-        this.learningObject.name
-      )
+      .getLearningObjectRatings({
+        learningObjectId: this.learningObject.id
+      })
       .then(val => {
+        console.log(val);
         this.ratings = val.ratings;
-        this.averageRating = val.avgRating;
+        this.averageRating = val.avgValue;
         const u = this.auth.username;
 
         for (let i = 0, l = val.ratings.length; i < l; i++) {

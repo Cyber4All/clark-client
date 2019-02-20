@@ -18,8 +18,8 @@
           </div>
         </div>
       </a>
-      <clark-rating-stars [rating]="rating.number" [color]="'gold'" [size]="18"></clark-rating-stars>
-      <div class="rating-date">{{ getDate(rating.date) | date }}</div>
+      <clark-rating-stars [rating]="rating.value" [color]="'gold'" [size]="18"></clark-rating-stars>
+      <div class="rating-date">{{ rating.date | date:'shortDate' }}</div>
       <div class="rating-text">
         {{ rating.comment }}
       </div>

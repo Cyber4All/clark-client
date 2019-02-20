@@ -246,13 +246,12 @@ export const RATING_ROUTES = {
       learningObjectAuthor
     )}/${encodeURIComponent(learningObjectName)}/ratings`;
   },
-  GET_LEARNING_OBJECT_RATINGS(
-    learningObjectAuthor: string,
-    learningObjectName: string
-  ) {
+  GET_LEARNING_OBJECT_RATINGS(params: {
+    learningObjectId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings`;
+      params.learningObjectId
+    )}/ratings`;
   },
   FLAG_LEARNING_OBJECT_RATING(
     learningObjectAuthor: string,

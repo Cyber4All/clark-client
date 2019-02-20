@@ -30,11 +30,6 @@ export class LearningObjectRatingsComponent implements OnInit {
     }
   }
 
-  getDate(seconds: string): Date {
-    const t = new Date( parseInt( seconds, 16 ) * 1000 );
-    return t;
-  }
-
   isAuthor(index: number): boolean {
     if (this.ratings[index].user.username === this.auth.username) {
       return true;
