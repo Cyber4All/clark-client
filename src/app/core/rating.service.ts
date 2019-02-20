@@ -9,11 +9,16 @@ export class RatingService {
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
-  createRating(learningObjectAuthor: string, learningObjectName: string, newRating: {number: number, comment: string }) {
+  createRating(params: {
+    learningObjectId: string,
+    rating: {value: number, comment: string };
+  }) {
     return this.http
       .post(
-        RATING_ROUTES.CREATE_RATING(learningObjectAuthor, learningObjectName),
-        newRating,
+        RATING_ROUTES.CREATE_RATING({
+          learningObjectId: params.learningObjectId,
+        }),
+        params.rating,
         {
           withCredentials: true, responseType: 'text'
         }
@@ -21,11 +26,18 @@ export class RatingService {
       .toPromise();
   }
 
-  editRating(learningObjectAuthor: string, learningObjectName: string, ratingId: string, rating: {number: number, comment: string}) {
+  editRating(params: {
+    learningObjectId: string;
+    ratingId: string;
+    rating: {value: number, comment: string};
+  }) {
     return this.http
       .patch(
-        RATING_ROUTES.EDIT_RATING(learningObjectAuthor, learningObjectName, ratingId),
-        rating,
+        RATING_ROUTES.EDIT_RATING({
+          learningObjectId: params.learningObjectId,
+          ratingId: params.ratingId,
+        }),
+        params.rating,
         {
           withCredentials: true, responseType: 'text'
         }
@@ -33,10 +45,16 @@ export class RatingService {
       .toPromise();
   }
 
-  deleteRating(learningObjectAuthor: string, learningObjectName: string, ratingId: string) {
+  deleteRating(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
     return this.http
       .delete(
-        RATING_ROUTES.DELETE_RATING(learningObjectAuthor, learningObjectName, ratingId),
+        RATING_ROUTES.DELETE_RATING({
+          learningObjectId: params.learningObjectId,
+          ratingId: params.ratingId,
+        }),
         {
           withCredentials: true, responseType: 'text'
         }
@@ -70,32 +88,18 @@ export class RatingService {
       });
   }
 
-  flagLearningObjectRating(
-    learningObjectAuthor: string,
-    learningObjectName: string,
-    ratingId: string,
-    report: {concern: string, comment?: string}): Promise<any> {
+  flagLearningObjectRating(params: {
+    learningObjectId: string;
+    ratingId: string;
+    report: {concern: string, comment?: string}
+  }): Promise<any> {
     return this.http.post(
-      RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING(learningObjectAuthor, learningObjectName, ratingId),
-      report,
-      { withCredentials: true }
+      RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING({
+        learningObjectId: params.learningObjectId,
+        ratingId: params.ratingId,
+      }),
+      params.report,
+      { withCredentials: true },
     ).toPromise();
-  }
-
-  // TODO implement this
-  getUserRatings() {
-    const stubUsername = 'nvisal1';
-    const stubLearningObjectName = 'testing contributors 3';
-    return this.http
-      .get(
-        RATING_ROUTES.GET_USER_RATINGS(stubUsername),
-        {
-          withCredentials: true
-        }
-      )
-      .toPromise()
-      .then(val => {
-        // console.log(val);
-      });
   }
 }

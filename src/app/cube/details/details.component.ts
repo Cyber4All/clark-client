@@ -19,9 +19,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 export interface Rating {
   id?: string;
   user: User;
-  number: number;
+  value: number;
   comment: string;
-  date: string;
+  date: number;
+  source?: string;
 }
 
 @Component({
@@ -156,7 +157,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param rating the rating object to be created
    */
   handleRatingSubmission(rating: {
-    number: number;
+    value: number;
     comment: string;
     editing?: boolean;
     id?: string;
@@ -176,13 +177,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * Creates a new rating
    * @param rating the rating to be created
    */
-  createRating(rating: { number: number; comment: string; id?: string }) {
+  createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
-      .createRating(
-        this.learningObject.author.username,
-        this.learningObject.name,
-        rating as Rating
-      )
+      .createRating({
+        learningObjectId: this.learningObject.id,
+        rating,
+      })
       .then(
         () => {
           this.getLearningObjectRatings();
@@ -211,7 +211,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * Edits an existing rating. An id must be supplied.
    * @param rating the rating object to be updated
    */
-  updateRating(rating: { number: number; comment: string; id?: string }) {
+  updateRating(rating: { value: number; comment: string; id?: string }) {
+    const {id, ...updates} = rating;
     if (!rating.id) {
       this.toastService.notify(
         'Error!',
@@ -223,12 +224,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       return;
     }
     this.ratingService
-      .editRating(
-        this.learningObject.author.username,
-        this.learningObject.name,
-        rating.id,
-        rating as Rating
-      )
+      .editRating({
+        learningObjectId: this.learningObject.id,
+        ratingId: rating.id,
+        rating: updates,
+      })
       .then(
         () => {
           this.getLearningObjectRatings();
@@ -276,11 +276,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     if (shouldDelete === 'delete') {
       this.ratingService
-        .deleteRating(
-          this.learningObject.author.username,
-          this.learningObject.name,
-          this.ratings[index].id
-        )
+        .deleteRating({
+          learningObjectId: this.ratings[index].source,
+          ratingId: this.ratings[index].id,
+        })
         .then(val => {
           this.getLearningObjectRatings();
           this.toastService.notify(
@@ -312,31 +311,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     if (ratingId) {
       this.ratingService
-        .flagLearningObjectRating(
-          this.learningObject.author.username,
-          this.learningObject.name,
+        .flagLearningObjectRating({
+          learningObjectId: this.learningObject.id,
           ratingId,
           report
-        )
-        .then(
-          val => {
-            this.toastService.notify(
-              'Success!',
-              'Report submitted successfully!',
-              'good',
-              'far fa-check'
-            );
-          },
-          error => {
-            this.toastService.notify(
-              'Error!',
-              'An error occured and your report could not be submitted',
-              'bad',
-              'far fa-times'
-            );
-            console.error(error);
-          }
-        );
+        })
+        .catch(response => {
+            if (response.status === 200) {
+              this.toastService.notify(
+                'Success!',
+                'Report submitted successfully!',
+                'good',
+                'far fa-check'
+              );
+            } else {
+              this.toastService.notify(
+                'Error!',
+                'An error occured and your report could not be submitted',
+                'bad',
+                'far fa-times'
+              );
+            }
+        });
     } else {
       this.toastService.notify(
         'Error!',

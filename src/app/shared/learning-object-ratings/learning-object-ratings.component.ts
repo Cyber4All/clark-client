@@ -10,7 +10,7 @@ import { AuthService } from '../../core/auth.service';
 })
 export class LearningObjectRatingsComponent implements OnInit {
 
-  @Input() ratings: {user: User, number: number, comment: string, date: string}[];
+  @Input() ratings: {user: User, value: number, comment: string, date: string}[];
   @Input() averageRating: number;
   @Input() loggedIn: boolean;
   @Output() editRating = new EventEmitter();
@@ -26,7 +26,7 @@ export class LearningObjectRatingsComponent implements OnInit {
 
   calculateAverageRating(): number {
     if (this.ratings.length > 0) {
-      return this.ratings.map(x => x.number).reduce((x, y) => x + y) / this.ratings.length;
+      return this.ratings.map(x => x.value).reduce((x, y) => x + y) / this.ratings.length;
     }
   }
 
@@ -39,7 +39,7 @@ export class LearningObjectRatingsComponent implements OnInit {
 
   submitEditRating(index: number) {
     const editRating =  {
-      number: this.ratings[index].number,
+      number: this.ratings[index].value,
       comment: this.ratings[index].comment,
       index: index
     };

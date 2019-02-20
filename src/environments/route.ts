@@ -219,32 +219,32 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 };
 
 export const RATING_ROUTES = {
-  DELETE_RATING(
-    learningObjectAuthor: string,
-    learningObjectName: string,
-    ratingId: string
-  ) {
+  DELETE_RATING(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
-      ratingId
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
     )}`;
   },
-  EDIT_RATING(
-    learningObjectAuthor: string,
-    learningObjectName: string,
-    ratingId: string
-  ) {
+  EDIT_RATING(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
-      ratingId
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
     )}`;
   },
-  CREATE_RATING(learningObjectAuthor: string, learningObjectName: string) {
+  CREATE_RATING(params: {
+    learningObjectId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings`;
+      params.learningObjectId
+    )}/ratings`;
   },
   GET_LEARNING_OBJECT_RATINGS(params: {
     learningObjectId: string;
@@ -253,15 +253,14 @@ export const RATING_ROUTES = {
       params.learningObjectId
     )}/ratings`;
   },
-  FLAG_LEARNING_OBJECT_RATING(
-    learningObjectAuthor: string,
-    learningObjectName: string,
+  FLAG_LEARNING_OBJECT_RATING(params: {
+    learningObjectId: string,
     ratingId: string
-  ) {
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
-      ratingId
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
     )}/flags`;
   },
   GET_USER_RATINGS(username: string) {
