@@ -4,7 +4,7 @@
       <div class="auth-title">CLARK</div>
       <div class="auth-title light">Cybersecurity Labs and Resource Knowledge-base</div>
       <div class="done" *ngIf="isLoading">
-        Verifying your email...
+        <p class="message--in-progress">Verifying your email...</p>
         <i class="far fa-spinner-third fa-spin"></i>
       </div>
       <div class="done" *ngIf="!isLoading">

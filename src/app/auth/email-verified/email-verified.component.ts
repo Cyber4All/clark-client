@@ -5,7 +5,7 @@ import { AuthService } from '../../core/auth.service';
   selector: 'app-email-verified',
   styles: [
     `.message--in-progress {
-      color: red;
+      margin-bottom: 20px;
     }`
   ],
   templateUrl: './email-verified.component.html'
