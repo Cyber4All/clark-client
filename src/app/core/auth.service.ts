@@ -16,6 +16,7 @@ export enum AUTH_GROUP {
   VISITOR,
   USER,
   REVIEWER,
+  CURATOR,
   EDITOR,
   ADMIN
 }
@@ -299,14 +300,14 @@ export class AuthService {
   }
 
   /**
-   * Identifies if the current logged in user has reviewer priviledges.
+   * Identifies if the current logged in user has reviewer privileges.
    */
   hasReviewerAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.USER;
   }
 
   /**
-   * Identifies if the current logged in user has editor priviledges.
+   * Identifies if the current logged in user has editor privileges.
    */
   public hasEditorAccess(): boolean {
     return this.group.getValue() > AUTH_GROUP.REVIEWER;
@@ -319,12 +320,20 @@ export class AuthService {
     if (!this.user['accessGroups']) {
       return;
     }
-    if (this.user['accessGroups'].includes('admin')) {
+
+    // Since the service will only pull down objects the authenticated user is authorized to see, we don't need
+    // to check the collection in the case of reviewers and curators. We can strip the collections from the roles
+    // in the access groups for ease of comparison.
+    const groups = this.user['accessGroups'].map(x => x.split('@')[0]);
+
+    if (groups.includes('admin')) {
       this.group.next(AUTH_GROUP.ADMIN);
-    } else if (this.user['accessGroups'].includes('editor')) {
+    } else if (groups.includes('editor')) {
       this.group.next(AUTH_GROUP.EDITOR);
-    } else if (this.user['accessGroups'].includes('reviewer')) {
+    } else if (groups.includes('reviewer')) {
       this.group.next(AUTH_GROUP.REVIEWER);
+    } else if (groups.includes('curator')) {
+      this.group.next(AUTH_GROUP.CURATOR);
     } else {
       this.group.next(AUTH_GROUP.USER);
     }
