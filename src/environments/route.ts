@@ -275,5 +275,6 @@ export const MISC_ROUTES = {
 
 export const STATS_ROUTES = {
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
+  LIBRARY_STATS: `${environment.apiURL}/library/stats`,
   USERS_STATS: `${environment.apiURL}/users/stats`
 };
