@@ -249,6 +249,40 @@ export const RATING_ROUTES = {
       params.ratingId
     )}/responses`;
   },
+  GET_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses`;
+  },
+  UPDATE_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+    responseId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses/${encodeURIComponent(
+      params.responseId)}`;
+  },
+  DELETE_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+    responseId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses/${encodeURIComponent(
+      params.responseId)}`;
+  },
   CREATE_RATING(params: {
     learningObjectId: string;
   }) {

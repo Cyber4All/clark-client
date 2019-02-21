@@ -24,6 +24,52 @@ export class RatingService {
     ).toPromise();
   }
 
+  editResponse(params: {
+    learningObjectId: string;
+    ratingId: string;
+    responseId: string;
+    updates: {comment: string};
+  }): Promise<any> {
+    return this.http.patch(
+      RATING_ROUTES.UPDATE_RESPONSE({
+        learningObjectId: params.learningObjectId,
+        ratingId: params.ratingId,
+        responseId: params.responseId,
+      }),
+      params.updates,
+      { withCredentials: true },
+    ).toPromise();
+  }
+
+  deleteResponse(params: {
+    learningObjectId: string;
+    ratingId: string;
+    responseId: string;
+  }): Promise<any> {
+    return this.http.delete(
+      RATING_ROUTES.DELETE_RESPONSE({
+        learningObjectId: params.learningObjectId,
+        ratingId: params.ratingId,
+        responseId: params.responseId,
+      }),
+      { withCredentials: true },
+    ).toPromise();
+  }
+
+  getResponse(params: {
+    learningObjectId: string;
+    ratingId: string;
+    responseId: string;
+  }): Promise<any> {
+    return this.http.get(
+      RATING_ROUTES.GET_RESPONSE({
+        learningObjectId: params.learningObjectId,
+        ratingId: params.ratingId,
+      }),
+      { withCredentials: true },
+    ).toPromise();
+  }
+
   createRating(params: {
     learningObjectId: string,
     rating: {value: number, comment: string };
