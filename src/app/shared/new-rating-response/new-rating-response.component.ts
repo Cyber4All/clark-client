@@ -8,23 +8,18 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 export class NewRatingResponseComponent implements OnInit {
 
-  @Input() index: number;
+  @Input() response: {comment: string, index: number};
+  @Input() editing = false;
   @Output() cancel: EventEmitter<number> = new EventEmitter();
   @Output() submit: EventEmitter<{comment: string, index: number}> = new EventEmitter();
-
-  response = {
-    comment: '',
-    index: 0,
-  };
 
   ngOnInit() { }
 
   submitResponse() {
-    this.response.index = this.index;
     this.submit.emit(this.response);
   }
 
   cancelResponse() {
-    this.cancel.emit(this.index);
+    this.cancel.emit(this.response.index);
   }
 }

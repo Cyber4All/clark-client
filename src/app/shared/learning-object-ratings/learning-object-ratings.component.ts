@@ -10,22 +10,25 @@ import { AuthService } from '../../core/auth.service';
 })
 export class LearningObjectRatingsComponent implements OnInit {
 
-  @Input() ratings: {user: User, value: number, comment: string, date: string}[];
+  @Input() ratings: {user: User, value: number, comment: string, date: string, response: object}[];
   @Input() learningObjectOwners: string[];
   @Input() averageRating: number;
   @Input() loggedIn: boolean;
   @Output() editRating = new EventEmitter();
   @Output() deleteRating = new EventEmitter();
+  @Output() editResponse = new EventEmitter();
+  @Output() deleteResponse = new EventEmitter();
   @Output() respondRating: EventEmitter<{comment: string}> = new EventEmitter();
   @Output() reportRating: EventEmitter<{concern: string, index: number, comment?: string}> = new EventEmitter();
 
   showReport = false;
   reportIndex: number;
   showResponse = [];
+  showEditResponse = [];
 
   constructor(public userService: UserService, private auth: AuthService) { }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   calculateAverageRating(): number {
     if (this.ratings.length > 0) {
@@ -35,6 +38,13 @@ export class LearningObjectRatingsComponent implements OnInit {
 
   isRatingAuthor(index: number): boolean {
     if (this.ratings[index].user.username === this.auth.username) {
+      return true;
+    }
+    return false;
+  }
+
+  isResponseAuthor(index: number): boolean {
+    if (this.ratings[index].response[0].user.username === this.auth.username) {
       return true;
     }
     return false;
@@ -50,12 +60,15 @@ export class LearningObjectRatingsComponent implements OnInit {
       comment: this.ratings[index].comment,
       index: index
     };
-    console.log(editRating);
     this.editRating.emit(editRating);
   }
 
   submitDeleteRating(index: number) {
     this.deleteRating.emit(index);
+  }
+
+  submitDeleteResponse(index: number) {
+    this.deleteResponse.emit(index);
   }
 
   triggerReportRating(report: {concern: string, comment?: string}) {
@@ -64,21 +77,43 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   submitResponse(response: {index: number, comment: string}) {
+    this.cancelResponse(response.index);
     this.respondRating.emit(response);
   }
 
+  submitEditResponse(response: {comment: string, index: number}) {
+    this.cancelEditResponse(response.index);
+    this.editResponse.emit(response);
+  }
+
+
   openResponse(index: number) {
     this.showResponse.push(index);
+  }
+
+  openEditResponse(index: number) {
+    this.showEditResponse.push(index);
   }
 
   isWritingResponse(index: number) {
     return this.showResponse.includes(index);
   }
 
+  isEditingResponse(index: number) {
+    return this.showEditResponse.includes(index);
+  }
+
   cancelResponse(element: number) {
     const index = this.showResponse.indexOf(element);
     if (index > -1) {
       this.showResponse.splice(index, 1);
+    }
+  }
+
+  cancelEditResponse(element: number) {
+    const index = this.showEditResponse.indexOf(element);
+    if (index > -1) {
+      this.showEditResponse.splice(index, 1);
     }
   }
 }

@@ -56,20 +56,6 @@ export class RatingService {
     ).toPromise();
   }
 
-  getResponse(params: {
-    learningObjectId: string;
-    ratingId: string;
-    responseId: string;
-  }): Promise<any> {
-    return this.http.get(
-      RATING_ROUTES.GET_RESPONSE({
-        learningObjectId: params.learningObjectId,
-        ratingId: params.ratingId,
-      }),
-      { withCredentials: true },
-    ).toPromise();
-  }
-
   createRating(params: {
     learningObjectId: string,
     rating: {value: number, comment: string };

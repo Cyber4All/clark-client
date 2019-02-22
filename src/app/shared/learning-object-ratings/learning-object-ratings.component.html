@@ -29,12 +29,41 @@
           <span (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
         </ng-container>
         <ng-template #notOwnerOptions>
-          <span *ngIf="isLearningObjectOwner()" (click)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
+          <span *ngIf="isLearningObjectOwner() && rating.response.length === 0" (click)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
           <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
         </ng-template>
       </div>
+      <div *ngIf="rating.response.length > 0 && !isEditingResponse(i)" class="response-container">
+          <a [routerLink]="['/users', rating.response[0].user.username]">
+            <div class="rating-user">
+              <img [src]="userService.getGravatarImage(rating.response[0].user.email, 45)" class="user-image" alt="Picture of {{rating.response[0].user.name}}"
+              />
+              <div class="user-name">
+                <span>{{ rating.response[0].user.name }}</span>
+                <!-- TODO implement check for verified user here -->
+                <div *ngIf="false" class="verified"><i class="far fa-check-circle"></i>verified user</div>
+              </div>
+            </div>
+          </a>
+          <div class="rating-date">{{ rating.response[0].date | date:'shortDate' }}</div>
+          <div class="rating-text">
+            {{ rating.response[0].comment }}
+          </div>
+          <div class="options">
+              <ng-container *ngIf="isResponseAuthor(i); else notOwnerOptions">
+                <span (click)="openEditResponse(i)"><i class="far fa-pencil-alt"></i>Edit response</span>
+                <span (click)="submitDeleteResponse(i)"><i class="far fa-trash-alt"></i>Delete response</span>
+              </ng-container>
+              <div class="email">
+                <a id="email-link" href="mailto: {{ rating.response[0].user.email }}"> Email: {{ rating.response[0].user.email }}</a>
+              </div>
+          </div>
+      </div>
       <div *ngIf="isWritingResponse(i)">
-          <clark-new-rating-response [index]="i" (submit)="submitResponse($event)" (cancel)="cancelResponse($event)" ></clark-new-rating-response>
+          <clark-new-rating-response [response]="{comment: '', index: i}" (submit)="submitResponse($event)" (cancel)="cancelResponse($event)" ></clark-new-rating-response>
+      </div>
+      <div *ngIf="isEditingResponse(i)">
+          <clark-new-rating-response [response]="{comment: rating.response[0].comment, index: i}"  (submit)="submitEditResponse($event)" (cancel)="cancelEditResponse($event)" ></clark-new-rating-response>
       </div>
     </div>
   </div>
