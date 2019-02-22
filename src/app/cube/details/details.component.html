@@ -34,7 +34,7 @@
           class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' :
           'Write a'}} review <i class="far fa-pencil"></i></button>
         <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
-          (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportResponse)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
+          (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
       </div>
     </div>
     <div class="sidebar">
