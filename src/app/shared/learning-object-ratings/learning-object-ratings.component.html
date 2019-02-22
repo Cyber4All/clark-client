@@ -54,7 +54,7 @@
                 <span (click)="openEditResponse(i)"><i class="far fa-pencil-alt"></i>Edit response</span>
                 <span (click)="submitDeleteResponse(i)"><i class="far fa-trash-alt"></i>Delete response</span>
               </ng-container>
-              <div class="email">
+              <div *ngIf="rating.user.username === auth.user.username" class="email">
                 <a id="email-link" href="mailto: {{ rating.response[0].user.email }}"> Email: {{ rating.response[0].user.email }}</a>
               </div>
           </div>
