@@ -23,6 +23,7 @@ export interface Rating {
   comment: string;
   date: number;
   source?: string;
+  response?: object;
 }
 
 @Component({
