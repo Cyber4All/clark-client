@@ -10,7 +10,7 @@ import { DashboardLearningObject } from '../dashboard.component';
 import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
 import { AuthService } from '../../../core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { StatusDescriptions } from 'environments/status-descriptions';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -18,7 +18,6 @@ import { LearningObject } from '@cyber4all/clark-entity';
   styleUrls: ['./dashboard-item.component.scss']
 })
 export class DashboardItemComponent implements OnChanges {
-
   @Input()
   learningObject: DashboardLearningObject;
   // the status of the learning object (passed in separatly for change detection)
@@ -59,19 +58,29 @@ export class DashboardItemComponent implements OnChanges {
   // id of the context menu returned from the context-menu component
   itemMenu: string;
 
-  // map of state strings to tooltips
-  states: Map<string, { tip: string }>;
+  statusDescription: string;
 
   // flags
   meatballOpen = false;
   showStatus = true;
 
-  constructor(private contextMenuService: ContextMenuService, private auth: AuthService, private collectionService: CollectionService) {}
+  constructor(
+    private contextMenuService: ContextMenuService,
+    private auth: AuthService,
+    private collectionService: CollectionService,
+    private statuses: StatusDescriptions
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
-      // TODO move the tooltips to a copy file
-      this.buildTooltip();
+      this.statuses
+        .getDescription(
+          changes.status.currentValue,
+          this.learningObject.collection
+        )
+        .then(desc => {
+          this.statusDescription = desc;
+        });
     }
   }
 
@@ -82,7 +91,11 @@ export class DashboardItemComponent implements OnChanges {
   toggleContextMenu(event: MouseEvent) {
     if (this.itemMenu) {
       if (!this.meatballOpen) {
-        this.contextMenuService.open(this.itemMenu, event.currentTarget as HTMLElement, {top: 2, left: 10});
+        this.contextMenuService.open(
+          this.itemMenu,
+          event.currentTarget as HTMLElement,
+          { top: 2, left: 10 }
+        );
       } else {
         this.contextMenuService.destroy(this.itemMenu);
       }
@@ -101,7 +114,11 @@ export class DashboardItemComponent implements OnChanges {
   actionPermissions(action: string) {
     const permissions = {
       edit: ['unreleased', 'denied'],
-      editChildren: ['unreleased', 'denied', this.learningObject.length !== 'nanomodule'],
+      editChildren: [
+        'unreleased',
+        'denied',
+        this.learningObject.length !== 'nanomodule'
+      ],
       manageMaterials: ['unreleased', 'denied', this.verifiedEmail],
       submit: ['unreleased', 'denied', this.verifiedEmail],
       view: ['released'],
@@ -134,71 +151,17 @@ export class DashboardItemComponent implements OnChanges {
     this.select.emit(val !== '-');
   }
 
-   /**
+  /**
    * Takes a learning object and returns a list of it's children's names or an empty list
    * @return {string[]}
    */
   objectChildrenNames(learningObject: DashboardLearningObject): string[] {
     if (learningObject.children && learningObject.children.length) {
-      return (learningObject.children as DashboardLearningObject[]).map(l => l.name);
+      return (learningObject.children as DashboardLearningObject[]).map(
+        l => l.name
+      );
     } else {
       return [];
     }
-  }
-
-  buildTooltip() {
-    this.collectionService.getCollection(this.learningObject.collection).then(val => {
-      this.states = new Map([
-        [
-          LearningObject.Status.REJECTED,
-          {
-            tip:
-              'This learning object was rejected. Contact your review team for further information'
-          }
-        ],
-        [
-          LearningObject.Status.RELEASED,
-          {
-            tip:
-              'This learning object is released in the ' +
-                (val ? val.name : '') +
-              ' collection and can be browsed for.'
-          }
-        ],
-        [
-          LearningObject.Status.PROOFING,
-          {
-            tip:
-              'This learning object is currently undergoing proofing by the editorial team. ' +
-              'It is not yet released and cannot be edited until this process is complete.'
-          }
-        ],
-        [
-          LearningObject.Status.REVIEW,
-          {
-            tip:
-              'This object is currently under review by the ' +
-                (val ? val.name : '') +
-              ' review team, It is not yet published and cannot be edited until the review process is complete.'
-          }
-        ],
-        [
-          LearningObject.Status.WAITING,
-          {
-            tip:
-              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
-                (val ? val.name : '') +
-              ' review team'
-          }
-        ],
-        [
-          LearningObject.Status.UNRELEASED,
-          {
-            tip:
-              'This learning object is visible only to you. Submit it for review to make it publicly available.'
-          }
-        ]
-      ]);
-    });
   }
 }

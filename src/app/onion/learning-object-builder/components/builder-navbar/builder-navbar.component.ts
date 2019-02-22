@@ -9,6 +9,7 @@ import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
+import { StatusDescriptions } from '@env/status-descriptions';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -28,6 +29,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   learningObject: LearningObject;
   collection: Collection;
+  statusDescription: string;
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -45,6 +47,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private toasterService: ToasterService,
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
+    private statuses: StatusDescriptions,
     public validator: LearningObjectValidator,
     public store: BuilderStore,
   ) {
@@ -67,7 +70,10 @@ export class BuilderNavbarComponent implements OnDestroy {
       this.learningObject = val;
       this.collectionService.getCollection(this.learningObject.collection).then(col => {
         this.collection = col;
-        this.buildTooltip();
+      });
+
+      this.statuses.getDescription(val.status, val.collection).then(desc => {
+        this.statusDescription = desc;
       });
     });
 
@@ -196,59 +202,6 @@ export class BuilderNavbarComponent implements OnDestroy {
       } else {
         this.showSubmission = true;
       }
-    });
-  }
-
-  /**
-   * Build the states map for the status tooltips and icons
-   *
-   * @memberof BuilderNavbarComponent
-   */
-  buildTooltip() {
-    this.collectionService.getCollection(this.learningObject.collection).then(val => {
-      this.states = new Map([
-        [
-          LearningObject.Status.REJECTED,
-          {
-            tip:
-              'This learning object was rejected. Contact your review team for further information'
-          }
-        ],
-        [
-          LearningObject.Status.RELEASED,
-          {
-            tip:
-              'This learning object is published to the ' +
-              (val ? val.name : '') +
-              ' collection and can be browsed for.'
-          }
-        ],
-        [
-          LearningObject.Status.REVIEW,
-          {
-            tip:
-              'This object is currently under review by the ' +
-              (val ? val.name : '') +
-              ' review team, It is not yet published and cannot be edited until the review process is complete.'
-          }
-        ],
-        [
-          LearningObject.Status.WAITING,
-          {
-            tip:
-              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
-              (val ? val.name : '') +
-              ' review team'
-          }
-        ],
-        [
-          LearningObject.Status.UNRELEASED,
-          {
-            tip:
-              'This learning object is visible only to you. Submit it for review to make it publicly available.'
-          }
-        ]
-      ]);
     });
   }
 
