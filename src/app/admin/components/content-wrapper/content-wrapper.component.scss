@@ -1,0 +1,17 @@
+@import '../../local-vars';
+
+.page-title {
+  font-size: 26px;
+  color: $dark-text;
+}
+
+.wrapper__top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wrapper__search {
+  margin-top: 10px;
+}

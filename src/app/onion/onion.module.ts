@@ -41,6 +41,9 @@ import { OnionComponent } from './onion.component';
     LearningObjectBuilderModule,
     OnionRoutingModule,
     VirtualScrollerModule
+  ],
+  exports: [
+    DashboardItemComponent
   ]
 })
 export class OnionModule { }

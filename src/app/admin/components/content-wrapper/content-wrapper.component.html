@@ -1,0 +1,18 @@
+<div class="content-wrapper">
+  <div class="wrapper__top">
+    <div class="wrapper-top__left">
+      <div class="page-title">
+        <ng-content select="[page-title]"></ng-content>
+      </div>
+    </div>
+    <div class="wrapper-top__right">
+      <ng-content select="[filter-options]"></ng-content>
+    </div>
+  </div>
+  <div class="wrapper__search">
+    <ng-content select="[search]"></ng-content>
+  </div>
+  <div class="wrapper__main">
+    <ng-content select="[main]"></ng-content>
+  </div>
+</div>
