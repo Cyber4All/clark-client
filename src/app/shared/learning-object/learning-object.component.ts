@@ -139,28 +139,40 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
    * @memberof LearningObjectListingComponent
    */
   makeContributors() {
+    const titleCase = new TitleCasePipe();
+    // short circuit the logic if there aren't any contributors
+    if (
+      !this.learningObject.contributors ||
+      !this.learningObject.contributors.length
+    ) {
+      this.contributors = titleCase.transform(this.learningObject.author.name);
+      return;
+    }
+
     const contributors = [
-      new TitleCasePipe().transform(this.learningObject.author.name)
+      titleCase.transform(this.learningObject.author.name)
     ].concat(
-      this.learningObject.contributors.map(c =>
-        new TitleCasePipe().transform(c.name)
-      )
+      this.learningObject.contributors.map(c => titleCase.transform(c.name))
     );
 
-    // special case, should read 'a'
-    if (contributors.length === 1) {
-      this.contributors = contributors[0];
-    } else if (contributors.length === 2) {
+    if (contributors.length === 2) {
       // special case, should read 'a and b'
       this.contributors = contributors.join(' and ');
     } else {
       // join everything on comma space, then replace the last instance with ' and '
       const tempResult = contributors.join(', ');
       const lastIndex = tempResult.lastIndexOf(', ');
-      this.contributors = tempResult.substring(0, lastIndex) + ' and ' + tempResult.substring(lastIndex + 1);
+      this.contributors =
+        tempResult.substring(0, lastIndex) +
+        ' and ' +
+        tempResult.substring(lastIndex + 1);
       // we know we'll need a tooltip here, so we'll create the contributors string as normal but also set the contributorsDisplay property
       // with a truncated version to be used instead. The contributors string here will be rendered in a tooltip instead.
-      this.contributorsDisplay = contributors.slice(0, 2).join(', ') + ' and ' + (contributors.length - 2) + ' others';
+      this.contributorsDisplay =
+        contributors.slice(0, 2).join(', ') +
+        ' and ' +
+        (contributors.length - 2) +
+        ` other${contributors.length - 2 > 1 ? 's' : ''}`;
     }
   }
 

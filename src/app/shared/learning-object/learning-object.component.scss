@@ -1,303 +1,296 @@
 @import '~_vars.scss';
 
 @media (min-width: 751px) {
-    :host.card {
-        min-height: 350px;
-        height: auto;
+  :host.card {
+    min-height: 350px;
+    height: auto;
 
-        .learning-object {
-            height: 100%;
-            flex-direction: column;
-            align-items: stretch;
+    .learning-object {
+      height: 100%;
+      flex-direction: column;
+      align-items: stretch;
 
-            .image {
-                width: 100%;
-                height: 150px;
-            }
+      .image {
+        width: 100%;
+        height: 150px;
+      }
 
-            .learning-object-content {
-                flex: 1;
+      .learning-object-content {
+        flex: 1;
 
-                .details {
-                    margin-bottom: 10px;
+        .details {
+          margin-bottom: 10px;
 
-                    .author {
-                        overflow-x: hidden;
-                        text-overflow: ellipsis;
-                        width: 100%;
-                    }
-                }
-            }
+          .author {
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+          }
         }
+      }
     }
+  }
 }
 
 @media (max-width: 750px) {
-
-    :host {
-
-        &.card {
-            width: 100% !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
+  :host {
+    &.card {
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
     }
+  }
 
-    .learning-object {
-
-        .title {
-            font-size: 16px !important;
-        }
-
-        .goals {
-            display: none;
-        }
-
-        .image {
-            width: 100px !important;
-            min-height: 100%;
-            max-height: 100% !important;
-
-            .initials {
-                font-size: 13px !important;
-            }
-        }
-    }
-
-
-}
-
-:host.loading {
-    // loading styles
-    $color: lighten($placeholder, 17);
-    pointer-events: none;
-    overflow: hidden;
-
-    .image {
-        background: $color !important;
-    }
-
-    .initials {
-        visibility: hidden;
-    }
-
-    .learning-object-content {
-        width: 100%;
-
-        & > * {
-            color: transparent !important;
-            background: $color !important;
-            margin-bottom: 20px;
-            height: 15px;
-            max-width: 500px;
-            width: 100% !important;
-        }
-    }
-
-    .learning-object {
-        overflow: hidden;
-
-        &:after {
-            content: '';
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0), white, rgba(255, 255, 255, 0));
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            max-width: 200px;
-            width: 70%;
-            animation: loading 2s linear forwards infinite;
-        }
-    }
-
-}
-
-:host.card {
-
-    .image {
-        max-height: 120px;
+  .learning-object {
+    .title {
+      font-size: 16px !important;
     }
 
     .goals {
-        white-space: normal !important;
-    }
-}
-
-.learning-object {
-    background: white;
-    border-radius: 3px;
-    box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: row;
-    max-width: 850px;
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    outline: none;
-    cursor: pointer;
-    position: relative;
-    align-items: stretch;
-    justify-content: flex-start;
-
-    @function gradient($color) {
-        @return linear-gradient(45deg, $color, lighten($color, 10));
-    }
-
-    &.nanomodule {
-
-        .image {
-            background: gradient($nanomodule-color);
-        }
-    }
-
-    &.micromodule {
-
-        .image {
-            background: gradient($micromodule-color);
-        }
-    }
-
-    &.module {
-
-        .image {
-            background: gradient($module-color);
-        }
-    }
-
-    &.unit {
-
-        .image {
-            background: gradient($unit-color);
-        }
-    }
-
-    &.course {
-
-        .image {
-            background: gradient($course-color);
-        }
+      display: none;
     }
 
     .image {
-        background: white;
-        width: 150px;
-        flex: 0 0 1;
+      width: 100px !important;
+      min-height: 100%;
+      max-height: 100% !important;
+
+      .initials {
+        font-size: 13px !important;
+      }
+    }
+  }
+}
+
+:host.loading {
+  // loading styles
+  $color: lighten($placeholder, 17);
+  pointer-events: none;
+  overflow: hidden;
+
+  .image {
+    background: $color !important;
+  }
+
+  .initials {
+    visibility: hidden;
+  }
+
+  .learning-object-content {
+    width: 100%;
+
+    & > * {
+      color: transparent !important;
+      background: $color !important;
+      margin-bottom: 20px;
+      height: 15px;
+      max-width: 500px;
+      width: 100% !important;
+    }
+  }
+
+  .learning-object {
+    overflow: hidden;
+
+    &:after {
+      content: '';
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0),
+        white,
+        rgba(255, 255, 255, 0)
+      );
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      max-width: 200px;
+      width: 70%;
+      animation: loading 2s linear forwards infinite;
+    }
+  }
+}
+
+:host.card {
+  .image {
+    max-height: 120px;
+  }
+
+  .goals {
+    white-space: normal !important;
+  }
+}
+
+.learning-object {
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: row;
+  max-width: 850px;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  @function gradient($color) {
+    @return linear-gradient(45deg, $color, lighten($color, 10));
+  }
+
+  &.nanomodule {
+    .image {
+      background: gradient($nanomodule-color);
+    }
+  }
+
+  &.micromodule {
+    .image {
+      background: gradient($micromodule-color);
+    }
+  }
+
+  &.module {
+    .image {
+      background: gradient($module-color);
+    }
+  }
+
+  &.unit {
+    .image {
+      background: gradient($unit-color);
+    }
+  }
+
+  &.course {
+    .image {
+      background: gradient($course-color);
+    }
+  }
+
+  .image {
+    background: white;
+    width: 150px;
+    flex: 0 0 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    ::ng-deep canvas {
+      opacity: 0.4;
+    }
+
+    .initials {
+      color: white;
+      font-size: 16px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 5px;
+      z-index: 2;
+    }
+
+    &:after {
+      content: '';
+      background: white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.05;
+      mask: $cube-pattern repeat;
+    }
+
+    .collection {
+      position: absolute;
+      color: $dark-text;
+      text-transform: capitalize;
+      font-size: 10px;
+      font-weight: bold;
+      background: orange;
+      top: 8px;
+      left: 0;
+      box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+
+      div {
+        padding: 2px 12px 2px 8px;
         position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex-grow: 0;
-        flex-shrink: 0;
-
-        ::ng-deep canvas {
-            opacity: 0.4;
-        }
-
-        .initials {
-            color: white;
-            font-size: 16px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 5px;
-            z-index: 2;
-        }
 
         &:after {
-            content: '';
-            background: white;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            opacity: 0.05;
-            mask: $cube-pattern repeat;
+          content: '';
+          width: 15px;
+          height: 16px;
+          position: absolute;
+          background: orange;
+          border-radius: 5px;
+          transform: rotate(45deg);
+          right: -8px;
+          top: 1px;
         }
+      }
+    }
+  }
 
-        .collection {
-            position: absolute;
-            color: $dark-text;
-            text-transform: capitalize;
-            font-size: 10px;
-            font-weight: bold;
-            background: orange;
-            top: 8px;
-            left: 0;
-            box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+  .learning-object-content {
+    padding: 10px;
+    min-width: 0;
+    width: 100%;
+    position: relative;
 
-            div {
-                padding: 2px 12px 2px 8px;
-                position: relative;
+    .title {
+      font-size: 16px;
+      color: black;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
-                &:after {
-                    content: '';
-                    width: 15px;
-                    height: 16px;
-                    position: absolute;
-                    background: orange;
-                    border-radius: 5px;
-                    transform: rotate(45deg);
-                    right: -8px;
-                    top: 1px;
-                }
-            }
+      .download-btn {
+        border: 0;
+        background: rgba(0, 0, 0, 0);
+        transition: all 0.2s ease;
+        -webkit-transform: translateZ(0);
+        outline: 0;
+        color: $placeholder;
+
+        &:hover {
+          transform: scale(1.1);
+          color: $blue-accent;
         }
+      }
     }
 
-    .learning-object-content {
-        padding: 10px;
-        min-width: 0;
-        width: 100%;
-        position: relative;
-
-        .title {
-            font-size: 16px;
-            color: black;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            .download-btn {
-                border: 0;
-                background: rgba(0, 0, 0, 0);
-                transition: all 0.2s ease;
-                -webkit-transform: translateZ(0);
-                outline: 0;
-                color: $placeholder;
-
-                &:hover {
-                    transform: scale(1.1);
-                    color: $blue-accent;
-                }
-            }
-        }
-
-        .details {
-            font-size: 13px;
-            color: lighten($dark-text, 10);
-            margin-top: 5px;
-        }
-
-        .goals {
-            font-size: 13px;
-            color: lighten($dark-text, 10);
-            margin-top: 5px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            min-width: 0;
-            overflow: hidden;
-        }
+    .details {
+      font-size: 13px;
+      color: lighten($dark-text, 10);
+      margin-top: 5px;
     }
- }
 
- @keyframes loading {
-     0% {
-        left: -200px;
-        opacity: 0;
+    .goals {
+      font-size: 13px;
+      color: lighten($dark-text, 10);
+      margin-top: 5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      min-width: 0;
+      overflow: hidden;
+    }
+  }
+}
 
-     } 50% {
-         opacity: 0.8;
-
-     } 100% {
-         opacity: 0;
-         left: 100%;
-     }
- }
+@keyframes loading {
+  0% {
+    left: -200px;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    left: 100%;
+  }
+}
