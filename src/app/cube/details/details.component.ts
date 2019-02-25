@@ -124,9 +124,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       );
 
+      const owners = this.learningObject.contributors.map(user => user.username);
+      owners.push(this.learningObject.author.username);
+
       if (
         this.auth.user &&
-        this.auth.user.username === this.learningObject.author.username
+        owners.includes(this.auth.username)
       ) {
         this.isOwnObject = true;
       } else {
