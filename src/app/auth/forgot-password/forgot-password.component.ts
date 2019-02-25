@@ -18,8 +18,8 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit() {
   }
 
-submit() {
-  this.failure = undefined;
+  submit() {
+    this.failure = undefined;
     clearTimeout(this.failureTimer);
 
     this.auth.initiateResetPassword(this.email).subscribe(val => {
@@ -31,7 +31,7 @@ submit() {
   }
 
   error(text: string = 'An error occured', duration: number = 4000) {
-  this.failure = text;
+    this.failure = text;
 
     this.failureTimer = setTimeout(() => {
       this.failure = undefined;
