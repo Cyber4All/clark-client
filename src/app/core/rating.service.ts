@@ -9,6 +9,14 @@ export class RatingService {
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
+  /**
+   * Respond to a rating
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @param {{comment:string}} response
+   * @returns {Promise<any>}
+   */
   createResponse(params: {
     learningObjectId: string;
     ratingId: string;
@@ -24,6 +32,16 @@ export class RatingService {
     ).toPromise();
   }
 
+
+  /**
+   * Edit a response
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @param {string} responseId
+   * @param {{comment: string}} updates
+   * @returns {Promise<any>}
+   */
   editResponse(params: {
     learningObjectId: string;
     ratingId: string;
@@ -41,6 +59,14 @@ export class RatingService {
     ).toPromise();
   }
 
+   /**
+   * Delete a response
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @param {string} responseId
+   * @returns {Promise<any>}
+   */
   deleteResponse(params: {
     learningObjectId: string;
     ratingId: string;
@@ -56,6 +82,13 @@ export class RatingService {
     ).toPromise();
   }
 
+   /**
+   * Create a rating for a learning object
+   *
+   * @param {string} learningObjectId
+   * @param {{value: number, comment: string}} rating
+   * @returns {Promise<any>}
+   */
   createRating(params: {
     learningObjectId: string,
     rating: {value: number, comment: string };
@@ -73,6 +106,14 @@ export class RatingService {
       .toPromise();
   }
 
+   /**
+   * Edit a rating
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @param {{value: number, comment: string}} rating
+   * @returns {Promise<any>}
+   */
   editRating(params: {
     learningObjectId: string;
     ratingId: string;
@@ -92,6 +133,14 @@ export class RatingService {
       .toPromise();
   }
 
+
+  /**
+   * Delete a rating
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @returns {Promise<any>}
+   */
   deleteRating(params: {
     learningObjectId: string;
     ratingId: string;
@@ -110,6 +159,12 @@ export class RatingService {
   }
 
 
+  /**
+   * Get ratings for a learning object
+   *
+   * @param {string} learningObjectId
+   * @returns {Promise<any>}
+   */
   getLearningObjectRatings(params: {
     learningObjectId: string;
   }): Promise<any> {
@@ -135,6 +190,14 @@ export class RatingService {
       });
   }
 
+  /**
+   * Flag a rating
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @param {{concern: string, comment: string}} report
+   * @returns {Promise<any>}
+   */
   flagLearningObjectRating(params: {
       learningObjectId: string;
       ratingId: string;
