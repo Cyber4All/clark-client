@@ -25,6 +25,9 @@ jobs:
       - attach_workspace : 
           at: ~/clark-client
       - run:
+          name: Unit Tests
+          command: npm test -- auth/
+      - run:
           name: Run e2e Tests
           command: |
             echo "Test coming soon"
