@@ -13,9 +13,9 @@
       <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
     </div>
     <div class="details">
-      <div class="author">
-        {{ learningObject.author.name | titlecase }} | {{ learningObject.author.organization }}
-      </div>
+      <span class="author" [tip]="contributors" tipDisabled="{{ !contributorsDisplay }}">
+        {{ contributorsDisplay || contributors }}
+      </span>
       <div class="date">
         Updated {{ date | date:'mediumDate' }}
       </div>

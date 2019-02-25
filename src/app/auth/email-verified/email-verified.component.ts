@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
+import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
   selector: 'clark-email-verified',
@@ -14,9 +15,10 @@ export class EmailVerifiedComponent implements OnInit {
   isLoading = true;
   hasValidToken;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private nav: NavbarService) {}
 
   ngOnInit() {
+    this.nav.hide();
     this.auth.validate()
       .then(async () => {
         // Token is good, refresh it and go home
