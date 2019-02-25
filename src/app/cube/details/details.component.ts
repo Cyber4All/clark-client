@@ -136,8 +136,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.isOwnObject = false;
       }
 
-      this.learningObjectOwners = this.learningObject.contributors.map(user => user.username);
-      this.learningObjectOwners.push(this.learningObject.author.username);
+      this.learningObjectOwners = owners;
       this.getLearningObjectRatings();
     } catch (e) {
 
@@ -350,6 +349,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Submit new rating response
+   *
+   * @param {string} comment
+   * @param {number} index
+   */
   submitResponse(response: {
     comment: string,
     index: number
@@ -393,6 +398,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Edit an existing rating response
+   *
+   * @param {string} comment
+   * @param {number} index
+   */
   editResponse(response: {
     comment: string,
     index: number,
@@ -437,6 +448,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Delete a rating response
+   *
+   * @param {number} index
+   */
   async deleteResponse(index: number) {
     // locate target rating and then delete the index param from the response
     const ratingId = this.ratings[index].id;
