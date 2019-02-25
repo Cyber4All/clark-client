@@ -355,7 +355,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param {string} comment
    * @param {number} index
    */
-  submitResponse(response: {
+  async submitResponse(response: {
     comment: string,
     index: number
   }) {
@@ -364,30 +364,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
     delete response.index;
 
     if (ratingId) {
-      this.ratingService
+      const result = await this.ratingService
         .createResponse({
           learningObjectId: this.learningObject.id,
           ratingId,
           response,
-        })
-        .catch(response => {
-            if (response.status === 200) {
-              this.getLearningObjectRatings();
-              this.toastService.notify(
-                'Success!',
-                'Response submitted successfully!',
-                'good',
-                'far fa-check'
-              );
-            } else {
-              this.toastService.notify(
-                'Error!',
-                'An error occured and your response could not be submitted',
-                'bad',
-                'far fa-times'
-              );
-            }
         });
+        if (result) {
+          this.getLearningObjectRatings();
+          this.toastService.notify(
+            'Success!',
+            'Response submitted successfully!',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.toastService.notify(
+            'Error!',
+            'An error occured and your response could not be submitted',
+            'bad',
+            'far fa-times'
+          );
+        }
     } else {
       this.toastService.notify(
         'Error!',
@@ -404,7 +402,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param {string} comment
    * @param {number} index
    */
-  editResponse(response: {
+  async editResponse(response: {
     comment: string,
     index: number,
   }) {
@@ -413,31 +411,29 @@ export class DetailsComponent implements OnInit, OnDestroy {
     const responseId = this.ratings[response.index].response[0]._id;
 
     if (ratingId) {
-      this.ratingService
+      const result = await this.ratingService
         .editResponse({
           learningObjectId: this.learningObject.id,
           ratingId,
           responseId,
           updates: response,
-        })
-        .catch(response => {
-            if (response.status === 200) {
-              this.getLearningObjectRatings();
-              this.toastService.notify(
-                'Success!',
-                'Response updated successfully!',
-                'good',
-                'far fa-check'
-              );
-            } else {
-              this.toastService.notify(
-                'Error!',
-                'An error occured and your response could not be updated',
-                'bad',
-                'far fa-times'
-              );
-            }
         });
+        if (result) {
+          this.getLearningObjectRatings();
+          this.toastService.notify(
+            'Success!',
+            'Response updated successfully!',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.toastService.notify(
+            'Error!',
+            'An error occured and your response could not be updated',
+            'bad',
+            'far fa-times'
+          );
+        }
     } else {
       this.toastService.notify(
         'Error!',
@@ -475,30 +471,29 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     if (shouldDelete === 'delete') {
       if (ratingId) {
-        this.ratingService
+        const result = await this.ratingService
           .deleteResponse({
             learningObjectId: this.learningObject.id,
             ratingId,
             responseId,
-          })
-          .catch(response => {
-              if (response.status === 200) {
-                this.getLearningObjectRatings();
-                this.toastService.notify(
-                  'Success!',
-                  'Response deleted successfully!',
-                  'good',
-                  'far fa-check'
-                );
-              } else {
-                this.toastService.notify(
-                  'Error!',
-                  'An error occured and your response could not be deleted',
-                  'bad',
-                  'far fa-times'
-                );
-              }
           });
+
+        if (result) {
+          this.getLearningObjectRatings();
+          this.toastService.notify(
+            'Success!',
+            'Response deleted successfully!',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.toastService.notify(
+            'Error!',
+            'An error occured and your response could not be deleted',
+            'bad',
+            'far fa-times'
+          );
+        }
       } else {
         this.toastService.notify(
           'Error!',
@@ -521,7 +516,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       })
       .then(val => {
         this.ratings = val.ratings;
-        this.averageRatingValueValue = val.avgValue;
+        this.averageRatingValue = val.avgValue;
 
         const u = this.auth.username;
 

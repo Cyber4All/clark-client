@@ -22,14 +22,18 @@ export class RatingService {
     ratingId: string;
     response: {comment: string}
   }): Promise<any> {
-    return this.http.post(
+    const res = this.http.post(
       RATING_ROUTES.CREATE_RESPONSE({
         learningObjectId: params.learningObjectId,
         ratingId: params.ratingId,
       }),
       params.response,
       { withCredentials: true },
-    ).toPromise();
+    ).toPromise()
+    .catch(result => {
+      return Promise.resolve(result.status === 200);
+    });
+    return res;
   }
 
 
@@ -48,7 +52,7 @@ export class RatingService {
     responseId: string;
     updates: {comment: string};
   }): Promise<any> {
-    return this.http.patch(
+    const res = this.http.patch(
       RATING_ROUTES.UPDATE_RESPONSE({
         learningObjectId: params.learningObjectId,
         ratingId: params.ratingId,
@@ -56,7 +60,11 @@ export class RatingService {
       }),
       params.updates,
       { withCredentials: true },
-    ).toPromise();
+    ).toPromise()
+    .catch(result => {
+      return Promise.resolve(result.status === 200);
+    });
+    return res;
   }
 
    /**
@@ -72,14 +80,18 @@ export class RatingService {
     ratingId: string;
     responseId: string;
   }): Promise<any> {
-    return this.http.delete(
+    const res = this.http.delete(
       RATING_ROUTES.DELETE_RESPONSE({
         learningObjectId: params.learningObjectId,
         ratingId: params.ratingId,
         responseId: params.responseId,
       }),
       { withCredentials: true },
-    ).toPromise();
+    ).toPromise()
+    .catch(result => {
+      return Promise.resolve(result.status === 200);
+    });
+    return res;
   }
 
    /**
