@@ -39,7 +39,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   loggedin: boolean;
   ratings: Rating[] = [];
   learningObjectOwners: string[];
-  averageRating = 0;
+  averageRatingValue = 0;
   showAddRating = false;
   showAddResponse = false;
   isOwnObject = false;
@@ -521,7 +521,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       })
       .then(val => {
         this.ratings = val.ratings;
-        this.averageRating = val.avgValue;
+        this.averageRatingValueValue = val.avgValue;
 
         const u = this.auth.username;
 

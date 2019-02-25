@@ -1,5 +1,5 @@
 <div *ngIf="learningObject" class="details-wrapper" [ngClass]="learningObject.length">
-  <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [owned]="isOwnObject" [ratings]="ratings" [averageRating]="averageRating" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
+  <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [owned]="isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
   <div class="flex">
     <div class="content">
       <div class="description">
@@ -33,7 +33,7 @@
         <button *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}"
           class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' :
           'Write a'}} review <i class="far fa-pencil"></i></button>
-        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRating" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
+        <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRatingValue" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
           (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
       </div>
     </div>
