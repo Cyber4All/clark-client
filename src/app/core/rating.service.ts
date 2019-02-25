@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RATING_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
-
+import { throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class RatingService {
@@ -18,6 +19,10 @@ export class RatingService {
           withCredentials: true, responseType: 'text'
         }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -30,6 +35,10 @@ export class RatingService {
           withCredentials: true, responseType: 'text'
         }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -41,6 +50,10 @@ export class RatingService {
           withCredentials: true, responseType: 'text'
         }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -51,6 +64,10 @@ export class RatingService {
         {
           withCredentials: true
         }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
       )
       .toPromise()
       .then((res: any) => {
@@ -74,7 +91,12 @@ export class RatingService {
       RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING(learningObjectAuthor, learningObjectName, ratingId),
       report,
       { withCredentials: true }
-    ).toPromise();
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    )
+    .toPromise();
   }
 
   // TODO implement this
@@ -88,9 +110,23 @@ export class RatingService {
           withCredentials: true
         }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then(val => {
         // console.log(val);
       });
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }
