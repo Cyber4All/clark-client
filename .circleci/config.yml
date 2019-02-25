@@ -13,6 +13,9 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
+          name: Unit Tests
+          command: npm test -- auth/
+      - run:
           name: Build Application
           command: yarn ng build --prod --aot=false --build-optimizer=false --no-progress
       - persist_to_workspace: 
@@ -24,9 +27,6 @@ jobs:
     steps:  
       - attach_workspace : 
           at: ~/clark-client
-      - run:
-          name: Unit Tests
-          command: npm test -- auth/
       - run:
           name: Run e2e Tests
           command: |
