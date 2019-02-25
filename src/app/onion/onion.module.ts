@@ -13,7 +13,6 @@ import { OnionCoreModule } from './core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
-import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component';
 import { OnionComponent } from './onion.component';
 
 /**
@@ -27,7 +26,7 @@ import { OnionComponent } from './onion.component';
   declarations: [
     OnionComponent,
     DashboardComponent,
-    DashboardItemComponent,
+
   ],
   // Specifys all modules to be imported
   imports: [
@@ -43,7 +42,7 @@ import { OnionComponent } from './onion.component';
     VirtualScrollerModule
   ],
   exports: [
-    DashboardItemComponent
+
   ]
 })
 export class OnionModule { }

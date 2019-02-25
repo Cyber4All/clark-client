@@ -6,11 +6,12 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { DashboardLearningObject } from '../dashboard.component';
-import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
-import { AuthService } from '../../../core/auth.service';
+
 import { CollectionService } from 'app/core/collection.service';
 import { StatusDescriptions } from 'environments/status-descriptions';
+import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
+import { ContextMenuService } from '../contextmenu/contextmenu.service';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-dashboard-item',
