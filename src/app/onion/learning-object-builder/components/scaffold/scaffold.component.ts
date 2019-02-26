@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'; 
+import { BuilderStore } from '../../builder-store.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
@@ -8,24 +9,30 @@ import { LearningObject } from '@cyber4all/clark-entity';
   styleUrls: ['./scaffold.component.scss']
 })
 export class ScaffoldComponent implements OnInit {
-  @Input() children: LearningObject; 
-
+  @Input() learningObject: LearningObject; 
   //boolean to indicate if edit is selected for the list 
-  editContent = false; 
+  @Input() editContent: boolean;
 
-  constructor() { }
+  children: any;
+  constructor(private store: BuilderStore) {}
 
-  ngOnInit() {  
-    this.children.getLearningObjects()
+  ngOnInit() {
+    this.store.getChildren().then((kiddos) => {
+      this.children = kiddos;
+      console.log(this.children)
+    }); 
   }
 
+  ngChange(){ 
+    //this.store.setChildren(this.learningObject, this.children); 
+  }
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.learningObject.children, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.children, event.previousIndex, event.currentIndex); 
   }
 
   //toggle between edit and list view of children 
   toggle(){
-    this.editContent = !this.editContent;
+   this.editContent = !this.editContent;
   }
 }
 

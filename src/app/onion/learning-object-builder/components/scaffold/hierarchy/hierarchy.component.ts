@@ -8,7 +8,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 })
 export class HierarchyComponent implements OnInit {
   @Input() editContent: boolean; 
-  @Input() learningObject: LearningObject; 
+  @Input() learningObject: LearningObject;
   constructor() { }
 
   ngOnInit() {
