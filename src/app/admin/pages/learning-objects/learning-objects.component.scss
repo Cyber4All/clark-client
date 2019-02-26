@@ -5,10 +5,6 @@ clark-dashboard-item {
     display: block;
 }
 
-.list-wrapper {
-    padding: 20px;
-}
-
 .list {
     max-width: $max-width;
     position: relative;
@@ -17,6 +13,7 @@ clark-dashboard-item {
     margin-top: 20px;
     min-height: 500px;
     overflow: hidden;
+    margin-top: 40px;
     margin-bottom: 20px;
 }
 
