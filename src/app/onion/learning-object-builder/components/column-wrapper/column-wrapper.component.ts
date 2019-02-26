@@ -29,26 +29,27 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
   async ngOnInit() {
     try {
       this.messageBar = !!(await this.messagesService.getStatus());
-
-      // calculate the height of the scroll wrapper
-      this.columnOffset = (this.columnWrapper
-        .nativeElement as HTMLElement).offsetTop;
-      this.columnHeight =
-        window.innerHeight -
-        this.columnOffset -
-        (this.messageBar
-          ? (document.querySelector('clark-message .wrapper') as HTMLElement)
-              .offsetHeight
-          : 0) +
-        30; // this +30 offsets the wrappers -30 offset
-
-      // set overflow of body to hidden to prevent parent scrolling
-      if (this.columnHeight >= 560) {
-        // this check prevents obsucring the outcomes sidebar
-        document.body.style.overflow = 'hidden';
-      }
     } catch (error) {
       // FIXME this suppresses the error resulting in the lambda function for messages being disabled
+    }
+
+    // calculate the height of the scroll wrapper
+    this.columnOffset = (this.columnWrapper
+      .nativeElement as HTMLElement).offsetTop;
+
+    this.columnHeight =
+      window.innerHeight -
+      this.columnOffset -
+      (this.messageBar
+        ? (document.querySelector('clark-message .wrapper') as HTMLElement)
+            .offsetHeight
+        : 0) +
+      30; // this +30 offsets the wrappers -30 offset
+
+    // set overflow of body to hidden to prevent parent scrolling
+    if (this.columnHeight >= 560) {
+      // this check prevents obsucring the outcomes sidebar
+      document.body.style.overflow = 'hidden';
     }
   }
 
