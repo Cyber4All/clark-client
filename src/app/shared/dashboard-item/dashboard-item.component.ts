@@ -27,6 +27,9 @@ export class DashboardItemComponent implements OnChanges {
   // Does this item include a checkbox
   @Input()
   hasCheckBox = true;
+   // Does this item include a author name
+  @Input()
+  hasAuthor = false;
   // is this object selected
   @Input()
   selected = false;
