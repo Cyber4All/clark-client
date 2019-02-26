@@ -15,10 +15,9 @@ export class EmailVerifiedComponent implements OnInit {
   isLoading = true;
   hasValidToken;
 
-  constructor(private auth: AuthService, private nav: NavbarService) {}
+  constructor(private auth: AuthService) {}
 
   ngOnInit() {
-    this.nav.hide();
     this.auth.validate()
       .then(async () => {
         // Token is good, refresh it and go home
