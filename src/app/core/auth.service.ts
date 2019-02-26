@@ -50,6 +50,19 @@ export class AuthService {
     }
   }
 
+  /**
+   * Checks if user's group equals admin or editor
+   *
+   * @returns {boolean}
+   * @memberof AuthService
+   */
+  public isAdminOrEditor(): boolean {
+    return (
+      this.group.value === AUTH_GROUP.ADMIN ||
+      this.group.value === AUTH_GROUP.EDITOR
+    );
+  }
+
   private changeStatus(status: boolean) {
     if (this.isLoggedIn.getValue() !== status) {
       this.isLoggedIn.next(status);
@@ -74,6 +87,10 @@ export class AuthService {
 
   get username(): string {
     return this.user ? this.user.username : undefined;
+  }
+
+  get accessGroups(): string[] {
+    return this.user ? this.user.accessGroups : [];
   }
 
   async validate(): Promise<void> {
