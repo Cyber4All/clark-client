@@ -5,7 +5,7 @@
   <div class="overall-rating">
     <clark-rating-stars  *ngIf="ratings?.length > 0" [rating]="averageRating" [color]="'gold'" [size]="22" [reviewsCount]="ratings?.length"></clark-rating-stars>
   </div>
-  <div *ngIf="ratings?.length; else noRatings" class="ratings-list">
+  <div *ngIf="ratings?.length > 0; else noRatings" class="ratings-list">
     <div *ngFor="let rating of ratings; let i = index;" class="rating-list-element">
       <a [routerLink]="['/users', rating.user.username]">
         <div class="rating-user">
@@ -18,23 +18,56 @@
           </div>
         </div>
       </a>
-      <clark-rating-stars [rating]="rating.number" [color]="'gold'" [size]="18"></clark-rating-stars>
-      <div class="rating-date">{{ getDate(rating.date) | date }}</div>
+      <clark-rating-stars [rating]="rating.value" [color]="'gold'" [size]="18"></clark-rating-stars>
+      <div class="rating-date">{{ rating.date | date:'shortDate' }}</div>
       <div class="rating-text">
         {{ rating.comment }}
       </div>
       <div *ngIf="auth.user?.emailVerified" class="options">
-        <ng-container *ngIf="isAuthor(i); else notOwnerOptions">
+        <ng-container *ngIf="isRatingAuthor(i); else notOwnerOptions">
           <span (click)="submitEditRating(i)"><i class="far fa-pencil-alt"></i>Edit rating</span>
           <span (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
         </ng-container>
         <ng-template #notOwnerOptions>
-          <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report
-            rating</span>
+          <span *ngIf="isLearningObjectOwner() && rating.response.length === 0" (click)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
+          <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
         </ng-template>
+      </div>
+      <div *ngIf="rating.response.length > 0 && !isEditingResponse(i)" class="response-container">
+          <a [routerLink]="['/users', rating.response[0].user.username]">
+            <div class="rating-user">
+              <img [src]="userService.getGravatarImage(rating.response[0].user.email, 45)" class="user-image" alt="Picture of {{rating.response[0].user.name}}"
+              />
+              <div class="user-name">
+                <span>{{ rating.response[0].user.name }}</span>
+                <!-- TODO implement check for verified user here -->
+                <div *ngIf="false" class="verified"><i class="far fa-check-circle"></i>verified user</div>
+              </div>
+            </div>
+          </a>
+          <div class="rating-date">{{ rating.response[0].date | date:'shortDate' }}</div>
+          <div class="rating-text">
+            {{ rating.response[0].comment }}
+          </div>
+          <div class="options">
+              <ng-container *ngIf="isResponseAuthor(i); else notOwnerOptions">
+                <span (click)="openEditResponse(i)"><i class="far fa-pencil-alt"></i>Edit response</span>
+                <span (click)="submitDeleteResponse(i)"><i class="far fa-trash-alt"></i>Delete response</span>
+              </ng-container>
+              <div *ngIf="rating.user.username === auth.username" class="email">
+                <a class="mailto" href="mailto: {{ rating.response[0].user.email }}"> Email: {{ rating.response[0].user.email }}</a>
+              </div>
+          </div>
+      </div>
+      <div *ngIf="isWritingResponse(i)">
+          <clark-new-rating-response [response]="{comment: '', index: i}" (submit)="submitResponse($event)" (cancel)="cancelResponse($event)" ></clark-new-rating-response>
+      </div>
+      <div *ngIf="isEditingResponse(i)">
+          <clark-new-rating-response [response]="{comment: rating.response[0].comment, index: i}"  (submit)="submitEditResponse($event)" (cancel)="cancelEditResponse($event)" ></clark-new-rating-response>
       </div>
     </div>
   </div>
+
   <ng-template #noRatings>
     <div class="no-ratings">
       This learning object doesn't have any ratings yet!
