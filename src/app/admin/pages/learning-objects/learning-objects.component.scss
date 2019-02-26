@@ -1,9 +1,15 @@
 @import '~_vars.scss';
-  .list-wrapper {
-    padding: 20px;
-  }
 
-  .list {
+clark-dashboard-item {
+    position: relative;
+    display: block;
+}
+
+.list-wrapper {
+    padding: 20px;
+}
+
+.list {
     max-width: $max-width;
     position: relative;
     margin: auto;
@@ -12,51 +18,65 @@
     min-height: 500px;
     overflow: hidden;
     margin-bottom: 20px;
+}
 
-    .list-top {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 20px;
-      position: relative;
-      z-index: 2;
-
-      .header {
-        font-size: 26px;
-        color: $dark-text;
-      }
-    }
-  }
-
-  .list-body {
-    .column-headers,
+.list__body {
+    .list__body__column-headers,
     ::ng-deep .row-item {
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: 20px 60px 2fr 1fr 1fr 50px;
-      grid-gap: 0 20px;
-      align-items: center;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 20px 60px 2fr 1fr 1fr 50px;
+        grid-gap: 0 20px;
+        align-items: center;
     }
 
     ::ng-deep .row-item {
-      & > div {
+        & > div {
         padding-top: 20px;
         padding-bottom: 20px;
-      }
+        }
     }
+}
 
-    .column-headers {
-      font-weight: bold;
-      font-size: 14px;
-      color: $dark-text;
-      opacity: 0.46;
-      padding-top: 20px;
-      padding-bottom: 10px;
-    }
+.list__body__column-headers {
+    font-weight: bold;
+    font-size: 14px;
+    color: $dark-text;
+    opacity: 0.46;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
 
-    clark-dashboard-item {
-      position: relative;
-      display: block;
-    }
-  }
+.empty-template {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+    font-size: 16px;
+}
+  
+.empty-template__top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: $dark-text;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+  
+.svg-inline--fa {
+    font-size: 50px;
+    margin-right: 10px;
+}
+    
+  
+
 

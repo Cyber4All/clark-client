@@ -4,10 +4,10 @@
   <div filter-options>filter options yo</div>
 
   <div class="list" main>
-    <div #listInner class="list-inner">
-      <div *ngIf="!loading; else loadingTemplate" class="list-body">
+    <div #listInner>
+      <div *ngIf="!loading; else loadingTemplate" class="list__body">
         <div *ngIf="learningObjects?.length; else emptyTemplate">
-          <div class="column-headers">
+          <div class="list__body__column-headers">
             <div>Status</div>
             <div>Name</div>
             <div>Type</div>
@@ -26,3 +26,17 @@
     </div>
   </div>
 </clark-admin-content-wrapper>
+
+<ng-template #emptyTemplate>
+  <div [@nonListItem] class="empty-template">
+    <div class="empty-template__top">
+      <i class="fal fa-box-open"></i>
+      <div class="top-message">
+        Nothing here!
+      </div>
+    </div>
+    <div class="empty-text">
+      Learning Objects will appear here after they are submitted to your collection
+    </div>
+  </div>
+</ng-template>
