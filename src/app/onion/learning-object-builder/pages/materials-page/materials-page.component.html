@@ -1,6 +1,6 @@
 <clark-column-wrapper [columns]="'lm'">
-  <div left>
-    <clark-scaffold></clark-scaffold>
+  <div left *ngIf="learningObject$">
+    <clark-scaffold [learningObject]= "learningObject$"></clark-scaffold>
   </div>
   <div main>
     <!-- upload content here -->
