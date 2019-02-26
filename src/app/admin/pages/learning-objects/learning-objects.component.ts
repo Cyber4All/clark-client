@@ -22,7 +22,9 @@ export class LearningObjectsComponent implements OnInit {
     this.learningObjects = [
       {
         _id: '5aa0183becba9a264dcd806b',
-        authorID: '5a70fb5ed45bde3f9d65a88c',
+        author: {
+          name: 'nick visalli',
+        },
         date: '1520530818714',
         goals: [
           {

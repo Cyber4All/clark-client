@@ -1,10 +1,5 @@
 @import '~_vars.scss';
 
-clark-dashboard-item {
-    position: relative;
-    display: block;
-}
-
 .list {
     max-width: $max-width;
     position: relative;
@@ -29,19 +24,24 @@ clark-dashboard-item {
 
     ::ng-deep .row-item {
         & > div {
-        padding-top: 20px;
-        padding-bottom: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
     }
-}
 
-.list__body__column-headers {
-    font-weight: bold;
-    font-size: 14px;
-    color: $dark-text;
-    opacity: 0.46;
-    padding-top: 20px;
-    padding-bottom: 10px;
+    .list__body__column-headers {
+        font-weight: bold;
+        font-size: 14px;
+        color: $dark-text;
+        opacity: 0.46;
+        padding-top: 20px;
+        padding-bottom: 10px;
+    }
+
+    clark-dashboard-item {
+        position: relative;
+        display: block;
+    }
 }
 
 .empty-template {

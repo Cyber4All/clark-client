@@ -24,6 +24,9 @@ export class DashboardItemComponent implements OnChanges {
   // the status of the learning object (passed in separatly for change detection)
   @Input()
   status: string;
+  // Does this item include a checkbox
+  @Input()
+  hasCheckBox = true;
   // is this object selected
   @Input()
   selected = false;

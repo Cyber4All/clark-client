@@ -10,6 +10,7 @@
           <div class="list__body__column-headers">
             <div>Status</div>
             <div>Name</div>
+            <div>Author</div>
             <div>Type</div>
             <div>Date</div>
           </div>
@@ -18,6 +19,7 @@
               *ngFor="let l of learningObjects; let i = index"
               [learningObject]="l"
               [status]="l.status"
+              [hasCheckBox]="false"
               >
             </clark-dashboard-item>
           </div>
