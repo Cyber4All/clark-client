@@ -11,12 +11,21 @@
   </button>
 </div>
 <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
-    <clark-hierarchy 
-      *ngFor="let c of learningObject?.children" 
-      [editContent] = "editContent"
-      [learningObject] = "c"
-      >
-    </clark-hierarchy>
+  <div *ngFor="let c of children" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
+    <div class = "info">
+      <div class = "top-row">
+        <div class = "child-title">{{c._name}}</div>
+      </div>
+      <div class = "bottom-row">
+        <div class = "child-length">{{c._length}}</div>
+        <div class = "child-last-updated">{{c._date |  date:'short'}}</div>
+      </div>
+  </div>
+  <div [ngStyle]="{display: editContent ? 'block' : 'none'}" class="hamburger-handle" cdkDragHandle>
+    <i class="fas fa-bars"></i>
+  </div>
+  </div>
 </div>
+
 
 
