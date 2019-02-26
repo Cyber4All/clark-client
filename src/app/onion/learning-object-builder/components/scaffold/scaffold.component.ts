@@ -19,7 +19,6 @@ export class ScaffoldComponent implements OnInit {
   ngOnInit() {
     this.store.getChildren().then((kiddos) => {
       this.children = kiddos;
-      console.log(this.children)
     }); 
   }
 
@@ -28,6 +27,7 @@ export class ScaffoldComponent implements OnInit {
   }
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.children, event.previousIndex, event.currentIndex); 
+    this.store.setChildren(this.children);
   }
 
   //toggle between edit and list view of children 
