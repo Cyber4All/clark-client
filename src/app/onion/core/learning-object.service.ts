@@ -30,10 +30,8 @@ export class LearningObjectService {
    * @returns {Promise<string>}
    * @memberof LearningObjectService
    */
-  create(learningObject): Promise<LearningObject> {
-    const route = USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(
-      this.auth.user.username
-    );
+  create(learningObject, authorUsername: string): Promise<LearningObject> {
+    const route = USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(authorUsername);
 
     return this.http
       .post(
@@ -70,11 +68,11 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(filters?: any): Promise<LearningObject[]> {
-    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(
-      this.auth.user.username,
-      filters
-    );
+  getLearningObjects(
+    authorUsername: string,
+    filters?: any
+  ): Promise<LearningObject[]> {
+    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .toPromise()
@@ -94,11 +92,12 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   // TODO type this parameter
-  save(id: string, learningObject: { [key: string]: any }): Promise<{}> {
-    const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(
-      this.auth.user.username,
-      id
-    );
+  save(
+    id: string,
+    authorUsername: string,
+    learningObject: { [key: string]: any },
+  ): Promise<{}> {
+    const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
     return this.http
       .patch(
         route,
@@ -134,7 +133,9 @@ export class LearningObjectService {
 
   deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
     return this.http
-      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
+      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), {
+        withCredentials: true
+      })
       .toPromise();
   }
 
@@ -144,9 +145,7 @@ export class LearningObjectService {
    * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
-    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT(
-      learningObject.id
-    );
+    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT(learningObject.id);
     return this.http
       .post(
         route,
@@ -161,15 +160,14 @@ export class LearningObjectService {
    * @param {learningObject} learningObject the learning object to be unpublished
    */
   unsubmit(learningObject: LearningObject) {
-    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(
-      learningObject.id
-    );
+    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(learningObject.id);
 
     return this.http
-      .delete(
-        route,
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
-      )
+      .delete(route, {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'text'
+      })
       .toPromise();
   }
 
@@ -180,9 +178,9 @@ export class LearningObjectService {
    * @returns {Promise<{}>}
    * @memberof LearningObjectService
    */
-  delete(learningObjectName: string): Promise<{}> {
+  delete(learningObjectName: string, authorUsername: string): Promise<{}> {
     const route = USER_ROUTES.DELETE_LEARNING_OBJECT(
-      this.auth.user.username,
+      authorUsername,
       learningObjectName
     );
     return this.http
@@ -201,11 +199,8 @@ export class LearningObjectService {
    * @returns {Promise<{}>}
    * @memberof LearningObjectService
    */
-  deleteMultiple(names: string[]): Promise<any> {
-    const route = USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(
-      this.auth.user.username,
-      names
-    );
+  deleteMultiple(names: string[], authorUsername: string): Promise<any> {
+    const route = USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(authorUsername, names);
 
     return this.http
       .delete(route, {
@@ -216,11 +211,12 @@ export class LearningObjectService {
       .toPromise();
   }
 
-  setChildren(learningObjectName: string, children: string[]): Promise<any> {
-    const route = USER_ROUTES.SET_CHILDREN(
-      this.auth.user.username,
-      learningObjectName
-    );
+  setChildren(
+    learningObjectName: string,
+    authorUsername: string,
+    children: string[]
+  ): Promise<any> {
+    const route = USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
 
     return this.http
       .post(
@@ -231,8 +227,8 @@ export class LearningObjectService {
       .toPromise();
   }
 
-  updateReadme(username: string, id: string): any {
-    const route = USER_ROUTES.UPDATE_PDF(username, id);
+  updateReadme(authorUsername: string, id: string): any {
+    const route = USER_ROUTES.UPDATE_PDF(authorUsername, id);
     return this.http.patch(
       route,
       {},
@@ -242,20 +238,20 @@ export class LearningObjectService {
   /**
    * Fetches Learning Object's Materials
    *
-   * @param {string} username
+   * @param {string} authorUsername
    * @param {string} objectId
    * @param {string} description
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
-  getMaterials(username: string, objectId: string): Promise<any> {
-    const route = USER_ROUTES.GET_MATERIALS(username, objectId);
+  getMaterials(authorUsername: string, objectId: string): Promise<any> {
+    const route = USER_ROUTES.GET_MATERIALS(authorUsername, objectId);
     return this.http.get(route, { withCredentials: true }).toPromise();
   }
   /**
    * Makes request to update file description
    *
-   * @param {string} username
+   * @param {string} authorUsername
    * @param {string} objectId
    * @param {string} fileId
    * @param {string} description
@@ -263,13 +259,13 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   updateFileDescription(
-    username: string,
+    authorUsername: string,
     objectId: string,
     fileId: string,
     description: string
   ): Promise<any> {
     const route = USER_ROUTES.UPDATE_FILE_DESCRIPTION(
-      username,
+      authorUsername,
       objectId,
       fileId
     );
