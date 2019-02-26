@@ -27,7 +27,7 @@ export interface AuthUser extends User {
 
 @Injectable()
 export class AuthService {
-  user: User = undefined;
+  user: AuthUser;
   headers = new Headers();
   httpHeaders = new HttpHeaders();
   inUse: object;
