@@ -1,11 +1,11 @@
 import { USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ResponseContentType } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
@@ -42,6 +42,10 @@ export class CartV2Service {
         withCredentials: true,
         headers: this.headers
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((val: any) => {
         this.cartItems = val
@@ -67,6 +71,10 @@ export class CartV2Service {
         ),
         {},
         { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
       )
       .toPromise()
       .then(async (val: any) => {
@@ -96,6 +104,10 @@ export class CartV2Service {
         ),
         { headers: this.headers, withCredentials: true }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((val: any) => {
         this.cartItems = val
@@ -112,6 +124,10 @@ export class CartV2Service {
           headers: this.headers,
           withCredentials: true
         })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise()
         .then(val => {
           this.cartItems = [];
@@ -129,6 +145,10 @@ export class CartV2Service {
         responseType: 'blob',
         withCredentials: true
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .subscribe(
         res => {
           importedSaveAs(res, `${Date.now()}.zip`);
@@ -172,6 +192,16 @@ export class CartV2Service {
           o.name === object.name && o.author.username === object.author.username
       ).length > 0
     );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }
 

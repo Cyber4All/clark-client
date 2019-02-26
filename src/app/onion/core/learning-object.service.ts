@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 import { LearningObject, LearningOutcome } from '@cyber4all/clark-entity';
 import { CookieService } from 'ngx-cookie';
 
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from '../../core/auth.service';
+
+import { retry, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class LearningObjectService {
@@ -41,6 +44,10 @@ export class LearningObjectService {
         { object: learningObject },
         { headers: this.headers, withCredentials: true }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((res: any) => {
         return new LearningObject(res);
@@ -58,6 +65,10 @@ export class LearningObjectService {
     const route = USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((response: any) => {
         return new LearningObject(response);
@@ -77,6 +88,10 @@ export class LearningObjectService {
     );
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((response: any) => {
         return response.map(object => new LearningObject(object));
@@ -105,6 +120,10 @@ export class LearningObjectService {
         { learningObject },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -129,12 +148,20 @@ export class LearningObjectService {
         { outcome },
         { withCredentials: true }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
   deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
     return this.http
       .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -153,6 +180,10 @@ export class LearningObjectService {
         { collection },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -169,6 +200,10 @@ export class LearningObjectService {
       .delete(
         route,
         { headers: this.headers, withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
       )
       .toPromise();
   }
@@ -191,6 +226,10 @@ export class LearningObjectService {
         withCredentials: true,
         responseType: 'text'
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -213,6 +252,10 @@ export class LearningObjectService {
         withCredentials: true,
         responseType: 'text'
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -228,6 +271,10 @@ export class LearningObjectService {
         { children },
         { withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -237,6 +284,10 @@ export class LearningObjectService {
       route,
       {},
       { withCredentials: true, responseType: 'text' }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
     );
   }
   /**
@@ -250,7 +301,12 @@ export class LearningObjectService {
    */
   getMaterials(username: string, objectId: string): Promise<any> {
     const route = USER_ROUTES.GET_MATERIALS(username, objectId);
-    return this.http.get(route, { withCredentials: true }).toPromise();
+    return this.http.get(route, { withCredentials: true })
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    )
+    .toPromise();
   }
   /**
    * Makes request to update file description
@@ -279,6 +335,10 @@ export class LearningObjectService {
         { description },
         { withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -296,6 +356,20 @@ export class LearningObjectService {
         { source: sourceId, outcome },
         { withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }
