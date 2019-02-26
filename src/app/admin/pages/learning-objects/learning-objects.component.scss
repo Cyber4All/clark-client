@@ -1,0 +1,62 @@
+@import '~_vars.scss';
+  .list-wrapper {
+    padding: 20px;
+  }
+
+  .list {
+    max-width: $max-width;
+    position: relative;
+    margin: auto;
+    box-sizing: border-box;
+    margin-top: 20px;
+    min-height: 500px;
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    .list-top {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+
+      .header {
+        font-size: 26px;
+        color: $dark-text;
+      }
+    }
+  }
+
+  .list-body {
+    .column-headers,
+    ::ng-deep .row-item {
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 20px 60px 2fr 1fr 1fr 50px;
+      grid-gap: 0 20px;
+      align-items: center;
+    }
+
+    ::ng-deep .row-item {
+      & > div {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    }
+
+    .column-headers {
+      font-weight: bold;
+      font-size: 14px;
+      color: $dark-text;
+      opacity: 0.46;
+      padding-top: 20px;
+      padding-bottom: 10px;
+    }
+
+    clark-dashboard-item {
+      position: relative;
+      display: block;
+    }
+  }
+
