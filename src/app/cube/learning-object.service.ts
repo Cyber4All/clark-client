@@ -1,7 +1,8 @@
 import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { Query } from '../shared/interfaces/query';
 
@@ -61,6 +62,10 @@ export class LearningObjectService {
 
     return this.http
       .get(route)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((response: any) => {
         const objects = response.objects;
@@ -85,6 +90,10 @@ export class LearningObjectService {
     );
     return this.http
       .get(route)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((res: any) => {
         const learningObject = new LearningObject(res);
@@ -98,10 +107,24 @@ export class LearningObjectService {
 
     return this.http
       .get(route, { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((val: any) => {
         return val
           .map(l => new LearningObject(l));
       });
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }

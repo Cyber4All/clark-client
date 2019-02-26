@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as querystring from 'querystring';
 import { LearningObject, StandardOutcome } from '@cyber4all/clark-entity';
+import { throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class OutcomeService {
@@ -14,6 +16,10 @@ export class OutcomeService {
     const query = querystring.stringify(this.formatFilter(filter));
     return this.http
       .get(environment.suggestionUrl + '/outcomes?' + query)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((res: any) => {
         return res;
@@ -23,6 +29,10 @@ export class OutcomeService {
   getSources(): Promise<string[]> {
     return this.http
       .get(environment.suggestionUrl + '/outcomes/sources')
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((res: any) => res);
   }
@@ -35,6 +45,10 @@ export class OutcomeService {
 
     return this.http
       .get(`${environment.suggestionUrl}/outcomes/suggest?${query}`)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((res: {total: number, outcomes: any[]}) => {
         return res.outcomes;
@@ -52,5 +66,15 @@ export class OutcomeService {
       name: filter.name !== '' ? filter.name : undefined,
       text: filter.text || filter.filterText
     };
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }

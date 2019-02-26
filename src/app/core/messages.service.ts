@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MISC_ROUTES } from '@env/route';
+import { throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable()
 export class MessagesService {
@@ -17,6 +19,10 @@ export class MessagesService {
             return Promise.resolve(this._message);
         } else {
             return this.http.get(MISC_ROUTES.CHECK_STATUS, { withCredentials: true })
+                .pipe(
+                    retry(3),
+                    catchError(this.handleError)
+                )
                 .toPromise()
                 .then((val: any) => {
                     if (val && val.length) {
@@ -26,6 +32,16 @@ export class MessagesService {
                 });
         }
     }
+
+    private handleError(error: HttpErrorResponse) {
+        if (error.error instanceof ErrorEvent) {
+          // Client-side or network returned error
+          return throwError(error.error.message);
+        } else {
+          // API returned error
+          return throwError(error);
+        }
+      }
 }
 
 export class Message {

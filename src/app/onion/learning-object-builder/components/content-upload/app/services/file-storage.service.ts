@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { USER_ROUTES } from '@env/route';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { retry, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { LearningObject } from '@cyber4all/clark-entity';
 
 @Injectable()
@@ -32,6 +34,10 @@ export class FileStorageService {
 
     return this.http
       .post(route, { filePath: params.filePath }, { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((res: { uploadId: string }) => res.uploadId);
   }
@@ -65,6 +71,10 @@ export class FileStorageService {
         { fileMeta: params.fileMeta, uploadId: params.uploadId },
         { withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -97,6 +107,10 @@ export class FileStorageService {
         { uploadId: params.uploadId },
         { withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -117,6 +131,20 @@ export class FileStorageService {
 
     return this.http
       .delete(route, { withCredentials: true, responseType: 'text' })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }
