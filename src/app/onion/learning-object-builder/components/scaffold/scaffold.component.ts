@@ -21,10 +21,7 @@ export class ScaffoldComponent implements OnInit {
       this.children = kiddos;
     }); 
   }
-
-  ngChange(){ 
-    //this.store.setChildren(this.learningObject, this.children); 
-  }
+  
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.children, event.previousIndex, event.currentIndex); 
     this.store.setChildren(this.children);
