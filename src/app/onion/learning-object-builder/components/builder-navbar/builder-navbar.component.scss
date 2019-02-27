@@ -108,7 +108,7 @@ button {
     align-items: center;
     justify-content: flex-end;
 
-    &>*:not(:last-child) {
+    & > *:not(:last-child) {
       margin-right: 15px;
     }
 
