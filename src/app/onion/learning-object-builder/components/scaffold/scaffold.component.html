@@ -17,7 +17,7 @@
         <div class = "child-title">{{c._name}}</div>
       </div>
       <div class = "bottom-row">
-        <div class = "child-length">{{c._length}}</div>
+        <div [ngClass]="c._length" class="child-length" >{{c._length | titlecase}}</div>
         <div class = "child-last-updated">{{c._date |  date:'short'}}</div>
       </div>
   </div>

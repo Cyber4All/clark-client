@@ -6,13 +6,13 @@
   padding-left: 20px;  
 
   .icon {
-    color: #4290ea;
+    color: $bright-blue;
     font-size: 20px; 
     align-items: left;
     justify-content: left;
   }
   .title {
-    color: #646464;
+    color: $blue-gradient;
     text-align: left;
     font-size: 20px; 
     font-weight: 600;
@@ -22,7 +22,7 @@
   }
 
   .edit{
-    color: #4290ea;
+    color: $bright-blue;
     background-color: white; 
     border: none; 
     font-size: 20px;
@@ -55,20 +55,40 @@
     .top-row {
       display: flex; 
       .child-title {
-        color: #646464;
+        color: $blue-gradient;
         text-align: left;
         font-size: 16px; 
       }
     }
     .bottom-row{
       display: flex; 
+
       .child-length {
-        color: #646464;
         text-align: left;
         font-size: 14px; 
+
+        &.nanomodule {
+          color: $nanomodule-color;
+        }
+  
+        &.micromodule {
+          color: $micromodule-color;
+        }
+  
+        &.module {
+          color: $module-color;
+        }
+  
+        &.unit {
+          color: $unit-color;
+        }
+  
+        &.course {
+          color: $course-color;
+        }
       }
       .child-last-updated {
-        color: #646464; 
+        color: $dark-text; 
         font-size: 14px; 
         padding-left: 20px;  
       }
