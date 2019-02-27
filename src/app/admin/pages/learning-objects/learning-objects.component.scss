@@ -12,8 +12,9 @@
     margin-bottom: 20px;
 }
 
+// FIXME: remove use of ng-deep and replace with shared stylesheet
 .list__body {
-    .list__body__column-headers,
+    .body__column-headers,
     ::ng-deep .row-item {
         padding: 0 20px;
         display: grid;
@@ -29,7 +30,7 @@
         }
     }
 
-    .list__body__column-headers {
+    .body__column-headers {
         font-weight: bold;
         font-size: 14px;
         color: $dark-text;

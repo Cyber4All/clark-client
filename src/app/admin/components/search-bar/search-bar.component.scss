@@ -19,7 +19,7 @@
     height: 100%;
 }
 
-.searchbar__container__input {
+.container__input {
     border: none;
     margin-left: 10px;
     font-size: 20px;
@@ -33,7 +33,7 @@ input::placeholder {
     color: $placeholder; 
 }
 
-.searchbar__container__icon {
+.container__icon {
     color: $bright-blue;
     font-size: 20px;
     margin-left: 10px;
