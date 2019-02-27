@@ -15,6 +15,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   error$: Subject<string> = new Subject<string>();
   learningObject$: Observable<LearningObject>;
   destroyed$: Subject<void> = new Subject();
+  learningObject: LearningObject;
 
   constructor(private store: BuilderStore) {}
 
@@ -28,6 +29,16 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     ).subscribe(val => {
       this.store.serviceInteraction$.next(val);
     });
+
+    // listen for outcome events and update component stores
+    this.store.learningObjectEvent
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((payload: LearningObject) => {
+        if (payload) {
+          // re-initialize our state variables
+          this.learningObject = payload;
+        }
+      });
   }
 
   async handleFileDeletion(fileIds: string[]) {
