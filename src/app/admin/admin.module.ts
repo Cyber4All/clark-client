@@ -7,12 +7,23 @@ import { LearningObjectsComponent } from './pages/learning-objects/learning-obje
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { UsersComponent } from './pages/users/users.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
-  declarations: [AdminComponent, SidebarComponent, LearningObjectsComponent, AnalyticsComponent, UsersComponent, ContentWrapperComponent],
+  declarations: [
+    AdminComponent,
+    SidebarComponent,
+    LearningObjectsComponent,
+    AnalyticsComponent,
+    UsersComponent,
+    ContentWrapperComponent,
+    SearchBarComponent,
+  ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    SharedModule,
   ]
 })
 export class AdminModule { }

@@ -6,11 +6,12 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { DashboardLearningObject } from '../dashboard.component';
-import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
-import { AuthService } from '../../../core/auth.service';
+
 import { CollectionService } from 'app/core/collection.service';
 import { StatusDescriptions } from 'environments/status-descriptions';
+import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
+import { ContextMenuService } from '../contextmenu/contextmenu.service';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -23,6 +24,12 @@ export class DashboardItemComponent implements OnChanges {
   // the status of the learning object (passed in separatly for change detection)
   @Input()
   status: string;
+  // Does this item include a checkbox
+  @Input()
+  hasCheckBox = true;
+   // Does this item include a author name
+  @Input()
+  hasAuthor = false;
   // is this object selected
   @Input()
   selected = false;
