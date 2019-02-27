@@ -5,7 +5,7 @@
 
   <div class="list" main>
     <div #listInner>
-      <div *ngIf="!loading; else loadingTemplate" class="list__body">
+      <div class="list__body">
         <div *ngIf="learningObjects?.length; else emptyTemplate">
           <div class="list__body__column-headers">
             <div>Status</div>
