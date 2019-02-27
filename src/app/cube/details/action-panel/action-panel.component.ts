@@ -233,12 +233,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     return this.windowWidth <= 750;
   }
 
-  // Navigates the route from client to admin perspective
-  openAdminApp() {
-    const route = `${environment.adminAppUrl}/objects/details/${this.learningObject.id}`;
-    window.open(route);
-  }
-
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();

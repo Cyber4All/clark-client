@@ -38,6 +38,8 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   destroyed$: Subject<void> = new Subject();
 
+  @Input() adminMode = false;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -46,7 +48,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
     public validator: LearningObjectValidator,
-    public store: BuilderStore,
+    public store: BuilderStore
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -60,16 +62,20 @@ export class BuilderNavbarComponent implements OnDestroy {
         }
       });
 
-    this.store.learningObjectEvent.pipe(
-      filter(val => typeof val !== 'undefined'),
-      takeUntil(this.destroyed$)
-    ).subscribe(val => {
-      this.learningObject = val;
-      this.collectionService.getCollection(this.learningObject.collection).then(col => {
-        this.collection = col;
-        this.buildTooltip();
+    this.store.learningObjectEvent
+      .pipe(
+        filter(val => typeof val !== 'undefined'),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(val => {
+        this.learningObject = val;
+        this.collectionService
+          .getCollection(this.learningObject.collection)
+          .then(col => {
+            this.collection = col;
+            this.buildTooltip();
+          });
       });
-    });
 
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
@@ -84,7 +90,11 @@ export class BuilderNavbarComponent implements OnDestroy {
   toggleSubmissionOptionsMenu(event: MouseEvent) {
     if (this.submissionOptionsMenu) {
       if (event && !this.showSubmissionOptions) {
-        this.contextMenuService.open(this.submissionOptionsMenu, (event.currentTarget as HTMLElement), { top: 5, left: 0 });
+        this.contextMenuService.open(
+          this.submissionOptionsMenu,
+          event.currentTarget as HTMLElement,
+          { top: 5, left: 0 }
+        );
       } else {
         this.contextMenuService.destroy(this.submissionOptionsMenu);
       }
@@ -110,7 +120,11 @@ export class BuilderNavbarComponent implements OnDestroy {
         result = this.validator.saveable && this.store.touched;
         break;
       case 'materials':
-        result = !!(this.auth.user.emailVerified && this.validator.saveable && this.store.touched);
+        result = !!(
+          this.auth.user.emailVerified &&
+          this.validator.saveable &&
+          this.store.touched
+        );
         break;
     }
 
@@ -135,7 +149,11 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @memberof BuilderNavbarComponent
    */
   isNewRoute(route: string) {
-    return !this.initialRouteStates.get(route) && this.firstRouteChanges.has(route) && !this.routesClicked.has(route);
+    return (
+      !this.initialRouteStates.get(route) &&
+      this.firstRouteChanges.has(route) &&
+      !this.routesClicked.has(route)
+    );
   }
 
   /**
@@ -168,12 +186,20 @@ export class BuilderNavbarComponent implements OnDestroy {
 
         // check for submission errors not related to outcomes
         if (
-          this.validator.errors.submitErrors.size > 1 || (this.validator.errors.submitErrors.size === 1 && !this.validator.get('outcomes'))) {
+          this.validator.errors.submitErrors.size > 1 ||
+          (this.validator.errors.submitErrors.size === 1 &&
+            !this.validator.get('outcomes'))
+        ) {
           errorPages.set('info', true);
         }
 
         // notify user
-        this.toasterService.notify('Error!', 'Please correct the errors and try again!', 'bad', 'far fa-times');
+        this.toasterService.notify(
+          'Error!',
+          'Please correct the errors and try again!',
+          'bad',
+          'far fa-times'
+        );
 
         if (errorPages.size && !errorPages.get(currentRoute)) {
           // we've found errors on other pages and none on our current page, so route to that page
@@ -205,51 +231,53 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @memberof BuilderNavbarComponent
    */
   buildTooltip() {
-    this.collectionService.getCollection(this.learningObject.collection).then(val => {
-      this.states = new Map([
-        [
-          LearningObject.Status.REJECTED,
-          {
-            tip:
-              'This learning object was rejected. Contact your review team for further information'
-          }
-        ],
-        [
-          LearningObject.Status.RELEASED,
-          {
-            tip:
-              'This learning object is published to the ' +
-              (val ? val.name : '') +
-              ' collection and can be browsed for.'
-          }
-        ],
-        [
-          LearningObject.Status.REVIEW,
-          {
-            tip:
-              'This object is currently under review by the ' +
-              (val ? val.name : '') +
-              ' review team, It is not yet published and cannot be edited until the review process is complete.'
-          }
-        ],
-        [
-          LearningObject.Status.WAITING,
-          {
-            tip:
-              'This learning object is waiting to be reviewed by the next available reviewer from the ' +
-              (val ? val.name : '') +
-              ' review team'
-          }
-        ],
-        [
-          LearningObject.Status.UNRELEASED,
-          {
-            tip:
-              'This learning object is visible only to you. Submit it for review to make it publicly available.'
-          }
-        ]
-      ]);
-    });
+    this.collectionService
+      .getCollection(this.learningObject.collection)
+      .then(val => {
+        this.states = new Map([
+          [
+            LearningObject.Status.REJECTED,
+            {
+              tip:
+                'This learning object was rejected. Contact your review team for further information'
+            }
+          ],
+          [
+            LearningObject.Status.RELEASED,
+            {
+              tip:
+                'This learning object is published to the ' +
+                (val ? val.name : '') +
+                ' collection and can be browsed for.'
+            }
+          ],
+          [
+            LearningObject.Status.REVIEW,
+            {
+              tip:
+                'This object is currently under review by the ' +
+                (val ? val.name : '') +
+                ' review team, It is not yet published and cannot be edited until the review process is complete.'
+            }
+          ],
+          [
+            LearningObject.Status.WAITING,
+            {
+              tip:
+                'This learning object is waiting to be reviewed by the next available reviewer from the ' +
+                (val ? val.name : '') +
+                ' review team'
+            }
+          ],
+          [
+            LearningObject.Status.UNRELEASED,
+            {
+              tip:
+                'This learning object is visible only to you. Submit it for review to make it publicly available.'
+            }
+          ]
+        ]);
+      });
   }
 
   /**
@@ -258,22 +286,30 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   submitForReview(collection: string) {
     this.submissionError = false;
-    this.store.submitForReview(collection).then(val => {
-      this.showSubmission = false;
-      this.toasterService.notify('Success!', 'Learning object submitted successfully!', 'good', 'far fa-check');
-    }).catch(error => {
-      console.error(error);
-      this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
-      this.showSubmission = false;
-      this.submissionError = true;
-    });
+    this.store
+      .submitForReview(collection)
+      .then(val => {
+        this.showSubmission = false;
+        this.toasterService.notify(
+          'Success!',
+          'Learning object submitted successfully!',
+          'good',
+          'far fa-check'
+        );
+      })
+      .catch(error => {
+        console.error(error);
+        this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
+        this.showSubmission = false;
+        this.submissionError = true;
+      });
   }
 
   /**
    * Return a learning object to unpublished status
    */
   cancelSubmission() {
-    this.store.cancelSubmission()
+    this.store.cancelSubmission();
   }
 
   ngOnDestroy() {

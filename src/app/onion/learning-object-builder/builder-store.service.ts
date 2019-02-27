@@ -684,7 +684,7 @@ export class BuilderStore {
 
         // create the object
         this.learningObjectService
-          .create(value)
+          .create(value, this.auth.username)
           .then((object: LearningObject) => {
             this.learningObject = object;
             this.serviceInteraction$.next(false);
@@ -706,7 +706,7 @@ export class BuilderStore {
 
         // send cached changes to server
         this.learningObjectService
-          .save(this.learningObject.id, value)
+          .save(this.learningObject.id, this.learningObject.author.username, value)
           .then(() => {
             this.serviceInteraction$.next(false);
           })
