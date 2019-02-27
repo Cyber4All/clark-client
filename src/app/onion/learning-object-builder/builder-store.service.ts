@@ -207,9 +207,9 @@ export class BuilderStore {
   /**
    * Sets the learning objects children after they have been reorderd
    */
-  setChildren(children: LearningObject[]) {
-    const childrenIDs = []; 
-    this.learningObjectService.setChildren(this.learningObject.name, childrenIDs); 
+  async setChildren(children: string[]) { 
+    console.log(this.learningObject.name);
+    await this.learningObjectService.setChildren(this.learningObject.name, children);
   }
 
   /**

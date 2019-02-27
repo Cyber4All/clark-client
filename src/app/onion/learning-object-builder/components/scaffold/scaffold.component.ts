@@ -13,6 +13,9 @@ export class ScaffoldComponent implements OnInit {
   //boolean to indicate if edit is selected for the list 
   @Input() editContent: boolean;
 
+  //array to obtain children IDs 
+  childrenIDs: string[] = []; 
+
   children: any;
   constructor(private store: BuilderStore) {}
 
@@ -23,8 +26,14 @@ export class ScaffoldComponent implements OnInit {
   }
   
   drop(event: CdkDragDrop<string[]>) {
+    //change the index of the child that has been moved in the array used for display 
     moveItemInArray(this.children, event.previousIndex, event.currentIndex); 
-    this.store.setChildren(this.children);
+    
+    //get the ids of the children in children array 
+    this.children.forEach(kid => this.childrenIDs.push(kid._id));
+
+    //set the ids of children to the same order as the childrenIDs 
+    this.store.setChildren(this.childrenIDs);
   }
 
   //toggle between edit and list view of children 
