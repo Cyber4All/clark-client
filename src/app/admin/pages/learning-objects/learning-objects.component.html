@@ -8,7 +8,7 @@
 
   <div class="list" main>
     <div #listInner>
-      <div class="list__body">
+      <div *ngIf="!loading; else loadingTemplate" class="list__body">
         <div *ngIf="learningObjects?.length; else emptyTemplate">
           <div class="body__column-headers">
             <div>Status</div>
@@ -17,7 +17,7 @@
             <div>Type</div>
             <div>Date</div>
           </div>
-            <cdk-virtual-scroll-viewport style="height: 1000px" itemSize="90">
+            <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90">
               <clark-dashboard-item
                 *cdkVirtualFor="let l of learningObjects; let i = index"
                 [learningObject]="l"
@@ -26,13 +26,19 @@
                 [hasAuthor]="true"
                 >
               </clark-dashboard-item>
-            </cdk-virtual-scroll-viewport> 
-        
+            </cdk-virtual-scroll-viewport>    
         </div>
       </div>
     </div>
   </div>
 </clark-admin-content-wrapper>
+
+<ng-template #loadingTemplate>
+  <div [@nonListItem] class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading learning objects...
+  </div>
+</ng-template>
 
 <ng-template #emptyTemplate>
   <div class="empty-template">

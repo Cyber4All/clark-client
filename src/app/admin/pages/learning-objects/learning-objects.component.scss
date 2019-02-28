@@ -75,6 +75,29 @@
     margin-right: 10px;
 }
     
+.loading-template {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  
+    color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+    font-size: 20px;
+    padding: 20px;
+  
+    .svg-inline--fa {
+      color: $bright-blue;
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+  }
   
 
 

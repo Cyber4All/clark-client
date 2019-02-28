@@ -11,6 +11,7 @@ export class LearningObjectsComponent implements OnInit {
 
   learningObjects: any;
   searchBarPlaceholder = 'Learning Objects';
+  loading = false;
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -19,13 +20,14 @@ export class LearningObjectsComponent implements OnInit {
   ngOnInit() {}
 
   getLearningObjects(text: string) {
-    console.log(text);
+    this.loading = true;
     const query = {
       text
     };
     this.learningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
+        this.loading = false;
       });
   }
  }
