@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -13,6 +14,8 @@ export class LearningObjectsComponent implements OnInit {
   learningObjects: any;
   searchBarPlaceholder = 'Learning Objects';
   loading = false;
+  displayStatusModal = false;
+  activeLearningObject;
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -42,5 +45,10 @@ export class LearningObjectsComponent implements OnInit {
         this.learningObjects = val.learningObjects;
         this.loading = false;
       });
+  }
+
+  openChangeStatusModal(learningObject: LearningObject) {
+    this.displayStatusModal = true;
+    this.activeLearningObject = learningObject;
   }
  }

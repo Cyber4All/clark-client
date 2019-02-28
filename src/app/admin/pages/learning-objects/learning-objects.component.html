@@ -26,6 +26,7 @@
                 [hasAuthor]="true"
                 [isAdmin]="true"
                 (viewUser)="getUserLearningObjects($event)"
+                (changeStatus)="openChangeStatusModal($event)"
                 >
               </clark-dashboard-item>
             </cdk-virtual-scroll-viewport>    
@@ -33,25 +34,90 @@
       </div>
     </div>
   </div>
-</clark-admin-content-wrapper>
 
-<ng-template #loadingTemplate>
-  <div [@nonListItem] class="loading-template">
-    <i class="far fa-spinner-third fa-spin"></i>
-    Loading learning objects...
+  <div class="modal" *ngIf="displayStatusModal">
+    <form class="input-wrapper">
+      <div class="header">
+        <div class="title">Status for:
+          <span class="lo-name">{{activeLearningObject.name | titlecase}}</span>
+        </div>
+      </div>
+      <div class="input-radio" *ngIf="isAdmin">
+        <div *ngFor="let status of adminObjectStatuses">
+          <label class="radio">
+            <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
+              name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
+          </label>
+        </div>
+      </div>
+      <div class="input-radio" *ngIf="isEditor">
+        <div *ngFor="let status of editorObjectStatuses">
+          <label class="radio">
+            <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
+                name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
+          </label>
+        </div>
+      </div>
+      <div class="submit">
+        <button type="button" (click)="closeStatusModal()" class="button bad">Cancel</button>
+        <button type="button" (click)="updateLearningObjectStatus()" class="button good">Submit</button>
+      </div>
+    </form>
   </div>
-</ng-template>
 
-<ng-template #emptyTemplate>
-  <div class="empty-template">
-    <div class="empty-template__top">
-      <i class="fal fa-box-open"></i>
-      <div class="top-message">
-        Nothing here!
+  <clark-popup *ngIf="displayStatusModal" (closed)="displayStatusModal= false">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">Change Status</div>
+        <div class="modal-text">
+          <form class="input-wrapper">
+            <div class="header">
+              <div class="title">Status for:
+                <span class="lo-name">{{activeLearningObject.name | titlecase}}</span>
+              </div>
+            </div>
+            <div class="input-radio" *ngIf="isAdmin">
+              <div *ngFor="let status of adminObjectStatuses">
+                <label class="radio">
+                  <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
+                    name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
+                </label>
+              </div>
+            </div>
+            <div class="input-radio" *ngIf="isEditor">
+              <div *ngFor="let status of editorObjectStatuses">
+                <label class="radio">
+                  <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
+                      name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
+                </label>
+              </div>
+            </div>
+            <div class="submit">
+              <button type="button" (click)="closeStatusModal()" class="button bad">Cancel</button>
+              <button type="button" (click)="updateLearningObjectStatus()" class="button good">Submit</button>
+            </div>
+          </form>
+        </div>
+    </div>
+  </clark-popup>
+
+  <ng-template #loadingTemplate>
+    <div [@nonListItem] class="loading-template">
+      <i class="far fa-spinner-third fa-spin"></i>
+      Loading learning objects...
+    </div>
+  </ng-template>
+  
+  <ng-template #emptyTemplate>
+    <div class="empty-template">
+      <div class="empty-template__top">
+        <i class="fal fa-box-open"></i>
+        <div class="top-message">
+          Nothing here!
+        </div>
+      </div>
+      <div class="empty-text">
+        Learning Objects will appear here after they are submitted to your collection
       </div>
     </div>
-    <div class="empty-text">
-      Learning Objects will appear here after they are submitted to your collection
-    </div>
-  </div>
-</ng-template>
+  </ng-template>
+</clark-admin-content-wrapper>

@@ -12,6 +12,7 @@ import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
 import { ContextMenuService } from '../contextmenu/contextmenu.service';
 import { AuthService } from 'app/core/auth.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -69,7 +70,7 @@ export class DashboardItemComponent implements OnChanges {
   viewUser: EventEmitter<string> = new EventEmitter();
   // Change status
   @Output()
-  changeStatus: EventEmitter<void> = new EventEmitter();
+  changeStatus: EventEmitter<LearningObject> = new EventEmitter();
 
 
   // id of the context menu returned from the context-menu component

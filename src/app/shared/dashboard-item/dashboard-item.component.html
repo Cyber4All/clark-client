@@ -52,7 +52,7 @@
 
       <li *ngIf="adminActionPermissions() && isAdmin" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li *ngIf="adminActionPermissions() && isAdmin" (click)="viewUser.emit(learningObject.author.username)"><i class="fas fa-user"></i>View User</li>
-      <li *ngIf="adminActionPermissions() && isAdmin" (click)="cancelSubmission.emit()"><i class="fas fa-exchange-alt"></i>Change Status</li>
+      <li *ngIf="adminActionPermissions() && isAdmin" (click)="changeStatus.emit(learningObject)"><i class="fas fa-exchange-alt"></i>Change Status</li>
     </ul>
   </div>
 </clark-context-menu>
