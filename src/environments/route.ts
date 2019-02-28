@@ -219,57 +219,99 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 };
 
 export const RATING_ROUTES = {
-  DELETE_RATING(
-    learningObjectAuthor: string,
-    learningObjectName: string,
-    ratingId: string
-  ) {
+  DELETE_RATING(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
-      ratingId
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
     )}`;
   },
-  EDIT_RATING(
-    learningObjectAuthor: string,
-    learningObjectName: string,
-    ratingId: string
-  ) {
+  EDIT_RATING(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
-      ratingId
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
     )}`;
   },
-  CREATE_RATING(learningObjectAuthor: string, learningObjectName: string) {
+  CREATE_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings`;
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses`;
   },
-  GET_LEARNING_OBJECT_RATINGS(
-    learningObjectAuthor: string,
-    learningObjectName: string
-  ) {
+  GET_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings`;
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses`;
   },
-  FLAG_LEARNING_OBJECT_RATING(
-    learningObjectAuthor: string,
-    learningObjectName: string,
+  UPDATE_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+    responseId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses/${encodeURIComponent(
+      params.responseId)}`;
+  },
+  DELETE_RESPONSE(params: {
+    learningObjectId: string;
+    ratingId: string;
+    responseId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
+    )}/responses/${encodeURIComponent(
+      params.responseId)}`;
+  },
+  CREATE_RATING(params: {
+    learningObjectId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings`;
+  },
+  GET_LEARNING_OBJECT_RATINGS(params: {
+    learningObjectId: string;
+  }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.learningObjectId
+    )}/ratings`;
+  },
+  FLAG_LEARNING_OBJECT_RATING(params: {
+    learningObjectId: string,
     ratingId: string
-  ) {
+  }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectAuthor
-    )}/${encodeURIComponent(learningObjectName)}/ratings/${encodeURIComponent(
-      ratingId
+      params.learningObjectId
+    )}/ratings/${encodeURIComponent(
+      params.ratingId
     )}/flags`;
   },
   GET_USER_RATINGS(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/ratings`;
-  }
+  },
 };
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
@@ -277,5 +319,6 @@ export const MISC_ROUTES = {
 
 export const STATS_ROUTES = {
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
+  LIBRARY_STATS: `${environment.apiURL}/library/stats`,
   USERS_STATS: `${environment.apiURL}/users/stats`
 };

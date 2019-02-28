@@ -129,8 +129,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router,
-    public nav: NavbarService
+    private router: Router
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
@@ -140,7 +139,6 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.nav.hide(); // hides nav bar
      // If development/testing set verified to true in order to skip reCaptcha check in e2e tests
      if (environment.production === false) {
       this.verified = true;

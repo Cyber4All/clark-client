@@ -19,9 +19,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 export interface Rating {
   id?: string;
   user: User;
-  number: number;
+  value: number;
   comment: string;
-  date: string;
+  date: number;
+  source?: string;
+  response?: object;
 }
 
 @Component({
@@ -32,11 +34,14 @@ export interface Rating {
 export class DetailsComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject<void>();
   learningObject: LearningObject;
+  children: LearningObject[];
   returnUrl: string;
   loggedin: boolean;
   ratings: Rating[] = [];
-  averageRating = 0;
+  learningObjectOwners: string[];
+  averageRatingValue = 0;
   showAddRating = false;
+  showAddResponse = false;
   isOwnObject = false;
 
   userRating: {
@@ -109,16 +114,29 @@ export class DetailsComponent implements OnInit, OnDestroy {
           return file;
         }
       );
+      // FIXME: This filter should be removed when service logic is updated
+      this.children = this.learningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+          child.status === LearningObject.Status['REVIEW'] ||
+          child.status === LearningObject.Status['PROOFING'] ||
+          child.status === LearningObject.Status['WAITING'];
+        }
+      );
+
+      const owners = this.learningObject.contributors.map(user => user.username);
+      owners.push(this.learningObject.author.username);
 
       if (
         this.auth.user &&
-        this.auth.user.username === this.learningObject.author.username
+        owners.includes(this.auth.username)
       ) {
         this.isOwnObject = true;
       } else {
         this.isOwnObject = false;
       }
 
+      this.learningObjectOwners = owners;
       this.getLearningObjectRatings();
     } catch (e) {
 
@@ -146,7 +164,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param rating the rating object to be created
    */
   handleRatingSubmission(rating: {
-    number: number;
+    value: number;
     comment: string;
     editing?: boolean;
     id?: string;
@@ -166,13 +184,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * Creates a new rating
    * @param rating the rating to be created
    */
-  createRating(rating: { number: number; comment: string; id?: string }) {
+  createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
-      .createRating(
-        this.learningObject.author.username,
-        this.learningObject.name,
-        rating as Rating
-      )
+      .createRating({
+        learningObjectId: this.learningObject.id,
+        rating,
+      })
       .then(
         () => {
           this.getLearningObjectRatings();
@@ -192,7 +209,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
             'bad',
             'far fa-times'
           );
-          console.error(error);
         }
       );
   }
@@ -201,7 +217,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * Edits an existing rating. An id must be supplied.
    * @param rating the rating object to be updated
    */
-  updateRating(rating: { number: number; comment: string; id?: string }) {
+  updateRating(rating: { value: number; comment: string; id?: string }) {
+    const {id, ...updates} = rating;
     if (!rating.id) {
       this.toastService.notify(
         'Error!',
@@ -213,12 +230,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       return;
     }
     this.ratingService
-      .editRating(
-        this.learningObject.author.username,
-        this.learningObject.name,
-        rating.id,
-        rating as Rating
-      )
+      .editRating({
+        learningObjectId: this.learningObject.id,
+        ratingId: rating.id,
+        rating: updates,
+      })
       .then(
         () => {
           this.getLearningObjectRatings();
@@ -266,11 +282,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     if (shouldDelete === 'delete') {
       this.ratingService
-        .deleteRating(
-          this.learningObject.author.username,
-          this.learningObject.name,
-          this.ratings[index].id
-        )
+        .deleteRating({
+          learningObjectId: this.ratings[index].source,
+          ratingId: this.ratings[index].id,
+        })
         .then(val => {
           this.getLearningObjectRatings();
           this.toastService.notify(
@@ -302,31 +317,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     if (ratingId) {
       this.ratingService
-        .flagLearningObjectRating(
-          this.learningObject.author.username,
-          this.learningObject.name,
+        .flagLearningObjectRating({
+          learningObjectId: this.learningObject.id,
           ratingId,
           report
-        )
-        .then(
-          val => {
-            this.toastService.notify(
-              'Success!',
-              'Report submitted successfully!',
-              'good',
-              'far fa-check'
-            );
-          },
-          error => {
-            this.toastService.notify(
-              'Error!',
-              'An error occured and your report could not be submitted',
-              'bad',
-              'far fa-times'
-            );
-            console.error(error);
-          }
-        );
+        })
+        .catch(response => {
+            if (response.status === 200) {
+              this.toastService.notify(
+                'Success!',
+                'Report submitted successfully!',
+                'good',
+                'far fa-check'
+              );
+            } else {
+              this.toastService.notify(
+                'Error!',
+                'An error occured and your report could not be submitted',
+                'bad',
+                'far fa-times'
+              );
+            }
+        });
     } else {
       this.toastService.notify(
         'Error!',
@@ -334,23 +346,178 @@ export class DetailsComponent implements OnInit, OnDestroy {
         'bad',
         'far fa-times'
       );
-      console.error('No ratingId specified');
     }
   }
 
   /**
-   * Retrieves list of learning object ratings from server and, if the user has a review in that lkist, assigns it to the
+   * Submit new rating response
+   *
+   * @param {string} comment
+   * @param {number} index
+   */
+  async submitResponse(response: {
+    comment: string,
+    index: number
+  }) {
+    // locate target rating and then delete the index param from the response
+    const ratingId = this.ratings[response.index].id;
+    delete response.index;
+
+    if (ratingId) {
+      const result = await this.ratingService
+        .createResponse({
+          learningObjectId: this.learningObject.id,
+          ratingId,
+          response,
+        });
+        if (result) {
+          this.getLearningObjectRatings();
+          this.toastService.notify(
+            'Success!',
+            'Response submitted successfully!',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.toastService.notify(
+            'Error!',
+            'An error occured and your response could not be submitted',
+            'bad',
+            'far fa-times'
+          );
+        }
+    } else {
+      this.toastService.notify(
+        'Error!',
+        'An error occured and your response could not be submitted',
+        'bad',
+        'far fa-times'
+      );
+    }
+  }
+
+  /**
+   * Edit an existing rating response
+   *
+   * @param {string} comment
+   * @param {number} index
+   */
+  async editResponse(response: {
+    comment: string,
+    index: number,
+  }) {
+    // locate target rating and then delete the index param from the response
+    const ratingId = this.ratings[response.index].id;
+    const responseId = this.ratings[response.index].response[0]._id;
+
+    if (ratingId) {
+      const result = await this.ratingService
+        .editResponse({
+          learningObjectId: this.learningObject.id,
+          ratingId,
+          responseId,
+          updates: response,
+        });
+        if (result) {
+          this.getLearningObjectRatings();
+          this.toastService.notify(
+            'Success!',
+            'Response updated successfully!',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.toastService.notify(
+            'Error!',
+            'An error occured and your response could not be updated',
+            'bad',
+            'far fa-times'
+          );
+        }
+    } else {
+      this.toastService.notify(
+        'Error!',
+        'An error occured and your response could not be updated',
+        'bad',
+        'far fa-times'
+      );
+    }
+  }
+
+  /**
+   * Delete a rating response
+   *
+   * @param {number} index
+   */
+  async deleteResponse(index: number) {
+    // locate target rating and then delete the index param from the response
+    const ratingId = this.ratings[index].id;
+    const responseId = this.ratings[index].response[0]._id;
+
+    const shouldDelete = await this.modalService
+      .makeDialogMenu(
+        'ratingDelete',
+        'Are you sure you want to delete this response?',
+        'You cannot undo this action!',
+        false,
+        'title-bad',
+        'center',
+        [
+          new ModalListElement('Yup, do it!', 'delete', 'bad'),
+          new ModalListElement('No wait!', 'cancel', 'neutral on-white')
+        ]
+      )
+      .toPromise();
+
+    if (shouldDelete === 'delete') {
+      if (ratingId) {
+        const result = await this.ratingService
+          .deleteResponse({
+            learningObjectId: this.learningObject.id,
+            ratingId,
+            responseId,
+          });
+
+        if (result) {
+          this.getLearningObjectRatings();
+          this.toastService.notify(
+            'Success!',
+            'Response deleted successfully!',
+            'good',
+            'far fa-check'
+          );
+        } else {
+          this.toastService.notify(
+            'Error!',
+            'An error occured and your response could not be deleted',
+            'bad',
+            'far fa-times'
+          );
+        }
+      } else {
+        this.toastService.notify(
+          'Error!',
+          'An error occured and your response could not be deleted',
+          'bad',
+          'far fa-times'
+        );
+      }
+    }
+  }
+
+  /**
+   * Retrieves list of learning object ratings from server and, if the user has a review in that list, assigns it to the
    * userReview variable
    */
   private async getLearningObjectRatings() {
     this.ratingService
-      .getLearningObjectRatings(
-        this.learningObject.author.username,
-        this.learningObject.name
-      )
+      .getLearningObjectRatings({
+        learningObjectId: this.learningObject.id
+      })
       .then(val => {
         this.ratings = val.ratings;
-        this.averageRating = val.avgRating;
+        this.averageRatingValue = val.avgValue;
+
         const u = this.auth.username;
 
         for (let i = 0, l = val.ratings.length; i < l; i++) {
