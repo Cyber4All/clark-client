@@ -71,28 +71,27 @@
         <div class="modal-text">
           <form class="input-wrapper">
             <div class="header">
-              <div class="title">Status for:
+              <div class="title">
                 <span class="lo-name">{{activeLearningObject.name | titlecase}}</span>
               </div>
             </div>
-            <div class="input-radio" *ngIf="isAdmin">
-              <div *ngFor="let status of adminObjectStatuses">
+            <div class="input-radio">
+              <div *ngFor="let status of adminStatusList">
                 <label class="radio">
                   <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
-                    name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
+                    name="enums" [checked]="isCurrentStatus(status)">{{ status | titlecase }}
                 </label>
               </div>
             </div>
             <div class="input-radio" *ngIf="isEditor">
-              <div *ngFor="let status of editorObjectStatuses">
+              <div *ngFor="let status of editorStatusList">
                 <label class="radio">
                   <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
-                      name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
+                      name="enums" [checked]="isCurrentStatus(status)">{{ status | titlecase }}
                 </label>
               </div>
             </div>
-            <div class="submit">
-              <button type="button" (click)="closeStatusModal()" class="button bad">Cancel</button>
+            <div class="btn-group to-right">
               <button type="button" (click)="updateLearningObjectStatus()" class="button good">Submit</button>
             </div>
           </form>

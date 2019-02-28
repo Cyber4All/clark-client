@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LearningObjectService } from 'app/cube/learning-object.service';
+import { LearningObjectService as publicService } from 'app/cube/learning-object.service';
+import { LearningObjectService as privateService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
 import { LearningObject } from '@cyber4all/clark-entity';
 
@@ -7,7 +8,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [LearningObjectService]
+  providers: [publicService, privateService]
 })
 export class LearningObjectsComponent implements OnInit {
 
@@ -16,9 +17,12 @@ export class LearningObjectsComponent implements OnInit {
   loading = false;
   displayStatusModal = false;
   activeLearningObject;
+  adminStatusList =  Object.keys(LearningObject.Status);
+  selectedStatus: string;
 
   constructor(
-    private learningObjectService: LearningObjectService,
+    private publicService: publicService,
+    private privateService: privateService,
   ) { }
 
   ngOnInit() {}
@@ -28,7 +32,7 @@ export class LearningObjectsComponent implements OnInit {
     const query: Query = {
       text
     };
-    this.learningObjectService.getLearningObjects(query)
+    this.publicService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
         this.loading = false;
@@ -40,7 +44,7 @@ export class LearningObjectsComponent implements OnInit {
     const query = {
       text: author
     };
-    this.learningObjectService.getLearningObjects(query)
+    this.publicService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
         this.loading = false;
@@ -50,5 +54,18 @@ export class LearningObjectsComponent implements OnInit {
   openChangeStatusModal(learningObject: LearningObject) {
     this.displayStatusModal = true;
     this.activeLearningObject = learningObject;
+  }
+
+  updateLearningObjectStatus() {
+    this.privateService.save(this.activeLearningObject.id, { status: this.selectedStatus });
+    this.displayStatusModal = false;
+  }
+
+  isCurrentStatus(status: string) {
+    return this.activeLearningObject.status === status.toLowerCase();
+  }
+
+  toggleStatus(status: string) {
+    this.selectedStatus = status.toLowerCase();
   }
  }
