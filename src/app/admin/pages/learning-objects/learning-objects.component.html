@@ -24,6 +24,8 @@
                 [status]="l.status"
                 [hasCheckBox]="false"
                 [hasAuthor]="true"
+                [isAdmin]="true"
+                (viewUser)="getUserLearningObjects($event)"
                 >
               </clark-dashboard-item>
             </cdk-virtual-scroll-viewport>    

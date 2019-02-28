@@ -27,9 +27,12 @@ export class DashboardItemComponent implements OnChanges {
   // Does this item include a checkbox
   @Input()
   hasCheckBox = true;
-   // Does this item include a author name
+  // Does this item include a author name
   @Input()
   hasAuthor = false;
+  // Display admin context menu
+  @Input()
+  isAdmin = false;
   // is this object selected
   @Input()
   selected = false;
@@ -61,6 +64,13 @@ export class DashboardItemComponent implements OnChanges {
   // fired when the cancel submission option is selected from the context menu
   @Output()
   cancelSubmission: EventEmitter<void> = new EventEmitter();
+  // fired when the view user option is selected from the context menu
+  @Output()
+  viewUser: EventEmitter<string> = new EventEmitter();
+  // Change status
+  @Output()
+  changeStatus: EventEmitter<void> = new EventEmitter();
+
 
   // id of the context menu returned from the context-menu component
   itemMenu: string;
@@ -140,6 +150,15 @@ export class DashboardItemComponent implements OnChanges {
     }
 
     return p.includes(this.status);
+  }
+
+   /**
+   * Given a string representation of a context menu action, returns true if that action should be allowed based on
+   * parameters such as learing object length and learning object status
+   * @param action {string} the action in question
+   */
+  adminActionPermissions() {
+    return this.auth.hasCuratorAccess();
   }
 
   /**
