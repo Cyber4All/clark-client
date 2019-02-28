@@ -3,39 +3,39 @@
 .header {
   display: flex;
   padding-top: 18px;
-  padding-left: 20px;  
+  padding-left: 20px; 
 
   .icon {
     color: $bright-blue;
-    font-size: 20px; 
+    font-size: 20px;
     align-items: left;
     justify-content: left;
   }
   .title {
     color: $blue-gradient;
     text-align: left;
-    font-size: 20px; 
+    font-size: 20px;
     font-weight: 600;
-    margin: 0 0 10px 10px; 
+    margin: 0 0 10px 10px;
     align-items: left;
     justify-content: left;
   }
 
   .edit{
     color: $bright-blue;
-    background-color: white; 
-    border: none; 
+    background-color: white;
+    border: none;
     font-size: 20px;
     margin-left: auto;
     padding-right: 20px;
     padding-left: 20px;
-    cursor: pointer; 
+    cursor: pointer;
   }
   .edit:focus{
-    outline: 0; 
+    outline: 0;
   }
   .edit:hover{
-    opacity: 0.6; 
+    opacity: 0.6;
   }
 }
 
@@ -51,13 +51,13 @@
   background: white;
 
   .info {
-    float: left; 
+    float: left;
     .top-row {
-      display: flex; 
+      display: flex;
       .child-title {
         color: $blue-gradient;
         text-align: left;
-        font-size: 16px; 
+        font-size: 16px;
       }
     }
     .bottom-row{
@@ -65,7 +65,7 @@
 
       .child-length {
         text-align: left;
-        font-size: 14px; 
+        font-size: 14px;
 
         &.nanomodule {
           color: $nanomodule-color;

@@ -502,7 +502,6 @@ export class BuilderStore {
       });
       this.learningObjectEvent.next(this.learningObject);
     } 
-    
   }
 
   /**

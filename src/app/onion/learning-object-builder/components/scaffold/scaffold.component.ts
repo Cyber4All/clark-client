@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'; 
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BuilderStore } from '../../builder-store.service';
 import { LearningObject } from '@cyber4all/clark-entity';
 
@@ -9,12 +9,12 @@ import { LearningObject } from '@cyber4all/clark-entity';
   styleUrls: ['./scaffold.component.scss']
 })
 export class ScaffoldComponent implements OnInit {
-  @Input() learningObject: LearningObject; 
-  //boolean to indicate if edit is selected for the list 
+  @Input() learningObject: LearningObject;
+  // boolean to indicate if edit is selected for the list
   @Input() editContent: boolean;
 
-  //array to obtain children IDs 
-  childrenIDs: string[] = []; 
+  // array to obtain children IDs
+  childrenIDs: string[] = [];
 
   children: any;
   constructor(private store: BuilderStore) {}
@@ -22,22 +22,22 @@ export class ScaffoldComponent implements OnInit {
   ngOnInit() {
     this.store.getChildren().then((kiddos) => {
       this.children = kiddos;
-    }); 
+    });
   }
   
   drop(event: CdkDragDrop<string[]>) {
-    //change the index of the child that has been moved in the array used for display 
-    moveItemInArray(this.children, event.previousIndex, event.currentIndex); 
-    
-    //get the ids of the children in children array 
+    // change the index of the child that has been moved in the array used for display
+    moveItemInArray(this.children, event.previousIndex, event.currentIndex);
+
+    // get the ids of the children in children array
     this.children.forEach(kid => this.childrenIDs.push(kid._id));
 
-    //set the ids of children to the same order as the childrenIDs 
+    // set the ids of children to the same order as the childrenIDs
     this.store.setChildren(this.childrenIDs);
   }
 
-  //toggle between edit and list view of children 
-  toggle(){
+  // toggle between edit and list view of children 
+  toggle() {
    this.editContent = !this.editContent;
   }
 }
