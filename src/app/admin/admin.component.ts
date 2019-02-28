@@ -20,7 +20,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   adminMode: boolean;
 
-  private _initialized: boolean[] = [false];
+  private _initialized: boolean[] = [ false /* collections loaded */ ];
 
   constructor(
     private navbarService: NavbarService,
@@ -30,6 +30,13 @@ export class AdminComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService
   ) {}
 
+  /**
+   * Returns true if the component is fully initialized (ie the array doesn't contain false), false otherwise
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof AdminComponent
+   */
   get initialized(): boolean {
     return !this._initialized.includes(false);
   }
@@ -40,8 +47,10 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     if (this.authService.hasEditorAccess()) {
       this.adminMode = true;
+      // we don't need to load collections, so we can set that initialization block to true
+      this._initialized[0] = true;
     } else {
-      // fetch the route parameter representing the selected collection
+      // this user isn't an admin/editor so fetch the route parameter representing the selected collection
       this.route.paramMap
         .pipe(takeUntil(this.destroyed$))
         .subscribe(params => {
@@ -50,8 +59,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         });
 
       this.retrieveAuthorizedCollections().then(() => {
-        console.log(this.authorizedCollections);
-        // collections array is not set and we should redirect to the first collection
+        // collections array is now set and we should redirect to the first collection
         this.router.navigate([this.authorizedCollections[0].abvName], { relativeTo: this.route });
       });
     }
@@ -63,6 +71,7 @@ export class AdminComponent implements OnInit, OnDestroy {
    * @memberof AdminComponent
    */
   async retrieveAuthorizedCollections() {
+    // wait for user to be logged in (edge case) and then fetch list of curated collections
     return await this.authService.isLoggedIn.pipe(
       skipWhile(x => x === false),
       take(1)
@@ -73,6 +82,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         .map(group =>
           this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
         )).then(() => {
+          // remove the initialization block
           this._initialized[0] = true;
         });
     });
