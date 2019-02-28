@@ -13,4 +13,4 @@ const clark_routes: Routes = [
   { path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 
-export const ClarkRoutingModule: ModuleWithProviders = RouterModule.forRoot(clark_routes, { enableTracing: true });
+export const ClarkRoutingModule: ModuleWithProviders = RouterModule.forRoot(clark_routes);
