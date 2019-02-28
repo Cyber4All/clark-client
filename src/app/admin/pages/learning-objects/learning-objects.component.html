@@ -1,6 +1,9 @@
 <clark-admin-content-wrapper>
   <div page-title>Learning Objects</div>
-  <clark-admin-search-bar search></clark-admin-search-bar>
+  <clark-admin-search-bar search 
+    [placeholder]="searchBarPlaceholder"
+    (userInput)="getLearningObjects($event)"
+  ></clark-admin-search-bar>
   <div filter-options>filter options yo</div>
 
   <div class="list" main>
@@ -14,16 +17,17 @@
             <div>Type</div>
             <div>Date</div>
           </div>
-          <div  [@listItem]="learningObjects.length">
-            <clark-dashboard-item
-              *ngFor="let l of learningObjects; let i = index"
-              [learningObject]="l"
-              [status]="l.status"
-              [hasCheckBox]="false"
-              [hasAuthor]="true"
-              >
-            </clark-dashboard-item>
-          </div>
+            <cdk-virtual-scroll-viewport style="height: 1000px" itemSize="90">
+              <clark-dashboard-item
+                *cdkVirtualFor="let l of learningObjects; let i = index"
+                [learningObject]="l"
+                [status]="l.status"
+                [hasCheckBox]="false"
+                [hasAuthor]="true"
+                >
+              </clark-dashboard-item>
+            </cdk-virtual-scroll-viewport> 
+        
         </div>
       </div>
     </div>
@@ -31,7 +35,7 @@
 </clark-admin-content-wrapper>
 
 <ng-template #emptyTemplate>
-  <div [@nonListItem] class="empty-template">
+  <div class="empty-template">
     <div class="empty-template__top">
       <i class="fal fa-box-open"></i>
       <div class="top-message">
