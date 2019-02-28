@@ -209,7 +209,7 @@ export class BuilderStore {
    */
   async setChildren(children: string[]) {
     console.log(this.learningObject.name);
-    await this.learningObjectService.setChildren(this.learningObject.name, children);
+    await this.learningObjectService.setChildren(this.learningObject.name, this.learningObject.author.toString(), children);
   }
 
   /**
