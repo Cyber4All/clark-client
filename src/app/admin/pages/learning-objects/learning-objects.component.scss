@@ -1,11 +1,10 @@
 @import '~_vars.scss';
 
 .list {
-    max-width: $max-width;
+    max-width: 100%;
     position: relative;
     margin: auto;
     box-sizing: border-box;
-    margin-top: 20px;
     min-height: 500px;
     overflow: hidden;
     margin-top: 40px;

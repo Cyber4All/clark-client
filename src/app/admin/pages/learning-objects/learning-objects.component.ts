@@ -22,7 +22,8 @@ export class LearningObjectsComponent implements OnInit {
   getLearningObjects(text: string) {
     this.loading = true;
     const query = {
-      text
+      text,
+      limit: 50,
     };
     this.learningObjectService.getLearningObjects(query)
       .then(val => {
