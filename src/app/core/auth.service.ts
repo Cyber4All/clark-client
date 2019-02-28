@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable ,  BehaviorSubject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
+import { catchError, retry } from 'rxjs/operators';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -27,7 +28,7 @@ export interface AuthUser extends User {
 
 @Injectable()
 export class AuthService {
-  user: User = undefined;
+  user: AuthUser;
   headers = new Headers();
   httpHeaders = new HttpHeaders();
   inUse: object;
@@ -48,6 +49,19 @@ export class AuthService {
         }
       );
     }
+  }
+
+  /**
+   * Checks if user's group equals admin or editor
+   *
+   * @returns {boolean}
+   * @memberof AuthService
+   */
+  public isAdminOrEditor(): boolean {
+    return (
+      this.group.value === AUTH_GROUP.ADMIN ||
+      this.group.value === AUTH_GROUP.EDITOR
+    );
   }
 
   private changeStatus(status: boolean) {
@@ -76,10 +90,18 @@ export class AuthService {
     return this.user ? this.user.username : undefined;
   }
 
+  get accessGroups(): string[] {
+    return this.user ? this.user.accessGroups : [];
+  }
+
   async validate(): Promise<void> {
     try {
       const response = await this.http
         .get(environment.apiURL + '/users/tokens', { withCredentials: true })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       this.user = response as AuthUser;
       this.assignUserToGroup();
@@ -97,6 +119,10 @@ export class AuthService {
           withCredentials: true,
           responseType: 'text'
         })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       return Promise.resolve();
     } catch (error) {
@@ -112,6 +138,10 @@ export class AuthService {
         .get(environment.apiURL + '/users/tokens/refresh', {
           withCredentials: true
         })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       this.user = val as AuthUser;
     } catch (error) {
@@ -125,6 +155,10 @@ export class AuthService {
         .post<User>(environment.apiURL + '/users/tokens', user, {
           withCredentials: true
         })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       this.user = val as AuthUser;
       this.changeStatus(true);
@@ -143,6 +177,10 @@ export class AuthService {
         withCredentials: true,
         responseType: 'text'
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
     this.user = undefined;
     this.changeStatus(false);
@@ -155,7 +193,12 @@ export class AuthService {
       await this.http.post(environment.apiURL + '/users', user, {
         withCredentials: true,
         responseType: 'text'
-      }).toPromise();
+      })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
       this.user = user;
       this.changeStatus(true);
       return this.user;
@@ -172,6 +215,10 @@ export class AuthService {
       .post<User>(environment.apiURL + '/users/password', { password }, {
         withCredentials: true
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
     return val;
   }
@@ -181,6 +228,10 @@ export class AuthService {
       environment.apiURL + '/users/ota-codes?action=resetPassword',
       { email },
       { withCredentials: true, responseType: 'text' }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
     );
   }
 
@@ -189,6 +240,10 @@ export class AuthService {
       environment.apiURL + '/users/ota-codes?otaCode=' + code,
       { payload },
       { withCredentials: true, responseType: 'text' }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
     );
   }
 
@@ -197,6 +252,10 @@ export class AuthService {
       environment.apiURL + '/users/ota-codes?action=verifyEmail',
       { email },
       { withCredentials: true, responseType: 'text' }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
     );
   }
 
@@ -206,6 +265,10 @@ export class AuthService {
         headers: this.httpHeaders,
         withCredentials: true
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
     this.inUse = val;
     return this.inUse;
@@ -220,7 +283,11 @@ export class AuthService {
     return this.http.patch(environment.apiURL + '/users/name', user.firstname, {
       withCredentials: true,
       responseType: 'text'
-    });
+    })
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
   establishSocket() {
@@ -336,6 +403,16 @@ export class AuthService {
       this.group.next(AUTH_GROUP.CURATOR);
     } else {
       this.group.next(AUTH_GROUP.USER);
+    }
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
     }
   }
 }
