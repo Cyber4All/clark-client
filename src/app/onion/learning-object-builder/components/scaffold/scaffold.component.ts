@@ -36,7 +36,7 @@ export class ScaffoldComponent implements OnInit {
     this.store.setChildren(this.childrenIDs);
   }
 
-  // toggle between edit and list view of children 
+  // toggle between edit and list view of children
   toggle() {
    this.editContent = !this.editContent;
   }

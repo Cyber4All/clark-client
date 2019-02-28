@@ -20,7 +20,6 @@
     align-items: left;
     justify-content: left;
   }
-
   .edit{
     color: $bright-blue;
     background-color: white;
@@ -61,7 +60,7 @@
       }
     }
     .bottom-row{
-      display: flex; 
+      display: flex;
 
       .child-length {
         text-align: left;
@@ -89,19 +88,19 @@
       }
       .child-last-updated {
         color: $dark-text;
-        font-size: 14px; 
-        padding-left: 20px;  
+        font-size: 14px;
+        padding-left: 20px;
       }
     }
   }
   .hamburger-handle {
-    display: flex;  
+    display: flex;
     color: $placeholder;
     cursor: move;
     width: 20px;
     height: 20px;
-    font-size: 18px; 
-    margin-left: auto;  
+    font-size: 18px;
+    margin-left: auto;
   }
 }
 
