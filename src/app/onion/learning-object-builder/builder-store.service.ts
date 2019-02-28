@@ -194,20 +194,20 @@ export class BuilderStore {
   }
 
   /**
-   * Retrieves the learning objects children 
-   * 
+   * Retrieves the learning objects children
+   *
    */
   async getChildren() {
     return await this.learningObjectService.getChildren(
       this.learningObject.id
-    ); 
+    );
     
   }
 
   /**
    * Sets the learning objects children after they have been reorderd
    */
-  async setChildren(children: string[]) { 
+  async setChildren(children: string[]) {
     console.log(this.learningObject.name);
     await this.learningObjectService.setChildren(this.learningObject.name, children);
   }
