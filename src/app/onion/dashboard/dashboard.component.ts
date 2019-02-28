@@ -187,7 +187,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async getLearningObjects(filters?: any): Promise<DashboardLearningObject[]> {
     this.loading = true;
     return this.learningObjectService
-      .getLearningObjects(filters)
+      .getLearningObjects(this.auth.username, filters)
       .then((learningObjects: LearningObject[]) => {
         this.loading = false;
         // deep copy list of learningObjects and initialize empty parents array
@@ -318,8 +318,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     if (!Array.isArray(objects) || objects.length === 1) {
+      const object = Array.isArray(objects) ? objects[0] : objects;
       this.learningObjectService
-        .delete(Array.isArray(objects) ? objects[0].name : objects.name)
+        .delete(object.name , object.author.username)
         .then(async () => {
           this.notificationService.notify(
             'Done!',
@@ -344,9 +345,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const canDelete = objects.filter(s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status));
 
       if (canDelete.length) {
+        const authorUsername = canDelete[0].author.username;
         this.learningObjectService
           // TODO: Verify selected is an array of names
-          .deleteMultiple(canDelete.map(s => s.name))
+          .deleteMultiple(canDelete.map(s => s.name), authorUsername)
           .then(async () => {
             this.clearSelected();
             if (canDelete.length === objects.length) {
@@ -486,7 +488,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           .filter(l => names.includes(l.name))
           .map(l => l.id);
         this.learningObjectService
-          .setChildren(this.focusedLearningObject.name, ids)
+          .setChildren(this.focusedLearningObject.name, this.focusedLearningObject.author.username, ids)
           .then(val => {
             this.notificationService.notify(
               'Success!',

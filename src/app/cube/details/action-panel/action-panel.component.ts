@@ -75,7 +75,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.auth.group
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
-        this.isEditButtonViewable = this.auth.hasEditorAccess();
+        this.isEditButtonViewable = this.learningObject.status !== LearningObject.Status.RELEASED && this.auth.hasEditorAccess();
       });
     this.hasDownloadAccess = this.auth.hasReviewerAccess() || this.isReleased;
     this.url = this.buildLocation();
@@ -231,12 +231,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get isMobile() {
     return this.windowWidth <= 750;
-  }
-
-  // Navigates the route from client to admin perspective
-  openAdminApp() {
-    const route = `${environment.adminAppUrl}/objects/details/${this.learningObject.id}`;
-    window.open(route);
   }
 
   ngOnDestroy() {
