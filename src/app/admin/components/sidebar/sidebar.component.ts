@@ -26,9 +26,9 @@ import { trigger, query, style, animate, transition } from '@angular/animations'
 export class SidebarComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
-  @Input() authorizedCollections: Collection[] = [];
+  @Input() collections: string[] = [];
   @Input() activeCollection: string;
-  @Input() adminMode: boolean;
+  @Input() editorMode: boolean;
 
   @Input() initialized = false;
 

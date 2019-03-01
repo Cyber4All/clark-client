@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   authorizedCollections: Collection[] = [];
   activeCollection: string;
 
-  adminMode: boolean;
+  editorMode: boolean;
 
   private _initialized: boolean[] = [ false /* collections loaded */ ];
 
@@ -46,7 +46,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.navbarService.hide();
 
     if (this.authService.hasEditorAccess()) {
-      this.adminMode = true;
+      this.editorMode = true;
       // we don't need to load collections, so we can set that initialization block to true
       this._initialized[0] = true;
     } else {
@@ -84,7 +84,8 @@ export class AdminComponent implements OnInit, OnDestroy {
         .filter(group => group.includes('curator@'))
         .map(group =>
           this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
-        )).then(() => {
+        ))
+        .then(() => {
           // remove the initialization block
           this._initialized[0] = true;
         });
