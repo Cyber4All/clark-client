@@ -21,8 +21,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private router: Router,
-    private route: ActivatedRoute,
-    public nav: NavbarService
+    private route: ActivatedRoute
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
@@ -31,10 +30,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.nav.hide(); // hides navbar
-    console.log('Login navbar visible ' + this.nav.visible);
-  }
+  ngOnInit() {}
 
   submit() {
     this.loginFailure = undefined;

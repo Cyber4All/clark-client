@@ -58,7 +58,7 @@ export class UsageStatsComponent implements OnInit {
     this.buildCounterStats();
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
-      this.usageStats.objects.underReview = stats.total - stats.released;
+      this.usageStats.objects.underReview = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
       this.usageStats.objects.lengths = {
         nanomodule: stats.lengths.nanomodule,

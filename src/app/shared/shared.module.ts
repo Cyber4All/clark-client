@@ -38,6 +38,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
 import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
+import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -84,6 +85,7 @@ import { DashboardItemComponent } from './dashboard-item/dashboard-item.componen
     CookiesComponent,
     DashboardItemComponent,
     EmailBannerComponent,
+    NewRatingResponseComponent,
   ],
   exports: [
     NavbarComponent,
@@ -109,7 +111,8 @@ import { DashboardItemComponent } from './dashboard-item/dashboard-item.componen
     ClarkContextMenuModule,
     EmailBannerComponent,
     DashboardItemComponent,
-    TeleporterModule
+    TeleporterModule,
+    NewRatingResponseComponent,
   ]
 })
 export class SharedModule {}

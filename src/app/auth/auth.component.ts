@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from '../shared/modals/modal.service';
+import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
   selector: 'app-auth',
@@ -7,8 +8,10 @@ import { ModalService } from '../shared/modals/modal.service';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-  constructor(public modalService: ModalService) {}
+  constructor(public modalService: ModalService, private nav: NavbarService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.nav.hide();
+  }
 
 }

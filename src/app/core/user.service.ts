@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -23,6 +24,10 @@ export class UserService {
           withCredentials: true, responseType: 'text'
         }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -32,6 +37,10 @@ export class UserService {
           .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
             withCredentials: true
           })
+          .pipe(
+            retry(3),
+            catchError(this.handleError)
+          )
           .toPromise()
           .then(
             (val: any) => {
@@ -60,6 +69,10 @@ export class UserService {
           withCredentials: true
         }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((val: any) => {
         const arr = val;
@@ -71,6 +84,10 @@ export class UserService {
     const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
       .get(route)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((val: any) => {
         const arr = val;
@@ -97,6 +114,10 @@ export class UserService {
           .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
             withCredentials: true
           })
+          .pipe(
+            retry(3),
+            catchError(this.handleError)
+          )
           .toPromise()
           .then(
             (val: any) => {
@@ -108,5 +129,15 @@ export class UserService {
             }
           )
       : Promise.resolve(null);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }

@@ -5,9 +5,20 @@
     color: $dark-text;
 }
 
+.mailto {
+    color: blue;
+    text-decoration: underline;
+}
+
+.response-container {
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
 .overall-rating {
     margin: 10px auto 40px;
 }
+
 
 .ratings-list {
     display: flex;
