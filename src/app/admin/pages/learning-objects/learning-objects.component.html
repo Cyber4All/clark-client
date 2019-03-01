@@ -14,7 +14,7 @@
             <div>Type</div>
             <div>Date</div>
           </div>
-          <div  [@listItem]="learningObjects.length">
+          <div>
             <clark-dashboard-item
               *ngFor="let l of learningObjects; let i = index"
               [learningObject]="l"
