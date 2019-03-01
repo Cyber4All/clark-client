@@ -1,10 +1,8 @@
-
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarService } from '../../core/navbar.service';
 import { BuilderStore } from './builder-store.service';
 import { ActivatedRoute } from '@angular/router';
-
 
 import { Subject } from 'rxjs';
 import {
@@ -20,7 +18,8 @@ import {
 import { ToasterService } from 'app/shared/toaster';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
-import { MessagesService } from 'app/core/messages.service';
+import { AuthService } from 'app/core/auth.service';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -63,7 +62,8 @@ export const builderTransitions = trigger('builderTransition', [
         stagger('150ms ease', [
           style({ transform: 'translateY(-200px)', opacity: 0 }),
           animate(
-            '300ms ease', style({ transform: 'translateY(0px)', opacity: 1 })
+            '300ms ease',
+            style({ transform: 'translateY(0px)', opacity: 1 })
           )
         ])
       ],
@@ -79,11 +79,11 @@ export const builderTransitions = trigger('builderTransition', [
   styleUrls: ['./learning-object-builder.component.scss'],
   animations: [
     trigger('serviceInteraction', [
-      state('open', style({ opacity: '1',  transform: 'translateY(-20px)' })),
+      state('open', style({ opacity: '1', transform: 'translateY(-20px)' })),
       state('closed', style({ opacity: '0', transform: 'translateY(0px)' })),
       transition('* => *', animate('300ms ease'))
     ]),
-    builderTransitions,
+    builderTransitions
   ],
   // these are provided here so that they'll be destroyed when navigating away
   providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
@@ -98,6 +98,8 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   errorMessage: string;
 
+  adminMode: boolean;
+
   // tslint:disable-next-line:max-line-length
   constructor(
     private store: BuilderStore,
@@ -105,8 +107,9 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private nav: NavbarService,
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
-    public noteService: ToasterService
-  ) { }
+    public noteService: ToasterService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
@@ -115,35 +118,53 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
       // if name parameter found, instruct store to fetch full learning object
       if (id) {
-        this.store.fetch(id);
+        this.store.fetch(id).then(obj => this.setBuilderMode(obj));
       } else {
         // otherwise instruct store to initialize and store a blank learning object
         this.store.makeNew();
       }
     });
 
-    this.builderStore.serviceInteraction$.pipe(takeUntil(this.destroyed$)).subscribe(val => {
-      if (val) {
-        clearTimeout(this.removeServiceIndicator);
-        this.serviceInteraction = true;
-        this.showServiceInteraction = true;
-      } else {
-        this.serviceInteraction = false;
+    this.builderStore.serviceInteraction$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(val => {
+        if (val) {
+          clearTimeout(this.removeServiceIndicator);
+          this.serviceInteraction = true;
+          this.showServiceInteraction = true;
+        } else {
+          this.serviceInteraction = false;
 
-        this.removeServiceIndicator = setTimeout(() => {
-          this.showServiceInteraction = false;
-        }, 3000);
-      }
-    });
+          this.removeServiceIndicator = setTimeout(() => {
+            this.showServiceInteraction = false;
+          }, 3000);
+        }
+      });
 
     // hides clark nav bar from builder
     this.nav.hide();
   }
 
+  /**
+   * Sets adminMode to true if user is admin or editor and is not the author
+   *
+   * @private
+   * @param {LearningObject} object
+   * @memberof LearningObjectBuilderComponent
+   */
+  private setBuilderMode(object: LearningObject): void {
+    this.adminMode =
+      this.authService.isAdminOrEditor() &&
+      object.author.username !== this.authService.username;
+  }
+
   get errorState(): boolean {
     this.errorMessage = this.validator.nextError;
 
-    return !this.validator.saveable || (this.validator.submissionMode && !this.validator.submittable);
+    return (
+      !this.validator.saveable ||
+      (this.validator.submissionMode && !this.validator.submittable)
+    );
   }
 
   getState(outlet: any) {

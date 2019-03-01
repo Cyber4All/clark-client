@@ -28,7 +28,7 @@ export interface AuthUser extends User {
 
 @Injectable()
 export class AuthService {
-  user: User = undefined;
+  user: AuthUser;
   headers = new Headers();
   httpHeaders = new HttpHeaders();
   inUse: object;
@@ -49,6 +49,19 @@ export class AuthService {
         }
       );
     }
+  }
+
+  /**
+   * Checks if user's group equals admin or editor
+   *
+   * @returns {boolean}
+   * @memberof AuthService
+   */
+  public isAdminOrEditor(): boolean {
+    return (
+      this.group.value === AUTH_GROUP.ADMIN ||
+      this.group.value === AUTH_GROUP.EDITOR
+    );
   }
 
   private changeStatus(status: boolean) {
@@ -75,6 +88,10 @@ export class AuthService {
 
   get username(): string {
     return this.user ? this.user.username : undefined;
+  }
+
+  get accessGroups(): string[] {
+    return this.user ? this.user.accessGroups : [];
   }
 
   async validate(): Promise<void> {

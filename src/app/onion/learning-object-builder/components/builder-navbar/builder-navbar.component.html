@@ -1,34 +1,50 @@
 <div class="builder-navbar-wrapper">
   <div class="top">
     <div class="top__left">
-      <a routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> Back to Dashboard</a>
+      <a *ngIf="!adminMode" routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> Back to Dashboard</a>
+      <!-- FIXME: Convert to routerLink when admin dashboard is pulled into CLARK -->
+      <a *ngIf="adminMode" href="https://admin.clark.center"><i class="far fa-arrow-left"></i> Back to Dashboard</a>
     </div>
     <div class="top__right">
-      <div *ngIf="!['unreleased', 'rejected'].includes(learningObject?.status) && learningObject?.collection" class="top__collection" tip="This learning object has been submitted to the {{ collection.name }} collection." tipLocation="bottom" >
+      <div *ngIf="!['unreleased', 'rejected'].includes(learningObject?.status) && learningObject?.collection" class="top__collection"
+        tip="This learning object has been submitted to the {{ collection.name }} collection." tipLocation="bottom">
         <span>{{ collection.name }}</span>
         <div class="collection__image" [style.background-image]="'url(assets/images/collections/' + learningObject?.collection + '.png)'"></div>
       </div>
-      <div *ngIf="learningObject?.status" class="top__status" [ngClass]="learningObject?.status" tip="{{ statusDescription }}" tipDisabled="{{ !statusDescription }}" tipLocation="bottom">
+      <div *ngIf="learningObject?.status" class="top__status" [ngClass]="learningObject?.status" tip="{{ states?.get(learningObject.status)?.tip }}"
+        tipDisabled="{{ !states?.get(learningObject.status)?.tip }}" tipLocation="bottom">
         <span *ngIf="learningObject?.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
         <span *ngIf="learningObject?.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
         <span *ngIf="learningObject?.status === 'review'"><i class="fas fa-sync"></i></span>
         <span *ngIf="learningObject?.status === 'released'"><i class="fas fa-eye"></i></span>
         <span *ngIf="learningObject?.status === 'denied'"><i class="fas fa-ban"></i></span>
       </div>
-      <ng-container *ngIf="!learningObject?.status || ['unreleased', 'rejected'].includes(learningObject?.status); else submittedButtonTemplate">
-        <button class="button" [ngClass]="{'good': !submissionError, 'bad': validator.submissionMode && submissionError, 'disabled': !auth.user.emailVerified}" (click)="auth.user.emailVerified && triggerSubmit()">
-          <div *ngIf="validator.submissionMode && submissionError" class="button__cancel" tip="Cancel Submission" tipLocation="bottom" (click)="$event.stopPropagation(); validator.submissionMode = false;">
-            <i class="far fa-times"></i>
-          </div>
-          {{ validator.submissionMode && submissionError ? 'Try Again' : 'Submit for review' }} 
-          <i class="far fa-arrow-right"></i>
-        </button>
+      <ng-container *ngIf="!adminMode">
+
+        <ng-container *ngIf="!learningObject?.status || ['unreleased', 'rejected'].includes(learningObject?.status); else submittedButtonTemplate">
+          <button class="button" [ngClass]="{'good': !submissionError, 'bad': validator.submissionMode && submissionError, 'disabled': !auth.user.emailVerified}"
+            (click)="auth.user.emailVerified && triggerSubmit()">
+            <div *ngIf="validator.submissionMode && submissionError" class="button__cancel" tip="Cancel Submission"
+              tipLocation="bottom" (click)="$event.stopPropagation(); validator.submissionMode = false;">
+              <i class="far fa-times"></i>
+            </div>
+            {{ validator.submissionMode && submissionError ? 'Try Again' : 'Submit for review' }}
+            <i class="far fa-arrow-right"></i>
+          </button>
+        </ng-container>
+
+        <ng-template #submittedButtonTemplate>
+          <button class="button good" (click)="toggleSubmissionOptionsMenu($event)" [ngClass]="{'shadow': showSubmissionOptions, 'disabled': !auth.user.emailVerified}">
+            Submitted <i class=" far fa-angle-down"></i>
+          </button>
+        </ng-template>
+
       </ng-container>
-      <ng-template #submittedButtonTemplate>
-        <button class="button good" (click)="toggleSubmissionOptionsMenu($event)" [ngClass]="{'shadow': showSubmissionOptions, 'disabled': !auth.user.emailVerified}">
-          Submitted <i class=" far fa-angle-down"></i>
-        </button>
-      </ng-template>
+      <div *ngIf="adminMode" class="builder-navbar-wrapper__bottom-right">
+        <div class="builder-navbar-wrapper__bottom-right__admin-badge">
+          <span>Editor Mode</span>
+        </div>
+      </div>
     </div>
   </div>
   <div class="builder-navbar-wrapper__bottom">
@@ -50,12 +66,14 @@
         <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator">All changes saved</span>
       </div>
     </div>
+
   </div>
 </div>
 
 <clark-popup *ngIf="showSubmission" (closed)="showSubmission = false">
   <div #popupInner>
-    <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)" (cancel)="showSubmission = false"></clark-collection-selector>
+    <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"
+      (cancel)="showSubmission = false"></clark-collection-selector>
   </div>
 </clark-popup>
 
@@ -70,6 +88,8 @@
 </clark-context-menu>
 
 <ng-template #navItemTemplate let-link="link" let-disabled="disabled" let-text="text">
-  <a *ngIf="!disabled" [ngClass]="{'new': isNewRoute(link)}" routerLink="{{ link }}" routerLinkActive="active" (click)="triggerRouteClick(link)">{{ text }}</a>
-  <a *ngIf="disabled" class="disabled" tip="Please give this learning object a name before adding outcomes or uploading materials" tipLocation="above"><i class="fas fa-lock"></i>{{ text }}</a>
+  <a *ngIf="!disabled" [ngClass]="{'new': isNewRoute(link)}" routerLink="{{ link }}" routerLinkActive="active" (click)="triggerRouteClick(link)">{{
+    text }}</a>
+  <a *ngIf="disabled" class="disabled" tip="Please give this learning object a name before adding outcomes or uploading materials"
+    tipLocation="above"><i class="fas fa-lock"></i>{{ text }}</a>
 </ng-template>

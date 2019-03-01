@@ -1,5 +1,4 @@
-
-import {takeUntil, debounceTime, take} from 'rxjs/operators';
+import { takeUntil, debounceTime, take } from 'rxjs/operators';
 import { trigger, style, animate, transition } from '@angular/animations';
 import {
   Component,
@@ -19,16 +18,11 @@ import {
 import { ToasterService } from '../../../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
-import {
-  LearningObject,
-} from '@cyber4all/clark-entity';
-import { BehaviorSubject ,  fromEvent ,  Observable ,  Subject } from 'rxjs';
-
-
+import { LearningObject } from '@cyber4all/clark-entity';
+import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
 import {
   ModalService,
-  ModalListElement
 } from '../../../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
@@ -60,11 +54,17 @@ export type DZFile = {
     trigger('uploadQueue', [
       transition(':enter', [
         style({ transform: 'translateY(20px)', opacity: 0 }),
-        animate('200ms 200ms ease-out', style({ transform: 'translateY(0px)', opacity: 1 }))
+        animate(
+          '200ms 200ms ease-out',
+          style({ transform: 'translateY(0px)', opacity: 1 })
+        )
       ]),
       transition(':leave', [
         style({ transform: 'translateY(-0px)', opacity: 1 }),
-        animate('200ms ease-out', style({ transform: 'translateY(20px)', opacity: 0 }))
+        animate(
+          '200ms ease-out',
+          style({ transform: 'translateY(20px)', opacity: 0 })
+        )
       ])
     ])
   ]
@@ -90,7 +90,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   urlAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output()
-  urlUpdated: EventEmitter<{ index: string; url: LearningObject.Material.Url }> = new EventEmitter<{
+  urlUpdated: EventEmitter<{
+    index: string;
+    url: LearningObject.Material.Url;
+  }> = new EventEmitter<{
     index: string;
     url: LearningObject.Material.Url;
   }>();
@@ -130,11 +133,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
-  LearningObject.Material.File[]
+    LearningObject.Material.File[]
   >([]);
-  folderMeta$: BehaviorSubject<LearningObject.Material.FolderDescription[]> = new BehaviorSubject<
-  LearningObject.Material.FolderDescription[]
-  >([]);
+  folderMeta$: BehaviorSubject<
+    LearningObject.Material.FolderDescription[]
+  > = new BehaviorSubject<LearningObject.Material.FolderDescription[]>([]);
 
   inProgressFileUploads = [];
   inProgressFolderUploads = [];
@@ -145,11 +148,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
-  private uploadIds = {
-
-  };
-
   solutionUpload = false;
+
+  showDeletePopup = false;
+  handleDeleteGenerator: Iterator<void>;
+
+  private uploadIds = {};
 
   constructor(
     private notificationService: ToasterService,
@@ -159,23 +163,27 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.learningObject$.pipe(takeUntil(this.unsubscribe$)).subscribe(object => {
-      if (object) {
-        this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
-        this.files$.next(object.materials.files);
-        this.folderMeta$.next(object.materials.folderDescriptions);
-        this.solutionUpload = false;
-        this.files$.value.forEach(file => {
-          if (file.name.toLowerCase().indexOf('solution') >= 0) {
-            this.solutionUpload = true;
-          }
-        });
-      }
-    });
+    this.learningObject$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(object => {
+        if (object) {
+          this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
+          this.files$.next(object.materials.files);
+          this.folderMeta$.next(object.materials.folderDescriptions);
+          this.solutionUpload = false;
+          this.files$.value.forEach(file => {
+            if (file.name.toLowerCase().indexOf('solution') >= 0) {
+              this.solutionUpload = true;
+            }
+          });
+        }
+      });
 
-    this.notes$.pipe(
-      takeUntil(this.unsubscribe$),
-      debounceTime(650), )
+    this.notes$
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        debounceTime(650)
+      )
       .subscribe(notes => {
         this.notesUpdated.emit(notes);
       });
@@ -192,8 +200,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
-    fromEvent(document.getElementsByTagName('body')[0], 'dragover').pipe(
-      takeUntil(this.unsubscribe$))
+    fromEvent(document.getElementsByTagName('body')[0], 'dragover')
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((event: any) => {
         const types = event.dataTransfer.types;
         if (types.filter(x => x === 'Files').length >= 1) {
@@ -202,8 +210,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
-    fromEvent(document.getElementsByTagName('body')[0], 'dragleave').pipe(
-      takeUntil(this.unsubscribe$))
+    fromEvent(document.getElementsByTagName('body')[0], 'dragleave')
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((event: any) => {
         if (event.target.classList.contains('uploader')) {
           this.toggleDrag(false);
@@ -285,8 +293,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         if (file.upload.chunked) {
           // Request multipart upload
-          const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
-          const uploadId  = await this.fileStorage.initMultipart({
+          const learningObject = await this.learningObject$
+            .pipe(take(1))
+            .toPromise();
+          const uploadId = await this.fileStorage.initMultipart({
             learningObject,
             fileId: file.upload.uuid,
             filePath: file.fullPath ? file.fullPath : file.name
@@ -364,7 +374,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           mimetype: file.type
         };
         const uploadId = this.uploadIds[file.upload.uuid];
-        const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
+        const learningObject = await this.learningObject$
+          .pipe(take(1))
+          .toPromise();
         await this.fileStorage.finalizeMultipart({
           fileMeta,
           learningObject,
@@ -524,23 +536,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @returns {Promise<void>}
    * @memberof UploadComponent
    */
-  async handleDeletion(files: string[]): Promise<void> {
-    const confirmed = await this.modalService
-      .makeDialogMenu(
-        'materialDelete',
-        'Are you sure?',
-        'You cannot undo this action!',
-        false,
-        'title-bad',
-        'center',
-        [
-          new ModalListElement('Yup, do it!', 'confirm', 'bad'),
-          new ModalListElement('Nevermind!', 'cancel', 'neutral')
-        ]
-      )
-      .toPromise();
-
-    if (confirmed === 'confirm') {
+  async *handleDeletion(files: string[]) {
+    this.showDeleteConfirmation();
+    const confirmed: boolean = yield;
+    if (confirmed) {
       this.saving$.next(true);
       try {
         const object = await this.learningObject$.pipe(take(1)).toPromise();
@@ -555,6 +554,44 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.saving$.next(false);
     }
+  }
+
+  /**
+   * Handles showing deletion confirmation modal
+   *
+   * @memberof UploadComponent
+   */
+  showDeleteConfirmation() {
+    this.showDeletePopup = true;
+  }
+
+  /**
+   * Handles hiding deletion confirmation modal
+   *
+   * @memberof UploadComponent
+   */
+  hideDeleteConfirmation() {
+    this.showDeletePopup = false;
+  }
+
+  /**
+   * Confirms deletion
+   *
+   * @memberof UploadComponent
+   */
+  confirmDeletion() {
+    this.handleDeleteGenerator.next(true);
+    this.hideDeleteConfirmation();
+  }
+
+  /**
+   * Cancels deletion
+   *
+   * @memberof UploadComponent
+   */
+  cancelDeletion() {
+    this.handleDeleteGenerator.next(false);
+    this.hideDeleteConfirmation();
   }
 
   /**
