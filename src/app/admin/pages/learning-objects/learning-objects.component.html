@@ -35,36 +35,6 @@
     </div>
   </div>
 
-  <div class="modal" *ngIf="displayStatusModal">
-    <form class="input-wrapper">
-      <div class="header">
-        <div class="title">Status for:
-          <span class="lo-name">{{activeLearningObject.name | titlecase}}</span>
-        </div>
-      </div>
-      <div class="input-radio" *ngIf="isAdmin">
-        <div *ngFor="let status of adminObjectStatuses">
-          <label class="radio">
-            <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
-              name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
-          </label>
-        </div>
-      </div>
-      <div class="input-radio" *ngIf="isEditor">
-        <div *ngFor="let status of editorObjectStatuses">
-          <label class="radio">
-            <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
-                name="enums" [checked]="objectPreviousStatus(status)">{{ status | titlecase }}
-          </label>
-        </div>
-      </div>
-      <div class="submit">
-        <button type="button" (click)="closeStatusModal()" class="button bad">Cancel</button>
-        <button type="button" (click)="updateLearningObjectStatus()" class="button good">Submit</button>
-      </div>
-    </form>
-  </div>
-
   <clark-popup *ngIf="displayStatusModal" (closed)="displayStatusModal= false">
     <div #popupInner class="popup-inner">
       <div class="modal-title">Change Status</div>

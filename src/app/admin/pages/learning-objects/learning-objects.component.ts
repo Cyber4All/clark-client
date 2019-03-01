@@ -13,7 +13,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
     PrivateLearningObjectService
   ]
 })
-export class LearningObjectsComponent implements OnInit {
+export class LearningObjectsComponent {
 
   learningObjects: any;
   searchBarPlaceholder = 'Learning Objects';
@@ -27,8 +27,6 @@ export class LearningObjectsComponent implements OnInit {
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
   ) { }
-
-  ngOnInit() {}
 
   getLearningObjects(text: string) {
     this.loading = true;
