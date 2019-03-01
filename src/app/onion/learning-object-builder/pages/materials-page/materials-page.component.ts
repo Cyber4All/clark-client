@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject ,  Observable } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
+import { Subject ,  Observable  } from 'rxjs';
 
 
 @Component({
@@ -32,13 +32,12 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
 
     // listen for outcome events and update component stores
     this.store.learningObjectEvent
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((payload: LearningObject) => {
-        if (payload) {
-          // re-initialize our state variables
-          this.learningObject = payload;
-        }
-      });
+    .pipe(
+      filter(learningObject => learningObject !== undefined),
+      takeUntil(this.destroyed$)
+    ).subscribe((payload: LearningObject) => {
+      this.learningObject = payload;
+    }); 
   }
 
   async handleFileDeletion(fileIds: string[]) {
