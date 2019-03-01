@@ -17,7 +17,6 @@ import { ModalModule } from 'app/shared/modals';
 import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { DashboardItemComponent } from 'app/shared/dashboard-item/dashboard-item.component';
 
 @NgModule({
   declarations: [
@@ -26,9 +25,9 @@ import { DashboardItemComponent } from 'app/shared/dashboard-item/dashboard-item
     LearningObjectsComponent,
     AnalyticsComponent,
     UsersComponent,
+    SearchBarComponent,
     ContentWrapperComponent,
     FilterSearchComponent,
-    DashboardItemComponent,
     DashboardComponent
   ],
   providers: [ FilterSearchService ],
@@ -40,7 +39,6 @@ import { DashboardItemComponent } from 'app/shared/dashboard-item/dashboard-item
     ContextMenuModule,
     ModalModule,
     PopupModule,
-    SearchBarComponent,
     CommonModule,
     AdminRoutingModule,
     SharedModule,
