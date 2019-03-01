@@ -17,6 +17,7 @@ import { ModalModule } from 'app/shared/modals';
 import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { SharedModule } from 'app/shared/shared.module';
     CommonModule,
     AdminRoutingModule,
     SharedModule,
+    ScrollingModule,
   ]
 })
 export class AdminModule { }

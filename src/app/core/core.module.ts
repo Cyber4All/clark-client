@@ -22,6 +22,7 @@ import { CollectionService } from './collection.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 import { AdminGuard } from './admin.guard';
+import { AccessGroupGuard } from './access-group-guard';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
+        AccessGroupGuard,
         AuthGuard,
         AdminGuard,
         AuthService,

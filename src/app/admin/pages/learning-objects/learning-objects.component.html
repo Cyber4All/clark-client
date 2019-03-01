@@ -1,12 +1,15 @@
 <clark-admin-content-wrapper>
   <div page-title>Learning Objects</div>
-  <clark-admin-search-bar search></clark-admin-search-bar>
+  <clark-admin-search-bar search 
+    [placeholder]="searchBarPlaceholder"
+    (userInput)="getLearningObjects($event)"
+  ></clark-admin-search-bar>
   <clark-admin-filter-search filter-options>
-  </clark-admin-filter-search>
+    </clark-admin-filter-search>
 
   <div class="list" main>
     <div #listInner>
-      <div class="list__body">
+      <div *ngIf="!loading; else loadingTemplate" class="list__body">
         <div *ngIf="learningObjects?.length; else emptyTemplate">
           <div class="body__column-headers">
             <div>Status</div>
@@ -15,32 +18,76 @@
             <div>Type</div>
             <div>Date</div>
           </div>
-          <div>
-            <clark-dashboard-item
-              *ngFor="let l of learningObjects; let i = index"
-              [learningObject]="l"
-              [status]="l.status"
-              [hasCheckBox]="false"
-              [hasAuthor]="true"
-              >
-            </clark-dashboard-item>
-          </div>
+            <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90">
+              <clark-dashboard-item
+                *cdkVirtualFor="let l of learningObjects; let i = index"
+                [learningObject]="l"
+                [status]="l.status"
+                [hasCheckBox]="false"
+                [hasAuthor]="true"
+                [isAdmin]="true"
+                (viewUser)="getUserLearningObjects($event)"
+                (changeStatus)="openChangeStatusModal($event)"
+                >
+              </clark-dashboard-item>
+            </cdk-virtual-scroll-viewport>    
         </div>
       </div>
     </div>
   </div>
-</clark-admin-content-wrapper>
 
-<ng-template #emptyTemplate>
-  <div [@nonListItem] class="empty-template">
-    <div class="empty-template__top">
-      <i class="fal fa-box-open"></i>
-      <div class="top-message">
-        Nothing here!
+  <clark-popup *ngIf="displayStatusModal" (closed)="displayStatusModal= false">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">Change Status</div>
+        <div class="modal-text">
+          <form class="input-wrapper">
+            <div class="header">
+              <div class="title">
+                <span class="lo-name">{{activeLearningObject.name | titlecase}}</span>
+              </div>
+            </div>
+            <div class="input-radio">
+              <div *ngFor="let status of adminStatusList">
+                <label class="radio">
+                  <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
+                    name="enums" [checked]="isCurrentStatus(status)">{{ status | titlecase }}
+                </label>
+              </div>
+            </div>
+            <div class="input-radio" *ngIf="isEditor">
+              <div *ngFor="let status of editorStatusList">
+                <label class="radio">
+                  <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
+                      name="enums" [checked]="isCurrentStatus(status)">{{ status | titlecase }}
+                </label>
+              </div>
+            </div>
+            <div class="btn-group to-right">
+              <button type="button" (click)="updateLearningObjectStatus()" class="button good">Submit</button>
+            </div>
+          </form>
+        </div>
+    </div>
+  </clark-popup>
+
+  <ng-template #loadingTemplate>
+    <div [@nonListItem] class="loading-template">
+      <i class="far fa-spinner-third fa-spin"></i>
+      Loading learning objects...
+    </div>
+  </ng-template>
+  
+  <ng-template #emptyTemplate>
+    <div class="empty-template">
+      <div class="empty-template__top">
+        <i class="fal fa-box-open"></i>
+        <div class="top-message">
+          Nothing here!
+        </div>
+      </div>
+      <div class="empty-text">
+        Learning Objects will appear here after they are submitted to your collection
       </div>
     </div>
-    <div class="empty-text">
-      Learning Objects will appear here after they are submitted to your collection
-    </div>
-  </div>
-</ng-template>
+  </ng-template>
+</clark-admin-content-wrapper>
