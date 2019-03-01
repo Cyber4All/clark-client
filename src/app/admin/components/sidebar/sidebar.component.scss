@@ -109,7 +109,7 @@ a {
     }
   }
 
-  .curator-menu--active {
+  .curator-menu--active .curator-menu__title {
     .svg-inline--fa,
     .icon {
       transform: rotate(90deg);
