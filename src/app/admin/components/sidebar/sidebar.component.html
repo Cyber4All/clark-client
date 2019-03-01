@@ -20,7 +20,7 @@
 </ng-template>
 
 <ng-template #collectionMenu>
-  <div  class="curator-menu" [ngClass]="{ 'curator-menu--active': activeCollection === collection.abvName }" *ngFor="let collection of authorizedCollections">
+  <div  class="curator-menu" [ngClass]="{ 'curator-menu--active': activeCollection === collection.abvName }" *ngFor="let collection of collections">
     <a routerLink="../{{ collection.abvName }}">
       <div class="curator-menu__title">
         {{ collection.name }}
