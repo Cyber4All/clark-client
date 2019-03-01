@@ -81,7 +81,8 @@ export class AdminComponent implements OnInit, OnDestroy {
         .filter(group => group.includes('curator@'))
         .map(group =>
           this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
-        )).then(() => {
+        ))
+        .then(() => {
           // remove the initialization block
           this._initialized[0] = true;
         });
