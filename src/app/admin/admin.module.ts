@@ -9,6 +9,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SharedModule } from 'app/shared/shared.module';
     CommonModule,
     AdminRoutingModule,
     SharedModule,
+    ScrollingModule,
   ]
 })
 export class AdminModule { }

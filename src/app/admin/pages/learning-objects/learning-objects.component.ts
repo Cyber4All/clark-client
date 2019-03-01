@@ -1,69 +1,76 @@
 import { Component, OnInit } from '@angular/core';
+import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
+import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
+import { Query } from 'app/shared/interfaces/query';
 import { LearningObject } from '@cyber4all/clark-entity';
-import { LearningObjectService } from 'app/cube/learning-object.service';
-import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
-import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [LearningObjectService]
+  providers: [
+    PublicLearningObjectService,
+    PrivateLearningObjectService
+  ]
 })
-export class LearningObjectsComponent implements OnInit {
+export class LearningObjectsComponent {
 
-  learningObjects: any[];
+  learningObjects: any;
+  searchBarPlaceholder = 'Learning Objects';
+  loading = false;
+  displayStatusModal = false;
+  activeLearningObject;
+  adminStatusList =  Object.keys(LearningObject.Status);
+  selectedStatus: string;
 
   constructor(
-    private learningObjectService: LearningObjectService,
+    private publicLearningObjectService: PublicLearningObjectService,
+    private privateLearningObjectService: PrivateLearningObjectService,
   ) { }
 
-  ngOnInit() {
-    this.learningObjects = [
-      {
-        _id: '5aa0183becba9a264dcd806b',
-        author: {
-          name: 'nick visalli',
-        },
-        date: '1520530818714',
-        goals: [
-          {
-            text: 'Introduce the concept of integer overflow in first programming courses'
-          }
-        ],
-        outcomes: [
-          '5aa0183becba9a264dcd806c'
-        ],
-        published: true,
-        name: 'This is a really really really really really really really really long title',
-        length: 'nanomodule',
-        materials:{
-          files:[],
-          urls:[
-            // tslint:disable-next-line:max-line-length
-            {title:'Online module','url':'http://cis1.towson.edu/~cyber4all/modules/nanomodules/Integer_Error-CS2_C++.html'},{'title':'See a Security Injection Module in Action','url':'https://youtu.be/MH_RD1jh0AE'},{'title':'How to use this module in your class','url':'https://youtu.be/u47q-qX52JI'}],'notes':'','pdf':{'name':'0ReadMeFirst - Integer Error - CS2 - C++.pdf','url':'https://neutrino-file-uploads.s3.us-east-2.amazonaws.com/skaza/5aa0183becba9a264dcd806b/0ReadMeFirst%20-%20Integer%20Error%20-%20CS2%20-%20C%2B%2B.pdf'}},'levels':['undergraduate'],'contributors':['5c6d71c29554c723fba68b19'],'collection':'secinj','lock':{'date':{'$numberDouble':'1538061211867'},'restrictions':['download']},'status':'released','description':'Introduce the concept of integer overflow in first programming courses'},
-        {
-        _id: '5aa0183becba9a264dcd806b',
-        author: {
-          name: 'nick visalli',
-        },
-        date: '1520530818714',
-        goals: [
-          {
-            text: 'Introduce the concept of integer overflow in first programming courses'
-          }
-        ],
-        outcomes: [
-          '5aa0183becba9a264dcd806c'
-        ],
-        published: true,
-        name: 'Integer Error - CS2 - C++',
-        length: 'nanomodule',
-        materials:{
-          files:[],
-          urls:[
-            // tslint:disable-next-line:max-line-length
-            {title:'Online module','url':'http://cis1.towson.edu/~cyber4all/modules/nanomodules/Integer_Error-CS2_C++.html'},{'title':'See a Security Injection Module in Action','url':'https://youtu.be/MH_RD1jh0AE'},{'title':'How to use this module in your class','url':'https://youtu.be/u47q-qX52JI'}],'notes':'','pdf':{'name':'0ReadMeFirst - Integer Error - CS2 - C++.pdf','url':'https://neutrino-file-uploads.s3.us-east-2.amazonaws.com/skaza/5aa0183becba9a264dcd806b/0ReadMeFirst%20-%20Integer%20Error%20-%20CS2%20-%20C%2B%2B.pdf'}},'levels':['undergraduate'],'contributors':['5c6d71c29554c723fba68b19'],'collection':'secinj','lock':{'date':{'$numberDouble':'1538061211867'},'restrictions':['download']},'status':'released','description':'Introduce the concept of integer overflow in first programming courses'},
-      ];
+  getLearningObjects(text: string) {
+    this.loading = true;
+    const query: Query = {
+      text
+    };
+    this.publicLearningObjectService.getLearningObjects(query)
+      .then(val => {
+        this.learningObjects = val.learningObjects;
+        this.loading = false;
+      });
+  }
+
+  getUserLearningObjects(author: string) {
+    this.loading = true;
+    const query = {
+      text: author
+    };
+    this.publicLearningObjectService.getLearningObjects(query)
+      .then(val => {
+        this.learningObjects = val.learningObjects;
+        this.loading = false;
+      });
+  }
+
+  openChangeStatusModal(learningObject: LearningObject) {
+    this.displayStatusModal = true;
+    this.activeLearningObject = learningObject;
+  }
+
+  updateLearningObjectStatus() {
+    this.privateLearningObjectService.save(
+      this.activeLearningObject.id,
+      this.activeLearningObject.author.username,
+      { status: this.selectedStatus }
+    );
+    this.displayStatusModal = false;
+  }
+
+  isCurrentStatus(status: string) {
+    return this.activeLearningObject.status === status.toLowerCase();
+  }
+
+  toggleStatus(status: string) {
+    this.selectedStatus = status.toLowerCase();
   }
  }
