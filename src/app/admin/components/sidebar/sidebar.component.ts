@@ -13,7 +13,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   @Input() authorizedCollections: string[] = [];
   @Input() activeCollection: string;
-  @Input() adminMode: boolean;
+  @Input() editorMode: boolean;
 
   @Input() initialized = false;
 

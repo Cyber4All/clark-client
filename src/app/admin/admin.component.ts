@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   authorizedCollections: Collection[] = [];
   activeCollection: string;
 
-  adminMode: boolean;
+  editorMode: boolean;
 
   private _initialized: boolean[] = [ false /* collections loaded */ ];
 
@@ -46,7 +46,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.navbarService.hide();
 
     if (this.authService.hasEditorAccess()) {
-      this.adminMode = true;
+      this.editorMode = true;
       // we don't need to load collections, so we can set that initialization block to true
       this._initialized[0] = true;
     } else {
