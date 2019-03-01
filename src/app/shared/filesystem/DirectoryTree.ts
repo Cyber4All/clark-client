@@ -34,7 +34,6 @@ export class DirectoryTree {
         }
         return true;
       });
-
     const newFiles = getUpdatedFiles(files);
     for (const file of newFiles) {
       this.fileMap.set(file.id, {
@@ -65,10 +64,32 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   private cleanFilesystem(files: LearningObject.Material.File[]) {
-    const fileIds = files.map(file => file.id);
+    /**
+     * Checks if file is in array by matching against id and path
+     *
+     * @returns {boolean}
+     */
+    const findFile = (params: {
+      cachedFileData: { id: string; path: string };
+      file: LearningObject.Material.File;
+    }): boolean => {
+      const { cachedFileData, file } = params;
+      const filePath = file.fullPath || file.name;
+      return cachedFileData.id === file.id || cachedFileData.path === filePath;
+    };
+
     const folderPaths = [];
+
+    // Remove file for file system and cache
     this.fileMap.forEach((mappedFile, mappedId) => {
-      if (!fileIds.includes(mappedId)) {
+      const fileExists = files.find(file =>
+        findFile({
+          file,
+          cachedFileData: { id: mappedId, path: mappedFile.path }
+        })
+      );
+
+      if (!fileExists) {
         this.removeFile(mappedFile.path);
         this.fileMap.delete(mappedId);
         const folderPath = getPaths(mappedFile.path).join('/');
@@ -77,6 +98,8 @@ export class DirectoryTree {
         }
       }
     });
+
+    // Remove empty folders leftover from file removal
     for (const path of folderPaths) {
       const paths = getPaths(path, false);
       const node = this.traversePath(paths);
