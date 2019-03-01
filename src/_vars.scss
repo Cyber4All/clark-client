@@ -27,6 +27,8 @@ $gencyber: $error-red;
 $secinj: #f9dd80;
 $c5: #983cbd;
 
+$proofing: #BD5EDA;
+
 // functions
 @function gradient($color1, $color2, $angle) {
     @return linear-gradient($angle, $color1, $color2);
