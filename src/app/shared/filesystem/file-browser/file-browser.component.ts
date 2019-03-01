@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { BehaviorSubject ,  Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectoryNode, DirectoryTree } from '../DirectoryTree';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { getPaths } from '../file-functions';
@@ -135,7 +135,8 @@ export class FileBrowserComponent implements OnInit {
    */
   private refreshNode(): void {
     const path = this.currentPath$.getValue();
-    this.currentNode$.next(this.filesystem.traversePath(path));
+    const node = this.filesystem.traversePath(path);
+    this.currentNode$.next(node);
     this.path.emit(path.join('/'));
   }
   /**

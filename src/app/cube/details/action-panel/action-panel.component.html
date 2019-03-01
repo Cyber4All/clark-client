@@ -19,7 +19,7 @@
         <i class="fal fa-spinner-third fa-spin"></i>
       </span>
     </button>
-    <button *ngIf="isEditButtonViewable" class="button neutral on-white" (click)="openAdminApp()"> 
+    <button *ngIf="isEditButtonViewable" class="button neutral on-white" [routerLink]="['/admin/learning-object-builder/', learningObject?.id]">
       Revise
     </button>
   </div>

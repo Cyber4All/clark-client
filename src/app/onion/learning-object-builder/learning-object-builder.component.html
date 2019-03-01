@@ -1,6 +1,6 @@
 <clark-toaster [content]="noteService.content"></clark-toaster>
 <div class="learning-object-builder-wrapper" [@builderTransition]="getState(o)">
-  <onion-builder-navbar *ngIf="true"></onion-builder-navbar>
+  <onion-builder-navbar [adminMode]="adminMode"></onion-builder-navbar>
   <router-outlet #o="outlet"></router-outlet>
 </div>
 
