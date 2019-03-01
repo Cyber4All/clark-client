@@ -37,6 +37,8 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
+import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
+import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -80,7 +82,9 @@ import { TeleporterModule } from './teleporter/teleporter.module';
     ProgressComponent,
     FileSizePipe,
     CookiesComponent,
+    DashboardItemComponent,
     EmailBannerComponent,
+    NewRatingResponseComponent,
   ],
   exports: [
     NavbarComponent,
@@ -105,7 +109,9 @@ import { TeleporterModule } from './teleporter/teleporter.module';
     ContextMenuModule,
     ClarkContextMenuModule,
     EmailBannerComponent,
-    TeleporterModule
+    DashboardItemComponent,
+    TeleporterModule,
+    NewRatingResponseComponent,
   ]
 })
 export class SharedModule {}

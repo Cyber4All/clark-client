@@ -13,8 +13,11 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
+          name: Unit Tests
+          command: npm test -- auth/
+      - run:
           name: Build Application
-          command: yarn ng build --prod --aot=false --build-optimizer=false
+          command: yarn ng build --prod --aot=false --build-optimizer=false --no-progress
       - persist_to_workspace: 
           root: dist
           paths: 

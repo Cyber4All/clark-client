@@ -1,6 +1,11 @@
 <div class="admin">
   <div class="admin__sidebar">
-    <clark-admin-sidebar></clark-admin-sidebar>
+    <clark-admin-sidebar
+      [collections]="authorizedCollections"
+      [activeCollection]="activeCollection"
+      [initialized]="initialized"
+      [editorMode]="editorMode"
+    ></clark-admin-sidebar>
   </div>
   <div class="admin__main-content">
     <router-outlet></router-outlet>

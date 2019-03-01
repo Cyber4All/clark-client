@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 import { skipWhile } from 'rxjs/operators';
 
 export interface Collection {
@@ -28,6 +28,10 @@ export class CollectionService {
    */
   async fetchCollections() {
     this.collections = await this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTIONS, { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((collections: Collection[]) => {
         this.collections = collections;
@@ -75,6 +79,10 @@ export class CollectionService {
         { collection: collectionName },
         { withCredentials: true, responseType: 'text' }
       )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
   }
 
@@ -85,6 +93,10 @@ export class CollectionService {
       .delete(
         USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(learningObjectId),
         { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
       )
       .toPromise();
   }
@@ -101,6 +113,20 @@ export class CollectionService {
 
   getCollectionMetadata(name: string) {
     return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTION_META(name))
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }

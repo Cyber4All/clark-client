@@ -1,6 +1,7 @@
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
@@ -44,6 +45,10 @@ export class SuggestionService {
       .get(`${environment.suggestionUrl}/outcomes/suggest?${query}`, {
         headers: this.headers
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise()
       .then((res: any) => {
         const outcomes = res.outcomes;
@@ -101,5 +106,15 @@ export class SuggestionService {
   updateMappings(mappings) {
     this.mappedStandards = mappings;
     this.mappedSubject.next(mappings);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
   }
 }

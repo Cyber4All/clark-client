@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable ,  BehaviorSubject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@cyber4all/clark-entity';
 import { Headers } from '@angular/http';
+import { catchError, retry } from 'rxjs/operators';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -80,6 +81,10 @@ export class AuthService {
     try {
       const response = await this.http
         .get(environment.apiURL + '/users/tokens', { withCredentials: true })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       this.user = response as AuthUser;
       this.assignUserToGroup();
@@ -97,6 +102,10 @@ export class AuthService {
           withCredentials: true,
           responseType: 'text'
         })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       return Promise.resolve();
     } catch (error) {
@@ -112,6 +121,10 @@ export class AuthService {
         .get(environment.apiURL + '/users/tokens/refresh', {
           withCredentials: true
         })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       this.user = val as AuthUser;
     } catch (error) {
@@ -125,6 +138,10 @@ export class AuthService {
         .post<User>(environment.apiURL + '/users/tokens', user, {
           withCredentials: true
         })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .toPromise();
       this.user = val as AuthUser;
       this.changeStatus(true);
@@ -143,6 +160,10 @@ export class AuthService {
         withCredentials: true,
         responseType: 'text'
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
     this.user = undefined;
     this.changeStatus(false);
@@ -155,7 +176,12 @@ export class AuthService {
       await this.http.post(environment.apiURL + '/users', user, {
         withCredentials: true,
         responseType: 'text'
-      }).toPromise();
+      })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
       this.user = user;
       this.changeStatus(true);
       return this.user;
@@ -172,6 +198,10 @@ export class AuthService {
       .post<User>(environment.apiURL + '/users/password', { password }, {
         withCredentials: true
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
     return val;
   }
@@ -181,6 +211,10 @@ export class AuthService {
       environment.apiURL + '/users/ota-codes?action=resetPassword',
       { email },
       { withCredentials: true, responseType: 'text' }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
     );
   }
 
@@ -189,6 +223,10 @@ export class AuthService {
       environment.apiURL + '/users/ota-codes?otaCode=' + code,
       { payload },
       { withCredentials: true, responseType: 'text' }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
     );
   }
 
@@ -197,6 +235,10 @@ export class AuthService {
       environment.apiURL + '/users/ota-codes?action=verifyEmail',
       { email },
       { withCredentials: true, responseType: 'text' }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
     );
   }
 
@@ -206,6 +248,10 @@ export class AuthService {
         headers: this.httpHeaders,
         withCredentials: true
       })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
       .toPromise();
     this.inUse = val;
     return this.inUse;
@@ -220,7 +266,11 @@ export class AuthService {
     return this.http.patch(environment.apiURL + '/users/name', user.firstname, {
       withCredentials: true,
       responseType: 'text'
-    });
+    })
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
   establishSocket() {
@@ -313,14 +363,14 @@ export class AuthService {
    * @memberof AuthService
    */
   public hasCuratorAccess(): boolean {
-    return this.group.getValue() > AUTH_GROUP.CURATOR;
+    return this.group.getValue() > AUTH_GROUP.REVIEWER;
   }
 
   /**
    * Identifies if the current logged in user has editor privileges.
    */
   public hasEditorAccess(): boolean {
-    return this.group.getValue() > AUTH_GROUP.REVIEWER;
+    return this.group.getValue() > AUTH_GROUP.CURATOR;
   }
 
   /**
@@ -331,16 +381,34 @@ export class AuthService {
     if (!this.user['accessGroups']) {
       return;
     }
-    if (this.user['accessGroups'].includes('admin')) {
+
+    // Since the service will only pull down objects the authenticated user is authorized to see, we don't need
+    // to check the collection in the case of reviewers and curators. We can strip the collections from the roles
+    // in the access groups for ease of comparison.
+    const groups = this.user['accessGroups'].map(x => x.split('@')[0]);
+
+    if (groups.includes('admin')) {
       this.group.next(AUTH_GROUP.ADMIN);
-    } else if (this.user['accessGroups'].includes('editor')) {
+    } else if (groups.includes('editor')) {
       this.group.next(AUTH_GROUP.EDITOR);
-    } else if (this.user['accessGroups'].includes('curator')) {
+    } else if (groups.includes('curator')) {
       this.group.next(AUTH_GROUP.CURATOR);
-    } else if (this.user['accessGroups'].includes('reviewer')) {
+    } else if (groups.includes('reviewer')) {
       this.group.next(AUTH_GROUP.REVIEWER);
+    } else if (groups.includes('curator')) {
+      this.group.next(AUTH_GROUP.CURATOR);
     } else {
       this.group.next(AUTH_GROUP.USER);
+    }
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
     }
   }
 }

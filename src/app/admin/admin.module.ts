@@ -12,10 +12,12 @@ import { FormsModule } from '@angular/forms';
 import { FilterSearchService } from 'app/shared/filter-search.service';
 import { TooltipModule } from 'app/shared/tooltips/tip.module';
 import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
-import { DashboardItemComponent } from 'app/onion/dashboard/dashboard-item/dashboard-item.component';
 import { DashboardComponent } from 'app/onion/dashboard/dashboard.component';
 import { ModalModule } from 'app/shared/modals';
 import { PopupModule } from 'app/shared/popups/popup.module';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SharedModule } from 'app/shared/shared.module';
+import { DashboardItemComponent } from 'app/shared/dashboard-item/dashboard-item.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,11 @@ import { PopupModule } from 'app/shared/popups/popup.module';
     TooltipModule,
     ContextMenuModule,
     ModalModule,
-    PopupModule
+    PopupModule,
+    SearchBarComponent,
+    CommonModule,
+    AdminRoutingModule,
+    SharedModule,
   ]
 })
 export class AdminModule { }
