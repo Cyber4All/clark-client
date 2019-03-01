@@ -58,7 +58,6 @@ import { TeleporterModule } from './teleporter/teleporter.module';
     ClarkContextMenuModule.forRoot(),
     TeleporterModule
   ],
-  providers: [],
   declarations: [
     NavbarComponent,
     MessageComponent,

@@ -1,0 +1,69 @@
+
+  <div class="list">
+    <div #listInner class="list-inner">
+      <div class="list-top">
+        <div class="wrapper">
+          <div class="filter-wrapper">
+            <div class="btn-group to-right">
+                <button class="button neutral filters-button" [ngClass]="{'shadow': collectionMenuDown}" (click)="toggleCollectionMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> All Collections <i class="fas fa-sort"></i></button>
+                <button class="button neutral filters-button"[ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> All Statuses <i class="fas fa-sort"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
+    <div #contextMenu class="filter-menu">
+      <ul>
+        <li class="unreleased" (click)="toggleFilter('unreleased')">
+          <div *ngIf="filters.get('unreleased')" class="indicator"></div>
+          <i class="far fa-eye-slash"></i>Unreleased
+        </li>
+        <li class="waiting" (click)="toggleFilter('waiting')">
+          <div *ngIf="filters.get('waiting')" class="indicator"></div>
+          <i class="far fa-hourglass"></i>Waiting for Review
+        </li>
+        <li class="review" (click)="toggleFilter('review')">
+          <div *ngIf="filters.get('review')" class="indicator"></div>
+          <i class="far fa-sync"></i>Under Review
+        </li>
+        <li class="released" (click)="toggleFilter('released')">
+          <div *ngIf="filters.get('released')" class="indicator"></div>
+          <i class="far fa-eye"></i>Released
+        </li>
+        <li class="denied" (click)="toggleFilter('rejected')">
+          <div *ngIf="filters.get('rejected')" class="indicator"></div>
+          <i class="far fa-ban"></i>Denied
+        </li>
+      </ul>
+    </div>
+  </clark-context-menu>
+  <clark-context-menu (id)="collectionMenu = $event" (close)="toggleCollectionMenu(undefined)">
+    <div #contextMenu class="filter-collection">
+      <ul>
+        <li class="C5" (click)="toggleFilter('C5')">
+          <div *ngIf="filters.get('C5')" class="indicator"></div>C5
+        </li>
+        <li class="CAE Community" (click)="toggleFilter('CAE Community')">
+          <div *ngIf="filters.get('CAE Community')" class="indicator"></div>CAE Community
+        </li>
+        <li class="GenCyber" (click)="toggleFilter('GenCyber')">
+          <div *ngIf="filters.get('GenCyber')" class="indicator"></div>GenCyber
+        </li>
+        <li class="Intro to Cyber" (click)="toggleFilter('Intro to Cyber')">
+          <div *ngIf="filters.get('Intro to Cyber')" class="indicator"></div>Intro to Cyber
+        </li>
+        <li class="NSA NCCP" (click)="toggleFilter('NSA NCCP')">
+          <div *ngIf="filters.get('NSA NCCP')" class="indicator"></div>NSA NCCP
+        </li>
+        <li class="Secure Coding Community" (click)="toggleFilter('Secure Coding Community')">
+          <div *ngIf="filters.get('Secure Coding Community')" class="indicator"></div>Secure Coding Community
+        </li>
+        <li class="Security Injections" (click)="toggleFilter('Security Injections')">
+          <div *ngIf="filters.get('Security Injections')" class="indicator"></div>Security Injections
+        </li>
+      </ul>
+    </div>
+  </clark-context-menu>
+ 
