@@ -380,14 +380,14 @@ export class AuthService {
    * @memberof AuthService
    */
   public hasCuratorAccess(): boolean {
-    return this.group.getValue() > AUTH_GROUP.CURATOR;
+    return this.group.getValue() > AUTH_GROUP.REVIEWER;
   }
 
   /**
    * Identifies if the current logged in user has editor privileges.
    */
   public hasEditorAccess(): boolean {
-    return this.group.getValue() > AUTH_GROUP.REVIEWER;
+    return this.group.getValue() > AUTH_GROUP.CURATOR;
   }
 
   /**

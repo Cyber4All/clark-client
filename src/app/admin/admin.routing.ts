@@ -16,11 +16,20 @@ import { UsersComponent } from './pages/users/users.component';
 const admin_routes: Routes = [
   {
     path: '', component: AdminComponent, canActivate: [ AdminGuard ], children: [
-      // { path: 'analytics', component: AnalyticsComponent },
+      // TODO THESE NEED AN ADMIN GUARD TO PREVENT ACCESS BY CURATORS
+      { path: 'analytics', component: AnalyticsComponent },
       { path: 'learning-objects', component: LearningObjectsComponent },
-      // { path: 'users', component: UsersComponent },
-      { path: '**', redirectTo: 'learning-objects', pathMatch: 'full' }
-    ]
-  }
+      { path: 'users', component: UsersComponent },
+      { path: '', redirectTo: 'analytics', pathMatch: 'full' }
+    ],
+  },
+  { path: ':collection', redirectTo: '/admin/:collection/analytics', pathMatch: 'full' },
+  {
+    path: ':collection', component: AdminComponent, children: [
+      { path: 'analytics', component: AnalyticsComponent },
+      { path: 'learning-objects', component: LearningObjectsComponent },
+      { path: 'reviewers', component: UsersComponent },
+    ],
+  },
 ];
 export const AdminRoutingModule: ModuleWithProviders = RouterModule.forChild(admin_routes);

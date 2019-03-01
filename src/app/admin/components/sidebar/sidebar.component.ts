@@ -1,17 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { Collection } from 'app/core/collection.service';
+import { trigger, query, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'clark-admin-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
+  animations: [
+    trigger('sidebar', [
+      transition('* => *', [
+        query(':enter', [
+          style({ opacity: 0, height: 0 }),
+          animate('200ms ease', style({ opacity: 1, height: '*' }))
+        ], { optional: true }),
+        query(':leave', [
+          style({ opacity: 1, height: '*' }),
+          animate('200ms ease', style({ opacity: 0, height: 0 }))
+        ], { optional: true })
+      ])
+    ])
+  ]
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
+  destroyed$: Subject<void> = new Subject();
 
-  constructor(private location: Location) { }
+  @Input() collections: string[] = [];
+  @Input() activeCollection: string;
+  @Input() editorMode: boolean;
 
-  ngOnInit() {
-  }
+  @Input() initialized = false;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {}
 
   /**
    * Navigate to previous location
@@ -19,7 +42,13 @@ export class SidebarComponent implements OnInit {
    * @memberof SidebarComponent
    */
   navigateBack() {
-    this.location.back();
+    // TODO this should take a redirect URL
+    this.router.navigateByUrl('/'); // navigates home
   }
 
+  ngOnDestroy() {
+    // subscription clean up
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
 }
