@@ -408,8 +408,6 @@ export class AuthService {
       this.group.next(AUTH_GROUP.ADMIN);
     } else if (groups.includes('editor')) {
       this.group.next(AUTH_GROUP.EDITOR);
-    } else if (groups.includes('curator')) {
-      this.group.next(AUTH_GROUP.CURATOR);
     } else if (groups.includes('reviewer')) {
       this.group.next(AUTH_GROUP.REVIEWER);
     } else if (groups.includes('curator')) {

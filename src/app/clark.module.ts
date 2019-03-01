@@ -11,14 +11,15 @@ import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 @NgModule({
   imports: [
     BrowserModule,
     ClarkRoutingModule,
     SharedModule,
     CoreModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ScrollingModule,
   ],
   declarations: [ClarkComponent, UnsupportedComponent, NotFoundComponent],
   bootstrap: [ClarkComponent],
