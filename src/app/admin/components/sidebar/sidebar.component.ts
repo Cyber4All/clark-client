@@ -11,7 +11,7 @@ import { increaseElementDepthCount } from '@angular/core/src/render3/state';
 export class SidebarComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
-  @Input() authorizedCollections: string[] = [];
+  @Input() collections: string[] = [];
   @Input() activeCollection: string;
   @Input() editorMode: boolean;
 
