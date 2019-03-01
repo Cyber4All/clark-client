@@ -18,6 +18,9 @@
   &.review {
     background: #f5a623;
   }
+  &.proofing {
+    background: $proofing;
+  }
   &.released {
     background: $green;
   }
