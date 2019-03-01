@@ -29,6 +29,7 @@ import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 import { OnionSharedModule } from '../shared/onion-shared.module';
+import { ChangeStatusComponent } from './components/change-status/change-status.component';
 
 /*
   NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
@@ -65,6 +66,7 @@ import { OnionSharedModule } from '../shared/onion-shared.module';
     UserDropdownComponent,
     ContributorPillComponent,
     ScaffoldComponent,
+    ChangeStatusComponent,
   ],
 })
 export class LearningObjectBuilderModule {}
