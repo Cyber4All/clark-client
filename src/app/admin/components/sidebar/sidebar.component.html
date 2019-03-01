@@ -5,8 +5,8 @@
     </a>
   </div>
   <div class="sidebar__bottom">
-    <div class="sidebar__menu">
-      <ng-container *ngTemplateOutlet="sidebarMenu"></ng-container>
+    <div *ngIf="initialized" class="sidebar__menu">
+      <ng-container *ngTemplateOutlet="!editorMode ? collectionMenu : sidebarMenu"></ng-container>
     </div>
   </div>
 </div>
@@ -17,4 +17,18 @@
     <a routerLink="./learning-objects" routerLinkActive="sidebar__menu--active"><li><i class="far fa-archive"></i>Objects</li></a>
     <a [routerLink]="editorMode ? './users' : './reviewers'" routerLinkActive="sidebar__menu--active"><li><i class="far fa-users"></i>{{ editorMode ? 'Users' : 'Reviewers' }}</li></a>
   </ul>
+</ng-template>
+
+<ng-template #collectionMenu>
+  <div  class="curator-menu" [ngClass]="{ 'curator-menu--active': activeCollection === collection.abvName }" *ngFor="let collection of collections">
+    <a routerLink="../{{ collection.abvName }}">
+      <div class="curator-menu__title">
+        {{ collection.name }}
+        <i class="fas fa-chevron-right"></i>
+      </div>
+    </a>
+    <div [@sidebar] class="curator-menu__items" *ngIf="activeCollection === collection.abvName">
+      <ng-container *ngTemplateOutlet="sidebarMenu"></ng-container>
+    </div>
+  </div>
 </ng-template>

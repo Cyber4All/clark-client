@@ -60,7 +60,9 @@ export class AdminComponent implements OnInit, OnDestroy {
 
       this.retrieveAuthorizedCollections().then(() => {
         // collections array is now set and we should redirect to the first collection
-        this.router.navigate([this.authorizedCollections[0].abvName], { relativeTo: this.route });
+        if (!this.activeCollection) {
+          this.router.navigate([this.authorizedCollections[0].abvName], { relativeTo: this.route });
+        }
       });
     }
   }
@@ -75,9 +77,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     return await this.authService.isLoggedIn.pipe(
       skipWhile(x => x === false),
       take(1)
-    ).subscribe(async () => {
+    ).toPromise().then(async () => {
       // we're sure the user is logged in here and so access groups should be defined
-      return await Promise.all(this.authService.user['accessGroups']
+      return await Promise.all(
+        this.authService.user['accessGroups']
         .filter(group => group.includes('curator@'))
         .map(group =>
           this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))

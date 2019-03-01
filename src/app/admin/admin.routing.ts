@@ -23,12 +23,12 @@ const admin_routes: Routes = [
       { path: '', redirectTo: 'analytics', pathMatch: 'full' }
     ],
   },
+  { path: ':collection', redirectTo: '/admin/:collection/analytics', pathMatch: 'full' },
   {
     path: ':collection', component: AdminComponent, children: [
       { path: 'analytics', component: AnalyticsComponent },
       { path: 'learning-objects', component: LearningObjectsComponent },
       { path: 'reviewers', component: UsersComponent },
-      { path: ':collection', redirectTo: '/admin/:collection/analytics' },
     ],
   },
 ];
