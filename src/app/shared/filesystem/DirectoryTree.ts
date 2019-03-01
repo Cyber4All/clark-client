@@ -67,10 +67,6 @@ export class DirectoryTree {
     /**
      * Checks if file is in array by matching against id and path
      *
-     * @param {{
-     *       cachedFileData: { id: string; path: string };
-     *       file: LearningObject.Material.File
-     *     }} params
      * @returns {boolean}
      */
     const findFile = (params: {
