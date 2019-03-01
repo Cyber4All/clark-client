@@ -65,19 +65,6 @@ export class BuilderNavbarComponent implements OnDestroy {
         }
       });
 
-<<<<<<< HEAD
-    this.store.learningObjectEvent.pipe(
-      filter(val => typeof val !== 'undefined'),
-      takeUntil(this.destroyed$)
-    ).subscribe(val => {
-      this.learningObject = val;
-      this.collectionService.getCollection(this.learningObject.collection).then(col => {
-        this.collection = col;
-      });
-
-      this.statuses.getDescription(val.status, val.collection).then(desc => {
-        this.statusDescription = desc;
-=======
     this.store.learningObjectEvent
       .pipe(
         filter(val => typeof val !== 'undefined'),
@@ -89,11 +76,8 @@ export class BuilderNavbarComponent implements OnDestroy {
           .getCollection(this.learningObject.collection)
           .then(col => {
             this.collection = col;
-            this.buildTooltip();
           });
->>>>>>> 37709f1d1c289505d6a87e5b0db9113b6f5aae9e
       });
-    });
 
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
