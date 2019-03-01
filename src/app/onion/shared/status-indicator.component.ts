@@ -4,17 +4,17 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'clark-lo-status-indicator',
   template: `
     <div
-      *ngIf="learningObject?.status" class="top__status"
-      [ngClass]="learningObject?.status"
-      tip="{{ states?.get(learningObject.status)?.tip }}"
-      tipDisabled="{{ !states?.get(learningObject.status)?.tip }}"
+      *ngIf="status" class="top__status"
+      [ngClass]="status"
+      tip="{{ states?.get(status)?.tip }}"
+      tipDisabled="{{ !states?.get(status)?.tip }}"
       tipLocation="bottom"
     >
-      <span *ngIf="learningObject?.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
-      <span *ngIf="learningObject?.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
-      <span *ngIf="learningObject?.status === 'review'"><i class="fas fa-sync"></i></span>
-      <span *ngIf="learningObject?.status === 'released'"><i class="fas fa-eye"></i></span>
-      <span *ngIf="learningObject?.status === 'denied'"><i class="fas fa-ban"></i></span>
+      <span *ngIf="status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
+      <span *ngIf="status === 'waiting'"><i class="fas fa-hourglass"></i></span>
+      <span *ngIf="status === 'review'"><i class="fas fa-sync"></i></span>
+      <span *ngIf="status === 'released'"><i class="fas fa-eye"></i></span>
+      <span *ngIf="status === 'denied'"><i class="fas fa-ban"></i></span>
     </div>
   `,
   styles: [`
@@ -49,7 +49,7 @@ import { Component, OnInit, Input } from '@angular/core';
   `]
 })
 export class LearningObjectStatusIndicatorComponent {
-  @Input() learningObject;
+  @Input() status;
   @Input() states;
 
   constructor() { }

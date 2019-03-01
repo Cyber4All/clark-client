@@ -11,7 +11,7 @@
         <span>{{ collection.name }}</span>
         <div class="collection__image" [style.background-image]="'url(assets/images/collections/' + learningObject?.collection + '.png)'"></div>
       </div>
-      <clark-lo-status-indicator [learningObject]="learningObject" [states]="states"></clark-lo-status-indicator>
+      <clark-lo-status-indicator [status]="learningObject?.status" [states]="states"></clark-lo-status-indicator>
       <ng-container *ngIf="!adminMode">
 
         <ng-container *ngIf="!learningObject?.status || ['unreleased', 'rejected'].includes(learningObject?.status); else submittedButtonTemplate">
