@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LearningObjectService as publicService } from 'app/cube/learning-object.service';
-import { LearningObjectService as privateService } from 'app/onion/core/learning-object.service';
+import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
+import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
 import { LearningObject } from '@cyber4all/clark-entity';
 
@@ -8,7 +8,10 @@ import { LearningObject } from '@cyber4all/clark-entity';
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [publicService, privateService]
+  providers: [
+    PublicLearningObjectService,
+    PrivateLearningObjectService
+  ]
 })
 export class LearningObjectsComponent implements OnInit {
 
@@ -21,8 +24,8 @@ export class LearningObjectsComponent implements OnInit {
   selectedStatus: string;
 
   constructor(
-    private publicService: publicService,
-    private privateService: privateService,
+    private publicLearningObjectService: PublicLearningObjectService,
+    private privateLearningObjectService: PrivateLearningObjectService,
   ) { }
 
   ngOnInit() {}
@@ -32,7 +35,7 @@ export class LearningObjectsComponent implements OnInit {
     const query: Query = {
       text
     };
-    this.publicService.getLearningObjects(query)
+    this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
         this.loading = false;
@@ -44,7 +47,7 @@ export class LearningObjectsComponent implements OnInit {
     const query = {
       text: author
     };
-    this.publicService.getLearningObjects(query)
+    this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
         this.loading = false;
@@ -57,7 +60,11 @@ export class LearningObjectsComponent implements OnInit {
   }
 
   updateLearningObjectStatus() {
-    this.privateService.save(this.activeLearningObject.id, { status: this.selectedStatus });
+    this.privateLearningObjectService.save(
+      this.activeLearningObject.id,
+      this.activeLearningObject.author.username,
+      { status: this.selectedStatus }
+    );
     this.displayStatusModal = false;
   }
 
