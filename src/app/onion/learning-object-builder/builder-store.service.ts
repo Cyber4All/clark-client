@@ -933,8 +933,8 @@ export class BuilderStore {
     error: HttpErrorResponse,
     builderError: BUILDER_ERRORS
   ) {
-    this.serviceInteraction$.next(false);
-    if (error.status === 500) {
+    this.serviceInteraction$.next(null);
+    if (error.status === 0 || error.status === 500) {
       this.serviceError$.next(BUILDER_ERRORS.SERVICE_FAILURE);
     } else {
       this.serviceError$.next(builderError);
