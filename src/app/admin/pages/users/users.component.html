@@ -1,43 +1,27 @@
 <clark-admin-content-wrapper>
-  <div page-title>Learning Objects</div>
+  <div page-title>Users</div>
   <clark-admin-search-bar search 
     [placeholder]="searchBarPlaceholder"
     (userInput)="getUsers($event)"
   ></clark-admin-search-bar>
   <div filter-options>filter options yo</div>
 
-  <div class="list" main>
-    <div #listInner>
-      <div *ngIf="!loading; else loadingTemplate" class="list__body">
-        <div *ngIf="users?.length; else emptyTemplate">
-            <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90">
-              <div *cdkVirtualFor="let u of users; let i = index">
-                {{ u.username }}
-              </div>
-            </cdk-virtual-scroll-viewport>    
-        </div>
+  <div main>
+    <div *ngIf="!loading; else loadingTemplate">
+      <div *ngIf="users?.length; else emptyTemplate">
+        <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90">
+          <div *cdkVirtualFor="let u of users; let i = index">
+            {{ u.username }}
+          </div>
+        </cdk-virtual-scroll-viewport>    
       </div>
     </div>
   </div>
 
   <ng-template #loadingTemplate>
-    <div [@nonListItem] class="loading-template">
+    <div class="loading-template">
       <i class="far fa-spinner-third fa-spin"></i>
-      Loading learning objects...
-    </div>
-  </ng-template>
-  
-  <ng-template #emptyTemplate>
-    <div class="empty-template">
-      <div class="empty-template__top">
-        <i class="fal fa-box-open"></i>
-        <div class="top-message">
-          Nothing here!
-        </div>
-      </div>
-      <div class="empty-text">
-        Learning Objects will appear here after they are submitted to your collection
-      </div>
+      Loading Users...
     </div>
   </ng-template>
 </clark-admin-content-wrapper>
