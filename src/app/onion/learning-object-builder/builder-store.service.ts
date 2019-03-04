@@ -12,6 +12,7 @@ import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * Defines a list of actions the builder can take
@@ -39,8 +40,20 @@ export enum BUILDER_ACTIONS {
   DELETE_FILES
 }
 
-export enum BUILDER_ERRORS {}
-// FILL WITH SERVICE INTERACTION ERRORS
+export enum BUILDER_ERRORS {
+  CREATE_OBJECT,
+  DUPLICATE_OBJECT_NAME,
+  CREATE_OUTCOME,
+  FETCH_OBJECT,
+  FETCH_OBJECT_MATERIALS,
+  UPDATE_FILE_DESCRIPTION,
+  UPDATE_OBJECT,
+  UPDATE_OUTCOME,
+  SUBMIT_REVIEW,
+  CANCEL_SUBMISSION,
+  DELETE_OUTCOME,
+  SERVICE_FAILURE
+}
 
 /**
  * A central storage repository for communication between learning object builder components.
@@ -83,6 +96,8 @@ export class BuilderStore {
   public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject(
     false
   );
+
+  public serviceError$: Subject<BUILDER_ERRORS> = new Subject();
 
   constructor(
     private auth: AuthService,
@@ -194,7 +209,7 @@ export class BuilderStore {
         return this.learningObject;
       })
       .catch(e => {
-        // TODO: SET BUILDER STORE ERROR STATE
+        this.handleServiceError(e, BUILDER_ERRORS.FETCH_OBJECT);
         return null;
       });
   }
@@ -213,7 +228,7 @@ export class BuilderStore {
         this.learningObjectEvent.next(this.learningObject);
       })
       .catch(e => {
-        // TODO: SET BUILDER STORE ERROR STATE
+        this.handleServiceError(e, BUILDER_ERRORS.FETCH_OBJECT_MATERIALS);
       });
   }
 
@@ -358,10 +373,7 @@ export class BuilderStore {
       .then(() => {
         this.serviceInteraction$.next(false);
       })
-      .catch(e => {
-        this.serviceInteraction$.next(false);
-        // TODO: SET BUILDER STORE ERROR STATE
-      });
+      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
   }
 
   private mutateOutcome(
@@ -579,9 +591,9 @@ export class BuilderStore {
       .then(e => {
         this.learningObjectEvent.next(this.learningObject);
       })
-      .catch(e => {
-        // TODO: SET BUILDER STORE STATE
-      });
+      .catch(e =>
+        this.handleServiceError(e, BUILDER_ERRORS.UPDATE_FILE_DESCRIPTION)
+      );
   }
 
   /**
@@ -676,7 +688,7 @@ export class BuilderStore {
             return true;
           })
           .catch(e => {
-            // TODO: SET BUILDER STORE ERROR STATE
+            this.handleServiceError(e, BUILDER_ERRORS.SUBMIT_REVIEW);
             return false;
           });
       }
@@ -697,7 +709,7 @@ export class BuilderStore {
         this.learningObjectEvent.next(this.learningObject);
       })
       .catch(e => {
-        // TODO: SET BUILDER STORE ERROR STATE
+        this.handleServiceError(e, BUILDER_ERRORS.CANCEL_SUBMISSION);
       });
   }
 
@@ -772,9 +784,9 @@ export class BuilderStore {
             'name',
             'A learning object with this name already exists!'
           );
-          // TODO: SET BUILDER STORE ERROR STATE
+          this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
         } else {
-          // TODO: SET BUILDER STORE ERROR STATE
+          this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
         }
       });
   }
@@ -793,16 +805,15 @@ export class BuilderStore {
         this.serviceInteraction$.next(false);
       })
       .catch(e => {
-        this.serviceInteraction$.next(false);
         if (e.status === 409) {
           // tried to save an object with a name that already exists
           this.validator.errors.saveErrors.set(
             'name',
             'A learning object with this name already exists!'
           );
-          // TODO: SET BUILDER STORE ERROR STATE
+          this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
         } else {
-          // TODO: SET BUILDER STORE ERROR STATE
+          this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
         }
       });
   }
@@ -818,21 +829,13 @@ export class BuilderStore {
    */
   private saveOutcome(data: any, delay?: boolean) {
     this.touched = true;
+    // retrieve current cached Map from storage and get the current cached value for given id
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
 
     // if delay is true, combine the new properties with the object in the cache subject
     // the cache subject will automatically call this function again without a delay property
     if (delay) {
-      const id = data.id;
-
-      // ensure that an outcome id is specified
-      if (!id) {
-        // TODO: SET BUILDER STORE ERROR STATE
-        throw new Error('Error! No outcome id specified for mutation!');
-      }
-
-      // retrieve current cached Map from storage and get the current cached value for given id
       this.outcomeCache$.next(newValue);
     } else {
       // if the outcome isn't saveable or there was no data given to the function, do nothing
@@ -886,11 +889,7 @@ export class BuilderStore {
         this.outcomes.set(newOutcome.id, outcome);
         this.outcomeEvent.next(this.outcomes);
       })
-      .catch(err => {
-        // TODO: SET BUILDER STORE ERROR STATE
-        console.error('Error! ', err);
-        this.serviceInteraction$.next(false);
-      });
+      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME));
   }
 
   /**
@@ -917,11 +916,28 @@ export class BuilderStore {
       .then(() => {
         this.serviceInteraction$.next(false);
       })
-      .catch(err => {
-        // TODO: SET BUILDER STORE ERROR STATE
-        console.error('Error! ', err);
-        this.serviceInteraction$.next(false);
-      });
+      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
+  }
+
+  /**
+   * This functions handles service level errors by setting service error observable
+   * If the status code is a 500, then the service failure error is set
+   *
+   * @private
+   * @param {HttpErrorResponse} error
+   * @param {BUILDER_ERRORS} builderError
+   * @memberof BuilderStore
+   */
+  private handleServiceError(
+    error: HttpErrorResponse,
+    builderError: BUILDER_ERRORS
+  ) {
+    this.serviceInteraction$.next(false);
+    if (error.status === 500) {
+      this.serviceError$.next(BUILDER_ERRORS.SERVICE_FAILURE);
+    } else {
+      this.serviceError$.next(builderError);
+    }
   }
 }
 
