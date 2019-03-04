@@ -8,12 +8,14 @@
 
   <div main>
     <div *ngIf="!loading; else loadingTemplate">
-      <div *ngIf="users?.length; else emptyTemplate">
-        <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90">
-          <div *cdkVirtualFor="let u of users; let i = index">
-            {{ u.username }}
+      <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
+        <!-- <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90" > -->
+          <div *ngFor="let u of users; let i = index" >
+            <clark-admin-user-card class="user-cards__card"
+              [user]="u"
+            ></clark-admin-user-card>
           </div>
-        </cdk-virtual-scroll-viewport>    
+        <!-- </cdk-virtual-scroll-viewport>     -->
       </div>
     </div>
   </div>

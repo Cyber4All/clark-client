@@ -1,0 +1,30 @@
+@import '~_vars.scss';
+
+.card {
+    box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.05);
+    width: 185px;
+    border-radius: 5px;
+}
+
+.card__image {
+    object-fit: cover;
+    width: 100%;
+    height: 140px;
+    border-radius: 5px 5px 0 0;
+}
+
+.card__body {
+    background-color: white;
+    height: 100%;
+    padding: 10px;
+    border-radius: 0 0 5px 5px;
+}
+
+.card__body__heading {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.card__body__username {
+    color: $placeholder;
+}
