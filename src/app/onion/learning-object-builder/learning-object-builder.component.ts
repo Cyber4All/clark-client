@@ -162,6 +162,19 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       object.author.username !== this.authService.username;
   }
 
+  /**
+   * Routes user to onion dashboard or admin dashboard depending on builder mode
+   *
+   * @memberof LearningObjectBuilderComponent
+   */
+  routeToDashboard() {
+    if (!this.adminMode) {
+      this.router.navigate(['/onion/dashboard']);
+    } else {
+      window.location.href = this.adminDashboardURL;
+    }
+  }
+
   get errorState(): boolean {
     this.errorMessage = this.validator.nextError;
 
