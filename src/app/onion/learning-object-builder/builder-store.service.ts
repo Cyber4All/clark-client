@@ -522,6 +522,7 @@ export class BuilderStore {
     const validUrlExpr = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
     if (url.url.match(validUrlExpr) && url.title !== '') {
       this.learningObject.materials.urls[index] = url;
+      this.learningObjectEvent.next(this.learningObject);
       this.saveObject({
         'materials.urls': this.learningObject.materials.urls
       });
@@ -538,6 +539,7 @@ export class BuilderStore {
     if (index !== undefined) {
       this.learningObject.materials.urls.splice(index, 1);
     }
+    this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
       'materials.urls': this.learningObject.materials.urls
     });
@@ -552,6 +554,7 @@ export class BuilderStore {
    */
   private updateNotes(notes: string): void {
     this.learningObject.materials.notes = notes;
+    this.learningObjectEvent.next(this.learningObject);
     this.saveObject({ 'materials.notes': notes });
   }
 
@@ -604,6 +607,7 @@ export class BuilderStore {
         description: params.description
       });
     }
+    this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
       'materials.folderDescriptions': this.learningObject.materials
         .folderDescriptions
@@ -622,6 +626,7 @@ export class BuilderStore {
       const index = this.findFile(fileId);
       this.learningObject.materials.files.splice(index, 1);
     });
+    this.learningObjectEvent.next(this.learningObject);
     this.learningObjectEvent.next(this.learningObject);
   }
 
