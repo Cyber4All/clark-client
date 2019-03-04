@@ -733,8 +733,8 @@ export class BuilderStore {
       this.objectCache$.next(newValue);
     } else {
       const canSave =
-        !this.validator.saveable ||
-        (this.validator.submissionMode && !this.validator.submittable);
+        this.validator.saveable ||
+        (this.validator.submissionMode && this.validator.submittable);
       // don't attempt to save if object isn't saveable, but keep cache so that we can try again later
       if (!canSave) {
         return;
@@ -799,6 +799,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private updateLearningObject(object: Partial<LearningObject>) {
+    this.serviceInteraction$.next(true);
     this.learningObjectService
       .save(this.learningObject.id, this.learningObject.author.username, object)
       .then(() => {
@@ -846,8 +847,6 @@ export class BuilderStore {
         return;
       }
 
-      this.serviceInteraction$.next(true);
-
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 
@@ -873,6 +872,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private createLearningOutcome(newOutcome: LearningOutcome) {
+    this.serviceInteraction$.next(true);
     this.learningObjectService
       .addLearningOutcome(this.learningObject.id, newOutcome)
       .then((serviceId: string) => {
@@ -911,6 +911,7 @@ export class BuilderStore {
     }
     // delete any lingering serviceId properties before sending to service
     delete updateValue.serviceId;
+    this.serviceInteraction$.next(true);
     this.learningObjectService
       .saveOutcome(this.learningObject.id, updateValue as any)
       .then(() => {
