@@ -128,16 +128,20 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     this.builderStore.serviceInteraction$
       .pipe(takeUntil(this.destroyed$))
       .subscribe(val => {
-        if (val) {
+        if (val === true) {
           clearTimeout(this.removeServiceIndicator);
           this.serviceInteraction = true;
           this.showServiceInteraction = true;
-        } else {
+        } else if (val === false) {
           this.serviceInteraction = false;
 
           this.removeServiceIndicator = setTimeout(() => {
             this.showServiceInteraction = false;
           }, 3000);
+        } else {
+          // If value is not explicitly true or false then an error occurred that will be handled by service error handler
+          this.showServiceInteraction = false;
+          this.serviceInteraction = false;
         }
       });
 
