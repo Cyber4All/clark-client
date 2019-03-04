@@ -260,6 +260,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
    * @memberof LearningObjectBuilderComponent
    */
   routeToDashboard() {
+    this.showServiceFailureModal = false;
     if (!this.adminMode) {
       this.router.navigate(['/onion/dashboard']);
     } else {
