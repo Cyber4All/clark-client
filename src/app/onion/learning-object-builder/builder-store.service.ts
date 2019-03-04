@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { LearningObject, LearningOutcome, User, StandardOutcome } from '@cyber4all/clark-entity';
+import {
+  LearningObject,
+  LearningOutcome,
+  User,
+  StandardOutcome
+} from '@cyber4all/clark-entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import {
-  LearningObjectValidator
-} from './validators/learning-object.validator';
+import { LearningObjectValidator } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
-
 
 /**
  * Defines a list of actions the builder can take
@@ -36,6 +38,9 @@ export enum BUILDER_ACTIONS {
   UPDATE_FOLDER_DESCRIPTION,
   DELETE_FILES
 }
+
+export enum BUILDER_ERRORS {}
+// FILL WITH SERVICE INTERACTION ERRORS
 
 /**
  * A central storage repository for communication between learning object builder components.
@@ -141,7 +146,12 @@ export class BuilderStore {
     this._learningObject = object;
     this.learningObjectEvent.next(this.learningObject);
 
-    if (![LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(object.status)) {
+    if (
+      ![
+        LearningObject.Status.UNRELEASED,
+        LearningObject.Status.REJECTED
+      ].includes(object.status)
+    ) {
       this.validator.submissionMode = true;
     }
   }
@@ -163,34 +173,48 @@ export class BuilderStore {
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  async fetch(id: string): Promise<LearningObject> {
+  fetch(id: string): Promise<LearningObject> {
     this.touched = true;
-    this.learningObject = await this.learningObjectService.getLearningObject(
-      id
-    );
-
-    if (this.learningObject.status && ![LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(this.learningObject.status)) {
-      // this learning object is submitted, ensure submission mode is on
-      this.validator.submissionMode = true;
-    }
-
-    this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
-    return this.learningObject;
+    return this.learningObjectService
+      .getLearningObject(id)
+      .then(object => {
+        this.learningObject = object;
+        // this learning object is submitted, ensure submission mode is on
+        this.validator.submissionMode =
+          this.learningObject.status &&
+          ![
+            LearningObject.Status.UNRELEASED,
+            LearningObject.Status.REJECTED
+          ].includes(this.learningObject.status);
+        this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
+        this.validator.validateLearningObject(
+          this.learningObject,
+          this.outcomes
+        );
+        return this.learningObject;
+      })
+      .catch(e => {
+        // TODO: SET BUILDER STORE ERROR STATE
+        return null;
+      });
   }
 
   /**
    * Retrieves materials for learning object
    *
-   * @returns {Promise<void>}
+   * @returns void
    * @memberof BuilderStore
    */
-  async fetchMaterials(): Promise<void> {
-    this.learningObject.materials = await this.learningObjectService.getMaterials(
-      this.learningObject.author.username,
-      this.learningObject.id
-    );
-    this.learningObjectEvent.next(this.learningObject);
+  fetchMaterials(): void {
+    this.learningObjectService
+      .getMaterials(this.learningObject.author.username, this.learningObject.id)
+      .then(materials => {
+        this.learningObject.materials = materials;
+        this.learningObjectEvent.next(this.learningObject);
+      })
+      .catch(e => {
+        // TODO: SET BUILDER STORE ERROR STATE
+      });
   }
 
   /**
@@ -293,8 +317,13 @@ export class BuilderStore {
   //  BUILDER ACTION HANDLERS  //
   ///////////////////////////////
 
-  private async createOutcome() {
-    const outcome: Partial<LearningOutcome> = { bloom: '', verb: '', text: '', mappings: [] };
+  private createOutcome() {
+    const outcome: Partial<LearningOutcome> = {
+      bloom: '',
+      verb: '',
+      text: '',
+      mappings: []
+    };
     outcome.id = genId();
 
     // this outcome needs to be created in the API, not modified, so store it in newOutcomes map
@@ -308,10 +337,10 @@ export class BuilderStore {
     return outcome.id;
   }
 
-  private async deleteOutcome(id: string) {
+  private deleteOutcome(id: string) {
     // grab the outcome that's about to be deleted
     const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
-    
+
     // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
@@ -320,17 +349,22 @@ export class BuilderStore {
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
     this.serviceInteraction$.next(true);
-    // @ts-ignore the serviceId property is a temporary addition and is stripped before saving. It tracks the id assigned to a new outcome by the service on creation
-    this.learningObjectService.deleteOutcome(this.learningObject.id, outcome.serviceId || id).then(val => {
-      this.serviceInteraction$.next(false);
-    }).catch(error => {
-      console.error(error);
-
-      this.serviceInteraction$.next(false);
-    });
+    this.learningObjectService
+      .deleteOutcome(
+        this.learningObject.id,
+        (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          .serviceId || id
+      )
+      .then(() => {
+        this.serviceInteraction$.next(false);
+      })
+      .catch(e => {
+        this.serviceInteraction$.next(false);
+        // TODO: SET BUILDER STORE ERROR STATE
+      });
   }
 
-  private async mutateOutcome(
+  private mutateOutcome(
     id: string,
     params: { verb?: string; bloom?: string; text?: string }
   ) {
@@ -357,8 +391,8 @@ export class BuilderStore {
         bloom: outcome.bloom,
         verb: outcome.verb,
         text: outcome.text,
-        // @ts-ignore we're using serviceid here as a temporary property so it's valid
-        serviceId: outcome.serviceId
+        serviceId: (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          .serviceId
       },
       true
     );
@@ -366,7 +400,7 @@ export class BuilderStore {
     return outcome;
   }
 
-  private async mapStandardOutcomeMapping(
+  private mapStandardOutcomeMapping(
     id: string,
     standardOutcome: StandardOutcome
   ) {
@@ -377,8 +411,12 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
 
     this.saveOutcome(
-      // @ts-ignore serviceId is a temporary property set to keep track of newly created learning
-      { id: outcome.serviceId || outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      {
+        id:
+          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+            .serviceId || outcome.id,
+        mappings: outcome.mappings.map(x => x.id)
+      },
       true
     );
   }
@@ -401,8 +439,12 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
 
     this.saveOutcome(
-      // @ts-ignore serviceId is a temporary property set to keep track of newly created learning outcomes
-      { id: outcome.serviceId || outcome.id, mappings: outcome.mappings.map(x => x.id) },
+      {
+        id:
+          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+            .serviceId || outcome.id,
+        mappings: outcome.mappings.map(x => x.id)
+      },
       true
     );
   }
@@ -411,7 +453,9 @@ export class BuilderStore {
   private mutateObject(data: any) {
     const dataProperties = Object.keys(data);
 
-    const learningObject: Partial<LearningObject> = this.learningObject.toPlainObject();
+    const learningObject: Partial<
+      LearningObject
+    > = this.learningObject.toPlainObject();
 
     for (const k of dataProperties) {
       learningObject[k] = data[k];
@@ -474,16 +518,15 @@ export class BuilderStore {
    * @param {Url} url
    * @memberof BuilderStore
    */
-  private async updateUrl(index: number,  url: LearningObject.Material.Url): Promise<any> {
-    var exp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-    if (url.url.match(exp) && url.title !== '') {
+  private updateUrl(index: number, url: LearningObject.Material.Url): void {
+    const validUrlExpr = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    if (url.url.match(validUrlExpr) && url.title !== '') {
       this.learningObject.materials.urls[index] = url;
-      await this.saveObject({
+      this.learningObjectEvent.next(this.learningObject);
+      this.saveObject({
         'materials.urls': this.learningObject.materials.urls
       });
-      this.learningObjectEvent.next(this.learningObject);
-    } 
-    
+    }
   }
 
   /**
@@ -492,14 +535,14 @@ export class BuilderStore {
    * @param {number} index
    * @memberof BuilderStore
    */
-  private async removeUrl(index: number): Promise<any> {
+  private removeUrl(index: number): void {
     if (index !== undefined) {
       this.learningObject.materials.urls.splice(index, 1);
     }
-    await this.saveObject({
+    this.learningObjectEvent.next(this.learningObject);
+    this.saveObject({
       'materials.urls': this.learningObject.materials.urls
     });
-    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -509,10 +552,10 @@ export class BuilderStore {
    * @returns {*}
    * @memberof BuilderStore
    */
-  private async updateNotes(notes: string): Promise<any> {
+  private updateNotes(notes: string): void {
     this.learningObject.materials.notes = notes;
-    await this.saveObject({ 'materials.notes': notes });
     this.learningObjectEvent.next(this.learningObject);
+    this.saveObject({ 'materials.notes': notes });
   }
 
   /**
@@ -520,22 +563,25 @@ export class BuilderStore {
    *
    * @param {*} fileId
    * @param {*} description
-   * @returns {Promise<any>}
+   * @returns void
    * @memberof BuilderStore
    */
-  private async updateFileDescription(
-    fileId: any,
-    description: any
-  ): Promise<any> {
+  private updateFileDescription(fileId: any, description: any): void {
     const index = this.findFile(fileId);
     this.learningObject.materials.files[index].description = description;
-    await this.learningObjectService.updateFileDescription(
-      this.learningObject.author.username,
-      this.learningObject.id,
-      fileId,
-      description
-    );
-    this.learningObjectEvent.next(this.learningObject);
+    this.learningObjectService
+      .updateFileDescription(
+        this.learningObject.author.username,
+        this.learningObject.id,
+        fileId,
+        description
+      )
+      .then(e => {
+        this.learningObjectEvent.next(this.learningObject);
+      })
+      .catch(e => {
+        // TODO: SET BUILDER STORE STATE
+      });
   }
 
   /**
@@ -544,14 +590,13 @@ export class BuilderStore {
    * @param {string} [path]
    * @param {number} [index]
    * @param {string} description
-   * @returns {Promise<any>}
    * @memberof BuilderStore
    */
-  private async updateFolderDescription(params: {
+  private updateFolderDescription(params: {
     path?: string;
     index?: number;
     description: string;
-  }): Promise<any> {
+  }): void {
     if (params.index !== undefined) {
       this.learningObject.materials.folderDescriptions[
         params.index
@@ -562,11 +607,11 @@ export class BuilderStore {
         description: params.description
       });
     }
-    await this.saveObject({
+    this.learningObjectEvent.next(this.learningObject);
+    this.saveObject({
       'materials.folderDescriptions': this.learningObject.materials
         .folderDescriptions
     });
-    this.learningObjectEvent.next(this.learningObject);
   }
 
   /**
@@ -576,11 +621,12 @@ export class BuilderStore {
    * @param {string[]} fileIds
    * @memberof BuilderStore
    */
-  private async removeFiles(fileIds: string[]) {
+  private removeFiles(fileIds: string[]) {
     fileIds.forEach(fileId => {
-    const index = this.findFile(fileId);
-    this.learningObject.materials.files.splice(index, 1);
+      const index = this.findFile(fileId);
+      this.learningObject.materials.files.splice(index, 1);
     });
+    this.learningObjectEvent.next(this.learningObject);
     this.learningObjectEvent.next(this.learningObject);
   }
 
@@ -621,15 +667,18 @@ export class BuilderStore {
 
       // if we passed a collection property, attempt the submission
       if (collection) {
-        return this.collectionService.submit(this.learningObject.id, collection).then(() => {
-          this.learningObject.status = LearningObject.Status.WAITING;
-          this.learningObject.collection = collection;
-          this.learningObjectEvent.next(this._learningObject);
-          return true;
-        }).catch(error => {
-          console.error(error);
-          throw new Error('This learning object could not be submitted');
-        });
+        return this.collectionService
+          .submit(this.learningObject.id, collection)
+          .then(() => {
+            this.learningObject.status = LearningObject.Status.WAITING;
+            this.learningObject.collection = collection;
+            this.learningObjectEvent.next(this._learningObject);
+            return true;
+          })
+          .catch(e => {
+            // TODO: SET BUILDER STORE ERROR STATE
+            return false;
+          });
       }
 
       return Promise.resolve(true);
@@ -639,18 +688,29 @@ export class BuilderStore {
     }
   }
 
-  public cancelSubmission(): Promise<void> {
-    return this.collectionService.unsubmit(this.learningObject.id).then(val => {
-      this.learningObject.unpublish();
-      this.learningObject.status = LearningObject.Status.UNRELEASED;
-      this.validator.submissionMode = false;
-      this.learningObjectEvent.next(this.learningObject);
-    }).catch(err => {
-      console.error(err);
-    })
+  public cancelSubmission(): void {
+    this.collectionService
+      .unsubmit(this.learningObject.id)
+      .then(() => {
+        this.learningObject.status = LearningObject.Status.UNRELEASED;
+        this.validator.submissionMode = false;
+        this.learningObjectEvent.next(this.learningObject);
+      })
+      .catch(e => {
+        // TODO: SET BUILDER STORE ERROR STATE
+      });
   }
 
-  private async saveObject(data: any, delay?: boolean): Promise<any> {
+  /**
+   * Handles saving a LearningObject
+   *
+   * @private
+   * @param {*} data
+   * @param {boolean} [delay]
+   * @returns
+   * @memberof BuilderStore
+   */
+  private saveObject(data: any, delay?: boolean) {
     let value = this.objectCache$.getValue();
     this.touched = true;
 
@@ -660,68 +720,26 @@ export class BuilderStore {
       const newValue = value ? Object.assign(value, data) : data;
       this.objectCache$.next(newValue);
     } else {
+      const canSave =
+        !this.validator.saveable ||
+        (this.validator.submissionMode && !this.validator.submittable);
       // don't attempt to save if object isn't saveable, but keep cache so that we can try again later
-      if (!this.validator.saveable || (this.validator.submissionMode && !this.validator.submittable)) {
+      if (!canSave) {
         return;
       }
-
-      this.serviceInteraction$.next(true);
 
       // clear the cache before submission so that any late arrivals will be cached for the next query
       this.objectCache$.next(undefined);
 
-      if (!value) {
-        // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
-        // in this case we'll use the current data instead
-        value = data;
-      }
+      // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
+      // in this case we'll use the current data instead
+      value = value || data;
 
       if (!this.learningObject.id) {
-        // this is a new learning object and we've been given a saveable name
-
-        // append status property to data
-        value.status = LearningObject.Status.UNRELEASED;
-
-        // create the object
-        this.learningObjectService
-          .create(value, this.auth.username)
-          .then((object: LearningObject) => {
-            this.learningObject = object;
-            this.serviceInteraction$.next(false);
-          })
-          .catch(err => {
-            this.serviceInteraction$.next(false);
-            if (err.status === 409) {
-              // tried to save an object with a name that already exists
-              this.validator.errors.saveErrors.set(
-                'name',
-                'A learning object with this name already exists!'
-              );
-              return;
-            }
-            console.error('Error! ', err);
-          });
+        this.createLearningObject(value);
       } else {
         // this is an existing object and we can save it (has a saveable name)
-
-        // send cached changes to server
-        this.learningObjectService
-          .save(this.learningObject.id, this.learningObject.author.username, value)
-          .then(() => {
-            this.serviceInteraction$.next(false);
-          })
-          .catch(err => {
-            this.serviceInteraction$.next(false);
-            if (err.status === 409) {
-              // tried to save an object with a name that already exists
-              this.validator.errors.saveErrors.set(
-                'name',
-                'A learning object with this name already exists!'
-              );
-              return;
-            }
-            console.error('Error! ', err);
-          });
+        this.updateLearningObject(value);
       }
     }
 
@@ -730,7 +748,75 @@ export class BuilderStore {
     }
   }
 
-  private async saveOutcome(data: any, delay?: boolean) {
+  /**
+   * Handles service interaction for creating a LearningObject
+   *
+   * @private
+   * @param {Partial<LearningObject>} object
+   * @memberof BuilderStore
+   */
+  private createLearningObject(object: Partial<LearningObject>) {
+    this.serviceInteraction$.next(true);
+    object.status = LearningObject.Status.UNRELEASED;
+    this.learningObjectService
+      .create(object, this.auth.username)
+      .then(learningObject => {
+        this.learningObject = learningObject;
+        this.serviceInteraction$.next(false);
+      })
+      .catch(e => {
+        this.serviceInteraction$.next(false);
+        if (e.status === 409) {
+          // tried to save an object with a name that already exists
+          this.validator.errors.saveErrors.set(
+            'name',
+            'A learning object with this name already exists!'
+          );
+          // TODO: SET BUILDER STORE ERROR STATE
+        } else {
+          // TODO: SET BUILDER STORE ERROR STATE
+        }
+      });
+  }
+
+  /**
+   * Handles service interaction for updating a LearningObject
+   *
+   * @private
+   * @param {Partial<LearningObject>} object
+   * @memberof BuilderStore
+   */
+  private updateLearningObject(object: Partial<LearningObject>) {
+    this.learningObjectService
+      .save(this.learningObject.id, this.learningObject.author.username, object)
+      .then(() => {
+        this.serviceInteraction$.next(false);
+      })
+      .catch(e => {
+        this.serviceInteraction$.next(false);
+        if (e.status === 409) {
+          // tried to save an object with a name that already exists
+          this.validator.errors.saveErrors.set(
+            'name',
+            'A learning object with this name already exists!'
+          );
+          // TODO: SET BUILDER STORE ERROR STATE
+        } else {
+          // TODO: SET BUILDER STORE ERROR STATE
+        }
+      });
+  }
+
+  /**
+   * Handles saving a LearningOutcome
+   *
+   * @private
+   * @param {*} data
+   * @param {boolean} [delay]
+   * @returns
+   * @memberof BuilderStore
+   */
+  private saveOutcome(data: any, delay?: boolean) {
     this.touched = true;
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
@@ -740,17 +826,20 @@ export class BuilderStore {
     if (delay) {
       const id = data.id;
 
-      // ensure that an outcome id is spepcified
+      // ensure that an outcome id is specified
       if (!id) {
+        // TODO: SET BUILDER STORE ERROR STATE
         throw new Error('Error! No outcome id specified for mutation!');
       }
 
       // retrieve current cached Map from storage and get the current cached value for given id
       this.outcomeCache$.next(newValue);
     } else {
-
       // if the outcome isn't saveable or there was no data given to the function, do nothing
-      if (!this.validator.outcomeValidator.outcomeSaveable(newValue.id) || !newValue) {
+      const canSave =
+        this.validator.outcomeValidator.outcomeSaveable(newValue.id) ||
+        newValue;
+      if (!canSave) {
         return;
       }
 
@@ -761,58 +850,78 @@ export class BuilderStore {
 
       if (this.newOutcomes.get(newValue.id)) {
         // this is a new outcome that hasn't been saved, create it
-
-        this.learningObjectService.addLearningOutcome(this.learningObject.id, newValue)
-          .then((serviceId: string) => {
-            this.serviceInteraction$.next(false);
-
-            // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
-            this.newOutcomes.delete(newValue.id);
-
-            // retrieve the outcome from the map keyed by it's temp ID, and then delete that entry;
-            const outcome: Partial<LearningOutcome> = this.outcomes.get(newValue.id)
-
-            // store the temporary id in the outcome so that the page component know's which outcome to keep focused
-            // @ts-ignore this is a temporary property and won't be saved
-            outcome.serviceId = serviceId;
-
-            // re-enter outcome into map
-            this.outcomes.set(newValue.id, outcome);
-            this.outcomeEvent.next(this.outcomes);
-          })
-          .catch(err => {
-            console.error('Error! ', err);
-            this.serviceInteraction$.next(false);
-          });
+        this.createLearningOutcome(newValue);
       } else {
         // this is an existing outcome, modify it
-        // deep copy the value to modify it before sending it to the service
-        const updateValue = Object.assign(newValue);
-
-        // if this item has a serviceId property, it was created during this session and thus it's ID property was generated here
-        // and doesn't correspond with it's id in the database. Replace the id property with the serviceId property before sending
-        if (updateValue.serviceId) {
-          updateValue.id = updateValue.serviceId;
-        }
-
-        // delete any lingering serviceId properties before sending to service
-        delete updateValue.serviceId;
-
-        this.learningObjectService
-          .saveOutcome(this.learningObject.id, updateValue)
-          .then(() => {
-            this.serviceInteraction$.next(false);
-          })
-          .catch(err => {
-            console.error('Error! ', err);
-            this.serviceInteraction$.next(false);
-          });
+        this.updateLearningOutcome(newValue);
       }
 
       if (this.objectCache$.getValue()) {
         this.saveObject(this.objectCache$.getValue());
       }
     }
+  }
+
+  /**
+   * Handles service interaction for creating a LearningOutcome
+   *
+   * @private
+   * @param {LearningOutcome} newOutcome
+   * @memberof BuilderStore
+   */
+  private createLearningOutcome(newOutcome: LearningOutcome) {
+    this.learningObjectService
+      .addLearningOutcome(this.learningObject.id, newOutcome)
+      .then((serviceId: string) => {
+        this.serviceInteraction$.next(false);
+        // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
+        this.newOutcomes.delete(newOutcome.id);
+        // retrieve the outcome from the map keyed by it's temp ID, and then delete that entry;
+        const outcome: Partial<LearningOutcome> & {
+          serviceId?: string;
+        } = this.outcomes.get(newOutcome.id);
+        // store the temporary id in the outcome so that the page component know's which outcome to keep focused
+        outcome.serviceId = serviceId;
+        // re-enter outcome into map
+        this.outcomes.set(newOutcome.id, outcome);
+        this.outcomeEvent.next(this.outcomes);
+      })
+      .catch(err => {
+        // TODO: SET BUILDER STORE ERROR STATE
+        console.error('Error! ', err);
+        this.serviceInteraction$.next(false);
+      });
+  }
+
+  /**
+   * Handles service interaction for updating a LearningOutcome
+   *
+   * @private
+   * @param {Partial<LearningOutcome>} outcome
+   * @memberof BuilderStore
+   */
+  private updateLearningOutcome(outcome: Partial<LearningOutcome>) {
+    // deep copy the value to modify it before sending it to the service
+    const updateValue: Partial<LearningOutcome> & {
+      serviceId?: string;
+    } = Object.assign(outcome);
+    // if this item has a serviceId property, it was created during this session and thus it's ID property was generated here
+    // and doesn't correspond with it's id in the database. Replace the id property with the serviceId property before sending
+    if (updateValue.serviceId) {
+      updateValue.id = updateValue.serviceId;
+    }
+    // delete any lingering serviceId properties before sending to service
+    delete updateValue.serviceId;
+    this.learningObjectService
+      .saveOutcome(this.learningObject.id, updateValue as any)
+      .then(() => {
+        this.serviceInteraction$.next(false);
+      })
+      .catch(err => {
+        // TODO: SET BUILDER STORE ERROR STATE
+        console.error('Error! ', err);
+        this.serviceInteraction$.next(false);
+      });
   }
 }
 
