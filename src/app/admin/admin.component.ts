@@ -77,7 +77,9 @@ export class AdminComponent implements OnInit, OnDestroy {
     return await this.authService.isLoggedIn.pipe(
       skipWhile(x => x === false),
       take(1)
-    ).toPromise().then(async () => {
+    )
+    .toPromise()
+    .then(async () => {
       // we're sure the user is logged in here and so access groups should be defined
       return await Promise.all(
         this.authService.user['accessGroups']
