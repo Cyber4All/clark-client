@@ -1,7 +1,9 @@
 <div class="card">
   <div class="card__middle">
-      hello
-  ;</div>
+      <div class="card__middle__header">{{ user.name | titlecase }}</div>
+      <div class="card__middle__remove"><i class="far fa-user"></i>- Remove Reviewer</div>
+      <div class="card__middle__email"><i class="far fa-envelope"></i> Send Email</div>
+  </div>
   <img src="{{ getGravatar() }}" alt="" class="card__image">
   <div class="card__body">
     <div class="card__body__heading">{{ user.name | titlecase }}</div>

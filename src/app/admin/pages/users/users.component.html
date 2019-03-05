@@ -8,7 +8,7 @@
 
   <div class="users" main>
     <div *ngIf="!loading; else loadingTemplate">
-      <cdk-virtual-scroll-viewport style="height: 1000px" itemSize="90" >
+      <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90" >
         <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
           <div *cdkVirtualFor="let u of users; let i = index" >
             <clark-admin-user-card class="user-cards__card"

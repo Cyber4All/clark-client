@@ -14,18 +14,20 @@
 } 
 
 .card:hover .card__middle {
-    opacity: 0.9;;
+    opacity: 0.9;
 };
 
 .card__middle {
     transition: .2s ease;
     opacity: 0;
     position: absolute;
-    text-align: center;
     background-color: $bright-blue;
     height: 230px;
     width: 185px;
     border-radius: 5px;
+    overflow: visible;
+    padding: 20px;
+    padding-top: 50px;
 }
 
 .card__image {
@@ -49,4 +51,25 @@
 
 .card__body__username {
     color: $placeholder;
+}
+
+.card__middle__header {
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.card__middle__remove {
+    color: white;
+    font-size: 15px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.card__middle__email {
+    color: white;
+    font-size: 15px;
+    font-weight: 300;
 }
