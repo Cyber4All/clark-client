@@ -17,6 +17,10 @@
   flex: 0 1 calc(33.3% - 32px);
 }
 
+.user-cards__card:hover {
+  color: $bright-blue;
+}
+
 .loading-template {
     display: flex;
     flex-direction: column;
