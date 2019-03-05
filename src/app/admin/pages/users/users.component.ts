@@ -28,7 +28,7 @@ export class UsersComponent implements OnInit {
   }
 
   navigateToUserObjects(username: string) {
-    this.router.navigate(['admin/learning-objects']);
+    this.router.navigate(['admin/learning-objects'], { queryParams: { username } });
   }
 
 }

@@ -3,6 +3,8 @@ import { LearningObjectService as PublicLearningObjectService } from 'app/cube/l
 import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -13,7 +15,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
     PrivateLearningObjectService
   ]
 })
-export class LearningObjectsComponent {
+export class LearningObjectsComponent implements OnInit {
 
   learningObjects: any;
   searchBarPlaceholder = 'Learning Objects';
@@ -22,10 +24,18 @@ export class LearningObjectsComponent {
   activeLearningObject;
   adminStatusList =  Object.keys(LearningObject.Status);
   selectedStatus: string;
+  sub: Subscription;
+
+  ngOnInit(): void {
+    this.sub = this.route
+      .queryParams
+      .subscribe(u => this.getUserLearningObjects(u.username));
+  }
 
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
+    private route: ActivatedRoute,
   ) { }
 
   getLearningObjects(text: string) {
