@@ -13,10 +13,8 @@
 
 .user-cards {
   margin-top: 30px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
 }
 
 .user-cards > *:not(:last-child) {

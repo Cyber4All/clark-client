@@ -1,8 +1,13 @@
 <div class="card">
-  <img src="{{ getGravatar() }}" alt="" class="card__image">
-  <div class="card__body">
-    <div class="card__body__heading">{{ user.name | titlecase }}</div>
-    <div>{{ (user.organization.length > 20)? (user.organization | slice:0:20)+'..':(user.organization) }}</div>
-    <div class="card__body__username"><i class="far fa-user"></i> {{ user.username }}</div>
+  <div class="overlay">
+      <img src="{{ getGravatar() }}" alt="" class="card__image">
+      <div class="card__middle">
+        <div>hello</div>
+      </div>
+      <div class="card__body">
+        <div class="card__body__heading">{{ user.name | titlecase }}</div>
+        <div>{{ (user.organization.length > 20)? (user.organization | slice:0:20)+'..':(user.organization) }}</div>
+        <div class="card__body__username"><i class="far fa-user"></i> {{ user.username }}</div>
+      </div>
   </div>
 </div>
