@@ -8,6 +8,7 @@ $green: #389857;
 $dark-text: #55595e;
 $wrapper-background: #f0f4f7;
 $blue-gradient: linear-gradient(45deg, $dark-blue, $blue-accent);
+$bright-blue-gradient: linear-gradient(rgba($bright-blue, 0.87), darken($bright-blue, 17));
 $error-red: #cf4739;
 $placeholder: lighten(#a9a9a9, 10);
 $popup-z: 9;
