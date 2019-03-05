@@ -37,7 +37,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     ).subscribe((payload: LearningObject) => {
       this.learningObject = payload;
-    }); 
+    });
   }
 
   async handleFileDeletion(fileIds: string[]) {

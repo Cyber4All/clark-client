@@ -7,7 +7,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
   styleUrls: ['./hierarchy.component.scss']
 })
 export class HierarchyComponent implements OnInit {
-  @Input() editContent: boolean; 
+  @Input() editContent: boolean;
   @Input() learningObject: LearningObject;
   constructor() { }
 

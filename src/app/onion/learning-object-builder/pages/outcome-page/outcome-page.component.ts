@@ -36,13 +36,12 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // listen for outcome events and update component stores
     this.store.learningObjectEvent
-    this.store.learningObjectEvent
     .pipe(
       filter(learningObject => learningObject !== undefined),
       takeUntil(this.destroyed$)
     ).subscribe((payload: LearningObject) => {
       this.learningObject = payload;
-    }); 
+    });
     // subscribe to params from activated route
     this.route.paramMap.pipe(takeUntil(this.destroyed$)).subscribe(params => {
       this.setActiveOutcome(params.get('id'));
