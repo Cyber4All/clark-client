@@ -28,13 +28,13 @@ export class ChangeStatusModalComponent {
   getStatusText(status: string) {
     switch (status) {
       case 'released':
-        return 'Release this Learning Object';
+        return `Release this Learning Object`;
       case 'proofing':
-        return 'Move this Learning Object to Proofing';
+        return 'Move to Proofing';
       case 'review':
-        return 'Move this Learning Object to Review';
+        return 'Move to Review';
       case 'waiting':
-        return 'Move this Learning Object to Waiting';
+        return 'Move to Waiting';
     }
   }
 
