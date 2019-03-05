@@ -556,12 +556,7 @@ export class BuilderStore {
       this.saveObject({
         'materials.urls': this.learningObject.materials.urls
       });
-<<<<<<< HEAD
-      this.learningObjectEvent.next(this.learningObject);
-    } 
-=======
     }
->>>>>>> master
   }
 
   /**
