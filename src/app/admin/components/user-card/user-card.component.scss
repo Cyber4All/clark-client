@@ -8,7 +8,7 @@
 }
 
 .card:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
     color: $bright-blue;
 } 
 
@@ -57,14 +57,14 @@
     color: white;
     font-size: 20px;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .card__middle__remove {
     color: white;
     font-size: 15px;
     font-weight: 300;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .card__middle__email {
