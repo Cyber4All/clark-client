@@ -4,7 +4,13 @@
     box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.05);
     width: 185px;
     border-radius: 5px;
+    transition: transform .2s
 }
+
+.card:hover {
+    color: $bright-blue;
+    transform: scale(1.2);
+  }
 
 .card__image {
     object-fit: cover;
