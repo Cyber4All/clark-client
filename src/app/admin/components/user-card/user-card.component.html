@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card__middle">
       <div class="card__middle__header">{{ user.name | titlecase }}</div>
-      <div onClick="showUserObjects()" class="card__middle__remove"><i class="far fa-eye"></i> View Objects</div>
+      <div (click)="showUserObjects()" class="card__middle__objects"><i class="far fa-eye"></i> View Objects</div>
       <a href="mailto:{{ user.email }}" class="card__middle__email"><i class="far fa-envelope"></i> Send Email</a>
   </div>
   <img src="{{ getGravatar() }}" alt="" class="card__image">

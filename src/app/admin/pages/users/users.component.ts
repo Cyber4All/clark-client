@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@cyber4all/clark-entity';
 import { UserService } from 'app/core/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'clark-users',
@@ -12,7 +13,7 @@ export class UsersComponent implements OnInit {
   users: User[];
   loading = false;
 
-  constructor(private user: UserService) { }
+  constructor(private user: UserService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -24,6 +25,10 @@ export class UsersComponent implements OnInit {
         this.users = val;
         this.loading = false;
       });
+  }
+
+  navigateToUserObjects(username: string) {
+    this.router.navigate(['admin/learning-objects']);
   }
 
 }

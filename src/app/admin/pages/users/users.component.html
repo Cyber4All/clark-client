@@ -13,6 +13,7 @@
           <div *cdkVirtualFor="let u of users; let i = index" >
             <clark-admin-user-card class="user-cards__card"
               [user]="u"
+              (navigateToUserObjects)="navigateToUserObjects($event)"
             ></clark-admin-user-card>
           </div>
         </div>
