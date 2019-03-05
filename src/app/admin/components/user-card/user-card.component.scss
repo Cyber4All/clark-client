@@ -18,7 +18,7 @@
 };
 
 .card__middle {
-    transition: .2s ease;
+    transition: all 0.2s ease;
     opacity: 0;
     position: absolute;
     background-image: $bright-blue-gradient;
