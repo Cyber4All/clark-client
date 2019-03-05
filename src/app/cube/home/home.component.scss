@@ -1,135 +1,5 @@
 @import '~_vars.scss';
 
-$top-height: 500px;
-$banner-height: 90px;
-
-.feature-text {
-  font-weight: 200;
-  font-size: 33px;
-  margin-bottom: 25px;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-}
-
-.whois {
-  display: flex;
-  flex-direction: column;
-  background: $blue-gradient;
-  padding: 100px 20px;
-  justify-content: center;
-  align-items: center;
-  color: white !important;
-
-  span {
-    max-width: $max-width;
-    font-size: 18px;
-    text-align: center;
-  }
-}
-
-.info-banner {
-  background: $blue-gradient;
-  width: 100%;
-  padding: 10px;
-
-  .view-all {
-    text-align: right;
-
-    a {
-      color: #FFF;
-      font-size: 18px;
-
-      .text {
-        margin-right: 15px;
-      }
-    }
-  }
-}
-
-.top {
-
-  .img-viewport {
-    background: url('/assets/images/servers.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-    width: 100%;
-    position: relative;
-    padding: 200px 20px;
-
-    &:after {
-      // color overlay to darken image slightly
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: darken($blue-accent, 35);
-      opacity: 0.2;
-      z-index: 1;
-    }
-
-    .search-viewport {
-      display: flex;
-      justify-content: center;
-      flex-direction: row;
-      height: 100%;
-      position: relative;
-      z-index: 2;
-
-      .search-contents {
-        margin: auto;
-        max-width: 700px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-
-        .feature-text {
-          color: white;
-          text-align: center;
-        }
-
-        form {
-          display: inline-block;
-          text-align: right;
-          // max-width: 500px;
-          width: 100%;
-
-          .search-input {
-            padding: 12px;
-            width: 100%;
-            border-radius: 3px;
-            -webit-appearance: none;
-            border: 2px solid white;
-            outline: none;
-            font-size: 16px;
-            box-shadow: 0 0 0 0 lighten($blue-accent, 20);
-            transition: all 0.2s ease;
-
-            &:focus {
-              box-shadow: 0 0 12px 3px lighten($blue-accent, 20);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .home-banner {
-    background: $blue-gradient;
-    height: $banner-height;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 25px;
-    color: white;
-  }
-}
-
 .contribute-invitation {
   width: 100%;
   text-align: center;
@@ -318,18 +188,14 @@ $banner-height: 90px;
 .browselink {
   color: white;
   font-size: 18px;
-  // width: 100px;
   cursor: pointer;
   @include vert-center;
   position: relative;
-  left: -10px;
   flex-direction: row;
   justify-content: right;
   text-align: right;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  margin-right: 20px;
+  text-decoration: underline;
 }
 
 @media (max-width: 750px) {

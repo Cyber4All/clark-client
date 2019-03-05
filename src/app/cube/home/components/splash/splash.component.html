@@ -1,0 +1,30 @@
+<div class="splash">
+  <div class="splash__search">
+    <div class="search__text">
+      Effective cybersecurity curriculum at your fingertips.
+    </div>
+    <div class="search__input">
+      <i class="far fa-search"></i>
+      <input
+        aria-label="Search clark"
+        autofocus
+        type="text"
+        class="search-input"
+        aria-label="Search Across Learning Objects"
+        placeholder="{{ placeholderText }}"
+        [(ngModel)]="searchText"
+        (input)="input.emit(searchText)"
+        (keypress)="submitSearch($event)"
+        name="query"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="search__actions">
+      <a routerLink="/browse">Browse all</a>
+      <button type="button" class="button" (click)="submitSearch()">
+        Search
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { LearningObjectService } from '../learning-object.service';
+ import { LearningObjectService } from '../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
@@ -79,16 +79,9 @@ export class HomeComponent implements OnInit {
         console.error(e.message);
       });
   }
-  keyDownSearch(event) {
-    if (event.keyCode === 13) {
-      this.search();
-    }
-  }
 
-  search() {
-    if (this.query.text) {
-      this.query.text = this.query.text.trim();
-    }
+  search(text: string) {
+    this.query.text = text;
 
     if (this.query.text === '') {
       this.learningObjectService.clearSearch();
@@ -97,8 +90,5 @@ export class HomeComponent implements OnInit {
         queryParams: { text: this.query.text }
       });
     }
-  }
-  goToContribute() {
-    this.router.navigate(['/onion']);
   }
 }
