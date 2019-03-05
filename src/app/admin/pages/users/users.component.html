@@ -1,3 +1,29 @@
-<p>
-  users works!
-</p>
+<clark-admin-content-wrapper>
+  <div page-title>Users</div>
+  <clark-admin-search-bar search 
+    [placeholder]="searchBarPlaceholder"
+    (userInput)="getUsers($event)"
+  ></clark-admin-search-bar>
+  <div filter-options>filter options yo</div>
+
+  <div main>
+    <div *ngIf="!loading; else loadingTemplate">
+      <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90" >
+        <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
+          <div *ngFor="let u of users; let i = index" >
+            <clark-admin-user-card class="user-cards__card"
+              [user]="u"
+            ></clark-admin-user-card>
+          </div>
+        </div>
+      </cdk-virtual-scroll-viewport>    
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-template">
+      <i class="far fa-spinner-third fa-spin"></i>
+      Loading Users...
+    </div>
+  </ng-template>
+</clark-admin-content-wrapper>
