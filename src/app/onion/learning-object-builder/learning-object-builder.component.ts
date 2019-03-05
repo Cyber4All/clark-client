@@ -20,6 +20,7 @@ import { LearningObjectValidator } from './validators/learning-object.validator'
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { environment } from '@env/environment.prod';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -101,7 +102,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   adminMode: boolean;
 
   showServiceFailureModal = false;
-  adminDashboardURL = 'https://admin.clark.center';
+  adminDashboardURL = environment.adminAppUrl;
 
   // tslint:disable-next-line:max-line-length
   constructor(
