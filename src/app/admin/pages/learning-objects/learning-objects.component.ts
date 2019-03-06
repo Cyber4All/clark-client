@@ -73,11 +73,19 @@ export class LearningObjectsComponent {
   toggleStatus(status: string) {
     this.selectedStatus = status.toLowerCase();
   }
-  getFilteredLearningObjects(status: string) {
+  getFilteredLearningObjects(status: string, isStatus: boolean) {
+    console.log(status);
+    let query: Query;
     this.loading = true;
-    const query: Query = {
-      status : [status]
-    };
+    if (isStatus) {
+        query = {
+          status : [status]
+       };
+    } else {
+      query = {
+        collection: status
+      };
+    }
     this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;

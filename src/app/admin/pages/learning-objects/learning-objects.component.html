@@ -5,7 +5,8 @@
     (userInput)="getLearningObjects($event)"
   ></clark-admin-search-bar>
   <clark-admin-filter-search filter-options
-    (userInput)="getFilteredLearningObjects($event)"
+    (statusFilter)="getFilteredLearningObjects($event,true)"
+    (collectionFilter)="getFilteredLearningObjects($event,false)"
   ></clark-admin-filter-search>
 
   <div class="list" main>

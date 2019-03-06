@@ -37,7 +37,8 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     // filters applied to dashboard objects (status filters)
     filters: Map<string, boolean> = new Map();
 
-    @Output() userInput = new EventEmitter<string>();
+    @Output() statusFilter = new EventEmitter<string>();
+    @Output() collectionFilter = new EventEmitter<string>();
     @ViewChild('searchInput') searchInput: ElementRef;
 
     searchText;
@@ -124,12 +125,25 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
    * Add or remove filter from filters list
    * @param filter {string} the filter to be toggled
    */
-  toggleFilter(filter: string) {
+  toggleStatusFilter(filter: string) {
     if (this.filters.get(filter)) {
       this.filters.delete(filter);
     } else {
       this.filters.set(filter, true);
-      this.userInput.emit(filter);
+      this.statusFilter.emit(filter);
+    }
+  }
+
+  /**
+   * Add or remove filter from filters list
+   * @param filter {string} the filter to be toggled
+   */
+  toggleCollectionFilter(filter: string) {
+    if (this.filters.get(filter)) {
+      this.filters.delete(filter);
+    } else {
+      this.filters.set(filter, true);
+      this.collectionFilter.emit(filter);
     }
   }
 

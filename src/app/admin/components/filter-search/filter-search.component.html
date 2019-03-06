@@ -16,23 +16,23 @@
 <clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
     <div #contextMenu class="filter-menu">
       <ul>
-        <li class="unreleased" (click)="toggleFilter('unreleased')">
+        <li class="unreleased" (click)="toggleStatusFilter('unreleased')">
           <div *ngIf="filters.get('unreleased')" class="indicator"></div>
           <i class="far fa-eye-slash"></i>Unreleased
         </li>
-        <li class="waiting" (click)="toggleFilter('waiting')">
+        <li class="waiting" (click)="toggleStatusFilter('waiting')">
           <div *ngIf="filters.get('waiting')" class="indicator"></div>
           <i class="far fa-hourglass"></i>Waiting for Review
         </li>
-        <li class="review" (click)="toggleFilter('review')">
+        <li class="review" (click)="toggleStatusFilter('review')">
           <div *ngIf="filters.get('review')" class="indicator"></div>
           <i class="far fa-sync"></i>Under Review
         </li>
-        <li class="released" (click)="toggleFilter('released')">
+        <li class="released" (click)="toggleStatusFilter('released')">
           <div *ngIf="filters.get('released')" class="indicator"></div>
           <i class="far fa-eye"></i>Released
         </li>
-        <li class="denied" (click)="toggleFilter('rejected')">
+        <li class="denied" (click)="toggleStatusFilter('rejected')">
           <div *ngIf="filters.get('rejected')" class="indicator"></div>
           <i class="far fa-ban"></i>Denied
         </li>
@@ -42,26 +42,26 @@
   <clark-context-menu (id)="collectionMenu = $event" (close)="toggleCollectionMenu(undefined)">
     <div #contextMenu class="filter-collection">
       <ul>
-        <li class="C5" (click)="toggleFilter('C5')">
-          <div *ngIf="filters.get('C5')" class="indicator"></div>C5
+        <li class="C5" (click)="toggleCollectionFilter('c5')">
+          <div *ngIf="filters.get('c5')" class="indicator"></div>C5
         </li>
-        <li class="CAE Community" (click)="toggleFilter('CAE Community')">
-          <div *ngIf="filters.get('CAE Community')" class="indicator"></div>CAE Community
+        <li class="CAE Community" (click)="toggleCollectionFilter('cae_community')">
+          <div *ngIf="filters.get('cae_community')" class="indicator"></div>CAE Community
         </li>
-        <li class="GenCyber" (click)="toggleFilter('GenCyber')">
-          <div *ngIf="filters.get('GenCyber')" class="indicator"></div>GenCyber
+        <li class="GenCyber" (click)="toggleCollectionFilter('gencyber')">
+          <div *ngIf="filters.get('gemcyber')" class="indicator"></div>GenCyber
         </li>
-        <li class="Intro to Cyber" (click)="toggleFilter('Intro to Cyber')">
-          <div *ngIf="filters.get('Intro to Cyber')" class="indicator"></div>Intro to Cyber
+        <li class="Intro to Cyber" (click)="toggleCollectionFilter('intro_to_cyber')">
+          <div *ngIf="filters.get('intro_to_cyber')" class="indicator"></div>Intro to Cyber
         </li>
-        <li class="NSA NCCP" (click)="toggleFilter('NSA NCCP')">
-          <div *ngIf="filters.get('NSA NCCP')" class="indicator"></div>NSA NCCP
+        <li class="NSA NCCP" (click)="toggleCollectionFilter('nccp')">
+          <div *ngIf="filters.get('nccp')" class="indicator"></div>NSA NCCP
         </li>
-        <li class="Secure Coding Community" (click)="toggleFilter('Secure Coding Community')">
-          <div *ngIf="filters.get('Secure Coding Community')" class="indicator"></div>Secure Coding Community
+        <li class="Secure Coding Community" (click)="toggleCollectionFilter('secure_coding_community')">
+          <div *ngIf="filters.get('secure_coding_community')" class="indicator"></div>Secure Coding Community
         </li>
-        <li class="Security Injections" (click)="toggleFilter('Security Injections')">
-          <div *ngIf="filters.get('Security Injections')" class="indicator"></div>Security Injections
+        <li class="Security Injections" (click)="toggleCollectionFilter('secinj')">
+          <div *ngIf="filters.get('secinj')" class="indicator"></div>Security Injections
         </li>
       </ul>
     </div>
