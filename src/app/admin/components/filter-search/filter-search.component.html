@@ -5,8 +5,8 @@
         <div class="wrapper">
           <div class="filter-wrapper">
             <div class="btn-group to-right">
-                <button class="button neutral filters-button" [ngClass]="{'shadow': collectionMenuDown}" (click)="toggleCollectionMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> All Collections <i class="fas fa-sort"></i></button>
-                <button class="button neutral filters-button"[ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> All Statuses <i class="fas fa-sort"></i></button>
+                <button class="button neutral filters-button" (click)="toggleCollectionMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> All Collections <i class="fas fa-chevron-down"></i></button>
+                <button class="button neutral filters-button" (click)="toggleFilterMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> All Statuses <i class="fas fa-chevron-down"></i></button>
             </div>
           </div>
         </div>

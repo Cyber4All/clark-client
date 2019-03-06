@@ -3,7 +3,9 @@ import {
     OnInit,
     OnDestroy,
     ViewChild,
-    ElementRef
+    ElementRef,
+    Output,
+    EventEmitter
   } from '@angular/core';
   import { Subscription } from 'rxjs/Subscription';
   import { Observable } from 'rxjs/Rx';
@@ -13,13 +15,10 @@ import {
   import { Router } from '@angular/router';
   import { AuthService } from 'app/core/auth.service';
   import { Subject } from 'rxjs';
-  import {
-    ItemsPerPage,
-    ITEMS_PER_PAGE,
-    Filter,
-    FilterSearchService
-  } from 'app/shared/filter-search.service';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
+import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
+import { Key } from 'protractor';
+// import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -29,11 +28,8 @@ import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 export class FilterSearchComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     private searchText$: Observable<string>;
-    selectedFilter: Filter;
     selectedCollection: { abvName: string, name: string };
-    itemsPerPage: ItemsPerPage[] = ITEMS_PER_PAGE;
     selectedStatusFilter: string[];
-    limit: ItemsPerPage;
     collections: { abvName: string, name: string }[] = [];
     isCollectionRestricted = false;
     filtersModified$: Subject<void> = new Subject();
@@ -41,10 +37,10 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     // filters applied to dashboard objects (status filters)
     filters: Map<string, boolean> = new Map();
 
+    @Output() userInput = new EventEmitter<string>();
     @ViewChild('searchInput') searchInput: ElementRef;
 
     searchText;
-    filterOptions: Filter[] = [];
     filterMenu: string;
     filterMenuDown = false;
     collectionMenu: string;
@@ -52,74 +48,16 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     collectionFilterOptions: string[];
     statusFilterOptions: string[];
     constructor(
-      private filterSearchService: FilterSearchService,
       private collectionService: CollectionService,
       private authService: AuthService,
       private contextMenuService: ContextMenuService,
       private router: Router) { }
 
     ngOnInit() {
-      this.subToFilters();
-      this.subToSearchTextChange();
-      this.subToSearchText();
-      this.subToItemsPerPage();
-      this.subToStatusFilter();
-      this.subToSelectedFilter();
-      this.subToSelectedStatusFilter();
       this.subToCollections();
       this.findUserRestrictions();
     }
 
-    private subToFilters(): void {
-      this.subscriptions.push(
-        this.filterSearchService.getFilters().subscribe(options => {
-          this.filterOptions = options;
-        })
-      );
-    }
-
-    private subToSearchTextChange(): void {
-      this.subscriptions.push(
-        this.filterSearchService.getSearchText().subscribe(text => {
-          this.searchText = text;
-        })
-      );
-    }
-
-    private subToItemsPerPage() {
-      this.subscriptions.push(
-        this.filterSearchService.getItemsPerPage().subscribe(limit => {
-          this.limit = limit;
-        })
-      );
-    }
-
-    private subToStatusFilter() {
-      this.subscriptions.push(
-        this.filterSearchService.getStatusFilter().subscribe(statFitler => {
-          this.statusFilterOptions = statFitler;
-        })
-      );
-    }
-    private subToSelectedFilter(): void {
-      this.subscriptions.push(
-        this.filterSearchService.getSelectedFilter().subscribe(filter => {
-          if (filter) {
-            this.selectedFilter = filter;
-          }
-        })
-      );
-    }
-
-    private subToSelectedStatusFilter(): void {
-      this.subscriptions.push(
-        this.filterSearchService.getSelectedStatusFilter().subscribe(statsFilter => {
-          if (statsFilter) {
-            this.selectedStatusFilter = statsFilter;
-          }
-        })
-      );
-    }
     private subToCollections(): void {
       this.collectionService.getCollections().then(collections => {
         this.collections = collections.map(c => ({ abvName: c.abvName, name: c.name }));
@@ -191,9 +129,8 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
       this.filters.delete(filter);
     } else {
       this.filters.set(filter, true);
+      this.userInput.emit(filter);
     }
-
-    this.filtersModified$.next();
   }
 
   /**
@@ -206,32 +143,6 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
 
     goToCollection() {
       this.router.navigate([`objects/${this.selectedCollection.abvName}`]);
-    }
-
-    setSelected(): void {
-      this.filterSearchService.setSelectedFilter(this.selectedFilter);
-    }
-    setLimit(limit: ItemsPerPage): void {
-      this.filterSearchService.setItemsPerPage(limit);
-    }
-
-    setStatusFilter(): void {
-      this.filterSearchService.setSelectedStatusFilter(this.selectedStatusFilter);
-    }
-
-    subToSearchText(): void {
-      if (this.searchInput.nativeElement) {
-        this.searchText$ = Observable.fromEvent(
-          this.searchInput.nativeElement,
-          'input'
-        ).map(x => x['currentTarget'].value);
-
-        this.subscriptions.push(
-          this.searchText$.subscribe(text => {
-            this.filterSearchService.setSearchText(text);
-          })
-        );
-      }
     }
 
     ngOnDestroy() {

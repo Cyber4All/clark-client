@@ -73,4 +73,15 @@ export class LearningObjectsComponent {
   toggleStatus(status: string) {
     this.selectedStatus = status.toLowerCase();
   }
+  getFilteredLearningObjects(status: string) {
+    this.loading = true;
+    const query: Query = {
+      status : [status]
+    };
+    this.publicLearningObjectService.getLearningObjects(query)
+      .then(val => {
+        this.learningObjects = val.learningObjects;
+        this.loading = false;
+      });
+   }
  }
