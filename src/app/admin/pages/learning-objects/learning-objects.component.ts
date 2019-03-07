@@ -74,7 +74,6 @@ export class LearningObjectsComponent {
     this.selectedStatus = status.toLowerCase();
   }
   getFilteredLearningObjects(status: string, isStatus: boolean) {
-    console.log(status);
     let query: Query;
     this.loading = true;
     if (isStatus) {
