@@ -11,7 +11,7 @@ export const UPLOAD_TIMEOUT = 900000; // 15 minutes timeout
 export const environment = {
   production: false,
   DROPZONE_CONFIG: {
-    url: USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(''),
+    url: USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT('', ''),
     maxFilesize: 100000000,
     acceptedFiles: '',
     autoQueue: true,
