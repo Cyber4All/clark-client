@@ -29,7 +29,8 @@ import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 import { HierarchyComponent } from './components/scaffold/hierarchy/hierarchy.component';
-
+import {OnionSharedModule} from '../shared/onion-shared.module';
+import {EditorActionPanelModule} from './components/editor-action-panel/editor-action-panel.module';
 /*
   NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
   This is because those services should be singletons across the builder, but cease to exist when the builder is
@@ -46,7 +47,9 @@ import { HierarchyComponent } from './components/scaffold/hierarchy/hierarchy.co
     CKEditorModule,
     ToasterModule.forRoot(),
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    OnionSharedModule,
+    EditorActionPanelModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
