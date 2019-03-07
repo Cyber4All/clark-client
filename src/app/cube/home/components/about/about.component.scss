@@ -9,21 +9,33 @@
 }
 
 .about__title {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   color: black;
   position: relative;
   display: inline-block;
+  color: $bright-blue;
 
   &:after {
     content: '';
     width: 50%;
-    background: $bright-blue;
+    // background: $bright-blue;
     bottom: -12px;
     left: 0;
     right: 0;
     margin: auto;
     position: absolute;
     height: 2px;
+  }
+
+  .title__icon {
+    $local-blue: lighten($bright-blue, 34);
+    background: $local-blue;
+    color: $bright-blue;
+    margin: auto;
+    margin-bottom: 20px;
+    // these paddings are here because the chart-network icon isn't centered correctly
+    padding-right: 2px;
+    padding-bottom: 2px;
   }
 }
 

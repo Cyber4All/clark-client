@@ -17,13 +17,13 @@
     bottom: 0px;
     left: 0;
     right: 0;
-    height: 400px;
+    height: 450px;
     z-index: 1;
   }
 }
 
 .about {
-  margin-top: -20px;
+  margin-top: -60px;
   padding: 0 20px;
 
   .about__grid {
@@ -42,9 +42,13 @@
 }
 
 .learning-objects {
-  height: 400px;
-  background: white;
   position: relative;
+
+  & > * {
+    display: block;
+    position: relative;
+    z-index: 3;
+  }
 
   &:before {
     content: '';
@@ -53,7 +57,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, white, transparent, white);
+    background: linear-gradient(180deg, white, transparent, transparent, transparent, white);
     z-index: 2;
   }
 
