@@ -37,11 +37,14 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.subToCollections();
+    this.getCollections();
     this.findUserRestrictions();
   }
 
-  private subToCollections(): void {
+  /**
+   * Fetches the collections from the CollectionService and formats them for use in the context menu.
+   */
+  private getCollections(): void {
     this.collectionService.getCollections().then(collections => {
       this.collections = collections.map(c => ({abvName: c.abvName, name: c.name}));
       this.collections.push({abvName: '', name: 'All'});
