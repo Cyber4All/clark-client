@@ -1,4 +1,43 @@
 @import '~_vars.scss';
+@import './home';
+
+.top {
+  position: relative;
+
+  &:after {
+    // gradient fade @ bottom of component
+    content: '';
+    background: linear-gradient(0deg, white, transparent);
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 500px;
+    z-index: 1;
+  }
+}
+
+.about {
+  margin-top: -40px;
+  background: white;
+  padding: 0 20px;
+}
+
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 20px;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+
+  & > * {
+    display: block;
+    box-sizing: border-box;
+  }
+}
+
+// old styles
 
 .contribute-invitation {
   width: 100%;

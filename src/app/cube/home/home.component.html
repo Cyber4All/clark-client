@@ -1,6 +1,11 @@
 <section class="top">
   <clark-homepage-splash [placeholderText]="placeholderText" (search)="search($event)"></clark-homepage-splash>
 </section>
+<section class="about">
+  <div class="about__grid">
+    <clark-about></clark-about>
+  </div>
+</section>
 <section class="info-banner">
   <div class="view-all">
     <a [routerLink]="['/system/usage']">

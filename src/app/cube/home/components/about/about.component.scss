@@ -1,0 +1,32 @@
+@import '~_vars.scss';
+@import '../../_home.scss';
+
+.about {
+  z-index: 2;
+  position: relative;
+  color: $dark-text;
+  text-align: center;
+}
+
+.about__title {
+  margin-bottom: 15px;
+  color: black;
+  position: relative;
+  display: inline-block;
+
+  &:after {
+    content: '';
+    width: 50%;
+    background: $bright-blue;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    height: 2px;
+  }
+}
+
+.about p {
+  font-size: 18px;
+}
