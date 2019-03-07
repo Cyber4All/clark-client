@@ -6,14 +6,11 @@
     <clark-about></clark-about>
   </div>
 </section>
-<section class="info-banner">
-  <div class="view-all">
-    <a [routerLink]="['/system/usage']">
-      <span class="text">View All</span><i class="far fa-angle-right"></i></a>
-  </div>
+<section class="philosophy">
+  <clark-philosophy></clark-philosophy>
 </section>
-<div class="featured-viewport">
-  <cube-featured></cube-featured>
+<div class="learning-objects">
+  <!-- <cube-featured></cube-featured> -->
 </div>
 <section class="collection-wrapper">
   <div class="collection-viewport">
@@ -31,16 +28,3 @@
     </div>
   </div>
 </section>
-
-<section class="bottom-banner">
-  <div class="whatis-wrapper">
-    <div class="title">{{ copy.WHATISTITLE }}</div>
-    <div class="text">{{ copy.WHATIS }}</div>
-  </div>
-  <div class="call-to-action">
-    <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
-    <button id="contribute-to-clark" class="button bad" routerLink= "../onion/dashboard">{{ copy.CALLTOACTION }}</button>
-  </div>
-</section>
-
-<clark-philosophy></clark-philosophy>

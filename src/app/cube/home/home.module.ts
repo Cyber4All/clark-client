@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
-import { PhilosophyComponent } from './philosophy/philosophy.component';
+import { PhilosophyComponent } from './components/philosophy/philosophy.component';
 import { StatCountersComponent } from './stat-counters/stat-counters.component';
 import { SplashComponent } from './components/splash/splash.component';
 import { AboutComponent } from './components/about/about.component';

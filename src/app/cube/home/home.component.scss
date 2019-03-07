@@ -1,6 +1,11 @@
 @import '~_vars.scss';
 @import './home';
 
+:host {
+  background: white;
+  display: block;
+}
+
 .top {
   position: relative;
 
@@ -12,28 +17,57 @@
     bottom: 0px;
     left: 0;
     right: 0;
-    height: 500px;
+    height: 400px;
     z-index: 1;
   }
 }
 
 .about {
-  margin-top: -40px;
-  background: white;
+  margin-top: -20px;
   padding: 0 20px;
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 20px;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  
+    & > * {
+      display: block;
+      box-sizing: border-box;
+    }
+  }
 }
 
-.about__grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: 20px;
-  padding: 20px;
-  max-width: 800px;
-  margin: auto;
+.learning-objects {
+  height: 400px;
+  background: white;
+  position: relative;
 
-  & > * {
-    display: block;
-    box-sizing: border-box;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, white, transparent, white);
+    z-index: 2;
+  }
+
+  &:after {
+    content: '';
+    background: $bright-blue;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    mask: $cube-pattern repeat;
+    opacity: 0.08;
+    z-index: 1;
   }
 }
 
