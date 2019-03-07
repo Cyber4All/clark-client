@@ -9,7 +9,6 @@ import { UsersComponent } from './pages/users/users.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { FilterSearchComponent } from 'app/admin/components/filter-search/filter-search.component';
 import { FormsModule } from '@angular/forms';
-import { FilterSearchService } from 'app/shared/filter-search.service';
 import { TooltipModule } from 'app/shared/tooltips/tip.module';
 import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
 import { DashboardComponent } from 'app/onion/dashboard/dashboard.component';
@@ -31,7 +30,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     FilterSearchComponent,
     DashboardComponent
   ],
-  providers: [ FilterSearchService ],
   imports: [
     CommonModule,
     AdminRoutingModule,
