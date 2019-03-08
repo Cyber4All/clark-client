@@ -6,14 +6,14 @@
   margin: auto;
   box-sizing: border-box;
   min-height: 500px;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
 .user-cards {
   margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(5, 20%);
+  grid-template-columns: repeat(6, 17%);
 }
 
 .user-cards > *:not(:last-child) {
@@ -22,7 +22,7 @@
 }
 
 .user-cards__card {
-  flex: 0 1 calc(33.3% - 32px);
+  
 }
 
 .loading-template {
@@ -47,6 +47,12 @@
       font-size: 30px;
       margin-bottom: 20px;
     }
+}
+
+@media (max-width: 400px) {
+  .user-cards {
+    grid-template-columns: repeat(4, 25%);
+  }
 }
 
 
