@@ -1,20 +1,24 @@
 @import '~_vars.scss';
 
+.users {
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+  box-sizing: border-box;
+  min-height: 500px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
 .user-cards {
   margin-top: 30px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(10%, 300px)); 
 }
 
 .user-cards > *:not(:last-child) {
   margin-right: 30px;
   margin-bottom: 30px;
-}
-
-.user-cards__card {
-  flex: 0 1 calc(33.3% - 32px);
 }
 
 .loading-template {
@@ -39,6 +43,24 @@
       font-size: 30px;
       margin-bottom: 20px;
     }
+}
+
+@media (max-width: 1600px) {
+  .user-cards {
+    grid-template-columns: repeat(5, 20%);
+  }
+}
+
+@media (max-width: 1350px) {
+  .user-cards {
+    grid-template-columns: repeat(4, 25%);
+  }
+}
+
+@media (max-width: 1150px) {
+  .user-cards {
+    grid-template-columns: repeat(3, 33%);
+  }
 }
 
 

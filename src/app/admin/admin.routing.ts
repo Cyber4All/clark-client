@@ -18,7 +18,7 @@ const admin_routes: Routes = [
     path: '', component: AdminComponent, canActivate: [ AdminGuard ], children: [
       // TODO THESE NEED AN ADMIN GUARD TO PREVENT ACCESS BY CURATORS
       { path: 'analytics', component: AnalyticsComponent },
-      { path: 'learning-objects', component: LearningObjectsComponent },
+      { path: 'learning-objects', component: LearningObjectsComponent},
       { path: 'users', component: UsersComponent },
       { path: '', redirectTo: 'analytics', pathMatch: 'full' }
     ],

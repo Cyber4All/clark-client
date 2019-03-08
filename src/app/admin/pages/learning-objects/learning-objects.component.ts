@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
 import { LearningObject } from '@cyber4all/clark-entity';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -13,7 +16,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
     PrivateLearningObjectService
   ]
 })
-export class LearningObjectsComponent {
+export class LearningObjectsComponent implements OnInit, OnDestroy {
 
   learningObjects: any;
   searchBarPlaceholder = 'Learning Objects';
@@ -22,10 +25,20 @@ export class LearningObjectsComponent {
   activeLearningObject;
   adminStatusList =  Object.keys(LearningObject.Status);
   selectedStatus: string;
+  componentDestroyed$: Subject<void> = new Subject();
+
+  ngOnInit(): void {
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.componentDestroyed$),
+      )
+      .subscribe(u => this.getUserLearningObjects(u.username));
+  }
 
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
+    private route: ActivatedRoute,
   ) { }
 
   getLearningObjects(text: string) {
@@ -72,5 +85,10 @@ export class LearningObjectsComponent {
 
   toggleStatus(status: string) {
     this.selectedStatus = status.toLowerCase();
+  }
+
+  ngOnDestroy() {
+    this.componentDestroyed$.next();
+    this.componentDestroyed$.unsubscribe();
   }
  }
