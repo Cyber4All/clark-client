@@ -89,18 +89,18 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
     this.selectedStatus = status.toLowerCase();
   }
 
-  getFilteredLearningObjects(status: string, isStatus: boolean) {
+  getFilteredLearningObjects(statuses: string[], collection: string, isStatus: boolean) {
     let query: Query;
     this.loading = true;
     if (isStatus) {
         query = {
           text: this.currentSearchText,
-          status : [status],
+          status : statuses,
        };
     } else {
       query = {
         text: this.currentSearchText,
-        collection: status,
+        collection,
       };
     }
     this.publicLearningObjectService.getLearningObjects(query)
