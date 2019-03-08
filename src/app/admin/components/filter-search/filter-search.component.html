@@ -1,17 +1,17 @@
 
-  <div class="list">
-    <div #listInner class="list-inner">
-      <div class="list-top">
-        <div class="wrapper">
-          <div class="filter-wrapper">
+  <div class="filter">
+    <div #listInner class="filter__container">
+      <div class="container__list-top">
+        <div class="container__wrapper">
+          <div class="container__filter-wrapper">
             <div class="btn-group to-right">
                 <button class="button neutral filters-button" (click)="toggleCollectionMenu($event)">
-                  <span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="selectedCollection !== '' && selectedCollection" (click)="clearCollectionFilter(); $event.stopPropagation()">
+                  <span class="filter__container--clear-filter" tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="selectedCollection !== '' && selectedCollection" (click)="clearCollectionFilter(); $event.stopPropagation()">
                     <i class="far fa-times"></i>
                   </span> All Collections <i class="fas fa-chevron-down"></i>
                 </button>
                 <button class="button neutral filters-button" (click)="toggleFilterMenu($event)">
-                  <span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size " (click)="clearStatusFilters(); $event.stopPropagation()">
+                  <span class="filter__container--clear-filter" tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size " (click)="clearStatusFilters(); $event.stopPropagation()">
                     <i class="far fa-times"></i>
                   </span> All Statuses <i class="fas fa-chevron-down"></i>
                 </button>
@@ -21,8 +21,8 @@
       </div>
     </div>
   </div>
-  <clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
-    <div #contextMenu class="filter-menu">
+  <clark-context-menu class="filter-status" (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
+    <div #contextMenu class="filter-status__container">
       <ul *ngFor="let status of statuses">
         <li [ngClass]="status" (click)="toggleStatusFilter(status)">
           <div *ngIf="filters.get(status)" class="indicator"></div>
@@ -31,8 +31,8 @@
       </ul>
     </div>
   </clark-context-menu>
-  <clark-context-menu (id)="collectionMenu = $event" (close)="toggleCollectionMenu(undefined)">
-    <div #contextMenu class="filter-collection">
+  <clark-context-menu class="filter-collection" (id)="collectionMenu = $event" (close)="toggleCollectionMenu(undefined)">
+    <div #contextMenu class="filter-collection__container">
       <ul>
         <li *ngFor="let collection of collections" [className]="collection.abvName" (click)="toggleCollectionFilter(collection.abvName)">
           <div *ngIf="collection.abvName === selectedCollection" class="indicator"></div> {{ collection.name }}
