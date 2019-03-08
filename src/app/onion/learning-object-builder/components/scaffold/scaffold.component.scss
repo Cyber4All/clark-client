@@ -37,6 +37,15 @@
     opacity: 0.6;
   }
 }
+.children-list {
+  width: 100%;
+  max-width: 100%;
+  min-height: 60px;
+  display: block;
+  background: white;
+  border-radius: 1px;
+  overflow: hidden;
+}
 
 .child-box {
   padding: 20px 10px;
@@ -48,15 +57,21 @@
   justify-content: space-between;
   box-sizing: border-box;
   background: white;
+  
 
   .info {
     float: left;
+    width: 100%;
     .top-row {
       display: flex;
       .child-title {
-        color: $blue-gradient;
+        color: $dark-text;
         text-align: left;
         font-size: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        word-break: break-all;
       }
     }
     .bottom-row{
