@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-<clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
+  <clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
     <div #contextMenu class="filter-menu">
       <ul *ngFor="let status of statuses">
         <li [ngClass]="status" (click)="toggleStatusFilter(status)">

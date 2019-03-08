@@ -123,10 +123,11 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   toggleStatusFilter(filter: string) {
     if (this.filters.get(filter)) {
       this.filters.delete(filter);
+      filter = '';
     } else {
       this.filters.set(filter, true);
-      this.statusFilter.emit(filter);
     }
+    this.statusFilter.emit(filter);
   }
 
   /**
@@ -136,10 +137,11 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   toggleCollectionFilter(filter: string) {
     if (this.filters.get(filter)) {
       this.filters.delete(filter);
+      filter = '';
     } else {
       this.filters.set(filter, true);
-      this.collectionFilter.emit(filter);
     }
+    this.collectionFilter.emit(filter);
   }
 
   /**
