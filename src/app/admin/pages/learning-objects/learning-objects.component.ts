@@ -25,6 +25,7 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
   activeLearningObject;
   adminStatusList =  Object.keys(LearningObject.Status);
   selectedStatus: string;
+  currentSearchText: string;
   componentDestroyed$: Subject<void> = new Subject();
 
   ngOnInit(): void {
@@ -43,6 +44,7 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
 
   getLearningObjects(text: string) {
     this.loading = true;
+    this.currentSearchText = text;
     const query: Query = {
       text
     };
@@ -92,11 +94,13 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
     this.loading = true;
     if (isStatus) {
         query = {
-          status : [status]
+          text: this.currentSearchText,
+          status : [status],
        };
     } else {
       query = {
-        collection: status
+        text: this.currentSearchText,
+        collection: status,
       };
     }
     this.publicLearningObjectService.getLearningObjects(query)
