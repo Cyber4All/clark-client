@@ -8,23 +8,26 @@
 
 .top {
   position: relative;
+  overflow: hidden;
 
   &:after {
     // gradient fade @ bottom of component
     content: '';
-    background: linear-gradient(0deg, white, transparent);
     position: absolute;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    height: 450px;
+    top: 550px;
+    width: 100%;
+    height: 2000vw;
     z-index: 1;
+    background: white;
+    transform: skewY(-4deg)
   }
 }
 
 .about {
-  margin-top: -40px;
+  position: relative;
+  z-index: 1;
   padding: 0 20px;
+  margin-top: -180px;
 
   .about__grid {
     display: grid;
@@ -42,7 +45,25 @@
 }
 
 .learning-objects {
+  padding: 80px 20px 80px;
   position: relative;
+
+  .title-text {
+    text-align: center;
+    color: $bright-blue;
+    margin-bottom: 20px;
+  }
+
+  .title-text .title__icon {
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  .subtitle-text {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+  }
 
   & > * {
     display: block;
@@ -57,294 +78,77 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, white, transparent, transparent, transparent, white);
-    z-index: 2;
-  }
-
-  &:after {
-    content: '';
-    background: $bright-blue;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    mask: $cube-pattern repeat;
-    opacity: 0.08;
+    background: #f6f9fc;
     z-index: 1;
-  }
-}
-
-// old styles
-
-.contribute-invitation {
-  width: 100%;
-  text-align: center;
-  background: white;
-  padding-top: 30px;
-
-  p {
-    font-size: 18px;
-    margin-top: 30px;
-  }
-
-  button {
-    margin-top: 30px;
-    font-size: 20px;
-  }
-}
-
-.search-results {
-  position: relative;
-}
-
-.featured-viewport {
-  padding: 100px 20px 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.collection-wrapper {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  width: 100%;
-  margin-top: 60px;
-  margin-bottom: 150px;
-  padding: 0 20px 25px;
-
-  .collection-viewport {
+    transform: skewY(-4deg);
     width: 100%;
+  }
+}
+
+.collections {
+  margin-top: 20px;
+  padding: 40px 20px;
+
+  .title-text {
+    color: $bright-blue;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .title__icon {
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  .collections__description {
+    max-width: 800px;
+    margin: auto;
+    font-size: 18px;
+    color: $dark-text;
+    text-align: center;
+  }
+
+  .collections__grid {
+    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 50px;
+    margin: auto;
+    margin-top: 40px;
+  }
+
+  .collection-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    // TODO: Set as variable shared between this and featured
-    max-width: 1375px;
-    // text stuff
-    font-weight: 200;
-
-    color: $dark-text;
-    text-align: center;
-
-    .title {
-      width: 100%;
-      text-align: left;
-      padding-left: 12px;
-      font-size: 33px;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-    }
-
-    .content {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding-top: 0;
-
-      .featured-collections {
-        margin-bottom: 25px;
-        position: relative;
-        width: 100%;
-        text-align: left;
-
-        .description {
-          font-size: 16px;
-        }
-      }
-
-      .card-container {
-        width: 100%;
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: center;
-        margin-top: 10px;
-
-        .collection-card {
-          background: white;
-          border-radius: 3px;
-          box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.05);
-          padding: 16px;
-          display: flex;
-          flex-flow: column nowrap;
-          margin: 0 40px;
-          font-weight: normal;
-          width: 200px;
-          cursor: pointer;
-
-          .collection-image {
-            position: relative;
-            width: 125px;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            margin: auto;
-
-            &:after {
-              content: '';
-              display: block;
-              padding-bottom: 100%;
-            }
-          }
-
-          .collection-name {
-            text-align: center;
-            width: 100%;
-            margin-top: 50px;
-            color: black;
-            font-size: 18px;
-          }
-        }
-      }
-    }
-  }
-}
-
-.call-to-action {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 80px;
-
-  .feature-text {
-    text-shadow: 0 2px transparent;
-    color: $dark-text;
-    text-align: center;
-    position: relative;
-    text-align: left;
-  }
-
-  .button {
-    margin: 0 auto 0 0;
-    font-size: 18px;
-    display: inline-flex;
-    flex-direction: row;
     justify-content: center;
+    padding: 20px;
+    border-radius: 7px;
+    box-shadow: 0 4px 22px 0px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    &:hover:not(:active) {
+      transform: scale(1.02);
+      box-shadow: 0 10px 30px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transition-duration: 0.1s;
+    }
   }
-}
 
-.bottom-banner {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  background: white;
-  border-bottom: 2px solid rgb(240, 244, 247);
+  .card__image {
+    width: 130px;
+  }
 
-  .whatis-wrapper {
-    padding-right: 80px;
-    width: 100%;
-    border-right: 1px solid rgb(240, 244, 247);
-    text-shadow: 0 2px transparent;
+  .card__name {
     color: $dark-text;
-    text-align: left;
-
-    .title {
-      font-size: 33px;
-      margin-bottom: 8px;
-    }
-
-    .text {
-      font-size: 22px;
-      font-weight: 200;
-    }
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 20px;
   }
-
-  .call-to-action {
-    width: 100%;
-    border-left: 1px solid rgb(240, 244, 247);
-  }
-
-  .whatis-wrapper,
-  .call-to-action {
-    max-width: calc(1370px/2);
-    padding: 60px;
-  }
-}
-
-.browselink {
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  @include vert-center;
-  position: relative;
-  flex-direction: row;
-  justify-content: right;
-  text-align: right;
-  margin-right: 20px;
-  text-decoration: underline;
-}
-
-@media (max-width: 750px) {
-
-  .info-banner {
-    display: none;
-  }
-
-  .img-viewport {
-    padding-top: 60px !important;
-    padding-bottom: 60px !important;
-
-    &:after {
-      opacity: 0.4 !important;
-    }
-  }
-
-  .featured-viewport,
-  .whois {
-    padding-top: 40px !important;
-    padding-bottom: 40px !important;
-  }
-
-  .collection-wrapper {
-    margin: 0;
-
-    .collection-viewport {
-      .title {
-        text-align: center;
-        margin-bottom: 8px;
-      }
-
-      .content {
-        flex-flow: column nowrap;
-
-        .featured-collections {
-          .description {
-            text-align: center;
-          }
-        }
-
-        .card-container {
-          flex-flow: row wrap;
-
-          .collection-card {
-            margin-bottom: 15px;
-          }
-        }
-      }
-    }
-  }
-
-  .bottom-banner {
-    flex-flow: column nowrap;
-
-    .whatis-wrapper {
-      border-right: 0;
-      border-bottom: 1px solid rgb(240, 244, 247);
-    }
-
-    .call-to-action {
-      border-left: 0;
-      border-top: 1px solid rgb(240, 244, 247);
-
-      .feature-text {
-        text-align: center;
-      }
-
-      .button.bad {
-        margin: 0;
-      }
-    }
-  }
-
 }

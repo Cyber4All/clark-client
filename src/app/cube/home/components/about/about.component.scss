@@ -28,9 +28,6 @@
   }
 
   .title__icon {
-    $local-blue: lighten($bright-blue, 34);
-    background: $local-blue;
-    color: $bright-blue;
     margin: auto;
     margin-bottom: 20px;
     // these paddings are here because the chart-network icon isn't centered correctly

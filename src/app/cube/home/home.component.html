@@ -10,21 +10,31 @@
   <clark-philosophy></clark-philosophy>
 </section>
 <div class="learning-objects">
-  <!-- <cube-featured></cube-featured> -->
+  <div class="title-text">
+    <div class="title__icon">
+      <i class="far fa-cube"></i>
+    </div>
+    Learning Objects
+  </div>
+  <div class="subtitle-text">
+    A Learning Object is a shareable, self-contained piece of curriculum that has clearly identified learning outcomes.
+  </div>
+  <cube-featured></cube-featured>
 </div>
-<section class="collection-wrapper">
-  <div class="collection-viewport">
-    <div class="title">Featured Collections</div>
-    <div class="content">
-      <div class="featured-collections">
-        <p class="description">{{ copy.COLLECTION_BLURB }}</p>
-      </div>
-      <div class="card-container">
-        <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.name}}">
-          <img class="collection-image" src="/assets/images/collections/{{c.abvName}}.png" alt="{{ c.name }} logo">
-          <div class="collection-name">{{ c.name }}</div>
-        </div>
-      </div>
+<section class="collections">
+  <div class="title-text">
+    <div class="title__icon">
+      <i class="far fa-cubes"></i>
+    </div>
+    Featured Collections
+  </div>
+  <div class="collections__description">
+    {{ copy.COLLECTION_BLURB }}
+  </div>
+  <div class="collections__grid">
+    <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.name}}">
+      <img class="card__image" src="/assets/images/collections/{{c.abvName}}.png" alt="{{ c.name }} logo">
+      <div class="card__name">{{ c.name }}</div>
     </div>
   </div>
 </section>

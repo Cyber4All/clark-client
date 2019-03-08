@@ -7,10 +7,10 @@ $banner-height: 90px;
 .splash {
   background: url('/assets/images/lecturer.jpg') no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: right 35% center;
   width: 100%;
   position: relative;
-  padding: 200px 20px 250px;
+  padding: 200px 20px 400px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -23,8 +23,8 @@ $banner-height: 90px;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, darken($bright-blue, 25), darken(desaturate($bright-blue, 5), 5));
-    opacity: 0.70;
+    background: linear-gradient(45deg, darken($bright-blue, 25), darken(desaturate($bright-blue, 0), 0));
+    opacity: 0.75;
     z-index: 1;
   }
 }
@@ -32,10 +32,12 @@ $banner-height: 90px;
 .splash__search {
   position: relative;
   z-index: 3;
+  max-width: 700px;
+  width: 100%;
 
   .search__text {
     color: white;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   .search__input {
@@ -49,10 +51,11 @@ $banner-height: 90px;
     justify-content: flex-start;
     align-items: center;
     padding-left: 18px;
+    width: 100%;
 
     &:focus-within {
       transform: scale(1.01);
-      box-shadow: 0 0 20px 4px rgba(red($bright-blue), green($bright-blue), blue($bright-blue), 0.5)
+      box-shadow: 0 6px 20px 5px rgba(0, 0, 0, 0.3);
     }
 
     input {
@@ -89,6 +92,7 @@ $banner-height: 90px;
     a {
       color: white;
       text-decoration: underline;
+      font-size: 16px;
     }
   }
 }
