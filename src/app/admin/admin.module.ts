@@ -31,7 +31,7 @@ import { AdminUserCardComponent } from './components/user-card/user-card.compone
     SearchBarComponent,
     ContentWrapperComponent,
     FilterSearchComponent,
-    DashboardComponent
+    DashboardComponent,
     AdminUserCardComponent,
   ],
   imports: [

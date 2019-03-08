@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { User } from '@cyber4all/clark-entity';
 import { UserService } from 'app/core/user.service';
 
@@ -9,6 +9,7 @@ import { UserService } from 'app/core/user.service';
 })
 export class AdminUserCardComponent implements OnInit {
   @Input() user: User;
+  @Output() navigateToUserObjects = new EventEmitter<string>();
 
   constructor(private userService: UserService) { }
 
@@ -22,4 +23,7 @@ export class AdminUserCardComponent implements OnInit {
     );
   }
 
+  showUserObjects() {
+    this.navigateToUserObjects.emit(this.user.username);
+  }
 }
