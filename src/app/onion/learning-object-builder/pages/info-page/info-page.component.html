@@ -1,6 +1,6 @@
 <clark-column-wrapper>
   <div left>
-    <clark-scaffold [learningObject]="learningObject"></clark-scaffold>
+    <clark-scaffold *ngIf="learningObject" [learningObject]="learningObject"></clark-scaffold>
   </div>
   <div main>
     <div *ngIf="learningObject; else loadingTemplate" class="content-wrapper">
