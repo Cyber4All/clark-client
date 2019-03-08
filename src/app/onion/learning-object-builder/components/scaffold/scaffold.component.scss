@@ -61,9 +61,10 @@
 
   .info {
     float: left;
-    width: 100%;
+    width: 90%; 
     .top-row {
       display: flex;
+      width: 100%;
       .child-title {
         color: $dark-text;
         text-align: left;
@@ -72,11 +73,11 @@
         overflow: hidden;
         white-space: nowrap;
         word-break: break-all;
+        max-width: 100%;
       }
     }
     .bottom-row{
       display: flex;
-
       .child-length {
         text-align: left;
         font-size: 14px;
