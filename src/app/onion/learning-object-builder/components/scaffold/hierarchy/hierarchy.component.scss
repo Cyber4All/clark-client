@@ -1,3 +1,5 @@
+@import "~_vars.scss";
+
 .children-list {
     width: 500px;
     max-width: 100%;
@@ -10,7 +12,7 @@
   
   .child-box {
     padding: 20px 10px;
-    border-bottom: solid 1px#ccc;
+    border-bottom: solid 1px$placeholder;
     color: rgba(0, 0, 0, 0.87);
     display: flex;
     flex-direction: row;
@@ -24,7 +26,7 @@
       .top-row {
         display: flex; 
         .child-title {
-          color: #646464;
+          color: $dark-text;
           text-align: left;
           font-size: 16px; 
         }
@@ -32,12 +34,30 @@
       .bottom-row{
         display: flex; 
         .child-length {
-          color: #646464;
           text-align: left;
           font-size: 14px; 
+          &.nanomodule {
+            color: $nanomodule-color;
+          }
+    
+          &.micromodule {
+            color: $micromodule-color;
+          }
+    
+          &.module {
+            color: $module-color;
+          }
+    
+          &.unit {
+            color: $unit-color;
+          }
+    
+          &.course {
+            color: $course-color;
+          }
         }
         .child-last-updated {
-          color: #646464; 
+          color: $dark-text; 
           font-size: 14px; 
           padding-left: 20px;  
         }
@@ -45,7 +65,7 @@
     }
     .hamburger-handle {
       display: flex;  
-      color: #646464;
+      color: $placeholder;
       cursor: move;
       width: 20px;
       height: 20px;
