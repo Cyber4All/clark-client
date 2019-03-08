@@ -6,121 +6,17 @@ $light-blue-gradient: linear-gradient(
   lighten($bright-blue, 5)
 );
 
-.dashboard {
-
-  .splash {
-    background: $light-blue-gradient;
-    color: white;
-    padding: 65px 20px 120px;
-    position: relative;
-    overflow: hidden;
-
-    .greeting {
-      position: relative;
-      font-size: 28px;
-      font-weight: bold;
-
-      span {
-        text-transform: capitalize;
-      }
-    }
-
-    &:after {
-      content: '';
-      background: white;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      opacity: 0.04;
-      mask: $cube-pattern repeat;
-    }
-  }
-
-  .list-wrapper {
-    padding: 20px;
-  }
-
-  .list {
-    max-width: $max-width;
-    position: relative;
-    margin: auto;
-    box-sizing: border-box;
-    background: white;
-    border-radius: 3px;
-    box-shadow: 0 5px 10px 0 rgba(84, 84, 100, 0.19);
-    margin-top: -80px;
-    min-height: 500px;
-    overflow: hidden;
-    margin-bottom: 20px;
-
-    .list-top {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 20px;
-      position: relative;
-      z-index: 2;
-
-      .header {
-        font-size: 26px;
-        color: $dark-text;
-      }
-    }
-  }
-
-  .list-body {
-    .column-headers,
-    ::ng-deep .row-item {
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: 20px 60px 2fr 1fr 1fr 50px;
-      grid-gap: 0 20px;
-      align-items: center;
-    }
-
-    ::ng-deep .row-item {
-      & > div {
-        padding-top: 20px;
-        padding-bottom: 20px;
-      }
-    }
-
-    .column-headers {
-      font-weight: bold;
-      font-size: 14px;
-      color: $dark-text;
-      opacity: 0.46;
-      padding-top: 20px;
-      padding-bottom: 10px;
-    }
-
-    clark-dashboard-item {
-      position: relative;
-      display: block;
-    }
-  }
-}
-
 // FIXME this can be removed when the new button styles are applied cross-application
 button {
   font-size: 14px;
   border: 0;
   padding: 10px 20px 10px 25px;
-  &.good {
-    background: $light-blue-gradient;
-  }
 
   &.neutral {
     background-color: transparent;
     box-shadow: none;
     color: $dark-text;
     padding:10px 5px 10px 0px;
-  }
-
-  &.shadow {
-    box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -284,6 +180,24 @@ $unpublished-color: rgba(
         background: #5ec9da;
 
         .indicator {
+          background: white;
+        }
+      }
+    }
+
+    &.proofing {
+      color: #bd5eda;
+    
+
+    .indicator {
+        background: #bd5eda;
+      }
+
+    &:hover {
+      color: white;
+      background: #bd5eda;
+
+      .indicator {
           background: white;
         }
       }
