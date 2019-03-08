@@ -22,40 +22,6 @@ button {
   }
 }
 
-.top__status {
-  width: 32px;
-  height: 32px;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 16px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgb(189, 193, 195);
-  transition: all 0.2s ease;
-  box-shadow: none;
-
-  &.waiting {
-    background: #5ec9da;
-  }
-
-  &.review {
-    background: #f5a623;
-  }
-
-  &.released {
-    background: $green;
-  }
-
-  &.denied {
-    background: saturate($error-red, 15);
-  }
-
-  &:hover {
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
-  }
-}
-
 .top__collection {
   display: flex;
   flex-direction: row;
@@ -225,17 +191,4 @@ button {
   font-size: 16px;
   text-decoration: underline;
   padding-top: 1px;
-}
-
-
-.builder-navbar-wrapper__bottom-right {
-  // padding: 0 0 10px 0;
-}
-
-.builder-navbar-wrapper__bottom-right__admin-badge {
-  background: linear-gradient(45deg, #fea200, #ffd000);
-  color: #ffffff;
-  padding: 5px 10px;
-  border-radius: 2px;
-  font-size: 16px;
 }
