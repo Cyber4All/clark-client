@@ -23,26 +23,10 @@
   </div>
 <clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
     <div #contextMenu class="filter-menu">
-      <ul>
-        <li class="unreleased" (click)="toggleStatusFilter('unreleased')">
-          <div *ngIf="filters.get('unreleased')" class="indicator"></div>
-          <i class="far fa-eye-slash"></i>Unreleased
-        </li>
-        <li class="waiting" (click)="toggleStatusFilter('waiting')">
-          <div *ngIf="filters.get('waiting')" class="indicator"></div>
-          <i class="far fa-hourglass"></i>Waiting for Review
-        </li>
-        <li class="review" (click)="toggleStatusFilter('review')">
-          <div *ngIf="filters.get('review')" class="indicator"></div>
-          <i class="far fa-sync"></i>Under Review
-        </li>
-        <li class="released" (click)="toggleStatusFilter('released')">
-          <div *ngIf="filters.get('released')" class="indicator"></div>
-          <i class="far fa-eye"></i>Released
-        </li>
-        <li class="denied" (click)="toggleStatusFilter('rejected')">
-          <div *ngIf="filters.get('rejected')" class="indicator"></div>
-          <i class="far fa-ban"></i>Denied
+      <ul *ngFor="let status of statuses">
+        <li [ngClass]="status" (click)="toggleStatusFilter(status)">
+          <div *ngIf="filters.get(status)" class="indicator"></div>
+          <i [ngClass]="getStatusIcon(status)"></i> {{ status | titlecase }}
         </li>
       </ul>
     </div>

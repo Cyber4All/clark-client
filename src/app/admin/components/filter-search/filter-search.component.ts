@@ -21,6 +21,15 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   // filters applied to dashboard objects (status filters)
   filters: Map<string, boolean> = new Map();
 
+  statuses = [
+    'released',
+    'proofing',
+    'review',
+    'waiting',
+    'unreleased',
+    'rejected'
+  ];
+
   @Output() statusFilter = new EventEmitter<string>();
   @Output() collectionFilter = new EventEmitter<string>();
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -139,6 +148,23 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   clearFilters() {
     this.filters = new Map();
     this.filtersModified$.next();
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'unreleased':
+        return 'far fa-eye-slash';
+      case 'waiting':
+        return 'far fa-hourglass';
+      case 'review':
+        return 'far fa-sync';
+      case 'proofing':
+        return 'far fa-shield';
+      case 'released':
+        return 'far fa-eye';
+      case 'rejected':
+        return 'far fa-ban';
+    }
   }
 
   ngOnDestroy() {

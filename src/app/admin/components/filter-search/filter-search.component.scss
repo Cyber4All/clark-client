@@ -221,7 +221,7 @@ $unpublished-color: rgba(
       }
     }
 
-    &.denied {
+    &.rejected {
       color: saturate($error-red, 15);
 
       .indicator {
@@ -323,7 +323,7 @@ $unpublished-color: rgba(
       }
     }
 
-    &.denied {
+    &.rejected {
       color: saturate($error-red, 15);
 
       .indicator {
