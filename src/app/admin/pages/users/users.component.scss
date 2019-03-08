@@ -13,7 +13,7 @@
 .user-cards {
   margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(6, 17%); 
+  grid-template-columns: repeat(6, minmax(10%, 300px)); 
 }
 
 .user-cards > *:not(:last-child) {
