@@ -40,7 +40,7 @@ import { OnionComponent } from './onion.component';
     ToasterModule,
     LearningObjectBuilderModule,
     OnionRoutingModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
   ]
 })
 export class OnionModule { }

@@ -1,0 +1,15 @@
+.admin-badge {
+  background: linear-gradient(45deg, #fea200, #ffd000);
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 2px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  .admin-badge__dropdown {
+    margin-left: 5px;
+    padding-left: 5px;
+    font-size: 14px;
+  }
+}
