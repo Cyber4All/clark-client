@@ -10,7 +10,7 @@
     <div class = "far fa-pencil"></div>
   </button>
 </div>
-<div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
+<div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)" *ngIf="children; else loadingTemplate">
   <div *ngFor="let c of children" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
     <div class = "info">
       <div class = "top-row">
@@ -27,5 +27,11 @@
   </div>
 </div>
 
+<ng-template #loadingTemplate>
+    <div class="loading-template">
+      <i class="far fa-spinner-third fa-spin"></i>
+      Loading...
+    </div>
+  </ng-template>
 
 
