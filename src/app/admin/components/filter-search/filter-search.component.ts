@@ -142,9 +142,14 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   /**
    * Remove all applied filters
    */
-  clearFilters() {
-    this.filters = new Map();
-    this.filtersModified$.next();
+  clearStatusFilters() {
+    this.filters.clear();
+    this.statusFilter.emit(Array.from( this.filters.keys() ));
+  }
+
+  clearCollectionFilter() {
+    this.selectedCollection = '';
+    this.collectionFilter.emit(this.selectedCollection);
   }
 
   getStatusIcon(status: string): string {
