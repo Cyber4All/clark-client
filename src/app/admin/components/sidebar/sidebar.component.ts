@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Collection } from 'app/core/collection.service';
@@ -23,18 +23,16 @@ import { trigger, query, style, animate, transition } from '@angular/animations'
     ])
   ]
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
-  @Input() collections: string[] = [];
+  @Input() collections: Collection[] = [];
   @Input() activeCollection: string;
   @Input() editorMode: boolean;
 
   @Input() initialized = false;
 
   constructor(private router: Router) {}
-
-  ngOnInit() {}
 
   /**
    * Navigate to previous location

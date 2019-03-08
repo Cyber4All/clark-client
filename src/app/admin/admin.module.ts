@@ -17,6 +17,9 @@ import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { AdminUserCardComponent } from './components/user-card/user-card.component';
+
+
 
 @NgModule({
   declarations: [
@@ -29,6 +32,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ContentWrapperComponent,
     FilterSearchComponent,
     DashboardComponent
+    AdminUserCardComponent,
   ],
   imports: [
     CommonModule,
