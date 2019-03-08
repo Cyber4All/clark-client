@@ -41,8 +41,6 @@
   }
 }
 .card-container {
-  // this margin offsets each individual card's top margin
-  margin-top: -24px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -51,6 +49,8 @@
   max-width: 1375px;
   align-items: stretch;
   margin: auto;
+  // this margin offsets each individual card's top margin
+  margin-top: -24px;
 
   learning-object-component {
     margin-top: 24px;
