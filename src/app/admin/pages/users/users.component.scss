@@ -13,16 +13,12 @@
 .user-cards {
   margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(6, 17%);
+  grid-template-columns: repeat(6, 17%); 
 }
 
 .user-cards > *:not(:last-child) {
   margin-right: 30px;
   margin-bottom: 30px;
-}
-
-.user-cards__card {
-  
 }
 
 .loading-template {
@@ -49,9 +45,21 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 1600px) {
+  .user-cards {
+    grid-template-columns: repeat(5, 20%);
+  }
+}
+
+@media (max-width: 1350px) {
   .user-cards {
     grid-template-columns: repeat(4, 25%);
+  }
+}
+
+@media (max-width: 1150px) {
+  .user-cards {
+    grid-template-columns: repeat(3, 33%);
   }
 }
 
