@@ -26,6 +26,8 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
   adminStatusList =  Object.keys(LearningObject.Status);
   selectedStatus: string;
   currentSearchText: string;
+  currentCollectionFilter = '';
+  currentStatusfilters = [''];
   componentDestroyed$: Subject<void> = new Subject();
 
   ngOnInit(): void {
@@ -89,20 +91,28 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
     this.selectedStatus = status.toLowerCase();
   }
 
-  getFilteredLearningObjects(statuses: string[], collection: string, isStatus: boolean) {
-    let query: Query;
+  getStatusFilteredLearningObjects(statuses: string[]) {
     this.loading = true;
-    if (isStatus) {
-        query = {
-          text: this.currentSearchText,
-          status : statuses,
-       };
-    } else {
-      query = {
-        text: this.currentSearchText,
-        collection,
-      };
-    }
+    const query: Query = {
+      text: this.currentSearchText,
+      status : statuses,
+      collection: this.currentCollectionFilter,
+    };
+
+    this.publicLearningObjectService.getLearningObjects(query)
+      .then(val => {
+        this.learningObjects = val.learningObjects;
+        this.loading = false;
+      });
+   }
+
+   getCollectionFilteredLearningObjects(collection: string) {
+    this.loading = true;
+    const query: Query = {
+      text: this.currentSearchText,
+      status: this.currentStatusfilters,
+      collection,
+    };
     this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
