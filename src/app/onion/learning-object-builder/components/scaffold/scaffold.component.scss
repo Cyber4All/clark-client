@@ -120,6 +120,12 @@
   }
 }
 
+.no-children {
+  color: $dark-text; 
+  text-align: center;
+  padding: 30px 30px;
+}
+
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
