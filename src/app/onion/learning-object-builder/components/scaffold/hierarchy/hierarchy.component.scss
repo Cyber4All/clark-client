@@ -24,18 +24,18 @@
     .info {
       float: left; 
       .top-row {
-        display: flex; 
+        display: flex;
         .child-title {
           color: $dark-text;
           text-align: left;
-          font-size: 16px; 
+          font-size: 16px;
         }
       }
       .bottom-row{
-        display: flex; 
+        display: flex;
         .child-length {
           text-align: left;
-          font-size: 14px; 
+          font-size: 14px;
           &.nanomodule {
             color: $nanomodule-color;
           }
@@ -57,20 +57,20 @@
           }
         }
         .child-last-updated {
-          color: $dark-text; 
-          font-size: 14px; 
-          padding-left: 20px;  
+          color: $dark-text;
+          font-size: 14px;
+          padding-left: 20px;
         }
       }
     }
     .hamburger-handle {
-      display: flex;  
+      display: flex;
       color: $placeholder;
       cursor: move;
       width: 20px;
       height: 20px;
-      font-size: 18px; 
-      margin-left: auto;  
+      font-size: 18px;
+      margin-left: auto;
     }
   }
   
