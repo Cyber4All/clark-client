@@ -23,8 +23,8 @@ export class AuthGuard implements CanActivate {
 
   /**
    * This method returns a boolean indicating whther or not navigation to a route should be allowed.
-   * @param route 
-   * @param state 
+   * @param route
+   * @param state
    */
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -36,17 +36,17 @@ export class AuthGuard implements CanActivate {
       return this.auth.validate().then(
         val => {
           this.auth.isLoggedIn.subscribe(status => {
-            //"status" is true if user is logged in , false if they are not logged in
-            //if the user is not logged in, go to home
+            // "status" is true if user is logged in , false if they are not logged in
+            // if the user is not logged in, go to home
             if (!status) {
               this.router.navigate(['home'], {
               });
             }
           });
-          //if user is logged in, return true
+          // if user is logged in, return true
           return true;
         },
-        //catches error sets in the service
+        // catches error sets in the service
         error => {
           this.router.navigate(['/auth/login'], {
             queryParams: { redirectUrl: state.url }
@@ -55,7 +55,7 @@ export class AuthGuard implements CanActivate {
         }
       );
     } else {
-      //if the user has no cookie, go to the login page
+      // if the user has no cookie, go to the login page
       this.router.navigate(['/auth/login'], {
         queryParams: { redirectUrl: state.url }
       });
