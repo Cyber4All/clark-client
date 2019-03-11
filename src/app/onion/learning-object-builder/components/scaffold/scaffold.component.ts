@@ -11,7 +11,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 export class ScaffoldComponent implements OnInit {
   @Input() learningObject: LearningObject;
   // boolean to indicate if edit is selected for the list
-  @Input() editContent: boolean;
+  @Input() editContent = true;
 
   // array to obtain children IDs
   childrenIDs: string[] = [];
@@ -24,7 +24,7 @@ export class ScaffoldComponent implements OnInit {
       this.children = kiddos;
     });
   }
-  
+
   drop(event: CdkDragDrop<string[]>) {
     // change the index of the child that has been moved in the array used for display
     moveItemInArray(this.children, event.previousIndex, event.currentIndex);
@@ -34,11 +34,6 @@ export class ScaffoldComponent implements OnInit {
 
     // set the ids of children to the same order as the childrenIDs
     this.store.setChildren(this.childrenIDs);
-  }
-
-  // toggle between edit and list view of children
-  toggle() {
-   this.editContent = !this.editContent;
   }
 }
 
