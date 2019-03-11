@@ -10,6 +10,7 @@ import { PhilosophyComponent } from './components/philosophy/philosophy.componen
 import { SplashComponent } from './components/splash/splash.component';
 import { AboutComponent } from './components/about/about.component';
 import { UsageComponent } from './components/usage/usage.component';
+import { CollectionsComponent } from './components/collections/collections.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { UsageComponent } from './components/usage/usage.component';
     RouterModule
   ],
   exports: [HomeComponent],
-  declarations: [HomeComponent, PhilosophyComponent, SplashComponent, AboutComponent, UsageComponent],
+  declarations: [HomeComponent, PhilosophyComponent, SplashComponent, AboutComponent, UsageComponent, CollectionsComponent],
   providers: []
 })
 export class HomeModule {}
