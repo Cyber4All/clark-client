@@ -24,11 +24,11 @@
 
   .usage__grid {
     max-width: 950px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(135px, 135px));
-    grid-gap: 60px;
+    display: flex;
     justify-content: center;
+    flex-direction: row;
     margin: auto;
+    flex-wrap: wrap;
   }
 
   .usage__item {
@@ -37,6 +37,8 @@
     justify-content: space-between;
     align-items: center;
     text-align: center;
+    margin: 24px 20px;
+    width: 135px;
 
     &.collections .item__icon {
       color: #cc3057;
@@ -93,5 +95,23 @@
     a {
       color: $bright-blue;
     }
+  }
+}
+
+.loading {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+
+  .svg-inline--fa,
+  .icon {
+    color: $bright-blue;
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  .loading__label {
+    font-size: 18px;
+    color: $placeholder;
   }
 }

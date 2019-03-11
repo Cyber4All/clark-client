@@ -1,11 +1,11 @@
 <div class="usage">
-  <div class="usage__content">
-    <div class="usage__title title-text">
-      <div class="title__icon">
-        <i class="far fa-chart-bar"></i>
-      </div>
-      CLARK by the numbers
+  <div class="usage__title title-text">
+    <div class="title__icon">
+      <i class="far fa-chart-bar"></i>
     </div>
+    CLARK by the numbers
+  </div>
+  <div *ngIf="!objectStatsLoading && !userStatsLoading; else loadingTemplate" class="usage__content">
     <div class="usage__grid">
       <div class="usage__item objects">
         <div class="item__icon">
@@ -52,7 +52,7 @@
         </div>
         <div class="item__left">
           <div class="item__count">
-            {{ stats.users.total | number }}
+            {{ stats.users.accounts | number }}
           </div>
           <div class="item__label">
             Registered<br /> Users
@@ -76,6 +76,16 @@
     <div class="usage__more">
       <a routerLink="/system/usage">See more usage statistics</a>
     </div>
-
   </div>
 </div>
+
+<ng-template #loadingTemplate>
+  <div class="loading">
+    <div class="loading__icon">
+      <i class="far fa-spinner-third fa-spin"></i>
+    </div>
+    <div class="loading__label">
+      Crunching the numbers...
+    </div>
+  </div>
+</ng-template>
