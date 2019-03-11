@@ -17,7 +17,7 @@ export interface LearningObjectStats {
   };
 }
 export interface UserStats {
-  total: number;
+  accounts: number;
   organizations: number;
 }
 

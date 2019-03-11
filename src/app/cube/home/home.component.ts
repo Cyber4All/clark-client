@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { COPY } from './home.copy';
 import { CollectionService, Collection } from '../../core/collection.service';
-import { UsageStats } from '../shared/types';
+import { UsageStats } from '../shared/types/usage-stats';
 import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 
 @Component({
@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
       released: 0,
       underReview: 0,
       downloads: 0,
+      collections: { number: 0 },
       lengths: {
         nanomodule: 0,
         micromodule: 0,
@@ -42,11 +43,8 @@ export class HomeComponent implements OnInit {
         evaluate_and_synthesize: 0
       }
     },
-    collections: {
-      number: 0
-    },
     users: {
-      total: 0,
+      accounts: 0,
       organizations: 0
     }
   };
@@ -63,12 +61,12 @@ export class HomeComponent implements OnInit {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.underReview = stats.underReview;
       this.usageStats.objects.downloads = stats.downloads;
-      this.usageStats.collections = stats.collections;
+      this.usageStats.objects.collections = stats.collections;
       this.objectStatsLoaded = true;
     });
 
     this.statsService.getUserStats().then(stats => {
-      this.usageStats.users.total = stats.total;
+      this.usageStats.users.accounts = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
       this.userStatsLoaded = true;
     });
