@@ -6,6 +6,7 @@ import {CollectionService} from 'app/core/collection.service';
 import {AuthService} from 'app/core/auth.service';
 import {Subject} from 'rxjs';
 import {ContextMenuService} from 'app/shared/contextmenu/contextmenu.service';
+import {LearningObject} from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -21,15 +22,8 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   // collection
   // filters applied to dashboard objects (status filters)
   filters: Map<string, boolean> = new Map();
+  statuses = Object.values(LearningObject.Status);
 
-  statuses = [
-    'released',
-    'proofing',
-    'review',
-    'waiting',
-    'unreleased',
-    'rejected'
-  ];
 
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
