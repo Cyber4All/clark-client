@@ -61,6 +61,7 @@ export class UsageStatsComponent implements OnInit {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
+      this.usageStats.objects.collections = stats.collections;
       this.usageStats.objects.lengths = {
         nanomodule: stats.lengths.nanomodule,
         micromodule: stats.lengths.micromodule,
@@ -68,16 +69,12 @@ export class UsageStatsComponent implements OnInit {
         unit: stats.lengths.unit,
         course: stats.lengths.course
       };
-      this.usageStats.objects.outcomes = {
-        remember_and_understand: stats.outcomes.remember_and_understand,
-        apply_and_analyze: stats.outcomes.apply_and_analyze,
-        evaluate_and_synthesize: stats.outcomes.evaluate_and_synthesize
-      };
+
+      this.usageStats.objects.outcomes = stats.outcomes;
+
       this.buildCounterStats();
       this.buildOutcomeDistributionChart();
       this.buildLengthDistributionChart();
-
-      console.log(this.usageStats);
     });
 
     this.statsService.getUserStats().then(stats => {
@@ -96,9 +93,7 @@ export class UsageStatsComponent implements OnInit {
    */
   private buildCounterStats() {
     // Empty the array to avoid pushing duplicates
-    this.counterStats = [];
-    this.counterStats.push(
-      ...[
+    this.counterStats = [
         {
           title: 'Learning Objects Released',
           value: this.usageStats.objects.released
@@ -106,6 +101,10 @@ export class UsageStatsComponent implements OnInit {
         {
           title: 'Learning Objects Under Review',
           value: this.usageStats.objects.review
+        },
+        {
+          title: 'Quality-Assured Collections',
+          value: this.usageStats.objects.collections.number
         },
         {
           title: 'Users',
@@ -119,8 +118,7 @@ export class UsageStatsComponent implements OnInit {
           title: 'Downloads',
           value: this.usageStats.objects.downloads
         }
-      ]
-    );
+      ];
   }
 
   /**
