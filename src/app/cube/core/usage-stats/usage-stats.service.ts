@@ -6,7 +6,7 @@ import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 interface BloomsDistribution {
-  blooms_distribution: { remember: number, apply: number, evaluate: number }
+  blooms_distribution: { remember: number, apply: number, evaluate: number };
 }
 
 @Injectable()
