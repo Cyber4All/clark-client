@@ -61,13 +61,14 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
-      this.usageStats.objects.underReview = stats.review;
+      this.usageStats.objects.underReview = stats.underReview;
       this.usageStats.objects.downloads = stats.downloads;
+      this.usageStats.collections = stats.collections;
       this.objectStatsLoaded = true;
     });
 
     this.statsService.getUserStats().then(stats => {
-      this.usageStats.users.total = stats.accounts;
+      this.usageStats.users.total = stats.total;
       this.usageStats.users.organizations = stats.organizations;
       this.userStatsLoaded = true;
     });

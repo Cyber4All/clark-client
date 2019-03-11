@@ -1,7 +1,8 @@
-interface LearningObjectStats {
+export interface LearningObjectStats {
   released: number;
   underReview: number;
   downloads: number;
+  collections: { number: number };
   lengths: {
     nanomodule: number;
     micromodule: number;
@@ -15,17 +16,12 @@ interface LearningObjectStats {
     evaluate_and_synthesize: number;
   };
 }
-interface UserStats {
+export interface UserStats {
   total: number;
   organizations: number;
 }
 
-interface CollectionStats {
-  number: number;
-}
-
 export interface UsageStats {
   objects: LearningObjectStats;
-  collections: CollectionStats;
   users: UserStats;
 }

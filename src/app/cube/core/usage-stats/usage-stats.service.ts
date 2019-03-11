@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { STATS_ROUTES } from '@env/route';
-import { LearningObjectStats, UserStats } from 'app/cube/shared/types';
+import { LearningObjectStats, UserStats } from 'app/cube/shared/types/usage-stats';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Collection } from '@cyber4all/clark-entity';
 
 @Injectable()
 export class UsageStatsService {
@@ -26,7 +27,8 @@ export class UsageStatsService {
         )
         .toPromise()
     ]);
-    return { ...objects, ...library } as LearningObjectStats;
+    // @ts-ignore
+    return { ...objects, ...library } as  LearningObjectStats & CollectionStats;
   }
   getUserStats(): Promise<UserStats> {
     return this.http.get<UserStats>(STATS_ROUTES.USERS_STATS)

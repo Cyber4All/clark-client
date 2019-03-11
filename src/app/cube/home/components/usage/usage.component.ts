@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UsageStats } from 'app/cube/shared/types';
+import { UsageStats } from 'app/cube/shared/types/usage-stats';
 
 @Component({
   selector: 'clark-usage',
