@@ -42,10 +42,6 @@ export class NewRatingComponent implements OnInit, OnChanges {
         this.advance();
       }
     }
-
-    if (changes.editing) {
-      console.log('editing', changes.editing.currentValue);
-    }
   }
 
   regress() {
