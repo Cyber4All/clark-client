@@ -10,10 +10,12 @@ $banner-height: 90px;
   background-position: right 35% center;
   width: 100%;
   position: relative;
-  padding: 200px 20px 400px;
+  padding: 0 20px;
+  height: 800px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
 
   &:after {
     // overlay gradient
@@ -34,6 +36,7 @@ $banner-height: 90px;
   z-index: 3;
   max-width: 700px;
   width: 100%;
+  margin-top: -280px;
 
   .search__text {
     color: white;
