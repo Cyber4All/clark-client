@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   usageStats: UsageStats = {
     objects: {
       released: 0,
-      underReview: 0,
+      review: 0,
       downloads: 0,
       collections: { number: 0 },
       lengths: {
@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
-      this.usageStats.objects.underReview = stats.underReview;
+      this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
       this.usageStats.objects.collections = stats.collections;
       this.objectStatsLoaded = true;

@@ -4,7 +4,10 @@ import { STATS_ROUTES } from '@env/route';
 import { LearningObjectStats, UserStats } from 'app/cube/shared/types/usage-stats';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { Collection } from '@cyber4all/clark-entity';
+
+interface BloomsDistribution {
+  blooms_distribution: { remember: number, apply: number, evaluate: number }
+}
 
 @Injectable()
 export class UsageStatsService {
@@ -13,7 +16,7 @@ export class UsageStatsService {
   async getLearningObjectStats(): Promise<LearningObjectStats> {
     const [objects, library] = await Promise.all([
       this.http
-        .get<Partial<LearningObjectStats>>(STATS_ROUTES.LEARNING_OBJECT_STATS)
+        .get<Partial<LearningObjectStats> & BloomsDistribution>(STATS_ROUTES.LEARNING_OBJECT_STATS)
         .pipe(
           retry(3),
           catchError(this.handleError)
@@ -27,8 +30,18 @@ export class UsageStatsService {
         )
         .toPromise()
     ]);
-    // @ts-ignore
-    return { ...objects, ...library } as  LearningObjectStats & CollectionStats;
+
+    // map service data to LearningObjectStats object
+    objects.outcomes = {
+      remember_and_understand: objects.blooms_distribution.remember,
+      apply_and_analyze: objects.blooms_distribution.apply,
+      evaluate_and_synthesize: objects.blooms_distribution.evaluate,
+    };
+
+    // delete irrelevant property
+    delete objects.blooms_distribution;
+
+    return { ...objects, ...library } as  LearningObjectStats;
   }
   getUserStats(): Promise<UserStats> {
     return this.http.get<UserStats>(STATS_ROUTES.USERS_STATS)
