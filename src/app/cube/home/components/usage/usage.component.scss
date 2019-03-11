@@ -23,10 +23,11 @@
   }
 
   .usage__grid {
-    max-width: 800px;
+    max-width: 950px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 90px;
+    grid-template-columns: repeat(auto-fill, minmax(135px, 135px));
+    grid-gap: 60px;
+    justify-content: center;
     margin: auto;
   }
 
@@ -36,6 +37,11 @@
     justify-content: space-between;
     align-items: center;
     text-align: center;
+
+    &.collections .item__icon {
+      color: #cc3057;
+      background: lighten(#cc3057, 35);
+    }
 
     &.downloads .item__icon {
       color: orange;

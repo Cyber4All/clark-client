@@ -19,7 +19,13 @@ interface UserStats {
   total: number;
   organizations: number;
 }
+
+interface CollectionStats {
+  number: number;
+}
+
 export interface UsageStats {
   objects: LearningObjectStats;
+  collections: CollectionStats;
   users: UserStats;
 }

@@ -9,7 +9,7 @@
     <div class="usage__grid">
       <div class="usage__item objects">
         <div class="item__icon">
-          <i class="far fa-boxes"></i>
+          <i class="far fa-cube"></i>
         </div>
         <div class="item__left">
           <div class="item__count">
@@ -17,6 +17,19 @@
           </div>
           <div class="item__label">
             Released<br /> Learning Objects
+          </div>
+        </div>
+      </div>
+      <div class="usage__item collections">
+        <div class="item__icon">
+          <i class="far fa-cubes"></i>
+        </div>
+        <div class="item__left">
+          <div class="item__count">
+            {{ stats.collections.number | number }}
+          </div>
+          <div class="item__label">
+            Quality-Assured<br /> Collections
           </div>
         </div>
       </div>

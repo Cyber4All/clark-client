@@ -42,6 +42,9 @@ export class HomeComponent implements OnInit {
         evaluate_and_synthesize: 0
       }
     },
+    collections: {
+      number: 0
+    },
     users: {
       total: 0,
       organizations: 0
