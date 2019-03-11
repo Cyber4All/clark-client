@@ -1,9 +1,8 @@
- import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectService } from '../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { COPY } from './home.copy';
-import { AuthService } from '../../core/auth.service';
 import { CollectionService, Collection } from '../../core/collection.service';
 import { UsageStats } from '../shared/types';
 import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
@@ -16,8 +15,9 @@ import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
-    limit: 1,
+    limit: 1
   };
+
   placeholderText = this.copy.SEARCH_PLACEHOLDER;
   collections: Collection[];
 
@@ -51,7 +51,6 @@ export class HomeComponent implements OnInit {
   constructor(
     public learningObjectService: LearningObjectService,
     private router: Router,
-    private auth: AuthService,
     private collectionService: CollectionService,
     private statsService: UsageStatsService
   ) {}
@@ -63,11 +62,13 @@ export class HomeComponent implements OnInit {
       this.usageStats.objects.downloads = stats.downloads;
       this.objectStatsLoaded = true;
     });
+
     this.statsService.getUserStats().then(stats => {
       this.usageStats.users.total = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
       this.userStatsLoaded = true;
     });
+
     this.collectionService
       .getCollections()
       .then(collections => {

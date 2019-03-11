@@ -88,7 +88,7 @@
 
 .collections {
   margin-top: 20px;
-  padding: 40px 20px 80px;
+  padding: 40px 20px 120px;
 
   .title-text {
     color: $bright-blue;
@@ -151,5 +151,64 @@
     font-weight: 400;
     text-align: center;
     margin-top: 20px;
+  }
+}
+
+.cta {
+  padding: 180px 20px 80px;
+  position: relative;
+  margin-top: -60px;
+
+  .cta__content {
+    position: relative;
+    z-index: 2;
+  }
+
+  &:before {
+    content: '';
+    background: linear-gradient(white, #f6f9fc, #f6f9fc);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    mask: $cube-pattern repeat;
+    z-index: 0;
+  }
+
+  &:after {
+    content: '';
+    background: linear-gradient(90deg, white, transparent, transparent, transparent, white);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  .title-text {
+    text-align: center;
+    color: $bright-blue;
+    margin-bottom: 20px;
+  }
+
+  .title__icon {
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  .subtitle-text {
+    max-width: 800px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 40px;
+  }
+
+  .button.good {
+    padding: 12px 30px;
+    background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+    border: 0;
+    font-size: 18px;
   }
 }

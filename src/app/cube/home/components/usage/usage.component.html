@@ -1,0 +1,68 @@
+<div class="usage">
+  <div class="usage__content">
+    <div class="usage__title title-text">
+      <div class="title__icon">
+        <i class="far fa-chart-bar"></i>
+      </div>
+      CLARK by the numbers
+    </div>
+    <div class="usage__grid">
+      <div class="usage__item objects">
+        <div class="item__icon">
+          <i class="far fa-boxes"></i>
+        </div>
+        <div class="item__left">
+          <div class="item__count">
+            {{ stats.objects.released | number }}
+          </div>
+          <div class="item__label">
+            Released<br /> Learning Objects
+          </div>
+        </div>
+      </div>
+      <div class="usage__item downloads">
+        <div class="item__icon">
+          <i class="far fa-cloud-download"></i>
+        </div>
+        <div class="item__left">
+          <div class="item__count">
+            {{ stats.objects.downloads | number }}
+          </div>
+          <div class="item__label">
+            Learning Object<br /> Downloads
+          </div>
+        </div>
+      </div>
+      <div class="usage__item users">
+        <div class="item__icon">
+          <i class="far fa-users"></i>
+        </div>
+        <div class="item__left">
+          <div class="item__count">
+            {{ stats.users.total | number }}
+          </div>
+          <div class="item__label">
+            Registered<br /> Users
+          </div>
+        </div>
+      </div>
+      <div class="usage__item organizations">
+        <div class="item__icon">
+          <i class="far fa-university"></i>
+        </div>
+        <div class="item__left">
+          <div class="item__count">
+            {{ stats.users.organizations | number }}
+          </div>
+          <div class="item__label">
+            Affiliated<br /> Organizations
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="usage__more">
+      <a routerLink="/system/usage">See more usage statistics</a>
+    </div>
+
+  </div>
+</div>
