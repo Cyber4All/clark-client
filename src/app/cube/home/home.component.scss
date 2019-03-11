@@ -66,6 +66,18 @@
     text-align: center;
   }
 
+  .browse-cta {
+    font-size: 18px;
+    text-align: center;
+
+    a {
+      color: $bright-blue;
+      font-size: 18px;
+      text-decoration: underline;
+      padding: 10px;
+    }
+  }
+
   & > * {
     display: block;
     position: relative;
