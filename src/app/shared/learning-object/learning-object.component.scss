@@ -1,5 +1,9 @@
 @import '~_vars.scss';
 
+a {
+  text-decoration: none;
+}
+
 @media (min-width: 751px) {
   :host.card {
     min-height: 350px;
