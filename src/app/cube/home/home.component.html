@@ -1,57 +1,48 @@
 <section class="top">
-  <div class="img-viewport">
-    <div class="search-viewport">
-      <div class="search-contents">
-        <div id="home-title" class="feature-text">{{ copy.HERO }}</div>
-        <form (keydown)="keyDownSearch($event)">
-          <div>
-            <input aria-label="Search clark" id="search-input" autofocus type="text" class="search-input" aria-label="Search Across Learning Objects"
-              placeholder="{{placeholderText}}" [(ngModel)]="query.text" name="query">
-            <div class="browselink" routerLink="/browse">{{ copy.BROWSE }}</div>
-            <button id="search-button" type="button" class="button bad" (click)="search()" style="margin-top: 15px;">{{
-              copy.SEARCH }}</button>
-          </div>
-        </form>
-      </div>
+  <clark-homepage-splash [placeholderText]="placeholderText" (search)="search($event)"></clark-homepage-splash>
+</section>
+<section class="about">
+  <div class="about__grid">
+    <clark-about></clark-about>
+  </div>
+</section>
+<section class="philosophy">
+  <clark-philosophy></clark-philosophy>
+</section>
+<div class="learning-objects">
+  <div class="title-text">
+    <div class="title__icon">
+      <i class="far fa-cube"></i>
     </div>
+    Recently Released<br /> Learning Objects
   </div>
-</section>
-<section class="info-banner">
-  <div class="view-all">
-    <a [routerLink]="['/system/usage']">
-      <span class="text">View All</span><i class="far fa-angle-right"></i></a>
+  <div class="subtitle-text">
+    A Learning Object is a self-contained piece of curriculum that has clearly identified learning outcomes. 
   </div>
-  <cube-stat-counters [stats]="usageStats" [objectStatsLoading]="!objectStatsLoaded" [userStatsLoading]="!userStatsLoaded"></cube-stat-counters>
-</section>
-<div class="featured-viewport">
+  <div class="browse-cta">
+    <a routerLink="/browse">View all Learning Objects</a>
+  </div>
   <cube-featured></cube-featured>
 </div>
-<section class="collection-wrapper">
-  <div class="collection-viewport">
-    <div class="title">Featured Collections</div>
-    <div class="content">
-      <div class="featured-collections">
-        <p class="description">{{ copy.COLLECTION_BLURB }}</p>
+<section class="collections">
+  <clark-collections [collections]="collections"></clark-collections>
+</section>
+<section class="usage">
+  <clark-usage [stats]="usageStats"></clark-usage>
+</section>
+<section class="cta">
+  <div class="cta__content">
+    <div class="title-text">
+      <div class="title__icon">
+        <i class="far fa-globe-americas"></i>
       </div>
-      <div class="card-container">
-        <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.name}}">
-          <img class="collection-image" src="/assets/images/collections/{{c.abvName}}.png" alt="{{ c.name }} logo">
-          <div class="collection-name">{{ c.name }}</div>
-        </div>
-      </div>
+      Join the cause
+    </div>
+    <div class="subtitle-text">
+      Contribute your freely accessible cybersecurity material<br /> for others to use.
+    </div>
+    <div class="btn-group center">
+      <button class="button good" routerLink="/onion/dashboard">Contribute to CLARK</button>
     </div>
   </div>
 </section>
-
-<section class="bottom-banner">
-  <div class="whatis-wrapper">
-    <div class="title">{{ copy.WHATISTITLE }}</div>
-    <div class="text">{{ copy.WHATIS }}</div>
-  </div>
-  <div class="call-to-action">
-    <div class="feature-text">{{ copy.CALLTOACTIONTEXT }}</div>
-    <button id="contribute-to-clark" class="button bad" routerLink= "../onion/dashboard">{{ copy.CALLTOACTION }}</button>
-  </div>
-</section>
-
-<clark-philosophy></clark-philosophy>

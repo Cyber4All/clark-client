@@ -14,7 +14,7 @@ export class PhilosophyComponent implements OnInit {
         'API',
         'Access'
       ],
-      icon: 'far fa-box-open'
+      icon: 'fal fa-box-open'
     },
     {
       title: 'Easy In',
@@ -23,7 +23,7 @@ export class PhilosophyComponent implements OnInit {
         'Mutually Beneficial',
         'Easy Updates'
       ],
-      icon: 'far fa-cloud-upload'
+      icon: 'fal fa-cloud-upload'
     },
     {
       title: 'Quality Curriculum',
@@ -32,7 +32,7 @@ export class PhilosophyComponent implements OnInit {
         'Active Curators',
         'Clear Learning Outcomes'
       ],
-      icon: 'far fa-check'
+      icon: 'fal fa-check'
     },
     {
       title: 'Easy Out',
@@ -41,7 +41,7 @@ export class PhilosophyComponent implements OnInit {
         'No Hooks',
         'Faceted Search'
       ],
-      icon: 'far fa-cloud-download'
+      icon: 'fal fa-cloud-download'
     },
     {
       title: 'Crowdsourced',
@@ -50,7 +50,7 @@ export class PhilosophyComponent implements OnInit {
         'Quality Control',
         'Currency'
       ],
-      icon: 'far fa-users'
+      icon: 'fal fa-users'
     },
     {
       title: 'Ownership',
@@ -59,7 +59,7 @@ export class PhilosophyComponent implements OnInit {
         'Format',
         'Web Presence'
       ],
-      icon: 'far fa-grin-beam'
+      icon: 'fal fa-grin-beam'
     }
   ];
 
