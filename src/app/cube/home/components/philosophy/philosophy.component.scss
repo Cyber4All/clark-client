@@ -9,18 +9,21 @@
 }
 
 .philosophy__values {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-  grid-row-gap: 25px;
-  margin: 45px 0 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 45px 0 25px;
   width: 100%;
-  max-width: 1250px;
+  max-width: 1200px;
+  flex-wrap: wrap;
   
   .values__wrapper {
+    width: 210px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     position: relative;
+    margin: 20px 10px;
 
     .svg-inline--fa {
       font-size: 50px;
@@ -56,42 +59,5 @@
 
   .values__list-item {
     list-style-type: none;
-  }
-}
-
-@media (max-width: 820px) {
-
-  .philosophy__title {
-    margin-bottom: 0 !important;
-  }
-
-  .philosophy__values {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, auto);
-    margin: 25px 0 0;
-  }
-
-  .values__wrapper {
-    margin-top: 25px;
-    width: 100%;
-
-    &:after {
-      display: none;
-    }
-  }
-}
-
-@media (min-width: 821px) and (max-width: 1250px) {
-
-  .philosophy__values {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, auto);
-    margin: 25px 0 0;
-
-    .values__wrapper:nth-child(3)::after {
-      display: none;
-    }
   }
 }
