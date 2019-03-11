@@ -27,3 +27,14 @@
 .service-indicator--saved {
   background: linear-gradient(45deg, darken(saturate($green, 10), 5), saturate(lighten($green, 10), 10));
 }
+
+.popup-inner {
+
+  .modal-title{
+    color: $bright-blue !important;
+  }
+  .button {
+    background: $bright-blue;
+    border-color: $bright-blue;
+  }
+}
