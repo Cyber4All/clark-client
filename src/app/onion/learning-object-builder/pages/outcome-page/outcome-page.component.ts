@@ -5,10 +5,11 @@ import {
   BUILDER_ACTIONS as actions
 } from '../../builder-store.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { ToasterService } from 'app/shared/toaster';
+import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-outcome-page',
@@ -18,6 +19,7 @@ import { ToasterService } from 'app/shared/toaster';
 export class OutcomePageComponent implements OnInit, OnDestroy {
   private _outcomes: Map<string, LearningOutcome> = new Map();
   destroyed$: Subject<void> = new Subject();
+  learningObject: LearningObject;
 
   // flags
   activeOutcome: string;
@@ -32,6 +34,14 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // listen for outcome events and update component stores
+    this.store.learningObjectEvent
+    .pipe(
+      filter(learningObject => learningObject !== undefined),
+      takeUntil(this.destroyed$)
+    ).subscribe((payload: LearningObject) => {
+      this.learningObject = payload;
+    });
     // subscribe to params from activated route
     this.route.paramMap.pipe(takeUntil(this.destroyed$)).subscribe(params => {
       this.setActiveOutcome(params.get('id'));
