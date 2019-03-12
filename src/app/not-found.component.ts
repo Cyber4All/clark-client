@@ -28,6 +28,6 @@ export class NotFoundComponent implements OnInit {
   }
 
   login() {
-    this.router.navigate(['auth']);
+    this.router.navigate(['auth'], { queryParams: { redirectUrl: this.redirectUrl } });
   }
 }

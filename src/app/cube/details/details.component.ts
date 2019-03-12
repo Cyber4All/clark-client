@@ -158,7 +158,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
               });
             }
           });
-
           this.router.navigate(['not-found'], { queryParams: { errorStatus: e.status, redirectUrl: redirectUrl} });
         }
       }
