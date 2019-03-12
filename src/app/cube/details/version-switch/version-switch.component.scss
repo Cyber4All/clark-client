@@ -1,0 +1,49 @@
+@import '~_vars.scss';
+
+$height: 25px;
+
+:host {
+  height: $height;
+}
+
+.switch {
+  width: calc(#{$height} * 2);
+  height: $height;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  display: inline-block;
+
+  // disable selection
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  .switch__background {
+    background: $wrapper-background;
+    border-radius: 50px;
+    width: inherit;
+    height: inherit;
+  }
+
+  .switch__fob {
+    border-radius: 50%;
+    width: $height;
+    height: $height;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: $wrapper-background;
+    transition: all 0.2s ease;
+  }
+
+  &.switch--on {
+
+    .switch__fob {
+      background: $wrapper-background;
+      transform: translateX($height);
+    }
+  }
+}
