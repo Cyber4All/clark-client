@@ -233,6 +233,24 @@ export class BuilderStore {
   }
 
   /**
+   * Retrieves the learning objects children
+   *
+   */
+  async getChildren() {
+    return await this.learningObjectService.getChildren(
+      this.learningObject.id
+    );
+    
+  }
+
+  /**
+   * Sets the learning objects children after they have been reorderd
+   */
+  async setChildren(children: string[]) {
+    await this.learningObjectService.setChildren(this.learningObject.name, this.learningObject.author.username, children);
+  }
+
+  /**
    * Creates and stores a new blank learning object
    *
    * @returns {LearningObject} new blank learning object

@@ -1,9 +1,41 @@
-<div class = "icon">
-<div class = "far fa-project-diagram icon"></div>
+
+<div class = "header">
+  <div class = "icon">
+    <div class = "far fa-project-diagram icon"></div>
+  </div>
+  <div class = "title">
+    Children
+  </div>
 </div>
-<div class = "text title">
-  This learning object isn't part of any scaffolds yet!
-</div>
-<div class = "text" id = "placeholder">
-  But don't worry! This feature will be added in the next release to enable a more seamless way to edit your learning objects.
-</div>
+<ng-template [ngIf]="children && children.length > 0">
+  <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let c of children" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
+      <div class = "info">
+        <div class = "top-row">
+          <div class = "child-title">{{c._name}}</div>
+        </div>
+        <div class = "bottom-row">
+          <div [ngClass]="c._length" class="child-length" >{{c._length | titlecase}}</div>
+          <div class = "child-last-updated">{{c._date |  date:'short'}}</div>
+        </div>
+      </div>
+      <div [ngStyle]="{display: editContent ? 'block' : 'none'}" class="hamburger-handle" cdkDragHandle>
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template [ngIf]="!children">
+    <div class="loading-template">
+      <i class="far fa-spinner-third fa-spin"></i>
+      Loading...
+    </div>
+  </ng-template>
+
+<ng-template [ngIf]="children.length == 0">
+  <div class= "no-children">
+    This learning object has no children  
+  </div>
+</ng-template>
+
+
