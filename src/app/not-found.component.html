@@ -1,12 +1,14 @@
 <div class="not-found-top">
-  <div class="container">
-      <img src="../assets/images/logo.png" class="not-found-logo" alt="CLARK logo">
-      <div class="row justify-content-center">
-          <div class="col-md-12 text-center">
-              <strong><h1 class="huge">404</h1></strong>
-              <div class="mb-4 lead">The page you are looking for was not found.</div>
-              <a routerLink='' class="btn btn-link">Back to Home</a>
-          </div>
-      </div>
-  </div>
+    <div class="container">
+        <img src="../assets/images/logo.png" class="not-found-logo" alt="CLARK logo">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <div *ngIf="statusCode">
+                    <strong><h1 class="huge">{{ statusCode }}</h1></strong>
+                    <div *ngIf="statusCode === 404" class="mb-4 lead">The page you are looking for was not found.</div>
+                    <a routerLink='' class="btn btn-link">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

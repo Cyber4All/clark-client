@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'clark-not-found',
@@ -8,8 +8,15 @@ import { Location } from '@angular/common';
 })
 export class NotFoundComponent implements OnInit {
 
-  constructor( private location: Location ) { }
+  statusCode: number;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(query => {
+      if (query) {
+        this.statusCode = query.errorStatus;
+      }
+    });
   }
 }
