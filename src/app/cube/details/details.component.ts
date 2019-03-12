@@ -146,18 +146,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
        */
 
       if (e instanceof HttpErrorResponse) {
-        if (e.status === 500) {
+        if (e.status === 500 || e.status === 401) {
           this.router.navigate(['not-found']);
-        }
-        // If user is not logged in, redirect to login then redirect back to object's page
-        if (e.status === 401) {
-          this.route.url.subscribe(urlSegments => {
-            let url = '';
-            urlSegments.forEach(segment => {
-              url = url + '/' + segment.path;
-            });
-            this.router.navigate(['auth'], { queryParams: { redirectUrl: url } });
-          });
         }
       }
       console.log(e);
