@@ -10,7 +10,10 @@
                         <div class="mb-4 lead">Currently, this learning object is unreleased. You are not authorized to view this page.</div>
                         <div *ngIf="!auth.user">
                             <div class="mb-4 lead">You are logged out. Please log back in.</div>
-                            <button (click)="login()">Login</button>
+                            <button class="auth-button" (click)="login()">
+                                <div class="mask"></div>
+                                <div class="text">Login</div>
+                            </button>
                         </div>
                     </ng-template>
                     <a routerLink='' class="btn btn-link">Back to Home</a>
