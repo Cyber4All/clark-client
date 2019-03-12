@@ -1,15 +1,28 @@
 @import '~_vars.scss';
 
-$height: 25px;
+$height: 20px;
 
 :host {
   height: $height;
 }
-
+.inner {
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
+    padding: 20px;
+    margin-bottom: 15px;
+}
+.text {
+    font-size: 16px;
+    color: $dark-text;
+    padding-right: 10px;
+    margin-left: 10px;
+    display: inline-block;
+}
 .switch {
   width: calc(#{$height} * 2);
   height: $height;
-  position: relative;
+  position: absolute;
   cursor: pointer;
   overflow: hidden;
   display: inline-block;
@@ -21,8 +34,10 @@ $height: 25px;
   user-select: none;
 
   .switch__background {
-    background: $wrapper-background;
+    background: $placeholder;
     border-radius: 50px;
+    border: 2px;
+    border-color: $blue-accent; 
     width: inherit;
     height: inherit;
   }
@@ -35,14 +50,14 @@ $height: 25px;
     top: 0;
     bottom: 0;
     left: 0;
-    background: $wrapper-background;
+    background: $blue-accent;
     transition: all 0.2s ease;
   }
 
   &.switch--on {
 
     .switch__fob {
-      background: $wrapper-background;
+      background: $dark-text;
       transform: translateX($height);
     }
   }
