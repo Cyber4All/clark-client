@@ -146,8 +146,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
        */
 
       if (e instanceof HttpErrorResponse) {
-        if (e.status === 500 || e.status === 401) {
+        if (e.status === 404) {
           this.router.navigate(['not-found'], { queryParams: { errorStatus: e.status } });
+        }
+        if (e.status === 401) {
+          let redirectUrl = '';
+          this.route.url.subscribe(segments => {
+            if (segments) {
+              segments.forEach(segment => {
+                redirectUrl = redirectUrl + '/' + segment.path;
+              });
+            }
+          });
+
+          this.router.navigate(['not-found'], { queryParams: { errorStatus: e.status, redirectUrl: redirectUrl} });
         }
       }
       console.log(e);

@@ -5,7 +5,14 @@
             <div class="col-md-12 text-center">
                 <div *ngIf="statusCode">
                     <strong><h1 class="huge">{{ statusCode }}</h1></strong>
-                    <div *ngIf="statusCode === 404" class="mb-4 lead">The page you are looking for was not found.</div>
+                    <div *ngIf="statusCode === 404; else unauthorized" class="mb-4 lead">The page you are looking for was not found.</div>
+                    <ng-template #unauthorized>
+                        <div class="mb-4 lead">Currently, this learning object is unreleased. You are not authorized to view this page.</div>
+                        <div *ngIf="!auth.user">
+                            <div class="mb-4 lead">You are logged out. Please log back in.</div>
+                            <button (click)="login()">Login</button>
+                        </div>
+                    </ng-template>
                     <a routerLink='' class="btn btn-link">Back to Home</a>
                 </div>
             </div>
