@@ -14,6 +14,7 @@ import { ParentListingComponent } from './included-in/parent-listing.component';
 import { DetailsSplashComponent } from './splash/details-splash.component';
 import { ActionPanelComponent } from './action-panel/action-panel.component';
 import { VersionSwitchComponent } from './version-switch/version-switch.component';
+import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { VersionSwitchComponent } from './version-switch/version-switch.componen
     ParentListingComponent,
     DetailsSplashComponent,
     ActionPanelComponent,
-    VersionSwitchComponent
+    VersionSwitchComponent,
+    ReviewerPanelComponent
   ],
   providers: []
 })
