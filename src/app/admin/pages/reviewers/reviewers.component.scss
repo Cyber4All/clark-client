@@ -1,4 +1,5 @@
 $blue-accent: #3b608b;
+$bright-blue: saturate(lighten($blue-accent, 20), 40);
 
 .users {
     max-width: 100%;
@@ -28,8 +29,7 @@ button {
 
   &.good {
     color: white;
-    background: $blue-accent;
-    border-color: $blue-accent;
-    margin-left: 850px;
+    background: $bright-blue;
+    border-color: $bright-blue;
   }
 }

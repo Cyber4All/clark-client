@@ -1,14 +1,16 @@
 <clark-admin-content-wrapper>
-    <div page-title>Reviewers
-      <div class="btn-group to-right">
-        <button class="button good add reviewers">Add Reviewer</button>
-      </div>
-    </div>
+    <div page-title>Reviewers</div>
     <clark-admin-search-bar search 
       [placeholder]="searchBarPlaceholder"
       (userInput)="getUsers($event)"
     ></clark-admin-search-bar>
-    <div filter-options>filter options yo</div>
+    <div filter-options>
+      <div class="btn-group to-right">
+        <button class="button good add reviewers"> Add Reviewer
+            <i class="far fa-user-plus"></i> 
+        </button>
+      </div>
+    </div>
   
     <div class="reviewers" main>
       <div *ngIf="!loading; else loadingTemplate">
