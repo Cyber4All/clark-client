@@ -6,9 +6,22 @@
     ></clark-admin-search-bar>
     <div filter-options>
       <div class="btn-group to-right">
-        <button class="button good add reviewers"> Add Reviewer
+        <button class="button good add reviewers" (click)="openSearchModal()"> Add Reviewer
             <i class="far fa-user-plus"></i> 
         </button>
+        <clark-popup *ngIf="displaySearchModal" (close)="displaySearchModal = undefined">
+            <div #popupInner class="popup-inner">
+              <div class="modal-text"><div class="user-dropdown">
+                  <input type="text" aria-label="user search" class="user-dropdown__search-input" placeholder="Search for reviewers" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
+                  <ul *ngIf="showDropdown" class="user-dropdown__list">
+                      <ng-container *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"></ng-container>
+                  </ul>
+                </div></div>
+              <div class="modal-text"><i class="far fa-users"></i>
+                <div>
+                </div>Your search results will appear here</div>
+            </div>
+        </clark-popup>
       </div>
     </div>
   

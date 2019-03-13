@@ -13,6 +13,9 @@ export class ReviewersComponent implements OnInit {
   reviewers: User[];
   collection: Collection[];
   loading = false;
+  displaySearchModal = false;
+  modalOpenSuccess = false;
+  modalOpenFailure = false;
 
   constructor(private user: UserService, private router: Router) { }
 
@@ -26,6 +29,18 @@ export class ReviewersComponent implements OnInit {
         this.reviewers = val;
         this.loading = false;
       });
+  }
+
+  openSearchModal() {
+    this.displaySearchModal = true;
+  }
+
+  open(search: boolean) {
+    if (search) {
+      this.modalOpenSuccess = true;
+    } else {
+      this.modalOpenFailure = true;
+    }
   }
 
   // check to see if this user is already a reviewer and either add or remove them
