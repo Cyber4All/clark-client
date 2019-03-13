@@ -43,6 +43,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showAddRating = false;
   showAddResponse = false;
   isOwnObject = false;
+  reviewer = true;
+  released = false;
 
   userRating: {
     user?: User;
@@ -95,6 +97,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+
+  viewReleased(released: boolean) {
+    this.released = released;
   }
 
   async fetchLearningObject(author: string, name: string) {
