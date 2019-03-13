@@ -5,6 +5,7 @@ import { AdminGuard } from 'app/core/admin.guard';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
 import { UsersComponent } from './pages/users/users.component';
+import { ReviewersComponent } from './pages/reviewers/reviewers.component';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -28,7 +29,7 @@ const admin_routes: Routes = [
     path: ':collection', component: AdminComponent, children: [
       { path: 'analytics', component: AnalyticsComponent },
       { path: 'learning-objects', component: LearningObjectsComponent },
-      { path: 'reviewers', component: UsersComponent },
+      { path: 'reviewers', component: ReviewersComponent },
     ],
   },
 ];

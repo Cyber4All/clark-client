@@ -1,0 +1,34 @@
+<clark-admin-content-wrapper>
+    <div page-title>Reviewers
+      <div class="btn-group to-right">
+        <button class="button good add reviewers">Add Reviewer</button>
+      </div>
+    </div>
+    <clark-admin-search-bar search 
+      [placeholder]="searchBarPlaceholder"
+      (userInput)="getUsers($event)"
+    ></clark-admin-search-bar>
+    <div filter-options>filter options yo</div>
+  
+    <div class="reviewers" main>
+      <div *ngIf="!loading; else loadingTemplate">
+        <cdk-virtual-scroll-viewport style="height: 700px" itemSize="40" >
+          <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
+            <div *cdkVirtualFor="let u of users; let i = index" >
+              <clark-admin-user-card class="user-cards__card"
+                [user]="u"
+                (navigateToUserObjects)="navigateToUserObjects($event)"
+              ></clark-admin-user-card>
+            </div>
+          </div>
+        </cdk-virtual-scroll-viewport>    
+      </div>
+    </div>
+  
+    <ng-template #loadingTemplate>
+      <div class="loading-template">
+        <i class="far fa-spinner-third fa-spin"></i>
+        Loading Reviewers...
+      </div>
+    </ng-template>
+  </clark-admin-content-wrapper>
