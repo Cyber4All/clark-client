@@ -240,7 +240,7 @@ export class BuilderStore {
     return await this.learningObjectService.getChildren(
       this.learningObject.id
     );
-    
+
   }
 
   /**
