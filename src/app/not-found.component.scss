@@ -28,7 +28,7 @@
   position: relative;
   font-size: 16px;
   outline: 0;
-  border-width: 0px;
+  border: none;
   -webkit-appearance: none;
   -moz-appearance: none;
 
@@ -41,7 +41,6 @@
       background: white;
       z-index: 1;
       transition: all 0.2s ease;
-      border-radius: 0;
       opacity: 0;
       border-radius: 1px;
   }
