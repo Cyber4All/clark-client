@@ -25,6 +25,14 @@ export class ChangeStatusModalComponent {
     this.closed.next();
   }
 
+  advance() {
+    alert('advancing');
+  }
+
+  regress() {
+    alert('regressing');
+  }
+
   getStatusText(status: string) {
     switch (status) {
       case 'released':
