@@ -1,0 +1,12 @@
+<div class="changelog">
+  <clark-text-editor editPlaceholder="Some changelog placeholder" [(savedContent)]="changelog" (textOutput)="changelogChange.emit($event)" name="changelog"></clark-text-editor>
+  <div class="button-bar">
+    <div class="btn-group to-left">
+      <button (click)="back.emit()" class="button neutral">Back</button>
+    </div>
+    <div class="btn-group to-right">
+      <button (click)="confirm.emit()" class="button good">{{ changelog && changelog !== '' ? 'Confirm' : 'No changes' }}</button>
+      <button (click)="cancel.emit()" class="button neutral">Cancel</button>
+    </div>
+  </div>
+</div>

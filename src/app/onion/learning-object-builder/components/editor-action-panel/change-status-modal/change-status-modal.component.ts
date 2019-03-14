@@ -12,6 +12,7 @@ export class ChangeStatusModalComponent {
   @Input() learningObject: LearningObject;
   @Output() closed = new EventEmitter();
   selectedStatus: string;
+  changelog: string;
   statuses = [
     'released',
     'proofing',
@@ -21,16 +22,18 @@ export class ChangeStatusModalComponent {
 
   constructor(private builderStore: BuilderStore) { }
 
+  page: 1 | 2 = 1;
+
   closeModal() {
     this.closed.next();
   }
 
   advance() {
-    alert('advancing');
+    this.page = 2;
   }
 
   regress() {
-    alert('regressing');
+    this.page = 1;
   }
 
   getStatusText(status: string) {

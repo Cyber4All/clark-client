@@ -1,9 +1,15 @@
 @import '~_vars.scss';
 
+.popup-inner {
+  min-width: 600px;
+  min-height: 350px;
+}
+
 .status-options-wrapper {
   margin-top: 25px;
-  min-width: 30vw;
+  min-width: 400px;
 }
+
 .status-item {
   display: flex;
   flex-flow: row nowrap;
@@ -11,12 +17,15 @@
   box-shadow: 0 0 5px lighten($placeholder, 10);
   padding: 8px 24px;
   cursor: pointer;
+
   &.unfocused {
     opacity: .3;
   }
+
   &:hover {
     box-shadow: 0 0 5px lighten($bright-blue, 10);
   }
+
   .status-item__text {
     display: flex;
     flex-direction: column;
@@ -31,7 +40,7 @@
   .button {
     padding: 8px 25px;
   }
-  
+
   .good {
     background: $bright-blue;
     border-color: $bright-blue;

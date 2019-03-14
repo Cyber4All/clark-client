@@ -1,16 +1,25 @@
 <clark-popup *ngIf="shouldShow" (closed)="closeModal()">
-  <div #popupInner>
-    <p>What would you like to do?</p>
-    <div class="status-options-wrapper">
-      <div *ngFor="let status of statuses" class="status-item" [ngClass]="{ 'unfocused': selectedStatus && selectedStatus !== status }" (click)="selectedStatus = status">
-        <clark-lo-status-indicator [status]="status"></clark-lo-status-indicator>
-        <span class="status-item__text">{{ getStatusText(status) }}</span>
-      </div>
-    </div>
-    <div class="btn-group center">
-      <button *ngIf="selectedStatus && selectedStatus === 'released'" class="button good" (click)="advance()">Next</button>
-      <button *ngIf="selectedStatus && selectedStatus !== 'released'" class="button good" (click)="updateStatus()">Confirm</button>
-      <button class="button neutral" (click)="closeModal()">Cancel</button>
-    </div>
+  <div class="popup-inner" #popupInner>
+    <ng-container *ngTemplateOutlet="page === 1 ? changeStatus : updateChangelog"></ng-container>
   </div>
 </clark-popup>
+
+<ng-template #changeStatus>
+  <p>What would you like to do?</p>
+  <div class="status-options-wrapper">
+    <div *ngFor="let status of statuses" class="status-item" [ngClass]="{ 'unfocused': selectedStatus && selectedStatus !== status }" (click)="selectedStatus = status">
+      <clark-lo-status-indicator [status]="status"></clark-lo-status-indicator>
+      <span class="status-item__text">{{ getStatusText(status) }}</span>
+    </div>
+  </div>
+  <div class="btn-group to-right">
+    <button *ngIf="selectedStatus && selectedStatus === 'released'" class="button good" (click)="advance()">Next</button>
+    <button *ngIf="selectedStatus && selectedStatus !== 'released'" class="button good" (click)="updateStatus()">Confirm</button>
+    <button class="button neutral" (click)="closeModal()">Cancel</button>
+  </div>
+</ng-template>
+
+<ng-template #updateChangelog>
+  <p>What changes were made?</p>
+  <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal()" (confirm)="updateStatus()"></clark-edit-changelog>
+</ng-template>
