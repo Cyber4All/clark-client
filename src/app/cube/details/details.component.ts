@@ -75,9 +75,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
+      const learningObjectName = decodeURIComponent(params['learningObjectName']);
       this.fetchLearningObject(
         params['username'],
-        params['learningObjectName']
+        learningObjectName,
       );
     });
 
