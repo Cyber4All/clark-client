@@ -149,7 +149,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       if (e instanceof HttpErrorResponse) {
         if (e.status === 404) {
-          this.router.navigate(['not-found'], { queryParams: { errorStatus: e.status } });
+          this.router.navigate(['not-found']);
         }
         if (e.status === 401) {
           let redirectUrl = '';
@@ -160,7 +160,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
               });
             }
           });
-          this.router.navigate(['not-found'], { queryParams: { errorStatus: e.status, redirectUrl: redirectUrl} });
+          this.router.navigate(['details/error-status'], { queryParams: { errorStatus: e.status, redirectUrl: redirectUrl} });
         }
       }
       console.log(e);
