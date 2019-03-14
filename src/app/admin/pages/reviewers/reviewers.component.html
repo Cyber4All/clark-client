@@ -1,5 +1,7 @@
 <clark-admin-content-wrapper>
-    <div page-title>Reviewers</div>
+    <div page-title>
+      <span class="cname">Reviewers</span>
+    </div>
     <clark-admin-search-bar search 
       [placeholder]="searchBarPlaceholder"
       (userInput)="getUsers($event)"
@@ -9,7 +11,7 @@
         <button class="button good add reviewers" (click)="openSearchModal()"> Add Reviewer
             <i class="far fa-user-plus"></i> 
         </button>
-        <clark-popup *ngIf="displaySearchModal" (close)="displaySearchModal = undefined">
+        <clark-popup *ngIf="displaySearchModal" (close)="closeSearchModal = undefined">
             <div #popupInner class="popup-inner">
               <div class="modal-text"><div class="user-dropdown">
                   <input type="text" aria-label="user search" class="user-dropdown__search-input" placeholder="Search for reviewers" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
@@ -17,6 +19,20 @@
                       <ng-container *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"></ng-container>
                   </ul>
                 </div></div>
+                <ng-template #resultsTemplate>
+                    <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">
+                      <virtual-scroller #searchResultsScroller [items]="searchResults">
+                        <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (click)="toggleAuthor(user)">
+                          <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': selectedAuthors.includes(user.username)}">
+                            <span *ngIf="!selectedAuthors.includes(user.username)"><i class="fas fa-plus"></i></span>
+                            <span *ngIf="selectedAuthors.includes(user.username)"><i class="fas fa-times"></i></span>
+                          </span>
+                          <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
+                          {{ reviewer.username }} - {{ reviewer.name | titlecase }} from {{ reviewer.organization | titlecase }}
+                        </li>
+                      </virtual-scroller>
+                    </ng-container>
+                  </ng-template>
               <div class="modal-text"><i class="far fa-users"></i>
                 <div>
                 </div>Your search results will appear here</div>
