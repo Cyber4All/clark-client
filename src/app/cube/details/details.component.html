@@ -37,7 +37,7 @@
           (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
       </div>
     </div>
-    <div class="sidebar">
+    <div class="sidebar" [ngStyle] = "{'margin-top': this.reviewer === true ? '-190px' : '-100px'}">
       <clark-version-switch *ngIf="reviewer === true" (toggled)="viewReleased($event)"></clark-version-switch>
       <clark-reviewer-panel *ngIf="reviewer === true && released === true"></clark-reviewer-panel>
       <cube-details-action-panel *ngIf="released === false" [learningObject]="learningObject"></cube-details-action-panel>
