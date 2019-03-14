@@ -1,0 +1,65 @@
+@import "../vars";
+@import "../globals.scss";
+
+.huge {
+  font-size: 60px;
+}
+
+.not-found-logo {
+  width: 180px;
+  display: block;
+  margin: 0 auto;
+}
+.not-found.top {
+  padding-top: 500px;
+}
+
+.auth-button {
+  background: linear-gradient(45deg,darken($blue-accent, 15), lighten($blue-accent, 15));
+  border-radius: 2px;
+  color: white;
+  padding: 15px;
+  width: 400px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  cursor: pointer !important;
+  position: relative;
+  font-size: 16px;
+  outline: 0;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  .mask {
+      width: calc(100% - 6px);
+      height: calc(100% - 6px);
+      top: 0; left: 0; right: 0; bottom: 0;
+      position: absolute;
+      margin: auto;
+      background: white;
+      z-index: 1;
+      transition: all 0.2s ease;
+      opacity: 0;
+      border-radius: 1px;
+  }
+
+  .text {
+      color: white;
+      z-index: 2;
+      position: relative;
+      transition: all 0.2s ease;
+  }
+
+  &:hover {
+
+      .mask {
+          opacity: 1;
+      }
+
+      .text {
+          color: $blue-accent;
+      }
+  }
+}
