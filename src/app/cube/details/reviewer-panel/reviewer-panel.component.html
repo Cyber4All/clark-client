@@ -1,5 +1,11 @@
 <div class="inner">
   <div class="btn-group vertical">
     <button class="button good"> Download Revisions</button>
+    <div class="last-revised">
+        Last Revised {{learningObject.date | date: 'shortDate'}}
+      </div>
+      <div class="last-released">
+        Last Released {{learningObject.date | date: 'shortDate'}}
+      </div>
   </div>
 </div>
