@@ -6,5 +6,18 @@
     padding: 20px;
     margin-bottom: 20px;
     height: 100px;
-    width: inherit;
+    color: $dark-text;
+
+    .button {
+        overflow: hidden;
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 10px;
+        border: none; 
+        position: relative;
+
+        &.good {
+            background: linear-gradient(45deg, #fea200, #ffd000)!important;
+        }
+    }
 }
