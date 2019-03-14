@@ -2,7 +2,16 @@
 
 .popup-inner {
   min-width: 600px;
-  min-height: 350px;
+  min-height: 400px;
+  position: relative;
+
+  & > * {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
 }
 
 .status-options-wrapper {
