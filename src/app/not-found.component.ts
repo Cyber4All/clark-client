@@ -10,24 +10,8 @@ import { NavbarService } from './core/navbar.service';
 })
 export class NotFoundComponent implements OnInit {
 
-  statusCode: number;
-  redirectUrl: string;
-
-  constructor(private route: ActivatedRoute, private router: Router, private auth: AuthService, private nav: NavbarService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.nav.show();
-    this.route.queryParams.subscribe(query => {
-      if (query) {
-        this.statusCode = query.errorStatus;
-        if (query.redirectUrl) {
-          this.redirectUrl = query.redirectUrl;
-        }
-      }
-    });
-  }
-
-  login() {
-    this.router.navigate(['auth'], { queryParams: { redirectUrl: this.redirectUrl } });
   }
 }
