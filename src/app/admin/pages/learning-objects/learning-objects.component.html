@@ -4,7 +4,10 @@
     [placeholder]="searchBarPlaceholder"
     (userInput)="getLearningObjects($event)"
   ></clark-admin-search-bar>
-  <div filter-options>filter options yo</div>
+  <clark-admin-filter-search filter-options
+    (statusFilter)="getStatusFilteredLearningObjects($event,true)"
+    (collectionFilter)="getCollectionFilteredLearningObjects($event,false)"
+  ></clark-admin-filter-search>
 
   <div class="list" main>
     <div #listInner>

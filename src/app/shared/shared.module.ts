@@ -60,7 +60,6 @@ import { NewRatingResponseComponent } from './new-rating-response/new-rating-res
     ClarkContextMenuModule.forRoot(),
     TeleporterModule
   ],
-  providers: [],
   declarations: [
     NavbarComponent,
     MessageComponent,
