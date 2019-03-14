@@ -4,6 +4,7 @@
   min-width: 600px;
   min-height: 400px;
   position: relative;
+  margin-top: 5px;
 
   & > * {
     position: absolute;
@@ -12,6 +13,12 @@
     right: 20px;
     bottom: 20px;
   }
+}
+
+.title {
+  font-size: 18px;
+  color: $dark-text;
+  margin-bottom: 15px;
 }
 
 .status-options-wrapper {
