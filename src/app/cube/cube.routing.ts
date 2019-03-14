@@ -14,6 +14,7 @@ import { CubeComponent } from './cube.component';
 import { CollectionComponent } from './collections/collection.component';
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
+import { ErrorStatusComponent } from './details/error-status/error-status.component';
 
 // Declared as a separate constant to be included as a child for breadcrumbs
 const detailRoute = {
@@ -65,6 +66,7 @@ const cube_routes: Routes = [
         data: { breadcrumb: 'Preferences' },
         canActivate: [AuthGuard]
       },
+      { path: 'details/error-status', component: ErrorStatusComponent },
       // Catch All
       {
         path: '**',
