@@ -43,7 +43,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showAddRating = false;
   showAddResponse = false;
   isOwnObject = false;
-  reviewer = true;
+  reviewer: Boolean;
   released = false;
 
   userRating: {
@@ -96,6 +96,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.isOwnObject = false;
       }
     });
+    //delete after dev is done. Just need it to access the UI
+    this.reviewer = true;
+    //this.reviewer = this.auth.hasReviewerAccess();
 
   }
 
