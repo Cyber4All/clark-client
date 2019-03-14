@@ -26,6 +26,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() owned? = false;
 
   collections = new Map<string, string>();
+  collection = '';
 
   canDownload = false;
   showDownloadModal = false;
@@ -66,6 +67,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
       this.collections = new Map(
         collections.map(c => [c.abvName, c.name] as [string, string])
       );
+      this.onResize(event);
     });
   }
 
@@ -195,6 +197,14 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     } else if (!localStorage.getItem('downloadWarning')) {
       this.showDownloadModal = val;
       localStorage.setItem('downloadWarning', 'true');
+    }
+  }
+
+  onResize(event) {
+    if (window.screen.width <= 750) {
+      this.collection = this.collection.substring(0, 13) + '...';
+    } else {
+      this.collection = this.collections.get(this.learningObject.collection);
     }
   }
 }
