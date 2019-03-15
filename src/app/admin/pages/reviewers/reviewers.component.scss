@@ -63,6 +63,12 @@ button {
   margin: 10px;
 }
 
+.container__prompt__loading {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
 .prompt__icon {
   color: $bright-blue;
   font-size: 40px;
@@ -88,6 +94,7 @@ button {
 }
 
 .search__input {
+  width: 90%;
   border: none;
   outline: none;
   padding: 5px;
