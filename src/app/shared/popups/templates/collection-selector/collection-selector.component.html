@@ -11,7 +11,7 @@
   </div>
   <div class="license-selection">
     <input type="checkbox" name="license-agreement" aria-label="license agreement checkbox" [(ngModel)]="licenseAccepted"/>
-    <span class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by/3.0/us/legalcode" target="_blank">Creative Commons 3.0 license</a></span>
+    <span class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">Creative Commons 4.0 license</a></span>
   </div>
   <div class="submit-btn btn-group center">
     <button class="button good" [ngClass]="{'disabled': !licenseAccepted || currentCollection == ''}" [disabled]="!licenseAccepted || currentCollection == ''" (click)="submit()">Submit for Review <i class="far fa-arrow-right"></i></button>
