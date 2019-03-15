@@ -42,7 +42,7 @@ import { OnionComponent } from './onion.component';
     VirtualScrollerModule
   ],
   exports: [
-
+    VirtualScrollerModule,
   ]
 })
 export class OnionModule { }

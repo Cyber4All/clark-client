@@ -7,14 +7,18 @@ import { LearningObjectsComponent } from './pages/learning-objects/learning-obje
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { UsersComponent } from './pages/users/users.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
+import { FilterSearchComponent } from 'app/admin/components/filter-search/filter-search.component';
+import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'app/shared/tooltips/tip.module';
+import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
+import { DashboardComponent } from 'app/onion/dashboard/dashboard.component';
+import { ModalModule } from 'app/shared/modals';
+import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { ReviewersComponent } from './pages/reviewers/reviewers.component';
-import { FormsModule } from '@angular/forms';
-
-
 
 @NgModule({
   declarations: [
@@ -24,11 +28,20 @@ import { FormsModule } from '@angular/forms';
     AnalyticsComponent,
     UsersComponent,
     ReviewersComponent,
-    ContentWrapperComponent,
     SearchBarComponent,
+    ContentWrapperComponent,
+    FilterSearchComponent,
+    DashboardComponent,
     AdminUserCardComponent,
   ],
   imports: [
+    CommonModule,
+    AdminRoutingModule,
+    FormsModule,
+    TooltipModule,
+    ContextMenuModule,
+    ModalModule,
+    PopupModule,
     CommonModule,
     AdminRoutingModule,
     SharedModule,
