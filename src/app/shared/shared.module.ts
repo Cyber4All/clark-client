@@ -39,6 +39,7 @@ import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
 import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
+import { UserSearchComponent } from './user-search/user-search.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -85,6 +86,7 @@ import { NewRatingResponseComponent } from './new-rating-response/new-rating-res
     DashboardItemComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
+    UserSearchComponent,
   ],
   exports: [
     NavbarComponent,

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, IterableDiffers, IterableDiffer, DoCheck  } from '@angular/core';
-import { User, Collection } from '@cyber4all/clark-entity';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, IterableDiffers, IterableDiffer } from '@angular/core';
+import { User } from '@cyber4all/clark-entity';
 import { UserService } from 'app/core/user.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
@@ -11,7 +11,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
   templateUrl: './reviewers.component.html',
   styleUrls: ['./reviewers.component.scss']
 })
-export class ReviewersComponent implements OnInit {
+export class ReviewersComponent implements OnInit, OnDestroy {
   searchBarPlaceholder = 'Reviewers';
   reviewers: User[];
   activeCollection: string;
@@ -182,7 +182,7 @@ export class ReviewersComponent implements OnInit {
     this.router.navigate(['admin/learning-objects'], { queryParams: { username } });
   }
 
-  OnDestroy() {
+  ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
   }
