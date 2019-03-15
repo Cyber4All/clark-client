@@ -43,6 +43,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showAddRating = false;
   showAddResponse = false;
   isOwnObject = false;
+  errorStatus: number;
+  redirectUrl: string;
 
   userRating: {
     user?: User;
@@ -160,6 +162,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
               });
             }
           });
+          this.errorStatus = e.status;
+          this.redirectUrl = redirectUrl;
         }
       }
       console.log(e);
