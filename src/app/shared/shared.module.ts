@@ -40,6 +40,7 @@ import { TeleporterModule } from './teleporter/teleporter.module';
 import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { UserSearchComponent } from './user-search/user-search.component';
+import { AdminUserCardComponent } from 'app/admin/components/user-card/user-card.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -59,7 +60,7 @@ import { UserSearchComponent } from './user-search/user-search.component';
     TooltipModule,
     PopupModule,
     ClarkContextMenuModule.forRoot(),
-    TeleporterModule
+    TeleporterModule,
   ],
   declarations: [
     NavbarComponent,
@@ -87,8 +88,10 @@ import { UserSearchComponent } from './user-search/user-search.component';
     EmailBannerComponent,
     NewRatingResponseComponent,
     UserSearchComponent,
+    AdminUserCardComponent,
   ],
   exports: [
+    AdminUserCardComponent,
     NavbarComponent,
     FileBrowserComponent,
     FileListViewComponent,
@@ -113,7 +116,7 @@ import { UserSearchComponent } from './user-search/user-search.component';
     EmailBannerComponent,
     DashboardItemComponent,
     TeleporterModule,
-    NewRatingResponseComponent,
+    NewRatingResponseComponent
   ]
 })
 export class SharedModule {}
