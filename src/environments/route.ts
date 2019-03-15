@@ -76,8 +76,10 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
   },
-  POST_FILE_TO_LEARNING_OBJECT(id: string) {
-    return `${environment.contentManagerURL}/learning-objects/${id}/files`;
+  POST_FILE_TO_LEARNING_OBJECT(id: string, username: string) {
+    return `${environment.contentManagerURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${id}/files`;
   },
   DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, id) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -99,9 +101,7 @@ export const USER_ROUTES = {
   DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/learning-outcomes/${encodeURIComponent(
-      outcomeId
-    )}`;
+    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
   GET_CART(username) {
     // CUBE
@@ -228,45 +228,25 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 };
 
 export const RATING_ROUTES = {
-  DELETE_RATING(params: {
-    learningObjectId: string;
-    ratingId: string;
-  }) {
+  DELETE_RATING(params: { learningObjectId: string; ratingId: string }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}`;
+    )}/ratings/${encodeURIComponent(params.ratingId)}`;
   },
-  EDIT_RATING(params: {
-    learningObjectId: string;
-    ratingId: string;
-  }) {
+  EDIT_RATING(params: { learningObjectId: string; ratingId: string }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}`;
+    )}/ratings/${encodeURIComponent(params.ratingId)}`;
   },
-  CREATE_RESPONSE(params: {
-    learningObjectId: string;
-    ratingId: string;
-  }) {
+  CREATE_RESPONSE(params: { learningObjectId: string; ratingId: string }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/responses`;
+    )}/ratings/${encodeURIComponent(params.ratingId)}/responses`;
   },
-  GET_RESPONSE(params: {
-    learningObjectId: string;
-    ratingId: string;
-  }) {
+  GET_RESPONSE(params: { learningObjectId: string; ratingId: string }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/responses`;
+    )}/ratings/${encodeURIComponent(params.ratingId)}/responses`;
   },
   UPDATE_RESPONSE(params: {
     learningObjectId: string;
@@ -277,8 +257,7 @@ export const RATING_ROUTES = {
       params.learningObjectId
     )}/ratings/${encodeURIComponent(
       params.ratingId
-    )}/responses/${encodeURIComponent(
-      params.responseId)}`;
+    )}/responses/${encodeURIComponent(params.responseId)}`;
   },
   DELETE_RESPONSE(params: {
     learningObjectId: string;
@@ -289,38 +268,31 @@ export const RATING_ROUTES = {
       params.learningObjectId
     )}/ratings/${encodeURIComponent(
       params.ratingId
-    )}/responses/${encodeURIComponent(
-      params.responseId)}`;
+    )}/responses/${encodeURIComponent(params.responseId)}`;
   },
-  CREATE_RATING(params: {
-    learningObjectId: string;
-  }) {
+  CREATE_RATING(params: { learningObjectId: string }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId
     )}/ratings`;
   },
-  GET_LEARNING_OBJECT_RATINGS(params: {
-    learningObjectId: string;
-  }) {
+  GET_LEARNING_OBJECT_RATINGS(params: { learningObjectId: string }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId
     )}/ratings`;
   },
   FLAG_LEARNING_OBJECT_RATING(params: {
-    learningObjectId: string,
-    ratingId: string
+    learningObjectId: string;
+    ratingId: string;
   }) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/flags`;
+    )}/ratings/${encodeURIComponent(params.ratingId)}/flags`;
   },
   GET_USER_RATINGS(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/ratings`;
-  },
+  }
 };
 export const MISC_ROUTES = {
   CHECK_STATUS: `${environment.apiURL}/status`
