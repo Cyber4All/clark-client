@@ -79,6 +79,8 @@ button {
   border-radius: 5px;
   padding: 5px;
   font-size: 17px;
+  margin-right: 8px;
+  margin-left: 8px;
 }
 
 .user-dropdown__search:focus-within {
@@ -88,6 +90,7 @@ button {
 .search__input {
   border: none;
   outline: none;
+  padding: 5px;
 }
 
 .search__input::placeholder {
@@ -96,12 +99,12 @@ button {
 
 .search__icon {
   color: $placeholder;
-  margin-right: 10px;
+  margin-left: 17px;
 }
 
 .user-dropdown__list {
   list-style: none;
-  padding: 0;
+  padding: 0px;
   margin: 0;
   max-width: 500px;
   width: 100%;
@@ -121,6 +124,7 @@ button {
   flex-direction: row;
   align-items: center;
   cursor: pointer;
+  padding: 25px;
   padding-left: 10px;
   transition: background 0.2s ease;
 
@@ -164,8 +168,8 @@ button {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
 }
