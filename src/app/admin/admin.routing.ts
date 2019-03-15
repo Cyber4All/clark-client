@@ -29,7 +29,7 @@ const admin_routes: Routes = [
     path: ':collection', component: AdminComponent, children: [
       { path: 'analytics', component: AnalyticsComponent },
       { path: 'learning-objects', component: LearningObjectsComponent },
-      { path: 'reviewers', component: ReviewersComponent },
+      { path: 'reviewers/:collection', component: ReviewersComponent },
     ],
   },
 ];

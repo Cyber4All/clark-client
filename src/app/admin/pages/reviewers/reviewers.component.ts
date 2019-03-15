@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, IterableDiffers, IterableDiffer, DoCheck  } from '@angular/core';
 import { User, Collection } from '@cyber4all/clark-entity';
 import { UserService } from 'app/core/user.service';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 export class ReviewersComponent implements OnInit {
   searchBarPlaceholder = 'Reviewers';
   reviewers: User[];
-  activeCollection: Collection;
+  activeCollection: string;
   displaySearchModal = false;
   modalOpenSuccess = false;
   modalOpenFailure = false;
@@ -45,7 +45,13 @@ export class ReviewersComponent implements OnInit {
   // fired when an author is removed as a contributor
   @Output() removeReviewer: EventEmitter<User> = new EventEmitter();
 
-  constructor(private user: UserService, private router: Router, private authService: AuthService, private differs: IterableDiffers) {
+  constructor(
+    private user: UserService,
+    private router: Router,
+    private authService: AuthService,
+    private differs: IterableDiffers,
+    private route: ActivatedRoute,
+  ) {
       // init contributors iterable differ
       this.differ = this.differs.find([]).create(null);
    }
@@ -74,6 +80,11 @@ export class ReviewersComponent implements OnInit {
         this.loading = false;
       }
     });
+
+    this.route.params.subscribe(params => {
+      this.activeCollection = params['collection'];
+      this.fetchReviewers();
+   });
   }
 
   DoCheck() {
@@ -85,6 +96,12 @@ export class ReviewersComponent implements OnInit {
         this.selectedReviewers.push(x.item.username);
       });
     }
+  }
+
+  async fetchReviewers() {
+    console.log('HERE');
+    this.reviewers = await this.user.fetchReviewers(this.activeCollection);
+    console.log('EH', this.reviewers);
   }
 
   /**

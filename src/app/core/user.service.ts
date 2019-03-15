@@ -54,6 +54,25 @@ export class UserService {
       : Promise.resolve(false);
   }
 
+  fetchReviewers(collection: string): Promise<User[]> {
+    return this.http
+      .get(
+        USER_ROUTES.FETCH_REVIEWERS(collection),
+        {
+          withCredentials: true
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((val: any) => {
+        const arr = val;
+        return arr.map(member => new  User(member));
+      });
+  }
+
   /**
    * Performs a text search and returns a list of matching users
    *

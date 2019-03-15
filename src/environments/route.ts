@@ -10,6 +10,11 @@ export const USER_ROUTES = {
       username
     )}/profile`;
   },
+  FETCH_REVIEWERS(collection: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      collection
+    )}/reviewers`;
+  },
   LOAD_USER_PROFILE(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username

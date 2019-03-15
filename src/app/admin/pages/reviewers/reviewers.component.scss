@@ -1,6 +1,10 @@
 @import '~_vars.scss';
 $light-blue-gradient: linear-gradient(45deg, saturate(darken($bright-blue, 10), 10), saturate(lighten($bright-blue, 10), 10));
 
+.cname {
+  color: $bright-blue;
+}
+
 .users {
     max-width: 100%;
     position: relative;

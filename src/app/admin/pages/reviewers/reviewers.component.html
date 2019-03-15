@@ -1,11 +1,7 @@
 <clark-admin-content-wrapper>
     <div page-title>
-      <span class="cname">Reviewers</span>
+      <span class="cname">{{activeCollection | titlecase}} </span> Reviewers
     </div>
-    <clark-admin-search-bar search 
-      [placeholder]="searchBarPlaceholder"
-      (userInput)="getUsers($event)"
-    ></clark-admin-search-bar>
     <div filter-options>
       <div class="btn-group to-right">
         <button class="button good add reviewers" (click)="openSearchModal()"> Add Reviewer
@@ -43,11 +39,11 @@
   
     <div class="reviewers" main>
       <div *ngIf="!loading; else loadingTemplate">
-        <cdk-virtual-scroll-viewport style="height: 700px" itemSize="40" >
-          <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
-            <div *cdkVirtualFor="let u of users; let i = index" >
+        <cdk-virtual-scroll-viewport style="height: 800px" itemSize="40" >
+          <div *ngIf="reviewers?.length; else emptyTemplate" class="user-cards">
+            <div *cdkVirtualFor="let r of reviewers; let i = index" >
               <clark-admin-user-card class="user-cards__card"
-                [user]="u"
+                [user]="r"
                 (navigateToUserObjects)="navigateToUserObjects($event)"
               ></clark-admin-user-card>
             </div>
