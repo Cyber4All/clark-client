@@ -31,7 +31,7 @@ export class ReviewersComponent implements OnInit {
   // true if dropdown results should be shown, false if they should be hidden
   showDropdown: boolean;
   // true if the component is actively querying the services, false otherwise
-  loading: boolean;
+  loading = false;
 
   // fires every time an input event occurs on the search input element
   userSearchInput$: Subject<string> = new Subject();
@@ -100,9 +100,9 @@ export class ReviewersComponent implements OnInit {
   }
 
   async fetchReviewers() {
-    console.log('HERE');
+    this.loading = true;
     this.reviewers = await this.user.fetchReviewers(this.activeCollection);
-    console.log('EH', this.reviewers);
+    this.loading = false;
   }
 
   /**

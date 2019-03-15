@@ -50,9 +50,9 @@
   
     <div class="reviewers" main>
       <div *ngIf="!loading; else loadingTemplate">
-        <cdk-virtual-scroll-viewport style="height: 800px" itemSize="40" >
-          <div *ngIf="reviewers?.length; else emptyTemplate" class="user-cards">
-            <div *cdkVirtualFor="let r of reviewers; let i = index" >
+        <virtual-scroller #scroll [style.height]="'800px'" [items]="reviewers" > 
+          <div *ngIf="reviewers?.length; else emptyTemplate" class="user-cards" #container>
+            <div *ngFor="let r of scroll.viewPortItems">
               <clark-admin-user-card class="user-cards__card"
                 [user]="r"
                 (navigateToUserObjects)="navigateToUserObjects($event)"
@@ -60,7 +60,7 @@
               ></clark-admin-user-card>
             </div>
           </div>
-        </cdk-virtual-scroll-viewport>    
+        </virtual-scroller>    
       </div>
     </div>
   
