@@ -18,6 +18,7 @@ export class ReviewersComponent implements OnInit {
   displaySearchModal = false;
   modalOpenSuccess = false;
   modalOpenFailure = false;
+  isSearching = false;
 
   // array of usernames representing all selected users
   selectedReviewers: string[] = [];
@@ -120,6 +121,7 @@ export class ReviewersComponent implements OnInit {
         }
 
         this.searchResults = results;
+        console.log(this.searchResults[0].username);
         this.loading = false;
       });
     }
