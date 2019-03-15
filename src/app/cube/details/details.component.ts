@@ -160,7 +160,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
               });
             }
           });
-          this.router.navigate(['details/error-status'], { queryParams: { errorStatus: e.status, redirectUrl: redirectUrl} });
         }
       }
       console.log(e);
