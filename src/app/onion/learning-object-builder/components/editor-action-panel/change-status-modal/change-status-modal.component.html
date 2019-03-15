@@ -23,7 +23,7 @@
 
 <ng-template #updateChangelog>
   <div [@carousel]="direction">
-      <p class="title">What changes were made?</p>
-      <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal()" (confirm)="updateStatus()"></clark-edit-changelog>
+    <p class="title">What changes were made?</p>
+    <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal()" (confirm)="updateStatus()"></clark-edit-changelog>
   </div>
 </ng-template>

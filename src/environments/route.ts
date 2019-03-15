@@ -1,6 +1,12 @@
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
+export const ADMIN_ROUTES = {
+  CREATE_CHANGELOG(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
+  }
+}
+
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,

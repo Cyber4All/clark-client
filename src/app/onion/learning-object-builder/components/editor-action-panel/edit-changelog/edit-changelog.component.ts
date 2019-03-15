@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class EditChangelogComponent implements OnInit {
 
   @Input() changelog: string;
+
   @Output() changelogChange: EventEmitter<string> = new EventEmitter();
   @Output() confirm: EventEmitter<void> = new EventEmitter();
   @Output() back: EventEmitter<void> = new EventEmitter();
