@@ -11,28 +11,30 @@
       <div *ngIf="isSearching" class="reviewer-search">
         <div class="reviewer-search__container">
           <div class="container__user-dropdown">
-            <input type="text" aria-label="user search" class="user-dropdown__search-input" placeholder="Search for reviewers" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
-            <div class="container__prompt">
+            <div class="user-dropdown__search">
+              <i class="fas fa-search search__icon"></i>
+              <input type="text" aria-label="user search" class="search__input" placeholder="Search Users" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
+            </div>
+            <div *ngIf="searchResults.length === 0 && !loading" class="container__prompt">
               <i class="fas fa-users prompt__icon"></i>
               <div class="prompt__text">
                   Your search results will <br> appear here
               </div> 
             </div>
-            <ul *ngIf="showDropdown" class="user-dropdown__list">
-              <ng-container *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"></ng-container>
+            <ul class="user-dropdown__list">
+              <div *ngIf="searchResults.length > 0 && !loading">
+                <virtual-scroller #searchResultsScroller [items]="searchResults">
+                  <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems" (click)="toggleAuthor(user)">
+                    <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': reviewers.includes(u.username)}">
+                      <span *ngIf="!reviewers.includes(u.username)"><i class="fas fa-plus"></i></span>
+                      <span *ngIf="reviewers.includes(u.username)"><i class="fas fa-times"></i></span>
+                    </span>
+                    <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
+                    {{ u.username }} - {{ u.name | titlecase }} from {{ u.organization | titlecase }}
+                  </li>
+                </virtual-scroller>
+              </div>
             </ul>
-            <ng-template #resultsTemplate>
-              <virtual-scroller #searchResultsScroller [items]="searchResults">
-                <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems" (click)="toggleAuthor(user)">
-                  <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': reviewers.includes(u.username)}">
-                    <span *ngIf="!reviewers.includes(u.username)"><i class="fas fa-plus"></i></span>
-                    <span *ngIf="reviewers.includes(u.username)"><i class="fas fa-times"></i></span>
-                  </span>
-                  <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
-                  {{ u.username }} - {{ u.name | titlecase }} from {{ u.organization | titlecase }}
-                </li>
-              </virtual-scroller>
-            </ng-template>
           </div>
         </div>
         

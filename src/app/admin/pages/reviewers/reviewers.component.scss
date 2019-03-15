@@ -74,21 +74,29 @@ button {
   margin-top: 5px;
 }
 
-.user-dropdown__search-input {
-  appearance: none;
-  font-size: 14px;
-  padding: 8px 10px;
+.user-dropdown__search {
   border: 1px solid $placeholder;
-  border-radius: 2px;
-  outline: 0;
-  max-width: 500px;
-  width: 100%;
-  box-sizing: border-box;
-  width: 100%;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 17px;
+}
 
-  &:focus {
-    border-color: $bright-blue;
-  }
+.user-dropdown__search:focus-within {
+  border-color: $bright-blue;
+}
+
+.search__input {
+  border: none;
+  outline: none;
+}
+
+.search__input::placeholder {
+  color: $placeholder;
+}
+
+.search__icon {
+  color: $placeholder;
+  margin-right: 10px;
 }
 
 .user-dropdown__list {

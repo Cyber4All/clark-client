@@ -121,7 +121,6 @@ export class ReviewersComponent implements OnInit {
         }
 
         this.searchResults = results;
-        console.log(this.searchResults[0].username);
         this.loading = false;
       });
     }
