@@ -21,6 +21,12 @@
                   Your search results will <br> appear here
               </div> 
             </div>
+            <div *ngIf="loading" class="container__prompt__loading" >
+                <div class="loading-template">
+                    <i class="far fa-spinner-third fa-spin"></i>
+                    Loading Reviewers...
+                  </div>
+              </div>
             <ul class="user-dropdown__list">
               <div *ngIf="searchResults.length > 0 && !loading">
                 <virtual-scroller #searchResultsScroller [items]="searchResults">
