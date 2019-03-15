@@ -1,6 +1,6 @@
 <clark-admin-content-wrapper>
     <div page-title>
-      <span class="cname">{{activeCollection | titlecase}} </span> Reviewers
+      <span class="cname">{{activeCollection.toUpperCase()}} </span> Reviewers
     </div>
     <div filter-options>
       <div class="btn-group to-right">
@@ -45,6 +45,7 @@
               <clark-admin-user-card class="user-cards__card"
                 [user]="r"
                 (navigateToUserObjects)="navigateToUserObjects($event)"
+                [reviewer]="true"
               ></clark-admin-user-card>
             </div>
           </div>
