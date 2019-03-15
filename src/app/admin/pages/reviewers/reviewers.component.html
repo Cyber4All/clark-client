@@ -15,8 +15,8 @@
               <i class="fas fa-search search__icon"></i>
               <input type="text" aria-label="user search" class="search__input" placeholder="Search Users" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
             </div>
-            <div *ngIf="searchResults.length === 0 && !loading" class="container__prompt">
-              <i class="fas fa-users prompt__icon"></i>
+            <div *ngIf="searchResults.length === 0 && !loading" class="container__prompt"><br>
+              <i class="far fa-users prompt__icon"></i>
               <div class="prompt__text">
                   Your search results will <br> appear here
               </div> 
