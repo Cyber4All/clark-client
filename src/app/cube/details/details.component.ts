@@ -77,9 +77,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
+      const learningObjectName = decodeURIComponent(params['learningObjectName']);
       this.fetchLearningObject(
         params['username'],
-        params['learningObjectName']
+        learningObjectName,
       );
     });
 
@@ -108,6 +109,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   async fetchLearningObject(author: string, name: string) {
     try {
+      this.resetRatings();
       this.learningObject = await this.learningObjectService.getLearningObject(
         author,
         name
@@ -541,5 +543,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
         // if we found the rating, we've returned from the function at this point
         this.userRating = {};
       });
+  }
+
+  /**
+   * Resets rating related properties to defaults
+   *
+   * @private
+   * @memberof DetailsComponent
+   */
+  private resetRatings() {
+    this.ratings = [];
+    this.averageRatingValue = 0;
   }
 }

@@ -233,6 +233,24 @@ export class BuilderStore {
   }
 
   /**
+   * Retrieves the learning objects children
+   *
+   */
+  async getChildren() {
+    return await this.learningObjectService.getChildren(
+      this.learningObject.id
+    );
+
+  }
+
+  /**
+   * Sets the learning objects children after they have been reorderd
+   */
+  async setChildren(children: string[]) {
+    await this.learningObjectService.setChildren(this.learningObject.name, this.learningObject.author.username, children);
+  }
+
+  /**
    * Creates and stores a new blank learning object
    *
    * @returns {LearningObject} new blank learning object
@@ -933,8 +951,9 @@ export class BuilderStore {
     error: HttpErrorResponse,
     builderError: BUILDER_ERRORS
   ) {
-    this.serviceInteraction$.next(false);
-    if (error.status === 500) {
+    this.serviceInteraction$.next(null);
+    // If Angular's HTTP API has trouble connecting to an external API the status code will be 0
+    if (error.status === 0 || error.status === 500) {
       this.serviceError$.next(BUILDER_ERRORS.SERVICE_FAILURE);
     } else {
       this.serviceError$.next(builderError);
