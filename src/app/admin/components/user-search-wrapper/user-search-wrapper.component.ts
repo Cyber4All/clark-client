@@ -72,7 +72,6 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
         }
 
         this.searchResults = results;
-        console.log(this.searchResults);
         this.loading = false;
       });
     }
