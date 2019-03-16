@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@cyber4all/clark-entity';
 import { UserService } from 'app/core/user.service';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'clark-users',
@@ -11,11 +11,20 @@ import {Router} from '@angular/router';
 export class UsersComponent implements OnInit {
   searchBarPlaceholder = 'Users';
   users: User[];
+  activeCollection: string;
   loading = false;
 
-  constructor(private user: UserService, private router: Router) { }
+  constructor(
+    private user: UserService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
+    this.route.parent.params.subscribe(params => {
+      this.activeCollection = params['collection'];
+      this.fetchReviewers();
+   });
   }
 
   getUsers(text: string) {
@@ -25,6 +34,12 @@ export class UsersComponent implements OnInit {
         this.users = val;
         this.loading = false;
       });
+  }
+
+  async fetchReviewers() {
+    this.loading = true;
+    this.users = await this.user.fetchReviewers(this.activeCollection);
+    this.loading = false;
   }
 
   navigateToUserObjects(username: string) {

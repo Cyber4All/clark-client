@@ -1,25 +1,26 @@
 <clark-admin-content-wrapper>
-  <div page-title>Users</div>
+  <div page-title>{{ activeCollection && activeCollection.length > 0 ? 'Reviewers' : 'Users' }}</div>
   <clark-admin-search-bar search 
+    *ngIf="!activeCollection"
     [placeholder]="searchBarPlaceholder"
     (userInput)="getUsers($event)"
   ></clark-admin-search-bar>
-  <div filter-options>filter options yo</div>
-<!-- 
+
   <div class="users" main>
     <div *ngIf="!loading; else loadingTemplate">
-      <cdk-virtual-scroll-viewport style="height: 700px" itemSize="40" >
-        <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
-          <div *cdkVirtualFor="let u of users; let i = index" >
+      <virtual-scroller #scroll [style.height]="'800px'" [items]="reviewers" > 
+        <div *ngIf="reviewers?.length; else emptyTemplate" class="user-cards" #container>
+          <div *ngFor="let r of scroll.viewPortItems">
             <clark-admin-user-card class="user-cards__card"
-              [user]="u"
+              [user]="r"
               (navigateToUserObjects)="navigateToUserObjects($event)"
+              [reviewer]="activeCollection.length > 0 && activeCollection"
             ></clark-admin-user-card>
           </div>
         </div>
-      </cdk-virtual-scroll-viewport>    
+      </virtual-scroller>    
     </div>
-  </div> -->
+  </div>
 
   <ng-template #loadingTemplate>
     <div class="loading-template">
