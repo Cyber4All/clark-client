@@ -23,7 +23,9 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
       this.activeCollection = params['collection'];
-      this.fetchReviewers();
+      if (this.activeCollection !== null) {
+        this.fetchReviewers();
+      }
    });
   }
 

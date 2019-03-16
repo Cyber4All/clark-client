@@ -1,20 +1,37 @@
 <clark-admin-content-wrapper>
-  <div page-title>{{ activeCollection && activeCollection.length > 0 ? 'Reviewers' : 'Users' }}</div>
+  <div page-title>
+    <span *ngIf="activeCollection !== null" class="collection-name">{{ activeCollection.toUpperCase() }}</span>
+    {{ activeCollection === null ? 'Users' : 'Reviewers' }}
+  </div>
   <clark-admin-search-bar search 
-    *ngIf="!activeCollection"
+    *ngIf="activeCollection === null"
     [placeholder]="searchBarPlaceholder"
     (userInput)="getUsers($event)"
   ></clark-admin-search-bar>
 
+  <div *ngIf="activeCollection !== null" filter-options>
+    <div class="btn-group to-right">
+      <button class="button good add reviewers" (click)="isSearching= !isSearching"> Add Reviewer
+          <i class="far fa-user-plus"></i> 
+      </button>
+    </div>
+    <div *ngIf="isSearching" class="reviewer-search">
+      <clark-user-search-wrapper
+      [users]="users"
+      (selectedUserIndex)="addReviewer($event)"
+      ></clark-user-search-wrapper>
+    </div>
+  </div>
+
   <div class="users" main>
     <div *ngIf="!loading; else loadingTemplate">
-      <virtual-scroller #scroll [style.height]="'800px'" [items]="reviewers" > 
-        <div *ngIf="reviewers?.length; else emptyTemplate" class="user-cards" #container>
+      <virtual-scroller #scroll [style.height]="'800px'" [items]="users" > 
+        <div *ngIf="users?.length; else emptyTemplate" class="user-cards" #container>
           <div *ngFor="let r of scroll.viewPortItems">
             <clark-admin-user-card class="user-cards__card"
               [user]="r"
               (navigateToUserObjects)="navigateToUserObjects($event)"
-              [reviewer]="activeCollection.length > 0 && activeCollection"
+              [reviewer]="activeCollection !== null"
             ></clark-admin-user-card>
           </div>
         </div>
