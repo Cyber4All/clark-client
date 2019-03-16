@@ -1,15 +1,15 @@
 <clark-admin-content-wrapper>
   <div page-title>
-    <span *ngIf="activeCollection !== null" class="collection-name">{{ activeCollection.toUpperCase() }}</span>
-    {{ activeCollection === null ? 'Users' : 'Reviewers' }}
+    <span *ngIf="activeCollection && activeCollection?.length > 0" class="collection-name">{{ activeCollection.toUpperCase() }}</span>
+    {{ activeCollection && activeCollection?.length > 0 ? 'Reviewers' : 'Users' }}
   </div>
   <clark-admin-search-bar search 
-    *ngIf="activeCollection === null"
+    *ngIf="!activeCollection"
     [placeholder]="searchBarPlaceholder"
     (userInput)="getUsers($event)"
   ></clark-admin-search-bar>
 
-  <div *ngIf="activeCollection !== null" filter-options>
+  <div *ngIf="activeCollection && activeCollection?.length > 0" filter-options>
     <div class="btn-group to-right">
       <button class="button good add reviewers" (click)="isSearching= !isSearching"> Add Reviewer
           <i class="far fa-user-plus"></i> 
@@ -17,8 +17,8 @@
     </div>
     <div *ngIf="isSearching" class="reviewer-search">
       <clark-user-search-wrapper
-      [users]="users"
-      (selectedUserIndex)="addReviewer($event)"
+        [users]="users"
+        (selectedUserIndex)="addReviewer($event)"
       ></clark-user-search-wrapper>
     </div>
   </div>
@@ -31,7 +31,7 @@
             <clark-admin-user-card class="user-cards__card"
               [user]="r"
               (navigateToUserObjects)="navigateToUserObjects($event)"
-              [reviewer]="activeCollection !== null"
+              [reviewer]="activeCollection && activeCollection?.length > 0"
             ></clark-admin-user-card>
           </div>
         </div>

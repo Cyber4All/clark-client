@@ -16,8 +16,6 @@ import { ModalModule } from 'app/shared/modals';
 import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
-import { ReviewersComponent } from './pages/reviewers/reviewers.component';
 import { UserSearchWrapperComponent } from './components/user-search-wrapper/user-search-wrapper.component';
 
 @NgModule({
@@ -27,7 +25,6 @@ import { UserSearchWrapperComponent } from './components/user-search-wrapper/use
     LearningObjectsComponent,
     AnalyticsComponent,
     UsersComponent,
-    ReviewersComponent,
     SearchBarComponent,
     ContentWrapperComponent,
     FilterSearchComponent,

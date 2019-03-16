@@ -12,6 +12,8 @@ export class AdminUserCardComponent implements OnInit {
   @Input() reviewer = 'false';
   @Output() navigateToUserObjects = new EventEmitter<string>();
 
+  loading = false;
+
   constructor(private userService: UserService) { }
 
   ngOnInit() {

@@ -20,7 +20,11 @@
             <div>Type</div>
             <div>Date</div>
           </div>
-            <virtual-scroller #scroll [style.height]="'800px'" [items]="learningObjects">
+            <virtual-scroller 
+              #scroll 
+              [style.height]="'700px'"
+              [items]="learningObjects"
+            >
               <clark-dashboard-item
                 *ngFor="let l of scroll.viewPortItems"
                 [learningObject]="l"
