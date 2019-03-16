@@ -19,6 +19,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { ReviewersComponent } from './pages/reviewers/reviewers.component';
+import { UserSearchWrapperComponent } from './components/user-search-wrapper/user-search-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ReviewersComponent } from './pages/reviewers/reviewers.component';
     FilterSearchComponent,
     DashboardComponent,
     AdminUserCardComponent,
+    UserSearchWrapperComponent,
   ],
   imports: [
     CommonModule,

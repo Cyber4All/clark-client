@@ -1,73 +1,41 @@
 <clark-admin-content-wrapper>
-    <div page-title>
-      <span class="cname">{{activeCollection.toUpperCase()}} </span> Reviewers
+  <div page-title>
+    <span class="cname">{{activeCollection.toUpperCase()}} </span> Reviewers
+  </div>
+  <div filter-options>
+    <div class="btn-group to-right">
+      <button class="button good add reviewers" (click)="isSearching= !isSearching"> Add Reviewer
+          <i class="far fa-user-plus"></i> 
+      </button>
     </div>
-    <div filter-options>
-      <div class="btn-group to-right">
-        <button class="button good add reviewers" (click)="isSearching= !isSearching"> Add Reviewer
-            <i class="far fa-user-plus"></i> 
-        </button>
-      </div>
-      <div *ngIf="isSearching" class="reviewer-search">
-        <div class="reviewer-search__container">
-          <div class="container__user-dropdown">
-            <div class="user-dropdown__search">
-              <i class="fas fa-search search__icon"></i>
-              <input type="text" aria-label="user search" class="search__input" placeholder="Search Users" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
-            </div>
-            <div *ngIf="searchResults.length === 0 && !loading" class="container__prompt"><br>
-              <i class="far fa-users prompt__icon"></i>
-              <div class="prompt__text">
-                  Your search results will <br> appear here
-              </div> 
-            </div>
-            <div *ngIf="loading" class="container__prompt__loading" >
-                <div class="loading-template">
-                    <i class="far fa-spinner-third fa-spin"></i>
-                    Loading Reviewers...
-                  </div>
-              </div>
-            <ul class="user-dropdown__list">
-              <div *ngIf="searchResults.length > 0 && !loading">
-                <virtual-scroller #searchResultsScroller [items]="searchResults">
-                  <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems" (click)="toggleAuthor(user)">
-                    <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': reviewers.includes(u.username)}">
-                      <span *ngIf="!reviewers.includes(u.username)"><i class="fas fa-plus"></i></span>
-                      <span *ngIf="reviewers.includes(u.username)"><i class="fas fa-times"></i></span>
-                    </span>
-                    <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
-                    {{ u.username }} - {{ u.name | titlecase }} from {{ u.organization | titlecase }}
-                  </li>
-                </virtual-scroller>
-              </div>
-            </ul>
+    <div *ngIf="isSearching" class="reviewer-search">
+      <clark-user-search-wrapper
+      [users]="reviewers"
+      (selectedUserIndex)="addReviewer($event)"
+      ></clark-user-search-wrapper>
+    </div>
+  </div>
+
+  <div class="reviewers" main>
+    <div *ngIf="!loading; else loadingTemplate">
+      <virtual-scroller #scroll [style.height]="'800px'" [items]="reviewers" > 
+        <div *ngIf="reviewers?.length; else emptyTemplate" class="user-cards" #container>
+          <div *ngFor="let r of scroll.viewPortItems">
+            <clark-admin-user-card class="user-cards__card"
+              [user]="r"
+              (navigateToUserObjects)="navigateToUserObjects($event)"
+              [reviewer]="true"
+            ></clark-admin-user-card>
           </div>
         </div>
-        
-      </div>
+      </virtual-scroller>    
     </div>
- 
-  
-    <div class="reviewers" main>
-      <div *ngIf="!loading; else loadingTemplate">
-        <virtual-scroller #scroll [style.height]="'800px'" [items]="reviewers" > 
-          <div *ngIf="reviewers?.length; else emptyTemplate" class="user-cards" #container>
-            <div *ngFor="let r of scroll.viewPortItems">
-              <clark-admin-user-card class="user-cards__card"
-                [user]="r"
-                (navigateToUserObjects)="navigateToUserObjects($event)"
-                [reviewer]="true"
-              ></clark-admin-user-card>
-            </div>
-          </div>
-        </virtual-scroller>    
-      </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-template">
+      <i class="far fa-spinner-third fa-spin"></i>
+      Loading Reviewers...
     </div>
-  
-    <ng-template #loadingTemplate>
-      <div class="loading-template">
-        <i class="far fa-spinner-third fa-spin"></i>
-        Loading Reviewers...
-      </div>
-    </ng-template>
-  </clark-admin-content-wrapper>
+  </ng-template>
+</clark-admin-content-wrapper>
