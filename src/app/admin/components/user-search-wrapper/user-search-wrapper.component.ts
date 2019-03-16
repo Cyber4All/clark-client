@@ -70,7 +70,6 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
             results.splice(i, 1);
           }
         }
-
         this.searchResults = results;
         this.loading = false;
       });

@@ -20,9 +20,9 @@
             <div>Type</div>
             <div>Date</div>
           </div>
-            <!-- <cdk-virtual-scroll-viewport style="height: 700px" itemSize="90">
+            <virtual-scroller #scroll [style.height]="'800px'" [items]="learningObjects">
               <clark-dashboard-item
-                *cdkVirtualFor="let l of learningObjects; let i = index"
+                *ngFor="let l of scroll.viewPortItems"
                 [learningObject]="l"
                 [status]="l.status"
                 [hasCheckBox]="false"
@@ -32,7 +32,7 @@
                 (changeStatus)="openChangeStatusModal($event)"
                 >
               </clark-dashboard-item>
-            </cdk-virtual-scroll-viewport>     -->
+            </virtual-scroller>    
         </div>
       </div>
     </div>
