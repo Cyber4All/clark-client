@@ -8,10 +8,7 @@
               <div class="mb-4 lead">This Learning Object is currently under review.</div>
               <div *ngIf="!auth.user; else unauthorized">
                 <div class="mb-4 lead">Try logging in to see if you have access.</div>
-                <button class="auth-button" (click)="login()">
-                  <div class="mask"></div>
-                  <div class="text">Login</div>
-                </button>
+                <button class="auth-button" (click)="login()">LOGIN</button>
               </div>
               <ng-template #unauthorized>
                 <div class="mb-4 lead">You do not have access to this learning object.</div>
