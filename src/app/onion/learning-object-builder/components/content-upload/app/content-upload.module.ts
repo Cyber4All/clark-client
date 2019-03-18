@@ -5,9 +5,7 @@ import { RouterModule } from '@angular/router';
 
 // Other
 import { routes } from './content-upload.routes';
-import { DropzoneModule } from '@cyber4all/ngx-dropzone-wrapper';
-import { DROPZONE_CONFIG } from '@cyber4all/ngx-dropzone-wrapper';
-import { DropzoneConfigInterface } from '@cyber4all/ngx-dropzone-wrapper';
+import { DropzoneModule, DROPZONE_CONFIG,DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { environment } from '../environments/environment';
 
 // Services
