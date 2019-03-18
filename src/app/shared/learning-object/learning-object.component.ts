@@ -202,8 +202,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
 
   onResize(event) {
     this.collection = this.collections.get(this.learningObject.collection);
-    if (window.screen.width <= 750 && this.collection.length > 13) {
-      this.collection = this.collection.substring(0, 13) + '...';
+    if (window.screen.width <= 750 && this.collection.length > 12) {
+      this.collection = this.collection.substring(0, 12) + '...';
     }
   }
 }
