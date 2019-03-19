@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from './core/auth.service';
+import { NavbarService } from './core/navbar.service';
 
 @Component({
   selector: 'clark-not-found',
@@ -8,7 +10,7 @@ import { Location } from '@angular/common';
 })
 export class NotFoundComponent implements OnInit {
 
-  constructor( private location: Location ) { }
+  constructor() { }
 
   ngOnInit() {
   }
