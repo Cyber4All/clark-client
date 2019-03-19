@@ -7,7 +7,7 @@ import {
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService, AuthUser } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../entity/learning-object';
+import { User } from '../../../entity/index';
 import {
   trigger,
   style,

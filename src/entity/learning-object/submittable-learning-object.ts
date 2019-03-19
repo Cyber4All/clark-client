@@ -6,7 +6,7 @@ import { LearningOutcome } from '../learning-outcome/learning-outcome';
 
 export class SubmittableLearningObject extends LearningObject {
   get description(): string {
-    return super.description;
+    return this.description;
   }
 
   /**
@@ -17,7 +17,7 @@ export class SubmittableLearningObject extends LearningObject {
    */
   set description(description: string) {
     SubmittableLearningObject.validateDescription(description);
-    super.description = description.trim();
+    this.description = description.trim();
   }
 
   /**

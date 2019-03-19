@@ -694,7 +694,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async addToCollection(collection?: string) {
     if (collection) {
       this.collectionService.submit(this.focusedLearningObject.id, collection).then(() => {
-        this.focusedLearningObject.publish();
         this.focusedLearningObject.status = LearningObject.Status.WAITING;
         this.focusedLearningObject.collection = collection;
         this.cd.detectChanges();
@@ -721,7 +720,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   cancelSubmission(l: DashboardLearningObject) {
     this.collectionService.unsubmit(l.id).then(async () => {
-      l.unpublish();
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
     }).catch(err => {

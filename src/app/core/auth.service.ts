@@ -343,17 +343,7 @@ export class AuthService {
   }
   async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
-      // Check that the object does not contain a download lock and the user is logged in
-      const restricted = learningObject.lock && learningObject.lock.restrictions.includes(LearningObject.Restriction.DOWNLOAD);
-
-      // If the object is restricted, check if the user is a reviewer or admin
-      if (restricted) {
-        if (this.user['accessGroups'].includes('admin') || this.user['accessGroups'].includes('reviewer')) {
-          return DOWNLOAD_STATUS.CAN_DOWNLOAD;
-        } else {
-          return DOWNLOAD_STATUS.NOT_RELEASED;
-        }
-      }
+      // Check that the user is logged in
 
       if (!this.isLoggedIn.getValue()) {
         // user isn't logged in

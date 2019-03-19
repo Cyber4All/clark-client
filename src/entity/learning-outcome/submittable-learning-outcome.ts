@@ -14,7 +14,7 @@ export class SubmittableLearningOutcome extends LearningOutcome {
    * @memberof SubmittableLearningOutcome
    */
   get text(): string {
-    return super.text;
+    return this.text;
   }
 
   /**
@@ -25,7 +25,7 @@ export class SubmittableLearningOutcome extends LearningOutcome {
    */
   set text(text: string) {
     SubmittableLearningOutcome.validateText(text);
-    super.text = text;
+    this.text = text;
   }
   /**
    * Creates an instance of SubmittableLearningOutcome.
