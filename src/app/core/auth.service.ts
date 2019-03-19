@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { environment } from '@env/environment';
 import { Observable ,  BehaviorSubject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
-import { User, LearningObject } from '@cyber4all/clark-entity';
+import { User, LearningObject } from '../../entity/index';
 import { Headers } from '@angular/http';
 import { catchError, retry } from 'rxjs/operators';
 

@@ -9,7 +9,7 @@ import {
   Renderer2
 } from '@angular/core';
 import { CartV2Service } from '../../core/cartv2.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../entity/index';
 import { AuthService, DOWNLOAD_STATUS } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
 import { TitleCasePipe } from '@angular/common';

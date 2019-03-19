@@ -1,4 +1,4 @@
-import { User } from '@cyber4all/clark-entity';
+import { User } from '../../../entity/index';
 import { AuthService } from '../../core/auth.service';
 import {
   ActivatedRouteSnapshot,

@@ -1,5 +1,5 @@
 import { getPaths } from './file-functions';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../entity/index';
 
 /**
  * Class Representing Simple Filesystem

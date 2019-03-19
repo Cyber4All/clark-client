@@ -1,4 +1,4 @@
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../entity/index';
 
 /**
  * Breaks Path string into array of paths. Removes last element assuming last element is file name.

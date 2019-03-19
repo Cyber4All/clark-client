@@ -10,7 +10,7 @@ import { DashboardLearningObject } from '../dashboard.component';
 import { ContextMenuService } from '../../../shared/contextmenu/contextmenu.service';
 import { AuthService } from '../../../core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../../entity/index';
 
 @Component({
   selector: 'clark-dashboard-item',

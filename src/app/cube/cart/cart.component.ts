@@ -3,7 +3,7 @@ import {takeUntil} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../entity/index';
 import { AuthService } from '../../core/auth.service';
 import { Subject } from 'rxjs';
 import { COPY } from './cart.copy';

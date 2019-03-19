@@ -4,7 +4,7 @@ import { USER_ROUTES } from '@env/route';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../../../../../entity/index';
 
 @Injectable()
 export class FileStorageService {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as querystring from 'querystring';
-import { LearningObject, StandardOutcome } from '@cyber4all/clark-entity';
+import { LearningObject, StandardOutcome } from '../../entity/index';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 

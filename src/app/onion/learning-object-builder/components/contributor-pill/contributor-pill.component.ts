@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { User } from '@cyber4all/clark-entity';
+import { User } from '../../../../../entity/index';
 
 @Component({
   selector: 'clark-contributor-pill',

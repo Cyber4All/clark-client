@@ -2,7 +2,7 @@
 import {takeUntil} from 'rxjs/operators';
 import { iframeParentID } from '../../core/cartv2.service';
 import { LearningObjectService } from '../learning-object.service';
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { LearningObject, User } from '../../../entity/index';
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/user.service';

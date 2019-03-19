@@ -1,7 +1,7 @@
 
 import {debounceTime, takeUntil} from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../entity/index';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';

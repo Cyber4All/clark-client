@@ -1,4 +1,4 @@
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { LearningObject, User } from '../../../entity/index';
 
 export const LOmock1 = new LearningObject({ author: new User(), name: 'LOmock1' });
 

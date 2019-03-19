@@ -7,7 +7,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { LearningOutcome, StandardOutcome } from '@cyber4all/clark-entity';
+import { LearningOutcome, StandardOutcome } from '../../../../../entity/index';
 import { OutcomeService } from 'app/core/outcome.service';
 import {
   BuilderStore

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {LearningObject} from '@cyber4all/clark-entity';
+import {LearningObject} from '../../../../../../entity/index';
 import {BUILDER_ACTIONS, BuilderStore} from '../../../builder-store.service';
 
 @Component({

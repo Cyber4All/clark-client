@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../../../../../../../entity/index';
 
 
 @Component({

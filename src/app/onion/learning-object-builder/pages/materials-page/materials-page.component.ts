@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../../../entity/index';
 import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Subject ,  Observable  } from 'rxjs';

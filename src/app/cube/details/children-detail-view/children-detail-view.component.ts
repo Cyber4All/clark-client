@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../../entity/index';
 
 @Component({
   selector: 'cube-children-detail-view',

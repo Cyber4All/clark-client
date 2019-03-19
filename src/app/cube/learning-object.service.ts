@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../entity/index';
 import { Query } from '../shared/interfaces/query';
 
 import * as querystring from 'querystring';

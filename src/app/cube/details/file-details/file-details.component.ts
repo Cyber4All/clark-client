@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { COPY } from './file-details.copy';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '../../../../entity/index';
 
 @Component({
   selector: 'onion-file-details',

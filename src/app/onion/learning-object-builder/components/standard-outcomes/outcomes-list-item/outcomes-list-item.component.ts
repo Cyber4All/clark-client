@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningOutcome } from '../../../../../../entity/index';
 import { SuggestedOutcome } from '../standard-outcomes.component';
 
 @Component({
