@@ -36,7 +36,11 @@ $learning-object-width: 820px;
     max-width: calc((#{$max-width} - #{$learning-object-width}) / 2 - 50px);
     min-width: 210px;
     width: 100%;
+    height: 650px;
     margin-right: 50px;
+    background-color: white;
+    box-shadow: 0 1px 12px 2px rgba(0, 0, 0, 0.05);
+    padding: 20px;
     z-index: 2;
 
     ::ng-deep .filter-section {
@@ -212,6 +216,7 @@ $learning-object-width: 820px;
       justify-content: flex-start;
       width: 100%;
       padding: 20px;
+      height: 100%;
       box-sizing: border-box;
       padding-top: 80px;
 
