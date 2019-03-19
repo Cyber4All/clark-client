@@ -2,8 +2,8 @@
   <div class="learning-object" id="learning-object" [ngClass]="learningObject.length">
     <div class="image">
       <div *ngIf="!loading" class="collection">
-        <div>
-          {{ collections.get(learningObject.collection) }}
+        <div (window:resize)="onResize($event)">
+          {{ collection }}
         </div>
       </div>
       <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
