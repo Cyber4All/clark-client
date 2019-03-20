@@ -22,18 +22,15 @@ export class ReviewerPanelComponent implements OnInit {
   private destroyed$ = new Subject<void>();
   hasDownloadAccess = false;
   downloading = false;
-  addingToLibrary = false;
   author: string;
   learningObjectName: string;
   saved = false;
   url: string;
   showAddRating = false;
   windowWidth: number;
-  loggedin = false;
   showDownloadModal = false;
   isEditButtonViewable = false;
 
-  userRating: { user?: User, number?: number, comment?: string, date?: string } = {};
 
   contributorsList = [];
   iframeParent = iframeParentID;
