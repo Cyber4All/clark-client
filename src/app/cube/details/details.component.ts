@@ -45,7 +45,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   isOwnObject = false;
   errorStatus: number;
   redirectUrl: string;
-  released: boolean;
+  revisedVersion = false;
   hasRevisions: boolean;
   reviewer: boolean;
 
@@ -109,7 +109,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   viewReleased(released: boolean) {
-    this.released = released;
+    this.revisedVersion = released;
   }
 
   async fetchLearningObject(author: string, name: string) {
