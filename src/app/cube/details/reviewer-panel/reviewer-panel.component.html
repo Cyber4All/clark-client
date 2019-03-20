@@ -1,6 +1,13 @@
 <div class="inner">
   <div class="btn-group vertical">
-    <button class="button good"> Download Revisions</button>
+    <button class="button good" (click)="addToCart(true)"> 
+      <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
+        <span *ngIf="downloading">
+          <i class="fal fa-spinner-third fa-spin"></i>
+        </span>
+      </span>
+      Download Revisions
+    </button>
     <div class="last-revised">
         Last Revised {{learningObject.date | date: 'shortDate'}}
       </div>
@@ -9,3 +16,9 @@
       </div>
   </div>
 </div>
+
+<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
+  <div style="max-width: 600px;" #popupInner>
+    <clark-download-notice (close)="toggleDownloadModal(false)"></clark-download-notice>
+  </div>
+</clark-popup>
