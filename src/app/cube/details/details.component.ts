@@ -43,14 +43,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showAddRating = false;
   showAddResponse = false;
   isOwnObject = false;
-<<<<<<< HEAD
-  reviewer: Boolean;
-  released = false;
-  hasRevisions: Boolean;
-=======
   errorStatus: number;
   redirectUrl: string;
->>>>>>> master
 
   userRating: {
     user?: User;
