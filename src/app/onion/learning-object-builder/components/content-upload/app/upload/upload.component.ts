@@ -21,9 +21,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObject } from '@cyber4all/clark-entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
-import {
-  ModalService,
-} from '../../../../../../shared/modals';
+import { ModalService } from '../../../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
 import { FileStorageService } from '../services/file-storage.service';
@@ -167,7 +165,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(object => {
         if (object) {
-          this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(object.id);
+          this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+            object.id,
+            object.author.username
+          );
           this.files$.next(object.materials.files);
           this.folderMeta$.next(object.materials.folderDescriptions);
           this.solutionUpload = false;

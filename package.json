@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.14.0",
+  "version": "2.18.3",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@angular/animations": "^7.2.3",
-    "@angular/cdk": "^7.0.0",
+    "@angular/cdk": "^7.3.0",
     "@angular/cli": "^7.3.0",
     "@angular/common": "^7.2.3",
     "@angular/compiler": "^7.2.3",

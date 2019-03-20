@@ -1,0 +1,21 @@
+<div class="not-found-top">
+  <div class="container">
+      <img src="../assets/images/logo.png" class="not-found-logo" alt="CLARK logo">
+      <div class="row justify-content-center">
+          <div class="col-md-12 text-center">
+            <div *ngIf="statusCode">
+              <strong><h1 class="huge">{{ statusCode }}</h1></strong>
+              <div class="mb-4 lead">This Learning Object is currently under review.</div>
+              <div *ngIf="!auth.user; else unauthorized">
+                <div class="mb-4 lead">Try logging in to see if you have access.</div>
+                <button class="auth-button" (click)="login()">LOGIN</button>
+              </div>
+              <ng-template #unauthorized>
+                <div class="mb-4 lead">You do not have access to this learning object.</div>
+              </ng-template>
+              <a routerLink='' class="btn btn-link">Back to Home</a>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>

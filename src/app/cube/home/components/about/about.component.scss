@@ -1,0 +1,40 @@
+@import '~_vars.scss';
+@import '../../_home.scss';
+
+.about {
+  z-index: 2;
+  position: relative;
+  color: $dark-text;
+  text-align: center;
+}
+
+.about__title {
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+  color: $bright-blue;
+
+  &:after {
+    content: '';
+    width: 50%;
+    // background: $bright-blue;
+    bottom: -12px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    height: 2px;
+  }
+
+  .title__icon {
+    margin: auto;
+    margin-bottom: 20px;
+    // these paddings are here because the chart-network icon isn't centered correctly
+    padding-right: 2px;
+    padding-bottom: 2px;
+  }
+}
+
+.about p {
+  font-size: 18px;
+}

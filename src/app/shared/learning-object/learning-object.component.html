@@ -1,28 +1,30 @@
-<div class="learning-object" id="learning-object" [ngClass]="learningObject.length" [routerLink]="['/details', learningObject.author.username, learningObject.name]">
-  <div class="image">
-    <div *ngIf="!loading" class="collection">
-      <div>
-        {{ collections.get(learningObject.collection) }}
+<a [routerLink]="['/details', learningObject.author.username, learningObject.name]">
+  <div class="learning-object" id="learning-object" [ngClass]="learningObject.length">
+    <div class="image">
+      <div *ngIf="!loading" class="collection">
+        <div (window:resize)="onResize($event)">
+          {{ collection }}
+        </div>
       </div>
+      <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
     </div>
-    <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
-  </div>
-  <div class="learning-object-content">
-    <div class="title">
-      {{ truncateText(learningObject.name, 45) }}
-      <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
-    </div>
-    <div class="details">
-      <span class="author" [tip]="contributors" tipDisabled="{{ !contributorsDisplay }}">
-        {{ contributorsDisplay || contributors }}
-      </span>
-      <div class="date">
-        Updated {{ date | date:'mediumDate' }}
+    <div class="learning-object-content">
+      <div class="title">
+        {{ truncateText(learningObject.name, 45) }}
+        <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
       </div>
+      <div class="details">
+        <span class="author" [tip]="contributors" tipDisabled="{{ !contributorsDisplay }}">
+          {{ contributorsDisplay || contributors }}
+        </span>
+        <div class="date">
+          Updated {{ date | date:'mediumDate' }}
+        </div>
+      </div>
+      <div class="goals" *ngIf="this.learningObject.description" [innerHtml]="goals()"></div>
     </div>
-    <div class="goals" *ngIf="this.learningObject.description" [innerHtml]="goals()"></div>
   </div>
-</div>
+</a>
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>

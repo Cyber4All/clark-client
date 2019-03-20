@@ -3,9 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '../../shared/interfaces/query';
 import { COPY } from './home.copy';
-import { AuthService } from '../../core/auth.service';
 import { CollectionService, Collection } from '../../core/collection.service';
-import { UsageStats } from '../shared/types';
+import { UsageStats } from '../shared/types/usage-stats';
 import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 
 @Component({
@@ -16,8 +15,9 @@ import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 export class HomeComponent implements OnInit {
   copy = COPY;
   query: Query = {
-    limit: 1,
+    limit: 1
   };
+
   placeholderText = this.copy.SEARCH_PLACEHOLDER;
   collections: Collection[];
 
@@ -27,8 +27,9 @@ export class HomeComponent implements OnInit {
   usageStats: UsageStats = {
     objects: {
       released: 0,
-      underReview: 0,
+      review: 0,
       downloads: 0,
+      collections: { number: 0 },
       lengths: {
         nanomodule: 0,
         micromodule: 0,
@@ -43,7 +44,7 @@ export class HomeComponent implements OnInit {
       }
     },
     users: {
-      total: 0,
+      accounts: 0,
       organizations: 0
     }
   };
@@ -51,7 +52,6 @@ export class HomeComponent implements OnInit {
   constructor(
     public learningObjectService: LearningObjectService,
     private router: Router,
-    private auth: AuthService,
     private collectionService: CollectionService,
     private statsService: UsageStatsService
   ) {}
@@ -59,15 +59,18 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
-      this.usageStats.objects.underReview = stats.review;
+      this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
+      this.usageStats.objects.collections = stats.collections;
       this.objectStatsLoaded = true;
     });
+
     this.statsService.getUserStats().then(stats => {
-      this.usageStats.users.total = stats.accounts;
+      this.usageStats.users.accounts = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
       this.userStatsLoaded = true;
     });
+
     this.collectionService
       .getCollections()
       .then(collections => {
@@ -79,16 +82,9 @@ export class HomeComponent implements OnInit {
         console.error(e.message);
       });
   }
-  keyDownSearch(event) {
-    if (event.keyCode === 13) {
-      this.search();
-    }
-  }
 
-  search() {
-    if (this.query.text) {
-      this.query.text = this.query.text.trim();
-    }
+  search(text: string) {
+    this.query.text = text;
 
     if (this.query.text === '') {
       this.learningObjectService.clearSearch();
@@ -97,8 +93,5 @@ export class HomeComponent implements OnInit {
         queryParams: { text: this.query.text }
       });
     }
-  }
-  goToContribute() {
-    this.router.navigate(['/onion']);
   }
 }

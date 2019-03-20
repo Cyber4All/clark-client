@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsageStats, LearningObjectStats, UserStats } from '../shared/types';
+import { UsageStats, LearningObjectStats, UserStats } from '../shared/types/usage-stats';
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
 import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
@@ -20,8 +20,9 @@ export class UsageStatsComponent implements OnInit {
   usageStats: UsageStats = {
     objects: {
       released: -1,
-      underReview: -1,
+      review: -1,
       downloads: -1,
+      collections: { number: -1 },
       lengths: {
         nanomodule: -1,
         micromodule: -1,
@@ -36,7 +37,7 @@ export class UsageStatsComponent implements OnInit {
       }
     },
     users: {
-      total: -1,
+      accounts: -1,
       organizations: -1
     }
   };
@@ -58,8 +59,9 @@ export class UsageStatsComponent implements OnInit {
     this.buildCounterStats();
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
-      this.usageStats.objects.underReview = stats.review;
+      this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
+      this.usageStats.objects.collections = stats.collections;
       this.usageStats.objects.lengths = {
         nanomodule: stats.lengths.nanomodule,
         micromodule: stats.lengths.micromodule,
@@ -67,18 +69,16 @@ export class UsageStatsComponent implements OnInit {
         unit: stats.lengths.unit,
         course: stats.lengths.course
       };
-      this.usageStats.objects.outcomes = {
-        remember_and_understand: stats.blooms_distribution.remember,
-        apply_and_analyze: stats.blooms_distribution.apply,
-        evaluate_and_synthesize: stats.blooms_distribution.evaluate
-      };
+
+      this.usageStats.objects.outcomes = stats.outcomes;
+
       this.buildCounterStats();
       this.buildOutcomeDistributionChart();
       this.buildLengthDistributionChart();
     });
 
     this.statsService.getUserStats().then(stats => {
-      this.usageStats.users.total = stats.accounts;
+      this.usageStats.users.accounts = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
       this.buildCounterStats();
     });
@@ -93,20 +93,22 @@ export class UsageStatsComponent implements OnInit {
    */
   private buildCounterStats() {
     // Empty the array to avoid pushing duplicates
-    this.counterStats = [];
-    this.counterStats.push(
-      ...[
+    this.counterStats = [
         {
           title: 'Learning Objects Released',
           value: this.usageStats.objects.released
         },
         {
           title: 'Learning Objects Under Review',
-          value: this.usageStats.objects.underReview
+          value: this.usageStats.objects.review
+        },
+        {
+          title: 'Quality-Assured Collections',
+          value: this.usageStats.objects.collections.number
         },
         {
           title: 'Users',
-          value: this.usageStats.users.total
+          value: this.usageStats.users.accounts
         },
         {
           title: 'Affiliated Organizations',
@@ -116,8 +118,7 @@ export class UsageStatsComponent implements OnInit {
           title: 'Downloads',
           value: this.usageStats.objects.downloads
         }
-      ]
-    );
+      ];
   }
 
   /**

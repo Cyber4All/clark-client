@@ -12,9 +12,6 @@ export const COPY = {
     CALLTOACTIONTEXT: `Contribute your freely accessible cybersecurity material for others to use.`,
     CALLTOACTION: `Contribute to CLARK`,
 
-    COLLECTION_BLURB: `Learning Objects can be grouped into Collections within CLARK.
-     This is a way to group learning objects beyond just their authors.
-     Each collection is unique, and supported by its own community.
-     Here you will find our first two featured collections.
-     Click the cards to visit the collection's CLARK page and learn more about them.`
+    COLLECTION_BLURB: `Learning Objects are grouped into Collections within CLARK.
+     Each collection is unique, has its own peer-review process, and is supported by its own community.`
 };

@@ -23,6 +23,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 import { AdminGuard } from './admin.guard';
 import { AccessGroupGuard } from './access-group-guard';
+import { ChangelogService } from './changelog.service';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ export class CoreModule {
         AdminGuard,
         AuthService,
         CartV2Service,
+        ChangelogService,
         CollectionService,
         UserService,
         OutcomeService,
