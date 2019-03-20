@@ -13,7 +13,7 @@ export class IncludedInService {
     return this.httpClient.get<LearningObject[]>(PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id))
     .pipe(
       take(1),
-      /* TODO: Remove this. 
+      /* TODO: Remove this.
        * It is a stopcap until the service stops returning unreleased.
        * More info at https://github.com/Cyber4All/learning-object-service/pull/282
        */
