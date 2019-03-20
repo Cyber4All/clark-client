@@ -65,11 +65,11 @@ $height: 20px;
   &.switch--on {
 
     .switch__fob {
-      background: $dark-text;
+      background:#fea200;
       transform: translateX($height);
     }
     .switch__background{
-      background: #fea200;
+      background: $placeholder;
     }
   }
 }
