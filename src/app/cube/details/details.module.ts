@@ -13,8 +13,12 @@ import { ChildrenDetailViewComponent } from './children-detail-view/children-det
 import { ParentListingComponent } from './included-in/parent-listing.component';
 import { DetailsSplashComponent } from './splash/details-splash.component';
 import { ActionPanelComponent } from './action-panel/action-panel.component';
+<<<<<<< HEAD
 import { VersionSwitchComponent } from './version-switch/version-switch.component';
 import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
+=======
+import { ErrorStatusComponent } from './error-status/error-status.component';
+>>>>>>> master
 
 @NgModule({
   imports: [
@@ -34,8 +38,12 @@ import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.componen
     ParentListingComponent,
     DetailsSplashComponent,
     ActionPanelComponent,
+<<<<<<< HEAD
     VersionSwitchComponent,
     ReviewerPanelComponent
+=======
+    ErrorStatusComponent
+>>>>>>> master
   ],
   providers: []
 })

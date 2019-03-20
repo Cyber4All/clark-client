@@ -1,4 +1,4 @@
-<div *ngIf="learningObject" class="details-wrapper" [ngClass]="learningObject.length">
+<div *ngIf="learningObject && !errorStatus" class="details-wrapper" [ngClass]="learningObject.length">
   <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [owned]="isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
   <div class="flex">
     <div class="content">
@@ -45,11 +45,14 @@
     </div>
   </div>
 </div>
-<div *ngIf="loggedin" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
+<div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
   <div class="new-rating" (click)="$event.stopPropagation()">
     <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
     <div class="title">Rate this Learning Object</div>
     <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
       (cancelRating)="showAddRating = false;"></clark-new-rating>
   </div>
+</div>
+<div *ngIf="errorStatus">
+  <clark-error-status [statusCode]="errorStatus" [redirectUrl]="redirectUrl"></clark-error-status>
 </div>

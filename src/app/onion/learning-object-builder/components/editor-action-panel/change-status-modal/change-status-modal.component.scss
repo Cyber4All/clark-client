@@ -1,9 +1,30 @@
 @import '~_vars.scss';
 
+.popup-inner {
+  min-width: 600px;
+  min-height: 400px;
+  position: relative;
+  margin-top: 5px;
+
+  & > * {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+.title {
+  font-size: 18px;
+  color: $dark-text;
+  margin-bottom: 15px;
+}
+
 .status-options-wrapper {
   margin-top: 25px;
-  min-width: 30vw;
 }
+
 .status-item {
   display: flex;
   flex-flow: row nowrap;
@@ -11,12 +32,15 @@
   box-shadow: 0 0 5px lighten($placeholder, 10);
   padding: 8px 24px;
   cursor: pointer;
+
   &.unfocused {
     opacity: .3;
   }
+
   &:hover {
     box-shadow: 0 0 5px lighten($bright-blue, 10);
   }
+
   .status-item__text {
     display: flex;
     flex-direction: column;
@@ -27,6 +51,11 @@
 
 .btn-group {
   margin-top: 25px;
+
+  .button {
+    padding: 8px 25px;
+  }
+
   .good {
     background: $bright-blue;
     border-color: $bright-blue;
