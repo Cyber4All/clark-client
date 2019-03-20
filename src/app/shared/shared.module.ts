@@ -38,6 +38,8 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
+import { TextEditorComponent } from './text-editor.component';
+import {CKEditorModule} from 'ng2-ckeditor';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -57,7 +59,8 @@ import { NewRatingResponseComponent } from './new-rating-response/new-rating-res
     TooltipModule,
     PopupModule,
     ClarkContextMenuModule.forRoot(),
-    TeleporterModule
+    TeleporterModule,
+    CKEditorModule,
   ],
   providers: [],
   declarations: [
@@ -84,6 +87,7 @@ import { NewRatingResponseComponent } from './new-rating-response/new-rating-res
     CookiesComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
+    TextEditorComponent
   ],
   exports: [
     NavbarComponent,
@@ -110,6 +114,7 @@ import { NewRatingResponseComponent } from './new-rating-response/new-rating-res
     EmailBannerComponent,
     TeleporterModule,
     NewRatingResponseComponent,
+    TextEditorComponent
   ]
 })
 export class SharedModule {}
