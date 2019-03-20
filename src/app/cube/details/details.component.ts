@@ -45,6 +45,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   isOwnObject = false;
   errorStatus: number;
   redirectUrl: string;
+  released: boolean;
+  hasRevisions: boolean;
+  reviewer: boolean;
 
   userRating: {
     user?: User;
