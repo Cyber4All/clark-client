@@ -104,6 +104,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.hasRevisions = true;
     // delete after dev is done. Just need it to access the UI
     this.reviewer = true;
+    // this.hasRevisions = this.learningObject.hasRevisions;
     // this.reviewer = this.auth.hasReviewerAccess();
 
   }
