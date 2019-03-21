@@ -101,11 +101,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     });
 
-    // delete after dev is done. Just need it to access the UI
+    // FIXME: delete after dev is done. Just need it to access the UI
     this.hasRevisions = true;
     this.reviewer = true;
-    // this.hasRevisions = this.learningObject.hasRevisions;
-    // this.reviewer = this.auth.hasReviewerAccess();
+    /* FIXME: this.hasRevisions = this.learningObject.hasRevisions;
+    this.reviewer = this.auth.hasReviewerAccess();*/
 
     if (this.hasRevisions) {
       this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
