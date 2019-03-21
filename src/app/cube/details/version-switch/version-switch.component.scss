@@ -12,11 +12,12 @@ $height: 20px;
   padding: 20px;
   margin-bottom: 15px;
 }
+
 .text {
   font-size: 16px;
   color: $dark-text;
   padding-right: 10px;
-  margin-left: 10px;
+  padding-left: 50px;
   display: inline-block;
 }
 
@@ -58,7 +59,7 @@ $height: 20px;
     top: 0;
     bottom: 0;
     left: 0;
-    background: $blue-accent;
+    background: $dark-text;
     transition: all 0.2s ease;
   }
 

@@ -1,7 +1,7 @@
 <div class="inner">
   <div *ngIf="hasRevisions === true; then revisions; else noRevisions"></div>
   <ng-template #revisions>
-    <div class="text">Released Learning Object</div>
+    <div class="text">View Revisions</div>
     <div class="switch" [ngClass]="{'switch--on': state}" (click)="toggle()">
       <div class="switch__background"></div>
       <div class="switch__fob"></div>
