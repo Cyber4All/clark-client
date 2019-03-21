@@ -111,7 +111,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (this.hasRevisions) {
       this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
         const learningObjectName = decodeURIComponent(params['learningObjectName']);
-        // will get replaced with function to load revisions
+        // FIXME: will get replaced with function to load revisions
         this.fetchLearningObject(
           params['username'],
           learningObjectName,
