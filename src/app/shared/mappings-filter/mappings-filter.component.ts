@@ -12,7 +12,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { OutcomeService } from '../../core/outcome.service';
-import { LearningOutcome, StandardOutcome } from '../../../entity/index';
+import { LearningOutcome, StandardOutcome } from '@entity';
 import {  Subject, fromEvent } from 'rxjs';
 import { takeUntil, debounceTime, map, filter } from 'rxjs/operators';
 

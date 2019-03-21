@@ -19,7 +19,7 @@ import { ToasterService } from 'app/shared/toaster';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { AuthService } from 'app/core/auth.service';
-import { LearningObject } from '../../../entity/index';
+import { LearningObject } from '@entity';
 import { environment } from '@env/environment.prod';
 
 export const builderTransitions = trigger('builderTransition', [

@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { LearningObject, User } from '../../../../entity/index';
+import { LearningObject, User } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';

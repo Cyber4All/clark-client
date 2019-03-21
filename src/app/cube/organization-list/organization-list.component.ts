@@ -1,4 +1,4 @@
-import { User } from '../../../entity/index';
+import { User } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/user.service';

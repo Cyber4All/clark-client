@@ -14,7 +14,7 @@ import { getIcon } from '../file-icons';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { TimeFunctions } from '../../../onion/learning-object-builder/components/content-upload/app/shared/time-functions';
-import { LearningObject } from '../../../../entity/index';
+import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({

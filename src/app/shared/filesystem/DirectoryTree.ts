@@ -1,5 +1,5 @@
 import { getPaths } from './file-functions';
-import { LearningObject } from '../../../entity/index';
+import { LearningObject } from '@entity';
 
 /**
  * Class Representing Simple Filesystem

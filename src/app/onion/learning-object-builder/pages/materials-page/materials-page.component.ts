@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LearningObject } from '../../../../../entity/index';
+import { LearningObject } from '@entity';
 import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Subject ,  Observable  } from 'rxjs';

@@ -2,7 +2,7 @@
 import {takeUntil, debounceTime} from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObject } from '../../../entity/index';
+import { LearningObject } from '@entity';
 import { lengths } from '@cyber4all/clark-taxonomy';
 
 

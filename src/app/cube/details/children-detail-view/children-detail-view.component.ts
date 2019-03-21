@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObject } from '../../../../entity/index';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'cube-children-detail-view',

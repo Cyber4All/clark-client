@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { LearningObject } from '../../../../../../../../../entity/index';
+import { LearningObject } from '@entity';
 
 
 @Component({

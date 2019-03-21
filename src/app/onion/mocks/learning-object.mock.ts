@@ -1,4 +1,4 @@
-import { LearningObject, User } from '../../../entity/index';
+import { LearningObject, User } from '@entity';
 
 export const LOmock1 = new LearningObject({ author: new User(), name: 'LOmock1' });
 

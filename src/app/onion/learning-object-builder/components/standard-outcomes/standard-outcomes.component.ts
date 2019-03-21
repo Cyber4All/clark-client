@@ -7,7 +7,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { LearningOutcome, StandardOutcome } from '../../../../../entity/index';
+import { LearningOutcome, StandardOutcome } from '@entity';
 import { OutcomeService } from 'app/core/outcome.service';
 import {
   BuilderStore

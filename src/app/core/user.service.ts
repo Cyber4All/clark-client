@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
-import { User } from '../../entity/index';
+import { User } from '@entity';
 import * as md5 from 'md5';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';

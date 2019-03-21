@@ -4,7 +4,7 @@ import {
   LearningOutcome,
   User,
   StandardOutcome
-} from '../../../entity/index';
+} from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';

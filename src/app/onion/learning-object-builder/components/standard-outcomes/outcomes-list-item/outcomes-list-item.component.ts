@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { LearningOutcome } from '../../../../../../entity/index';
+import { LearningOutcome } from '@entity';
 import { SuggestedOutcome } from '../standard-outcomes.component';
 
 @Component({

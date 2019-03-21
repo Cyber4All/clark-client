@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { IncludedInService } from './included-in.service';
-import { LearningObject } from '../../../../entity/index';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'cube-details-included-in',

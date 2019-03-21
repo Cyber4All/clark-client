@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { LearningObject } from '../../../../entity/index';
+import { LearningObject } from '@entity';
 import { CollectionService } from '../../../core/collection.service';
 
 @Component({

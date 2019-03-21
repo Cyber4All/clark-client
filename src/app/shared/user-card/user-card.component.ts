@@ -1,7 +1,7 @@
 import { LearningObjectService } from '../../cube/learning-object.service';
 import { UserService } from '../../core/user.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { User, LearningObject } from '../../../entity/index';
+import { User, LearningObject } from '@entity';
 import { ModalService } from '../modals';
 import { ModalListElement } from '../modals';
 

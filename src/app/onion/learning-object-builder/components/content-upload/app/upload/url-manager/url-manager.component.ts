@@ -11,7 +11,7 @@ import {
 import { Subject } from 'rxjs';
 
 
-import { LearningObject } from '../../../../../../../../entity/index';
+import { LearningObject } from '@entity';
 
 
 @Component({

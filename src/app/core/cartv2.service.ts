@@ -1,6 +1,6 @@
 import { USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
-import { LearningObject } from '../../entity/index';
+import { LearningObject } from '@entity';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';

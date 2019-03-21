@@ -1,4 +1,4 @@
-import { User } from '../../../entity/index';
+import { User } from '@entity';
 import { AuthService } from '../../core/auth.service';
 import {
   ActivatedRouteSnapshot,

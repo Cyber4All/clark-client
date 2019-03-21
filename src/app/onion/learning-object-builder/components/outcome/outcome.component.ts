@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { levels } from '@cyber4all/clark-taxonomy';
-import { LearningOutcome } from '../../../../../entity/index';
+import { LearningOutcome } from '@entity';
 import {
   trigger,
   transition,
