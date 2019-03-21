@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
-import { AuthService } from './auth.service';
+import { AuthService, AuthUser } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
@@ -61,7 +61,7 @@ export class UserService {
    * @returns {Promise<User[]} array of users matching the text query
    * @memberof UserService
    */
-  searchUsers(query: string): Promise<User[]> {
+  searchUsers(query: string): Promise<AuthUser[]> {
     return this.http
       .get(
         USER_ROUTES.SEARCH_USERS(query),
@@ -76,7 +76,7 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(member => new  User(member));
+        return arr.map(user => Object.assign(new User(user).toPlainObject(), { accessGroups: user.accessGroups }) as AuthUser);
       });
   }
 

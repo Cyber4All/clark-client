@@ -1,0 +1,29 @@
+<div class="privileges">
+
+  <div class="privileges__banner">
+    <div class="banner__title">Privileges: {{ user.name | titlecase }}</div>
+    <div class="banner__sub">Edit this user's privileges for specific collections in the CLARK system.</div>
+  </div>
+
+  <div class="privileges__top">
+    <div class="privileges__subtitle">
+      Active Privileges
+    </div>
+    <div class="privileges__actions btn-group center">
+      <button class="button good">Add Privilege <i class="far fa-user-plus"></i></button>
+    </div>
+  </div>
+
+  <div class="privileges__list">
+    <div *ngFor="let p of privileges; let i = index" class="privileges__privilege">
+      <div class="privilege__role">{{ p[0] }}</div>
+      <div *ngIf="p[1] && collections[i]" class="privilege__collection">{{ collections[i] }}</div>
+      <div class="privilege__overlay">
+        <div class="privilege__delete">
+          <i class="far fa-trash-alt"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

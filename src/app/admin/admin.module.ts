@@ -18,6 +18,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { SharedModule } from 'app/shared/shared.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
+import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 
 
 
@@ -33,6 +34,7 @@ import { AdminUserCardComponent } from './components/user-card/user-card.compone
     FilterSearchComponent,
     DashboardComponent,
     AdminUserCardComponent,
+    UserPrivilegesComponent,
   ],
   imports: [
     CommonModule,

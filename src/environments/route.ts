@@ -22,7 +22,7 @@ export const USER_ROUTES = {
     )}/learning-objects/profile`;
   },
   SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search?text=` + query;
+    return `${environment.apiURL}/users/search?text=${'Nick Winner'}&limit=1`;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
