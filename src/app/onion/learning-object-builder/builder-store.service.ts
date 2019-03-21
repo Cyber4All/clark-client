@@ -800,7 +800,7 @@ export class BuilderStore {
           // tried to save an object with a name that already exists
           this.validator.errors.saveErrors.set(
             'name',
-            'A learning object with this name already exists!'
+            'A learning object with this name already exists! The title should be unique within your learning objects.'
           );
           this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
         } else {
@@ -828,7 +828,7 @@ export class BuilderStore {
           // tried to save an object with a name that already exists
           this.validator.errors.saveErrors.set(
             'name',
-            'A learning object with this name already exists!'
+            'A learning object with this name already exists! The title should be unique within your learning objects.'
           );
           this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
         } else {
