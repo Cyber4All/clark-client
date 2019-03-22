@@ -49,7 +49,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   revisedVersion = false;
   hasRevisions: boolean;
   reviewer: boolean;
-  showDownloadModal = false;
 
   userRating: {
     user?: User;
@@ -122,10 +121,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   viewReleased(released: boolean) {
     this.revisedVersion = released;
-  }
-
-  toggleDownloadModal(val?: boolean) {
-    this.showDownloadModal = val;
   }
 
   async fetchLearningObject(author: string, name: string) {
