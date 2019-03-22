@@ -11,7 +11,7 @@ import { FilterSearchComponent } from 'app/admin/components/filter-search/filter
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'app/shared/tooltips/tip.module';
 import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
-import { DashboardComponent } from 'app/onion/dashboard/dashboard.component';
+
 import { ModalModule } from 'app/shared/modals';
 import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -20,7 +20,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
-
 
 
 @NgModule({
@@ -33,7 +32,6 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
     SearchBarComponent,
     ContentWrapperComponent,
     FilterSearchComponent,
-    DashboardComponent,
     AdminUserCardComponent,
     UserPrivilegesComponent,
     PrivilegesListComponent,
