@@ -10,10 +10,10 @@ export const USER_ROUTES = {
       username
     )}/profile`;
   },
-  FETCH_REVIEWERS(collection: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
+  FETCH_MEMBERS(collection: string, query: any) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
       collection
-    )}/reviewers`;
+    )}/members?${querystring.stringify(query)}`;
   },
   LOAD_USER_PROFILE(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(

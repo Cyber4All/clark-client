@@ -40,7 +40,7 @@ export class UsersComponent implements OnInit {
 
   async fetchReviewers() {
     this.loading = true;
-    this.users = await this.user.fetchReviewers(this.activeCollection);
+    this.users = await this.user.fetchReviewers(this.activeCollection, {role: 'reviewer'});
     this.loading = false;
   }
 

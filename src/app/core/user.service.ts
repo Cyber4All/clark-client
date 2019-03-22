@@ -54,10 +54,10 @@ export class UserService {
       : Promise.resolve(false);
   }
 
-  fetchReviewers(collection: string): Promise<User[]> {
+  fetchReviewers(collection: string, role: any): Promise<User[]> {
     return this.http
       .get(
-        USER_ROUTES.FETCH_REVIEWERS(collection),
+        USER_ROUTES.FETCH_MEMBERS(collection, role),
         {
           withCredentials: true
         }
