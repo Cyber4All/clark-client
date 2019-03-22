@@ -59,3 +59,39 @@
   color: $dark-text;
   font-size: 20px;
 }
+
+.role-selector {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.role-selector__role {
+  background: linear-gradient(45deg, #f7f7f7, white);
+  padding: 40px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  cursor: pointer;
+  color: $dark-text;
+  text-transform: uppercase;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+
+  .svg-inline--fa,
+  .icon {
+    font-size: 35px;
+    margin-bottom: 5px;
+  }
+
+  &:hover,
+  &.role-selector__role--active {
+    color: white;
+    background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+    transform: scale(1.05);
+    box-shadow: 0 4px 28px 0 rgba(0, 0, 0, 0.25);
+  }
+}

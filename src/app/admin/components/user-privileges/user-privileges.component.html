@@ -56,11 +56,11 @@
 
 <ng-template #roleSelector>
   <div class="role-selector">
-    <div (click)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (click)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
       <i class="far fa-user-edit"></i>
       Reviewer
     </div>
-    <div (click)="selectedRole = 'curator'; advance()" class="role-selector__role">
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (click)="selectedRole = 'curator'; advance()" class="role-selector__role">
       <i class="far fa-user-crown"></i>
       Curator
     </div>
