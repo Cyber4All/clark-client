@@ -1,3 +1,7 @@
 <div class="carousel">
-  <ng-content></ng-content>
+  <ng-container *ngFor="let item of items; let i = index">
+    <div class="carousel__item" [@carousel]="direction" *ngIf="i === index">
+      <ng-container [ngTemplateOutlet]="item"></ng-container>
+    </div>
+  </ng-container>
 </div>
