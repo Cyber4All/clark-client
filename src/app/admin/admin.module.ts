@@ -19,6 +19,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
+import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
 
 
 
@@ -35,6 +36,7 @@ import { UserPrivilegesComponent } from './components/user-privileges/user-privi
     DashboardComponent,
     AdminUserCardComponent,
     UserPrivilegesComponent,
+    PrivilegesListComponent,
   ],
   imports: [
     CommonModule,
