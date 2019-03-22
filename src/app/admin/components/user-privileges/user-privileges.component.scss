@@ -41,11 +41,16 @@
 }
 
 .privileges__top {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  height: 44px;
   margin-bottom: 20px;
+  overflow: hidden;
+
+  .privileges__top-inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .privileges__subtitle {

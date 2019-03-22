@@ -5,15 +5,64 @@
     <div class="banner__sub">Edit this user's privileges for specific collections in the CLARK system.</div>
   </div>
 
+  <!-- Title Carousel -->
   <div class="privileges__top">
-    <div class="privileges__subtitle">
-      Active Privileges
-    </div>
-    <div class="privileges__actions btn-group center">
-      <button class="button good">Add Privilege <i class="far fa-user-plus"></i></button>
-    </div>
-  </div>
+    <clark-carousel [action$]="carouselAction$">
 
-  <clark-privileges-list [privileges]="privileges" [collections]="collections"></clark-privileges-list>
+      <ng-template>
+        <div class="privileges__top-inner">
+          <div class="privileges__subtitle">
+            Active Privileges
+          </div>
+          <div class="privileges__actions btn-group to-right">
+            <button (click)="advance()" class="button good">Add Privilege <i class="far fa-user-plus"></i></button>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template>
+        <div class="privileges__top-inner">
+          <div (click)="regress()" class="privileges__subtitle">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template>
+          <div class="privileges__top-inner">
+            <div (click)="regress()" class="privileges__subtitle">
+              <i class="fas fa-arrow-left"></i>
+            </div>
+          </div>
+        </ng-template>
+      
+    </clark-carousel>
+  </div>
+  
+  <!-- Main Carousel -->
+  <clark-carousel [action$]="carouselAction$">
+
+    <ng-template>
+      <clark-privileges-list #carouselItem [privileges]="privileges" [collections]="collections"></clark-privileges-list>
+    </ng-template>
+
+    <ng-template>
+      <ng-container [ngTemplateOutlet]="roleSelector"></ng-container>
+    </ng-template>
+
+  </clark-carousel>
 
 </div>
+
+<ng-template #roleSelector>
+  <div class="role-selector">
+    <div (click)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
+      <i class="far fa-user-edit"></i>
+      Reviewer
+    </div>
+    <div (click)="selectedRole = 'curator'; advance()" class="role-selector__role">
+      <i class="far fa-user-crown"></i>
+      Curator
+    </div>
+  </div>
+</ng-template>

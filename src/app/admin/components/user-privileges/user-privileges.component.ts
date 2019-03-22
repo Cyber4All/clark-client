@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthUser } from 'app/core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'clark-user-privileges',
@@ -13,6 +14,10 @@ export class UserPrivilegesComponent implements OnInit {
   privileges: string[][];
   collections: string[] = [];
 
+  selectedRole: 'curator' | 'reviewer';
+
+  carouselAction$: Subject<string> = new Subject();
+
   constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
@@ -24,5 +29,13 @@ export class UserPrivilegesComponent implements OnInit {
     for (const p of this.privileges) {
       this.collections.push((await this.collectionService.getCollection(p[1])).name);
     }
+  }
+
+  advance() {
+    this.carouselAction$.next('+1');
+  }
+
+  regress() {
+    this.carouselAction$.next('-1');
   }
 }
