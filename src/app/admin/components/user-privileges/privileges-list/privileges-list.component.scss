@@ -14,9 +14,9 @@
   justify-content: space-between;
 
   background: white;
-  padding: 6px;
+  padding: 10px;
   border-radius: 3px;
-  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.14);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   align-items: center;
 
   .privilege__left {
@@ -27,9 +27,9 @@
     color: $dark-text;
 
     .privilege__role {
-      background: $bright-blue;
+      background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
       color: white;
-      padding: 2px 4px;
+      padding: 3px 8px;
       border-radius: 2px;
       text-transform: uppercase;
     }
@@ -46,5 +46,10 @@
   .privilege__delete {
     color: $error-red;
     cursor: pointer;
+
+    .svg-inline--fa,
+    .icon {
+      margin-left: 2px;
+    }
   }
 }
