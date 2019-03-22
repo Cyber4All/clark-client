@@ -58,6 +58,11 @@
   text-transform: uppercase;
   color: $dark-text;
   font-size: 20px;
+
+  .svg-inline--fa,
+  .icon {
+    margin-right: 10px;
+  }
 }
 
 .role-selector {
