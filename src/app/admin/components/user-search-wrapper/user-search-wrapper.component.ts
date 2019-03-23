@@ -21,11 +21,11 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
     searchResults: User[] = [];
     // search query string, modeled to the search
     query: string;
-    // Array of users to add or remove from
+    // Array of users to add ori remove from
     // This array is used when rendering + or x next to user
     @Input() users: User[];
     // Fired when user is selected
-    @Output() selectedUserIndex: EventEmitter<number> = new EventEmitter();
+    @Output() selectedUser: EventEmitter<User> = new EventEmitter();
 
   constructor(
     private user: UserService,
@@ -82,7 +82,9 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
    * @memberof UserSearchWrapperComponent
    */
   selectUser(index: number) {
-    this.selectedUserIndex.emit(index);
+    this.selectedUser.emit(this.searchResults[index]);
+    this.searchResults = [];
+    this.clearSearch();
   }
 
   /**

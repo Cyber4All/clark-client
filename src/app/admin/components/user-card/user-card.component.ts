@@ -11,6 +11,7 @@ export class AdminUserCardComponent implements OnInit {
   @Input() user: User;
   @Input() reviewer = 'false';
   @Output() navigateToUserObjects = new EventEmitter<string>();
+  @Output() removeMember = new EventEmitter<string>();
 
   loading = false;
 
@@ -28,5 +29,9 @@ export class AdminUserCardComponent implements OnInit {
 
   showUserObjects() {
     this.navigateToUserObjects.emit(this.user.username);
+  }
+
+  removeReviewer() {
+    this.removeMember.emit(this.user.id);
   }
 }

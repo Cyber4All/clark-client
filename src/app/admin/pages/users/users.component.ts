@@ -13,6 +13,8 @@ export class UsersComponent implements OnInit {
   users: User[];
   activeCollection: string;
   loading = false;
+  displayRemoveReviewerModal = false;
+  removeReviewerId: string;
 
   constructor(
     private user: UserService,
@@ -42,6 +44,22 @@ export class UsersComponent implements OnInit {
     this.loading = true;
     this.users = await this.user.fetchReviewers(this.activeCollection, {role: 'reviewer'});
     this.loading = false;
+  }
+
+  async addReviewer(user: User) {
+    await this.user.assignMember(user.id, this.activeCollection, {role: 'reviewer'});
+    await this.fetchReviewers();
+  }
+
+  showModal(reviewerId: string) {
+    this.removeReviewerId = reviewerId;
+    this.displayRemoveReviewerModal = true;
+  }
+
+  async removeReviewer() {
+    this.displayRemoveReviewerModal = false;
+    await this.user.removeMember(this.activeCollection, this.removeReviewerId, {role: 'reviewer'} );
+    await this.fetchReviewers();
   }
 
   navigateToUserObjects(username: string) {

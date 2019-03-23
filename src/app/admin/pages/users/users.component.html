@@ -18,7 +18,7 @@
     <div *ngIf="isSearching" class="reviewer-search">
       <clark-user-search-wrapper
         [users]="users"
-        (selectedUserIndex)="addReviewer($event)"
+        (selectedUser)="addReviewer($event)"
       ></clark-user-search-wrapper>
     </div>
   </div>
@@ -30,13 +30,32 @@
           <div *ngFor="let r of scroll.viewPortItems">
             <clark-admin-user-card class="user-cards__card"
               [user]="r"
-              (navigateToUserObjects)="navigateToUserObjects($event)"
               [reviewer]="activeCollection && activeCollection?.length > 0"
+              (navigateToUserObjects)="navigateToUserObjects($event)"
+              (removeMember)="showModal($event)"
             ></clark-admin-user-card>
           </div>
         </div>
       </virtual-scroller>    
     </div>
+    <clark-popup *ngIf="displayRemoveReviewerModal" (closed)="displayRemoveReviewerModal= false">
+      <div #popupInner class="popup-inner">
+        <div class="modal-title">You are about to remove a reviewer</div>
+          <div class="modal-text">
+            <form class="input-wrapper">
+              <div class="header">
+                <div class="title">
+                  <span class="lo-name">Are you sure?</span>
+                </div>
+              </div>
+              <div class="btn-group to-right">
+                <button type="button" (click)="displayRemoveReviewerModal= false" class="button bad">Cancel</button>
+                <button type="button" (click)="removeReviewer()" class="button good">Yes</button>
+              </div>
+            </form>
+          </div>
+      </div>
+    </clark-popup>
   </div>
 
   <ng-template #loadingTemplate>
