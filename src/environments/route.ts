@@ -15,6 +15,27 @@ export const USER_ROUTES = {
       collection
     )}/members?${querystring.stringify(query)}`;
   },
+  ASSIGN_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
+  UPDATE_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
+  REMOVE_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
   LOAD_USER_PROFILE(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
-import { User } from '@cyber4all/clark-entity';
+import { User, Collection } from '@cyber4all/clark-entity';
 import * as md5 from 'md5';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
@@ -71,6 +71,64 @@ export class UserService {
         const arr = val;
         return arr.map(member => new  User(member));
       });
+  }
+
+  assignMember(memberId: string, collection: string, role: any): Promise<User> {
+    return this.http
+      .put(
+        USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
+        role,
+        {
+          withCredentials: true
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        return new User(res);
+      });
+  }
+
+  editMember(collection: string, memberId: string, role: any): Promise<User> {
+    return this.http
+      .patch(
+        USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId),
+        role,
+        {
+          withCredentials: true, responseType: 'text'
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        return new User(res);
+      });
+  }
+
+  async removeMember(
+    collection: string,
+    memberId: string,
+    role: any,
+  ): Promise<void> {
+    await this.http.request(
+        'delete',
+        USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
+        {
+          body: role,
+        },
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+    return Promise.resolve();
   }
 
   /**
