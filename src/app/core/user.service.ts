@@ -73,32 +73,39 @@ export class UserService {
       });
   }
 
-  assignMember(memberId: string, collection: string, role: any): Promise<User> {
-    return this.http
+  async assignMember(
+    memberId: string,
+    collection: string,
+    role: any
+  ): Promise<void> {
+    await this.http
       .put(
         USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
         role,
         {
-          withCredentials: true
+          withCredentials: true,
+          responseType: 'text',
         }
       )
       .pipe(
         retry(3),
         catchError(this.handleError)
       )
-      .toPromise()
-      .then((res: any) => {
-        return new User(res);
-      });
+      .toPromise();
   }
 
-  editMember(collection: string, memberId: string, role: any): Promise<User> {
+  editMember(
+    collection: string,
+    memberId: string,
+    role: any
+  ): Promise<User> {
     return this.http
       .patch(
         USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId),
         role,
         {
-          withCredentials: true, responseType: 'text'
+          withCredentials: true,
+          responseType: 'text',
         }
       )
       .pipe(
@@ -121,6 +128,8 @@ export class UserService {
         USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
         {
           body: role,
+          withCredentials: true,
+          responseType: 'text',
         },
       )
       .pipe(
@@ -128,7 +137,6 @@ export class UserService {
         catchError(this.handleError)
       )
       .toPromise();
-    return Promise.resolve();
   }
 
   /**
