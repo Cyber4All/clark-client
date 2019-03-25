@@ -44,6 +44,7 @@ import {CKEditorModule} from 'ng2-ckeditor';
 import { CarouselComponent } from './carousel/carousel.component';
 import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
 import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
+import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -94,7 +95,8 @@ import { DownloadNoticePopupComponent } from './popup-templates/download-notice-
     TextEditorComponent,
     CarouselComponent,
     CollectionSelectorPopupComponent,
-    DownloadNoticePopupComponent
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent
   ],
   exports: [
     NavbarComponent,
