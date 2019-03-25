@@ -4,7 +4,7 @@
       <div class="privilege__role">{{ p[0] }}</div>
       <div *ngIf="p[1] && collections[i]" class="privilege__collection">{{ collections[i] }}</div>
     </div>
-    <div class="privilege__delete">
+    <div (click)="remove(i)" class="privilege__delete">
       Remove <i class="far fa-trash-alt"></i>
     </div>
   </div>

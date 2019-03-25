@@ -46,7 +46,7 @@
   <clark-carousel [action$]="carouselAction$">
 
     <ng-template>
-      <clark-privileges-list #carouselItem [privileges]="privileges" [collections]="collections"></clark-privileges-list>
+      <clark-privileges-list #carouselItem [privileges]="privileges" [collections]="collections" (delete)="remove($event)"></clark-privileges-list>
     </ng-template>
 
     <ng-template>

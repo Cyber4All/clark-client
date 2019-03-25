@@ -44,8 +44,15 @@ export class UserPrivilegesComponent implements OnInit {
     this.selectedCollection = collectionName;
   }
 
+  remove(index: number) {
+    // TODO removal service logic here
+
+    this.privileges.splice(index, 1);
+    this.collections.splice(index, 1);
+  }
+
   submit() {
-    // TODO submission logic here
+    // TODO submission service logic here
 
     this.advance();
 
