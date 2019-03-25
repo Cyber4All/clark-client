@@ -26,11 +26,11 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
 
   menu = false;
 
-  //Create event emitters
+  // Create event emitters
   @Output() selectedVerb: EventEmitter<string> = new EventEmitter();
   @Output() selectedCategory: EventEmitter<string> = new EventEmitter();
   @Output() enteredText: EventEmitter<string> = new EventEmitter();
-  //this event emitter helps to change the overflow value from hidden to visible when the dropdown button is clicked
+  // this event emitter helps to change the overflow value from hidden to visible when the dropdown button is clicked
   @Output() overflowValue: EventEmitter<any> = new EventEmitter();
 
   /**
@@ -58,11 +58,11 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
         map((event) => (event.target as HTMLInputElement).value.trim()),
         takeUntil(this.componentDestroyed$)
       ).subscribe((val: string) => {
+        // remove bullets and update the text of the outcome
+        val = val.replace(/\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/g, '');
+
         const index = val.indexOf(' ');
         this.text = val;
-
-        // remove bullets and update the text of the outcome
-        this.text = this.text.replace(/\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/g, '');
 
         if (!this.verb) {
           // we haven't set a verb yet, let's set the verb now
