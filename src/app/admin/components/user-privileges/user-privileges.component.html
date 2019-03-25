@@ -33,6 +33,9 @@
             <div (click)="regress()" class="privileges__subtitle">
               <i class="fas fa-arrow-left"></i> Back to role selector
             </div>
+            <div class="privileges__actions btn-group to-right">
+              <button (click)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
+            </div>
           </div>
         </ng-template>
       
@@ -51,7 +54,7 @@
     </ng-template>
 
     <ng-template>
-      <clark-collections-grid></clark-collections-grid>
+      <clark-collections-grid (selected)="selectCollection($event)"></clark-collections-grid>
     </ng-template>
 
   </clark-carousel>

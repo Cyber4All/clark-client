@@ -15,6 +15,7 @@ export class UserPrivilegesComponent implements OnInit {
   collections: string[] = [];
 
   selectedRole: 'curator' | 'reviewer';
+  selectedCollection: string;
 
   carouselAction$: Subject<string> = new Subject();
 
@@ -31,11 +32,29 @@ export class UserPrivilegesComponent implements OnInit {
     }
   }
 
-  advance() {
-    this.carouselAction$.next('+1');
+  advance(distance: number = 1) {
+    this.carouselAction$.next('+' + distance);
   }
 
-  regress() {
-    this.carouselAction$.next('-1');
+  regress(distance: number = 1) {
+    this.carouselAction$.next('-' + distance);
+  }
+
+  selectCollection(collectionName: string) {
+    this.selectedCollection = collectionName;
+  }
+
+  submit() {
+    // TODO submission logic here
+
+    this.advance();
+
+    setTimeout(() => {
+      this.privileges.push([this.selectedRole, this.selectedCollection]);
+      this.getCollections();
+
+      this.selectCollection = undefined;
+      this.selectedRole = undefined;
+    }, 400);
   }
 }

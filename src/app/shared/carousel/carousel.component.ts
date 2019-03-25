@@ -57,13 +57,24 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   advance(distance: number = 1) {
     this.direction = 'next';
     this.cd.detectChanges();
-    this.index += distance;
+
+    if (this.index + distance >= this.items.length) {
+      this.index = distance - (this.items.length - this.index);
+    } else {
+      this.index += distance;
+    }
+
   }
 
   regress(distance: number = 1) {
     this.direction = 'prev';
     this.cd.detectChanges();
-    this.index -= distance;
+
+    if (this.index - distance < 0) {
+      this.index = this.items.length - distance;
+    } else {
+      this.index -= distance;
+    }
   }
 
   ngOnDestroy() {
