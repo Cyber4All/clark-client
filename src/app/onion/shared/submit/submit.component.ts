@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { LearningObject } from '@entity';
 import { ChangelogService } from 'app/core/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { first } from 'rxjs/operators';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'clark-submit',
@@ -15,22 +17,32 @@ export class SubmitComponent implements OnInit {
   @Input() learningObject: LearningObject;
 
   @Input() visible: boolean;
-  @Input() error: boolean;
 
   carouselAction$: Subject<string> = new Subject();
+  changelogComplete$: Subject<boolean> = new Subject();
 
   changelog: string;
+  licenseAccepted: boolean;
+  needsChangelog: boolean;
+
+  @Output() close: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private changelogService: ChangelogService,
     private collectionService: CollectionService,
-    private learningObjectService: LearningObjectService
+    private learningObjectService: LearningObjectService,
+    private toasterService: ToasterService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.learningObject.collection && !this.collection) {
+      this.collection = this.learningObject.collection;
+      this.getCollectionSelected(this.collection);
+    }
+  }
 
   /**
-   * Create a new changelog for the active learning object
+   * Create a new changelog for the active Learning Object
    */
   createChangelog() {
     if (this.changelog) {
@@ -41,17 +53,23 @@ export class SubmitComponent implements OnInit {
           this.changelog
         )
         .then(() => {
-          this.visible = false;
+          this.changelogComplete$.next(true);
         })
         .catch(e => {
           console.error(e);
-          this.visible = false;
-          // TODO display visible error handling to user
+          this.closeModal();
+          this.changelogComplete$.next(false);
+          this.toasterService.notify(
+            'Error!',
+            'We couldn\'t submit your change log at this time. Please try again later.',
+            'bad',
+            'far fa-times'
+          );
         });
     } else {
-      this.visible = false;
+      this.changelogComplete$.next(true);
+      this.closeModal();
     }
-    this.submitForReview(this.collection);
   }
 
   advance(distance: number = 1) {
@@ -63,36 +81,47 @@ export class SubmitComponent implements OnInit {
   }
 
   /**
-   * Submits a learning object to a collection for review and publishes the object
+   * Submits a Learning Object to a collection for review and publishes the object
    * @param {string} collection the name of the collection to submit to
    */
-  submitForReview(collection: string) {
-    this.collectionService
+  async submitForReview() {
+    let proceed = true;
+
+    if (this.needsChangelog) {
+      this.advance();
+      proceed = await this.changelogComplete$.pipe(first()).toPromise();
+    }
+
+    if (proceed) {
+      this.collectionService
       .submit({
         learningObjectId: this.learningObject.id,
         userId: this.learningObject.author.id,
-        collectionName: collection
+        collectionName: this.collection
       })
       .then(() => {
         this.learningObject.status = LearningObject.Status.WAITING;
-        this.learningObject.collection = collection;
-        // TODO provide feedback here
-        // this.toasterService.notify(
-        //   'Success!',
-        //   'Learning object submitted successfully!',
-        //   'good',
-        //   'far fa-check'
-        // );
+        this.learningObject.collection = this.collection;
+        this.toasterService.notify(
+          'Success!',
+          'Learning Object submitted successfully!',
+          'good',
+          'far fa-check'
+        );
+        this.closeModal();
         return true;
       })
       .catch(e => {
-        // this.handleServiceError(e, BUILDER_ERRORS.SUBMIT_REVIEW);
-        // TODO fix this
-        alert('an error occurred');
-        this.visible = false;
-        this.error = true;
+        this.toasterService.notify(
+          'Error!',
+          'We couldn\'t submit your Learning Object at this time. Please try again later.',
+          'bad',
+          'far fa-times'
+        );
+        this.closeModal();
         return false;
       });
+    }
   }
 
   /**
@@ -104,13 +133,12 @@ export class SubmitComponent implements OnInit {
     .then(val => {
       this.collection = collection;
       if (!val.isFirstSubmission) {
-        this.advance()
-      } else {
-        this.submitForReview(this.collection);
+        this.needsChangelog = true;
       }
     });
   }
-}
 
-/*
- */
+  closeModal() {
+    this.close.emit();
+  }
+}

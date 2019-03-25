@@ -1,0 +1,25 @@
+<div class="collections-grid">
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <div *ngIf="collections; else noneTemplate" class="collection-chooser">
+      <div *ngFor="let c of collections" class="collection-chooser__collection" [ngClass]="{'selected': currentCollection === c.abvName}" (click)="select(c.abvName)">
+        <div class="collection__logo" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
+        <div class="collection__name">{{ c.name }}</div>
+      </div>
+    </div>
+  </ng-container>
+  
+  <!-- loading -->
+  <ng-template #loadingTemplate>
+    <div class="loading-template">
+      <span><i class="far fa-spinner-third fa-spin"></i></span>
+      Loading collections...
+    </div>
+  </ng-template>
+  
+  <ng-template #noneTemplate>
+    <div class="none-template">
+      <span><i class="far fa-times"></i></span>
+      No collections found! This is probably an error.
+    </div>
+  </ng-template>
+</div>

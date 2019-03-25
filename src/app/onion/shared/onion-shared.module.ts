@@ -4,6 +4,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { LearningObjectStatusIndicatorComponent } from './status-indicator/status-indicator.component';
 import { SubmitComponent } from './submit/submit.component';
 import { EditChangelogComponent } from './edit-changelog/edit-changelog.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { EditChangelogComponent } from './edit-changelog/edit-changelog.componen
   imports: [
     CommonModule,
     SharedModule,
+    FormsModule
   ],
   exports: [
     LearningObjectStatusIndicatorComponent,

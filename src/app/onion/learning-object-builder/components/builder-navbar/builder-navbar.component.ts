@@ -9,7 +9,6 @@ import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -48,7 +47,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     private toasterService: ToasterService,
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
-    private learningObjectService: LearningObjectService,
     public validator: LearningObjectValidator,
     public store: BuilderStore
   ) {
@@ -71,12 +69,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       )
       .subscribe(val => {
         this.learningObject = val;
-        this.collectionService
-          .getCollection(this.learningObject.collection)
-          .then(col => {
-            this.collection = col;
-            this.buildTooltip();
-          });
+        this.getCollectionName();
       });
 
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
@@ -285,6 +278,15 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   cancelSubmission() {
     this.store.cancelSubmission();
+  }
+
+  getCollectionName() {
+    this.collectionService
+      .getCollection(this.learningObject.collection)
+      .then(col => {
+        this.collection = col;
+        this.buildTooltip();
+      });
   }
 
   ngOnDestroy() {

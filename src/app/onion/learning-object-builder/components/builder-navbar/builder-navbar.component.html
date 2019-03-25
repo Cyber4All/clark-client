@@ -138,7 +138,7 @@
   </div>
 </div>
 
-<clark-submit [learningObject]="store.learningObject" [visible]="showSubmission" [error]="submissionError"></clark-submit>
+<clark-submit *ngIf="showSubmission" [learningObject]="store.learningObject" [visible]="true" (close)="showSubmission = false; getCollectionName()"></clark-submit>
 
 <clark-context-menu (id)="submissionOptionsMenu = $event" (close)="toggleSubmissionOptionsMenu($event)">
   <div #contextMenu>

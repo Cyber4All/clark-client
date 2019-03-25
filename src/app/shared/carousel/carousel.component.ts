@@ -17,7 +17,9 @@ import { carousel } from './carousel.animation';
   selector: 'clark-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
-  animations: [ carousel ]
+  animations: [
+    carousel
+  ],
 })
 export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ContentChildren(TemplateRef, { descendants: false }) items: QueryList<
@@ -26,7 +28,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() action$: Subject<string> = new Subject();
 
-  direction: 'next' | 'prev' = 'next';
+  direction: 'next' | 'prev' | 'off' = 'off';
   index = 0;
 
   destroyed$: Subject<void> = new Subject();
