@@ -11,6 +11,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   box-sizing: border-box;
   position: absolute;
   background: $light-blue-gradient;
+  margin-bottom: 80px;
 
   &:after {
     content: '';

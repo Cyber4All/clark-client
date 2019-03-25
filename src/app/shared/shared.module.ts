@@ -127,7 +127,8 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     TextEditorComponent,
     CarouselComponent,
     CollectionSelectorPopupComponent,
-    DownloadNoticePopupComponent
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent
   ]
 })
 export class SharedModule {}
