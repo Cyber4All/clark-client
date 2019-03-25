@@ -106,7 +106,7 @@ export class LearningObjectService {
    * @param {string} id
    * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
-   */
+   
   getRevisedLearningObject(
     author: string,
     learningObjectName: string,
@@ -126,7 +126,7 @@ export class LearningObjectService {
         const learningObject = new LearningObject(res);
         return learningObject;
       });
-  }
+  }*/
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     const route = USER_ROUTES.LOAD_USER_PROFILE(
       username
