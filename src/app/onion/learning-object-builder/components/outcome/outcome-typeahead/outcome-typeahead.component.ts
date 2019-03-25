@@ -61,6 +61,9 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
         const index = val.indexOf(' ');
         this.text = val;
 
+        // remove bullets and update the text of the outcome
+        this.text = this.text.replace(/\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/g, '');
+
         if (!this.verb) {
           // we haven't set a verb yet, let's set the verb now
           if (index >= 0) {
