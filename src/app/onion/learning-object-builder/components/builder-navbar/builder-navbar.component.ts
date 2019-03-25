@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 
 @Component({

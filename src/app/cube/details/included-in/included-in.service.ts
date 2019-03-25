@@ -3,7 +3,7 @@ import { map, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 @Injectable()
 export class IncludedInService {
