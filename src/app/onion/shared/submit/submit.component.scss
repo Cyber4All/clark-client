@@ -1,0 +1,44 @@
+@import '~_vars.scss';
+
+:host > div {
+  padding: 0px;
+}
+
+.submit {
+  min-width: 650px;
+  min-height: 400px;
+}
+
+.banner {
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  background: linear-gradient(45deg, darken($bright-blue, 5), lighten($bright-blue, 5));
+
+  &:after {
+    content: '';
+    background: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.04;
+    mask: $cube-pattern repeat;
+  }
+
+  .banner__title {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .banner__sub {
+    color: white;
+    opacity: 0.85;
+    font-size: 16px;
+  }
+}
