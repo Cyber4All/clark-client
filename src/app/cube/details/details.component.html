@@ -39,8 +39,7 @@
     </div>
     <div class="sidebar" [ngStyle] = "{'margin-top': reviewer === true ? '-190px' : '-110px'}">
       <clark-version-switch *ngIf="reviewer === true" (toggled)="viewReleased($event)" [hasRevisions]="hasRevisions"></clark-version-switch>
-      <clark-reviewer-panel *ngIf="revisedVersion === true" [learningObject]="learningObject"></clark-reviewer-panel>
-      <cube-details-action-panel *ngIf="revisedVersion === false" [learningObject]="learningObject"></cube-details-action-panel>
+      <cube-details-action-panel [revisedDate]="revisedLearningObject.date" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
       <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
     </div>
   </div>
@@ -56,3 +55,9 @@
 <div *ngIf="errorStatus">
   <clark-error-status [statusCode]="errorStatus" [redirectUrl]="redirectUrl"></clark-error-status>
 </div>
+
+<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
+    <div style="max-width: 600px;" #popupInner>
+      <clark-download-notice (close)="toggleDownloadModal(false)"></clark-download-notice>
+    </div>
+  </clark-popup>

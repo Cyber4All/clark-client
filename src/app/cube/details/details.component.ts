@@ -35,6 +35,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject<void>();
   learningObject: LearningObject;
   revisedLearningObject: LearningObject;
+  releasedLearningObject: LearningObject;
+  revisedChildren: LearningObject[];
+  releasedChildren: LearningObject[];
   children: LearningObject[];
   returnUrl: string;
   loggedin: boolean;
@@ -46,9 +49,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
   isOwnObject = false;
   errorStatus: number;
   redirectUrl: string;
-  revisedVersion = false;
   hasRevisions: boolean;
   reviewer: boolean;
+  showDownloadModal = false;
+  revisedVersion = false; 
+
 
   userRating: {
     user?: User;
@@ -82,7 +87,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
       const learningObjectName = decodeURIComponent(params['learningObjectName']);
-      this.fetchLearningObject(
+      this.fetchReleasedLearningObject(
         params['username'],
         learningObjectName,
       );
@@ -103,15 +108,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
 
     // FIXME: delete after dev is done. Just need it to access the UI
-    this.hasRevisions = true;
     this.reviewer = true;
-    /* FIXME: this.hasRevisions = this.learningObject.hasRevisions;
-    this.reviewer = this.auth.hasReviewerAccess();*/
+    this.hasRevisions = true;
+    // this.hasRevisions = this.learningObject.hasRevisions;
+    // this.reviewer = this.auth.hasReviewerAccess();
 
-    if (this.hasRevisions && this.reviewer) {
+    if (this.hasRevisions) {
       this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
         const learningObjectName = decodeURIComponent(params['learningObjectName']);
-        this.fetchRevisedLearningObject(
+          this.fetchRevisedLearningObject(
           params['username'],
           learningObjectName,
         );
@@ -121,20 +126,33 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   viewReleased(released: boolean) {
     this.revisedVersion = released;
+    if (this.revisedVersion === true) {
+      this.setLearningObject(this.revisedLearningObject);
+    } else {
+      this.setLearningObject(this.releasedLearningObject);
+    }
   }
 
-  async fetchLearningObject(author: string, name: string) {
+  toggleDownloadModal(val?: boolean) {
+    this.showDownloadModal = val;
+  }
+
+  setLearningObject(learningObject: LearningObject) {
+    this.learningObject = learningObject;
+  }
+
+  async fetchReleasedLearningObject(author: string, name: string) {
     try {
       this.resetRatings();
-      this.learningObject = await this.learningObjectService.getLearningObject(
+      this.releasedLearningObject = await this.learningObjectService.getLearningObject(
         author,
         name
       );
-      this.learningObject.materials.files = this.learningObject.materials.files.map(
+      this.releasedLearningObject.materials.files = this.releasedLearningObject.materials.files.map(
         file => {
           file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-            username: this.learningObject.author.username,
-            loId: this.learningObject.id,
+            username: this.releasedLearningObject.author.username,
+            loId: this.releasedLearningObject.id,
             fileId: file.id,
             open: canViewInBrowser(file)
           });
@@ -142,7 +160,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       );
       // FIXME: This filter should be removed when service logic is updated
-      this.children = this.learningObject.children.filter(
+      this.releasedChildren = this.releasedLearningObject.children.filter(
         child => {
           return child.status === LearningObject.Status['RELEASED'] ||
           child.status === LearningObject.Status['REVIEW'] ||
@@ -151,8 +169,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       );
 
-      const owners = this.learningObject.contributors.map(user => user.username);
-      owners.push(this.learningObject.author.username);
+      const owners = this.releasedLearningObject.contributors.map(user => user.username);
+      owners.push(this.releasedLearningObject.author.username);
 
       if (
         this.auth.user &&
@@ -191,77 +209,77 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
       console.log(e);
     }
+    this.setLearningObject(this.releasedLearningObject);
   }
-    async fetchRevisedLearningObject(author: string, name: string) {
-      try {
-        this.resetRatings();
-        this.revisedLearningObject = await this.learningObjectService.getLearningObject(
-          author,
-          name
-        );
-        this.revisedLearningObject.materials.files = this.learningObject.materials.files.map(
-          file => {
-            file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-              username: this.revisedLearningObject.author.username,
-              loId: this.revisedLearningObject.id,
-              fileId: file.id,
-              open: canViewInBrowser(file)
-            });
-            return file;
-          }
-        );
-        // FIXME: This filter should be removed when service logic is updated
-        this.children = this.revisedLearningObject.children.filter(
-          child => {
-            return child.status === LearningObject.Status['RELEASED'] ||
-            child.status === LearningObject.Status['REVIEW'] ||
-            child.status === LearningObject.Status['PROOFING'] ||
-            child.status === LearningObject.Status['WAITING'];
-          }
-        );
-  
-        const owners = this.revisedLearningObject.contributors.map(user => user.username);
-        owners.push(this.revisedLearningObject.author.username);
-  
-        if (
-          this.auth.user &&
-          owners.includes(this.auth.username)
-        ) {
-          this.isOwnObject = true;
-        } else {
-          this.isOwnObject = false;
+
+  async fetchRevisedLearningObject(author: string, name: string) {
+    try {
+      this.resetRatings();
+      this.revisedLearningObject = await this.learningObjectService.getLearningObject(
+        author,
+        name
+      );
+      this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
+        file => {
+          file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+          username: this.revisedLearningObject.author.username,
+          loId: this.revisedLearningObject.id,
+          fileId: file.id,
+          open: canViewInBrowser(file)
+          });
+        return file;
         }
-  
-        this.learningObjectOwners = owners;
-        this.getLearningObjectRatings();
-      } catch (e) {
-  
-        /**
-         * TODO: change status to 404 when issue #149 is closed
-         * if server error is thrown, navigate to not-found page
-         */
-  
-        if (e instanceof HttpErrorResponse) {
-          if (e.status === 404) {
-            this.router.navigate(['not-found']);
-          }
-          if (e.status === 401) {
-            let redirectUrl = '';
-            this.route.url.subscribe(segments => {
-              if (segments) {
-                segments.forEach(segment => {
-                  redirectUrl = redirectUrl + '/' + segment.path;
-                });
-              }
-            });
-            this.errorStatus = e.status;
-            this.redirectUrl = redirectUrl;
-          }
+      );
+      // FIXME: This filter should be removed when service logic is updated
+      this.revisedChildren = this.revisedLearningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+          child.status === LearningObject.Status['REVIEW'] ||
+          child.status === LearningObject.Status['PROOFING'] ||
+          child.status === LearningObject.Status['WAITING'];
         }
-        console.log(e);
+      );
+
+      const owners = this.revisedLearningObject.contributors.map(user => user.username);
+      owners.push(this.revisedLearningObject.author.username);
+
+      if (
+        this.auth.user &&
+        owners.includes(this.auth.username)
+      ) {
+        this.isOwnObject = true;
+      } else {
+        this.isOwnObject = false;
       }
-      console.log(this.revisedLearningObject.id);
+
+      this.learningObjectOwners = owners;
+    } catch (e) {
+
+    /**
+    * TODO: change status to 404 when issue #149 is closed
+    * if server error is thrown, navigate to not-found page
+    */
+
+    if (e instanceof HttpErrorResponse) {
+      if (e.status === 404) {
+        this.router.navigate(['not-found']);
+      }
+      if (e.status === 401) {
+        let redirectUrl = '';
+        this.route.url.subscribe(segments => {
+          if (segments) {
+            segments.forEach(segment => {
+            redirectUrl = redirectUrl + '/' + segment.path;
+            });
+          }
+        });
+        this.errorStatus = e.status;
+        this.redirectUrl = redirectUrl;
+        }
+      }
+      console.log(e);
     }
+  }
 
   ngOnDestroy() {
     this.isDestroyed$.next();
