@@ -106,7 +106,7 @@ export class LearningObjectService {
    * @param {string} id
    * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
-   
+
   getRevisedLearningObject(
     author: string,
     learningObjectName: string,
