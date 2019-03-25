@@ -215,7 +215,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   async fetchRevisedLearningObject(author: string, name: string) {
     try {
       this.resetRatings();
-      this.revisedLearningObject = await this.learningObjectService.getLearningObject(
+      this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
         author,
         name
       );
