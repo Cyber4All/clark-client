@@ -2,11 +2,11 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { CollectionService, Collection } from 'app/core/collection.service';
 
 @Component({
-  selector: 'clark-collection-selector',
-  templateUrl: './collection-selector.component.html',
-  styleUrls: ['./collection-selector.component.scss']
+  selector: 'clark-collection-selector-popup',
+  templateUrl: './collection-selector-popup.component.html',
+  styleUrls: ['./collection-selector-popup.component.scss']
 })
-export class CollectionSelectorComponent implements OnInit {
+export class CollectionSelectorPopupComponent implements OnInit {
   // list of collections from service
   @Input() collections: Collection[];
 

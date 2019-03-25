@@ -42,6 +42,8 @@ import { NewRatingResponseComponent } from './new-rating-response/new-rating-res
 import { TextEditorComponent } from './text-editor.component';
 import {CKEditorModule} from 'ng2-ckeditor';
 import { CarouselComponent } from './carousel/carousel.component';
+import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
+import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -90,7 +92,9 @@ import { CarouselComponent } from './carousel/carousel.component';
     EmailBannerComponent,
     NewRatingResponseComponent,
     TextEditorComponent,
-    CarouselComponent
+    CarouselComponent,
+    CollectionSelectorPopupComponent,
+    DownloadNoticePopupComponent
   ],
   exports: [
     NavbarComponent,
@@ -119,7 +123,9 @@ import { CarouselComponent } from './carousel/carousel.component';
     TeleporterModule,
     NewRatingResponseComponent,
     TextEditorComponent,
-    CarouselComponent
+    CarouselComponent,
+    CollectionSelectorPopupComponent,
+    DownloadNoticePopupComponent
   ]
 })
 export class SharedModule {}
