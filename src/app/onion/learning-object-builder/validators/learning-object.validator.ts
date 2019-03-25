@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LearningOutcomeValidator } from './learning-outcome.validator';
-import { LearningOutcome, LearningObject, SubmittableLearningOutcome, SubmittableLearningObject } from '@cyber4all/clark-entity';
+import { LearningOutcome, LearningObject, SubmittableLearningOutcome, SubmittableLearningObject } from '@entity';
 
 export interface LearningObjectError {
   [key: string]: {

@@ -10,7 +10,6 @@ import {ToasterModule} from 'app/shared/toaster';
 import {BuilderRoutingModule} from './learning-object-builder.routing';
 import {SharedModule} from 'app/shared/shared.module';
 import {ContentUploadModule} from './components/content-upload/app/content-upload.module';
-import {CKEditorModule} from 'ng2-ckeditor';
 // components
 import { LearningObjectBuilderComponent } from './learning-object-builder.component';
 import { OutcomeComponent } from './components/outcome/outcome.component';
@@ -23,7 +22,6 @@ import { MetadataComponent } from './pages/info-page/metadata/metadata.component
 import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapper.component';
 import { StandardOutcomesComponent } from './components/standard-outcomes/standard-outcomes.component';
 import { OutcomesListItemComponent } from './components/standard-outcomes/outcomes-list-item/outcomes-list-item.component';
-import { TextEditorComponent } from './components/text-editor.component';
 import { LearningObjectDescriptionComponent } from './components/description.component';
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
@@ -44,7 +42,6 @@ import {EditorActionPanelModule} from './components/editor-action-panel/editor-a
     BuilderRoutingModule,
     FormsModule,
     ContentUploadModule,
-    CKEditorModule,
     ToasterModule.forRoot(),
     ReactiveFormsModule,
     DragDropModule,
@@ -64,7 +61,6 @@ import {EditorActionPanelModule} from './components/editor-action-panel/editor-a
     StandardOutcomesComponent,
     OutcomesListItemComponent,
     LearningObjectDescriptionComponent,
-    TextEditorComponent,
     UserDropdownComponent,
     ContributorPillComponent,
     ScaffoldComponent,

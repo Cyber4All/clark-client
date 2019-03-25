@@ -11,7 +11,7 @@ import {
 import { Subject } from 'rxjs';
 
 
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 
 @Component({

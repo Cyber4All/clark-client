@@ -7,7 +7,7 @@ import {
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService, AuthUser } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '@cyber4all/clark-entity';
+import { User } from '@entity';
 import {
   trigger,
   style,

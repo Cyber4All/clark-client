@@ -1,6 +1,5 @@
 import { AuthService, AUTH_GROUP } from '../core/auth.service';
 import { CookieModule, CookieService } from 'ngx-cookie';
-import { User } from '@cyber4all/clark-entity';
 import { FeaturedComponent } from 'app/cube/shared/featured/featured.component';
 import { TestBed, fakeAsync, tick, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';

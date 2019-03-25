@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningOutcome } from '@entity';
 import {
   BuilderStore,
   BUILDER_ACTIONS as actions
@@ -9,7 +9,7 @@ import { takeUntil, filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { ToasterService } from 'app/shared/toaster';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'clark-outcome-page',

@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
 
-import { LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningOutcome } from '@entity';
 import { text } from '@angular/core/src/render3/instructions';
 
 @Component({
