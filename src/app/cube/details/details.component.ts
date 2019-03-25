@@ -52,7 +52,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   hasRevisions: boolean;
   reviewer: boolean;
   showDownloadModal = false;
-  revisedVersion = false; 
+  revisedVersion = false;
 
 
   userRating: {
