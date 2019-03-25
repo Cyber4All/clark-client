@@ -100,6 +100,33 @@ export class LearningObjectService {
         return learningObject;
       });
   }
+    /**
+   * Fetches LearningObject by id
+   *
+   * @param {string} id
+   * @returns {Promise<LearningObject>}
+   * @memberof LearningObjectService
+   */
+  getRevisedLearningObject(
+    author: string,
+    learningObjectName: string,
+  ): Promise<LearningObject> {
+    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_REVISED_LEARNING_OBJECT(
+      author,
+      learningObjectName
+    );
+    return this.http
+      .get(route)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        const learningObject = new LearningObject(res);
+        return learningObject;
+      });
+  }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     const route = USER_ROUTES.LOAD_USER_PROFILE(
       username
