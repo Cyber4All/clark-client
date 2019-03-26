@@ -39,7 +39,7 @@
     </div>
     <div class="sidebar" [ngStyle] = "{'margin-top': reviewer === true ? '-190px' : '-110px'}">
       <clark-version-switch *ngIf="reviewer === true" (toggled)="viewReleased($event)" [hasRevisions]="hasRevisions"></clark-version-switch>
-      <cube-details-action-panel [revisedDate]="revisedLearningObject.date" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
+      <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
       <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
     </div>
   </div>

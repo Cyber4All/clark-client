@@ -17,6 +17,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   @Input() learningObject: LearningObject;
   @Input() revisedVersion: boolean;
+  @Input() reviewer: boolean;
   @Input() revisedDate: Date;
   @Input() releasedDate: Date;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
