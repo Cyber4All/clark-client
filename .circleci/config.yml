@@ -78,6 +78,8 @@ workflows:
           #   branches:
           #     only: /master/
       - cypress/run:
+          requires:
+            - test
           executor: cypress/browsers-chrome69
           browser: chrome
           start: npm start
