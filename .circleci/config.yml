@@ -74,12 +74,12 @@ workflows:
       - cypress/run:
           start: npm start
           wait-on: 'http://clark-client:4200'
-      - test:
-          requires:
-            - build
-          # filters:
-          #   branches:
-          #     only: /master/
+      # - test:
+      #     requires:
+      #       - build
+      #     # filters:
+      #     #   branches:
+      #     #     only: /master/
       - deploy:
           requires:
             - test
