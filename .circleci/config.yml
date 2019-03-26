@@ -76,7 +76,6 @@ workflows:
           requires:
             - cypress/install
           start: npm start
-          wait-on: 'http://localhost:4200'
       # - test:
       #     requires:
       #       - build
