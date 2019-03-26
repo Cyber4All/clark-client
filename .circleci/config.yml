@@ -13,13 +13,10 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
-          name: Unit Tests
-          command: npm test -- auth/
-      - run:
           name: Build Application
-          command: yarn ng build --prod --aot=false --build-optimizer=false --no-progress
+          command: yarn ng build --prod --aot=false --build-optimizer=false
       - persist_to_workspace: 
-          root: dist
+          root: ./
           paths: 
             - ./
   test:
@@ -28,9 +25,29 @@ jobs:
       - attach_workspace : 
           at: ~/clark-client
       - run:
+          name: Clone e2eBox Repository 
+          command: >-
+           ls && cd .. && git clone https://${github_username}:${github_password}@github.com/nvisal1/CLARK-e2eBox.git
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - run: 
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            mv ~/docker-compose /usr/local/bin/docker-compose
+      - setup_remote_docker
+      - run:
           name: Run e2e Tests
           command: |
-            echo "Test coming soon"
+            cd ../CLARK-e2eBox
+            docker-compose run cypress ./node_modules/.bin/cypress run --record --key ${cypress_dashboard_key} \ --config baseUrl=http://clark-client:4200
   deploy:
     <<: *defaults
     steps:
@@ -56,12 +73,12 @@ workflows:
           filters:
             branches:
               only: /master/
-      - test:
-          requires:
-            - build
-          filters:
-            branches:
-              only: /master/
+      # - test:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only: /master/
       - deploy:
           requires:
             - test
