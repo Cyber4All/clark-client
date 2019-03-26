@@ -58,7 +58,7 @@ jobs:
           name: Deploy to S3 
           command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
 workflows:
-  version: 2
+  version: 2.1
   build-and-test:
     jobs:
       - build
