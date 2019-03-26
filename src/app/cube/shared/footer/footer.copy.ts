@@ -3,5 +3,6 @@ export const COPY = {
     TEAM: 'Meet the Team',
     USAGE: 'Usage Statistics',
     HELP: 'Ask for Help',
-    TUTORIAL: 'Tutorial'
+    TUTORIAL: 'Tutorial',
+    TERMS: 'Terms of Service',
 };
