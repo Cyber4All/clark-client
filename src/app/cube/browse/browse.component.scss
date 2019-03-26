@@ -21,7 +21,7 @@ $learning-object-width: 820px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-content: flex-start;
+  align-items: flex-start;
 
   .column-title {
     text-align: left;
@@ -37,7 +37,6 @@ $learning-object-width: 820px;
     max-width: calc((#{$max-width} - #{$learning-object-width}) / 2 - 50px);
     min-width: 210px;
     width: 100%;
-    height: 650px;
     margin-right: 50px;
     background-color: white;
     box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.03);
