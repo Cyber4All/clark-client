@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-reviewer-panel',
