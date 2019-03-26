@@ -45,9 +45,11 @@ jobs:
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
-      - cypress/run:
-          start: npm start
-          wait-on: 'http://clark-client:4200'
+      - run:
+          name: Run e2e Tests
+          command: |
+            start: npm start
+          wait-on: 'http://localhost:4200'
 
   deploy:
     <<: *defaults
