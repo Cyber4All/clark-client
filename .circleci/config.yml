@@ -93,6 +93,9 @@ workflows:
       - test:
           requires:
             - build
+      - cypress:
+          requires:
+            - test
   build-test-and-deploy:
     jobs:
       - build:
@@ -102,9 +105,7 @@ workflows:
       - test:
           requires:
             - build
-      - cypress:
-          requires:
-            - test
+      
       # - deploy:
       #     requires:
       #       - test
