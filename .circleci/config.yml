@@ -75,7 +75,9 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
+          browser: chrome
           start: npm start
+           
       # - test:
       #     requires:
       #       - build
