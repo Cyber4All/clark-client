@@ -108,15 +108,12 @@ export class LearningObjectService {
    * @param {string} id
    * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
-
+  */
   getRevisedLearningObject(
-    author: string,
-    learningObjectName: string,
+    learningObjectId: String
   ): Promise<LearningObject> {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
-      author,
-      learningObjectName,
-      revisions
+    const route = USER_ROUTES.GET_LEARNING_OBJECT(
+     learningObjectId
     );
     return this.http
       .get(route)
@@ -129,7 +126,7 @@ export class LearningObjectService {
         const learningObject = new LearningObject(res);
         return learningObject;
       });
-  }*/
+  }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     const route = USER_ROUTES.LOAD_USER_PROFILE(
       username
