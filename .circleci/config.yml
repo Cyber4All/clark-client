@@ -102,9 +102,6 @@ workflows:
       - test:
           requires:
             - build
-          # filters:
-          #   branches:
-          #     only: /master/
       - cypress:
           requires:
             - test
