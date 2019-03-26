@@ -21,6 +21,9 @@ jobs:
             - ./
   test:
     <<: *defaults
+    docker:
+      - image: cypress/base:10
+    parallelism: 1
     steps:  
       - attach_workspace : 
           at: ~/clark-client
@@ -43,12 +46,6 @@ jobs:
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
-
-  cypress:
-    docker:
-      - image: cypress/base:10
-    parallelism: 1
-    steps:
       - checkout
       - restore_cache:
           keys:
@@ -73,7 +70,7 @@ jobs:
       - run:
           name: Run Cypress tests
           command: 'npx cypress run --config baseUrl=http://clark-client:4200'
-
+      
   deploy:
     <<: *defaults
     steps:
@@ -93,9 +90,6 @@ workflows:
       - test:
           requires:
             - build
-      - cypress:
-          requires:
-            - test
   build-test-and-deploy:
     jobs:
       - build:
