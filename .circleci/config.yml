@@ -45,9 +45,6 @@ jobs:
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
-      - cypress/run:
-          start: npm start
-          wait-on: 'http://clark-client:4200'
 
   deploy:
     <<: *defaults
@@ -74,12 +71,15 @@ workflows:
           filters:
             branches:
               only: /master/
+      - cypress/run:
+          start: npm start
+          wait-on: 'http://clark-client:4200'
       - test:
           requires:
             - build
-          filters:
-            branches:
-              only: /master/
+          # filters:
+          #   branches:
+          #     only: /master/
       - deploy:
           requires:
             - test
