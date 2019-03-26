@@ -69,7 +69,7 @@ jobs:
           at: ~/
       - run:
           name: Run Cypress tests
-          command: 'npx cypress run --config baseUrl=http://clark-client:4200'
+          command: 'npx cypress run --config baseUrl=http://localhost:4200'
       
   deploy:
     <<: *defaults
