@@ -83,12 +83,10 @@ export class LearningObjectService {
   getLearningObject(
     author: string,
     learningObjectName: string,
-    revisions: boolean
   ): Promise<LearningObject> {
     const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,
-      learningObjectName,
-      revisions
+      learningObjectName
     );
     return this.http
       .get(route)

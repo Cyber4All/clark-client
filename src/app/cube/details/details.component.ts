@@ -132,8 +132,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.resetRatings();
       this.releasedLearningObject = await this.learningObjectService.getLearningObject(
         author,
-        name,
-        this.revisedVersion
+        name
       );
       this.releasedLearningObject.materials.files = this.releasedLearningObject.materials.files.map(
         file => {
@@ -170,7 +169,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       this.learningObjectOwners = owners;
       this.hasRevisions = this.releasedLearningObject.hasRevision;
-      console.log(this.hasRevisions);
       this.getLearningObjectRatings();
     } catch (e) {
 
