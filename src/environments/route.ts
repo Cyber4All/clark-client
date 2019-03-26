@@ -196,10 +196,10 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
     return `${environment.apiURL}/learning-objects?${query}`;
   },
-  GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName) {
+  GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName, revisions) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       author
-    )}/${encodeURIComponent(learningObjectName)}`;
+    )}/${encodeURIComponent(learningObjectName)}?${encodeURIComponent(revisions)}`;
   },
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_META(name: string) {
