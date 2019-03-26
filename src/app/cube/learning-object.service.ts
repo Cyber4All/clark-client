@@ -82,11 +82,13 @@ export class LearningObjectService {
    */
   getLearningObject(
     author: string,
-    learningObjectName: string
+    learningObjectName: string,
+    revisions: boolean
   ): Promise<LearningObject> {
     const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,
-      learningObjectName
+      learningObjectName,
+      revisions
     );
     return this.http
       .get(route)
@@ -111,9 +113,10 @@ export class LearningObjectService {
     author: string,
     learningObjectName: string,
   ): Promise<LearningObject> {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_REVISED_LEARNING_OBJECT(
+    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,
-      learningObjectName
+      learningObjectName,
+      revisions
     );
     return this.http
       .get(route)
