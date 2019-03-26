@@ -71,7 +71,10 @@ workflows:
           filters:
             branches:
               only: /master/
+      - cypress/install
       - cypress/run:
+          requires:
+            - cypress/install
           start: npm start
           wait-on: 'http://clark-client:4200'
       # - test:
