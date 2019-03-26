@@ -104,11 +104,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       if (!this.loggedin) {
         this.isOwnObject = false;
+        this.reviewer = false;
+        this.hasRevisions = false;
       }
     });
 
     // FIXME: delete after dev is done. Just need it to access the UI
-    this.reviewer = true;
+    this.reviewer = false;
     this.hasRevisions = true;
     // this.hasRevisions = this.learningObject.hasRevisions;
     // this.reviewer = this.auth.hasReviewerAccess();
@@ -137,16 +139,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.showDownloadModal = val;
   }
 
-  setLearningObject(learningObject: LearningObject) {
-    this.learningObject = learningObject;
-  }
-
   async fetchReleasedLearningObject(author: string, name: string) {
+    console.log(this.revisedVersion)
     try {
       this.resetRatings();
       this.releasedLearningObject = await this.learningObjectService.getLearningObject(
         author,
-        name
+        name,
+        this.revisedVersion
       );
       this.releasedLearningObject.materials.files = this.releasedLearningObject.materials.files.map(
         file => {
@@ -215,9 +215,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   async fetchRevisedLearningObject(author: string, name: string) {
     try {
       this.resetRatings();
-      this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
+      this.revisedLearningObject = await this.learningObjectService.getLearningObject(
         author,
-        name
+        name,
+        this.revisedVersion
       );
       this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
         file => {
@@ -279,6 +280,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
       console.log(e);
     }
+  }
+
+  setLearningObject(learningObject: LearningObject) {
+    this.learningObject = learningObject;
   }
 
   ngOnDestroy() {
