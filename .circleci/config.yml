@@ -77,7 +77,6 @@ workflows:
           # filters:
           #   branches:
           #     only: /master/
-      - cypress/install
       - cypress/run:
           requires:
             - cypress/install
