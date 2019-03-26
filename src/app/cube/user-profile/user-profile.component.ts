@@ -1,7 +1,7 @@
 import { UserService } from '../../core/user.service';
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { AuthService } from '../../core/auth.service';
-import { User } from '@cyber4all/clark-entity';
+import { User } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { COPY } from './user-profile.copy';

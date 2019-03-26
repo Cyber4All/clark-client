@@ -5,7 +5,7 @@ import {
   Output,
   ChangeDetectorRef
 } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 import { BUILDER_ACTIONS, BuilderStore } from '../../../builder-store.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { carousel } from './clark-change-status-modal.animations';
