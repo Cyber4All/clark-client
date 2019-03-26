@@ -71,20 +71,23 @@ workflows:
           filters:
             branches:
               only: /master/
-      - cypress/install
+      - test:
+          requires:
+            - build
+          # filters:
+          #   branches:
+          #     only: /master/
+      - cypress/install:
+          attach_workspace:
+            at: ~/
       - cypress/run:
           requires:
             - cypress/install
+          attach_workspace:
+            at: ~/
           executor: cypress/browsers-chrome69
           browser: chrome
           start: npm start
-           
-      # - test:
-      #     requires:
-      #       - build
-      #     # filters:
-      #     #   branches:
-      #     #     only: /master/
       # - deploy:
       #     requires:
       #       - test
