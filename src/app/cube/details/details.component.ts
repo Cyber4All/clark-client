@@ -110,28 +110,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
 
     // FIXME: delete after dev is done. Just need it to access the UI
-    this.reviewer = false;
-    this.hasRevisions = true;
-    // this.hasRevisions = this.learningObject.hasRevisions;
+    this.reviewer = true;
     // this.reviewer = this.auth.hasReviewerAccess();
-
-    if (this.hasRevisions) {
-      this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
-        const learningObjectName = decodeURIComponent(params['learningObjectName']);
-          this.fetchRevisedLearningObject(
-          params['username'],
-          learningObjectName,
-        );
-      });
-    }
   }
 
   viewReleased(released: boolean) {
     this.revisedVersion = released;
     if (this.revisedVersion === true) {
-      this.setLearningObject(this.revisedLearningObject);
+      this.learningObject = this.revisedLearningObject;
     } else {
-      this.setLearningObject(this.releasedLearningObject);
+      this.learningObject = this.releasedLearningObject;
     }
   }
 
@@ -140,7 +128,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async fetchReleasedLearningObject(author: string, name: string) {
-    console.log(this.revisedVersion)
     try {
       this.resetRatings();
       this.releasedLearningObject = await this.learningObjectService.getLearningObject(
@@ -182,6 +169,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
 
       this.learningObjectOwners = owners;
+      this.hasRevisions = this.releasedLearningObject.hasRevision;
+      console.log(this.hasRevisions);
       this.getLearningObjectRatings();
     } catch (e) {
 
@@ -209,81 +198,77 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
       console.log(e);
     }
-    this.setLearningObject(this.releasedLearningObject);
-  }
+    this.learningObject = this.releasedLearningObject;
 
-  async fetchRevisedLearningObject(author: string, name: string) {
-    try {
-      this.resetRatings();
-      this.revisedLearningObject = await this.learningObjectService.getLearningObject(
-        author,
-        name,
-        this.revisedVersion
-      );
-      this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
-        file => {
-          file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-          username: this.revisedLearningObject.author.username,
-          loId: this.revisedLearningObject.id,
-          fileId: file.id,
-          open: canViewInBrowser(file)
-          });
-        return file;
-        }
-      );
-      // FIXME: This filter should be removed when service logic is updated
-      this.revisedChildren = this.revisedLearningObject.children.filter(
-        child => {
-          return child.status === LearningObject.Status['RELEASED'] ||
-          child.status === LearningObject.Status['REVIEW'] ||
-          child.status === LearningObject.Status['PROOFING'] ||
-          child.status === LearningObject.Status['WAITING'];
-        }
-      );
-
-      const owners = this.revisedLearningObject.contributors.map(user => user.username);
-      owners.push(this.revisedLearningObject.author.username);
-
-      if (
-        this.auth.user &&
-        owners.includes(this.auth.username)
-      ) {
-        this.isOwnObject = true;
-      } else {
-        this.isOwnObject = false;
-      }
-
-      this.learningObjectOwners = owners;
-    } catch (e) {
-
-    /**
-    * TODO: change status to 404 when issue #149 is closed
-    * if server error is thrown, navigate to not-found page
-    */
-
-    if (e instanceof HttpErrorResponse) {
-      if (e.status === 404) {
-        this.router.navigate(['not-found']);
-      }
-      if (e.status === 401) {
-        let redirectUrl = '';
-        this.route.url.subscribe(segments => {
-          if (segments) {
-            segments.forEach(segment => {
-            redirectUrl = redirectUrl + '/' + segment.path;
+    if (this.hasRevisions) {
+      try {
+        this.resetRatings();
+        this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
+          this.learningObject.id
+        );
+        this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
+          file => {
+            file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+            username: this.revisedLearningObject.author.username,
+            loId: this.revisedLearningObject.id,
+            fileId: file.id,
+            open: canViewInBrowser(file)
             });
+          return file;
           }
-        });
-        this.errorStatus = e.status;
-        this.redirectUrl = redirectUrl;
-        }
-      }
-      console.log(e);
-    }
-  }
+        );
+        // FIXME: This filter should be removed when service logic is updated
+        this.revisedChildren = this.revisedLearningObject.children.filter(
+          child => {
+            return child.status === LearningObject.Status['RELEASED'] ||
+            child.status === LearningObject.Status['REVIEW'] ||
+            child.status === LearningObject.Status['PROOFING'] ||
+            child.status === LearningObject.Status['WAITING'];
+          }
+        );
 
-  setLearningObject(learningObject: LearningObject) {
-    this.learningObject = learningObject;
+        const owners = this.revisedLearningObject.contributors.map(user => user.username);
+        owners.push(this.revisedLearningObject.author.username);
+
+        if (
+          this.auth.user &&
+          owners.includes(this.auth.username)
+        ) {
+          this.isOwnObject = true;
+        } else {
+          this.isOwnObject = false;
+        }
+
+        this.learningObjectOwners = owners;
+      } catch (e) {
+
+      /**
+      * TODO: change status to 404 when issue #149 is closed
+      * if server error is thrown, navigate to not-found page
+      */
+
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === 404) {
+          this.router.navigate(['not-found']);
+        }
+        if (e.status === 401) {
+          let redirectUrl = '';
+          this.route.url.subscribe(segments => {
+            if (segments) {
+              segments.forEach(segment => {
+              redirectUrl = redirectUrl + '/' + segment.path;
+              });
+            }
+          });
+          this.errorStatus = e.status;
+          this.redirectUrl = redirectUrl;
+          }
+        }
+        console.log(e);
+      }
+    } else {
+      this.revisedLearningObject = this.learningObject;
+    }
   }
 
   ngOnDestroy() {
