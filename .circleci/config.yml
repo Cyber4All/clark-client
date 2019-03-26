@@ -44,7 +44,7 @@ jobs:
             mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
 
-  cypress/run:
+  cypress:
     docker:
       - image: cypress/base:10
     parallelism: 1
@@ -105,7 +105,7 @@ workflows:
           # filters:
           #   branches:
           #     only: /master/
-      - cypress/run:
+      - cypress:
           requires:
             - test
       # - deploy:
