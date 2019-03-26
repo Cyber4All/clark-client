@@ -75,6 +75,7 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
+          executor: cypress/browsers-chrome69
           browser: chrome
           start: npm start
            
