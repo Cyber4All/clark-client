@@ -10,7 +10,7 @@ describe('Library', () => {
     beforeEach(() => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
-            cy.visit(route[0]);
+            cy.visit(route['home']);
         });
     });   
     // =============================================================

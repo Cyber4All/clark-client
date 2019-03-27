@@ -1,6 +1,6 @@
 
 {
-    "home": "",
+    "home": "/",
     "login": "auth/login",
     "browse": "browse",
     "dashboard": "onion/dashboard",

@@ -13,8 +13,9 @@ describe('Browse', () => {
     beforeEach(() => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
+            console.log(route)
             home = route;
-            cy.visit(home[0]);
+            cy.visit(home['home']);
         });
         cy.fixture('names.json').then((name) => {
             names = name;
@@ -104,7 +105,7 @@ describe('Browse', () => {
     });
 
     it('Select a filter and then clear filters', () => {
-        cy.visit(home[1]);
+        cy.visit(home['login']);
         cy.wait(1000);
 
         // select filter and wait 1 second for query to fire (this is debounced 650ms in the client!)

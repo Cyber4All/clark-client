@@ -3,7 +3,7 @@ describe('New Rating', () => {
     before(() => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
-            cy.visit(route[0]);
+            cy.visit(route['home']);
         });
 
         // wait for page to load
