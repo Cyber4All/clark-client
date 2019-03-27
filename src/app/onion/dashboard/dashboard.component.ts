@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
+import { ActivatedRoute } from '@angular/router';
 
 export interface DashboardLearningObject extends LearningObject {
   status: LearningObject.Status;
@@ -108,7 +109,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private notificationService: ToasterService,
     private contextMenuService: ContextMenuService,
     private nav: NavbarService,
-    public auth: AuthService // used in markup,
+    public auth: AuthService, // used in markup,
+    public route: ActivatedRoute
   ) {
     const hours = new Date().getHours();
     if (hours >= 17) {
@@ -132,6 +134,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.filtersModified$.pipe(takeUntil(this.destroyed$), debounceTime(400), ).subscribe(async () => {
       const filters = {status: Array.from(this.filters.keys())};
       this.learningObjects = await this.getLearningObjects(filters);
+    });
+
+    // if the user is trying to edit a released learning object, then get the status and alert the user
+    this.route.queryParams.subscribe(queryParams => {
+      if (queryParams.status && queryParams.status === '403') {
+        this.notificationService.notify('Error!', 'This learning object is currently released and cannot be edited!', 'bad', 'far fa-times');
+      }
     });
   }
 
