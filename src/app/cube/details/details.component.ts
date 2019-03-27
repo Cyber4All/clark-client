@@ -108,10 +108,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.hasRevisions = false;
       }
     });
-
-    // FIXME: delete after dev is done. Just need it to access the UI
-    this.reviewer = true;
-    // this.reviewer = this.auth.hasReviewerAccess();
+    this.reviewer = this.auth.hasReviewerAccess();
   }
 
   viewReleased(released: boolean) {
@@ -169,6 +166,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       this.learningObjectOwners = owners;
       this.hasRevisions = this.releasedLearningObject.hasRevision;
+      this.learningObject = this.releasedLearningObject;
       this.getLearningObjectRatings();
     } catch (e) {
 
@@ -196,7 +194,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
       console.log(e);
     }
-    this.learningObject = this.releasedLearningObject;
 
     if (this.hasRevisions) {
       try {
