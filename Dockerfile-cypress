@@ -21,5 +21,7 @@ COPY cypress.json /usr/src/app/cypress.json
 
 WORKDIR /usr/src/app
 
+RUN ls
+
 # confirm the cypress install
 RUN ./node_modules/.bin/cypress verify
