@@ -4,6 +4,9 @@ import * as querystring from 'querystring';
 export const ADMIN_ROUTES = {
   CREATE_CHANGELOG(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
+  },
+  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(abvCollectionName)}/members/${encodeURIComponent(userId)}`;
   }
 };
 
