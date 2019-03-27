@@ -127,9 +127,12 @@ export const USER_ROUTES = {
   DOWNLOAD_OBJECT(username, author, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/library/learning-objects/${encodeURIComponent(
-      author
-    )}/${encodeURIComponent(learningObjectName)}`;
+    )}/learning-objects/${encodeURIComponent(learningObjectName)}/bundle`;
+  },
+  DOWNLOAD_REVISED_OBJECT(username, learningObjectName) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${learningObjectName}/bundle?revision`;
   },
   GET_SAME_ORGANIZATION(organization) {
     return `${
