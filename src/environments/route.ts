@@ -6,7 +6,12 @@ export const ADMIN_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
   },
   MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string) {
-    return `${environment.apiURL}/collections/${encodeURIComponent(abvCollectionName)}/members/${encodeURIComponent(userId)}`;
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      abvCollectionName
+    )}/members/${encodeURIComponent(userId)}`;
+  },
+  GET_USER_ROLES(id: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(id)}/roles`;
   }
 };
 

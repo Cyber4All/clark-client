@@ -12,8 +12,8 @@ import { PrivilegeService } from 'app/core/privilege.service';
 export class UserPrivilegesComponent implements OnInit {
   @Input() user: AuthUser;
 
-  privileges: string[][];
-  collections: string[] = [];
+  privileges: string[][] = [];
+  collections: { [index: string]: string } = {};
 
   selectedRole: 'curator' | 'reviewer';
   selectedCollection: string;
@@ -23,17 +23,26 @@ export class UserPrivilegesComponent implements OnInit {
   constructor(private collectionService: CollectionService, private privilegeService: PrivilegeService) {}
 
   ngOnInit() {
-    this.privileges = this.user.accessGroups.map(x => x.split('@'));
+    this.getUserRoles();
+  }
+
+  private getUserRoles() {
+    this.privilegeService.getRoles(this.user.id).then(roles => {
+      this.privileges = roles.map(x => x.split('@'));
     this.getCollections();
+    });
   }
 
   async getCollections() {
-    for (const p of this.privileges) {
-      this.collections.push(
-        (await this.collectionService.getCollection(p[1])).name
+    await Promise.all(
+      this.privileges.map(async priv => {
+        const [_, collectionId] = priv;
+        this.collections[
+          collectionId
+        ] = (await this.collectionService.getCollection(collectionId)).name;
+      })
       );
     }
-  }
 
   advance(distance: number = 1) {
     this.carouselAction$.next('+' + distance);
@@ -48,8 +57,7 @@ export class UserPrivilegesComponent implements OnInit {
     this.selectedCollection = collectionName;
   }
 
-  async submit() {
-    alert(this.selectedCollection);
+  submit() {
     // TODO submission service logic here
     let collectionIndex = -1;
     for (let i = 0, l = this.privileges.length; i <l; i++) {
@@ -73,31 +81,32 @@ export class UserPrivilegesComponent implements OnInit {
       this.advance();
 
       setTimeout(() => {
-
         if (collectionIndex >= 0) {
           this.privileges.splice(collectionIndex, 1);
-          this.collections.splice(collectionIndex, 1);
         }
 
         this.privileges.push([this.selectedRole, this.selectedCollection]);
         this.getCollections();
 
-        this.selectCollection = undefined;
+          this.selectedCollection = undefined;
         this.selectedRole = undefined;
       }, 400);
-    }).catch(error => {
+      })
+      .catch(error => {
       console.error(error);
-      alert('An error occurred!');
     });
   }
 
   async remove(index: number) {
-    this.privilegeService.removeMembership(this.privileges[index][1], this.user.id).then(() => {
+    const [_, collection] = this.privileges[index];
+    this.privilegeService
+      .removeMembership(collection, this.user.id)
+      .then(() => {
       this.privileges.splice(index, 1);
-      this.collections.splice(index, 1);
-    }).catch(error => {
+        delete this.collections[collection];
+      })
+      .catch(error => {
       console.error(error);
-      alert('An error occurred!');
     });
   }
 }

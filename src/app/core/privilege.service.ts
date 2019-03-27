@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { ADMIN_ROUTES } from '@env/route';
@@ -10,6 +10,23 @@ import { ADMIN_ROUTES } from '@env/route';
 export class PrivilegeService {
   constructor(private http: HttpClient) {}
 
+  /**
+   * Fetches roles for specified user
+   *
+   * @param {string} id [Id of the user to fetch roles for]
+   * @returns {Promise<string[]>}
+   * @memberof PrivilegeService
+   */
+  getRoles(id: string): Promise<string[]> {
+    return this.http
+      .get<{ roles: string[] }>(ADMIN_ROUTES.GET_USER_ROLES(id))
+      .pipe(
+        retry(3),
+        map(data => data.roles),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
   /**
    * Create a new changelog for the given learning object
    *

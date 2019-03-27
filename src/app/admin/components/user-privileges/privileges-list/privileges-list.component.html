@@ -1,8 +1,8 @@
 <div class="privileges__list">
-  <div *ngFor="let p of privileges; let i = index" class="privileges__privilege">
+  <div *ngFor="let p of privileges; let i = index;" class="privileges__privilege">
     <div class="privilege__left">
       <div class="privilege__role">{{ p[0] }}</div>
-      <div *ngIf="p[1] && collections[i]" class="privilege__collection">{{ collections[i] }}</div>
+      <div *ngIf="p[1] && collections[p[1]]" class="privilege__collection">{{ collections[p[1]]}}</div>
     </div>
     <div (click)="remove(i)" class="privilege__delete">
       Remove <i class="far fa-trash-alt"></i>

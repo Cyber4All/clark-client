@@ -6,6 +6,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./privileges-list.component.scss']
 })
 export class PrivilegesListComponent implements OnInit {
+  @Input() privileges: string[][] = [];
+  @Input() collections: { [index: string]: string } = {};
 
   @Input() privileges: string[][];
   @Input() collections: string[];
