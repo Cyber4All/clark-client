@@ -40,17 +40,17 @@
     </div>
     <clark-popup *ngIf="displayRemoveReviewerModal" (closed)="displayRemoveReviewerModal= false">
       <div #popupInner class="popup-inner">
-        <div class="modal-title">You are about to remove a reviewer</div>
+        <div class="modal-title">Are You Sure?</div>
           <div class="modal-text">
             <form class="input-wrapper">
               <div class="header">
                 <div class="title">
-                  <span class="lo-name">Are you sure?</span>
+                  <span class="lo-name">You are about to remove a reviewer and you can't undo this!</span>
                 </div>
               </div>
-              <div class="btn-group to-right">
-                <button type="button" (click)="displayRemoveReviewerModal= false" class="button bad">Cancel</button>
-                <button type="button" (click)="removeReviewer()" class="button good">Yes</button>
+              <div class="btn-group center">
+                <button type="button" (click)="removeReviewer()" class="button bad">Yes<i class="fas fa-user-minus left"></i></button>
+                <button type="button" (click)="displayRemoveReviewerModal= false" class="button neutral">Cancel<i class="far fa-ban"></i></button>
               </div>
             </form>
           </div>
