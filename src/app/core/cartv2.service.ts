@@ -6,6 +6,7 @@ import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { stringify } from '@angular/compiler/src/util';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
@@ -160,15 +161,24 @@ export class CartV2Service {
 
   downloadLearningObject(
     author: string,
-    learningObjectName: string
+    learningObjectName: string,
+    revisedVersion: boolean
   ): BehaviorSubject<boolean> {
     const url = USER_ROUTES.DOWNLOAD_OBJECT(
-      this.user.username,
+    this.user.username,
+      author,
+      learningObjectName
+    );
+    const revisedUrl = USER_ROUTES.DOWNLOAD_REVISED_OBJECT(
       author,
       learningObjectName
     );
     const iframe = document.createElement('iframe');
-    iframe.src = url;
+    if (revisedVersion) {
+      iframe.src = revisedUrl;
+    } else {
+      iframe.src = url;
+    }
     iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
 
     const loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(

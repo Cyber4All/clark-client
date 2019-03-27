@@ -184,7 +184,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     this.cart
       .downloadLearningObject(
         this.learningObject.author.username,
-        this.learningObject.name
+        this.learningObject.name,
+        this.learningObject.hasRevision
       )
       .pipe(take(1));
 
