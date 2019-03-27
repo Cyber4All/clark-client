@@ -124,14 +124,14 @@ export const USER_ROUTES = {
       learningObjectName
     )}`;
   },
-  DOWNLOAD_OBJECT(username, author, learningObjectName) {
+  DOWNLOAD_OBJECT(author, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      author
     )}/learning-objects/${encodeURIComponent(learningObjectName)}/bundle`;
   },
-  DOWNLOAD_REVISED_OBJECT(username, learningObjectName) {
+  DOWNLOAD_REVISED_OBJECT(author, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      author
     )}/learning-objects/${learningObjectName}/bundle?revision`;
   },
   GET_SAME_ORGANIZATION(organization) {
