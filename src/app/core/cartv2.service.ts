@@ -165,7 +165,6 @@ export class CartV2Service {
     revisedVersion: boolean
   ): BehaviorSubject<boolean> {
     const url = USER_ROUTES.DOWNLOAD_OBJECT(
-    this.user.username,
       author,
       learningObjectName
     );
