@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // Components
-import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { FooterComponent } from './footer/footer.component';
 
 // Guards/Resolvers
@@ -30,13 +29,11 @@ import { FeaturedComponent } from './featured/featured.component';
   ],
   exports: [
     FooterComponent,
-    BreadcrumbComponent,
     EscapeHtmlPipe,
     FeaturedComponent
   ],
   declarations: [
     FooterComponent,
-    BreadcrumbComponent,
     EscapeHtmlPipe,
     FeaturedComponent
   ],

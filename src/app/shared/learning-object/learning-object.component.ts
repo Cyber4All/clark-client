@@ -6,7 +6,8 @@ import {
   OnChanges,
   SimpleChanges,
   ElementRef,
-  Renderer2
+  Renderer2,
+  ChangeDetectorRef
 } from '@angular/core';
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@entity';
@@ -39,7 +40,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     private renderer: Renderer2,
     private cart: CartV2Service,
     public auth: AuthService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -202,6 +204,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
 
   onResize(event) {
     this.collection = this.collections.get(this.learningObject.collection);
+    this.cd.detectChanges();
     if (window.screen.width <= 750 && this.collection.length > 12) {
       this.collection = this.collection.substring(0, 12) + '...';
     }
