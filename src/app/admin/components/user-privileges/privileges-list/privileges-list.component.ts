@@ -9,19 +9,13 @@ export class PrivilegesListComponent implements OnInit {
   @Input() privileges: string[][] = [];
   @Input() collections: { [index: string]: string } = {};
 
-  @Input() privileges: string[][];
-  @Input() collections: string[];
-
   @Output() delete: EventEmitter<number> = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 
   remove(index: number) {
     this.delete.emit(index);
   }
-
 }
