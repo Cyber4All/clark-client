@@ -53,7 +53,6 @@ export class UserPrivilegesComponent implements OnInit {
   }
 
   selectCollection(collectionName: string) {
-    alert(collectionName);
     this.selectedCollection = collectionName;
   }
 
