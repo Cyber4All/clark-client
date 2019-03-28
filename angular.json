@@ -23,9 +23,12 @@
             ],
             "styles": [
               "src/globals.scss"
+<<<<<<< HEAD
             ],
             "scripts": [
               
+=======
+>>>>>>> master
             ]
           },
           "configurations": {

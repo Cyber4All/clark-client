@@ -2,7 +2,7 @@
 import {takeUntil} from 'rxjs/operators';
 import { iframeParentID } from '../../core/cartv2.service';
 import { LearningObjectService } from '../learning-object.service';
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { LearningObject, User } from '@entity';
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/user.service';
@@ -43,6 +43,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showAddRating = false;
   showAddResponse = false;
   isOwnObject = false;
+  errorStatus: number;
+  redirectUrl: string;
 
   userRating: {
     user?: User;
@@ -148,8 +150,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
        */
 
       if (e instanceof HttpErrorResponse) {
-        if (e.status === 500) {
+        if (e.status === 404) {
           this.router.navigate(['not-found']);
+        }
+        if (e.status === 401) {
+          let redirectUrl = '';
+          this.route.url.subscribe(segments => {
+            if (segments) {
+              segments.forEach(segment => {
+                redirectUrl = redirectUrl + '/' + segment.path;
+              });
+            }
+          });
+          this.errorStatus = e.status;
+          this.redirectUrl = redirectUrl;
         }
       }
       console.log(e);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-import { LearningObject, LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome } from '@entity';
 import { CookieService } from 'ngx-cookie';
 
 import { USER_ROUTES } from '@env/route';

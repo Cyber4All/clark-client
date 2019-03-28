@@ -4,7 +4,7 @@ import {
   BuilderStore,
   BUILDER_ACTIONS as actions
 } from '../../builder-store.service';
-import { LearningObject, User } from '@cyber4all/clark-entity';
+import { LearningObject, User } from '@entity';
 import { COPY } from './info-page.copy';
 import { Subject } from 'rxjs';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';

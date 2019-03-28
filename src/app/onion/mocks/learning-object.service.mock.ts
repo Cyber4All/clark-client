@@ -3,7 +3,7 @@ import {of as observableOf,  Observable } from 'rxjs';
 import { LOmocks } from './learning-object.mock';
 import { Injectable } from '@angular/core';
 
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 
 @Injectable()
