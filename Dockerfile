@@ -1,21 +1,20 @@
-# Create image based on the official Node 6 image from dockerhub
-FROM node:8
+# Create image based on the official Node 8 image from dockerhub
+FROM node:8 as builder
 
-# Create a directory where our app will be placed
 RUN mkdir -p /opt/src/app
-
-# Expose the port the app runs in and the webpack server port
-EXPOSE 4200 49153
-
-# install dependencies in a different location for easier app bind mounting for local development
 WORKDIR /opt
 COPY package.json package-lock.json* ./
 RUN npm install && npm cache clean --force
 ENV PATH /opt/node_modules/.bin:$PATH
-
-# Copy source to the app's directory
 WORKDIR /opt/src/app
 COPY . /opt/src/app
+RUN npm run build
 
-# Serve the app
-CMD ["npm", "start"]
+FROM nginx:alpine
+RUN rm -rf /usr/share/nginx/html/*
+COPY nginx.conf ./nginx.conf
+COPY --from=builder  /opt/src/app/dist /usr/share/nginx/html
+RUN ls
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
