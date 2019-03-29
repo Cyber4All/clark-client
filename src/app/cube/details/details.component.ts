@@ -110,9 +110,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
     this.reviewer = this.auth.hasReviewerAccess();
   }
-
-  viewReleased(released: boolean) {
-    this.revisedVersion = released;
+  /**
+   * toggles between released and revised copies of a learning object
+   * @param revised the boolean for if the revised is being viewed
+   */
+  viewReleased(revised: boolean) {
+    this.revisedVersion = revised;
     if (this.revisedVersion === true) {
       this.learningObject = this.revisedLearningObject;
     } else {
@@ -124,6 +127,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.showDownloadModal = val;
   }
 
+  /**
+   * Fetches the released learning object to display first. If the object hasRevisions and the user has reviewer access
+   * the revised copy is also fetched.
+   * @param author the author of the learning object
+   * @param name the name of the learning object
+   */
   async fetchReleasedLearningObject(author: string, name: string) {
     try {
       this.resetRatings();

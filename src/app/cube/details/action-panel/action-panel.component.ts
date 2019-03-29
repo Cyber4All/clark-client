@@ -111,6 +111,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
   }
 
+  /**
+   * Download the revised copy of a learning object. This does not add the object to the users cart
+   * @param download boolean determines if download takes place
+   */
   downloadRevised(download?: boolean) {
     if (download) {
       this.download(
