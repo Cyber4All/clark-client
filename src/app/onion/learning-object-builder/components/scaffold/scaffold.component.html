@@ -12,11 +12,11 @@
     <div *ngFor="let c of children" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
       <div class = "info">
         <div class = "top-row">
-          <div class = "child-title">{{c._name}}</div>
+          <div class = "child-title">{{c.name}}</div>
         </div>
         <div class = "bottom-row">
-          <div [ngClass]="c._length" class="child-length" >{{c._length | titlecase}}</div>
-          <div class = "child-last-updated">{{c._date |  date:'short'}}</div>
+        <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
+          <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
         </div>
       </div>
       <div [ngStyle]="{display: editContent ? 'block' : 'none'}" class="hamburger-handle" cdkDragHandle>
