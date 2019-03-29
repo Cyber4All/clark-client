@@ -30,7 +30,7 @@ export const USER_ROUTES = {
     )}/learning-objects/profile`;
   },
   SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search?text=${'Nick Winner'}&limit=1`;
+    return `${environment.apiURL}/users/search`;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
