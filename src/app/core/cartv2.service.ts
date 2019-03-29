@@ -6,7 +6,6 @@ import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { stringify } from '@angular/compiler/src/util';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
