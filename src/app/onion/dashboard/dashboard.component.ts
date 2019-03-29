@@ -137,7 +137,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     // if the user is trying to edit a released learning object, then get the status and alert the user
-    this.route.queryParams.subscribe(queryParams => {
+    this.route.queryParams.pipe(takeUntil(this.destroyed$), debounceTime(400)).subscribe(queryParams => {
       if (queryParams.status && queryParams.status === '403') {
         this.notificationService.notify('Error!', 'This learning object is currently released and cannot be edited!', 'bad', 'far fa-times');
       }
