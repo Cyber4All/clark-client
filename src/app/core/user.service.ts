@@ -61,7 +61,7 @@ export class UserService {
    * @returns {Promise<User[]} array of users matching the text query
    * @memberof UserService
    */
-  searchUsers(query: string): Promise<AuthUser[]> {
+  searchUsers(query: string): Promise<User[]> {
     return this.http
       .get(
         USER_ROUTES.SEARCH_USERS(query),
@@ -76,7 +76,7 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(user => Object.assign(new User(user).toPlainObject(), { accessGroups: user.accessGroups }) as AuthUser);
+        return arr.map(user => new User(user));
       });
   }
 

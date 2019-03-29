@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'app/core/user.service';
 import {Router} from '@angular/router';
-import { AuthUser } from 'app/core/auth.service';
+import { User } from '@cyber4all/clark-entity';
 
 @Component({
   selector: 'clark-users',
@@ -10,11 +10,11 @@ import { AuthUser } from 'app/core/auth.service';
 })
 export class UsersComponent implements OnInit {
   searchBarPlaceholder = 'Users';
-  users: AuthUser[];
+  users: User[];
   loading = false;
 
   showPrivileges: boolean;
-  selectedUser: AuthUser;
+  selectedUser: User;
 
   constructor(private user: UserService, private router: Router) { }
 
@@ -26,7 +26,6 @@ export class UsersComponent implements OnInit {
     this.loading = true;
     this.user.searchUsers(text)
       .then(val => {
-        console.log(val);
         this.users = val;
         this.loading = false;
       });
@@ -36,7 +35,7 @@ export class UsersComponent implements OnInit {
     this.router.navigate(['admin/learning-objects'], { queryParams: { username } });
   }
 
-  editPrivileges(user: AuthUser) {
+  editPrivileges(user: User) {
     this.selectedUser = user;
     this.showPrivileges = true;
   }
