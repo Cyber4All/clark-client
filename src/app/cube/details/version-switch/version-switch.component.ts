@@ -7,7 +7,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class VersionSwitchComponent implements OnInit {
   @Input() state: boolean;
-  @Input() hasRevisions: boolean;
   @Output() toggled: EventEmitter<boolean> = new EventEmitter();
 
   constructor() { }

@@ -1,13 +1,5 @@
-<div class="inner">
-  <div *ngIf="hasRevisions; then revisions; else noRevisions"></div>
-  <ng-template #revisions>
-    <div class="text">View Revisions</div>
-    <div class="switch" [ngClass]="{'switch--on': state}" (click)="toggle()">
-      <div class="switch__background"></div>
-      <div class="switch__fob"></div>
-    </div>
-  </ng-template>
-  <ng-template #noRevisions>
-      <div class="no-revisions">No revisions have been made since last release.</div>
-  </ng-template>
+<div class="switch" [ngClass]="{'switch--on': state}" (click)="toggle()">
+  <div class="switch__background"></div>
+  <div class="switch__fob"></div>
 </div>
+

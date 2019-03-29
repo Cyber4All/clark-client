@@ -5,29 +5,7 @@ $height: 20px;
 :host {
   height: $height;
 }
-.inner {
-  background: white;
-  border-radius: 2px;
-  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
-  padding: 20px;
-  margin-bottom: 15px;
-}
 
-.text {
-  font-size: 16px;
-  color: $dark-text;
-  padding-right: 10px;
-  padding-left: 50px;
-  display: inline-block;
-}
-
-.no-revisions{
-  font-size: 16px;
-  color: $dark-text;
-  padding-right: 10px;
-  text-align: center;
-  display: inline-block;
-}
 .switch {
   width: calc(#{$height} * 2);
   height: $height;
