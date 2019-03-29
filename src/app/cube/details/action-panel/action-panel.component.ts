@@ -111,7 +111,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
   }
 
-  async downloadRevised(download?: boolean) {
+  downloadRevised(download?: boolean) {
     if (download) {
       this.download(
         this.learningObject.author.username,
