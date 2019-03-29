@@ -5,10 +5,10 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://localhost:3000',
+  apiURL: 'http://clark-gateway:3000',
   STATE_STORAGE_LOCATION: 'state',
-  suggestionUrl: 'http://localhost:7000',
-  contentManagerURL: 'http://localhost:5000',
+  suggestionUrl: 'http://outcome-suggestion-service:7000',
+  contentManagerURL: 'http://learning-object-service:5000',
   adminAppUrl: 'http://localhost:4100'
 };
 
