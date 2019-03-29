@@ -3,7 +3,7 @@
     tipLocation="top">
     <i class="fas fa-exclamation"></i>Review Pending
   </div>
-  <div *ngIf="revisedVersion === false; else reviewerPanel">
+  <div *ngIf="!revisedVersion; else reviewerPanel">
     <div class="btn-group vertical" [ngClass]="{'review-pending': !isReleased}">
       <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{hasDownloadAccess || !loggedin}}" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading}"
         class="button good" id="download-button" (click)="addToCart(true)">
