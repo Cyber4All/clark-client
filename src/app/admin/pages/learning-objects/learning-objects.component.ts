@@ -33,7 +33,7 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const username = params['username'];
-      if (typeof(username) !== 'undefined' && username !== null) {
+      if (username !== null) {
         this.getLearningObjects(username);
       }
    });
@@ -57,11 +57,6 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
         this.learningObjects = val.learningObjects;
         this.loading = false;
       });
-  }
-
-  reload(event) {
-    console.log(event);
-    console.log('hello');
   }
 
   getUserLearningObjects(author: string) {
