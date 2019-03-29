@@ -1,5 +1,5 @@
 <div class="inner">
-  <div *ngIf="hasRevisions === true; then revisions; else noRevisions"></div>
+  <div *ngIf="hasRevisions; then revisions; else noRevisions"></div>
   <ng-template #revisions>
     <div class="text">View Revisions</div>
     <div class="switch" [ngClass]="{'switch--on': state}" (click)="toggle()">
