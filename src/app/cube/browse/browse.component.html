@@ -1,6 +1,6 @@
 <div class="container">
   <div class="browse-columns">
-    <div class="sidebar-wrapper" [ngClass]="{'active': filtersDownMobile}">
+    <div *ngIf="filters" class="sidebar-wrapper" [ngClass]="{'active': filtersDownMobile}">
       <div class="column-title">
         {{ copy.FILTERS }}
         <div class="filters-clear-all" id="filters-clear-all" (click)="clearAllFilters()">{{ copy.CLEARFILTERS }}</div>
@@ -14,7 +14,7 @@
         <button (click)="closeFilters();" class="button neutral">Cancel</button>
       </div>
     </div>
-    <div class="content" id="content">
+    <div *ngIf="learningObjects" class="content" id="content">
       <div class="column-title" id="column-title">
         <span>{{ copy.RESULTS }} ({{this.totalLearningObjects}})
           <span class="clear-search" id="clear-search" (click)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </span>

@@ -21,7 +21,6 @@ import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
-import { RouterComponent } from './shared/breadcrumb/router.component';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { UserInformationComponent } from './user-profile/user-information/user-information.component';
 import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
@@ -46,7 +45,6 @@ import { DetailsModule } from './details/details.module';
   declarations: [
     CubeComponent,
     CartComponent,
-    RouterComponent,
     BrowseComponent,
     UserProfileComponent,
     UserPreferencesComponent,
