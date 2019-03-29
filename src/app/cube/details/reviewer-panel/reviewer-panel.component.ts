@@ -13,7 +13,7 @@ export class ReviewerPanelComponent implements OnInit {
 
   ngOnInit() {
   }
-  click(download: boolean) {
+  downloadRevisions(download: boolean) {
     this.download.emit(download);
   }
 }
