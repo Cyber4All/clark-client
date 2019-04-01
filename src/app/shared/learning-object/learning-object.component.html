@@ -17,6 +17,7 @@
         <span class="author">
           {{ learningObject.author.name }} | {{ learningObject.author.organization }}
         </span>
+        {{ learningObject.contributors?.length ? ', and ' + learningObject.contributors.length + ' more' : '' }}
         <div class="date">
           Updated {{ date | date:'mediumDate' }}
         </div>
