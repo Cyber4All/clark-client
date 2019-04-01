@@ -30,9 +30,6 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   canDownload = false;
   showDownloadModal = false;
 
-  contributors: string;
-  contributorsDisplay: string;
-
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,
@@ -49,10 +46,6 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
       } else {
         this.renderer.removeClass(this.hostEl.nativeElement, 'loading');
       }
-    }
-
-    if (changes.learningObject) {
-      this.makeContributors();
     }
   }
 
@@ -130,52 +123,6 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
   get date() {
     // tslint:disable-next-line:radix
     return new Date(parseInt(this.learningObject.date));
-  }
-
-  /**
-   * Create a contributors string to be rendered on the list item when an object is passed
-   *  in to the component. Also sets contributorsDisplay property if the number of contributors is too
-   *  long to display in the author span. In that case, the contributorsDisplay property is used in the authors
-   *  span and the complete contributors string is set as a tooltip.
-   *
-   * @memberof LearningObjectListingComponent
-   */
-  makeContributors() {
-    const titleCase = new TitleCasePipe();
-    // short circuit the logic if there aren't any contributors
-    if (
-      !this.learningObject.contributors ||
-      !this.learningObject.contributors.length
-    ) {
-      this.contributors = titleCase.transform(this.learningObject.author.name);
-      return;
-    }
-
-    const contributors = [
-      titleCase.transform(this.learningObject.author.name)
-    ].concat(
-      this.learningObject.contributors.map(c => titleCase.transform(c.name))
-    );
-
-    if (contributors.length === 2) {
-      // special case, should read 'a and b'
-      this.contributors = contributors.join(' and ');
-    } else {
-      // join everything on comma space, then replace the last instance with ' and '
-      const tempResult = contributors.join(', ');
-      const lastIndex = tempResult.lastIndexOf(', ');
-      this.contributors =
-        tempResult.substring(0, lastIndex) +
-        ' and ' +
-        tempResult.substring(lastIndex + 1);
-      // we know we'll need a tooltip here, so we'll create the contributors string as normal but also set the contributorsDisplay property
-      // with a truncated version to be used instead. The contributors string here will be rendered in a tooltip instead.
-      this.contributorsDisplay =
-        contributors.slice(0, 2).join(', ') +
-        ' and ' +
-        (contributors.length - 2) +
-        ` other${contributors.length - 2 > 1 ? 's' : ''}`;
-    }
   }
 
   download(e) {

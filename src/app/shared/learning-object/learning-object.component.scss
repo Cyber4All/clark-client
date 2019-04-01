@@ -285,6 +285,11 @@ a {
   }
 }
 
+
+.author {
+  text-transform: capitalize
+}
+
 @keyframes loading {
   0% {
     left: -200px;
