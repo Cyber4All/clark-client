@@ -94,6 +94,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.25s ease;
+    background-color: white;
   
     &:hover:not(:active) {
       transform: scale(1.02);
@@ -107,6 +108,16 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     img {
         height: 130px;
     }
+}
+
+.card__name {
+    color: #55595e;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 20px;
 }
 
 @media(max-width: 1000px) {
