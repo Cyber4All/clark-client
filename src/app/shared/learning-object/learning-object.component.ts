@@ -22,9 +22,7 @@ import { TitleCasePipe } from '@angular/common';
 })
 export class LearningObjectListingComponent implements OnInit, OnChanges {
   @Input() learningObject: LearningObject;
-  @Input() link;
   @Input() loading: boolean;
-  @Input() owned? = false;
 
   collections = new Map<string, string>();
   collection = '';
