@@ -10,3 +10,10 @@
     <div class="description">Learning Objects are grouped into Collections within CLARK. Each collection is unique, has its own peer-review process, and is supported by its own community.</div>
   </div>
 </section>
+
+<div class="collections__grid">
+  <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.name}}">
+    <img class="card__image" src="/assets/images/collections/{{c.abvName}}.png" alt="{{ c.name }} logo">
+    <div class="card__name">{{ c.name }}</div>
+  </div>
+</div>
