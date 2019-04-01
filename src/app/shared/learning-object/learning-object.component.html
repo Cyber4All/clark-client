@@ -1,7 +1,7 @@
 <a [routerLink]="['/details', learningObject.author.username, learningObject.name]">
   <div class="learning-object" id="learning-object" [ngClass]="learningObject.length">
     <div class="image">
-      <div *ngIf="!loading" class="collection">
+      <div *ngIf="!loading && collection" class="collection">
         <div (window:resize)="onResize($event)">
           {{ collection }}
         </div>
