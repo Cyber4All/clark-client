@@ -35,6 +35,7 @@ import {
 } from '../shared/toaster';
 import { CollectionModule } from './collections/collection.module';
 import { DetailsModule } from './details/details.module';
+import { FeaturedCollectionsComponent } from './featured-collections/featured-collections.component';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -51,6 +52,7 @@ import { DetailsModule } from './details/details.module';
     UserInformationComponent,
     UserEditInformationComponent,
     OrganizationListComponent,
+    FeaturedCollectionsComponent,
   ],
   imports: [
     // Angular imports
