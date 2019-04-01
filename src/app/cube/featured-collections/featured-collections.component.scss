@@ -139,6 +139,8 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         grid-gap: 10px;
         
         .collection-card {
+            box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
+
             img {
                 height: 60px;
             }
