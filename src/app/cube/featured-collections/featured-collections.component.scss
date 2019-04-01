@@ -121,6 +121,10 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 }
 
 @media(max-width: 1000px) {
+    .hero {
+        padding: 0px 10px;
+    }
+
     .collections__grid {
         grid-template-columns: repeat(2, minmax(170px, 1fr));
         grid-gap: 20px;
