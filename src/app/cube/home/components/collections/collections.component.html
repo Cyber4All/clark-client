@@ -9,7 +9,7 @@
     {{ copy.COLLECTION_BLURB }}
   </div>
   <div class="featured-collections-cta">
-    <a>View all Collections</a>
+    <a routerLink="/c">View all Collections</a>
   </div>
   <div class="collections__grid">
     <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.name}}">

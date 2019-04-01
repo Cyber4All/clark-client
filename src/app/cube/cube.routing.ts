@@ -11,6 +11,7 @@ import { UserPreferencesComponent } from './user-profile/user-preferences/user-p
 import { AuthGuard } from '../core/auth-guard.service';
 import { CubeComponent } from './cube.component';
 import { CollectionComponent } from './collections/collection.component';
+import { FeaturedCollectionsComponent } from './featured-collections/featured-collections.component';
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
 
@@ -21,6 +22,7 @@ const cube_routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'c/:name', component: CollectionComponent },
+      { path: 'c', component: FeaturedCollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse/:query',
