@@ -1,0 +1,76 @@
+
+@import '~_vars.scss';
+$sidebar-width: 350px;
+$content-width: calc(#{$max-width} - #{$sidebar-width});
+
+.hero {
+    height: 500px;
+    background: url('/assets/images/clouds.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        .title__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: auto;
+            margin-bottom: 20px;
+            background: #deecfb;
+            color: #4290ea;
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+
+            svg {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    }
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(45deg, darken($blue-accent, 10), lighten($blue-accent, 10));
+        opacity: 0.1;
+        z-index: 1;
+    }
+
+    .logos {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        & > *:first-child {
+            margin-right: 0px;
+        }
+    }
+
+    .header {
+        color: white;
+        font-size: 50px;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .description {
+        color: white;
+        font-size: 18px;
+        text-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+        font-weight: normal;
+    }
+}
