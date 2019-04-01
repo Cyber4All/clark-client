@@ -290,6 +290,10 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     return outlet.activatedRouteData.state;
   }
 
+  /**
+   * Determines whether or not a Learning Object is in the Review Stage.
+   * @param object the Learning Object in question.
+   */
   private isInReviewStage(object): boolean {
     return object.status.includes('waiting') && object.status.includes('review') && object.status.includes('proofing');
   }
