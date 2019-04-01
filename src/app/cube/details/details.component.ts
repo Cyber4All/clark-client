@@ -205,73 +205,77 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     if (this.hasRevisions) {
-      try {
-        this.resetRatings();
-        this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
-          this.learningObject.id
-        );
-        this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
-          file => {
-            file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-            username: this.revisedLearningObject.author.username,
-            loId: this.revisedLearningObject.id,
-            fileId: file.id,
-            open: canViewInBrowser(file)
-            });
-          return file;
-          }
-        );
-        // FIXME: This filter should be removed when service logic is updated
-        this.revisedChildren = this.revisedLearningObject.children.filter(
-          child => {
-            return child.status === LearningObject.Status['RELEASED'] ||
-            child.status === LearningObject.Status['REVIEW'] ||
-            child.status === LearningObject.Status['PROOFING'] ||
-            child.status === LearningObject.Status['WAITING'];
-          }
-        );
-
-        const owners = this.revisedLearningObject.contributors.map(user => user.username);
-        owners.push(this.revisedLearningObject.author.username);
-
-        if (
-          this.auth.user &&
-          owners.includes(this.auth.username)
-        ) {
-          this.isOwnObject = true;
-        } else {
-          this.isOwnObject = false;
-        }
-
-        this.learningObjectOwners = owners;
-      } catch (e) {
-
-      /**
-      * TODO: change status to 404 when issue #149 is closed
-      * if server error is thrown, navigate to not-found page
-      */
-
-      if (e instanceof HttpErrorResponse) {
-        if (e.status === 404) {
-          this.router.navigate(['not-found']);
-        }
-        if (e.status === 401) {
-          let redirectUrl = '';
-          this.route.url.subscribe(segments => {
-            if (segments) {
-              segments.forEach(segment => {
-              redirectUrl = redirectUrl + '/' + segment.path;
-              });
-            }
-          });
-          this.errorStatus = e.status;
-          this.redirectUrl = redirectUrl;
-          }
-        }
-        console.log(e);
-      }
+      this.loadRevisedLearningObject();
     } else {
       this.revisedLearningObject = this.learningObject;
+    }
+  }
+
+  async loadRevisedLearningObject() {
+    try {
+      this.resetRatings();
+      this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
+        this.learningObject.id
+      );
+      this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
+        file => {
+          file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+          username: this.revisedLearningObject.author.username,
+          loId: this.revisedLearningObject.id,
+          fileId: file.id,
+          open: canViewInBrowser(file)
+          });
+        return file;
+        }
+      );
+      // FIXME: This filter should be removed when service logic is updated
+      this.revisedChildren = this.revisedLearningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+          child.status === LearningObject.Status['REVIEW'] ||
+          child.status === LearningObject.Status['PROOFING'] ||
+          child.status === LearningObject.Status['WAITING'];
+        }
+      );
+
+      const owners = this.revisedLearningObject.contributors.map(user => user.username);
+      owners.push(this.revisedLearningObject.author.username);
+
+      if (
+        this.auth.user &&
+        owners.includes(this.auth.username)
+      ) {
+        this.isOwnObject = true;
+      } else {
+        this.isOwnObject = false;
+      }
+
+      this.learningObjectOwners = owners;
+    } catch (e) {
+
+    /**
+    * TODO: change status to 404 when issue #149 is closed
+    * if server error is thrown, navigate to not-found page
+    */
+
+    if (e instanceof HttpErrorResponse) {
+      if (e.status === 404) {
+        this.router.navigate(['not-found']);
+      }
+      if (e.status === 401) {
+        let redirectUrl = '';
+        this.route.url.subscribe(segments => {
+          if (segments) {
+            segments.forEach(segment => {
+            redirectUrl = redirectUrl + '/' + segment.path;
+            });
+          }
+        });
+        this.errorStatus = e.status;
+        this.redirectUrl = redirectUrl;
+        }
+      }
+      console.log(e);
     }
   }
 
