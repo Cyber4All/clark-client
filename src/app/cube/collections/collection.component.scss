@@ -71,12 +71,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        &.nccp {
-            background-image: url('/assets/images/collections/nccp.png');
-        }
-        &.c5 {
-            background-image: url('/assets/images/collections/c5.png');
-        }
+        
         &:after {
             content: '';
             display: block;
