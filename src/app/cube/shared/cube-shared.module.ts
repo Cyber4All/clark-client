@@ -17,6 +17,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { FeaturedComponent } from './featured/featured.component';
+import { CollectionCardComponent } from './collection-card/collection-card.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { FeaturedComponent } from './featured/featured.component';
   declarations: [
     FooterComponent,
     EscapeHtmlPipe,
-    FeaturedComponent
+    FeaturedComponent,
+    CollectionCardComponent
   ],
   providers: [ProfileGuard, UserResolver]
 })
