@@ -13,6 +13,10 @@ export class CollectionCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    // Set the URL for the collection logo, else use the featured collection logo
+    if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
+      this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
+    }
   }
 
 }

@@ -12,6 +12,7 @@
     cursor: pointer;
     transition: all 0.25s ease;
     background-color: white;
+    height: 100%;
   
     &:hover:not(:active) {
       transform: scale(1.02);
@@ -24,6 +25,25 @@
 
     img {
         height: 130px;
+    }
+
+    .title__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: auto;
+        margin-bottom: 20px;
+        background: #deecfb;
+        color: #4290ea;
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+
+        svg {
+            width: 60px;
+            height: 60px;
+        }
     }
 }
 
@@ -51,6 +71,16 @@
 
         img {
             height: 60px;
+        }
+
+        .title__icon {
+            width: 70px;
+            height: 70px;
+            
+            svg {
+                width: 40px;
+                height: 40px;;
+            }
         }
     }
 }
