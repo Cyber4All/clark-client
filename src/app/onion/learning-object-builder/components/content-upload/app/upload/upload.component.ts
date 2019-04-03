@@ -24,7 +24,10 @@ import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 import { ModalService } from '../../../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
-import { FileStorageService } from '../services/file-storage.service';
+import {
+  FileStorageService,
+  FileUploadMeta
+} from '../services/file-storage.service';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type DZFile = {
@@ -297,10 +300,20 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           const learningObject = await this.learningObject$
             .pipe(take(1))
             .toPromise();
+          const fileUploadMeta: FileUploadMeta = {
+            name: file.name,
+            path: file.fullPath || file.name,
+            fileType: file.type,
+            size: file.size
+          };
+          console.log('TCL: addFile -> fileUploadMeta', fileUploadMeta);
+          console.log('TCL: addFile -> file', file);
+
           const uploadId = await this.fileStorage.initMultipart({
-            learningObject,
+            fileUploadMeta,
             fileId: file.upload.uuid,
-            filePath: file.fullPath ? file.fullPath : file.name
+            learningObjectId: learningObject.id,
+            authorUsername: learningObject.author.username
           });
           this.uploadIds[file.upload.uuid] = uploadId;
         }
@@ -367,20 +380,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (file.upload.chunked && file.status !== 'error') {
       try {
-        const fileMeta = {
-          dzuuid: file.upload.uuid,
-          name: file.name,
-          size: file.size,
-          fullPath: file.fullPath,
-          mimetype: file.type
-        };
         const uploadId = this.uploadIds[file.upload.uuid];
         const learningObject = await this.learningObject$
           .pipe(take(1))
           .toPromise();
         await this.fileStorage.finalizeMultipart({
-          fileMeta,
-          learningObject,
+          learningObjectId: learningObject.id,
+          authorUsername: learningObject.author.username,
           fileId: file.upload.uuid,
           uploadId
         });

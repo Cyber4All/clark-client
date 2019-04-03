@@ -6,6 +6,13 @@ import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { LearningObject } from '@entity';
 
+export interface FileUploadMeta {
+  name: string;
+  fileType: string;
+  path: string;
+  size: number;
+}
+
 @Injectable()
 export class FileStorageService {
   constructor(private http: HttpClient) {}
@@ -21,19 +28,25 @@ export class FileStorageService {
    * @returns {Promise<any>}
    * @memberof FileStorageService
    */
-  initMultipart(params: {
-    learningObject: LearningObject;
+  initMultipart({
+    learningObjectId,
+    authorUsername,
+    fileId,
+    fileUploadMeta
+  }: {
+    learningObjectId: string;
+    authorUsername: string;
     fileId: string;
-    filePath: string;
+    fileUploadMeta: FileUploadMeta;
   }): Promise<any> {
     const route = USER_ROUTES.INIT_MULTIPART({
-      fileId: params.fileId,
-      username: params.learningObject.author.username,
-      objectId: params.learningObject.id
+      fileId: fileId,
+      username: authorUsername,
+      objectId: learningObjectId
     });
 
     return this.http
-      .post(route, { filePath: params.filePath }, { withCredentials: true })
+      .post(route, { fileUploadMeta }, { withCredentials: true })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -53,22 +66,27 @@ export class FileStorageService {
    * @returns {Promise<any>}
    * @memberof FileStorageService
    */
-  finalizeMultipart(params: {
-    learningObject: LearningObject;
+  finalizeMultipart({
+    learningObjectId,
+    authorUsername,
+    fileId,
+    uploadId
+  }: {
+    learningObjectId: string;
+    authorUsername: string;
     fileId: string;
     uploadId: string;
-    fileMeta: any;
   }): Promise<any> {
     const route = USER_ROUTES.FINALIZE_MULTIPART({
-      fileId: params.fileId,
-      username: params.learningObject.author.username,
-      objectId: params.learningObject.id
+      fileId,
+      username: authorUsername,
+      objectId: learningObjectId
     });
 
     return this.http
       .patch(
         route,
-        { fileMeta: params.fileMeta, uploadId: params.uploadId },
+        { uploadId },
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
