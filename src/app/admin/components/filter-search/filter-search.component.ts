@@ -6,7 +6,7 @@ import {CollectionService} from 'app/core/collection.service';
 import {AuthService} from 'app/core/auth.service';
 import {Subject} from 'rxjs';
 import {ContextMenuService} from 'app/shared/contextmenu/contextmenu.service';
-import {LearningObject} from '@cyber4all/clark-entity';
+import {LearningObject} from '@entity';
 
 @Component({
   selector: 'clark-admin-filter-search',

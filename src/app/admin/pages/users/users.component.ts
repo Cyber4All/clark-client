@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'app/core/user.service';
 import {Router} from '@angular/router';
-import { User } from '@cyber4all/clark-entity';
+import { User } from '@entity';
 
 @Component({
   selector: 'clark-users',
