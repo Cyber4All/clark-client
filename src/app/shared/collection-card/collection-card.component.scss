@@ -24,7 +24,7 @@
     }
 
     img {
-        height: 130px;
+        height: 80px;
     }
 
     .title__icon {
@@ -36,13 +36,13 @@
         margin-bottom: 20px;
         background: #deecfb;
         color: #4290ea;
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         border-radius: 50px;
 
         svg {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
         }
     }
 }
@@ -57,14 +57,6 @@
     margin-top: 20px;
 }
 
-@media(max-width: 1000px) {
-    .collection-card {
-        img {
-            height: 100px;
-        }
-    }
-}
-
 @media(max-width: 500px) {
     .collection-card {
         box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
@@ -74,12 +66,12 @@
         }
 
         .title__icon {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             
             svg {
-                width: 40px;
-                height: 40px;;
+                width: 20px;
+                height: 20px;;
             }
         }
     }
