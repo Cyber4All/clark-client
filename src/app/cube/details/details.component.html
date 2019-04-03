@@ -39,8 +39,8 @@
     </div>
     <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
       <div class="inner"*ngIf="reviewer">
-        <div class="revisions">
-          <div class="text" *ngIf="hasRevisions">View Revisions</div>
+        <div *ngIf="hasRevisions" class="revisions">
+          <div class="text">View Revisions</div>
           <clark-version-switch (toggled)="viewReleased($event)"></clark-version-switch>
         </div>
         <div class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
