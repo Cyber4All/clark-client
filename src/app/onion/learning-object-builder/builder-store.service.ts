@@ -4,7 +4,7 @@ import {
   LearningOutcome,
   User,
   StandardOutcome
-} from '@cyber4all/clark-entity';
+} from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -236,7 +236,7 @@ export class BuilderStore {
    * Retrieves the learning objects children
    *
    */
-  async getChildren() {
+  async getChildren(): Promise<LearningObject[]> {
     return await this.learningObjectService.getChildren(
       this.learningObject.id
     );

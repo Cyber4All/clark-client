@@ -1,8 +1,8 @@
 
 import {takeUntil, debounceTime} from 'rxjs/operators';
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 import { lengths } from '@cyber4all/clark-taxonomy';
 
 
@@ -25,9 +25,9 @@ import { LearningObjectService } from '../learning-object.service';
   styleUrls: ['./browse.component.scss'],
   providers: [SuggestionService]
 })
-export class BrowseComponent implements OnInit, OnDestroy {
+export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;
-  learningObjects: LearningObject[] = Array(20).fill(new LearningObject());
+  learningObjects: LearningObject[];
   totalLearningObjects = 0;
 
   query: Query = {
@@ -108,13 +108,14 @@ export class BrowseComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     public mappingService: SuggestionService,
     private auth: AuthService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private cd: ChangeDetectorRef
   ) {
     this.windowWidth = window.innerWidth;
-    this.learningObjects = Array(20).fill(new LearningObject());
+    this.cd.detach();
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>()
       .pipe(
@@ -429,6 +430,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
   async fetchLearningObjects(query: Query) {
     this.loading = true;
     this.learningObjects = Array(20).fill(new LearningObject());
+    this.cd.detectChanges();
     // Trim leading and trailing whitespace
     query.text = query.text.trim();
     try {
@@ -440,6 +442,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
       this.loading = false;
+      this.cd.detectChanges();
     } catch (e) {
       console.log(`Error: ${e}`);
     }
@@ -467,5 +470,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubscribe.next();
+  }
+
+  trackByIndex(index, item) {
+    return index;
   }
 }

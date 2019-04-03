@@ -1,7 +1,17 @@
-<a [routerLink]="['/details', learningObject.author.username, learningObject.name]">
-  <div class="learning-object" id="learning-object" [ngClass]="learningObject.length">
+<a
+  [routerLink]="[
+    '/details',
+    learningObject.author.username,
+    learningObject.name
+  ]"
+>
+  <div
+    class="learning-object"
+    id="learning-object"
+    [ngClass]="learningObject.length"
+  >
     <div class="image">
-      <div *ngIf="!loading" class="collection">
+      <div *ngIf="!loading && collection" class="collection">
         <div (window:resize)="onResize($event)">
           {{ collection }}
         </div>
@@ -11,17 +21,34 @@
     <div class="learning-object-content">
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
-        <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn" (click)="download($event)"><i class="fas fa-download"></i></button>      
+        <button
+          *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
+          class="download-btn"
+          (click)="download($event)"
+        >
+          <i class="fas fa-download"></i>
+        </button>
       </div>
       <div class="details">
-        <span class="author" [tip]="contributors" tipDisabled="{{ !contributorsDisplay }}">
-          {{ contributorsDisplay || contributors }}
+        <span class="author">
+          {{
+            learningObject.author.name | titlecase
+          }} | 
+          {{
+            learningObject.author.organization.trim() | titlecase
+          }}{{
+            learningObject.contributors?.length
+              ? ', and ' + learningObject.contributors.length + ' more'
+              : ''
+          }}
         </span>
-        <div class="date">
-          Updated {{ date | date:'mediumDate' }}
-        </div>
+        <div class="date">Updated {{ date | date: 'mediumDate' }}</div>
       </div>
-      <div class="goals" *ngIf="this.learningObject.description" [innerHtml]="goals()"></div>
+      <div
+        class="goals"
+        *ngIf="this.learningObject.description"
+        [innerHtml]="goals()"
+      ></div>
     </div>
   </div>
 </a>
