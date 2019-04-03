@@ -12,10 +12,9 @@
   <div class="logo"></div>
 </section>
 <section class="collection-container">
-  <div class="description">
+  <div *ngIf="collection?.description" class="description">
     <div class="heading">Description</div>
-    <p *ngIf="collection?.description" [innerHtml]="collection?.description"></p>
-    <p *ngIf="!collection?.description">There is no description set for this collection.</p>
+    <p [innerHtml]="collection?.description"></p>
   </div>
   
   <cube-featured [collection]="key"></cube-featured>
