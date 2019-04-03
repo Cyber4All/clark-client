@@ -3,7 +3,7 @@ export const environment = {
   apiURL: 'https://api-gateway.clark.center',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'https://api-outcome-suggestion.clark.center',
-  contentManagerURL: 'https://api-learning-objects.clark.center',
+  contentManagerURL: 'https://api-file-upload.clark.center',
   adminAppUrl: 'https://admin.clark.center'
 };
 
