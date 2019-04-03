@@ -306,7 +306,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             fileType: file.type,
             size: file.size
           };
-          console.log('TCL: addFile -> fileUploadMeta', fileUploadMeta);
           console.log('TCL: addFile -> file', file);
 
           const uploadId = await this.fileStorage.initMultipart({
