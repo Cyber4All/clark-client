@@ -1,5 +1,5 @@
-<div *ngIf="learningObject && revisedLearningObject && !errorStatus" class="details-wrapper" [ngClass]="learningObject.length">
-  <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [owned]="isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
+<div *ngIf="learningObject && !errorStatus" class="details-wrapper" [ngClass]="learningObject.length">
+  <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
   <div class="flex">
     <div class="content">
       <div class="description">
