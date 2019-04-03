@@ -14,7 +14,8 @@
 <section class="collection-container">
   <div class="description">
     <div class="heading">Description</div>
-    <p [innerHtml]="collection?.description"></p>
+    <p *ngIf="collection?.description" [innerHtml]="collection?.description"></p>
+    <p *ngIf="!collection?.description">There is no description set for this collection.</p>
   </div>
   
   <cube-featured [collection]="key"></cube-featured>
