@@ -210,7 +210,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.revisedLearningObject = this.learningObject;
     }
   }
-
+/**
+ * Loaded a revised copy of the learning object if the hasRevisions flag is true
+ */
   async loadRevisedLearningObject() {
     try {
       this.resetRatings();
