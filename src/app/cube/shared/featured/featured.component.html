@@ -4,7 +4,13 @@
   </a> -->
 </div>
 
-<div class="card-container">
+<div *ngIf="learningObjects.length > 0; else noObjects" class="card-container">
     <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" learningObjectCard [loading]="loading">
     </learning-object-component>
 </div>
+
+<ng-template #noObjects>
+  <div class="no-objects">
+    There are no Learning Objects released for this collection.  Click <a routerLink="/browse">here</a> to browse all.
+  </div>
+</ng-template>
