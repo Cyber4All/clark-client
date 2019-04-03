@@ -236,7 +236,7 @@ export class BuilderStore {
    * Retrieves the learning objects children
    *
    */
-  async getChildren() {
+  async getChildren(): Promise<LearningObject[]> {
     return await this.learningObjectService.getChildren(
       this.learningObject.id
     );
