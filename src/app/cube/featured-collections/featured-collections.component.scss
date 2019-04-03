@@ -4,14 +4,34 @@ $sidebar-width: 350px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
 
 .hero {
-    height: 500px;
-    background: url('/assets/images/clouds.jpg');
-    background-size: cover;
-    background-position: center bottom;
     position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    padding: 70px 10px 130px 10px;
+    background: $blue-gradient;
+
+    &:after {
+        content: '';
+        background: white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.03;
+        mask: $cube-pattern repeat;
+    }
+
+    &:before {
+        content: '';
+        background: $wrapper-background;
+        position: absolute;
+        width: 100%;
+        height: 100vw;
+        top: 370px;
+        left: 0;
+        right: 0;
+        transform: skewY(-2deg);
+    }
 
     .inner {
         display: flex;
@@ -40,14 +60,14 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         }
     }
 
-    &:before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(45deg, darken($blue-accent, 10), lighten($blue-accent, 10));
-        opacity: 0.1;
-        z-index: 1;
-    }
+    // &:before {
+    //     content: '';
+    //     position: absolute;
+    //     top: 0; left: 0; right: 0; bottom: 0;
+    //     background: linear-gradient(45deg, darken($blue-accent, 10), lighten($blue-accent, 10));
+    //     opacity: 0.1;
+    //     z-index: 1;
+    // }
 
     .logos {
         display: flex;
