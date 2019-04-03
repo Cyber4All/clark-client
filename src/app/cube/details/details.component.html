@@ -41,7 +41,7 @@
       <div class="inner"*ngIf="reviewer">
         <div class="revisions">
           <div class="text" *ngIf="hasRevisions">View Revisions</div>
-          <clark-version-switch *ngIf="hasRevisions" (toggled)="viewReleased($event)"></clark-version-switch>
+          <clark-version-switch (toggled)="viewReleased($event)"></clark-version-switch>
         </div>
         <div class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
       </div>
