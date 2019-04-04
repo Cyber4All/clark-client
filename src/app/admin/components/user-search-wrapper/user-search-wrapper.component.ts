@@ -41,9 +41,6 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
         this.findUser(val.trim());
       });
 
-      // TODO is there a better way to do this?
-      // I want two events to occur when this event fires. 1) after a debounce, perform search
-      // 2) immediately (without debounce) show the popup
       this.userSearchInput$.pipe(
         takeUntil(this.destroyed$)
       ).subscribe((val: string) => {
@@ -65,12 +62,7 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
     if (query && query !== '') {
       this.user.searchUsers(query).then((results: User[]) => {
         // remove current user from results
-        for (let i = 0; i < results.length; i++) {
-          if (this.authService.username === results[i].username) {
-            results.splice(i, 1);
-          }
-        }
-        this.searchResults = results;
+        this.searchResults = results.filter(result => result.username !== this.authService.username);
         this.loading = false;
       });
     }
