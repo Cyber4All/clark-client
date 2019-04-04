@@ -11,7 +11,7 @@
 
   <div *ngIf="activeCollection && activeCollection?.length > 0" filter-options>
     <div class="btn-group to-right">
-      <button class="button good add reviewers" (click)="isSearching= !isSearching"> Add Reviewer
+      <button id="add-reviewers" class="button good add reviewers" (click)="isSearching= !isSearching"> Add Reviewer
           <i class="far fa-user-plus"></i> 
       </button>
     </div>
@@ -45,7 +45,7 @@
             <form class="input-wrapper">
               <div class="header">
                 <div class="title">
-                  <span class="lo-name">You are about to remove a reviewer and you can't undo this!</span>
+                  <span class="lo-name">You are about to remove a reviewer from this collection!</span>
                 </div>
               </div>
               <div class="btn-group center">
