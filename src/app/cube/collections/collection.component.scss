@@ -130,6 +130,15 @@ img {
     }
 }
 
+.recently-released {
+    font-weight: 200;
+    font-size: 33px;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    color: #333;
+    padding-left: 12px;
+}
+
 @media only screen and (min-width: 1224px) {
     .collection-container {
         .collection-content {
