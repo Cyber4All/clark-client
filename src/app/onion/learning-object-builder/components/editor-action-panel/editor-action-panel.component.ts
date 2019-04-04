@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {ContextMenuService} from '../../../../shared/contextmenu/contextmenu.service';
-import {LearningObject} from '@cyber4all/clark-entity';
+import {LearningObject} from '@entity';
 
 @Component({
   selector: 'clark-editor-action-panel',

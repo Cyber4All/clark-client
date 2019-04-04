@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BuilderStore } from '../../builder-store.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'clark-scaffold',
@@ -16,7 +16,7 @@ export class ScaffoldComponent implements OnInit {
   // array to obtain children IDs
   childrenIDs: string[] = [];
 
-  children: any;
+  children: LearningObject[];
   constructor(private store: BuilderStore) {}
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class ScaffoldComponent implements OnInit {
     moveItemInArray(this.children, event.previousIndex, event.currentIndex);
 
     // get the ids of the children in children array
-    this.children.forEach(kid => this.childrenIDs.push(kid._id));
+    this.children.forEach(kid => this.childrenIDs.push(kid.id));
 
     // set the ids of children to the same order as the childrenIDs
     this.store.setChildren(this.childrenIDs);

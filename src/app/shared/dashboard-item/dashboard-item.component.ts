@@ -12,7 +12,7 @@ import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
 import { ContextMenuService } from '../contextmenu/contextmenu.service';
 import { AuthService } from 'app/core/auth.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'clark-dashboard-item',
