@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
-import { User } from '@cyber4all/clark-entity';
+import { User } from '@entity';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
@@ -59,6 +59,7 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
    * @memberof UserSearchWrapperComponent
    */
   findUser(query: string) {
+    console.log(query);
     if (query && query !== '') {
       this.user.searchUsers(query).then((results: User[]) => {
         // remove current user from results

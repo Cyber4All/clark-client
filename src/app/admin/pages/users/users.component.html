@@ -32,8 +32,9 @@
               [reviewer]="activeCollection && activeCollection?.length > 0"
               (navigateToUserObjects)="navigateToUserObjects($event)"
               (removeMember)="showModal($event)"
-              [user]="u"
-              (editPrivileges)="editPrivileges(u)"
+              [canEditPrivilege]="authService.isAdminOrEditor()"
+              [user]="r"
+              (editPrivileges)="editPrivileges(r)"
             ></clark-admin-user-card>
           </div>
         </div>

@@ -55,8 +55,8 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/profile`;
   },
-  SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search`;
+  SEARCH_USERS(query: string) {
+    return `${environment.apiURL}/users/search?text=${encodeURIComponent(query)}`;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;

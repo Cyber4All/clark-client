@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'app/core/user.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import { User } from '@entity';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-users',
@@ -23,14 +24,16 @@ export class UsersComponent implements OnInit {
     private user: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    public authService: AuthService,
   ) { }
 
   ngOnInit() {
-    this.getUsers();
     this.route.parent.params.subscribe(params => {
       this.activeCollection = params['collection'];
-      if (this.activeCollection !== null && typeof(this.activeCollection) !== 'undefined') {
+      if (this.activeCollection) {
         this.fetchReviewers();
+      } else {
+        this.getUsers();
       }
    });
   }
@@ -50,6 +53,7 @@ export class UsersComponent implements OnInit {
   async fetchReviewers() {
     this.loading = true;
     this.users = await this.user.fetchReviewers(this.activeCollection, {role: 'reviewer'});
+    console.log(this.users);
     this.loading = false;
   }
 
@@ -76,7 +80,7 @@ export class UsersComponent implements OnInit {
    */
   async removeReviewer() {
     this.displayRemoveReviewerModal = false;
-    await this.user.removeMember(this.activeCollection, this.removeReviewerId, {role: 'reviewer'} );
+    await this.user.removeMember(this.activeCollection, this.removeReviewerId );
     await this.fetchReviewers();
   }
 

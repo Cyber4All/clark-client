@@ -39,7 +39,6 @@ import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
 import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
-import { AdminUserCardComponent } from 'app/admin/components/user-card/user-card.component';
 import { TextEditorComponent } from './text-editor.component';
 import {CKEditorModule} from 'ng2-ckeditor';
 import { CarouselComponent } from './carousel/carousel.component';
@@ -93,7 +92,6 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     DashboardItemComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
-    AdminUserCardComponent,
     TextEditorComponent,
     CarouselComponent,
     CollectionSelectorPopupComponent,
@@ -101,7 +99,6 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     CollectionsGridComponent
   ],
   exports: [
-    AdminUserCardComponent,
     NavbarComponent,
     FileBrowserComponent,
     FileListViewComponent,

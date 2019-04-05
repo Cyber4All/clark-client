@@ -9,7 +9,8 @@ import { UserService } from 'app/core/user.service';
 })
 export class AdminUserCardComponent implements OnInit {
   @Input() user: User;
-  @Input() reviewer = 'false';
+  @Input() reviewer = false;
+  @Input() canEditPrivilege = false;
   @Output() navigateToUserObjects = new EventEmitter<string>();
   @Output() removeMember = new EventEmitter<string>();
 
