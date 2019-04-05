@@ -4,7 +4,7 @@ import {
   LearningOutcome,
   User,
   StandardOutcome
-} from '@cyber4all/clark-entity';
+} from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -230,6 +230,24 @@ export class BuilderStore {
       .catch(e => {
         this.handleServiceError(e, BUILDER_ERRORS.FETCH_OBJECT_MATERIALS);
       });
+  }
+
+  /**
+   * Retrieves the learning objects children
+   *
+   */
+  async getChildren(): Promise<LearningObject[]> {
+    return await this.learningObjectService.getChildren(
+      this.learningObject.id
+    );
+
+  }
+
+  /**
+   * Sets the learning objects children after they have been reorderd
+   */
+  async setChildren(children: string[]) {
+    await this.learningObjectService.setChildren(this.learningObject.name, this.learningObject.author.username, children);
   }
 
   /**
@@ -782,7 +800,7 @@ export class BuilderStore {
           // tried to save an object with a name that already exists
           this.validator.errors.saveErrors.set(
             'name',
-            'A learning object with this name already exists!'
+            'A learning object with this name already exists! The title should be unique within your learning objects.'
           );
           this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
         } else {
@@ -810,7 +828,7 @@ export class BuilderStore {
           // tried to save an object with a name that already exists
           this.validator.errors.saveErrors.set(
             'name',
-            'A learning object with this name already exists!'
+            'A learning object with this name already exists! The title should be unique within your learning objects.'
           );
           this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
         } else {
@@ -933,8 +951,9 @@ export class BuilderStore {
     error: HttpErrorResponse,
     builderError: BUILDER_ERRORS
   ) {
-    this.serviceInteraction$.next(false);
-    if (error.status === 500) {
+    this.serviceInteraction$.next(null);
+    // If Angular's HTTP API has trouble connecting to an external API the status code will be 0
+    if (error.status === 0 || error.status === 500) {
       this.serviceError$.next(BUILDER_ERRORS.SERVICE_FAILURE);
     } else {
       this.serviceError$.next(builderError);

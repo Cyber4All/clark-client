@@ -5,7 +5,6 @@ $blue-accent: #3b608b;
 $bright-blue: saturate(lighten($blue-accent, 20), 40);
 $dark-blue: darken($blue-accent, 20);
 $green: #389857;
-$dark-text: #55595e;
 $wrapper-background: #f0f4f7;
 $blue-gradient: linear-gradient(45deg, $dark-blue, $blue-accent);
 $bright-blue-gradient: linear-gradient(rgba($bright-blue, 0.87), darken($bright-blue, 17));
@@ -14,6 +13,8 @@ $placeholder: lighten(#a9a9a9, 10);
 $popup-z: 9;
 $notification-z: 10;
 $cube-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPgoKPHBhdGggZD0iTTI4IDY2TDAgNTBMMCAxNkwyOCAwTDU2IDE2TDU2IDUwTDI4IDY2TDI4IDEwMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+CjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPgo8L3N2Zz4=');
+$dark-text: #4c575e;
+$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
 
 // length colors
 $nanomodule-color: #3b788b;

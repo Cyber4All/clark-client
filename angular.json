@@ -23,9 +23,6 @@
             ],
             "styles": [
               "src/globals.scss"
-            ],
-            "scripts": [
-              "./node_modules/chart.js/src/chart.js"
             ]
           },
           "configurations": {

@@ -72,6 +72,13 @@ button {
   right: 30px;
 }
 
+.privileges {
+
+  .privileges__title {
+    color: $dark-text !important;
+  }
+}
+
 @media (max-width: 1600px) {
   .user-cards {
     grid-template-columns: repeat(5, 20%);

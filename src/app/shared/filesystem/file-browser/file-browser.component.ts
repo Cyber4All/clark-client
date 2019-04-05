@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DirectoryNode, DirectoryTree } from '../DirectoryTree';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 

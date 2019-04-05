@@ -29,10 +29,11 @@
         <div *ngIf="users?.length; else emptyTemplate" class="user-cards" #container>
           <div *ngFor="let r of scroll.viewPortItems">
             <clark-admin-user-card class="user-cards__card"
-              [user]="r"
               [reviewer]="activeCollection && activeCollection?.length > 0"
               (navigateToUserObjects)="navigateToUserObjects($event)"
               (removeMember)="showModal($event)"
+              [user]="u"
+              (editPrivileges)="editPrivileges(u)"
             ></clark-admin-user-card>
           </div>
         </div>
@@ -65,3 +66,9 @@
     </div>
   </ng-template>
 </clark-admin-content-wrapper>
+
+<clark-popup *ngIf="showPrivileges" (closed)="showPrivileges = false">
+  <div #popupInner class="privileges">
+    <clark-user-privileges [user]="selectedUser"></clark-user-privileges>
+  </div>
+</clark-popup>

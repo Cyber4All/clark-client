@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '@cyber4all/clark-entity';
 import { UserService } from 'app/core/user.service';
 import {Router, ActivatedRoute} from '@angular/router';
+import { User } from '@entity';
 
 @Component({
   selector: 'clark-users',
@@ -16,6 +16,9 @@ export class UsersComponent implements OnInit {
   displayRemoveReviewerModal = false;
   removeReviewerId: string;
 
+  showPrivileges: boolean;
+  selectedUser: User;
+
   constructor(
     private user: UserService,
     private router: Router,
@@ -23,6 +26,7 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getUsers();
     this.route.parent.params.subscribe(params => {
       this.activeCollection = params['collection'];
       if (this.activeCollection !== null && typeof(this.activeCollection) !== 'undefined') {
@@ -31,11 +35,7 @@ export class UsersComponent implements OnInit {
    });
   }
 
-/**
- * Text search that returns the list of users to add
- * @param text text string to query by
- */
-  getUsers(text: string) {
+  getUsers(text?: string) {
     this.loading = true;
     this.user.searchUsers(text)
       .then(val => {
@@ -82,6 +82,11 @@ export class UsersComponent implements OnInit {
 
   navigateToUserObjects(username: string) {
     this.router.navigate(['admin/learning-objects'], { queryParams: { username } });
+  }
+
+  editPrivileges(user: User) {
+    this.selectedUser = user;
+    this.showPrivileges = true;
   }
 
 }

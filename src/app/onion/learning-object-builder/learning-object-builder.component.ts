@@ -1,8 +1,8 @@
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarService } from '../../core/navbar.service';
-import { BuilderStore } from './builder-store.service';
-import { ActivatedRoute } from '@angular/router';
+import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
 import {
@@ -19,7 +19,8 @@ import { ToasterService } from 'app/shared/toaster';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { AuthService } from 'app/core/auth.service';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
+import { environment } from '@env/environment.prod';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -100,10 +101,14 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   adminMode: boolean;
 
+  showServiceFailureModal = false;
+  adminDashboardURL = environment.adminAppUrl;
+
   // tslint:disable-next-line:max-line-length
   constructor(
     private store: BuilderStore,
     private route: ActivatedRoute,
+    private router: Router,
     private nav: NavbarService,
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
@@ -113,33 +118,49 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
-    this.route.paramMap.pipe(takeUntil(this.destroyed$)).subscribe(params => {
-      const id = params.get('learningObjectId');
-
-      // if name parameter found, instruct store to fetch full learning object
-      if (id) {
-        this.store.fetch(id).then(obj => this.setBuilderMode(obj));
-      } else {
-        // otherwise instruct store to initialize and store a blank learning object
-        this.store.makeNew();
-      }
+    this.route.paramMap
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(routeParams => {
+        const id = routeParams.get('learningObjectId');
+        // if name parameter found, instruct store to fetch full learning object
+        if (id) {
+          this.store.fetch(id).then(learningObject => {
+            // redirect user to dashboard if the object is in the review stage and they are not an editor
+            if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
+              this.router.navigate(['onion/dashboard']);
+            } else {
+              this.setBuilderMode(learningObject);
+            }
+          });
+        } else {
+          // otherwise instruct store to initialize and store a blank learning object
+          this.store.makeNew();
+        }
     });
 
     this.builderStore.serviceInteraction$
       .pipe(takeUntil(this.destroyed$))
       .subscribe(val => {
-        if (val) {
+        if (val === true) {
           clearTimeout(this.removeServiceIndicator);
           this.serviceInteraction = true;
           this.showServiceInteraction = true;
-        } else {
+        } else if (val === false) {
           this.serviceInteraction = false;
 
           this.removeServiceIndicator = setTimeout(() => {
             this.showServiceInteraction = false;
           }, 3000);
+        } else {
+          // If value is not explicitly true or false then an error occurred that will be handled by service error handler
+          this.showServiceInteraction = false;
+          this.serviceInteraction = false;
         }
       });
+
+    this.builderStore.serviceError$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(e => this.handleBuilderError(e));
 
     // hides clark nav bar from builder
     this.nav.hide();
@@ -158,6 +179,104 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       object.author.username !== this.authService.username;
   }
 
+  /**
+   * Handles builder errors by displaying error feedback to the user via toaster or modal if there is a service failure
+   *
+   * @private
+   * @param {BUILDER_ERRORS} error
+   * @memberof LearningObjectBuilderComponent
+   */
+  private handleBuilderError(error: BUILDER_ERRORS) {
+    const toasterTitle = 'Error!';
+    const toasterClass = 'bad';
+    const toasterIcon = 'far fa-times';
+    switch (error) {
+      case BUILDER_ERRORS.SERVICE_FAILURE:
+        this.showServiceFailureModal = true;
+        break;
+      case BUILDER_ERRORS.CREATE_OBJECT:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to create Learning Object',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      case BUILDER_ERRORS.CREATE_OUTCOME:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to create Learning Outcome',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      case BUILDER_ERRORS.DELETE_OUTCOME:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to delete Learning Outcome',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      case BUILDER_ERRORS.FETCH_OBJECT_MATERIALS:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to load materials',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      case BUILDER_ERRORS.SUBMIT_REVIEW:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to submit Learning Object for review',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      case BUILDER_ERRORS.UPDATE_FILE_DESCRIPTION:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to update file description',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      case BUILDER_ERRORS.UPDATE_OBJECT:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to update Learning Object',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      case BUILDER_ERRORS.UPDATE_OUTCOME:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to update Learning Outcome',
+          toasterClass,
+          toasterIcon
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Routes user to onion dashboard or admin dashboard depending on builder mode
+   *
+   * @memberof LearningObjectBuilderComponent
+   */
+  routeToDashboard() {
+    this.showServiceFailureModal = false;
+    if (!this.adminMode) {
+      this.router.navigate(['/onion/dashboard']);
+    } else {
+      window.location.href = this.adminDashboardURL;
+    }
+  }
+
   get errorState(): boolean {
     this.errorMessage = this.validator.nextError;
 
@@ -169,6 +288,14 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   getState(outlet: any) {
     return outlet.activatedRouteData.state;
+  }
+
+  /**
+   * Determines whether or not a Learning Object is in the Review Stage.
+   * @param object the Learning Object in question.
+   */
+  private isInReviewStage(object): boolean {
+    return object.status.includes('waiting') && object.status.includes('review') && object.status.includes('proofing');
   }
 
   ngOnDestroy() {

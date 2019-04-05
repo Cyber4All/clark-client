@@ -1,6 +1,7 @@
 <clark-toaster [content]="noteService.content"></clark-toaster>
 <div class="learning-object-builder-wrapper" [@builderTransition]="getState(o)">
-  <onion-builder-navbar [adminMode]="adminMode"></onion-builder-navbar>
+  <!-- The ngIf directive on onion-builder-navbar forces the :enter event to fire for router animations and should NOT be removed -->
+  <onion-builder-navbar *ngIf="true" [adminMode]="adminMode"></onion-builder-navbar>
   <router-outlet #o="outlet"></router-outlet>
 </div>
 
@@ -29,3 +30,15 @@
     {{ errorMessage }}
   </span>
 </ng-template>
+
+<!-- Service Error Popup -->
+<clark-popup *ngIf="showServiceFailureModal" (closed)="routeToDashboard()">
+  <div #popupInner class="popup-inner">
+    <div class="modal-title">Network error</div>
+    <div class="modal-text">We are currently unable to save your work due to a network related issue. Please check back
+      later and try again.</div>
+    <div class="btn-group center">
+      <button class="button good" (click)="routeToDashboard()">Back to Dashboard</button>
+    </div>
+  </div>
+</clark-popup>

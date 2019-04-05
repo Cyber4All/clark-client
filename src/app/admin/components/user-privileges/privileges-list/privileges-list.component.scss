@@ -1,0 +1,55 @@
+@import '~_vars.scss';
+
+.privileges__list {
+
+  & > *:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+
+.privileges__privilege {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  background: white;
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+  align-items: center;
+
+  .privilege__left {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: $dark-text;
+
+    .privilege__role {
+      background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+      color: white;
+      padding: 3px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    & > *:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  .privilege__delete {
+    color: $error-red;
+    cursor: pointer;
+
+    .svg-inline--fa,
+    .icon {
+      margin-left: 2px;
+    }
+  }
+}

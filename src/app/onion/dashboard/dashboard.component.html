@@ -134,6 +134,6 @@
 <!-- Collection Submission Popup -->
 <clark-popup *ngIf="submitToCollection" (closed)="submitToCollection = false">
   <div #popupInner>
-    <clark-collection-selector [currentCollection]="focusedLearningObject.collection" (choice)="addToCollection($event)" (cancel)="submitToCollection = false"></clark-collection-selector>
+    <clark-collection-selector-popup [currentCollection]="focusedLearningObject.collection" (choice)="addToCollection($event)" (cancel)="submitToCollection = false"></clark-collection-selector-popup>
   </div>
 </clark-popup>

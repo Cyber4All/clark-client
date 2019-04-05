@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'cube-parent-listing',
@@ -22,6 +22,6 @@ export class ParentListingComponent implements OnInit {
   ngOnInit() { }
 
   public buildLink(learningObject: LearningObject) {
-    return `/details/${learningObject.author.username}/${learningObject.name}`;
+    return `/details/${learningObject.author.username}/${encodeURIComponent(learningObject.name)}`;
   }
 }

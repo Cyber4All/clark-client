@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as md5 from 'md5';
 import { FormGroup } from '@angular/forms';
-import { User } from '@cyber4all/clark-entity';
+import { User } from '@entity';
 
 @Component({
   selector: 'clark-gravatar-info',

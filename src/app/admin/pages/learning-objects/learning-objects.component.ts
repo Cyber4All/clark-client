@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

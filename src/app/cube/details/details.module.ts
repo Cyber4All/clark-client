@@ -13,6 +13,7 @@ import { ChildrenDetailViewComponent } from './children-detail-view/children-det
 import { ParentListingComponent } from './included-in/parent-listing.component';
 import { DetailsSplashComponent } from './splash/details-splash.component';
 import { ActionPanelComponent } from './action-panel/action-panel.component';
+import { ErrorStatusComponent } from './error-status/error-status.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { ActionPanelComponent } from './action-panel/action-panel.component';
     ChildrenDetailViewComponent,
     ParentListingComponent,
     DetailsSplashComponent,
-    ActionPanelComponent
+    ActionPanelComponent,
+    ErrorStatusComponent
   ],
   providers: []
 })

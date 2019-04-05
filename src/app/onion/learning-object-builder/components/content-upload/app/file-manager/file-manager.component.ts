@@ -12,7 +12,7 @@ import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 
 import { DirectoryNode } from '../../../../../../shared/filesystem/DirectoryTree';
 
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 
 export interface FileEdit {
   id?: string;

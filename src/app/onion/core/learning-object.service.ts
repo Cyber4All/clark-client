@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-import { LearningObject, LearningOutcome } from '@cyber4all/clark-entity';
+import { LearningObject, LearningOutcome } from '@entity';
 import { CookieService } from 'ngx-cookie';
 
 import { USER_ROUTES } from '@env/route';
@@ -300,6 +300,15 @@ export class LearningObjectService {
       catchError(this.handleError)
     )
     .toPromise();
+  }
+  /**
+   * Fetches Learning Object's Children
+   */
+  getChildren(learningObjectID: string): Promise<LearningObject[]> {
+    const route = USER_ROUTES.GET_CHILDREN(learningObjectID);
+    return this.http.get(route, { withCredentials: true }).toPromise().then(children => {
+      return (children as []).map(c => new LearningObject(c));
+    });
   }
   /**
    * Makes request to update file description

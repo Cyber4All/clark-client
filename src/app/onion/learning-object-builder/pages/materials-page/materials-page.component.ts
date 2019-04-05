@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LearningObject } from '@cyber4all/clark-entity';
+import { LearningObject } from '@entity';
 import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject ,  Observable } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
+import { Subject ,  Observable  } from 'rxjs';
 
 
 @Component({
@@ -15,6 +15,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   error$: Subject<string> = new Subject<string>();
   learningObject$: Observable<LearningObject>;
   destroyed$: Subject<void> = new Subject();
+  learningObject: LearningObject;
 
   constructor(private store: BuilderStore) {}
 
@@ -27,6 +28,15 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     ).subscribe(val => {
       this.store.serviceInteraction$.next(val);
+    });
+
+    // listen for outcome events and update component stores
+    this.store.learningObjectEvent
+    .pipe(
+      filter(learningObject => learningObject !== undefined),
+      takeUntil(this.destroyed$)
+    ).subscribe((payload: LearningObject) => {
+      this.learningObject = payload;
     });
   }
 

@@ -40,6 +40,12 @@ import { TeleporterModule } from './teleporter/teleporter.module';
 import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { AdminUserCardComponent } from 'app/admin/components/user-card/user-card.component';
+import { TextEditorComponent } from './text-editor.component';
+import {CKEditorModule} from 'ng2-ckeditor';
+import { CarouselComponent } from './carousel/carousel.component';
+import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
+import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
+import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -60,6 +66,7 @@ import { AdminUserCardComponent } from 'app/admin/components/user-card/user-card
     PopupModule,
     ClarkContextMenuModule.forRoot(),
     TeleporterModule,
+    CKEditorModule,
   ],
   declarations: [
     NavbarComponent,
@@ -87,6 +94,11 @@ import { AdminUserCardComponent } from 'app/admin/components/user-card/user-card
     EmailBannerComponent,
     NewRatingResponseComponent,
     AdminUserCardComponent,
+    TextEditorComponent,
+    CarouselComponent,
+    CollectionSelectorPopupComponent,
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent
   ],
   exports: [
     AdminUserCardComponent,
@@ -114,7 +126,12 @@ import { AdminUserCardComponent } from 'app/admin/components/user-card/user-card
     EmailBannerComponent,
     DashboardItemComponent,
     TeleporterModule,
-    NewRatingResponseComponent
+    NewRatingResponseComponent,
+    TextEditorComponent,
+    CarouselComponent,
+    CollectionSelectorPopupComponent,
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent
   ]
 })
 export class SharedModule {}

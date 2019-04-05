@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { User } from '@cyber4all/clark-entity';
+import { User } from '@entity';
 import { UserService } from 'app/core/user.service';
 
 @Component({
@@ -14,6 +14,7 @@ export class AdminUserCardComponent implements OnInit {
   @Output() removeMember = new EventEmitter<string>();
 
   loading = false;
+  @Output() editPrivileges: EventEmitter<void> = new EventEmitter();
 
   constructor(private userService: UserService) { }
 
@@ -28,7 +29,11 @@ export class AdminUserCardComponent implements OnInit {
   }
 
   showUserObjects() {
-    this.navigateToUserObjects.emit(this.user.username);
+    this.navigateToUserObjects.emit();
+  }
+
+  editUserPrivileges() {
+    this.editPrivileges.emit();
   }
 
   removeReviewer() {
