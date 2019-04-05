@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeaturedCollectionsComponent } from './featured-collections.component';
+import { FeaturedCollectionsComponent } from './collections.component';
 
 describe('FeaturedCollectionsComponent', () => {
   let component: FeaturedCollectionsComponent;

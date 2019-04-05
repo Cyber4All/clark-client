@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
 
 @Component({
-  selector: 'clark-featured-collections',
-  templateUrl: './featured-collections.component.html',
-  styleUrls: ['./featured-collections.component.scss']
+  selector: 'clark-collections',
+  templateUrl: './collections.component.html',
+  styleUrls: ['./collections.component.scss']
 })
 export class FeaturedCollectionsComponent implements OnInit {
 
