@@ -92,7 +92,7 @@ img {
     }
 
     .collection-logo {
-        width: 120px;        
+        width: 120px;
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
@@ -110,7 +110,7 @@ img {
         justify-content: center;
 
         & > *:first-child {
-            margin-right: 0px;
+            margin-right: 0;
         }
     }
 
@@ -119,13 +119,13 @@ img {
         font-size: 50px;
         text-transform: uppercase;
         font-weight: bold;
-        text-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
     }
 
     .long-name {
         color: white;
         font-size: 24px;
-        text-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
         font-weight: normal;
     }
 }
