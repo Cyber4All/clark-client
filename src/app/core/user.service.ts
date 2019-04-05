@@ -121,13 +121,11 @@ export class UserService {
   async removeMember(
     collection: string,
     memberId: string,
-    role: any,
   ): Promise<void> {
     await this.http.request(
         'delete',
         USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
         {
-          body: role,
           withCredentials: true,
           responseType: 'text',
         },
