@@ -64,7 +64,7 @@ Cypress.Commands.add('reviewerLogin', () => {
     cy.url().should('include', 'login');
 
     //Enter login info
-    cy.get('input[name=username]').type('revieweraccount');
+    cy.get('input[name=username]').type('testreviewer');
     cy.get('input[name=password]').type('password');
     cy.get('#auth-button').click();
 })
