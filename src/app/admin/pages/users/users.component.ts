@@ -76,7 +76,7 @@ export class UsersComponent implements OnInit {
    */
   async removeReviewer() {
     this.displayRemoveReviewerModal = false;
-    await this.user.removeMember(this.activeCollection, this.removeReviewerId, {role: 'reviewer'} );
+    await this.user.removeMember(this.activeCollection, this.removeReviewerId );
     await this.fetchReviewers();
   }
 
