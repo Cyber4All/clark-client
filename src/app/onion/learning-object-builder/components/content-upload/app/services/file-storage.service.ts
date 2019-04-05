@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { LearningObject } from '@entity';
+import { CookieService } from 'ngx-cookie';
 
 export interface FileUploadMeta {
   name: string;
@@ -15,7 +16,10 @@ export interface FileUploadMeta {
 
 @Injectable()
 export class FileStorageService {
-  constructor(private http: HttpClient) {}
+  private token: string;
+  constructor(private http: HttpClient, private cookie: CookieService) {
+    this.token = this.cookie.get('presence');
+  }
 
   /**
    * Sends request to initiate multipart upload
@@ -46,7 +50,11 @@ export class FileStorageService {
     });
 
     return this.http
-      .post(route, { fileUploadMeta }, { withCredentials: true })
+      .post(
+        route,
+        { fileUploadMeta },
+        { headers: { Authorization: `Bearer ${this.token}` } }
+      )
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -87,7 +95,11 @@ export class FileStorageService {
       .patch(
         route,
         { uploadId },
-        { withCredentials: true, responseType: 'text' }
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+          withCredentials: true,
+          responseType: 'text'
+        }
       )
       .pipe(
         retry(3),
@@ -123,7 +135,11 @@ export class FileStorageService {
       .delete(
         route,
         { uploadId: params.uploadId },
-        { withCredentials: true, responseType: 'text' }
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+          withCredentials: true,
+          responseType: 'text'
+        }
       )
       .pipe(
         retry(3),
@@ -148,7 +164,11 @@ export class FileStorageService {
     );
 
     return this.http
-      .delete(route, { withCredentials: true, responseType: 'text' })
+      .delete(route, {
+        headers: { Authorization: `Bearer ${this.token}` },
+        withCredentials: true,
+        responseType: 'text'
+      })
       .pipe(
         retry(3),
         catchError(this.handleError)

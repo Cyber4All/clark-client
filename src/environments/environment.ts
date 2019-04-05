@@ -8,7 +8,7 @@ export const environment = {
   apiURL: 'http://localhost:3000',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'http://localhost:7000',
-  contentManagerURL: 'http://localhost:5100',
+  contentManagerURL: 'http://api-file-upload.us-east-1.elasticbeanstalk.com',
   adminAppUrl: 'http://localhost:4100'
 };
 

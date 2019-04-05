@@ -28,6 +28,7 @@ import {
   FileStorageService,
   FileUploadMeta
 } from '../services/file-storage.service';
+import { CookieService } from 'ngx-cookie';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type DZFile = {
@@ -130,7 +131,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.renameFile(file);
     },
     autoQueue: false,
-    parallelChunkUploads: true
+    parallelChunkUploads: true,
+    headers: { Authorization: '' }
   };
 
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
@@ -160,8 +162,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
-    private fileStorage: FileStorageService
-  ) {}
+    private fileStorage: FileStorageService,
+    private cookie: CookieService
+  ) {
+    this.config.headers.Authorization = `Bearer ${this.cookie.get('presence')}`;
+  }
 
   ngOnInit() {
     this.learningObject$
