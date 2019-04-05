@@ -69,9 +69,13 @@ describe('Details', () => {
         cy.get('.switch').should('not.exist');
 
         //login
-        cy.verfiedlogin();
+        cy.reviewerLogin();
 
+        //wait for page to load
         cy.wait(1000);
+
+         //reload page
+         cy.reload(); 
 
         //toggle the switch 
         cy.get('.switch').click({ force: true });
@@ -90,7 +94,7 @@ describe('Details', () => {
         cy.get('#write-review').should('not.exist');
 
         // login
-        cy.verifiedlogin();
+        cy.verifiedLogin();
 
         cy.wait(1000);
 
