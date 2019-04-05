@@ -58,6 +58,30 @@ describe('Details', () => {
         cy.url().should('include', 'home');
     });
 
+    it('Navigate to details and click the toggle switch to switch to revised option', () => {
+        //Wait for learning objects to load on page 
+        cy.wait(1000);
+
+        //Click left-most card
+        cy.get('.learning-object').first().click({ force: true }, { multiple: true });
+
+        //ensure that when not logged in, option doesn't exist
+        cy.get('.switch').should('not.exist');
+
+        //login
+        cy.verfiedlogin();
+
+        cy.wait(1000);
+
+        //toggle the switch 
+        cy.get('.switch').click({ force: true });
+
+        //verify that reviewer panel appears 
+        cy.get('.last-revised').should('be.visible');
+        cy.get('.last-released').should('be.visible');
+
+    });
+    
     it('Navigate to details and clicking on \'Write a review\'', () => {
         // Wait for learning objects to load on page
         cy.wait(1000);
