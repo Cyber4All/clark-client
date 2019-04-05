@@ -27,13 +27,15 @@ export class PrivilegeService {
       )
       .toPromise();
   }
+
   /**
-   * Create a new changelog for the given learning object
+   * Adds membership at a specific role for a collection to a user
    *
-   * @param {string} learningObjectId the id of the learning object
-   * @param {string} changelog the text body of the changelog
+   * @param {string} abvCollectionName the abbreviated name of the collection for which to add the membership
+   * @param {string} userId the id of the user to grant membership to
+   * @param {string} role the role the user will hold in the collection
    * @returns {Promise<{}>}
-   * @memberof ChangelogService
+   * @memberof PrivilegeService
    */
   addMembership(abvCollectionName: string, userId: string, role: string): Promise<{}> {
     return this.http
@@ -49,6 +51,15 @@ export class PrivilegeService {
       .toPromise();
   }
 
+  /**
+   * Modifies an existing membership to a collection for a user
+   *
+   * @param {string} abvCollectionName the abbreviated name of the collection for which to modify the membership
+   * @param {string} userId the id of the user to modify membership for
+   * @param {string} role the role the user will hold in the collection
+   * @returns
+   * @memberof PrivilegeService
+   */
   modifyMembership(abvCollectionName: string, userId: string, role: string) {
     return this.http
       .patch(
@@ -63,6 +74,14 @@ export class PrivilegeService {
       .toPromise();
   }
 
+  /**
+   * Removes a users membership from a specific collection
+   *
+   * @param {string} abvCollectionName the abbreviated name of the collection for which to remove the membership
+   * @param {string} userId the id of the user to remove membership for
+   * @returns
+   * @memberof PrivilegeService
+   */
   removeMembership(abvCollectionName: string, userId: string) {
     return this.http
       .delete(
@@ -76,6 +95,14 @@ export class PrivilegeService {
       .toPromise();
   }
 
+  /**
+   * Generic error-handling function for errors through from the HttpClient module
+   *
+   * @private
+   * @param {HttpErrorResponse} error
+   * @returns
+   * @memberof PrivilegeService
+   */
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
