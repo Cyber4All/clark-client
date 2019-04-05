@@ -1,5 +1,5 @@
-<div *ngIf="learningObject && revisedLearningObject && !errorStatus" class="details-wrapper" [ngClass]="learningObject.length">
-  <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [owned]="isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
+<div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
+  <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
   <div class="flex">
     <div class="content">
       <div class="description">
@@ -39,9 +39,9 @@
     </div>
     <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
       <div class="inner"*ngIf="reviewer">
-        <div class="revisions">
-          <div class="text" *ngIf="hasRevisions">View Revisions</div>
-          <clark-version-switch *ngIf="hasRevisions" (toggled)="viewReleased($event)"></clark-version-switch>
+        <div *ngIf="hasRevisions" class="revisions">
+          <div class="text">View Revisions</div>
+          <clark-version-switch (toggled)="viewReleased($event)"></clark-version-switch>
         </div>
         <div class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
       </div>
