@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
+import { Collection } from '../../core/collection.service';
 
 @Component({
   selector: 'clark-collections',
@@ -8,14 +9,14 @@ import { CollectionService } from 'app/core/collection.service';
 })
 export class CollectionsComponent implements OnInit {
 
-  collections;
+  collections: Collection[];
 
   constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
     this.collectionService
       .getCollections()
-      .then(collections => {
+      .then((collections: Collection[]) => {
         this.collections = collections;
       })
       .catch(e => {
