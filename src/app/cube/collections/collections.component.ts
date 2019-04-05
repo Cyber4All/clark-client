@@ -6,7 +6,7 @@ import { CollectionService } from 'app/core/collection.service';
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss']
 })
-export class FeaturedCollectionsComponent implements OnInit {
+export class CollectionsComponent implements OnInit {
 
   collections;
 

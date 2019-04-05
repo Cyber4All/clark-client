@@ -33,9 +33,9 @@ import { ModalModule } from '../shared/modals';
 import {
   ToasterModule
 } from '../shared/toaster';
-import { CollectionModule } from './collections/collection.module';
+import { CollectionModule } from './collection-details/collection-details.module';
 import { DetailsModule } from './details/details.module';
-import { FeaturedCollectionsComponent } from './featured-collections/featured-collections.component';
+import { CollectionsComponent } from './collections/collections.component';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -52,7 +52,7 @@ import { FeaturedCollectionsComponent } from './featured-collections/featured-co
     UserInformationComponent,
     UserEditInformationComponent,
     OrganizationListComponent,
-    FeaturedCollectionsComponent,
+    CollectionsComponent,
   ],
   imports: [
     // Angular imports
