@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DownloadNoticeComponent } from './download-notice.component';
+import { CollectionsGridComponent } from './collections-grid.component';
 
-describe('DownloadNoticeComponent', () => {
-  let component: DownloadNoticeComponent;
-  let fixture: ComponentFixture<DownloadNoticeComponent>;
+describe('CollectionsGridComponent', () => {
+  let component: CollectionsGridComponent;
+  let fixture: ComponentFixture<CollectionsGridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DownloadNoticeComponent ]
+      declarations: [ CollectionsGridComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DownloadNoticeComponent);
+    fixture = TestBed.createComponent(CollectionsGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -41,6 +41,10 @@ import { DashboardItemComponent } from './dashboard-item/dashboard-item.componen
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
 import {CKEditorModule} from 'ng2-ckeditor';
+import { CarouselComponent } from './carousel/carousel.component';
+import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
+import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
+import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -88,7 +92,11 @@ import {CKEditorModule} from 'ng2-ckeditor';
     DashboardItemComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    CarouselComponent,
+    CollectionSelectorPopupComponent,
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent
   ],
   exports: [
     NavbarComponent,
@@ -116,7 +124,11 @@ import {CKEditorModule} from 'ng2-ckeditor';
     DashboardItemComponent,
     TeleporterModule,
     NewRatingResponseComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    CarouselComponent,
+    CollectionSelectorPopupComponent,
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent
   ]
 })
 export class SharedModule {}

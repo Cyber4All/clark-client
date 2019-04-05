@@ -1,48 +1,9 @@
 @import '~_vars.scss';
 
-$dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
-
-.banner {
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 20px;
-  box-sizing: border-box;
-  position: absolute;
-  background: $light-blue-gradient;
-
-  &:after {
-    content: '';
-    background: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.04;
-    mask: $cube-pattern repeat;
-  }
-
-  .banner__title {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-  }
-
-  .banner__sub {
-    color: white;
-    opacity: 0.85;
-    font-size: 16px;
-  }
-}
-
 .collection-chooser {
-  padding: 20px;
   margin: auto;
   margin-bottom: 25px;
   width: 100%;
-  margin-top: 80px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
@@ -99,33 +60,6 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   }
 }
 
-.license-selection {
-  color: $dark-text;
-  font-size: 18px;
-  max-width: 500px;
-  text-align: left;
-  margin: auto;
-  display: flex;
-  padding: 10px;
-  border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-
-  .statement {
-    margin-left: 15px;
-  }
-}
-
-.submit-btn {
-  margin-top: 30px;
-}
-
-:host {
-    // resize the popup
-    max-width: 800px;
-    width: 90vw;
-    display: block;
-}
-
 .loading-template,
 .none-template {
   margin-top: 50px;
@@ -149,23 +83,5 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   .svg-inline--fa,
   .icon {
     color: $error-red;
-  }
-}
-
-// FIXME this can be removed when the new button styles are applied cross-application
-button {
-  border: 0;
-  padding: 10px 20px 10px 25px;
-
-  &.good {
-      background: $light-blue-gradient;
-  }
-
-  &.neutral {
-      color: $dark-text;
-  }
-
-  &.shadow {
-      box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
   }
 }

@@ -4,6 +4,14 @@ import * as querystring from 'querystring';
 export const ADMIN_ROUTES = {
   CREATE_CHANGELOG(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
+  },
+  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      abvCollectionName
+    )}/members/${encodeURIComponent(userId)}`;
+  },
+  GET_USER_ROLES(id: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(id)}/roles`;
   }
 };
 
@@ -22,7 +30,7 @@ export const USER_ROUTES = {
     )}/learning-objects/profile`;
   },
   SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search?text=` + query;
+    return `${environment.apiURL}/users/search`;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
