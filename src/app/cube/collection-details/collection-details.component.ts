@@ -6,10 +6,10 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'cube-collection',
-  templateUrl: 'collection.component.html',
-  styleUrls: ['collection.component.scss']
+  templateUrl: 'collection-details.component.html',
+  styleUrls: ['collection-details.component.scss']
 })
-export class CollectionComponent implements OnInit, OnDestroy {
+export class CollectionDetailsComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();
   key = new Subject<string>();
   collection;
