@@ -19,10 +19,10 @@ export class UsersComponent implements OnInit {
   constructor(private user: UserService, private router: Router) { }
 
   ngOnInit() {
-    this.getUsers('');
+    this.getUsers();
   }
 
-  getUsers(text: string) {
+  getUsers(text?: string) {
     this.loading = true;
     this.user.searchUsers(text)
       .then(val => {
