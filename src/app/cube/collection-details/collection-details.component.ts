@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'cube-collection',
+  selector: 'cube-collection-details',
   templateUrl: 'collection-details.component.html',
   styleUrls: ['collection-details.component.scss']
 })
