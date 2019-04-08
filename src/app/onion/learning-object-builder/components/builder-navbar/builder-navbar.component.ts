@@ -28,6 +28,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   learningObject: LearningObject;
   collection: Collection;
+  changelog;
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();

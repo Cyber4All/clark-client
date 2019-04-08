@@ -21,6 +21,7 @@ import { EditChangelogComponent } from './edit-changelog/edit-changelog.componen
   ],
   exports: [
     EditorActionPanelComponent,
+    EditChangelogComponent
   ],
 })
 export class EditorActionPanelModule { }
