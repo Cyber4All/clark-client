@@ -11,16 +11,20 @@
 
   <div *ngIf="activeCollection && activeCollection?.length > 0" filter-options>
     <div class="btn-group to-right">
-      <button id="add-reviewers" class="button good add reviewers" (click)="isSearching= !isSearching"> Add Reviewer
+      <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : isSearching}" (click)= "isSearching= !isSearching"> Add Reviewer
           <i class="far fa-user-plus"></i> 
       </button>
     </div>
-    <div *ngIf="isSearching" class="reviewer-search">
-      <clark-user-search-wrapper
-        [users]="users"
-        (selectedUser)="addReviewer($event)"
-      ></clark-user-search-wrapper>
-    </div>
+    <clark-teleporter *ngIf="isSearching">
+      <div #teleporterPayload class="reviewer-search-wrapper" (click)="isSearching = false">
+        <div class="reviewer-search" (click)="$event.stopPropagation()">
+          <clark-user-search-wrapper
+            [users]="users"
+            (selectedUser)="addReviewer($event)"
+          ></clark-user-search-wrapper>
+        </div>
+      </div>
+    </clark-teleporter>
   </div>
 
   <div class="users" main>
