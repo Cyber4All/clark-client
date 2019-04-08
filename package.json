@@ -8,8 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "jest --verbose  --coverage",
-    "lint": "ng lint",
-    "app": "cd .. cd "
+    "lint": "ng lint"
   },
   "dependencies": {
     "@angular/animations": "^7.2.3",
