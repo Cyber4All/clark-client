@@ -197,9 +197,6 @@ export class FileStorageService {
     return this.http
       .delete(
         route,
-        // @ts-ignore Sending body is legal
-        { uploadId: params.uploadId },
-        // @ts-ignore Sending body is legal
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
