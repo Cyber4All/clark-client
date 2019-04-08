@@ -328,6 +328,11 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.changelog
       ).then(() => {
         this.page++;
+      }).catch(e => {
+        console.error(e);
+        this.showSubmission = false;
+        this.toasterService.notify('Error!', e, 'bad', 'far fa-times');
+        this.page = 1;
       });
     } else {
       this.page++;
