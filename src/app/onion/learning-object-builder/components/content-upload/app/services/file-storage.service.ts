@@ -161,10 +161,14 @@ export class FileStorageService {
     });
 
     return this.http
-      .patch(route, {
-        headers: { Authorization: `Bearer ${this.token}` },
-        responseType: 'text'
-      })
+      .patch(
+        route,
+        {},
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+          responseType: 'text'
+        }
+      )
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -195,10 +199,7 @@ export class FileStorageService {
       objectId: params.learningObject.id
     });
     return this.http
-      .delete(
-        route,
-        { withCredentials: true, responseType: 'text' }
-      )
+      .delete(route, { withCredentials: true, responseType: 'text' })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -259,33 +260,6 @@ export class FileStorageService {
 
     return this.http
       .delete(route, { withCredentials: true, responseType: 'text' })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Sends learning object ID and file name to API for deletion.
-   *
-   * @param {string} learningObjectID
-   * @param {string} filename
-   * @returns {Promise<{}>}
-   * @memberof FileStorageService
-   */
-  deleteAdmin(learningObject: LearningObject, fileId: string): Promise<{}> {
-    const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT(
-      learningObject.author.username,
-      learningObject.id,
-      fileId
-    );
-
-    return this.http
-      .delete(route, {
-        headers: { Authorization: `Bearer ${this.token}` },
-        responseType: 'text'
-      })
       .pipe(
         retry(3),
         catchError(this.handleError)
