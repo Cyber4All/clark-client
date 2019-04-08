@@ -294,6 +294,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       .submitForReview(collection)
       .then(val => {
         this.showSubmission = false;
+        this.page = 1;
         this.toasterService.notify(
           'Success!',
           'Learning object submitted successfully!',
@@ -303,6 +304,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       })
       .catch(error => {
         console.error(error);
+        this.page = 1;
         this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
         this.showSubmission = false;
         this.submissionError = true;
@@ -320,12 +322,16 @@ export class BuilderNavbarComponent implements OnDestroy {
    * Create a new changelog for the active learning object
    */
   updateChangelog() {
-    this.changelogService.createChangelog(
-      this.store.learningObjectEvent.getValue().id,
-      this.changelog
-    ).then(() => {
+    if (this.changelog) {
+      this.changelogService.createChangelog(
+        this.store.learningObjectEvent.getValue().id,
+        this.changelog
+      ).then(() => {
+        this.page++;
+      });
+    } else {
       this.page++;
-    });
+    }
   }
 
   ngOnDestroy() {
