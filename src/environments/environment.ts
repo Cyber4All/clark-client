@@ -9,6 +9,7 @@ export const environment = {
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'http://localhost:7000',
   contentManagerURL: 'http://localhost:5000',
+  contentManagerURLAdmin: 'http://localhost:5100',
   adminAppUrl: 'http://localhost:4100'
 };
 
