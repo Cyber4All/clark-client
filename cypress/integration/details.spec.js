@@ -62,6 +62,7 @@ describe('Details', () => {
         //Wait for learning objects to load on page 
         cy.wait(1000);
 
+<<<<<<< HEAD
          //login
          cy.reviewerLogin();
 
@@ -74,6 +75,23 @@ describe('Details', () => {
         //Click left-most card
         cy.get('.learning-object').first().click({ force: true }, { multiple: true });
 
+=======
+        //Click left-most card
+        cy.get('.learning-object').first().click({ force: true }, { multiple: true });
+
+        //ensure that when not logged in, option doesn't exist
+        cy.get('.switch').should('not.exist');
+
+        //login
+        cy.reviewerLogin();
+
+        //wait for page to load
+        cy.wait(1000);
+
+         //reload page
+         cy.reload(); 
+
+>>>>>>> aa293a0c2fadc8b48cdc0e5a6344ac560d14e96b
         //toggle the switch 
         cy.get('.switch').click({ force: true });
 
