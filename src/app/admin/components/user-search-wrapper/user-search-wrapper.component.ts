@@ -59,7 +59,6 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
    * @memberof UserSearchWrapperComponent
    */
   findUser(query: string) {
-    console.log(query);
     if (query && query !== '') {
       this.user.searchUsers(query).then((results: User[]) => {
         // remove current user from results
