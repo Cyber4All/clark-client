@@ -122,14 +122,19 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(routeParams => {
         const id = routeParams.get('learningObjectId');
+
         // if name parameter found, instruct store to fetch full learning object
         if (id) {
           this.store.fetch(id).then(learningObject => {
-            // redirect user to dashboard if the object is in the review stage and they are not an editor
-            if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
-              this.router.navigate(['onion/dashboard']);
+            if (learningObject.status === LearningObject.Status.RELEASED) {
+              this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
             } else {
-              this.setBuilderMode(learningObject);
+              // redirect user to dashboard if the object is in the working stage
+              if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
+                this.router.navigate(['onion/dashboard']);
+              } else {
+                this.setBuilderMode(learningObject);
+              }
             }
           });
         } else {
