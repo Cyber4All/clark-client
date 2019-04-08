@@ -24,7 +24,12 @@ import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 import { ModalService } from '../../../../../../shared/modals';
 import { USER_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
-import { FileStorageService } from '../services/file-storage.service';
+import {
+  FileStorageService,
+  FileUploadMeta
+} from '../services/file-storage.service';
+import { CookieService } from 'ngx-cookie';
+import { AuthService } from 'app/core/auth.service';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type DZFile = {
@@ -127,7 +132,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.renameFile(file);
     },
     autoQueue: false,
-    parallelChunkUploads: true
+    parallelChunkUploads: true,
+    headers: {}
   };
 
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
@@ -152,23 +158,29 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   handleDeleteGenerator: Iterator<void>;
 
   private uploadIds = {};
+  private userIsPrivileged = false;
 
   constructor(
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
     private modalService: ModalService,
-    private fileStorage: FileStorageService
-  ) {}
+    private fileStorage: FileStorageService,
+    private cookie: CookieService,
+    private auth: AuthService
+  ) {
+    this.config.headers.Authorization = `Bearer ${this.cookie.get('presence')}`;
+    this.userIsPrivileged = this.auth.isAdminOrEditor();
+  }
 
   ngOnInit() {
     this.learningObject$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(object => {
         if (object) {
-          this.config.url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
-            object.id,
-            object.author.username
-          );
+          this.config.url = this.getFileUploadUrl({
+            learningObjectId: object.id,
+            authorUsername: object.author.username
+          });
           this.files$.next(object.materials.files);
           this.folderMeta$.next(object.materials.folderDescriptions);
           this.solutionUpload = false;
@@ -197,6 +209,40 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notificationService.notify('Error!', err, 'bad', 'far fa-times');
       }
     });
+  }
+
+  /**
+   *  Gets upload URL based on user access privileges
+   *  FIXME: TESTING PURPOSES ONLY. Remove after test of file upload service is completed
+   *
+   * @param {{
+   *     learningObjectId: string;
+   *     authorUsername: string;
+   *   }} {
+   *     learningObjectId,
+   *     authorUsername
+   *   }
+   * @returns {string}
+   * @memberof UploadComponent
+   */
+  getFileUploadUrl({
+    learningObjectId,
+    authorUsername
+  }: {
+    learningObjectId: string;
+    authorUsername: string;
+  }): string {
+    let url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
+      learningObjectId,
+      authorUsername
+    );
+    if (this.userIsPrivileged) {
+      url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT_ADMIN(
+        learningObjectId,
+        authorUsername
+      );
+    }
+    return url;
   }
 
   ngAfterViewInit() {
@@ -297,11 +343,29 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           const learningObject = await this.learningObject$
             .pipe(take(1))
             .toPromise();
-          const uploadId = await this.fileStorage.initMultipart({
-            learningObject,
-            fileId: file.upload.uuid,
-            filePath: file.fullPath ? file.fullPath : file.name
-          });
+
+          // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
+          let uploadId = '';
+          if (this.userIsPrivileged) {
+            const fileUploadMeta: FileUploadMeta = {
+              name: file.name,
+              path: file.fullPath || file.name,
+              fileType: file.type,
+              size: file.size
+            };
+            uploadId = await this.fileStorage.initMultipartAdmin({
+              fileUploadMeta,
+              fileId: file.upload.uuid,
+              learningObjectId: learningObject.id,
+              authorUsername: learningObject.author.username
+            });
+          } else {
+            uploadId = await this.fileStorage.initMultipart({
+              learningObject,
+              fileId: file.upload.uuid,
+              filePath: file.fullPath ? file.fullPath : file.name
+            });
+          }
           this.uploadIds[file.upload.uuid] = uploadId;
         }
       }
@@ -378,12 +442,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         const learningObject = await this.learningObject$
           .pipe(take(1))
           .toPromise();
-        await this.fileStorage.finalizeMultipart({
-          fileMeta,
-          learningObject,
-          fileId: file.upload.uuid,
-          uploadId
-        });
+
+        // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
+        if (this.userIsPrivileged) {
+          await this.fileStorage.finalizeMultipartAdmin({
+            learningObjectId: learningObject.id,
+            authorUsername: learningObject.author.username,
+            fileId: file.upload.uuid,
+            uploadId
+          });
+        } else {
+          await this.fileStorage.finalizeMultipart({
+            fileMeta,
+            learningObject,
+            fileId: file.upload.uuid,
+            uploadId
+          });
+        }
+
         this.uploadComplete.emit();
       } catch (e) {
         console.error(e);
@@ -421,12 +497,21 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   private async abortMultipartUpload(file: any) {
     const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
     const uploadId = this.uploadIds[file.upload.uuid];
-
-    this.fileStorage.abortMultipart({
-      learningObject,
-      uploadId,
-      fileId: file.upload.uuid
-    });
+    // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
+    if (this.userIsPrivileged) {
+      this.fileStorage.abortMultipartAdmin({
+        learningObjectId: learningObject.id,
+        authorUsername: learningObject.author.username,
+        uploadId,
+        fileId: file.upload.uuid
+      });
+    } else {
+      this.fileStorage.abortMultipart({
+        learningObject,
+        uploadId,
+        fileId: file.upload.uuid
+      });
+    }
   }
 
   /**
