@@ -66,6 +66,11 @@
   </div>
 </clark-popup>
 
+<ng-template #authorChangelogTemplate>
+  <p class="title">What changes were made?</p>
+  <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal()" (confirm)="updateStatus()"></clark-edit-changelog>
+</ng-template>
+
 <ng-template #submitReviewTemplate>
   <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"
       (cancel)="showSubmission = false"></clark-collection-selector>
