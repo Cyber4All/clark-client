@@ -61,13 +61,13 @@
 
 <clark-popup *ngIf="showSubmission" (closed)="showSubmission = false">
   <div #popupInner>
-    <ng-container [ngTemplateOutlet]="true ? authorChangelogTemplate : submitReviewTemplate"></ng-container>
+    <ng-container [ngTemplateOutlet]="page === 1 ? authorChangelogTemplate : submitReviewTemplate"></ng-container>
   </div>
 </clark-popup>
 
 <ng-template #authorChangelogTemplate>
   <p class="title">What changes were made?</p>
-  <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal()" (confirm)="updateStatus()"></clark-edit-changelog>
+  <clark-edit-changelog [(changelog)]="changelog" (back)="showSubmission = false" (cancel)="showSubmission = false" (confirm)="updateChangelog()"></clark-edit-changelog>
 </ng-template>
 
 <ng-template #submitReviewTemplate>

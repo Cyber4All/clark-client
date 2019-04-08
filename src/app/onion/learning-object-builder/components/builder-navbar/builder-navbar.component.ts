@@ -9,6 +9,7 @@ import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
+import { ChangelogService } from 'app/core/changelog.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -29,6 +30,7 @@ export class BuilderNavbarComponent implements OnDestroy {
   learningObject: LearningObject;
   collection: Collection;
   changelog;
+  page = 1;
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -48,6 +50,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private toasterService: ToasterService,
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
+    private changelogService: ChangelogService,
     public validator: LearningObjectValidator,
     public store: BuilderStore
   ) {
@@ -311,6 +314,18 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   cancelSubmission() {
     this.store.cancelSubmission();
+  }
+
+  /**
+   * Create a new changelog for the active learning object
+   */
+  updateChangelog() {
+    this.changelogService.createChangelog(
+      this.store.learningObjectEvent.getValue().id,
+      this.changelog
+    ).then(() => {
+      this.page++;
+    });
   }
 
   ngOnDestroy() {
