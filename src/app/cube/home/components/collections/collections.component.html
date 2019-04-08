@@ -8,10 +8,12 @@
   <div class="collections__description">
     {{ copy.COLLECTION_BLURB }}
   </div>
+  <div class="featured-collections-cta">
+    <a routerLink="/c">View all Collections</a>
+  </div>
   <div class="collections__grid">
-    <div class="collection-card" *ngFor="let c of collections" routerLink="/c/{{c.name}}">
-      <img class="card__image" src="/assets/images/collections/{{c.abvName}}.png" alt="{{ c.name }} logo">
-      <div class="card__name">{{ c.name }}</div>
+    <div *ngFor="let c of collections">
+      <clark-collection-card [collection]="c"></clark-collection-card>
     </div>
   </div>
 </div>

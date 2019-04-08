@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { CollectionComponent } from './collection.component';
+import { CollectionDetailsComponent } from './collection-details.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
@@ -16,6 +16,6 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   exports: [],
-  declarations: [CollectionComponent]
+  declarations: [CollectionDetailsComponent]
 })
 export class CollectionModule {}

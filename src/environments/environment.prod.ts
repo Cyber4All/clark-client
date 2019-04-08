@@ -4,6 +4,7 @@ export const environment = {
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'https://api-outcome-suggestion.clark.center',
   contentManagerURL: 'https://api-learning-objects.clark.center',
+  contentManagerURLAdmin: 'https://api-file-upload.clark.center',
   adminAppUrl: 'https://admin.clark.center'
 };
 

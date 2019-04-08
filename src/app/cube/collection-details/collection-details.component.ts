@@ -5,14 +5,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'cube-collection',
-  templateUrl: 'collection.component.html',
-  styleUrls: ['collection.component.scss']
+  selector: 'cube-collection-details',
+  templateUrl: 'collection-details.component.html',
+  styleUrls: ['collection-details.component.scss']
 })
-export class CollectionComponent implements OnInit, OnDestroy {
+export class CollectionDetailsComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();
   key = new Subject<string>();
   collection;
+  pictureLocation: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,5 +38,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
   async fetchCollection(name: string) {
     this.collection = await this.collectionService.getCollectionMetadata(name);
     this.key.next(this.collection.abvName);
+    if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
+      this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
+    }
   }
 }

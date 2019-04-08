@@ -3,7 +3,9 @@ import * as querystring from 'querystring';
 
 export const ADMIN_ROUTES = {
   CREATE_CHANGELOG(learningObjectId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectId
+    )}/changelog`;
   }
 };
 
@@ -78,6 +80,11 @@ export const USER_ROUTES = {
   },
   POST_FILE_TO_LEARNING_OBJECT(id: string, username: string) {
     return `${environment.contentManagerURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${id}/files`;
+  },
+  POST_FILE_TO_LEARNING_OBJECT_ADMIN(id: string, username: string) {
+    return `${environment.contentManagerURLAdmin}/users/${encodeURIComponent(
       username
     )}/learning-objects/${id}/files`;
   },
@@ -163,7 +170,9 @@ export const USER_ROUTES = {
     )}/learning-objects/${objectId}/materials`;
   },
   GET_CHILDREN(learningObjectID: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectID)}/children/summary`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      learningObjectID
+    )}/children/summary`;
   },
   INIT_MULTIPART(params: {
     username: string;
@@ -174,6 +183,15 @@ export const USER_ROUTES = {
       params.username
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
   },
+  INIT_MULTIPART_ADMIN(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/admin`;
+  },
   FINALIZE_MULTIPART(params: {
     username: string;
     objectId: string;
@@ -183,6 +201,18 @@ export const USER_ROUTES = {
       params.username
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
   },
+  FINALIZE_MULTIPART_ADMIN(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+    uploadId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
+      params.uploadId
+    }/admin`;
+  },
   ABORT_MULTIPART(params: {
     username: string;
     objectId: string;
@@ -191,6 +221,18 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.username
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
+  },
+  ABORT_MULTIPART_ADMIN(params: {
+    username: string;
+    objectId: string;
+    fileId: string;
+    uploadId: string;
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
+      params.uploadId
+    }/admin`;
   }
 };
 
