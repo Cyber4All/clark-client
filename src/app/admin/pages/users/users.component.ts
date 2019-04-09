@@ -41,7 +41,7 @@ export class UsersComponent implements OnInit {
 
   getUsers(text?: string) {
     this.loading = true;
-    this.user.searchUsers(text)
+    this.user.searchUsers({ text })
       .then(val => {
         this.users = val;
         this.loading = false;

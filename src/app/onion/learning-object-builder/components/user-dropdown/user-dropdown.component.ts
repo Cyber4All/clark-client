@@ -86,7 +86,7 @@ export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
    */
   findUser(query: string) {
     if (query && query !== '') {
-      this.userService.searchUsers(query).then((results: User[]) => {
+      this.userService.searchUsers({ text: query }).then((results: User[]) => {
         // remove current user from results
         for (let i = 0; i < results.length; i++) {
           if (this.authService.username === results[i].username) {

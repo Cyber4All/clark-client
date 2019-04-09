@@ -60,7 +60,7 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
    */
   findUser(query: string) {
     if (query && query !== '') {
-      this.user.searchUsers(query).then((results: User[]) => {
+      this.user.searchUsers({ text: query }).then((results: User[]) => {
         // remove current user from results
         this.searchResults = results.filter(result => result.username !== this.authService.username);
         this.loading = false;
