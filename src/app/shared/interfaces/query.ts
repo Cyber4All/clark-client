@@ -33,3 +33,9 @@ export interface FilterQuery extends Query {
   length?: string[];
   level?: string[];
 }
+
+export interface UserQuery {
+  currPage?: number;
+  limit?: number;
+  text?: string;
+}

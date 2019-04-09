@@ -7,6 +7,7 @@ import { User } from '@entity';
 import * as md5 from 'md5';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { UserQuery } from 'app/shared/interfaces/query';
 
 @Injectable()
 export class UserService {
@@ -144,7 +145,7 @@ export class UserService {
    * @returns {Promise<User[]} array of users matching the text query
    * @memberof UserService
    */
-  searchUsers(query: string): Promise<User[]> {
+  searchUsers(query: UserQuery): Promise<User[]> {
     return this.http
       .get(
         USER_ROUTES.SEARCH_USERS(query),
