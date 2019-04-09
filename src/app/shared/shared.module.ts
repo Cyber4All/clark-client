@@ -39,6 +39,7 @@ import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
+import { CollectionCardComponent } from './collection-card/collection-card.component';
 import {CKEditorModule} from 'ng2-ckeditor';
 
 /**
@@ -87,7 +88,8 @@ import {CKEditorModule} from 'ng2-ckeditor';
     CookiesComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    CollectionCardComponent
   ],
   exports: [
     NavbarComponent,
@@ -114,7 +116,8 @@ import {CKEditorModule} from 'ng2-ckeditor';
     EmailBannerComponent,
     TeleporterModule,
     NewRatingResponseComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    CollectionCardComponent
   ]
 })
 export class SharedModule {}
