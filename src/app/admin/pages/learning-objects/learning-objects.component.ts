@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
@@ -16,7 +16,8 @@ import { takeUntil } from 'rxjs/operators';
     PrivateLearningObjectService
   ]
 })
-export class LearningObjectsComponent implements OnInit, OnDestroy {
+export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('list') listElement: ElementRef<HTMLElement>;
 
   learningObjects: any;
   searchBarPlaceholder = 'Learning Objects';
@@ -30,6 +31,8 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
   currentStatusfilters = [''];
   componentDestroyed$: Subject<void> = new Subject();
 
+  listViewHeightOffset: number;
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const username = params['username'];
@@ -39,11 +42,18 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
    });
   }
 
+  ngAfterViewInit() {
+    if (!this.loading) {
+      this.listViewHeightOffset =
+        // 50 here is the browser-rendered height of the table-headers
+        this.listElement.nativeElement.getBoundingClientRect().top + 50;
+    }
+  }
+
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
     private route: ActivatedRoute,
-    public changeDetectorRef: ChangeDetectorRef
   ) { }
 
   getLearningObjects(text: string) {
@@ -56,6 +66,12 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
       .then(val => {
         this.learningObjects = val.learningObjects;
         this.loading = false;
+
+        if (!this.listViewHeightOffset) {
+          this.listViewHeightOffset =
+            // 50 here is the browser-rendered height of the table-headers
+            this.listElement.nativeElement.getBoundingClientRect().top + 50;
+        }
       });
   }
 
