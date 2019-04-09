@@ -88,7 +88,7 @@
 </clark-context-menu>
 
 <clark-context-menu (id)="userMenu = $event" (close)="userDropdown(undefined)">
-  <div #contextMenu>
+  <div #contextMenu id="context-popup">
     <ul>
       <li *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (click)="userDropdown(undefined)"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
       <li [routerLink]="['users', authService.user?.username]" (click)="userDropdown(undefined)"><i class="far fa-user"></i>Your Profile</li>

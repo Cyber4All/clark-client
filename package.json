@@ -8,9 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "jest --verbose  --coverage",
-    "lint": "ng lint",
-    "app": "cd .. cd ",
-    "e2e": "cypress open"
+    "lint": "ng lint"
   },
   "dependencies": {
     "@angular/animations": "^7.2.3",

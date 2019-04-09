@@ -24,13 +24,39 @@ export const USER_ROUTES = {
       username
     )}/profile`;
   },
+  FETCH_MEMBERS(collection: string, query: any) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members?${querystring.stringify(query)}`;
+  },
+  ASSIGN_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
+  UPDATE_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
+  REMOVE_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
   LOAD_USER_PROFILE(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/profile`;
   },
-  SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search`;
+  SEARCH_USERS(query: string) {
+    return `${environment.apiURL}/users/search?text=${encodeURIComponent(query)}`;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;

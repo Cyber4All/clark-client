@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
@@ -31,24 +31,26 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
   componentDestroyed$: Subject<void> = new Subject();
 
   ngOnInit(): void {
-    this.route.queryParams
-      .pipe(
-        takeUntil(this.componentDestroyed$),
-      )
-      .subscribe(u => this.getUserLearningObjects(u.username));
+    this.route.queryParams.subscribe(params => {
+      const username = params['username'];
+      if (username !== null) {
+        this.getLearningObjects(username);
+      }
+   });
   }
 
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
     private route: ActivatedRoute,
+    public changeDetectorRef: ChangeDetectorRef
   ) { }
 
   getLearningObjects(text: string) {
     this.loading = true;
     this.currentSearchText = text;
     const query: Query = {
-      text
+      text,
     };
     this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {

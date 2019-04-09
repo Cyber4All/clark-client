@@ -16,6 +16,7 @@ import { ModalModule } from 'app/shared/modals';
 import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { UserSearchWrapperComponent } from './components/user-search-wrapper/user-search-wrapper.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
@@ -32,6 +33,7 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
     SearchBarComponent,
     ContentWrapperComponent,
     FilterSearchComponent,
+    UserSearchWrapperComponent,
     AdminUserCardComponent,
     UserPrivilegesComponent,
     PrivilegesListComponent,
@@ -47,7 +49,7 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
     CommonModule,
     AdminRoutingModule,
     SharedModule,
-    ScrollingModule,
-  ]
+    FormsModule
+  ],
 })
 export class AdminModule { }

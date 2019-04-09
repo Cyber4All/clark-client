@@ -1,25 +1,67 @@
 <clark-admin-content-wrapper>
-  <div page-title>Users</div>
+  <div page-title>
+    <span *ngIf="activeCollection && activeCollection?.length > 0" class="collection-name">{{ activeCollection.toUpperCase() }}</span>
+    {{ activeCollection && activeCollection?.length > 0 ? 'Reviewers' : 'Users' }}
+  </div>
   <clark-admin-search-bar search 
+    *ngIf="!activeCollection"
     [placeholder]="searchBarPlaceholder"
     (userInput)="getUsers($event)"
   ></clark-admin-search-bar>
-  <div filter-options>filter options yo</div>
+
+  <div *ngIf="activeCollection && activeCollection?.length > 0" filter-options>
+    <div class="btn-group to-right">
+      <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : isSearching}" (click)= "isSearching= !isSearching"> Add Reviewer
+          <i class="far fa-user-plus"></i> 
+      </button>
+    </div>
+    <clark-teleporter *ngIf="isSearching">
+      <div #teleporterPayload class="reviewer-search-wrapper" (click)="isSearching = false">
+        <div class="reviewer-search" (click)="$event.stopPropagation()">
+          <clark-user-search-wrapper
+            [users]="users"
+            (selectedUser)="addReviewer($event)"
+          ></clark-user-search-wrapper>
+        </div>
+      </div>
+    </clark-teleporter>
+  </div>
 
   <div class="users" main>
     <div *ngIf="!loading; else loadingTemplate">
-      <cdk-virtual-scroll-viewport style="height: 700px" itemSize="40" >
-        <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
-          <div *cdkVirtualFor="let u of users; let i = index" >
+      <virtual-scroller #scroll [style.height]="'800px'" [items]="users" > 
+        <div *ngIf="users?.length; else emptyTemplate" class="user-cards" #container>
+          <div *ngFor="let r of scroll.viewPortItems">
             <clark-admin-user-card class="user-cards__card"
-              [user]="u"
-              (navigateToUserObjects)="navigateToUserObjects(u.username)"
-              (editPrivileges)="editPrivileges(u)"
+              [reviewer]="activeCollection && activeCollection?.length > 0"
+              (navigateToUserObjects)="navigateToUserObjects($event)"
+              (removeMember)="showModal($event)"
+              [canEditPrivilege]="authService.isAdminOrEditor()"
+              [user]="r"
+              (editPrivileges)="editPrivileges(r)"
             ></clark-admin-user-card>
           </div>
         </div>
-      </cdk-virtual-scroll-viewport>    
+      </virtual-scroller>    
     </div>
+    <clark-popup *ngIf="displayRemoveReviewerModal" (closed)="displayRemoveReviewerModal= false">
+      <div #popupInner class="popup-inner">
+        <div class="modal-title">Are You Sure?</div>
+          <div class="modal-text">
+            <form class="input-wrapper">
+              <div class="header">
+                <div class="title">
+                  <span class="lo-name">You are about to remove a reviewer from this collection!</span>
+                </div>
+              </div>
+              <div class="btn-group center">
+                <button type="button" (click)="removeReviewer()" class="button bad">Yes<i class="fas fa-user-minus left"></i></button>
+                <button type="button" (click)="displayRemoveReviewerModal= false" class="button neutral">Cancel<i class="far fa-ban"></i></button>
+              </div>
+            </form>
+          </div>
+      </div>
+    </clark-popup>
   </div>
 
   <ng-template #loadingTemplate>

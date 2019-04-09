@@ -9,7 +9,12 @@ import { UserService } from 'app/core/user.service';
 })
 export class AdminUserCardComponent implements OnInit {
   @Input() user: User;
-  @Output() navigateToUserObjects: EventEmitter<void> = new EventEmitter();
+  @Input() reviewer = false;
+  @Input() canEditPrivilege = false;
+  @Output() navigateToUserObjects = new EventEmitter<string>();
+  @Output() removeMember = new EventEmitter<string>();
+
+  loading = false;
   @Output() editPrivileges: EventEmitter<void> = new EventEmitter();
 
   constructor(private userService: UserService) { }
@@ -30,5 +35,9 @@ export class AdminUserCardComponent implements OnInit {
 
   editUserPrivileges() {
     this.editPrivileges.emit();
+  }
+
+  removeReviewer() {
+    this.removeMember.emit(this.user.id);
   }
 }

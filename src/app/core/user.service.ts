@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService, AuthUser } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
@@ -52,6 +52,89 @@ export class UserService {
             }
           )
       : Promise.resolve(false);
+  }
+
+  fetchReviewers(collection: string, role: any): Promise<User[]> {
+    return this.http
+      .get(
+        USER_ROUTES.FETCH_MEMBERS(collection, role),
+        {
+          withCredentials: true
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((val: any) => {
+        const arr = val;
+        return arr.map(member => new  User(member));
+      });
+  }
+
+  async assignMember(
+    memberId: string,
+    collection: string,
+    role: any
+  ): Promise<void> {
+    await this.http
+      .put(
+        USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
+        role,
+        {
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  editMember(
+    collection: string,
+    memberId: string,
+    role: any
+  ): Promise<User> {
+    return this.http
+      .patch(
+        USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId),
+        role,
+        {
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        return new User(res);
+      });
+  }
+
+  async removeMember(
+    collection: string,
+    memberId: string,
+  ): Promise<void> {
+    await this.http.request(
+        'delete',
+        USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
+        {
+          withCredentials: true,
+          responseType: 'text',
+        },
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 
   /**
