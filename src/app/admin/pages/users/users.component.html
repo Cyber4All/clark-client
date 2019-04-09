@@ -29,20 +29,13 @@
 
   <div class="users" main>
     <div *ngIf="!loading; else loadingTemplate">
-      <virtual-scroller #scroll [style.height]="'800px'" [items]="users" > 
-        <div *ngIf="users?.length; else emptyTemplate" class="user-cards" #container>
-          <div *ngFor="let r of scroll.viewPortItems">
-            <clark-admin-user-card class="user-cards__card"
-              [reviewer]="activeCollection && activeCollection?.length > 0"
-              (navigateToUserObjects)="navigateToUserObjects($event)"
-              (removeMember)="showModal($event)"
-              [canEditPrivilege]="authService.isAdminOrEditor()"
-              [user]="r"
-              (editPrivileges)="editPrivileges(r)"
-            ></clark-admin-user-card>
-          </div>
-        </div>
-      </virtual-scroller>    
+      <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
+        <clark-admin-user-card *ngFor="let user of users" class="user-cards__card"
+          [user]="user"
+          (navigateToUserObjects)="navigateToUserObjects(user.username)"
+          (editPrivileges)="editPrivileges(user)"
+        ></clark-admin-user-card>
+      </div>
     </div>
     <clark-popup *ngIf="displayRemoveReviewerModal" (closed)="displayRemoveReviewerModal= false">
       <div #popupInner class="popup-inner">

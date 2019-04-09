@@ -56,7 +56,8 @@ export class UsersComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public authService: AuthService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
@@ -121,6 +122,10 @@ export class UsersComponent implements OnInit {
   editPrivileges(user: User) {
     this.selectedUser = user;
     this.showPrivileges = true;
+  }
+
+  trackby(index: number, item) {
+    return item.id;
   }
 
 }

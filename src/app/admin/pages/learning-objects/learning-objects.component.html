@@ -1,4 +1,5 @@
 <clark-admin-content-wrapper>
+  <div #list2 class="el"></div>
   <div page-title>Learning Objects</div>
   <clark-admin-search-bar search 
     [placeholder]="searchBarPlaceholder"
@@ -9,11 +10,11 @@
     (collectionFilter)="getCollectionFilteredLearningObjects($event,false)"
   ></clark-admin-filter-search>
 
-  <div class="list" main>
+  <div #list class="list" main>
     <div #listInner>
       <div *ngIf="!loading; else loadingTemplate" class="list__body">
         <div *ngIf="learningObjects?.length; else emptyTemplate">
-          <div class="body__column-headers">
+          <div #headers class="body__column-headers">
             <div>Status</div>
             <div>Name</div>
             <div>Author</div>
@@ -22,7 +23,7 @@
           </div>
             <virtual-scroller 
               #scroll 
-              [style.height]="'700px'"
+              [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
               [items]="learningObjects"
             >
               <clark-dashboard-item

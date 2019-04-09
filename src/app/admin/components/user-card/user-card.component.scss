@@ -5,7 +5,8 @@
     width: 185px;
     border-radius: 5px;
     transition: transform 0.2s ease;
-    display: inline-block
+    display: inline-block;
+    position: relative;
 }
 
 .card:hover .card__middle {
@@ -19,12 +20,15 @@
     position: absolute;
     background: linear-gradient(0deg, darken($bright-blue, 20), rgba(red($bright-blue), green($bright-blue), blue($bright-blue), 0.9));
     height: 230px;
-    width: 185px;
     border-radius: 5px;
     overflow: visible;
     padding: 20px;
     padding-top: 50px;
-}
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+  }
 
 .card__image {
     object-fit: cover;
