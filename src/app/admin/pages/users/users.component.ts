@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from 'app/core/user.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import { User } from '@entity';
@@ -25,7 +25,6 @@ export class UsersComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public authService: AuthService,
-    private cd: ChangeDetectorRef
   ) {
   }
 
