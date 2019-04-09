@@ -4,7 +4,8 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { CollectionService } from 'app/core/collection.service';
@@ -17,7 +18,8 @@ import { LearningObject } from '@entity';
 @Component({
   selector: 'clark-dashboard-item',
   templateUrl: './dashboard-item.component.html',
-  styleUrls: ['./dashboard-item.component.scss']
+  styleUrls: ['./dashboard-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardItemComponent implements OnChanges {
   @Input()

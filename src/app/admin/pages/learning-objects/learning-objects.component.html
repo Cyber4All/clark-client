@@ -3,17 +3,17 @@
   <div page-title>Learning Objects</div>
   <clark-admin-search-bar search 
     [placeholder]="searchBarPlaceholder"
-    (userInput)="getLearningObjects($event)"
+    (userInput)="userSearchInput$.next()"
   ></clark-admin-search-bar>
   <clark-admin-filter-search filter-options
-    (statusFilter)="getStatusFilteredLearningObjects($event,true)"
-    (collectionFilter)="getCollectionFilteredLearningObjects($event,false)"
+    (statusFilter)="getStatusFilteredLearningObjects($event)"
+    (collectionFilter)="getCollectionFilteredLearningObjects($event)"
   ></clark-admin-filter-search>
 
   <div #list class="list" main>
     <div #listInner>
-      <div *ngIf="!loading; else loadingTemplate" class="list__body">
-        <div *ngIf="learningObjects?.length; else emptyTemplate">
+      <div class="list__body">
+        <div *ngIf="learningObjects?.length || loading; else emptyTemplate">
           <div #headers class="body__column-headers">
             <div>Status</div>
             <div>Name</div>
@@ -25,6 +25,8 @@
               #scroll 
               [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
               [items]="learningObjects"
+              [bufferAmount]="query.limit"
+              (vsEnd)="scroll.viewPortInfo.startIndex && getLearningObjects($event);"
             >
               <clark-dashboard-item
                 *ngFor="let l of scroll.viewPortItems"
@@ -37,6 +39,10 @@
                 (changeStatus)="openChangeStatusModal($event)"
                 >
               </clark-dashboard-item>
+              <div [@nonListItem] class="loading-template">
+                <i class="far fa-spinner-third fa-spin"></i>
+                Loading learning objects...
+              </div>
             </virtual-scroller>    
         </div>
       </div>
@@ -78,10 +84,6 @@
   </clark-popup>
 
   <ng-template #loadingTemplate>
-    <div [@nonListItem] class="loading-template">
-      <i class="far fa-spinner-third fa-spin"></i>
-      Loading learning objects...
-    </div>
   </ng-template>
   
   <ng-template #emptyTemplate>

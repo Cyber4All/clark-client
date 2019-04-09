@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { ChangeEvent as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
 import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -14,82 +15,100 @@ import { takeUntil } from 'rxjs/operators';
   providers: [
     PublicLearningObjectService,
     PrivateLearningObjectService
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
 
-  learningObjects: any;
+  learningObjects: LearningObject[] = [];
   searchBarPlaceholder = 'Learning Objects';
-  loading = false;
-  displayStatusModal = false;
+
   activeLearningObject;
+
   adminStatusList =  Object.keys(LearningObject.Status);
   selectedStatus: string;
-  currentSearchText: string;
   currentCollectionFilter = '';
-  currentStatusfilters = [''];
-  componentDestroyed$: Subject<void> = new Subject();
+  currentStatusFilters = [''];
 
   listViewHeightOffset: number;
+
+  query: Query = {
+    currPage: 1,
+    limit: 20,
+    text: ''
+  };
+
+  displayStatusModal = false;
+
+  // boolean value representing the client's notion of whether or not the server will send more objects if the next page is requested
+  shouldStillPaginate = true;
+
+  userSearchInput$: Subject<void> = new Subject();
+  componentDestroyed$: Subject<void> = new Subject();
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const username = params['username'];
       if (username !== null) {
-        this.getLearningObjects(username);
+        this.query.text = username;
+        this.getLearningObjects();
       }
    });
+
+   this.userSearchInput$.pipe(
+     takeUntil(this.componentDestroyed$),
+     debounceTime(650)
+   ).subscribe(() => {
+     this.getLearningObjects();
+   });
+
+   this.getLearningObjects();
   }
 
   ngAfterViewInit() {
-    if (!this.loading) {
-      this.listViewHeightOffset =
-        // 50 here is the browser-rendered height of the table-headers
-        this.listElement.nativeElement.getBoundingClientRect().top + 50;
-    }
+    this.listViewHeightOffset =
+      // 50 here is the browser-rendered height of the table-headers
+      this.listElement.nativeElement.getBoundingClientRect().top + 50;
   }
 
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
     private route: ActivatedRoute,
+    private cd: ChangeDetectorRef
   ) { }
 
-  getLearningObjects(text: string) {
-    this.loading = true;
-    this.currentSearchText = text;
-    const query: Query = {
-      text,
-    };
-    this.publicLearningObjectService.getLearningObjects(query)
+  getLearningObjects(event?: VirtualScrollerChangeEvent) {
+    if (event && event.end !== this.learningObjects.length - 1) {
+      return;
+    }
+    this.publicLearningObjectService.getLearningObjects(this.query)
       .then(val => {
-        this.learningObjects = val.learningObjects;
-        this.loading = false;
+        this.learningObjects = this.learningObjects.concat(val.learningObjects);
+        this.cd.detectChanges();
 
-        if (!this.listViewHeightOffset) {
-          this.listViewHeightOffset =
-            // 50 here is the browser-rendered height of the table-headers
-            this.listElement.nativeElement.getBoundingClientRect().top + 50;
+        if (val.learningObjects.length < this.query.limit || val.learningObjects.length === 0) {
+          // do something regarding error handling here
         }
       });
   }
 
   getUserLearningObjects(author: string) {
-    this.loading = true;
     const query = {
       text: author
     };
     this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
-        this.loading = false;
+        this.cd.detectChanges();
       });
   }
 
   openChangeStatusModal(learningObject: LearningObject) {
     this.displayStatusModal = true;
     this.activeLearningObject = learningObject;
+    this.cd.detectChanges();
   }
 
   updateLearningObjectStatus() {
@@ -99,6 +118,7 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
       { status: this.selectedStatus }
     );
     this.displayStatusModal = false;
+    this.cd.detectChanges();
   }
 
   isCurrentStatus(status: string) {
@@ -110,31 +130,29 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getStatusFilteredLearningObjects(statuses: string[]) {
-    this.loading = true;
     const query: Query = {
-      text: this.currentSearchText,
-      status : statuses,
+      text: this.query.text,
+      status: statuses,
       collection: this.currentCollectionFilter,
     };
 
     this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
-        this.loading = false;
+        this.cd.detectChanges();
       });
    }
 
    getCollectionFilteredLearningObjects(collection: string) {
-    this.loading = true;
     const query: Query = {
-      text: this.currentSearchText,
-      status: this.currentStatusfilters,
+      text: this.query.text,
+      status: this.currentStatusFilters,
       collection,
     };
     this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
-        this.loading = false;
+        this.cd.detectChanges();
       });
    }
 
