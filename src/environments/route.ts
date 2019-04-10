@@ -50,15 +50,30 @@ export const USER_ROUTES = {
       learningObjectName
     )}`;
   },
-  SUBMIT_LEARNING_OBJECT(learningObjectId: string) {
+  SUBMIT_LEARNING_OBJECT(params: {
+    userId: string,
+    learningObjectId: string
+  }) {
     return `${
       environment.apiURL
-    }/learning-objects/${learningObjectId}/submission`;
+    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
   },
-  UNSUBMIT_LEARNING_OBJECT(learningObjectId: string) {
+  UNSUBMIT_LEARNING_OBJECT(params: {
+    userId: string,
+    learningObjectId: string
+  }) {
     return `${
       environment.apiURL
-    }/learning-objects/${learningObjectId}/submission`;
+    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
+  },
+  CHECK_FIRST_SUBMISSION(params: {
+    userId: string,
+    learningObjectId: string,
+    query: {},
+  }) {
+    return `${
+      environment.apiURL
+    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${params.query}`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
