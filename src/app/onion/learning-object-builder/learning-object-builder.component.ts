@@ -118,23 +118,29 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
-    this.route.paramMap.pipe(takeUntil(this.destroyed$)).subscribe(params => {
-      const id = params.get('learningObjectId');
+    this.route.paramMap
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(routeParams => {
+        const id = routeParams.get('learningObjectId');
 
-      // if name parameter found, instruct store to fetch full learning object
-      if (id) {
-        this.store.fetch(id).then(obj => {
-          // redirect user to dashboard if the object is in the working stage
-          if (!obj.status.includes('waiting') && !obj.status.includes('review') && !obj.status.includes('proofing')) {
-            this.setBuilderMode(obj);
-          } else {
-            this.router.navigate(['onion/dashboard']);
-          }
-        });
-      } else {
-        // otherwise instruct store to initialize and store a blank learning object
-        this.store.makeNew();
-      }
+        // if name parameter found, instruct store to fetch full learning object
+        if (id) {
+          this.store.fetch(id).then(learningObject => {
+            if (learningObject.status === LearningObject.Status.RELEASED) {
+              this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
+            } else {
+              // redirect user to dashboard if the object is in the working stage
+              if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
+                this.router.navigate(['onion/dashboard']);
+              } else {
+                this.setBuilderMode(learningObject);
+              }
+            }
+          });
+        } else {
+          // otherwise instruct store to initialize and store a blank learning object
+          this.store.makeNew();
+        }
     });
 
     this.builderStore.serviceInteraction$
@@ -287,6 +293,14 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   getState(outlet: any) {
     return outlet.activatedRouteData.state;
+  }
+
+  /**
+   * Determines whether or not a Learning Object is in the Review Stage.
+   * @param object the Learning Object in question.
+   */
+  private isInReviewStage(object): boolean {
+    return object.status.includes('waiting') && object.status.includes('review') && object.status.includes('proofing');
   }
 
   ngOnDestroy() {

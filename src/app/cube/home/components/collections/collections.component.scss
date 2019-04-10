@@ -63,3 +63,17 @@
   text-align: center;
   margin-top: 20px;
 }
+
+.featured-collections-cta {
+  font-size: 18px;
+  text-align: center;
+  margin: 20px;
+
+  a {
+    color: $bright-blue;
+    font-size: 18px;
+    text-decoration: underline;
+    padding: 10px;
+    cursor: pointer;
+  }
+}

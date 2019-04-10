@@ -6,8 +6,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { OnionComponent } from './onion.component';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
-import { LearningObjectBuilderGuard } from './core/learning-object-builder.guard';
-
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
  * Route Guards are passed in an array, meaning there can be multiple, to the canActivate property.
@@ -37,7 +35,7 @@ const onion_routes: Routes = [
         path: 'learning-object-builder/:learningObjectId',
         loadChildren:
           'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
-        canActivate: [AuthGuard, LearningObjectBuilderGuard],
+        canActivate: [AuthGuard],
         data: { state: 'builder' }
       },
       { path: '**', redirectTo: 'dashboard' }
