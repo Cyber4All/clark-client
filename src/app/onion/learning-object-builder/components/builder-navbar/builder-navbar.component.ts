@@ -322,7 +322,7 @@ export class BuilderNavbarComponent implements OnDestroy {
   /**
    * Create a new changelog for the active learning object
    */
-  updateChangelog() {
+  createChangelog() {
     if (this.changelog) {
       this.changelogService.createChangelog(this.store.learningObjectEvent.getValue().author.id,
         this.store.learningObjectEvent.getValue().id,
