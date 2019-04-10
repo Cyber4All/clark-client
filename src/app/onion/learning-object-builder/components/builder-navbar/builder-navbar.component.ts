@@ -290,6 +290,7 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   submitForReview(collection: string) {
     this.submissionError = false;
+    this.page++;
     this.store
       .submitForReview(collection)
       .then(val => {
@@ -327,15 +328,17 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.store.learningObjectEvent.getValue().id,
         this.changelog
       ).then(() => {
-        this.page++;
+        this.showSubmission = false;
+        this.page = 1;
       }).catch(e => {
         console.error(e);
         this.showSubmission = false;
-        this.toasterService.notify('Error!', e, 'bad', 'far fa-times');
         this.page = 1;
+        this.toasterService.notify('Error!', e, 'bad', 'far fa-times');
       });
     } else {
-      this.page++;
+      this.showSubmission = false;
+      this.page = 1;
     }
   }
 
