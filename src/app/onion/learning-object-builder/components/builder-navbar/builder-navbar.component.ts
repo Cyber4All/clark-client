@@ -344,8 +344,8 @@ export class BuilderNavbarComponent implements OnDestroy {
   }
 
   /**
-   * 
-   * @param collection The selected collection from the output
+   * Gets the collection name selected from the output
+   * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {
     this.submitCollection = collection;
