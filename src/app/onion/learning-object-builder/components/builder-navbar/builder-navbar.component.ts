@@ -324,7 +324,7 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   updateChangelog() {
     if (this.changelog) {
-      this.changelogService.createChangelog(this.auth.user.id,
+      this.changelogService.createChangelog(this.store.learningObjectEvent.getValue().author.id,
         this.store.learningObjectEvent.getValue().id,
         this.changelog)
           .then(() => {
