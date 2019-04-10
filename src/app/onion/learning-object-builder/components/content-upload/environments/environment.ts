@@ -14,13 +14,12 @@ export const environment = {
     url: USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT('', ''),
     maxFilesize: 100000000,
     acceptedFiles: '',
-    autoQueue: true,
     withCredentials: true,
+    parallelChunkUploads: true,
     chunking: true,
     // 6MB Chunk Size
     chunkSize: CHUNK_SIZE,
     timeout: UPLOAD_TIMEOUT, //
-    createImageThumbnails: false,
-    generatePreviews: false
+    createImageThumbnails: false
   }
 };

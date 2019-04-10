@@ -14,7 +14,7 @@ import {
 import {
   DropzoneDirective,
   DropzoneConfigInterface
-} from '@cyber4all/ngx-dropzone-wrapper';
+} from 'ngx-dropzone-wrapper';
 import { ToasterService } from '../../../../../../shared/toaster';
 import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';

@@ -2,8 +2,8 @@ import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
 export const ADMIN_ROUTES = {
-  CREATE_CHANGELOG(learningObjectId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+  CREATE_CHANGELOG(userId: string, learningObjectId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/changelog`;
   }
