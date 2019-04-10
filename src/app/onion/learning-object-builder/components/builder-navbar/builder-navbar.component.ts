@@ -31,6 +31,7 @@ export class BuilderNavbarComponent implements OnDestroy {
   collection: Collection;
   changelog;
   page = 1;
+  submitCollection: string; // Refers to the collection the user wishes to submit to
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -290,7 +291,6 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   submitForReview(collection: string) {
     this.submissionError = false;
-    this.page++;
     this.store
       .submitForReview(collection)
       .then(val => {
@@ -305,9 +305,9 @@ export class BuilderNavbarComponent implements OnDestroy {
       })
       .catch(error => {
         console.error(error);
-        this.page = 1;
         this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
         this.showSubmission = false;
+        this.page = 1;
         this.submissionError = true;
       });
   }
@@ -324,22 +324,32 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   updateChangelog() {
     if (this.changelog) {
-      this.changelogService.createChangelog(
+      this.changelogService.createChangelog(this.auth.user.id,
         this.store.learningObjectEvent.getValue().id,
-        this.changelog
-      ).then(() => {
-        this.showSubmission = false;
-        this.page = 1;
-      }).catch(e => {
-        console.error(e);
-        this.showSubmission = false;
-        this.page = 1;
-        this.toasterService.notify('Error!', e, 'bad', 'far fa-times');
-      });
+        this.changelog)
+          .then(() => {
+          this.showSubmission = false;
+          this.page = 1;
+        }).catch(e => {
+          console.error(e);
+          this.showSubmission = false;
+          this.page = 1;
+          this.toasterService.notify('Error!', e, 'bad', 'far fa-times');
+        });
     } else {
       this.showSubmission = false;
       this.page = 1;
     }
+    this.submitForReview(this.submitCollection);
+  }
+
+  /**
+   * 
+   * @param collection The selected collection from the output
+   */
+  getCollectionSelected(collection: string) {
+    this.submitCollection = collection;
+    this.page++;
   }
 
   ngOnDestroy() {

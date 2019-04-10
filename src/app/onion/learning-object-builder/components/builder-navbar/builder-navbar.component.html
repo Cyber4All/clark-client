@@ -66,7 +66,7 @@
 </clark-popup>
 
 <ng-template #submitReviewTemplate>
-  <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"
+  <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="getCollectionSelected($event)"
       (cancel)="showSubmission = false"></clark-collection-selector>
 </ng-template>
 
