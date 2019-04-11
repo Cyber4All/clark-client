@@ -110,6 +110,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
     this.reviewer = this.auth.hasReviewerAccess();
   }
+
+  /**
+   * Returns a boolean representing whether or not the children component should be displayed
+   *
+   * true true if:
+      1) we're looking at the released version and the released object has children, or
+      2) we're looking at the revised version and the revised object has children
+   * @readonly
+   * @memberof DetailsComponent
+   */
+  get showChildren() {
+    return (!this.revisedVersion && this.releasedChildren.length) || (this.revisedVersion && this.revisedChildren.length);
+  }
+
   /**
    * toggles between released and revised copies of a learning object
    * @param revised the boolean for if the revised is being viewed
