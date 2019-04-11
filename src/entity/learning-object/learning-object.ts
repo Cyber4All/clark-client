@@ -15,7 +15,6 @@ const MAX_NAME_LENGTH = 170;
  * @class
  */
 export class LearningObject {
-  private _id: string;
   get id(): string {
     return this._id;
   }
@@ -26,7 +25,6 @@ export class LearningObject {
       throw new EntityError(LEARNING_OBJECT_ERRORS.ID_SET, 'id');
     }
   }
-  private _author: User;
   /**
    * @property {User} author (immutable)
    *       the user this learning object belongs to
@@ -34,8 +32,6 @@ export class LearningObject {
   get author(): User {
     return this._author;
   }
-
-  private _name!: string;
   /**
    * @property {string} name
    *       the object's identifying name, unique over a user
@@ -53,6 +49,220 @@ export class LearningObject {
       throw new EntityError(LEARNING_OBJECT_ERRORS.INVALID_NAME, 'name');
     }
   }
+  /**
+   * @property {string} description
+   *       description of the object's content
+   *
+   */
+  get description(): string {
+    return this._description;
+  }
+  set description(description: string) {
+    if (description !== undefined && description !== null) {
+      this._description = description.trim();
+      this.updateDate();
+    } else {
+      throw new EntityError(
+        LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION,
+        'description',
+      );
+    }
+  }
+  /**
+   * @property {string} date
+   *       the object's last-modified date
+   */
+  get date(): string {
+    return this._date;
+  }
+  /**
+   * @property {string} length
+   *       the object's class, determining its length (eg. module)
+   *       values are restricted according to available lengths
+   */
+  get length(): LearningObject.Length {
+    return this._length;
+  }
+
+  set length(length: LearningObject.Length) {
+    if (this.isValidLength(length)) {
+      this._length = length;
+      this.updateDate();
+    } else {
+      throw new EntityError(
+        LEARNING_OBJECT_ERRORS.INVALID_LENGTH(length),
+        'length',
+      );
+    }
+  }
+  /**
+   * @property {string[]} levels
+   *       this object's Academic Level. (ie K-12)
+   */
+  get levels(): LearningObject.Level[] {
+    return this._levels;
+  }
+  /**
+   * @property {LearningOutcome[]} outcomes
+   *       outcomes this object should enable students to achieve
+   *
+   */
+  get outcomes(): LearningOutcome[] {
+    return this._outcomes;
+  }
+  /**
+   * @property {LearningObject.Material} materials neutrino file/url storage
+   *
+   */
+  get materials(): LearningObject.Material {
+    return this._materials;
+  }
+  set materials(material: LearningObject.Material) {
+    if (material) {
+      this.updateDate();
+      this._materials = material;
+    } else {
+      throw new EntityError(
+        LEARNING_OBJECT_ERRORS.INVALID_MATERIAL,
+        'materials',
+      );
+    }
+  }
+  /**
+   * @property {LearningObject.Metrics} metrics neutrino file/url storage
+   *
+   */
+  get metrics(): LearningObject.Metrics {
+    return this._metrics;
+  }
+  set metrics(metrics: LearningObject.Metrics) {
+    if (metrics) {
+      this._metrics = metrics;
+    } else {
+      throw new EntityError(LEARNING_OBJECT_ERRORS.INVALID_METRICS, 'metrics');
+    }
+  }
+  get children(): LearningObject[] {
+    return this._children;
+  }
+  /**
+   * @property {contributors} User[] array of Users
+   *
+   */
+  get contributors(): User[] {
+    return this._contributors;
+  }
+  /**
+   * @property {collection} string the collection this object belongs to
+   *
+   */
+  get collection(): string {
+    return this._collection;
+  }
+  set collection(collection: string) {
+    if (collection !== undefined && collection !== null) {
+      this._collection = collection;
+      this.updateDate();
+    } else {
+      throw new EntityError(
+        LEARNING_OBJECT_ERRORS.INVALID_COLLECTION,
+        'collection',
+      );
+    }
+  }
+  /**
+   * @property {status} Status Represents current state of Learning Object
+   *
+   */
+  get status(): LearningObject.Status {
+    return this._status;
+  }
+  set status(status: LearningObject.Status) {
+    // FIXME: Remove when system has removed old valid status values
+    status = this.remapStatus(status);
+    if (this.isValidStatus(status)) {
+      this._status = status;
+      this.updateDate();
+    } else {
+      throw new EntityError(
+        LEARNING_OBJECT_ERRORS.INVALID_STATUS(status),
+        'status',
+      );
+    }
+  }
+
+get hasRevision(): boolean {
+  return this._hasRevision;
+}
+
+  /**
+   * Creates an instance of LearningObject.
+   * @param {Partial<LearningObject>} [object]
+   * @memberof LearningObject
+   */
+  constructor(object?: Partial<LearningObject>) {
+    // @ts-ignore Id will be undefined on creation
+    this._id = undefined;
+    this._author = new User();
+    this._name = '';
+    this._description = '';
+    this._date = Date.now().toString();
+    this._length = LearningObject.Length.NANOMODULE;
+    this._levels = [LearningObject.Level.Undergraduate];
+    this._outcomes = [];
+    this._materials = {
+      files: [],
+      urls: [],
+      notes: '',
+      folderDescriptions: [],
+      pdf: { name: '', url: '' },
+    };
+    this._children = [];
+    this._contributors = [];
+    this._collection = '';
+    this._status = LearningObject.Status.UNRELEASED;
+    this._metrics = { saves: 0, downloads: 0 };
+
+    if (object) {
+      this.copyObject(object);
+    }
+    this._constructed = true;
+  }
+  private _id: string;
+  private _author: User;
+
+  private _name!: string;
+
+  private _description!: string;
+
+  private _date: string;
+
+  private _length!: LearningObject.Length;
+
+  private _levels: LearningObject.Level[];
+
+  private _outcomes: LearningOutcome[];
+
+  private _materials!: LearningObject.Material;
+
+  private _metrics!: LearningObject.Metrics;
+
+  private _children: LearningObject[];
+
+  private _contributors: User[];
+
+  private _collection!: string;
+
+  private _status!: LearningObject.Status;
+
+/**
+ * @property {boolean} hasRevision
+ * An optional field on a learning object, denoting whether or not the object
+ * has a working copy with a different status in the working collection.
+ */
+private _hasRevision?: boolean;
+
+  private _constructed = false;
 
   /**
    * Checks if name is valid
@@ -76,36 +286,6 @@ export class LearningObject {
     return false;
   }
 
-  private _description!: string;
-  /**
-   * @property {string} description
-   *       description of the object's content
-   *
-   */
-  get description(): string {
-    return this._description;
-  }
-  set description(description: string) {
-    if (description !== undefined && description !== null) {
-      this._description = description.trim();
-      this.updateDate();
-    } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION,
-        'description',
-      );
-    }
-  }
-
-  private _date: string;
-  /**
-   * @property {string} date
-   *       the object's last-modified date
-   */
-  get date(): string {
-    return this._date;
-  }
-
   /**
    * Updates LearningObject's last-modified date
    *
@@ -115,28 +295,6 @@ export class LearningObject {
   private updateDate() {
     if (this._constructed) {
       this._date = Date.now().toString();
-    }
-  }
-
-  private _length!: LearningObject.Length;
-  /**
-   * @property {string} length
-   *       the object's class, determining its length (eg. module)
-   *       values are restricted according to available lengths
-   */
-  get length(): LearningObject.Length {
-    return this._length;
-  }
-
-  set length(length: LearningObject.Length) {
-    if (this.isValidLength(length)) {
-      this._length = length;
-      this.updateDate();
-    } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_LENGTH(length),
-        'length',
-      );
     }
   }
 
@@ -159,15 +317,6 @@ export class LearningObject {
       return true;
     }
     return false;
-  }
-
-  private _levels: LearningObject.Level[];
-  /**
-   * @property {string[]} levels
-   *       this object's Academic Level. (ie K-12)
-   */
-  get levels(): LearningObject.Level[] {
-    return this._levels;
   }
 
   /**
@@ -237,16 +386,6 @@ export class LearningObject {
     }
     return [alreadyAdded, isValid];
   }
-
-  private _outcomes: LearningOutcome[];
-  /**
-   * @property {LearningOutcome[]} outcomes
-   *       outcomes this object should enable students to achieve
-   *
-   */
-  get outcomes(): LearningOutcome[] {
-    return this._outcomes;
-  }
   /**
    * Adds a passed outcome or new, blank learning outcome to this object.
    * @returns {number} index of the outcome
@@ -268,47 +407,6 @@ export class LearningObject {
   removeOutcome(index: number): LearningOutcome {
     this.updateDate();
     return this._outcomes.splice(index, 1)[0];
-  }
-
-  private _materials!: LearningObject.Material;
-  /**
-   * @property {LearningObject.Material} materials neutrino file/url storage
-   *
-   */
-  get materials(): LearningObject.Material {
-    return this._materials;
-  }
-  set materials(material: LearningObject.Material) {
-    if (material) {
-      this.updateDate();
-      this._materials = material;
-    } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_MATERIAL,
-        'materials',
-      );
-    }
-  }
-
-  private _metrics!: LearningObject.Metrics;
-  /**
-   * @property {LearningObject.Metrics} metrics neutrino file/url storage
-   *
-   */
-  get metrics(): LearningObject.Metrics {
-    return this._metrics;
-  }
-  set metrics(metrics: LearningObject.Metrics) {
-    if (metrics) {
-      this._metrics = metrics;
-    } else {
-      throw new EntityError(LEARNING_OBJECT_ERRORS.INVALID_METRICS, 'metrics');
-    }
-  }
-
-  private _children: LearningObject[];
-  get children(): LearningObject[] {
-    return this._children;
   }
 
   /**
@@ -337,15 +435,6 @@ export class LearningObject {
   removeChild(index: number): LearningObject {
     this.updateDate();
     return this._children.splice(index, 1)[0];
-  }
-
-  private _contributors: User[];
-  /**
-   * @property {contributors} User[] array of Users
-   *
-   */
-  get contributors(): User[] {
-    return this._contributors;
   }
 
   /**
@@ -378,59 +467,6 @@ export class LearningObject {
     this.updateDate();
     return this._contributors.splice(index, 1)[0];
   }
-
-  private _collection!: string;
-  /**
-   * @property {collection} string the collection this object belongs to
-   *
-   */
-  get collection(): string {
-    return this._collection;
-  }
-  set collection(collection: string) {
-    if (collection !== undefined && collection !== null) {
-      this._collection = collection;
-      this.updateDate();
-    } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_COLLECTION,
-        'collection',
-      );
-    }
-  }
-
-  private _status!: LearningObject.Status;
-  /**
-   * @property {status} Status Represents current state of Learning Object
-   *
-   */
-  get status(): LearningObject.Status {
-    return this._status;
-  }
-  set status(status: LearningObject.Status) {
-    // FIXME: Remove when system has removed old valid status values
-    status = this.remapStatus(status);
-    if (this.isValidStatus(status)) {
-      this._status = status;
-      this.updateDate();
-    } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_STATUS(status),
-        'status',
-      );
-    }
-  }
-
-/**
- * @property {boolean} hasRevision
- * An optional field on a learning object, denoting whether or not the object 
- * has a working copy with a different status in the working collection.
- */
-private _hasRevision?: boolean;
-
-get hasRevision(): boolean {
-  return this._hasRevision;
-}
   /**
    * Map deprecated status values to new LearningObject.Status values
    *
@@ -469,42 +505,6 @@ get hasRevision(): boolean {
       return true;
     }
     return false;
-  }
-
-  private _constructed = false;
-
-  /**
-   * Creates an instance of LearningObject.
-   * @param {Partial<LearningObject>} [object]
-   * @memberof LearningObject
-   */
-  constructor(object?: Partial<LearningObject>) {
-    // @ts-ignore Id will be undefined on creation
-    this._id = undefined;
-    this._author = new User();
-    this._name = '';
-    this._description = '';
-    this._date = Date.now().toString();
-    this._length = LearningObject.Length.NANOMODULE;
-    this._levels = [LearningObject.Level.Undergraduate];
-    this._outcomes = [];
-    this._materials = {
-      files: [],
-      urls: [],
-      notes: '',
-      folderDescriptions: [],
-      pdf: { name: '', url: '' },
-    };
-    this._children = [];
-    this._contributors = [];
-    this._collection = '';
-    this._status = LearningObject.Status.UNRELEASED;
-    this._metrics = { saves: 0, downloads: 0 };
-
-    if (object) {
-      this.copyObject(object);
-    }
-    this._constructed = true;
   }
 
   /**
