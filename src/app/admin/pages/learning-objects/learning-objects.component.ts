@@ -28,8 +28,6 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
 
   adminStatusList =  Object.keys(LearningObject.Status);
   selectedStatus: string;
-  currentCollectionFilter = '';
-  currentStatusFilters = [''];
 
   listViewHeightOffset: number;
 
@@ -83,6 +81,12 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     if (event && event.end !== this.learningObjects.length - 1) {
       return;
     }
+
+    if (this.learningObjects.length) {
+      // we've already made an initial request to load the first page of results, increment the current page before next request
+      this.query.currPage++;
+    }
+
     this.publicLearningObjectService.getLearningObjects(this.query)
       .then(val => {
         this.learningObjects = this.learningObjects.concat(val.learningObjects);
@@ -130,30 +134,19 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getStatusFilteredLearningObjects(statuses: string[]) {
-    const query: Query = {
-      text: this.query.text,
-      status: statuses,
-      collection: this.currentCollectionFilter,
-    };
+    this.query.status = statuses;
+    this.query.currPage = 1;
+    this.learningObjects = [];
 
-    this.publicLearningObjectService.getLearningObjects(query)
-      .then(val => {
-        this.learningObjects = val.learningObjects;
-        this.cd.detectChanges();
-      });
+    this.getLearningObjects();
    }
 
    getCollectionFilteredLearningObjects(collection: string) {
-    const query: Query = {
-      text: this.query.text,
-      status: this.currentStatusFilters,
-      collection,
-    };
-    this.publicLearningObjectService.getLearningObjects(query)
-      .then(val => {
-        this.learningObjects = val.learningObjects;
-        this.cd.detectChanges();
-      });
+    this.query.collection = collection;
+    this.query.currPage = 1;
+    this.learningObjects = [];
+
+    this.getLearningObjects();
    }
 
   ngOnDestroy() {
