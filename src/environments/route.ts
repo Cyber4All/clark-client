@@ -131,15 +131,12 @@ export const USER_ROUTES = {
       learningObjectName
     )}`;
   },
-  DOWNLOAD_OBJECT(author, learningObjectName) {
+  DOWNLOAD_OBJECT(username, author, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/library/learning-objects/${encodeURIComponent(
       author
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}/bundle`;
-  },
-  DOWNLOAD_REVISED_OBJECT(author, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      author
-    )}/learning-objects/${learningObjectName}/bundle?revision`;
+    )}/${encodeURIComponent(learningObjectName)}`;
   },
   GET_SAME_ORGANIZATION(organization) {
     return `${

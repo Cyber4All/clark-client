@@ -14,8 +14,6 @@ import { ParentListingComponent } from './included-in/parent-listing.component';
 import { DetailsSplashComponent } from './splash/details-splash.component';
 import { ActionPanelComponent } from './action-panel/action-panel.component';
 import { ErrorStatusComponent } from './error-status/error-status.component';
-import { VersionSwitchComponent } from './version-switch/version-switch.component';
-import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
 
 @NgModule({
   imports: [
@@ -35,9 +33,7 @@ import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.componen
     ParentListingComponent,
     DetailsSplashComponent,
     ActionPanelComponent,
-    ErrorStatusComponent,
-    VersionSwitchComponent,
-    ReviewerPanelComponent
+    ErrorStatusComponent
   ],
   providers: []
 })

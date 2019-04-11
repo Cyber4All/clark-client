@@ -34,7 +34,7 @@ Cypress.Commands.add('login', () => {
 
     // Enter login info 
     cy.get('input[name=username]').type('testaccount');
-    cy.get('input[name=password]').type('password');
+    cy.get('input[name=password]').type('password12345!');
     cy.get('#auth-button').click();
 });
 
@@ -55,19 +55,6 @@ Cypress.Commands.add('verifiedLogin', () => {
 
     cy.url().should('include', 'home');
 });
-
-Cypress.Commands.add('reviewerLogin', () => {
-    //Click sign in button
-    cy.get('#clark-sign-in').click({ force: true });
-
-    //Assert URL
-    cy.url().should('include', 'login');
-
-    //Enter login info
-    cy.get('input[name=username]').type('testreviewer');
-    cy.get('input[name=password]').type('password');
-    cy.get('#auth-button').click();
-})
 
 /**
  * Opens the object 'Test Object' in the builder

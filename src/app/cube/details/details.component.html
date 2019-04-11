@@ -1,4 +1,4 @@
-<div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
+<div *ngIf="learningObject && !errorStatus" class="details-wrapper" [ngClass]="learningObject.length">
   <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
   <div class="flex">
     <div class="content">
@@ -37,15 +37,8 @@
           (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
       </div>
     </div>
-    <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
-      <div class="inner"*ngIf="reviewer">
-        <div *ngIf="hasRevisions" class="revisions">
-          <div class="text">View Revisions</div>
-          <clark-version-switch (toggled)="viewReleased($event)"></clark-version-switch>
-        </div>
-        <div class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
-      </div>
-      <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
+    <div class="sidebar">
+      <cube-details-action-panel [learningObject]="learningObject"></cube-details-action-panel>
       <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
     </div>
   </div>
@@ -61,9 +54,3 @@
 <div *ngIf="errorStatus">
   <clark-error-status [statusCode]="errorStatus" [redirectUrl]="redirectUrl"></clark-error-status>
 </div>
-
-<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
-    <div style="max-width: 600px;" #popupInner>
-      <clark-download-notice (close)="toggleDownloadModal(false)"></clark-download-notice>
-    </div>
-  </clark-popup>
