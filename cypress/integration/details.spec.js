@@ -12,7 +12,7 @@ describe('Details', () => {
     beforeEach(() => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
-            cy.visit(route[0]);
+            cy.visit(route['home']);
         });
         cy.fixture('creds.json').then((cred) => {
             creds = cred;
@@ -58,6 +58,31 @@ describe('Details', () => {
         cy.url().should('include', 'home');
     });
 
+    it('Navigate to details and click the toggle switch to switch to revised option', () => {
+        //Wait for learning objects to load on page 
+        cy.wait(1000);
+
+         //login
+         cy.reviewerLogin();
+
+         //wait
+         cy.wait(1000);
+
+         //reload 
+         cy.reload();
+         
+        //Click left-most card
+        cy.get('.learning-object').first().click({ force: true }, { multiple: true });
+
+        //toggle the switch 
+        cy.get('.switch').click({ force: true });
+
+        //verify that reviewer panel appears 
+        cy.get('.last-revised').should('be.visible');
+        cy.get('.last-released').should('be.visible');
+
+    });
+    
     it('Navigate to details and clicking on \'Write a review\'', () => {
         // Wait for learning objects to load on page
         cy.wait(1000);
@@ -66,7 +91,7 @@ describe('Details', () => {
         cy.get('#write-review').should('not.exist');
 
         // login
-        cy.verifiedlogin();
+        cy.verifiedLogin();
 
         cy.wait(1000);
 
