@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RATING_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map, filter } from 'rxjs/operators';
 
 @Injectable()
 export class RatingService {
@@ -21,7 +21,7 @@ export class RatingService {
   createResponse(params: {
     learningObjectId: string;
     ratingId: string;
-    response: {comment: string}
+    response: { comment: string }
   }): Promise<any> {
     const res = this.http.post(
       RATING_ROUTES.CREATE_RESPONSE({
@@ -31,9 +31,9 @@ export class RatingService {
       params.response,
       { withCredentials: true },
     ).toPromise()
-    .catch(result => {
-      return Promise.resolve(result.status === 200);
-    });
+      .catch(result => {
+        return Promise.resolve(result.status === 200);
+      });
     return res;
   }
 
@@ -51,7 +51,7 @@ export class RatingService {
     learningObjectId: string;
     ratingId: string;
     responseId: string;
-    updates: {comment: string};
+    updates: { comment: string };
   }): Promise<any> {
     const res = this.http.patch(
       RATING_ROUTES.UPDATE_RESPONSE({
@@ -62,20 +62,20 @@ export class RatingService {
       params.updates,
       { withCredentials: true },
     ).toPromise()
-    .catch(result => {
-      return Promise.resolve(result.status === 200);
-    });
+      .catch(result => {
+        return Promise.resolve(result.status === 200);
+      });
     return res;
   }
 
-   /**
-   * Delete a response
-   *
-   * @param {string} learningObjectId
-   * @param {string} ratingId
-   * @param {string} responseId
-   * @returns {Promise<any>}
-   */
+  /**
+  * Delete a response
+  *
+  * @param {string} learningObjectId
+  * @param {string} ratingId
+  * @param {string} responseId
+  * @returns {Promise<any>}
+  */
   deleteResponse(params: {
     learningObjectId: string;
     ratingId: string;
@@ -89,22 +89,22 @@ export class RatingService {
       }),
       { withCredentials: true },
     ).toPromise()
-    .catch(result => {
-      return Promise.resolve(result.status === 200);
-    });
+      .catch(result => {
+        return Promise.resolve(result.status === 200);
+      });
     return res;
   }
 
-   /**
-   * Create a rating for a learning object
-   *
-   * @param {string} learningObjectId
-   * @param {{value: number, comment: string}} rating
-   * @returns {Promise<any>}
-   */
+  /**
+  * Create a rating for a learning object
+  *
+  * @param {string} learningObjectId
+  * @param {{value: number, comment: string}} rating
+  * @returns {Promise<any>}
+  */
   createRating(params: {
     learningObjectId: string,
-    rating: {value: number, comment: string };
+    rating: { value: number, comment: string };
   }) {
     return this.http
       .post(
@@ -123,18 +123,18 @@ export class RatingService {
       .toPromise();
   }
 
-   /**
-   * Edit a rating
-   *
-   * @param {string} learningObjectId
-   * @param {string} ratingId
-   * @param {{value: number, comment: string}} rating
-   * @returns {Promise<any>}
-   */
+  /**
+  * Edit a rating
+  *
+  * @param {string} learningObjectId
+  * @param {string} ratingId
+  * @param {{value: number, comment: string}} rating
+  * @returns {Promise<any>}
+  */
   editRating(params: {
     learningObjectId: string;
     ratingId: string;
-    rating: {value: number, comment: string};
+    rating: { value: number, comment: string };
   }) {
     return this.http
       .patch(
@@ -204,19 +204,18 @@ export class RatingService {
       )
       .pipe(
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleError),
+        filter(response => response != null),
+        map((response: any) => {
+          const ratings = response.ratings.map((r: any) => {
+            const x = ({ ...r, id: r.id ? r.id : r._id });
+            delete x._id;
+            return x;
+          });
+          return { ...response, ratings };
+        })
       )
-      .toPromise()
-      .then((res: any) => {
-        const data = res;
-        // assign id param to the value of _id and remove _id
-        data.ratings = data.ratings.map(r => {
-          const x = ({...r, id: r.id ? r.id : r._id });
-          delete x._id;
-          return x;
-        });
-        return data;
-      });
+      .toPromise();
   }
 
   /**
@@ -230,7 +229,7 @@ export class RatingService {
   flagLearningObjectRating(params: {
     learningObjectId: string;
     ratingId: string;
-    report: {concern: string, comment?: string}
+    report: { concern: string, comment?: string }
   }): Promise<any> {
     return this.http.post(
       RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING({
@@ -240,11 +239,11 @@ export class RatingService {
       params.report,
       { withCredentials: true },
     )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise();
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 
   // TODO implement this

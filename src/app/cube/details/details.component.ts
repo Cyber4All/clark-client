@@ -647,8 +647,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Retrieves list of learning object ratings from server and, if the user has a review in that list, assigns it to the
-   * userReview variable
+   * Retrieves list of learning object ratings from the RatingService.
+   * If the user has a review in that list, it is assigned to the userReview variable.
+   * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
     this.ratingService
@@ -656,6 +657,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
         learningObjectId: this.learningObject.id
       })
       .then(val => {
+        if (!val) {
+          this.resetRatings();
+          return;
+        }
         this.ratings = val.ratings;
         this.averageRatingValue = val.avgValue;
 
@@ -684,5 +689,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private resetRatings() {
     this.ratings = [];
     this.averageRatingValue = 0;
+    this.userRating = {};
   }
 }
