@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RATING_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class RatingService {
@@ -204,19 +204,19 @@ export class RatingService {
       )
       .pipe(
         retry(3),
-        catchError(this.handleError)
+        catchError(this.handleError),
+        map((response: any) => {
+          if (response) {
+            const ratings = response.ratings.map((r: any) => {
+              const x = ({...r, id: r.id ? r.id : r._id });
+              delete x._id;
+              return x;
+            });
+            return { ...response, ratings };
+          }
+        })
       )
-      .toPromise()
-      .then((res: any) => {
-        const data = res;
-        // assign id param to the value of _id and remove _id
-        data.ratings = data.ratings.map(r => {
-          const x = ({...r, id: r.id ? r.id : r._id });
-          delete x._id;
-          return x;
-        });
-        return data;
-      });
+      .toPromise();
   }
 
   /**
