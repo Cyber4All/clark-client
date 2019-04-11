@@ -14,7 +14,7 @@ describe('Browse', () => {
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
             home = route;
-            cy.visit(home[0]);
+            cy.visit(home['home']);
         });
         cy.fixture('names.json').then((name) => {
             names = name;

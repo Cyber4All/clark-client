@@ -8,15 +8,6 @@ import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { takeUntil } from 'rxjs/operators';
 
-// TODO move this to clark entity?
-export interface Rating {
-  id?: string;
-  user: User;
-  number: number;
-  comment: string;
-  date: string;
-}
-
 @Component({
   selector: 'cube-details-action-panel',
   styleUrls: ['action-panel.component.scss'],
@@ -25,8 +16,11 @@ export interface Rating {
 export class ActionPanelComponent implements OnInit, OnDestroy {
 
   @Input() learningObject: LearningObject;
+  @Input() revisedVersion: boolean;
+  @Input() reviewer: boolean;
+  @Input() revisedDate: Date;
+  @Input() releasedDate: Date;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
-  @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private destroyed$ = new Subject<void>();
@@ -35,17 +29,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   addingToLibrary = false;
   author: string;
   learningObjectName: string;
-  ratings: Rating[] = [];
-  averageRating = 0;
   saved = false;
   url: string;
-  showAddRating = false;
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
   isEditButtonViewable = false;
-
-  userRating: { user?: User, number?: number, comment?: string, date?: string } = {};
 
   contributorsList = [];
   iframeParent = iframeParentID;
@@ -54,11 +43,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   public tips = TOOLTIP_TEXT;
 
-  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
-      this.showAddRating = false;
-    }
-  }
 
   @HostListener('window:resize', ['$event']) handleResize(event) {
     this.windowWidth = event.target.outerWidth;
@@ -127,10 +111,24 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
   }
 
+  /**
+   * Download the revised copy of a learning object. This does not add the object to the users cart
+   * @param download boolean determines if download takes place
+   */
+  downloadRevised(download?: boolean) {
+    if (download) {
+      this.download(
+        this.learningObject.author.username,
+        this.learningObject.name
+      );
+    }
+  }
+
+
   download(author: string, learningObjectName: string) {
     this.downloading = true;
     const loaded = this.cartService
-      .downloadLearningObject(author, learningObjectName).pipe(
+      .downloadLearningObject(author, learningObjectName, this.revisedVersion).pipe(
       takeUntil(this.destroyed$));
 
     this.toggleDownloadModal(true);
