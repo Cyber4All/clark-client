@@ -82,11 +82,36 @@ export class LearningObjectService {
    */
   getLearningObject(
     author: string,
-    learningObjectName: string
+    learningObjectName: string,
   ): Promise<LearningObject> {
     const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,
       learningObjectName
+    );
+    return this.http
+      .get(route)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        const learningObject = new LearningObject(res);
+        return learningObject;
+      });
+  }
+    /**
+   * Fetches LearningObject by id
+   *
+   * @param {string} id
+   * @returns {Promise<LearningObject>}
+   * @memberof LearningObjectService
+  */
+  getRevisedLearningObject(
+    learningObjectId: String
+  ): Promise<LearningObject> {
+    const route = USER_ROUTES.GET_LEARNING_OBJECT(
+     learningObjectId
     );
     return this.http
       .get(route)
