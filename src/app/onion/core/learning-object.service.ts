@@ -170,7 +170,10 @@ export class LearningObjectService {
    * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
-    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT(learningObject.id);
+    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT({
+      learningObjectId: learningObject.id,
+      userId: learningObject.author.id,
+    });
     return this.http
       .post(
         route,
@@ -189,8 +192,10 @@ export class LearningObjectService {
    * @param {learningObject} learningObject the learning object to be unpublished
    */
   unsubmit(learningObject: LearningObject) {
-    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(learningObject.id);
-
+    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT({
+      learningObjectId: learningObject.id,
+      userId: learningObject.author.id
+    });
     return this.http
       .delete(
         route,
