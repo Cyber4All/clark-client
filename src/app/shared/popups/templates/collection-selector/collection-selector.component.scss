@@ -96,6 +96,23 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+
+    &.generic {
+      background: $wrapper-background;
+      color: $bright-blue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: auto 0;
+      margin-right: 10px;
+      border-radius: 50px;
+
+      svg {
+        height: 20px;
+        width: 20px;
+      }
+    }
   }
 }
 
