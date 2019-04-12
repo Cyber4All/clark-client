@@ -5,7 +5,7 @@
 <ng-container *ngIf="!loading; else loadingTemplate">
   <div *ngIf="collections; else noneTemplate" class="collection-chooser">
     <div *ngFor="let c of collections" class="collection-chooser__collection" [ngClass]="{'selected': currentCollection === c.abvName}" (click)="select(c.abvName)">
-      <div class="collection__logo" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
+      <div class="collection__logo" *ngIf="c.abvName !== 'intro_to_cyber' && c.abvName !== 'secure_coding_community'; else genericLogoTemplate" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
       <div class="collection__name">{{ c.name }}</div>
     </div>
   </div>
@@ -31,5 +31,11 @@
   <div class="none-template">
     <span><i class="far fa-times"></i></span>
     No collections found! This is probably an error.
+  </div>
+</ng-template>
+
+<ng-template #genericLogoTemplate>
+  <div class="collection__logo generic">
+    <i class="far fa-cubes"></i>
   </div>
 </ng-template>

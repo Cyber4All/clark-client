@@ -110,6 +110,20 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
     this.reviewer = this.auth.hasReviewerAccess();
   }
+
+  /**
+   * Returns a boolean representing whether or not the children component should be displayed
+   *
+   * true true if:
+      1) we're looking at the released version and the released object has children, or
+      2) we're looking at the revised version and the revised object has children
+   * @readonly
+   * @memberof DetailsComponent
+   */
+  get showChildren() {
+    return (!this.revisedVersion && this.releasedChildren.length) || (this.revisedVersion && this.revisedChildren.length);
+  }
+
   /**
    * toggles between released and revised copies of a learning object
    * @param revised the boolean for if the revised is being viewed
@@ -633,8 +647,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Retrieves list of learning object ratings from server and, if the user has a review in that list, assigns it to the
-   * userReview variable
+   * Retrieves list of learning object ratings from the RatingService.
+   * If the user has a review in that list, it is assigned to the userReview variable.
+   * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
     this.ratingService
@@ -642,6 +657,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
         learningObjectId: this.learningObject.id
       })
       .then(val => {
+        if (!val) {
+          this.resetRatings();
+          return;
+        }
         this.ratings = val.ratings;
         this.averageRatingValue = val.avgValue;
 
@@ -670,5 +689,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private resetRatings() {
     this.ratings = [];
     this.averageRatingValue = 0;
+    this.userRating = {};
   }
 }

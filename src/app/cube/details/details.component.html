@@ -13,7 +13,7 @@
       </section>
 
       <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
-      <cube-children-detail-view *ngIf="children?.length > 0" [length]="learningObject.length" [children]="children"></cube-children-detail-view>
+      <cube-children-detail-view *ngIf="showChildren" [length]="learningObject.length" [children]="revisedVersion ? revisedChildren : releasedChildren"></cube-children-detail-view>
       <div class="materials">
         <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
       </div>
