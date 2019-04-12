@@ -3,6 +3,7 @@ import { AuthUser } from 'app/core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
 import { Subject } from 'rxjs';
 import { PrivilegeService } from 'app/core/privilege.service';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'clark-user-privileges',
@@ -20,7 +21,7 @@ export class UserPrivilegesComponent implements OnInit {
 
   carouselAction$: Subject<string> = new Subject();
 
-  constructor(private collectionService: CollectionService, private privilegeService: PrivilegeService) {}
+  constructor(private collectionService: CollectionService, private privilegeService: PrivilegeService, private toaster: ToasterService) {}
 
   ngOnInit() {
     this.getUserRoles();
@@ -30,6 +31,9 @@ export class UserPrivilegesComponent implements OnInit {
     this.privilegeService.getRoles(this.user.id).then(roles => {
       this.privileges = roles.map(x => x.split('@'));
     this.getCollections();
+    }).catch(error => {
+      this.toaster.notify('Error!', 'There was an error fetching user\'s privileges. Please try again later.', 'bad', 'far fa-times');
+      console.error(error);
     });
   }
 
@@ -41,7 +45,9 @@ export class UserPrivilegesComponent implements OnInit {
           collectionId
         ] = (await this.collectionService.getCollection(collectionId)).name;
       })
-      );
+      ).catch(error => {
+        this.toaster.notify('Error!', 'There was an error fetching collections. Please try again later.', 'bad', 'far fa-times');
+      });
     }
 
   advance(distance: number = 1) {
@@ -92,8 +98,9 @@ export class UserPrivilegesComponent implements OnInit {
       }, 400);
       })
       .catch(error => {
-      console.error(error);
-    });
+        this.toaster.notify('Error!', 'There was an error adding a privilege. Please try again later.', 'bad', 'far fa-times');
+        console.error(error);
+      });
   }
 
   async remove(index: number) {
@@ -105,7 +112,8 @@ export class UserPrivilegesComponent implements OnInit {
         delete this.collections[collection];
       })
       .catch(error => {
-      console.error(error);
-    });
+        this.toaster.notify('Error!', 'There was an error removing a privilege. Please try again later.', 'bad', 'far fa-times');
+        console.error(error);
+      });
   }
 }

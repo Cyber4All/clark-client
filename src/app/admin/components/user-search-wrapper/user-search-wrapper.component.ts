@@ -4,6 +4,7 @@ import { User } from '@entity';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'clark-user-search-wrapper',
@@ -29,6 +30,7 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
 
   constructor(
     private user: UserService,
+    private toaster: ToasterService,
     private authService: AuthService,
   ) { }
 
@@ -64,6 +66,9 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
         // remove current user from results
         this.searchResults = results.filter(result => result.username !== this.authService.username);
         this.loading = false;
+      }).catch(error => {
+        this.toaster.notify('Error!', 'There was an error fetching users. Please try again later.', 'bad', 'far fa-times');
+        console.error(error);
       });
     }
   }
