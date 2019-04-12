@@ -702,7 +702,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   async addToCollection(collection?: string) {
     if (collection) {
-      this.collectionService.submit(this.focusedLearningObject.id, collection).then(() => {
+      this.collectionService.submit({
+        userId: this.focusedLearningObject.author.id,
+        learningObjectId: this.focusedLearningObject.id,
+        collectionName: collection,
+      }).then(() => {
         this.focusedLearningObject.status = LearningObject.Status.WAITING;
         this.focusedLearningObject.collection = collection;
         this.cd.detectChanges();
@@ -728,7 +732,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {DashboardLearningObject} learning object to be unpublished
    */
   cancelSubmission(l: DashboardLearningObject) {
-    this.collectionService.unsubmit(l.id).then(async () => {
+    this.collectionService.unsubmit({
+      learningObjectId: l.id,
+      userId: l.author.id,
+    }).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
     }).catch(err => {

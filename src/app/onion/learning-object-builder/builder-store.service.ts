@@ -698,7 +698,11 @@ export class BuilderStore {
       // if we passed a collection property, attempt the submission
       if (collection) {
         return this.collectionService
-          .submit(this.learningObject.id, collection)
+          .submit({
+            learningObjectId: this.learningObject.id,
+            userId: this.learningObject.author.id,
+            collectionName: collection,
+          })
           .then(() => {
             this.learningObject.status = LearningObject.Status.WAITING;
             this.learningObject.collection = collection;
@@ -720,7 +724,10 @@ export class BuilderStore {
 
   public cancelSubmission(): void {
     this.collectionService
-      .unsubmit(this.learningObject.id)
+      .unsubmit({
+        learningObjectId: this.learningObject.id,
+        userId: this.learningObject.author.id,
+      })
       .then(() => {
         this.learningObject.status = LearningObject.Status.UNRELEASED;
         this.validator.submissionMode = false;
