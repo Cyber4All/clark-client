@@ -34,7 +34,7 @@ Cypress.Commands.add('login', () => {
 
     // Enter login info 
     cy.get('input[name=username]').type('testaccount');
-    cy.get('input[name=password]').type('password12345!');
+    cy.get('input[name=password]').type('password');
     cy.get('#auth-button').click();
 
     cy.wait(1000);

@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
+import { ActivatedRoute } from '@angular/router';
 
 export interface DashboardLearningObject extends LearningObject {
   status: LearningObject.Status;
@@ -108,7 +109,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private notificationService: ToasterService,
     private contextMenuService: ContextMenuService,
     private nav: NavbarService,
-    public auth: AuthService // used in markup,
+    public auth: AuthService, // used in markup,
+    public route: ActivatedRoute
   ) {
     const hours = new Date().getHours();
     if (hours >= 17) {
@@ -132,6 +134,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.filtersModified$.pipe(takeUntil(this.destroyed$), debounceTime(400), ).subscribe(async () => {
       const filters = {status: Array.from(this.filters.keys())};
       this.learningObjects = await this.getLearningObjects(filters);
+    });
+
+    // if the user is trying to edit a released learning object, then get the status and alert the user
+    this.route.queryParams.pipe(takeUntil(this.destroyed$), debounceTime(400)).subscribe(queryParams => {
+      if (queryParams.status && queryParams.status === '403') {
+        this.notificationService.notify('Error!', 'This learning object is currently released and cannot be edited!', 'bad', 'far fa-times');
+      }
     });
   }
 
@@ -693,7 +702,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   async addToCollection(collection?: string) {
     if (collection) {
-      this.collectionService.submit(this.focusedLearningObject.id, collection).then(() => {
+      this.collectionService.submit({
+        userId: this.focusedLearningObject.author.id,
+        learningObjectId: this.focusedLearningObject.id,
+        collectionName: collection,
+      }).then(() => {
         this.focusedLearningObject.status = LearningObject.Status.WAITING;
         this.focusedLearningObject.collection = collection;
         this.cd.detectChanges();
@@ -719,7 +732,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {DashboardLearningObject} learning object to be unpublished
    */
   cancelSubmission(l: DashboardLearningObject) {
-    this.collectionService.unsubmit(l.id).then(async () => {
+    this.collectionService.unsubmit({
+      learningObjectId: l.id,
+      userId: l.author.id,
+    }).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
     }).catch(err => {

@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/Cyber4All/clark-client/tree/master.svg?style=svg)](https://circleci.com/gh/Cyber4All/clark-client/tree/master) [![Greenkeeper badge](https://badges.greenkeeper.io/Cyber4All/clark-client.svg)](https://greenkeeper.io/)
 
 # CLARK
-The official [CLARK Platform](https://clark.center) client, created with :heart: by the Cyber4All team.
+The official [CLARK Platform](https://clark.center) client, created with lots of :heart: by the Cyber4All team.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.7. A cheat sheet for the CLI can be found [here](https://cli.angular.io/reference.pdf).
 

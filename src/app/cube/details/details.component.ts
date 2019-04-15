@@ -34,6 +34,10 @@ export interface Rating {
 export class DetailsComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject<void>();
   learningObject: LearningObject;
+  revisedLearningObject: LearningObject;
+  releasedLearningObject: LearningObject;
+  revisedChildren: LearningObject[];
+  releasedChildren: LearningObject[];
   children: LearningObject[];
   returnUrl: string;
   loggedin: boolean;
@@ -45,6 +49,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
   isOwnObject = false;
   errorStatus: number;
   redirectUrl: string;
+  hasRevisions: boolean;
+  reviewer: boolean;
+  showDownloadModal = false;
+  revisedVersion = false;
+
 
   userRating: {
     user?: User;
@@ -78,7 +87,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
       const learningObjectName = decodeURIComponent(params['learningObjectName']);
-      this.fetchLearningObject(
+      this.fetchReleasedLearningObject(
         params['username'],
         learningObjectName,
       );
@@ -95,23 +104,61 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       if (!this.loggedin) {
         this.isOwnObject = false;
+        this.reviewer = false;
+        this.hasRevisions = false;
       }
     });
-
+    this.reviewer = this.auth.hasReviewerAccess();
   }
 
-  async fetchLearningObject(author: string, name: string) {
+  /**
+   * Returns a boolean representing whether or not the children component should be displayed
+   *
+   * true true if:
+      1) we're looking at the released version and the released object has children, or
+      2) we're looking at the revised version and the revised object has children
+   * @readonly
+   * @memberof DetailsComponent
+   */
+  get showChildren() {
+    return (!this.revisedVersion && this.releasedChildren.length) || (this.revisedVersion && this.revisedChildren.length);
+  }
+
+  /**
+   * toggles between released and revised copies of a learning object
+   * @param revised the boolean for if the revised is being viewed
+   */
+  viewReleased(revised: boolean) {
+    this.revisedVersion = revised;
+    if (this.revisedVersion === true) {
+      this.learningObject = this.revisedLearningObject;
+    } else {
+      this.learningObject = this.releasedLearningObject;
+    }
+  }
+
+  toggleDownloadModal(val?: boolean) {
+    this.showDownloadModal = val;
+  }
+
+  /**
+   * Fetches the released learning object to display first. If the object hasRevisions and the user has reviewer access
+   * the revised copy is also fetched.
+   * @param author the author of the learning object
+   * @param name the name of the learning object
+   */
+  async fetchReleasedLearningObject(author: string, name: string) {
     try {
       this.resetRatings();
-      this.learningObject = await this.learningObjectService.getLearningObject(
+      this.releasedLearningObject = await this.learningObjectService.getLearningObject(
         author,
         name
       );
-      this.learningObject.materials.files = this.learningObject.materials.files.map(
+      this.releasedLearningObject.materials.files = this.releasedLearningObject.materials.files.map(
         file => {
           file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-            username: this.learningObject.author.username,
-            loId: this.learningObject.id,
+            username: this.releasedLearningObject.author.username,
+            loId: this.releasedLearningObject.id,
             fileId: file.id,
             open: canViewInBrowser(file)
           });
@@ -119,7 +166,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       );
       // FIXME: This filter should be removed when service logic is updated
-      this.children = this.learningObject.children.filter(
+      this.releasedChildren = this.releasedLearningObject.children.filter(
         child => {
           return child.status === LearningObject.Status['RELEASED'] ||
           child.status === LearningObject.Status['REVIEW'] ||
@@ -128,8 +175,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
       );
 
-      const owners = this.learningObject.contributors.map(user => user.username);
-      owners.push(this.learningObject.author.username);
+      const owners = this.releasedLearningObject.contributors.map(user => user.username);
+      owners.push(this.releasedLearningObject.author.username);
 
       if (
         this.auth.user &&
@@ -141,6 +188,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
 
       this.learningObjectOwners = owners;
+      this.hasRevisions = this.releasedLearningObject.hasRevision;
+      this.learningObject = this.releasedLearningObject;
       this.getLearningObjectRatings();
     } catch (e) {
 
@@ -164,6 +213,82 @@ export class DetailsComponent implements OnInit, OnDestroy {
           });
           this.errorStatus = e.status;
           this.redirectUrl = redirectUrl;
+        }
+      }
+      console.log(e);
+    }
+
+    if (this.hasRevisions) {
+      this.loadRevisedLearningObject();
+    } else {
+      this.revisedLearningObject = this.learningObject;
+    }
+  }
+/**
+ * Loaded a revised copy of the learning object if the hasRevisions flag is true
+ */
+  async loadRevisedLearningObject() {
+    try {
+      this.resetRatings();
+      this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
+        this.learningObject.id
+      );
+      this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
+        file => {
+          file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+          username: this.revisedLearningObject.author.username,
+          loId: this.revisedLearningObject.id,
+          fileId: file.id,
+          open: canViewInBrowser(file)
+          });
+        return file;
+        }
+      );
+      // FIXME: This filter should be removed when service logic is updated
+      this.revisedChildren = this.revisedLearningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+          child.status === LearningObject.Status['REVIEW'] ||
+          child.status === LearningObject.Status['PROOFING'] ||
+          child.status === LearningObject.Status['WAITING'];
+        }
+      );
+
+      const owners = this.revisedLearningObject.contributors.map(user => user.username);
+      owners.push(this.revisedLearningObject.author.username);
+
+      if (
+        this.auth.user &&
+        owners.includes(this.auth.username)
+      ) {
+        this.isOwnObject = true;
+      } else {
+        this.isOwnObject = false;
+      }
+
+      this.learningObjectOwners = owners;
+    } catch (e) {
+
+    /**
+    * TODO: change status to 404 when issue #149 is closed
+    * if server error is thrown, navigate to not-found page
+    */
+
+    if (e instanceof HttpErrorResponse) {
+      if (e.status === 404) {
+        this.router.navigate(['not-found']);
+      }
+      if (e.status === 401) {
+        let redirectUrl = '';
+        this.route.url.subscribe(segments => {
+          if (segments) {
+            segments.forEach(segment => {
+            redirectUrl = redirectUrl + '/' + segment.path;
+            });
+          }
+        });
+        this.errorStatus = e.status;
+        this.redirectUrl = redirectUrl;
         }
       }
       console.log(e);
@@ -522,8 +647,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Retrieves list of learning object ratings from server and, if the user has a review in that list, assigns it to the
-   * userReview variable
+   * Retrieves list of learning object ratings from the RatingService.
+   * If the user has a review in that list, it is assigned to the userReview variable.
+   * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
     this.ratingService
@@ -531,6 +657,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
         learningObjectId: this.learningObject.id
       })
       .then(val => {
+        if (!val) {
+          this.resetRatings();
+          return;
+        }
         this.ratings = val.ratings;
         this.averageRatingValue = val.avgValue;
 
@@ -559,5 +689,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private resetRatings() {
     this.ratings = [];
     this.averageRatingValue = 0;
+    this.userRating = {};
   }
 }

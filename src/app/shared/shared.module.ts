@@ -40,6 +40,7 @@ import { TeleporterModule } from './teleporter/teleporter.module';
 import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
+import { CollectionCardComponent } from './collection-card/collection-card.component';
 import {CKEditorModule} from 'ng2-ckeditor';
 import { CarouselComponent } from './carousel/carousel.component';
 import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
@@ -96,7 +97,8 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     CarouselComponent,
     CollectionSelectorPopupComponent,
     DownloadNoticePopupComponent,
-    CollectionsGridComponent
+    CollectionsGridComponent,
+    CollectionCardComponent
   ],
   exports: [
     NavbarComponent,
@@ -128,7 +130,8 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     CarouselComponent,
     CollectionSelectorPopupComponent,
     DownloadNoticePopupComponent,
-    CollectionsGridComponent
+    CollectionsGridComponent,
+    CollectionCardComponent
   ]
 })
 export class SharedModule {}

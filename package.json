@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.21.6",
+  "version": "2.22.15",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -24,7 +24,6 @@
     "@angular/platform-browser-dynamic": "^7.2.3",
     "@angular/router": "^7.2.3",
     "@cyber4all/clark-taxonomy": "^4.0.1",
-    "@cyber4all/ngx-dropzone-wrapper": "^6.2.1",
     "@nguniversal/express-engine": "^7.0.2",
     "chance": "^1.0.16",
     "chart.js": "^2.7.3",
@@ -37,6 +36,7 @@
     "ng2-ckeditor": "^1.2.0",
     "ngx-contextmenu": "^5.0.1",
     "ngx-cookie": "4.0.2",
+    "ngx-dropzone-wrapper": "^7.2.1",
     "ngx-virtual-scroller": "^1.0.11",
     "npm": "^6.4.1",
     "raven-js": "^3.22.3",
