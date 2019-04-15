@@ -19,7 +19,7 @@ export class ChangelogService {
    */
   createChangelog(userId: string, learningObjectId: string, changelog: string): Promise<{}> {
     return this.http
-      .post(ADMIN_ROUTES.CREATE_CHANGELOG(userId, learningObjectId), { changelogText: changelog }, { responseType: 'text' })
+      .post(ADMIN_ROUTES.CREATE_CHANGELOG(learningObjectId), { userId, changelogText: changelog }, { responseType: 'text' })
       .pipe(
         retry(3),
         catchError(this.handleError)
