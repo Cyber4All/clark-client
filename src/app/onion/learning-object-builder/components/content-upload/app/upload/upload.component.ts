@@ -338,6 +338,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           file.upload.uuid,
           this.inProgressFileUploads.length - 1
         );
+      }
         if (file.upload.chunked) {
           // Request multipart upload
           const learningObject = await this.learningObject$
@@ -368,7 +369,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.uploadIds[file.upload.uuid] = uploadId;
         }
-      }
       this.dzDirectiveRef.dropzone().processFile(file);
     } catch (error) {
       this.error$.next(error);
