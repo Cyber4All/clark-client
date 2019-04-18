@@ -198,7 +198,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.hasRevisions = this.releasedLearningObject.hasRevision;
       this.learningObject = this.releasedLearningObject;
       await this.getLearningObjectRatings();
-      this.loading.pop()
+      this.loading.pop();
     } catch (e) {
 
       /**
@@ -223,7 +223,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.redirectUrl = redirectUrl;
         }
       }
-      this.loading.pop()
+      this.loading.pop();
       console.log(e);
     }
 
@@ -451,7 +451,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .catch(() => {
           this.toastService.notify(
             'Error!',
-            "Rating couldn't be deleted",
+            'Rating couldn\'t be deleted',
             'bad',
             'far fa-times'
           );
