@@ -47,7 +47,7 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
       this.querying = true;
       this.emailError = false;
 
-      this.auth.identifiersInUse(val).then((res: any) => {
+      this.auth.usernameInUse(val).then((res: any) => {
         this.querying = false;
         this.result = res.inUse;
         if (!this.result) {

@@ -11,8 +11,6 @@ import { UserQuery } from 'app/shared/interfaces/query';
 
 @Injectable()
 export class UserService {
-  socket;
-  socketWatcher: Observable<string>;
   constructor(private http: HttpClient, private auth: AuthService) {
   }
 

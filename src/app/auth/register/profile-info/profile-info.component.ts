@@ -46,7 +46,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
       }
       this.querying = true;
       this.usernameError = undefined;
-      this.auth.identifiersInUse(val).then((res: any) => {
+      this.auth.usernameInUse(val).then((res: any) => {
         this.querying = false;
         this.result = res.inUse;
         if (!this.result) {

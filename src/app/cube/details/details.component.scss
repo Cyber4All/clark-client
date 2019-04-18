@@ -306,3 +306,21 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     transform: scale(1);
   }
 }
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 300px;
+  font-size: 18px;
+  color:  $dark-text;
+  margin: auto;
+  margin-top: 100px;
+
+  .svg-inline--fa {
+    color:  $bright-blue;
+    font-size: 25px;
+    margin-bottom: 10px;
+  }
+}
