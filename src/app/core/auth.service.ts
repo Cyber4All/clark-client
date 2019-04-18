@@ -247,10 +247,10 @@ export class AuthService {
     );
   }
 
-  sendEmailVerification(email: string): Observable<any> {
+  sendEmailVerification(email?: string): Observable<any> {
     return this.http.post(
       environment.apiURL + '/users/ota-codes?action=verifyEmail',
-      { email },
+      { email: email || this.user.email },
       { withCredentials: true, responseType: 'text' }
     )
     .pipe(
