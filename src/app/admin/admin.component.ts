@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, skipWhile, take } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { CollectionService, Collection } from 'app/core/collection.service';
+import { ToasterService } from 'app/shared/toaster';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private toaster: ToasterService
   ) {}
 
   /**
@@ -63,6 +65,9 @@ export class AdminComponent implements OnInit, OnDestroy {
         if (!this.activeCollection) {
           this.router.navigate([this.authorizedCollections[0].abvName], { relativeTo: this.route });
         }
+      }).catch(error => {
+        this.toaster.notify('Error!', 'There was an error retrieving collections. Please try again later.', 'bad', 'far fa-times');
+        console.error(error);
       });
     }
   }

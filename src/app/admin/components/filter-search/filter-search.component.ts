@@ -7,6 +7,7 @@ import {AuthService} from 'app/core/auth.service';
 import {Subject} from 'rxjs';
 import {ContextMenuService} from 'app/shared/contextmenu/contextmenu.service';
 import {LearningObject} from '@entity';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -38,6 +39,7 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private authService: AuthService,
     private contextMenuService: ContextMenuService,
+    private toaster: ToasterService
     ) { }
 
   ngOnInit() {
@@ -61,6 +63,9 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
         }
         return 0;
       });
+    }).catch(error => {
+      this.toaster.notify('Error!', error, 'bad', 'far fa-times');
+      console.error(error);
     });
   }
 

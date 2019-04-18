@@ -3,6 +3,7 @@ import { UserService } from 'app/core/user.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'clark-users',
@@ -30,9 +31,9 @@ export class UsersComponent implements OnInit {
     private user: UserService,
     private router: Router,
     private route: ActivatedRoute,
+    private toaster: ToasterService,
     public authService: AuthService,
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
@@ -51,6 +52,9 @@ export class UsersComponent implements OnInit {
       .then(val => {
         this.users = val;
         this.loading = false;
+      }).catch(error => {
+        this.toaster.notify('Error!', 'There was an error fetching users. Please try again later.', 'bad', 'far fa-times');
+        console.error(error);
       });
   }
 

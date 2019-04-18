@@ -7,6 +7,7 @@ import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -74,7 +75,8 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
     private route: ActivatedRoute,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private toaster: ToasterService
   ) { }
 
   getLearningObjects(event?: VirtualScrollerChangeEvent) {
@@ -95,6 +97,9 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
         if (val.learningObjects.length < this.query.limit || val.learningObjects.length === 0) {
           // do something regarding error handling here
         }
+      }).catch(error => {
+        console.error(error);
+        this.toaster.notify('Error!', 'There was an error fetching collections. Please try again later.', 'bad', 'far fa-times');
       });
   }
 
@@ -106,6 +111,9 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
       .then(val => {
         this.learningObjects = val.learningObjects;
         this.cd.detectChanges();
+      }).catch(error => {
+        this.toaster.notify('Error!', 'There was an error fetching this user\'s learning objects. Please try again later.', 'bad', 'far fa-times');
+        console.error(error);
       });
   }
 
