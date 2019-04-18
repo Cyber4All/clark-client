@@ -268,7 +268,7 @@ export class AuthService {
 
   /**
    * Creates a new user
-   * 
+   *
    * @param user the user's data from the registration component
    */
   async register(user: any): Promise<User> {
@@ -400,7 +400,7 @@ export class AuthService {
       catchError(this.handleError)
     );
   }
-  
+
   /**
    * Triggers a print operation for CLARK cards with the specified username, name and organization
    *
