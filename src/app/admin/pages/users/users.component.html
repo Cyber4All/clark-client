@@ -32,6 +32,7 @@
       <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
         <clark-admin-user-card *ngFor="let user of users" class="user-cards__card"
           [user]="user"
+          [reviewer]="authService.hasCuratorAccess() && !authService.hasEditorAccess()"
           (navigateToUserObjects)="navigateToUserObjects(user.username)"
           (editPrivileges)="editPrivileges(user)"
         ></clark-admin-user-card>

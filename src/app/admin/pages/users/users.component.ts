@@ -3,36 +3,11 @@ import { UserService } from 'app/core/user.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
-import { trigger, transition, style, animate, animateChild, query } from '@angular/animations';
 
 @Component({
   selector: 'clark-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
-  animations: [
-    trigger('fade', [
-        transition(':enter', [
-            style({ opacity: 0 }),
-            animate('100ms', style({ opacity: 1 })),
-            query( '@scale', animateChild() )
-        ]),
-        transition(':leave', [
-            style({ opacity: 1 }),
-            animate('100ms', style({ opacity: 0 })),
-            query( '@scale', animateChild() )
-        ])
-    ]),
-    trigger('scale', [
-        transition(':enter', [
-            style({ transform: 'scale(0.8)', opacity: 0 }),
-            animate('100ms 70ms ease-out', style({ transform: 'scale(1)', opacity: 1 }))
-        ]),
-        transition(':leave', [
-            style({ transform: 'scale(1)', opacity: 1 }),
-            animate('100ms ease-out', style({ transform: 'scale(0.8)', opacity: 0 }))
-        ])
-    ])
-],
 })
 export class UsersComponent implements OnInit {
   searchBarPlaceholder = 'Users';

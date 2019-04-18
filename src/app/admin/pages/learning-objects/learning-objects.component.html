@@ -13,7 +13,7 @@
   <div #list class="list" main>
     <div #listInner>
       <div class="list__body">
-        <div *ngIf="learningObjects?.length || loading; else emptyTemplate">
+        <div *ngIf="learningObjects?.length; else emptyTemplate">
           <div #headers class="body__column-headers">
             <div>Status</div>
             <div>Name</div>
