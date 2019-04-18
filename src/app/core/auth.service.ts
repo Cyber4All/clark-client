@@ -33,8 +33,6 @@ export class AuthService {
   httpHeaders = new HttpHeaders();
   inUse: object;
   isLoggedIn = new BehaviorSubject<boolean>(false);
-  socket;
-  socketWatcher: Observable<string>;
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
 
   constructor(private http: HttpClient, private cookies: CookieService) {
@@ -209,19 +207,6 @@ export class AuthService {
     }
   }
 
-  // checkPassword is used when changing a password in the user-edit-information.component
-  async checkPassword(password: string): Promise<any> {
-    const val = await this.http
-      .post<User>(environment.apiURL + '/users/password', { password }, {
-        withCredentials: true
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-    return val;
-  }
 
   initiateResetPassword(email: string): Observable<any> {
     return this.http.post(

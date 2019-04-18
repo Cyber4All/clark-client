@@ -79,32 +79,6 @@ export class ClarkComponent implements OnInit {
     }, 600000); // 10 minute interval
   }
 
-  /**
-   * Checks if the user is unverified and if they are establishes connection to gateway via socket
-   */
-  attemptSocketConnection(): boolean {
-    if (!this.authService.user.emailVerified) {
-      this.authService.establishSocket().subscribe(res => {
-        // events
-        if (res === 'VERIFIED_EMAIL') {
-          this.modal.makeDialogMenu(
-            'emailVerified',
-            'Email Verified!',
-            'Thank you for verifying your email! Now you can do awesome things like publish learning objects and upload materials!',
-            true,
-            'title-good',
-            'center',
-            [new ModalListElement('Got it!', 'done', 'green')]
-          );
-        }
-      });
-
-      return true;
-    }
-
-    return false;
-  }
-
   reloadPage() {
     location.reload();
   }
