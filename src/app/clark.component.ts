@@ -41,25 +41,20 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class ClarkComponent implements OnInit {
-  connectedToSocket: boolean;
   isSupportedBrowser: boolean;
   cookiesAgreement: boolean;
   isOldVersion = false;
   errorMessage: string;
 
-  constructor(private authService: AuthService, private cartService: CartV2Service, private modal: ModalService, private router: Router) {
+  constructor(private authService: AuthService, private cartService: CartV2Service, private router: Router) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
-      this.connectedToSocket = false;
       this.authService.isLoggedIn.subscribe(val => {
         if (val) {
           this.cartService.updateUser();
           this.cartService.getCart();
 
-          this.connectedToSocket = this.attemptSocketConnection();
 
-        } else if (this.connectedToSocket) {
-          this.authService.destroySocket();
         }
       });
 

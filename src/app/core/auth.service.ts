@@ -33,8 +33,6 @@ export class AuthService {
   httpHeaders = new HttpHeaders();
   inUse: object;
   isLoggedIn = new BehaviorSubject<boolean>(false);
-  socket;
-  socketWatcher: Observable<string>;
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
 
   constructor(private http: HttpClient, private cookies: CookieService) {
