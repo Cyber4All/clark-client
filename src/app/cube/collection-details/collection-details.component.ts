@@ -41,7 +41,6 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
 
   async fetchCollection(name: string) {
     this.collection = await this.collectionService.getCollectionMetadata(name);
-    console.log(this.collection);
     this.key.next(this.collection.abvName);
     if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
