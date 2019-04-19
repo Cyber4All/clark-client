@@ -69,27 +69,6 @@
   color: $dark-text;
 }
 
-.view-all {
-  color: $blue-accent;
-  font-size: 18px;
-  width: 100px;
-  cursor: pointer;
-  @include vert-center;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  text-align: right;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  .svg-inline--fa {
-    @include vert-center;
-    margin-left: 15px;
-  }
-}
-
 @media(max-width: 750px) {
   .feature-text {
     text-align: center !important;
