@@ -62,14 +62,13 @@
     }
   }
 
-  .login-msg {
+  .action-message {
     margin-top: 20px;
     font-size: 16px;
     color: $dark-text;
 
-    span {
+    a {
       color: $blue-accent;
-      text-decoration: underline;
       cursor: pointer;
     }
   }
@@ -197,5 +196,16 @@
         background: $green;
       }
     }
+  }
+}
+
+.email-unverified {
+  background:  linear-gradient(45deg, darken(saturate($error-red, 20), 10), $error-red);
+  color: white;
+  padding: 3px;
+  border-radius: 2px;
+
+  .email-unverified__icon {
+
   }
 }

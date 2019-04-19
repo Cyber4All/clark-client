@@ -52,7 +52,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private cartService: CartV2Service,
     private renderer: Renderer2,
-    private noteService: ToasterService,
+    private toaster: ToasterService,
   ) { }
 
   ngOnInit() {
@@ -61,7 +61,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.isEditButtonViewable = this.auth.hasEditorAccess();
       });
-    this.hasDownloadAccess = this.auth.hasReviewerAccess() || this.isReleased;
+    this.hasDownloadAccess = (this.auth.hasReviewerAccess() || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
+
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
@@ -101,7 +102,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.log(error);
-      this.noteService.notify(
+      this.toaster.notify(
         'Error!',
         'There was an error adding to your library',
         'bad',
@@ -145,7 +146,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     el.select();
     document.execCommand('copy');
 
-    this.noteService.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
   }
 
   toggleDownloadModal(val?: boolean) {
@@ -229,6 +230,29 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get isMobile() {
     return this.windowWidth <= 750;
+  }
+
+  /**
+   * Sends email verification email
+   *
+   * @memberof UserInformationComponent
+   */
+  public async sendEmailVerification() {
+    try {
+      await this.auth.validate();
+
+      if (!this.auth.user.emailVerified) {
+        await this.auth.sendEmailVerification().toPromise();
+        this.toaster.notify(
+          `Success!`,
+          `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`,
+          'good',
+          'far fa-check'
+        );
+      }
+    } catch (e) {
+      this.toaster.notify(`Could not send email`, `${e}`, 'bad', '');
+    }
   }
 
   ngOnDestroy() {

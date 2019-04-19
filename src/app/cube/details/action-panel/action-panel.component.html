@@ -25,8 +25,14 @@
       </button>
     </div>
     <ng-container *ngIf="!auth.user">
-      <div class="login-msg" id="login-msg">Please
-        <a [routerLink]="['/auth/login']">log in</a> to add this Learning Object to your library.</div>
+      <div class="action-message" id="login-msg">Please
+        <a [routerLink]="['/auth/login']">log in</a> to add this Learning Object to your library.
+      </div>
+    </ng-container>
+    <ng-container *ngIf="auth.user && !auth.user?.emailVerified">
+      <div class="action-message">
+        Please <a (click)="sendEmailVerification()">verify your email</a> to download this Learning Object.
+      </div>
     </ng-container>
     <div class="details-metrics">
       <div>
