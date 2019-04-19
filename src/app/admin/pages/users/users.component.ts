@@ -4,11 +4,33 @@ import {Router, ActivatedRoute} from '@angular/router';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from 'app/shared/toaster';
+import { trigger, transition, style, animate, stagger, query, animateChild } from '@angular/animations';
 
 @Component({
   selector: 'clark-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
+  animations: [
+    trigger('staggerChildren', [
+      transition('* => *', [
+        query(':enter', [
+          stagger(30, [
+            animateChild()
+          ])
+        ], { optional: true })
+      ])
+    ]),
+    trigger('fade', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('350ms ease', style({ opacity: 1, transform: 'translateY(0px)' }))
+      ]),
+      transition(':leave', [
+        style({ opacity: 1,transform: 'translateY(0px)' }),
+        animate('350ms ease', style({ opacity: 0, transform: 'translateY(20px)' }))
+      ])
+    ])
+  ]
 })
 export class UsersComponent implements AfterViewInit {
   searchBarPlaceholder = 'Users';

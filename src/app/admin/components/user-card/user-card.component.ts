@@ -2,6 +2,7 @@ import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy, Change
 import { User } from '@entity';
 import { UserService } from 'app/core/user.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { setClassMetadata } from '@angular/core/src/render3';
 
 @Component({
   selector: 'clark-admin-user-card',
@@ -18,7 +19,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
         style({ opacity: 1 }),
         animate('200ms ease', style({ opacity: 0 }))
       ])
-    ])
+    ]),
   ]
 })
 export class AdminUserCardComponent {

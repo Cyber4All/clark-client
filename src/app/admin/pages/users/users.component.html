@@ -29,13 +29,14 @@
 
   <div class="users" main>
     <div *ngIf="!loading; else loadingTemplate">
-      <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
+      <div *ngIf="users?.length; else emptyTemplate" class="user-cards" [@staggerChildren]>
         <clark-admin-user-card *ngFor="let user of users;trackBy: trackby" class="user-cards__card"
           [user]="user"
           [reviewer]="authService.hasCuratorAccess() && !authService.hasEditorAccess()"
           (navigateToUserObjects)="navigateToUserObjects(user.username)"
           (editPrivileges)="editPrivileges(user)"
           (removeMember)="removeReviewer(user.id)"
+          [@fade]
         ></clark-admin-user-card>
       </div>
     </div>
@@ -60,7 +61,7 @@
   </div>
 
   <ng-template #loadingTemplate>
-    <div class="loading-template">
+    <div [@fade] class="loading-template">
       <i class="far fa-spinner-third fa-spin"></i>
       Loading Users...
     </div>
