@@ -33,6 +33,7 @@
         <clark-admin-user-card *ngFor="let user of users;trackBy: trackby" class="user-cards__card"
           [user]="user"
           [reviewer]="authService.hasCuratorAccess() && !authService.hasEditorAccess()"
+          [canEditPrivilege]="authService.hasEditorAccess()"
           (navigateToUserObjects)="navigateToUserObjects(user.username)"
           (editPrivileges)="editPrivileges(user)"
           (removeMember)="removeReviewer(user.id)"
