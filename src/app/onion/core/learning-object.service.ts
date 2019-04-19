@@ -380,7 +380,19 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getFirstSubmission(userID: string, objectID: string, collection: string, hasSubmission: boolean) {
-
+    return this.http
+      .get(
+        USER_ROUTES.CHECK_FIRST_SUBMISSION({
+          userId: userID,
+          learningObjectId: objectID,
+          query: { collection: collection, hasSubmission: hasSubmission }}),
+          { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 
   private handleError(error: HttpErrorResponse) {
