@@ -29,7 +29,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private authService: AuthService,
     private collectionService: CollectionService,
-    private toaster: ToasterService
+    public toaster: ToasterService
   ) {}
 
   /**
