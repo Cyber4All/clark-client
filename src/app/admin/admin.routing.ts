@@ -17,17 +17,13 @@ const admin_routes: Routes = [
   {
     path: '', component: AdminComponent, canActivate: [ AdminGuard ], children: [
       // TODO THESE NEED AN ADMIN GUARD TO PREVENT ACCESS BY CURATORS
-      { path: 'analytics', component: AnalyticsComponent },
-      { path: 'learning-objects', component: LearningObjectsComponent},
       { path: 'users', component: UsersComponent },
-      { path: '', redirectTo: 'analytics', pathMatch: 'full' }
+      { path: '', redirectTo: 'users', pathMatch: 'full' }
     ],
   },
-  { path: ':collection', redirectTo: '/admin/:collection/analytics', pathMatch: 'full' },
+  { path: ':collection', redirectTo: '/admin/:collection/reviewers', pathMatch: 'full' },
   {
     path: ':collection', component: AdminComponent, children: [
-      { path: 'analytics', component: AnalyticsComponent },
-      { path: 'learning-objects', component: LearningObjectsComponent },
       { path: 'reviewers', component: UsersComponent },
     ],
   },
