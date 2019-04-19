@@ -131,7 +131,8 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     CollectionSelectorPopupComponent,
     DownloadNoticePopupComponent,
     CollectionsGridComponent,
-    CollectionCardComponent
+    CollectionCardComponent,
+    ToasterModule
   ]
 })
 export class SharedModule {}
