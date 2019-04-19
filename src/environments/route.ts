@@ -352,9 +352,6 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/ratings`;
-  },
-  GET_SUBMIT_HISTORY(userID: string, objectID: string) {
-    return `${environment.apiURL}/users/${userID}/learning-objects/${objectID}`;
   }
 };
 export const MISC_ROUTES = {
