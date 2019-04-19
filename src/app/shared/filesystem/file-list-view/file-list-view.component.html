@@ -16,7 +16,7 @@
         {{ folder.name }}
       </div>
       <div class="text-contained description">
-        <span>{{ folder.description || 'No description here!' }}</span>
+        <span>{{ folder.description }}</span>
         <!-- <input #folderDesc (click)="setEditable(folder)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="folder.description ? folder.description: ''"
           [formControl]="descriptionControl" /> -->
       </div>
@@ -36,7 +36,7 @@
         <span class="external-link-icon" *ngIf="previewUrl(file.extension)"><i class="far fa-external-link"></i></span>
       </div>
       <div class="text-contained description">
-        <span>{{ file.description || 'No description here!' }}</span>
+        <span>{{ file.description }}</span>
         <!-- <input #fileDesc (click)="setEditable(file)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="file.description ? file.description: ''"
           [formControl]="descriptionControl" /> -->
       </div>
