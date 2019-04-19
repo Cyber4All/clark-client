@@ -4,7 +4,9 @@
     <div *ngIf="!reviewer" (click)="showUserObjects()" class="card__middle__objects"><i class="far fa-eye card__middle__icon"></i> View Objects</div>
     <div *ngIf="reviewer" (click)="removeReviewer()" class="card__middle__objects"><i class="far fa-user card__middle__icon"></i> Remove Reviewer</div>
     <div *ngIf="canEditPrivilege" (click)="editUserPrivileges()" class="card__middle__objects"><i class="far fa-users-cog card__middle__icon"></i> Edit Privileges</div>
-    <a href="mailto:{{ user?.email }}" class="card__middle__email"><i class="far fa-envelope card__middle__icon"></i> Send Email</a>
+    <div>
+      <a href="mailto:{{ user?.email }}" class="card__middle__email"><i class="far fa-envelope card__middle__icon"></i> Send Email</a>
+    </div>
   </div>
   <div class="card__image" [style.backgroundImage]="'url(' + getGravatar() + ')'">
   </div>
