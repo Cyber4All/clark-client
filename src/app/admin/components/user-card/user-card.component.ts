@@ -1,26 +1,44 @@
-import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { User } from '@entity';
 import { UserService } from 'app/core/user.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'clark-admin-user-card',
   templateUrl: './user-card.component.html',
   styleUrls: ['./user-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('menu', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('200ms ease', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
-export class AdminUserCardComponent implements OnInit {
+export class AdminUserCardComponent {
   @Input() user: User;
   @Input() reviewer = false;
   @Input() canEditPrivilege = false;
+
   @Output() navigateToUserObjects = new EventEmitter<string>();
   @Output() removeMember = new EventEmitter<string>();
 
   loading = false;
   @Output() editPrivileges: EventEmitter<void> = new EventEmitter();
 
-  constructor(private userService: UserService) { }
+  showMiddle: boolean;
 
-  ngOnInit() {
+  constructor(private userService: UserService, private cd: ChangeDetectorRef) {}
+
+  toggleCardMenu(value) {
+    this.showMiddle = value;
+    this.cd.detectChanges();
   }
 
   getGravatar() {
