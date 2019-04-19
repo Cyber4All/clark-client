@@ -16,7 +16,6 @@ import { UsersComponent } from './pages/users/users.component';
 const admin_routes: Routes = [
   {
     path: '', component: AdminComponent, canActivate: [ AdminGuard ], children: [
-      // TODO THESE NEED AN ADMIN GUARD TO PREVENT ACCESS BY CURATORS
       { path: 'users', component: UsersComponent },
       { path: '', redirectTo: 'users', pathMatch: 'full' }
     ],
