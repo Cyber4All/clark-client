@@ -1,0 +1,15 @@
+<div class="changelog-modal">
+  <div class="changelog-modal__header">
+    <div class="header__title">
+      {{ learningObject.name }} change logs
+    </div>
+    <div class="header__date">
+      Learning Object last updated, {{ learningObject.date | date:'shortDate' }}
+    </div>
+  </div>
+  <div class="changelog-modal__body">
+    <clark-changelog-list
+      [changelogs] = "changelogs"
+    ></clark-changelog-list>
+  </div>
+</div>

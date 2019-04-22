@@ -56,6 +56,9 @@ export class DashboardItemComponent implements OnChanges {
   @Output()
   cancelSubmission: EventEmitter<void> = new EventEmitter();
 
+  @Output()
+  viewAllChangelogs: EventEmitter<string> = new EventEmitter();
+
   // id of the context menu returned from the context-menu component
   itemMenu: string;
 

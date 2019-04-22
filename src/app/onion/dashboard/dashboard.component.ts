@@ -12,6 +12,7 @@ import { trigger, transition, style, animate, animateChild, query, stagger } fro
 import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
 import { ActivatedRoute } from '@angular/router';
+import { ChangelogService } from 'app/core/changelog.service';
 
 export interface DashboardLearningObject extends LearningObject {
   status: LearningObject.Status;
@@ -77,6 +78,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   focusedLearningObject: DashboardLearningObject;
   filterMenu: string;
 
+  openChangelogModal: boolean;
+  changelogLearningObject: LearningObject;
+  changelogs: [];
+
   // Observables
   destroyed$: Subject<void> = new Subject();
   filtersModified$: Subject<void> = new Subject();
@@ -104,6 +109,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private learningObjectService: LearningObjectService,
+    private changelogService: ChangelogService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
     private notificationService: ToasterService,
@@ -740,6 +746,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.cd.detectChanges();
     }).catch(err => {
       console.error(err);
+    });
+  }
+
+  async openViewAllChangelogsModal(learningObjectId: string) {
+    this.openChangelogModal = true;
+    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
+    this.changelogs =  await this.changelogService.fetchAllChangelogs({
+      userId: this.changelogLearningObject.author.id,
+      learningObjectId: this.changelogLearningObject.id,
     });
   }
 
