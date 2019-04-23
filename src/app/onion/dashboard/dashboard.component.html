@@ -134,7 +134,7 @@
 
 <!-- View All Change Logs -->
 <clark-popup *ngIf="openChangelogModal" (closed)="openChangelogModal = false">
-  <div #popupInner style="height: 90vh; min-width: 40vw;" class="popup-inner">
+  <div #popupInner style="height: 90vh; min-width: 500px; max-width: 30vw;" class="popup-inner">
     <clark-changelog-modal
       [learningObject] = "changelogLearningObject"
       [changelogs] = "changelogs"
