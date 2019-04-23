@@ -14,7 +14,7 @@
       [theme]="changelog.author.role === 'author' ? 'default' : 'proofing'"
     ></clark-identification-pill>
   </div>
-  <div class="changelog-item__timeline">
+  <div *ngIf="showTimeline" class="changelog-item__timeline">
     
   </div>
   <div class="changelog-item__text">

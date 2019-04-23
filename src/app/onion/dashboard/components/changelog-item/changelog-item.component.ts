@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ChangelogItemComponent implements OnInit {
 
   @Input() changelog: any;
+  @Input() showTimeline = false;
 
   constructor() { }
 

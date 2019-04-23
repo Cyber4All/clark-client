@@ -1,7 +1,7 @@
 .changelog-item {
     display: grid;
     grid-template-rows: auto 100px 10px;
-    grid-template-columns: 80px 130px 100px;
+    grid-template-columns: 80px 130px 100px auto;
     grid-gap: 10px;
 }
 
@@ -16,16 +16,19 @@
 }
 
 .changelog-item__badge {
+    margin-top: 5px;
     display: flex;
     flex-direction: column;
 }
 
 .changelog-item__text {
+    grid-column: 2 / span 3;
     display: flex;
     font-size: 17px;
 }
 
 .changelog-item__timeline {
+    grid-row-start: 2;
     display: flex;
     flex-direction: column;
     border-left: 1px solid black;

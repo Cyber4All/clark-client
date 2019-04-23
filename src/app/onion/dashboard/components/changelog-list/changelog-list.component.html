@@ -1,5 +1,6 @@
 <div class="changelog-list">
-  <clark-changelog-item *ngFor="let changelog of changelogs"
+  <clark-changelog-item *ngFor="let changelog of changelogs; let i = index"
     [changelog] = "changelog"
+    [showTimeline] = "i === changelogs.length - 1 ? false : true"
   ></clark-changelog-item>
 </div>
