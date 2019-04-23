@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'clark-identification-pill',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./identification-pill.component.scss']
 })
 export class IdentificationPillComponent implements OnInit {
+  @Input() accessGroup: string;
 
   constructor() { }
 

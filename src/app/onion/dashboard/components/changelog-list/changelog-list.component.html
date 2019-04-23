@@ -1,3 +1,5 @@
 <div class="changelog-list">
-  <clark-changelog-item></clark-changelog-item>
+  <clark-changelog-item *ngFor="let changelog of changelogs"
+    [changelog] = "changelog"
+  ></clark-changelog-item>
 </div>

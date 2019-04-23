@@ -756,6 +756,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       userId: this.changelogLearningObject.author.id,
       learningObjectId: this.changelogLearningObject.id,
     });
+    console.log(this.changelogs);
   }
 
   /**

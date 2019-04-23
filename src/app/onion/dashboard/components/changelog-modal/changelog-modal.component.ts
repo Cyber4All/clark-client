@@ -9,7 +9,7 @@ import { LearningObject } from '@entity';
 export class ChangelogModalComponent implements OnInit {
 
   @Input() learningObject: LearningObject;
-  @Input() changelogs: [];
+  @Input() changelogs: any;
 
   constructor() { }
 
