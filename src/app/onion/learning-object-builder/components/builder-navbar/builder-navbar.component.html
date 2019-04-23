@@ -61,10 +61,26 @@
 
 <clark-popup *ngIf="showSubmission" (closed)="showSubmission = false">
   <div #popupInner>
-    <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"
-      (cancel)="showSubmission = false"></clark-collection-selector>
+    <ng-container [ngTemplateOutlet]="page === 1 ? submitReviewTemplate : authorChangelogTemplate"></ng-container>
   </div>
 </clark-popup>
+
+<ng-template #submitReviewTemplate>
+  <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="getCollectionSelected($event)"
+      (cancel)="showSubmission = false"></clark-collection-selector>
+</ng-template>
+
+<ng-template #authorChangelogTemplate>
+  <div class="whole_changelog_wrapper">
+    <div class="banner">
+      <div class="banner__title">Create a Changelog</div>
+      <div class="banner__sub">What changes were made to this learning object?</div>
+    </div>
+    <div class="changelog_wrapper">
+      <clark-edit-changelog [(changelog)]="changelog" (back)="page = 1" (cancel)="showSubmission = false; page = 1;" (confirm)="createChangelog()"></clark-edit-changelog>
+    </div>
+  </div>
+</ng-template>
 
 <clark-context-menu (id)="submissionOptionsMenu = $event" (close)="toggleSubmissionOptionsMenu($event)">
   <div #contextMenu>
