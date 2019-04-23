@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class IdentificationPillComponent implements OnInit {
   @Input() accessGroup: string;
+  @Input() theme = 'default';
 
   constructor() { }
 
