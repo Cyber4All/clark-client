@@ -1,5 +1,5 @@
 <div class="changelog">
-  <clark-text-editor editorPlaceholder="What {{ mode }} changes were made to this learning object?" [(savedContent)]="changelog" (textOutput)="changelogChange.emit($event)" name="changelog"></clark-text-editor>
+  <clark-text-editor editorPlaceholder="What editorial changes were made to this learning object?" [(savedContent)]="changelog" (textOutput)="changelogChange.emit($event)" name="changelog"></clark-text-editor>
   <div class="button-bar">
     <div class="btn-group to-left">
       <button (click)="back.emit()" class="button neutral">Back</button>
