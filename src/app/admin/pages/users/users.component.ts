@@ -1,29 +1,51 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { UserService } from 'app/core/user.service';
 import {Router, ActivatedRoute} from '@angular/router';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from 'app/shared/toaster';
+import { trigger, transition, style, animate, stagger, query, animateChild } from '@angular/animations';
 
 @Component({
   selector: 'clark-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
+  animations: [
+    trigger('staggerChildren', [
+      transition('* => *', [
+        query(':enter', [
+          stagger(30, [
+            animateChild()
+          ])
+        ], { optional: true })
+      ])
+    ]),
+    trigger('fade', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('350ms ease', style({ opacity: 1, transform: 'translateY(0px)' }))
+      ]),
+      transition(':leave', [
+        style({ opacity: 1,transform: 'translateY(0px)' }),
+        animate('350ms ease', style({ opacity: 0, transform: 'translateY(20px)' }))
+      ])
+    ])
+  ]
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements AfterViewInit {
   searchBarPlaceholder = 'Users';
   users: User[];
   activeCollection: string;
   loading = false;
   displayRemoveReviewerModal = false;
   removeReviewerId: string;
-  isSearching: boolean;
+  reviewerModal: boolean;
   showPrivileges: boolean;
   selectedUser: User;
 
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
     if (event.keyCode === 27) {
-        this.isSearching = false;
+        this.reviewerModal = false;
     }
 }
 
@@ -33,9 +55,10 @@ export class UsersComponent implements OnInit {
     private route: ActivatedRoute,
     private toaster: ToasterService,
     public authService: AuthService,
-  ) { }
+  ) {
+  }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.route.parent.params.subscribe(params => {
       this.activeCollection = params['collection'];
       if (this.activeCollection) {
@@ -54,6 +77,7 @@ export class UsersComponent implements OnInit {
         this.loading = false;
       }).catch(error => {
         this.toaster.notify('Error!', 'There was an error fetching users. Please try again later.', 'bad', 'far fa-times');
+        this.loading = false;
         console.error(error);
       });
   }
@@ -71,27 +95,30 @@ export class UsersComponent implements OnInit {
    * Adds a user as a reviewer to a collection after being clicked on in the user search
    * @param user the elements of a clark user such as id and role
    */
-  async addReviewer(user: User) {
-    await this.user.assignMember(user.id, this.activeCollection, {role: 'reviewer'});
-    await this.fetchReviewers();
+  addReviewer(user: User) {
+    this.user.assignMember(user.id, this.activeCollection, 'reviewer').then(() => {
+      this.users.splice(0, 0, user);
+    }).catch(error => {
+      this.toaster.notify('Error!', 'Could not add reviewer. Please try again later', 'bad', 'far fa-times');
+      console.error(error);
+    });
   }
 
-/**
- * Opens up a modal of a selected reviewer in a collection which gives the choice to remove their reviewer access
- * @param reviewerId the id of the of reviewer which allows us to remove their access
- */
-  showModal(reviewerId: string) {
-    this.removeReviewerId = reviewerId;
-    this.displayRemoveReviewerModal = true;
+  toggleAddReviewerModal(value: boolean) {
+    this.reviewerModal = value;
   }
 
   /**
    * Removes the reviewer access from a user in a collection
    */
-  async removeReviewer() {
+  removeReviewer(userId?: string) {
     this.displayRemoveReviewerModal = false;
-    await this.user.removeMember(this.activeCollection, this.removeReviewerId );
-    await this.fetchReviewers();
+    this.user.removeMember(this.activeCollection, userId || this.removeReviewerId ).then(() => {
+      this.users = this.users.filter(x => x.id !== userId);
+    }).catch(error => {
+      this.toaster.notify('Error!', 'Could not remove reviewer. Please try again later', 'bad', 'far fa-times');
+      console.error(error);
+    });
   }
 
   navigateToUserObjects(username: string) {

@@ -1,7 +1,7 @@
 <clark-admin-content-wrapper>
   <div page-title>
     <span *ngIf="activeCollection && activeCollection?.length > 0" class="collection-name">{{ activeCollection.toUpperCase() }}</span>
-    {{ activeCollection && activeCollection?.length > 0 ? 'Reviewers' : 'Users' }}
+    {{ activeCollection && activeCollection?.length > 0 ? 'Reviewers' : 'Users' }} {{ users ? '(' + users.length + ')' : '' }}
   </div>
   <clark-admin-search-bar search 
     *ngIf="!activeCollection"
@@ -11,12 +11,12 @@
 
   <div *ngIf="activeCollection && activeCollection?.length > 0" filter-options>
     <div class="btn-group to-right">
-      <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : isSearching}" (click)= "isSearching= !isSearching"> Add Reviewer
+      <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : reviewerModal}" (click)="toggleAddReviewerModal(true)"> Add Reviewer
           <i class="far fa-user-plus"></i> 
       </button>
     </div>
-    <clark-teleporter *ngIf="isSearching">
-      <div #teleporterPayload class="reviewer-search-wrapper" (click)="isSearching = false">
+    <clark-teleporter *ngIf="reviewerModal">
+      <div #teleporterPayload class="reviewer-search-wrapper" (click)="toggleAddReviewerModal(false)">
         <div class="reviewer-search" (click)="$event.stopPropagation()">
           <clark-user-search-wrapper
             [users]="users"
@@ -29,12 +29,15 @@
 
   <div class="users" main>
     <div *ngIf="!loading; else loadingTemplate">
-      <div *ngIf="users?.length; else emptyTemplate" class="user-cards">
-        <clark-admin-user-card *ngFor="let user of users" class="user-cards__card"
+      <div *ngIf="users?.length; else emptyTemplate" class="user-cards" [@staggerChildren]>
+        <clark-admin-user-card *ngFor="let user of users;trackBy: trackby" class="user-cards__card"
           [user]="user"
           [reviewer]="authService.hasCuratorAccess() && !authService.hasEditorAccess()"
+          [canEditPrivilege]="authService.hasEditorAccess()"
           (navigateToUserObjects)="navigateToUserObjects(user.username)"
           (editPrivileges)="editPrivileges(user)"
+          (removeMember)="removeReviewer(user.id)"
+          [@fade]
         ></clark-admin-user-card>
       </div>
     </div>
@@ -59,7 +62,7 @@
   </div>
 
   <ng-template #loadingTemplate>
-    <div class="loading-template">
+    <div [@fade] class="loading-template">
       <i class="far fa-spinner-third fa-spin"></i>
       Loading Users...
     </div>

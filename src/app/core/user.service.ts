@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
-import { AuthService, AuthUser } from './auth.service';
+import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
 import { User } from '@entity';
 import * as md5 from 'md5';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { UserQuery } from 'app/shared/interfaces/query';
 
@@ -70,6 +70,7 @@ export class UserService {
         const arr = val;
         return arr.map(member => new  User(member));
       });
+
   }
 
   async assignMember(
@@ -80,7 +81,7 @@ export class UserService {
     await this.http
       .put(
         USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
-        role,
+        { role },
         {
           withCredentials: true,
           responseType: 'text',
