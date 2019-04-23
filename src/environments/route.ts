@@ -1,5 +1,6 @@
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
+import { query } from '@angular/core/src/render3';
 
 export const ADMIN_ROUTES = {
   CREATE_CHANGELOG(userId: string, learningObjectId: string) {
@@ -69,11 +70,15 @@ export const USER_ROUTES = {
   CHECK_FIRST_SUBMISSION(params: {
     userId: string,
     learningObjectId: string,
-    query: {},
+    query: {
+      collection: string,
+      hasSubmission: boolean;
+    },
   }) {
+    const q = 'collection=' + params.query.collection + '&hasSubmission=' + params.query.hasSubmission;
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${params.query}`;
+    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(

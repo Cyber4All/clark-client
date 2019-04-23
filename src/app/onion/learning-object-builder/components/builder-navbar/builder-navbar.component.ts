@@ -10,6 +10,7 @@ import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 import { ChangelogService } from 'app/core/changelog.service';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -52,6 +53,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
     private changelogService: ChangelogService,
+    private object: LearningObjectService,
     public validator: LearningObjectValidator,
     public store: BuilderStore
   ) {
@@ -348,8 +350,15 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {
-    this.submitCollection = collection;
-    this.page++;
+    this.object.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true).then(val => {
+      const isFirstSubmit = JSON.parse(val).isFirstSubmission;
+      this.submitCollection = collection;
+      if (!isFirstSubmit) {
+        this.page++;
+      } else {
+        this.submitForReview(this.submitCollection);
+      }
+    });
   }
 
   ngOnDestroy() {
