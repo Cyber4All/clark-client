@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from '../../core/collection.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,6 +14,10 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
   key = new Subject<string>();
   collection;
   pictureLocation: string;
+
+  COPY = {
+    VIEWALL: 'View All'
+  };
 
   constructor(
     private route: ActivatedRoute,
