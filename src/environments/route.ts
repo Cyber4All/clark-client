@@ -69,15 +69,11 @@ export const USER_ROUTES = {
   CHECK_FIRST_SUBMISSION(params: {
     userId: string,
     learningObjectId: string,
-    query: {
-      collection: string,
-      hasSubmission: boolean;
-    },
+    query: {},
   }) {
-    const q = 'collection=' + params.query.collection + '&hasSubmission=' + params.query.hasSubmission;
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
+    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${params.query}`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(

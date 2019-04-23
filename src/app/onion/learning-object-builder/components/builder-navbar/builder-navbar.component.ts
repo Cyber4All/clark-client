@@ -9,8 +9,6 @@ import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
-import { ChangelogService } from 'app/core/changelog.service';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -30,9 +28,6 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   learningObject: LearningObject;
   collection: Collection;
-  changelog;
-  page = 1;
-  submitCollection: string; // Refers to the collection the user wishes to submit to
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -297,7 +292,6 @@ export class BuilderNavbarComponent implements OnDestroy {
       .submitForReview(collection)
       .then(val => {
         this.showSubmission = false;
-        this.page = 1;
         this.toasterService.notify(
           'Success!',
           'Learning object submitted successfully!',
@@ -309,7 +303,6 @@ export class BuilderNavbarComponent implements OnDestroy {
         console.error(error);
         this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
         this.showSubmission = false;
-        this.page = 1;
         this.submissionError = true;
       });
   }
