@@ -53,7 +53,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
     private changelogService: ChangelogService,
-    private object: LearningObjectService,
+    private learningObjectService: LearningObjectService,
     public validator: LearningObjectValidator,
     public store: BuilderStore
   ) {
@@ -350,7 +350,7 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {
-    this.object.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true).then(val => {
+    this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true).then(val => {
       const isFirstSubmit = JSON.parse(val).isFirstSubmission;
       this.submitCollection = collection;
       if (!isFirstSubmit) {
