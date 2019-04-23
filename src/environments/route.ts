@@ -1,6 +1,5 @@
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
-import { query } from '@angular/core/src/render3';
 
 export const ADMIN_ROUTES = {
   CREATE_CHANGELOG(userId: string, learningObjectId: string) {
