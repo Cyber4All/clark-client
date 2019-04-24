@@ -166,13 +166,16 @@ export class AuthService {
   async validate(): Promise<void> {
     try {
       const response = await this.http
-        .get(environment.apiURL + '/users/tokens', { withCredentials: true })
+        .get<Tokens>(environment.apiURL + '/users/tokens', {
+          withCredentials: true
+        })
         .pipe(
           retry(3),
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = response as AuthUser;
+      this.user = response.user as AuthUser;
+      this.openIdToken = response.openId;
       this.assignUserToGroup();
     } catch (error) {
       throw error;
@@ -215,8 +218,8 @@ export class AuthService {
    */
   async refreshToken(): Promise<void> {
     try {
-      const val = await this.http
-        .get(environment.apiURL + '/users/tokens/refresh', {
+      const response = await this.http
+        .get<Tokens>(environment.apiURL + '/users/tokens/refresh', {
           withCredentials: true
         })
         .pipe(
@@ -224,7 +227,8 @@ export class AuthService {
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = val as AuthUser;
+      this.user = response.user;
+      this.openIdToken = response.openId;
     } catch (error) {
       throw error;
     }
@@ -239,8 +243,8 @@ export class AuthService {
    */
   async login(user: { username: string; password: string }): Promise<any> {
     try {
-      const val = await this.http
-        .post<User>(environment.apiURL + '/users/tokens', user, {
+      const response = await this.http
+        .post<Tokens>(environment.apiURL + '/users/tokens', user, {
           withCredentials: true
         })
         .pipe(
@@ -248,7 +252,9 @@ export class AuthService {
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = val as AuthUser;
+
+      this.user = response.user;
+      this.openIdToken = response.openId;
       this.changeStatus(true);
       this.assignUserToGroup();
       return this.user;
@@ -277,6 +283,7 @@ export class AuthService {
       )
       .toPromise();
     this.user = undefined;
+    this.openIdToken = null;
     this.changeStatus(false);
     this.group.next(AUTH_GROUP.VISITOR);
     window.location.reload();
@@ -289,16 +296,17 @@ export class AuthService {
    */
   async register(user: any): Promise<User> {
     try {
-      await this.http.post(environment.apiURL + '/users', user, {
-        withCredentials: true,
-        responseType: 'text'
+      const tokens = await this.http
+        .post<Tokens>(environment.apiURL + '/users', user, {
+          withCredentials: true
       })
       .pipe(
         retry(3),
         catchError(this.handleError)
       )
       .toPromise();
-      this.user = user;
+      this.user = tokens.user;
+      this.openIdToken = tokens.openId;
       this.changeStatus(true);
       return this.user;
     } catch (error) {
