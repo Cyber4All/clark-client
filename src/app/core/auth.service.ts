@@ -45,6 +45,7 @@ export class AuthService {
   inUse: object;
   isLoggedIn = new BehaviorSubject<boolean>(false);
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
+  private openIdToken: OpenIdToken;
 
   constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
@@ -58,6 +59,10 @@ export class AuthService {
         }
       );
     }
+  }
+
+  public getOpenIdToken(): OpenIdToken {
+    return this.openIdToken;
   }
 
   /**
