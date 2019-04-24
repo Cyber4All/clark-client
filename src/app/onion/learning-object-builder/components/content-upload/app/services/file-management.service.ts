@@ -47,7 +47,6 @@ export interface UploadErrorUpdate extends UploadUpdate {
 @Injectable()
 export class FileManagementService {
   private S3: AWS.S3;
-  private openIdToken: OpenIdToken;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -63,7 +62,7 @@ export class FileManagementService {
     if (!bucketPath) {
       throw new Error('bucketPath must be set!');
     }
-    this.configureS3();
+    this.buildS3Client();
     const uploadUpdate$ = new Subject<UploadUpdate>();
     this.processUploads(files, bucketPath, uploadUpdate$);
     return uploadUpdate$;
@@ -106,21 +105,15 @@ export class FileManagementService {
         params,
         (err: Error, res: AWS.S3.ManagedUpload.SendData) => {
           if (err) {
-            const errorUpdate: UploadErrorUpdate = {
-              type: 'error',
-              error: err,
-              data: fileMeta
-            };
+            this.handleUploadError(err, fileMeta, uploadUpdate$);
             failed++;
-
-            uploadUpdate$.next(errorUpdate);
           } else {
             const complete: UploadCompleteUpdate = {
               type: 'complete',
               data: { ...fileMeta, url: res.Location, eTag: res.ETag }
             };
-            successful++;
             uploadUpdate$.next(complete);
+            successful++;
           }
           remainingUploads--;
           if (remainingUploads === 0) {
@@ -145,30 +138,61 @@ export class FileManagementService {
   }
 
   /**
+   * Handles errors that occur when uploading file
+   * If error is Credential related; Error is thrown to prevent upload attempts from continuing
+   * All errors are emitted through uploadUpdate
+   *
+   * @private
+   * @param {Error} err [The Error object]
+   * @param {FileUploadMeta} fileMeta [Metadata about the file being uploaded during error]
+   * @param {Subject<UploadUpdate>} uploadUpdate$ [Subject used to emit Upload Error Update]
+   * @memberof FileManagementService
+   */
+  private handleUploadError(
+    err: Error,
+    fileMeta: FileUploadMeta,
+    uploadUpdate$: Subject<UploadUpdate>
+  ) {
+    if (err.name === 'CredentialsError') {
+      const credentialsErrorUpdate: UploadErrorUpdate = {
+        type: 'error',
+        error: err,
+        data: fileMeta
+      };
+      uploadUpdate$.next(credentialsErrorUpdate);
+      throw err;
+    }
+    const errorUpdate: UploadErrorUpdate = {
+      type: 'error',
+      error: err,
+      data: fileMeta
+    };
+    uploadUpdate$.next(errorUpdate);
+  }
+
+  /**
    * Configures S3 Sdk for upload using user's Cognito credentials
    *
    * @private
    * @memberof FileManagementService
    */
-  private configureS3() {
-    if (!this.openIdToken) {
-      this.openIdToken = this.auth.getOpenIdToken();
-      const Logins = {};
-      Logins['cognito-identity.amazonaws.com'] = this.openIdToken.Token;
-      const IdentityPoolId = this.auth.isAdminOrEditor()
-        ? environment.cognitoAdminIdentityPoolId
-        : environment.cognitoIdentityPoolId;
-      const IdentityId = this.openIdToken.IdentityId;
-      AWS.config.credentials = new AWS.CognitoIdentityCredentials(
-        {
-          IdentityPoolId,
-          IdentityId,
-          Logins
-        },
-        { region: environment.cognitoRegion }
-      );
-      this.S3 = new AWS.S3({ region: environment.s3BucketRegion });
-    }
+  private buildS3Client() {
+    const openIdToken: OpenIdToken = this.auth.getOpenIdToken();
+    const Logins = {};
+    Logins['cognito-identity.amazonaws.com'] = openIdToken.Token;
+    const IdentityPoolId = this.auth.isAdminOrEditor()
+      ? environment.cognitoAdminIdentityPoolId
+      : environment.cognitoIdentityPoolId;
+    const IdentityId = openIdToken.IdentityId;
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials(
+      {
+        IdentityPoolId,
+        IdentityId,
+        Logins
+      },
+      { region: environment.cognitoRegion }
+    );
+    this.S3 = new AWS.S3({ region: environment.s3BucketRegion });
   }
 
   /**

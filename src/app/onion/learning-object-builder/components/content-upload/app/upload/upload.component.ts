@@ -460,14 +460,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private handleUpload(files: WebkitFile[]) {
     this.enqueueFiles(files);
-    try {
-      this.fileManager
-        .upload(this.bucketUploadPath, files)
-        .subscribe(update => this.handleUploadUpdates(update));
-    } catch (e) {
-      this.resetUploadStatuses();
-      this.error$.next(`Could not upload files. Please check your connection.`);
-    }
+    this.fileManager
+      .upload(this.bucketUploadPath, files)
+      .subscribe(update => this.handleUploadUpdates(update));
   }
 
   /**
@@ -599,8 +594,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private handleUploadError(update: UploadErrorUpdate) {
-    const index = this.uploadQueueMap[update.data.fullPath];
-    this.uploadQueue[index].success = false;
+    if (update.error.name === 'CredentialsError') {
+      this.error$.next(
+        `Cannot upload files at this time. Invalid credentials.`
+      );
+      const s = this.uploadQueue.filter(file => !file.success);
+      // TODO: Fetch new credentials and attempt retry?
+      this.resetUploadStatuses();
+    } else {
+      const index = this.uploadQueueMap[update.data.fullPath];
+      this.uploadQueue[index].success = false;
+    }
   }
 
   /**
