@@ -3,6 +3,7 @@ import { LearningObject } from '@entity';
 import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
 import { takeUntil, filter } from 'rxjs/operators';
 import { FileUploadMeta } from '../../components/content-upload/app/services/file-management.service';
+import { Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'clark-materials-page',
