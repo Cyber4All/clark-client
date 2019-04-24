@@ -518,7 +518,10 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
+    if (
+      error.error instanceof ErrorEvent ||
+      (error.error && error.error.message)
+    ) {
       // Client-side or network returned error
       return throwError(error.error.message);
     } else {
