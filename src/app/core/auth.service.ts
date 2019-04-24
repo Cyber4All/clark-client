@@ -22,8 +22,19 @@ export enum AUTH_GROUP {
   ADMIN
 }
 
+export interface Tokens {
+  bearer: string;
+  openId: OpenIdToken;
+  user: AuthUser;
+}
+
 export interface AuthUser extends User {
   accessGroups: string[];
+}
+
+export interface OpenIdToken {
+  IdentityId: string;
+  Token: string;
 }
 
 @Injectable()
