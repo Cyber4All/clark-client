@@ -16,7 +16,13 @@
     <div class="heading">Description</div>
     <p [innerHtml]="collection?.description"></p>
   </div>
-  
-  <div class="recently-released">Recently Released</div>
+
+  <div class="featured--header">
+      <div class="recently-released">Recently Released</div>
+      <a id="view-all" class="view-all" [routerLink]="['/browse']"
+        [queryParams]="{ collection: collection?.abvName }">{{ COPY.VIEWALL }}
+        <i class="far fa-angle-right"></i>
+      </a>
+  </div>
   <cube-featured [collection]="key"></cube-featured>
 </section>
