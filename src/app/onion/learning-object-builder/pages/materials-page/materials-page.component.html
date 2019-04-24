@@ -1,12 +1,24 @@
 <clark-column-wrapper [columns]="'lm'">
   <div left>
-    <clark-scaffold *ngIf="learningObject" [learningObject]= "learningObject"></clark-scaffold>
+    <clark-scaffold
+      *ngIf="learningObject"
+      [learningObject]="learningObject"
+    ></clark-scaffold>
   </div>
   <div main>
     <!-- upload content here -->
-    <app-upload [learningObject$]="learningObject$" [error$]="error$" [saving$]="saving$" (filesDeleted)="handleFileDeletion($event)"
-      (uploadComplete)="handleUploadComplete()" (urlAdded)="handleUrlAdded()" (urlUpdated)="handleUrlUpdated($event)"
-      (urlRemoved)="handleUrlRemoved($event)" (fileDescriptionUpdated)="handleFileDescriptionUpdate($event)"
-      (folderDescriptionUpdated)="handleFolderDescriptionUpdate($event)" (notesUpdated)="handleNotesUpdate($event)"></app-upload>
+    <app-upload
+      [learningObject$]="learningObject$"
+      [error$]="error$"
+      [saving$]="saving$"
+      (filesDeleted)="handleFileDeletion($event)"
+      (filesUploaded)="handleFilesUploaded($event)"
+      (urlAdded)="handleUrlAdded()"
+      (urlUpdated)="handleUrlUpdated($event)"
+      (urlRemoved)="handleUrlRemoved($event)"
+      (fileDescriptionUpdated)="handleFileDescriptionUpdate($event)"
+      (folderDescriptionUpdated)="handleFolderDescriptionUpdate($event)"
+      (notesUpdated)="handleNotesUpdate($event)"
+    ></app-upload>
   </div>
 </clark-column-wrapper>

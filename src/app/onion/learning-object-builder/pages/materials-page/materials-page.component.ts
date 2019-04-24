@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
 import { takeUntil, filter } from 'rxjs/operators';
-import { Subject ,  Observable  } from 'rxjs';
-
+import { FileUploadMeta } from '../../components/content-upload/app/services/file-management.service';
 
 @Component({
   selector: 'clark-materials-page',
@@ -49,10 +48,10 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  async handleUploadComplete() {
+  async handleFilesUploaded(files: FileUploadMeta[]) {
     // Refresh object or materials
     try {
-      await this.store.fetchMaterials();
+      await this.store.execute(BUILDER_ACTIONS.ADD_FILE_META, { files });
     } catch (e) {
       this.error$.next(e);
     }
