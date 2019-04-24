@@ -13,6 +13,7 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FileUploadMeta } from './components/content-upload/app/services/file-management.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -28,6 +29,7 @@ export enum BUILDER_ACTIONS {
   UNMAP_STANDARD_OUTCOME,
   MUTATE_OBJECT,
   ADD_MATERIALS,
+  ADD_FILE_META,
   DELETE_MATERIALS,
   ADD_CONTRIBUTOR,
   REMOVE_CONTRIBUTOR,
@@ -310,6 +312,8 @@ export class BuilderStore {
         return await this.addContributor(data.user);
       case BUILDER_ACTIONS.REMOVE_CONTRIBUTOR:
         return await this.removeContributor(data.user);
+      case BUILDER_ACTIONS.ADD_FILE_META:
+        return await this.addFileMeta(data.files);
       case BUILDER_ACTIONS.ADD_URL:
         return await this.addUrl();
       case BUILDER_ACTIONS.UPDATE_URL:
@@ -530,7 +534,19 @@ export class BuilderStore {
       );
     }
   }
-
+  /**
+   * Adds Url to Learning Object's materials
+   *
+   * @memberof BuilderStore
+   */
+  private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
+    await this.learningObjectService.addFileMeta({
+      files,
+      username: this.learningObject.author.username,
+      objectId: this.learningObject.id
+    });
+    await this.fetchMaterials();
+  }
   /**
    * Adds Url to Learning Object's materials
    *

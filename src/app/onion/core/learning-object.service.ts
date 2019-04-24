@@ -9,6 +9,7 @@ import { AuthService } from '../../core/auth.service';
 
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/file-management.service';
 
 @Injectable()
 export class LearningObjectService {
@@ -288,6 +289,35 @@ export class LearningObjectService {
       catchError(this.handleError)
     );
   }
+
+  /**
+   * Adds Learning Object's Materials
+   *
+   * @param {string} authorUsername
+   * @param {string} objectId
+   * @param {FileUploadMeta[]} files
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
+  addFileMeta({
+    username,
+    objectId,
+    files
+  }: {
+    username: string;
+    objectId: string;
+    files: FileUploadMeta[];
+  }): Promise<any> {
+    const route = USER_ROUTES.ADD_FILE_META(username, objectId);
+    return this.http
+      .post(route, { fileMeta: files }, { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
   /**
    * Fetches Learning Object's Materials
    *
