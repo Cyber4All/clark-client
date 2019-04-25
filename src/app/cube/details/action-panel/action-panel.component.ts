@@ -21,6 +21,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @Input() revisedDate: Date;
   @Input() releasedDate: Date;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
+  @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private destroyed$ = new Subject<void>();
@@ -143,10 +144,22 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   copyLink() {
     const el = this.objectLinkElement.nativeElement;
+    console.log(el);
     el.select();
     document.execCommand('copy');
 
     this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+  }
+
+  copyAttribution() {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('objectAttribution'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+
+    this.toaster.notify('Success!', 'Learning object Creative Commons Attribution copied to your clipboard!', 'good', 'far fa-check');
   }
 
   toggleDownloadModal(val?: boolean) {
