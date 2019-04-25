@@ -28,13 +28,12 @@ import {
   UploadErrorUpdate
 } from '../services/typings';
 
-export interface WebkitFile extends File {
-  uuid?: string;
+export interface FileInput extends File {
   fullPath?: string;
   webkitRelativePath?: string;
 }
 
-export interface EnqueuedFile extends WebkitFile {
+export interface EnqueuedFile extends FileInput {
   progress?: number;
   success?: boolean;
   totalUploaded?: number;
@@ -323,10 +322,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    *
    * @private
    * @param {*} fileEntry
-   * @returns {Promise<WebkitFile>}
+   * @returns {Promise<FileInput>}
    * @memberof UploadComponent
    */
-  private parseFileEntry(fileEntry): Promise<WebkitFile> {
+  private parseFileEntry(fileEntry): Promise<FileInput> {
     return new Promise((resolve, reject) => {
       fileEntry.file(
         file => {
@@ -346,7 +345,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @private
    * @param {any} directoryEntry
    * @param {string} currentDirPath
-   * @returns {Promise<WebkitFile[]>}
+   * @returns {Promise<FileInput[]>}
    * @memberof UploadComponent
    */
   private parseDirectoryEntry({
@@ -355,7 +354,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }: {
     directoryEntry: any;
     currentDirPath: string;
-  }): Promise<WebkitFile[]> {
+  }): Promise<FileInput[]> {
     const directoryReader = directoryEntry.createReader();
     return new Promise((resolve, reject) => {
       directoryReader.readEntries(
@@ -384,7 +383,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @private
    * @param {any[]} entries
    * @param {string} currentDirPath
-   * @returns {Promise<WebkitFile[]>}
+   * @returns {Promise<FileInput[]>}
    * @memberof UploadComponent
    */
   private parseFilesFromEntry({
@@ -393,7 +392,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }: {
     entries: any[];
     currentDirPath: string;
-  }): Promise<WebkitFile[]> {
+  }): Promise<FileInput[]> {
     const files = [];
     const promises$ = entries.map(entry => {
       if (entry.isFile) {
@@ -440,7 +439,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   filesPicked(fileList: FileList) {
     if (fileList.length > 0) {
-      let files: WebkitFile[] = Array.from(fileList);
+      let files: FileInput[] = Array.from(fileList);
       if (this.openPath) {
         files = files.map(file => {
           file.fullPath = `${this.openPath}/${file.webkitRelativePath ||
@@ -456,10 +455,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles file uploads by storing files in upload queue and uploading using the file manager
    *
    * @private
-   * @param {WebkitFile[]} files [List of files to enqueue and upload]
+   * @param {FileInput[]} files [List of files to enqueue and upload]
    * @memberof UploadComponent
    */
-  private handleUpload(files: WebkitFile[]) {
+  private handleUpload(files: FileInput[]) {
     this.enqueueFiles(files);
     try {
       this.fileManager
@@ -478,10 +477,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * Adds files to queue and caches their indexes
    *
    * @private
-   * @param {WebkitFile[]} files [List of files to enqueue]
+   * @param {FileInput[]} files [List of files to enqueue]
    * @memberof UploadComponent
    */
-  private enqueueFiles(files: WebkitFile[]) {
+  private enqueueFiles(files: FileInput[]) {
     files.forEach(file => {
       const path = file.fullPath || file.webkitRelativePath || file.name;
       this.uploadQueueMap[path] = this.uploadQueue.length;

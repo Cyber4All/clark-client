@@ -8,7 +8,7 @@ import { retry, catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, Observable } from 'rxjs';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
-import { WebkitFile } from '../upload/upload.component';
+import { FileInput } from '../upload/upload.component';
 import { AuthService, OpenIdToken } from 'app/core/auth.service';
 import {
   UploadUpdate,
@@ -33,11 +33,11 @@ export class FileManagementService {
    * Uploads files to S3 using S3 SDK
    *
    * @param {string} bucketPath [The path within the bucket to upload files to]
-   * @param {WebkitFile[]} files [List of files to upload]
+   * @param {FileInput[]} files [List of files to upload]
    * @returns {Observable<UploadUpdate>}
    * @memberof FileManagementService
    */
-  upload(bucketPath: string, files: WebkitFile[]): Observable<UploadUpdate> {
+  upload(bucketPath: string, files: FileInput[]): Observable<UploadUpdate> {
     if (!bucketPath) {
       throw new Error('bucketPath must be set!');
     }
@@ -82,14 +82,14 @@ export class FileManagementService {
    * Initializes counter object to track queue status and processes upload queue
    *
    * @private
-   * @param {WebkitFile[]} files [List of files to upload]
+   * @param {FileInput[]} files [List of files to upload]
    * @param {string} bucketPath [The path within the bucket to upload files to]
    * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
    * @param {number} concurrentUploads [Maximum number of concurrent uploads]
    * @memberof FileManagementService
    */
   private async startUploads(
-    files: WebkitFile[],
+    files: FileInput[],
     bucketPath: string,
     uploadUpdate$: Subject<UploadUpdate>,
     concurrentUploads?: number
@@ -118,7 +118,7 @@ export class FileManagementService {
    * `proceessNext.next()` Initiates the start of the job queue
    *
    * @private
-   * @param {WebkitFile[]} files [List of files to upload]
+   * @param {FileInput[]} files [List of files to upload]
    * @param {string} bucketPath [The path within the bucket to upload files to]
    * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
    * @param {QueueStatus} queueStatus [Object containing counters related to status of the queue]
@@ -126,7 +126,7 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   private processUploadQueue(
-    files: WebkitFile[],
+    files: FileInput[],
     bucketPath: string,
     uploadUpdate$: Subject<UploadUpdate>,
     queueStatus: QueueStatus,
@@ -154,7 +154,7 @@ export class FileManagementService {
    * Upload progress and responses are reported
    *
    * @private
-   * @param {WebkitFile[]} enqueued [List of files enqueued to upload]
+   * @param {FileInput[]} enqueued [List of files enqueued to upload]
    * @param {string} bucketPath [The path within the bucket to upload files to]
    * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
    * @param {QueueStatus} queueStatus [Object containing counters related to status of the queue]
@@ -163,7 +163,7 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   private processUploadJobs(
-    enqueued: WebkitFile[],
+    enqueued: FileInput[],
     bucketPath: string,
     uploadUpdate$: Subject<UploadUpdate>,
     queueStatus: QueueStatus,
@@ -200,11 +200,11 @@ export class FileManagementService {
    * Generates FileUploadMeta for a file
    *
    * @private
-   * @param {WebkitFile} file [The file to generate FileUploadMeta for]
+   * @param {FileInput} file [The file to generate FileUploadMeta for]
    * @returns {FileUploadMeta}
    * @memberof FileManagementService
    */
-  private generateFileUploadMeta(file: WebkitFile): FileUploadMeta {
+  private generateFileUploadMeta(file: FileInput): FileUploadMeta {
     return {
       name: file.name,
       fileType: file.type,
@@ -218,13 +218,13 @@ export class FileManagementService {
    *
    * @private
    * @param {string} bucketPath [The path within the bucket to upload files to]
-   * @param {WebkitFile} file [The file to generate upload params for]
+   * @param {FileInput} file [The file to generate upload params for]
    * @returns {AWS.S3.PutObjectRequest}
    * @memberof FileManagementService
    */
   private generateUploadParams(
     bucketPath: string,
-    file: WebkitFile
+    file: FileInput
   ): AWS.S3.PutObjectRequest {
     return {
       Bucket: environment.s3Bucket,
