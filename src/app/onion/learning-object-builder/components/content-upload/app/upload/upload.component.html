@@ -127,10 +127,12 @@
   type="file"
   (change)="filesPicked(folderInput.files)"
   webkitDirectory
+  aria-label="Folder input"
 />
 <input
   class="hidden"
   #fileInput
   type="file"
   (change)="filesPicked(fileInput.files)"
+  aria-label="File input"
 />
