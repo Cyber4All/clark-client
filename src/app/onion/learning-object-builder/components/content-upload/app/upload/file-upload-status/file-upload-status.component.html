@@ -5,7 +5,9 @@
       [ngClass]="{ completed: progress === 100 }"
     >
       <div class="progress__uploading-txt">
-        Uploading {{ totalFiles }} file{{ totalFiles === 1 ? '' : 's' }}
+        Uploading {{ totalFiles | number: '1.0-0' }} file{{
+          totalFiles === 1 ? '' : 's'
+        }}
       </div>
       <div class="progress__progress-txt">
         {{ progress | number: '1.0-0' }}%
