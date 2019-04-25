@@ -60,8 +60,9 @@ export class FileManagementService {
       credentialsError.name = UploadErrorReason.Credentials;
       throw credentialsError;
     }
-    const Logins = {};
-    Logins['cognito-identity.amazonaws.com'] = openIdToken.Token;
+    const Logins = {
+      'cognito-identity.amazonaws.com': openIdToken.Token
+    };
     const IdentityPoolId = this.auth.isAdminOrEditor()
       ? environment.cognitoAdminIdentityPoolId
       : environment.cognitoIdentityPoolId;
