@@ -51,7 +51,7 @@ export class FileManagementService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
-   * Uploads files to S3
+   * Uploads files to S3 using S3 SDK
    *
    * @param {string} bucketPath [The path within the bucket to upload files to]
    * @param {WebkitFile[]} files [List of files to upload]
@@ -196,7 +196,7 @@ export class FileManagementService {
   }
 
   /**
-   * Sends learning object ID and file name to API for deletion.
+   * Deletes specified from Learning Object using CLARK API
    *
    * @param {string} learningObjectID
    * @param {string} filename
