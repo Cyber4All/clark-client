@@ -44,6 +44,10 @@ export interface UploadErrorUpdate extends UploadUpdate {
   error: Error;
 }
 
+export enum UploadErrorReason {
+  Credentials = 'CredentialsError'
+}
+
 @Injectable()
 export class FileManagementService {
   private S3: AWS.S3;
@@ -153,7 +157,7 @@ export class FileManagementService {
     fileMeta: FileUploadMeta,
     uploadUpdate$: Subject<UploadUpdate>
   ) {
-    if (err.name === 'CredentialsError') {
+    if (err.name === UploadErrorReason.Credentials) {
       const credentialsErrorUpdate: UploadErrorUpdate = {
         type: 'error',
         error: err,
@@ -178,6 +182,11 @@ export class FileManagementService {
    */
   private buildS3Client() {
     const openIdToken: OpenIdToken = this.auth.getOpenIdToken();
+    if (!openIdToken) {
+      const credentialsError = new Error();
+      credentialsError.name = UploadErrorReason.Credentials;
+      throw credentialsError;
+    }
     const Logins = {};
     Logins['cognito-identity.amazonaws.com'] = openIdToken.Token;
     const IdentityPoolId = this.auth.isAdminOrEditor()

@@ -24,7 +24,8 @@ import {
   UploadQueueCompleteUpdate,
   FileUploadMeta,
   UploadProgressUpdate,
-  UploadCompleteUpdate
+  UploadCompleteUpdate,
+  UploadErrorReason
 } from '../services/file-management.service';
 
 export interface WebkitFile extends File {
@@ -460,9 +461,17 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private handleUpload(files: WebkitFile[]) {
     this.enqueueFiles(files);
-    this.fileManager
-      .upload(this.bucketUploadPath, files)
-      .subscribe(update => this.handleUploadUpdates(update));
+    try {
+      this.fileManager
+        .upload(this.bucketUploadPath, files)
+        .subscribe(update => this.handleUploadUpdates(update));
+    } catch (e) {
+      if (e.name === UploadErrorReason.Credentials) {
+        this.handleCredentialsError();
+      } else {
+        this.error$.next('Unable to upload files at this time.');
+      }
+    }
   }
 
   /**
@@ -594,17 +603,19 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private handleUploadError(update: UploadErrorUpdate) {
-    if (update.error.name === 'CredentialsError') {
-      this.error$.next(
-        `Cannot upload files at this time. Invalid credentials.`
-      );
-      const s = this.uploadQueue.filter(file => !file.success);
-      // TODO: Fetch new credentials and attempt retry?
-      this.resetUploadStatuses();
+    if (update.error.name === UploadErrorReason.Credentials) {
+      this.handleCredentialsError();
     } else {
       const index = this.uploadQueueMap[update.data.fullPath];
       this.uploadQueue[index].success = false;
     }
+  }
+
+  private handleCredentialsError() {
+    this.error$.next(`Cannot upload files at this time. Invalid credentials.`);
+    const s = this.uploadQueue.filter(file => !file.success);
+    // TODO: Fetch new credentials and attempt retry?
+    this.resetUploadStatuses();
   }
 
   /**
