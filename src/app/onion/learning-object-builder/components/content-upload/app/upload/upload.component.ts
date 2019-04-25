@@ -17,16 +17,16 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
+import { FileManagementService } from '../services/file-management.service';
 import {
-  FileManagementService,
-  UploadUpdate,
-  UploadErrorUpdate,
-  UploadQueueCompleteUpdate,
   FileUploadMeta,
+  UploadErrorReason,
+  UploadUpdate,
   UploadProgressUpdate,
   UploadCompleteUpdate,
-  UploadErrorReason
-} from '../services/file-management.service';
+  UploadQueueCompleteUpdate,
+  UploadErrorUpdate
+} from '../services/typings';
 
 export interface WebkitFile extends File {
   uuid?: string;

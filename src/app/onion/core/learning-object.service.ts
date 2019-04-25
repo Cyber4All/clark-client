@@ -9,7 +9,7 @@ import { AuthService } from '../../core/auth.service';
 
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/file-management.service';
+import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
 
 @Injectable()
 export class LearningObjectService {

@@ -13,7 +13,7 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FileUploadMeta } from './components/content-upload/app/services/file-management.service';
+import { FileUploadMeta } from './components/content-upload/app/services/typings';
 
 /**
  * Defines a list of actions the builder can take
