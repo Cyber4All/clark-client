@@ -9,6 +9,8 @@ import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
+import { ChangelogService } from 'app/core/changelog.service';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -37,6 +39,10 @@ export class BuilderNavbarComponent implements OnDestroy {
   states: Map<string, { tip: string }>;
 
   destroyed$: Subject<void> = new Subject();
+
+  changelog: string;
+  submitCollection: string;
+  page = 1;
 
   @Input() adminMode = false;
 
