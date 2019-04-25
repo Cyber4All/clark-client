@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable ,  BehaviorSubject, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@entity';
 import { Headers } from '@angular/http';
@@ -37,6 +41,8 @@ export interface OpenIdToken {
   Token: string;
 }
 
+const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
+
 @Injectable()
 export class AuthService {
   user: AuthUser;
@@ -49,19 +55,71 @@ export class AuthService {
 
   constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
-      this.validate().then(
-        _ => {
-          this.changeStatus(true);
-        },
-        _ => {
-          this.cookies.remove('presence');
-          this.changeStatus(false);
-        }
-      );
+      this.validate();
     }
   }
 
+  /**
+   * Stores and sets appropriate values for starting session
+   *
+   * @private
+   * @param {Tokens} tokens
+   * @memberof AuthService
+   */
+  private setSession(tokens: Tokens) {
+    this.user = tokens.user;
+    this.openIdToken = tokens.openId;
+    this.changeStatus(true);
+    this.assignUserToGroup();
+    localStorage.setItem(
+      TOKEN_STORAGE_KEY,
+      JSON.stringify({ bearer: tokens.bearer, openId: tokens.openId })
+    );
+  }
+
+  /**
+   * Unset session related data
+   *
+   * @private
+   * @memberof AuthService
+   */
+  private endSession() {
+    this.user = undefined;
+    this.openIdToken = null;
+    this.cookies.remove('presence');
+    this.changeStatus(false);
+    this.group.next(AUTH_GROUP.VISITOR);
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+  }
+
+  /**
+   * Retrieves tokens from local storage
+   *
+   * @private
+   * @returns {Partial<Tokens>}
+   * @memberof AuthService
+   */
+  private getTokens(): Partial<Tokens> {
+    const storageItem = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (storageItem) {
+      return JSON.parse(storageItem) as Partial<Tokens>;
+    }
+    return null;
+  }
+
+  /**
+   * Retrieves OpenId token from memory or storage if not in memory
+   *
+   * @returns {OpenIdToken}
+   * @memberof AuthService
+   */
   public getOpenIdToken(): OpenIdToken {
+    if (!this.openIdToken) {
+      const tokens = this.getTokens();
+      if (tokens) {
+        this.openIdToken = tokens.openId;
+      }
+    }
     return this.openIdToken;
   }
 
@@ -166,7 +224,7 @@ export class AuthService {
   async validate(): Promise<void> {
     try {
       const response = await this.http
-        .get<Tokens>(environment.apiURL + '/users/tokens', {
+        .get<AuthUser>(environment.apiURL + '/users/tokens', {
           withCredentials: true
         })
         .pipe(
@@ -174,10 +232,11 @@ export class AuthService {
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = response.user as AuthUser;
-      this.openIdToken = response.openId;
+      this.user = response;
+      this.changeStatus(true);
       this.assignUserToGroup();
     } catch (error) {
+      this.endSession();
       throw error;
     }
   }
@@ -227,8 +286,7 @@ export class AuthService {
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = response.user;
-      this.openIdToken = response.openId;
+      this.setSession(response);
     } catch (error) {
       throw error;
     }
@@ -253,14 +311,10 @@ export class AuthService {
         )
         .toPromise();
 
-      this.user = response.user;
-      this.openIdToken = response.openId;
-      this.changeStatus(true);
-      this.assignUserToGroup();
+      this.setSession(response);
       return this.user;
     } catch (error) {
-      this.changeStatus(false);
-      this.user = undefined;
+      this.endSession();
       throw error;
     }
   }
@@ -272,7 +326,8 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    await this.http
+    this.endSession();
+    this.http
       .delete(environment.apiURL + '/users/' + this.username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
@@ -282,10 +337,7 @@ export class AuthService {
         catchError(this.handleError)
       )
       .toPromise();
-    this.user = undefined;
-    this.openIdToken = null;
-    this.changeStatus(false);
-    this.group.next(AUTH_GROUP.VISITOR);
+
     window.location.reload();
   }
 
@@ -299,23 +351,19 @@ export class AuthService {
       const tokens = await this.http
         .post<Tokens>(environment.apiURL + '/users', user, {
           withCredentials: true
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-      this.user = tokens.user;
-      this.openIdToken = tokens.openId;
-      this.changeStatus(true);
+        })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise();
+      this.setSession(tokens);
       return this.user;
     } catch (error) {
-      this.changeStatus(false);
-      this.user = undefined;
+      this.endSession();
       throw error;
     }
   }
-
 
   /**
    * Begins the password reset process by sending an email to the specified email address
@@ -325,15 +373,16 @@ export class AuthService {
    * @memberof AuthService
    */
   initiateResetPassword(email: string): Observable<any> {
-    return this.http.post(
-      environment.apiURL + '/users/ota-codes?action=resetPassword',
-      { email },
-      { withCredentials: true, responseType: 'text' }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post(
+        environment.apiURL + '/users/ota-codes?action=resetPassword',
+        { email },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -345,15 +394,16 @@ export class AuthService {
    * @memberof AuthService
    */
   resetPassword(payload: string, code: string): Observable<any> {
-    return this.http.patch(
-      environment.apiURL + '/users/ota-codes?otaCode=' + code,
-      { payload },
-      { withCredentials: true, responseType: 'text' }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .patch(
+        environment.apiURL + '/users/ota-codes?otaCode=' + code,
+        { payload },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -364,15 +414,16 @@ export class AuthService {
    * @memberof AuthService
    */
   sendEmailVerification(email?: string): Observable<any> {
-    return this.http.post(
-      environment.apiURL + '/users/ota-codes?action=verifyEmail',
-      { email: email || this.user.email },
-      { withCredentials: true, responseType: 'text' }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post(
+        environment.apiURL + '/users/ota-codes?action=verifyEmail',
+        { email: email || this.user.email },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -384,10 +435,13 @@ export class AuthService {
    */
   async usernameInUse(username: string) {
     const val = await this.http
-      .get(environment.apiURL + '/users/identifiers/active?username=' + username, {
-        headers: this.httpHeaders,
-        withCredentials: true
-      })
+      .get(
+        environment.apiURL + '/users/identifiers/active?username=' + username,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -415,14 +469,15 @@ export class AuthService {
     email: string;
     organization: string;
   }): Observable<any> {
-    return this.http.patch(environment.apiURL + '/users/name', user.firstname, {
-      withCredentials: true,
-      responseType: 'text'
-    })
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .patch(environment.apiURL + '/users/name', user.firstname, {
+        withCredentials: true,
+        responseType: 'text'
+      })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -434,23 +489,28 @@ export class AuthService {
    * @memberof AuthService
    */
   printCards(username: string, name: string, organization: string) {
-    const uppercase = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
+    const uppercase = (word: string): string =>
+      word.charAt(0).toUpperCase() + word.slice(1);
     // Format user information
     const nameSplit = name.split(' ');
     const firstname = uppercase(nameSplit[0]);
     const lastname = uppercase(nameSplit.slice(1, nameSplit.length).join(' '));
-    const org = organization.split(' ').map(word => uppercase(word)).join(' ');
+    const org = organization
+      .split(' ')
+      .map(word => uppercase(word))
+      .join(' ');
 
     // Create and click a tag to open new tab
     const newlink = document.createElement('a');
     newlink.setAttribute('target', '_blank');
-    newlink.setAttribute('href', `https://api-gateway.clark.center/users/${encodeURIComponent(
-      username
-    )}/cards?fname=${encodeURIComponent(
-      firstname
-    )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
-      org
-    )}`);
+    newlink.setAttribute(
+      'href',
+      `https://api-gateway.clark.center/users/${encodeURIComponent(
+        username
+      )}/cards?fname=${encodeURIComponent(
+        firstname
+      )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(org)}`
+    );
     newlink.click();
   }
 
