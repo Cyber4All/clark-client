@@ -336,7 +336,7 @@ export class BuilderNavbarComponent implements OnDestroy {
           console.error(e);
           this.showSubmission = false;
           this.page = 1;
-          this.toasterService.notify('Error!', e, 'bad', 'far fa-times');
+          this.toasterService.notify('Error!', 'We couldn\'t create your changelog!', 'bad', 'far fa-times');
         });
     } else {
       this.showSubmission = false;
