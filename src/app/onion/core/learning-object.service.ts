@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from '../../core/auth.service';
 
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable()
@@ -313,7 +313,7 @@ export class LearningObjectService {
     const route = USER_ROUTES.GET_CHILDREN(learningObjectID);
     return this.http.get(route, { withCredentials: true }).toPromise().then(children => {
       return (children as []).map(c => new LearningObject(c));
-    });
+    });      
   }
   /**
    * Makes request to update file description
@@ -370,6 +370,15 @@ export class LearningObjectService {
       .toPromise();
   }
 
+  /**
+   * Checks if the user is submitting a learning object for the first time
+   *
+   * @param userId The learning object's author ID
+   * @param learningObjectId The learning object's ID
+   * @param collection The collection submitting to
+   * @param hasSubmission If the object has a submission [SET TO TRUE]
+   * @memberof LearningObjectService
+   */
   getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
     return this.http
       .get(
@@ -383,6 +392,7 @@ export class LearningObjectService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
+        map(val => JSON.parse(val)),
         retry(3),
         catchError(this.handleError)
       )

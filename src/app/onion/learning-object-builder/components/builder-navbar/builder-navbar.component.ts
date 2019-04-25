@@ -30,6 +30,9 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   learningObject: LearningObject;
   collection: Collection;
+  changelog;
+  page = 1;
+  submitCollection: string; // Refers to the collection the user wishes to submit to
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -39,10 +42,6 @@ export class BuilderNavbarComponent implements OnDestroy {
   states: Map<string, { tip: string }>;
 
   destroyed$: Subject<void> = new Subject();
-
-  changelog: string;
-  submitCollection: string;
-  page = 1;
 
   @Input() adminMode = false;
 
@@ -297,6 +296,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     this.store
       .submitForReview(collection)
       .then(val => {
+        this.page = 1;
         this.showSubmission = false;
         this.toasterService.notify(
           'Success!',
@@ -308,6 +308,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       .catch(error => {
         console.error(error);
         this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
+        this.page = 1;
         this.showSubmission = false;
         this.submissionError = true;
       });
@@ -349,10 +350,10 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {
-    this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true).then(val => {
-      const isFirstSubmit = JSON.parse(val).isFirstSubmission;
+    this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true)
+    .then(val => {
       this.submitCollection = collection;
-      if (!isFirstSubmit) {
+      if (!val.isFirstSubmission) {
         this.page++;
       } else {
         this.submitForReview(this.submitCollection);
