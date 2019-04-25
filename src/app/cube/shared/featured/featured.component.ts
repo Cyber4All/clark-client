@@ -2,7 +2,6 @@ import { LearningObject } from '@entity';
 import { Component, OnInit, Input } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
 import { Query, OrderBy, SortType } from '../../../shared/interfaces/query';
-import { COPY } from './featured.copy';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,7 +13,6 @@ import { takeUntil } from 'rxjs/operators';
 export class FeaturedComponent implements OnInit {
   destroyed$ = new Subject<void>();
   @Input() collection: Subject<string>;
-  copy = COPY;
   learningObjects: LearningObject[] = Array(5);
   query: Query = {
     limit: 5,
