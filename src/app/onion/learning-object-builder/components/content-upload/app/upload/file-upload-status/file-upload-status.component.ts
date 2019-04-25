@@ -14,6 +14,4 @@ export class FileUploadStatusComponent {
 
   @Input()
   progress = 0;
-
-  constructor() {}
 }
