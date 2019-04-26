@@ -381,7 +381,7 @@ export class LearningObjectService {
    */
   getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
     return this.http
-      .get(
+      .get<{isFirstSubmission: boolean}>(
         USER_ROUTES.CHECK_FIRST_SUBMISSION({
           userId,
           learningObjectId,
@@ -389,10 +389,9 @@ export class LearningObjectService {
             collection,
             hasSubmission
           }}),
-        { withCredentials: true, responseType: 'text' }
+        { withCredentials: true }
       )
       .pipe(
-        map(val => JSON.parse(val)),
         retry(3),
         catchError(this.handleError)
       )
