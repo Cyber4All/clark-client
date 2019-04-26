@@ -85,16 +85,16 @@ export class FileManagementService {
    * @param {FileInput[]} files [List of files to upload]
    * @param {string} bucketPath [The path within the bucket to upload files to]
    * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
-   * @param {number} concurrentUploads [Maximum number of concurrent uploads]
+   * @param {number} maxConcurrentUploads [Maximum number of concurrent uploads]
    * @memberof FileManagementService
    */
   private async startUploads(
     files: FileInput[],
     bucketPath: string,
     uploadUpdate$: Subject<UploadUpdate>,
-    concurrentUploads?: number
+    maxConcurrentUploads?: number
   ) {
-    const maxConcurrent = concurrentUploads || DEFAULT_CONCURRENT_UPLOADS;
+    const maxConcurrent = maxConcurrentUploads || DEFAULT_CONCURRENT_UPLOADS;
     const queueStatus: QueueStatus = {
       successful: 0,
       failed: 0,
@@ -111,10 +111,10 @@ export class FileManagementService {
 
   /**
    * Processes upload queue by creating observables to listen for events to trigger the processing of next jobs
-   * Jobs are enqueued and processed; Once spliced segment is completed, another segment is processed;
+   * Jobs are enqueued and processed; Once a job in the spliced segment is completed, more jobs are enqueued based on the remaining space
    * This event loop stops when all files are processed
    * *** NOTE ***
-   * The maximum number of files to upload concurrently are dependent on the value of `concurrentUploads`
+   * The maximum number of files to upload concurrently are dependent on the value of `maxConcurrentUploads`
    * `proceessNext.next()` Initiates the start of the job queue
    *
    * @private
@@ -122,7 +122,7 @@ export class FileManagementService {
    * @param {string} bucketPath [The path within the bucket to upload files to]
    * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
    * @param {QueueStatus} queueStatus [Object containing counters related to status of the queue]
-   * @param {number} concurrentUploads [The maximum amount of files to upload concurrently]
+   * @param {number} maxConcurrentUploads [The maximum amount of files to upload concurrently]
    * @memberof FileManagementService
    */
   private processUploadQueue(
@@ -130,69 +130,74 @@ export class FileManagementService {
     bucketPath: string,
     uploadUpdate$: Subject<UploadUpdate>,
     queueStatus: QueueStatus,
-    concurrentUploads: number
+    maxConcurrentUploads: number
   ) {
+    const enqueueStatus: EnqueueStatus = {
+      enqueued: 0
+    };
     const jobsComplete$ = new Subject<boolean>();
     const processNext$ = new Subject<void>();
     processNext$.pipe(takeUntil(jobsComplete$)).subscribe(() => {
-      const enqueued = files.splice(0, concurrentUploads);
-      this.processUploadJobs(
-        enqueued,
-        bucketPath,
-        uploadUpdate$,
-        queueStatus,
-        jobsComplete$,
-        processNext$
-      );
+      const remainingQueueSpace = maxConcurrentUploads - enqueueStatus.enqueued;
+      files.splice(0, remainingQueueSpace).forEach(file => {
+        this.startUpload(
+          file,
+          bucketPath,
+          queueStatus,
+          enqueueStatus,
+          uploadUpdate$,
+          jobsComplete$,
+          processNext$
+        );
+      });
     });
     // Start processing uploads
     processNext$.next();
   }
 
   /**
-   * Processes enqueued files using S3 to upload
+   * Starts upload to S3 using S3 SDK to upload
    * Upload progress and responses are reported
    *
    * @private
-   * @param {FileInput[]} enqueued [List of files enqueued to upload]
+   * @param {FileInput} file [The file to upload]
    * @param {string} bucketPath [The path within the bucket to upload files to]
-   * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
    * @param {QueueStatus} queueStatus [Object containing counters related to status of the queue]
-   * @param {Subject<boolean>} jobsComplete$ [Observable indicating whether or not all files in the upload queue have been completed]
-   * @param {Subject<void>} processNext$ [Observable used to trigger next set of upload jobs on current job's completion]
+   * @param {EnqueueStatus} enqueueStatus [Object containing counters related to status of the enqueued queue]
+   * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
+   * @param {Subject<boolean>} jobsComplete$ [Observable used to signal that the entire queue has been processed]
+   * @param {Subject<void>} processNext$ [Observable used to signal another upload job can be started]
    * @memberof FileManagementService
    */
-  private processUploadJobs(
-    enqueued: FileInput[],
+  private startUpload(
+    file: FileInput,
     bucketPath: string,
-    uploadUpdate$: Subject<UploadUpdate>,
     queueStatus: QueueStatus,
+    enqueueStatus: EnqueueStatus,
+    uploadUpdate$: Subject<UploadUpdate>,
     jobsComplete$: Subject<boolean>,
     processNext$: Subject<void>
   ) {
-    const enqueueStatus: EnqueueStatus = {
-      remaining: enqueued.length
-    };
-    enqueued.forEach(file => {
-      const fileMeta: FileUploadMeta = this.generateFileUploadMeta(file);
-      const params: AWS.S3.Types.PutObjectRequest = this.generateUploadParams(
-        bucketPath,
-        file
-      );
-      this.S3.upload(params, (err: Error, res: AWS.S3.ManagedUpload.SendData) =>
-        this.handleUploadResponse(
-          err,
-          res,
-          fileMeta,
-          queueStatus,
-          enqueueStatus,
-          uploadUpdate$,
-          jobsComplete$,
-          processNext$
-        )
-      ).on('httpUploadProgress', evt => {
-        this.reportProgress(fileMeta, evt, uploadUpdate$);
-      });
+    const fileMeta: FileUploadMeta = this.generateFileUploadMeta(file);
+    const params: AWS.S3.Types.PutObjectRequest = this.generateUploadParams(
+      bucketPath,
+      file
+    );
+    // Upload started; Increment number of enqueued uploads
+    enqueueStatus.enqueued++;
+    this.S3.upload(params, (err: Error, res: AWS.S3.ManagedUpload.SendData) =>
+      this.handleUploadResponse(
+        err,
+        res,
+        fileMeta,
+        queueStatus,
+        enqueueStatus,
+        uploadUpdate$,
+        jobsComplete$,
+        processNext$
+      )
+    ).on('httpUploadProgress', evt => {
+      this.reportProgress(fileMeta, evt, uploadUpdate$);
     });
   }
 
@@ -249,10 +254,10 @@ export class FileManagementService {
    * @param {AWS.S3.ManagedUpload.SendData} res [Response data from S3 SDK]
    * @param {FileUploadMeta} fileMeta [Metadata about the file processed]
    * @param {QueueStatus} queueStatus [Object containing counters related to status of the queue]
-   * @param {EnqueueStatus} queueStatus [Object containing counters related to status of the enqueued queue]
+   * @param {EnqueueStatus} enqueueStatus [Object containing counters related to status of the enqueued queue]
    * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
-   * @param {Subject<boolean>} jobsComplete$ [Observable indicating whether or not all files in the upload queue have been completed]
-   * @param {Subject<void>} processNext$ [Observable used to trigger next set of upload jobs on current job's completion]
+   * @param {Subject<boolean>} jobsComplete$ [Observable used to signal that the entire queue has been processed]
+   * @param {Subject<void>} processNext$ [Observable used to signal another upload job can be started]
    * @memberof FileManagementService
    */
   private handleUploadResponse(
@@ -271,11 +276,10 @@ export class FileManagementService {
       this.handleFileComplete(fileMeta, res, uploadUpdate$, queueStatus);
     }
     queueStatus.remaining--;
+    enqueueStatus.enqueued--;
     if (queueStatus.remaining === 0) {
       this.handleQueueComplete(jobsComplete$, uploadUpdate$, queueStatus);
-    }
-    enqueueStatus.remaining--;
-    if (enqueueStatus.remaining === 0) {
+    } else {
       processNext$.next();
     }
   }
@@ -371,7 +375,7 @@ export class FileManagementService {
    * Emitting an UploadQueueCompleteUpdate
    *
    * @private
-   * @param {Subject<boolean>} jobsComplete$ [Observable indicating whether or not all files in the upload queue have been completed]
+   * @param {Subject<boolean>} jobsComplete$ [Observable used to signal that the entire queue has been processed]
    * @param {Subject<UploadUpdate>} uploadUpdate$ [Observable used to report upload updates]
    * @param {QueueStatus} queueStatus [Object containing counters related to status of the queue]
    * @memberof FileManagementService

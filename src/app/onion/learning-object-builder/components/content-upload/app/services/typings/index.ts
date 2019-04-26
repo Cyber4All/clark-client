@@ -38,7 +38,7 @@ export interface QueueStatus {
 }
 
 export interface EnqueueStatus {
-  remaining: number;
+  enqueued: number;
 }
 
 export enum UploadErrorReason {
