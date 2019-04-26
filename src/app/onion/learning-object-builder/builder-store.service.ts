@@ -540,12 +540,14 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
+    this.serviceInteraction$.next(true);
     await this.learningObjectService.addFileMeta({
       files,
       username: this.learningObject.author.username,
       objectId: this.learningObject.id
     });
     await this.fetchMaterials();
+    this.serviceInteraction$.next(false);
   }
   /**
    * Adds Url to Learning Object's materials
