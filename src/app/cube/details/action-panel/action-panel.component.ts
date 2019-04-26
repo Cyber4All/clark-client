@@ -144,7 +144,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   copyLink() {
     const el = this.objectLinkElement.nativeElement;
-    console.log(el);
     el.select();
     document.execCommand('copy');
 
