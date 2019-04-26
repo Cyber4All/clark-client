@@ -32,6 +32,36 @@ a {
           }
         }
       }
+
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        margin-top: 80px;
+        height: 80px;
+        width: 100%;
+        
+        .warn {
+          background-color: lighten($error-red, 20);
+          padding: 15px;
+          width: 60px;
+          height: 60px;
+          border-radius: 50px;
+
+          svg {
+            width: 30px;
+            height: 30px;
+          }
+        }
+      }
+
+      .message {
+        color: $dark-text;
+        text-align: center;
+        padding: 10px;
+        font-size: 16px;
+      }
     }
   }
 }

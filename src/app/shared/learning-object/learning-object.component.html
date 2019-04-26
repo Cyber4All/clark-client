@@ -1,4 +1,5 @@
 <a
+  *ngIf="loading || learningObject._id !== undefined; else cardFailTemplate"
   [routerLink]="[
     '/details',
     learningObject.author.username,
@@ -60,3 +61,14 @@
     ></clark-download-notice>
   </div>
 </clark-popup>
+
+<ng-template #cardFailTemplate>
+  <div class="learning-object">
+    <div class="icon">
+      <div class="warn"><i class="fas fa-exclamation-circle"></i></div>
+    </div>
+    <div class="message">
+      Something went wrong getting the learning object
+    </div>
+  </div>
+</ng-template>
