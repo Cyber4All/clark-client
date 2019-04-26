@@ -107,15 +107,15 @@
     position: relative;
 
     &:before {
-      content: 'Creative Commons Attribution';
+      content: 'Attribute this Object';
       color: $dark-text;
       text-align: center;
       padding: 0;
       background: white;
       position: absolute;
       z-index: 2;
-      left: 5%;
-      right: 5%;
+      left: 20%;
+      right: 20%;
       bottom: -7px;
     }
     &:after {
