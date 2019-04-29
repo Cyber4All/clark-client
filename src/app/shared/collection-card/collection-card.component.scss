@@ -21,10 +21,11 @@
   
     &:active {
       transition-duration: 0.1s;
+      outline: 0;
     }
 
     img {
-        height: 80px;
+        height: 120px;
     }
 
     .title__icon {
