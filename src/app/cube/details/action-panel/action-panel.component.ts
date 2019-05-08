@@ -150,6 +150,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
   }
 
+  /**
+   * Copy the Creative Commons Attribution to the clipboard
+   *
+  */
   copyAttribution() {
     const range = document.createRange();
     range.selectNode(document.getElementById('objectAttribution'));
