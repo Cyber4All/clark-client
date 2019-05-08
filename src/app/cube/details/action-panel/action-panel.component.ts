@@ -35,7 +35,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
-  isEditButtonViewable = false;
+  userCanRevise = false;
 
   contributorsList = [];
   iframeParent = iframeParentID;
@@ -60,7 +60,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.auth.group
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
-        this.isEditButtonViewable = this.auth.hasEditorAccess();
+        this.userCanRevise = this.auth.hasEditorAccess();
       });
     this.hasDownloadAccess = (this.auth.hasReviewerAccess() || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
 
@@ -162,7 +162,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
 
-    this.toaster.notify('Success!', 'Learning object Creative Commons Attribution copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.notify('Success!', 'Attribution information has been copied to your clipboard!', 'good', 'far fa-check');
   }
 
   toggleDownloadModal(val?: boolean) {
