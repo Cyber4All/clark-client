@@ -11,7 +11,7 @@
                 <input aria-label="URL" placeholder="https://example.com" type="text" [value]="urlLink" [(ngModel)]="urlLink"
                         (input)="updateLink($event.target.value)" required #link="ngModel" pattern="https?://.+">
                 <div style="color:red" [hidden]="link.valid || title.untouched">
-                        <div [hidden]="!link.hasError('pattern')">Not a valid URL. Must include https://</div>
+                        <div [hidden]="!link.hasError('pattern') || link.untouched">Not a valid URL. Must include https://</div>
                         <div [hidden]="!link.hasError('required')">Please type in valid URL</div>
                 </div>
         </div>
