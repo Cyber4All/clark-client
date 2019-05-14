@@ -47,7 +47,7 @@ export class UrlRowComponent implements OnInit {
    */
   updateTitle(title: object) {
     if (this.titleText !== '' && this.urlLink !== '') {
-      if (this.urlLink.includes('https://')) {
+      if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
         this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true});
       } else {
         this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false});
@@ -62,7 +62,7 @@ export class UrlRowComponent implements OnInit {
    */
   updateLink(url: object) {
     if (this.urlLink !== '' && this.titleText !== '') {
-      if (this.urlLink.includes('https://')) {
+      if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
         this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true});
       } else {
         this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false});
