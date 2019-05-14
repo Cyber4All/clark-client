@@ -13,11 +13,13 @@
     <button class="button good" (click)="addURL()">Click here to add a URL</button>
   </div>
   <div class="section url-wrapper">
-    <div *ngFor="let url of urls; let i = index;" class="link input-wrapper">
-            <clark-url-row [url]="url" [index]="i" (updateUrl)="updateUrl($event)"></clark-url-row>
-      <button class="button bad icon-only" (click)="removeURL(i)">
-        <i class="far fa-times"></i>
-      </button>
+    <div *ngFor="let url of urls; let i = index;">
+      <div class="link input-wrapper">
+        <clark-url-row [url]="url" [index]="i" (updateUrl)="updateUrl($event)"></clark-url-row>
+        <button class="button bad icon-only" (click)="removeURL(i)">
+          <i class="far fa-times"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

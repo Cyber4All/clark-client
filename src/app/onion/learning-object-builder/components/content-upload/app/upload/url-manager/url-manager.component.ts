@@ -77,13 +77,11 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
         this.update.emit({ url, index: update.index });
       });
   }
-
   /**
    * Emits an event to the parent component and fires next on the trigger save subject
    */
   addURL() {
     this.add.emit();
-    this.triggerSave$.next();
   }
 
 
@@ -96,8 +94,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     const index: number = event['index'];
     const url:   string = event['url'];
     const title: string = event['title'];
-      this.urlUpdated$.next({index, url, title });
-
+    this.urlUpdated$.next({index, url, title });
   }
 
   /**
