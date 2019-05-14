@@ -27,7 +27,7 @@ export class UrlRowComponent implements OnInit {
   index: number = 0;
 
   @Output()
-  updateUrl: EventEmitter<{ index: number; title: string; url: string }> = new EventEmitter();
+  updateUrl: EventEmitter<{}> = new EventEmitter();
   constructor() {
 
   }
@@ -48,7 +48,9 @@ export class UrlRowComponent implements OnInit {
   updateTitle(title: object) {
     if (this.titleText !== '' && this.urlLink !== '') {
       if (this.urlLink.includes('https://')) {
-        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true});
+      } else {
+        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false});
       }
     }
   }
@@ -61,7 +63,9 @@ export class UrlRowComponent implements OnInit {
   updateLink(url: object) {
     if (this.urlLink !== '' && this.titleText !== '') {
       if (this.urlLink.includes('https://')) {
-        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true});
+      } else {
+        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false});
       }
     }
   }

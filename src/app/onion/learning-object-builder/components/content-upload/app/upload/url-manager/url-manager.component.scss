@@ -12,6 +12,9 @@
     padding-top: 10px;
     padding-bottom: 10px;
   }
+.button[disabled] {
+    background: linear-gradient(45deg, darken($placeholder, 10), lighten($placeholder, 5));
+}
 
 .empty-message {
     margin: auto;

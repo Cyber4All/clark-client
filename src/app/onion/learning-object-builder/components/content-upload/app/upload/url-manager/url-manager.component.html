@@ -1,7 +1,7 @@
 <div class="topbar">
   <div class="slide-title">URLs</div>
   <div class="btn-group to-right">
-    <button *ngIf="urls.length > 0" (click)="addURL()" class="button good">Add URL
+    <button *ngIf="urls.length > 0" [disabled]="!addNew" (click)="addURL()" class="button good">Add URL
       <i class="far fa-plus"></i>
     </button>
   </div>

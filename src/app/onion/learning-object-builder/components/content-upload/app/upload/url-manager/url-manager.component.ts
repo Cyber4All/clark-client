@@ -42,6 +42,8 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     url: string;
   }> = new Subject();
 
+  addNew: boolean = true;
+
   constructor() {}
 
   ngOnInit() {
@@ -82,6 +84,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
    */
   addURL() {
     this.add.emit();
+    this.addNew = false;
   }
 
 
@@ -91,10 +94,13 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
    * @param event
    */
   updateUrl(event: object) {
-    const index: number = event['index'];
-    const url:   string = event['url'];
-    const title: string = event['title'];
-    this.urlUpdated$.next({index, url, title });
+    if (event['addNew'] === true) {
+      this.addNew = true;
+      const index: number = event['index'];
+      const url:   string = event['url'];
+      const title: string = event['title'];
+      this.urlUpdated$.next({index, url, title });
+    }
   }
 
   /**
