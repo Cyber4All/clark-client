@@ -41,24 +41,28 @@ export class UrlRowComponent implements OnInit {
       }
   }
   /**
-   * Accepts a title object that only emits to the parent component 
-   * if the title input field is not empty 
+   * Accepts a title object that only emits to the parent component
+   * if the title input field is not empty
    * @param title
    */
   updateTitle(title: object) {
     if (this.titleText !== '' && this.urlLink !== '') {
-      this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
-    } 
+      if (this.urlLink.includes('https://')) {
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
+      }
+    }
   }
 
   /**
    * Accepts the url object that only emits to the parent component 
    * if the url field isn't empty and is a valid URL
-   * @param url 
+   * @param url
    */
   updateLink(url: object) {
     if (this.urlLink !== '' && this.titleText !== '') {
-      this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
+      if (this.urlLink.includes('https://')) {
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
+      }
     }
   }
 }
