@@ -29,14 +29,14 @@ export class UrlRowComponent implements OnInit {
   @Output()
   updateUrl: EventEmitter<{ index: number; title: string; url: string }> = new EventEmitter();
   constructor() {
-
+    
   }
   ngOnInit() {
-
-      if (this.url.title) {
+ 
+      if(this.url.title){
         this.titleText = this.url.title;
-      }
-       if (this.url.url) {
+      } 
+       if(this.url.url){ 
         this.urlLink = this.url.url;
       }
   }
