@@ -83,6 +83,12 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
           toolTip: this.tooltipText[l.toLowerCase()]
         }))
       ]
+    },
+    {
+      name: 'guidelines',
+      type: 'select-many',
+      canSearch: false,
+      values: []
     }
   ];
   searchDelaySubject: any;
