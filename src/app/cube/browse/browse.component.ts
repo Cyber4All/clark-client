@@ -2,7 +2,7 @@
 import {takeUntil, debounceTime} from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObject } from '@entity';
+import { LearningObject, StandardOutcome } from '@entity';
 import { lengths } from '@cyber4all/clark-taxonomy';
 
 
@@ -17,7 +17,7 @@ import { CollectionService } from '../../core/collection.service';
 import { OrderBy, Query, SortType } from '../../shared/interfaces/query';
 import { ModalListElement, ModalService, Position } from '../../shared/modals';
 import { LearningObjectService } from '../learning-object.service';
-
+import { OutcomeService } from 'app/core/outcome.service';
 
 @Component({
   selector: 'cube-browse',
@@ -115,7 +115,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     public mappingService: SuggestionService,
     private auth: AuthService,
     private collectionService: CollectionService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private outcomeService: OutcomeService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -139,6 +140,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       //   this.clearAllFilters(true);
       // }
       const collections = await this.collectionService.getCollections();
+      const outcomeSources = await this.outcomeService.getSources();
+      this.filters[3].values = outcomeSources.map(o => ({ name: o }));
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
