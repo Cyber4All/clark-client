@@ -1,47 +1,42 @@
 .changelog-item {
-    display: grid;
-    grid-template-rows: auto 100px 10px;
-    grid-template-columns: 80px 130px 100px auto;
-    grid-gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: start;
 }
 
 .changelog-item__name {
-    display: flex;
-    font-size: 20px;
-    flex-direction: column;
+  display: flex;
+  font-size: 20px;
+  flex-direction: row;
+  align-items: center;
 }
 
 .changelog-item__date {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .changelog-item__badge {
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
 }
 
 .changelog-item__text {
-    grid-column: 2 / span 3;
-    display: flex;
-    font-size: 17px;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .changelog-item__timeline {
-    grid-row-start: 2;
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid black;
-    margin-left: 20px;
-}
-
-.changelog-item__profile-image-container {
-    display: flex;
-    flex-direction: column;
 }
 
 .profile-image-container__avatar {
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  margin-right: 20px;
+  border: 10px solid white;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: -10px;
 }

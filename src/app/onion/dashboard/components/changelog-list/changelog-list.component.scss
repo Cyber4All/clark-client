@@ -1,3 +1,30 @@
 .changelog-list {
-    margin-top: 30px;
+  margin-top: 30px;
+  position: relative;
+
+  & > * {
+    display: block;
+    position: relative;
+    z-index: 1;
+
+    &:not(:last-child) {
+      margin-bottom: 40px;
+    }
+
+    &:last-child {
+      // set the background to white here to perfectly obscure the timeline line that runs down the side of the list items
+      background: white;
+    }
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 27px;
+    z-index: 0;
+    width: 2px;
+    background: #ababab;
+  }
 }
