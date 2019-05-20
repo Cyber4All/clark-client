@@ -74,8 +74,6 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
         this.close();
       });
 
-    console.log(this.viewer.instance.floating)
-
     // attach component to angular's component tree (DOES NOT ADD TO DOM)
     this.appRef.attachView(this.viewer.hostView);
 
