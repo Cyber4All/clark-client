@@ -14,7 +14,7 @@
   </div>
   <div class="section url-wrapper">
     <div *ngFor="let url of urls; let i = index;">
-      <div class="link input-wrapper" [ngStyle]="{'box-shadow': (!addNew && !urls[i].link && !urls[i].title) ? '2px 2px 10px #3b608b' : ' white'}">
+      <div class="link input-wrapper" [ngStyle]="{'box-shadow': (!addNew && focusMe && !urls[i].link && !urls[i].title) ? '0px 0px 5px #4f7eb4' : 'none'}">
         <clark-url-row [addNew]="addNew" [url]="url" [index]="i" (updateUrl)="updateUrl($event)"></clark-url-row>
         <button class="button bad icon-only" (click)="removeURL(i)">
           <i class="far fa-times"></i>

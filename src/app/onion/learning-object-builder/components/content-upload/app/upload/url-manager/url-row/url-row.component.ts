@@ -49,24 +49,24 @@ export class UrlRowComponent implements OnInit {
   updateTitle(title: object) {
     if (this.titleText !== '' && this.urlLink !== '') {
       if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
-        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true});
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true, focusMe: false});
       } else {
-        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false});
+        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: false});
       }
     }
   }
 
   /**
-   * Accepts the url object that only emits to the parent component 
+   * Accepts the url object that only emits to the parent component
    * if the url field isn't empty and is a valid URL
    * @param url
    */
   updateLink(url: object) {
     if (this.urlLink !== '' && this.titleText !== '') {
       if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
-        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true});
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true, focusMe: false});
       } else {
-        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false});
+        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: false});
       }
     }
   }

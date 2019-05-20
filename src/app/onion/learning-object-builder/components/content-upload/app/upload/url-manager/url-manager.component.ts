@@ -43,7 +43,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
   }> = new Subject();
 
   addNew: boolean = true;
-
+  focusMe: boolean;
   constructor() {}
 
   ngOnInit() {
@@ -85,6 +85,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
   addURL() {
     this.add.emit();
     this.addNew = false;
+    this.focusMe = true;
   }
 
 
@@ -94,6 +95,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
    * @param event
    */
   updateUrl(event: object) {
+    this.focusMe = event['focusMe'];
     if (event['addNew'] === true) {
       this.addNew = true;
       const index: number = event['index'];
