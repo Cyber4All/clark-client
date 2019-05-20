@@ -13,6 +13,7 @@ export interface Query {
   limit?: number;
   length?: string[] | string;
   level?: string[];
+  guidelines?: string[];
   orderBy?: OrderBy;
   sortType?: SortType;
   text?: string;
