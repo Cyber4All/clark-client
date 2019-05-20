@@ -11,13 +11,11 @@
           [theme]="changelog.author.role === 'author' ? 'default' : 'proofing'"
         ></clark-identification-pill>
       </div>
+      <div class="changelog-item__date">
+        on {{ changelog.date | date:'shortDate' }}
+      </div>
     </div>
-    <div class="changelog-item__date">
-      {{ changelog.date | date:'shortDate' }}
-    </div>
-    <div class="changelog-item__text">
-      {{ changelog.text }}
-    </div>
+    <div class="changelog-item__text" [innerHtml]="changelog.text"></div>
   </div>
   <div class="changelog-item__timeline"></div>
 </div>
