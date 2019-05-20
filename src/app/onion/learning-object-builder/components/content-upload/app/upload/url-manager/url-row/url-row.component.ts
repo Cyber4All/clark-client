@@ -18,6 +18,7 @@ export class UrlRowComponent implements OnInit {
 
   titleText: string;
   urlLink: string;
+  @Input() addNew: boolean;
   @Input()
   url: LearningObject.Material.Url = {
     title: '',
