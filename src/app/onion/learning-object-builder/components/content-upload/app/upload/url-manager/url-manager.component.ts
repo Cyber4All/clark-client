@@ -110,6 +110,10 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
    */
   removeURL(index: number) {
     this.remove.emit(index);
+    console.log(index);
+    if (index === this.urls.length) {
+      this.addNew = true;
+    }
     this.triggerSave$.next();
   }
 
