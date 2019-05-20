@@ -758,6 +758,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
+  }
+
   /**
    * Return a list of the selected learning object's
    * @return {DashboardLearningObjects[]} List of selected learning object's

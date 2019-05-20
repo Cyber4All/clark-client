@@ -4,7 +4,7 @@ import { LearningObject } from '@entity';
 @Component({
   selector: 'clark-changelog-modal',
   templateUrl: './changelog-modal.component.html',
-  styleUrls: ['./changelog-modal.component.scss']
+  styleUrls: ['./changelog-modal.component.scss'],
 })
 export class ChangelogModalComponent implements OnInit {
 

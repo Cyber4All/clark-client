@@ -5,7 +5,8 @@ import {
   style,
   animate,
   query,
-  animateChild
+  animateChild,
+  sequence
 } from '@angular/animations';
 
 @Component({
@@ -27,10 +28,13 @@ import {
     trigger('scale', [
       transition(':enter', [
         style({ transform: 'scale(0.8)', opacity: 0 }),
-        animate(
-          '100ms 70ms ease-out',
-          style({ transform: 'scale(1)', opacity: 1 })
-        )
+        sequence([
+          animate(
+            '100ms 70ms ease-out',
+            style({ transform: 'scale(1)', opacity: 1 })
+          ),
+          query('@*', animateChild(), { optional: true })
+        ])
       ]),
       transition(':leave', [
         style({ transform: 'scale(1)', opacity: 1 }),

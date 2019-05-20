@@ -4,12 +4,21 @@
       {{ learningObject.name }}
     </div>
     <div class="header__date">
-      Learning Object last updated, {{ learningObject.date | date:'shortDate' }}
+      Learning Object last updated on {{ learningObject.date | date:'mediumDate' }}
     </div>
   </div>
   <div class="changelog-modal__body">
-    <clark-changelog-list
+    <clark-changelog-list *ngIf="changelogs; else loadingTemplate"
       [changelogs] = "changelogs?.logs"
     ></clark-changelog-list>
   </div>
 </div>
+
+<ng-template #loadingTemplate>
+  <div class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    <div>
+      Loading changelogs...
+    </div>
+  </div>
+</ng-template>

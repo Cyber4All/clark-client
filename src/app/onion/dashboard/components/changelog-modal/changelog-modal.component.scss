@@ -1,7 +1,22 @@
+@import '~_vars.scss';
+
 .changelog-modal {
-    padding: 0px 20px;
+  padding: 0px 20px;
 }
 
 .header__title {
+  font-size: 30px;
+}
+
+.loading-template {
+  text-align: center;
+  padding: 40px 0px;
+  color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+  font-size: 20px;
+
+  .svg-inline--fa {
+    color: $bright-blue;
     font-size: 30px;
+    margin-bottom: 20px;
+  }
 }

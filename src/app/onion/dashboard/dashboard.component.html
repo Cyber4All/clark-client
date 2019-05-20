@@ -133,11 +133,11 @@
 </clark-popup>
 
 <!-- View All Change Logs -->
-<clark-popup [floating]="true" *ngIf="openChangelogModal && changelogs" (closed)="openChangelogModal = false">
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
   <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
     <clark-changelog-modal
       [learningObject] = "changelogLearningObject"
-      [changelogs] = "changelogs[0]"
+      [changelogs] = "changelogs ? changelogs[0] : undefined"
     ></clark-changelog-modal>
   </div> 
 </clark-popup>
