@@ -8,6 +8,12 @@
   font-size: 30px;
 }
 
+.header__date {
+  font-size: 16px;
+  color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+  margin-bottom: 10px;
+}
+
 .loading-template,
 .empty-template {
   text-align: center;
