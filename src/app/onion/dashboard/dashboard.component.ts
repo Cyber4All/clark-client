@@ -754,10 +754,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
     this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
-    this.changelogs =  await this.changelogService.fetchAllChangelogs({
-      userId: this.changelogLearningObject.author.id,
-      learningObjectId: this.changelogLearningObject.id,
-    });
+    try {
+      this.changelogs =  await this.changelogService.fetchAllChangelogs({
+        userId: this.changelogLearningObject.author.id,
+        learningObjectId: this.changelogLearningObject.id,
+      });
+    } catch (error) {
+      let errorMessage;
+
+      if (error.status >= 500) {
+        errorMessage = 'We encountered an error while attempting to retrieve changelogs for this learning object.';
+      } else if (error.status === 401) {
+        // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
+        this.auth.logout();
+      } else {
+        errorMessage = 'An unknown error occurred while attempting to retrieve changelogs for this learning object.';
+      }
+
+      this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+    }
 
     this.loadingChangelogs = false;
   }
