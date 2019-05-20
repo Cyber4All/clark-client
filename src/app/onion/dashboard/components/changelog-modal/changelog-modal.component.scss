@@ -8,7 +8,8 @@
   font-size: 30px;
 }
 
-.loading-template {
+.loading-template,
+.empty-template {
   text-align: center;
   padding: 40px 0px;
   color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
@@ -18,5 +19,9 @@
     color: $bright-blue;
     font-size: 30px;
     margin-bottom: 20px;
+  }
+
+  &.empty-template .svg-inline--fa {
+    font-size: 40px;
   }
 }

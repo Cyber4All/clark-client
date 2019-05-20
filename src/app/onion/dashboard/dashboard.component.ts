@@ -81,6 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   openChangelogModal: boolean;
   changelogLearningObject: LearningObject;
   changelogs: [];
+  loadingChangelogs: boolean;
 
   // Observables
   destroyed$: Subject<void> = new Subject();
@@ -751,11 +752,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async openViewAllChangelogsModal(learningObjectId: string) {
     this.openChangelogModal = true;
+    this.loadingChangelogs = true;
     this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
     this.changelogs =  await this.changelogService.fetchAllChangelogs({
       userId: this.changelogLearningObject.author.id,
       learningObjectId: this.changelogLearningObject.id,
     });
+
+    this.loadingChangelogs = false;
   }
 
   closeChangelogsModal() {

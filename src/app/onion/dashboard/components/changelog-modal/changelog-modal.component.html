@@ -8,9 +8,11 @@
     </div>
   </div>
   <div class="changelog-modal__body">
-    <clark-changelog-list *ngIf="changelogs; else loadingTemplate"
-      [changelogs] = "changelogs?.logs"
-    ></clark-changelog-list>
+    <ng-container *ngIf="!loading; else loadingTemplate">
+      <clark-changelog-list *ngIf="changelogs; else emptyTemplate"
+        [changelogs] = "changelogs?.logs"
+      ></clark-changelog-list>
+    </ng-container>
   </div>
 </div>
 
@@ -19,6 +21,15 @@
     <i class="far fa-spinner-third fa-spin"></i>
     <div>
       Loading changelogs...
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+  <div class="empty-template">
+    <i class="far fa-comment-alt-slash"></i>
+    <div>
+      This learning object doesn't <br />have any changelogs yet!
     </div>
   </div>
 </ng-template>

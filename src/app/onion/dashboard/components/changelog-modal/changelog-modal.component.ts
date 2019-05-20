@@ -10,6 +10,7 @@ export class ChangelogModalComponent implements OnInit {
 
   @Input() learningObject: LearningObject;
   @Input() changelogs: any;
+  @Input() loading: boolean;
 
   constructor() { }
 
