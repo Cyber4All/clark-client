@@ -313,7 +313,7 @@ export class LearningObjectService {
     const route = USER_ROUTES.GET_CHILDREN(learningObjectID);
     return this.http.get(route, { withCredentials: true }).toPromise().then(children => {
       return (children as []).map(c => new LearningObject(c));
-    });      
+    });
   }
   /**
    * Makes request to update file description
