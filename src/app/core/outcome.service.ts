@@ -40,7 +40,14 @@ export class OutcomeService {
         catchError(this.handleError)
       )
       .toPromise()
-      .then((res: any) => res);
+      .then((res: any) => {
+        const sources = res.filter(source => {
+          if (source !== 'CAE CDE 2019') {
+            return source;
+          }
+        });
+        return sources;
+      });
   }
 
   suggestOutcomes(source: LearningObject, filter): Promise<StandardOutcome[]> {
