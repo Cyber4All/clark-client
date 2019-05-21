@@ -28,7 +28,7 @@ export class ChangelogService {
   }
 
   /**
-   * Gets all change logs for a given learning object
+   * Gets all change logs for a given Learning Object
    *
    * @param {string} userId the id of the learning object author
    * @param {string} learningObjectId the id of the learning object
