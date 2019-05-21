@@ -58,7 +58,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   filters: FilterSection[] = [
     {
       name: 'collection',
-      type: 'select-one',
+      type: 'select-many',
       canSearch: false,
       values: []
     },
