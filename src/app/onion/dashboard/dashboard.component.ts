@@ -753,7 +753,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /**
    * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
    *
-   * @param {string} learningObjectId the id of the learning object for which to fetch change logs
+   * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
    * @memberof DashboardComponent
    */
   async openViewAllChangelogsModal(learningObjectId: string) {
