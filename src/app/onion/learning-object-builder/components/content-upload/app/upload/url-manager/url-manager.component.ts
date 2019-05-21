@@ -42,6 +42,8 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     url: string;
   }> = new Subject();
 
+  addNew: boolean = true;
+  focusMe: boolean;
   constructor() {}
 
   ngOnInit() {
@@ -77,13 +79,13 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
         this.update.emit({ url, index: update.index });
       });
   }
-
   /**
    * Emits an event to the parent component and fires next on the trigger save subject
    */
   addURL() {
     this.add.emit();
-    this.triggerSave$.next();
+    this.addNew = false;
+    this.focusMe = true;
   }
 
 
@@ -93,11 +95,14 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
    * @param event
    */
   updateUrl(event: object) {
-    const index: number = event['index'];
-    const url:   string = event['url'];
-    const title: string = event['title'];
+    this.focusMe = event['focusMe'];
+    if (event['addNew'] === true) {
+      this.addNew = true;
+      const index: number = event['index'];
+      const url:   string = event['url'];
+      const title: string = event['title'];
       this.urlUpdated$.next({index, url, title });
-
+    }
   }
 
   /**
@@ -107,6 +112,9 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
    */
   removeURL(index: number) {
     this.remove.emit(index);
+    if (index === this.urls.length) {
+      this.addNew = true;
+    }
     this.triggerSave$.next();
   }
 
