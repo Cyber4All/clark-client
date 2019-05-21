@@ -21,7 +21,13 @@ export class OutcomeService {
         catchError(this.handleError)
       )
       .toPromise()
-      .then((res: any) => {
+      .then((res: {total: number, outcomes: any[]}) => {
+        const outcomes = res.outcomes.filter(outcome => {
+          if (outcome.source !== 'CAE CDE 2019') {
+            return outcome;
+          }
+        });
+        res.outcomes = outcomes;
         return res;
       });
   }
@@ -51,6 +57,12 @@ export class OutcomeService {
       )
       .toPromise()
       .then((res: {total: number, outcomes: any[]}) => {
+        const outcomes = res.outcomes.filter(outcome => {
+          if (outcome.source !== 'CAE CDE 2019') {
+            return outcome;
+          }
+        });
+        res.outcomes = outcomes;
         return res.outcomes;
       });
   }
