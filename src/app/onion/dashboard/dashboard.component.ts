@@ -772,7 +772,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
         this.auth.logout();
       } else {
-        errorMessage = 'We encountered an error while attempting to retrieve change logs for this learning object. Please try again later.';
+        errorMessage = 'We encountered an error while attempting to retrieve change logs for this Learning Object. Please try again later.';
       }
 
       this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
