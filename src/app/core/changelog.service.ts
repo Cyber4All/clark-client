@@ -31,7 +31,7 @@ export class ChangelogService {
    * Gets all change logs for a given Learning Object
    *
    * @param {string} userId the id of the Learning Object author
-   * @param {string} learningObjectId the id of the learning object
+   * @param {string} learningObjectId the id of the Learning Object
    * @returns {Promise<{}>}
    * @memberof ChangelogService
    */
