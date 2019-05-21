@@ -44,6 +44,7 @@
                 (editChildren)="editChildren(l)"
                 (submit)="submitToCollection = true; focusedLearningObject = l;"
                 (cancelSubmission)="cancelSubmission(l)"
+                (viewAllChangelogs)="openViewAllChangelogsModal($event)"
                 >
               </clark-dashboard-item>
             </div>
@@ -129,6 +130,17 @@
         <button class="button neutral" (click)="childrenConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
       </div>
   </div>
+</clark-popup>
+
+<!-- View All Change Logs -->
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+    <clark-changelog-modal
+      [learningObject] = "changelogLearningObject"
+      [changelogs] = "changelogs ? changelogs[0] : undefined"
+      [loading]="loadingChangelogs  "
+    ></clark-changelog-modal>
+  </div> 
 </clark-popup>
 
 <!-- Collection Submission Popup -->

@@ -12,6 +12,7 @@ import { trigger, transition, style, animate, animateChild, query, stagger } fro
 import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
 import { ActivatedRoute } from '@angular/router';
+import { ChangelogService } from 'app/core/changelog.service';
 
 export interface DashboardLearningObject extends LearningObject {
   status: LearningObject.Status;
@@ -77,6 +78,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   focusedLearningObject: DashboardLearningObject;
   filterMenu: string;
 
+  openChangelogModal: boolean;
+  changelogLearningObject: LearningObject;
+  changelogs: [];
+  loadingChangelogs: boolean;
+
   // Observables
   destroyed$: Subject<void> = new Subject();
   filtersModified$: Subject<void> = new Subject();
@@ -104,6 +110,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private learningObjectService: LearningObjectService,
+    private changelogService: ChangelogService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
     private notificationService: ToasterService,
@@ -741,6 +748,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }).catch(err => {
       console.error(err);
     });
+  }
+
+  /**
+   * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
+   *
+   * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
+   * @memberof DashboardComponent
+   */
+  async openViewAllChangelogsModal(learningObjectId: string) {
+    this.openChangelogModal = true;
+    this.loadingChangelogs = true;
+    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
+    try {
+      this.changelogs =  await this.changelogService.fetchAllChangelogs({
+        userId: this.changelogLearningObject.author.id,
+        learningObjectId: this.changelogLearningObject.id,
+      });
+    } catch (error) {
+      let errorMessage;
+
+      if (error.status === 401) {
+        // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
+        this.auth.logout();
+      } else {
+        errorMessage = 'We encountered an error while attempting to retrieve change logs for this Learning Object. Please try again later.';
+      }
+
+      this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+    }
+
+    this.loadingChangelogs = false;
+  }
+
+  /**
+   * Closes any open change log modals
+   *
+   * @memberof DashboardComponent
+   */
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
   }
 
   /**
