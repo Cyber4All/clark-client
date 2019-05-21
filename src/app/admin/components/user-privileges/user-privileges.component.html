@@ -22,22 +22,22 @@
 
       <ng-template>
         <div class="privileges__top-inner">
-          <div (click)="regress()" class="privileges__subtitle">
+          <div (click)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
             <i class="fas fa-arrow-left"></i> Back to privileges
           </div>
         </div>
       </ng-template>
 
       <ng-template>
-          <div class="privileges__top-inner">
-            <div (click)="regress()" class="privileges__subtitle">
-              <i class="fas fa-arrow-left"></i> Back to role selector
-            </div>
-            <div class="privileges__actions btn-group to-right">
-              <button (click)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
-            </div>
+        <div class="privileges__top-inner">
+          <div (click)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
+            <i class="fas fa-arrow-left"></i> Back to role selector
           </div>
-        </ng-template>
+          <div class="privileges__actions btn-group to-right">
+            <button (click)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
+          </div>
+        </div>
+      </ng-template>
       
     </clark-carousel>
   </div>

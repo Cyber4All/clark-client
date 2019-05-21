@@ -63,6 +63,33 @@
   .icon {
     margin-right: 10px;
   }
+
+  &.privileges__subtitle--interactable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background: $bright-blue;
+      opacity: 0;
+      transition: inherit;
+    }
+
+    &:hover {
+      opacity: 0.8;
+
+      &:after {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+  }
 }
 
 .role-selector {
