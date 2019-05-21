@@ -18,6 +18,7 @@ export class UrlRowComponent implements OnInit {
 
   titleText: string;
   urlLink: string;
+  @Input() addNew: boolean;
   @Input()
   url: LearningObject.Material.Url = {
     title: '',
@@ -27,7 +28,7 @@ export class UrlRowComponent implements OnInit {
   index: number = 0;
 
   @Output()
-  updateUrl: EventEmitter<{ index: number; title: string; url: string }> = new EventEmitter();
+  updateUrl: EventEmitter<{}> = new EventEmitter();
   constructor() {
 
   }
@@ -41,24 +42,32 @@ export class UrlRowComponent implements OnInit {
       }
   }
   /**
-   * Accepts a title object that only emits to the parent component 
-   * if the title input field is not empty 
+   * Accepts a title object that only emits to the parent component
+   * if the title input field is not empty
    * @param title
    */
   updateTitle(title: object) {
     if (this.titleText !== '' && this.urlLink !== '') {
-      this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
-    } 
+      if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true, focusMe: false});
+      } else {
+        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: false});
+      }
+    }
   }
 
   /**
-   * Accepts the url object that only emits to the parent component 
+   * Accepts the url object that only emits to the parent component
    * if the url field isn't empty and is a valid URL
-   * @param url 
+   * @param url
    */
   updateLink(url: object) {
     if (this.urlLink !== '' && this.titleText !== '') {
-      this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink });
+      if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
+        this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true, focusMe: false});
+      } else {
+        this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: false});
+      }
     }
   }
 }
