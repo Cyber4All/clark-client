@@ -768,13 +768,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } catch (error) {
       let errorMessage;
 
-      if (error.status >= 500) {
-        errorMessage = 'We encountered an error while attempting to retrieve changelogs for this learning object.';
-      } else if (error.status === 401) {
+      if (error.status === 401) {
         // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
         this.auth.logout();
       } else {
-        errorMessage = 'An unknown error occurred while attempting to retrieve changelogs for this learning object.';
+        errorMessage = 'We encountered an error while attempting to retrieve change logs for this learning object. Please try again later.';
       }
 
       this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
