@@ -41,9 +41,11 @@ export class UserPrivilegesComponent implements OnInit {
     await Promise.all(
       this.privileges.map(async priv => {
         const [_, collectionId] = priv;
-        this.collections[
-          collectionId
-        ] = (await this.collectionService.getCollection(collectionId)).name;
+        if (collectionId) {
+          this.collections[
+            collectionId
+          ] = (await this.collectionService.getCollection(collectionId)).name;
+        }
       })
       ).catch(error => {
         this.toaster.notify('Error!', 'There was an error fetching collections. Please try again later.', 'bad', 'far fa-times');
