@@ -750,6 +750,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Opens the Change Log modal for a specified learning object and fetches the appropriate change logs
+   *
+   * @param {string} learningObjectId the id of the learning object for which to fetch change logs
+   * @memberof DashboardComponent
+   */
   async openViewAllChangelogsModal(learningObjectId: string) {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
@@ -777,6 +783,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.loadingChangelogs = false;
   }
 
+  /**
+   * Closes any open change log modals
+   *
+   * @memberof DashboardComponent
+   */
   closeChangelogsModal() {
     this.openChangelogModal = false;
     this.changelogs = undefined;
