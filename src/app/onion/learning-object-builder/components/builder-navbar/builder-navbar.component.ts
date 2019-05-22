@@ -9,6 +9,8 @@ import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
+import { ChangelogService } from 'app/core/changelog.service';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -28,6 +30,9 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   learningObject: LearningObject;
   collection: Collection;
+  changelog;
+  page = 1;
+  submitCollection: string; // Refers to the collection the user wishes to submit to
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -291,6 +296,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     this.store
       .submitForReview(collection)
       .then(val => {
+        this.page = 1;
         this.showSubmission = false;
         this.toasterService.notify(
           'Success!',
@@ -302,6 +308,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       .catch(error => {
         console.error(error);
         this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
+        this.page = 1;
         this.showSubmission = false;
         this.submissionError = true;
       });
@@ -329,7 +336,7 @@ export class BuilderNavbarComponent implements OnDestroy {
           console.error(e);
           this.showSubmission = false;
           this.page = 1;
-          this.toasterService.notify('Error!', e, 'bad', 'far fa-times');
+          this.toasterService.notify('Error!', 'We couldn\'t create your changelog!', 'bad', 'far fa-times');
         });
     } else {
       this.showSubmission = false;
@@ -343,10 +350,10 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {
-    this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true).then(val => {
-      const isFirstSubmit = JSON.parse(val).isFirstSubmission;
+    this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true)
+    .then(val => {
       this.submitCollection = collection;
-      if (!isFirstSubmit) {
+      if (!val.isFirstSubmission) {
         this.page++;
       } else {
         this.submitForReview(this.submitCollection);

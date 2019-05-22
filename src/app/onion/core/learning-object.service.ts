@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from '../../core/auth.service';
 
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable()
@@ -362,6 +362,34 @@ export class LearningObjectService {
         USER_ROUTES.CREATE_AN_OUTCOME(sourceId),
         { source: sourceId, outcome },
         { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Checks if the user is submitting a learning object for the first time
+   *
+   * @param userId The learning object's author ID
+   * @param learningObjectId The learning object's ID
+   * @param collection The collection submitting to
+   * @param hasSubmission If the object has a submission [SET TO TRUE]
+   * @memberof LearningObjectService
+   */
+  getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
+    return this.http
+      .get<{isFirstSubmission: boolean}>(
+        USER_ROUTES.CHECK_FIRST_SUBMISSION({
+          userId,
+          learningObjectId,
+          query: {
+            collection,
+            hasSubmission
+          }}),
+        { withCredentials: true }
       )
       .pipe(
         retry(3),
