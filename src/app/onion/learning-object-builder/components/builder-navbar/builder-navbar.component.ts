@@ -9,7 +9,6 @@ import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
-import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 @Component({
@@ -30,9 +29,6 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   learningObject: LearningObject;
   collection: Collection;
-  changelog;
-  page = 1;
-  submitCollection: string; // Refers to the collection the user wishes to submit to
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -52,7 +48,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     private toasterService: ToasterService,
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
-    private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
     public validator: LearningObjectValidator,
     public store: BuilderStore
@@ -181,55 +176,53 @@ export class BuilderNavbarComponent implements OnDestroy {
     const errorPages = new Map<string, boolean>();
     const currentRoute = this.activatedRoute.snapshot.children[0].url[0].path;
 
-    this.store.submitForReview().then((canSubmit: boolean) => {
-      if (!canSubmit) {
-        // check for outcome errors
+    if (!this.store.canSubmit()) {
+      // check for outcome errors
+      if (
+        this.validator.get('outcomes') ||
+        this.validator.outcomeValidator.errors.submitErrors.size
+      ) {
+        errorPages.set('outcomes', true);
+      }
+
+      // check for submission errors not related to outcomes
+      if (
+        this.validator.errors.submitErrors.size > 1 ||
+        (this.validator.errors.submitErrors.size === 1 &&
+          !this.validator.get('outcomes'))
+      ) {
+        errorPages.set('info', true);
+      }
+
+      // notify user
+      this.toasterService.notify(
+        'Error!',
+        'Please correct the errors and try again!',
+        'bad',
+        'far fa-times'
+      );
+
+      if (errorPages.size && !errorPages.get(currentRoute)) {
+        // we've found errors on other pages and none on our current page, so route to that page
+        const target = ['./' + Array.from(errorPages.keys())[0]];
+
         if (
-          this.validator.get('outcomes') ||
+          target[0] === './outcomes' &&
           this.validator.outcomeValidator.errors.submitErrors.size
         ) {
-          errorPages.set('outcomes', true);
+          // route directly to bad outcome if possible
+          target.push(
+            Array.from(
+              this.validator.outcomeValidator.errors.submitErrors.keys()
+            )[0]
+          );
         }
 
-        // check for submission errors not related to outcomes
-        if (
-          this.validator.errors.submitErrors.size > 1 ||
-          (this.validator.errors.submitErrors.size === 1 &&
-            !this.validator.get('outcomes'))
-        ) {
-          errorPages.set('info', true);
-        }
-
-        // notify user
-        this.toasterService.notify(
-          'Error!',
-          'Please correct the errors and try again!',
-          'bad',
-          'far fa-times'
-        );
-
-        if (errorPages.size && !errorPages.get(currentRoute)) {
-          // we've found errors on other pages and none on our current page, so route to that page
-          const target = ['./' + Array.from(errorPages.keys())[0]];
-
-          if (
-            target[0] === './outcomes' &&
-            this.validator.outcomeValidator.errors.submitErrors.size
-          ) {
-            // route directly to bad outcome if possible
-            target.push(
-              Array.from(
-                this.validator.outcomeValidator.errors.submitErrors.keys()
-              )[0]
-            );
-          }
-
-          this.router.navigate(target, { relativeTo: this.activatedRoute });
-        }
-      } else {
-        this.showSubmission = true;
+        this.router.navigate(target, { relativeTo: this.activatedRoute });
       }
-    });
+    } else {
+      this.showSubmission = true;
+    }
   }
 
   /**
@@ -288,77 +281,10 @@ export class BuilderNavbarComponent implements OnDestroy {
   }
 
   /**
-   * Submits a learning object to a collection for review and publishes the object
-   * @param {string} collection the name of the collection to submit to
-   */
-  submitForReview(collection: string) {
-    this.submissionError = false;
-    this.store
-      .submitForReview(collection)
-      .then(val => {
-        this.page = 1;
-        this.showSubmission = false;
-        this.toasterService.notify(
-          'Success!',
-          'Learning object submitted successfully!',
-          'good',
-          'far fa-check'
-        );
-      })
-      .catch(error => {
-        console.error(error);
-        this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
-        this.page = 1;
-        this.showSubmission = false;
-        this.submissionError = true;
-      });
-  }
-
-  /**
    * Return a learning object to unpublished status
    */
   cancelSubmission() {
     this.store.cancelSubmission();
-  }
-
-  /**
-   * Create a new changelog for the active learning object
-   */
-  createChangelog() {
-    if (this.changelog) {
-      this.changelogService.createChangelog(this.store.learningObjectEvent.getValue().author.id,
-        this.store.learningObjectEvent.getValue().id,
-        this.changelog)
-          .then(() => {
-          this.showSubmission = false;
-          this.page = 1;
-        }).catch(e => {
-          console.error(e);
-          this.showSubmission = false;
-          this.page = 1;
-          this.toasterService.notify('Error!', 'We couldn\'t create your changelog!', 'bad', 'far fa-times');
-        });
-    } else {
-      this.showSubmission = false;
-      this.page = 1;
-    }
-    this.submitForReview(this.submitCollection);
-  }
-
-  /**
-   * Gets the collection name selected from the output
-   * @param collection The selected collection
-   */
-  getCollectionSelected(collection: string) {
-    this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true)
-    .then(val => {
-      this.submitCollection = collection;
-      if (!val.isFirstSubmission) {
-        this.page++;
-      } else {
-        this.submitForReview(this.submitCollection);
-      }
-    });
   }
 
   ngOnDestroy() {

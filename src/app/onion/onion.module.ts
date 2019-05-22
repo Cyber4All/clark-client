@@ -19,6 +19,7 @@ import { ChangelogItemComponent } from './dashboard/components/changelog-item/ch
 import { IdentificationPillComponent } from './dashboard/components/identification-pill/identification-pill.component';
 import { ChangelogListComponent } from './dashboard/components/changelog-list/changelog-list.component';
 import { ChangelogModalComponent } from './dashboard/components/changelog-modal/changelog-modal.component';
+import { OnionSharedModule } from './shared/onion-shared.module';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -44,6 +45,7 @@ import { ChangelogModalComponent } from './dashboard/components/changelog-modal/
     ReactiveFormsModule,
     SharedModule,
     OnionCoreModule,
+    OnionSharedModule,
     ModalModule,
     ToasterModule,
     LearningObjectBuilderModule,

@@ -123,10 +123,11 @@ import { DownloadNoticePopupComponent } from './popup-templates/download-notice-
     TeleporterModule,
     NewRatingResponseComponent,
     TextEditorComponent,
-    CollectionCardComponent
-    CarouselComponent,
+    CollectionCardComponent,
     CollectionSelectorPopupComponent,
-    DownloadNoticePopupComponent
+    DownloadNoticePopupComponent,
+    CollectionCardComponent,
+    CarouselComponent
   ]
 })
 export class SharedModule {}

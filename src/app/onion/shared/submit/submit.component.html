@@ -1,30 +1,28 @@
 <clark-popup *ngIf="visible" (closed)="visible = false">
   <div class="submit" #popupInner>
+    <div class="banner">
+      <div class="banner__title">Create a Changelog</div>
+      <div class="banner__sub">
+        What changes were made to this learning object?
+      </div>
+    </div>
     <clark-carousel [action$]="carouselAction$">
       <ng-template #submitReviewTemplate>
-        <clark-collection-selector
+        <clark-collection-grid
           [currentCollection]="collection || learningObject.collection"
           (choice)="getCollectionSelected($event)"
           (cancel)="visible = false"
-        ></clark-collection-selector>
+        ></clark-collection-grid>
       </ng-template>
 
       <ng-template #authorChangelogTemplate>
-        <div class="whole_changelog_wrapper">
-          <div class="banner">
-            <div class="banner__title">Create a Changelog</div>
-            <div class="banner__sub">
-              What changes were made to this learning object?
-            </div>
-          </div>
-          <div class="changelog_wrapper">
-            <clark-edit-changelog
-              [(changelog)]="changelog"
-              (back)="regress()"
-              (cancel)="visible = false; regress()"
-              (confirm)="createChangelog()"
-            ></clark-edit-changelog>
-          </div>
+        <div class="changelog_wrapper">
+          <clark-edit-changelog
+            [(changelog)]="changelog"
+            (back)="regress()"
+            (cancel)="visible = false; regress()"
+            (confirm)="createChangelog()"
+          ></clark-edit-changelog>
         </div>
       </ng-template>
     </clark-carousel>
