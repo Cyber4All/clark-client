@@ -463,7 +463,7 @@ export class AuthService {
    * Identifies if the current logged in user has editor privileges.
    */
   public hasEditorAccess(): boolean {
-    return this.group.getValue() > AUTH_GROUP.REVIEWER;
+    return this.group.getValue() > AUTH_GROUP.CURATOR;
   }
 
   /**
