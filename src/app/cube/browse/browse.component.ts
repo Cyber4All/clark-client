@@ -35,6 +35,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     currPage: 1,
     limit: 20,
     length: [],
+    guidelines: [],
     level: [],
     standardOutcomes: [],
     orderBy: undefined,
@@ -437,6 +438,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   async fetchLearningObjects(query: Query) {
+    console.log(query);
     this.loading = true;
     this.learningObjects = Array(20).fill(new LearningObject());
     this.cd.detectChanges();
