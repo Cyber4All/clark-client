@@ -44,9 +44,11 @@
   
   <!-- Main Carousel -->
   <clark-carousel [action$]="carouselAction$">
-
     <ng-template>
-      <clark-privileges-list *ngIf="privileges" #carouselItem [privileges]="privileges" [collections]="collections" (delete)="remove($event)"></clark-privileges-list>
+      <div class="privilege-wrapper">
+        <clark-privileges-list [privileges]="privileges" [collections]="collections" (delete)="remove($event)"></clark-privileges-list>
+        <ng-container *ngIf="!privileges?.length" [ngTemplateOutlet]="noPrivilegesTemplate"></ng-container>
+      </div>
     </ng-template>
 
     <ng-template>
@@ -70,6 +72,17 @@
     <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (click)="selectedRole = 'curator'; advance()" class="role-selector__role">
       <i class="far fa-user-crown"></i>
       Curator
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noPrivilegesTemplate>
+  <div [@noPrivileges] class="no-privileges">
+    <div>
+      <i class="far fa-user-lock"></i>
+    </div>
+    <div>
+      This user doesn't have any administrator privileges yet!
     </div>
   </div>
 </ng-template>

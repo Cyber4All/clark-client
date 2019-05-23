@@ -4,11 +4,24 @@ import { CollectionService } from 'app/core/collection.service';
 import { Subject } from 'rxjs';
 import { PrivilegeService } from 'app/core/privilege.service';
 import { ToasterService } from 'app/shared/toaster';
+import { trigger, transition, style, animate, animateChild, query, group } from '@angular/animations';
 
 @Component({
   selector: 'clark-user-privileges',
   templateUrl: './user-privileges.component.html',
-  styleUrls: ['./user-privileges.component.scss']
+  styleUrls: ['./user-privileges.component.scss'],
+  animations: [
+    trigger('noPrivileges', [
+      transition(':leave', [
+        style({ opacity: 1, transform: 'scale(1, 1)' }),
+        animate('300ms ease', style({ opacity: 0, transform: 'scale(1, 0.6)' })),
+      ]),
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(1, 0.6)' }),
+        animate('300ms ease', style({ opacity: 1, transform: 'scale(1, 1)' }))
+      ])
+    ])
+  ]
 })
 export class UserPrivilegesComponent implements OnInit {
   @Input() user: AuthUser;
@@ -65,7 +78,6 @@ export class UserPrivilegesComponent implements OnInit {
   }
 
   submit() {
-    // TODO submission service logic here
     let collectionIndex = -1;
     for (let i = 0, l = this.privileges.length; i <l; i++) {
       if (this.privileges[i][1] === this.selectedCollection) {
