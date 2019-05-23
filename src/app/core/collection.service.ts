@@ -34,11 +34,6 @@ export class CollectionService {
       )
       .toPromise()
       .then(async (collections: Collection[]) => {
-        this.collections = collections.map(c => {
-          c.hasLogo = false;
-          return c;
-        });
-
         for (const c of this.collections) {
           c.hasLogo = false;
 
