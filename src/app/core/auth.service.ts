@@ -292,7 +292,7 @@ export class AuthService {
     } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
-      // reject the Promise with the error's payload 
+      // reject the Promise with the error's payload
       return Promise.reject(error);
     }
   }
