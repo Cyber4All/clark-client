@@ -28,6 +28,7 @@ import {
   UploadErrorUpdate
 } from '../services/typings';
 import { UPLOAD_ERRORS } from './errors';
+import { AuthService } from 'app/core/auth.service';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -153,10 +154,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private newFileMeta: FileUploadMeta[] = [];
 
+  private credentialRefreshAttempted = false;
+
   constructor(
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
-    private fileManager: FileManagementService
+    private fileManager: FileManagementService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -608,10 +612,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private handleCredentialsError() {
-    this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
-    const s = this.uploadQueue.filter(file => !file.success);
-    // TODO: Fetch new credentials and attempt retry?
-    this.resetUploadStatuses();
+    if (!this.credentialRefreshAttempted) {
+      console.log('RETRYING');
+      this.credentialRefreshAttempted = true;
+      this.auth
+        .refreshToken()
+        .then(() => {
+          const failedFiles = this.uploadQueue.filter(file => !file.success);
+          this.resetUploadStatuses();
+          this.handleUpload(failedFiles);
+        })
+        .catch(e => {
+          this.resetUploadStatuses();
+          this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
+        });
+    } else {
+      this.resetUploadStatuses();
+      this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
+    }
   }
 
   /**
