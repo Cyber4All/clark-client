@@ -41,6 +41,7 @@ export interface OpenIdToken {
   Token: string;
 }
 
+// Location of logged in user's access tokens in local storage
 const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
 
 @Injectable()
