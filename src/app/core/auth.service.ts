@@ -61,7 +61,12 @@ export class AuthService {
   }
 
   /**
-   * Stores and sets appropriate values for starting session
+   * Stores and sets:
+   * User data of logged of logged in user
+   * OpenId token of logged in user
+   * Logged in status to true
+   * Access group of logged in user
+   * Access token in local storage
    *
    * @private
    * @param {Tokens} tokens
