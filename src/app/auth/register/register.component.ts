@@ -172,8 +172,7 @@ export class RegisterComponent implements OnInit {
         }
       },
       error => {
-        console.error('whoops', error);
-        this.error(error.error.message);
+        this.error(error.message);
       }
     );
   }
