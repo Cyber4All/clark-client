@@ -159,7 +159,6 @@ export class AuthService {
       this.user = response as AuthUser;
       this.assignUserToGroup();
     } catch (error) {
-      // reject the Promise with the error's payload
       return Promise.reject(error);
     }
   }
@@ -187,7 +186,6 @@ export class AuthService {
       return Promise.resolve();
     } catch (error) {
       if (error.status === 426) {
-        // reject the Promise with the error's payload
         return Promise.reject(error);
       }
     }
@@ -212,7 +210,6 @@ export class AuthService {
         .toPromise();
       this.user = val as AuthUser;
     } catch (error) {
-      // reject the Promise with the error's payload
       return Promise.reject(error);
     }
   }
@@ -242,7 +239,6 @@ export class AuthService {
     } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
-      // reject the Promise with the error's payload
       return Promise.reject(error);
     }
   }
@@ -292,7 +288,6 @@ export class AuthService {
     } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
-      // reject the Promise with the error's payload
       return Promise.reject(error);
     }
   }
