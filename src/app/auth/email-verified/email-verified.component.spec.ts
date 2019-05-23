@@ -10,7 +10,7 @@ const promise = {
 };
 
 const authServiceStub = {
-  validate: (callback) => promise,
+  validateAndRefreshToken: (callback) => promise,
   refreshToken: () => promise,
 };
 const navbarServiceStub = {
