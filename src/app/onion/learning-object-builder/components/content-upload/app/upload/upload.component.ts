@@ -27,6 +27,7 @@ import {
   UploadQueueCompleteUpdate,
   UploadErrorUpdate
 } from '../services/typings';
+import { UPLOAD_ERRORS } from './errors';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -468,7 +469,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       if (e.name === UploadErrorReason.Credentials) {
         this.handleCredentialsError();
       } else {
-        this.error$.next('Unable to upload files at this time.');
+        this.error$.next(UPLOAD_ERRORS.SERVICE_ERROR);
       }
     }
   }
@@ -576,12 +577,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleQueueComplete(update: UploadQueueCompleteUpdate) {
     if ((update as UploadQueueCompleteUpdate).data.failed) {
       const unUploadedFiles = this.uploadQueue.filter(file => !file.success);
-      const fileNames =
-        unUploadedFiles
-          .map(file => file.name)
-          .join(', ')
-          .substring(0, 50) + '...';
-      this.error$.next(`Could not upload: ${fileNames}.`);
+      const fileNames = unUploadedFiles.map(file => file.name).join(', ');
+      this.error$.next(UPLOAD_ERRORS.FILES_FAILED(fileNames));
       // TODO: Prompt user and Attempt retry?
       this.resetUploadStatuses();
     } else {
@@ -611,7 +608,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private handleCredentialsError() {
-    this.error$.next(`Cannot upload files at this time. Invalid credentials.`);
+    this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
     const s = this.uploadQueue.filter(file => !file.success);
     // TODO: Fetch new credentials and attempt retry?
     this.resetUploadStatuses();
