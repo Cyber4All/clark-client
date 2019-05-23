@@ -159,7 +159,8 @@ export class AuthService {
       this.user = response as AuthUser;
       this.assignUserToGroup();
     } catch (error) {
-      throw error;
+      // reject the Promise with the error's payload
+      return Promise.reject(error);
     }
   }
 
@@ -169,7 +170,7 @@ export class AuthService {
    * @returns {Promise<void>}
    * @memberof AuthService
    */
-  async checkClientVersion(): Promise<void> {
+  async checkClientVersion(): Promise<void | Partial<{ message: string }>> {
     // Application version information
     const { version: appVersion } = require('../../../package.json');
     try {
@@ -186,6 +187,7 @@ export class AuthService {
       return Promise.resolve();
     } catch (error) {
       if (error.status === 426) {
+        // reject the Promise with the error's payload
         return Promise.reject(error);
       }
     }
@@ -197,7 +199,7 @@ export class AuthService {
    * @returns {Promise<void>}
    * @memberof AuthService
    */
-  async refreshToken(): Promise<void> {
+  async refreshToken(): Promise<void | Partial<{ message: string }>> {
     try {
       const val = await this.http
         .get(environment.apiURL + '/users/tokens/refresh', {
@@ -210,7 +212,8 @@ export class AuthService {
         .toPromise();
       this.user = val as AuthUser;
     } catch (error) {
-      throw error;
+      // reject the Promise with the error's payload
+      return Promise.reject(error);
     }
   }
 
@@ -239,7 +242,8 @@ export class AuthService {
     } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
-      throw error;
+      // reject the Promise with the error's payload
+      return Promise.reject(error);
     }
   }
 
@@ -288,7 +292,8 @@ export class AuthService {
     } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
-      throw error;
+      // reject the Promise with the error's payload 
+      return Promise.reject(error);
     }
   }
 
@@ -496,10 +501,10 @@ export class AuthService {
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
-      return throwError(error.error.message);
+      return throwError(error.error);
     } else {
       // API returned error
-      return throwError(error);
+      return throwError(error.error);
     }
   }
 }
