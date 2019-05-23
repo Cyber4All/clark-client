@@ -72,10 +72,22 @@ export class SubmitComponent implements OnInit {
     }
   }
 
+  /**
+   * Move the carousel forwards by {distance}
+   *
+   * @param {number} [distance=1] the amount of carousel slides to traverse
+   * @memberof SubmitComponent
+   */
   advance(distance: number = 1) {
     this.carouselAction$.next('+' + distance);
   }
 
+  /**
+   * Move the carousel backwards by {distance}
+   *
+   * @param {number} [distance=1] the number of carousel slides to traverse
+   * @memberof SubmitComponent
+   */
   regress(distance: number = 1) {
     this.carouselAction$.next('-' + distance);
   }
