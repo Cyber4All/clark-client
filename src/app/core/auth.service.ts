@@ -261,7 +261,7 @@ export class AuthService {
    * @returns {Promise<void>}
    * @memberof AuthService
    */
-  async checkClientVersion(): Promise<void> {
+  async checkClientVersion(): Promise<void | Partial<{ message: string }>> {
     // Application version information
     const { version: appVersion } = require('../../../package.json');
     try {
@@ -289,7 +289,7 @@ export class AuthService {
    * @returns {Promise<void>}
    * @memberof AuthService
    */
-  async refreshToken(): Promise<void> {
+  async refreshToken(): Promise<void | Partial<{ message: string }>> {
     try {
       const response = await this.http
         .get<AuthUser & { tokens: Tokens }>(
@@ -308,7 +308,7 @@ export class AuthService {
       const user: AuthUser = response as AuthUser;
       this.setSession({ user, tokens });
     } catch (error) {
-      throw error;
+      return Promise.reject(error);
     }
   }
 
@@ -616,10 +616,10 @@ export class AuthService {
       (error.error && error.error.message)
     ) {
       // Client-side or network returned error
-      return throwError(error.error.message);
+      return throwError(error.error);
     } else {
       // API returned error
-      return throwError(error);
+      return throwError(error.error);
     }
   }
 }

@@ -2,11 +2,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserAgentService } from 'app/core/user-agent.service';
 
 @Component({
-  selector: 'clark-download-notice',
-  templateUrl: './download-notice.component.html',
-  styleUrls: ['./download-notice.component.scss']
+  selector: 'clark-download-notice-popup',
+  templateUrl: './download-notice-popup.component.html',
+  styleUrls: ['./download-notice-popup.component.scss']
 })
-export class DownloadNoticeComponent implements OnInit {
+export class DownloadNoticePopupComponent implements OnInit {
 
   @Output() close: EventEmitter<void> = new EventEmitter();
 

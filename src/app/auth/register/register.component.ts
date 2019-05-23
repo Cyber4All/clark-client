@@ -1,13 +1,7 @@
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl,
-} from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit, HostListener } from '@angular/core';
-import { AuthService, AuthUser } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '@entity';
 import {
   trigger,
   style,
@@ -17,7 +11,6 @@ import {
   query,
   stagger
 } from '@angular/animations';
-import { NavbarService } from '../../core/navbar.service';
 import { environment } from '@env/environment';
 
 @Component({
@@ -62,7 +55,6 @@ import { environment } from '@env/environment';
     ])
   ]
 })
-
 export class RegisterComponent implements OnInit {
   regInfo = {
     firstname: '',
@@ -110,21 +102,21 @@ export class RegisterComponent implements OnInit {
     {
       left: 'Create your profile',
       right: 'Register!'
-    },
+    }
   ];
 
   elements = ['Personal Information', 'User Information', 'Preview'];
 
   @HostListener('window:keyup', ['$event'])
-    keyup(event) {
-      if (event.target.tagName.toLowerCase() !== 'input') {
-        if (event.keyCode === 39) {
-          this.next();
-        } else if (event.keyCode === 37) {
-          this.back();
-        }
+  keyup(event) {
+    if (event.target.tagName.toLowerCase() !== 'input') {
+      if (event.keyCode === 39) {
+        this.next();
+      } else if (event.keyCode === 37) {
+        this.back();
       }
     }
+  }
 
   constructor(
     private auth: AuthService,
@@ -133,14 +125,16 @@ export class RegisterComponent implements OnInit {
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
-        this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
+        this.redirectUrl = decodeURIComponent(
+          route.snapshot.queryParams.redirectUrl
+        );
       }
     });
   }
 
   ngOnInit() {
-     // If development/testing set verified to true in order to skip reCaptcha check in e2e tests
-     if (environment.production === false) {
+    // If development/testing set verified to true in order to skip reCaptcha check in e2e tests
+    if (environment.production === false) {
       this.verified = true;
     }
   }
@@ -213,13 +207,13 @@ export class RegisterComponent implements OnInit {
   }
 
   // navigation
-   next() {
+  next() {
     this.pageValidate(); // Validate page before allowing access to the next
-     if (this.page === 1 && this.isValidPage) {
-        this.slidePage();
-     } else {
-       this.slidePage();
-     }
+    if (this.page === 1 && this.isValidPage) {
+      this.slidePage();
+    } else {
+      this.slidePage();
+    }
   }
 
   private slidePage() {
@@ -244,7 +238,7 @@ export class RegisterComponent implements OnInit {
   }
 
   // Checks for specific items on pages 1 and 2
-   pageValidate() {
+  pageValidate() {
     switch (this.page) {
       case 1:
         this.isValidPage = this.validatePageOne();
@@ -304,7 +298,9 @@ export class RegisterComponent implements OnInit {
       this.regForm.controls['username'].value.length < 3 ||
       this.regForm.controls['username'].value.length > 20
     ) {
-      this.error('Usernames must be at least 3 characters long and no longer than 20 characters.');
+      this.error(
+        'Usernames must be at least 3 characters long and no longer than 20 characters.'
+      );
       return false;
     }
 

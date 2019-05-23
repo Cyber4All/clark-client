@@ -482,6 +482,34 @@ export class LearningObjectService {
       .toPromise();
   }
 
+  /**
+   * Checks if the user is submitting a learning object for the first time
+   *
+   * @param userId The learning object's author ID
+   * @param learningObjectId The learning object's ID
+   * @param collection The collection submitting to
+   * @param hasSubmission If the object has a submission [SET TO TRUE]
+   * @memberof LearningObjectService
+   */
+  getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
+    return this.http
+      .get<{isFirstSubmission: boolean}>(
+        USER_ROUTES.CHECK_FIRST_SUBMISSION({
+          userId,
+          learningObjectId,
+          query: {
+            collection,
+            hasSubmission
+          }}),
+        { withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

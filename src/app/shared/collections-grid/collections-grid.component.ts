@@ -1,23 +1,21 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { CollectionService, Collection } from 'app/core/collection.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Collection, CollectionService } from 'app/core/collection.service';
 
 @Component({
-  selector: 'clark-collection-selector',
-  templateUrl: './collection-selector.component.html',
-  styleUrls: ['./collection-selector.component.scss']
+  selector: 'clark-collections-grid',
+  templateUrl: './collections-grid.component.html',
+  styleUrls: ['./collections-grid.component.scss']
 })
-export class CollectionSelectorComponent implements OnInit {
+export class CollectionsGridComponent implements OnInit {
+
   // list of collections from service
   @Input() collections: Collection[];
 
   // highlights collection if one is already present
   @Input() currentCollection: string;
 
-  // fires when the user selects a choice
-  @Output() choice: EventEmitter<string> = new EventEmitter();
-
-  // emits event to parent component to cancel submission
-  @Output() cancel: EventEmitter<void> = new EventEmitter();
+  // fires when the user selects a collection
+  @Output() selected: EventEmitter<string> = new EventEmitter();
 
   // flags
   loading = false;
@@ -50,10 +48,6 @@ export class CollectionSelectorComponent implements OnInit {
 
   select(collection: string) {
     this.currentCollection = collection;
+    this.selected.emit(collection);
   }
-
-  submit() {
-    this.choice.emit(this.currentCollection);
-  }
-
 }

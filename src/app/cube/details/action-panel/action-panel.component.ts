@@ -21,6 +21,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @Input() revisedDate: Date;
   @Input() releasedDate: Date;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
+  @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private destroyed$ = new Subject<void>();
@@ -147,6 +148,21 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
 
     this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+  }
+
+  /**
+   * Copy the Creative Commons Attribution to the clipboard
+   *
+  */
+  copyAttribution() {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('objectAttribution'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+
+    this.toaster.notify('Success!', 'Attribution information has been copied to your clipboard!', 'good', 'far fa-check');
   }
 
   toggleDownloadModal(val?: boolean) {
