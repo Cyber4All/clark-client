@@ -29,7 +29,6 @@ export enum AUTH_GROUP {
 export interface Tokens {
   bearer: string;
   openId: OpenIdToken;
-  user: AuthUser;
 }
 
 export interface AuthUser extends User {
@@ -69,11 +68,12 @@ export class AuthService {
    * Access token in local storage
    *
    * @private
-   * @param {Tokens} tokens
+   * @param {AuthUser} user [User data for the logged in user]
+   * @param {Tokens} tokens [Access tokens for the logged in user]
    * @memberof AuthService
    */
-  private setSession(tokens: Tokens) {
-    this.user = tokens.user;
+  private setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
+    this.user = user;
     this.openIdToken = tokens.openId;
     this.changeStatus(true);
     this.assignUserToGroup();
@@ -292,15 +292,21 @@ export class AuthService {
   async refreshToken(): Promise<void> {
     try {
       const response = await this.http
-        .get<Tokens>(environment.apiURL + '/users/tokens/refresh', {
-          withCredentials: true
-        })
+        .get<AuthUser & { tokens: Tokens }>(
+          environment.apiURL + '/users/tokens/refresh',
+          {
+            withCredentials: true
+          }
+        )
         .pipe(
           retry(3),
           catchError(this.handleError)
         )
         .toPromise();
-      this.setSession(response);
+      const tokens: Tokens = response.tokens;
+      delete response.tokens;
+      const user: AuthUser = response as AuthUser;
+      this.setSession({ user, tokens });
     } catch (error) {
       throw error;
     }
@@ -316,16 +322,23 @@ export class AuthService {
   async login(user: { username: string; password: string }): Promise<any> {
     try {
       const response = await this.http
-        .post<Tokens>(environment.apiURL + '/users/tokens', user, {
-          withCredentials: true
-        })
+        .post<AuthUser & { tokens: Tokens }>(
+          environment.apiURL + '/users/tokens',
+          user,
+          {
+            withCredentials: true
+          }
+        )
         .pipe(
           retry(3),
           catchError(this.handleError)
         )
         .toPromise();
 
-      this.setSession(response);
+      const tokens: Tokens = response.tokens;
+      delete response.tokens;
+      const authUser: AuthUser = response as AuthUser;
+      this.setSession({ user: authUser, tokens });
       return this.user;
     } catch (error) {
       this.endSession();
@@ -362,16 +375,23 @@ export class AuthService {
    */
   async register(user: any): Promise<User> {
     try {
-      const tokens = await this.http
-        .post<Tokens>(environment.apiURL + '/users', user, {
-          withCredentials: true
-        })
+      const response = await this.http
+        .post<AuthUser & { tokens: Tokens }>(
+          environment.apiURL + '/users',
+          user,
+          {
+            withCredentials: true
+          }
+        )
         .pipe(
           retry(3),
           catchError(this.handleError)
         )
         .toPromise();
-      this.setSession(tokens);
+      const tokens: Tokens = response.tokens;
+      delete response.tokens;
+      const authUser: AuthUser = response as AuthUser;
+      this.setSession({ user: authUser, tokens });
       return this.user;
     } catch (error) {
       this.endSession();
