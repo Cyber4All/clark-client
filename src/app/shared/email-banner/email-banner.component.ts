@@ -21,7 +21,7 @@ export class EmailBannerComponent implements OnInit {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.validate();
+      await this.auth.validateAndUpdate();
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();

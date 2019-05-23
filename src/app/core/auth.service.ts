@@ -56,7 +56,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
-      this.validate();
+      this.validateAndRefreshToken();
     }
   }
 
@@ -228,12 +228,14 @@ export class AuthService {
   }
 
   /**
-   * Validate the current cookie against the service
+   * Validate the current token against the service
+   * If the token is valid. The current logged in user's data is updated with the service's response payload
+   * If the token is invalid, the current user's session is ended.
    *
    * @returns {Promise<void>}
    * @memberof AuthService
    */
-  async validate(): Promise<void> {
+  async validateAndRefreshToken(): Promise<void> {
     try {
       const response = await this.http
         .get<AuthUser>(environment.apiURL + '/users/tokens', {

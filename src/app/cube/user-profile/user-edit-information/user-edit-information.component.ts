@@ -84,7 +84,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
     };
     try {
       await this.userService.editUserInfo(edits);
-      await this.auth.validate();
+      await this.auth.validateAndUpdate();
       this.close.emit(true);
       this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
     } catch (e) {
