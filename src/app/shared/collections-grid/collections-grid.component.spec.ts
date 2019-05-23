@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CollectionSelectorComponent } from './collection-selector.component';
+import { CollectionsGridComponent } from './collections-grid.component';
 
-describe('CollectionSelectorComponent', () => {
-  let component: CollectionSelectorComponent;
-  let fixture: ComponentFixture<CollectionSelectorComponent>;
+describe('CollectionsGridComponent', () => {
+  let component: CollectionsGridComponent;
+  let fixture: ComponentFixture<CollectionsGridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionSelectorComponent ]
+      declarations: [ CollectionsGridComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CollectionSelectorComponent);
+    fixture = TestBed.createComponent(CollectionsGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
