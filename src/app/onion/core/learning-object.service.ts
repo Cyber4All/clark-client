@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from '../../core/auth.service';
 
-import { retry, catchError, map } from 'rxjs/operators';
+import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable()
