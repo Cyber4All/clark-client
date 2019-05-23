@@ -51,7 +51,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.validateAndUpdate();
+      await this.auth.validateAndRefreshToken();
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification(this.user.email).toPromise();

@@ -18,7 +18,7 @@ export class EmailVerifiedComponent implements OnInit {
   constructor(private auth: AuthService) {}
 
   ngOnInit() {
-    this.auth.validateAndUpdate()
+    this.auth.validateAndRefreshToken()
       .then(async () => {
         // Token is good, refresh it and go home
         await this.auth.refreshToken();
