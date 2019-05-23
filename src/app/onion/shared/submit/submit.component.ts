@@ -162,6 +162,11 @@ export class SubmitComponent implements OnInit {
     });
   }
 
+  /**
+   * Emit a close event to parent component
+   *
+   * @memberof SubmitComponent
+   */
   closeModal() {
     this.close.emit();
   }
