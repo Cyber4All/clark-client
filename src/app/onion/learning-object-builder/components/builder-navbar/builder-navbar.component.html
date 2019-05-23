@@ -1,39 +1,94 @@
 <div class="builder-navbar-wrapper">
   <div class="top">
     <div class="top__left">
-      <a *ngIf="!adminMode" routerLink="onion/dashboard"><i class="far fa-arrow-left"></i> Back to Dashboard</a>
+      <a *ngIf="!adminMode" routerLink="onion/dashboard"
+        ><i class="far fa-arrow-left"></i> Back to Dashboard</a
+      >
       <!-- FIXME: Convert to routerLink when admin dashboard is pulled into CLARK -->
-      <a *ngIf="adminMode" href="https://admin.clark.center"><i class="far fa-arrow-left"></i> Back to Dashboard</a>
+      <a *ngIf="adminMode" href="https://admin.clark.center"
+        ><i class="far fa-arrow-left"></i> Back to Dashboard</a
+      >
     </div>
     <div class="top__right">
-      <div *ngIf="!['unreleased', 'rejected'].includes(learningObject?.status) && learningObject?.collection" class="top__collection"
-        tip="This learning object has been submitted to the {{ collection.name }} collection." tipLocation="bottom">
+      <div
+        *ngIf="
+          !['unreleased', 'rejected'].includes(learningObject?.status) &&
+          learningObject?.collection
+        "
+        class="top__collection"
+        tip="This learning object has been submitted to the {{
+          collection.name
+        }} collection."
+        tipLocation="bottom"
+      >
         <span>{{ collection.name }}</span>
-        <div class="collection__image" [style.background-image]="'url(assets/images/collections/' + learningObject?.collection + '.png)'"></div>
+        <div *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
+          class="collection__image"
+          [style.background-image]="
+            'url(assets/images/collections/' +
+            learningObject?.collection +
+            '.png)'
+          "
+        ></div>
       </div>
-      <clark-lo-status-indicator [status]="learningObject?.status" [states]="states"></clark-lo-status-indicator>
+      <clark-lo-status-indicator
+        [status]="learningObject?.status"
+        [states]="states"
+      ></clark-lo-status-indicator>
       <ng-container *ngIf="!adminMode">
-
-        <ng-container *ngIf="!learningObject?.status || ['unreleased', 'rejected'].includes(learningObject?.status); else submittedButtonTemplate">
-          <button class="button" [ngClass]="{'good': !submissionError, 'bad': validator.submissionMode && submissionError, 'disabled': !auth.user.emailVerified}"
-            (click)="auth.user.emailVerified && triggerSubmit()">
-            <div *ngIf="validator.submissionMode && submissionError" class="button__cancel" tip="Cancel Submission"
-              tipLocation="bottom" (click)="$event.stopPropagation(); validator.submissionMode = false;">
+        <ng-container
+          *ngIf="
+            !learningObject?.status ||
+              ['unreleased', 'rejected'].includes(learningObject?.status);
+            else submittedButtonTemplate
+          "
+        >
+          <button
+            class="button"
+            [ngClass]="{
+              good: !submissionError,
+              bad: validator.submissionMode && submissionError,
+              disabled: !auth.user.emailVerified
+            }"
+            (click)="auth.user.emailVerified && triggerSubmit()"
+          >
+            <div
+              *ngIf="validator.submissionMode && submissionError"
+              class="button__cancel"
+              tip="Cancel Submission"
+              tipLocation="bottom"
+              (click)="
+                $event.stopPropagation(); validator.submissionMode = false
+              "
+            >
               <i class="far fa-times"></i>
             </div>
-            {{ validator.submissionMode && submissionError ? 'Try Again' : 'Submit for review' }}
+            {{
+              validator.submissionMode && submissionError
+                ? 'Try Again'
+                : 'Submit for review'
+            }}
             <i class="far fa-arrow-right"></i>
           </button>
         </ng-container>
 
         <ng-template #submittedButtonTemplate>
-          <button class="button good" (click)="toggleSubmissionOptionsMenu($event)" [ngClass]="{'shadow': showSubmissionOptions, 'disabled': !auth.user.emailVerified}">
+          <button
+            class="button good"
+            (click)="toggleSubmissionOptionsMenu($event)"
+            [ngClass]="{
+              shadow: showSubmissionOptions,
+              disabled: !auth.user.emailVerified
+            }"
+          >
             Submitted <i class=" far fa-angle-down"></i>
           </button>
         </ng-template>
-
       </ng-container>
-      <clark-editor-action-panel *ngIf="adminMode" [learningObject]="learningObject"></clark-editor-action-panel>
+      <clark-editor-action-panel
+        *ngIf="adminMode"
+        [learningObject]="learningObject"
+      ></clark-editor-action-panel>
     </div>
   </div>
   <div class="builder-navbar-wrapper__bottom">
@@ -41,44 +96,86 @@
       <!-- update routerLinkActive with class used to show that link is active -->
       <ul>
         <li>
-          <ng-container [ngTemplateOutlet]="navItemTemplate" [ngTemplateOutletContext]="{ disabled: false, link: 'info', text: 'Basic Information' }"></ng-container>
+          <ng-container
+            [ngTemplateOutlet]="navItemTemplate"
+            [ngTemplateOutletContext]="{
+              disabled: false,
+              link: 'info',
+              text: 'Basic Information'
+            }"
+          ></ng-container>
         </li>
         <li>
-          <ng-container [ngTemplateOutlet]="navItemTemplate" [ngTemplateOutletContext]="{ disabled: !canRoute('outcomes'), link: 'outcomes', text: 'Learning Outcomes' }"></ng-container>
+          <ng-container
+            [ngTemplateOutlet]="navItemTemplate"
+            [ngTemplateOutletContext]="{
+              disabled: !canRoute('outcomes'),
+              link: 'outcomes',
+              text: 'Learning Outcomes'
+            }"
+          ></ng-container>
         </li>
         <li>
-          <ng-container [ngTemplateOutlet]="navItemTemplate" [ngTemplateOutletContext]="{ disabled: !canRoute('materials'), link: 'materials', text: 'Materials' }"></ng-container>
+          <ng-container
+            [ngTemplateOutlet]="navItemTemplate"
+            [ngTemplateOutletContext]="{
+              disabled: !canRoute('materials'),
+              link: 'materials',
+              text: 'Materials'
+            }"
+          ></ng-container>
         </li>
       </ul>
       <div class="builder-navbar-wrapper__saving-indicator">
-        <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator">Saving changes . . . </span>
-        <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator">All changes saved</span>
+        <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator"
+          >Saving changes . . .
+        </span>
+        <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator"
+          >All changes saved</span
+        >
       </div>
     </div>
-
   </div>
 </div>
 
-<clark-popup *ngIf="showSubmission" (closed)="showSubmission = false">
-  <div #popupInner>
-    <clark-collection-selector [currentCollection]="store.learningObjectEvent.getValue().collection" (choice)="submitForReview($event)"
-      (cancel)="showSubmission = false"></clark-collection-selector>
-  </div>
-</clark-popup>
+<clark-submit *ngIf="showSubmission" [learningObject]="store.learningObject" [visible]="true" (close)="showSubmission = false; getCollectionName()"></clark-submit>
 
 <clark-context-menu (id)="submissionOptionsMenu = $event" (close)="toggleSubmissionOptionsMenu($event)">
   <div #contextMenu>
     <ul>
-      <li class="bad" (click)="cancelSubmission(); toggleSubmissionOptionsMenu($event)">
+      <li
+        class="bad"
+        (click)="cancelSubmission(); toggleSubmissionOptionsMenu($event)"
+      >
         <i class="far fa-ban"></i> Cancel Submission
       </li>
     </ul>
   </div>
 </clark-context-menu>
 
-<ng-template #navItemTemplate let-link="link" let-disabled="disabled" let-text="text">
-  <a *ngIf="!disabled" [ngClass]="{'new': isNewRoute(link)}" routerLink="{{ link }}" routerLinkActive="active" (click)="triggerRouteClick(link)">{{
-    text }}</a>
-  <a *ngIf="disabled" class="disabled" tip="Please give this learning object a name before adding outcomes or uploading materials"
-    tipLocation="above"><i class="fas fa-lock"></i>{{ text }}</a>
+<ng-template
+  #navItemTemplate
+  let-link="link"
+  let-disabled="disabled"
+  let-text="text"
+>
+  <a
+    *ngIf="!disabled"
+    [ngClass]="{ new: isNewRoute(link) }"
+    routerLink="{{ link }}"
+    routerLinkActive="active"
+    (click)="triggerRouteClick(link)"
+    >{{ text }}</a
+  >
+  <a
+    *ngIf="disabled"
+    class="disabled"
+    tip="Please give this learning object a name before adding outcomes or uploading materials"
+    tipLocation="above"
+    ><i class="fas fa-lock"></i>{{ text }}</a
+  >
+</ng-template>
+
+<ng-template #genericCollectionLogoTemplate>
+  <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
 </ng-template>
