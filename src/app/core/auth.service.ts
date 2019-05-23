@@ -90,7 +90,7 @@ export class AuthService {
    * @memberof AuthService
    */
   private endSession() {
-    this.user = undefined;
+    this.user = null;
     this.openIdToken = null;
     this.cookies.remove('presence');
     this.changeStatus(false);
