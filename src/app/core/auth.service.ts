@@ -85,6 +85,12 @@ export class AuthService {
 
   /**
    * Unset session related data
+   * User data from previously logged in user is cleared from memory
+   * OpenId token is cleared from memory
+   * The presence cookie is removed from the browser
+   * Logged in status is set to false
+   * The user's access group is set to vistor
+   * All tokens are cleared from local storage
    *
    * @private
    * @memberof AuthService
