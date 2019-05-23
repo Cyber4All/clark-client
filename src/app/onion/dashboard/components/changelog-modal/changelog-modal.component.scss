@@ -1,0 +1,33 @@
+@import '~_vars.scss';
+
+.changelog-modal {
+  padding: 0 20px;
+}
+
+.header__title {
+  font-size: 30px;
+}
+
+.header__date {
+  font-size: 16px;
+  color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+  margin-bottom: 10px;
+}
+
+.loading-template,
+.empty-template {
+  text-align: center;
+  padding: 40px 0;
+  color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+  font-size: 20px;
+
+  .svg-inline--fa {
+    color: $bright-blue;
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  &.empty-template .svg-inline--fa {
+    font-size: 40px;
+  }
+}

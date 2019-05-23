@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   ChangeDetectorRef,
   ContentChildren,
   QueryList,
@@ -17,24 +16,23 @@ import { carousel } from './carousel.animation';
   selector: 'clark-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
-  animations: [ carousel ]
+  animations: [
+    carousel
+  ],
 })
-export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CarouselComponent implements AfterViewInit, OnDestroy {
   @ContentChildren(TemplateRef, { descendants: false }) items: QueryList<
     TemplateRef<any>
   >;
 
   @Input() action$: Subject<string> = new Subject();
 
-  direction: 'next' | 'prev' = 'next';
+  direction: 'next' | 'prev' | 'off' = 'off';
   index = 0;
 
   destroyed$: Subject<void> = new Subject();
 
   constructor(private cd: ChangeDetectorRef) {}
-
-  ngOnInit() {
-  }
 
   ngAfterViewInit() {
     this.action$.pipe(takeUntil(this.destroyed$)).subscribe(action => {
@@ -54,6 +52,12 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * Advance the carousel by an amount of {distance}
+   *
+   * @param {number} [distance=1]
+   * @memberof CarouselComponent
+   */
   advance(distance: number = 1) {
     this.direction = 'next';
     this.cd.detectChanges();
@@ -63,9 +67,15 @@ export class CarouselComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.index += distance;
     }
-
   }
 
+
+  /**
+   * Regress the carousel by an amount of {distance}
+   *
+   * @param {number} [distance=1]
+   * @memberof CarouselComponent
+   */
   regress(distance: number = 1) {
     this.direction = 'prev';
     this.cd.detectChanges();

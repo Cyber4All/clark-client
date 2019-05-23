@@ -43,9 +43,9 @@ import { TextEditorComponent } from './text-editor.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
 import {CKEditorModule} from 'ng2-ckeditor';
 import { CarouselComponent } from './carousel/carousel.component';
-import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
 import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
 import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
+import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -95,10 +95,13 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     NewRatingResponseComponent,
     TextEditorComponent,
     CarouselComponent,
-    CollectionSelectorPopupComponent,
     DownloadNoticePopupComponent,
     CollectionsGridComponent,
-    CollectionCardComponent
+    CollectionCardComponent,
+    CarouselComponent,
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent,
+    GenericCollectionLogoComponent
   ],
   exports: [
     NavbarComponent,
@@ -128,11 +131,15 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
     NewRatingResponseComponent,
     TextEditorComponent,
     CarouselComponent,
-    CollectionSelectorPopupComponent,
     DownloadNoticePopupComponent,
     CollectionsGridComponent,
     CollectionCardComponent,
-    ToasterModule
+    ToasterModule,
+    DownloadNoticePopupComponent,
+    CollectionCardComponent,
+    CarouselComponent,
+    CollectionsGridComponent,
+    GenericCollectionLogoComponent
   ]
 })
 export class SharedModule {}

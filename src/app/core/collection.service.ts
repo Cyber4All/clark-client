@@ -34,15 +34,10 @@ export class CollectionService {
       )
       .toPromise()
       .then(async (collections: Collection[]) => {
-        this.collections = collections.map(c => {
-          c.hasLogo = false;
-          return c;
-        });
-
-        for (const c of this.collections) {
+        for (const c of collections) {
           c.hasLogo = false;
 
-          try {
+           try {
             await this.http.head('/assets/images/collections/' + c.abvName + '.png').pipe(
               catchError(this.handleError)
             ).toPromise().then(() => {
@@ -52,11 +47,9 @@ export class CollectionService {
             // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
           }
         }
-
-        this.loading$.next(false);
-
-        return this.collections;
+        return collections;
       });
+    this.loading$.next(false);
   }
 
   /**

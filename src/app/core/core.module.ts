@@ -25,6 +25,7 @@ import { AdminGuard } from './admin.guard';
 import { AccessGroupGuard } from './access-group-guard';
 import { ChangelogService } from './changelog.service';
 import { PrivilegeService } from './privilege.service';
+import { EditorService } from './editor.service';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ export class CoreModule {
         CartV2Service,
         ChangelogService,
         CollectionService,
+        EditorService,
         UserService,
         OutcomeService,
         MessagesService,

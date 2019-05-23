@@ -14,6 +14,11 @@ import { SharedModule } from '../shared/shared.module';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { OnionComponent } from './onion.component';
+import { ChangelogItemComponent } from './dashboard/components/changelog-item/changelog-item.component';
+import { IdentificationPillComponent } from './dashboard/components/identification-pill/identification-pill.component';
+import { ChangelogListComponent } from './dashboard/components/changelog-list/changelog-list.component';
+import { ChangelogModalComponent } from './dashboard/components/changelog-modal/changelog-modal.component';
+import { OnionSharedModule } from './shared/onion-shared.module';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -26,7 +31,10 @@ import { OnionComponent } from './onion.component';
   declarations: [
     OnionComponent,
     DashboardComponent,
-
+    ChangelogItemComponent,
+    IdentificationPillComponent,
+    ChangelogListComponent,
+    ChangelogModalComponent,
   ],
   // Specifys all modules to be imported
   imports: [
@@ -35,6 +43,7 @@ import { OnionComponent } from './onion.component';
     ReactiveFormsModule,
     SharedModule,
     OnionCoreModule,
+    OnionSharedModule,
     ModalModule,
     ToasterModule,
     LearningObjectBuilderModule,

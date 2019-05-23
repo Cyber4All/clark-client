@@ -16,6 +16,7 @@ import { ActionPanelComponent } from './action-panel/action-panel.component';
 import { ErrorStatusComponent } from './error-status/error-status.component';
 import { VersionSwitchComponent } from './version-switch/version-switch.component';
 import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
+import { ReviseButtonComponent } from './action-panel/revise-button.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.componen
     ActionPanelComponent,
     ErrorStatusComponent,
     VersionSwitchComponent,
-    ReviewerPanelComponent
+    ReviewerPanelComponent,
+    ReviseButtonComponent,
   ],
   providers: []
 })

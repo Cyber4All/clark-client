@@ -46,7 +46,8 @@ import {EditorActionPanelModule} from './components/editor-action-panel/editor-a
     ReactiveFormsModule,
     DragDropModule,
     OnionSharedModule,
-    EditorActionPanelModule
+    EditorActionPanelModule,
+    OnionSharedModule
   ],
   declarations: [
     LearningObjectBuilderComponent,

@@ -2,32 +2,28 @@
   <ng-container *ngIf="!loading; else loadingTemplate">
     <div *ngIf="collections; else noneTemplate" class="collection-chooser">
       <div *ngFor="let c of collections" class="collection-chooser__collection" [ngClass]="{'selected': currentCollection === c.abvName}" (click)="select(c.abvName)">
-        <div class="collection__logo" *ngIf="c.hasLogo; else genericLogoTemplate" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
+        <div *ngIf="c.hasLogo; else genericCollectionImage" class="collection__logo" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
         <div class="collection__name">{{ c.name }}</div>
       </div>
     </div>
   </ng-container>
-</div>
   
-<!-- loading -->
-<ng-template #loadingTemplate>
-  <div class="loading-template">
-    <span><i class="far fa-spinner-third fa-spin"></i></span>
-    Loading collections...
-  </div>
-</ng-template>
+  <!-- loading -->
+  <ng-template #loadingTemplate>
+    <div class="loading-template">
+      <span><i class="far fa-spinner-third fa-spin"></i></span>
+      Loading collections...
+    </div>
+  </ng-template>
+  
+  <ng-template #noneTemplate>
+    <div class="none-template">
+      <span><i class="far fa-times"></i></span>
+      Uh-oh! We weren't able to get a list of collections. Please try again later.
+    </div>
+  </ng-template>
+</div>
 
-<!-- No collections template -->
-<ng-template #noneTemplate>
-  <div class="none-template">
-    <span><i class="far fa-times"></i></span>
-    No collections found! This is probably an error.
-  </div>
-</ng-template>
-
-<!-- Template for collections with no logo -->
-<ng-template #genericLogoTemplate>
-  <div class="collection__logo generic">
-    <i class="far fa-cubes"></i>
-  </div>
+<ng-template #genericCollectionImage>
+  <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
 </ng-template>

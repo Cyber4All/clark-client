@@ -22,7 +22,7 @@
         tipLocation="bottom"
       >
         <span>{{ collection.name }}</span>
-        <div
+        <div *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
           class="collection__image"
           [style.background-image]="
             'url(assets/images/collections/' +
@@ -138,15 +138,7 @@
   </div>
 </div>
 
-<clark-popup *ngIf="showSubmission" (closed)="showSubmission = false">
-  <div #popupInner>
-    <clark-collection-selector-popup
-      [currentCollection]="store.learningObjectEvent.getValue().collection"
-      (choice)="submitForReview($event)"
-      (cancel)="showSubmission = false"
-    ></clark-collection-selector-popup>
-  </div>
-</clark-popup>
+<clark-submit *ngIf="showSubmission" [learningObject]="store.learningObject" [visible]="true" (close)="showSubmission = false; getCollectionName()"></clark-submit>
 
 <clark-context-menu
   (id)="submissionOptionsMenu = $event"
@@ -185,4 +177,8 @@
     tipLocation="above"
     ><i class="fas fa-lock"></i>{{ text }}</a
   >
+</ng-template>
+
+<ng-template #genericCollectionLogoTemplate>
+  <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
 </ng-template>
