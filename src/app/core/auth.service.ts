@@ -353,9 +353,8 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    this.endSession();
     this.http
-      .delete(environment.apiURL + '/users/' + this.username + '/tokens', {
+      .delete(environment.apiURL + '/users/' + this.user.username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
       })
@@ -364,7 +363,7 @@ export class AuthService {
         catchError(this.handleError)
       )
       .toPromise();
-
+    this.endSession();
     window.location.reload();
   }
 
