@@ -22,7 +22,7 @@
         tipLocation="bottom"
       >
         <span>{{ collection.name }}</span>
-        <div
+        <div *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
           class="collection__image"
           [style.background-image]="
             'url(assets/images/collections/' +
@@ -174,4 +174,8 @@
     tipLocation="above"
     ><i class="fas fa-lock"></i>{{ text }}</a
   >
+</ng-template>
+
+<ng-template #genericCollectionLogoTemplate>
+  <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
 </ng-template>

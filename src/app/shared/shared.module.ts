@@ -129,7 +129,8 @@ import { GenericCollectionLogoComponent } from './generic-collection-logo/generi
     DownloadNoticePopupComponent,
     CollectionCardComponent,
     CarouselComponent,
-    CollectionsGridComponent
+    CollectionsGridComponent,
+    GenericCollectionLogoComponent
   ]
 })
 export class SharedModule {}
