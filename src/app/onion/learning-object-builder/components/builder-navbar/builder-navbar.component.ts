@@ -69,7 +69,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       )
       .subscribe(val => {
         this.learningObject = val;
-        this.getCollectionName();
+        this.getCollection();
       });
 
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
@@ -224,53 +224,49 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @memberof BuilderNavbarComponent
    */
   buildTooltip() {
-    this.collectionService
-      .getCollection(this.learningObject.collection)
-      .then(val => {
-        this.states = new Map([
-          [
-            LearningObject.Status.REJECTED,
-            {
-              tip:
-                'This learning object was rejected. Contact your review team for further information'
-            }
-          ],
-          [
-            LearningObject.Status.RELEASED,
-            {
-              tip:
-                'This learning object is published to the ' +
-                (val ? val.name : '') +
-                ' collection and can be browsed for.'
-            }
-          ],
-          [
-            LearningObject.Status.REVIEW,
-            {
-              tip:
-                'This object is currently under review by the ' +
-                (val ? val.name : '') +
-                ' review team, It is not yet published and cannot be edited until the review process is complete.'
-            }
-          ],
-          [
-            LearningObject.Status.WAITING,
-            {
-              tip:
-                'This learning object is waiting to be reviewed by the next available reviewer from the ' +
-                (val ? val.name : '') +
-                ' review team'
-            }
-          ],
-          [
-            LearningObject.Status.UNRELEASED,
-            {
-              tip:
-                'This learning object is visible only to you. Submit it for review to make it publicly available.'
-            }
-          ]
-        ]);
-      });
+    this.states = new Map([
+      [
+        LearningObject.Status.REJECTED,
+        {
+          tip:
+            'This learning object was rejected. Contact your review team for further information'
+        }
+      ],
+      [
+        LearningObject.Status.RELEASED,
+        {
+          tip:
+            'This learning object is published to the ' +
+            (this.collection ? this.collection.name : '') +
+            ' collection and can be browsed for.'
+        }
+      ],
+      [
+        LearningObject.Status.REVIEW,
+        {
+          tip:
+            'This object is currently under review by the ' +
+            (this.collection ? this.collection.name : '') +
+            ' review team, It is not yet published and cannot be edited until the review process is complete.'
+        }
+      ],
+      [
+        LearningObject.Status.WAITING,
+        {
+          tip:
+            'This learning object is waiting to be reviewed by the next available reviewer from the ' +
+            (this.collection ? this.collection.name : '') +
+            ' review team'
+        }
+      ],
+      [
+        LearningObject.Status.UNRELEASED,
+        {
+          tip:
+            'This learning object is visible only to you. Submit it for review to make it publicly available.'
+        }
+      ]
+    ]);
   }
 
   /**
@@ -280,7 +276,12 @@ export class BuilderNavbarComponent implements OnDestroy {
     this.store.cancelSubmission();
   }
 
-  getCollectionName() {
+  /**
+   * Retrieves the full Collection object from the collection service from the selected abbreviated collection
+   *
+   * @memberof BuilderNavbarComponent
+   */
+  getCollection() {
     this.collectionService
       .getCollection(this.learningObject.collection)
       .then(col => {
