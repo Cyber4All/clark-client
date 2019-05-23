@@ -6,6 +6,7 @@ import { CollectionService } from 'app/core/collection.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
 import { ToasterService } from 'app/shared/toaster';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-submit',
@@ -31,7 +32,8 @@ export class SubmitComponent implements OnInit {
     private changelogService: ChangelogService,
     private collectionService: CollectionService,
     private learningObjectService: LearningObjectService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -56,15 +58,20 @@ export class SubmitComponent implements OnInit {
           this.changelogComplete$.next(true);
         })
         .catch(e => {
-          console.error(e);
           this.closeModal();
           this.changelogComplete$.next(false);
-          this.toasterService.notify(
-            'Error!',
-            'We couldn\'t submit your change log at this time. Please try again later.',
-            'bad',
-            'far fa-times'
-          );
+
+          if (e.status === 401) {
+            // user isn't logged in, redirect to login page
+            this.auth.logout();
+          } else {
+            this.toasterService.notify(
+              'Error!',
+              'We couldn\'t submit your change log at this time. Please try again later.',
+              'bad',
+              'far fa-times'
+            );
+          }
         });
     } else {
       this.changelogComplete$.next(true);
@@ -124,12 +131,17 @@ export class SubmitComponent implements OnInit {
         return true;
       })
       .catch(e => {
-        this.toasterService.notify(
-          'Error!',
-          'We couldn\'t submit your Learning Object at this time. Please try again later.',
-          'bad',
-          'far fa-times'
-        );
+        if (e.status === 401) {
+          // user isn't logged in, redirect to login page
+          this.auth.logout();
+        } else {
+          this.toasterService.notify(
+            'Error!',
+            'We couldn\'t submit your Learning Object at this time. Please try again later.',
+            'bad',
+            'far fa-times'
+          );
+        }
         this.closeModal();
         return false;
       });
