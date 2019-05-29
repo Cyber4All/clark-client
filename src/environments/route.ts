@@ -1,11 +1,20 @@
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
-export const ADMIN_ROUTES = {
+export const CHANGELOG_ROUTES = {
   CREATE_CHANGELOG(userId: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/changelog`;
+  },
+  FETCH_ALL_CHANGELOGS(params: {
+    userId: string, learningObjectId: string
+  }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.userId,
+    )}/learning-objects/${encodeURIComponent(
+      params.learningObjectId,
+      )}/changelogs`;
   }
 };
 
@@ -69,11 +78,15 @@ export const USER_ROUTES = {
   CHECK_FIRST_SUBMISSION(params: {
     userId: string,
     learningObjectId: string,
-    query: {},
+    query: {
+      collection: string,
+      hasSubmission: boolean
+    },
   }) {
+    const q = 'collection=' + params.query.collection + '&hasSubmission=' + params.query.hasSubmission;
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${params.query}`;
+    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(

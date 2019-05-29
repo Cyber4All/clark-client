@@ -33,11 +33,23 @@ export class CollectionService {
         catchError(this.handleError)
       )
       .toPromise()
-      .then((collections: Collection[]) => {
-        this.collections = collections;
-        this.loading$.next(false);
+      .then(async (collections: Collection[]) => {
+        for (const c of collections) {
+          c.hasLogo = false;
+
+           try {
+            await this.http.head('/assets/images/collections/' + c.abvName + '.png').pipe(
+              catchError(this.handleError)
+            ).toPromise().then(() => {
+             c.hasLogo = true;
+            });
+          } catch (_) {
+            // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
+          }
+        }
         return collections;
       });
+    this.loading$.next(false);
   }
 
   /**

@@ -34,7 +34,7 @@ export class ResetPasswordComponent implements OnInit {
     this.auth.resetPassword(this.password, this.otaCode).subscribe(val => {
       this.done = true;
     }, error => {
-      this.error(error.error.message);
+      this.error(error.message);
     });
   }
 

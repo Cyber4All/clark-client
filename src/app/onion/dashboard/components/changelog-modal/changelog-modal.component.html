@@ -1,0 +1,35 @@
+<div class="changelog-modal">
+  <div class="changelog-modal__header">
+    <div class="header__title">
+      {{ learningObject.name }}
+    </div>
+    <div class="header__date">
+      Learning Object last updated on {{ learningObject.date | date:'mediumDate' }}
+    </div>
+  </div>
+  <div class="changelog-modal__body">
+    <ng-container *ngIf="!loading; else loadingTemplate">
+      <clark-changelog-list *ngIf="changelogs; else emptyTemplate"
+        [changelogs] = "changelogs?.logs"
+      ></clark-changelog-list>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    <div>
+      Loading change logs...
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+  <div class="empty-template">
+    <i class="far fa-comment-alt-slash"></i>
+    <div>
+      This Learning Object doesn't <br />have any change logs yet!
+    </div>
+  </div>
+</ng-template>
