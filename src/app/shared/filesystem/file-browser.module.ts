@@ -9,6 +9,8 @@ import { FilePreviewComponent } from './file-preview/file-preview.component';
 import { FileSizePipe } from './file-list-view/file-size.pipe';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { TooltipModule } from '../tooltips/tip.module';
+import { FileListItemComponent } from './file-list-view/components/file-list-item/file-list-item.component';
+import { FolderListItemComponent } from './file-list-view/components/folder-list-item/folder-list-item.component';
 
 @NgModule({
   imports: [
@@ -21,6 +23,8 @@ import { TooltipModule } from '../tooltips/tip.module';
   declarations: [
     FileBrowserComponent,
     FileListViewComponent,
+    FileListItemComponent,
+    FolderListItemComponent,
     FileBreadcrumbComponent,
     FilePreviewComponent,
     FileSizePipe
