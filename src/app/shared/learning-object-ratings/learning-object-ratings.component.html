@@ -1,9 +1,9 @@
 <div class="learning-object-ratings">
-  <div class="title">
+  <div tabindex="0" class="title">
     Reviews
   </div>
   <div class="overall-rating">
-    <clark-rating-stars  *ngIf="ratings?.length > 0" [rating]="averageRating" [color]="'gold'" [size]="22" [reviewsCount]="ratings?.length"></clark-rating-stars>
+    <clark-rating-stars  *ngIf="ratings?.length > 0" [rating]="averageRating" [color]="'gold'" [size]="22" [reviewsCount]="ratings?.length" tabindex="0"></clark-rating-stars>
   </div>
   <div *ngIf="ratings?.length > 0; else noRatings" class="ratings-list">
     <div *ngFor="let rating of ratings; let i = index;" class="rating-list-element">
@@ -19,8 +19,8 @@
         </div>
       </a>
       <clark-rating-stars [rating]="rating.value" [color]="'gold'" [size]="18"></clark-rating-stars>
-      <div class="rating-date">{{ rating.date | date:'shortDate' }}</div>
-      <div class="rating-text">
+      <div tabindex="0" class="rating-date">{{ rating.date | date:'shortDate' }}</div>
+      <div tabindex="0" class="rating-text">
         {{ rating.comment }}
       </div>
       <div *ngIf="auth.user?.emailVerified" class="options">
