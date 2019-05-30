@@ -23,7 +23,7 @@
           </div>
           <div [ngClass]="learningObject.length" class="type" tabindex="0" attr.aria-label="This learning object is a {{ learningObject.length }}">{{ learningObject.length }}</div>
         </div>
-        <span [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{collections.get(learningObject.collection)}}" attr.aria-label="Clickable link {{ learningObject.collection }} collection page">
+        <span [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{collections.get(learningObject.collection)}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">
           <div class="collection">
             <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/collections/' + collectionImage + ')'}"></div>
             <div class="collection-name">{{ collections.get(learningObject.collection)}}</div>
