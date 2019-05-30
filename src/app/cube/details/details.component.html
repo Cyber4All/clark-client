@@ -10,7 +10,7 @@
 
         <section class="academic-levels">
           <div class="title" tabindex="0">Academic Levels</div>
-          <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }" attr.aria-label="Clickable link. View all {{ l }} learning objects">{{ l | titlecase}}</a>
+          <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }" attr.aria-label="Clickable link. View all {{ l }} Learning Objects">{{ l | titlecase}}</a>
         </section>
 
         <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
