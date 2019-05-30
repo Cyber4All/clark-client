@@ -5,12 +5,13 @@ import { COPY } from '../details.copy';
   selector: 'cube-outcomes-detail-view',
   template: `
   <section class="outcomes-detail-view">
-    <h1>Learning Outcomes</h1>
-    <p class="no-content-alert" *ngIf="!(outcomes.length > 0)">
+    <h1 tabindex="0">Learning Outcomes</h1>
+    <p tabindex="0" class="no-content-alert" *ngIf="!(outcomes.length > 0)">
       This learning object doesn't have any learning outcomes.
     </p>
-    <div class="outcomes" *ngFor="let o of outcomes; let i = index">
+    <div tabindex="0" class="outcomes" *ngFor="let o of outcomes; let i = index">
       <button
+        tabindex="0"
         class="header"
         [disabled]="!(o.mappings.length > 0)"
         (click)="toggleMappings(i)"
@@ -21,7 +22,7 @@ import { COPY } from '../details.copy';
       </button>
       <ul *ngIf="showMappings[i]">
         <div style="margin-top: 20px;"></div>
-        <li *ngFor="let m of o.mappings">
+        <li tabindex="0" *ngFor="let m of o.mappings">
         <span class="standard-author">{{ m.author }}</span>
         <span class="standard-name">{{ m.name }}</span>
         <span class="standard-outcome">{{ m.outcome }}</span>
