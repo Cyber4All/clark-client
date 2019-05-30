@@ -4,13 +4,13 @@
     <div class="flex">
       <div class="content">
         <div class="description">
-          <div class="title">Description</div>
-          <p [innerHtml]="learningObject.description"></p>
+          <div class="title" tabindex="0">Description</div>
+          <p tabindex="0"   [innerHtml]="learningObject.description"></p>
         </div>
 
         <section class="academic-levels">
-          <div class="title">Academic Levels</div>
-          <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }">{{ l | titlecase}}</a>
+          <div class="title" tabindex="0">Academic Levels</div>
+          <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }" attr.aria-label="Clickable link. View all {{ l }} learning objects">{{ l | titlecase}}</a>
         </section>
 
         <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
