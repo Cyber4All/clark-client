@@ -11,7 +11,13 @@
 
     <!-- Render Files -->
     <cdk-virtual-scroll-viewport itemSize="30" class="file-list-viewport">
-      <ng-container *cdkVirtualFor="let item of directoryListing">
+      <ng-container
+        *cdkVirtualFor="
+          let item of directoryListing;
+          trackBy: trackItems;
+          templateCacheSize: 0
+        "
+      >
         <!-- Folder -->
         <clark-folder-list-item
           *ngIf="item.children"

@@ -150,6 +150,21 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     this.emitDesc.emit({ description, file: this.editableFile });
   }
 
+  /**
+   * Track by function to improve performance of ngFor/cdkFor loop
+   *
+   * @param {number} index [Index of the current element]
+   * @param {(DirectoryNode | LearningObject.Material.File)} elm [The current element]
+   * @returns
+   * @memberof FileListViewComponent
+   */
+  trackItems(index: number, elm: DirectoryNode | LearningObject.Material.File) {
+    if (elm instanceof DirectoryNode) {
+      return elm.getPath();
+    }
+    return elm.id || index;
+  }
+
   ngOnDestroy() {
     this.killSub$.next(true);
     this.killSub$.unsubscribe();
