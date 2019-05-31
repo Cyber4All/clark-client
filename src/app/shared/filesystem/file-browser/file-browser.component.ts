@@ -135,8 +135,6 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
     let node;
     if (this.currentPath.length - paths.length === 1) {
       node = this.currentNode$.value.getParent();
-      this.currentNode$.next(node);
-      this.path.emit(this.currentPath.join('/'));
     } else {
       node = this.filesystem.traversePath(paths);
     }
