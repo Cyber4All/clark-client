@@ -9,9 +9,9 @@ import { COPY } from '../details.copy';
     <p tabindex="0" class="no-content-alert" *ngIf="!(outcomes.length > 0)">
       This learning object doesn't have any learning outcomes.
     </p>
-    <div tabindex="0" class="outcomes" *ngFor="let o of outcomes; let i = index">
+    <div [attr.tabindex]="!(o.mappings.length > 0)? 0 : -1" class="outcomes" *ngFor="let o of outcomes; let i = index">
       <button
-        tabindex="0"
+        [attr.tabindex]="(o.mappings.length > 0)? 0 : -1"
         class="header"
         [disabled]="!(o.mappings.length > 0)"
         (click)="toggleMappings(i)"
