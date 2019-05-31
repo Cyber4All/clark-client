@@ -1,0 +1,20 @@
+<div (click)="handleClick($event)" class="grid-row wrapper">
+  <div class="text-contained inline-flex">
+    <i class="fas fa-folder icon"></i>
+    {{ folder?.getName() }}
+  </div>
+  <div class="text-contained description">
+    <span>{{ folder?.description }}</span>
+  </div>
+  <div class="text-contained">
+    {{ timestampAge }}
+  </div>
+  <div class="empty"></div>
+  <div
+    *ngIf="showOptionButton"
+    class="meatballs"
+    (click)="handleMeatballClick($event)"
+  >
+    <div></div>
+  </div>
+</div>
