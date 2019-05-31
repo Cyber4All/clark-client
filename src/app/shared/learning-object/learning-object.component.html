@@ -4,8 +4,9 @@
     learningObject.author.username,
     learningObject.name
   ]"
+  attr.aria-label="Clickable link to {{ learningObject.name }}"
 >
-  <div
+  <div 
     class="learning-object"
     id="learning-object"
     [ngClass]="learningObject.length"
@@ -25,6 +26,7 @@
           *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
           class="download-btn"
           (click)="download($event)"
+          attr.aria-label="Clickable Download button for {{ learningObject.name }}"
         >
           <i class="fas fa-download"></i>
         </button>
