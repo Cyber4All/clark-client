@@ -122,7 +122,11 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Determines what node to refresh the view with by checking the path change
+   * If the path decreased in length by 1, we know that the user clicked one directory higher from breadcrumbs
+   * So, no traversal is needed. Just emit the parent node
    *
+   * If the path changed by more than 1, the user jumped multiple directories and we need to traverse to find node to emit
    *
    * @param {string[]} paths
    * @memberof FileBrowserComponent
