@@ -1,5 +1,5 @@
 <div class="top-wrapper">
-  <clark-file-breadcrumb [paths$]="currentPath$"></clark-file-breadcrumb>
+  <clark-file-breadcrumb [paths]="currentPath" (pathChanged)="handlePathChanged($event)"></clark-file-breadcrumb>
   <div class="view-switcher inline-flex right">
     <div class="inline-flex">
       <button *ngIf="canManage && ((currentNode$| async)?.folders.length || (currentNode$| async)?.files.length)" id="new-file" (click)="emitNewOptionClick($event)" class="button new">

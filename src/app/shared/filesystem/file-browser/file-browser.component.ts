@@ -1,9 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { DirectoryNode, DirectoryTree } from '../DirectoryTree';
 import { LearningObject } from '@entity';
 import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
+import { takeUntil } from 'rxjs/operators';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type Removal = {
@@ -22,7 +30,7 @@ export type DescriptionUpdate = {
   templateUrl: 'file-browser.component.html',
   styleUrls: ['file-browser.component.scss']
 })
-export class FileBrowserComponent implements OnInit {
+export class FileBrowserComponent implements OnInit, OnDestroy {
   @Input() canManage = false;
   @Input()
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
@@ -43,12 +51,13 @@ export class FileBrowserComponent implements OnInit {
 
   private filesystem: DirectoryTree = new DirectoryTree();
 
-  private subscriptions: Subscription[] = [];
+  private killSub$: Subject<boolean> = new Subject();
+
   currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
     DirectoryNode
   >(null);
 
-  currentPath$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  currentPath: string[] = [];
   tips = TOOLTIP_TEXT;
   view = 'list';
 
@@ -57,7 +66,6 @@ export class FileBrowserComponent implements OnInit {
   ngOnInit(): void {
     this.subToFiles();
     this.subToFolderMeta();
-    this.subToPaths();
   }
   /**
    * Subscribe to file changes
@@ -66,12 +74,12 @@ export class FileBrowserComponent implements OnInit {
    * @memberof FileBrowserComponent
    */
   private subToFiles(): void {
-    this.subscriptions.push(
-      this.files$.subscribe(files => {
-        this.filesystem.addFiles(files);
-        this.refreshNode();
-      })
-    );
+    this.files$.pipe(takeUntil(this.killSub$)).subscribe(files => {
+      this.filesystem = new DirectoryTree();
+      this.filesystem.addFiles(files);
+      const node = this.filesystem.traversePath([]);
+      this.emitCurrentNode(node);
+    });
   }
   /**
    * Subscribe to folder meta changes
@@ -80,25 +88,11 @@ export class FileBrowserComponent implements OnInit {
    * @memberof FileBrowserComponent
    */
   private subToFolderMeta(): void {
-    this.subscriptions.push(
-      this.folderMeta$.subscribe(folders => {
-        this.linkFolderMeta(folders);
-      })
-    );
+    this.folderMeta$.pipe(takeUntil(this.killSub$)).subscribe(folders => {
+      this.linkFolderMeta(folders);
+    });
   }
-  /**
-   * Subscribe to path changes
-   *
-   * @private
-   * @memberof FileBrowserComponent
-   */
-  private subToPaths(): void {
-    this.subscriptions.push(
-      this.currentPath$.subscribe(() => {
-        this.refreshNode();
-      })
-    );
-  }
+
   /**
    * Associate folder with meta data
    *
@@ -122,22 +116,39 @@ export class FileBrowserComponent implements OnInit {
    * @memberof FileBrowserComponent
    */
   openFolder(path: string): void {
-    const paths = this.currentPath$.getValue();
-    paths.push(path);
-    this.currentPath$.next(paths);
-    this.refreshNode();
+    this.currentPath.push(path);
+    const node = this.filesystem.getFolder(this.currentNode$.value, path);
+    this.emitCurrentNode(node);
   }
+
   /**
-   * Open node at current path
+   *
+   *
+   * @param {string[]} paths
+   * @memberof FileBrowserComponent
+   */
+  handlePathChanged(paths: string[]): void {
+    let node;
+    if (this.currentPath.length - paths.length === 1) {
+      node = this.currentNode$.value.getParent();
+      this.currentNode$.next(node);
+      this.path.emit(this.currentPath.join('/'));
+    } else {
+      node = this.filesystem.traversePath(paths);
+    }
+    this.currentPath = paths;
+    this.emitCurrentNode(node);
+  }
+
+  /**
+   * Emit node at current path
    *
    * @private
    * @memberof FileBrowserComponent
    */
-  private refreshNode(): void {
-    const path = this.currentPath$.getValue();
-    const node = this.filesystem.traversePath(path);
+  private emitCurrentNode(node: DirectoryNode): void {
     this.currentNode$.next(node);
-    this.path.emit(path.join('/'));
+    this.path.emit(this.currentPath.join('/'));
   }
   /**
    * Emit click event on container
@@ -165,5 +176,10 @@ export class FileBrowserComponent implements OnInit {
    */
   emitDesc(value: DescriptionUpdate): void {
     this.descriptionUpdated.emit(value);
+  }
+
+  ngOnDestroy() {
+    this.killSub$.next(true);
+    this.killSub$.unsubscribe();
   }
 }

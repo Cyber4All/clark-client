@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'clark-file-breadcrumb',
@@ -8,7 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class FileBreadcrumbComponent implements OnInit {
   @Input()
-  paths$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  paths: string[] = [];
+
+  @Output() pathChanged: EventEmitter<string[]> = new EventEmitter();
 
   constructor() {}
 
@@ -19,10 +20,11 @@ export class FileBreadcrumbComponent implements OnInit {
     if (root) {
       path = [];
     } else {
-      path = this.paths$.getValue().slice(0, index + 1);
+      path = this.paths.slice(0, index + 1);
     }
-    if (JSON.stringify(path) !== JSON.stringify(this.paths$.getValue())) {
-      this.paths$.next(path);
+    if (JSON.stringify(path) !== JSON.stringify(this.paths)) {
+      this.paths = path;
+      this.pathChanged.emit(this.paths);
     }
   }
 }
