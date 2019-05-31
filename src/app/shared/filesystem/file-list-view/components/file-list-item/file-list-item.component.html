@@ -1,0 +1,31 @@
+<div class="grid-row wrapper">
+  <div
+    (click)="handleClick($event)"
+    class="text-contained inline-flex"
+    [ngClass]="{ 'hover-react': previewUrl }"
+    tip="{{ file?.name }}"
+    tipLocation="above"
+  >
+    <i class="fas {{ icon }} icon"></i>
+    {{ file?.name }}
+    <span class="external-link-icon" *ngIf="previewUrl"
+      ><i class="far fa-external-link"></i
+    ></span>
+  </div>
+  <div class="text-contained description">
+    <span>{{ file?.description }}</span>
+  </div>
+  <div class="text-contained">
+    {{ timestampAge }}
+  </div>
+  <div class="text-contained">
+    {{ file?.size | fileSize }}
+  </div>
+  <div
+    *ngIf="showOptionButton"
+    class="meatballs"
+    (click)="handleMeatballClick($event)"
+  >
+    <div></div>
+  </div>
+</div>

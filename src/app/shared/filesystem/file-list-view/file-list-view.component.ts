@@ -71,7 +71,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     }
 
     return timestamp;
-  };
+  }
 
   constructor(private auth: AuthService) {
     // set which extensions can be previewed and how
