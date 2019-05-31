@@ -156,7 +156,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   getFileIds(folder: DirectoryNode): string[] {
-    const children = folder.getChildren();
+    const children = folder.getFolders();
     const files = folder.getFiles();
     if (!children.length && !files.length) {
       return [];
