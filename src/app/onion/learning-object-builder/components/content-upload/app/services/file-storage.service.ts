@@ -32,19 +32,29 @@ export class FileStorageService {
    * @returns {Promise<any>}
    * @memberof FileStorageService
    */
-  initMultipart(params: {
-    learningObject: LearningObject;
+  initMultipart({
+    learningObjectId,
+    authorUsername,
+    fileId,
+    fileUploadMeta
+  }: {
+    learningObjectId: string;
+    authorUsername: string;
     fileId: string;
-    filePath: string;
+    fileUploadMeta: FileUploadMeta;
   }): Promise<any> {
     const route = USER_ROUTES.INIT_MULTIPART({
-      fileId: params.fileId,
-      username: params.learningObject.author.username,
-      objectId: params.learningObject.id
+      fileId: fileId,
+      username: authorUsername,
+      objectId: learningObjectId
     });
 
     return this.http
-      .post(route, { filePath: params.filePath }, { withCredentials: true })
+      .post(
+        route,
+        { fileUploadMeta },
+        { headers: { Authorization: `Bearer ${this.token}` } }
+      )
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -106,23 +116,32 @@ export class FileStorageService {
    * @returns {Promise<any>}
    * @memberof FileStorageService
    */
-  finalizeMultipart(params: {
-    learningObject: LearningObject;
+  finalizeMultipart({
+    learningObjectId,
+    authorUsername,
+    fileId,
+    uploadId
+  }: {
+    learningObjectId: string;
+    authorUsername: string;
     fileId: string;
     uploadId: string;
-    fileMeta: any;
   }): Promise<any> {
     const route = USER_ROUTES.FINALIZE_MULTIPART({
-      fileId: params.fileId,
-      username: params.learningObject.author.username,
-      objectId: params.learningObject.id
+      fileId,
+      username: authorUsername,
+      objectId: learningObjectId
     });
 
     return this.http
       .patch(
         route,
-        { fileMeta: params.fileMeta, uploadId: params.uploadId },
-        { withCredentials: true, responseType: 'text' }
+        { uploadId },
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+          withCredentials: true,
+          responseType: 'text'
+        }
       )
       .pipe(
         retry(3),
@@ -259,7 +278,11 @@ export class FileStorageService {
     );
 
     return this.http
-      .delete(route, { withCredentials: true, responseType: 'text' })
+      .delete(route, {
+        headers: { Authorization: `Bearer ${this.token}` },
+        withCredentials: true,
+        responseType: 'text'
+      })
       .pipe(
         retry(3),
         catchError(this.handleError)
