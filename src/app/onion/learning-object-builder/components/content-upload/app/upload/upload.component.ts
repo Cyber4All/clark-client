@@ -22,7 +22,7 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
 import { ModalService } from '../../../../../../shared/modals';
-import { USER_ROUTES } from '@env/route';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
 import {
   FileStorageService,
@@ -212,6 +212,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Handles downloading a file by opening the stream url in a new window
+   *
+   * @param {LearningObject.Material.File} file[The file to be downloaded]
+   * @memberof UploadComponent
+   */
+  async handleFileDownload(file: LearningObject.Material.File) {
+    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
+    const loId = learningObject.id;
+    const authorUsername = learningObject.author.username;
+    const url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+      loId,
+      username: authorUsername,
+      fileId: file.id
+    });
+    window.open(url, '__blank');
+  }
+
+  /**
    *  Gets upload URL based on user access privileges
    *  FIXME: TESTING PURPOSES ONLY. Remove after test of file upload service is completed
    *
@@ -339,36 +357,36 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           this.inProgressFileUploads.length - 1
         );
       }
-        if (file.upload.chunked) {
-          // Request multipart upload
-          const learningObject = await this.learningObject$
-            .pipe(take(1))
-            .toPromise();
+      if (file.upload.chunked) {
+        // Request multipart upload
+        const learningObject = await this.learningObject$
+          .pipe(take(1))
+          .toPromise();
 
-          // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
-          let uploadId = '';
-          if (this.userIsPrivileged) {
-            const fileUploadMeta: FileUploadMeta = {
-              name: file.name,
-              path: file.fullPath || file.name,
-              fileType: file.type,
-              size: file.size
-            };
-            uploadId = await this.fileStorage.initMultipartAdmin({
-              fileUploadMeta,
-              fileId: file.upload.uuid,
-              learningObjectId: learningObject.id,
-              authorUsername: learningObject.author.username
-            });
-          } else {
-            uploadId = await this.fileStorage.initMultipart({
-              learningObject,
-              fileId: file.upload.uuid,
-              filePath: file.fullPath ? file.fullPath : file.name
-            });
-          }
-          this.uploadIds[file.upload.uuid] = uploadId;
+        // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
+        let uploadId = '';
+        if (this.userIsPrivileged) {
+          const fileUploadMeta: FileUploadMeta = {
+            name: file.name,
+            path: file.fullPath || file.name,
+            fileType: file.type,
+            size: file.size
+          };
+          uploadId = await this.fileStorage.initMultipartAdmin({
+            fileUploadMeta,
+            fileId: file.upload.uuid,
+            learningObjectId: learningObject.id,
+            authorUsername: learningObject.author.username
+          });
+        } else {
+          uploadId = await this.fileStorage.initMultipart({
+            learningObject,
+            fileId: file.upload.uuid,
+            filePath: file.fullPath ? file.fullPath : file.name
+          });
         }
+        this.uploadIds[file.upload.uuid] = uploadId;
+      }
       this.dzDirectiveRef.dropzone().processFile(file);
     } catch (error) {
       this.error$.next(error);
