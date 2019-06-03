@@ -55,7 +55,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
         .collection-name {
           color: white;
-          font-size: $larger;
+          font-size: $large;
           margin-left: 10px;
           opacity: 0.6;
         }
@@ -122,7 +122,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       position: relative;
       color: white;
       text-transform: capitalize;
-      font-size: $small;
+      font-size: $normal;
       font-weight: 300;
 
       &.nanomodule {
