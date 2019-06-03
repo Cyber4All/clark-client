@@ -69,12 +69,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       )
       .subscribe(val => {
         this.learningObject = val;
-        this.collectionService
-          .getCollection(this.learningObject.collection)
-          .then(col => {
-            this.collection = col;
-            this.buildTooltip();
-          });
+        this.getCollection();
       });
 
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
@@ -174,55 +169,53 @@ export class BuilderNavbarComponent implements OnDestroy {
     const errorPages = new Map<string, boolean>();
     const currentRoute = this.activatedRoute.snapshot.children[0].url[0].path;
 
-    this.store.submitForReview().then((canSubmit: boolean) => {
-      if (!canSubmit) {
-        // check for outcome errors
+    if (!this.store.canSubmit()) {
+      // check for outcome errors
+      if (
+        this.validator.get('outcomes') ||
+        this.validator.outcomeValidator.errors.submitErrors.size
+      ) {
+        errorPages.set('outcomes', true);
+      }
+
+      // check for submission errors not related to outcomes
+      if (
+        this.validator.errors.submitErrors.size > 1 ||
+        (this.validator.errors.submitErrors.size === 1 &&
+          !this.validator.get('outcomes'))
+      ) {
+        errorPages.set('info', true);
+      }
+
+      // notify user
+      this.toasterService.notify(
+        'Error!',
+        'Please correct the errors and try again!',
+        'bad',
+        'far fa-times'
+      );
+
+      if (errorPages.size && !errorPages.get(currentRoute)) {
+        // we've found errors on other pages and none on our current page, so route to that page
+        const target = ['./' + Array.from(errorPages.keys())[0]];
+
         if (
-          this.validator.get('outcomes') ||
+          target[0] === './outcomes' &&
           this.validator.outcomeValidator.errors.submitErrors.size
         ) {
-          errorPages.set('outcomes', true);
+          // route directly to bad outcome if possible
+          target.push(
+            Array.from(
+              this.validator.outcomeValidator.errors.submitErrors.keys()
+            )[0]
+          );
         }
 
-        // check for submission errors not related to outcomes
-        if (
-          this.validator.errors.submitErrors.size > 1 ||
-          (this.validator.errors.submitErrors.size === 1 &&
-            !this.validator.get('outcomes'))
-        ) {
-          errorPages.set('info', true);
-        }
-
-        // notify user
-        this.toasterService.notify(
-          'Error!',
-          'Please correct the errors and try again!',
-          'bad',
-          'far fa-times'
-        );
-
-        if (errorPages.size && !errorPages.get(currentRoute)) {
-          // we've found errors on other pages and none on our current page, so route to that page
-          const target = ['./' + Array.from(errorPages.keys())[0]];
-
-          if (
-            target[0] === './outcomes' &&
-            this.validator.outcomeValidator.errors.submitErrors.size
-          ) {
-            // route directly to bad outcome if possible
-            target.push(
-              Array.from(
-                this.validator.outcomeValidator.errors.submitErrors.keys()
-              )[0]
-            );
-          }
-
-          this.router.navigate(target, { relativeTo: this.activatedRoute });
-        }
-      } else {
-        this.showSubmission = true;
+        this.router.navigate(target, { relativeTo: this.activatedRoute });
       }
-    });
+    } else {
+      this.showSubmission = true;
+    }
   }
 
   /**
@@ -231,78 +224,49 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @memberof BuilderNavbarComponent
    */
   buildTooltip() {
-    this.collectionService
-      .getCollection(this.learningObject.collection)
-      .then(val => {
-        this.states = new Map([
-          [
-            LearningObject.Status.REJECTED,
-            {
-              tip:
-                'This learning object was rejected. Contact your review team for further information'
-            }
-          ],
-          [
-            LearningObject.Status.RELEASED,
-            {
-              tip:
-                'This learning object is published to the ' +
-                (val ? val.name : '') +
-                ' collection and can be browsed for.'
-            }
-          ],
-          [
-            LearningObject.Status.REVIEW,
-            {
-              tip:
-                'This object is currently under review by the ' +
-                (val ? val.name : '') +
-                ' review team, It is not yet published and cannot be edited until the review process is complete.'
-            }
-          ],
-          [
-            LearningObject.Status.WAITING,
-            {
-              tip:
-                'This learning object is waiting to be reviewed by the next available reviewer from the ' +
-                (val ? val.name : '') +
-                ' review team'
-            }
-          ],
-          [
-            LearningObject.Status.UNRELEASED,
-            {
-              tip:
-                'This learning object is visible only to you. Submit it for review to make it publicly available.'
-            }
-          ]
-        ]);
-      });
-  }
-
-  /**
-   * Submits a learning object to a collection for review and publishes the object
-   * @param {string} collection the name of the collection to submit to
-   */
-  submitForReview(collection: string) {
-    this.submissionError = false;
-    this.store
-      .submitForReview(collection)
-      .then(val => {
-        this.showSubmission = false;
-        this.toasterService.notify(
-          'Success!',
-          'Learning object submitted successfully!',
-          'good',
-          'far fa-check'
-        );
-      })
-      .catch(error => {
-        console.error(error);
-        this.toasterService.notify('Error!', error, 'bad', 'far fa-times');
-        this.showSubmission = false;
-        this.submissionError = true;
-      });
+    this.states = new Map([
+      [
+        LearningObject.Status.REJECTED,
+        {
+          tip:
+            'This learning object was rejected. Contact your review team for further information'
+        }
+      ],
+      [
+        LearningObject.Status.RELEASED,
+        {
+          tip:
+            'This learning object is published to the ' +
+            (this.collection ? this.collection.name : '') +
+            ' collection and can be browsed for.'
+        }
+      ],
+      [
+        LearningObject.Status.REVIEW,
+        {
+          tip:
+            'This object is currently under review by the ' +
+            (this.collection ? this.collection.name : '') +
+            ' review team, It is not yet published and cannot be edited until the review process is complete.'
+        }
+      ],
+      [
+        LearningObject.Status.WAITING,
+        {
+          tip:
+            'This learning object is waiting to be reviewed by the next available reviewer from the ' +
+            (this.collection ? this.collection.name : '') +
+            ' review team'
+        }
+      ],
+      [
+        LearningObject.Status.UNRELEASED,
+        {
+          tip:
+            'This learning object is visible only to you. Submit it for review to make it publicly available.'
+        }
+      ]
+    ]);
   }
 
   /**
@@ -310,6 +274,20 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   cancelSubmission() {
     this.store.cancelSubmission();
+  }
+
+  /**
+   * Retrieves the full Collection object from the collection service from the selected abbreviated collection
+   *
+   * @memberof BuilderNavbarComponent
+   */
+  getCollection() {
+    this.collectionService
+      .getCollection(this.learningObject.collection)
+      .then(col => {
+        this.collection = col;
+        this.buildTooltip();
+      });
   }
 
   ngOnDestroy() {

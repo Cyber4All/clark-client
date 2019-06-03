@@ -1,0 +1,49 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CollectionService } from '../../core/collection.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+@Component({
+  selector: 'cube-collection-details',
+  templateUrl: 'collection-details.component.html',
+  styleUrls: ['collection-details.component.scss']
+})
+export class CollectionDetailsComponent implements OnInit, OnDestroy {
+  destroyed$ = new Subject<void>();
+  key = new Subject<string>();
+  collection;
+  pictureLocation: string;
+
+  COPY = {
+    VIEWALL: 'View All'
+  };
+
+  constructor(
+    private route: ActivatedRoute,
+    private collectionService: CollectionService
+  ) { }
+
+  ngOnInit() {
+    this.route.params
+      .pipe(
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(params => {
+        this.fetchCollection(params.name);
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
+
+  async fetchCollection(name: string) {
+    this.collection = await this.collectionService.getCollectionMetadata(name);
+    this.key.next(this.collection.abvName);
+    if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
+      this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
+    }
+  }
+}

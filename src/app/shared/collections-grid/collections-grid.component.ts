@@ -1,0 +1,53 @@
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Collection, CollectionService } from 'app/core/collection.service';
+
+@Component({
+  selector: 'clark-collections-grid',
+  templateUrl: './collections-grid.component.html',
+  styleUrls: ['./collections-grid.component.scss']
+})
+export class CollectionsGridComponent implements OnInit {
+
+  // list of collections from service
+  @Input() collections: Collection[];
+
+  // highlights collection if one is already present
+  @Input() currentCollection: string;
+
+  // fires when the user selects a collection
+  @Output() selected: EventEmitter<string> = new EventEmitter();
+
+  // flags
+  loading = false;
+  licenseAccepted = false;
+
+  constructor(private collectionService: CollectionService) { }
+
+  async ngOnInit() {
+    // if no collections list was passed through component input, fetch them here
+    if (!this.collections) {
+      this.collections = await this.loadCollections();
+    }
+  }
+
+  /**
+   * Load a list of collections
+   * @return {Promise<Collection[]} list of collections from service
+   */
+  async loadCollections(): Promise<Collection[]> {
+    this.loading = true;
+    return  this.collectionService.getCollections().then(val => {
+      this.loading = false;
+      return val;
+    }).catch(error => {
+      console.log(error);
+      this.loading = false;
+      return [];
+    });
+  }
+
+  select(collection: string) {
+    this.currentCollection = collection;
+    this.selected.emit(collection);
+  }
+}

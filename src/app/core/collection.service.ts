@@ -33,11 +33,23 @@ export class CollectionService {
         catchError(this.handleError)
       )
       .toPromise()
-      .then((collections: Collection[]) => {
-        this.collections = collections;
-        this.loading$.next(false);
+      .then(async (collections: Collection[]) => {
+        for (const c of collections) {
+          c.hasLogo = false;
+
+           try {
+            await this.http.head('/assets/images/collections/' + c.abvName + '.png').pipe(
+              catchError(this.handleError)
+            ).toPromise().then(() => {
+             c.hasLogo = true;
+            });
+          } catch (_) {
+            // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
+          }
+        }
         return collections;
       });
+    this.loading$.next(false);
   }
 
   /**
@@ -69,14 +81,18 @@ export class CollectionService {
    * @param {string} collectionName name of collection in which to insert learning object
    * @return {Promise<any>}
    */
-  submit(
+  submit(params: {
+    userId: string,
     learningObjectId: string,
     collectionName: string
-  ): Promise<any> {
+  }): Promise<any> {
     return this.http
       .post(
-        USER_ROUTES.SUBMIT_LEARNING_OBJECT(learningObjectId),
-        { collection: collectionName },
+        USER_ROUTES.SUBMIT_LEARNING_OBJECT({
+          userId: params.userId,
+          learningObjectId: params.learningObjectId,
+        }),
+        { collection: params.collectionName },
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
@@ -86,12 +102,16 @@ export class CollectionService {
       .toPromise();
   }
 
-  unsubmit(
-    learningObjectId: string
-  ): Promise<any> {
+  unsubmit(params: {
+    learningObjectId: string,
+    userId: string,
+  }): Promise<any> {
     return this.http
       .delete(
-        USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(learningObjectId),
+        USER_ROUTES.UNSUBMIT_LEARNING_OBJECT({
+          userId: params.userId,
+          learningObjectId: params.learningObjectId,
+        }),
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(

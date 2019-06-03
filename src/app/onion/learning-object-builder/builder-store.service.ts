@@ -689,38 +689,19 @@ export class BuilderStore {
    *@param {string} [collection]
    * @memberof BuilderStore
    */
-  public submitForReview(collection?: string): Promise<boolean> {
+  public canSubmit(): boolean {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
+    this.validator.submissionMode = true;
 
-    if (this.validator.saveable && this.validator.submittable) {
-      this.validator.submissionMode = true;
-
-      // if we passed a collection property, attempt the submission
-      if (collection) {
-        return this.collectionService
-          .submit(this.learningObject.id, collection)
-          .then(() => {
-            this.learningObject.status = LearningObject.Status.WAITING;
-            this.learningObject.collection = collection;
-            this.learningObjectEvent.next(this._learningObject);
-            return true;
-          })
-          .catch(e => {
-            this.handleServiceError(e, BUILDER_ERRORS.SUBMIT_REVIEW);
-            return false;
-          });
-      }
-
-      return Promise.resolve(true);
-    } else {
-      this.validator.submissionMode = true;
-      return Promise.resolve(false);
-    }
+    return this.validator.saveable && this.validator.submittable;
   }
 
   public cancelSubmission(): void {
     this.collectionService
-      .unsubmit(this.learningObject.id)
+      .unsubmit({
+        learningObjectId: this.learningObject.id,
+        userId: this.learningObject.author.id,
+      })
       .then(() => {
         this.learningObject.status = LearningObject.Status.UNRELEASED;
         this.validator.submissionMode = false;

@@ -33,8 +33,6 @@ export class AuthService {
   httpHeaders = new HttpHeaders();
   inUse: object;
   isLoggedIn = new BehaviorSubject<boolean>(false);
-  socket;
-  socketWatcher: Observable<string>;
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
 
   constructor(private http: HttpClient, private cookies: CookieService) {
@@ -64,36 +62,91 @@ export class AuthService {
     );
   }
 
+  /**
+   * Set's the user's logged-in status
+   *
+   * @private
+   * @param {boolean} status whether or not the user is logged in
+   * @memberof AuthService
+   */
   private changeStatus(status: boolean) {
     if (this.isLoggedIn.getValue() !== status) {
       this.isLoggedIn.next(status);
     }
   }
 
+  /**
+   * Return the currently logged-in user's full name
+   *
+   * @readonly
+   * @type {string}
+   * @memberof AuthService
+   */
   get name(): string {
     return this.user ? this.user.name : undefined;
   }
 
+  /**
+   * Return the currently logged-in user's first name
+   *
+   * @readonly
+   * @type {string}
+   * @memberof AuthService
+   */
   get firstName(): string {
     return this.user ? this.user.name.split(' ')[0] : undefined;
   }
 
+  /**
+   * Return the currently logged-in user's email address
+   *
+   * @readonly
+   * @type {string}
+   * @memberof AuthService
+   */
   get email(): string {
     return this.user ? this.user.email : undefined;
   }
 
+  /**
+   * Return the status of the application, either true for authenticated or false for public
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof AuthService
+   */
   get status(): boolean {
     return this.user ? true : false;
   }
 
+  /**
+   * Return the currently logged-in user's username
+   *
+   * @readonly
+   * @type {string}
+   * @memberof AuthService
+   */
   get username(): string {
     return this.user ? this.user.username : undefined;
   }
 
+  /**
+   * Return the currently logged-in user's access groups
+   *
+   * @readonly
+   * @type {string[]}
+   * @memberof AuthService
+   */
   get accessGroups(): string[] {
     return this.user ? this.user.accessGroups : [];
   }
 
+  /**
+   * Validate the current cookie against the service
+   *
+   * @returns {Promise<void>}
+   * @memberof AuthService
+   */
   async validate(): Promise<void> {
     try {
       const response = await this.http
@@ -106,11 +159,17 @@ export class AuthService {
       this.user = response as AuthUser;
       this.assignUserToGroup();
     } catch (error) {
-      throw error;
+      return Promise.reject(error);
     }
   }
 
-  async checkClientVersion(): Promise<void> {
+  /**
+   * Checks the client's version against the service
+   *
+   * @returns {Promise<void>}
+   * @memberof AuthService
+   */
+  async checkClientVersion(): Promise<void | Partial<{ message: string }>> {
     // Application version information
     const { version: appVersion } = require('../../../package.json');
     try {
@@ -132,7 +191,13 @@ export class AuthService {
     }
   }
 
-  async refreshToken(): Promise<void> {
+  /**
+   * Retrieves a new token for the active user
+   *
+   * @returns {Promise<void>}
+   * @memberof AuthService
+   */
+  async refreshToken(): Promise<void | Partial<{ message: string }>> {
     try {
       const val = await this.http
         .get(environment.apiURL + '/users/tokens/refresh', {
@@ -145,10 +210,17 @@ export class AuthService {
         .toPromise();
       this.user = val as AuthUser;
     } catch (error) {
-      throw error;
+      return Promise.reject(error);
     }
   }
 
+  /**
+   * Logs a user in
+   *
+   * @param {{ username: string; password: string }} user an object containing the plain text username and password to attempt login
+   * @returns {Promise<any>}
+   * @memberof AuthService
+   */
   async login(user: { username: string; password: string }): Promise<any> {
     try {
       const val = await this.http
@@ -167,13 +239,19 @@ export class AuthService {
     } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
-      throw error;
+      return Promise.reject(error);
     }
   }
 
-  async logout(username: string = this.user.username): Promise<void> {
+  /**
+   * Logs the current user out
+   *
+   * @returns {Promise<void>}
+   * @memberof AuthService
+   */
+  async logout(): Promise<void> {
     await this.http
-      .delete(environment.apiURL + '/users/' + username + '/tokens', {
+      .delete(environment.apiURL + '/users/' + this.username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
       })
@@ -188,6 +266,11 @@ export class AuthService {
     window.location.reload();
   }
 
+  /**
+   * Creates a new user
+   *
+   * @param user the user's data from the registration component
+   */
   async register(user: any): Promise<User> {
     try {
       await this.http.post(environment.apiURL + '/users', user, {
@@ -205,24 +288,18 @@ export class AuthService {
     } catch (error) {
       this.changeStatus(false);
       this.user = undefined;
-      throw error;
+      return Promise.reject(error);
     }
   }
 
-  // checkPassword is used when changing a password in the user-edit-information.component
-  async checkPassword(password: string): Promise<any> {
-    const val = await this.http
-      .post<User>(environment.apiURL + '/users/password', { password }, {
-        withCredentials: true
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-    return val;
-  }
 
+  /**
+   * Begins the password reset process by sending an email to the specified email address
+   *
+   * @param {string} email
+   * @returns {Observable<any>}
+   * @memberof AuthService
+   */
   initiateResetPassword(email: string): Observable<any> {
     return this.http.post(
       environment.apiURL + '/users/ota-codes?action=resetPassword',
@@ -235,6 +312,14 @@ export class AuthService {
     );
   }
 
+  /**
+   * Resets a user's password and deletes the corresponding OTA code
+   *
+   * @param {string} payload the new password
+   * @param {string} code the original one-time code that corresponds to the password-reset request
+   * @returns {Observable<any>}
+   * @memberof AuthService
+   */
   resetPassword(payload: string, code: string): Observable<any> {
     return this.http.patch(
       environment.apiURL + '/users/ota-codes?otaCode=' + code,
@@ -247,10 +332,17 @@ export class AuthService {
     );
   }
 
-  sendEmailVerification(email: string): Observable<any> {
+  /**
+   * Sends a password verification email to the specified email address
+   *
+   * @param {string} [email]
+   * @returns {Observable<any>}
+   * @memberof AuthService
+   */
+  sendEmailVerification(email?: string): Observable<any> {
     return this.http.post(
       environment.apiURL + '/users/ota-codes?action=verifyEmail',
-      { email },
+      { email: email || this.user.email },
       { withCredentials: true, responseType: 'text' }
     )
     .pipe(
@@ -259,7 +351,14 @@ export class AuthService {
     );
   }
 
-  async identifiersInUse(username: string) {
+  /**
+   * Determines whether or not the specified username is currently in use
+   *
+   * @param {string} username
+   * @returns
+   * @memberof AuthService
+   */
+  async usernameInUse(username: string) {
     const val = await this.http
       .get(environment.apiURL + '/users/identifiers/active?username=' + username, {
         headers: this.httpHeaders,
@@ -274,6 +373,18 @@ export class AuthService {
     return this.inUse;
   }
 
+  /**
+   * Udates a user's information with the specified data
+   *
+   * @param {{
+   *     firstname: string;
+   *     lastname: string;
+   *     email: string;
+   *     organization: string;
+   *   }} user
+   * @returns {Observable<any>}
+   * @memberof AuthService
+   */
   updateInfo(user: {
     firstname: string;
     lastname: string;
@@ -290,37 +401,14 @@ export class AuthService {
     );
   }
 
-  establishSocket() {
-    /* if (!this.socketWatcher) {
-      this.socketWatcher = new Observable(observer => {
-        this.socket = io(environment.apiURL + '?user=' + this.username);
-
-        this.socket.on('message', val => {
-          if (val === 'VERIFIED_EMAIL') {
-            this.validate().then(() => {
-              if (!this.user.emailVerfied) {
-                // the link must have been clicked in a different browser, let's refresh the token
-                this.refreshToken().then(() => {
-                  observer.next('VERIFIED_EMAIL');
-                  this.destroySocket();
-                });
-              }
-            });
-          }
-        });
-      });
-    }
-    return this.socketWatcher;
-    */
-    return new Observable();
-  }
-
-  destroySocket() {
-    if (this.socket) {
-      this.socket.emit('close');
-    }
-  }
-
+  /**
+   * Triggers a print operation for CLARK cards with the specified username, name and organization
+   *
+   * @param {string} username
+   * @param {string} name
+   * @param {string} organization
+   * @memberof AuthService
+   */
   printCards(username: string, name: string, organization: string) {
     const uppercase = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
     // Format user information
@@ -341,6 +429,14 @@ export class AuthService {
     )}`);
     newlink.click();
   }
+
+  /**
+   * Determines whether or not the currently logged-in user can download the specified learning object
+   *
+   * @param {LearningObject} learningObject
+   * @returns {Promise<number>}
+   * @memberof AuthService
+   */
   async userCanDownload(learningObject: LearningObject): Promise<number> {
     if (environment.production) {
       // Check that the user is logged in
@@ -367,8 +463,9 @@ export class AuthService {
    * Identifies if the current logged in user has editor privileges.
    */
   public hasEditorAccess(): boolean {
-    return this.group.getValue() > AUTH_GROUP.REVIEWER;
+    return this.group.getValue() > AUTH_GROUP.CURATOR;
   }
+
   /**
    * Assigns an authorization group to a user based on their access groups.
    * The highest priority group will be assigned.
@@ -399,10 +496,10 @@ export class AuthService {
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
-      return throwError(error.error.message);
+      return throwError(error.error);
     } else {
       // API returned error
-      return throwError(error);
+      return throwError(error.error);
     }
   }
 }

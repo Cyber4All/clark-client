@@ -1,0 +1,23 @@
+@import '~_vars.scss';
+
+.button-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-group {
+  margin-top: 45px;
+
+  .button {
+    padding: 8px 25px;
+  }
+
+  .good {
+    background: $bright-blue;
+    border-color: $bright-blue;
+  }
+}

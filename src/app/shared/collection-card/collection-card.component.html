@@ -1,0 +1,9 @@
+
+<div class="collection-card" routerLink="/c/{{ collection.name }}">
+  <img *ngIf="pictureLocation; else genericLogoTemplate" class="card__image" src="{{ pictureLocation }}" alt="{{ collection.name }} logo">
+  <div class="card__name">{{ collection.name }}</div>
+</div>
+
+<ng-template #genericLogoTemplate>
+  <clark-generic-collection-logo></clark-generic-collection-logo>
+</ng-template>

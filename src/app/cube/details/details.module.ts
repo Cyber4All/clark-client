@@ -14,6 +14,10 @@ import { ParentListingComponent } from './included-in/parent-listing.component';
 import { DetailsSplashComponent } from './splash/details-splash.component';
 import { ActionPanelComponent } from './action-panel/action-panel.component';
 import { ErrorStatusComponent } from './error-status/error-status.component';
+import { VersionSwitchComponent } from './version-switch/version-switch.component';
+import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
+import { ReviseButtonComponent } from './action-panel/revise-button.component';
+import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
 
 @NgModule({
   imports: [
@@ -21,6 +25,7 @@ import { ErrorStatusComponent } from './error-status/error-status.component';
     SharedModule,
     FormsModule,
     RouterModule,
+    FileBrowserModule,
     CubeSharedModule
   ],
   exports: [],
@@ -33,7 +38,10 @@ import { ErrorStatusComponent } from './error-status/error-status.component';
     ParentListingComponent,
     DetailsSplashComponent,
     ActionPanelComponent,
-    ErrorStatusComponent
+    ErrorStatusComponent,
+    VersionSwitchComponent,
+    ReviewerPanelComponent,
+    ReviseButtonComponent
   ],
   providers: []
 })

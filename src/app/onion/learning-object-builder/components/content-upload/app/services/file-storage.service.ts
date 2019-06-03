@@ -64,6 +64,48 @@ export class FileStorageService {
   }
 
   /**
+   * Sends request to initiate multipart upload
+   *
+   * @param {{
+   *     learningObject: LearningObject;
+   *     fileId: string;
+   *     filePath: string;
+   *   }} params
+   * @returns {Promise<any>}
+   * @memberof FileStorageService
+   */
+  initMultipartAdmin({
+    learningObjectId,
+    authorUsername,
+    fileId,
+    fileUploadMeta
+  }: {
+    learningObjectId: string;
+    authorUsername: string;
+    fileId: string;
+    fileUploadMeta: FileUploadMeta;
+  }): Promise<any> {
+    const route = USER_ROUTES.INIT_MULTIPART_ADMIN({
+      fileId: fileId,
+      username: authorUsername,
+      objectId: learningObjectId
+    });
+
+    return this.http
+      .post(
+        route,
+        { fileUploadMeta },
+        { headers: { Authorization: `Bearer ${this.token}` } }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: { uploadId: string }) => res.uploadId);
+  }
+
+  /**
    * Sends request to finalize multipart upload
    *
    * @param {{
@@ -109,6 +151,51 @@ export class FileStorageService {
   }
 
   /**
+   * Sends request to finalize multipart upload
+   *
+   * @param {{
+   *     learningObject: LearningObject;
+   *     fileId: string;
+   *     uploadId: string;
+   *   }} params
+   * @returns {Promise<any>}
+   * @memberof FileStorageService
+   */
+  finalizeMultipartAdmin({
+    learningObjectId,
+    authorUsername,
+    fileId,
+    uploadId
+  }: {
+    learningObjectId: string;
+    authorUsername: string;
+    fileId: string;
+    uploadId: string;
+  }): Promise<any> {
+    const route = USER_ROUTES.FINALIZE_MULTIPART_ADMIN({
+      fileId,
+      username: authorUsername,
+      objectId: learningObjectId,
+      uploadId: uploadId
+    });
+
+    return this.http
+      .patch(
+        route,
+        {},
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+          responseType: 'text'
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
    * Sends request to abort multipart upload
    *
    * @param {{
@@ -130,17 +217,44 @@ export class FileStorageService {
       username: params.learningObject.author.username,
       objectId: params.learningObject.id
     });
-    // @ts-ignore Sending body is legal
     return this.http
-      .delete(
-        route,
-        { uploadId: params.uploadId },
-        {
-          headers: { Authorization: `Bearer ${this.token}` },
-          withCredentials: true,
-          responseType: 'text'
-        }
+      .delete(route, { withCredentials: true, responseType: 'text' })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
       )
+      .toPromise();
+  }
+
+  /**
+   * Sends request to abort multipart upload
+   *
+   * @param {{
+   *     learningObject: LearningObject;
+   *     fileId: string;
+   *     uploadId: string;
+   *     fileMeta: any;
+   *   }} params
+   * @returns {Promise<any>}
+   * @memberof FileStorageService
+   */
+  abortMultipartAdmin(params: {
+    learningObjectId: string;
+    authorUsername: string;
+    fileId: string;
+    uploadId: string;
+  }): Promise<any> {
+    const route = USER_ROUTES.ABORT_MULTIPART_ADMIN({
+      fileId: params.fileId,
+      username: params.authorUsername,
+      objectId: params.learningObjectId,
+      uploadId: params.uploadId
+    });
+    return this.http
+      .delete(route, {
+        headers: { Authorization: `Bearer ${this.token}` },
+        responseType: 'text'
+      })
       .pipe(
         retry(3),
         catchError(this.handleError)

@@ -63,25 +63,10 @@
   }
 }
 
-.view-all {
-  color: $blue-accent;
+.no-objects {
   font-size: 18px;
-  width: 100px;
-  cursor: pointer;
-  @include vert-center;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  text-align: right;
-
-  &:hover {
-    text-decoration: underline;
-  }
-
-  .svg-inline--fa {
-    @include vert-center;
-    margin-left: 15px;
-  }
+  text-align: center;
+  color: $dark-text;
 }
 
 @media(max-width: 750px) {

@@ -62,14 +62,13 @@
     }
   }
 
-  .login-msg {
+  .action-message {
     margin-top: 20px;
     font-size: 16px;
     color: $dark-text;
 
-    span {
+    a {
       color: $blue-accent;
-      text-decoration: underline;
       cursor: pointer;
     }
   }
@@ -100,6 +99,96 @@
     margin-right: 5px;
   }
 }
+
+.CCAttribution {
+  margin-top: 30px;
+
+  .CC-title {
+    position: relative;
+
+    &:before {
+      content: 'Attribute this Object';
+      color: $dark-text;
+      text-align: center;
+      padding: 0;
+      background: white;
+      position: absolute;
+      z-index: 2;
+      left: 20%;
+      right: 20%;
+      bottom: -7px;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      height: 1px;
+      background: lighten($dark-text, 40);
+      width: 100%;
+      left: 0;
+      bottom: 0;
+    }
+  }
+  .attribution {
+    padding-top: 20px;
+    width: 80%;
+    display: inline-block;
+  }
+
+  .CC-Content {
+    padding-top: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 20%;
+    float: right;
+    padding-left: 15px;
+
+      button {
+        border: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        outline: 0;
+      }
+
+      a {
+        color: white !important;
+        text-decoration: none !important;
+      }
+
+      &>button {
+        min-width: 30px;
+        height: 30px;
+        background: $blue-accent;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white !important;
+        font-size: 18px;
+        transition: all 0.2s ease;
+        transform: scale(1);
+        cursor: pointer;
+        flex-shrink: 0;
+        flex-grow: 0;
+
+        &:hover:not(.animated) {
+          transform: scale(1.1);
+        }
+
+        &:active:hover {
+          transform: scale(0.95);
+        }
+
+        &.animated {
+          animation: jiggle 0.4s linear;
+        }
+
+        &.copyAttribution {
+          background-color: $green;
+        }
+      }
+    }
+  }
 
 .details-share {
   margin-top: 30px;
@@ -197,5 +286,16 @@
         background: $green;
       }
     }
+  }
+}
+
+.email-unverified {
+  background:  linear-gradient(45deg, darken(saturate($error-red, 20), 10), $error-red);
+  color: white;
+  padding: 3px;
+  border-radius: 2px;
+
+  .email-unverified__icon {
+
   }
 }

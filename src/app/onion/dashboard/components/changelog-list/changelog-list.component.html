@@ -1,0 +1,5 @@
+<div [@stagger]="changelogs.length" class="changelog-list">
+  <clark-changelog-item *ngFor="let changelog of changelogs"
+    [changelog] = "changelog"
+  ></clark-changelog-item>
+</div>

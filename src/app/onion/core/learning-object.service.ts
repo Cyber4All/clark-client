@@ -170,7 +170,10 @@ export class LearningObjectService {
    * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
-    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT(learningObject.id);
+    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT({
+      learningObjectId: learningObject.id,
+      userId: learningObject.author.id,
+    });
     return this.http
       .post(
         route,
@@ -189,8 +192,10 @@ export class LearningObjectService {
    * @param {learningObject} learningObject the learning object to be unpublished
    */
   unsubmit(learningObject: LearningObject) {
-    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT(learningObject.id);
-
+    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT({
+      learningObjectId: learningObject.id,
+      userId: learningObject.author.id
+    });
     return this.http
       .delete(
         route,
@@ -357,6 +362,34 @@ export class LearningObjectService {
         USER_ROUTES.CREATE_AN_OUTCOME(sourceId),
         { source: sourceId, outcome },
         { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Checks if the user is submitting a learning object for the first time
+   *
+   * @param userId The learning object's author ID
+   * @param learningObjectId The learning object's ID
+   * @param collection The collection submitting to
+   * @param hasSubmission If the object has a submission [SET TO TRUE]
+   * @memberof LearningObjectService
+   */
+  getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
+    return this.http
+      .get<{isFirstSubmission: boolean}>(
+        USER_ROUTES.CHECK_FIRST_SUBMISSION({
+          userId,
+          learningObjectId,
+          query: {
+            collection,
+            hasSubmission
+          }}),
+        { withCredentials: true }
       )
       .pipe(
         retry(3),

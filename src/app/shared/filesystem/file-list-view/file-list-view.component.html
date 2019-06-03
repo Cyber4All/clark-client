@@ -5,56 +5,49 @@
       <div class>Description</div>
       <div class>Date</div>
       <div class>Size</div>
-      <div *ngIf="canManage" class="placeholder">
-      </div>
+      <div *ngIf="canManage" class="placeholder"></div>
     </div>
     <!-- Render Folders -->
-    <div (click)="openFolder(folder.name, $event)" class="grid-row folder" *ngFor="let folder of (node$ | async)?.children" [contextMenu]="fileOptions"
-      [contextMenuSubject]="folder">
-      <div class="text-contained inline-flex">
-        <i class="fas fa-folder icon"></i>
-        {{ folder.name }}
-      </div>
-      <div class="text-contained description">
-        <span>{{ folder.description || 'No description here!' }}</span>
-        <!-- <input #folderDesc (click)="setEditable(folder)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="folder.description ? folder.description: ''"
-          [formControl]="descriptionControl" /> -->
-      </div>
-      <div class="text-contained">
-        {{ getTimestampAge(getFolderTimestamp(folder)) }}
-      </div>
-      <div class="empty"></div>
-      <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: folder}); $event.stopPropagation()">
-        <div></div>
-      </div>
-    </div>
+
     <!-- Render Files -->
-    <div class="grid-row file" *ngFor="let file of (node$ | async)?.files" [contextMenu]="fileOptions" [contextMenuSubject]="file">
-      <div (click)="openFile(file)" class="text-contained inline-flex" [ngClass]="{'hover-react': previewUrl(file.extension)}" tip="{{ file.name }}" tipLocation="above">
-        <i class="fas {{ getIcon(file.extension) }} icon"></i>
-        {{ file.name }}
-        <span class="external-link-icon" *ngIf="previewUrl(file.extension)"><i class="far fa-external-link"></i></span>
-      </div>
-      <div class="text-contained description">
-        <span>{{ file.description || 'No description here!' }}</span>
-        <!-- <input #fileDesc (click)="setEditable(file)" *ngIf="canManage" class="description" name="file-description" placeholder="Enter description" [value]="file.description ? file.description: ''"
-          [formControl]="descriptionControl" /> -->
-      </div>
-      <div class="text-contained">
-        {{ getTimestampAge(file.date) }}
-      </div>
-      <!-- Filesize
-            remove comment and insert server filesize value before pipe -->
-      <div class="text-contained">
-          {{ file.size | fileSize }}
-      </div>
-      <div *ngIf="canManage" class="meatballs" (click)="emitContextOpen.next({event: $event, item: file}); $event.stopPropagation()">
-        <div></div>
-      </div>
-    </div>
+    <cdk-virtual-scroll-viewport itemSize="30" class="file-list-viewport">
+      <ng-container
+        *cdkVirtualFor="
+          let item of directoryListing;
+          trackBy: trackItems;
+          templateCacheSize: 0
+        "
+      >
+        <!-- Folder -->
+        <clark-folder-list-item
+          *ngIf="item.children"
+          class="folder"
+          (clicked)="openFolder(item.name)"
+          (menuClicked)="handleMenuClicked($event, item)"
+          [folder]="item"
+          [showOptionButton]="canManage"
+          [contextMenu]="fileOptions"
+          [contextMenuSubject]="item"
+        ></clark-folder-list-item>
+
+        <!-- File -->
+        <clark-file-list-item
+          *ngIf="!item.children"
+          class="file"
+          (clicked)="openFile(item)"
+          (menuClicked)="handleMenuClicked($event, item)"
+          [file]="item"
+          [showOptionButton]="canManage"
+          [contextMenu]="fileOptions"
+          [contextMenuSubject]="item"
+        ></clark-file-list-item>
+      </ng-container>
+    </cdk-virtual-scroll-viewport>
   </div>
 </div>
 <div class="preview" *ngIf="!preview">
   <clark-file-preview></clark-file-preview>
-  <button (click)="returnToFileView()" class="button good">Return to file view </button>
+  <button (click)="returnToFileView()" class="button good">
+    Return to file view
+  </button>
 </div>

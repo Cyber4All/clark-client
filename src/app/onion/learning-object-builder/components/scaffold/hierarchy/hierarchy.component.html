@@ -1,11 +1,11 @@
 <div class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
   <div class = "info">
     <div class = "top-row">
-      <div class = "child-title">{{learningObject._name}}</div>
+      <div class = "child-title">{{learningObject.name}}</div>
     </div>
     <div class = "bottom-row">
-      <div class = "child-length">{{learningObject._length}}</div>
-      <div class = "child-last-updated">{{learningObject._date |  date:'short'}}</div>
+      <div class = "child-length">{{learningObject.length}}</div>
+      <div class = "child-last-updated">{{learningObject.date |  date:'short'}}</div>
     </div>
   </div>
   <div [ngStyle]="{display: editContent ? 'block' : 'none'}" class="hamburger-handle" cdkDragHandle>

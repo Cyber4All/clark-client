@@ -8,15 +8,6 @@ import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
 import { ToasterService } from '../../../shared/toaster/toaster.service';
 import { takeUntil } from 'rxjs/operators';
 
-// TODO move this to clark entity?
-export interface Rating {
-  id?: string;
-  user: User;
-  number: number;
-  comment: string;
-  date: string;
-}
-
 @Component({
   selector: 'cube-details-action-panel',
   styleUrls: ['action-panel.component.scss'],
@@ -25,8 +16,12 @@ export interface Rating {
 export class ActionPanelComponent implements OnInit, OnDestroy {
 
   @Input() learningObject: LearningObject;
+  @Input() revisedVersion: boolean;
+  @Input() reviewer: boolean;
+  @Input() revisedDate: Date;
+  @Input() releasedDate: Date;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
-  @ViewChild('ratingsWrapper') ratingsWrapper: ElementRef;
+  @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
   private destroyed$ = new Subject<void>();
@@ -35,17 +30,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   addingToLibrary = false;
   author: string;
   learningObjectName: string;
-  ratings: Rating[] = [];
-  averageRating = 0;
   saved = false;
   url: string;
-  showAddRating = false;
   windowWidth: number;
   loggedin = false;
   showDownloadModal = false;
-  isEditButtonViewable = false;
-
-  userRating: { user?: User, number?: number, comment?: string, date?: string } = {};
+  userCanRevise = false;
 
   contributorsList = [];
   iframeParent = iframeParentID;
@@ -54,11 +44,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   public tips = TOOLTIP_TEXT;
 
-  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
-      this.showAddRating = false;
-    }
-  }
 
   @HostListener('window:resize', ['$event']) handleResize(event) {
     this.windowWidth = event.target.outerWidth;
@@ -68,16 +53,17 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private cartService: CartV2Service,
     private renderer: Renderer2,
-    private noteService: ToasterService,
+    private toaster: ToasterService,
   ) { }
 
   ngOnInit() {
     this.auth.group
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
-        this.isEditButtonViewable = this.auth.hasEditorAccess();
+        this.userCanRevise = this.auth.hasEditorAccess();
       });
-    this.hasDownloadAccess = this.auth.hasReviewerAccess() || this.isReleased;
+    this.hasDownloadAccess = (this.auth.hasReviewerAccess() || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
+
     this.url = this.buildLocation();
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
@@ -117,7 +103,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       }
     } catch (error) {
       console.log(error);
-      this.noteService.notify(
+      this.toaster.notify(
         'Error!',
         'There was an error adding to your library',
         'bad',
@@ -127,10 +113,24 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.addingToLibrary = false;
   }
 
+  /**
+   * Download the revised copy of a learning object. This does not add the object to the users cart
+   * @param download boolean determines if download takes place
+   */
+  downloadRevised(download?: boolean) {
+    if (download) {
+      this.download(
+        this.learningObject.author.username,
+        this.learningObject.name
+      );
+    }
+  }
+
+
   download(author: string, learningObjectName: string) {
     this.downloading = true;
     const loaded = this.cartService
-      .downloadLearningObject(author, learningObjectName).pipe(
+      .downloadLearningObject(author, learningObjectName, this.revisedVersion).pipe(
       takeUntil(this.destroyed$));
 
     this.toggleDownloadModal(true);
@@ -147,7 +147,22 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     el.select();
     document.execCommand('copy');
 
-    this.noteService.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+  }
+
+  /**
+   * Copy the Creative Commons Attribution to the clipboard
+   *
+  */
+  copyAttribution() {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('objectAttribution'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+
+    this.toaster.notify('Success!', 'Attribution information has been copied to your clipboard!', 'good', 'far fa-check');
   }
 
   toggleDownloadModal(val?: boolean) {
@@ -231,6 +246,29 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get isMobile() {
     return this.windowWidth <= 750;
+  }
+
+  /**
+   * Sends email verification email
+   *
+   * @memberof UserInformationComponent
+   */
+  public async sendEmailVerification() {
+    try {
+      await this.auth.validate();
+
+      if (!this.auth.user.emailVerified) {
+        await this.auth.sendEmailVerification().toPromise();
+        this.toaster.notify(
+          `Success!`,
+          `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`,
+          'good',
+          'far fa-check'
+        );
+      }
+    } catch (e) {
+      this.toaster.notify(`Could not send email`, `${e}`, 'bad', '');
+    }
   }
 
   ngOnDestroy() {
