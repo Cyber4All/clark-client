@@ -108,7 +108,7 @@ body {
   );
   padding: 8px 20px 8px 25px;
   text-transform: uppercase;
-  font-size: 15px;
+  font-size: $normal;
   cursor: pointer;
   box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
   transition: opacity 0.2s ease;
@@ -304,7 +304,7 @@ body {
 
     .title {
       font-weight: bold;
-      font-size: 18px;
+      font-size: $large;
     }
   }
 
@@ -448,7 +448,7 @@ body {
 
   li {
     cursor: pointer;
-    font-size: 14px;
+    font-size: $small;
     padding: 8px 15px;
     list-style-type: none;
 
@@ -519,7 +519,7 @@ body {
     }
 
     li {
-      font-size: 15px;
+      font-size: $normal;
     }
   }
 
@@ -545,7 +545,7 @@ body {
 
     .title-text {
       color: $blue-accent;
-      font-size: 20px;
+      font-size: $larger;
       text-align: center;
       font-weight: bold;
       margin-bottom: 10px;
@@ -555,7 +555,7 @@ body {
       color: $dark-text;
       text-align: center;
       margin: 25px auto;
-      font-size: 16px;
+      font-size: $normal;
     }
 
     &.title-bad .title-text {
@@ -624,7 +624,7 @@ body {
       padding: 10px 5px;
       text-align: center;
       color: $blue-accent;
-      font-size: 15px;
+      font-size: $normal;
       cursor: pointer;
       transition: color 0.2s ease;
       text-transform: uppercase;
