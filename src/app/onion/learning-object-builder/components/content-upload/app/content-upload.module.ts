@@ -21,6 +21,7 @@ import { ContextMenuModule } from 'ngx-contextmenu';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
 import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component';
+import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,14 @@ import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component'
     FileUploadStatusComponent,
     UrlRowComponent
   ],
-  imports: [CommonModule, SharedModule, FormsModule, ContextMenuModule, routes],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FileBrowserModule,
+    FormsModule,
+    ContextMenuModule,
+    routes
+  ],
   exports: [
     RouterModule,
     UploadComponent,
