@@ -3,7 +3,7 @@
 $local-blue: lighten($light-blue, 34);
 
 .title-text {
-  font-size: 30px;
+  font-size: $largest;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 2px;
@@ -22,6 +22,6 @@ $local-blue: lighten($light-blue, 34);
 }
 
 .subtitle-text {
-  font-size: 30px;
+  font-size: $largest;
   font-weight: lighter;
 }

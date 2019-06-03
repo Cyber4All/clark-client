@@ -5,11 +5,11 @@
 }
 
 .header__title {
-  font-size: 30px;
+  font-size: $larger;
 }
 
 .header__date {
-  font-size: 16px;
+  font-size: $normal;
   color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
   margin-bottom: 10px;
 }
@@ -19,11 +19,11 @@
   text-align: center;
   padding: 40px 0;
   color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
-  font-size: 20px;
+  font-size: $larger;
 
   .svg-inline--fa {
     color: $light-blue;
-    font-size: 30px;
+    font-size: $larger;
     margin-bottom: 20px;
   }
 

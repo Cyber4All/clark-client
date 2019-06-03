@@ -15,12 +15,12 @@ form {
 
 .gravatar-header {
     text-align: left;
-    font-size: 15px;
+    font-size: $normal;
 }
 
 .gravatar-text {
     text-align: left;
-    font-size: 12px;
+    font-size: $smaller;
 }
 
 .input {
@@ -34,7 +34,7 @@ form {
     color: $dark-grey;
 
     .preview-name {
-        font-size: 22px;
+        font-size: $larger;
     }
 
     .preview-organization {

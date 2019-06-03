@@ -37,26 +37,8 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
         .title {
           color: black;
-          font-size: 22px;
+          font-size: $larger;
           margin-bottom: 20px;
-        }
-
-        ul {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: space-between;
-        }
-
-        li {
-          font-size: 18px;
-          width: 45%;
-          margin-bottom: 10px;
-
-          .svg-inline--fa {
-            margin-top: 3px;
-            margin-right: 15px;
-          }
         }
       }
 
@@ -72,14 +54,12 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         justify-content: flex-start;
         align-items: center;
         margin-bottom: 5px;
-
         .title {
           width: 100%;
           color: black;
-          font-size: 22px;
+          font-size: $larger;
           padding-left: 10px;
         }
-
         .level {
           text-transform: none;
           cursor: pointer;
@@ -92,7 +72,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           border: 3px solid transparent;
           margin-top: 10px;
           user-select: none;
-
           &:hover,
           &:focus {
             text-decoration: none;
@@ -100,54 +79,54 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           }
         }
       }
-      .disclaimer {
-        background: #fff;
-        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
-        padding: 20px;
-        margin-bottom: 40px;
-
-        .title {
-          width: 100%;
-          color: black;
-          font-size: 22px;
-          padding-left: 10px;
-        }
-
-        p {
-          padding-left: 10px;
-          padding-top: 8px;
-        }
-      }
-
-      .outcomes {
-        background: desaturate(lighten($blue-accent, 55), 20);
-      }
-
-      .ratings {
-        background: white;
-        border-radius: 3px;
-        padding: 20px;
-        position: relative;
-
-        button {
-          position: absolute;
-          right: 20px;
-          top: 20px;
-        }
-
-        ::ng-deep .title {
-          font-size: 22px;
-        }
-      }
     }
-
-    .sidebar {
-      width: $sidebar-width;
+    .disclaimer {
+      background: #fff;
+      box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
       padding: 20px;
-      flex-shrink: 0;
-      margin-top: -190px;
-      z-index: 2;
+      margin-bottom: 40px;
+
+      .title {
+        width: 100%;
+        color: black;
+        font-size: $larger;
+        padding-left: 10px;
+      }
+
+      p {
+        padding-left: 10px;
+        padding-top: 8px;
+      }
     }
+
+    .outcomes {
+      background: desaturate(lighten($blue-accent, 55), 20);
+    }
+
+    .ratings {
+      background: white;
+      border-radius: 3px;
+      padding: 20px;
+      position: relative;
+
+      button {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+      }
+
+      ::ng-deep .title {
+        font-size: $larger;
+      }
+    }
+  }
+
+  .sidebar {
+    width: $sidebar-width;
+    padding: 20px;
+    flex-shrink: 0;
+    margin-top: -190px;
+    z-index: 2;
   }
 }
 
@@ -226,13 +205,14 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       position: absolute;
       top: 10px;
       right: 20px;
-      font-size: 20px;
+      font-size: $larger;
       cursor: pointer;
       color: lighten($dark-grey, 20);
     }
 
     .title {
-      font-size: 20px;
+      color: black;
+      font-size: $larger;
       text-align: center;
       color: $dark-grey;
       margin-bottom: 15px;
@@ -247,7 +227,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   margin-bottom: 15px;
 
   .no-revisions {
-    font-size: 16px;
+    font-size: $normal;
     color: $dark-grey;
     padding-right: 10px;
     text-align: center;
@@ -255,7 +235,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   }
 }
 .text {
-  font-size: 16px;
+  font-size: $normal;
   color: $dark-grey;
   padding-right: 10px;
   padding-left: 50px;
@@ -316,14 +296,14 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   align-items: center;
   justify-content: center;
   max-width: 300px;
-  font-size: 18px;
+  font-size: $large;
   color: $dark-grey;
   margin: auto;
   margin-top: 100px;
 
   .svg-inline--fa {
     color: $light-blue;
-    font-size: 25px;
+    font-size: $larger;
     margin-bottom: 10px;
   }
 }

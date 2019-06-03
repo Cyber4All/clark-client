@@ -9,7 +9,7 @@ $row-gap: 25px;
 
 .header {
   margin-bottom: 25px;
-  font-size: 22px;
+  font-size: $larger;
 }
 
 .stat-counters {
@@ -38,7 +38,7 @@ $row-gap: 25px;
   padding: 20px;
 
   .title {
-    font-size: 18px;
+    font-size: $large;
     color: #333;
   }
 

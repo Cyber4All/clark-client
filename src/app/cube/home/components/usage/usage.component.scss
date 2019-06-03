@@ -38,7 +38,7 @@
     align-items: center;
     text-align: center;
     margin: 24px 30px;
-    width: 135px;
+    width: 145px;
 
     &.collections .item__icon {
       color: #cc3057;
@@ -63,14 +63,14 @@
 
   .item__count {
     color: $dark-grey;
-    font-size: 30px;
+    font-size: $largest;
     margin-bottom: 5px;
     font-weight: 600;
   }
 
   .item__label {
     color: lighten($dark-grey, 25);
-    font-size: 18px;
+    font-size: $large;
   }
 
   .item__icon {
@@ -89,7 +89,7 @@
   .usage__more {
     text-align: center;
     text-decoration: underline;
-    font-size: 18px;
+    font-size: $large;
     margin-top: 70px;
 
     a {
@@ -106,12 +106,12 @@
   .svg-inline--fa,
   .icon {
     color: $light-blue;
-    font-size: 26px;
+    font-size: $larger;
     margin-bottom: 10px;
   }
 
   .loading__label {
-    font-size: 18px;
+    font-size: $large;
     color: $medium-grey;
   }
 }

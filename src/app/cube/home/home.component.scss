@@ -67,12 +67,12 @@
   }
 
   .browse-cta {
-    font-size: 18px;
+    font-size: $large;
     text-align: center;
 
     a {
       color: $light-blue;
-      font-size: 18px;
+      font-size: $large;
       text-decoration: underline;
       padding: 10px;
     }
@@ -156,6 +156,6 @@
 
   .button.good {
     padding: 12px 30px;
-    font-size: 18px;
+    font-size: $large;
   }
 }

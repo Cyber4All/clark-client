@@ -32,7 +32,7 @@
 .file-breadcrumb {
 
   .link {
-    font-size: 20px;
+    font-size: $larger;
     font-weight: 700;
     margin: 5px 0;
     padding: 0;
@@ -108,7 +108,7 @@
 .context-item {
 
   .option {
-    font-size: 18px;
+    font-size: $large;
   }
 }
 
@@ -125,8 +125,7 @@ div.dropzone-message {
   margin: auto;
   align-self: center;
   font-weight: 200;
-  font-size: 20px;
-  // color: desaturate(lighten($light-blue, 15), 30);
+  font-size: $larger;
   color: lighten($dark-grey, 20);
   display: flex;
   flex-direction: column;
@@ -134,13 +133,12 @@ div.dropzone-message {
 
   & > .svg-inline--fa {
     font-size: 60px;
-    // color: $light-blue;
     margin-bottom: 10px;
     color: inherit;
   }
 
   .empty-title {
-    font-size: 30px;
+    font-size: $largest;
     margin-bottom: 15px;
   }
 

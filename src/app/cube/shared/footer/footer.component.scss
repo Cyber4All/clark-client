@@ -17,7 +17,7 @@ footer {
   }
 
   .funding-info {
-    font-size: 16px;
+    font-size: $normal;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -52,20 +52,7 @@ footer {
   a,
   .small-links {
     color: whitesmoke;
-    font-size: 16px;
-  }
-
-  .notice {
-    color: whitesmoke;
-
-    p {
-      font-size: 12px;
-      max-width: 1000px;
-    }
-
-    .notice-title {
-      font-size: 14px;
-    }
+    font-size: $normal;
   }
 }
 

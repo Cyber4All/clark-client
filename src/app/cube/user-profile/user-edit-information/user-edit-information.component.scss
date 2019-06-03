@@ -9,7 +9,7 @@ textarea {
   font-family: 'Source Sans Pro', serif;
   font-weight: normal;
   padding: 12px;
-  font-size: 15px;
+  font-size: $normal;
   resize: none;
   color: $blue-accent;
 }
@@ -31,12 +31,12 @@ form {
 
   .gravatar-header {
     text-align: left;
-    font-size: 15px;
+    font-size: $normal;
   }
 
   .gravatar-text {
     text-align: left;
-    font-size: 12px;
+    font-size: $smaller;
   }
 
   .input {
@@ -57,7 +57,7 @@ form {
       flex-grow: 1;
       flex-shrink: 1;
       border: none;
-      font-size: 15px;
+      font-size: $normal;
       outline: 0;
       font-family: 'Source Sans Pro', serif;
       font-weight: normal;
@@ -100,7 +100,7 @@ form {
 .title {
   text-align: center;
   color: $dark-grey;
-  font-size: 28px;
+  font-size: $larger;
   margin-top: 10px;
   margin-bottom: 10px;
 }

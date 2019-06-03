@@ -12,7 +12,7 @@
     background: $orange-gradient;
     padding: 8px 12px;
     border-radius: 2px 2px 0 0;
-    font-size: 18px;
+    font-size: $large;
     text-align: center;
     margin-bottom: 10px;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
@@ -38,7 +38,7 @@
   .button {
     overflow: hidden;
     text-align: center;
-    font-size: 16px;
+    font-size: $normal;
     position: relative;
 
     &.saved {
@@ -52,7 +52,7 @@
 
   .action-message {
     margin-top: 20px;
-    font-size: 16px;
+    font-size: $normal;
     color: $dark-grey;
 
     a {

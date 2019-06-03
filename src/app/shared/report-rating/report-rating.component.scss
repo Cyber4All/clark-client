@@ -11,7 +11,7 @@
     position: absolute;
     top: 4px;
     left: 0;
-    font-size: 15px;
+    font-size: $normal;
     cursor: pointer;
   }
 }
@@ -22,7 +22,7 @@
     margin: 0;
 
     li {
-      font-size: 18px;
+      font-size: $large;
       list-style-type: none;
       padding: 10px 20px 10px 0;
       cursor: pointer;
@@ -36,7 +36,7 @@
       }
 
       .svg-inline--fa {
-        font-size: 14px;
+        font-size: $small;
       }
     }
   }
@@ -45,7 +45,7 @@
 .comment {
   .comment-description {
     color: $dark-grey;
-    font-size: 16px;
+    font-size: $normal;
 
     span {
       font-weight: bold;

@@ -34,7 +34,7 @@
     align-items: center;
 
     a {
-      font-size: 20px;
+      font-size: $large;
       text-decoration: none;
       color: black;
 
@@ -63,7 +63,7 @@
       .button__cancel {
         background: white;
         color: $error-red;
-        font-size: 12px;
+        font-size: $smaller;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -95,7 +95,7 @@
 
     li {
       list-style-type: none;
-      font-size: 18px;
+      font-size: $large;
 
       a {
         display: flex;
@@ -109,7 +109,7 @@
         .svg-inline--fa,
         .icon {
           margin-right: 5px;
-          font-size: 12px;
+          font-size: $smaller;
         }
 
         &:after {
@@ -166,7 +166,7 @@
 .builder-navbar-wrapper__saving-indicator {
   color: $medium-grey;
   margin-left: 30px;
-  font-size: 16px;
+  font-size: $normal;
   text-decoration: underline;
   padding-top: 1px;
 }
@@ -199,14 +199,14 @@
 
     .banner__title {
       color: white;
-      font-size: 24px;
+      font-size: $larger;
       font-weight: bold;
     }
 
     .banner__sub {
       color: white;
       opacity: 0.85;
-      font-size: 16px;
+      font-size: $normal;
     }
   }
 

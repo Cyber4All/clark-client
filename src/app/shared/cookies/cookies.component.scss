@@ -45,12 +45,12 @@
         }
 
         .text {
-            font-size: 16px;
+            font-size: $normal;
         }
     }
 
     .dismiss {
-        font-size: 20px;
+        font-size: $larger;
         cursor: pointer;
     }
 }

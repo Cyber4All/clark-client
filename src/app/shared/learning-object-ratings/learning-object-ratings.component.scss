@@ -1,7 +1,7 @@
 @import '~_vars.scss';
 
 .title {
-  font-size: 18px;
+  font-size: $large;
   color: $dark-grey;
 }
 
@@ -56,7 +56,7 @@
       }
 
       .user-name {
-        font-size: 18px;
+        font-size: $large;
         text-transform: capitalize;
         margin-left: 10px;
         display: flex;
@@ -73,13 +73,13 @@
     }
 
     .rating-text {
-      font-size: 16px;
+      font-size: $normal;
     }
   }
 
   .options {
     margin-top: 5px;
-    font-size: 14px;
+    font-size: $smaller;
 
     & > * {
       cursor: pointer;
@@ -107,7 +107,7 @@
 .no-ratings {
   text-align: left;
   color: $dark-grey;
-  font-size: 18px;
+  font-size: $large;
 }
 
 .report-rating-wrapper {
@@ -140,7 +140,7 @@
 
     .closePopup {
       position: absolute;
-      font-size: 18px;
+      font-size: $large;
       right: 20px;
       top: 23px;
       color: $blue-accent;

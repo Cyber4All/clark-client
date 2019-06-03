@@ -24,8 +24,7 @@
     padding: 8px 0 6px;
     border-bottom: 2px solid $light-blue;
     outline: 0;
-    font-size: 15px;
-    font-family: 'Arial', sans-serif;
+    font-size: $normal;
     margin: 0;
     margin-left: -1px;
     flex-grow: 2;
@@ -45,7 +44,7 @@
     background: $light-blue-gradient;
     color: white;
     padding: 8px 12px;
-    font-size: 15px;
+    font-size: $normal;
     top: 0;
     left: -8px;
     bottom: 0;
@@ -58,7 +57,7 @@
     }
 
     .svg-inline--fa {
-      font-size: 12px;
+      font-size: $smaller;
       margin-left: 10px;
     }
 

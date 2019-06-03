@@ -41,7 +41,7 @@
 
   .outcome-header {
     width: 100%;
-    font-size: 16px;
+    font-size: $normal;
     color: $dark-grey;
     font-weight: 600;
     margin-bottom: 30px;
@@ -89,12 +89,12 @@
 
     .level {
       background: white;
-      padding: 25px 15px;
+      padding: 25px 10px;
       border-radius: 5px;
       box-shadow: 0 2px 12px 2px rgba(0, 0, 0, 0.04);
       text-align: center;
       font-weight: 500;
-      font-size: 15px;
+      font-size: $normal;
       color: $medium-grey;
       transition: all 0.2s ease;
       cursor: pointer;
@@ -163,7 +163,7 @@
         margin-bottom: 10px;
         flex-shrink: 0;
         box-sizing: border-box;
-        font-size: 14px;
+        font-size: $small;
 
         .svg-inline--fa,
         .icon {

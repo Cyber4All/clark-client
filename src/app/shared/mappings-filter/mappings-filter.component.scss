@@ -9,7 +9,7 @@
   color: white !important;
   position: absolute;
   align-items: center;
-  font-size: 12px;
+  font-size: $smaller;
   border-radius: 2px;
   z-index: 1;
   cursor: text;
@@ -81,7 +81,7 @@
   .loading,
   .empty {
     color: $blue-accent;
-    font-size: 18px;
+    font-size: $large;
     position: relative;
     z-index: 1;
     display: flex;
@@ -92,7 +92,7 @@
   .empty {
     margin-top: 10px;
     color: $medium-grey;
-    font-size: 14px;
+    font-size: $small;
     text-align: center;
     padding: 10px;
   }

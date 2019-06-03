@@ -4,7 +4,8 @@
   margin-bottom: 40px;
 
   h1 {
-    font-size: 22px;
+    color: black;
+    font-size: $larger;
     padding-left: 10px;
   }
 
@@ -34,14 +35,14 @@
       .title {
         flex-grow: 2;
         color: black;
-        font-size: 14px;
+        font-size: $small;
         padding: 10px;
         padding-left: 20px;
         text-align: start;
       }
 
       .mappings-count {
-        font-size: 12px;
+        font-size: $small;
         color: gray;
         padding-right: 10px;
       }
@@ -75,9 +76,9 @@
 
       .standard-author,
       .standard-name {
-        font-size: 16px;
+        font-size: $normal;
         //background-color: skyblue;
-        color: darken(#55595e, 10);
+        color: $dark-grey;
       }
 
       .standard-name {
@@ -85,7 +86,7 @@
       }
 
       .standard-outcome {
-        font-size: 14px;
+        font-size: $small;
       }
 
       .standard-author,

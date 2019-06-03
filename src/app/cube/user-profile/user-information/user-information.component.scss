@@ -3,14 +3,14 @@
 .title {
   text-align: center;
   color: $dark-grey;
-  font-size: 28px;
+  font-size: $larger;
   margin-top: 10px;
 }
 
 .info {
   color: $dark-grey;
   text-align: center;
-  font-size: 16px;
+  font-size: $normal;
   margin-bottom: 20px;
   .organization {
     text-transform: capitalize;
@@ -23,7 +23,7 @@
 
 .bio {
   color: $dark-grey;
-  font-size: 18px;
+  font-size: $large;
   max-width: 600px;
   margin: auto;
   
@@ -33,7 +33,7 @@
   color: $blue-accent;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: $larger;
 }
 
 .learning-objects {
@@ -47,7 +47,7 @@
   .no-objects {
     margin-top: 30px;
     color: $dark-grey;
-    font-size: 18px;
+    font-size: $large;
     text-align: center;
   }
 

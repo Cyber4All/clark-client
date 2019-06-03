@@ -7,14 +7,14 @@
 
   .icon {
     color: $light-blue;
-    font-size: 20px;
+    font-size: $larger;
     align-items: left;
     justify-content: left;
   }
   .title {
     color: $blue-gradient;
     text-align: left;
-    font-size: 20px;
+    font-size: $larger;
     font-weight: 600;
     margin: 0 0 10px 10px;
     align-items: left;
@@ -53,7 +53,7 @@
       .child-title {
         color: $dark-grey;
         text-align: left;
-        font-size: 16px;
+        font-size: $normal;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -66,7 +66,7 @@
 
       .child-length {
         text-align: left;
-        font-size: 14px;
+        font-size: $small;
 
         &.nanomodule {
           color: $nanomodule-color;
@@ -91,7 +91,7 @@
 
       .child-last-updated {
         color: $dark-grey;
-        font-size: 14px;
+        font-size: $small;
         padding-left: 20px;
       }
     }
@@ -103,7 +103,7 @@
     cursor: move;
     width: 20px;
     height: 20px;
-    font-size: 18px;
+    font-size: $large;
     margin-left: auto;
   }
 }

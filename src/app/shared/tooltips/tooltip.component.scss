@@ -1,3 +1,5 @@
+@import '~_vars.scss';
+
 $dark-grey: #111;
 $light-text: #fff;
 $success-green: #389857;
@@ -14,8 +16,8 @@ $light: #fefefe;
 .tooltip {
   position: fixed;
   display: block;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: $smaller;
   font-style: normal;
   font-weight: normal;
   line-height: 1.42857143;
@@ -34,7 +36,6 @@ $light: #fefefe;
   z-index: 9999999999999999999999999999999;
 
   &.dark {
-
     .tooltip-inner {
       color: $light-text;
       background-color: $black;
@@ -58,7 +59,6 @@ $light: #fefefe;
   }
 
   &.light {
-
     .tooltip-inner {
       color: $dark-grey;
       background-color: $light;
@@ -83,7 +83,6 @@ $light: #fefefe;
   }
 
   &.good {
-
     .tooltip-inner {
       color: $light-text;
       background-color: $success-green;
@@ -107,7 +106,6 @@ $light: #fefefe;
   }
 
   &.bad {
-
     .tooltip-inner {
       color: $light-text;
       background-color: $red;
@@ -131,7 +129,6 @@ $light: #fefefe;
   }
 
   &.neutral {
-
     .tooltip-inner {
       color: $light-text;
       background-color: $blue;
@@ -155,7 +152,7 @@ $light: #fefefe;
   }
 
   .tooltip-inner {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     max-width: 250px;
     padding: 8px;
     text-align: center;
@@ -176,7 +173,7 @@ $light: #fefefe;
     margin-top: -3px;
 
     .tooltip-inner {
-      box-shadow: 0 -1px 3px rgba(0, 0, 0, .2);
+      box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.2);
     }
 
     &.tooltip-arrow {
@@ -222,15 +219,13 @@ $light: #fefefe;
       border-width: 5px 0 5px 5px;
     }
   }
-
-
 }
 
 @keyframes fadein {
   from {
     opacity: 0;
-
-  } to {
+  }
+  to {
     opacity: 0.9;
   }
 }

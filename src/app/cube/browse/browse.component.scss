@@ -12,7 +12,7 @@ $learning-object-width: 820px;
     color: lighten(desaturate($blue-accent, 10), 5);
     text-decoration: underline;
     cursor: pointer;
-    font-size: 16px;
+    font-size: $normal;
     text-transform: none;
   }
 }
@@ -25,7 +25,7 @@ $learning-object-width: 820px;
 
   .column-title {
     text-align: left;
-    font-size: 16px;
+    font-size: $normal;
     text-transform: uppercase;
     padding-bottom: 10px;
     border-bottom: 1px solid lighten(desaturate($blue-accent, 20), 50);
@@ -90,13 +90,13 @@ $learning-object-width: 820px;
 
       .sort,
       .mobile-filters {
-        font-size: 16px;
+        font-size: $normal;
         cursor: pointer;
         display: flex;
         align-items: center;
 
         .svg-inline--fa {
-          font-size: 10px;
+          font-size: $smaller;
           margin: 0 5px;
         }
 
@@ -110,7 +110,7 @@ $learning-object-width: 820px;
 
           & > * {
             @include vert-center;
-            font-size: 14px;
+            font-size: $small;
           }
         }
 
@@ -118,7 +118,7 @@ $learning-object-width: 820px;
           display: none;
 
           & > .svg-inline--fa {
-            font-size: 14px;
+            font-size: $small;
             margin-left: 12px;
           }
         }

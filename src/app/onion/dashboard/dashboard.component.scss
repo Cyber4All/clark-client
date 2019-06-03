@@ -11,7 +11,7 @@
 
     .greeting {
       position: relative;
-      font-size: 28px;
+      font-size: $largest;
       font-weight: bold;
 
       span {
@@ -58,7 +58,7 @@
       z-index: 2;
 
       .header {
-        font-size: 26px;
+        font-size: $larger;
         color: $dark-grey;
       }
     }
@@ -83,7 +83,7 @@
 
     .column-headers {
       font-weight: bold;
-      font-size: 14px;
+      font-size: $small;
       color: $dark-grey;
       opacity: 0.46;
       padding-top: 20px;
@@ -229,7 +229,7 @@ $unpublished-color: rgba(
   bottom: 0;
 
   color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
-  font-size: 20px;
+  font-size: $larger;
   padding: 20px;
 
   .svg-inline--fa {
@@ -253,7 +253,7 @@ $unpublished-color: rgba(
   bottom: 0;
 
   color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
-  font-size: 16px;
+  font-size: $normal;
 
   .top {
     display: flex;
@@ -261,7 +261,7 @@ $unpublished-color: rgba(
     align-items: center;
     flex-direction: row;
     color: $dark-grey;
-    font-size: 30px;
+    font-size: $largest;
     margin-bottom: 10px;
 
     .svg-inline--fa {

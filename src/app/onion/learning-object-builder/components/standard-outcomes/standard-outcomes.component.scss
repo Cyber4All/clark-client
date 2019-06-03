@@ -5,7 +5,7 @@
   position: relative;
 
   .title {
-    font-size: 18px;
+    font-size: $large;
     color: $dark-grey;
     font-weight: 600;
     margin-bottom: 8px;
@@ -73,7 +73,7 @@
   .svg-inline--fa,
   .icon {
     color: $light-blue;
-    font-size: 20px;
+    font-size: $larger;
     margin-bottom: 10px;
   }
 }
