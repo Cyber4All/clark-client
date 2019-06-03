@@ -132,14 +132,14 @@
     }
 
     ::ng-deep .auth-title {
-        font-size: $larger;
+        font-size: $largest;
         color: $blue-accent;
         font-weight: bolder;
         text-align: center;
 
         &.light {
             font-weight: lighter;
-            font-size: $large;
+            font-size: $larger;
         }
 
     }
