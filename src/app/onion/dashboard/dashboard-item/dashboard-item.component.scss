@@ -18,11 +18,15 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         padding-left: 50px;
         padding-right: 50px;
     }
+    .name {
+        font-size: $small;
+    }
 
     .hierarchy-parents,
     .hierarchy-children {
         color: $bright-blue;
-        font-size: $normal;
+        font-size: $small;
+        font-style: bold;
         margin-left: 10px;
     }
 }
