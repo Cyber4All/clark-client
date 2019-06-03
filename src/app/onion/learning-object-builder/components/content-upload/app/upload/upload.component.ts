@@ -133,7 +133,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     autoQueue: false,
     parallelChunkUploads: true,
-    headers: {}
+    headers: { Authorization: '' }
   };
 
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
@@ -363,15 +363,16 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           .pipe(take(1))
           .toPromise();
 
+        const fileUploadMeta: FileUploadMeta = {
+          name: file.name,
+          path: file.fullPath || file.name,
+          fileType: file.type,
+          size: file.size
+        };
+
         // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
         let uploadId = '';
         if (this.userIsPrivileged) {
-          const fileUploadMeta: FileUploadMeta = {
-            name: file.name,
-            path: file.fullPath || file.name,
-            fileType: file.type,
-            size: file.size
-          };
           uploadId = await this.fileStorage.initMultipartAdmin({
             fileUploadMeta,
             fileId: file.upload.uuid,
@@ -380,9 +381,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         } else {
           uploadId = await this.fileStorage.initMultipart({
-            learningObject,
+            learningObjectId: learningObject.id,
+            authorUsername: learningObject.author.username,
             fileId: file.upload.uuid,
-            filePath: file.fullPath ? file.fullPath : file.name
+            fileUploadMeta
           });
         }
         this.uploadIds[file.upload.uuid] = uploadId;
@@ -449,13 +451,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (file.upload.chunked && file.status !== 'error') {
       try {
-        const fileMeta = {
-          dzuuid: file.upload.uuid,
-          name: file.name,
-          size: file.size,
-          fullPath: file.fullPath,
-          mimetype: file.type
-        };
         const uploadId = this.uploadIds[file.upload.uuid];
         const learningObject = await this.learningObject$
           .pipe(take(1))
@@ -471,8 +466,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         } else {
           await this.fileStorage.finalizeMultipart({
-            fileMeta,
-            learningObject,
+            learningObjectId: learningObject.id,
+            authorUsername: learningObject.author.username,
             fileId: file.upload.uuid,
             uploadId
           });
