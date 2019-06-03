@@ -179,23 +179,11 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   private removeEmptyFolders(node: DirectoryNode): void {
-    if (!this.isRoot(node) && this.isFolderEmpty(node)) {
+    if (!this.isRoot(node) && node.isEmpty()) {
       const parent = node.getParent();
       parent.removeFolder(node.getName());
       this.removeEmptyFolders(parent);
     }
-  }
-
-  /**
-   * Checks if folder is empty by checking the length folders and files
-   *
-   * @private
-   * @param {DirectoryNode} folder [The folder to check]
-   * @returns {boolean}
-   * @memberof DirectoryTree
-   */
-  private isFolderEmpty(folder: DirectoryNode): boolean {
-    return !folder.getFolders().length && !folder.getFiles().length;
   }
 
   /**
@@ -235,6 +223,17 @@ export class DirectoryNode {
     this.folders = [];
     this.description = '';
   }
+
+  /**
+   * Checks if folder is empty by checking the length folders and files
+   *
+   * @returns {boolean}
+   * @memberof DirectoryNode
+   */
+  public isEmpty(): boolean {
+    return !this.folders.length && !this.files.length;
+  }
+
   /**
    * Gets Parent Node
    *
