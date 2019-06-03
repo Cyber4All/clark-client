@@ -47,7 +47,7 @@ a {
 
   .learning-object {
     .title {
-      font-size: 16px !important;
+      font-size: $normal;
     }
 
     .goals {
@@ -60,7 +60,7 @@ a {
       max-height: 100% !important;
 
       .initials {
-        font-size: 13px !important;
+        font-size: $small;
       }
     }
   }
@@ -190,7 +190,7 @@ a {
 
     .initials {
       color: white;
-      font-size: 16px;
+      font-size: $normal;
       text-align: center;
       background: rgba(0, 0, 0, 0.4);
       padding: 5px;
@@ -213,10 +213,10 @@ a {
       position: absolute;
       color: $dark-text;
       text-transform: capitalize;
-      font-size: 10px;
+      font-size: $smaller;
       font-weight: bold;
       background: orange;
-      top: 8px;
+      top:8px;
       left: 0;
       box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
 
@@ -227,13 +227,13 @@ a {
         &:after {
           content: '';
           width: 15px;
-          height: 16px;
+          height: 20px;
           position: absolute;
           background: orange;
           border-radius: 5px;
           transform: rotate(45deg);
-          right: -8px;
-          top: 1px;
+          right: -6px;
+          top: .5px;
         }
       }
     }
@@ -246,7 +246,7 @@ a {
     position: relative;
 
     .title {
-      font-size: 16px;
+      font-size: $normal;
       color: black;
       display: flex;
       flex-direction: row;
@@ -268,13 +268,13 @@ a {
     }
 
     .details {
-      font-size: 13px;
+      font-size: $small;
       color: lighten($dark-text, 10);
       margin-top: 5px;
     }
 
     .goals {
-      font-size: 13px;
+      font-size: $small;
       color: lighten($dark-text, 10);
       margin-top: 5px;
       white-space: nowrap;
