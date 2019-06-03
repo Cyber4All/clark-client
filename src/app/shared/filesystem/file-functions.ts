@@ -48,3 +48,57 @@ const viewableInBrowser = ['.pdf'];
 export function canViewInBrowser(file: LearningObject.Material.File) {
   return viewableInBrowser.includes(getExtension(file));
 }
+
+const microsoftPreviewUrl =
+  'https://view.officeapps.live.com/op/embed.aspx?src=';
+
+const previewable: { [index: string]: string[] } = {
+  microsoft: [
+    'doc',
+    'docx',
+    'xls',
+    'xlsx',
+    'ppt',
+    'pptx',
+    'odt',
+    'ott',
+    'oth',
+    'odm'
+  ],
+  browser: ['pdf']
+};
+
+/**
+ * Returns preview url for file based on extension
+ * If the file's extension matches a Microsoft file extension, the Microsoft preview url for the file is returned
+ * If the file's extension can be opened in browser, the file's url is returned
+ * If the extension does not match any case, an empty string is returned.
+ *
+ * @export
+ * @param {LearningObject.Material.File} file [Metadata of the file]
+ * @returns {string} [Preview url]
+ */
+export function getPreviewUrl(file: LearningObject.Material.File): string {
+  let url = '';
+  const extension = file.extension;
+  if (extension) {
+    const types = Object.keys(previewable);
+    for (const type of types) {
+      const extensions = previewable[type];
+      if (extensions.includes(extension.replace('.', ''))) {
+        switch (type) {
+          case 'microsoft':
+            url = `${microsoftPreviewUrl}${file.url}`;
+            break;
+          case 'browser':
+            url = file.url;
+            break;
+          default:
+            break;
+        }
+        break;
+      }
+    }
+  }
+  return url;
+}

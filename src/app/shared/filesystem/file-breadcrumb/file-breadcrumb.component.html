@@ -1,9 +1,14 @@
 <div class="file-breadcrumb">
-  <span class="crumb" [ngClass]="{'link': (paths$|async)?.length}" (click)="jumpTo(0, true)">Materials</span>
-  <ng-container *ngFor="let path of (paths$ | async); let i=index;">
+  <span
+    class="crumb"
+    [ngClass]="{ link: paths?.length }"
+    (click)="jumpTo(0, true)"
+    >Materials</span
+  >
+  <ng-container *ngFor="let path of paths; let i = index">
     <span>
       <i class="far fa-chevron-right arrow"></i>
     </span>
-    <span class="crumb link" (click)="jumpTo(i)">{{path}}</span>
+    <span class="crumb link" (click)="jumpTo(i)">{{ path }}</span>
   </ng-container>
 </div>

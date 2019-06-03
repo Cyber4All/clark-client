@@ -17,6 +17,7 @@ import { ErrorStatusComponent } from './error-status/error-status.component';
 import { VersionSwitchComponent } from './version-switch/version-switch.component';
 import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
 import { ReviseButtonComponent } from './action-panel/revise-button.component';
+import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { ReviseButtonComponent } from './action-panel/revise-button.component';
     SharedModule,
     FormsModule,
     RouterModule,
+    FileBrowserModule,
     CubeSharedModule
   ],
   exports: [],
@@ -39,7 +41,7 @@ import { ReviseButtonComponent } from './action-panel/revise-button.component';
     ErrorStatusComponent,
     VersionSwitchComponent,
     ReviewerPanelComponent,
-    ReviseButtonComponent,
+    ReviseButtonComponent
   ],
   providers: []
 })
