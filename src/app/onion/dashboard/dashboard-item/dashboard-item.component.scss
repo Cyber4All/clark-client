@@ -1,23 +1,11 @@
 @import '~_vars.scss';
-$dark-text: rgb(83, 94, 100);
-$light-blue-gradient: linear-gradient(
-  45deg,
-  darken($light-blue, 10),
-  lighten($light-blue, 5)
-);
 
 .dashboard-item {
-  border-top: 2px solid
-    rgba(red($dark-text), green($dark-text), blue($dark-text), 0.12);
+  border-top: 2px solid $placeholder;
   transition: background 0.1s ease;
 
   &:not(.disabled):hover {
-    background: rgba(
-      red($dark-text),
-      green($dark-text),
-      blue($dark-text) + 10,
-      0.08
-    );
+    background: $placeholder;
   }
 
   &.disabled {

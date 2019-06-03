@@ -76,7 +76,7 @@ img {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(45deg, darken($blue-accent, 10), lighten($blue-accent, 10));
+        background: $blue-gradient;
         opacity: 0.1;
         z-index: 1;
     }

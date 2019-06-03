@@ -9,7 +9,7 @@
   text-align: left;
   color: white;
   min-width: 200px;
-  background: linear-gradient(45deg, $light-blue, saturate(lighten($light-blue, 10), 10));
+  background: $light-blue-gradient;
   border-radius: 4px;
   z-index: 2;
 
@@ -22,10 +22,6 @@
   &.service-indicator--error {
     background: $error-red;
   }
-}
-
-.service-indicator--saved {
-  background: linear-gradient(45deg, darken(saturate($success_green, 10), 5), saturate(lighten($success_green, 10), 10));
 }
 
 .popup-inner {

@@ -1,8 +1,5 @@
 @import '~_vars.scss';
 
-$dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
-
 .title {
   font-size: 20px;
   color: $dark-text;

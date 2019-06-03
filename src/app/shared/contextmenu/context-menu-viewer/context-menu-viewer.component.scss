@@ -1,8 +1,5 @@
 @import '~_vars.scss';
 
-$dark-text: rgb(83, 94, 100);
-$light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
-
 .full-screen {
   position: fixed;
   top: 0;

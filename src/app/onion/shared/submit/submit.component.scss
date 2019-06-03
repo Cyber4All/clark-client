@@ -1,8 +1,5 @@
 @import '~_vars.scss';
 
-$dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
-
 .submit {
   max-width: 800px;
   min-height: 550px;
@@ -17,7 +14,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($l
   padding: 20px;
   box-sizing: border-box;
   position: absolute;
-  background: linear-gradient(45deg, darken($light-blue, 5), lighten($light-blue, 5));
+  background: $light-blue-gradient;
   height: 96px;
 
   &:after {

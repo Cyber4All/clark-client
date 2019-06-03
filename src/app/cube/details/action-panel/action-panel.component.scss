@@ -9,7 +9,7 @@
 
   .download-warning {
     color: white;
-    background: linear-gradient(45deg, #fea200, #ffd000);
+    background: $orange-gradient;
     padding: 8px 12px;
     border-radius: 2px 2px 0 0;
     font-size: 18px;
@@ -216,12 +216,8 @@
 }
 
 .email-unverified {
-  background:  linear-gradient(45deg, darken(saturate($error-red, 20), 10), $error-red);
+  background:  $error-red;
   color: white;
   padding: 3px;
   border-radius: 2px;
-
-  .email-unverified__icon {
-
-  }
 }

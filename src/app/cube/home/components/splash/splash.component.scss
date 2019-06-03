@@ -25,8 +25,8 @@ $banner-height: 90px;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, darken($light-blue, 25), darken(desaturate($light-blue, 0), 0));
-    opacity: 0.75;
+    background: $light-blue-gradient;
+    opacity: 0.8;
     z-index: 1;
   }
 }
