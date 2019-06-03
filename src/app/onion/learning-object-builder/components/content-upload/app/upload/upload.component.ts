@@ -1,4 +1,4 @@
-import { takeUntil, debounceTime, take, last, first } from 'rxjs/operators';
+import { takeUntil, debounceTime, take } from 'rxjs/operators';
 import { trigger, style, animate, transition } from '@angular/animations';
 import {
   Component,
@@ -18,6 +18,7 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
 import { FileManagementService } from '../services/file-management.service';
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import {
   FileUploadMeta,
   UploadErrorReason,
@@ -630,6 +631,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.resetUploadStatuses();
       this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
     }
+  }
+
+  /**
+   * Handles downloading a file by opening the stream url in a new window
+   *
+   * @param {LearningObject.Material.File} file[The file to be downloaded]
+   * @memberof UploadComponent
+   */
+  async handleFileDownload(file: LearningObject.Material.File) {
+    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
+    const loId = learningObject.id;
+    const authorUsername = learningObject.author.username;
+    const url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+      loId,
+      username: authorUsername,
+      fileId: file.id
+    });
+    window.open(url, '__blank');
   }
 
   /**

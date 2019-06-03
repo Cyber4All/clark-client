@@ -49,6 +49,11 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output()
   path: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output()
+  downloadClicked: EventEmitter<
+    LearningObject.Material.File
+  > = new EventEmitter();
+
   editDescription: boolean;
 
   componentDestroyed$ = new Subject<void>();
@@ -56,6 +61,15 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {}
 
+  /**
+   * Emits clicked file
+   *
+   * @param {LearningObject.Material.File} file
+   * @memberof FileManagerComponent
+   */
+  handleDownloadClick(file: LearningObject.Material.File) {
+    this.downloadClicked.emit(file);
+  }
   /**
    * Triggers new options context menu
    *
@@ -156,7 +170,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   getFileIds(folder: DirectoryNode): string[] {
-    const children = folder.getChildren();
+    const children = folder.getFolders();
     const files = folder.getFiles();
     if (!children.length && !files.length) {
       return [];

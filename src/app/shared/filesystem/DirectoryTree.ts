@@ -8,15 +8,23 @@ import { LearningObject } from '@entity';
  * @class DirectoryTree
  */
 export class DirectoryTree {
-  private _root: DirectoryNode;
-  private lastNode: DirectoryNode;
-  private fileMap: Map<string, { path: string; file: string }> = new Map<
-    string,
-    { path: string; file: string }
-  >();
-  private pathMap: Map<string, number> = new Map<string, number>();
+  private root: DirectoryNode;
+  private lastTouchedNode: DirectoryNode;
+
   constructor() {
-    this._root = new DirectoryNode('', '', null);
+    this.root = new DirectoryNode('', '', null);
+  }
+
+  /**
+   * Returns folder DirectoryNode object if the folder exists within parent DirectoryNode
+   *
+   * @param {DirectoryNode} parent [The folder that contains the sub folder to be returned]
+   * @param {string} folderName [The name of the sub folder that should be returned]
+   * @returns {DirectoryNode}
+   * @memberof DirectoryTree
+   */
+  public getFolder(parent: DirectoryNode, folderName: string): DirectoryNode {
+    return parent.getFolder(folderName);
   }
   /**
    * Adds new Files to Directory Tree
@@ -25,23 +33,9 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   public addFiles(files: LearningObject.Material.File[]) {
-    // Returns new files and files that have had their metadata changed
-    const getUpdatedFiles = (fileList: LearningObject.Material.File[]) =>
-      fileList.filter(file => {
-        const mappedFile = this.fileMap.get(file.id);
-        if (mappedFile && mappedFile.file === JSON.stringify(file)) {
-          return false;
-        }
-        return true;
-      });
-    const newFiles = getUpdatedFiles(files);
-    for (const file of newFiles) {
-      this.fileMap.set(file.id, {
-        path: file.fullPath ? file.fullPath : file.name,
-        file: JSON.stringify(file)
-      });
+    files.forEach(file => {
       if (!file.fullPath) {
-        this._root.addFile(file);
+        this.root.addFile(file);
       } else {
         const paths = getPaths(file.fullPath);
         let node = this.traversePath(paths);
@@ -52,75 +46,33 @@ export class DirectoryTree {
           node.addFile(file);
         }
       }
-    }
-    this.cleanFilesystem(files);
+    });
   }
 
   /**
-   * Removes cached files that are no longer in the array of files
+   * Appends a new node for all missing directory paths
    *
    * @private
-   * @param {LearningObject.Material.File[]} files
+   * @param {string[]} paths [All path segments of the file]
+   * @returns
    * @memberof DirectoryTree
    */
-  private cleanFilesystem(files: LearningObject.Material.File[]) {
-    /**
-     * Checks if file is in array by matching against id and path
-     *
-     * @returns {boolean}
-     */
-    const findFile = (params: {
-      cachedFileData: { id: string; path: string };
-      file: LearningObject.Material.File;
-    }): boolean => {
-      const { cachedFileData, file } = params;
-      const filePath = file.fullPath || file.name;
-      return cachedFileData.id === file.id || cachedFileData.path === filePath;
-    };
-
-    const folderPaths = [];
-
-    // Remove file for file system and cache
-    this.fileMap.forEach((mappedFile, mappedId) => {
-      const fileExists = files.find(file =>
-        findFile({
-          file,
-          cachedFileData: { id: mappedId, path: mappedFile.path }
-        })
-      );
-
-      if (!fileExists) {
-        this.removeFile(mappedFile.path);
-        this.fileMap.delete(mappedId);
-        const folderPath = getPaths(mappedFile.path).join('/');
-        if (!folderPaths.includes(folderPath)) {
-          folderPaths.push(folderPath);
-        }
-      }
-    });
-
-    // Remove empty folders leftover from file removal
-    for (const path of folderPaths) {
-      const paths = getPaths(path, false);
-      const node = this.traversePath(paths);
-      if (node) {
-        this.removeEmptyFolders(node);
-      }
-    }
-  }
   private buildSubTree(paths: string[]) {
-    const last_touched_node_paths = getPaths(this.lastNode.getPath(), false);
-    const _paths = [...last_touched_node_paths];
+    const last_touched_node_paths = getPaths(
+      this.lastTouchedNode.getPath(),
+      false
+    );
+    const currentPaths = [...last_touched_node_paths];
     const continueFromIndex = last_touched_node_paths.length;
     let lastCreatedNode: DirectoryNode;
     for (let i = continueFromIndex; i < paths.length; i++) {
-      const p = paths[i];
-      _paths.push(p);
-      const _node = this.traversePath(_paths);
-      if (!_node) {
-        const name = p;
-        lastCreatedNode = this.add(name, `${_paths.join('/')}`, this.lastNode);
-      }
+      const folderName = paths[i];
+      currentPaths.push(folderName);
+      lastCreatedNode = this.addFolder(
+        folderName,
+        `${currentPaths.join('/')}`,
+        lastCreatedNode || this.lastTouchedNode
+      );
     }
     return lastCreatedNode;
   }
@@ -138,22 +90,16 @@ export class DirectoryTree {
     const currentPath = paths.shift();
     if (!parent) {
       if (!currentPath) {
-        return this._root;
+        return this.root;
       }
 
-      const nodeIndex = this.pathMap.get(currentPath);
-      const nodeChildren = this._root.getChildren();
-
-      const currentNode =
-        nodeIndex !== undefined
-          ? nodeChildren[nodeIndex]
-          : this.findNodeAtLevel(currentPath, nodeChildren);
+      const currentNode = this.root.getFolder(currentPath);
 
       if (currentNode) {
         return this.traversePath(paths, currentNode);
       }
 
-      this.lastNode = this._root;
+      this.lastTouchedNode = this.root;
       return null;
     }
 
@@ -161,45 +107,15 @@ export class DirectoryTree {
       return parent;
     }
 
-    const parentPath = parent.getPath();
-    const childPath = `${parentPath}/${currentPath}`;
-    const children = parent.getChildren();
-    const cachedIndex = this.pathMap.get(childPath);
-    const index = cachedIndex !== undefined ? cachedIndex : -1;
-    let node = children[index] || this.findNodeAtLevel(currentPath, children);
-    if (node && node.getName() !== currentPath) {
-      node = this.findNodeAtLevel(currentPath, children);
-    }
+    const node = parent.getFolder(currentPath);
     if (node) {
       return this.traversePath(paths, node);
     }
 
-    this.lastNode = parent;
+    this.lastTouchedNode = parent;
     return null;
   }
-  /**
-   * Finds Node within array of children and caches location
-   *
-   * @param {string} path
-   * @param {DirectoryNode[]} elements
-   * @returns {DirectoryNode}
-   * @memberof DirectoryTree
-   */
-  public findNodeAtLevel(
-    path: string,
-    elements: DirectoryNode[]
-  ): DirectoryNode {
-    let node;
-    for (let i = 0; i < elements.length; i++) {
-      const child = elements[i];
-      if (child.getName() === path) {
-        this.pathMap.set(child.getPath(), i);
-        node = child;
-        break;
-      }
-    }
-    return node;
-  }
+
   /**
    * Adds new Node to Parent Node
    *
@@ -210,16 +126,14 @@ export class DirectoryTree {
    * @returns {DirectoryNode}
    * @memberof DirectoryTree
    */
-  private add(
+  private addFolder(
     name: string,
     path: string,
     parent: DirectoryNode
   ): DirectoryNode {
     const newNode = new DirectoryNode(name, path, parent);
-    parent.addChild(newNode);
-    // Cache path's index
-    this.pathMap.set(path, parent.getChildren().length - 1);
-    return parent.getChildren()[parent.getChildren().length - 1];
+    parent.addFolder(newNode);
+    return newNode;
   }
 
   /**
@@ -228,17 +142,16 @@ export class DirectoryTree {
    * @param {string[]} paths Array of paths to folder
    * @memberof DirectoryTree
    */
-  public removeFolder(path: string) {
+  public removeFolder(path: string): DirectoryNode {
     const paths = getPaths(path, false);
     const node = this.traversePath(paths);
     if (node) {
       const parent = node.getParent();
-      const index = this.pathMap.get(node.getPath());
-      const removingFrom = parent ? parent : this._root;
-      removingFrom.getChildren().splice(index, 1);
-    } else {
-      throw new Error(`Node at path: ${path} does not exist`);
+      const deleted = parent.removeFolder(node.getName());
+      this.removeEmptyFolders(parent);
+      return deleted;
     }
+    return null;
   }
   /**
    * Removes file at path from Tree
@@ -251,27 +164,24 @@ export class DirectoryTree {
     const fileName = path.split('/').pop();
     const node = this.traversePath(folderPath);
     if (node) {
-      return node.removeFile(fileName);
-    } else {
-      throw new Error(`Node at path: ${folderPath.join('/')} does not exist`);
+      const deleted = node.removeFile(fileName);
+      this.removeEmptyFolders(node);
+      return deleted;
     }
+    return null;
   }
 
   /**
-   * Recursively removes empty folders starting for leaf node
+   * Recursively removes empty folders starting from leaf node
    *
    * @private
    * @param {DirectoryNode} node
    * @memberof DirectoryTree
    */
   private removeEmptyFolders(node: DirectoryNode): void {
-    if (
-      !this.isRoot(node) &&
-      !node.getChildren().length &&
-      !node.getFiles().length
-    ) {
+    if (!this.isRoot(node) && node.isEmpty()) {
       const parent = node.getParent();
-      this.removeFolder(node.getPath());
+      parent.removeFolder(node.getName());
       this.removeEmptyFolders(parent);
     }
   }
@@ -285,7 +195,7 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   private isRoot(node: DirectoryNode): boolean {
-    return node.getPath() === this._root.getPath();
+    return node.getPath() === this.root.getPath();
   }
 }
 
@@ -299,17 +209,31 @@ export class DirectoryNode {
   private path: string;
   private files: LearningObject.Material.File[];
   private parent: DirectoryNode;
-  private children: DirectoryNode[];
+  private folders: DirectoryNode[];
   public description: string;
+
+  private fileMap: Map<string, number> = new Map();
+  private folderMap: Map<string, number> = new Map();
 
   constructor(name: string, path: string, parent: DirectoryNode) {
     this.name = name;
     this.path = path;
     this.files = [];
     this.parent = parent;
-    this.children = [];
+    this.folders = [];
     this.description = '';
   }
+
+  /**
+   * Checks if folder is empty by checking the length folders and files
+   *
+   * @returns {boolean}
+   * @memberof DirectoryNode
+   */
+  public isEmpty(): boolean {
+    return !this.folders.length && !this.files.length;
+  }
+
   /**
    * Gets Parent Node
    *
@@ -337,14 +261,27 @@ export class DirectoryNode {
   public getPath(): string {
     return this.path;
   }
+
   /**
-   * Get Node's children
+   * Returns folder by name
+   *
+   * @param {string} name [The name of the folder to return]
+   * @returns {DirectoryNode}
+   * @memberof DirectoryNode
+   */
+  public getFolder(name: string): DirectoryNode {
+    const cachedIndex = this.folderMap.get(name);
+    const childIndex = cachedIndex != null ? cachedIndex : -1;
+    return this.folders[childIndex];
+  }
+  /**
+   * Get Node's folders
    *
    * @returns {DirectoryNode[]}
    * @memberof DirectoryNode
    */
-  public getChildren(): DirectoryNode[] {
-    return this.children;
+  public getFolders(): DirectoryNode[] {
+    return this.folders;
   }
   /**
    * Gets Files in Directory
@@ -356,24 +293,18 @@ export class DirectoryNode {
     return this.files;
   }
   /**
-   * Add Child to Node
+   * Add Folder to Node
    *
-   * @param {DirectoryNode} child
+   * @param {DirectoryNode} newFolder
    * @returns {DirectoryNode}
    * @memberof DirectoryNode
    */
-  public addChild(newChild: DirectoryNode): DirectoryNode {
-    let canAdd = true;
-    for (const child of this.children) {
-      if (newChild.name === child.name) {
-        canAdd = false;
-        break;
-      }
+  public addFolder(newFolder: DirectoryNode): DirectoryNode {
+    if (this.folderMap.get(newFolder.name) == null) {
+      this.folderMap.set(newFolder.name, this.folders.length);
+      this.folders.push(newFolder);
     }
-    if (canAdd) {
-      this.children.push(newChild);
-    }
-    return newChild;
+    return newFolder;
   }
   /**
    * Add File to Node's files
@@ -382,16 +313,28 @@ export class DirectoryNode {
    * @memberof DirectoryNode
    */
   public addFile(newFile: LearningObject.Material.File) {
-    let canAdd = true;
-    for (const file of this.files) {
-      if (file.name === newFile.name) {
-        canAdd = false;
-        break;
-      }
-    }
-    if (canAdd) {
+    if (this.fileMap.get(newFile.name) == null) {
+      this.fileMap.set(newFile.name, this.files.length);
       this.files.push(newFile);
     }
+  }
+  /**
+   * Remove folder from Node's children by folderName
+   *
+   * @param {string} folderName
+   * @returns {DirectoryNode}
+   * @memberof DirectoryNode
+   */
+  public removeFolder(folderName: string): DirectoryNode {
+    const index = this.folderMap.get(folderName);
+    if (index >= 0) {
+      const deleted = this.folders[index];
+      this.folders.splice(index, 1);
+      this.folderMap.delete(folderName);
+      this.reIndexCacheMap(index, this.folders, this.folderMap);
+      return deleted;
+    }
+    return null;
   }
   /**
    * Remove file from Node's files by filename
@@ -401,27 +344,37 @@ export class DirectoryNode {
    * @memberof DirectoryNode
    */
   public removeFile(filename: string): LearningObject.Material.File {
-    const index = this.findFile(filename);
-    const deleted = this.files[index];
-    this.files.splice(index, 1);
-    return deleted;
+    const index = this.fileMap.get(filename);
+    if (index >= 0) {
+      const deleted = this.files[index];
+      this.files.splice(index, 1);
+      this.fileMap.delete(filename);
+      this.reIndexCacheMap(index, this.files, this.fileMap);
+      return deleted;
+    }
+    return null;
   }
+
   /**
-   * Finds file by filename
+   * Re-indexes cache map to match modified array
+   * Only values after the deleted index get re-indexed
    *
    * @private
-   * @param {string} filename
-   * @returns {number}
+   * @param {number} deletedIndex [The index the element was deleted at]
+   * @param {Array<DirectoryNode | LearningObject.Material.File>} modifiedArray [The array the element was spliced from]
+   * @param {Map<string, number>} cacheMap [The cache map to be re-indexed]
    * @memberof DirectoryNode
    */
-  private findFile(filename: string): number {
-    let index = 0;
-    for (let i = 0; i < this.files.length; i++) {
-      if (this.files[i].name === filename) {
-        index = i;
-        break;
+  private reIndexCacheMap(
+    deletedIndex: number,
+    modifiedArray: Array<DirectoryNode | LearningObject.Material.File>,
+    cacheMap: Map<string, number>
+  ): void {
+    if (deletedIndex <= modifiedArray.length - 1) {
+      for (let i = deletedIndex; i < modifiedArray.length; i++) {
+        const element = modifiedArray[i];
+        cacheMap.set((element as any).name, i);
       }
     }
-    return index;
   }
 }
