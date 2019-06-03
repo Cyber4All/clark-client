@@ -54,19 +54,6 @@ footer {
     color: whitesmoke;
     font-size: $normal;
   }
-
-  .notice {
-    color: whitesmoke;
-
-    p {
-      font-size: $smaller;
-      max-width: 1000px;
-    }
-
-    .notice-title {
-      font-size: $small;
-    }
-  }
 }
 
 @media(max-width: 750px) {
