@@ -1,4 +1,4 @@
-@import "~_vars.scss";
+@import '~_vars.scss';
 
 .header {
   display: flex;
@@ -20,23 +20,6 @@
     align-items: left;
     justify-content: left;
   }
-  /* This is for later when we implement edit functionality
-  .edit{
-    color: $light-blue;
-    background-color: white;
-    border: none;
-    font-size: 20px;
-    margin-left: auto;
-    padding-right: 20px;
-    padding-left: 20px;
-    cursor: pointer;
-  }
-  .edit:focus{
-    outline: 0;
-  }
-  .edit:hover{
-    opacity: 0.6;
-  } */
 }
 .children-list {
   width: 100%;
@@ -50,7 +33,7 @@
 
 .child-box {
   padding: 20px 10px;
-  border-bottom: solid 1px$placeholder;
+  border-bottom: solid 1px $light-grey;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
   flex-direction: row;
@@ -58,14 +41,15 @@
   justify-content: space-between;
   box-sizing: border-box;
   background: white;
-  
 
   .info {
     float: left;
     width: 90%;
+
     .top-row {
       display: flex;
       width: 100%;
+
       .child-title {
         color: $dark-text;
         text-align: left;
@@ -77,8 +61,9 @@
         max-width: 100%;
       }
     }
-    .bottom-row{
+    .bottom-row {
       display: flex;
+
       .child-length {
         text-align: left;
         font-size: 14px;
@@ -86,23 +71,24 @@
         &.nanomodule {
           color: $nanomodule-color;
         }
-  
+
         &.micromodule {
           color: $micromodule-color;
         }
-  
+
         &.module {
           color: $module-color;
         }
-  
+
         &.unit {
           color: $unit-color;
         }
-  
+
         &.course {
           color: $course-color;
         }
       }
+
       .child-last-updated {
         color: $dark-text;
         font-size: 14px;
@@ -110,9 +96,10 @@
       }
     }
   }
+  
   .hamburger-handle {
     display: flex;
-    color: $placeholder;
+    color: $medium-grey;
     cursor: move;
     width: 20px;
     height: 20px;
@@ -131,8 +118,7 @@
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-              0 8px 10px 1px rgba(0, 0, 0, 0.14),
-              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {
@@ -150,6 +136,3 @@
 .child-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-
-
-

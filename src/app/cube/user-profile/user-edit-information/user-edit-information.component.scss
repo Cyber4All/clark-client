@@ -43,7 +43,7 @@ form {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    border: 1px solid $placeholder;
+    border: 1px solid $medium-grey;
     border-radius: 1px;
 
     &:not(:last-child) {
@@ -75,7 +75,7 @@ form {
       flex-grow: 0;
       flex-shrink: 0;
       @include vert-center;
-      color: darken($placeholder, 20);
+      color: $placeholder;
       padding-left: 14px;
       box-sizing: content-box;
     }

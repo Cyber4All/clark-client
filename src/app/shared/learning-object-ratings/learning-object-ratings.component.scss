@@ -83,7 +83,7 @@
 
     & > * {
       cursor: pointer;
-      color: darken($placeholder, 25);
+      color: $medium-grey;
 
       &:not(:last-child) {
         margin-right: 15px;
@@ -106,7 +106,7 @@
 
 .no-ratings {
   text-align: left;
-  color: darken($placeholder, 25);
+  color: $dark-text;
   font-size: 18px;
 }
 

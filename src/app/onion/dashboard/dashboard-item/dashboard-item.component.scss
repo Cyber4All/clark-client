@@ -1,11 +1,11 @@
 @import '~_vars.scss';
 
 .dashboard-item {
-  border-top: 2px solid $placeholder;
+  border-top: 2px solid $light-grey;
   transition: background 0.1s ease;
 
   &:not(.disabled):hover {
-    background: $placeholder;
+    background: $light-grey;
   }
 
   &.disabled {

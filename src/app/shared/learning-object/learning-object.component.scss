@@ -68,7 +68,7 @@ a {
 
 :host.loading {
   // loading styles
-  $color: lighten($placeholder, 17);
+  $color: $light-grey;
   pointer-events: none;
   overflow: hidden;
 
@@ -258,7 +258,7 @@ a {
         transition: all 0.2s ease;
         -webkit-transform: translateZ(0);
         outline: 0;
-        color: $placeholder;
+        color: $medium-grey;
 
         &:hover {
           transform: scale(1.1);
