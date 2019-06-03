@@ -34,6 +34,16 @@
       </div>
     </div>
   </ng-template>
+  <ng-template contextMenuItem (execute)="handleDownloadClick($event.item)" let-item>
+    <div *ngIf="!item?.children" class="context-item" >
+      <div>
+        Download
+      </div>
+      <div>
+        <i class="far fa-download"></i>
+      </div>
+    </div>
+  </ng-template>
   <ng-template contextMenuItem (execute)="triggerDelete($event.item)">
     <div *ngIf="!editDescription" class="context-item bad">
       <div>
