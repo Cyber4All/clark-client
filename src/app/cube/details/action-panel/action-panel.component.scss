@@ -4,7 +4,7 @@
   background: white;
   border-radius: 2px;
   box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
-  padding: 20px;
+  padding: 25px;
   margin-bottom: 20px;
 
   .download-warning {
@@ -28,36 +28,24 @@
 
   .btn-group.review-pending {
     margin-top: 40px;
+
+    & > * {
+      display: block;
+      margin-bottom: 15px;
+    }
   }
 
   .button {
     overflow: hidden;
     text-align: center;
     font-size: 16px;
-    margin-bottom: 10px;
     position: relative;
-
-    &.disabled {
-      cursor: default !important;
-      opacity: 0.4 !important;
-      border-color: $dark-text !important;
-      pointer-events: none;
-      font-size: 14px;
-
-      &.good {
-        background: $dark-text !important;
-      }
-
-      &.neutral {
-        color: $dark-text !important;
-      }
-    }
 
     &.saved {
       cursor: default !important;
       pointer-events: none;
       border-color: transparent;
-      color: $green;
+      color: $success-green;
       box-shadow: none;
     }
   }
@@ -143,49 +131,9 @@
     float: right;
     padding-left: 15px;
 
-      button {
-        border: 0;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        outline: 0;
-      }
-
       a {
         color: white !important;
         text-decoration: none !important;
-      }
-
-      &>button {
-        min-width: 30px;
-        height: 30px;
-        background: $blue-accent;
-        border-radius: 3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white !important;
-        font-size: 18px;
-        transition: all 0.2s ease;
-        transform: scale(1);
-        cursor: pointer;
-        flex-shrink: 0;
-        flex-grow: 0;
-
-        &:hover:not(.animated) {
-          transform: scale(1.1);
-        }
-
-        &:active:hover {
-          transform: scale(0.95);
-        }
-
-        &.animated {
-          animation: jiggle 0.4s linear;
-        }
-
-        &.copyAttribution {
-          background-color: $green;
-        }
       }
     }
   }
@@ -226,45 +174,23 @@
     flex-direction: row;
     justify-content: space-between;
 
-    button {
-      border: 0;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      outline: 0;
-    }
-
     a {
       color: white !important;
       text-decoration: none !important;
     }
 
-    &>button {
-      min-width: 30px;
-      height: 30px;
+    & > button {
       background: $blue-accent;
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: white !important;
-      font-size: 18px;
-      transition: all 0.2s ease;
       transform: scale(1);
       cursor: pointer;
       flex-shrink: 0;
       flex-grow: 0;
 
-      &:hover:not(.animated) {
-        transform: scale(1.1);
-      }
-
       &:active:hover {
         transform: scale(0.95);
       }
 
-      &.animated {
-        animation: jiggle 0.4s linear;
-      }
 
       &.facebook {
         background: #3b5998;
@@ -283,7 +209,7 @@
       }
 
       &.copylink {
-        background: $green;
+        background: $success-green;
       }
     }
   }

@@ -1,22 +1,27 @@
 @import '~_vars.scss';
 
-button.neutral.on-white {
+button.neutral {
   width: 100%;
 }
+
 p { font-size: 18px; }
+
 .btn-group {
   margin-top: 50px;
 }
+
 .popup-content {
   max-width: 600px;
   padding: 16px;
 }
+
 .popup-header {
   width: 100%;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   margin-bottom: 25px;
+
   .fa-exclamation-triangle {
     font-size: 60px;
     color: $placeholder;

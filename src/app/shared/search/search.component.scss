@@ -85,7 +85,7 @@ $buttonWidth: 135px;
             width: $buttonWidth;
             height: 100%;
             transform: scale(1);
-            background: linear-gradient(45deg, darken($bright-blue, 15), $bright-blue);
+            background: linear-gradient(45deg, darken($light-blue, 15), $light-blue);
             position: absolute;
             left: 0;
             box-sizing: border-box;
@@ -116,7 +116,7 @@ $buttonWidth: 135px;
             }
 
             &:hover {
-                color: $bright-blue;
+                color: $light-blue;
             }
 
             &.active {

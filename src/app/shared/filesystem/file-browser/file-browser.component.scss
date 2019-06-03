@@ -7,19 +7,6 @@
   padding: 15px 0 5px;
 }
 
-.button {
-  text-align: center;
-  margin: 0 5px;
-  background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
-  color: white;
-  box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
-  font-weight: normal;
-  border: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .icon-clean {
   margin: 0;
 }
@@ -139,7 +126,7 @@ div.dropzone-message {
   align-self: center;
   font-weight: 200;
   font-size: 20px;
-  // color: desaturate(lighten($bright-blue, 15), 30);
+  // color: desaturate(lighten($light-blue, 15), 30);
   color: lighten($dark-text, 20);
   display: flex;
   flex-direction: column;
@@ -147,7 +134,7 @@ div.dropzone-message {
 
   & > .svg-inline--fa {
     font-size: 60px;
-    // color: $bright-blue;
+    // color: $light-blue;
     margin-bottom: 10px;
     color: inherit;
   }
@@ -155,7 +142,6 @@ div.dropzone-message {
   .empty-title {
     font-size: 30px;
     margin-bottom: 15px;
-    // font-weight: normal;
   }
 
   .button {

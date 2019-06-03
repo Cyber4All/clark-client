@@ -12,7 +12,7 @@
   }
 
   .title-text {
-    color: $bright-blue;
+    color: $light-blue;
     text-align: center;
     margin-bottom: 60px;
   }
@@ -56,8 +56,8 @@
     }
 
     &.organizations .item__icon {
-      color: $green;
-      background: lighten($green, 35);
+      color: $success-green;
+      background: lighten($success-green, 35);
     }
   }
 
@@ -82,8 +82,8 @@
     font-size: 28px;
     border-radius: 50%;
     margin-bottom: 10px;
-    color: $bright-blue;
-    background: lighten($bright-blue, 35);
+    color: $light-blue;
+    background: lighten($light-blue, 35);
   }
 
   .usage__more {
@@ -93,7 +93,7 @@
     margin-top: 70px;
 
     a {
-      color: $bright-blue;
+      color: $light-blue;
     }
   }
 }
@@ -105,7 +105,7 @@
 
   .svg-inline--fa,
   .icon {
-    color: $bright-blue;
+    color: $light-blue;
     font-size: 26px;
     margin-bottom: 10px;
   }

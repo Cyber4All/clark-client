@@ -2,25 +2,8 @@
 
 $dark-text: #545e64;
 $light-blue-gradient: linear-gradient(45deg,
-darken($bright-blue, 10),
-lighten($bright-blue, 5));
-
-button {
-  border: 0;
-  padding: 10px 20px 10px 25px;
-
-  &.good {
-    background: $light-blue-gradient;
-  }
-
-  &.neutral {
-    color: $dark-text;
-  }
-
-  &.shadow {
-    box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-  }
-}
+darken($light-blue, 10),
+lighten($light-blue, 5));
 
 .top__collection {
   display: flex;
@@ -141,14 +124,14 @@ button {
           left: 0;
           right: 0;
           height: 3px;
-          background: $bright-blue;
+          background: $light-blue;
           transform: translateY(3px);
           opacity: 0;
           transition: 0.2s all ease;
         }
 
         &.active {
-          color: $bright-blue;
+          color: $light-blue;
 
           &:after {
             transform: translateY(0);
@@ -162,14 +145,14 @@ button {
         }
 
         &.new {
-          color: $bright-blue;
+          color: $light-blue;
 
           &:before {
             content: '';
             position: absolute;
             height: 6px;
             width: 6px;
-            background: $bright-blue;
+            background: $light-blue;
             border-radius: 50%;
             right: 0;
             top: 11px;

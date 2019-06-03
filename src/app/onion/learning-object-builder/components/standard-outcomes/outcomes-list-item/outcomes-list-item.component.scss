@@ -1,7 +1,7 @@
 @import '~_vars.scss';
 
 $dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+$light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
 
 .outcomes-list-item {
   background: white;
@@ -14,7 +14,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   cursor: pointer;
 
   .bar {
-    background: $bright-blue;
+    background: $light-blue;
     width: 6px;
     position: absolute;
     left: 0;

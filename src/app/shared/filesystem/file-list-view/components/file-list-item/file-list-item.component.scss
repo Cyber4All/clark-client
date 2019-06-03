@@ -68,7 +68,7 @@
   &:before,
   &:after {
     content: '';
-    background: $bright-blue;
+    background: $light-blue;
     border-radius: 50%;
     height: 6px;
     width: 6px;
@@ -77,7 +77,7 @@
 }
 
 .external-link-icon {
-  color: $bright-blue;
+  color: $light-blue;
   font-size: 10px;
   margin-left: 5px;
 }

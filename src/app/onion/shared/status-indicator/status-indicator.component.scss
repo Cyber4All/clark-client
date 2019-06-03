@@ -3,29 +3,34 @@
 .top__status {
   width: 32px;
   height: 32px;
-  color: rgba(255, 255, 255, 0.9);
+  color: white;
   font-size: 16px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgb(189, 193, 195);
+  background: $status_unreleased;
   transition: all 0.2s ease;
   box-shadow: none;
+
   &.waiting {
-    background: #5ec9da;
+    background: $status_waiting;
   }
+
   &.review {
-    background: #f5a623;
+    background: $status_review;
   }
+
   &.proofing {
-    background: $proofing;
+    background: $status_proofing;
   }
+
   &.released {
-    background: $green;
+    background: $status_released;
   }
+
   &.rejected {
-    background: saturate($error-red, 15);
+    background: $status_rejected;
   }
   &:hover {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);

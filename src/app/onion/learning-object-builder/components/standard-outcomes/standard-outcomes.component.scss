@@ -1,7 +1,7 @@
 @import '~_vars.scss';
 
 $dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+$light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
 
 .standard-outcomes {
   padding: 12px 10px;
@@ -75,7 +75,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
   .svg-inline--fa,
   .icon {
-    color: $bright-blue;
+    color: $light-blue;
     font-size: 20px;
     margin-bottom: 10px;
   }

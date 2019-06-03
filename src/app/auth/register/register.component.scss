@@ -62,11 +62,11 @@ form {
     }
 
     &.submit {
-        background: $green;
-        border-color: $green;
+        background: $success-green;
+        border-color: $success-green;
         
         &:hover {
-            color: $green;
+            color: $success-green;
         }
     }
 }

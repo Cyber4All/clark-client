@@ -3,8 +3,8 @@
 $dark-text: #545e64;
 $light-blue-gradient: linear-gradient(
   45deg,
-  darken($bright-blue, 10),
-  lighten($bright-blue, 5)
+  darken($light-blue, 10),
+  lighten($light-blue, 5)
 );
 
 .outcome-component {
@@ -29,7 +29,7 @@ $light-blue-gradient: linear-gradient(
     top: 0;
     bottom: 0;
     left: -6px;
-    background: $bright-blue;
+    background: $light-blue;
     width: 5px;
     transition: all 0.2s ease;
   }
@@ -119,8 +119,8 @@ $light-blue-gradient: linear-gradient(
       }
 
       &.active {
-        color: $bright-blue;
-        border-color: $bright-blue;
+        color: $light-blue;
+        border-color: $light-blue;
       }
     }
   }
@@ -162,8 +162,8 @@ $light-blue-gradient: linear-gradient(
       flex-wrap: wrap;
 
       .pill {
-        color: $bright-blue;
-        border: 1px solid $bright-blue;
+        color: $light-blue;
+        border: 1px solid $light-blue;
         padding: 3px 5px;
         border-radius: 2px;
         margin-right: 10px;

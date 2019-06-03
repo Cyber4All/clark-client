@@ -12,19 +12,6 @@
   max-width: 100%;
 }
 
-.button.good {
-  text-align: center;
-  margin: 0 5px;
-  background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
-  color: white;
-  box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
-  font-weight: normal;
-  border: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .disabled {
   z-index: 909999999;
   background: rgba(0, 0, 0, 0.8);
@@ -64,7 +51,7 @@
       left: 0;
       right: 0;
       height: 10px;
-      background: linear-gradient(45deg, darken($bright-blue, 15), $bright-blue);
+      background: linear-gradient(45deg, darken($light-blue, 15), $light-blue);
     }
   }
 }
@@ -113,7 +100,7 @@
     flex-direction: column;
 
     .uploader-icon {
-      color: $bright-blue;
+      color: $light-blue;
       font-size: 30px;
       margin: auto;
       width: 70px;
@@ -155,7 +142,7 @@
 }
 
 .back-button {
-  color: $bright-blue;
+  color: $light-blue;
   cursor: pointer;
   margin-bottom: 10px;
 
@@ -182,7 +169,7 @@
   }
 
   .tabs {
-    background: linear-gradient(45deg, darken($bright-blue, 15), $bright-blue);
+    background: linear-gradient(45deg, darken($light-blue, 15), $light-blue);
     color: white;
     padding: 10px 20px 0;
     overflow: hidden;
@@ -234,7 +221,7 @@
         }
 
         &.active {
-          color: $bright-blue;
+          color: $light-blue;
           position: relative;
 
           &:after {
@@ -267,7 +254,7 @@
   }
 
   .loading {
-    color: $bright-blue;
+    color: $light-blue;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -324,7 +311,7 @@
     margin-top: 10px;
 
     &:focus {
-      border-color: $bright-blue;
+      border-color: $light-blue;
     }
   }
 }

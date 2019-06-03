@@ -7,7 +7,7 @@ import { DialogMenuComponent } from './dialogmenu.component';
 import { CommonModule } from '@angular/common';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ToasterModule } from '../toaster';
-import { CheckBoxComponent } from './checkbox.component';
+import { CheckBoxComponent } from './checkbox/checkbox.component';
 
 export * from './modal.service';
 export * from './contextmenu.component';

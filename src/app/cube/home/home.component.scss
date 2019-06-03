@@ -50,7 +50,7 @@
 
   .title-text {
     text-align: center;
-    color: $bright-blue;
+    color: $light-blue;
     margin-bottom: 20px;
   }
 
@@ -71,7 +71,7 @@
     text-align: center;
 
     a {
-      color: $bright-blue;
+      color: $light-blue;
       font-size: 18px;
       text-decoration: underline;
       padding: 10px;
@@ -138,7 +138,7 @@
 
   .title-text {
     text-align: center;
-    color: $bright-blue;
+    color: $light-blue;
     margin-bottom: 20px;
   }
 
@@ -156,8 +156,6 @@
 
   .button.good {
     padding: 12px 30px;
-    background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
-    border: 0;
     font-size: 18px;
   }
 }

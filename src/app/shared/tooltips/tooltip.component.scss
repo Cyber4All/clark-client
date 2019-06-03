@@ -1,6 +1,6 @@
 $dark-text: #111;
 $light-text: #fff;
-$green: #389857;
+$success-green: #389857;
 $black: #000;
 $red: #cf4739;
 $blue: #3b608b;
@@ -86,23 +86,23 @@ $light: #fefefe;
 
     .tooltip-inner {
       color: $light-text;
-      background-color: $green;
+      background-color: $success-green;
     }
 
     &.top .tooltip-arrow {
-      border-top-color: $green;
+      border-top-color: $success-green;
     }
 
     &.right .tooltip-arrow {
-      border-right-color: $green;
+      border-right-color: $success-green;
     }
 
     &.left .tooltip-arrow {
-      border-left-color: $green;
+      border-left-color: $success-green;
     }
 
     &.bottom .tooltip-arrow {
-      border-bottom-color: $green;
+      border-bottom-color: $success-green;
     }
   }
 

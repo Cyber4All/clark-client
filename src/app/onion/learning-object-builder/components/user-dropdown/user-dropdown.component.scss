@@ -1,6 +1,6 @@
 @import '~_vars.scss';
 
-$light-blue-gradient: linear-gradient(45deg, saturate(darken($bright-blue, 10), 10), saturate(lighten($bright-blue, 10), 10));
+$light-blue-gradient: linear-gradient(45deg, saturate(darken($light-blue, 10), 10), saturate(lighten($light-blue, 10), 10));
 
 .user-dropdown {
   position: relative;
@@ -18,7 +18,7 @@ $light-blue-gradient: linear-gradient(45deg, saturate(darken($bright-blue, 10), 
   box-sizing: border-box;
 
   &:focus {
-    border-color: $bright-blue;
+    border-color: $light-blue;
   }
 }
 

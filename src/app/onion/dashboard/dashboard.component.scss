@@ -3,8 +3,8 @@
 $dark-text: #545e64;
 $light-blue-gradient: linear-gradient(
   45deg,
-  darken($bright-blue, 10),
-  lighten($bright-blue, 5)
+  darken($light-blue, 10),
+  lighten($light-blue, 5)
 );
 
 .dashboard {
@@ -104,25 +104,8 @@ $light-blue-gradient: linear-gradient(
   }
 }
 
-// FIXME this can be removed when the new button styles are applied cross-application
-button {
-  border: 0;
-  padding: 10px 20px 10px 25px;
-
-  &.good {
-    background: $light-blue-gradient;
-  }
-
-  &.neutral {
-    color: $dark-text;
-  }
-
-  &.shadow {
-    box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-  }
-}
-
 .filters-button {
+
   span {
     padding-right: 10px;
     color: $error-red;
@@ -204,15 +187,15 @@ $unpublished-color: rgba(
     }
 
     &.released {
-      color: $green;
+      color: $success-green;
 
       .indicator {
-        background: $green;
+        background: $success-green;
       }
 
       &:hover {
         color: white;
-        background: $green;
+        background: $success-green;
 
         .indicator {
           background: white;
@@ -257,7 +240,7 @@ $unpublished-color: rgba(
   padding: 20px;
 
   .svg-inline--fa {
-    color: $bright-blue;
+    color: $light-blue;
     font-size: 30px;
     margin-bottom: 20px;
   }

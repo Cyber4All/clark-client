@@ -39,7 +39,7 @@
             background: transparent;
             animation: pulse 15s linear infinite;
             @include vert-center;
-            background: radial-gradient(transparent, $bright-blue);
+            background: radial-gradient(transparent, $light-blue);
             width: 0;
             height: 0;
             top: 50%;
@@ -266,10 +266,10 @@
     ::ng-deep .done {
         text-align: center;
         margin-top: 40px;
-        color: $green;
+        color: $success-green;
 
         .svg-inline--fa {
-            color: $green;
+            color: $success-green;
             font-size: 60px;
             display: block;
             margin: 0px auto 20px;

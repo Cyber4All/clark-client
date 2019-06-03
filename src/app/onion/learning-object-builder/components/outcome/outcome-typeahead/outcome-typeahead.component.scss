@@ -1,7 +1,7 @@
 @import '~_vars.scss';
 
 $dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+$light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
 
 .typeahead {
     width: 500px;
@@ -25,7 +25,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         border: 0;
         width: 100%;
         padding: 8px 0 6px;
-        border-bottom: 2px solid $bright-blue;
+        border-bottom: 2px solid $light-blue;
         outline: 0;
         font-size: 15px;
         font-family: 'Arial', sans-serif;
@@ -89,7 +89,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
                 cursor: pointer;
 
                 &.selected {
-                    color: $bright-blue;
+                    color: $light-blue;
                 }
 
                 &:not(:last-child) {
@@ -98,7 +98,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
                 &:hover {
                     color: white;
-                    background: $bright-blue;
+                    background: $light-blue;
                 }
             }
         }
