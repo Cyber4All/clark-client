@@ -5,12 +5,6 @@
       <button *ngIf="canManage && ((currentNode$| async)?.folders.length || (currentNode$| async)?.files.length)" id="new-file" (click)="emitNewOptionClick($event)" class="button new">
         New Upload <i class="fas fa-upload"></i>
       </button>
-      <!-- <span *ngIf="view==='list'" (click)="view='grid'" class="button clean">
-        <i class="fas fa-th icon-clean"></i>
-      </span>
-      <span *ngIf="view==='grid'" (click)="view='list'" class="button clean">
-        <i class="fas fa-list icon-clean"></i>
-      </span> -->
     </div>
   </div>
 
