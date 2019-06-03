@@ -5,17 +5,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 // Shared 3rd Party Modules
 import { ClickOutsideModule } from 'ng-click-outside';
+
 import { ToasterModule } from './toaster';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
 // Components
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { FileListViewComponent } from './filesystem/file-list-view/file-list-view.component';
-import { ContextMenuModule } from 'ngx-contextmenu';
-import { FileBreadcrumbComponent } from './filesystem/file-breadcrumb/file-breadcrumb.component';
-import { FileBrowserComponent } from './filesystem/file-browser/file-browser.component';
-import { FilePreviewComponent } from './filesystem/file-preview/file-preview.component';
 import { TooltipModule } from './tooltips/tip.module';
 import { IndicatorComponent } from './indicator/indicator.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
@@ -31,7 +27,6 @@ import { LearningObjectRatingsComponent } from './learning-object-ratings/learni
 import { ReportRatingComponent } from './report-rating/report-rating.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PopupModule } from './popups/popup.module';
-import { FileSizePipe } from './filesystem/file-list-view/file-size.pipe';
 import { CookiesComponent } from './cookies/cookies.component';
 import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/contextmenu.module';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
@@ -40,7 +35,11 @@ import { TeleporterModule } from './teleporter/teleporter.module';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
-import {CKEditorModule} from 'ng2-ckeditor';
+import { CKEditorModule } from 'ng2-ckeditor';
+import { CarouselComponent } from './carousel/carousel.component';
+import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
+import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
+import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -49,14 +48,13 @@ import {CKEditorModule} from 'ng2-ckeditor';
  */
 @NgModule({
   imports: [
-  CommonModule,
+    CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
     ClickOutsideModule,
     ModalModule,
     ToasterModule,
-    ContextMenuModule,
     TooltipModule,
     PopupModule,
     ClarkContextMenuModule.forRoot(),
@@ -67,10 +65,6 @@ import {CKEditorModule} from 'ng2-ckeditor';
   declarations: [
     NavbarComponent,
     MessageComponent,
-    FileBrowserComponent,
-    FileListViewComponent,
-    FileBreadcrumbComponent,
-    FilePreviewComponent,
     IndicatorComponent,
     LearningObjectListingComponent,
     UserCardComponent,
@@ -84,18 +78,18 @@ import {CKEditorModule} from 'ng2-ckeditor';
     LearningObjectRatingsComponent,
     ReportRatingComponent,
     ProgressComponent,
-    FileSizePipe,
     CookiesComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
     TextEditorComponent,
-    CollectionCardComponent
+    CollectionCardComponent,
+    CarouselComponent,
+    DownloadNoticePopupComponent,
+    CollectionsGridComponent,
+    GenericCollectionLogoComponent
   ],
   exports: [
     NavbarComponent,
-    FileBrowserComponent,
-    FileListViewComponent,
-    FileBreadcrumbComponent,
     TooltipModule,
     IndicatorComponent,
     LearningObjectListingComponent,
@@ -111,13 +105,17 @@ import {CKEditorModule} from 'ng2-ckeditor';
     VirtualScrollerModule,
     PopupModule,
     CookiesComponent,
-    ContextMenuModule,
     ClarkContextMenuModule,
     EmailBannerComponent,
     TeleporterModule,
     NewRatingResponseComponent,
     TextEditorComponent,
-    CollectionCardComponent
+    CollectionCardComponent,
+    DownloadNoticePopupComponent,
+    CollectionCardComponent,
+    CarouselComponent,
+    CollectionsGridComponent,
+    GenericCollectionLogoComponent,
   ]
 })
 export class SharedModule {}

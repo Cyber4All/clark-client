@@ -1,0 +1,35 @@
+@import '~_vars.scss';
+
+.title__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+  background: $wrapper-background;
+  color: $bright-blue;
+  width: 100%;
+  border-radius: 50%;
+  position: relative;
+  padding: 20px;
+
+  &.title__icon--small {
+    padding: 10px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  svg {
+    width: 50px;
+    height: 50px;
+  }
+}

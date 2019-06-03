@@ -84,6 +84,6 @@
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>
-    <clark-download-notice (close)="toggleDownloadModal(false)"></clark-download-notice>
+    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
   </div>
 </clark-popup>
