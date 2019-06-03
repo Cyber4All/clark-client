@@ -339,36 +339,38 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           this.inProgressFileUploads.length - 1
         );
       }
-        if (file.upload.chunked) {
-          // Request multipart upload
-          const learningObject = await this.learningObject$
-            .pipe(take(1))
-            .toPromise();
+      if (file.upload.chunked) {
+        // Request multipart upload
+        const learningObject = await this.learningObject$
+          .pipe(take(1))
+          .toPromise();
 
-          // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
-          let uploadId = '';
-          if (this.userIsPrivileged) {
-            const fileUploadMeta: FileUploadMeta = {
-              name: file.name,
-              path: file.fullPath || file.name,
-              fileType: file.type,
-              size: file.size
-            };
-            uploadId = await this.fileStorage.initMultipartAdmin({
-              fileUploadMeta,
-              fileId: file.upload.uuid,
-              learningObjectId: learningObject.id,
-              authorUsername: learningObject.author.username
-            });
-          } else {
-            uploadId = await this.fileStorage.initMultipart({
-              learningObject,
-              fileId: file.upload.uuid,
-              filePath: file.fullPath ? file.fullPath : file.name
-            });
-          }
-          this.uploadIds[file.upload.uuid] = uploadId;
+        const fileUploadMeta: FileUploadMeta = {
+          name: file.name,
+          path: file.fullPath || file.name,
+          fileType: file.type,
+          size: file.size
+        };
+
+        // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
+        let uploadId = '';
+        if (this.userIsPrivileged) {
+          uploadId = await this.fileStorage.initMultipartAdmin({
+            fileUploadMeta,
+            fileId: file.upload.uuid,
+            learningObjectId: learningObject.id,
+            authorUsername: learningObject.author.username
+          });
+        } else {
+          uploadId = await this.fileStorage.initMultipart({
+            learningObjectId: learningObject.id,
+            authorUsername: learningObject.author.username,
+            fileId: file.upload.uuid,
+            fileUploadMeta
+          });
         }
+        this.uploadIds[file.upload.uuid] = uploadId;
+      }
       this.dzDirectiveRef.dropzone().processFile(file);
     } catch (error) {
       this.error$.next(error);
