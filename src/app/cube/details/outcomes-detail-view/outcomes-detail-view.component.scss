@@ -4,6 +4,7 @@
   margin-bottom: 40px;
 
   h1 {
+    color: black;
     font-size: $larger;
     padding-left: 10px;
   }
@@ -41,7 +42,7 @@
       }
 
       .mappings-count {
-        font-size: $smaller;
+        font-size: $small;
         color: gray;
         padding-right: 10px;
       }
@@ -77,7 +78,7 @@
       .standard-name {
         font-size: $normal;
         //background-color: skyblue;
-        color: darken(#55595e, 10);
+        color: $dark-text;
       }
 
       .standard-name {
