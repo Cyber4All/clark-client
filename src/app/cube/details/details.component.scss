@@ -40,24 +40,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           font-size: $larger;
           margin-bottom: 20px;
         }
-
-        ul {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: space-between;
-        }
-
-        li {
-          font-size: $large;
-          width: 45%;
-          margin-bottom: 10px;
-
-          .svg-inline--fa {
-            margin-top: 3px;
-            margin-right: 15px;
-          }
-        }
       }
 
       .description {
@@ -228,6 +210,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     }
 
     .title {
+      color: black;
       font-size: $larger;
       text-align: center;
       color: $dark-text;
