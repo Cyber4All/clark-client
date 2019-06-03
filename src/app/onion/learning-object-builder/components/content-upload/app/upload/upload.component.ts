@@ -22,7 +22,7 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
 import { ModalService } from '../../../../../../shared/modals';
-import { USER_ROUTES } from '@env/route';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { getPaths } from '../../../../../../shared/filesystem/file-functions';
 import {
   FileStorageService,
@@ -209,6 +209,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notificationService.notify('Error!', err, 'bad', 'far fa-times');
       }
     });
+  }
+
+  /**
+   * Handles downloading a file by opening the stream url in a new window
+   *
+   * @param {LearningObject.Material.File} file[The file to be downloaded]
+   * @memberof UploadComponent
+   */
+  async handleFileDownload(file: LearningObject.Material.File) {
+    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
+    const loId = learningObject.id;
+    const authorUsername = learningObject.author.username;
+    const url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+      loId,
+      username: authorUsername,
+      fileId: file.id
+    });
+    window.open(url, '__blank');
   }
 
   /**
