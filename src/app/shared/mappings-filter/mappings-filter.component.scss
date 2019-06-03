@@ -31,7 +31,7 @@
     -moz-appearance: none;
     border: 0;
     background: transparent;
-    color: $dark-text;
+    color: $dark-grey;
     flex-grow: 2;
     outline: 0;
     padding-left: 5px;
@@ -102,7 +102,7 @@
 
     li {
       list-style-type: none;
-      color: $dark-text;
+      color: $dark-grey;
       padding: 6px 15px;
       box-sizing: border-box;
       cursor: pointer;

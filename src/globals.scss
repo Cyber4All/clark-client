@@ -51,7 +51,7 @@ body {
   }
 
   &.neutral {
-    color: $dark-text;
+    color: $dark-grey;
     background: white;
 
     &:after {
@@ -61,7 +61,7 @@ body {
       left: 0;
       right: 0;
       bottom: 0;
-      border: 1px solid $dark-text;
+      border: 1px solid $dark-grey;
       border-radius: inherit;
       position: absolute;
     }
@@ -257,7 +257,7 @@ body {
     }
 
     .text {
-      color: $dark-text;
+      color: $dark-grey;
       text-align: center;
       margin: 25px auto;
       font-size: 16px;

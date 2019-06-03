@@ -386,13 +386,13 @@
 
       .greeting {
         font-size: 20px;
-        color: $dark-text;
+        color: $dark-grey;
       }
     }
 
     &.content-switcher {
       font-size: 18px;
-      color: $dark-text;
+      color: $dark-grey;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -417,7 +417,7 @@
           cursor: pointer;
           list-style-type: none;
           padding: 5px 0;
-          color: $dark-text;
+          color: $dark-grey;
 
           &:not(:last-child) {
             margin-bottom: 10px;

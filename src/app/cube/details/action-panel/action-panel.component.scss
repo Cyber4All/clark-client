@@ -53,7 +53,7 @@
   .action-message {
     margin-top: 20px;
     font-size: 16px;
-    color: $dark-text;
+    color: $dark-grey;
 
     a {
       color: $blue-accent;
@@ -66,7 +66,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  color: lighten($dark-text, 20);
+  color: lighten($dark-grey, 20);
   margin-top: 30px;
 
   &>* {
@@ -96,7 +96,7 @@
 
     &:before {
       content: 'Attribute this Object';
-      color: $dark-text;
+      color: $dark-grey;
       text-align: center;
       padding: 0;
       background: white;
@@ -110,7 +110,7 @@
       content: '';
       position: absolute;
       height: 1px;
-      background: lighten($dark-text, 40);
+      background: lighten($dark-grey, 40);
       width: 100%;
       left: 0;
       bottom: 0;
@@ -146,7 +146,7 @@
 
     &:before {
       content: 'Share';
-      color: $dark-text;
+      color: $dark-grey;
       text-align: center;
       padding: 0 10px;
       background: white;
@@ -161,7 +161,7 @@
       content: '';
       position: absolute;
       height: 1px;
-      background: lighten($dark-text, 40);
+      background: lighten($dark-grey, 40);
       width: 100%;
       left: 0;
       bottom: 0;

@@ -63,7 +63,7 @@ $buttonWidth: 135px;
 
   .description {
     text-align: center;
-    color: lighten($dark-text, 20);
+    color: lighten($dark-grey, 20);
     margin-top: 10px;
   }
 
@@ -99,7 +99,7 @@ $buttonWidth: 135px;
     .option {
       width: $buttonWidth;
       text-transform: uppercase;
-      color: $dark-text;
+      color: $dark-grey;
       font-size: 15px;
       text-align: center;
       padding: 10px;

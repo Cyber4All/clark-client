@@ -211,7 +211,7 @@ a {
 
     .collection {
       position: absolute;
-      color: $dark-text;
+      color: $dark-grey;
       text-transform: capitalize;
       font-size: 10px;
       font-weight: bold;
@@ -269,13 +269,13 @@ a {
 
     .details {
       font-size: 13px;
-      color: lighten($dark-text, 10);
+      color: lighten($dark-grey, 10);
       margin-top: 5px;
     }
 
     .goals {
       font-size: 13px;
-      color: lighten($dark-text, 10);
+      color: lighten($dark-grey, 10);
       margin-top: 5px;
       white-space: nowrap;
       text-overflow: ellipsis;

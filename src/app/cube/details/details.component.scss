@@ -32,7 +32,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         border: 1px solid rgba(0, 0, 0, 0.05);
         padding: 20px;
         border-radius: 2px;
-        color: $dark-text;
+        color: $dark-grey;
         margin-bottom: 40px;
 
         .title {
@@ -228,13 +228,13 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       right: 20px;
       font-size: 20px;
       cursor: pointer;
-      color: lighten($dark-text, 20);
+      color: lighten($dark-grey, 20);
     }
 
     .title {
       font-size: 20px;
       text-align: center;
-      color: $dark-text;
+      color: $dark-grey;
       margin-bottom: 15px;
     }
   }
@@ -248,7 +248,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
   .no-revisions {
     font-size: 16px;
-    color: $dark-text;
+    color: $dark-grey;
     padding-right: 10px;
     text-align: center;
     display: inline-block;
@@ -256,7 +256,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 }
 .text {
   font-size: 16px;
-  color: $dark-text;
+  color: $dark-grey;
   padding-right: 10px;
   padding-left: 50px;
   display: inline-block;
@@ -317,7 +317,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   justify-content: center;
   max-width: 300px;
   font-size: 18px;
-  color: $dark-text;
+  color: $dark-grey;
   margin: auto;
   margin-top: 100px;
 

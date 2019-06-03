@@ -41,7 +41,7 @@
 .user-dropdown__list-item {
   height: 40px;
   background: white;
-  color: $dark-text;
+  color: $dark-grey;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -98,7 +98,7 @@
 .user-dropdown__message {
   padding: 10px;
   text-align: center;
-  color: $dark-text;
+  color: $dark-grey;
   width: 100%;
   box-sizing: border-box;
   display: block;

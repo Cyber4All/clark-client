@@ -85,7 +85,7 @@
       cursor: pointer;
 
       &:hover {
-        color: $dark-text;
+        color: $dark-grey;
       }
     }
   }
@@ -100,7 +100,7 @@
 
     .details {
       font-size: 14px;
-      color: lighten($dark-text, 10);
+      color: lighten($dark-grey, 10);
       margin-top: 5px;
     }
   }

@@ -42,7 +42,7 @@
   .outcome-header {
     width: 100%;
     font-size: 16px;
-    color: $dark-text;
+    color: $dark-grey;
     font-weight: 600;
     margin-bottom: 30px;
     display: flex;
@@ -108,7 +108,7 @@
 
       &:hover:not(.active) {
         transform: scale(1.03);
-        color: $dark-text;
+        color: $dark-grey;
       }
 
       &.active {

@@ -59,7 +59,7 @@
 
       .header {
         font-size: 26px;
-        color: $dark-text;
+        color: $dark-grey;
       }
     }
   }
@@ -84,7 +84,7 @@
     .column-headers {
       font-weight: bold;
       font-size: 14px;
-      color: $dark-text;
+      color: $dark-grey;
       opacity: 0.46;
       padding-top: 20px;
       padding-bottom: 10px;
@@ -107,23 +107,23 @@
 }
 
 $unpublished-color: rgba(
-  red($dark-text),
-  green($dark-text),
-  blue($dark-text),
+  red($dark-grey),
+  green($dark-grey),
+  blue($dark-grey),
   0.36
 );
 
 .filter-menu {
   li {
     position: relative;
-    color: $dark-text;
+    color: $dark-grey;
 
     .indicator {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       display: inline-block;
-      background: $dark-text;
+      background: $dark-grey;
       position: absolute;
       left: 10px;
       top: 0;
@@ -138,7 +138,7 @@ $unpublished-color: rgba(
 
     &:hover {
       color: white;
-      background: $dark-text;
+      background: $dark-grey;
 
       .indicator {
         background: white;
@@ -228,7 +228,7 @@ $unpublished-color: rgba(
   top: 0;
   bottom: 0;
 
-  color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
   font-size: 20px;
   padding: 20px;
 
@@ -252,7 +252,7 @@ $unpublished-color: rgba(
   top: 0;
   bottom: 0;
 
-  color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
   font-size: 16px;
 
   .top {
@@ -260,7 +260,7 @@ $unpublished-color: rgba(
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    color: $dark-text;
+    color: $dark-grey;
     font-size: 30px;
     margin-bottom: 10px;
 

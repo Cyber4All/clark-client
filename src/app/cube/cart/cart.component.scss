@@ -19,7 +19,7 @@
 
     .count {
         font-weight: light;
-        color: lighten($dark-text, 20);
+        color: lighten($dark-grey, 20);
         font-style: italic;
         text-align: center;
     }
@@ -76,7 +76,7 @@
 
             .author {
                 font-style: italic;
-                color: lighten($dark-text, 20);
+                color: lighten($dark-grey, 20);
             }
 
             &:nth-of-type(even) {
@@ -111,7 +111,7 @@
         margin-top: 40px;
         text-align: center;
         font-size: 18px;
-        color: lighten($dark-text, 20);
+        color: lighten($dark-grey, 20);
 
         span {
             font-style: italic;

@@ -2,7 +2,7 @@
 
 .title {
   font-size: 20px;
-  color: $dark-text;
+  color: $dark-grey;
   font-weight: 600;
 }
 
@@ -24,13 +24,13 @@
   padding-bottom: 30px;
 
   .no-outcomes__title {
-    color: $dark-text;
+    color: $dark-grey;
     font-size: 20px;
   }
 
   .no-outcomes__description {
     font-size: 14px;
-    color: $dark-text;
+    color: $dark-grey;
     max-width: 500px;
     margin: auto;
     margin-top: 5px;

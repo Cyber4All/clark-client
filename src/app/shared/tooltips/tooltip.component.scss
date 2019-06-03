@@ -1,4 +1,4 @@
-$dark-text: #111;
+$dark-grey: #111;
 $light-text: #fff;
 $success-green: #389857;
 $black: #000;
@@ -60,7 +60,7 @@ $light: #fefefe;
   &.light {
 
     .tooltip-inner {
-      color: $dark-text;
+      color: $dark-grey;
       background-color: $light;
       background: linear-gradient(-90deg, darken($light, 2), $light);
     }

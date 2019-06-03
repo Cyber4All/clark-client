@@ -31,7 +31,7 @@ img {
     font-size: 33px;
     margin-bottom: 25px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-    color: $dark-text;
+    color: $dark-grey;
 }
 .collection-container {
     max-width: $max-width;
@@ -44,7 +44,7 @@ img {
     margin-top: 50px;
     .description {
         border-radius: 2px;
-        color: $dark-text;
+        color: $dark-grey;
         margin-bottom: 40px;
         .heading {
             padding-left: 12px;
@@ -134,7 +134,7 @@ img {
     font-weight: 200;
     font-size: 33px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-    color: $dark-text;
+    color: $dark-grey;
     padding-left: 12px;
 }
 

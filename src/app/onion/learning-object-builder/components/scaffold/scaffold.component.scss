@@ -51,7 +51,7 @@
       width: 100%;
 
       .child-title {
-        color: $dark-text;
+        color: $dark-grey;
         text-align: left;
         font-size: 16px;
         text-overflow: ellipsis;
@@ -90,7 +90,7 @@
       }
 
       .child-last-updated {
-        color: $dark-text;
+        color: $dark-grey;
         font-size: 14px;
         padding-left: 20px;
       }
@@ -109,7 +109,7 @@
 }
 
 .no-children {
-  color: $dark-text;
+  color: $dark-grey;
   text-align: center;
   padding: 30px 30px;
 }

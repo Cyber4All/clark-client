@@ -2,7 +2,7 @@
 
 .title {
   font-size: 18px;
-  color: $dark-text;
+  color: $dark-grey;
 }
 
 .mailto {
@@ -34,7 +34,7 @@
     padding: 10px 0;
 
     a {
-      color: $dark-text;
+      color: $dark-grey;
       text-decoration: none;
     }
 
@@ -66,7 +66,7 @@
     }
 
     .rating-date {
-      color: $dark-text;
+      color: $dark-grey;
       opacity: 0.8;
       margin-top: 5px;
       margin-bottom: 10px;
@@ -106,7 +106,7 @@
 
 .no-ratings {
   text-align: left;
-  color: $dark-text;
+  color: $dark-grey;
   font-size: 18px;
 }
 

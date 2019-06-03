@@ -50,7 +50,7 @@
     }
 
     &.dark {
-        color: $dark-text;
+        color: $dark-grey;
     }
 
     &.blue {
@@ -61,7 +61,7 @@
         color: #feb000;
 
         .number-reviews {
-            color: $dark-text;
+            color: $dark-grey;
         }
     }
 }
