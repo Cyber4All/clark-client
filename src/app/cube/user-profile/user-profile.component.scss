@@ -76,10 +76,10 @@
             top: 20px;
             right: 20px;
             color: $blue-accent;
-            font-size: 18px;
+            font-size: $large;
 
             .svg-inline--fa {
-                font-size: 20px;
+                font-size: $larger;
                 margin-right: 5px;
             }
 
@@ -94,10 +94,10 @@
             top: 20px;
             right: 20px;
             color: $blue-accent;
-            font-size: 18px;
+            font-size: $large;
 
             .svg-inline--fa {
-                font-size: 20px;
+                font-size: $larger;
                 margin-right: 5px;
             }
 
@@ -129,7 +129,7 @@
         }
         
         .edit {
-            font-size: 14px !important;
+            font-size: $small;
             right: 0px !important;
 
             & > *:not(.svg-inline--fa) {

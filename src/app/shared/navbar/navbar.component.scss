@@ -131,7 +131,7 @@
   }
 
   .version-label {
-    font-size: 14px;
+    font-size: $small;
     border-radius: 3px;
     text-align: center;
     position: absolute;
@@ -173,7 +173,7 @@
 
     .right {
       padding-left: 15px;
-      font-size: 18px;
+      font-size: $large;
 
       a {
         color: $blue-accent !important;
@@ -185,7 +185,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    font-size: 16px;
+    font-size: $normal;
     cursor: pointer;
     flex-shrink: 0;
     right: 0;
@@ -209,7 +209,7 @@
     &.mobile {
 
       .mobile-search-option {
-        font-size: 20px;
+        font-size: $larger;
       }
 
       .hamburger {
@@ -259,7 +259,7 @@
 
     .contributor {
       color: $blue-accent;
-      font-size: 15px;
+      font-size: $normal;
       padding-left: 10px;
       justify-content: space-between;
       display: inline-flex;
@@ -267,14 +267,14 @@
       align-items: center;
 
       .svg-inline--fa {
-        font-size: 11px;
+        font-size: $smaller;
         @include vert-center;
         margin-left: 7px;
       }
     }
 
     .user-menu .svg-inline--fa {
-      font-size: 11px;
+      font-size: $smaller;
       @include vert-center;
       margin-left: 7px;
     }
@@ -390,13 +390,13 @@
       }
 
       .greeting {
-        font-size: 20px;
+        font-size: $larger;
         color: $dark-text;
       }
     }
 
     &.content-switcher {
-      font-size: 18px;
+      font-size: $large;
       color: $dark-text;
       display: flex;
       flex-direction: row;
@@ -406,7 +406,7 @@
       cursor: pointer;
 
       .svg-inline--fa {
-        font-size: 16px;
+        font-size: $normal;
         @include vert-center;
       }
     }
@@ -418,7 +418,7 @@
         margin: 0;
 
         li {
-          font-size: 16px;
+          font-size: $normal;
           cursor: pointer;
           list-style-type: none;
           padding: 5px 0;

@@ -28,7 +28,7 @@ img {
 
 .heading {
     font-weight: 200;
-    font-size: 33px;
+    font-size: $largest;
     margin-bottom: 25px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
     color: $dark-text;
@@ -116,7 +116,7 @@ img {
 
     .name {
         color: white;
-        font-size: 50px;
+        font-size: $largest;
         text-transform: uppercase;
         font-weight: bold;
         text-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
@@ -124,7 +124,7 @@ img {
 
     .long-name {
         color: white;
-        font-size: 24px;
+        font-size: $larger;
         text-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
         font-weight: normal;
     }
@@ -132,7 +132,7 @@ img {
 
 .recently-released {
     font-weight: 200;
-    font-size: 33px;
+    font-size: $largest;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
     color: $dark-text;
     padding-left: 12px;
@@ -144,7 +144,7 @@ img {
 }
 .view-all {
     color: $blue-accent;
-    font-size: 18px;
+    font-size: $large;
     width: 100px;
     cursor: pointer;
     @include vert-center;

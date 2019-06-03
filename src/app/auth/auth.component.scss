@@ -3,7 +3,7 @@
    
     :host {
         font-family: 'Source Sans Pro', serif;
-        font-size: 16px;
+        font-size: $normal;
     }
 
     ::ng-deep .background, ::ng-deep .wrapper {
@@ -132,14 +132,14 @@
     }
 
     ::ng-deep .auth-title {
-        font-size: 26px;
+        font-size: $larger;
         color: $blue-accent;
         font-weight: bolder;
         text-align: center;
 
         &.light {
             font-weight: lighter;
-            font-size: 18px;
+            font-size: $large;
         }
 
     }
@@ -155,7 +155,7 @@
         margin-top: 30px;
         cursor: pointer !important;
         position: relative;
-        font-size: 16px;
+        font-size: $normal;
         outline: 0;
         border-width: 0px;
         -webkit-appearance: none;
@@ -213,7 +213,7 @@
             flex-grow: 1;
             flex-shrink: 1;
             border: none;
-            font-size: 15px;
+            font-size: $normal;
             outline: 0;
             font-family: 'Source Sans Pro', serif;
             font-weight: normal;

@@ -67,12 +67,12 @@
   }
 
   .browse-cta {
-    font-size: 18px;
+    font-size: $large;
     text-align: center;
 
     a {
       color: $bright-blue;
-      font-size: 18px;
+      font-size: $large;
       text-decoration: underline;
       padding: 10px;
     }
@@ -158,6 +158,6 @@
     padding: 12px 30px;
     background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
     border: 0;
-    font-size: 18px;
+    font-size: $large;
   }
 }

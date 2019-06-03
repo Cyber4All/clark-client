@@ -8,7 +8,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   position: relative;
 
   .title {
-    font-size: 18px;
+    font-size: $large;
     color: $dark-text;
     font-weight: 600;
     margin-bottom: 8px;
@@ -76,7 +76,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
   .svg-inline--fa,
   .icon {
     color: $bright-blue;
-    font-size: 20px;
+    font-size: $larger;
     margin-bottom: 10px;
   }
 }

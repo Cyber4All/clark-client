@@ -34,14 +34,14 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
   .banner__title {
     color: white;
-    font-size: 24px;
+    font-size: $larger;
     font-weight: bold;
   }
 
   .banner__sub {
     color: white;
     opacity: 0.85;
-    font-size: 16px;
+    font-size: $normal;
   }
 }
 
@@ -50,7 +50,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
   p {
     color: $dark-text;
-    font-size: 18px;
+    font-size: $large;
     margin: 5px 0 20px;
   }
 }
@@ -58,7 +58,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
 .license-selection {
   color: $dark-text;
-  font-size: 18px;
+  font-size: $large;
   max-width: 500px;
   text-align: left;
   margin: auto;

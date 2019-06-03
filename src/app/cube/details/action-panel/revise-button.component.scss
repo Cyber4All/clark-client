@@ -3,7 +3,9 @@
 button.neutral.on-white {
   width: 100%;
 }
-p { font-size: 18px; }
+p { 
+  font-size: $large; 
+}
 .btn-group {
   margin-top: 50px;
 }

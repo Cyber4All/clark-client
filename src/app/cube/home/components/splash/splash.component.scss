@@ -67,7 +67,7 @@ $banner-height: 90px;
       width: 100%;
       border: 0;
       outline: 0;
-      font-size: 16px;
+      font-size: $normal;
     }
   
     .svg-inline--fa,
@@ -95,7 +95,7 @@ $banner-height: 90px;
     a {
       color: white;
       text-decoration: underline;
-      font-size: 16px;
+      font-size: $normal;
     }
   }
 }

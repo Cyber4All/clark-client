@@ -38,7 +38,7 @@ $buttonWidth: 135px;
             .icon {
                 color: $blue-accent;
                 padding: 9px 12px;
-                font-size: 16px;
+                font-size: $normal;
                 cursor: pointer;
             }
 
@@ -102,7 +102,7 @@ $buttonWidth: 135px;
             width: $buttonWidth;
             text-transform: uppercase;
             color: $dark-text;
-            font-size: 15px;
+            font-size: $normal;
             text-align: center;
             padding: 10px;
             box-sizing: border-box;

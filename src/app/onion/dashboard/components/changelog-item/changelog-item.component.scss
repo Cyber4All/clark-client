@@ -9,7 +9,7 @@
 
 .changelog-item__name {
   display: flex;
-  font-size: 20px;
+  font-size: $larger;
   flex-direction: row;
   align-items: center;
 }
@@ -26,7 +26,7 @@
 }
 
 .changelog-item__text {
-  font-size: 16px;
+  font-size: $normal;
   margin-top: 10px;
   color: $dark-text;
 }

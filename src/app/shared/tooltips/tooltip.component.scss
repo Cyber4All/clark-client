@@ -1,3 +1,5 @@
+
+@import '~_vars.scss';
 $dark-text: #111;
 $light-text: #fff;
 $green: #389857;
@@ -15,7 +17,7 @@ $light: #fefefe;
   position: fixed;
   display: block;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-size: $smaller;
   font-style: normal;
   font-weight: normal;
   line-height: 1.42857143;

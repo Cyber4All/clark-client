@@ -39,7 +39,7 @@
 }
 .file-breadcrumb {
   .link {
-    font-size: 20px;
+    font-size: $larger;
     font-weight: 700;
     margin: 5px;
     padding: 0 7px;
@@ -106,7 +106,7 @@
 
 .context-item {
   .option {
-    font-size: 18px;
+    font-size: $large;
   }
 }
 .icon.light {

@@ -34,7 +34,7 @@
       max-height: 100% !important;
 
       .initials {
-        font-size: 13px !important;
+        font-size: $smaller;
       }
     }
   }
@@ -79,7 +79,7 @@
     span {
       position: absolute;
       bottom: 0; right: 0;
-      font-size: 30px;
+      font-size: $large;
       z-index: 3;
       color: $blue-accent;
       cursor: pointer;
@@ -94,12 +94,12 @@
     padding: 10px;
 
     .title {
-      font-size: 18px;
+      font-size: $large;
       color: black;
     }
 
     .details {
-      font-size: 14px;
+      font-size: $small;
       color: lighten($dark-text, 10);
       margin-top: 5px;
     }

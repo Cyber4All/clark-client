@@ -13,7 +13,7 @@
   background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
   color: white;
   box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
+  font-size: $normal;
   font-weight: normal;
   border: 0;
   padding-top: 10px;
@@ -45,7 +45,7 @@
 .file-breadcrumb {
 
   .link {
-    font-size: 20px;
+    font-size: $larger;
     font-weight: 700;
     margin: 5px 0;
     padding: 0;
@@ -121,7 +121,7 @@
 .context-item {
 
   .option {
-    font-size: 18px;
+    font-size: $large;
   }
 }
 
@@ -138,7 +138,7 @@ div.dropzone-message {
   margin: auto;
   align-self: center;
   font-weight: 200;
-  font-size: 20px;
+  font-size: $larger;
   // color: desaturate(lighten($bright-blue, 15), 30);
   color: lighten($dark-text, 20);
   display: flex;
@@ -153,7 +153,7 @@ div.dropzone-message {
   }
 
   .empty-title {
-    font-size: 30px;
+    font-size: $largest;
     margin-bottom: 15px;
     // font-weight: normal;
   }

@@ -18,7 +18,7 @@ $light-blue-gradient: linear-gradient(
 
     .greeting {
       position: relative;
-      font-size: 28px;
+      font-size: $larger;
       font-weight: bold;
 
       span {
@@ -65,7 +65,7 @@ $light-blue-gradient: linear-gradient(
       z-index: 2;
 
       .header {
-        font-size: 26px;
+        font-size: $larger;
         color: $dark-text;
       }
     }
@@ -90,7 +90,7 @@ $light-blue-gradient: linear-gradient(
 
     .column-headers {
       font-weight: bold;
-      font-size: 14px;
+      font-size: $small;
       color: $dark-text;
       opacity: 0.46;
       padding-top: 20px;
@@ -253,7 +253,7 @@ $unpublished-color: rgba(
   bottom: 0;
 
   color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
-  font-size: 20px;
+  font-size: $larger;
   padding: 20px;
 
   .svg-inline--fa {
@@ -277,7 +277,7 @@ $unpublished-color: rgba(
   bottom: 0;
 
   color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
-  font-size: 16px;
+  font-size: $normal;
 
   .top {
     display: flex;
@@ -285,7 +285,7 @@ $unpublished-color: rgba(
     align-items: center;
     flex-direction: row;
     color: $dark-text;
-    font-size: 30px;
+    font-size: $largest;
     margin-bottom: 10px;
 
     .svg-inline--fa {

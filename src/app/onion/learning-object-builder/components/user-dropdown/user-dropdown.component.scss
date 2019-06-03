@@ -8,7 +8,7 @@ $light-blue-gradient: linear-gradient(45deg, saturate(darken($bright-blue, 10), 
 
 .user-dropdown__search-input {
   appearance: none;
-  font-size: 14px;
+  font-size: $small;
   padding: 8px 10px;
   border: 1px solid $placeholder;
   border-radius: 2px;

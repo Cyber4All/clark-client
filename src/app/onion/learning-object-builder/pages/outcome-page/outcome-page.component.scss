@@ -4,7 +4,7 @@ $dark-text: #545e64;
 $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
 
 .title {
-  font-size: 20px;
+  font-size: $larger;
   color: $dark-text;
   font-weight: 600;
 }
@@ -45,11 +45,11 @@ button {
 
   .no-outcomes__title {
     color: $dark-text;
-    font-size: 20px;
+    font-size: $larger;
   }
 
   .no-outcomes__description {
-    font-size: 14px;
+    font-size: $small;
     color: darken($placeholder, 25);
     max-width: 500px;
     margin: auto;

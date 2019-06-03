@@ -61,7 +61,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 14px;
+  font-size: $small;
 
   .svg-inline--fa {
     margin-right: 13px;
@@ -88,7 +88,7 @@
 
 .folder,
 .file {
-  font-size: 15px;
+  font-size: $normal;
 }
 
 .folder:hover {
@@ -112,7 +112,7 @@
 }
 
 .icon {
-  font-size: 20px;
+  font-size: $larger;
   margin-right: 5px;
 }
 
@@ -127,6 +127,6 @@ input {
 
 .external-link-icon {
   color: $bright-blue;
-  font-size: 10px;
+  font-size: $smaller;
   margin-left: 5px;
 }

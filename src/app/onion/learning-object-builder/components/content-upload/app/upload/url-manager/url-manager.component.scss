@@ -6,7 +6,7 @@
     background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
     color: white;
     box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);
-    font-size: 16px;
+    font-size: $normal;
     font-weight: normal;
     border: 0;
     padding-top: 10px;
@@ -20,7 +20,7 @@
     margin: auto;
     align-self: center;
     font-weight: 200;
-    font-size: 20px;
+    font-size: $larger;
     color: lighten($dark-text, 20);
     display: flex;
     flex-direction: column;
@@ -34,7 +34,7 @@
     }
 
     .empty-title {
-        font-size: 30px;
+        font-size: $larger;
         margin-bottom: 15px;
     }
 
@@ -50,7 +50,7 @@
     justify-content: space-between;
 
     .slide-title {
-        font-size: 26px;
+        font-size: $larger;
         border-radius: 4px;
         padding: 15px 0 5px;
     }

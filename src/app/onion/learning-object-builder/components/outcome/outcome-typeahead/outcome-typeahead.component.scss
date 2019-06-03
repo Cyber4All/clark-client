@@ -27,7 +27,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         padding: 8px 0 6px;
         border-bottom: 2px solid $bright-blue;
         outline: 0;
-        font-size: 15px;
+        font-size: $normal;
         font-family: 'Arial', sans-serif;
         margin: 0;
         margin-left: -1px;
@@ -48,7 +48,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         background: $light-blue-gradient;
         color: white;
         padding: 8px 12px;
-        font-size: 15px;
+        font-size: $normal;
         top: 0;
         left: -8px;
         bottom: 0;
@@ -61,7 +61,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
         }
 
         .svg-inline--fa {
-            font-size: 12px;
+            font-size: $smaller;
             margin-left: 10px;
         }
 
