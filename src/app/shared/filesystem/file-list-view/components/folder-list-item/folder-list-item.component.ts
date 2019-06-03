@@ -42,7 +42,7 @@ export class FolderListItemComponent implements OnInit {
       .sort((a, b) => (a < b ? 1 : -1))[0];
     timestamp = timestamp > derivedTimestamp ? timestamp : derivedTimestamp;
 
-    for (const folder of node.getChildren()) {
+    for (const folder of node.getFolders()) {
       return this.getLatestDate(folder, timestamp);
     }
 
