@@ -39,6 +39,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           color: black;
           font-size: $larger;
           margin-bottom: 20px;
+          padding-left: 10px;
         }
       }
 
