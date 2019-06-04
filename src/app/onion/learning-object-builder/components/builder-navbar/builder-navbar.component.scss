@@ -100,7 +100,7 @@
       a {
         display: flex;
         text-decoration: none;
-        color: $medium-grey;
+        color: $dark-grey;
         padding: 0 15px 10px;
         position: relative;
         flex-direction: row;
@@ -164,7 +164,7 @@
 }
 
 .builder-navbar-wrapper__saving-indicator {
-  color: $medium-grey;
+  color: $dark-grey;
   margin-left: 30px;
   font-size: $normal;
   text-decoration: underline;

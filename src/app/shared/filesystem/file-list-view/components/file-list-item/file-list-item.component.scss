@@ -3,11 +3,11 @@
 .wrapper {
   height: 100%;
   width: 100%;
-  font-size: 15px;
+  font-size: $normal;
 }
 .icon {
   color: #485460;
-  font-size: 20px;
+  font-size: $large;
   margin-right: 5px;
 }
 .grid-row {
@@ -27,7 +27,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 14px;
+  font-size: $small;
 
   .svg-inline--fa {
     margin-right: 13px;

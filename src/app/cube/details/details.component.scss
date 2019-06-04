@@ -230,7 +230,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
   .no-revisions {
     font-size: $normal;
-    color: $medium-grey;
+    color: $dark-grey;
     padding-right: 10px;
     text-align: center;
     display: inline-block;
@@ -299,7 +299,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   justify-content: center;
   max-width: 300px;
   font-size: $large;
-  color: $medium-grey;
+  color: $dark-grey;
   margin: auto;
   margin-top: 100px;
 

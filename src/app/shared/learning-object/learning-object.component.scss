@@ -3,7 +3,7 @@
 a {
   text-decoration: none;
 }
-
+//Styles for Cards 
 @media (min-width: 751px) {
   :host.card {
     min-height: 350px;
@@ -17,6 +17,10 @@ a {
       .image {
         width: 100%;
         height: 150px;
+
+        .initials {
+          font-size: $normal;
+        }
       }
 
       .learning-object-content {
@@ -31,11 +35,24 @@ a {
             width: 100%;
           }
         }
+        .collection {
+          display: none;
+        }
+        .card-collection {
+          display: inline;
+        }
+        .download-btn{
+          display: none;
+        }
+        .download-btn-card {
+          display: inline;
+        }
       }
     }
   }
 }
 
+// Styles for mobile
 @media (max-width: 750px) {
   :host {
     &.card {
@@ -47,7 +64,7 @@ a {
 
   .learning-object {
     .title {
-      font-size: $normal;
+      font-size: $small !important;
     }
 
     .goals {
@@ -60,11 +77,18 @@ a {
       max-height: 100% !important;
 
       .initials {
-        font-size: $small;
+        font-size: $smaller !important;
       }
+    }
+    .card-collection {
+      display: none;
+    }
+    .download-btn-card {
+      display: none;
     }
   }
 }
+
 
 :host.loading {
   // loading styles
@@ -192,7 +216,7 @@ a {
       color: white;
       font-size: $normal;
       text-align: center;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       padding: 5px;
       z-index: 2;
     }
@@ -208,36 +232,6 @@ a {
       opacity: 0.05;
       mask: $cube-pattern repeat;
     }
-
-    .collection {
-      position: absolute;
-      color: $dark-grey;
-      text-transform: capitalize;
-      font-size: $smaller;
-      font-weight: bold;
-      background: orange;
-      top:8px;
-      left: 0;
-      box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
-      
-      div {
-        padding: 0px 8.5px 1px 4px;
-        position: relative;
-
-        &:after {
-          content: '';
-          width: 15.5px;
-          height: 15.5px;
-          position: absolute;
-          background: orange;
-          border-radius: 5px;
-          transform: rotate(45deg);
-          right: -8px;
-          top: 1px;
-          z-index: 1;
-        }
-      }
-    }
   }
 
   .learning-object-content {
@@ -248,7 +242,7 @@ a {
 
     .title {
       font-size: $normal;
-      color: black;
+      color: $darker-grey;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -266,6 +260,45 @@ a {
           color: $blue-accent;
         }
       }
+    }
+
+    .card-collection {
+      background: $light-blue;
+      padding: 2px 5px;
+      border-radius: 3px;
+      display: inline-block;
+      position: relative;
+      color: white;
+      font-size: $smaller;
+      font-weight: 400;
+      display: none;
+    }
+
+    .download-btn-card {
+      border: 0;
+      background: rgba(0, 0, 0, 0);
+      transition: all 0.2s ease;
+      -webkit-transform: translateZ(0);
+      outline: 0;
+      color: $medium-grey;
+      display: none;
+      float: right;
+
+      &:hover {
+        transform: scale(1.1);
+        color: $blue-accent;
+      }
+    }
+
+    .collection {
+      background: $light-blue;
+      padding: 2px 5px;
+      border-radius: 3px;
+      display: inline-block;
+      position: relative;
+      color: white;
+      font-size: $smaller;
+      font-weight: 400;
     }
 
     .details {
