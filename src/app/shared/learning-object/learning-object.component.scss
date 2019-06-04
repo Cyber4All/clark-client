@@ -220,7 +220,6 @@ a {
       left: 0;
       box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
       
-
       div {
         padding: 0px 8.5px 1px 4px;
         position: relative;
@@ -271,13 +270,13 @@ a {
 
     .details {
       font-size: $small;
-      color: lighten($dark-grey, 10);
+      color: $dark-grey;
       margin-top: 5px;
     }
 
     .goals {
       font-size: $small;
-      color: lighten($dark-grey, 10);
+      color: $dark-grey;
       margin-top: 5px;
       white-space: nowrap;
       text-overflow: ellipsis;

@@ -59,7 +59,7 @@
 
       .header {
         font-size: $larger;
-        color: $dark-grey;
+        color: $darker-grey;
       }
     }
   }
@@ -82,10 +82,8 @@
     }
 
     .column-headers {
-      font-weight: bold;
       font-size: $small;
       color: $dark-grey;
-      opacity: 0.46;
       padding-top: 20px;
       padding-bottom: 10px;
     }
@@ -105,13 +103,6 @@
     cursor: pointer;
   }
 }
-
-$unpublished-color: rgba(
-  red($dark-grey),
-  green($dark-grey),
-  blue($dark-grey),
-  0.36
-);
 
 .filter-menu {
   li {
@@ -146,15 +137,15 @@ $unpublished-color: rgba(
     }
 
     &.waiting {
-      color: #5ec9da;
+      color: $status_waiting;
 
       .indicator {
-        background: #5ec9da;
+        background: $status_waiting;
       }
 
       &:hover {
         color: white;
-        background: #5ec9da;
+        background: $status_waiting;
 
         .indicator {
           background: white;
@@ -163,15 +154,15 @@ $unpublished-color: rgba(
     }
 
     &.review {
-      color: #f5a623;
+      color: $status_review;
 
       .indicator {
-        background: #f5a623;
+        background: $status_review;
       }
 
       &:hover {
         color: white;
-        background: #f5a623;
+        background: $status_review;
 
         .indicator {
           background: white;
@@ -180,15 +171,15 @@ $unpublished-color: rgba(
     }
 
     &.released {
-      color: $success-green;
+      color: $status_released;
 
       .indicator {
-        background: $success-green;
+        background: $status_released;
       }
 
       &:hover {
         color: white;
-        background: $success-green;
+        background: $status_released;
 
         .indicator {
           background: white;
@@ -197,15 +188,15 @@ $unpublished-color: rgba(
     }
 
     &.denied {
-      color: saturate($error-red, 15);
+      color: $status_rejected;
 
       .indicator {
-        background: saturate($error-red, 15);
+        background: $status_rejected;
       }
 
       &:hover {
         color: white;
-        background: saturate($error-red, 15);
+        background: $status_rejected;
 
         .indicator {
           background: white;
@@ -228,7 +219,7 @@ $unpublished-color: rgba(
   top: 0;
   bottom: 0;
 
-  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
+  color: $medium-grey;
   font-size: $larger;
   padding: 20px;
 
@@ -252,7 +243,7 @@ $unpublished-color: rgba(
   top: 0;
   bottom: 0;
 
-  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
+  color: $medium-grey;
   font-size: $normal;
 
   .top {

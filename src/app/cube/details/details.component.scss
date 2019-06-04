@@ -36,7 +36,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         margin-bottom: 40px;
 
         .title {
-          color: black;
+          color: $darker-grey;
           font-size: $larger;
           margin-bottom: 20px;
         }
@@ -54,12 +54,14 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
         justify-content: flex-start;
         align-items: center;
         margin-bottom: 5px;
+
         .title {
           width: 100%;
-          color: black;
+          color: $darker-grey;
           font-size: $larger;
           padding-left: 10px;
         }
+
         .level {
           text-transform: none;
           cursor: pointer;
@@ -88,7 +90,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
       .title {
         width: 100%;
-        color: black;
+        color: $darker-grey;
         font-size: $larger;
         padding-left: 10px;
       }
@@ -207,14 +209,14 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       right: 20px;
       font-size: $larger;
       cursor: pointer;
-      color: lighten($dark-grey, 20);
+      color: $medium-grey;
     }
 
     .title {
       color: black;
       font-size: $larger;
       text-align: center;
-      color: $dark-grey;
+      color: $darker-grey;
       margin-bottom: 15px;
     }
   }
@@ -228,7 +230,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
   .no-revisions {
     font-size: $normal;
-    color: $dark-grey;
+    color: $medium-grey;
     padding-right: 10px;
     text-align: center;
     display: inline-block;
@@ -297,7 +299,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   justify-content: center;
   max-width: 300px;
   font-size: $large;
-  color: $dark-grey;
+  color: $medium-grey;
   margin: auto;
   margin-top: 100px;
 

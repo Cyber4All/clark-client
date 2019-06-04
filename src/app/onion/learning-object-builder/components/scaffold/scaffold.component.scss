@@ -12,7 +12,6 @@
     justify-content: left;
   }
   .title {
-    color: $blue-gradient;
     text-align: left;
     font-size: $large;
     font-weight: 600;
@@ -51,7 +50,7 @@
       width: 100%;
 
       .child-title {
-        color: $dark-grey;
+        color: $darker-grey;
         text-align: left;
         font-size: $normal;
         text-overflow: ellipsis;
@@ -112,6 +111,7 @@
   color: $dark-grey;
   text-align: center;
   padding: 30px 30px;
+  font-size: $normal;
 }
 
 .cdk-drag-preview {

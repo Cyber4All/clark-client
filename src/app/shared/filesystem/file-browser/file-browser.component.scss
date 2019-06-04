@@ -126,7 +126,7 @@ div.dropzone-message {
   align-self: center;
   font-weight: 200;
   font-size: $larger;
-  color: lighten($dark-grey, 20);
+  color: $dark-grey;
   display: flex;
   flex-direction: column;
   align-items: center;
