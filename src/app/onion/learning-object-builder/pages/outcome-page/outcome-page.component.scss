@@ -1,7 +1,7 @@
 @import '~_vars.scss';
 
 .title {
-  font-size: $larger;
+  font-size: $large;
   color: $dark-grey;
   font-weight: 600;
 }
@@ -25,11 +25,11 @@
 
   .no-outcomes__title {
     color: $dark-grey;
-    font-size: $larger;
+    font-size: $large;
   }
 
   .no-outcomes__description {
-    font-size: $small;
+    font-size: $normal;
     color: $dark-grey;
     max-width: 500px;
     margin: auto;
