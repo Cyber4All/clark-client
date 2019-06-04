@@ -73,12 +73,12 @@
     .uploader-text {
       margin-top: 10px;
       font-size: $larger;
-      color: lighten(desaturate($blue-accent, 30), 15);
+      color: $dark-grey;
       transition: all 0.2s ease;
       text-align: center;
 
       div {
-        font-weight: bold;
+        font-size: $largest;
       }
     }
   }

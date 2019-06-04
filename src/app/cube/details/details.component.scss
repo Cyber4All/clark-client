@@ -101,10 +101,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       }
     }
 
-    .outcomes {
-      background: desaturate(lighten($blue-accent, 55), 20);
-    }
-
     .ratings {
       background: white;
       border-radius: 3px;
@@ -213,7 +209,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     }
 
     .title {
-      color: black;
       font-size: $larger;
       text-align: center;
       color: $darker-grey;

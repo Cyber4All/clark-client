@@ -114,12 +114,7 @@
       position: relative;
 
       &.active {
-        background: rgba(
-          red($blue-accent),
-          green($blue-accent),
-          blue($blue-accent),
-          0.3
-        );
+        background: $light-grey;
       }
 
       &:not(.section):hover {

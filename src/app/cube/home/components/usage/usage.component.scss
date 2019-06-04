@@ -46,8 +46,8 @@
     }
 
     &.downloads .item__icon {
-      color: orange;
-      background: lighten(orange, 35);
+      color: $orange;
+      background: lighten($orange, 35);
     }
 
     &.users .item__icon {

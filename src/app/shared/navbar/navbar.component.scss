@@ -363,7 +363,7 @@
     box-sizing: border-box;
 
     &.user {
-      background: saturate(rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.1), 0);
+      background: $light-grey;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -388,21 +388,9 @@
         font-size: $larger;
         color: $dark-grey;
       }
-    }
 
-    &.content-switcher {
-      font-size: $large;
-      color: $dark-grey;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-      border-top: 2px solid rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-
-      .svg-inline--fa {
-        font-size: $normal;
-        @include vert-center;
+      a {
+        color: $light-blue;
       }
     }
 
