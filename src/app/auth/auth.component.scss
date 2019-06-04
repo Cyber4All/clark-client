@@ -236,27 +236,27 @@
         color: $blue-accent;
       }
     }
-  }
 
-  & > .svg-inline--fa {
-    width: 15px;
-    height: 15px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    @include vert-center;
-    color: $medium-grey;
-    padding-left: 14px;
-    box-sizing: content-box;
-  }
-
-  &.active > .svg-inline--fa {
-    color: $blue-accent;
-  }
-
-  .icon-right {
-    position: absolute;
-    right: 10px;
-    @include vert-center;
+    & > .svg-inline--fa {
+      width: 15px;
+      height: 15px;
+      flex-grow: 0;
+      flex-shrink: 0;
+      @include vert-center;
+      color: $medium-grey;
+      padding-left: 14px;
+      box-sizing: content-box;
+    }
+    
+    &.active > .svg-inline--fa {
+      color: $blue-accent;
+    }
+    
+    .icon-right {
+      position: absolute;
+      right: 10px;
+      @include vert-center;
+    }
   }
 }
 
