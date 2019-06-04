@@ -123,10 +123,7 @@
         cursor: pointer;
         margin-top: 40px;
         text-align: center;
-        background: desaturate(
-          rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.1),
-          10
-        );
+        background: $light-grey;
         color: $dark-grey;
 
         span {
@@ -247,11 +244,11 @@
       padding-left: 14px;
       box-sizing: content-box;
     }
-    
+  
     &.active > .svg-inline--fa {
       color: $blue-accent;
     }
-    
+
     .icon-right {
       position: absolute;
       right: 10px;

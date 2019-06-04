@@ -26,6 +26,7 @@
 }
 
 .search-bar {
+
   input {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -91,7 +92,7 @@
 
   .empty {
     margin-top: 10px;
-    color: $medium-grey;
+    color: $dark-grey;
     font-size: $small;
     text-align: center;
     padding: 10px;
@@ -113,12 +114,7 @@
       position: relative;
 
       &.active {
-        background: rgba(
-          red($blue-accent),
-          green($blue-accent),
-          blue($blue-accent),
-          0.3
-        );
+        background: $light-grey;
       }
 
       &:not(.section):hover {

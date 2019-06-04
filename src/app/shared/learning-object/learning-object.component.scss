@@ -216,7 +216,7 @@ a {
       color: white;
       font-size: $normal;
       text-align: center;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       padding: 5px;
       z-index: 2;
     }
@@ -242,7 +242,7 @@ a {
 
     .title {
       font-size: $normal;
-      color: black;
+      color: $darker-grey;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -303,13 +303,13 @@ a {
 
     .details {
       font-size: $small;
-      color: lighten($dark-grey, 10);
+      color: $dark-grey;
       margin-top: 5px;
     }
 
     .goals {
       font-size: $small;
-      color: lighten($dark-grey, 10);
+      color: $dark-grey;
       margin-top: 5px;
       white-space: nowrap;
       text-overflow: ellipsis;

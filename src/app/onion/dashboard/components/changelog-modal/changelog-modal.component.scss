@@ -10,7 +10,7 @@
 
 .header__date {
   font-size: $normal;
-  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
+  color: $dark-grey;
   margin-bottom: 10px;
 }
 
@@ -18,8 +18,8 @@
 .empty-template {
   text-align: center;
   padding: 40px 0;
-  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
-  font-size: $large;
+  color: $dark-grey;
+  font-size: $larger;
 
   .svg-inline--fa {
     color: $light-blue;

@@ -12,50 +12,6 @@
   max-width: 100%;
 }
 
-.disabled {
-  z-index: 909999999;
-  background: rgba(0, 0, 0, 0.8);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .image {
-    font-size: 40px;
-  }
-
-  .btn-group {
-    margin-top: 20px;
-  }
-
-  .disabled-inner {
-    background: white;
-    border-radius: 3px;
-    padding: 30px 80px 20px;
-    max-width: 600px;
-    box-sizing: border-box;
-    font-size: $large;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    color: $dark-grey;
-
-    &:before {
-      position: absolute;
-      content: '';
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 10px;
-      background: $light-blue-gradient;
-    }
-  }
-}
-
 .uploader {
   position: fixed;
   top: 0;
@@ -117,12 +73,12 @@
     .uploader-text {
       margin-top: 10px;
       font-size: $larger;
-      color: lighten(desaturate($blue-accent, 30), 15);
+      color: $dark-grey;
       transition: all 0.2s ease;
       text-align: center;
 
       div {
-        font-weight: bold;
+        font-size: $largest;
       }
     }
   }

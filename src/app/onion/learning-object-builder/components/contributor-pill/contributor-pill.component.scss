@@ -31,13 +31,14 @@
 
 .contributor-pill__dropdown-option {
   padding: 5px 25px;
-  color: lighten($dark-grey, 20);
+  color: $error-red;
   cursor: pointer;
   text-align: center;
 
   .svg-inline--fa,
   .icon {
     color: $error-red;
+    margin-right: 5px;
   }
 
   &:hover {

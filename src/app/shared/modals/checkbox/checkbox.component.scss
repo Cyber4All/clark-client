@@ -2,7 +2,7 @@
 
 .checkbox {
   background: white;
-  border: 2px solid lighten($dark-grey, 40);
+  border: 2px solid $medium-grey;
   position: relative;
   transition: all 0.1s ease;
   cursor: pointer;

@@ -73,7 +73,7 @@
   }
 }
 
-// fixed postion nav bar
+// fixed position nav bar
 .topbar {
   position: relative;
   width: 100%;
@@ -81,7 +81,7 @@
   background: white;
   z-index: 4;
   box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.08);
-  color: $blue-accent;
+  color: $dark-grey;
   box-sizing: border-box;
 
   .inner {
@@ -171,7 +171,7 @@
       font-size: $large;
 
       a {
-        color: $blue-accent !important;
+        // color: $blue-accent !important;
       }
     }
   }
@@ -217,7 +217,7 @@
         position: relative;
 
         .bar {
-          background: $blue-accent;
+          background: $dark-grey;
           border-radius: 2px;
           width: 100%;
           height: 3px;
@@ -253,7 +253,7 @@
     }
 
     .contributor {
-      color: $blue-accent;
+      color: $dark-grey;
       font-size: $normal;
       padding-left: 10px;
       justify-content: space-between;
@@ -278,7 +278,7 @@
       @include vert-center;
       outline: none;
       margin-left: 20px;
-      background: $blue-accent;
+      background: $dark-grey;
       width: 30px;
       height: 30px;
       mask: url('../../../assets/images/books.svg') no-repeat center;
@@ -322,14 +322,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: darken($blue-accent, 25);
+  background: darken($light-blue, 35);
   z-index: 5;
   opacity: 0;
   transition: all 0.5s ease;
   visibility: hidden;
 
   &.active {
-    opacity: 0.6;
+    opacity: 0.8;
     visibility: visible;
   }
 
@@ -363,7 +363,7 @@
     box-sizing: border-box;
 
     &.user {
-      background: saturate(rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.1), 0);
+      background: $light-grey;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -388,21 +388,9 @@
         font-size: $larger;
         color: $dark-grey;
       }
-    }
 
-    &.content-switcher {
-      font-size: $large;
-      color: $dark-grey;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-      border-top: 2px solid rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-
-      .svg-inline--fa {
-        font-size: $normal;
-        @include vert-center;
+      a {
+        color: $light-blue;
       }
     }
 

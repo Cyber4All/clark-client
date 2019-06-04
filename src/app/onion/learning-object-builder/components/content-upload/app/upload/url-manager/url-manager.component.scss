@@ -4,8 +4,8 @@
   margin: auto;
   align-self: center;
   font-weight: 200;
-  font-size: $larger;
-  color: lighten($dark-grey, 20);
+  font-size: $largest;
+  color: $dark-grey;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +18,7 @@
   }
 
   .empty-title {
-    font-size: $larger;
+    font-size: $largest;
     margin-bottom: 15px;
   }
 

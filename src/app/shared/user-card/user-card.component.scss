@@ -46,12 +46,11 @@
   padding: 10px;
   background: white;
   border-radius: 3px;
-  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.07);
   display: flex;
   flex-direction: row;
   max-width: 400px;
   width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
   outline: none;
   cursor: pointer;
 
@@ -73,20 +72,6 @@
       background-repeat: no-repeat;
       margin: auto;
     }
-
-    span {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      font-size: $large;
-      z-index: 3;
-      color: $blue-accent;
-      cursor: pointer;
-
-      &:hover {
-        color: $dark-grey;
-      }
-    }
   }
 
   .user-content {
@@ -94,12 +79,12 @@
 
     .title {
       font-size: $large;
-      color: black;
+      color: $darker-grey;
     }
 
     .details {
       font-size: $small;
-      color: lighten($dark-grey, 10);
+      color: $dark-grey;
       margin-top: 5px;
     }
   }
