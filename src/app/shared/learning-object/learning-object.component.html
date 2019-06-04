@@ -11,14 +11,19 @@
     [ngClass]="learningObject.length"
   >
     <div class="image">
-      <div *ngIf="!loading && collection" class="collection">
-        <div (window:resize)="onResize($event)">
-          {{ collection }}
-        </div>
-      </div>
       <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
     </div>
     <div class="learning-object-content">
+      <div *ngIf="collection !== undefined" class="card-collection">
+        {{ collection }}
+      </div>
+        <button
+          *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
+          class="download-btn-card"
+          (click)="download($event)"
+        >
+        <i class="fas fa-download"></i>
+      </button>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
         <button
@@ -28,6 +33,9 @@
         >
           <i class="fas fa-download"></i>
         </button>
+      </div>
+      <div class="collection">
+        {{ collection }}
       </div>
       <div class="details">
         <span class="author">
