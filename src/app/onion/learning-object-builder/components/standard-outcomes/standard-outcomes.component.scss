@@ -13,7 +13,7 @@
 
   .search-bar {
     border-radius: 2px;
-    background: #eee;
+    background: $light-grey;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -31,7 +31,7 @@
 
     .svg-inline--fa,
     .icon {
-      color: #757575;
+      color: $dark-grey;
     }
   }
 

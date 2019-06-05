@@ -33,13 +33,13 @@
 .status {
   width: 32px;
   height: 32px;
-  color: rgba(255, 255, 255, 0.9);
+  color: white;
   font-size: $normal;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgb(189, 193, 195);
+  background: $status_unreleased;
   transition: all 0.2s ease;
   box-shadow: none;
 

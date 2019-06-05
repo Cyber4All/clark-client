@@ -75,7 +75,7 @@ $buttonWidth: 135px;
     position: relative;
     z-index: 1;
     margin-top: 15px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid $light-grey;
     border-radius: 2px;
 
     .highlight {
@@ -106,7 +106,7 @@ $buttonWidth: 135px;
       z-index: 2;
       position: relative;
       transition: all 0.2s ease;
-      color: rgba(0, 0, 0, 0.5);
+      color: $dark-grey;
 
       &:not(.active) {
         cursor: pointer;

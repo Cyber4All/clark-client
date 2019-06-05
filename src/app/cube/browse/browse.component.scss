@@ -154,9 +154,9 @@ $learning-object-width: 820px;
     li {
       padding: 10px;
       color: $blue-accent;
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      border-top: 1px solid $light-grey;
+      border-bottom: 1px solid $light-grey;
+      border-left: 1px solid $light-grey;
       list-style-type: none;
       min-width: 45px;
       text-align: center;
@@ -184,7 +184,7 @@ $learning-object-width: 820px;
 
       &:last-child {
         border-radius: 0 3px 3px 0;
-        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        border-right: 1px solid $light-grey;
       }
     }
   }
@@ -209,7 +209,7 @@ $learning-object-width: 820px;
       opacity: 0;
       transform: scale(0.9);
       transition: all 0.15s ease;
-      background: rgba(255, 255, 255, 0.98);
+      background: white;
       max-width: none !important;
       display: flex;
       flex-direction: column;

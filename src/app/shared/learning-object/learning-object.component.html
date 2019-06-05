@@ -34,7 +34,7 @@
           <i class="fas fa-download"></i>
         </button>
       </div>
-      <div class="collection">
+      <div *ngIf="collection !== undefined" class="collection">
         {{ collection }}
       </div>
       <div class="details">

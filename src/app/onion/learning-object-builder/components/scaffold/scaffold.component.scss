@@ -33,7 +33,7 @@
 .child-box {
   padding: 20px 10px;
   border-bottom: solid 1px $light-grey;
-  color: rgba(0, 0, 0, 0.87);
+  color: $dark-grey;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -65,26 +65,29 @@
 
       .child-length {
         text-align: left;
-        font-size: $small;
+        font-size: $smaller;
+        color: white;
+        padding: 2px 5px;
+        border-radius: 2px;
 
         &.nanomodule {
-          color: $nanomodule-color;
+          background: $nanomodule-color;
         }
 
         &.micromodule {
-          color: $micromodule-color;
+          background: $micromodule-color;
         }
 
         &.module {
-          color: $module-color;
+          background: $module-color;
         }
 
         &.unit {
-          color: $unit-color;
+          background: $unit-color;
         }
 
         &.course {
-          color: $course-color;
+          background: $course-color;
         }
       }
 

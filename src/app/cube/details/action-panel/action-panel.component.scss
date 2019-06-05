@@ -43,10 +43,12 @@
 
     &.saved {
       cursor: default !important;
-      pointer-events: none;
-      border-color: transparent;
+      pointer-events: none !important;
       color: $success-green;
-      box-shadow: none;
+
+      &:after {
+        border-color: transparent ;
+      }
     }
   }
 

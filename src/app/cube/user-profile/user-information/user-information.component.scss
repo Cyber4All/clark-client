@@ -41,6 +41,8 @@
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
+  padding-left: 30px;
+  padding-right: 30px;
   padding-bottom: 20px;
   margin-top: 20px;
 
@@ -70,7 +72,7 @@
 }
 
 .verify-email.button {
-  max-width: 175px;
+  display: inline-block;
   margin: 10px auto;
 }
 

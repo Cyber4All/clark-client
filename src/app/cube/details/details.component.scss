@@ -29,7 +29,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
       .description,
       .outcomes {
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid $light-grey;
         padding: 20px;
         border-radius: 2px;
         color: $dark-grey;
@@ -44,7 +44,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       }
 
       .description {
-        background: #fff;
+        background: white;
         box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
       }
 
@@ -68,7 +68,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           cursor: pointer;
           margin-right: 10px;
           background: $blue-accent;
-          color: #fff;
+          color: white;
           box-shadow: none;
           padding: 5px 10px;
           border-radius: 2px;
@@ -84,7 +84,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       }
     }
     .disclaimer {
-      background: #fff;
+      background: white;
       box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
       padding: 20px;
       margin-bottom: 40px;
@@ -163,7 +163,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   right: 0;
   bottom: 0;
   z-index: 999999;
-  background: rgba(0, 0, 0, 0.75);
+  background: $dark-overlay;
   display: flex;
   justify-content: center;
   align-items: center;
