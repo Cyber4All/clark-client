@@ -5,12 +5,10 @@ import { RouterModule } from '@angular/router';
 
 // Other
 import { routes } from './content-upload.routes';
-import { DropzoneModule, DROPZONE_CONFIG,DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-import { environment } from '../environments/environment';
 
 // Services
 import { LearningObjectService } from '../../../../core/learning-object.service';
-import { FileStorageService } from './services/file-storage.service';
+import { FileManagementService } from './services/file-management.service';
 
 // Components
 import { FileManagerComponent } from './file-manager/file-manager.component';
@@ -24,9 +22,6 @@ import { UrlManagerComponent } from './upload/url-manager/url-manager.component'
 import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component';
 import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
-
-const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
-  environment.DROPZONE_CONFIG;
 
 @NgModule({
   declarations: [
@@ -42,7 +37,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     SharedModule,
     FileBrowserModule,
     FormsModule,
-    DropzoneModule,
     ContextMenuModule,
     routes
   ],
@@ -54,14 +48,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface =
     UrlManagerComponent,
     UrlRowComponent
   ],
-  providers: [
-    LearningObjectService,
-    FileStorageService,
-    {
-      provide: DROPZONE_CONFIG,
-      useValue: DEFAULT_DROPZONE_CONFIG
-    }
-  ],
+  providers: [LearningObjectService, FileManagementService],
   bootstrap: [ContentUploadComponent]
 })
 export class ContentUploadModule {}

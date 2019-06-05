@@ -3,44 +3,44 @@ import { trigger, style, animate, transition } from '@angular/animations';
 import {
   Component,
   OnInit,
-  ViewChild,
   ChangeDetectorRef,
   OnDestroy,
   AfterViewInit,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
-import {
-  DropzoneDirective,
-  DropzoneConfigInterface
-} from 'ngx-dropzone-wrapper';
 import { ToasterService } from '../../../../../../shared/toaster';
-import { environment } from '../../environments/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
-import { ModalService } from '../../../../../../shared/modals';
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { getPaths } from '../../../../../../shared/filesystem/file-functions';
+import { FileManagementService } from '../services/file-management.service';
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import {
-  FileStorageService,
-  FileUploadMeta
-} from '../services/file-storage.service';
-import { CookieService } from 'ngx-cookie';
+  FileUploadMeta,
+  UploadErrorReason,
+  UploadUpdate,
+  UploadProgressUpdate,
+  UploadCompleteUpdate,
+  UploadQueueCompleteUpdate,
+  UploadErrorUpdate
+} from '../services/typings';
+import { UPLOAD_ERRORS } from './errors';
 import { AuthService } from 'app/core/auth.service';
 
-// tslint:disable-next-line:interface-over-type-literal
-export type DZFile = {
-  id?: string;
-  accepted: boolean;
-  fullPath: string;
-  name: string;
-  size: number;
-  parent: string;
-  [key: string]: any;
-};
+export interface FileInput extends File {
+  fullPath?: string;
+  webkitRelativePath?: string;
+}
+
+export interface EnqueuedFile extends FileInput {
+  progress?: number;
+  success?: boolean;
+  totalUploaded?: number;
+}
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -73,9 +73,8 @@ export type DZFile = {
   ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
-  private uploadErrors = {};
-  @ViewChild(DropzoneDirective)
-  dzDirectiveRef: DropzoneDirective;
+  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('folderInput') folderInput: ElementRef;
 
   @Input()
   error$: Subject<string> = new Subject<string>();
@@ -89,7 +88,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   filesDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output()
-  uploadComplete: EventEmitter<void> = new EventEmitter<void>();
+  filesUploaded: EventEmitter<FileUploadMeta[]> = new EventEmitter<
+    FileUploadMeta[]
+  >();
   @Output()
   urlAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output()
@@ -125,17 +126,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   retrieving = false;
 
-  // @ts-ignore The ngx-dropzone doesn't believe generatePreview is a valid config option
-  config: DropzoneConfigInterface = {
-    ...environment.DROPZONE_CONFIG,
-    renameFile: (file: any) => {
-      return this.renameFile(file);
-    },
-    autoQueue: false,
-    parallelChunkUploads: true,
-    headers: { Authorization: '' }
-  };
-
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
     LearningObject.Material.File[]
   >([]);
@@ -143,9 +133,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     LearningObject.Material.FolderDescription[]
   > = new BehaviorSubject<LearningObject.Material.FolderDescription[]>([]);
 
-  inProgressFileUploads = [];
-  inProgressFolderUploads = [];
-  inProgressUploadsMap: Map<string, number> = new Map<string, number>();
+  uploadQueue: EnqueuedFile[] = [];
+  uploadQueueMap: { [path: string]: number } = {};
+  uploadProgress = 0;
+
+  totalUploaded = 0;
+  totalUploadSize = 0;
+
   tips = TOOLTIP_TEXT;
 
   unsubscribe$ = new Subject<void>();
@@ -157,30 +151,25 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   showDeletePopup = false;
   handleDeleteGenerator: Iterator<void>;
 
-  private uploadIds = {};
-  private userIsPrivileged = false;
+  private bucketUploadPath = '';
+
+  private newFileMeta: FileUploadMeta[] = [];
+
+  private credentialRefreshAttempted = false;
 
   constructor(
     private notificationService: ToasterService,
     private changeDetector: ChangeDetectorRef,
-    private modalService: ModalService,
-    private fileStorage: FileStorageService,
-    private cookie: CookieService,
+    private fileManager: FileManagementService,
     private auth: AuthService
-  ) {
-    this.config.headers.Authorization = `Bearer ${this.cookie.get('presence')}`;
-    this.userIsPrivileged = this.auth.isAdminOrEditor();
-  }
+  ) {}
 
   ngOnInit() {
     this.learningObject$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(object => {
         if (object) {
-          this.config.url = this.getFileUploadUrl({
-            learningObjectId: object.id,
-            authorUsername: object.author.username
-          });
+          this.bucketUploadPath = `${object.author.username}/${object.id}`;
           this.files$.next(object.materials.files);
           this.folderMeta$.next(object.materials.folderDescriptions);
           this.solutionUpload = false;
@@ -201,66 +190,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notesUpdated.emit(notes);
       });
 
-    this.error$.pipe(takeUntil(this.unsubscribe$)).subscribe(err => {
-      if (err) {
-        if (err['error']) {
-          err = err['error'];
+    this.error$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((err: Error | string) => {
+        let message: string;
+        if (err) {
+          if (err instanceof Error) {
+            message = err.message;
+          } else {
+            message = err;
+          }
+          this.notificationService.notify(
+            'Error!',
+            message,
+            'bad',
+            'far fa-times'
+          );
         }
-        this.notificationService.notify('Error!', err, 'bad', 'far fa-times');
-      }
-    });
-  }
-
-  /**
-   * Handles downloading a file by opening the stream url in a new window
-   *
-   * @param {LearningObject.Material.File} file[The file to be downloaded]
-   * @memberof UploadComponent
-   */
-  async handleFileDownload(file: LearningObject.Material.File) {
-    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
-    const loId = learningObject.id;
-    const authorUsername = learningObject.author.username;
-    const url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-      loId,
-      username: authorUsername,
-      fileId: file.id
-    });
-    window.open(url, '__blank');
-  }
-
-  /**
-   *  Gets upload URL based on user access privileges
-   *  FIXME: TESTING PURPOSES ONLY. Remove after test of file upload service is completed
-   *
-   * @param {{
-   *     learningObjectId: string;
-   *     authorUsername: string;
-   *   }} {
-   *     learningObjectId,
-   *     authorUsername
-   *   }
-   * @returns {string}
-   * @memberof UploadComponent
-   */
-  getFileUploadUrl({
-    learningObjectId,
-    authorUsername
-  }: {
-    learningObjectId: string;
-    authorUsername: string;
-  }): string {
-    let url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT(
-      learningObjectId,
-      authorUsername
-    );
-    if (this.userIsPrivileged) {
-      url = USER_ROUTES.POST_FILE_TO_LEARNING_OBJECT_ADMIN(
-        learningObjectId,
-        authorUsername
-      );
-    }
-    return url;
+      });
   }
 
   ngAfterViewInit() {
@@ -268,10 +215,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     fromEvent(document.getElementsByTagName('body')[0], 'dragover')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((event: any) => {
-        const types = event.dataTransfer.types;
-        if (types.filter(x => x === 'Files').length >= 1) {
-          this.toggleDrag(true);
-        }
+        const validDrop = Array.prototype.every.call(
+          event.dataTransfer.items,
+          item => item.kind === 'file'
+        );
+        this.toggleDrag(validDrop);
       });
 
     // create an observable from the dragover event and subscribe to it to show the dropzone popover
@@ -323,277 +271,386 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handle the file drop event
-   */
-  handleDrop() {
-    this.toggleDrag(false, 300);
-    this.toggleDropped(true);
-  }
-
-  /**
-   * Opens Dropzone upload dialog
+   * Handles dragenter event and Allows valid drop data
    *
-   * @memberof UploadComponent
-   */
-  openDZ() {
-    // @ts-ignore
-    document.querySelector('.dz-hidden-input').click();
-  }
-
-  /**
-   * Fired when file is added. Verifies limit hasn't been reached and adds to queued files & filesystem
-   *
-   * @param {DZFile} file
-   * @memberof UploadComponent
-   */
-  async addFile(file: DZFile) {
-    delete this.uploadErrors[file.upload.uuid];
-    try {
-      if (!file.rootFolder) {
-        // this is a file addition
-        this.inProgressFileUploads.push(file);
-        this.inProgressUploadsMap.set(
-          file.upload.uuid,
-          this.inProgressFileUploads.length - 1
-        );
-      }
-      if (file.upload.chunked) {
-        // Request multipart upload
-        const learningObject = await this.learningObject$
-          .pipe(take(1))
-          .toPromise();
-
-        const fileUploadMeta: FileUploadMeta = {
-          name: file.name,
-          path: file.fullPath || file.name,
-          fileType: file.type,
-          size: file.size
-        };
-
-        // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
-        let uploadId = '';
-        if (this.userIsPrivileged) {
-          uploadId = await this.fileStorage.initMultipartAdmin({
-            fileUploadMeta,
-            fileId: file.upload.uuid,
-            learningObjectId: learningObject.id,
-            authorUsername: learningObject.author.username
-          });
-        } else {
-          uploadId = await this.fileStorage.initMultipart({
-            learningObjectId: learningObject.id,
-            authorUsername: learningObject.author.username,
-            fileId: file.upload.uuid,
-            fileUploadMeta
-          });
-        }
-        this.uploadIds[file.upload.uuid] = uploadId;
-      }
-      this.dzDirectiveRef.dropzone().processFile(file);
-    } catch (error) {
-      this.error$.next(error);
-    }
-  }
-
-  fileSending(event) {
-    const file: DZFile = event[0];
-    // @ts-ignore
-    (<FormData>event[2]).append('size', file.size);
-    if (file.fullPath) {
-      (<FormData>event[2]).append('fullPath', file.fullPath);
-    }
-    if (file.upload.chunked) {
-      const uploadId = this.uploadIds[file.upload.uuid];
-      (<FormData>event[2]).append('uploadId', uploadId);
-    }
-  }
-
-  uploadProgress(event) {
-    const file = event[0];
-    const newProgress = Math.min(100, (event[2] / file.size) * 100);
-    let index;
-
-    if (file.rootFolder) {
-      // this is a folder update
-      // locate the folder in the array
-      index = this.inProgressUploadsMap.get(file.rootFolder);
-      const folder = this.inProgressFolderUploads[index];
-
-      // set this files progress
-      folder.allProgress.set(file.fullPath, newProgress);
-
-      // calculate the folders overall progress
-      folder.progress = Math.ceil(
-        Array.from(folder.allProgress.values() as number[]).reduce(
-          (x, y) => x + y
-        ) / folder.items
-      );
-    } else {
-      // this is a file update
-      index = this.inProgressUploadsMap.get(file.upload.uuid);
-      this.inProgressFileUploads[index].progress = Math.ceil(newProgress);
-    }
-  }
-
-  async dzComplete(file) {
-    const progressCheck = this.inProgressFileUploads
-      .filter(x => typeof x.progress !== 'number' || x.progress < 100)
-      .concat(
-        this.inProgressFolderUploads.filter(
-          x => typeof x.progress !== 'number' || x.progress < 100
-        )
-      );
-
-    if (!progressCheck.length) {
-      this.inProgressFileUploads = [];
-      this.inProgressFolderUploads = [];
-      this.inProgressUploadsMap = new Map();
-    }
-    if (file.upload.chunked && file.status !== 'error') {
-      try {
-        const uploadId = this.uploadIds[file.upload.uuid];
-        const learningObject = await this.learningObject$
-          .pipe(take(1))
-          .toPromise();
-
-        // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
-        if (this.userIsPrivileged) {
-          await this.fileStorage.finalizeMultipartAdmin({
-            learningObjectId: learningObject.id,
-            authorUsername: learningObject.author.username,
-            fileId: file.upload.uuid,
-            uploadId
-          });
-        } else {
-          await this.fileStorage.finalizeMultipart({
-            learningObjectId: learningObject.id,
-            authorUsername: learningObject.author.username,
-            fileId: file.upload.uuid,
-            uploadId
-          });
-        }
-
-        this.uploadComplete.emit();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }
-
-  /**
-   * Displays error message and aborts upload if chunked upload
-   *
-   * @param {*} events
-   * @memberof UploadComponent
-   */
-  async handleError(events) {
-    // Timeout was needed to prevent issues with parallel chunk uploads which would all error out at the same time
-    const file = await new Promise<any>(resolve => {
-      setTimeout(() => resolve(events[0]), 800);
-    });
-    if (!this.uploadErrors[file.upload.uuid]) {
-      this.uploadErrors[file.upload.uuid] = 1;
-      this.error$.next(`Could not upload ${file.name}.`);
-      if (file.upload.chunked) {
-        this.abortMultipartUpload(file);
-      }
-    }
-  }
-
-  /**
-   * Cancels multipart upload
-   *
-   * @private
-   * @param {*} file
-   * @memberof UploadComponent
-   */
-  private async abortMultipartUpload(file: any) {
-    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
-    const uploadId = this.uploadIds[file.upload.uuid];
-    // FIXME: Conditional block for TESTING PURPOSES ONLY. Remove after test of file upload service is completed
-    if (this.userIsPrivileged) {
-      this.fileStorage.abortMultipartAdmin({
-        learningObjectId: learningObject.id,
-        authorUsername: learningObject.author.username,
-        uploadId,
-        fileId: file.upload.uuid
-      });
-    } else {
-      this.fileStorage.abortMultipart({
-        learningObject,
-        uploadId,
-        fileId: file.upload.uuid
-      });
-    }
-  }
-
-  /**
-   * Fired when DZDropzone emits queuecomplete
-   *
-   * @memberof UploadComponent
-   */
-  queueComplete() {
-    this.uploadErrors = {};
-    this.uploadComplete.emit();
-  }
-
-  /**
-   * Fired when DZDropzone emits success
-   *
-   * @memberof UploadComponent
-   */
-  uploadSuccess() {}
-
-  /**
-   * Checks if file as fullPath or webkitRelativePath property and sets the fullPath prop;
-   *
-   * @private
-   * @param {DZFile} file
+   * @param {DragEvent} event [Drag event]
    * @returns
    * @memberof UploadComponent
    */
-  private renameFile(file: any): string {
-    let path: string;
-    if (file.fullPath || file.webkitRelativePath) {
-      path = file.fullPath ? file.fullPath : file.webkitRelativePath;
-    }
-    if (this.openPath) {
-      path = `${this.openPath}/${path ? path : file.name}`;
-    }
-    if (path) {
-      file.fullPath = path;
-      const rootFolder = getPaths(path)[0];
-      file.rootFolder = rootFolder;
+  dragenter(event: DragEvent) {
+    // indicates valid drop data
+    // false allows drop
+    return Array.prototype.every.call(
+      event.dataTransfer.items,
+      item => item.kind !== 'file'
+    );
+  }
+  /**
+   * Handles dragover event and Allows valid drop data
+   *
+   * @param {DragEvent} event [Drag event]
+   * @returns
+   * @memberof UploadComponent
+   */
+  dragover(event: DragEvent) {
+    // indicates valid drop data
+    // false allows drop
+    return Array.prototype.every.call(
+      event.dataTransfer.items,
+      item => item.kind !== 'file'
+    );
+  }
 
-      const index = this.inProgressUploadsMap.get(rootFolder);
-      let folder = this.inProgressFolderUploads[index];
+  /**
+   * Handles drop event by filtering data transfer items to files; Parsing folder and file entries; Starting upload
+   *
+   * @param {DragEvent} event [Drag event]
+   * @memberof UploadComponent
+   */
+  async handleDrop(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.toggleDrag(false, 300);
+    this.toggleDropped(true);
+    const entries = Array.from(event.dataTransfer.items)
+      .filter((item: any) => item.kind === 'file')
+      .map((item: any) => item.webkitGetAsEntry());
+    const files = await this.parseFilesFromEntry({
+      entries,
+      currentDirPath: ''
+    });
+    this.handleUpload(files);
+  }
 
-      if (folder) {
-        folder.items++;
-        folder.allProgress.set(file.fullPath, 0);
-        this.inProgressFolderUploads[index] = folder;
-      } else {
-        folder = {
-          items: 1,
-          progress: 0,
-          name: file.rootFolder,
-          folder: true,
-          allProgress: new Map()
-        };
+  /**
+   * Parses file entry using entry's file method.
+   * Promise is rejected if file is invalid
+   *
+   * @private
+   * @param {*} fileEntry
+   * @returns {Promise<FileInput>}
+   * @memberof UploadComponent
+   */
+  private parseFileEntry(fileEntry): Promise<FileInput> {
+    return new Promise((resolve, reject) => {
+      fileEntry.file(
+        file => {
+          resolve(file);
+        },
+        err => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-        folder.allProgress.set(file.fullPath, 0);
+  /**
+   * Recursively parses directory entry using reader to get files
+   * Concats directory paths to form file path
+   *
+   * @private
+   * @param {any} directoryEntry
+   * @param {string} currentDirPath
+   * @returns {Promise<FileInput[]>}
+   * @memberof UploadComponent
+   */
+  private parseDirectoryEntry({
+    directoryEntry,
+    currentDirPath
+  }: {
+    directoryEntry: any;
+    currentDirPath: string;
+  }): Promise<FileInput[]> {
+    const directoryReader = directoryEntry.createReader();
+    return new Promise((resolve, reject) => {
+      directoryReader.readEntries(
+        entries => {
+          const newPath =
+            `${currentDirPath ? currentDirPath + '/' : ''}` +
+            directoryEntry.name;
+          this.parseFilesFromEntry({
+            entries,
+            currentDirPath: newPath
+          }).then(files => {
+            resolve(files);
+          });
+        },
+        err => {
+          reject(err);
+        }
+      );
+    });
+  }
 
-        this.inProgressFolderUploads.push(folder);
-        this.inProgressUploadsMap.set(
-          rootFolder,
-          this.inProgressFolderUploads.length - 1
-        );
+  /**
+   * Parses file list of entries
+   * `currentDirPath` and `openPath` are appended to the file's path if they are set
+   *
+   * @private
+   * @param {any[]} entries
+   * @param {string} currentDirPath
+   * @returns {Promise<FileInput[]>}
+   * @memberof UploadComponent
+   */
+  private parseFilesFromEntry({
+    entries,
+    currentDirPath
+  }: {
+    entries: any[];
+    currentDirPath: string;
+  }): Promise<FileInput[]> {
+    const files = [];
+    const promises$ = entries.map(entry => {
+      if (entry.isFile) {
+        return this.parseFileEntry(entry).then(file => {
+          if (currentDirPath) {
+            file.fullPath = `${currentDirPath}/${file.name}`;
+          }
+          if (this.openPath) {
+            file.fullPath = `${this.openPath}/${file.fullPath || file.name}`;
+          }
+          files.push(file);
+        });
+      } else if (entry.isDirectory) {
+        return this.parseDirectoryEntry({
+          currentDirPath,
+          directoryEntry: entry
+        }).then(allFiles => {
+          files.push(...allFiles);
+        });
       }
-    } else {
-      path = file.name;
-    }
+    });
+    return Promise.all(promises$).then(() => files);
+  }
 
-    return path.trim();
+  /**
+   * Opens file upload dialog
+   *
+   * @memberof UploadComponent
+   */
+  openFilePicker(folderPicker: boolean) {
+    if (folderPicker) {
+      this.folderInput.nativeElement.click();
+    } else {
+      this.fileInput.nativeElement.click();
+    }
+  }
+
+  /**
+   * Files when files or folders are selected via picker
+   * Grabs all files from FileList and starts upload
+   *
+   * @param {FileList} fileList
+   * @memberof UploadComponent
+   */
+  filesPicked(fileList: FileList) {
+    if (fileList.length > 0) {
+      let files: FileInput[] = Array.from(fileList);
+      if (this.openPath) {
+        files = files.map(file => {
+          file.fullPath = `${this.openPath}/${file.webkitRelativePath ||
+            file.name}`;
+          return file;
+        });
+      }
+      this.handleUpload(files);
+    }
+  }
+
+  /**
+   * Handles file uploads by storing files in upload queue and uploading using the file manager
+   *
+   * @private
+   * @param {FileInput[]} files [List of files to enqueue and upload]
+   * @memberof UploadComponent
+   */
+  private handleUpload(files: FileInput[]) {
+    this.enqueueFiles(files);
+    try {
+      this.fileManager
+        .upload(this.bucketUploadPath, files)
+        .subscribe(update => this.handleUploadUpdates(update));
+    } catch (e) {
+      if (e.name === UploadErrorReason.Credentials) {
+        this.handleCredentialsError();
+      } else {
+        this.error$.next(UPLOAD_ERRORS.SERVICE_ERROR);
+      }
+    }
+  }
+
+  /**
+   * Adds files to queue and caches their indexes
+   *
+   * @private
+   * @param {FileInput[]} files [List of files to enqueue]
+   * @memberof UploadComponent
+   */
+  private enqueueFiles(files: FileInput[]) {
+    files.forEach(file => {
+      const path = file.fullPath || file.webkitRelativePath || file.name;
+      this.uploadQueueMap[path] = this.uploadQueue.length;
+      this.uploadQueue.push(file);
+      this.totalUploadSize += file.size;
+    });
+  }
+
+  /**
+   * Resets all upload status trackers
+   *
+   * @private
+   * @memberof UploadComponent
+   */
+  private resetUploadStatuses() {
+    this.uploadQueue = [];
+    this.uploadQueueMap = {};
+    this.uploadProgress = 0;
+    this.totalUploaded = 0;
+    this.totalUploadSize = 0;
+    this.folderInput.nativeElement.value = null;
+    this.fileInput.nativeElement.value = null;
+  }
+
+  /**
+   * Handles delegation of handling UploadUpdates
+   *
+   * @private
+   * @param {UploadUpdate} update [Upload update object from the file manager]
+   * @memberof UploadComponent
+   */
+  private handleUploadUpdates(update: UploadUpdate) {
+    switch (update.type) {
+      case 'progress':
+        this.updateUploadProgress(update as UploadProgressUpdate);
+        break;
+      case 'complete':
+        this.handleFileUploadComplete(update as UploadCompleteUpdate);
+        break;
+      case 'queueComplete':
+        this.handleQueueComplete(update as UploadQueueCompleteUpdate);
+        break;
+      case 'error':
+        this.handleUploadError(update as UploadErrorUpdate);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Handles updating the total upload progress which is calculated by (totalDataUploaded/totalUploadSize)
+   * Last totalUploaded is subtracted from the update's progress to remove what has already been added to the totalUploaded value
+   * Example:
+   * `totalUploaded` = 2 units; `lastTotalUploaded` = 2 units; `upload.data.totalUploaded` = 10 units; `totalUploadSize`= 100 units;
+   * `totalUploaded`+= `upload.data.totalUploaded` - `lastTotalUploaded` = 2+10-2 = 10 units uploaded
+   * `uploadProgress` = (`totalUploaded`/`totalUploadSize`) * 100 = (10 units/100 units) * 100 = .10 * 100 = 10%
+   *
+   * @private
+   * @param {UploadProgressUpdate} update [Progress update object from file manager]
+   * @memberof UploadComponent
+   */
+  private updateUploadProgress(update: UploadProgressUpdate) {
+    const index = this.uploadQueueMap[update.data.fullPath];
+    const lastTotalUploaded = this.uploadQueue[index].totalUploaded || 0;
+    this.uploadQueue[index].totalUploaded = update.data.totalUploaded;
+    this.totalUploaded += update.data.totalUploaded - lastTotalUploaded;
+    this.uploadProgress = (this.totalUploaded / this.totalUploadSize) * 100;
+  }
+
+  /**
+   * Handles completion of a file upload by setting it's success flag to true and adding its metadata to the new file meta list
+   *
+   * @private
+   * @param {UploadCompleteUpdate} update [Upload Complete update object from file manager]
+   * @memberof UploadComponent
+   */
+  private handleFileUploadComplete(update: UploadCompleteUpdate) {
+    const index = this.uploadQueueMap[update.data.fullPath];
+    this.uploadQueue[index].success = true;
+    this.newFileMeta.push(update.data);
+  }
+
+  /**
+   * Handles completion of the upload queue.
+   * If no files failed; Upload progress is set to 100 just in case the progress updates didn't reflect this;
+   * Upload statuses are reset after brief timeout to allow user to see the completion
+   *
+   * If files failed; Un-uploaded files are retrieved from the queue; An error message is sent to the user; Upload statuses are reset
+   *
+   * @private
+   * @param {UploadQueueCompleteUpdate} update [Queue Complete update object from file manager]
+   * @memberof UploadComponent
+   */
+  private handleQueueComplete(update: UploadQueueCompleteUpdate) {
+    if ((update as UploadQueueCompleteUpdate).data.failed) {
+      const unUploadedFiles = this.uploadQueue.filter(file => !file.success);
+      const fileNames = unUploadedFiles.map(file => file.name).join(', ');
+      this.error$.next(UPLOAD_ERRORS.FILES_FAILED(fileNames));
+      // TODO: Prompt user and Attempt retry?
+      this.resetUploadStatuses();
+    } else {
+      this.uploadProgress = 100;
+      setTimeout(() => {
+        this.resetUploadStatuses();
+      }, 500);
+    }
+    this.filesUploaded.emit(this.newFileMeta);
+    this.newFileMeta = [];
+  }
+
+  /**
+   * Handles file upload errors by marking the file success flag as false
+   *
+   * @private
+   * @param {UploadErrorUpdate} update [Upload Error update object from file manager]
+   * @memberof UploadComponent
+   */
+  private handleUploadError(update: UploadErrorUpdate) {
+    if (update.error.name === UploadErrorReason.Credentials) {
+      this.handleCredentialsError();
+    } else {
+      const index = this.uploadQueueMap[update.data.fullPath];
+      this.uploadQueue[index].success = false;
+    }
+  }
+
+  private handleCredentialsError() {
+    if (!this.credentialRefreshAttempted) {
+      console.log('RETRYING');
+      this.credentialRefreshAttempted = true;
+      this.auth
+        .refreshToken()
+        .then(() => {
+          const failedFiles = this.uploadQueue.filter(file => !file.success);
+          this.resetUploadStatuses();
+          this.handleUpload(failedFiles);
+        })
+        .catch(e => {
+          this.resetUploadStatuses();
+          this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
+        });
+    } else {
+      this.resetUploadStatuses();
+      this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
+    }
+  }
+
+  /**
+   * Handles downloading a file by opening the stream url in a new window
+   *
+   * @param {LearningObject.Material.File} file[The file to be downloaded]
+   * @memberof UploadComponent
+   */
+  async handleFileDownload(file: LearningObject.Material.File) {
+    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
+    const loId = learningObject.id;
+    const authorUsername = learningObject.author.username;
+    const url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+      loId,
+      username: authorUsername,
+      fileId: file.id
+    });
+    window.open(url, '__blank');
   }
 
   /**
@@ -644,7 +701,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         const object = await this.learningObject$.pipe(take(1)).toPromise();
         await Promise.all(
           files.map(async fileId => {
-            await this.fileStorage.delete(object, fileId);
+            await this.fileManager.delete(object, fileId);
           })
         );
         this.filesDeleted.emit(files);

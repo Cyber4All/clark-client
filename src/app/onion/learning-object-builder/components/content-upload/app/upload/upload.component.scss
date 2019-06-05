@@ -276,19 +276,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  max-width: 400px;
-  background: white;
-  padding: 20px;
-  box-sizing: border-box;
-  max-height: 500px;
-  overflow-y: auto;
-  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.05);
-  border-radius: 3px;
-
-  .title {
-    font-size: $larger;
-    margin-bottom: 10px;
-  }
+  width: 250px;
 }
 
 .solutions-warning {
@@ -298,6 +286,10 @@
   text-align: center;
   margin-bottom: 30px;
   font-size: $normal;
+}
+
+.hidden{
+  visibility: hidden;
 }
 
 @keyframes upload-arrow {

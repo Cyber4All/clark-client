@@ -69,3 +69,10 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * Need to import at least one locale-data with intl.
  */
 // import 'intl/locale-data/jsonp/en';
+
+/**
+ * Exposes `global` to window scope
+ * AWS SDK requires `global` to exist
+ * Work around for Angular https://github.com/aws/aws-sdk-js/issues/2141
+ */
+(window as any).global = window;
