@@ -75,11 +75,23 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    */
   private subToFiles(): void {
     this.files$.pipe(takeUntil(this.killSub$)).subscribe(files => {
-      this.filesystem = new DirectoryTree();
-      this.filesystem.addFiles(files);
-      const node = this.filesystem.traversePath([]);
-      this.emitCurrentNode(node);
+      this.refreshFilesystem(files);
     });
+  }
+
+  /**
+   * Re-inits file system with added files and resets node and path to root
+   *
+   * @private
+   * @param {LearningObject.Material.File[]} files
+   * @memberof FileBrowserComponent
+   */
+  private refreshFilesystem(files: LearningObject.Material.File[]) {
+    this.filesystem = new DirectoryTree();
+    this.filesystem.addFiles(files);
+    this.currentPath = [];
+    const node = this.filesystem.traversePath(this.currentPath);
+    this.emitCurrentNode(node);
   }
   /**
    * Subscribe to folder meta changes
