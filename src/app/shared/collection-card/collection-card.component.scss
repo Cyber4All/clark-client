@@ -35,7 +35,7 @@
     margin: auto;
     margin-bottom: 20px;
     background: $wrapper-background;
-    color: $bright-blue;
+    color: $light-blue;
     width: 80px;
     height: 80px;
     border-radius: 50px;
@@ -48,10 +48,10 @@
 }
 
 .card__name {
-  color: $dark-text;
+  color: $dark-grey;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 20px;
+  font-size: $larger;
   font-weight: 400;
   text-align: center;
   margin-top: 20px;

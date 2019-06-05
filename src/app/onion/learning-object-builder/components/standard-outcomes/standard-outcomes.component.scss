@@ -1,22 +1,19 @@
 @import '~_vars.scss';
 
-$dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
-
 .standard-outcomes {
   padding: 12px 10px;
   position: relative;
 
   .title {
-    font-size: 18px;
-    color: $dark-text;
+    font-size: $large;
+    color: $darker-grey;
     font-weight: 600;
     margin-bottom: 8px;
   }
 
   .search-bar {
     border-radius: 2px;
-    background: #eee;
+    background: $light-grey;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -34,7 +31,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
     .svg-inline--fa,
     .icon {
-      color: #757575;
+      color: $dark-grey;
     }
   }
 
@@ -66,7 +63,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 }
 
 .loading-template {
-  color: $dark-text;
+  color: $dark-grey;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,8 +72,8 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
 
   .svg-inline--fa,
   .icon {
-    color: $bright-blue;
-    font-size: 20px;
+    color: $light-blue;
+    font-size: $larger;
     margin-bottom: 10px;
   }
 }

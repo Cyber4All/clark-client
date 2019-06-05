@@ -4,15 +4,15 @@
   background: white;
   border-radius: 2px;
   box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
-  padding: 20px;
+  padding: 25px;
   margin-bottom: 20px;
 
   .download-warning {
     color: white;
-    background: linear-gradient(45deg, #fea200, #ffd000);
+    background: $orange-gradient;
     padding: 8px 12px;
     border-radius: 2px 2px 0 0;
-    font-size: 18px;
+    font-size: $large;
     text-align: center;
     margin-bottom: 10px;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
@@ -28,44 +28,34 @@
 
   .btn-group.review-pending {
     margin-top: 40px;
+
+    & > * {
+      display: block;
+      margin-bottom: 15px;
+    }
   }
 
   .button {
     overflow: hidden;
     text-align: center;
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: $normal;
     position: relative;
-
-    &.disabled {
-      cursor: default !important;
-      opacity: 0.4 !important;
-      border-color: $dark-text !important;
-      pointer-events: none;
-      font-size: 14px;
-
-      &.good {
-        background: $dark-text !important;
-      }
-
-      &.neutral {
-        color: $dark-text !important;
-      }
-    }
 
     &.saved {
       cursor: default !important;
-      pointer-events: none;
-      border-color: transparent;
-      color: $green;
-      box-shadow: none;
+      pointer-events: none !important;
+      color: $success-green;
+
+      &:after {
+        border-color: transparent ;
+      }
     }
   }
 
   .action-message {
     margin-top: 20px;
-    font-size: 16px;
-    color: $dark-text;
+    font-size: $normal;
+    color: $dark-grey;
 
     a {
       color: $blue-accent;
@@ -75,13 +65,14 @@
 }
 
 .details-metrics {
+  font-size: $normal;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  color: lighten($dark-text, 20);
+  color: $dark-grey;
   margin-top: 30px;
 
-  &>* {
+  & > * {
     span {
       position: relative;
 
@@ -108,7 +99,7 @@
 
     &:before {
       content: 'Attribute this Object';
-      color: $dark-text;
+      color: $dark-grey;
       text-align: center;
       padding: 0;
       background: white;
@@ -118,11 +109,12 @@
       right: 20%;
       bottom: -7px;
     }
+
     &:after {
       content: '';
       position: absolute;
       height: 1px;
-      background: lighten($dark-text, 40);
+      background: $light-grey;
       width: 100%;
       left: 0;
       bottom: 0;
@@ -143,52 +135,12 @@
     float: right;
     padding-left: 15px;
 
-      button {
-        border: 0;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        outline: 0;
-      }
-
-      a {
-        color: white !important;
-        text-decoration: none !important;
-      }
-
-      &>button {
-        min-width: 30px;
-        height: 30px;
-        background: $blue-accent;
-        border-radius: 3px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white !important;
-        font-size: 18px;
-        transition: all 0.2s ease;
-        transform: scale(1);
-        cursor: pointer;
-        flex-shrink: 0;
-        flex-grow: 0;
-
-        &:hover:not(.animated) {
-          transform: scale(1.1);
-        }
-
-        &:active:hover {
-          transform: scale(0.95);
-        }
-
-        &.animated {
-          animation: jiggle 0.4s linear;
-        }
-
-        &.copyAttribution {
-          background-color: $green;
-        }
-      }
+    a {
+      color: white !important;
+      text-decoration: none !important;
     }
   }
+}
 
 .details-share {
   margin-top: 30px;
@@ -198,7 +150,7 @@
 
     &:before {
       content: 'Share';
-      color: $dark-text;
+      color: $dark-grey;
       text-align: center;
       padding: 0 10px;
       background: white;
@@ -213,7 +165,7 @@
       content: '';
       position: absolute;
       height: 1px;
-      background: lighten($dark-text, 40);
+      background: $light-grey;
       width: 100%;
       left: 0;
       bottom: 0;
@@ -226,44 +178,21 @@
     flex-direction: row;
     justify-content: space-between;
 
-    button {
-      border: 0;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      outline: 0;
-    }
-
     a {
       color: white !important;
       text-decoration: none !important;
     }
 
-    &>button {
-      min-width: 30px;
-      height: 30px;
+    & > button {
       background: $blue-accent;
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: white !important;
-      font-size: 18px;
-      transition: all 0.2s ease;
       transform: scale(1);
       cursor: pointer;
       flex-shrink: 0;
       flex-grow: 0;
 
-      &:hover:not(.animated) {
-        transform: scale(1.1);
-      }
-
       &:active:hover {
         transform: scale(0.95);
-      }
-
-      &.animated {
-        animation: jiggle 0.4s linear;
       }
 
       &.facebook {
@@ -283,19 +212,15 @@
       }
 
       &.copylink {
-        background: $green;
+        background: $success-green;
       }
     }
   }
 }
 
 .email-unverified {
-  background:  linear-gradient(45deg, darken(saturate($error-red, 20), 10), $error-red);
+  background: $error-red;
   color: white;
   padding: 3px;
   border-radius: 2px;
-
-  .email-unverified__icon {
-
-  }
 }

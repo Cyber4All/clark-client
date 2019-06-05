@@ -4,20 +4,21 @@
   margin-bottom: 40px;
 
   h1 {
-    font-size: 22px;
+    color: $darker-grey;
+    font-size: $larger;
     padding-left: 10px;
   }
 
   .no-content-alert {
     margin-left: 10px;
-    color: rgb(124, 124, 124);
+    color: $dark-grey;
   }
 
   .outcomes {
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid $light-grey;
     border-radius: 2px;
-    background: #fff;
-    color: $dark-text;
+    background: white;
+    color: $dark-grey;
 
     .header {
       display: flex;
@@ -25,7 +26,7 @@
       align-items: center;
       width: 100%;
       border: 0;
-      background: #fff;
+      background: white;
 
       &:focus {
         outline: 0;
@@ -33,16 +34,16 @@
 
       .title {
         flex-grow: 2;
-        color: black;
-        font-size: 14px;
+        color: $darker-grey;
+        font-size: $small;
         padding: 10px;
         padding-left: 20px;
         text-align: start;
       }
 
       .mappings-count {
-        font-size: 12px;
-        color: gray;
+        font-size: $small;
+        color: $dark-grey;
         padding-right: 10px;
       }
 
@@ -52,13 +53,13 @@
 
       &.clickable {
         &:hover {
-          outline: 1px solid lighten($bright-blue, 15);
+          outline: 1px solid $light-blue;
         }
       }
     }
 
     ul {
-      border-top: 1px solid lighten($bright-blue, 15);
+      border-top: 1px solid $light-blue;
       display: flex;
       flex-direction: column;
       flex-wrap: nowrap;
@@ -75,9 +76,8 @@
 
       .standard-author,
       .standard-name {
-        font-size: 16px;
-        //background-color: skyblue;
-        color: darken(#55595e, 10);
+        font-size: $normal;
+        color: $dark-grey;
       }
 
       .standard-name {
@@ -85,7 +85,7 @@
       }
 
       .standard-outcome {
-        font-size: 14px;
+        font-size: $small;
       }
 
       .standard-author,

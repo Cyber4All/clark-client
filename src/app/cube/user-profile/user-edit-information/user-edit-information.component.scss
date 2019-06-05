@@ -9,7 +9,7 @@ textarea {
   font-family: 'Source Sans Pro', serif;
   font-weight: normal;
   padding: 12px;
-  font-size: 15px;
+  font-size: $normal;
   resize: none;
   color: $blue-accent;
 }
@@ -31,19 +31,19 @@ form {
 
   .gravatar-header {
     text-align: left;
-    font-size: 15px;
+    font-size: $normal;
   }
 
   .gravatar-text {
     text-align: left;
-    font-size: 12px;
+    font-size: $smaller;
   }
 
   .input {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    border: 1px solid $placeholder;
+    border: 1px solid $medium-grey;
     border-radius: 1px;
 
     &:not(:last-child) {
@@ -57,7 +57,7 @@ form {
       flex-grow: 1;
       flex-shrink: 1;
       border: none;
-      font-size: 15px;
+      font-size: $normal;
       outline: 0;
       font-family: 'Source Sans Pro', serif;
       font-weight: normal;
@@ -75,7 +75,7 @@ form {
       flex-grow: 0;
       flex-shrink: 0;
       @include vert-center;
-      color: darken($placeholder, 20);
+      color: $placeholder;
       padding-left: 14px;
       box-sizing: content-box;
     }
@@ -99,8 +99,8 @@ form {
 
 .title {
   text-align: center;
-  color: $dark-text;
-  font-size: 28px;
+  color: $darker-grey;
+  font-size: $larger;
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -141,7 +141,7 @@ li {
 }
 
 #plus {
-  background-color: $green;
+  background-color: $success-green;
   height: 40px;
   margin-right: 20px;
   text-align: center;

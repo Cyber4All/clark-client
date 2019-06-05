@@ -1,200 +1,185 @@
 @import '~_vars.scss';
-$dark-text: rgb(83, 94, 100);
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
 
 .dashboard-item {
-    border-top: 2px solid rgba(red($dark-text), green($dark-text), blue($dark-text), 0.12);
-    transition: background 0.1s ease;
+  border-top: 2px solid $light-grey;
+  transition: background 0.1s ease;
 
-    &:not(.disabled):hover {
-        background: rgba(red($dark-text), green($dark-text), blue($dark-text) + 10, 0.08);
-    }
+  &:not(.disabled):hover {
+    background: $light-grey;
+  }
 
-    &.disabled {
-        pointer-events: none;
-    }
+  &.disabled {
+    pointer-events: none;
+  }
 
-    &.shrink {
-        padding-left: 50px;
-        padding-right: 50px;
-    }
+  &.shrink {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
 
-    .hierarchy-parents,
-    .hierarchy-children {
-        color: $bright-blue;
-        font-size: 15px;
-        margin-left: 10px;
-    }
+  .name {
+    font-size: $small;
+  }
+
+  .hierarchy-parents,
+  .hierarchy-children {
+    color: $light-blue;
+    font-size: $normal;
+    margin-left: 10px;
+    font-style: bold;
+  }
 }
 
 .status {
-    width: 32px;
-    height: 32px;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 16px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgb(189, 193, 195);
-    transition: all 0.2s ease;
-    box-shadow: none;
+  width: 32px;
+  height: 32px;
+  color: white;
+  font-size: $normal;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $status_unreleased;
+  transition: all 0.2s ease;
+  box-shadow: none;
 
-    &.waiting {
-        background: #5ec9da;
-    }
+  &.waiting {
+    background: $status_waiting;
+  }
 
-    &.review {
-        background: #f5a623;
-    }
+  &.review {
+    background: $status_review;
+  }
 
-    &.proofing {
-        background: #bd5eda;
-    }
+  &.proofing {
+    background: $status_proofing;
+  }
 
-    &.released {
-        background: $green;
-    }
+  &.released {
+    background: $status_released;
+  }
 
-    &.denied {
-        background: saturate($error-red, 15);
-    }
+  &.denied {
+    background: $status_rejected;
+  }
 
-    &:hover {
-        box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
-    }
+  &:hover {
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
+  }
 }
 
 // meatball styles from this point downward
 .meatball {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    cursor: pointer;
-    padding: 16px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  padding: 16px 0;
 
-    .icon {
-        font-size: 20px;
-        transform: rotate(-90deg);
-        z-index: 1;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        height: 25px;
-        width: 12px;
-        opacity: 0;
-        color: white;
-        transition: all 0.2s ease;
-    }
+  .icon {
+    font-size: $large;
+    transform: rotate(-90deg);
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: 25px;
+    width: 12px;
+    opacity: 0;
+    color: white;
+    transition: all 0.2s ease;
+  }
 
-    .orb:before {
-        content: '';
-        margin-left: -10px;
-    }
+  .orb:before {
+    content: '';
+    margin-left: -10px;
+  }
 
-    .orb:after {
-        content: '';
-        margin-left: 10px;
-    }
+  .orb:after {
+    content: '';
+    margin-left: 10px;
+  }
 
+  .orb,
+  .orb:after,
+  .orb:before {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: $dark-grey;
+    border-radius: 50%;
+    z-index: 1;
+    transition: all 0.2s ease;
+  }
+
+  .orb {
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 42px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.04);
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.1s ease;
+  }
+
+  &:hover {
     .orb,
+    .orb:before,
     .orb:after,
-    .orb:before {
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        background: $dark-text;
-        border-radius: 50%;
-        z-index: 1;
-        transition: all 0.2s ease;
-    }
-
-    .orb {
-        left: 0;
-        right: 0;
-        margin: auto;
+    .icon {
+      background: $light-blue;
     }
 
     &:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        width: 42px;
-        height: 42px;
-        background: rgba(255, 255, 255, 0.5);
-        box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.04);
-        border-radius: 50%;
-        z-index: 0;
-        opacity: 0;
-        transform: scale(0.9);
-        transition: all 0.1s ease;
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &.open {
+    .orb,
+    .orb:before,
+    .orb:after {
+      opacity: 0;
+      color: white;
     }
 
-    &:hover {
-        .orb,
-        .orb:before,
-        .orb:after,
-        .icon {
-            background: $bright-blue;
-        }
-
-        &:after {
-            opacity: 1;
-            transform: scale(1);
-        }
+    .icon {
+      color: white;
+      transform: rotate(0);
+      opacity: 1;
     }
 
-    &.open {
-        .orb,
-        .orb:before,
-        .orb:after, {
-            opacity: 0;
-            color: white;
-        }
-
-        .icon {
-            color: white;
-            transform: rotate(0);
-            opacity: 1;
-        }
-
-        &:after {
-            opacity: 1;
-            transform: scale(1);
-            background: $light-blue-gradient;
-            box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
-        }
+    &:after {
+      opacity: 1;
+      transform: scale(1);
+      background: $light-blue-gradient;
+      box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
     }
+  }
 
-    &.disabled {
-        pointer-events: none;
-        opacity: .5;
-    }
-}
-
-// FIXME this can be removed when the new button styles are applied cross-application
-button {
-    border: 0;
-    padding: 10px 20px 10px 25px;
-
-    &.good {
-        background: $light-blue-gradient;
-    }
-
-    &.neutral {
-        color: $dark-text;
-    }
-
-    &.shadow {
-        box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-    }
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }

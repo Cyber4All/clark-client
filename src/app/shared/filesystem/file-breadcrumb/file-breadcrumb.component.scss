@@ -1,7 +1,8 @@
+@import '~_vars.scss';
 .file-breadcrumb {
 
   .crumb {
-    font-size: 26px;
+    font-size: $larger;
     margin: 5px 0;
     padding: 0;
     border-radius: 4px;
@@ -15,7 +16,7 @@
 
     &.link:hover {
       cursor: pointer;
-      background: #e9e9e9;
+      background: $light-grey;
     }
   }
 
