@@ -42,7 +42,7 @@ export class UrlRowComponent implements OnInit {
     }
 
     if (this.url.title === '' && this.url.url === '') {
-      this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: false});
+      this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: true});
     }
   }
   /**
