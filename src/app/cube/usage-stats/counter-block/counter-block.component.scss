@@ -1,13 +1,13 @@
 
 @import '~_vars.scss';
 .counter-wrapper {
-  background: #FFF;
+  background: white;
   border-radius: 2px;
   padding: 10px 15px;
 
   .title {
     font-size: $normal;
-    color: #333;
+    color: $darker-grey;
     margin-bottom: 6px;
   }
 

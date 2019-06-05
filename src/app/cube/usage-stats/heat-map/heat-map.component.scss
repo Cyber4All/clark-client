@@ -1,14 +1,14 @@
 @import '~_vars.scss';
 .heat-map-wrapper {
 
-  background: #FFF;
+  background: white;
   border-radius: 2px;
   padding: 20px;
   max-height: 500px;
 
   .title {
     font-size: $large;
-    color: #333;
+    color: $darker-grey;
   }
 
   overflow: hidden;
