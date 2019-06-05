@@ -197,6 +197,11 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/${objectId}/materials`;
   },
+  ADD_FILE_META(username: string, objectId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${objectId}/materials/files`;
+  },
   GET_CHILDREN(learningObjectID: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectID

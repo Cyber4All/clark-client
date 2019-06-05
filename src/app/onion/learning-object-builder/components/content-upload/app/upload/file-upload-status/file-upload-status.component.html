@@ -1,16 +1,37 @@
-<div class="file-upload-status">
-    <virtual-scroller #scroll [items]="makeArray()" [style.height]="makeArray().length > 5 ? 5 * 33 + 'px' : makeArray().length * 33 + 'px'">
-      <div class="file" *ngFor="let f of scroll.viewPortItems">
-        <div class="name">
-          <span *ngIf="!f?.folder">
-            <i class="fas {{ getIcon(f.extension) }}"></i>
-          </span>
-          <span *ngIf="f?.folder">
-            <i class="fas fa-folder"></i>
-          </span>
-          {{ f.name }} <span *ngIf="f?.folder">({{f.items}} {{ f.items === 1 ? 'item' : 'items'}})</span>
-        </div>
-        <clark-progress [percentage]="f.progress || 0"></clark-progress>
+<div class="wrapper">
+  <div class="wrapper__text-content">
+    <div
+      class="text-content__progress"
+      [ngClass]="{ completed: progress === 100 }"
+    >
+      <div class="progress__uploading-txt">
+        Uploading {{ totalFiles | number: '1.0-0' }} file{{
+          totalFiles === 1 ? '' : 's'
+        }}
       </div>
-    </virtual-scroller>
+      <div class="progress__progress-txt">
+        {{ progress | number: '1.0-0' }}%
+      </div>
+    </div>
+    <div
+      class="text-content__upload-complete"
+      [ngClass]="{ completed: progress === 100 }"
+    >
+      <div class="upload-complete__uploaded-txt">
+        Uploaded {{ totalFiles }} file{{ totalFiles === 1 ? '' : 's' }}
+      </div>
+      <div class="upload-complete__check">
+        <i class="fal fa-check"></i>
+      </div>
+    </div>
+  </div>
+  <clark-progress
+    [percentage]="progress"
+    [ngClass]="{ completed: progress === 100 }"
+  ></clark-progress>
+  <div
+    class="wrapper__progress-bg"
+    [style.width]="progress + '%'"
+    [ngClass]="{ filled: progress === 100 }"
+  ></div>
 </div>
