@@ -42,7 +42,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
     url: string;
   }> = new Subject();
 
-  addNew: boolean = true;
+  addNew: boolean;
   focusMe: boolean;
   constructor() {}
 
@@ -56,6 +56,8 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
       });
 
     this.subToUrlUpdates();
+
+    this.addNew = true;
   }
 
   /**
@@ -102,6 +104,8 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
       const url:   string = event['url'];
       const title: string = event['title'];
       this.urlUpdated$.next({index, url, title });
+    } else { 
+      this.addNew = false;
     }
   }
 
