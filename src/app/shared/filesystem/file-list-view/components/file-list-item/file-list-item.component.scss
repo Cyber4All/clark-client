@@ -6,7 +6,7 @@
   font-size: $normal;
 }
 .icon {
-  color: #485460;
+  color: $dark-grey;
   font-size: $large;
   margin-right: 5px;
 }
@@ -16,7 +16,7 @@
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
-  background: #fff;
+  background: white;
   padding: 0 0 8px;
   justify-self: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
@@ -48,7 +48,7 @@
 }
 
 .description {
-  color: #555555;
+  color: $dark-grey;
 }
 
 .inline-flex {

@@ -23,7 +23,7 @@
   .icon {
     position: relative;
     padding: 10px;
-    background: rgba(0, 0, 0, 0.05);
+    background: $medium-grey;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,7 +62,7 @@
   }
 
   &.warning {
-    background: linear-gradient(45deg, #f5a623, lighten(#f5a623, 2));
+    background: linear-gradient(45deg, $orange, lighten($orange, 2));
     color: white;
   }
 

@@ -50,7 +50,7 @@
   transition: background 0.2s ease;
 
   &:hover {
-    background: #f4f4f4;
+    background: $light-grey;
 
     .user-dropdown__action {
       opacity: 1;
