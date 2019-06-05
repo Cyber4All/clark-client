@@ -1,4 +1,4 @@
-<div [@outcome]="active ? 'open' : 'closed'" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
+<div [@outcome]="noAnimation ? 'off' : (active ? 'open' : 'closed')" (@outcome.done)="noAnimation = false" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
   <div class="outcome-header">
     <div class="outcome-header__left">
         {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
