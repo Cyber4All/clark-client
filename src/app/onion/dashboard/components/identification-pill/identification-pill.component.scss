@@ -6,14 +6,14 @@
     color: white;
     border-radius: 5px;
     text-align: center;
-    font-size: 14px;
+    font-size: $small;
 }
 
 // Themes
 .default {
-    background-color: $bright-blue;
+    background-color: $light-blue;
 }
 
 .proofing {
-    background-color: $proofing;
+    background-color: $status_proofing;
 }

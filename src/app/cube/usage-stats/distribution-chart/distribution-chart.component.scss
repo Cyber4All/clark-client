@@ -1,8 +1,9 @@
+@import '~_vars.scss';
 .chart-wrapper {
   display: block;
   height: 100%;
   width: 100%;
-  background: #FFF;
+  background: white;
   padding: 20px;
   border-radius: 2px;
 }
@@ -19,8 +20,8 @@
     justify-content: space-between;
 
     .title {
-      font-size: 18px;
-      color: #333;
+      font-size: $large;
+      color: $darker-grey;
     }
 
     margin-bottom: 15px;

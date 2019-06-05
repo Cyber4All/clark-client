@@ -11,14 +11,19 @@
     [ngClass]="learningObject.length"
   >
     <div class="image">
-      <div *ngIf="!loading && collection" class="collection">
-        <div (window:resize)="onResize($event)">
-          {{ collection }}
-        </div>
-      </div>
       <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
     </div>
     <div class="learning-object-content">
+      <div *ngIf="collection !== undefined" class="card-collection">
+        {{ collection }}
+      </div>
+      <button
+        *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
+        class="download-btn-card"
+        (click)="download($event)"
+      >
+        <i class="fas fa-download"></i>
+      </button>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
         <button
@@ -29,13 +34,13 @@
           <i class="fas fa-download"></i>
         </button>
       </div>
+      <div *ngIf="collection !== undefined" class="collection">
+        {{ collection }}
+      </div>
       <div class="details">
         <span class="author">
-          {{
-            learningObject.author.name | titlecase
-          }} | 
-          {{
-            learningObject.author.organization.trim() | titlecase
+          {{ learningObject.author.name | titlecase }} |
+          {{ learningObject.author.organization.trim() | titlecase
           }}{{
             learningObject.contributors?.length
               ? ', and ' + learningObject.contributors.length + ' more'
@@ -55,6 +60,8 @@
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>
-    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
+    <clark-download-notice-popup
+      (close)="toggleDownloadModal(false)"
+    ></clark-download-notice-popup>
   </div>
 </clark-popup>

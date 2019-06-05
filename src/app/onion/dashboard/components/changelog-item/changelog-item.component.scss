@@ -9,13 +9,13 @@
 
 .changelog-item__name {
   display: flex;
-  font-size: 20px;
+  font-size: $larger;
   flex-direction: row;
   align-items: center;
 }
 
 .changelog-item__date {
-  color: #a4a4a4;
+  color: $dark-grey;
   margin-left: 10px;
 }
 
@@ -26,9 +26,9 @@
 }
 
 .changelog-item__text {
-  font-size: 16px;
+  font-size: $normal;
   margin-top: 10px;
-  color: $dark-text;
+  color: $dark-grey;
 }
 
 .profile-image-container__avatar {

@@ -36,12 +36,12 @@
 </div>
 
 <ng-template #noResults >
-  <ng-container *ngIf="loading; else introTemplate" [ngTemplateOutlet]="loadingTemplate">
+  <ng-container *ngIf="loading; else emptyTemplate" [ngTemplateOutlet]="loadingTemplate">
   </ng-container>
 </ng-template>
 
-<ng-template #introTemplate>
-  <div *ngIf="outcomes" class="intro">
+<ng-template #emptyTemplate>
+  <div *ngIf="outcomes" class="empty">
     We couldn't find anything for that query!
   </div>
 </ng-template>

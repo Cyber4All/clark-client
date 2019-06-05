@@ -4,7 +4,6 @@
 .usage {
   padding: 60px 20px;
   position: relative;
-  border-top: 2px solid #f6f9fc;
 
   .usage__content {
     position: relative;
@@ -12,7 +11,7 @@
   }
 
   .title-text {
-    color: $bright-blue;
+    color: $light-blue;
     text-align: center;
     margin-bottom: 60px;
   }
@@ -38,7 +37,7 @@
     align-items: center;
     text-align: center;
     margin: 24px 30px;
-    width: 135px;
+    width: 145px;
 
     &.collections .item__icon {
       color: #cc3057;
@@ -46,8 +45,8 @@
     }
 
     &.downloads .item__icon {
-      color: orange;
-      background: lighten(orange, 35);
+      color: $orange;
+      background: lighten($orange, 35);
     }
 
     &.users .item__icon {
@@ -56,21 +55,21 @@
     }
 
     &.organizations .item__icon {
-      color: $green;
-      background: lighten($green, 35);
+      color: $success-green;
+      background: lighten($success-green, 35);
     }
   }
 
   .item__count {
-    color: $dark-text;
-    font-size: 30px;
+    color: $dark-grey;
+    font-size: $largest;
     margin-bottom: 5px;
     font-weight: 600;
   }
 
   .item__label {
-    color: lighten($dark-text, 25);
-    font-size: 18px;
+    color: $dark-grey;
+    font-size: $large;
   }
 
   .item__icon {
@@ -82,18 +81,18 @@
     font-size: 28px;
     border-radius: 50%;
     margin-bottom: 10px;
-    color: $bright-blue;
-    background: lighten($bright-blue, 35);
+    color: $light-blue;
+    background: lighten($light-blue, 35);
   }
 
   .usage__more {
     text-align: center;
     text-decoration: underline;
-    font-size: 18px;
+    font-size: $large;
     margin-top: 70px;
 
     a {
-      color: $bright-blue;
+      color: $light-blue;
     }
   }
 }
@@ -105,13 +104,13 @@
 
   .svg-inline--fa,
   .icon {
-    color: $bright-blue;
-    font-size: 26px;
+    color: $light-blue;
+    font-size: $larger;
     margin-bottom: 10px;
   }
 
   .loading__label {
-    font-size: 18px;
-    color: $placeholder;
+    font-size: $large;
+    color: $dark-grey;
   }
 }

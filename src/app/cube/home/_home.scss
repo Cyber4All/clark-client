@@ -1,17 +1,17 @@
 @import '~_vars.scss';
 
-$local-blue: lighten($bright-blue, 34);
+$background-blue: lighten($light-blue, 34);
 
 .title-text {
-  font-size: 30px;
+  font-size: $largest;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 2px;
 }
 
 .title__icon {
-  background: $local-blue;
-  color: $bright-blue;
+  background: $background-blue;
+  color: $light-blue;
   border-radius: 50%;
   width: 65px;
   height: 65px;
@@ -22,6 +22,6 @@ $local-blue: lighten($bright-blue, 34);
 }
 
 .subtitle-text {
-  font-size: 30px;
+  font-size: $largest;
   font-weight: lighter;
 }

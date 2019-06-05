@@ -49,7 +49,7 @@ li {
 }
 
 #plus {
-  background-color: $green;
+  background-color: $success-green;
   height: 40px;
   margin-right: 20px;
   text-align: center;
@@ -68,7 +68,7 @@ ul {
 }
 
 .title {
-  color: $dark-text;
+  color: $darker-grey;
 }
 
 .h-group {
@@ -90,7 +90,6 @@ ul {
 .line-spacer {
   margin-top: 25px;
   margin-bottom: 25px;
-  // border-bottom: 2px dashed darken($placeholder, 0);
   height: 1px;
   display: none;
 }
