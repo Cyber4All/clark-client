@@ -45,7 +45,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output()
   fileEdited: EventEmitter<FileEdit> = new EventEmitter<FileEdit>();
   @Output()
-  openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
+  openFilePicker: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output()
   path: EventEmitter<string> = new EventEmitter<string>();
 
@@ -191,13 +191,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   openFolderDialog(fromRoot?: boolean) {
-    const fileInput = document.querySelector('.dz-hidden-input');
-    fileInput.setAttribute('directory', 'true');
-    fileInput.setAttribute('webkitdirectory', 'true');
-    fileInput.setAttribute('mozdirectory', 'true');
-    fileInput.setAttribute('msdirectory', 'true');
-    fileInput.setAttribute('odirectory', 'true');
-    this.openDZ.emit(true);
+    this.openFilePicker.emit(true);
     if (fromRoot) {
       this.path.emit();
     }
@@ -209,13 +203,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   openFileDialog(fromRoot?: boolean) {
-    const fileInput = document.querySelector('.dz-hidden-input');
-    fileInput.removeAttribute('directory');
-    fileInput.removeAttribute('webkitdirectory');
-    fileInput.removeAttribute('mozdirectory');
-    fileInput.removeAttribute('msdirectory');
-    fileInput.removeAttribute('odirectory');
-    this.openDZ.emit(true);
+    this.openFilePicker.emit(false);
     if (fromRoot) {
       this.path.emit();
     }
