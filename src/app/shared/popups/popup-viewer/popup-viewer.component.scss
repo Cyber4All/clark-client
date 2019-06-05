@@ -6,7 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: $dark-overlay;
   z-index: 20;
   display: flex;
   justify-content: center;
@@ -25,7 +25,7 @@
     cursor: pointer;
     transform: scale(1);
     font-size: $normal;
-    color: rgba(0, 0, 0, 0.4);
+    color: $medium-grey;
 
     &:hover {
       transform: scale(1.1);

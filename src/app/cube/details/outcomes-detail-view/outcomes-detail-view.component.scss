@@ -11,11 +11,11 @@
 
   .no-content-alert {
     margin-left: 10px;
-    color: rgb(124, 124, 124);
+    color: $dark-grey;
   }
 
   .outcomes {
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid $light-grey;
     border-radius: 2px;
     background: #fff;
     color: $dark-grey;
