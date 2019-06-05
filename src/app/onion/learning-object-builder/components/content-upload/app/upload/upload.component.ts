@@ -507,6 +507,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     this.uploadProgress = 0;
     this.totalUploaded = 0;
     this.totalUploadSize = 0;
+    this.folderInput.nativeElement.value = null;
+    this.fileInput.nativeElement.value = null;
   }
 
   /**
