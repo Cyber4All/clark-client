@@ -11,7 +11,7 @@
         <div class="author">{{object.author.name | titlecase}}</div>
       </div>
       <div class="actions">
-        <button *ngIf="canDownload" class="button icon-only good" [ngClass]="{'disabled': downloading[i]}" (click)="downloadObject($event, object, i)">
+        <button *ngIf="canDownload || object.status === statuses.RELEASED" class="button icon-only good" [ngClass]="{'disabled': downloading[i]}" (click)="downloadObject($event, object, i)">
           <span *ngIf="!downloading[i]">
             <i class="far fa-download"></i>
           </span>
