@@ -6,7 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: $dark-overlay;
   z-index: 20;
   display: flex;
   justify-content: center;
@@ -24,8 +24,8 @@
     transition: all 0.2s ease;
     cursor: pointer;
     transform: scale(1);
-    font-size: 16px;
-    color: rgba(0, 0, 0, 0.4);
+    font-size: $normal;
+    color: $medium-grey;
 
     &:hover {
       transform: scale(1.1);
@@ -53,7 +53,7 @@
   .modal-title {
     color: $blue-accent;
     font-weight: bold;
-    font-size: 26px;
+    font-size: $larger;
     text-align: center;
 
     &.bad {
@@ -62,7 +62,7 @@
   }
 
   .modal-text {
-    font-size: 16px;
+    font-size: $normal;
     margin: 20px auto;
     text-align: center;
   }

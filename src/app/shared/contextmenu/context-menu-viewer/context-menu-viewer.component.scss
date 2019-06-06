@@ -1,8 +1,5 @@
 @import '~_vars.scss';
 
-$dark-text: rgb(83, 94, 100);
-$light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
-
 .full-screen {
   position: fixed;
   top: 0;
@@ -30,7 +27,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($bright-blue, 10), lighten($
     li {
       list-style-type: none;
       padding: 6px 15px;
-      color: $dark-text;
+      color: $dark-grey;
       cursor: pointer;
 
       .svg-inline--fa,

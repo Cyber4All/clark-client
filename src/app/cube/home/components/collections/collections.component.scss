@@ -2,7 +2,7 @@
 @import '../../home';
 
 .title-text {
-  color: $bright-blue;
+  color: $light-blue;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -15,8 +15,8 @@
 .collections__description {
   max-width: 800px;
   margin: auto;
-  font-size: 18px;
-  color: $dark-text;
+  font-size: $large;
+  color: $dark-grey;
   text-align: center;
 }
 
@@ -55,23 +55,23 @@
 }
 
 .card__name {
-  color: $dark-text;
+  color: $dark-grey;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 20px;
+  font-size: $larger;
   font-weight: 400;
   text-align: center;
   margin-top: 20px;
 }
 
 .featured-collections-cta {
-  font-size: 18px;
+  font-size: $large;
   text-align: center;
   margin: 20px;
 
   a {
-    color: $bright-blue;
-    font-size: 18px;
+    color: $light-blue;
+    font-size: $large;
     text-decoration: underline;
     padding: 10px;
     cursor: pointer;

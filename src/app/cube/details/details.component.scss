@@ -1,6 +1,6 @@
 @import '~_vars.scss';
 
-$sidebar-width: 320px;
+$sidebar-width: 360px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
 
 .details-wrapper {
@@ -29,121 +29,103 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
       .description,
       .outcomes {
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid $light-grey;
         padding: 20px;
         border-radius: 2px;
-        color: $dark-text;
+        color: $dark-grey;
         margin-bottom: 40px;
 
         .title {
-          color: black;
-          font-size: 22px;
+          color: $darker-grey;
+          font-size: $larger;
           margin-bottom: 20px;
-        }
-
-        ul {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: space-between;
-        }
-
-        li {
-          font-size: 18px;
-          width: 45%;
-          margin-bottom: 10px;
-
-          .svg-inline--fa {
-            margin-top: 3px;
-            margin-right: 15px;
-          }
+          padding-left: 10px;
         }
       }
 
       .description {
-        background: #fff;
+        background: white;
         box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
       }
 
       .academic-levels {
-          display: flex;
-          flex-wrap: wrap;
-          flex-direction: row;
-          justify-content: flex-start;
-          align-items: center;
-          margin-bottom: 5px;
-          .title {
-            width: 100%;
-            color: black;
-            font-size: 22px;
-            padding-left: 10px;
-          }
-          .level {
-            text-transform: none;
-            cursor: pointer;
-            margin-right: 10px;
-            background: $blue-accent;
-            color: #fff;
-            box-shadow: none;
-            padding: 5px 10px;
-            border-radius: 2px;
-            border: 3px solid transparent;
-            margin-top: 10px;
-            user-select: none;
-            &:hover, &:focus {
-              text-decoration: none;
-              outline: none;
-            }
-          }
-      }
-      .disclaimer {
-        background: #fff;
-        box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
-        padding: 20px;
-        margin-bottom: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 5px;
 
         .title {
           width: 100%;
-          color: black;
-          font-size: 22px;
+          color: $darker-grey;
+          font-size: $larger;
           padding-left: 10px;
         }
 
-        p {
-          padding-left: 10px;
-          padding-top: 8px;
-        }
-      }
-
-      .outcomes {
-        background: desaturate(lighten($blue-accent, 55), 20);
-      }
-
-      .ratings {
-        background: white;
-        border-radius: 3px;
-        padding: 20px;
-        position: relative;
-
-        button {
-          position: absolute;
-          right: 20px;
-          top: 20px;
-        }
-
-        ::ng-deep .title {
-          font-size: 22px;
+        .level {
+          text-transform: none;
+          cursor: pointer;
+          margin-right: 10px;
+          background: $blue-accent;
+          color: white;
+          box-shadow: none;
+          padding: 5px 10px;
+          border-radius: 2px;
+          border: 3px solid transparent;
+          margin-top: 10px;
+          user-select: none;
+          &:hover,
+          &:focus {
+            text-decoration: none;
+            outline: none;
+          }
         }
       }
     }
-
-    .sidebar {
-      width: $sidebar-width;
+    .disclaimer {
+      background: white;
+      box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
       padding: 20px;
-      flex-shrink: 0;
-      margin-top: -190px;
-      z-index: 2;
+      margin-bottom: 40px;
+
+      .title {
+        width: 100%;
+        color: $darker-grey;
+        font-size: $larger;
+        padding-left: 10px;
+      }
+
+      p {
+        padding-left: 10px;
+        padding-top: 8px;
+      }
     }
+
+    .ratings {
+      background: white;
+      border-radius: 3px;
+      padding: 20px;
+      position: relative;
+
+      button {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+      }
+
+      ::ng-deep .title {
+        font-size: $larger;
+      }
+    }
+  }
+
+  .sidebar {
+    width: $sidebar-width;
+    padding: 20px;
+    flex-shrink: 0;
+    margin-top: -190px;
+    z-index: 2;
   }
 }
 
@@ -181,7 +163,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   right: 0;
   bottom: 0;
   z-index: 999999;
-  background: rgba(0, 0, 0, 0.75);
+  background: $dark-overlay;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -222,15 +204,15 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       position: absolute;
       top: 10px;
       right: 20px;
-      font-size: 20px;
+      font-size: $larger;
       cursor: pointer;
-      color: lighten($dark-text, 20);
+      color: $medium-grey;
     }
 
     .title {
-      font-size: 20px;
+      font-size: $larger;
       text-align: center;
-      color: $dark-text;
+      color: $darker-grey;
       margin-bottom: 15px;
     }
   }
@@ -242,23 +224,22 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   padding: 20px;
   margin-bottom: 15px;
 
-  .no-revisions{
-    font-size: 16px;
-    color: $dark-text;
+  .no-revisions {
+    font-size: $normal;
+    color: $dark-grey;
     padding-right: 10px;
     text-align: center;
     display: inline-block;
   }
 }
 .text {
-  font-size: 16px;
-  color: $dark-text;
+  font-size: $normal;
+  color: $dark-grey;
   padding-right: 10px;
   padding-left: 50px;
   display: inline-block;
 }
 @media (max-width: 450px) {
-
   .sidebar .btn-group {
     flex-direction: column !important;
 
@@ -272,17 +253,17 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   0% {
     bottom: 0;
     opacity: 1;
-
-  } 50% {
+  }
+  50% {
     bottom: 10px;
     opacity: 0;
-
-  } 51% {
+  }
+  51% {
     bottom: -10px;
     opacity: 0;
-    color: $green;
-
-  } 100% {
+    color: $success-green;
+  }
+  100% {
     bottom: 0;
     opacity: 1;
     color: inherit;
@@ -292,17 +273,17 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 @keyframes jiggle {
   0% {
     transform: scale(1);
-
-  } 25% {
+  }
+  25% {
     transform: scale(0.95);
-
-  } 50% {
+  }
+  50% {
     transform: scale(1.1);
-
-  } 75% {
+  }
+  75% {
     transform: scale(0.95);
-
-  } 100% {
+  }
+  100% {
     transform: scale(1);
   }
 }
@@ -313,14 +294,14 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   align-items: center;
   justify-content: center;
   max-width: 300px;
-  font-size: 18px;
-  color:  $dark-text;
+  font-size: $large;
+  color: $dark-grey;
   margin: auto;
   margin-top: 100px;
 
   .svg-inline--fa {
-    color:  $bright-blue;
-    font-size: 25px;
+    color: $light-blue;
+    font-size: $larger;
     margin-bottom: 10px;
   }
 }

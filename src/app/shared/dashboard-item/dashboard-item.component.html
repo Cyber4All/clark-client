@@ -13,7 +13,7 @@
         <span *ngIf="learningObject.status === 'denied'"><i class="fas fa-ban"></i></span>
       </div>
     </div>
-    <div>
+    <div class="name">
       {{ learningObject.name }}
       <span *ngIf="learningObject.parents?.length" tip="{{ learningObject.parents.join(', ') }}" tipLocation="above" class="hierarchy-parents">{{ learningObject.parents.length }} parent{{ learningObject.parents.length !== 1 ? 's' : '' }}</span>
       <span *ngIf="learningObject.children?.length" tip="{{ objectChildrenNames(learningObject).join(', ') }}" tipLocation="above" class="hierarchy-children">{{ learningObject.children.length }} {{ learningObject.children.length !== 1 ? 'children' : 'child' }}</span>

@@ -1,0 +1,42 @@
+@import '~_vars.scss';
+
+.checkbox {
+  background: white;
+  border: 2px solid $medium-grey;
+  position: relative;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $blue-accent;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease;
+    border: 1px solid white;
+  }
+
+  &.active {
+    border-color: $blue-accent;
+
+    &:after {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  &.disabled {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

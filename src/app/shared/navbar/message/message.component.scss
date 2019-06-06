@@ -11,7 +11,7 @@
         max-width: $max-width;
         margin: auto;
         text-align: center;
-        font-size: 18px;
+        font-size: $large;
         font-weight: normal;
 
         .icon {
@@ -38,7 +38,7 @@
     }
 
     &.good {
-        background: $green;
+        background: $success-green;
         color: white;
     }
 }

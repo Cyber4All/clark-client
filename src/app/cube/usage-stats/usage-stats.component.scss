@@ -9,7 +9,7 @@ $row-gap: 25px;
 
 .header {
   margin-bottom: 25px;
-  font-size: 22px;
+  font-size: $larger;
 }
 
 .stat-counters {
@@ -33,13 +33,13 @@ $row-gap: 25px;
 }
 
 .active-users-wrapper {
-  background: #FFF;
+  background: white;
   border-radius: 2px;
   padding: 20px;
 
   .title {
-    font-size: 18px;
-    color: #333;
+    font-size: $large;
+    color: $darker-grey;
   }
 
   overflow: hidden;

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable ,  BehaviorSubject, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@entity';
 import { Headers } from '@angular/http';
@@ -22,9 +26,22 @@ export enum AUTH_GROUP {
   ADMIN
 }
 
+export interface Tokens {
+  bearer: string;
+  openId: OpenIdToken;
+}
+
 export interface AuthUser extends User {
   accessGroups: string[];
 }
+
+export interface OpenIdToken {
+  IdentityId: string;
+  Token: string;
+}
+
+// Location of logged in user's access tokens in local storage
+const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
 
 @Injectable()
 export class AuthService {
@@ -34,19 +51,88 @@ export class AuthService {
   inUse: object;
   isLoggedIn = new BehaviorSubject<boolean>(false);
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
+  private openIdToken: OpenIdToken;
 
   constructor(private http: HttpClient, private cookies: CookieService) {
     if (this.cookies.get('presence')) {
-      this.validate().then(
-        _ => {
-          this.changeStatus(true);
-        },
-        _ => {
-          this.cookies.remove('presence');
-          this.changeStatus(false);
-        }
-      );
+      this.validateAndRefreshToken();
     }
+  }
+
+  /**
+   * Stores and sets:
+   * User data of logged of logged in user
+   * OpenId token of logged in user
+   * Logged in status to true
+   * Access group of logged in user
+   * Access token in local storage
+   *
+   * @private
+   * @param {AuthUser} user [User data for the logged in user]
+   * @param {Tokens} tokens [Access tokens for the logged in user]
+   * @memberof AuthService
+   */
+  private setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
+    this.user = user;
+    this.openIdToken = tokens.openId;
+    this.changeStatus(true);
+    this.assignUserToGroup();
+    localStorage.setItem(
+      TOKEN_STORAGE_KEY,
+      JSON.stringify({ bearer: tokens.bearer, openId: tokens.openId })
+    );
+  }
+
+  /**
+   * Unset session related data
+   * User data from previously logged in user is cleared from memory
+   * OpenId token is cleared from memory
+   * The presence cookie is removed from the browser
+   * Logged in status is set to false
+   * The user's access group is set to vistor
+   * All tokens are cleared from local storage
+   *
+   * @private
+   * @memberof AuthService
+   */
+  private endSession() {
+    this.user = null;
+    this.openIdToken = null;
+    this.cookies.remove('presence');
+    this.changeStatus(false);
+    this.group.next(AUTH_GROUP.VISITOR);
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+  }
+
+  /**
+   * Retrieves tokens from local storage
+   *
+   * @private
+   * @returns {Partial<Tokens>}
+   * @memberof AuthService
+   */
+  private getTokens(): Partial<Tokens> {
+    const storageItem = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (storageItem) {
+      return JSON.parse(storageItem) as Partial<Tokens>;
+    }
+    return null;
+  }
+
+  /**
+   * Retrieves OpenId token from memory or storage if not in memory
+   *
+   * @returns {OpenIdToken}
+   * @memberof AuthService
+   */
+  public getOpenIdToken(): OpenIdToken {
+    if (!this.openIdToken) {
+      const tokens = this.getTokens();
+      if (tokens) {
+        this.openIdToken = tokens.openId;
+      }
+    }
+    return this.openIdToken;
   }
 
   /**
@@ -142,24 +228,30 @@ export class AuthService {
   }
 
   /**
-   * Validate the current cookie against the service
+   * Validate the current token against the service
+   * If the token is valid. The current logged in user's data is updated with the service's response payload
+   * If the token is invalid, the current user's session is ended.
    *
    * @returns {Promise<void>}
    * @memberof AuthService
    */
-  async validate(): Promise<void> {
+  async validateAndRefreshToken(): Promise<void> {
     try {
       const response = await this.http
-        .get(environment.apiURL + '/users/tokens', { withCredentials: true })
+        .get<AuthUser>(environment.apiURL + '/users/tokens', {
+          withCredentials: true
+        })
         .pipe(
           retry(3),
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = response as AuthUser;
+      this.user = response;
+      this.changeStatus(true);
       this.assignUserToGroup();
     } catch (error) {
-      return Promise.reject(error);
+      this.endSession();
+      throw error;
     }
   }
 
@@ -199,16 +291,22 @@ export class AuthService {
    */
   async refreshToken(): Promise<void | Partial<{ message: string }>> {
     try {
-      const val = await this.http
-        .get(environment.apiURL + '/users/tokens/refresh', {
-          withCredentials: true
-        })
+      const response = await this.http
+        .get<AuthUser & { tokens: Tokens }>(
+          environment.apiURL + '/users/tokens/refresh',
+          {
+            withCredentials: true
+          }
+        )
         .pipe(
           retry(3),
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = val as AuthUser;
+      const tokens: Tokens = response.tokens;
+      delete response.tokens;
+      const user: AuthUser = response as AuthUser;
+      this.setSession({ user, tokens });
     } catch (error) {
       return Promise.reject(error);
     }
@@ -223,23 +321,28 @@ export class AuthService {
    */
   async login(user: { username: string; password: string }): Promise<any> {
     try {
-      const val = await this.http
-        .post<User>(environment.apiURL + '/users/tokens', user, {
-          withCredentials: true
-        })
+      const response = await this.http
+        .post<AuthUser & { tokens: Tokens }>(
+          environment.apiURL + '/users/tokens',
+          user,
+          {
+            withCredentials: true
+          }
+        )
         .pipe(
           retry(3),
           catchError(this.handleError)
         )
         .toPromise();
-      this.user = val as AuthUser;
-      this.changeStatus(true);
-      this.assignUserToGroup();
+
+      const tokens: Tokens = response.tokens;
+      delete response.tokens;
+      const authUser: AuthUser = response as AuthUser;
+      this.setSession({ user: authUser, tokens });
       return this.user;
     } catch (error) {
-      this.changeStatus(false);
-      this.user = undefined;
-      return Promise.reject(error);
+      this.endSession();
+      throw error;
     }
   }
 
@@ -250,8 +353,8 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    await this.http
-      .delete(environment.apiURL + '/users/' + this.username + '/tokens', {
+    this.http
+      .delete(environment.apiURL + '/users/' + this.user.username + '/tokens', {
         withCredentials: true,
         responseType: 'text'
       })
@@ -260,9 +363,7 @@ export class AuthService {
         catchError(this.handleError)
       )
       .toPromise();
-    this.user = undefined;
-    this.changeStatus(false);
-    this.group.next(AUTH_GROUP.VISITOR);
+    this.endSession();
     window.location.reload();
   }
 
@@ -273,25 +374,29 @@ export class AuthService {
    */
   async register(user: any): Promise<User> {
     try {
-      await this.http.post(environment.apiURL + '/users', user, {
-        withCredentials: true,
-        responseType: 'text'
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-      this.user = user;
-      this.changeStatus(true);
+      const response = await this.http
+        .post<AuthUser & { tokens: Tokens }>(
+          environment.apiURL + '/users',
+          user,
+          {
+            withCredentials: true
+          }
+        )
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise();
+      const tokens: Tokens = response.tokens;
+      delete response.tokens;
+      const authUser: AuthUser = response as AuthUser;
+      this.setSession({ user: authUser, tokens });
       return this.user;
     } catch (error) {
-      this.changeStatus(false);
-      this.user = undefined;
-      return Promise.reject(error);
+      this.endSession();
+      throw error;
     }
   }
-
 
   /**
    * Begins the password reset process by sending an email to the specified email address
@@ -301,15 +406,16 @@ export class AuthService {
    * @memberof AuthService
    */
   initiateResetPassword(email: string): Observable<any> {
-    return this.http.post(
-      environment.apiURL + '/users/ota-codes?action=resetPassword',
-      { email },
-      { withCredentials: true, responseType: 'text' }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post(
+        environment.apiURL + '/users/ota-codes?action=resetPassword',
+        { email },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -321,15 +427,16 @@ export class AuthService {
    * @memberof AuthService
    */
   resetPassword(payload: string, code: string): Observable<any> {
-    return this.http.patch(
-      environment.apiURL + '/users/ota-codes?otaCode=' + code,
-      { payload },
-      { withCredentials: true, responseType: 'text' }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .patch(
+        environment.apiURL + '/users/ota-codes?otaCode=' + code,
+        { payload },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -340,15 +447,16 @@ export class AuthService {
    * @memberof AuthService
    */
   sendEmailVerification(email?: string): Observable<any> {
-    return this.http.post(
-      environment.apiURL + '/users/ota-codes?action=verifyEmail',
-      { email: email || this.user.email },
-      { withCredentials: true, responseType: 'text' }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .post(
+        environment.apiURL + '/users/ota-codes?action=verifyEmail',
+        { email: email || this.user.email },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -360,10 +468,13 @@ export class AuthService {
    */
   async usernameInUse(username: string) {
     const val = await this.http
-      .get(environment.apiURL + '/users/identifiers/active?username=' + username, {
-        headers: this.httpHeaders,
-        withCredentials: true
-      })
+      .get(
+        environment.apiURL + '/users/identifiers/active?username=' + username,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -391,14 +502,15 @@ export class AuthService {
     email: string;
     organization: string;
   }): Observable<any> {
-    return this.http.patch(environment.apiURL + '/users/name', user.firstname, {
-      withCredentials: true,
-      responseType: 'text'
-    })
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    );
+    return this.http
+      .patch(environment.apiURL + '/users/name', user.firstname, {
+        withCredentials: true,
+        responseType: 'text'
+      })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 
   /**
@@ -410,23 +522,28 @@ export class AuthService {
    * @memberof AuthService
    */
   printCards(username: string, name: string, organization: string) {
-    const uppercase = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
+    const uppercase = (word: string): string =>
+      word.charAt(0).toUpperCase() + word.slice(1);
     // Format user information
     const nameSplit = name.split(' ');
     const firstname = uppercase(nameSplit[0]);
     const lastname = uppercase(nameSplit.slice(1, nameSplit.length).join(' '));
-    const org = organization.split(' ').map(word => uppercase(word)).join(' ');
+    const org = organization
+      .split(' ')
+      .map(word => uppercase(word))
+      .join(' ');
 
     // Create and click a tag to open new tab
     const newlink = document.createElement('a');
     newlink.setAttribute('target', '_blank');
-    newlink.setAttribute('href', `https://api-gateway.clark.center/users/${encodeURIComponent(
-      username
-    )}/cards?fname=${encodeURIComponent(
-      firstname
-    )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(
-      org
-    )}`);
+    newlink.setAttribute(
+      'href',
+      `https://api-gateway.clark.center/users/${encodeURIComponent(
+        username
+      )}/cards?fname=${encodeURIComponent(
+        firstname
+      )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(org)}`
+    );
     newlink.click();
   }
 
@@ -504,7 +621,10 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
+    if (
+      error.error instanceof ErrorEvent ||
+      (error.error && error.error.message)
+    ) {
       // Client-side or network returned error
       return throwError(error.error);
     } else {
