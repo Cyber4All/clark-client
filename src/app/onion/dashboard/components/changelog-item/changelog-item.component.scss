@@ -1,0 +1,43 @@
+@import '~_vars.scss';
+
+.changelog-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.changelog-item__name {
+  display: flex;
+  font-size: $larger;
+  flex-direction: row;
+  align-items: center;
+}
+
+.changelog-item__date {
+  color: $dark-grey;
+  margin-left: 10px;
+}
+
+.changelog-item__badge {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.changelog-item__text {
+  font-size: $normal;
+  margin-top: 10px;
+  color: $dark-grey;
+}
+
+.profile-image-container__avatar {
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  margin-right: 20px;
+  border: 10px solid white;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: -10px;
+}

@@ -10,8 +10,8 @@ div.dropzone-message {
   margin: auto;
   align-self: center;
   font-weight: 200;
-  font-size: 26px;
-  color: #a5a3a3;
+  font-size: $larger;
+  color: $dark-grey;
   pointer-events: none;
 }
 

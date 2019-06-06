@@ -45,9 +45,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output()
   fileEdited: EventEmitter<FileEdit> = new EventEmitter<FileEdit>();
   @Output()
-  openDZ: EventEmitter<boolean> = new EventEmitter<boolean>();
+  openFilePicker: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output()
   path: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output()
+  downloadClicked: EventEmitter<
+    LearningObject.Material.File
+  > = new EventEmitter();
 
   editDescription: boolean;
 
@@ -56,6 +61,15 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   constructor(private contextMenuService: ContextMenuService) {}
   ngOnInit(): void {}
 
+  /**
+   * Emits clicked file
+   *
+   * @param {LearningObject.Material.File} file
+   * @memberof FileManagerComponent
+   */
+  handleDownloadClick(file: LearningObject.Material.File) {
+    this.downloadClicked.emit(file);
+  }
   /**
    * Triggers new options context menu
    *
@@ -156,7 +170,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   getFileIds(folder: DirectoryNode): string[] {
-    const children = folder.getChildren();
+    const children = folder.getFolders();
     const files = folder.getFiles();
     if (!children.length && !files.length) {
       return [];
@@ -177,13 +191,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   openFolderDialog(fromRoot?: boolean) {
-    const fileInput = document.querySelector('.dz-hidden-input');
-    fileInput.setAttribute('directory', 'true');
-    fileInput.setAttribute('webkitdirectory', 'true');
-    fileInput.setAttribute('mozdirectory', 'true');
-    fileInput.setAttribute('msdirectory', 'true');
-    fileInput.setAttribute('odirectory', 'true');
-    this.openDZ.emit(true);
+    this.openFilePicker.emit(true);
     if (fromRoot) {
       this.path.emit();
     }
@@ -195,13 +203,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   openFileDialog(fromRoot?: boolean) {
-    const fileInput = document.querySelector('.dz-hidden-input');
-    fileInput.removeAttribute('directory');
-    fileInput.removeAttribute('webkitdirectory');
-    fileInput.removeAttribute('mozdirectory');
-    fileInput.removeAttribute('msdirectory');
-    fileInput.removeAttribute('odirectory');
-    this.openDZ.emit(true);
+    this.openFilePicker.emit(false);
     if (fromRoot) {
       this.path.emit();
     }

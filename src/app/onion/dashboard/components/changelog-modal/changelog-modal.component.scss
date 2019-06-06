@@ -1,0 +1,33 @@
+@import '~_vars.scss';
+
+.changelog-modal {
+  padding: 0 20px;
+}
+
+.header__title {
+  font-size: $larger;
+}
+
+.header__date {
+  font-size: $normal;
+  color: $dark-grey;
+  margin-bottom: 10px;
+}
+
+.loading-template,
+.empty-template {
+  text-align: center;
+  padding: 40px 0;
+  color: $dark-grey;
+  font-size: $larger;
+
+  .svg-inline--fa {
+    color: $light-blue;
+    font-size: $larger;
+    margin-bottom: 20px;
+  }
+
+  &.empty-template .svg-inline--fa {
+    font-size: 40px;
+  }
+}

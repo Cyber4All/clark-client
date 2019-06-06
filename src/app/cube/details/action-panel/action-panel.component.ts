@@ -144,13 +144,16 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   copyLink() {
     const el = this.objectLinkElement.nativeElement;
-    console.log(el);
     el.select();
     document.execCommand('copy');
 
     this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
   }
 
+  /**
+   * Copy the Creative Commons Attribution to the clipboard
+   *
+  */
   copyAttribution() {
     const range = document.createRange();
     range.selectNode(document.getElementById('objectAttribution'));
@@ -159,7 +162,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
 
-    this.toaster.notify('Success!', 'Learning object Creative Commons Attribution copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.notify('Success!', 'Attribution information has been copied to your clipboard!', 'good', 'far fa-check');
   }
 
   toggleDownloadModal(val?: boolean) {
@@ -252,7 +255,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.validate();
+      await this.auth.validateAndRefreshToken();
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();

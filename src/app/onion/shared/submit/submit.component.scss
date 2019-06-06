@@ -1,0 +1,74 @@
+@import '~_vars.scss';
+
+.submit {
+  max-width: 800px;
+  min-height: 550px;
+  width: 90vw;
+  padding: 20px;
+}
+
+.banner {
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  background: $light-blue-gradient;
+  height: 96px;
+
+  &:after {
+    content: '';
+    background: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.04;
+    mask: $cube-pattern repeat;
+  }
+
+  .banner__title {
+    color: white;
+    font-size: $larger;
+    font-weight: bold;
+  }
+
+  .banner__sub {
+    color: white;
+    opacity: 0.85;
+    font-size: $normal;
+  }
+}
+
+.carousel__item {
+  margin-top: 80px;
+
+  p {
+    color: $dark-grey;
+    font-size: $large;
+    margin: 5px 0 20px;
+  }
+}
+
+
+.license-selection {
+  color: $dark-grey;
+  font-size: $large;
+  max-width: 500px;
+  text-align: left;
+  margin: auto;
+  display: flex;
+  padding: 10px;
+  border-radius: 3px;
+  border: 1px solid $light-grey;
+
+  .statement {
+    margin-left: 15px;
+  }
+}
+
+.submit-btn {
+  margin-top: 30px;
+}

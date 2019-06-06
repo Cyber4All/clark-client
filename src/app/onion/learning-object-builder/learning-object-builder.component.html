@@ -32,7 +32,7 @@
 </ng-template>
 
 <!-- Service Error Popup -->
-<clark-popup *ngIf="showServiceFailureModal" (closed)="routeToDashboard()">
+<clark-popup *ngIf="showServiceFailureModal">
   <div #popupInner class="popup-inner">
     <div class="modal-title">Network error</div>
     <div class="modal-text">We are currently unable to save your work due to a network related issue. Please check back

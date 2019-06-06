@@ -12,63 +12,6 @@
   max-width: 100%;
 }
 
-.button.good {
-  text-align: center;
-  margin: 0 5px;
-  background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
-  color: white;
-  box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
-  font-weight: normal;
-  border: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.disabled {
-  z-index: 909999999;
-  background: rgba(0, 0, 0, 0.8);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .image {
-    font-size: 40px;
-  }
-
-  .btn-group {
-    margin-top: 20px;
-  }
-
-  .disabled-inner {
-    background: white;
-    border-radius: 3px;
-    padding: 30px 80px 20px;
-    max-width: 600px;
-    box-sizing: border-box;
-    font-size: 18px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    color: $dark-text;
-
-    &:before {
-      position: absolute;
-      content: '';
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 10px;
-      background: linear-gradient(45deg, darken($bright-blue, 15), $bright-blue);
-    }
-  }
-}
-
 .uploader {
   position: fixed;
   top: 0;
@@ -113,7 +56,7 @@
     flex-direction: column;
 
     .uploader-icon {
-      color: $bright-blue;
+      color: $light-blue;
       font-size: 30px;
       margin: auto;
       width: 70px;
@@ -129,13 +72,13 @@
 
     .uploader-text {
       margin-top: 10px;
-      font-size: 20px;
-      color: lighten(desaturate($blue-accent, 30), 15);
+      font-size: $larger;
+      color: $dark-grey;
       transition: all 0.2s ease;
       text-align: center;
 
       div {
-        font-weight: bold;
+        font-size: $largest;
       }
     }
   }
@@ -148,14 +91,14 @@
   justify-content: space-between;
 
   .slide-title {
-    font-size: 26px;
+    font-size: $larger;
     border-radius: 4px;
     padding: 15px 0 5px;
   }
 }
 
 .back-button {
-  color: $bright-blue;
+  color: $light-blue;
   cursor: pointer;
   margin-bottom: 10px;
 
@@ -178,11 +121,11 @@
 
   .title {
     padding: 10px;
-    font-size: 26px;
+    font-size: $larger;
   }
 
   .tabs {
-    background: linear-gradient(45deg, darken($bright-blue, 15), $bright-blue);
+    background: $light-blue-gradient;
     color: white;
     padding: 10px 20px 0;
     overflow: hidden;
@@ -234,7 +177,7 @@
         }
 
         &.active {
-          color: $bright-blue;
+          color: $light-blue;
           position: relative;
 
           &:after {
@@ -267,11 +210,11 @@
   }
 
   .loading {
-    color: $bright-blue;
+    color: $light-blue;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 26px;
+    font-size: $larger;
     margin-top: 40px;
   }
 
@@ -319,12 +262,12 @@
     padding: 15px;
     appearance: none;
     border-radius: 2px;
-    border: 1px solid $placeholder;
+    border: 1px solid $medium-grey;
     outline: 0;
     margin-top: 10px;
 
     &:focus {
-      border-color: $bright-blue;
+      border-color: $light-blue;
     }
   }
 }
@@ -333,28 +276,20 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  max-width: 400px;
-  background: white;
-  padding: 20px;
-  box-sizing: border-box;
-  max-height: 500px;
-  overflow-y: auto;
-  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.05);
-  border-radius: 3px;
-
-  .title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
+  width: 250px;
 }
 
 .solutions-warning {
   color: white;
-  background: linear-gradient(45deg, #fea200, #ffd000);
+  background: $orange-gradient;
   padding: 15px;
   text-align: center;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: $normal;
+}
+
+.hidden{
+  visibility: hidden;
 }
 
 @keyframes upload-arrow {

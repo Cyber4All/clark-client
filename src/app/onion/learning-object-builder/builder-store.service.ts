@@ -13,6 +13,7 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FileUploadMeta } from './components/content-upload/app/services/typings';
 
 /**
  * Defines a list of actions the builder can take
@@ -28,6 +29,7 @@ export enum BUILDER_ACTIONS {
   UNMAP_STANDARD_OUTCOME,
   MUTATE_OBJECT,
   ADD_MATERIALS,
+  ADD_FILE_META,
   DELETE_MATERIALS,
   ADD_CONTRIBUTOR,
   REMOVE_CONTRIBUTOR,
@@ -310,6 +312,8 @@ export class BuilderStore {
         return await this.addContributor(data.user);
       case BUILDER_ACTIONS.REMOVE_CONTRIBUTOR:
         return await this.removeContributor(data.user);
+      case BUILDER_ACTIONS.ADD_FILE_META:
+        return await this.addFileMeta(data.files);
       case BUILDER_ACTIONS.ADD_URL:
         return await this.addUrl();
       case BUILDER_ACTIONS.UPDATE_URL:
@@ -530,7 +534,21 @@ export class BuilderStore {
       );
     }
   }
-
+  /**
+   * Adds Url to Learning Object's materials
+   *
+   * @memberof BuilderStore
+   */
+  private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
+    this.serviceInteraction$.next(true);
+    await this.learningObjectService.addFileMeta({
+      files,
+      username: this.learningObject.author.username,
+      objectId: this.learningObject.id
+    });
+    await this.fetchMaterials();
+    this.serviceInteraction$.next(false);
+  }
   /**
    * Adds Url to Learning Object's materials
    *
@@ -689,37 +707,11 @@ export class BuilderStore {
    *@param {string} [collection]
    * @memberof BuilderStore
    */
-  public submitForReview(collection?: string): Promise<boolean> {
+  public canSubmit(): boolean {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
+    this.validator.submissionMode = true;
 
-    if (this.validator.saveable && this.validator.submittable) {
-      this.validator.submissionMode = true;
-
-      // if we passed a collection property, attempt the submission
-      if (collection) {
-        return this.collectionService
-          .submit({
-            learningObjectId: this.learningObject.id,
-            userId: this.learningObject.author.id,
-            collectionName: collection,
-          })
-          .then(() => {
-            this.learningObject.status = LearningObject.Status.WAITING;
-            this.learningObject.collection = collection;
-            this.learningObjectEvent.next(this._learningObject);
-            return true;
-          })
-          .catch(e => {
-            this.handleServiceError(e, BUILDER_ERRORS.SUBMIT_REVIEW);
-            return false;
-          });
-      }
-
-      return Promise.resolve(true);
-    } else {
-      this.validator.submissionMode = true;
-      return Promise.resolve(false);
-    }
+    return this.validator.saveable && this.validator.submittable;
   }
 
   public cancelSubmission(): void {

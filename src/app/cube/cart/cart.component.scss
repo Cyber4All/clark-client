@@ -1,124 +1,122 @@
 @import '~_vars.scss';
 
 .wrapper {
-    max-width: 950px;
-    background: white;
-    padding: 20px;
-    border-radius: 3px;
-    margin: auto;
-    margin-top: 40px;
-    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+  max-width: 950px;
+  background: white;
+  padding: 20px;
+  border-radius: 3px;
+  margin: auto;
+  margin-top: 40px;
+  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 
-    .title {
-        text-transform: uppercase;
+  .title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: $larger;
+    text-align: center;
+    color: $blue-accent;
+  }
+
+  .count {
+    font-weight: light;
+    color: $dark-grey;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .cart {
+    margin-top: 10px;
+    border: 1px solid $light-grey;
+
+    .object {
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .name {
         font-weight: bold;
-        font-size: 20px;
-        text-align: center;
+        font-size: $large;
         color: $blue-accent;
-    }
 
-    .count {
-        font-weight: light;
-        color: lighten($dark-text, 20);
+        .length {
+          margin-top: 5px;
+          padding: 3px;
+          border-radius: 1px;
+          display: inline-block;
+          position: relative;
+          color: white;
+          text-transform: capitalize;
+          font-size: $small;
+          font-weight: 300;
+          margin-left: 10px;
+
+          &.nanomodule {
+            background: $nanomodule-color;
+          }
+
+          &.micromodule {
+            background: $micromodule-color;
+          }
+
+          &.module {
+            background: $module-color;
+          }
+
+          &.unit {
+            background: $unit-color;
+          }
+
+          &.course {
+            background: $course-color;
+          }
+        }
+      }
+
+      .author {
         font-style: italic;
-        text-align: center;
-    }
+        color: $dark-grey;
+      }
 
-    .cart {
-        margin-top: 10px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+      &:nth-of-type(even) {
+        background: $light-grey;
+        border-top: 1px solid $light-grey;
+        border-bottom: 1px solid $light-grey;
+      }
 
-        .object {
-            padding: 10px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+      .actions {
+        display: flex;
+        flex-direction: row;
+        align-self: center;
 
-
-            .name {
-                font-weight: bold;
-                font-size: 18px;
-                color: $blue-accent;
-
-                .length {
-                    margin-top: 5px;
-                    padding: 3px;
-                    border-radius: 1px;
-                    display: inline-block;
-                    position: relative;
-                    color: white;
-                    text-transform: capitalize;
-                    font-size: 14px;
-                    font-weight: 300;
-                    margin-left: 10px;
-
-                    &.nanomodule {
-                        background: $nanomodule-color;
-                    }
-
-                    &.micromodule {
-                        background: $micromodule-color;
-                    }
-
-                    &.module {
-                        background: $module-color;
-                    }
-
-                    &.unit {
-                        background: $unit-color;
-                    }
-
-                    &.course {
-                        background: $course-color;
-                    }
-                }
-            }
-
-            .author {
-                font-style: italic;
-                color: lighten($dark-text, 20);
-            }
-
-            &:nth-of-type(even) {
-                background: rgba(0, 0, 0, 0.05);
-                border-top: 1px solid rgba(0, 0, 0, 0.02);
-                border-bottom: 1px solid rgba(0, 0, 0, 0.02);
-            }
-
-            .actions {
-                display: flex;
-                flex-direction: row;
-                align-self: center;
-
-                .button {
-                    margin-left: 10px;
-                    max-height: 38px;
-                }
-            }
-
-            .name:hover {
-                cursor: pointer;
-                text-decoration: underline;
-            }
+        .button {
+          margin-left: 10px;
+          max-height: 38px;
         }
-    }
+      }
 
-    .btn-group {
-        margin-top: 25px;
+      .name:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
+  }
 
-    .no-objects {
-        margin-top: 40px;
-        text-align: center;
-        font-size: 18px;
-        color: lighten($dark-text, 20);
+  .btn-group {
+    margin-top: 25px;
+  }
 
-        span {
-            font-style: italic;
-            color: $blue-accent;
-            text-decoration: underline;
-            outline: none;
-            cursor: pointer;
-        }
+  .no-objects {
+    margin-top: 40px;
+    text-align: center;
+    font-size: $large;
+    color: $dark-grey;
+
+    a {
+      color: $blue-accent;
+      text-decoration: underline;
+      outline: none;
+      cursor: pointer;
     }
+  }
 }

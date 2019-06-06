@@ -1,0 +1,19 @@
+@import '~_vars.scss';
+
+.identification-pill {
+    width: 80px;
+    height: 20px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    font-size: $small;
+}
+
+// Themes
+.default {
+    background-color: $light-blue;
+}
+
+.proofing {
+    background-color: $status_proofing;
+}

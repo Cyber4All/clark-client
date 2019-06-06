@@ -14,7 +14,7 @@
         </span>
         <span *ngIf="!hasDownloadAccess">Not available for download</span>
       </button>
-      <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral on-white" id="save-to-library" (click)="addToCart()">
+      <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral" id="save-to-library" (click)="addToCart()">
         {{ saved ? 'Saved to your library!' : 'Save to Library' }}
         <span *ngIf="addingToLibrary">
           <i class="fal fa-spinner-third fa-spin"></i>
@@ -50,27 +50,27 @@
         is licensed under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>
       </div>
       <div class="CC-Content">
-        <button (click)="copyAttribution()" class="copyAttribution" id="copyAttribution">
-            <i class="fas fa-clipboard"></i>
+        <button class="button icon-only green" (click)="copyAttribution()" id="copyAttribution">
+          <i class="fas fa-clipboard"></i>
         </button>
       </div>
     </div>
     <div class="details-share">
       <div class="share-title"></div>
       <div class="share-icons">
-        <button (click)="shareButton($event, 'facebook')" class="facebook" id="facebook">
+        <button (click)="shareButton($event, 'facebook')" class="button icon-only facebook" id="facebook">
           <i class="fab fa-facebook"></i>
         </button>
-        <button (click)="shareButton($event, 'twitter')" class="twitter" id="twitter">
+        <button (click)="shareButton($event, 'twitter')" class="button icon-only twitter" id="twitter">
           <i class="fab fa-twitter"></i>
         </button>
-        <button (click)="shareButton($event, 'linkedin')" class="linkedin" id="linkedin">
+        <button (click)="shareButton($event, 'linkedin')" class="button icon-only linkedin" id="linkedin">
           <i class="fab fa-linkedin"></i>
         </button>
-        <button (click)="shareButton($event, 'email')" class="email" id="email">
+        <button (click)="shareButton($event, 'email')" class="button icon-only email" id="email">
           <i class="fas fa-envelope"></i>
         </button>
-        <button (click)="shareButton($event, 'copyLink')" class="copylink" id="copylink">
+        <button (click)="shareButton($event, 'copyLink')" class="button icon-only copylink" id="copylink">
           <i class="fas fa-clipboard"></i>
         </button>
         <textarea aria-label="link copy area" #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height:0;"></textarea>
@@ -84,6 +84,6 @@
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>
-    <clark-download-notice (close)="toggleDownloadModal(false)"></clark-download-notice>
+    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
   </div>
 </clark-popup>

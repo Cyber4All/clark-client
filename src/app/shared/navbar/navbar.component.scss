@@ -7,11 +7,6 @@
   }
 }
 
-// :host {
-//   opacity: 0.99;
-//   display: block;
-// }
-
 .clark-search-wrapper {
   max-width: 600px;
   margin: auto;
@@ -78,7 +73,7 @@
   }
 }
 
-// fixed postion nav bar
+// fixed position nav bar
 .topbar {
   position: relative;
   width: 100%;
@@ -86,7 +81,7 @@
   background: white;
   z-index: 4;
   box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.08);
-  color: $blue-accent;
+  color: $dark-grey;
   box-sizing: border-box;
 
   .inner {
@@ -131,7 +126,7 @@
   }
 
   .version-label {
-    font-size: 14px;
+    font-size: $small;
     border-radius: 3px;
     text-align: center;
     position: absolute;
@@ -173,11 +168,7 @@
 
     .right {
       padding-left: 15px;
-      font-size: 18px;
-
-      a {
-        color: $blue-accent !important;
-      }
+      font-size: $large;
     }
   }
 
@@ -185,7 +176,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    font-size: 16px;
+    font-size: $normal;
     cursor: pointer;
     flex-shrink: 0;
     right: 0;
@@ -209,7 +200,7 @@
     &.mobile {
 
       .mobile-search-option {
-        font-size: 20px;
+        font-size: $larger;
       }
 
       .hamburger {
@@ -222,7 +213,7 @@
         position: relative;
 
         .bar {
-          background: $blue-accent;
+          background: $dark-grey;
           border-radius: 2px;
           width: 100%;
           height: 3px;
@@ -258,8 +249,8 @@
     }
 
     .contributor {
-      color: $blue-accent;
-      font-size: 15px;
+      color: $dark-grey;
+      font-size: $normal;
       padding-left: 10px;
       justify-content: space-between;
       display: inline-flex;
@@ -267,14 +258,14 @@
       align-items: center;
 
       .svg-inline--fa {
-        font-size: 11px;
+        font-size: $smaller;
         @include vert-center;
         margin-left: 7px;
       }
     }
 
     .user-menu .svg-inline--fa {
-      font-size: 11px;
+      font-size: $smaller;
       @include vert-center;
       margin-left: 7px;
     }
@@ -283,7 +274,7 @@
       @include vert-center;
       outline: none;
       margin-left: 20px;
-      background: $blue-accent;
+      background: $dark-grey;
       width: 30px;
       height: 30px;
       mask: url('../../../assets/images/books.svg') no-repeat center;
@@ -310,7 +301,7 @@
     padding: 0 15px;
 
     &:not(:last-child) {
-      border-right: 1px solid $placeholder;
+      border-right: 1px solid $light-grey;
     }
 
     .svg-inline--fa {
@@ -327,14 +318,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: darken($blue-accent, 25);
+  background: darken($light-blue, 35);
   z-index: 5;
   opacity: 0;
   transition: all 0.5s ease;
   visibility: hidden;
 
   &.active {
-    opacity: 0.6;
+    opacity: 0.8;
     visibility: visible;
   }
 
@@ -368,7 +359,7 @@
     box-sizing: border-box;
 
     &.user {
-      background: saturate(rgba(red($blue-accent), green($blue-accent), blue($blue-accent), 0.1), 0);
+      background: $light-grey;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -390,24 +381,12 @@
       }
 
       .greeting {
-        font-size: 20px;
-        color: $dark-text;
+        font-size: $larger;
+        color: $dark-grey;
       }
-    }
 
-    &.content-switcher {
-      font-size: 18px;
-      color: $dark-text;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-      border-top: 2px solid rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-
-      .svg-inline--fa {
-        font-size: 16px;
-        @include vert-center;
+      a {
+        color: $light-blue;
       }
     }
 
@@ -418,11 +397,11 @@
         margin: 0;
 
         li {
-          font-size: 16px;
+          font-size: $normal;
           cursor: pointer;
           list-style-type: none;
           padding: 5px 0;
-          color: $dark-text;
+          color: $dark-grey;
 
           &:not(:last-child) {
             margin-bottom: 10px;
@@ -434,53 +413,6 @@
     &.auth {
       margin-top: 25px;
     }
-  }
-}
-
-.search-slidedown {
-  position: fixed;
-  top: -85px;
-  left: 0;
-  right: 0;
-  height: 80px;
-  z-index: 100000;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 15px;
-  background: white;
-  box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.15);
-  align-items: center;
-  visibility: hidden;
-  transition: all 0.2s cubic-bezier(0.55, 0.11, 0.26, 0.91);
-  transition-delay: 0.1s;
-
-  &.active {
-    top: 0;
-    visibility: visible;
-  }
-
-  form {
-    width: 100%;
-  }
-
-  input {
-    border: 1px solid $placeholder;
-    appearance: none;
-    width: 100%;
-    padding: 9px;
-    box-sizing: border-box;
-    border-radius: 3px 0 0 3px;
-    outline: 0;
-
-    &:focus {
-      border-color: $blue-accent;
-    }
-  }
-
-  .button {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
   }
 }
 
