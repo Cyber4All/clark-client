@@ -5,6 +5,7 @@ import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from 'app/shared/toaster';
 import { trigger, transition, style, animate, stagger, query, animateChild } from '@angular/animations';
+import { CollectionService, Collection } from 'app/core/collection.service';
 
 @Component({
   selector: 'clark-users',
@@ -35,13 +36,14 @@ import { trigger, transition, style, animate, stagger, query, animateChild } fro
 export class UsersComponent implements AfterViewInit {
   searchBarPlaceholder = 'Users';
   users: User[];
-  activeCollection: string;
   loading = false;
   displayRemoveReviewerModal = false;
   removeReviewerId: string;
   reviewerModal: boolean;
   showPrivileges: boolean;
   selectedUser: User;
+
+  activeCollection: Collection;
 
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
     if (event.keyCode === 27) {
@@ -55,12 +57,13 @@ export class UsersComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private toaster: ToasterService,
     public authService: AuthService,
+    private collectionService: CollectionService
   ) {
   }
 
   ngAfterViewInit() {
-    this.route.parent.params.subscribe(params => {
-      this.activeCollection = params['collection'];
+    this.route.parent.params.subscribe(async params => {
+      this.activeCollection = await this.collectionService.getCollection(params['collection']);
       if (this.activeCollection) {
         this.fetchReviewers();
       } else {
@@ -87,7 +90,7 @@ export class UsersComponent implements AfterViewInit {
    */
   async fetchReviewers() {
     this.loading = true;
-    this.users = await this.user.fetchReviewers(this.activeCollection, {role: 'reviewer'});
+    this.users = await this.user.fetchReviewers(this.activeCollection.abvName, {role: 'reviewer'});
     this.loading = false;
   }
 
@@ -96,7 +99,7 @@ export class UsersComponent implements AfterViewInit {
    * @param user the elements of a clark user such as id and role
    */
   addReviewer(user: User) {
-    this.user.assignMember(user.id, this.activeCollection, 'reviewer').then(() => {
+    this.user.assignMember(user.id, this.activeCollection.abvName, 'reviewer').then(() => {
       this.users.splice(0, 0, user);
     }).catch(error => {
       this.toaster.notify('Error!', 'Could not add reviewer. Please try again later', 'bad', 'far fa-times');
@@ -113,7 +116,7 @@ export class UsersComponent implements AfterViewInit {
    */
   removeReviewer(userId?: string) {
     this.displayRemoveReviewerModal = false;
-    this.user.removeMember(this.activeCollection, userId || this.removeReviewerId ).then(() => {
+    this.user.removeMember(this.activeCollection.abvName, userId || this.removeReviewerId ).then(() => {
       this.users = this.users.filter(x => x.id !== userId);
     }).catch(error => {
       this.toaster.notify('Error!', 'Could not remove reviewer. Please try again later', 'bad', 'far fa-times');

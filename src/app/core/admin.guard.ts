@@ -17,7 +17,7 @@ export class AdminGuard implements CanActivate {
     const c = this.cookies.get('presence');
 
     if (c) {
-      return this.auth.validate().then(val => {
+      return this.auth.validateAndRefreshToken().then(val => {
         return this.auth.hasCuratorAccess();
       }, error => {
         return false;

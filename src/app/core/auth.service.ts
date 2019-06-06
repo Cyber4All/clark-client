@@ -609,12 +609,16 @@ export class AuthService {
 
     if (groups.includes('admin')) {
       this.group.next(AUTH_GROUP.ADMIN);
+      return;
     } else if (groups.includes('editor')) {
       this.group.next(AUTH_GROUP.EDITOR);
-    } else if (groups.includes('reviewer')) {
-      this.group.next(AUTH_GROUP.REVIEWER);
+      return;
     } else if (groups.includes('curator')) {
       this.group.next(AUTH_GROUP.CURATOR);
+      return;
+    } else if (groups.includes('reviewer')) {
+      this.group.next(AUTH_GROUP.REVIEWER);
+      return;
     } else {
       this.group.next(AUTH_GROUP.USER);
     }

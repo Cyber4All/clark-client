@@ -87,7 +87,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   constructor(
-    private modalCtrl: ModalService,
+    public modalCtrl: ModalService,
     private router: Router,
     private route: ActivatedRoute,
     private contextMenuService: ContextMenuService,

@@ -1,7 +1,7 @@
 <clark-admin-content-wrapper>
   <div page-title>
-    <span *ngIf="activeCollection && activeCollection?.length > 0" class="collection-name">{{ activeCollection.toUpperCase() }}</span>
-    {{ activeCollection && activeCollection?.length > 0 ? 'Reviewers' : 'Users' }} {{ users ? '(' + users.length + ')' : '' }}
+    <span *ngIf="activeCollection && activeCollection?.name.length > 0" class="collection-name">{{ activeCollection.name.toUpperCase() }}</span>
+    {{ activeCollection && activeCollection.name?.length > 0 ? 'Reviewers' : 'Users' }} {{ users ? '(' + users.length + ')' : '' }}
   </div>
   <clark-admin-search-bar search 
     *ngIf="!activeCollection"
@@ -9,7 +9,7 @@
     (userInput)="getUsers($event)"
   ></clark-admin-search-bar>
 
-  <div *ngIf="activeCollection && activeCollection?.length > 0" filter-options>
+  <div *ngIf="activeCollection && activeCollection?.name.length > 0" filter-options>
     <div class="btn-group to-right">
       <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : reviewerModal}" (click)="toggleAddReviewerModal(true)"> Add Reviewer
           <i class="far fa-user-plus"></i> 
