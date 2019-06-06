@@ -16,7 +16,7 @@
   
   .privilege__delete-confirm {
     background: rgba(255, 255, 255, 0.9);
-    color: $dark-text;
+    color: $dark-grey;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -45,8 +45,8 @@
 
       &:nth-child(2) {
         background: transparent;
-        color: $dark-text;
-        border-color: $dark-text;
+        color: $dark-grey;
+        border-color: $dark-grey;
       }
     }
 
@@ -76,10 +76,10 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    color: $dark-text;
+    color: $dark-grey;
 
     .privilege__role {
-      background: linear-gradient(45deg, darken($bright-blue, 10), lighten($bright-blue, 5));
+      background: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
       color: white;
       padding: 3px 8px;
       border-radius: 2px;

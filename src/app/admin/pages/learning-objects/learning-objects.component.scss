@@ -31,7 +31,7 @@
     .body__column-headers {
         font-weight: bold;
         font-size: 14px;
-        color: $dark-text;
+        color: $dark-grey;
         opacity: 0.46;
         padding-top: 20px;
         padding-bottom: 10px;
@@ -54,7 +54,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+    color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
     font-size: 16px;
 }
   
@@ -63,7 +63,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    color: $dark-text;
+    color: $dark-grey;
     font-size: 30px;
     margin-bottom: 10px;
 }
@@ -80,12 +80,12 @@
     justify-content: center;
     text-align: center;
   
-    color: rgba(red($dark-text), green($dark-text), blue($dark-text), 0.6);
+    color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
     font-size: 20px;
     padding: 20px;
   
     .svg-inline--fa {
-      color: $bright-blue;
+      color: $light-blue;
       font-size: 30px;
       margin-bottom: 20px;
     }

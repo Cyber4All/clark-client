@@ -1,9 +1,9 @@
 @import '~_vars.scss';
-$dark-text: #545e64;
+$dark-grey: #545e64;
 $light-blue-gradient: linear-gradient(
   45deg,
-  darken($bright-blue, 10),
-  lighten($bright-blue, 5)
+  darken($light-blue, 10),
+  lighten($light-blue, 5)
 );
 
 // FIXME this can be removed when the new button styles are applied cross-application
@@ -15,7 +15,7 @@ button {
   &.neutral {
     background-color: transparent;
     box-shadow: none;
-    color: $dark-text;
+    color: $dark-grey;
     padding:10px 5px 10px 0px;
   }
 }
@@ -28,24 +28,17 @@ button {
   }
 }
 
-$unpublished-color: rgba(
-  red($dark-text),
-  green($dark-text),
-  blue($dark-text),
-  0.36
-);
-
 .filter-collection__container {
   li {
     position: relative;
-    color: $dark-text;
+    color: $dark-grey;
     text-indent: 15px;
     .indicator {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       display: inline-block;
-      background: $dark-text;
+      background: $dark-grey;
       position: absolute;
       left: 15px;
       top: 0;
@@ -67,15 +60,15 @@ $unpublished-color: rgba(
     }
 
     &.waiting {
-      color: #5ec9da;
+      color: $status_waiting;
 
       .indicator {
-        background: #5ec9da;
+        background: $status_waiting;
       }
 
       &:hover {
         color: white;
-        background: #5ec9da;
+        background: $status_waiting;
 
         .indicator {
           background: white;
@@ -84,15 +77,15 @@ $unpublished-color: rgba(
     }
 
     &.review {
-      color: #f5a623;
+      color: $status_review;
 
       .indicator {
-        background: #f5a623;
+        background: $status_review;
       }
 
       &:hover {
         color: white;
-        background: #f5a623;
+        background: $status_review;
 
         .indicator {
           background: white;
@@ -101,15 +94,15 @@ $unpublished-color: rgba(
     }
 
     &.released {
-      color: $green;
+      color: $status_released;
 
       .indicator {
-        background: $green;
+        background: $status_released;
       }
 
       &:hover {
         color: white;
-        background: $green;
+        background: $status_released;
 
         .indicator {
           background: white;
@@ -118,135 +111,15 @@ $unpublished-color: rgba(
     }
 
     &.rejected {
-      color: saturate($error-red, 15);
+      color: $status_rejected;
 
       .indicator {
-        background: saturate($error-red, 15);
+        background: $status_rejected;
       }
 
       &:hover {
         color: white;
-        background: saturate($error-red, 15);
-
-        .indicator {
-          background: white;
-        }
-      }
-    }
-  }
-}
-
-.filter-status__container {
-  li {
-    position: relative;
-    color: $dark-text;
-
-    .indicator {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      display: inline-block;
-      background: $dark-text;
-      position: absolute;
-      left: 10px;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-    }
-
-    .svg-inline--fa,
-    .icon {
-      margin-left: 15px;
-    }
-
-    &:hover {
-      color: white;
-      background: $dark-text;
-
-      .indicator {
-        background: white;
-      }
-    }
-
-    &.waiting {
-      color: #5ec9da;
-
-      .indicator {
-        background: #5ec9da;
-      }
-
-      &:hover {
-        color: white;
-        background: #5ec9da;
-
-        .indicator {
-          background: white;
-        }
-      }
-    }
-
-    &.proofing {
-      color: #bd5eda;
-    
-
-    .indicator {
-        background: #bd5eda;
-      }
-
-    &:hover {
-      color: white;
-      background: #bd5eda;
-
-      .indicator {
-          background: white;
-        }
-      }
-    }
-
-    &.review {
-      color: #f5a623;
-
-      .indicator {
-        background: #f5a623;
-      }
-
-      &:hover {
-        color: white;
-        background: #f5a623;
-
-        .indicator {
-          background: white;
-        }
-      }
-    }
-
-    &.released {
-      color: $green;
-
-      .indicator {
-        background: $green;
-      }
-
-      &:hover {
-        color: white;
-        background: $green;
-
-        .indicator {
-          background: white;
-        }
-      }
-    }
-
-    &.rejected {
-      color: saturate($error-red, 15);
-
-      .indicator {
-        background: saturate($error-red, 15);
-      }
-
-      &:hover {
-        color: white;
-        background: saturate($error-red, 15);
+        background: $status_rejected;
 
         .indicator {
           background: white;

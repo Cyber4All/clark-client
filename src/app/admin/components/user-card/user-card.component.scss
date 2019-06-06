@@ -1,15 +1,16 @@
 @import '~_vars.scss';
 
 .card {
-    box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.05);
-    width: 185px;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.15);
+    max-width: 220px;
+    min-width: 185px;
     border-radius: 5px;
     position: relative;
 }
 
 .card__middle {
     position: absolute;
-    background: linear-gradient(0deg, darken($bright-blue, 20), rgba(red($bright-blue), green($bright-blue), blue($bright-blue), 0.9));
+    background: linear-gradient(0deg, darken($light-blue, 20), rgba(red($light-blue), green($light-blue), blue($light-blue), 0.9));
     height: 230px;
     border-radius: 5px;
     padding: 20px;
