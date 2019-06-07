@@ -8,7 +8,6 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 
-import { CollectionService } from 'app/core/collection.service';
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
 import { ContextMenuService } from '../contextmenu/contextmenu.service';
@@ -33,9 +32,12 @@ export class DashboardItemComponent implements OnChanges {
   // Does this item include a author name
   @Input()
   hasAuthor = false;
-  // Display admin context menu
+  // Does the current user have administrator privileges
   @Input()
   isAdmin = false;
+  // Display context menu for the collection dashboard
+  @Input()
+  collectionDashboard = false;
   // is this object selected
   @Input()
   selected = false;
@@ -90,7 +92,6 @@ export class DashboardItemComponent implements OnChanges {
   constructor(
     private contextMenuService: ContextMenuService,
     private auth: AuthService,
-    private collectionService: CollectionService,
     private statuses: StatusDescriptions
   ) {}
 
