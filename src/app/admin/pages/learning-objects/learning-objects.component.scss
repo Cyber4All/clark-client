@@ -10,14 +10,13 @@
   margin-top: 40px;
 }
 
-// FIXME: remove use of ng-deep and replace with shared stylesheet
 .list__body {
   .body__column-headers,
   ::ng-deep .row-item {
     padding: 0 20px;
     display: grid;
-    grid-template-columns: 20px 2fr 1fr 1fr 1fr 50px;
-    grid-gap: 0 30px;
+    grid-template-columns: 20px 2.5fr 1fr 0.7fr 1fr 50px;
+    grid-gap: 0 40px;
     align-items: center;
   }
 
@@ -73,7 +72,7 @@
   margin-right: 10px;
 }
 
-.loading-template {
+.loadingOrFinished__content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,7 +81,7 @@
 
   color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
   font-size: 20px;
-  padding: 20px;
+  padding: 40px;
 
   .svg-inline--fa {
     color: $light-blue;

@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToasterService } from 'app/shared/toaster';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -17,7 +18,6 @@ import { ToasterService } from 'app/shared/toaster';
     PublicLearningObjectService,
     PrivateLearningObjectService
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
@@ -32,7 +32,7 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
 
   listViewHeightOffset: number;
 
-  query: Query = {
+  _query: Query = {
     currPage: 1,
     limit: 20,
     text: ''
@@ -40,17 +40,30 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
 
   displayStatusModal = false;
 
-  // boolean value representing the client's notion of whether or not the server will send more objects if the next page is requested
-  shouldStillPaginate = true;
+  total: number;
 
-  userSearchInput$: Subject<void> = new Subject();
+  loading: boolean;
+
+  userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
+
+  allResultsReceived: boolean;
+
+  isAdminOrEditor: boolean;
+
+  constructor(
+    private publicLearningObjectService: PublicLearningObjectService,
+    private privateLearningObjectService: PrivateLearningObjectService,
+    private route: ActivatedRoute,
+    private toaster: ToasterService,
+    private auth: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const username = params['username'];
       if (username !== null) {
-        this.query.text = username;
+        this.query = { text: username };
         this.getLearningObjects();
       }
    });
@@ -58,9 +71,14 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
    this.userSearchInput$.pipe(
      takeUntil(this.componentDestroyed$),
      debounceTime(650)
-   ).subscribe(() => {
+   ).subscribe(searchTerm => {
+     this.query = { currPage: 1, text: searchTerm }
+     this.learningObjects = [];
+
      this.getLearningObjects();
    });
+
+   this.isAdminOrEditor = this.auth.hasEditorAccess();
 
    this.getLearningObjects();
   }
@@ -71,36 +89,49 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
       this.listElement.nativeElement.getBoundingClientRect().top + 50;
   }
 
-  constructor(
-    private publicLearningObjectService: PublicLearningObjectService,
-    private privateLearningObjectService: PrivateLearningObjectService,
-    private route: ActivatedRoute,
-    private cd: ChangeDetectorRef,
-    private toaster: ToasterService
-  ) { }
+  get query() {
+    return this._query;
+  }
+
+  set query(q: Partial<Query>) {
+    // tslint:disable-next-line:forin
+    for (const key in q) {
+      this.query[key] = q[key];
+    }
+
+    // if we have more than one property to change or the one property we have to change isn't the current page, reset the search
+    if (Object.keys(q).length > 1 || !Object.keys(q).includes('currPage')) {
+      this.allResultsReceived = false;
+    }
+  }
 
   getLearningObjects(event?: VirtualScrollerChangeEvent) {
-    if (event && event.end !== this.learningObjects.length - 1) {
-      return;
+    if (!this.allResultsReceived) {
+      this.loading = true;
+
+      if (event && (event.end < 0 || event.end !== this.learningObjects.length - 1)) {
+        return;
+      }
+
+      if (this.learningObjects.length) {
+        // we've already made an initial request to load the first page of results, increment the current page before next request
+        this.query = { currPage: this.query.currPage + 1 };
+      }
+
+      this.publicLearningObjectService.getLearningObjects(this.query)
+        .then(val => {
+          this.learningObjects = this.learningObjects.concat(val.learningObjects);
+
+          if (this.learningObjects.length === val.total) {
+            this.allResultsReceived = true;
+          }
+        }).catch(error => {
+          console.error(error);
+          this.toaster.notify('Error!', 'There was an error fetching collections. Please try again later.', 'bad', 'far fa-times');
+        }).finally(() => {
+          this.loading = false;
+        });
     }
-
-    if (this.learningObjects.length) {
-      // we've already made an initial request to load the first page of results, increment the current page before next request
-      this.query.currPage++;
-    }
-
-    this.publicLearningObjectService.getLearningObjects(this.query)
-      .then(val => {
-        this.learningObjects = this.learningObjects.concat(val.learningObjects);
-        this.cd.detectChanges();
-
-        if (val.learningObjects.length < this.query.limit || val.learningObjects.length === 0) {
-          // do something regarding error handling here
-        }
-      }).catch(error => {
-        console.error(error);
-        this.toaster.notify('Error!', 'There was an error fetching collections. Please try again later.', 'bad', 'far fa-times');
-      });
   }
 
   getUserLearningObjects(author: string) {
@@ -110,9 +141,9 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     this.publicLearningObjectService.getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
-        this.cd.detectChanges();
       }).catch(error => {
-        this.toaster.notify('Error!', 'There was an error fetching this user\'s learning objects. Please try again later.', 'bad', 'far fa-times');
+        this.toaster
+          .notify('Error!', 'There was an error fetching this user\'s learning objects. Please try again later.', 'bad', 'far fa-times');
         console.error(error);
       });
   }
@@ -120,7 +151,6 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
   openChangeStatusModal(learningObject: LearningObject) {
     this.displayStatusModal = true;
     this.activeLearningObject = learningObject;
-    this.cd.detectChanges();
   }
 
   updateLearningObjectStatus() {
@@ -130,7 +160,6 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
       { status: this.selectedStatus }
     );
     this.displayStatusModal = false;
-    this.cd.detectChanges();
   }
 
   isCurrentStatus(status: string) {
@@ -142,16 +171,14 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getStatusFilteredLearningObjects(statuses: string[]) {
-    this.query.status = statuses;
-    this.query.currPage = 1;
+    this.query = { status: statuses, currPage: 1 };
     this.learningObjects = [];
 
     this.getLearningObjects();
    }
 
    getCollectionFilteredLearningObjects(collection: string) {
-    this.query.collection = collection;
-    this.query.currPage = 1;
+    this.query = { collection, currPage: 1 };
     this.learningObjects = [];
 
     this.getLearningObjects();
