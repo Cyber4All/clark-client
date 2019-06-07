@@ -1,11 +1,13 @@
 <clark-admin-content-wrapper>
   <div #list2 class="el"></div>
   <div page-title>Learning Objects</div>
-  <clark-admin-search-bar search 
+  <clark-admin-search-bar
+    search
     [placeholder]="searchBarPlaceholder"
     (userInput)="userSearchInput$.next()"
   ></clark-admin-search-bar>
-  <clark-admin-filter-search filter-options
+  <clark-admin-filter-search
+    filter-options
     (statusFilter)="getStatusFilteredLearningObjects($event)"
     (collectionFilter)="getCollectionFilteredLearningObjects($event)"
   ></clark-admin-filter-search>
@@ -21,71 +23,93 @@
             <div>Type</div>
             <div>Date</div>
           </div>
-            <virtual-scroller 
-              #scroll 
-              [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
-              [items]="learningObjects"
-              [bufferAmount]="query.limit"
-              (vsEnd)="scroll.viewPortInfo.startIndex && getLearningObjects($event);"
+          <virtual-scroller
+            #scroll
+            [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
+            [items]="learningObjects"
+            [bufferAmount]="query.limit"
+            [enableUnequalChildrenSizes]="true"
+            (vsEnd)="
+              scroll.viewPortInfo.startIndex && getLearningObjects($event)
+            "
+          >
+            <clark-dashboard-item
+              *ngFor="let l of scroll.viewPortItems"
+              [learningObject]="l"
+              [status]="l.status"
+              [hasCheckBox]="false"
+              [hasAuthor]="true"
+              [isAdmin]="true"
+              (viewUser)="getUserLearningObjects($event)"
+              (changeStatus)="openChangeStatusModal($event)"
             >
-              <clark-dashboard-item
-                *ngFor="let l of scroll.viewPortItems"
-                [learningObject]="l"
-                [status]="l.status"
-                [hasCheckBox]="false"
-                [hasAuthor]="true"
-                [isAdmin]="true"
-                (viewUser)="getUserLearningObjects($event)"
-                (changeStatus)="openChangeStatusModal($event)"
-                >
-              </clark-dashboard-item>
-              <div [@nonListItem] class="loading-template">
-                <i class="far fa-spinner-third fa-spin"></i>
-                Loading learning objects...
-              </div>
-            </virtual-scroller>    
+            </clark-dashboard-item>
+            <div [@nonListItem] class="loading-template">
+              <i class="far fa-spinner-third fa-spin"></i>
+              Loading learning objects...
+            </div>
+          </virtual-scroller>
         </div>
       </div>
     </div>
   </div>
 
-  <clark-popup *ngIf="displayStatusModal" (closed)="displayStatusModal= false">
+  <clark-popup *ngIf="displayStatusModal" (closed)="displayStatusModal = false">
     <div #popupInner class="popup-inner">
       <div class="modal-title">Change Status</div>
-        <div class="modal-text">
-          <form class="input-wrapper">
-            <div class="header">
-              <div class="title">
-                <span class="lo-name">{{activeLearningObject.name | titlecase}}</span>
-              </div>
+      <div class="modal-text">
+        <form class="input-wrapper">
+          <div class="header">
+            <div class="title">
+              <span class="lo-name">{{
+                activeLearningObject.name | titlecase
+              }}</span>
             </div>
-            <div class="input-radio">
-              <div *ngFor="let status of adminStatusList">
-                <label class="radio">
-                  <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
-                    name="enums" [checked]="isCurrentStatus(status)">{{ status | titlecase }}
-                </label>
-              </div>
+          </div>
+          <div class="input-radio">
+            <div *ngFor="let status of adminStatusList">
+              <label class="radio">
+                <input
+                  (click)="toggleStatus(status)"
+                  [id]="status"
+                  type="radio"
+                  [value]="status"
+                  name="enums"
+                  [checked]="isCurrentStatus(status)"
+                />{{ status | titlecase }}
+              </label>
             </div>
-            <div class="input-radio" *ngIf="isEditor">
-              <div *ngFor="let status of editorStatusList">
-                <label class="radio">
-                  <input (click)="toggleStatus(status)" [id]="status" type="radio" [value]="status"
-                      name="enums" [checked]="isCurrentStatus(status)">{{ status | titlecase }}
-                </label>
-              </div>
+          </div>
+          <div class="input-radio" *ngIf="isEditor">
+            <div *ngFor="let status of editorStatusList">
+              <label class="radio">
+                <input
+                  (click)="toggleStatus(status)"
+                  [id]="status"
+                  type="radio"
+                  [value]="status"
+                  name="enums"
+                  [checked]="isCurrentStatus(status)"
+                />{{ status | titlecase }}
+              </label>
             </div>
-            <div class="btn-group to-right">
-              <button type="button" (click)="updateLearningObjectStatus()" class="button good">Submit</button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div class="btn-group to-right">
+            <button
+              type="button"
+              (click)="updateLearningObjectStatus()"
+              class="button good"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </clark-popup>
 
-  <ng-template #loadingTemplate>
-  </ng-template>
-  
+  <ng-template #loadingTemplate> </ng-template>
+
   <ng-template #emptyTemplate>
     <div class="empty-template">
       <div class="empty-template__top">
@@ -95,7 +119,8 @@
         </div>
       </div>
       <div class="empty-text">
-        Learning Objects will appear here after they are submitted to your collection
+        Learning Objects will appear here after they are submitted to your
+        collection
       </div>
     </div>
   </ng-template>
