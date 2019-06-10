@@ -5,9 +5,9 @@
   box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
 
   .header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: $light-grey;
     padding: 8px;
-    font-size: 16px;
+    font-size: $large;
     background-color: white;
 
     .lo-length {

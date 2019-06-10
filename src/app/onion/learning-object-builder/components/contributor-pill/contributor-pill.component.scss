@@ -3,7 +3,7 @@
 .contributor-pill {
   position: relative;
   padding: 3px;
-  color: $bright-blue;
+  color: $light-blue;
   text-decoration: underline;
 }
 
@@ -31,13 +31,14 @@
 
 .contributor-pill__dropdown-option {
   padding: 5px 25px;
-  color: lighten($dark-text, 20);
+  color: $error-red;
   cursor: pointer;
   text-align: center;
 
   .svg-inline--fa,
   .icon {
     color: $error-red;
+    margin-right: 5px;
   }
 
   &:hover {

@@ -2,54 +2,98 @@
   <div class="manage-materials">
     <div class="tabs">
       <ul id="materials-title">
-        <li [ngClass]="{'active': slide === 1}" (click)="changeSlide(1)">Materials</li>
-        <li [ngClass]="{'active': slide === 2}" (click)="changeSlide(2)">URLs</li>
-        <li [ngClass]="{'active': slide === 3}" (click)="changeSlide(3)">Notes</li>
+        <li [ngClass]="{ active: slide === 1 }" (click)="changeSlide(1)">
+          Materials
+        </li>
+        <li [ngClass]="{ active: slide === 2 }" (click)="changeSlide(2)">
+          URLs
+        </li>
+        <li [ngClass]="{ active: slide === 3 }" (click)="changeSlide(3)">
+          Notes
+        </li>
       </ul>
     </div>
     <div class="materials-slides">
-      <div [@fadeIn] *ngIf="slide === 1" class="slide slide1">
+      <div
+        [@fadeIn]
+        *ngIf="slide === 1"
+        class="slide slide1"
+        (dragenter)="dragenter($event)"
+        (dragover)="dragover($event)"
+        (drop)="handleDrop($event)"
+      >
         <div *ngIf="solutionUpload" class="solutions-warning">
-          Note: While the upload of solution files are not prohibited, they won't be included during a learning
-          object's download.
+          Note: While the upload of solution files are not prohibited, they
+          won't be included during a Learning Object's download.
         </div>
         <!-- This element has a dropzone tag as a backup in case the browser doesn't support the dragover event or something goes wrong -->
-        <onion-file-manager *ngIf="!retrieving; else loadingTemplate" [confirmDeletion]="confirmDeletion$" [files$]="files$"
-          [folderMeta$]="folderMeta$" (openDZ)="openDZ()" (fileDeleted)="handleDeleteGenerator = handleDeletion($event); handleDeleteGenerator.next()" (fileEdited)="handleEdit($event)"
-          (path)="openPath=$event" (solutionUpload)="handleSolution($event)"></onion-file-manager>
+        <onion-file-manager
+          *ngIf="!retrieving; else loadingTemplate"
+          [confirmDeletion]="confirmDeletion$"
+          [files$]="files$"
+          [folderMeta$]="folderMeta$"
+          (openFilePicker)="openFilePicker($event)"
+          (fileDeleted)="
+            handleDeleteGenerator = handleDeletion($event);
+            handleDeleteGenerator.next()
+          "
+          (fileEdited)="handleEdit($event)"
+          (path)="openPath = $event"
+          (solutionUpload)="handleSolution($event)"
+          (downloadClicked)="handleFileDownload($event)"
+        ></onion-file-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
-        <clark-url-manager [urls]="(learningObject$|async)?.materials?.urls" (add)="addURL()" (update)="updateUrl($event)"
-          (remove)="removeURL($event)"></clark-url-manager>
+        <clark-url-manager
+          [urls]="(learningObject$ | async)?.materials?.urls"
+          (add)="addURL()"
+          (update)="updateUrl($event)"
+          (remove)="removeURL($event)"
+        ></clark-url-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 3" class="slide slide3">
         <div class="topbar">
           <div class="slide-title">Notes</div>
         </div>
         <div class="notes">
-          <textarea aria-label="Learning Object notes" rows="8" type="text" [value]="(learningObject$|async)?.materials.notes"
-            (keyup)="updateNotes($event.target.value)" name="learningObjectNotes" placeholder="Add any notes on copyright, grant acknowledgments, etc."></textarea>
+          <textarea
+            aria-label="Learning Object notes"
+            rows="8"
+            type="text"
+            [value]="(learningObject$ | async)?.materials.notes"
+            (keyup)="updateNotes($event.target.value)"
+            name="learningObjectNotes"
+            placeholder="Add any notes on copyright, grant acknowledgments, etc."
+          ></textarea>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="inProgressFileUploads?.length || inProgressFolderUploads?.length" [@uploadQueue] class="upload-queue">
-    <div class="title">Uploading files...</div>
-    <onion-file-upload-status [files]="inProgressFileUploads" [folders]="inProgressFolderUploads"></onion-file-upload-status>
+  <div *ngIf="uploadQueue.length" [@uploadQueue] class="upload-queue">
+    <onion-file-upload-status
+      [totalFiles]="uploadQueue.length"
+      [progress]="uploadProgress"
+    ></onion-file-upload-status>
   </div>
 
-  <clark-teleporter>
-    <div #teleporterPayload class="uploader" [ngClass]="{'dragging': showDragMenu, 'dropped': dropped}" [dropzone]="config"
-      (drop)="handleDrop()" (addedFile)="addFile($event)" (dragLeave)="toggleDrag(false)" (sending)="fileSending($event)"
-      (uploadProgress)="uploadProgress($event)" (complete)="dzComplete($event)" (success)="uploadSuccess()"
-      (queueComplete)="queueComplete()" (error)="handleError($event)">
+  <clark-teleporter *ngIf="dragAndDropSupported">
+    <div
+      #teleporterPayload
+      class="uploader"
+      [ngClass]="{ dragging: showDragMenu, dropped: dropped }"
+      (dragenter)="dragenter($event)"
+      (dragover)="dragover($event)"
+      (drop)="handleDrop($event)"
+      (dragLeave)="toggleDrag(false)"
+    >
       <div class="uploader-content">
         <div class="uploader-icon">
-          <i class='far fa-arrow-up'></i>
+          <i class="far fa-arrow-up"></i>
         </div>
         <div class="uploader-text">
           <div>Drop files and folders here</div>
-          to add them to {{ (!openPath) ? 'your learning object' : '\'' + openPath + '\''}}!
+          to add them to
+          {{ !openPath ? 'your learning object' : "'" + openPath + "'" }}!
         </div>
       </div>
     </div>
@@ -62,15 +106,34 @@
   </ng-template>
 </div>
 
-
 <!-- Delete Confirmation Popup -->
 <clark-popup *ngIf="showDeletePopup" (closed)="cancelDeletion()">
   <div #popupInner class="popup-inner">
     <div class="modal-title">Are you sure?</div>
     <div class="modal-text">You cannot undo this action!</div>
     <div class="btn-group center">
-      <button class="button bad" (click)="confirmDeletion()">Yep, do it! <i class="far fa-trash"></i></button>
-      <button class="button neutral" (click)="cancelDeletion()">Wait, nevermind! <i class="far fa-ban"></i></button>
+      <button class="button bad" (click)="confirmDeletion()">
+        Yep, do it! <i class="far fa-trash"></i>
+      </button>
+      <button class="button neutral" (click)="cancelDeletion()">
+        Wait, nevermind! <i class="far fa-ban"></i>
+      </button>
     </div>
   </div>
 </clark-popup>
+
+<input
+  class="hidden"
+  #folderInput
+  type="file"
+  (change)="filesPicked(folderInput.files)"
+  webkitDirectory
+  aria-label="Folder input"
+/>
+<input
+  class="hidden"
+  #fileInput
+  type="file"
+  (change)="filesPicked(fileInput.files)"
+  aria-label="File input"
+/>

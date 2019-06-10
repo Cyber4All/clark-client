@@ -1,22 +1,22 @@
 @import '~_vars.scss';
 
 .button {
-    overflow: hidden;
-    text-align: center;
-    font-size: 16px;
-    margin-bottom: 10px;
-    border: none;
-    position: relative;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  overflow: hidden;
+  text-align: center;
+  font-size: $normal;
+  margin-bottom: 10px;
+  border: none;
+  position: relative;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
-    &.good {
-        background: #fea200 !important;
-    }
+  &.good {
+    background: $orange !important;
+  }
 }
-.last-revised,.last-released {
-    margin-bottom: 10px;
-    color: $dark-text;
-    font-size: 16px;
+.last-revised,
+.last-released {
+  margin-bottom: 10px;
+  color: $dark-grey;
+  font-size: $normal;
 }
-

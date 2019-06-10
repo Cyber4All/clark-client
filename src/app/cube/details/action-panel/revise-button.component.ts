@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'clark-revise-button',
   template: `
-    <button class="button neutral on-white" (click)="makeRevision()">
+    <button class="button neutral" (click)="makeRevision()">
       Revise
     </button>
     <clark-popup *ngIf="showPopup" (closed)="showPopup = false">

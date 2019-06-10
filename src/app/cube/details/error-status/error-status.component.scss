@@ -3,7 +3,7 @@
 @import "../../../../globals.scss";
 
 .huge {
-  font-size: 60px;
+  font-size: $largest;
 }
 
 .not-found-logo {
@@ -15,12 +15,17 @@
   padding-top: 500px;
 }
 
+.message {
+  font-size: $large;
+  margin-bottom: 10px;
+}
+
 .auth-button {
   -moz-transition-duration: .2s;
   transition-duration: .2s;
   overflow: hidden;
   text-align: center;
-  font-size: 16px;
+  font-size: $normal;
   margin-bottom: 10px;
   position: relative;
   background-color: $blue-accent;

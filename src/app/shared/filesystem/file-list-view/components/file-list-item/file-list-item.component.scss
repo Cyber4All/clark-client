@@ -3,11 +3,11 @@
 .wrapper {
   height: 100%;
   width: 100%;
-  font-size: 15px;
+  font-size: $normal;
 }
 .icon {
-  color: #485460;
-  font-size: 20px;
+  color: $dark-grey;
+  font-size: $large;
   margin-right: 5px;
 }
 .grid-row {
@@ -16,7 +16,7 @@
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
-  background: #fff;
+  background: white;
   padding: 0 0 8px;
   justify-self: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
@@ -27,7 +27,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 14px;
+  font-size: $small;
 
   .svg-inline--fa {
     margin-right: 13px;
@@ -48,7 +48,7 @@
 }
 
 .description {
-  color: #555555;
+  color: $dark-grey;
 }
 
 .inline-flex {
@@ -68,7 +68,7 @@
   &:before,
   &:after {
     content: '';
-    background: $bright-blue;
+    background: $light-blue;
     border-radius: 50%;
     height: 6px;
     width: 6px;
@@ -77,7 +77,7 @@
 }
 
 .external-link-icon {
-  color: $bright-blue;
+  color: $light-blue;
   font-size: 10px;
   margin-left: 5px;
 }
