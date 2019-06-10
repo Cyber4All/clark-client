@@ -39,6 +39,7 @@ import { CollectionCardComponent } from './collection-card/collection-card.compo
 import { CKEditorModule } from 'ng2-ckeditor';
 import { CarouselComponent } from './carousel/carousel.component';
 import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
+import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
 import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 
@@ -84,11 +85,11 @@ import { GenericCollectionLogoComponent } from './generic-collection-logo/generi
     NewRatingResponseComponent,
     TextEditorComponent,
     CarouselComponent,
-    DownloadNoticePopupComponent,
     CollectionsGridComponent,
     CollectionCardComponent,
     CarouselComponent,
     DownloadNoticePopupComponent,
+    CollectionSelectorPopupComponent,
     CollectionsGridComponent,
     GenericCollectionLogoComponent
   ],
@@ -116,11 +117,11 @@ import { GenericCollectionLogoComponent } from './generic-collection-logo/generi
     NewRatingResponseComponent,
     TextEditorComponent,
     CarouselComponent,
-    DownloadNoticePopupComponent,
     CollectionsGridComponent,
     CollectionCardComponent,
     ToasterModule,
     DownloadNoticePopupComponent,
+    CollectionSelectorPopupComponent,
     CollectionCardComponent,
     CarouselComponent,
     CollectionsGridComponent,
