@@ -3,6 +3,10 @@
 .page-title {
   font-size: 26px;
   color: $dark-grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 40px;
 }
 
 .wrapper__top {

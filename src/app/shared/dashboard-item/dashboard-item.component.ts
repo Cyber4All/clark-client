@@ -23,7 +23,7 @@ import { LearningObject } from '@entity';
 export class DashboardItemComponent implements OnChanges {
   @Input()
   learningObject: DashboardLearningObject;
-  // the status of the learning object (passed in separatly for change detection)
+  // the status of the learning object (passed in separately for change detection)
   @Input()
   status: string;
   // Does this item include a checkbox
