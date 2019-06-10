@@ -56,7 +56,7 @@
     </ng-template>
 
     <ng-template>
-      <clark-collections-grid (selected)="selectCollection($event)"></clark-collections-grid>
+      <clark-collections-grid [preselect]="collectionsWithSelectedRole" preselectReason="This user is already a {{ selectedRole }} in this collection." (selected)="selectCollection($event)"></clark-collections-grid>
     </ng-template>
 
   </clark-carousel>

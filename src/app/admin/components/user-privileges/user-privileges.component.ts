@@ -130,4 +130,10 @@ export class UserPrivilegesComponent implements OnInit {
         console.error(error);
       });
   }
+
+  get collectionsWithSelectedRole() {
+    if (this.selectedRole) {
+      return this.privileges.filter(x => x[0] === this.selectedRole).map(x => x[1])
+    }
+  }
 }

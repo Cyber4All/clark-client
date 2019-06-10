@@ -14,6 +14,12 @@ export class CollectionsGridComponent implements OnInit {
   // highlights collection if one is already present
   @Input() currentCollection: string;
 
+  // collections that cannot be selected
+  @Input() preselect: string[];
+
+  // a string that defines why a user can't select any collections defined in the preselect input
+  @Input() preselectReason: string;
+
   // fires when the user selects a collection
   @Output() selected: EventEmitter<string> = new EventEmitter();
 
@@ -49,5 +55,9 @@ export class CollectionsGridComponent implements OnInit {
   select(collection: string) {
     this.currentCollection = collection;
     this.selected.emit(collection);
+  }
+
+  isPreselected(collectionAbv: string) {
+    return this.preselect.includes(collectionAbv);
   }
 }

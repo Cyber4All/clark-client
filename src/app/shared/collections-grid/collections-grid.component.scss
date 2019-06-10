@@ -75,6 +75,11 @@
       }
     }
   }
+
+  &.collection-chooser__collection--preselected {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .loading-template,
