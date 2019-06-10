@@ -21,6 +21,8 @@ export class CartComponent implements OnInit, OnDestroy {
   iframeParent = iframeParentID;
   canDownload = false;
 
+  statuses = LearningObject.Status;
+
   constructor(
     public cartService: CartV2Service,
     private router: Router,

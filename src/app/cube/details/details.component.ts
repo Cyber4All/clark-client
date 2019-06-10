@@ -428,7 +428,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         'center',
         [
           new ModalListElement('Yup, do it!', 'delete', 'bad'),
-          new ModalListElement('No wait!', 'cancel', 'neutral on-white')
+          new ModalListElement('No wait!', 'cancel', 'neutral')
         ]
       )
       .toPromise();
@@ -617,7 +617,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         'center',
         [
           new ModalListElement('Yup, do it!', 'delete', 'bad'),
-          new ModalListElement('No wait!', 'cancel', 'neutral on-white')
+          new ModalListElement('No wait!', 'cancel', 'neutral')
         ]
       )
       .toPromise();

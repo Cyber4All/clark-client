@@ -1,45 +1,44 @@
 @import '~_vars.scss';
 
 .clark-filter {
-    display: flex;
-    
-    &.horizontal {
+  display: flex;
+
+  &.horizontal {
+    flex-direction: row;
+  }
+
+  &.vertical {
+    flex-direction: column;
+  }
+
+  .filter-section {
+    .filter-section-inner {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .filter-section-name {
+      color: $darker-grey;
+      font-size: $normal;
+      text-transform: capitalize;
+      margin-bottom: 5px;
+    }
+
+    .filter {
+      text-transform: capitalize;
+      font-size: $small;
+      display: inline;
+      flex-wrap: nowrap;
+
+      &.filter-checkbox {
+        display: flex;
         flex-direction: row;
-    }
 
-    &.vertical {
-        flex-direction: column;
-    }
-
-    .filter-section {
-
-        .filter-section-inner {
-            padding-top: 15px;
-            padding-bottom: 15px;
+        clark-checkbox {
+          @include vert-center;
+          margin-right: 10px;
         }
-
-        .filter-section-name {
-            color: black;
-            font-size: 16px;
-            text-transform: capitalize;
-            margin-bottom: 5px;
-        }
-
-        .filter {
-            text-transform: capitalize;
-            font-size: 15px;
-            display: inline;
-            flex-wrap: nowrap;
-
-            &.filter-checkbox {
-                display: flex;
-                flex-direction: row;
-
-                clark-checkbox {
-                    @include vert-center;
-                    margin-right: 10px;
-                }
-            }
-        }
+      }
     }
+  }
 }

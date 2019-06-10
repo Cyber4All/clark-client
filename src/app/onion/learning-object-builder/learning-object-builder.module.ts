@@ -26,7 +26,6 @@ import { LearningObjectDescriptionComponent } from './components/description.com
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
-import { HierarchyComponent } from './components/scaffold/hierarchy/hierarchy.component';
 import {OnionSharedModule} from '../shared/onion-shared.module';
 import {EditorActionPanelModule} from './components/editor-action-panel/editor-action-panel.module';
 /*
@@ -65,7 +64,6 @@ import {EditorActionPanelModule} from './components/editor-action-panel/editor-a
     UserDropdownComponent,
     ContributorPillComponent,
     ScaffoldComponent,
-    HierarchyComponent
   ],
 })
 export class LearningObjectBuilderModule {}

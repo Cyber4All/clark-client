@@ -55,7 +55,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
         .collection-name {
           color: white;
-          font-size: 20px;
+          font-size: $large;
           margin-left: 10px;
           opacity: 0.6;
         }
@@ -69,7 +69,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
       .author {
         .link {
-          color: #fff;
+          color: #white;
           opacity: 1;
           font-weight: 400;
         }
@@ -82,7 +82,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     }
 
     .name {
-      font-size: 40px;
+      font-size: $largest;
       color: white;
       text-shadow: 0 0 rgba(0, 0, 0, 0.2);
     }
@@ -90,7 +90,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     .author,
     .downloads {
       color: white;
-      font-size: 18px;
+      font-size: $large;
       font-weight: 300;
     }
 
@@ -101,7 +101,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       align-items: center;
 
       a {
-        font-size: 16px;
+        font-size: $normal;
         color: white;
         cursor: pointer;
         margin-left: 10px;
@@ -122,7 +122,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       position: relative;
       color: white;
       text-transform: capitalize;
-      font-size: 14px;
+      font-size: $normal;
       font-weight: 300;
 
       &.nanomodule {

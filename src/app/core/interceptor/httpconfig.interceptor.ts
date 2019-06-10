@@ -21,7 +21,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let headers = request.headers.set('Content-Type', 'application/json');
     headers = headers.append('Authorization', `Bearer ${this.token}`);
-    console.log('TCL: HttpConfigInterceptor -> headers', headers);
 
     request = request.clone({
       headers,

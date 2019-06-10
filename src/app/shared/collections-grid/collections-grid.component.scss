@@ -39,7 +39,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    border: 4px $bright-blue solid;
+    border: 4px $light-blue solid;
     background: transparent;
     position: absolute;
     opacity: 0;
@@ -69,15 +69,15 @@
 .none-template {
   margin-top: 50px;
   text-align: center;
-  font-size: 18px;
-  color: lighten($dark-text, 40);
+  font-size: $large;
+  color: $dark-grey;
   margin-bottom: 50px;
 
   .svg-inline--fa,
   .icon {
     margin: auto;
     font-size: 25px;
-    color: $bright-blue;
+    color: $light-blue;
     display: block;
     margin-bottom: 5px;
   }

@@ -9,13 +9,13 @@
   text-align: left;
   color: white;
   min-width: 200px;
-  background: linear-gradient(45deg, $bright-blue, saturate(lighten($bright-blue, 10), 10));
+  background: $light-blue-gradient;
   border-radius: 4px;
   z-index: 2;
 
   .svg-inline--fa,
   .icon {
-    font-size: 14px;
+    font-size: $small;
     margin-right: 10px;
   }
 
@@ -24,17 +24,9 @@
   }
 }
 
-.service-indicator--saved {
-  background: linear-gradient(45deg, darken(saturate($green, 10), 5), saturate(lighten($green, 10), 10));
-}
-
 .popup-inner {
 
   .modal-title{
-    color: $bright-blue !important;
-  }
-  .button {
-    background: $bright-blue;
-    border-color: $bright-blue;
+    color: $light-blue !important;
   }
 }

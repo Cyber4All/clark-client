@@ -1,7 +1,7 @@
 <div class="section url-wrap">
         <div class="title-field">
                 <input aria-label="URL Title" placeholder="Title" type="text" [value]="titleText" [(ngModel)]="titleText"
-                        (input)="updateTitle($event.target.value)" required #title="ngModel">
+                        (input)="updateTitle()" required #title="ngModel">
                 <div style="color:red" [hidden]="title.valid || title.untouched">
                         <div [hidden]="!title.hasError('required')">Title must be provided</div>
                 </div>
@@ -9,7 +9,7 @@
 
         <div class="url-field">
                 <input aria-label="URL" placeholder="https://example.com" type="text" [value]="urlLink" [(ngModel)]="urlLink"
-                        (input)="updateLink($event.target.value)" required #link="ngModel" pattern="https?://.+">
+                        (input)="updateLink()" required #link="ngModel" pattern="https?://.+">
                 <div style="color:red" [hidden]="link.valid || (title.untouched || link.untouched)">
                         <div [hidden]="!link.hasError('pattern')">Not a valid URL. Must include https:// or http://</div>
                         <div [hidden]="!link.hasError('required')">Please type in valid URL</div>

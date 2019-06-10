@@ -24,8 +24,8 @@ import { LearningOutcomeValidator } from '../../validators/learning-outcome.vali
   styleUrls: ['./outcome.component.scss'],
   animations: [
     trigger('outcome', [
-      state('open', style({ height: '*' })),
-      state('*', style({ height: '60px' })),
+      state('open', style({ height: '*', opacity: 1 })),
+      state('closed', style({ height: '80px', opacity: 1 })),
       transition('* <=> *', animate('350ms ease'))
     ])
   ]
@@ -39,6 +39,8 @@ export class OutcomeComponent implements OnInit {
   totalOutcomes: number;
   @Input()
   active: boolean;
+
+  noAnimation = true;
 
   @Output()
   unmap: EventEmitter<{

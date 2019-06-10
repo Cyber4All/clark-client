@@ -16,8 +16,8 @@
 }
 
 .title {
-  font-size: 18px;
-  color: $dark-text;
+  font-size: $large;
+  color: $darker-grey;
   margin-bottom: 15px;
 }
 
@@ -29,16 +29,17 @@
   display: flex;
   flex-flow: row nowrap;
   margin-bottom: 15px;
-  box-shadow: 0 0 5px lighten($placeholder, 10);
-  padding: 8px 24px;
+  box-shadow: 0 0 5px $light-grey;
+  padding: 10px 24px;
   cursor: pointer;
+  transition: box-shadow 0.2s ease;
 
   &.unfocused {
     opacity: .3;
   }
 
   &:hover {
-    box-shadow: 0 0 5px lighten($bright-blue, 10);
+    box-shadow: 0 0 5px $light-blue;
   }
 
   .status-item__text {
@@ -51,13 +52,4 @@
 
 .btn-group {
   margin-top: 25px;
-
-  .button {
-    padding: 8px 25px;
-  }
-
-  .good {
-    background: $bright-blue;
-    border-color: $bright-blue;
-  }
 }

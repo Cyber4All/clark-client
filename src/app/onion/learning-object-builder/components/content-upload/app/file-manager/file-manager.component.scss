@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background: #f9f9f9;
+  background: white;
   border-radius: 4px;
   padding: 10px;
   cursor: pointer;
@@ -39,7 +39,7 @@
 }
 .file-breadcrumb {
   .link {
-    font-size: 20px;
+    font-size: $larger;
     font-weight: 700;
     margin: 5px;
     padding: 0 7px;
@@ -47,7 +47,7 @@
   }
   & :hover {
     cursor: pointer;
-    background: #e9e9e9;
+    background: $light-grey;
   }
 }
 .full-width {
@@ -78,18 +78,13 @@
   flex-direction: column;
 }
 .context-item.bad {
-  color: #cf4739;
+  color: $error-red;
 }
 
 .button.slim {
   padding: 1px 15px;
 }
-.button.new {
-  background: $blue-accent;
-  color: #fff;
-  padding: 8px 30px;
-  font-weight: 600;
-}
+
 .inline-flex {
   display: flex;
   flex-direction: row;
@@ -106,11 +101,11 @@
 
 .context-item {
   .option {
-    font-size: 18px;
+    font-size: $large;
   }
 }
 .icon.light {
-  color: #808e9b;
+  color: $medium-grey;
 }
 
 .help {

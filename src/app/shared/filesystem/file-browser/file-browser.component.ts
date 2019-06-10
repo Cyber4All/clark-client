@@ -12,6 +12,7 @@ import { LearningObject } from '@entity';
 import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { takeUntil } from 'rxjs/operators';
+import { getUserAgentBrowser } from 'getUserAgentBrowser';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type Removal = {
@@ -60,8 +61,24 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
   currentPath: string[] = [];
   tips = TOOLTIP_TEXT;
   view = 'list';
+  dragAndDropSupported = false;
 
-  constructor() {}
+  constructor() {
+    this.checkDragDropSupport();
+  }
+
+  /**
+   * Checks if the user's browser is one that will support drag and drop uploads by checking the user agent
+   *
+   * @memberof UploadComponent
+   */
+  checkDragDropSupport() {
+    const supportedBrowserRegex = /chrome|firefox/gi;
+    const browser = getUserAgentBrowser();
+    if (supportedBrowserRegex.test(browser)) {
+      this.dragAndDropSupported = true;
+    }
+  }
 
   ngOnInit(): void {
     this.subToFiles();
@@ -75,11 +92,23 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    */
   private subToFiles(): void {
     this.files$.pipe(takeUntil(this.killSub$)).subscribe(files => {
-      this.filesystem = new DirectoryTree();
-      this.filesystem.addFiles(files);
-      const node = this.filesystem.traversePath([]);
-      this.emitCurrentNode(node);
+      this.refreshFilesystem(files);
     });
+  }
+
+  /**
+   * Re-inits file system with added files and resets node and path to root
+   *
+   * @private
+   * @param {LearningObject.Material.File[]} files
+   * @memberof FileBrowserComponent
+   */
+  private refreshFilesystem(files: LearningObject.Material.File[]) {
+    this.filesystem = new DirectoryTree();
+    this.filesystem.addFiles(files);
+    this.currentPath = [];
+    const node = this.filesystem.traversePath(this.currentPath);
+    this.emitCurrentNode(node);
   }
   /**
    * Subscribe to folder meta changes

@@ -1,27 +1,5 @@
 @import '~_vars.scss';
 
-$dark-text: #545e64;
-$light-blue-gradient: linear-gradient(45deg,
-darken($bright-blue, 10),
-lighten($bright-blue, 5));
-
-button {
-  border: 0;
-  padding: 10px 20px 10px 25px;
-
-  &.good {
-    background: $light-blue-gradient;
-  }
-
-  &.neutral {
-    color: $dark-text;
-  }
-
-  &.shadow {
-    box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-  }
-}
-
 .top__collection {
   display: flex;
   flex-direction: row;
@@ -56,9 +34,9 @@ button {
     align-items: center;
 
     a {
-      font-size: 20px;
+      font-size: $large;
       text-decoration: none;
-      color: black;
+      color: $darker-grey;
 
       .svg-inline--fa,
       .icon {
@@ -85,7 +63,7 @@ button {
       .button__cancel {
         background: white;
         color: $error-red;
-        font-size: 12px;
+        font-size: $smaller;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -117,12 +95,12 @@ button {
 
     li {
       list-style-type: none;
-      font-size: 18px;
+      font-size: $large;
 
       a {
         display: flex;
         text-decoration: none;
-        color: darken($placeholder, 20);
+        color: $dark-grey;
         padding: 0 15px 10px;
         position: relative;
         flex-direction: row;
@@ -131,7 +109,7 @@ button {
         .svg-inline--fa,
         .icon {
           margin-right: 5px;
-          font-size: 12px;
+          font-size: $smaller;
         }
 
         &:after {
@@ -141,14 +119,14 @@ button {
           left: 0;
           right: 0;
           height: 3px;
-          background: $bright-blue;
+          background: $light-blue;
           transform: translateY(3px);
           opacity: 0;
           transition: 0.2s all ease;
         }
 
         &.active {
-          color: $bright-blue;
+          color: $light-blue;
 
           &:after {
             transform: translateY(0);
@@ -157,19 +135,19 @@ button {
         }
 
         &.disabled {
-          opacity: 0.6;
+          opacity: 0.8;
           cursor: default;
         }
 
         &.new {
-          color: $bright-blue;
+          color: $light-blue;
 
           &:before {
             content: '';
             position: absolute;
             height: 6px;
             width: 6px;
-            background: $bright-blue;
+            background: $light-blue;
             border-radius: 50%;
             right: 0;
             top: 11px;
@@ -186,9 +164,9 @@ button {
 }
 
 .builder-navbar-wrapper__saving-indicator {
-  color: darken($placeholder, 30);
+  color: $dark-grey;
   margin-left: 30px;
-  font-size: 16px;
+  font-size: $normal;
   text-decoration: underline;
   padding-top: 1px;
 }
@@ -221,14 +199,14 @@ button {
 
     .banner__title {
       color: white;
-      font-size: 24px;
+      font-size: $larger;
       font-weight: bold;
     }
 
     .banner__sub {
       color: white;
       opacity: 0.85;
-      font-size: 16px;
+      font-size: $normal;
     }
   }
 
