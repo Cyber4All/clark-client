@@ -30,6 +30,7 @@ import {
 } from '../services/typings';
 import { UPLOAD_ERRORS } from './errors';
 import { AuthService } from 'app/core/auth.service';
+import { getUserAgentBrowser } from 'getUserAgentBrowser';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -151,6 +152,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   showDeletePopup = false;
   handleDeleteGenerator: Iterator<void>;
 
+  dragAndDropSupported = false;
+
   private bucketUploadPath = '';
 
   private newFileMeta: FileUploadMeta[] = [];
@@ -162,7 +165,22 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private fileManager: FileManagementService,
     private auth: AuthService
-  ) {}
+  ) {
+    this.checkDragDropSupport();
+  }
+
+  /**
+   * Checks if the user's browser is one that will support drag and drop uploads by checking the user agent
+   *
+   * @memberof UploadComponent
+   */
+  checkDragDropSupport() {
+    const supportedBrowserRegex = /chrome|firefox/gi;
+    const browser = getUserAgentBrowser();
+    if (supportedBrowserRegex.test(browser)) {
+      this.dragAndDropSupported = true;
+    }
+  }
 
   ngOnInit() {
     this.learningObject$

@@ -34,19 +34,23 @@ export class UrlRowComponent implements OnInit {
   }
   ngOnInit() {
 
-      if (this.url.title) {
-        this.titleText = this.url.title;
-      }
-       if (this.url.url) {
-        this.urlLink = this.url.url;
-      }
+    if (this.url.title) {
+      this.titleText = this.url.title;
+    }
+    if (this.url.url) {
+      this.urlLink = this.url.url;
+    }
+
+    if (this.url.title === '' && this.url.url === '') {
+      this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: true});
+    }
   }
   /**
    * Accepts a title object that only emits to the parent component
    * if the title input field is not empty
    * @param title
    */
-  updateTitle(title: object) {
+  updateTitle() {
     if (this.titleText !== '' && this.urlLink !== '') {
       if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
         this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true, focusMe: false});
@@ -61,7 +65,7 @@ export class UrlRowComponent implements OnInit {
    * if the url field isn't empty and is a valid URL
    * @param url
    */
-  updateLink(url: object) {
+  updateLink() {
     if (this.urlLink !== '' && this.titleText !== '') {
       if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
         this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true, focusMe: false});
