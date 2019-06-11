@@ -3,16 +3,19 @@
   <div class="filter">
     <div class="filter__container">
       <div class="btn-group to-right">
-        <button class="button neutral filters-button" (click)="toggleCollectionMenu($event)">
-          <span class="filter__container--clear-filter" tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="selectedCollection !== '' && selectedCollection" (click)="clearCollectionFilter(); $event.stopPropagation()">
-            <i class="far fa-times"></i>
-              </span> All Collections <i class="fas fa-chevron-down"></i>
+        <button *ngIf="adminOrEditor" class="button neutral filters-button" (click)="toggleCollectionMenu($event)" [ngClass]="{'filters-button--down': collectionMenuDown}">
+          <span class="filter-badge" *ngIf="selectedCollection" (click)="clearCollectionFilter(); $event.stopPropagation()">
+            {{ 1 }}
+          </span>
+          {{ selectedCollection ? selectedCollection.name : 'All Collections' }} <i class="fas fa-chevron-down"></i>
         </button>
-        <button class="button neutral filters-button" (click)="toggleFilterMenu($event)">
-          <span class="filter__container--clear-filter" tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size " (click)="clearStatusFilters(); $event.stopPropagation()">
-            <i class="far fa-times"></i>
-              </span> All Statuses <i class="fas fa-chevron-down"></i>
+        <button class="button neutral filters-button" (click)="toggleFilterMenu($event)" [ngClass]="{'filters-button--down': filterMenuDown}">
+          <span class="filter-badge" *ngIf="filters.size">
+            {{ filters.size }}
+          </span>
+          All Statuses <i class="fas fa-chevron-down"></i>
         </button>
+        <a *ngIf="filters.size || selectedCollection" (click)="clearAllFilters()" class="filters-clear">Clear filters</a>
       </div>
     </div>
   </div>
@@ -20,7 +23,7 @@
     <div #contextMenu class="filter-status__container">
       <ul *ngFor="let status of statuses">
         <li [ngClass]="status" (click)="toggleStatusFilter(status)">
-          <div *ngIf="filters.get(status)" class="indicator"></div>
+          <div *ngIf="filters.has(status)" class="indicator"></div>
           <i [ngClass]="getStatusIcon(status)"></i> {{ status | titlecase }}
         </li>
       </ul>
@@ -30,7 +33,7 @@
     <div #contextMenu class="filter-collection__container">
       <ul>
         <li *ngFor="let collection of collections" [className]="collection.abvName" (click)="toggleCollectionFilter(collection.abvName)">
-          <div *ngIf="collection.abvName === selectedCollection" class="indicator"></div> {{ collection.name }}
+          <div *ngIf="collection.abvName === selectedCollection?.abvName" class="indicator"></div> {{ collection.name }}
         </li>
       </ul>
     </div>

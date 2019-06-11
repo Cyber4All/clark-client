@@ -195,14 +195,21 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     this.learningObjects = [];
 
     this.getLearningObjects();
-   }
+  }
 
    getCollectionFilteredLearningObjects(collection: string) {
     this.query = { collection, currPage: 1 };
     this.learningObjects = [];
 
     this.getLearningObjects();
-   }
+  }
+
+  clearStatusAndCollectionFilters() {
+    this.query = { collection: undefined, status: undefined, currPage: 1 };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
 
   ngOnDestroy() {
     this.componentDestroyed$.next();

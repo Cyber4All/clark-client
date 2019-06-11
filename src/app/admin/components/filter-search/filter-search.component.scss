@@ -1,19 +1,60 @@
 @import '~_vars.scss';
 
-.filters-button {
+.btn-group {
+  align-items: center;
 
-  span {
-    padding-right: 10px;
+  a {
     color: $error-red;
+    font-size: $small;
     cursor: pointer;
   }
 }
 
+.filters-button {
+  transition: all 0.2s ease;
+
+  .filter-badge {
+    color: white;
+    background: $light-blue;
+    border-radius: 4px;
+    padding: 0px 5px;
+    margin-right: 5px;
+    margin-left: -5px;
+    text-align: center;
+    display: inline-block;
+  }
+
+  &:after {
+    transition: all 0.2s ease;
+  }
+
+  .svg-inline--fa {
+    transition: all 0.2s ease;
+  }
+
+  &.filters-button--down {
+    $lighter-blue: rgba(red($light-blue), green($light-blue), blue($light-blue), 0.1);
+    background: $lighter-blue;
+    color: $light-blue;
+    
+    & > .svg-inline--fa {
+      transform: rotate(180deg);
+    }
+
+    &:after {
+      border-color: transparent;
+    }
+  }
+}
+
+.filter-status__container,
 .filter-collection__container {
+
   li {
     position: relative;
     color: $dark-grey;
     text-indent: 15px;
+
     .indicator {
       width: 6px;
       height: 6px;

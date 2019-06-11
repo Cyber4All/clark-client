@@ -10,6 +10,8 @@
     filter-options
     (statusFilter)="getStatusFilteredLearningObjects($event)"
     (collectionFilter)="getCollectionFilteredLearningObjects($event)"
+    (clearAll)="clearStatusAndCollectionFilters()"
+    [adminOrEditor]="isAdminOrEditor"
   ></clark-admin-filter-search>
 
   <div #list class="list" main>
