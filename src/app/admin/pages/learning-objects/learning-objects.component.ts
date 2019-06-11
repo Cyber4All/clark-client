@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToasterService } from 'app/shared/toaster';
 import { AuthService } from 'app/core/auth.service';
+import { Collection, CollectionService } from 'app/core/collection.service';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -51,21 +52,38 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
 
   isAdminOrEditor: boolean;
 
+  activeCollection: Collection;
+
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private privateLearningObjectService: PrivateLearningObjectService,
     private route: ActivatedRoute,
     private toaster: ToasterService,
-    private auth: AuthService
+    private auth: AuthService,
+    private collectionService: CollectionService
   ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const username = params['username'];
+
       if (username !== null) {
         this.query = { text: username };
-        this.getLearningObjects();
       }
+   });
+
+   this.route.parent.params.pipe(
+     takeUntil(this.componentDestroyed$)
+   ).subscribe(async params => {
+     this.activeCollection = await (params.collection ? await this.collectionService.getCollection(params.collection) : undefined);
+
+     if (this.activeCollection) {
+       this.query = { collection: this.activeCollection.abvName };
+     } else {
+       this.query = { collection: undefined };
+     }
+
+     this.getLearningObjects();
    });
 
    this.userSearchInput$.pipe(
@@ -80,7 +98,9 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
 
    this.isAdminOrEditor = this.auth.hasEditorAccess();
 
-   this.getLearningObjects();
+   if (this.isAdminOrEditor || this.activeCollection) {
+    this.getLearningObjects();
+   }
   }
 
   ngAfterViewInit() {
