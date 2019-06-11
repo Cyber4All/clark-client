@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarService } from 'app/core/navbar.service';
 import { Subject } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntil, skipWhile, take } from 'rxjs/operators';
+import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { ToasterService } from 'app/shared/toaster';
@@ -21,12 +21,14 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   editorMode: boolean;
 
+  canScroll = true;
+
   private _initialized: boolean[] = [ false /* collections loaded */ ];
 
   constructor(
     private navbarService: NavbarService,
-    private router: Router,
     private route: ActivatedRoute,
+    private router: Router,
     private authService: AuthService,
     private collectionService: CollectionService,
     public toaster: ToasterService
@@ -46,6 +48,20 @@ export class AdminComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // hide CLARK navbar
     this.navbarService.hide();
+
+    // set the can scroll value to determine whether or not we add 30px of padding to the bottom of the content wrapper
+    const canScroll = this.route.snapshot.firstChild.data.canScroll;
+    this.canScroll = typeof canScroll === 'boolean' ? canScroll : true;
+
+    // listen for route changes to perform the same check above
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(() => this.route),
+      map(route => route.firstChild),
+      switchMap(route => route.data),
+    ).subscribe(data =>  {
+      this.canScroll = typeof data.canScroll === 'boolean' ? data.canScroll : true;
+    });
 
     if (this.authService.hasEditorAccess()) {
       this.editorMode = true;

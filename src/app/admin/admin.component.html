@@ -8,7 +8,7 @@
       [editorMode]="editorMode"
     ></clark-admin-sidebar>
   </div>
-  <div class="admin__main-content">
+  <div [ngClass]="{'admin__main-content--can-scroll': canScroll}" class="admin__main-content">
     <router-outlet></router-outlet>
   </div>
 </div>
