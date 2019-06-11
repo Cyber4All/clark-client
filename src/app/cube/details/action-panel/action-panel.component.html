@@ -6,15 +6,15 @@
   <div *ngIf="!revisedVersion; else reviewerPanel">
     <div class="btn-group vertical" [ngClass]="{'review-pending': !isReleased}">
       <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{hasDownloadAccess || !loggedin}}" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading}"
-        class="button good" id="download-button" (click)="addToCart(true)">
+        class="button good" id="download-button" (click)="addToCart(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
         <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
           <span *ngIf="downloading">
             <i class="fal fa-spinner-third fa-spin"></i>
           </span>
         </span>
-        <span *ngIf="!hasDownloadAccess">Not available for download</span>
+        <span tabindex="0" *ngIf="!hasDownloadAccess">Not available for download</span>
       </button>
-      <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral" id="save-to-library" (click)="addToCart()">
+      <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral" id="save-to-library" (click)="addToCart()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
         {{ saved ? 'Saved to your library!' : 'Save to Library' }}
         <span *ngIf="addingToLibrary">
           <i class="fal fa-spinner-third fa-spin"></i>
@@ -23,7 +23,7 @@
       <clark-revise-button *ngIf="userCanRevise" [learningObject]="learningObject"></clark-revise-button>
     </div>
     <ng-container *ngIf="!auth.user">
-      <div class="action-message" id="login-msg">Please
+      <div tabindex="0" class="action-message" id="login-msg">Please
         <a [routerLink]="['/auth/login']">log in</a> to add this Learning Object to your library.
       </div>
     </ng-container>
@@ -58,22 +58,22 @@
     <div class="details-share">
       <div class="share-title"></div>
       <div class="share-icons">
-        <button (click)="shareButton($event, 'facebook')" class="button icon-only facebook" id="facebook" aria-label="Share on Facebook">
+        <button (click)="shareButton($event, 'facebook')" class="button icon-only facebook" id="facebook" aria-label="Clickable Share on Facebook button">
           <i class="fab fa-facebook"></i>
         </button>
-        <button (click)="shareButton($event, 'twitter')" class="button icon-only twitter" id="twitter" aria-label="Share on Twitter">
+        <button (click)="shareButton($event, 'twitter')" class="button icon-only twitter" id="twitter" aria-label="Clickable Share on Twitter button">
           <i class="fab fa-twitter"></i>
         </button>
-        <button (click)="shareButton($event, 'linkedin')" class="button icon-only linkedin" id="linkedin" aria-label="Share on LinkedIn">
+        <button (click)="shareButton($event, 'linkedin')" class="button icon-only linkedin" id="linkedin" aria-label="Clickable Share on LinkedIn button">
           <i class="fab fa-linkedin"></i>
         </button>
-        <button (click)="shareButton($event, 'email')" class="button icon-only email" id="email" aria-label="Share via email">
+        <button (click)="shareButton($event, 'email')" class="button icon-only email" id="email" aria-label="Clickable Share via email button">
           <i class="fas fa-envelope"></i>
         </button>
-        <button (click)="shareButton($event, 'copyLink')" class="button icon-only copylink" id="copylink" aria-label="Copy link">
+        <button (click)="shareButton($event, 'copyLink')" class="button icon-only copylink" id="copylink" aria-label="Clickable Copy link button">
           <i class="fas fa-clipboard"></i>
         </button>
-        <textarea aria-label="link copy area" #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height:0;"></textarea>
+        <textarea tabindex="-1" aria-label="link copy area" #objectLinkElement readonly="true" value="{{url}}" style="position: fixed; opacity: 0; width: 0; height:0;"></textarea>
       </div>
     </div>
   </div>

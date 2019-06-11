@@ -27,7 +27,7 @@
       <div class="link-listing" *ngFor="let link of materials.urls">
         <span tabindex="0" class="link-listing-title">{{ link.title }}</span>
         <span class="link-listing-url">
-          <a href="{{ link.url }}" target="_blank">{{ copy.OPENLINK }}</a>
+          <a href="{{ link.url }}" target="_blank" attr.aria-label="Clickable link to {{ link.title }}">{{ copy.OPENLINK }}</a>
         </span>
       </div>
     </section>

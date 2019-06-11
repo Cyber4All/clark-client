@@ -3,7 +3,7 @@
     <div class="header">    
       <div class="name" tabindex="0">{{ learningObject.name }}</div>
       <div class="author">
-        <span tabindex="0">Created by</span>
+        <span tabindex="0">Created by </span>
         <a tabindex="0" [routerLink]="['/users', learningObject.author.username]" class="link" id="author-link" attr.aria-label="Clickable link {{ learningObject.author.name }}">{{learningObject.author.name | titlecase}}</a> - 
         <a tabindex="-0" [routerLink]="['/organization', learningObject.author.organization]" class="link"  attr.aria-label="Clickable link {{ learningObject.author.organization }}">{{learningObject.author.organization | titlecase}}</a>
         <span tabindex="0">, updated {{ learningObject.date | date:'shortDate' }}</span>
@@ -17,7 +17,7 @@
         </div>
         <div class="header-bottom">
           <div class="rating">
-            <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length" tabindex="0" attr.aria-label="Rating {{ averageRating }} out of 5 stars"></clark-rating-stars>
+            <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
             <a *ngIf="canRate"  id="write-review" (click)="showRatingPopup()" aria-label="Clickable link write a review" tabindex="0">Write a review</a>
             <span class="emailNotVerified" *ngIf="!canRate && !owned" tip="Please log in and verify your email to rate this learning object.">
               <i class="far fa-question-circle"></i>
