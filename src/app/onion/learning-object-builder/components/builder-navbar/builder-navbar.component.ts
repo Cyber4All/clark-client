@@ -4,12 +4,13 @@ import { AuthService } from 'app/core/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 import { StatusDescriptions } from '@env/status-descriptions';
+import { HistoryService } from 'app/core/history.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -40,6 +41,8 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   destroyed$: Subject<void> = new Subject();
 
+  redirectUrl: string;
+
   @Input() adminMode = false;
 
   constructor(
@@ -49,7 +52,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private toasterService: ToasterService,
     private collectionService: CollectionService,
     private contextMenuService: ContextMenuService,
-    private statuses: StatusDescriptions,
+    private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore
   ) {
@@ -77,6 +80,8 @@ export class BuilderNavbarComponent implements OnDestroy {
 
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
+
+    this.redirectUrl = this.history.lastRoute ? this.history.lastRoute.url : undefined;
   }
 
   /**
