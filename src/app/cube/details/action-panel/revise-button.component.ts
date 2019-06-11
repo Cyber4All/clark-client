@@ -48,7 +48,7 @@ export class ReviseButtonComponent {
    * TODO: This flow must be updated after the implementation of ch26
    */
   makeRevision(): void {
-    if (!this.learningObject.hasRevision) {
+    if (this.learningObject.status === LearningObject.Status.RELEASED) {
       this.showPopup = true;
     } else {
       this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
