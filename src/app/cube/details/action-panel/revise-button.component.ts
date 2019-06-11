@@ -19,8 +19,8 @@ import { of } from 'rxjs';
           <i class="fas fa-exclamation-triangle"></i>
         </div>
         <p>
-          Revising a released Learning Object will move the working copy on the user's dashboard
-          back to proofing. The user will be able to see this, but will not be able to make any
+          Revising a released Learning Object will change the status on the user's dashboard
+          from released to proofing. The user will be able to see this, but will not be able to make any
           edits themselves.
         </p>
         <p> Are you sure you want to do this? </p>
