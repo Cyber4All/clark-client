@@ -19,13 +19,12 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   collections: Collection[] = [];
   isCollectionRestricted = false;
   filtersModified$: Subject<void> = new Subject();
-  _selectedCollection: Collection;
-  // filters applied to dashboard objects (status filters)
   filters: Set<string> = new Set();
   statuses = Object.values(LearningObject.Status);
 
-  @Input() adminOrEditor: boolean;
+  private _selectedCollection: Collection;
 
+  @Input() adminOrEditor: boolean;
 
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
@@ -48,7 +47,10 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     this.getCollections();
     this.findUserRestrictions();
 
+    // add the 'all' option into the list of statuses
     this.statuses.splice(0, 0, 'All');
+
+    this.statuses = this.statuses.filter(s => !['rejected', 'unreleased'].includes(s.toLowerCase()))
   }
 
   /**

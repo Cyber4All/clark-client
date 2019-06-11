@@ -1,5 +1,14 @@
 import { ChangeEvent as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
@@ -15,12 +24,10 @@ import { Collection, CollectionService } from 'app/core/collection.service';
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [
-    PublicLearningObjectService,
-    PrivateLearningObjectService
-  ],
+  providers: [PublicLearningObjectService, PrivateLearningObjectService]
 })
-export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LearningObjectsComponent
+  implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
 
   learningObjects: LearningObject[] = [];
@@ -28,7 +35,7 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
 
   activeLearningObject;
 
-  adminStatusList =  Object.keys(LearningObject.Status);
+  adminStatusList = Object.keys(LearningObject.Status);
   selectedStatus: string;
 
   listViewHeightOffset: number;
@@ -61,7 +68,7 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     private toaster: ToasterService,
     private auth: AuthService,
     private collectionService: CollectionService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -70,37 +77,41 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
       if (username !== null) {
         this.query = { text: username };
       }
-   });
+    });
 
-   this.route.parent.params.pipe(
-     takeUntil(this.componentDestroyed$)
-   ).subscribe(async params => {
-     this.activeCollection = await (params.collection ? await this.collectionService.getCollection(params.collection) : undefined);
+    this.route.parent.params
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe(async params => {
+        this.activeCollection = await (params.collection
+          ? await this.collectionService.getCollection(params.collection)
+          : undefined);
 
-     if (this.activeCollection) {
-       this.query = { collection: this.activeCollection.abvName };
-     } else {
-       this.query = { collection: undefined };
-     }
+        if (this.activeCollection) {
+          this.query = { collection: this.activeCollection.abvName };
+        } else {
+          this.query = { collection: undefined };
+        }
 
-     this.getLearningObjects();
-   });
+        this.getLearningObjects();
+      });
 
-   this.userSearchInput$.pipe(
-     takeUntil(this.componentDestroyed$),
-     debounceTime(650)
-   ).subscribe(searchTerm => {
-     this.query = { currPage: 1, text: searchTerm }
-     this.learningObjects = [];
+    this.userSearchInput$
+      .pipe(
+        takeUntil(this.componentDestroyed$),
+        debounceTime(650)
+      )
+      .subscribe(searchTerm => {
+        this.query = { currPage: 1, text: searchTerm };
+        this.learningObjects = [];
 
-     this.getLearningObjects();
-   });
+        this.getLearningObjects();
+      });
 
-   this.isAdminOrEditor = this.auth.hasEditorAccess();
+    this.isAdminOrEditor = this.auth.hasEditorAccess();
 
-   if (this.isAdminOrEditor || this.activeCollection) {
-    this.getLearningObjects();
-   }
+    if (this.isAdminOrEditor || this.activeCollection) {
+      this.getLearningObjects();
+    }
   }
 
   ngAfterViewInit() {
@@ -129,7 +140,10 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     if (!this.allResultsReceived) {
       this.loading = true;
 
-      if (event && (event.end < 0 || event.end !== this.learningObjects.length - 1)) {
+      if (
+        event &&
+        (event.end < 0 || event.end !== this.learningObjects.length - 1)
+      ) {
         return;
       }
 
@@ -138,17 +152,27 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
         this.query = { currPage: this.query.currPage + 1 };
       }
 
-      this.publicLearningObjectService.getLearningObjects(this.query)
+      this.publicLearningObjectService
+        .getLearningObjects(this.query)
         .then(val => {
-          this.learningObjects = this.learningObjects.concat(val.learningObjects);
+          this.learningObjects = this.learningObjects.concat(
+            val.learningObjects
+          );
 
           if (this.learningObjects.length === val.total) {
             this.allResultsReceived = true;
           }
-        }).catch(error => {
+        })
+        .catch(error => {
           console.error(error);
-          this.toaster.notify('Error!', 'There was an error fetching collections. Please try again later.', 'bad', 'far fa-times');
-        }).finally(() => {
+          this.toaster.notify(
+            'Error!',
+            'There was an error fetching collections. Please try again later.',
+            'bad',
+            'far fa-times'
+          );
+        })
+        .finally(() => {
           this.loading = false;
         });
     }
@@ -158,12 +182,18 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     const query = {
       text: author
     };
-    this.publicLearningObjectService.getLearningObjects(query)
+    this.publicLearningObjectService
+      .getLearningObjects(query)
       .then(val => {
         this.learningObjects = val.learningObjects;
-      }).catch(error => {
-        this.toaster
-          .notify('Error!', 'There was an error fetching this user\'s learning objects. Please try again later.', 'bad', 'far fa-times');
+      })
+      .catch(error => {
+        this.toaster.notify(
+          'Error!',
+          'There was an error fetching this user\'s learning objects. Please try again later.',
+          'bad',
+          'far fa-times'
+        );
         console.error(error);
       });
   }
@@ -197,7 +227,7 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     this.getLearningObjects();
   }
 
-   getCollectionFilteredLearningObjects(collection: string) {
+  getCollectionFilteredLearningObjects(collection: string) {
     this.query = { collection, currPage: 1 };
     this.learningObjects = [];
 
@@ -215,4 +245,4 @@ export class LearningObjectsComponent implements OnInit, AfterViewInit, OnDestro
     this.componentDestroyed$.next();
     this.componentDestroyed$.unsubscribe();
   }
- }
+}
