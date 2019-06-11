@@ -1,38 +1,5 @@
 @import '~_vars.scss';
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 20;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & > div {
-    overflow: auto;
-    position: relative;
-  }
-
-  .popup-close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    transform: scale(1);
-    font-size: 16px;
-    color: rgba(0, 0, 0, 0.4);
-
-    &:hover {
-      transform: scale(1.1);
-    }
-  }
-}
-
 .collection-name {
   color: $light-blue;
 }
@@ -72,13 +39,13 @@
   top: 0;
   bottom: 0;
 
-  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
-  font-size: 20px;
+  $color: $dark-grey;
+  font-size: $large;
   padding: 20px;
 
   .svg-inline--fa {
     color: $light-blue;
-    font-size: 30px;
+    font-size: $larger;
     margin-bottom: 20px;
   }
 }

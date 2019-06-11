@@ -8,8 +8,8 @@ a {
 
 .sidebar__top {
   padding-left: 25px;
-  color: $light-text;
-  font-size: 18px;
+  color: $dark-grey;
+  font-size: $normal;
   
   .svg-inline--fa,
   .icon {
@@ -33,12 +33,13 @@ a {
     }
   }
   .curator-menu__title,
+
   li {
     padding: 10px 25px; 
     box-sizing: border-box;
-    color: $light-text;
+    color: $dark-grey;
     list-style-type: none;
-    font-size: 16px;
+    font-size: $normal;
     position: relative;
     transition: all 0.2s ease;
 
@@ -67,7 +68,7 @@ a {
   .sidebar__menu--active li,
   .curator-menu--active .curator-menu__title {
     position: relative;
-    background: rgba(red($light-blue), green($light-blue), blue($light-blue), 0.13);
+    background: rgba(red($light-blue), green($light-blue), blue($light-blue), 0.08);
     color: $light-blue !important;
 
     &:before {
@@ -82,7 +83,7 @@ a {
 
     .svg-inline--fa,
     .icon {
-      font-size: 12px;
+      font-size: $smaller;
       position: absolute;
       top: 0;
       bottom: 0;

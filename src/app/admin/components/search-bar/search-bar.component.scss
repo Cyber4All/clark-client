@@ -1,18 +1,19 @@
 @import '~_vars.scss';
 
 .searchbar {
-    width: 100%;
-    background-color: white;
-    border-radius: 5px;
-    margin-top: 20px;
-    box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    transition: all 0.2s ease;
-    position: relative;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+  margin-top: 20px;
+  box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .searchbar:focus-within {
-    box-shadow: 0px 0px 16px 2px rgba(red($light-blue), green($light-blue), blue($light-blue), 0.1);
+  box-shadow: 0px 0px 16px 2px
+    rgba(red($light-blue), green($light-blue), blue($light-blue), 0.1);
 }
 
 .searchbar__container {
@@ -23,22 +24,20 @@
 }
 
 .container__input {
-    border: none;
-    font-size: 14px;
-    width: 100%;
-    color: $dark-grey;
-    outline: none;
-    height: 100%;
-    font-weight: 350;
-    padding: 13px;
+  border: none;
+  font-size: $small;
+  width: 100%;
+  color: $dark-grey;
+  outline: none;
+  height: 100%;
+  padding: 13px;
 }
 
-input::placeholder { 
-    color: $placeholder; 
+input::placeholder {
+  color: $placeholder;
 }
 
 .container__icon {
-    color: $light-blue;
-    font-size: 16px;
+  color: $light-blue;
+  font-size: $normal;
 }
-

@@ -4,7 +4,7 @@
 
 body {
   font-family: 'Source Sans Pro', serif;
-  background: #f0f4f7 !important;
+  background: $wrapper-background !important;
   height: 100vh;
 }
 
@@ -52,7 +52,7 @@ body {
 
   &.neutral {
     color: $dark-grey;
-    background: white;
+    background: transparent;
 
     &:after {
       content: '';

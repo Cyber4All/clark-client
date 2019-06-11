@@ -1,8 +1,5 @@
 @import '~_vars.scss';
 
-$border-color: #EEEEEE;
-$light-text: #9D9D9D;
-
 .admin {
   display: grid;
   grid-template-columns: minmax(150px, 225px) 1fr;
@@ -18,7 +15,7 @@ $light-text: #9D9D9D;
   background: white;
   padding: 20px 0px;
   height: 100vh;
-  border-right: 2px solid $border-color;
+  border-right: 2px solid $light-grey;
 }
 
 .admin__main-content {

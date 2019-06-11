@@ -28,10 +28,8 @@
   }
 
   .body__column-headers {
-    font-weight: bold;
-    font-size: 14px;
+    font-size: $small;
     color: $dark-grey;
-    opacity: 0.46;
     padding-top: 20px;
     padding-bottom: 10px;
   }
@@ -53,8 +51,8 @@
   right: 0;
   top: 0;
   bottom: 0;
-  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
-  font-size: 16px;
+  color: $dark-grey;
+  font-size: $normal;
 }
 
 .empty-template__top {
@@ -63,12 +61,12 @@
   align-items: center;
   flex-direction: row;
   color: $dark-grey;
-  font-size: 30px;
+  font-size: $larger;
   margin-bottom: 10px;
 }
 
 .svg-inline--fa {
-  font-size: 50px;
+  font-size: $largest;
   margin-right: 10px;
 }
 
@@ -79,13 +77,13 @@
   justify-content: center;
   text-align: center;
 
-  color: rgba(red($dark-grey), green($dark-grey), blue($dark-grey), 0.6);
-  font-size: 20px;
+  color: $dark-grey;
+  font-size: $large;
   padding: 40px;
 
   .svg-inline--fa {
     color: $light-blue;
-    font-size: 30px;
+    font-size: $larger;
     margin-bottom: 20px;
   }
 }

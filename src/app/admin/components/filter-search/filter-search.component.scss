@@ -1,23 +1,7 @@
 @import '~_vars.scss';
-$dark-grey: #545e64;
-$light-blue-gradient: linear-gradient(
-  45deg,
-  darken($light-blue, 10),
-  lighten($light-blue, 5)
-);
-
-// FIXME this can be removed when the new button styles are applied cross-application
-button {
-  font-size: 14px;
-  border: 0;
-  padding: 10px 20px 10px 25px;
-
-  &.neutral {
-    background-color: transparent;
-  }
-}
 
 .filters-button {
+
   span {
     padding-right: 10px;
     color: $error-red;
