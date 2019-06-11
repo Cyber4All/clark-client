@@ -21,7 +21,7 @@ const cube_routes: Routes = [
     component: CubeComponent,
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'c/:name', component: CollectionDetailsComponent },
+      { path: 'c/:abvName', component: CollectionDetailsComponent },
       { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {

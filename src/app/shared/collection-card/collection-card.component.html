@@ -1,5 +1,5 @@
 
-<div class="collection-card" routerLink="/c/{{ collection.name }}">
+<div class="collection-card" routerLink="/c/{{ collection.abvName }}">
   <img *ngIf="pictureLocation; else genericLogoTemplate" class="card__image" src="{{ pictureLocation }}" alt="{{ collection.name }} logo">
   <div class="card__name">{{ collection.name }}</div>
 </div>
