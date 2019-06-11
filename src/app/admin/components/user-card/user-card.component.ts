@@ -45,11 +45,23 @@ export class AdminUserCardComponent {
 
   constructor(private userService: UserService, private cd: ChangeDetectorRef) {}
 
-  toggleCardMenu(value) {
+  /**
+   * Toggle the menu items on the card hover value
+   *
+   * @param {boolean} value true if the menu should display, false otherwise
+   * @memberof AdminUserCardComponent
+   */
+  toggleCardMenu(value: boolean) {
     this.showMiddle = value;
     this.cd.detectChanges();
   }
 
+  /**
+   * Retrieve the gravatar image for the card's user
+   *
+   * @returns
+   * @memberof AdminUserCardComponent
+   */
   getGravatar() {
     return this.userService.getGravatarImage(
       this.user.email,
@@ -57,14 +69,29 @@ export class AdminUserCardComponent {
     );
   }
 
+  /**
+   * Emit an event to the parent component instructing it to navigate to the user's objects
+   *
+   * @memberof AdminUserCardComponent
+   */
   showUserObjects() {
     this.navigateToUserObjects.emit();
   }
 
+  /**
+   * Emit an event to the parent component instructing it edit the card's user's privileges
+   *
+   * @memberof AdminUserCardComponent
+   */
   editUserPrivileges() {
     this.editPrivileges.emit();
   }
 
+  /**
+   * Emit an event to the parent component instructing it to remove the card's user as a reviewer from the active collection
+   *
+   * @memberof AdminUserCardComponent
+   */
   removeReviewer() {
     this.removeMember.emit(this.user.id);
   }

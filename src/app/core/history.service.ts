@@ -17,11 +17,23 @@ export class HistoryService {
     });
   }
 
-  get lastRoute() {
+  /**
+   * Retrieve the previous location as a NavigationEnd Event
+   *
+   * @readonly
+   * @memberof HistoryService
+   */
+  get lastRoute(): NavigationEnd {
     return this.history[this.history.length - 2];
   }
 
 
+  /**
+   * Retrieve the current location as a NavigationEnd Event
+   *
+   * @readonly
+   * @memberof HistoryService
+   */
   get currentRoute() {
     return this.history[this.history.length - 1];
   }

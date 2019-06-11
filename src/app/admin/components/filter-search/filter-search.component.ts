@@ -1,5 +1,12 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Input, Output, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
 import { CollectionService, Collection } from 'app/core/collection.service';
@@ -14,8 +21,7 @@ import { ToasterService } from 'app/shared/toaster';
   templateUrl: './filter-search.component.html',
   styleUrls: ['./filter-search.component.scss']
 })
-export class FilterSearchComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+export class FilterSearchComponent implements OnInit {
   collections: Collection[] = [];
   isCollectionRestricted = false;
   filtersModified$: Subject<void> = new Subject();
@@ -41,7 +47,7 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private contextMenuService: ContextMenuService,
     private toaster: ToasterService
-    ) { }
+  ) {}
 
   ngOnInit() {
     this.getCollections();
@@ -50,31 +56,35 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     // add the 'all' option into the list of statuses
     this.statuses.splice(0, 0, 'All');
 
-    this.statuses = this.statuses.filter(s => !['rejected', 'unreleased'].includes(s.toLowerCase()))
+    this.statuses = this.statuses.filter(
+      s => !['rejected', 'unreleased'].includes(s.toLowerCase())
+    );
   }
 
   /**
    * Fetches the collections from the CollectionService and formats them for use in the context menu.
    */
   private getCollections(): void {
-    this.collectionService.getCollections().then(collections => {
-      this.collections = collections;
-      this.collections.push({ abvName: 'all', name: 'All', hasLogo: false});
+    this.collectionService
+      .getCollections()
+      .then(collections => {
+        this.collections = collections;
+        this.collections.push({ abvName: 'all', name: 'All', hasLogo: false });
 
-      this.collections.sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+        this.collections.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+      })
+      .catch(error => {
+        this.toaster.notify('Error!', error, 'bad', 'far fa-times');
+        console.error(error);
       });
-
-    }).catch(error => {
-      this.toaster.notify('Error!', error, 'bad', 'far fa-times');
-      console.error(error);
-    });
   }
 
   /**
@@ -88,10 +98,23 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  setSelectedCollection(val: string) {
-    this._selectedCollection = this.collections.filter(x => x.abvName === val)[0];
+  /**
+   * Set's the selected collection property to the full Collection object represented by the abbreviated name
+   * @param { string } abvName abbreviated name of the collection
+   */
+  setSelectedCollection(abvName: string) {
+    this._selectedCollection = this.collections.filter(
+      x => x.abvName === abvName
+    )[0];
   }
 
+  /**
+   * Return the currently selected collection
+   *
+   * @readonly
+   * @type {Collection}
+   * @memberof FilterSearchComponent
+   */
   get selectedCollection(): Collection {
     return this._selectedCollection;
   }
@@ -103,7 +126,16 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   toggleFilterMenu(event: MouseEvent) {
     if (this.filterMenu) {
       if (!this.filterMenuDown && event) {
-        this.contextMenuService.open(this.filterMenu, (event.currentTarget as HTMLElement), {top: 10, left: (event.currentTarget as HTMLElement).getBoundingClientRect().width - 200});
+        this.contextMenuService.open(
+          this.filterMenu,
+          event.currentTarget as HTMLElement,
+          {
+            top: 10,
+            left:
+              (event.currentTarget as HTMLElement).getBoundingClientRect()
+                .width - 200
+          }
+        );
       } else {
         this.contextMenuService.destroy(this.filterMenu);
       }
@@ -121,7 +153,16 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   toggleCollectionMenu(event: MouseEvent) {
     if (this.collectionMenu) {
       if (!this.collectionMenuDown && event) {
-        this.contextMenuService.open(this.collectionMenu, (event.currentTarget as HTMLElement), {top: 10, left: (event.currentTarget as HTMLElement).getBoundingClientRect().width - 200});
+        this.contextMenuService.open(
+          this.collectionMenu,
+          event.currentTarget as HTMLElement,
+          {
+            top: 10,
+            left:
+              (event.currentTarget as HTMLElement).getBoundingClientRect()
+                .width - 200
+          }
+        );
       } else {
         this.contextMenuService.destroy(this.collectionMenu);
       }
@@ -148,7 +189,7 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
     } else {
       this.filters.add(filter);
     }
-    this.statusFilter.emit(Array.from( this.filters ));
+    this.statusFilter.emit(Array.from(this.filters));
   }
 
   /**
@@ -160,7 +201,10 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
       this.clearCollectionFilters();
       this.toggleCollectionMenu(undefined);
       return;
-    } else if (this.selectedCollection && filter === this.selectedCollection.abvName) {
+    } else if (
+      this.selectedCollection &&
+      filter === this.selectedCollection.abvName
+    ) {
       this.clearCollectionFilters();
     } else {
       this.setSelectedCollection(filter);
@@ -169,24 +213,41 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Remove all applied filters
+   * Remove all applied status filters
    */
   clearStatusFilters() {
     this.filters.clear();
     this.statusFilter.emit([]);
   }
 
+  /**
+   * Remove any applied collection filters
+   *
+   * @memberof FilterSearchComponent
+   */
   clearCollectionFilters() {
     this.setSelectedCollection(undefined);
     this.collectionFilter.emit(undefined);
   }
 
+  /**
+   * Remove all active status filters and collection filters
+   *
+   * @memberof FilterSearchComponent
+   */
   clearAllFilters() {
     this.setSelectedCollection(undefined);
     this.filters.clear();
     this.clearAll.emit();
   }
 
+  /**
+   * Returns the correct icon for the given Learning Object status
+   *
+   * @param {string} status the status for which to return an icon
+   * @returns {string}
+   * @memberof FilterSearchComponent
+   */
   getStatusIcon(status: string): string {
     switch (status) {
       case 'unreleased':
@@ -203,11 +264,4 @@ export class FilterSearchComponent implements OnInit, OnDestroy {
         return 'far fa-ban';
     }
   }
-
-  ngOnDestroy() {
-    for (const sub of this.subscriptions) {
-      sub.unsubscribe();
-    }
-  }
-
 }

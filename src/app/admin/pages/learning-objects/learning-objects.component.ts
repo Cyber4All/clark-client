@@ -48,6 +48,7 @@ export class LearningObjectsComponent
 
   displayStatusModal = false;
 
+  // the total number of learning objects for a given query as dictated from the API
   total: number;
 
   loading: boolean;
@@ -55,6 +56,7 @@ export class LearningObjectsComponent
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
 
+  // whether or not the virtual scrolling list should continue trying to fetch as it's scrolled
   allResultsReceived: boolean;
 
   isAdminOrEditor: boolean;
@@ -71,6 +73,7 @@ export class LearningObjectsComponent
   ) {}
 
   ngOnInit(): void {
+    // query by a username if it's passed in
     this.route.queryParams.subscribe(params => {
       const username = params['username'];
 
@@ -79,6 +82,7 @@ export class LearningObjectsComponent
       }
     });
 
+    // listen for changes in the route and append the collection to the query
     this.route.parent.params
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe(async params => {
@@ -95,6 +99,7 @@ export class LearningObjectsComponent
         this.getLearningObjects();
       });
 
+    // listen for input events from the search component and perform the search action
     this.userSearchInput$
       .pipe(
         takeUntil(this.componentDestroyed$),
@@ -120,10 +125,21 @@ export class LearningObjectsComponent
       this.listElement.nativeElement.getBoundingClientRect().top + 50;
   }
 
-  get query() {
+  /**
+   * Return te Query object
+   *
+   * @type {Query}
+   * @memberof LearningObjectsComponent
+   */
+  get query(): Query {
     return this._query;
   }
 
+  /**
+   * Sets the specified properties onto the Query object
+   *@param {Partial<Query>} q an object with the properties and their values with which to update the Query object
+   * @memberof LearningObjectsComponent
+   */
   set query(q: Partial<Query>) {
     // tslint:disable-next-line:forin
     for (const key in q) {
@@ -136,14 +152,23 @@ export class LearningObjectsComponent
     }
   }
 
+  /**
+   * Retrieve Learning Objects from the service
+   *
+   * @param {VirtualScrollerChangeEvent} [event] the event dictating that the virtual scroller has reached the end of the current list
+   * @returns
+   * @memberof LearningObjectsComponent
+   */
   getLearningObjects(event?: VirtualScrollerChangeEvent) {
     if (!this.allResultsReceived) {
+      // we know there are more objects to pull
       this.loading = true;
 
       if (
         event &&
         (event.end < 0 || event.end !== this.learningObjects.length - 1)
       ) {
+        // this is a false event from the virtual scroller, disregard
         return;
       }
 
@@ -178,6 +203,12 @@ export class LearningObjectsComponent
     }
   }
 
+  /**
+   *Retrieve an author's Learning Objects
+   *
+   * @param {string} author the username of the author
+   * @memberof LearningObjectsComponent
+   */
   getUserLearningObjects(author: string) {
     const query = {
       text: author
@@ -198,28 +229,12 @@ export class LearningObjectsComponent
       });
   }
 
-  openChangeStatusModal(learningObject: LearningObject) {
-    this.displayStatusModal = true;
-    this.activeLearningObject = learningObject;
-  }
-
-  updateLearningObjectStatus() {
-    this.privateLearningObjectService.save(
-      this.activeLearningObject.id,
-      this.activeLearningObject.author.username,
-      { status: this.selectedStatus }
-    );
-    this.displayStatusModal = false;
-  }
-
-  isCurrentStatus(status: string) {
-    return this.activeLearningObject.status === status.toLowerCase();
-  }
-
-  toggleStatus(status: string) {
-    this.selectedStatus = status.toLowerCase();
-  }
-
+  /**
+   * Update the status filters object and reset the Learning Objects query
+   *
+   * @param {string[]} statuses the list of statuses by which to filter
+   * @memberof LearningObjectsComponent
+   */
   getStatusFilteredLearningObjects(statuses: string[]) {
     this.query = { status: statuses, currPage: 1 };
     this.learningObjects = [];
@@ -227,6 +242,12 @@ export class LearningObjectsComponent
     this.getLearningObjects();
   }
 
+  /**
+   * Update the Query's collection parameter and reset the Learning Objects query
+   *
+   * @param {string} collection the abbreviated name of the collection by which to filter
+   * @memberof LearningObjectsComponent
+   */
   getCollectionFilteredLearningObjects(collection: string) {
     this.query = { collection, currPage: 1 };
     this.learningObjects = [];
@@ -234,6 +255,11 @@ export class LearningObjectsComponent
     this.getLearningObjects();
   }
 
+  /**
+   * Clear the filters of both collection and status and reset the Learning Objects query
+   *
+   * @memberof LearningObjectsComponent
+   */
   clearStatusAndCollectionFilters() {
     this.query = { collection: undefined, status: undefined, currPage: 1 };
     this.learningObjects = [];

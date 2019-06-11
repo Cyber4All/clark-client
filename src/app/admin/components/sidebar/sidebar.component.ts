@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Collection } from 'app/core/collection.service';
 import { trigger, query, style, animate, transition } from '@angular/animations';
+import { HistoryService } from 'app/core/history.service';
 
 @Component({
   selector: 'clark-admin-sidebar',
@@ -32,7 +33,7 @@ export class SidebarComponent implements OnDestroy {
 
   @Input() initialized = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private history: HistoryService) {}
 
   /**
    * Navigate to previous location
@@ -40,8 +41,7 @@ export class SidebarComponent implements OnDestroy {
    * @memberof SidebarComponent
    */
   navigateBack() {
-    // TODO this should take a redirect URL
-    this.router.navigateByUrl('/'); // navigates home
+    this.router.navigateByUrl(this.history.lastRoute ? this.history.lastRoute.url : '/');
   }
 
   ngOnDestroy() {

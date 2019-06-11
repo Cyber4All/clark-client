@@ -60,7 +60,13 @@ export class PrivilegesListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-
+  
+  /**
+   * Remove the privilege at the specified index
+   *
+   * @param {number} index
+   * @memberof PrivilegesListComponent
+   */
   async remove(index: number) {
     this.deleteMode = index;
     const confirmation = await this.deleteConfirmation$.pipe(first()).toPromise();
@@ -71,6 +77,14 @@ export class PrivilegesListComponent implements OnInit {
     this.deleteMode = undefined;
   }
 
+  /**
+   * Instructs the ngFor how to track changes to the list of privileges
+   *
+   * @param {*} _
+   * @param {*} item
+   * @returns
+   * @memberof PrivilegesListComponent
+   */
   trackBy(_, item) {
     return item.join('@');
   }

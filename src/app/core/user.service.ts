@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
@@ -11,16 +15,23 @@ import { UserQuery } from 'app/shared/interfaces/query';
 
 @Injectable()
 export class UserService {
-  constructor(private http: HttpClient, private auth: AuthService) {
-  }
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
+  /**
+   * Edit a user's basic information
+   *
+   * @param {UserEdit} user the new user object
+   * @returns {Promise<any>}
+   * @memberof UserService
+   */
   editUserInfo(user: UserEdit): Promise<any> {
     return this.http
       .patch(
         USER_ROUTES.EDIT_USER_INFO,
         { user },
         {
-          withCredentials: true, responseType: 'text'
+          withCredentials: true,
+          responseType: 'text'
         }
       )
       .pipe(
@@ -30,6 +41,13 @@ export class UserService {
       .toPromise();
   }
 
+  /**
+   * Check to see if a user exists for the given username
+   *
+   * @param {string} username the username of the user to validate
+   * @returns {Promise<boolean>}
+   * @memberof UserService
+   */
   validateUser(username: string): Promise<boolean> {
     return username && username !== 'undefined'
       ? this.http
@@ -53,14 +71,19 @@ export class UserService {
       : Promise.resolve(false);
   }
 
-  fetchReviewers(collection: string, role: any): Promise<User[]> {
+  /**
+   * Fetch a list of user's who are reviewers for the given collection
+   *
+   * @param {string} collection
+   * @param {*} role
+   * @returns {Promise<User[]>}
+   * @memberof UserService
+   */
+  fetchReviewers(collection: string): Promise<User[]> {
     return this.http
-      .get(
-        USER_ROUTES.FETCH_MEMBERS(collection, role),
-        {
-          withCredentials: true
-        }
-      )
+      .get(USER_ROUTES.FETCH_MEMBERS(collection, 'reviewer'), {
+        withCredentials: true
+      })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -68,15 +91,23 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(member => new  User(member));
+        return arr.map(member => new User(member));
       });
-
   }
 
+  /**
+   * Assigns a user to a specified collection with a specified role
+   *
+   * @param {string} memberId the id of the user
+   * @param {string} collection the abbreviated name of the collection
+   * @param {string} role the string representation of the role
+   * @returns {Promise<void>}
+   * @memberof UserService
+   */
   async assignMember(
     memberId: string,
     collection: string,
-    role: any
+    role: string
   ): Promise<void> {
     await this.http
       .put(
@@ -84,7 +115,7 @@ export class UserService {
         { role },
         {
           withCredentials: true,
-          responseType: 'text',
+          responseType: 'text'
         }
       )
       .pipe(
@@ -94,20 +125,21 @@ export class UserService {
       .toPromise();
   }
 
-  editMember(
-    collection: string,
-    memberId: string,
-    role: any
-  ): Promise<User> {
+  /**
+   * Edit's a user's role in a collection
+   *
+   * @param {string} collection the selected collection
+   * @param {string} memberId the id of the user
+   * @param {string} role the user's new role in that collection
+   * @returns {Promise<User>}
+   * @memberof UserService
+   */
+  editMember(collection: string, memberId: string, role: string): Promise<User> {
     return this.http
-      .patch(
-        USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId),
-        role,
-        {
-          withCredentials: true,
-          responseType: 'text',
-        }
-      )
+      .patch(USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId), role, {
+        withCredentials: true,
+        responseType: 'text'
+      })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -118,17 +150,23 @@ export class UserService {
       });
   }
 
-  async removeMember(
-    collection: string,
-    memberId: string,
-  ): Promise<void> {
-    await this.http.request(
+  /**
+   * Remove a user's privilege from a collection
+   *
+   * @param {string} collection the collection to remove
+   * @param {string} memberId the user who's privilege shall be revoked
+   * @returns {Promise<void>}
+   * @memberof UserService
+   */
+  async removeMember(collection: string, memberId: string): Promise<void> {
+    await this.http
+      .request(
         'delete',
         USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
         {
           withCredentials: true,
-          responseType: 'text',
-        },
+          responseType: 'text'
+        }
       )
       .pipe(
         retry(3),
@@ -146,12 +184,9 @@ export class UserService {
    */
   searchUsers(query: UserQuery): Promise<User[]> {
     return this.http
-      .get(
-        USER_ROUTES.SEARCH_USERS(query),
-        {
-          withCredentials: true
-        }
-      )
+      .get(USER_ROUTES.SEARCH_USERS(query), {
+        withCredentials: true
+      })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -163,6 +198,13 @@ export class UserService {
       });
   }
 
+  /**
+   * Retrieve a list of user's that belong to a given organization
+   *
+   * @param {string} organization
+   * @returns {Promise<User[]>}
+   * @memberof UserService
+   */
   getOrganizationMembers(organization: string): Promise<User[]> {
     const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
@@ -178,6 +220,14 @@ export class UserService {
       });
   }
 
+  /**
+   * Retrieve the gravatar image for a given email at a given size
+   *
+   * @param {*} email
+   * @param {*} imgSize
+   * @returns {string}
+   * @memberof UserService
+   */
   getGravatarImage(email, imgSize): string {
     const defaultIcon = 'identicon';
     // r=pg checks the rating of the Gravatar image
@@ -191,6 +241,13 @@ export class UserService {
     );
   }
 
+  /**
+   * Retrieve a User object for a given username
+   *
+   * @param {string} username
+   * @returns {Promise<User>}
+   * @memberof UserService
+   */
   getUser(username: string): Promise<User> {
     return username && username !== 'undefined'
       ? this.http

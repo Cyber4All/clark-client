@@ -24,10 +24,21 @@ export class CollectionSelectorPopupComponent {
 
   constructor(private collectionService: CollectionService) { }
 
+  /**
+   * Select a particular collection
+   *
+   * @param {string} collection the collection to be selected
+   * @memberof CollectionSelectorPopupComponent
+   */
   select(collection: string) {
     this.currentCollection = collection;
   }
 
+  /**
+   * Emit an event to the parent component instructing it to act with the selected collection
+   *
+   * @memberof CollectionSelectorPopupComponent
+   */
   submit() {
     this.choice.emit(this.currentCollection);
   }

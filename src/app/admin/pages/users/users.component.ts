@@ -72,6 +72,12 @@ export class UsersComponent implements AfterViewInit {
    });
   }
 
+  /**
+   * Retrieve a list of user's with a text query
+   *
+   * @param {string} [text] the text with which to query
+   * @memberof UsersComponent
+   */
   getUsers(text?: string) {
     this.loading = true;
     this.user.searchUsers({ text })
@@ -90,7 +96,7 @@ export class UsersComponent implements AfterViewInit {
    */
   async fetchReviewers() {
     this.loading = true;
-    this.users = await this.user.fetchReviewers(this.activeCollection.abvName, {role: 'reviewer'});
+    this.users = await this.user.fetchReviewers(this.activeCollection.abvName);
     this.loading = false;
   }
 
@@ -107,6 +113,12 @@ export class UsersComponent implements AfterViewInit {
     });
   }
 
+  /**
+   * Toggle the modal to add reviewers on and off
+   *
+   * @param {boolean} value true if the modal should display, false otherwise
+   * @memberof UsersComponent
+   */
   toggleAddReviewerModal(value: boolean) {
     this.reviewerModal = value;
   }
@@ -124,15 +136,32 @@ export class UsersComponent implements AfterViewInit {
     });
   }
 
+  /**
+   * Navigate to an author's Learning Objects on the Learning Object's page
+   *
+   * @param {string} username the username of the author
+   * @memberof UsersComponent
+   */
   navigateToUserObjects(username: string) {
     this.router.navigate(['admin/learning-objects'], { queryParams: { username } });
   }
 
+  /**
+   * Toggle the modal to edit a user's privileges on and select the specified user
+   *
+   * @param {User} user the user who's privileges should be edited
+   * @memberof UsersComponent
+   */
   editPrivileges(user: User) {
     this.selectedUser = user;
     this.showPrivileges = true;
   }
 
+  /**
+   * Dictates to the *ngFor directive how to track changes to the User's list
+   * @param index 
+   * @param item 
+   */
   trackby(index: number, item) {
     return item.id;
   }
