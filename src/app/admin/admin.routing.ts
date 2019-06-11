@@ -2,7 +2,6 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { AdminGuard } from 'app/core/admin.guard';
-import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
 import { UsersComponent } from './pages/users/users.component';
 
@@ -17,16 +16,14 @@ const admin_routes: Routes = [
   {
     path: '', component: AdminComponent, canActivate: [ AdminGuard ], children: [
       // TODO THESE NEED AN ADMIN GUARD TO PREVENT ACCESS BY CURATORS
-      { path: 'analytics', component: AnalyticsComponent },
       { path: 'learning-objects', component: LearningObjectsComponent, data: { canScroll: false } },
       { path: 'users', component: UsersComponent },
-      { path: '', redirectTo: 'analytics', pathMatch: 'full' }
+      { path: '', redirectTo: 'learning-objects', pathMatch: 'full' }
     ],
   },
-  { path: ':collection', redirectTo: '/admin/:collection/analytics', pathMatch: 'full' },
+  { path: ':collection', redirectTo: '/admin/:collection/learning-objects', pathMatch: 'full' },
   {
     path: ':collection', component: AdminComponent, children: [
-      { path: 'analytics', component: AnalyticsComponent },
       { path: 'learning-objects', component: LearningObjectsComponent, data: { canScroll: false } },
       { path: 'reviewers', component: UsersComponent },
     ],
