@@ -5,7 +5,6 @@ import {
   HostListener,
   OnDestroy
 } from '@angular/core';
-import { ModalService, Position, ModalListElement } from '../modals';
 import {
   Router,
   ActivatedRoute,
@@ -47,7 +46,6 @@ import { ContextMenuService } from '../contextmenu/contextmenu.service';
   ]
 })
 export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
-  // FIXME: Convert 'class' to 'type' for consistency
   responsiveThreshold = 750;
   windowWidth: number;
   version: any;
@@ -87,7 +85,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   constructor(
-    public modalCtrl: ModalService,
     private router: Router,
     private route: ActivatedRoute,
     private contextMenuService: ContextMenuService,
