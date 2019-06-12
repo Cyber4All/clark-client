@@ -221,7 +221,7 @@ export class LearningObjectsComponent
       .catch(error => {
         this.toaster.notify(
           'Error!',
-          'There was an error fetching this user\'s learning objects. Please try again later.',
+          'There was an error fetching this user\'s Learning Objects. Please try again later.',
           'bad',
           'far fa-times'
         );

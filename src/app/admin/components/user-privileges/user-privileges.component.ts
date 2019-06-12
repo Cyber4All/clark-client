@@ -51,7 +51,7 @@ export class UserPrivilegesComponent implements OnInit {
       this.privileges = roles.map(x => x.split('@'));
     this.getCollections();
     }).catch(error => {
-      this.toaster.notify('Error!', 'There was an error fetching user\'s privileges. Please try again later.', 'bad', 'far fa-times');
+      this.toaster.notify('Error!', 'There was an error fetching this user\'s privileges. Please try again later.', 'bad', 'far fa-times');
       console.error(error);
     });
   }
