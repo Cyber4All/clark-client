@@ -58,6 +58,6 @@ export class CollectionsGridComponent implements OnInit {
   }
 
   isPreselected(collectionAbv: string) {
-    return this.preselect.includes(collectionAbv);
+    return this.preselect && this.preselect.includes(collectionAbv);
   }
 }
