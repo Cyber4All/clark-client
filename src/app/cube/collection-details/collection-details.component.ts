@@ -30,7 +30,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe(params => {
-        this.fetchCollection(params.name);
+        this.fetchCollection(params.abvName);
       });
   }
 
@@ -39,8 +39,8 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     this.destroyed$.unsubscribe();
   }
 
-  async fetchCollection(name: string) {
-    this.collection = await this.collectionService.getCollectionMetadata(name);
+  async fetchCollection(abvName: string) {
+    this.collection = await this.collectionService.getCollectionMetadata(abvName);
     this.key.next(this.collection.abvName);
     if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
