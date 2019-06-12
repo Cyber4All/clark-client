@@ -5,7 +5,7 @@
       <div class="content">
         <div class="description">
           <div class="title" tabindex="0">Description</div>
-          <p tabindex="0"   [innerHtml]="learningObject.description"></p>
+          <p tabindex="0" [innerHtml]="learningObject.description"></p>
         </div>
 
         <section class="academic-levels">
@@ -34,7 +34,7 @@
           <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRatingValue" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
             (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
             <button tabindex="0" *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}"
-            class="button good" (click)="showAddRating = auth.user.emailVerified" attr.aria-labelledby="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+            class="button good" (click)="showAddRating = auth.user.emailVerified" attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
             'Write a'}} review <i class="far fa-pencil"></i></button>
         </div>
       </div>

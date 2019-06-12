@@ -4,7 +4,7 @@
       <div class="row justify-content-center">
           <div class="col-md-12 text-center">
             <div *ngIf="statusCode">
-              <strong><h1 class="huge" tabindex="0" attr.aria-labelledby="Error status: {{ statusCode }}">{{ statusCode }}</h1></strong>
+              <strong><h1 class="huge" tabindex="0" attr.aria-label="Error status: {{ statusCode }}">{{ statusCode }}</h1></strong>
               <div tabindex="0" class="message">This Learning Object is currently under review.</div>
               <div *ngIf="!auth.user; else unauthorized">
                 <div tabindex="0" class="message">Try logging in to see if you have access.</div>
