@@ -6,7 +6,7 @@ import { LearningObjectsComponent } from './pages/learning-objects/learning-obje
 import { UsersComponent } from './pages/users/users.component';
 
 /**
- * Contains all whitelisted routes for the application, stored in an Routes array.
+ * Contains all routes for the module, stored in a Routes array.
  * Route Guards are passed in an array, meaning there can be multiple, to the canActivate property.
  * Read more about Angular routes at: https://angular.io/guide/router#configuration
  *
