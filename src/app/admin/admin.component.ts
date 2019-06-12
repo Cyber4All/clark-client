@@ -94,7 +94,8 @@ export class AdminComponent implements OnInit, OnDestroy {
    * @memberof AdminComponent
    */
   async retrieveAuthorizedCollections() {
-    // wait for user to be logged in (edge case) and then fetch list of curated collections
+    // wait for user to be logged in (edge case: slow connections can cause the application to
+    // temporarily load in an unauthenticated state) and then fetch list of curated collections
     return await this.authService.isLoggedIn.pipe(
       skipWhile(x => x === false),
       take(1)
