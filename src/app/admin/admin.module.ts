@@ -19,6 +19,7 @@ import { UserSearchWrapperComponent } from './components/user-search-wrapper/use
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
+import { CoreModule } from './core/core.module';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
     PrivilegesListComponent,
   ],
   imports: [
+    CoreModule.forRoot(),
     CommonModule,
     AdminRoutingModule,
     FormsModule,

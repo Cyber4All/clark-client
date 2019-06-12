@@ -4,9 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { ADMIN_ROUTES } from '@env/route';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PrivilegeService {
   constructor(private http: HttpClient) {}
 

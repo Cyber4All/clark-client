@@ -2,9 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AuthUser } from 'app/core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
 import { Subject } from 'rxjs';
-import { PrivilegeService } from 'app/core/privilege.service';
+import { PrivilegeService } from 'app/admin/core/privilege.service';
 import { ToasterService } from 'app/shared/toaster';
-import { trigger, transition, style, animate, animateChild, query, group } from '@angular/animations';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'clark-user-privileges',
