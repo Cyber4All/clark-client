@@ -18,11 +18,4 @@ export class VersionSwitchComponent implements OnInit {
     this.state = !this.state;
     this.toggled.emit(this.state);
   }
-
-  onKey(event) {
-    if (event.key === 'Enter') {
-      this.state = !this.state;
-      this.toggled.emit(this.state);
-    }
-  }
 }
