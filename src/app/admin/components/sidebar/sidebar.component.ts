@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Collection } from 'app/core/collection.service';
@@ -24,7 +24,7 @@ import { HistoryService } from 'app/core/history.service';
     ])
   ]
 })
-export class SidebarComponent implements OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
   @Input() collections: Collection[] = [];
@@ -33,7 +33,15 @@ export class SidebarComponent implements OnDestroy {
 
   @Input() initialized = false;
 
-  constructor(private router: Router, private history: HistoryService) {}
+  backRoute: string;
+
+  constructor(private router: Router, private history: HistoryService) { }
+
+  ngOnInit() {
+    this.backRoute = this.history.lastRoute ? this.history.lastRoute.url : '/';
+
+    console.log('BAC', this.backRoute)
+  }
 
   /**
    * Navigate to previous location
@@ -41,7 +49,7 @@ export class SidebarComponent implements OnDestroy {
    * @memberof SidebarComponent
    */
   navigateBack() {
-    this.router.navigateByUrl(this.history.lastRoute ? this.history.lastRoute.url : '/');
+    this.router.navigateByUrl(this.backRoute);
   }
 
   ngOnDestroy() {
