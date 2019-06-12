@@ -45,7 +45,6 @@ export class SidebarComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // subscription clean up
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
   }
