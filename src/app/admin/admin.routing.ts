@@ -10,7 +10,7 @@ import { UsersComponent } from './pages/users/users.component';
  * Route Guards are passed in an array, meaning there can be multiple, to the canActivate property.
  * Read more about Angular routes at: https://angular.io/guide/router#configuration
  *
- * @author Nick Winner Yo
+ * @author Nick Winner
  */
 const admin_routes: Routes = [
   {
