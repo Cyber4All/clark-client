@@ -5,6 +5,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from 'app/shared/toaster';
+import { Collection } from 'app/core/collection.service';
 
 @Component({
   selector: 'clark-user-search-wrapper',
@@ -25,6 +26,9 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
     // Array of users to add ori remove from
     // This array is used when rendering + or x next to user
     @Input() users: User[];
+
+    @Input() collection: Collection;
+
     // Fired when user is selected
     @Output() selectedUser: EventEmitter<User> = new EventEmitter();
 

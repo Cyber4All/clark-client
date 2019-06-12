@@ -20,6 +20,7 @@
         <div class="reviewer-search" (click)="$event.stopPropagation()">
           <clark-user-search-wrapper
             [users]="users"
+            [collection]="activeCollection"
             (selectedUser)="addReviewer($event)"
           ></clark-user-search-wrapper>
         </div>
