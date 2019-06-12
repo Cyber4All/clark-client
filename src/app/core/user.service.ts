@@ -81,7 +81,7 @@ export class UserService {
    */
   fetchReviewers(collection: string): Promise<User[]> {
     return this.http
-      .get(USER_ROUTES.FETCH_MEMBERS(collection, 'reviewer'), {
+      .get(USER_ROUTES.FETCH_MEMBERS(collection, { role: 'reviewer' }), {
         withCredentials: true
       })
       .pipe(
