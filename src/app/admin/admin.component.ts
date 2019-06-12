@@ -104,7 +104,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     .then(async () => {
       // we're sure the user is logged in here and so access groups should be defined
       return await Promise.all(
-        this.authService.user['accessGroups']
+        this.authService.user.accessGroups
         .filter(group => group.includes('curator@'))
         .map(group =>
           this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))

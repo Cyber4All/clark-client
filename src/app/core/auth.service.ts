@@ -598,14 +598,14 @@ export class AuthService {
    * The highest priority group will be assigned.
    */
   private assignUserToGroup() {
-    if (!this.user['accessGroups']) {
+    if (!this.user.accessGroups) {
       return;
     }
 
     // Since the service will only pull down objects the authenticated user is authorized to see, we don't need
     // to check the collection in the case of reviewers and curators. We can strip the collections from the roles
     // in the access groups for ease of comparison.
-    const groups = this.user['accessGroups'].map(x => x.split('@')[0]);
+    const groups = this.user.accessGroups.map(x => x.split('@')[0]);
 
     if (groups.includes('admin')) {
       this.group.next(AUTH_GROUP.ADMIN);

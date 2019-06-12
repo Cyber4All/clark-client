@@ -91,7 +91,7 @@ export class FilterSearchComponent implements OnInit {
    * Checks for user's authorization
    */
   private findUserRestrictions() {
-    this.authService.user['accessGroups'].forEach((group: string) => {
+    this.authService.user.accessGroups.forEach((group: string) => {
       if (group.includes('@')) {
         this.isCollectionRestricted = true;
       }
