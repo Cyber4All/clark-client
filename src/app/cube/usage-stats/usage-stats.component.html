@@ -1,6 +1,6 @@
 <div class="container">
   <div class="header">
-    <span>CLARK Usage Statistics</span>
+    <span tabindex="0">CLARK Usage Statistics</span>
   </div>
   <div class="stat-counters">
     <cube-counter-block *ngFor="let stat of counterStats" [stat]="stat"></cube-counter-block>
@@ -10,13 +10,15 @@
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
     <cube-distribution-chart class="chart" [chart]="lengthDistributionChart" [moreInfoLink]="lengthLearnMoreLink"
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
+    <cube-distribution-chart class="chart" [chart]="organizationBreakdownChart" 
+      (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
   </div>
   <div class="heat-map-wrapper">
     <cube-heat-map class="heat-map"></cube-heat-map>
   </div>
 
   <div class="active-users-wrapper">
-    <div class="title">
+    <div class="title" tabindex="0">
       <span>Active Users</span>
     </div>
     <div class="iframe-wrapper">

@@ -15,6 +15,7 @@ let CHART_HOVERED = false;
 export class UsageStatsComponent implements OnInit {
   outcomeDistributionReady = false;
   lengthDistributionReady = false;
+  organizationDistributionReady = false;
 
   // Default values are set to -1 (invalid value) to trigger loading spinner
   usageStats: UsageStats = {
@@ -42,6 +43,8 @@ export class UsageStatsComponent implements OnInit {
     }
   };
 
+  organizationBreakdownChart: PieChart;
+
   outcomeDistributionChart: PieChart;
   outcomeLearnMoreLink = 'https://cft.vanderbilt.edu/guides-sub-pages/blooms-taxonomy';
 
@@ -56,6 +59,7 @@ export class UsageStatsComponent implements OnInit {
   constructor(private statsService: UsageStatsService) {}
 
   ngOnInit() {
+    this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
     this.statsService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
@@ -119,6 +123,54 @@ export class UsageStatsComponent implements OnInit {
           value: this.usageStats.objects.downloads
         }
       ];
+  }
+
+  /**
+   * Constructs chart for Organization Breakdown distribution
+   *
+   * @private
+   * @memberof UsageStatsComponent
+   */
+  private buildOrganizationBreakdownChart() {
+    this.organizationBreakdownChart = {
+      title: 'Users By Organization',
+      type: 'doughnut',
+      labels: ['Universities', 'Community Colleges', 'K-12 (Schools)', 'Companies', 'Government'],
+      data: [
+        248,
+        24,
+        30,
+        79,
+        22
+      ],
+      legend: true,
+      options: {
+        responsive: true,
+        legend: {
+          position: 'bottom'
+        },
+        hover: {
+          onHover: () => {
+            CHART_HOVERED = true;
+          }
+        },
+        animation: {
+          onComplete: generatePieSliceLabels
+        }
+      },
+      colors: [
+        {
+          backgroundColor: [
+            '#3b788b',
+            '#3b8b80',
+            '#3b8b6c',
+            '#236b2d',
+            '#1e4b25'
+          ]
+        }
+      ]
+    };
+    this.organizationDistributionReady = true;
   }
 
   /**
