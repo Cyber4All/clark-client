@@ -68,7 +68,7 @@ export class FilterSearchComponent implements OnInit {
     this.collectionService
       .getCollections()
       .then(collections => {
-        this.collections = collections;
+        this.collections = Array.from(collections);
         this.collections.push({ abvName: 'all', name: 'All', hasLogo: false });
 
         this.collections.sort((a, b) => {
