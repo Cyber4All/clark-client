@@ -19,8 +19,8 @@ import { of } from 'rxjs';
           <i class="fas fa-exclamation-triangle"></i>
         </div>
         <p tabindex="0">
-          Revising a released Learning Object will move the working copy on the user's dashboard
-          back to proofing. The user will be able to see this, but will not be able to make any
+          Revising a released Learning Object will change the status on the user's dashboard
+          from released to proofing. The user will be able to see this, but will not be able to make any
           edits themselves.
         </p>
         <p tabindex="0"> Are you sure you want to do this? </p>
@@ -48,7 +48,7 @@ export class ReviseButtonComponent {
    * TODO: This flow must be updated after the implementation of ch26
    */
   makeRevision(): void {
-    if (!this.learningObject.hasRevision) {
+    if (this.learningObject.status === LearningObject.Status.RELEASED) {
       this.showPopup = true;
     } else {
       this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
