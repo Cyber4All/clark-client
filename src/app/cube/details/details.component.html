@@ -4,13 +4,13 @@
     <div class="flex">
       <div class="content">
         <div class="description">
-          <div class="title">Description</div>
-          <p [innerHtml]="learningObject.description"></p>
+          <div class="title" tabindex="0">Description</div>
+          <p tabindex="0" [innerHtml]="learningObject.description"></p>
         </div>
 
         <section class="academic-levels">
-          <div class="title">Academic Levels</div>
-          <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }">{{ l | titlecase}}</a>
+          <div class="title" tabindex="0">Academic Levels</div>
+          <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }" attr.aria-label="Clickable link. View all {{ l }} Learning Objects">{{ l | titlecase}}</a>
         </section>
 
         <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
@@ -19,8 +19,8 @@
           <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
         </div>
         <div *ngIf="learningObject.collection === 'nccp'" class="disclaimer">
-          <div class="title">Notice Regarding NSA NCCP Course Materials</div>
-          <p>These course materials were created under a U.S. Government grant. The terms of the Call for Proposals advised the course
+          <div tabindex="0" class="title">Notice Regarding NSA NCCP Course Materials</div>
+          <p tabindex="0">These course materials were created under a U.S. Government grant. The terms of the Call for Proposals advised the course
             creator that the materials would be made "publicly available for educational institutions" to educate and prepare their
             graduates for potential future employment with the U.S. Government in the cybersecurity field. The terms of the grant
             further provided that, with respect to any copyright in the materials, the U.S. Government reserved a royalty-free, nonexclusive
@@ -31,34 +31,36 @@
             the U.S. Government authorizes others to reproduce, publish and use them in furtherance of this Federal purpose.</p>
         </div>
         <div #ratingsWrapper class="ratings">
-          <button *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review learning objects." tipDisabled="{{ auth.user.emailVerified }}"
-            class="button good" (click)="showAddRating = auth.user.emailVerified">{{ userRating.date ? 'Edit your' :
-            'Write a'}} review <i class="far fa-pencil"></i></button>
           <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRatingValue" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
             (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
+            <button tabindex="0" *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review Learning Objects." tipDisabled="{{ auth.user.emailVerified }}"
+            class="button good" (click)="showAddRating = auth.user.emailVerified" attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+            'Write a'}} review <i class="far fa-pencil"></i></button>
         </div>
       </div>
-      <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
-        <div class="inner"*ngIf="reviewer">
-          <div *ngIf="hasRevisions" class="revisions">
-            <div class="text">View Revisions</div>
-            <clark-version-switch (toggled)="viewReleased($event)"></clark-version-switch>
-          </div>
-          <div class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
+      <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
+        <div class="new-rating" (click)="$event.stopPropagation()">
+          <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
+          <div class="title">Rate this Learning Object</div>
+          <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
+            (cancelRating)="showAddRating = false;"></clark-new-rating>
         </div>
-        <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
-        <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
       </div>
+
+  <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
+    <div class="inner"*ngIf="reviewer">
+      <div *ngIf="hasRevisions" class="revisions">
+        <div tabindex="0" class="text">View Revisions</div>
+        <clark-version-switch (toggled)="viewReleased($event)"></clark-version-switch>
+      </div>
+      <div tabindex="0" class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
     </div>
+    <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
+    <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
   </div>
-  <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
-    <div class="new-rating" (click)="$event.stopPropagation()">
-      <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
-      <div class="title">Rate this Learning Object</div>
-      <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
-        (cancelRating)="showAddRating = false;"></clark-new-rating>
-    </div>
-  </div>
+</div>
+</div>
+
   <div *ngIf="errorStatus">
     <clark-error-status [statusCode]="errorStatus" [redirectUrl]="redirectUrl"></clark-error-status>
   </div>
