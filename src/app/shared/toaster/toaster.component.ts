@@ -25,8 +25,8 @@ import {
         <div><i [attr.class]="el.icon"></i></div>
       </div>
       <div class="note-content" id="note-content">
-        <div class="title">{{ el.title }}</div>
-        <div class="text">{{ el.text }}</div>
+        <div aria-live="Assertive" class="title">{{ el.title }}</div>
+        <div aria-live="Assertive" class="text">{{ el.text }}</div>
       </div>
     </div>
   `,

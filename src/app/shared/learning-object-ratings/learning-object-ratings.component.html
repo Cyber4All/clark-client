@@ -1,8 +1,9 @@
 <div class="learning-object-ratings">
-  <div class="title">
+  <div tabindex="0" class="title">
     Reviews
   </div>
   <div class="overall-rating">
+    <div *ngIf="ratings?.length > 0">Overall Rating</div>
     <clark-rating-stars  *ngIf="ratings?.length > 0" [rating]="averageRating" [color]="'gold'" [size]="22" [reviewsCount]="ratings?.length"></clark-rating-stars>
   </div>
   <div *ngIf="ratings?.length > 0; else noRatings" class="ratings-list">
@@ -19,18 +20,18 @@
         </div>
       </a>
       <clark-rating-stars [rating]="rating.value" [color]="'gold'" [size]="18"></clark-rating-stars>
-      <div class="rating-date">{{ rating.date | date:'shortDate' }}</div>
-      <div class="rating-text">
+      <div tabindex="0" class="rating-date">{{ rating.date | date:'shortDate' }}</div>
+      <div tabindex="0" class="rating-text">
         {{ rating.comment }}
       </div>
       <div *ngIf="auth.user?.emailVerified" class="options">
         <ng-container *ngIf="isRatingAuthor(i); else notOwnerOptions">
-          <span (click)="submitEditRating(i)"><i class="far fa-pencil-alt"></i>Edit rating</span>
-          <span (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
+          <span tabindex="0" aria-label="Clickable Edit Rating link" (click)="submitEditRating(i)"><i class="far fa-pencil-alt"></i>Edit rating</span>
+          <span tabindex="0" aria-label="Clickable Delete Rating link" (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
         </ng-container>
         <ng-template #notOwnerOptions>
-          <span *ngIf="isLearningObjectOwner() && rating.response.length === 0" (click)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
-          <span *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
+          <span tabindex="0" aria-label="Clickable Respond to Rating link" *ngIf="isLearningObjectOwner() && rating.response.length === 0" (click)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
+          <span tabindex="0" aria-label="Clickable Report Rating link" *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
         </ng-template>
       </div>
       <div *ngIf="rating.response.length > 0 && !isEditingResponse(i)" class="response-container">
@@ -39,18 +40,18 @@
               <img [src]="userService.getGravatarImage(rating.response[0].user.email, 45)" class="user-image" alt="Picture of {{rating.response[0].user.name}}"
               />
               <div class="user-name">
-                <span>{{ rating.response[0].user.name }}</span>
+                <span tabindex="0">{{ rating.response[0].user.name }}</span>
               </div>
             </div>
           </a>
-          <div class="rating-date">{{ rating.response[0].date | date:'shortDate' }}</div>
-          <div class="rating-text">
+          <div class="rating-date" tabindex="0">{{ rating.response[0].date | date:'shortDate' }}</div>
+          <div class="rating-text" tabindex="0">
             {{ rating.response[0].comment }}
           </div>
           <div class="options">
               <ng-container *ngIf="isResponseAuthor(i); else notOwnerOptions">
-                <span (click)="openEditResponse(i)"><i class="far fa-pencil-alt"></i>Edit response</span>
-                <span (click)="submitDeleteResponse(i)"><i class="far fa-trash-alt"></i>Delete response</span>
+                <button tabindex="0" (click)="openEditResponse($event, i)"><i class="far fa-pencil-alt"></i>Edit response</button>
+                <button (click)="submitDeleteResponse($event, i)"><i class="far fa-trash-alt"></i>Delete response</button>
               </ng-container>
               <div *ngIf="rating.user.username === auth.username" class="email">
                 <a class="mailto" href="mailto: {{ rating.response[0].user.email }}"> Email: {{ rating.response[0].user.email }}</a>
@@ -67,7 +68,7 @@
   </div>
 
   <ng-template #noRatings>
-    <div class="no-ratings">
+    <div tabindex="0" class="no-ratings">
       This learning object doesn't have any ratings yet!
     </div>
   </ng-template>
