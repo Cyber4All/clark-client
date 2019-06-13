@@ -40,6 +40,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
 import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -86,7 +87,8 @@ import { GenericCollectionLogoComponent } from './generic-collection-logo/generi
     CarouselComponent,
     DownloadNoticePopupComponent,
     CollectionsGridComponent,
-    GenericCollectionLogoComponent
+    GenericCollectionLogoComponent,
+    TermsOfServiceComponent
   ],
   exports: [
     NavbarComponent,

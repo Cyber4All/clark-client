@@ -14,6 +14,7 @@ import { CollectionsComponent } from './collections/collections.component';
 import { CollectionDetailsComponent } from './collection-details/collection-details.component';
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
+import { TermsOfServiceComponent } from 'app/shared/terms-of-service/terms-of-service.component';
 
 const cube_routes: Routes = [
   {
@@ -44,6 +45,10 @@ const cube_routes: Routes = [
       {
         path: 'system/usage',
         loadChildren: 'app/cube/usage-stats/usage-stats.module#UsageStatsModule'
+      },
+      {
+        path: 'system/termsofservice',
+        component: TermsOfServiceComponent
       },
       {
         path: 'users/:username',
