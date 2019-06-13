@@ -1,34 +1,36 @@
 <div class="splash">
   <div class="inner">
-    <div class="header">
-      <div class="name">{{ learningObject.name }}</div>
-      <div class="author">Created by
-        <span [routerLink]="['/users', learningObject.author.username]" class="link" id="author-link">{{learningObject.author.name | titlecase}}</span> - 
-        <span [routerLink]="['/organization', learningObject.author.organization]" class="link">{{learningObject.author.organization | titlecase}}</span>
-        , updated {{ learningObject.date | date:'shortDate' }}</div>
-        <div *ngIf="learningObject.contributors?.length" class="author">Contributors:
+    <div class="header">    
+      <div class="name" tabindex="0">{{ learningObject.name }}</div>
+      <div class="author">
+        <span tabindex="0">Created by </span>
+        <a tabindex="0" [routerLink]="['/users', learningObject.author.username]" class="link" id="author-link" attr.aria-label="Clickable link {{ learningObject.author.name }}">{{learningObject.author.name | titlecase}}</a> - 
+        <a tabindex="-0" [routerLink]="['/organization', learningObject.author.organization]" class="link"  attr.aria-label="Clickable link {{ learningObject.author.organization }}">{{learningObject.author.organization | titlecase}}</a>
+        <span tabindex="0">, updated {{ learningObject.date | date:'shortDate' }}</span>
+      </div>
+        <div *ngIf="learningObject.contributors?.length" class="author" tabindex="0">Contributors:
           <span *ngFor="let contributor of learningObject.contributors; let i = index;">
-              <span class="link" [routerLink]="['/users', contributor.username]">{{ contributor.name | titlecase }}</span>
-            - <span [routerLink]="['/organization', contributor.organization]" class="link">{{contributor.organization | titlecase}}</span>
+              <a class="link" [routerLink]="['/users', contributor.username]" attr.aria-label="Clickable link {{ contributor.name }}">{{ contributor.name | titlecase }}</a>
+            - <a [routerLink]="['/organization', contributor.organization]" class="link" attr.aria-label="Clickable link {{ contributor.organization }}">{{contributor.organization | titlecase}}</a>
             <span *ngIf="i !== learningObject.contributors.length -1">, </span>
           </span>
         </div>
         <div class="header-bottom">
           <div class="rating">
             <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
-            <a *ngIf="canRate"  id="write-review" (click)="showRatingPopup()">Write a review</a>
+            <a *ngIf="canRate"  id="write-review" (click)="showRatingPopup()" aria-label="Clickable link write a review" tabindex="0">Write a review</a>
             <span class="emailNotVerified" *ngIf="!canRate && !owned" tip="Please log in and verify your email to rate this learning object.">
               <i class="far fa-question-circle"></i>
             </span>
           </div>
-          <div [ngClass]="learningObject.length" class="type">{{ learningObject.length }}</div>
+          <div [ngClass]="learningObject.length" class="type" tabindex="0" attr.aria-label="This Learning Object is a {{ learningObject.length }}">{{ learningObject.length }}</div>
         </div>
-        <span [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{learningObject.collection}}">
+        <a tabindex="0" [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{learningObject.collection}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">
           <div class="collection">
             <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/collections/' + collectionImage + ')'}"></div>
             <div class="collection-name">{{ collections.get(learningObject.collection)}}</div>
           </div>
-        </span>
+        </a>
     </div>
   </div>
 </div>
