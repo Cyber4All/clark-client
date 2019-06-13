@@ -127,6 +127,7 @@ export class UsageStatsComponent implements OnInit {
 
   /**
    * Constructs chart for Organization Breakdown distribution
+   * FIXME: Data is currently hardcoded in this chart and should be eventually pulled from backend.
    *
    * @private
    * @memberof UsageStatsComponent
