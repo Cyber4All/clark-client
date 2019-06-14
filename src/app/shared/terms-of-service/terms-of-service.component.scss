@@ -1,0 +1,28 @@
+@import '~_vars.scss';
+@import'~globals.scss';
+.container {
+    padding-bottom: 20px;
+}
+h1 {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    font-size: $largest;
+}
+h2 {
+    font-size: $large;
+    color: $dark-grey;
+}
+hr {
+    border-width: 2px;
+}
+p {
+    font-size: $normal;
+    padding-bottom: 10px;
+}
+
+li {
+    font-size: $normal;
+}
+.underline {
+    text-decoration: underline;
+}
