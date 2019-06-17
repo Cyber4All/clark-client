@@ -1,35 +1,37 @@
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserPrivilegesComponent } from './user-privileges.component';
+import { FilterSearchComponent } from './filter-search.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
 import { HttpClientModule } from '@angular/common/http';
-import { PrivilegeService } from 'app/admin/core/privilege.service';
+import { CookieModule } from 'ngx-cookie';
+import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from 'app/shared/toaster';
-import { AuthUser } from 'app/core/auth.service';
+import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 
-describe('UserPrivilegesComponent', () => {
-  let component: UserPrivilegesComponent;
-  let fixture: ComponentFixture<UserPrivilegesComponent>;
+describe('SearchBarComponent', () => {
+  let component: FilterSearchComponent;
+  let fixture: ComponentFixture<FilterSearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ UserPrivilegesComponent ],
-      imports: [ HttpClientModule ],
+      declarations: [ FilterSearchComponent ],
+      imports: [ HttpClientModule, CookieModule.forRoot() ],
       providers: [
+        { provide: AuthService, useValue: { user: { accessGroups: [] } } },
         CollectionService,
-        PrivilegeService,
-        ToasterService
+        ToasterService,
+        ContextMenuService
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserPrivilegesComponent);
+    fixture = TestBed.createComponent(FilterSearchComponent);
     component = fixture.componentInstance;
-    component.user = new AuthUser();
     fixture.detectChanges();
   });
 

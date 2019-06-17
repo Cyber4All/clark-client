@@ -1,6 +1,6 @@
 import { Component, HostListener, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { UserService } from 'app/core/user.service';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from 'app/shared/toaster';

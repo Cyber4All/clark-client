@@ -6,11 +6,8 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef
 } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
-import { LearningObjectService as PrivateLearningObjectService } from 'app/onion/core/learning-object.service';
 import { Query } from 'app/shared/interfaces/query';
 import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
@@ -24,7 +21,7 @@ import { Collection, CollectionService } from 'app/core/collection.service';
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [PublicLearningObjectService, PrivateLearningObjectService]
+  providers: [PublicLearningObjectService]
 })
 export class LearningObjectsComponent
   implements OnInit, AfterViewInit, OnDestroy {
@@ -65,7 +62,6 @@ export class LearningObjectsComponent
 
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
-    private privateLearningObjectService: PrivateLearningObjectService,
     private route: ActivatedRoute,
     private toaster: ToasterService,
     private auth: AuthService,

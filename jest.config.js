@@ -3,6 +3,7 @@ module.exports = {
   roots: ['src'],
   setupTestFrameworkScriptFile: "<rootDir>/src/setup-jest.ts",
   moduleNameMapper: {
-    '@env/(.*)': '<rootDir>/src/environments/$1'
+    '@env(.*)': '<rootDir>/src/environments/$1',
+    '@entity(.*)': '<rootDir>/src/entity/$1'
   }
 }

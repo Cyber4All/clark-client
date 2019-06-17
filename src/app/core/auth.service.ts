@@ -31,7 +31,7 @@ export interface Tokens {
   openId: OpenIdToken;
 }
 
-export interface AuthUser extends User {
+export class AuthUser extends User {
   accessGroups: string[];
 }
 

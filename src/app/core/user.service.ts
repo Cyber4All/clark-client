@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
-  HttpErrorResponse,
-  HttpHeaders
+  HttpErrorResponse
 } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
+// import { User } from '../../entity';
 import { User } from '@entity';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
