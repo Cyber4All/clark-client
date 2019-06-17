@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'clark-revise-button',
   template: `
-    <button class="button neutral" (click)="makeRevision()">
+    <button class="button neutral" (click)="makeRevision()" aria-label="Clickable Revise button">
       Revise
     </button>
     <clark-popup *ngIf="showPopup" (closed)="showPopup = false">
@@ -18,15 +18,15 @@ import { of } from 'rxjs';
         <div class="popup-header">
           <i class="fas fa-exclamation-triangle"></i>
         </div>
-        <p>
-          Revising a released Learning Object will move the working copy on the user's dashboard
-          back to proofing. The user will be able to see this, but will not be able to make any
+        <p tabindex="0">
+          Revising a released Learning Object will change the status on the user's dashboard
+          from released to proofing. The user will be able to see this, but will not be able to make any
           edits themselves.
         </p>
-        <p> Are you sure you want to do this? </p>
+        <p tabindex="0"> Are you sure you want to do this? </p>
         <div class="btn-group to-right">
-          <button class="button bad" (click)="moveToProofing()"> Move to Proofing </button>
-          <button class="button neutral" (click)="showPopup = false;"> Cancel </button>
+          <button class="button bad" (click)="moveToProofing()" aria-label="Clickable Move to Proofing button"> Move to Proofing </button>
+          <button class="button neutral" (click)="showPopup = false;" aria-label="Clickable Cancel button"> Cancel </button>
         </div>
       </div>
     </clark-popup>
@@ -48,7 +48,7 @@ export class ReviseButtonComponent {
    * TODO: This flow must be updated after the implementation of ch26
    */
   makeRevision(): void {
-    if (!this.learningObject.hasRevision) {
+    if (this.learningObject.status === LearningObject.Status.RELEASED) {
       this.showPopup = true;
     } else {
       this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);

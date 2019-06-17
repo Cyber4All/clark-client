@@ -1,5 +1,5 @@
 <div class="rating-stars {{ color ? color : '' }}" [ngStyle]="styles" tip="{{ rating }} out of {{ count }}" tipDisabled="{{ !reviewsCount }}" tipLocation="top">
-  <div class="stars">
+  <div class="stars" tabindex="0" attr.aria-label="Rating: {{ rating }} out of 5 stars">
     <div class="empty-stars">
       <div class="empty-star" *ngFor="let item of iterableCount">
         <i class="fal fa-star"></i>
@@ -13,5 +13,5 @@
       </div>
     </div>
   </div>
-  <div *ngIf="reviewsCount && reviewsCount > 0" class="number-reviews">({{ reviewsCount }})</div>
+  <div *ngIf="reviewsCount && reviewsCount > 0" class="number-reviews" tabindex="0" attr.aria-label="{{ reviewsCount }} {{ reviewsCount > 0 ? 'Review' : 'Reviews'}} ">({{ reviewsCount }})</div>
 </div>

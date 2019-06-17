@@ -76,7 +76,7 @@
     ></onion-file-upload-status>
   </div>
 
-  <clark-teleporter>
+  <clark-teleporter *ngIf="dragAndDropSupported">
     <div
       #teleporterPayload
       class="uploader"

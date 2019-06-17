@@ -12,6 +12,7 @@ import { LearningObject } from '@entity';
 import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { takeUntil } from 'rxjs/operators';
+import { getUserAgentBrowser } from 'getUserAgentBrowser';
 
 // tslint:disable-next-line:interface-over-type-literal
 export type Removal = {
@@ -60,8 +61,24 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
   currentPath: string[] = [];
   tips = TOOLTIP_TEXT;
   view = 'list';
+  dragAndDropSupported = false;
 
-  constructor() {}
+  constructor() {
+    this.checkDragDropSupport();
+  }
+
+  /**
+   * Checks if the user's browser is one that will support drag and drop uploads by checking the user agent
+   *
+   * @memberof UploadComponent
+   */
+  checkDragDropSupport() {
+    const supportedBrowserRegex = /chrome|firefox/gi;
+    const browser = getUserAgentBrowser();
+    if (supportedBrowserRegex.test(browser)) {
+      this.dragAndDropSupported = true;
+    }
+  }
 
   ngOnInit(): void {
     this.subToFiles();
