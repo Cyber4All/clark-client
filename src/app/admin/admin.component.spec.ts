@@ -15,7 +15,7 @@ describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
 
-  class activatedRouteStub {
+  class ActivatedRouteStub {
     public snapshot = {
       firstChild: {
         data: {}
@@ -39,7 +39,7 @@ describe('AdminComponent', () => {
         ToasterService,
         CollectionService,
         { provide: Router, useValue: routerStub },
-        { provide: ActivatedRoute, useClass: activatedRouteStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ]
     }).compileComponents();
 

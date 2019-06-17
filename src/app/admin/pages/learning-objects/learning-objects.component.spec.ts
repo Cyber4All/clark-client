@@ -15,7 +15,7 @@ describe('LearningObjectsComponent', () => {
   let component: LearningObjectsComponent;
   let fixture: ComponentFixture<LearningObjectsComponent>;
 
-  class activatedRouteStub {
+  class ActivatedRouteStub {
     public parent = {
       params: of({})
     };
@@ -32,7 +32,7 @@ describe('LearningObjectsComponent', () => {
         ToasterService,
         AuthService,
         CollectionService,
-        { provide: ActivatedRoute, useClass: activatedRouteStub }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
     })
     .compileComponents();

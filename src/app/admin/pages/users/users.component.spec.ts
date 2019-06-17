@@ -16,7 +16,7 @@ describe('UsersComponent', () => {
   let component: UsersComponent;
   let fixture: ComponentFixture<UsersComponent>;
 
-  class activatedRouteStub {
+  class ActivatedRouteStub {
     public parent = {
       params: of({})
     };
@@ -37,7 +37,7 @@ describe('UsersComponent', () => {
         CollectionService,
         UserService,
         { provide: Router, userValue: routerStub },
-        { provide: ActivatedRoute, useClass: activatedRouteStub }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ]
     })
     .compileComponents();
