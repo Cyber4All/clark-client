@@ -39,8 +39,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.backRoute = this.history.lastRoute ? this.history.lastRoute.url : '/';
-
-    console.log('BAC', this.backRoute);
   }
 
   /**
