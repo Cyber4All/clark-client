@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   canScroll = true;
 
-  private _initialized: boolean[] = [ false /* collections loaded */ ];
+  collectionsLoaded: boolean;
 
   constructor(
     private navbarService: NavbarService,
@@ -33,17 +33,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     public toaster: ToasterService
   ) {}
-
-  /**
-   * Returns true if the component is fully initialized (ie the array doesn't contain false), false otherwise
-   *
-   * @readonly
-   * @type {boolean}
-   * @memberof AdminComponent
-   */
-  get initialized(): boolean {
-    return !this._initialized.includes(false);
-  }
 
   ngOnInit() {
     // hide CLARK navbar
@@ -66,7 +55,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (this.authService.hasEditorAccess()) {
       this.editorMode = true;
       // we don't need to load collections, so we can set that initialization block to true
-      this._initialized[0] = true;
+      this.collectionsLoaded = true;
     } else {
       // this user isn't an admin/editor so fetch the route parameter representing the selected collection
       this.route.paramMap
@@ -111,7 +100,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         ))
         .then(() => {
           // remove the initialization block
-          this._initialized[0] = true;
+          this.collectionsLoaded = true;
         });
     });
   }
