@@ -187,7 +187,7 @@ export class UserPrivilegesComponent implements OnInit {
    */
   get collectionsWithSelectedRole() {
     if (this.selectedRole) {
-      return this.privileges.filter(x => x[0] === this.selectedRole).map(x => x[1])
+      return this.privileges.filter(x => x[0] === this.selectedRole).map(x => x[1]);
     }
   }
 }

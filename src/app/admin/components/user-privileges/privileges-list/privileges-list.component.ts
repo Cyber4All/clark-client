@@ -60,7 +60,7 @@ export class PrivilegesListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-  
+
   /**
    * Remove the privilege at the specified index
    *

@@ -35,7 +35,7 @@ a {
   .curator-menu__title,
 
   li {
-    padding: 10px 25px; 
+    padding: 10px 25px;
     box-sizing: border-box;
     color: $dark-grey;
     list-style-type: none;
@@ -106,7 +106,7 @@ a {
 
     &:before {
       opacity: 0;
-      width: 0px;
+      width: 0;
     }
   }
 

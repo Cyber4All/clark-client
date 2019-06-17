@@ -27,7 +27,7 @@ import { CollectionService, Collection } from 'app/core/collection.service';
         animate('350ms ease', style({ opacity: 1, transform: 'translateY(0px)' }))
       ]),
       transition(':leave', [
-        style({ opacity: 1,transform: 'translateY(0px)' }),
+        style({ opacity: 1, transform: 'translateY(0px)' }),
         animate('350ms ease', style({ opacity: 0, transform: 'translateY(20px)' }))
       ])
     ])
@@ -159,8 +159,8 @@ export class UsersComponent implements AfterViewInit {
 
   /**
    * Dictates to the *ngFor directive how to track changes to the User's list
-   * @param index 
-   * @param item 
+   * @param index
+   * @param item
    */
   trackby(index: number, item) {
     return item.id;
