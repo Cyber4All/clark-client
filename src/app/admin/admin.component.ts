@@ -65,7 +65,9 @@ export class AdminComponent implements OnInit, OnDestroy {
           this.activeCollection = params.get('collection');
         });
 
-      this.retrieveAuthorizedCollections().then(() => {
+      // wait for user to be logged in (edge case: slow connections can cause the application to
+      // temporarily load in an unauthenticated state) and then fetch list of curated collections
+      this.retrieveAuthorizedCollectionsAfterLogin().then(() => {
         // collections array is now set and we should redirect to the first collection
         if (!this.activeCollection) {
           this.router.navigate([this.authorizedCollections[0].abvName], { relativeTo: this.route });
@@ -78,31 +80,39 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Retrieve a list of collection names for which the user is authorized to view (has curator status for)
+   * Wait for the login event to fire to ensure an authenticated state and then call the retrieveAuthorizedCollections function
    *
+   * @returns
    * @memberof AdminComponent
    */
-  async retrieveAuthorizedCollections() {
-    // wait for user to be logged in (edge case: slow connections can cause the application to
-    // temporarily load in an unauthenticated state) and then fetch list of curated collections
+  async retrieveAuthorizedCollectionsAfterLogin() {
     return await this.authService.isLoggedIn.pipe(
       skipWhile(x => x === false),
       take(1)
     )
     .toPromise()
-    .then(async () => {
-      // we're sure the user is logged in here and so access groups should be defined
-      return await Promise.all(
-        this.authService.user.accessGroups
-        .filter(group => group.includes('curator@'))
-        .map(group =>
-          this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
-        ))
-        .then(() => {
-          // remove the initialization block
-          this.collectionsLoaded = true;
-        });
+    .then(() => {
+      this.retrieveAuthorizedCollections();
     });
+  }
+
+  /**
+   * Retrieve a list of collection names for which the user is authorized to view (has curator status for)
+   *
+   * @memberof AdminComponent
+   */
+  async retrieveAuthorizedCollections() {
+    // we're sure the user is logged in here and so access groups should be defined
+    return await Promise.all(
+      this.authService.user.accessGroups
+      .filter(group => group.includes('curator@'))
+      .map(group =>
+        this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
+      ))
+      .then(() => {
+        // remove the initialization block
+        this.collectionsLoaded = true;
+      });
   }
 
   ngOnDestroy() {
