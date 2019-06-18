@@ -83,6 +83,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   changelogs: [];
   loadingChangelogs: boolean;
 
+  openSidePanel: boolean;
+  loadingSidePanel: boolean;
+
   // Observables
   destroyed$: Subject<void> = new Subject();
   filtersModified$: Subject<void> = new Subject();
@@ -789,6 +792,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   closeChangelogsModal() {
     this.openChangelogModal = false;
     this.changelogs = undefined;
+  }
+
+   /**
+   * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
+   *
+   * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
+   * @memberof DashboardComponent
+   */
+  openRevisionsSidePanel() {
+    this.openSidePanel = true;
+    console.log(this.openSidePanel);
+  }
+  /**
+   * Closes any open side panels
+   * 
+   * @memberof DashboardComponent
+   */
+  closeSidePanel() {
+    this.openSidePanel = false;
   }
 
   /**

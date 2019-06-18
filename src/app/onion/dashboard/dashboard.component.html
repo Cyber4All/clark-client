@@ -45,6 +45,7 @@
                 (submit)="submitToCollection = true; focusedLearningObject = l;"
                 (cancelSubmission)="cancelSubmission(l)"
                 (viewAllChangelogs)="openViewAllChangelogsModal($event)"
+                (viewSidePanel)="openRevisionsSidePanel()"
                 >
               </clark-dashboard-item>
             </div>
@@ -145,3 +146,11 @@
 
 <!-- Collection Submission Popup -->
 <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
+
+<!--Revisions Side Panel
+<clark-popup-sidepanel [floating]="true" *ngIf="openSidePanel" (closed)="closeSidePanel()">
+  <div #popupInner style="min-width: 500px">
+    This is the side panel! Yay!
+  </div>
+</clark-popup-sidepanel>
+-->
