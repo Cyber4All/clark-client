@@ -14,7 +14,7 @@ jobs:
           command: npm install
       - run:
           name: Unit Tests
-          command: npm test -- auth/
+          command: npm test -- auth/ admin/
       - run:
           name: Build Application
           command: yarn ng build --prod --no-progress
