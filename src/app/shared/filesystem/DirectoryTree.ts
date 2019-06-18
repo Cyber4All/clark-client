@@ -144,7 +144,7 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   get isEmpty(): boolean {
-    return !this.root.getFiles().length && !this.root.getFolders().length;
+    return this.root.isEmpty();
   }
 
   /**
