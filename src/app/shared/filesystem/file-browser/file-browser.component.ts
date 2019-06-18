@@ -50,13 +50,12 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
     DescriptionUpdate
   >();
 
-  private filesystem: DirectoryTree = new DirectoryTree();
+  @Input() filesystem$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(new DirectoryTree());
+  private filesystem;
 
   private killSub$: Subject<boolean> = new Subject();
 
-  currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
-    DirectoryNode
-  >(null);
+  @Input() currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(null);
 
   currentPath: string[] = [];
   tips = TOOLTIP_TEXT;
@@ -83,6 +82,15 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subToFiles();
     this.subToFolderMeta();
+
+    this.filesystem$.pipe(
+      takeUntil(this.killSub$)
+    ).subscribe(filesystem => {
+      if (!filesystem.isEmpty) {
+        this.filesystem = filesystem;
+        this.refreshFilesystem();
+      }
+    });
   }
   /**
    * Subscribe to file changes
@@ -103,10 +111,13 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    * @param {LearningObject.Material.File[]} files
    * @memberof FileBrowserComponent
    */
-  private refreshFilesystem(files: LearningObject.Material.File[]) {
-    this.filesystem = new DirectoryTree();
-    this.filesystem.addFiles(files);
-    this.currentPath = [];
+  private refreshFilesystem(files?: LearningObject.Material.File[]) {
+    if (files) {
+      this.filesystem = new DirectoryTree();
+      this.filesystem.addFiles(files);
+      this.currentPath = [];
+    }
+
     const node = this.filesystem.traversePath(this.currentPath);
     this.emitCurrentNode(node);
   }
