@@ -1,12 +1,7 @@
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService } from '../../core/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { LoginComponent } from './login.component';
-import { CookieService } from 'ngx-cookie';
-import { HttpClientModule } from '@angular/common/http';
-import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { NavbarService } from 'app/core/navbar.service';
 

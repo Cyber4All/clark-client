@@ -1,0 +1,79 @@
+@import '~_vars.scss';
+
+.card {
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+    max-width: 220px;
+    min-width: 185px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.card__middle {
+    position: absolute;
+    background: linear-gradient(0deg, darken($light-blue, 20), rgba(red($light-blue), green($light-blue), blue($light-blue), 0.9));
+    height: 230px;
+    border-radius: 5px;
+    padding: 20px;
+    padding-top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+  }
+
+.card__image {
+    width: 100%;
+    height: 140px;
+    border-radius: 5px 5px 0 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.card__body {
+    background-color: white;
+    height: 100%;
+    padding: 10px;
+    border-radius: 0 0 5px 5px;
+}
+
+.card__body__heading {
+    font-size: $large;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.card__body__username {
+    color: $placeholder;
+}
+
+.card__middle__header {
+    text-align: center;
+    color: white;
+    font-size: $large;
+    font-weight: 500;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+}
+
+.card__middle__objects {
+    color: white;
+    font-size: $normal;
+    font-weight: 300;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+.card__middle__email {
+    color: white;
+    font-size: $normal;
+    font-weight: 300;
+}
+
+.card__middle__icon {
+    margin-right: 8px;
+}
+
+.card__body__organization {
+    text-transform: capitalize;
+}
+

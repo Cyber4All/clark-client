@@ -1,0 +1,169 @@
+@import '~_vars.scss';
+
+.btn-group {
+  align-items: center;
+
+  a {
+    color: $error-red;
+    font-size: $small;
+    cursor: pointer;
+  }
+}
+
+.filters-button {
+  transition: all 0.2s ease;
+
+  .filter-badge {
+    color: white;
+    background: $light-blue;
+    border-radius: 4px;
+    padding: 0 5px;
+    margin-right: 5px;
+    margin-left: -5px;
+    text-align: center;
+    display: inline-block;
+  }
+
+  &:after {
+    transition: all 0.2s ease;
+  }
+
+  .svg-inline--fa {
+    transition: all 0.2s ease;
+  }
+
+  &.filters-button--down {
+    $lighter-blue: rgba(red($light-blue), green($light-blue), blue($light-blue), 0.1);
+    background: $lighter-blue;
+    color: $light-blue;
+    
+    & > .svg-inline--fa {
+      transform: rotate(180deg);
+    }
+
+    &:after {
+      border-color: transparent;
+    }
+  }
+}
+
+.filter-status__container,
+.filter-collection__container {
+
+  li {
+    position: relative;
+    color: $dark-grey;
+    text-indent: 15px;
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      background: $dark-grey;
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+
+    .svg-inline--fa,
+    .icon {
+      margin-left: 10px;
+    }
+
+    &:hover {
+      color: white;
+
+      .indicator {
+        background: white;
+      }
+    }
+
+    &.waiting {
+      color: $status_waiting;
+
+      .indicator {
+        background: $status_waiting;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_waiting;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
+    &.review {
+      color: $status_review;
+
+      .indicator {
+        background: $status_review;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_review;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
+    &.proofing {
+      color: $status_proofing;
+
+      .indicator {
+        background: $status_proofing;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_proofing;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
+    &.released {
+      color: $status_released;
+
+      .indicator {
+        background: $status_released;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_released;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
+    &.rejected {
+      color: $status_rejected;
+
+      .indicator {
+        background: $status_rejected;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_rejected;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+  }
+}

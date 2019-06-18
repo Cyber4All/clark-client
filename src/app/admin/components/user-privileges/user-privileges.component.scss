@@ -1,0 +1,146 @@
+@import '~_vars.scss';
+
+.privileges {
+  padding-top: 100px;
+  min-width: 650px;
+  min-height: 400px;
+}
+
+.privileges__banner {
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: absolute;
+  background: linear-gradient(45deg, darken($light-blue, 5), lighten($light-blue, 5));
+
+  &:after {
+    content: '';
+    background: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.04;
+    mask: $cube-pattern repeat;
+  }
+
+  .banner__title {
+    color: white;
+    font-size: $larger;
+    font-weight: bold;
+  }
+
+  .banner__sub {
+    color: white;
+    opacity: 0.85;
+    font-size: $normal;
+  }
+}
+
+.privileges__top {
+  height: 44px;
+  margin-bottom: 20px;
+  overflow: hidden;
+
+  .privileges__top-inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.privileges__subtitle {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: $dark-grey;
+  font-size: $large;
+
+  .svg-inline--fa,
+  .icon {
+    margin-right: 10px;
+  }
+
+  &.privileges__subtitle--interactable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background: $light-blue;
+      opacity: 0;
+      transition: inherit;
+    }
+
+    &:hover {
+      opacity: 0.8;
+
+      &:after {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.role-selector {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.role-selector__role {
+  background: linear-gradient(45deg, #f7f7f7, white);
+  padding: 40px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: $larger;
+  cursor: pointer;
+  color: $dark-grey;
+  text-transform: uppercase;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+
+  .svg-inline--fa,
+  .icon {
+    font-size: $largest;
+    margin-bottom: 5px;
+  }
+
+  &:hover,
+  &.role-selector__role--active {
+    color: white;
+    background: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
+    transform: scale(1.05);
+    box-shadow: 0 4px 28px 0 rgba(0, 0, 0, 0.25);
+  }
+}
+
+.no-privileges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $dark-grey;
+  font-size: $large;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 40px;
+
+  .svg-inline--fa {
+    font-size: $largest;
+    color: $light-blue;
+    margin-bottom: 20px;
+  }
+}

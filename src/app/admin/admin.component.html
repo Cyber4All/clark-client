@@ -1,0 +1,14 @@
+<clark-toaster [content]="toaster.content"></clark-toaster>
+<div class="admin">
+  <div class="admin__sidebar">
+    <clark-admin-sidebar
+      [collections]="authorizedCollections"
+      [activeCollection]="activeCollection"
+      [initialized]="collectionsLoaded"
+      [editorMode]="editorMode"
+    ></clark-admin-sidebar>
+  </div>
+  <div [ngClass]="{'admin__main-content--can-scroll': canScroll}" class="admin__main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

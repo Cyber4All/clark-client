@@ -61,8 +61,14 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   advance(distance: number = 1) {
     this.direction = 'next';
     this.cd.detectChanges();
-    this.index += distance;
+
+    if (this.index + distance >= this.items.length) {
+      this.index = distance - (this.items.length - this.index);
+    } else {
+      this.index += distance;
+    }
   }
+
 
   /**
    * Regress the carousel by an amount of {distance}
@@ -73,7 +79,12 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   regress(distance: number = 1) {
     this.direction = 'prev';
     this.cd.detectChanges();
-    this.index -= distance;
+
+    if (this.index - distance < 0) {
+      this.index = this.items.length - distance;
+    } else {
+      this.index -= distance;
+    }
   }
 
   ngOnDestroy() {

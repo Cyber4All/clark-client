@@ -1,7 +1,5 @@
 <clark-message></clark-message>
 <div *ngIf="nav.visible" [@simpleFadeAnimation]="'in'">
-  <app-contextmenu [content]="modalCtrl.contextMenuContent"></app-contextmenu>
-  <app-dialogmenu [content]="modalCtrl.dialogMenuContent"></app-dialogmenu>
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
       <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
@@ -77,3 +75,23 @@
     </div>
   </div>
 </div>
+
+<clark-context-menu (id)="contributorMenu = $event" (close)="contributorDropdown(undefined)">
+  <div #contextMenu>
+    <ul>
+      <li routerLink="/onion/dashboard" (click)="contributorDropdown(undefined)"><i class="far fa-list"></i>Your Dashboard</li>
+      <li routerLink="/onion/learning-object-builder" (click)="contributorDropdown(undefined)"><i class="far fa-plus"></i>Create a Learning Object</li>
+    </ul>
+  </div>
+</clark-context-menu>
+
+<clark-context-menu (id)="userMenu = $event" (close)="userDropdown(undefined)">
+  <div #contextMenu id="context-popup">
+    <ul>
+      <li *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (click)="userDropdown(undefined)"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+      <li [routerLink]="['users', authService.user?.username]" (click)="userDropdown(undefined)"><i class="far fa-user"></i>Your Profile</li>
+      <li routerLink="/auth/forgot-password" (click)="userDropdown(undefined)"><i class="far fa-unlock-alt"></i>Change Password</li>
+      <li (click)="logout(); userDropdown(undefined)"><i class="far fa-sign-out"></i>Sign Out</li>
+    </ul>
+  </div>
+</clark-context-menu>

@@ -1,0 +1,34 @@
+@import '~_vars.scss';
+
+.admin {
+  display: grid;
+  grid-template-columns: minmax(150px, 225px) 1fr;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+.admin__sidebar {
+  background: white;
+  padding: 20px 0;
+  height: 100vh;
+  border-right: 2px solid $light-grey;
+}
+
+.admin__main-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  padding: 30px 30px 0;
+  box-sizing: border-box;
+  flex: 1;
+  overflow-y: scroll;
+  max-height: 100vh;
+
+  &.admin__main-content--can-scroll {
+    padding-bottom: 30px;
+  }
+}

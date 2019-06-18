@@ -1,0 +1,88 @@
+<div class="privileges">
+
+  <div class="privileges__banner">
+    <div class="banner__title">Privileges: {{ user.name | titlecase }}</div>
+    <div class="banner__sub">Edit this user's privileges for specific collections in the CLARK system.</div>
+  </div>
+
+  <!-- Title Carousel -->
+  <div class="privileges__top">
+    <clark-carousel [action$]="carouselAction$">
+
+      <ng-template>
+        <div class="privileges__top-inner">
+          <div class="privileges__subtitle">
+            Active Privileges
+          </div>
+          <div class="privileges__actions btn-group to-right">
+            <button (click)="advance()" class="button good">Add Privilege <i class="far fa-user-plus"></i></button>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template>
+        <div class="privileges__top-inner">
+          <div (click)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
+            <i class="fas fa-arrow-left"></i> Back to privileges
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template>
+        <div class="privileges__top-inner">
+          <div (click)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
+            <i class="fas fa-arrow-left"></i> Back to role selector
+          </div>
+          <div class="privileges__actions btn-group to-right">
+            <button (click)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
+          </div>
+        </div>
+      </ng-template>
+      
+    </clark-carousel>
+  </div>
+  
+  <!-- Main Carousel -->
+  <clark-carousel [action$]="carouselAction$">
+    <ng-template>
+      <div class="privilege-wrapper">
+        <clark-privileges-list [privileges]="privileges" [collections]="collections" (delete)="remove($event)"></clark-privileges-list>
+        <ng-container *ngIf="!privileges?.length" [ngTemplateOutlet]="noPrivilegesTemplate"></ng-container>
+      </div>
+    </ng-template>
+
+    <ng-template>
+      <ng-container [ngTemplateOutlet]="roleSelector"></ng-container>
+    </ng-template>
+
+    <ng-template>
+      <clark-collections-grid [preselect]="collectionsWithSelectedRole" preselectReason="This user is already a {{ selectedRole }} in this collection." (selected)="selectCollection($event)"></clark-collections-grid>
+    </ng-template>
+
+  </clark-carousel>
+
+</div>
+
+<ng-template #roleSelector>
+  <div class="role-selector">
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (click)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
+      <i class="far fa-user-edit"></i>
+      Reviewer
+    </div>
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (click)="selectedRole = 'curator'; advance()" class="role-selector__role">
+      <i class="far fa-user-crown"></i>
+      Curator
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noPrivilegesTemplate>
+  <div [@noPrivileges] class="no-privileges">
+    <div>
+      <i class="far fa-user-lock"></i>
+    </div>
+    <div>
+      This user doesn't have any administrator privileges yet!
+    </div>
+  </div>
+</ng-template>

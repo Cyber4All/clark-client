@@ -5,7 +5,6 @@ import {
   HostListener,
   OnDestroy
 } from '@angular/core';
-import { ModalService, Position, ModalListElement } from '../modals';
 import {
   Router,
   ActivatedRoute,
@@ -26,6 +25,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { ContextMenuService } from '../contextmenu/contextmenu.service';
 
 @Component({
   selector: 'clark-navbar',
@@ -46,7 +46,6 @@ import {
   ]
 })
 export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
-  // FIXME: Convert 'class' to 'type' for consistancy
   responsiveThreshold = 750;
   windowWidth: number;
   version: any;
@@ -59,9 +58,15 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   hideNavbar = false;
   isOnion = false;
   loggedin = this.authService.user ? true : false;
-  menuOpen = false; // flag for wheher or not the mobile menu is out
-  searchDown = false; // flag for wheher or not the search is down
-  searchOverflow = false; // flag for wheher or not the search is down
+  menuOpen = false; // flag for whether or not the mobile menu is out
+  searchDown = false; // flag for whether or not the search is down
+  searchOverflow = false; // flag for whether or not the search is down
+
+  userMenu: string; // holds the id of the user context menu after it's registered
+  userDown = false; // flag for whether or not the user context menu is open
+
+  contributorMenu: string; // holds the id of the contributor context menu after it's registered
+  contributorDown = false; // flag for whether or not the contributor context menu is open
 
   url: string;
 
@@ -80,10 +85,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   constructor(
-    private modalCtrl: ModalService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService,
+    private contextMenuService: ContextMenuService,
+    public authService: AuthService,
     public nav: NavbarService
   ) {
     this.windowWidth = window.innerWidth;
@@ -161,62 +166,21 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   /**
-   * naviagtes to the users information by using the authService
-   * to open the users profile
-   */
-  userprofile() {
-    this.router.navigate(['users', this.authService.user.username]);
-  }
-
-  /**
-   * routes the users to the forgot-password page
-  */
-  reset() {
-    this.router.navigate(['/auth/forgot-password']);
-   }
-
-  /**
    * Click events on the user section of the topbar, displays context menu
    * @param event
    */
   userDropdown(event): void {
-    this.subs.push(
-      this.modalCtrl
-        .makeContextMenu(
-          'UserContextMenu',
-          'dropdown',
-          [
-            new ModalListElement(
-              '<i class="far fa-user-circle fa-fw"></i>View profile',
-              'userprofile'
-            ),
-            new ModalListElement(
-              '<i class="fal fa-exclamation-circle"></i>Reset Password',
-              'reset'
-            ),
-            new ModalListElement(
-              '<i class="far fa-sign-out"></i>Sign out',
-              'logout'
-            )
-          ],
-          true,
-          null,
-          new Position(
-            this.modalCtrl.offset(event.currentTarget).left -
-              (200 - event.currentTarget.offsetWidth),
-            this.modalCtrl.offset(event.currentTarget).top + 50
-          )
-        )
-        .subscribe(val => {
-          if (val === 'logout') {
-            this.logout();
-          } else if (val === 'userprofile') {
-            this.userprofile();
-          } else if (val === 'reset') {
-            this.reset();
-          }
-        })
-    );
+    if (this.userMenu) {
+      if (!this.userDown && event) {
+        this.contextMenuService.open(this.userMenu, (event.currentTarget as HTMLElement), { top: 10, left: 5 });
+      } else {
+        this.contextMenuService.destroy(this.userMenu);
+      }
+
+      this.userDown = event ? true : false;
+    } else {
+      console.error('Error! Attempted to use an unregistered context menu');
+    }
   }
 
   /**
@@ -224,32 +188,17 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
    * @param event
    */
   contributorDropdown(event): void {
-    this.subs.push(
-      this.modalCtrl
-        .makeContextMenu(
-          'ContributorContextMenu',
-          'dropdown',
-          [
-            new ModalListElement('Your dashboard', 'dashboard'),
-            new ModalListElement('Create a Learning Object', 'create')
-          ],
-          true,
-          null,
-          new Position(
-            this.modalCtrl.offset(event.currentTarget).left -
-              (190 - event.currentTarget.offsetWidth),
-            this.modalCtrl.offset(event.currentTarget).top + 40
-          )
-        )
-        .subscribe(val => {
-          if (val === 'create') {
-            this.router.navigate(['onion', 'learning-object-builder']);
-          }
-          if (val === 'dashboard') {
-            this.router.navigate(['onion', 'dashboard']);
-          }
-        })
-    );
+    if (this.contributorMenu) {
+      if (!this.contributorDown && event) {
+        this.contextMenuService.open(this.contributorMenu, (event.currentTarget as HTMLElement), { top: 10, left: 5 });
+      } else {
+        this.contextMenuService.destroy(this.contributorMenu);
+      }
+
+      this.contributorDown = event ? true : false;
+    } else {
+      console.error('Error! Attempted to use an unregistered context menu');
+    }
   }
 
   gravatarImage(size): string {

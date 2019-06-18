@@ -36,6 +36,10 @@ Cypress.Commands.add('login', () => {
     cy.get('input[name=username]').type('testaccount');
     cy.get('input[name=password]').type('password');
     cy.get('#auth-button').click();
+
+    cy.wait(1000);
+
+    cy.url().should('include', 'home');
 });
 
 // Login help method (verified email)
@@ -56,17 +60,72 @@ Cypress.Commands.add('verifiedLogin', () => {
     cy.url().should('include', 'home');
 });
 
-Cypress.Commands.add('reviewerLogin', () => {
-    //Click sign in button
-    cy.get('#clark-sign-in').click({ force: true });
+Cypress.Commands.add('curatorLogin', () => {
+    // Click sign in button 
+    cy.get('#clark-sign-in').click({ force: true })
 
-    //Assert URL
+    // Assert URL 
     cy.url().should('include', 'login');
 
-    //Enter login info
+    // Enter login info 
+    cy.get('input[name=username]').type('testcurator');
+    cy.get('input[name=password]').type('password');
+    cy.get('#auth-button').click();
+
+    cy.wait(1000);
+
+    cy.url().should('include', 'home');
+})
+
+Cypress.Commands.add('editorLogin', () => {
+    // Click sign in button 
+    cy.get('#clark-sign-in').click({ force: true })
+
+    // Assert URL 
+    cy.url().should('include', 'login');
+
+    // Enter login info 
+    cy.get('input[name=username]').type('testeditor');
+    cy.get('input[name=password]').type('password');
+    cy.get('#auth-button').click();
+
+    cy.wait(1000);
+
+    cy.url().should('include', 'home');
+})
+
+Cypress.Commands.add('adminLogin', () => {
+    // Click sign in button 
+    cy.get('#clark-sign-in').click({ force: true })
+
+    // Assert URL 
+    cy.url().should('include', 'login');
+
+    // Enter login info 
+    cy.get('input[name=username]').type('testadmin');
+    cy.get('input[name=password]').type('password');
+    cy.get('#auth-button').click();
+
+    cy.wait(1000);
+
+    cy.url().should('include', 'home');
+})
+
+Cypress.Commands.add('reviewerLogin', () => {
+    // Click sign in button 
+    cy.get('#clark-sign-in').click({ force: true })
+
+    // Assert URL 
+    cy.url().should('include', 'login');
+
+    // Enter login info 
     cy.get('input[name=username]').type('testreviewer');
     cy.get('input[name=password]').type('password');
     cy.get('#auth-button').click();
+
+    cy.wait(1000);
+
+    cy.url().should('include', 'home');
 })
 
 /**

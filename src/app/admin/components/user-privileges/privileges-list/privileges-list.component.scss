@@ -1,0 +1,107 @@
+@import '~_vars.scss';
+
+.privileges__list {
+
+  & > *:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.privileges__privilege {
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+  transform-origin: center top;
+  
+  .privilege__delete-confirm {
+    background: rgba(255, 255, 255, 0.9);
+    color: $dark-grey;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 0 10px;
+    z-index: 1;
+
+    .micro-button {
+      color: white;
+      border-radius: 3px;
+      padding: 6px 10px;
+      background: $error-red;
+      margin-left: 10px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      border: 1px solid $error-red;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:nth-child(2) {
+        background: transparent;
+        color: $dark-grey;
+        border-color: $dark-grey;
+      }
+    }
+
+    .micro-link {
+      text-decoration: underline;
+    }
+  }
+}
+
+
+.privilege__inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: white;
+  padding: 10px;
+  align-items: center;
+  transition: filter 0.2s 0.2s ease;
+  will-change: filter;
+
+  &.privilege__inner--blur {
+    filter: blur(3px);
+  }
+
+  .privilege__left {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: $dark-grey;
+
+    .privilege__role {
+      background: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 5));
+      color: white;
+      padding: 3px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    & > *:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-left: 10px;
+  }
+
+  .privilege__delete {
+    color: $error-red;
+    cursor: pointer;
+
+    .svg-inline--fa,
+    .icon {
+      margin-left: 2px;
+    }
+  }
+}

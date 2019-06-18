@@ -1,16 +1,14 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.33.1",
+  "version": "2.34.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "jest --verbose  --coverage",
-    "lint": "ng lint",
-    "app": "cd .. cd ",
-    "e2e": "cypress open"
+    "lint": "ng lint"
   },
   "dependencies": {
     "@angular/animations": "^7.2.3",

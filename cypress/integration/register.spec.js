@@ -13,7 +13,7 @@ describe('Register', () => {
 
         // Return to home page before each test
         cy.fixture('route.json').then((route) => {
-            cy.visit(route[0]);
+            cy.visit(route['home']);
         });
         cy.fixture('register.json').then((reg) => {
             regInfo = reg;

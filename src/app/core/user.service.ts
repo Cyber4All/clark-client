@@ -1,25 +1,37 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
+// import { User } from '../../entity';
 import { User } from '@entity';
 import * as md5 from 'md5';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { UserQuery } from 'app/shared/interfaces/query';
 
 @Injectable()
 export class UserService {
-  constructor(private http: HttpClient, private auth: AuthService) {
-  }
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
+  /**
+   * Edit a user's basic information
+   *
+   * @param {UserEdit} user the new user object
+   * @returns {Promise<any>}
+   * @memberof UserService
+   */
   editUserInfo(user: UserEdit): Promise<any> {
     return this.http
       .patch(
         USER_ROUTES.EDIT_USER_INFO,
         { user },
         {
-          withCredentials: true, responseType: 'text'
+          withCredentials: true,
+          responseType: 'text'
         }
       )
       .pipe(
@@ -29,6 +41,13 @@ export class UserService {
       .toPromise();
   }
 
+  /**
+   * Check to see if a user exists for the given username
+   *
+   * @param {string} username the username of the user to validate
+   * @returns {Promise<boolean>}
+   * @memberof UserService
+   */
   validateUser(username: string): Promise<boolean> {
     return username && username !== 'undefined'
       ? this.http
@@ -53,20 +72,18 @@ export class UserService {
   }
 
   /**
-   * Performs a text search and returns a list of matching users
+   * Fetch a list of user's who are reviewers for the given collection
    *
-   * @param {string} query the text string to query by
-   * @returns {Promise<User[]} array of users matching the text query
+   * @param {string} collection
+   * @param {*} role
+   * @returns {Promise<User[]>}
    * @memberof UserService
    */
-  searchUsers(query: string): Promise<User[]> {
+  fetchReviewers(collection: string): Promise<User[]> {
     return this.http
-      .get(
-        USER_ROUTES.SEARCH_USERS(query),
-        {
-          withCredentials: true
-        }
-      )
+      .get(USER_ROUTES.FETCH_MEMBERS(collection, { role: 'reviewer' }), {
+        withCredentials: true
+      })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -74,10 +91,120 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(member => new  User(member));
+        return arr.map(member => new User(member));
       });
   }
 
+  /**
+   * Assigns a user to a specified collection with a specified role
+   *
+   * @param {string} memberId the id of the user
+   * @param {string} collection the abbreviated name of the collection
+   * @param {string} role the string representation of the role
+   * @returns {Promise<void>}
+   * @memberof UserService
+   */
+  async assignMember(
+    memberId: string,
+    collection: string,
+    role: string
+  ): Promise<void> {
+    await this.http
+      .put(
+        USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
+        { role },
+        {
+          withCredentials: true,
+          responseType: 'text'
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Edit's a user's role in a collection
+   *
+   * @param {string} collection the selected collection
+   * @param {string} memberId the id of the user
+   * @param {string} role the user's new role in that collection
+   * @returns {Promise<User>}
+   * @memberof UserService
+   */
+  editMember(collection: string, memberId: string, role: string): Promise<User> {
+    return this.http
+      .patch(USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId), role, {
+        withCredentials: true,
+        responseType: 'text'
+      })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        return new User(res);
+      });
+  }
+
+  /**
+   * Remove a user's privilege from a collection
+   *
+   * @param {string} collection the collection to remove
+   * @param {string} memberId the user who's privilege shall be revoked
+   * @returns {Promise<void>}
+   * @memberof UserService
+   */
+  async removeMember(collection: string, memberId: string): Promise<void> {
+    await this.http
+      .request(
+        'delete',
+        USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
+        {
+          withCredentials: true,
+          responseType: 'text'
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Performs a text search and returns a list of matching users
+   *
+   * @param {string} query the text string to query by
+   * @returns {Promise<User[]} array of users matching the text query
+   * @memberof UserService
+   */
+  searchUsers(query: UserQuery): Promise<User[]> {
+    return this.http
+      .get(USER_ROUTES.SEARCH_USERS(query), {
+        withCredentials: true
+      })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((val: any) => {
+        const arr = val;
+        return arr.map(user => new User(user));
+      });
+  }
+
+  /**
+   * Retrieve a list of user's that belong to a given organization
+   *
+   * @param {string} organization
+   * @returns {Promise<User[]>}
+   * @memberof UserService
+   */
   getOrganizationMembers(organization: string): Promise<User[]> {
     const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
@@ -93,6 +220,14 @@ export class UserService {
       });
   }
 
+  /**
+   * Retrieve the gravatar image for a given email at a given size
+   *
+   * @param {*} email
+   * @param {*} imgSize
+   * @returns {string}
+   * @memberof UserService
+   */
   getGravatarImage(email, imgSize): string {
     const defaultIcon = 'identicon';
     // r=pg checks the rating of the Gravatar image
@@ -106,6 +241,13 @@ export class UserService {
     );
   }
 
+  /**
+   * Retrieve a User object for a given username
+   *
+   * @param {string} username
+   * @returns {Promise<User>}
+   * @memberof UserService
+   */
   getUser(username: string): Promise<User> {
     return username && username !== 'undefined'
       ? this.http
