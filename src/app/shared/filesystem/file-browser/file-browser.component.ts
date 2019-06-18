@@ -187,7 +187,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    * @param {MouseEvent} $event
    * @memberof FileBrowserComponent
    */
-  emitContainerClick($event: any): void {
+  emitContainerClick($event: MouseEvent): void {
     this.containerClick.emit($event);
   }
   /**
@@ -196,7 +196,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    * @param {MouseEvent} $event
    * @memberof FileBrowserComponent
    */
-  emitNewOptionClick($event: any): void {
+  emitNewOptionClick($event: MouseEvent): void {
     this.newOptionsClick.emit($event);
   }
   /**
