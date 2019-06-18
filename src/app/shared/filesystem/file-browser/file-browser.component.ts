@@ -4,8 +4,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnDestroy,
-  ChangeDetectorRef
+  OnDestroy
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DirectoryNode, DirectoryTree } from '../DirectoryTree';
@@ -63,7 +62,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
   view = 'list';
   dragAndDropSupported = false;
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor() {
     this.checkDragDropSupport();
   }
 
