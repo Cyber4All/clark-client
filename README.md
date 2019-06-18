@@ -65,7 +65,7 @@ beforeEach(async(() => {
 ```
 
 ### Angular Router and ActivatedRoute
-In the event the target component uses the Angular Router or the Angular ActivatedRoute object, additional steps should be taken to ensure the tests pass. Any properties of the class that are access in the component should be stubbed out in the tests and then provided. For example, suppose our target component contains the following:
+In the event the target component uses the Angular Router or the Angular ActivatedRoute object, additional steps should be taken to ensure the tests pass. Any properties of the class that are accessed in the component should be stubbed out in the tests and then provided. For example, suppose our target component contains the following:
 
 ```javascript
 import { Router } from '@angular/router'
