@@ -50,7 +50,7 @@ This is also the place to import and export third party UI modules.
 
 Run `ng test` to execute the unit tests via [Jest](https://jestjs.io).
 
-When utilizing the Angular CLI to generate a new Angular Component, the CLI automatically generates a spec file for it. This spec file, when run with Jest, will by default only test that the component can be created. However, after adding things like additional component and dependencies, the original spec file can no longer run without changes.
+When utilizing the Angular CLI to generate a new Angular Component, the CLI automatically generates a spec file for it. This spec file will, by default, only test that the component can be created. However, after adding things like additional components and dependencies, the original spec file can no longer run without changes.
 
 #### Using `CUSTOM_ELEMENTS_SCHEMA` to test Angular components in isolation
 If the component that's being tested has children components, those children components should not be included in the parent's test. To accomplish this, we can define a schema for the testing module to use that allows for the existence of so-called `custom elements`. A [custom element](https://angular.io/guide/elements) is piece of code used in much the same way that a standard HTML tag or Angular component is used in markup. When we tell Angular to expect custom elements in our component tests, we don't then need to import all of the children components because Angular will treat them like black boxes and not attempt to execute them. In this way, we can test the parent component in isolation.
