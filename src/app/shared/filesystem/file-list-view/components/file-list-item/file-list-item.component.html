@@ -1,11 +1,11 @@
-<div class="grid-row wrapper" role="link" tabindex="0" attr.aria-labelledby="name description updated size">
+<div class="grid-row wrapper" role="link" tabindex="0" attr.aria-labelledby="file-name file-description file-updated file-size">
   <div
     (click)="handleClick($event)"
     class="text-contained inline-flex"
     [ngClass]="{ 'hover-react': previewUrl }"
     tip="{{ file?.name }}"
     tipLocation="above"
-    id="name"
+    id="file-name"
   >
     <i class="fas {{ icon }} icon"></i>
     {{ file?.name }}
@@ -13,13 +13,13 @@
       ><i class="far fa-external-link"></i
     ></span>
   </div>
-  <div class="text-contained description" id="description">
+  <div class="text-contained description" id="file-description">
     <span>{{ file?.description }}</span>
   </div>
-  <div class="text-contained" id="updated" attr.aria-label="Last updated {{ timestampAge }}">
+  <div class="text-contained" id="file-updated" attr.aria-label="Last updated {{ timestampAge }}">
     {{ timestampAge }}
   </div>
-  <div class="text-contained" id="size" attr.aria-label="{{ file?.size }}">
+  <div class="text-contained" id="file-size" attr.aria-label="{{ file?.size }}">
     {{ file?.size | fileSize }}
   </div>
   <a
