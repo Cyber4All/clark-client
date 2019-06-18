@@ -196,9 +196,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         }
 
         this.currentNode$.next(node);
-      } else {
-        console.log('ya messed up')
-      }
     });
   }
 
