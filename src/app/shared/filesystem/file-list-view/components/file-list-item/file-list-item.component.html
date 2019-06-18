@@ -22,11 +22,13 @@
   <div class="text-contained" id="size" attr.aria-label="{{ file?.size }}">
     {{ file?.size | fileSize }}
   </div>
-  <div
+  <a
+    tabindex="0"
     *ngIf="showOptionButton"
     class="meatballs"
     (click)="handleMeatballClick($event)"
+    attr.aria-label="Clickable Option Menu for {{ file?.name }}"
   >
     <div></div>
-  </div>
+  </a>
 </div>

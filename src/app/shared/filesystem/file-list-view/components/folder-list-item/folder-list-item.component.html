@@ -10,12 +10,13 @@
     {{ timestampAge }}
   </div>
   <div class="empty"></div>
-  <div
-    aria-label="Clickable Option Menu"
+  <a
+    tabindex="0"
+    attr.aria-label="Clickable Option Menu for {{ folder?.getName() }}"
     *ngIf="showOptionButton"
     class="meatballs"
     (click)="handleMeatballClick($event)"
   >
     <div></div>
-  </div>
+  </a>
 </div>
