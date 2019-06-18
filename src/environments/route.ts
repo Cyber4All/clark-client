@@ -1,12 +1,21 @@
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
-export const CHANGELOG_ROUTES = {
-  CREATE_CHANGELOG(userId: string, learningObjectId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(
-      learningObjectId
-    )}/changelog`;
+export const ADMIN_ROUTES = {
+  CREATE_CHANGELOG(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
   },
+  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      abvCollectionName
+    )}/members/${encodeURIComponent(userId)}`;
+  },
+  GET_USER_ROLES(id: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(id)}/roles`;
+  }
+};
+
+export const CHANGELOG_ROUTES = {
   FETCH_ALL_CHANGELOGS(params: {
     userId: string, learningObjectId: string
   }) {
@@ -27,13 +36,39 @@ export const USER_ROUTES = {
       username
     )}/profile`;
   },
+  FETCH_MEMBERS(collection: string, query: any) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members?${querystring.stringify(query)}`;
+  },
+  ASSIGN_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
+  UPDATE_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
+  REMOVE_COLLECTION_MEMBER(collection: string, memberId: string) {
+    return `${environment.apiURL}/collections/${encodeURIComponent(
+      collection
+    )}/members/${encodeURIComponent(
+      memberId
+    )}`;
+  },
   LOAD_USER_PROFILE(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/profile`;
   },
   SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search?text=` + query;
+    return `${environment.apiURL}/users/search?text=${encodeURIComponent(querystring.stringify(query))}`;
   },
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;

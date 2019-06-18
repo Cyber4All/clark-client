@@ -7,20 +7,22 @@ import {
   SimpleChanges,
   ElementRef,
   Renderer2,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  OnDestroy
 } from '@angular/core';
 import { CartV2Service } from '../../core/cartv2.service';
 import { LearningObject } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'learning-object-component',
   templateUrl: 'learning-object.component.html',
-  styleUrls: ['./learning-object.component.scss']
+  styleUrls: ['./learning-object.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LearningObjectListingComponent implements OnInit, OnChanges {
+export class LearningObjectListingComponent implements OnInit, OnChanges, OnDestroy {
   @Input() learningObject: LearningObject;
   @Input() loading: boolean;
 
@@ -154,5 +156,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges {
     if (window.screen.width <= 750 && this.collection.length > 12) {
       this.collection = this.collection.substring(0, 12) + '...';
     }
+  }
+
+  ngOnDestroy() {
+    this.cd.detach();
   }
 }

@@ -31,7 +31,7 @@ export interface Tokens {
   openId: OpenIdToken;
 }
 
-export interface AuthUser extends User {
+export class AuthUser extends User {
   accessGroups: string[];
 }
 
@@ -577,6 +577,16 @@ export class AuthService {
   }
 
   /**
+   * Identifies if the current logged in user has curator privileges
+   *
+   * @returns {boolean}
+   * @memberof AuthService
+   */
+  public hasCuratorAccess(): boolean {
+    return this.group.getValue() > AUTH_GROUP.REVIEWER;
+  }
+
+  /**
    * Identifies if the current logged in user has editor privileges.
    */
   public hasEditorAccess(): boolean {
@@ -588,23 +598,27 @@ export class AuthService {
    * The highest priority group will be assigned.
    */
   private assignUserToGroup() {
-    if (!this.user['accessGroups']) {
+    if (!this.user.accessGroups) {
       return;
     }
 
     // Since the service will only pull down objects the authenticated user is authorized to see, we don't need
     // to check the collection in the case of reviewers and curators. We can strip the collections from the roles
     // in the access groups for ease of comparison.
-    const groups = this.user['accessGroups'].map(x => x.split('@')[0]);
+    const groups = this.user.accessGroups.map(x => x.split('@')[0]);
 
     if (groups.includes('admin')) {
       this.group.next(AUTH_GROUP.ADMIN);
+      return;
     } else if (groups.includes('editor')) {
       this.group.next(AUTH_GROUP.EDITOR);
-    } else if (groups.includes('reviewer')) {
-      this.group.next(AUTH_GROUP.REVIEWER);
+      return;
     } else if (groups.includes('curator')) {
       this.group.next(AUTH_GROUP.CURATOR);
+      return;
+    } else if (groups.includes('reviewer')) {
+      this.group.next(AUTH_GROUP.REVIEWER);
+      return;
     } else {
       this.group.next(AUTH_GROUP.USER);
     }

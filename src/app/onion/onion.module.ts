@@ -13,7 +13,6 @@ import { OnionCoreModule } from './core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
-import { DashboardItemComponent } from './dashboard/dashboard-item/dashboard-item.component';
 import { OnionComponent } from './onion.component';
 import { ChangelogItemComponent } from './dashboard/components/changelog-item/changelog-item.component';
 import { IdentificationPillComponent } from './dashboard/components/identification-pill/identification-pill.component';
@@ -32,7 +31,6 @@ import { OnionSharedModule } from './shared/onion-shared.module';
   declarations: [
     OnionComponent,
     DashboardComponent,
-    DashboardItemComponent,
     ChangelogItemComponent,
     IdentificationPillComponent,
     ChangelogListComponent,
@@ -50,6 +48,9 @@ import { OnionSharedModule } from './shared/onion-shared.module';
     ToasterModule,
     LearningObjectBuilderModule,
     OnionRoutingModule,
+    VirtualScrollerModule
+  ],
+  exports: [
     VirtualScrollerModule,
   ]
 })

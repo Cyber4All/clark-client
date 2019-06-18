@@ -1,13 +1,38 @@
 <div class="collections-grid">
   <ng-container *ngIf="!loading; else loadingTemplate">
     <div *ngIf="collections; else noneTemplate" class="collection-chooser">
-      <div *ngFor="let c of collections" class="collection-chooser__collection" [ngClass]="{'selected': currentCollection === c.abvName}" (click)="select(c.abvName)">
-        <div *ngIf="c.hasLogo; else genericCollectionImage" class="collection__logo" [ngStyle]="{backgroundImage: 'url(assets/images/collections/' + c.abvName + '.png)'}"></div>
-        <div class="collection__name">{{ c.name }}</div>
+      <div
+        *ngFor="let c of collections"
+        [tip]="
+          preselectReason || 'This collection cannot be selected right now.'
+        "
+        tipDisabled="{{ !isPreselected(c.abvName) }}"
+        tipLocation="above"
+      >
+        <div
+          class="collection-chooser__collection"
+          [ngClass]="{
+            selected: currentCollection === c.abvName,
+            'collection-chooser__collection--preselected': isPreselected(
+              c.abvName
+            )
+          }"
+          (click)="!isPreselected(c.abvName) && select(c.abvName)"
+        >
+          <div
+            *ngIf="c.hasLogo; else genericCollectionImage"
+            class="collection__logo"
+            [ngStyle]="{
+              backgroundImage:
+                'url(assets/images/collections/' + c.abvName + '.png)'
+            }"
+          ></div>
+          <div class="collection__name">{{ c.name }}</div>
+        </div>
       </div>
     </div>
   </ng-container>
-  
+
   <!-- loading -->
   <ng-template #loadingTemplate>
     <div class="loading-template">
@@ -15,11 +40,11 @@
       Loading collections...
     </div>
   </ng-template>
-  
+
   <ng-template #noneTemplate>
     <div class="none-template">
       <span><i class="far fa-times"></i></span>
-      Uh-oh! We weren't able to get a list of collections. Please try again later.
+      We weren't able to get a list of collections. Please try again later.
     </div>
   </ng-template>
 </div>

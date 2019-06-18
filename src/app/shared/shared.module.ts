@@ -32,12 +32,14 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
+import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { CarouselComponent } from './carousel/carousel.component';
 import { DownloadNoticePopupComponent } from './popup-templates/download-notice-popup/download-notice-popup.component';
+import { CollectionSelectorPopupComponent } from './popup-templates/collection-selector-popup/collection-selector-popup.component';
 import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
@@ -62,7 +64,6 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     TeleporterModule,
     CKEditorModule,
   ],
-  providers: [],
   declarations: [
     NavbarComponent,
     MessageComponent,
@@ -80,12 +81,16 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     ReportRatingComponent,
     ProgressComponent,
     CookiesComponent,
+    DashboardItemComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
     TextEditorComponent,
+    CarouselComponent,
+    CollectionsGridComponent,
     CollectionCardComponent,
     CarouselComponent,
     DownloadNoticePopupComponent,
+    CollectionSelectorPopupComponent,
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
     TermsOfServiceComponent
@@ -109,11 +114,16 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     CookiesComponent,
     ClarkContextMenuModule,
     EmailBannerComponent,
+    DashboardItemComponent,
     TeleporterModule,
     NewRatingResponseComponent,
     TextEditorComponent,
+    CarouselComponent,
+    CollectionsGridComponent,
     CollectionCardComponent,
+    ToasterModule,
     DownloadNoticePopupComponent,
+    CollectionSelectorPopupComponent,
     CollectionCardComponent,
     CarouselComponent,
     CollectionsGridComponent,

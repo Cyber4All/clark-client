@@ -1,0 +1,21 @@
+@import '../../local-vars';
+
+.page-title {
+  font-size: $larger;
+  color: $dark-grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 40px;
+}
+
+.wrapper__top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wrapper__search {
+  margin-top: 10px;
+}

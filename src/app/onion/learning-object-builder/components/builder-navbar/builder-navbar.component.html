@@ -5,7 +5,7 @@
         ><i class="far fa-arrow-left"></i> Back to Dashboard</a
       >
       <!-- FIXME: Convert to routerLink when admin dashboard is pulled into CLARK -->
-      <a *ngIf="adminMode" href="https://admin.clark.center"
+      <a *ngIf="adminMode" routerLink="{{ redirectUrl || '/admin' }}"
         ><i class="far fa-arrow-left"></i> Back to Dashboard</a
       >
     </div>
@@ -140,7 +140,10 @@
 
 <clark-submit *ngIf="showSubmission" [learningObject]="store.learningObject" [visible]="true" (close)="showSubmission = false; getCollectionName()"></clark-submit>
 
-<clark-context-menu (id)="submissionOptionsMenu = $event" (close)="toggleSubmissionOptionsMenu($event)">
+<clark-context-menu
+  (id)="submissionOptionsMenu = $event"
+  (close)="toggleSubmissionOptionsMenu($event)"
+>
   <div #contextMenu>
     <ul>
       <li

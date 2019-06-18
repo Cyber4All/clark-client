@@ -57,11 +57,28 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+
+    &.generic {
+      background: $wrapper-background;
+      color: $light-grey;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: auto 0;
+      margin-right: 10px;
+      border-radius: 50px;
+
+      svg {
+        height: 20px;
+        width: 20px;
+      }
+    }
   }
 
-  clark-generic-collection-logo {
-    display: block;
-    margin-right: 10px;
+  &.collection-chooser__collection--preselected {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 

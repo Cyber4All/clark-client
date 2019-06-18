@@ -1,0 +1,72 @@
+@import '~_vars.scss';
+
+.collection-name {
+  color: $light-blue;
+}
+
+.users {
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+  box-sizing: border-box;
+  min-height: 500px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.user-cards {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 20px;
+
+  & > * {
+    display: block;
+    position: relative;
+  }
+}
+
+.loading-template {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  $color: $dark-grey;
+  font-size: $large;
+  padding: 20px;
+
+  .svg-inline--fa {
+    color: $light-blue;
+    font-size: $larger;
+    margin-bottom: 20px;
+  }
+}
+
+.reviewer-search-wrapper {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+
+.reviewer-search {
+  width: 550px;
+  margin-top: 5px;
+  z-index: 1;
+  position: absolute;
+  top: 70px;
+  right: 30px;
+}
+
+.privileges {
+  .privileges__title {
+    color: $dark-grey !important;
+  }
+}

@@ -1,0 +1,37 @@
+
+
+  <div class="filter">
+    <div class="filter__container">
+      <div class="btn-group to-right">
+        <button *ngIf="adminOrEditor" class="button neutral filters-button" (click)="toggleCollectionMenu($event)" [ngClass]="{'filters-button--down': collectionMenuDown}">
+          {{ selectedCollection ? selectedCollection.name : 'All Collections' }} <i class="fas fa-chevron-down"></i>
+        </button>
+        <button class="button neutral filters-button" (click)="toggleFilterMenu($event)" [ngClass]="{'filters-button--down': filterMenuDown}">
+          <span class="filter-badge" *ngIf="filters.size">
+            {{ filters.size }}
+          </span>
+          All Statuses <i class="fas fa-chevron-down"></i>
+        </button>
+        <a *ngIf="filters.size || selectedCollection" (click)="clearAllFilters()" class="filters-clear">Clear filters</a>
+      </div>
+    </div>
+  </div>
+  <clark-context-menu class="filter-status" (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
+    <div #contextMenu class="filter-status__container">
+      <ul *ngFor="let status of statuses">
+        <li [ngClass]="status" (click)="toggleStatusFilter(status)">
+          <div *ngIf="filters.has(status)" class="indicator"></div>
+          <i [ngClass]="getStatusIcon(status)"></i> {{ status | titlecase }}
+        </li>
+      </ul>
+    </div>
+  </clark-context-menu>
+  <clark-context-menu class="filter-collection" (id)="collectionMenu = $event" (close)="toggleCollectionMenu(undefined)">
+    <div #contextMenu class="filter-collection__container">
+      <ul>
+        <li *ngFor="let collection of collections" [className]="collection.abvName" (click)="toggleCollectionFilter(collection.abvName)">
+          <div *ngIf="collection.abvName === selectedCollection?.abvName" class="indicator"></div> {{ collection.name }}
+        </li>
+      </ul>
+    </div>
+  </clark-context-menu>
