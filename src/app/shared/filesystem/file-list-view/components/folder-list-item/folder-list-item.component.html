@@ -1,4 +1,4 @@
-<div (click)="handleClick($event)" class="grid-row wrapper">
+<div role="link" tabindex="0" attr.aria-label="{{ folder?.getName() }} Folder" (click)="handleClick($event)" class="grid-row wrapper">
   <div class="text-contained inline-flex">
     <i class="fas fa-folder icon"></i>
     {{ folder?.getName() }}
