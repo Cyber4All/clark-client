@@ -20,4 +20,4 @@ export const slide = trigger('slide', [
     style({ transform: 'translateX(0px)', opacity: 1 }),
     animate('{{ inSpeed }}ms ease', style({ transform: 'translateX({{ pixels }}px)', opacity: 1 }))
   ], { params : { pixels: 400, outSpeed: 350, inSpeed: 250 } }),
-])
+]);

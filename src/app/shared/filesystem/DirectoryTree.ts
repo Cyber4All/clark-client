@@ -137,6 +137,17 @@ export class DirectoryTree {
   }
 
   /**
+   * Is the DirectoryTree empty (no files or folders)
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof DirectoryTree
+   */
+  get isEmpty(): boolean {
+    return this.root.isEmpty();
+  }
+
+  /**
    * Removes folder at path from Tree
    *
    * @param {string[]} paths Array of paths to folder
@@ -316,6 +327,9 @@ export class DirectoryNode {
     if (this.fileMap.get(newFile.name) == null) {
       this.fileMap.set(newFile.name, this.files.length);
       this.files.push(newFile);
+    } else {
+      const index = this.fileMap.get(newFile.name);
+      this.files[index] = newFile;
     }
   }
   /**
