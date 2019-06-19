@@ -1,44 +1,34 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations'
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { slide, fade } from './side-panel-viewer.component.animations';
 
 @Component({
   selector: 'clark-side-panel-viewer',
   template: `
-  <ng-container *ngIf="value">
-    <div (click)="close()" [@fade] class="overlay"></div>
-    <div [style.minWidth]="contentWidth + 'px'" (click)="$event.stopPropagation()" [@slide]="{value: ':enter', params: { pixels: contentWidth + 40, outSpeed: outSpeed, inSpeed: inSpeed }}" class="side-panel">
-      <ng-content></ng-content>
-    </div>
-  </ng-container>
+    <ng-container *ngIf="value">
+      <div (click)="close()" [@fade] class="overlay"></div>
+      <div
+        [style.minWidth]="contentWidth + 'px'"
+        (click)="$event.stopPropagation()"
+        [@slide]="{
+          value: ':enter',
+          params: {
+            pixels: contentWidth + 40,
+            outSpeed: outSpeed,
+            inSpeed: inSpeed
+          }
+        }"
+        class="side-panel"
+      >
+        <ng-content></ng-content>
+      </div>
+    </ng-container>
   `,
   styleUrls: ['./side-panel-viewer.component.scss'],
-  animations: [
-    trigger('slide', [
-      transition(':enter', [
-        style({ transform: 'translateX({{ pixels }}px)', opacity: 1 }),
-        animate('{{ outSpeed }}ms 150ms ease', style({ transform: 'translateX(0px)', opacity: 1 }))
-      ], { params : { pixels: 400, outSpeed: 350, inSpeed: 250 } }),
-      transition(':leave', [
-        style({ transform: 'translateX(0px)', opacity: 1 }),
-        animate('{{ inSpeed }}ms ease', style({ transform: 'translateX({{ pixels }}px)', opacity: 1 }))
-      ], { params : { pixels: 400, outSpeed: 350, inSpeed: 250 } }),
-    ]),
-    trigger('fade', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('250ms ease', style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ opacity: 1 }),
-        animate('250ms ease', style({ opacity: 0 }))
-      ])
-    ])
-  ]
+  animations: [slide, fade]
 })
-export class SidePanelViewerComponent implements OnDestroy, OnInit {
-
+export class SidePanelViewerComponent implements OnInit, OnDestroy {
   _watcher$: BehaviorSubject<boolean>;
   contentWidth = 400;
 
@@ -46,7 +36,7 @@ export class SidePanelViewerComponent implements OnDestroy, OnInit {
   private defaultWidth = 350;
   private destroyed$: Subject<void> = new Subject();
 
-  constructor() { }
+  constructor() {}
 
   /**
    * Calculate the speed necessary to open te side panel
@@ -69,9 +59,7 @@ export class SidePanelViewerComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this._watcher$.pipe(
-      takeUntil(this.destroyed$)
-    ).subscribe(val => {
+    this._watcher$.pipe(takeUntil(this.destroyed$)).subscribe(val => {
       this.value = val;
     });
   }
@@ -89,5 +77,4 @@ export class SidePanelViewerComponent implements OnDestroy, OnInit {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
   }
-
 }
