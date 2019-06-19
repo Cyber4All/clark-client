@@ -45,6 +45,7 @@
                 (submit)="submitToCollection = true; focusedLearningObject = l;"
                 (cancelSubmission)="cancelSubmission(l)"
                 (viewAllChangelogs)="openViewAllChangelogsModal($event)"
+                (viewSidePanel)="openLearningObjectSidePanel()"
                 >
               </clark-dashboard-item>
             </div>
@@ -145,3 +146,7 @@
 
 <!-- Collection Submission Popup -->
 <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
+
+<div panel [controller$]="sidePanelController$" [contentWidth]="450">
+  Learning Object Side Panel Content
+</div>
