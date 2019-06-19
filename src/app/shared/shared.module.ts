@@ -43,7 +43,6 @@ import { CollectionSelectorPopupComponent } from './popup-templates/collection-s
 import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
-import { SidePanelModule } from './side-panel/side-panel.module';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -64,7 +63,6 @@ import { SidePanelModule } from './side-panel/side-panel.module';
     ClarkContextMenuModule.forRoot(),
     TeleporterModule,
     CKEditorModule,
-    SidePanelModule
   ],
   declarations: [
     NavbarComponent,
@@ -113,7 +111,6 @@ import { SidePanelModule } from './side-panel/side-panel.module';
     ProgressComponent,
     VirtualScrollerModule,
     PopupModule,
-    SidePanelModule,
     CookiesComponent,
     ClarkContextMenuModule,
     EmailBannerComponent,
