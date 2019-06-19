@@ -147,6 +147,6 @@
 <!-- Collection Submission Popup -->
 <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
 
-<div panel [watcher$]="sidePanelWatcher$" [contentWidth]="450">
+<div panel [controller$]="sidePanelController$" [contentWidth]="450">
   Learning Object Side Panel Content
 </div>

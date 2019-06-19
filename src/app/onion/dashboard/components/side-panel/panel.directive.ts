@@ -20,7 +20,7 @@ import { BehaviorSubject } from 'rxjs';
 export class PanelDirective implements OnInit, OnDestroy {
   viewer: ComponentRef<SidePanelViewerComponent>;
 
-  @Input() watcher$: BehaviorSubject<boolean>;
+  @Input() controller$: BehaviorSubject<boolean>;
   @Input() contentWidth: number;
 
   constructor(
@@ -37,8 +37,8 @@ export class PanelDirective implements OnInit, OnDestroy {
    * @memberof PanelDirective
    */
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    if (this.watcher$.getValue() && event.keyCode === 27) {
-      this.watcher$.next(false);
+    if (this.controller$.getValue() && event.keyCode === 27) {
+      this.controller$.next(false);
     }
   }
 
@@ -51,7 +51,7 @@ export class PanelDirective implements OnInit, OnDestroy {
     .resolveComponentFactory(SidePanelViewerComponent)
     .create(this.injector, [[this.host.nativeElement]]);
 
-    this.viewer.instance._watcher$ = this.watcher$;
+    this.viewer.instance._controller$ = this.controller$;
     this.viewer.instance.contentWidth = this.contentWidth;
 
     // attach component to angular's component tree (DOES NOT ADD TO DOM)

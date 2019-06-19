@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   changelogs: [];
   loadingChangelogs: boolean;
 
-  sidePanelWatcher$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  sidePanelController$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   // Observables
   destroyed$: Subject<void> = new Subject();
@@ -798,7 +798,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @memberof DashboardComponent
    */
   openLearningObjectSidePanel() {
-    this.sidePanelWatcher$.next(true);
+    this.sidePanelController$.next(true);
   }
 
   /**

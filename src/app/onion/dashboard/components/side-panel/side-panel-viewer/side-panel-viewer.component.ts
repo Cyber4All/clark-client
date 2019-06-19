@@ -29,7 +29,7 @@ import { slide, fade } from './side-panel-viewer.component.animations';
   animations: [slide, fade]
 })
 export class SidePanelViewerComponent implements OnInit, OnDestroy {
-  _watcher$: BehaviorSubject<boolean>;
+  _controller$: BehaviorSubject<boolean>;
   contentWidth = 400;
 
   value: boolean;
@@ -59,7 +59,7 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._watcher$.pipe(takeUntil(this.destroyed$)).subscribe(val => {
+    this._controller$.pipe(takeUntil(this.destroyed$)).subscribe(val => {
       this.value = val;
     });
   }
@@ -70,7 +70,7 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
    * @memberof SidePanelViewerComponent
    */
   close() {
-    this._watcher$.next(false);
+    this._controller$.next(false);
   }
 
   ngOnDestroy() {
