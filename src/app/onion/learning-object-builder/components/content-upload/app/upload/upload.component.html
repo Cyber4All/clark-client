@@ -26,11 +26,11 @@
           Note: While the upload of solution files are not prohibited, they
           won't be included during a Learning Object's download.
         </div>
-        <!-- This element has a dropzone tag as a backup in case the browser doesn't support the dragover event or something goes wrong -->
         <onion-file-manager
           *ngIf="!retrieving; else loadingTemplate"
           [confirmDeletion]="confirmDeletion$"
           [files$]="files$"
+          [deletionSuccessful$]="filesDeleted"
           [folderMeta$]="folderMeta$"
           (openFilePicker)="openFilePicker($event)"
           (fileDeleted)="
