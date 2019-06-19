@@ -6,7 +6,7 @@ import { slide, fade } from './side-panel-viewer.component.animations';
 @Component({
   selector: 'clark-side-panel-viewer',
   template: `
-    <ng-container *ngIf="value">
+    <ng-container *ngIf="isOpen">
       <div (click)="close()" [@fade] class="overlay"></div>
       <div
         [style.minWidth]="contentWidth + 'px'"
@@ -32,7 +32,7 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
   _controller$: BehaviorSubject<boolean>;
   contentWidth = 400;
 
-  value: boolean;
+  isOpen: boolean;
   private defaultWidth = 350;
   private destroyed$: Subject<void> = new Subject();
 
@@ -60,7 +60,7 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._controller$.pipe(takeUntil(this.destroyed$)).subscribe(val => {
-      this.value = val;
+      this.isOpen = val;
     });
   }
 
