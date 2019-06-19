@@ -42,7 +42,7 @@ export class SidePanelViewerComponent implements OnDestroy, OnInit {
   _watcher$: BehaviorSubject<boolean>;
   contentWidth = 400;
 
-  private value: boolean;
+  value: boolean;
   private defaultWidth = 350;
   private destroyed$: Subject<void> = new Subject();
 
