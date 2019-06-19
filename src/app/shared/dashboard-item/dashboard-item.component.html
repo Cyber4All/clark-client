@@ -45,7 +45,7 @@
       <li *ngIf="adminActionPermissions() && isAdmin && collectionDashboard" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
 
       <li *ngIf="actionPermissions('edit') && !collectionDashboard" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
-      <li *ngIf="!collectionDashboard" (click)="viewSidePanel.emit()"><i class="fas fa-arrow-to-left"></i>View Revisions</li>
+      <li *ngIf="!collectionDashboard && actionPermissions('infoPanel')" (click)="viewSidePanel.emit()"><i class="fas fa-info-circle"></i>Info</li>
       <li *ngIf="actionPermissions('editChildren') && !collectionDashboard" (click)="editChildren.emit()"><i class="far fa-project-diagram"></i>Edit Children</li>
       <li *ngIf="actionPermissions('manageMaterials') && !collectionDashboard" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
       <li *ngIf="actionPermissions('submit') && !collectionDashboard" (click)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>

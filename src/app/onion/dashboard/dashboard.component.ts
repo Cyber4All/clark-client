@@ -7,7 +7,7 @@ import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
 import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
@@ -23,7 +23,6 @@ export interface DashboardLearningObject extends LearningObject {
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  // TODO: leave animations with routing?
   animations: [
     trigger('list', [
       transition(':enter', [
@@ -83,8 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   changelogs: [];
   loadingChangelogs: boolean;
 
-  openSidePanel: boolean;
-  loadingSidePanel: boolean;
+  sidePanelWatcher$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   // Observables
   destroyed$: Subject<void> = new Subject();
@@ -801,16 +799,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @memberof DashboardComponent
    */
   openRevisionsSidePanel() {
-    this.openSidePanel = true;
-    console.log(this.openSidePanel);
-  }
-  /**
-   * Closes any open side panels
-   * 
-   * @memberof DashboardComponent
-   */
-  closeSidePanel() {
-    this.openSidePanel = false;
+    this.sidePanelWatcher$.next(true);
   }
 
   /**

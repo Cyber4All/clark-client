@@ -13,6 +13,7 @@ import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component
 import { ContextMenuService } from '../contextmenu/contextmenu.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -147,7 +148,9 @@ export class DashboardItemComponent implements OnChanges {
       submit: ['unreleased', 'denied', this.verifiedEmail],
       view: ['released'],
       delete: ['unreleased', 'denied'],
-      cancelSubmission: ['waiting', this.verifiedEmail]
+      cancelSubmission: ['waiting', this.verifiedEmail],
+      // FIXME this is temporarily feature-locked
+      infoPanel: ['released', !environment.production]
     };
 
     const p = permissions[action];
