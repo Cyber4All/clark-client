@@ -10,9 +10,10 @@ import {
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 
-import { DirectoryNode } from '../../../../../../shared/filesystem/DirectoryTree';
+import { DirectoryNode, DirectoryTree } from 'app/shared/filesystem/DirectoryTree';
 
 import { LearningObject } from '@entity';
+import { takeUntil, take } from 'rxjs/operators';
 
 export interface FileEdit {
   id?: string;
@@ -40,6 +41,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   @Input()
   confirmDeletion: Subject<boolean> = new Subject<boolean>();
+  @Input() deletionSuccessful$: EventEmitter<string[]> = new EventEmitter();
   @Output()
   fileDeleted: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output()
@@ -58,8 +60,21 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
   componentDestroyed$ = new Subject<void>();
 
+  currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(null);
+
+  directoryTree: DirectoryTree = new DirectoryTree();
+  directoryTree$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(this.directoryTree);
+
   constructor(private contextMenuService: ContextMenuService) {}
-  ngOnInit(): void {}
+
+  ngOnInit() {
+    this.files$.pipe(
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(files => {
+      this.directoryTree.addFiles(files);
+      this.directoryTree$.next(this.directoryTree);
+    });
+  }
 
   /**
    * Emits clicked file
@@ -149,17 +164,40 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   /**
    * Marks files for deletion in filesystem and emits deletion event up to parent
    */
-  triggerDelete(file) {
+  triggerDelete(file: DirectoryNode | File) {
     let scheduledDeletions: string[] = [];
+    let name: string;
+    let isFolder = false;
 
     if (!(file instanceof DirectoryNode)) {
+      // @ts-ignore
       scheduledDeletions = [file.id];
+      name = file.name;
     } else {
       const folder = file;
       scheduledDeletions = this.getFileIds(folder);
+      name = folder.getName();
+      isFolder = true;
     }
 
     this.fileDeleted.emit(scheduledDeletions);
+
+    this.deletionSuccessful$.pipe(
+      takeUntil(this.componentDestroyed$),
+      take(1)
+    ).subscribe(files => {
+      if (files === scheduledDeletions) {
+        const node = this.currentNode$.getValue();
+
+        if (isFolder) {
+          node.removeFolder(name);
+        } else {
+          node.removeFile(name);
+        }
+
+        this.currentNode$.next(node);
+      }
+    });
   }
 
   /**
