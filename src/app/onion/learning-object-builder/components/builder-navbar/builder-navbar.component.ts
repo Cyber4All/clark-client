@@ -31,6 +31,8 @@ export class BuilderNavbarComponent implements OnDestroy {
   learningObject: LearningObject;
   collection: Collection;
   statusDescription: string;
+  // FIXME: This will need to set based on the data coming back once the service is in place
+  revisedVersion: boolean = false;
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
@@ -82,6 +84,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
 
     this.redirectUrl = this.history.lastRoute ? this.history.lastRoute.url : undefined;
+
   }
 
   /**
@@ -91,6 +94,7 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @memberof BuilderNavbarComponent
    */
   toggleSubmissionOptionsMenu(event: MouseEvent) {
+    console.log(this.learningObject);
     if (this.submissionOptionsMenu) {
       if (event && !this.showSubmissionOptions) {
         this.contextMenuService.open(
