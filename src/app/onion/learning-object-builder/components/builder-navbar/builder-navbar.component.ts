@@ -84,7 +84,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
 
     this.redirectUrl = this.history.lastRoute ? this.history.lastRoute.url : undefined;
-
   }
 
   /**
