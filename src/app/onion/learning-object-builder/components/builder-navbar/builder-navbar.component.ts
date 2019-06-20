@@ -94,7 +94,6 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @memberof BuilderNavbarComponent
    */
   toggleSubmissionOptionsMenu(event: MouseEvent) {
-    console.log(this.learningObject);
     if (this.submissionOptionsMenu) {
       if (event && !this.showSubmissionOptions) {
         this.contextMenuService.open(
