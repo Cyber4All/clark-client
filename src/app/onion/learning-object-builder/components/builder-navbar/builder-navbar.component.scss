@@ -26,6 +26,22 @@
   left: 0;
   right: 0;
 
+  .revising-notification {
+    background-color: $tag_revision;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 30px;
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    font-size: $normal;
+    text-align: center;
+    box-shadow: 0 2px 4px 0 rgba(136, 135, 135, 0.3);
+  }
+
   .top {
     margin-bottom: 30px;
     display: flex;
