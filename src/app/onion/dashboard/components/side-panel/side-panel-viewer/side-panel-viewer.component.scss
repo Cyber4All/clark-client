@@ -1,0 +1,24 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 4;
+}
+
+.side-panel {
+  background: white;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  min-width: 400px;
+  padding: 20px;
+  z-index: 5;
+  box-shadow: -2px 0 6px 2px rgba(0, 0, 0, 0.1);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}

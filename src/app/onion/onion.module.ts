@@ -19,6 +19,7 @@ import { IdentificationPillComponent } from './dashboard/components/identificati
 import { ChangelogListComponent } from './dashboard/components/changelog-list/changelog-list.component';
 import { ChangelogModalComponent } from './dashboard/components/changelog-modal/changelog-modal.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
+import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -48,7 +49,8 @@ import { OnionSharedModule } from './shared/onion-shared.module';
     ToasterModule,
     LearningObjectBuilderModule,
     OnionRoutingModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    SidePanelModule
   ],
   exports: [
     VirtualScrollerModule,
