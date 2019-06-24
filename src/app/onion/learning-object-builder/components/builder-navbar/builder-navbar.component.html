@@ -1,6 +1,6 @@
 <div class="builder-navbar-wrapper">
   <div class="top" [ngStyle]="{'margin-top': revisedVersion ?  '10px' : '0px', 'margin-bottom': revisedVersion ? '20px' : '30px'}">
-    <div *ngIf="revisedVersion && !adminMode" aria-live="assertive" class="revising-notification">Currently Revising: {{ learningObject.name }}</div>
+    <div *ngIf="revisedVersion && !adminMode" aria-live="assertive" class="revising-notification">Currently Revising: {{ learningObject?.name }}</div>
     <div class="top__left">
       <a *ngIf="!adminMode" routerLink="onion/dashboard"
         ><i class="far fa-arrow-left"></i> Back to Dashboard</a
