@@ -108,3 +108,11 @@
     }
   }
 }
+
+
+// mobile styles
+@media screen and (max-width: "600px") {
+  .section.title {
+    font-size: $large;
+  }
+}

@@ -36,3 +36,11 @@
   }
 }
 
+// mobile styles
+@media screen and (max-width: "600px") {
+  .grid-row {
+    &.header {
+      display: none;
+    }
+  }
+}

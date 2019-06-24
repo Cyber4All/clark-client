@@ -16,10 +16,10 @@
   <div class="text-contained description" id="file-description">
     <span>{{ file?.description }}</span>
   </div>
-  <div class="text-contained" id="file-updated" attr.aria-label="Last updated {{ timestampAge }}">
+  <div class="text-contained timestamp" id="file-updated" attr.aria-label="Last updated {{ timestampAge }}">
     {{ timestampAge }}
   </div>
-  <div class="text-contained" id="file-size" attr.aria-label="{{ file?.size }}">
+  <div class="text-contained filesize" id="file-size" attr.aria-label="{{ file?.size }}">
     {{ file?.size | fileSize }}
   </div>
   <a
