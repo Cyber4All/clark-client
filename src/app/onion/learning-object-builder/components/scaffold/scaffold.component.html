@@ -32,10 +32,15 @@
     </div>
   </ng-template>
 
-<ng-template [ngIf]="children?.length == 0">
+<ng-template [ngIf]="children?.length == 0 && learningObject?.length != 'nanomodule'">
   <div class= "no-children">
     This learning object has no children  
   </div>
 </ng-template>
 
+<ng-template [ngIf]="learningObject?.length === 'nanomodule'">
+  <div class= "no-children">
+    Nanomodules cannot have children
+  </div>
+</ng-template>
 
