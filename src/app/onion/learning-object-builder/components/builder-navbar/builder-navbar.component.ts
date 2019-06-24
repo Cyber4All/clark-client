@@ -31,6 +31,8 @@ export class BuilderNavbarComponent implements OnDestroy {
   learningObject: LearningObject;
   collection: Collection;
   statusDescription: string;
+  // FIXME: This will need to set based on the data coming back once the service is in place
+  revisedVersion = false;
 
   initialRouteStates: Map<string, boolean> = new Map();
   firstRouteChanges: Set<string> = new Set();
