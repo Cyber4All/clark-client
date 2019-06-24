@@ -1,14 +1,13 @@
 <div class="file-breadcrumb">
-  <span
+  <button
     class="crumb"
     [ngClass]="{ link: paths?.length }"
     (click)="jumpTo(0, true)"
-    >Materials</span
-  >
+    >Files and Folders</button>
   <ng-container *ngFor="let path of paths; let i = index">
     <span>
       <i class="far fa-chevron-right arrow"></i>
     </span>
-    <span class="crumb link" (click)="jumpTo(i)">{{ path }}</span>
+    <button tabindex="0" class="crumb link" (click)="jumpTo(i)">{{ path }}</button>
   </ng-container>
 </div>

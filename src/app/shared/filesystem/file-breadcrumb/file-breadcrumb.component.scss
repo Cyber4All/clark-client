@@ -8,6 +8,8 @@
     border-radius: 4px;
     margin-right: 5px;
     padding-right: 7px;
+    border: none;
+    background: transparent;
 
     &:not(:first-child) {
       margin: 5px;

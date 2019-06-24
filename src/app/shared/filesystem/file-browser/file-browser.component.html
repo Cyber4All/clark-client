@@ -12,7 +12,7 @@
 <div (click)="emitContainerClick($event)" class="flex-wrapper" [ngClass]="{empty: (currentNode$| async)?.isEmpty()}">
   <div *ngIf="canManage && (currentNode$| async)?.isEmpty()" class="dropzone-message">
     <i class="fal fa-cloud-upload"></i>
-    <div class="empty-title">No materials here!</div>
+    <div tabindex="0" class="empty-title">No materials here!</div>
     <button class="button good" id="new-file" (click)="emitNewOptionClick($event)">Click here to upload</button>
     <span *ngIf="dragAndDropSupported">or drag and drop files and folders here</span>
   </div>
