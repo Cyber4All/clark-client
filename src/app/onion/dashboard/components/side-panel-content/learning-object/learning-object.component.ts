@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { LearningObject } from '@entity';
 
 @Component({
@@ -6,13 +6,7 @@ import { LearningObject } from '@entity';
   templateUrl: './learning-object.component.html',
   styleUrls: ['./learning-object.component.scss']
 })
-export class LearningObjectComponent implements OnInit {
+export class LearningObjectComponent {
 
   @Input() learningObject: LearningObject;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }
