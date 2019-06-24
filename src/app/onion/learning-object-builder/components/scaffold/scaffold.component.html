@@ -22,14 +22,20 @@
           <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
         </div>
       </div>
-      <div [ngStyle]="{display: editContent ? 'block' : 'none'}" class="hamburger-handle" cdkDragHandle>
+      <div [ngStyle]="{display: editContent ? 'none' : 'block'}" class="hamburger-handle" cdkDragHandle>
         <i class="fas fa-bars"></i>
       </div>
-      <button [ngStyle]="{display: editContent ? 'none' : 'block'}" class="delete" (click)="deleteChild()">
+      <button [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (click)="deleteChild()">
         <i class="far fa-trash-alt"></i>
       </button>
     </div>
   </div>
+</ng-template>
+<ng-template [ngIf]="editContent">
+  <button class="edit-children" (click)="addChild()">
+    <i class="far fa-plus"></i>
+    Add Child
+  </button>
 </ng-template>
 
 <ng-template [ngIf]="!children">

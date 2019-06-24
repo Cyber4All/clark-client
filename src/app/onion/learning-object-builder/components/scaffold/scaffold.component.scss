@@ -138,6 +138,17 @@
   font-size: $normal;
 }
 
+.edit-children {
+  border-top: solid 1px $light-grey;
+  width: 100%;
+  font-size: $large;
+  background: transparent;
+  border-bottom: none;
+  border-right: none;
+  border-left: none;
+  color: $light-blue;
+}
+
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
