@@ -6,6 +6,6 @@
   </div>
   <div class="learning-object__row">
     <div [attr.class]="'learning-object__length ' + learningObject.length">{{ learningObject.length | titlecase }} · </div>
-    <div class="learning-object__date">Released on {{ learningObject.date | date:shortDate }}</div>
+    <div class="learning-object__date">Released on {{ learningObject.date | date:'shortDate' }}</div>
   </div>
 </div>
