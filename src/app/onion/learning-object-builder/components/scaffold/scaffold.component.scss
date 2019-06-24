@@ -10,6 +10,14 @@
     font-size: $large;
     align-items: left;
     justify-content: left;
+
+    &.right {
+      margin-left: 70px;
+      background: transparent;
+      border: none;
+      height: 18px;
+      width: 18px;
+    }
   }
   .title {
     text-align: left;

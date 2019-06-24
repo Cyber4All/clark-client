@@ -6,6 +6,9 @@
   <div class = "title">
     Children
   </div>
+  <button class="icon right">
+    <i class="far fa-pencil"></i>
+  </button>
 </div>
 <ng-template [ngIf]="children && children.length > 0">
   <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
