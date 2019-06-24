@@ -21,6 +21,7 @@ export class SidePanelContentComponent implements OnChanges {
   constructor(private ratingService: RatingService) { }
 
   ngOnChanges(changes: SimpleChanges) {
+    // loading the ratings for the object when the Learning Object input changes
     this.loadingRatings = true;
     this.ratingService.getLearningObjectRatings({ learningObjectId: this.learningObject.id }).then(val => {
       this.averageRating = val ? val.avgValue : 0;
@@ -30,6 +31,11 @@ export class SidePanelContentComponent implements OnChanges {
     });
   }
 
+  /**
+   * Instruct the side panel directive to close the panel
+   *
+   * @memberof SidePanelContentComponent
+   */
   close() {
     this.controller$.next(false);
   }
