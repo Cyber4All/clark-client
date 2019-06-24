@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ADMIN_ROUTES, CHANGELOG_ROUTES } from '@env/route';
+import { CHANGELOG_ROUTES } from '@env/route';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
@@ -19,7 +19,7 @@ export class ChangelogService {
    */
   createChangelog(userId: string, learningObjectId: string, changelog: string): Promise<{}> {
     return this.http
-      .post(ADMIN_ROUTES.CREATE_CHANGELOG(learningObjectId), { userId, changelogText: changelog }, { responseType: 'text' })
+      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(userId, learningObjectId), { changelogText: changelog }, { responseType: 'text' })
       .pipe(
         retry(3),
         catchError(this.handleError)
