@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
 import { RatingService } from 'app/core/rating.service';
@@ -9,7 +9,7 @@ import { Rating } from 'app/cube/details/details.component';
   templateUrl: './side-panel-content.component.html',
   styleUrls: ['./side-panel-content.component.scss']
 })
-export class SidePanelContentComponent implements OnInit {
+export class SidePanelContentComponent implements OnInit, OnChanges {
 
   @Input() controller$: BehaviorSubject<boolean>;
 
@@ -22,11 +22,15 @@ export class SidePanelContentComponent implements OnInit {
   constructor(private ratingService: RatingService) { }
 
   ngOnInit() {
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('TRIGGERING');
     this.loadingRatings = true;
     this.ratingService.getLearningObjectRatings({ learningObjectId: this.learningObject.id }).then(val => {
-      console.log(val)
-      this.averageRating = val.avgValue;
-      this.ratings = val.ratings;
+      this.averageRating = val ? val.avgValue : 0;
+      this.ratings = val ? val.ratings : [];
 
       this.loadingRatings = true;
     });

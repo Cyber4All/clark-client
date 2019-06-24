@@ -10,7 +10,7 @@ import { SidePanelOptions } from '../panel.directive';
     <ng-container *ngIf="isOpen">
       <div (click)="close()" [@fade] class="overlay"></div>
       <div
-        [style.minWidth]="contentWidth + 'px'"
+        [style.width]="contentWidth + 'px'"
         (click)="$event.stopPropagation()"
         [@slide]="{
           value: ':enter',

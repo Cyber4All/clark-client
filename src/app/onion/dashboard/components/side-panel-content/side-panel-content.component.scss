@@ -16,6 +16,12 @@
   background: $light-blue-gradient;
   position: relative;
 
+  & > * {
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
   &:before {
     content: '';
     position: absolute;
@@ -25,7 +31,8 @@
     right: 0;
     mask: $cube-pattern;
     background: white;
-    opacity: 0.04
+    opacity: 0.04;
+    z-index: 0;
   }
 
   .side-panel__button-bar {
