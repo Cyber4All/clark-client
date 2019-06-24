@@ -6,12 +6,33 @@
   justify-content: flex-start;
   align-items: center;
 
-  & > *:not(:last-child) {
-    margin-right: 7px;
-  }
-
   &:not(:first-child) {
     margin-top: 5px;
+  }
+}
+
+.learning-object__row--delim {
+
+  & > *:not(:last-child) {
+    position: relative;
+    margin-right: 8px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: -11px;
+      bottom: 0;
+      top: 0;
+      background: white;
+      border-radius: 50%;
+      width: 4px;
+      height: 4px;
+      margin: auto;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-left: 8px;
   }
 }
 
@@ -26,5 +47,9 @@
 }
 
 .learning-object__date {
+  color: white;
+}
+
+.learning-object__collection {
   color: white;
 }

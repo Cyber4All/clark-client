@@ -1,11 +1,12 @@
 <div class="learning-object">
   <div class="learning-object__row">
-    <div tip="{{ learningObject?.name }}" tipDisabled="{{ !learningObject?.name || learningObject?.name.length <= 70 }}" tipLocation="below" class="learning-object__name">
+    <div tip="{{ learningObject?.name }}" tipDisabled="{{ !learningObject?.name || learningObject?.name.length <= 70 }}" tipLocation="bottom" class="learning-object__name">
       {{ (learningObject?.name | slice:0:69) + (learningObject?.name.length > 70 ? '...' : '') }}
     </div>
   </div>
-  <div class="learning-object__row">
-    <div [attr.class]="'learning-object__length ' + learningObject.length">{{ learningObject.length | titlecase }} · </div>
-    <div class="learning-object__date">Released on {{ learningObject.date | date:'shortDate' }}</div>
+  <div class="learning-object__row learning-object__row--delim">
+    <div [attr.class]="'learning-object__length ' + learningObject.length">{{ learningObject.length | titlecase }}</div>
+    <div class="learning-object__date">{{ learningObject.date | date:'mediumDate' }}</div>
+    <div class="learning-object__collection">{{ learningObject.collection | collection | async }}</div>
   </div>
 </div>
