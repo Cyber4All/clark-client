@@ -1,0 +1,11 @@
+<div class="learning-object">
+  <div class="learning-object__row">
+    <div class="learning-object__name">
+      {{ learningObject.name }}
+    </div>
+  </div>
+  <div class="learning-object__row">
+    <div [attr.class]="'learning-object__length ' + learningObject.length">{{ learningObject.length | titlecase }} · </div>
+    <div class="learning-object__date">Released on {{ learningObject.date | date:shortDate }}</div>
+  </div>
+</div>

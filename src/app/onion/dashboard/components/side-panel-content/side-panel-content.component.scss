@@ -1,0 +1,89 @@
+@import '~_vars.scss';
+
+.side-panel {
+  position: relative;
+
+  .title {
+    font-weight: 600;
+    font-size: $larger;
+    color: $darker-grey;
+    margin-bottom: 15px;
+  }
+}
+
+.side-panel__object {
+  padding: 50px 20px;
+  background: $light-blue-gradient;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    mask: $cube-pattern;
+    background: white;
+    opacity: 0.04
+  }
+
+  .side-panel__button-bar {
+    position: absolute;
+    bottom: -20px;
+    z-index: 1;
+    right: 20px;
+
+    button {
+      box-shadow: 0 4px 12px 2px rgba(0, 0, 0, 0.15);
+      opacity: 1 !important;
+    }
+  }
+}
+
+.side-panel__metrics {
+  padding: 20px;
+
+  .metrics__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+    & > * {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .metrics__amount {
+    font-size: $largest;
+    font-weight: bold;
+    color: $darker-grey;
+  }
+
+  .metrics__label {
+    font-size: $large;
+    color: $dark-grey;
+  }
+}
+
+.side-panel__revision {
+  padding: 20px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  font-size: $normal;
+
+  .revision__empty {
+    text-align: center;
+    color: $dark-grey;
+    font-size: $large;
+  }
+
+  .btn-group {
+    margin-top: 25px;
+  }
+}

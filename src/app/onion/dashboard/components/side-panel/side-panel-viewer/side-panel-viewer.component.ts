@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { slide, fade } from './side-panel-viewer.component.animations';
+import { SidePanelOptions } from '../panel.directive';
 
 @Component({
   selector: 'clark-side-panel-viewer',
@@ -19,7 +20,7 @@ import { slide, fade } from './side-panel-viewer.component.animations';
             inSpeed: inSpeed
           }
         }"
-        class="side-panel"
+        class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
       >
         <ng-content></ng-content>
       </div>
@@ -31,6 +32,8 @@ import { slide, fade } from './side-panel-viewer.component.animations';
 export class SidePanelViewerComponent implements OnInit, OnDestroy {
   _controller$: BehaviorSubject<boolean>;
   contentWidth = 400;
+
+  options: SidePanelOptions;
 
   isOpen: boolean;
   private defaultWidth = 350;

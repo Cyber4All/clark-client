@@ -76,8 +76,10 @@ export class DashboardItemComponent implements OnChanges {
   // Change status
   @Output()
   changeStatus: EventEmitter<LearningObject> = new EventEmitter();
+
   @Output()
   viewAllChangelogs: EventEmitter<string> = new EventEmitter();
+
   @Output()
   viewSidePanel: EventEmitter<boolean> = new EventEmitter ();
 

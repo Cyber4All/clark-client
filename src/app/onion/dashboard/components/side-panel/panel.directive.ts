@@ -14,6 +14,10 @@ import {
 import { SidePanelViewerComponent } from './side-panel-viewer/side-panel-viewer.component';
 import { BehaviorSubject } from 'rxjs';
 
+export interface SidePanelOptions {
+  padding: boolean;
+}
+
 @Directive({
   selector: '[panel]'
 })
@@ -22,6 +26,7 @@ export class PanelDirective implements OnInit, OnDestroy {
 
   @Input() controller$: BehaviorSubject<boolean>;
   @Input() contentWidth: number;
+  @Input() options: SidePanelOptions;
 
   constructor(
     private host: ElementRef,
@@ -53,6 +58,7 @@ export class PanelDirective implements OnInit, OnDestroy {
 
     this.viewer.instance._controller$ = this.controller$;
     this.viewer.instance.contentWidth = this.contentWidth;
+    this.viewer.instance.options = this.options;
 
     // attach component to angular's component tree (DOES NOT ADD TO DOM)
     this.appRef.attachView(this.viewer.hostView);

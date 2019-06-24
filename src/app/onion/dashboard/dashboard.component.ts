@@ -797,7 +797,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
    *
    * @memberof DashboardComponent
    */
-  openLearningObjectSidePanel() {
+  openLearningObjectSidePanel(event: DashboardLearningObject) {
+    this.focusedLearningObject = event;
     this.sidePanelController$.next(true);
   }
 

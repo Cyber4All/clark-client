@@ -1,4 +1,4 @@
-import { trigger, transition, style, animate } from '@angular/animations';
+import { trigger, transition, style, animate, animateChild, query } from '@angular/animations';
 
 export const fade = trigger('fade', [
   transition(':enter', [
@@ -14,7 +14,10 @@ export const fade = trigger('fade', [
 export const slide = trigger('slide', [
   transition(':enter', [
     style({ transform: 'translateX({{ pixels }}px)', opacity: 1 }),
-    animate('{{ outSpeed }}ms 150ms ease', style({ transform: 'translateX(0px)', opacity: 1 }))
+    animate('{{ outSpeed }}ms 150ms ease', style({ transform: 'translateX(0px)', opacity: 1 })),
+    query(':enter', [
+      animateChild()
+    ], { optional: true })
   ], { params : { pixels: 400, outSpeed: 350, inSpeed: 250 } }),
   transition(':leave', [
     style({ transform: 'translateX(0px)', opacity: 1 }),
