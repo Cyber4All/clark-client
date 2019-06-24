@@ -116,6 +116,19 @@
     font-size: $large;
     margin-left: auto;
   }
+
+  .delete {
+    display: flex;
+    color: $error-red;
+    cursor: pointer;
+    font-size: $large;
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+  }
 }
 
 .no-children {

@@ -11,7 +11,7 @@ import { LearningObject } from '@entity';
 export class ScaffoldComponent implements OnInit {
   @Input() learningObject: LearningObject;
   // boolean to indicate if edit is selected for the list
-  @Input() editContent = true;
+  @Input() editContent: boolean;
 
   // array to obtain children IDs
   childrenIDs: string[] = [];
@@ -34,6 +34,14 @@ export class ScaffoldComponent implements OnInit {
 
     // set the ids of children to the same order as the childrenIDs
     this.store.setChildren(this.childrenIDs);
+  }
+
+  toggleAddDelete() {
+    this.editContent = !this.editContent;
+  }
+
+  deleteChild() {
+
   }
 }
 

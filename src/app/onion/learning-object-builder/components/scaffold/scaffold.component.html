@@ -1,12 +1,12 @@
 
-<div class = "header">
-  <div class = "icon">
-    <div class = "far fa-project-diagram icon"></div>
+<div class="header">
+  <div class="icon">
+    <div class="far fa-project-diagram icon"></div>
   </div>
-  <div class = "title">
+  <div class="title">
     Children
   </div>
-  <button class="icon right">
+  <button *ngIf="children?.length != 0 && learningObject?.length != 'nanomodule'" class="icon right" (click)="toggleAddDelete()">
     <i class="far fa-pencil"></i>
   </button>
 </div>
@@ -25,9 +25,13 @@
       <div [ngStyle]="{display: editContent ? 'block' : 'none'}" class="hamburger-handle" cdkDragHandle>
         <i class="fas fa-bars"></i>
       </div>
+      <button [ngStyle]="{display: editContent ? 'none' : 'block'}" class="delete" (click)="deleteChild()">
+        <i class="far fa-trash-alt"></i>
+      </button>
     </div>
   </div>
 </ng-template>
+
 <ng-template [ngIf]="!children">
     <div class="loading-template">
       <i class="far fa-spinner-third fa-spin"></i>
