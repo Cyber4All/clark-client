@@ -41,7 +41,7 @@
     text-align: center;
     box-shadow: 0 2px 4px 0 rgba(136, 135, 135, 0.3);
   }
-
+  
   .top {
     margin-bottom: 30px;
     display: flex;
@@ -59,6 +59,12 @@
         margin-right: 10px;
       }
     }
+
+    &.banner {
+      margin-bottom: 20px;
+      margin-top: 10px;
+    }
+    
   }
 
   .top__right {
