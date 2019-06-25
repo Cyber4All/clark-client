@@ -10,14 +10,6 @@
     font-size: $large;
     align-items: left;
     justify-content: left;
-
-    &.right {
-      margin-left: 70px;
-      background: transparent;
-      border: none;
-      height: 18px;
-      width: 18px;
-    }
   }
   .title {
     text-align: left;
@@ -26,6 +18,14 @@
     margin: 0 0 10px 10px;
     align-items: left;
     justify-content: left;
+  }
+  .edit {
+    background: transparent;
+    border: none;
+    color: $light-blue;
+    font-size: $large;
+    margin-left: auto;
+    padding-right: 10px;
   }
 }
 .children-list {
@@ -121,13 +121,13 @@
     display: flex;
     color: $error-red;
     cursor: pointer;
+    width: 20px;
+    height: 20px;
     font-size: $large;
     margin-left: auto;
     background: transparent;
     border: none;
-    height: 20px;
-    width: 20px;
-    margin-right: 10px;
+    padding-right: 20px;
   }
 }
 
