@@ -20,6 +20,8 @@ import { ChangelogListComponent } from './dashboard/components/changelog-list/ch
 import { ChangelogModalComponent } from './dashboard/components/changelog-modal/changelog-modal.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
 import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
+import { SidePanelContentComponent } from './dashboard/components/side-panel-content/side-panel-content.component';
+import { LearningObjectComponent } from './dashboard/components/side-panel-content/learning-object/learning-object.component';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -36,6 +38,8 @@ import { SidePanelModule } from './dashboard/components/side-panel/side-panel.mo
     IdentificationPillComponent,
     ChangelogListComponent,
     ChangelogModalComponent,
+    SidePanelContentComponent,
+    LearningObjectComponent,
   ],
   // Specifys all modules to be imported
   imports: [

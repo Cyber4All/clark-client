@@ -43,6 +43,7 @@ import { CollectionSelectorPopupComponent } from './popup-templates/collection-s
 import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { CollectionPipe } from './pipes/collection.pipe';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -93,7 +94,8 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     CollectionSelectorPopupComponent,
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
-    TermsOfServiceComponent
+    TermsOfServiceComponent,
+    CollectionPipe
   ],
   exports: [
     NavbarComponent,
@@ -128,6 +130,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     CarouselComponent,
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
+    CollectionPipe
   ]
 })
 export class SharedModule {}

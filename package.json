@@ -1,13 +1,13 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.36.2",
+  "version": "2.37.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "jest --verbose  --coverage",
+    "test": "jest --maxWorkers=2 --verbose  --coverage",
     "lint": "ng lint"
   },
   "dependencies": {
