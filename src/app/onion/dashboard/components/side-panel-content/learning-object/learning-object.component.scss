@@ -1,0 +1,55 @@
+@import '~_vars.scss';
+
+.learning-object__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  &:not(:first-child) {
+    margin-top: 5px;
+  }
+}
+
+.learning-object__row--delim {
+
+  & > *:not(:last-child) {
+    position: relative;
+    margin-right: 8px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: -11px;
+      bottom: 0;
+      top: 0;
+      background: white;
+      border-radius: 50%;
+      width: 4px;
+      height: 4px;
+      margin: auto;
+    }
+  }
+
+  & > *:not(:first-child) {
+    margin-left: 8px;
+  }
+}
+
+.learning-object__name {
+  font-size: $larger;
+  color: white;
+}
+
+.learning-object__length {
+  color: white;
+  border-radius: 2px;
+}
+
+.learning-object__date {
+  color: white;
+}
+
+.learning-object__collection {
+  color: white;
+}
