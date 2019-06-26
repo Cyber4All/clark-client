@@ -14,7 +14,7 @@ jobs:
           command: npm install
       - run:
           name: Unit Tests
-          command: npm test -- auth/ admin/ onion/dashboard/
+          command: npm test --maxWorkers=2 auth/ admin/ onion/dashboard/
       - run:
           name: Build Application
           command: yarn ng build --prod --no-progress
