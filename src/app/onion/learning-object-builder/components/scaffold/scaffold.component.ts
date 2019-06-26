@@ -1,4 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  ChangeDetectorRef,
+  HostListener
+} from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BuilderStore } from '../../builder-store.service';
 import { LearningObject } from '@entity';
@@ -13,19 +22,52 @@ export class ScaffoldComponent implements OnInit {
   // boolean to indicate if edit is selected for the list
   @Input() editContent: boolean;
 
+  @ViewChild('addChildButton') addChildButton: ElementRef;
+  @ViewChild('teleporterPayload') teleporterPayload: ElementRef;
+
+  @HostListener('window:click', ['$event']) handleClickAway(event: MouseEvent) {
+    this.toggleAddChild(false);
+  }
+
+  @HostListener('keyup', ['$event']) handleEscape(event: KeyboardEvent) {
+    if (event.keyCode === 27) {
+      this.toggleAddChild(false);
+    }
+  }
+
   // array to obtain children IDs
   childrenIDs: string[] = [];
   childrenConfirmationMessage: string;
   childrenConfirmation: boolean;
 
+  isAddingChild: boolean;
+
   children: LearningObject[];
-  constructor(private store: BuilderStore) {}
+  constructor(
+    private store: BuilderStore,
+    private renderer: Renderer2,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.store.getChildren().then((kiddos) => {
+    this.store.getChildren().then(kiddos => {
       this.children = kiddos;
     });
     this.childrenConfirmation = false;
+  }
+
+  /**
+   * Add child to children array
+   */
+  addChild(child: LearningObject) {
+    // add child to the children array
+    this.children.push(child);
+
+    // add child to the childrenIDs array
+    this.childrenIDs.push(child.id);
+
+    // send request to the service to set children
+    this.store.setChildren(this.childrenIDs);
   }
 
   /**
@@ -56,7 +98,9 @@ export class ScaffoldComponent implements OnInit {
    */
   deleteButton(index) {
     this.childrenConfirmationMessage = `Just to confirm, you want to delete '
-        ${this.children[index].name}' as a child of '${this.learningObject.name}'?`;
+        ${this.children[index].name}' as a child of '${
+      this.learningObject.name
+    }'?`;
 
     this.toggleConfirmationModal(true);
   }
@@ -70,7 +114,7 @@ export class ScaffoldComponent implements OnInit {
     // remove the child that was selected to be deleted
     this.children.splice(index, 1);
 
-    // set childrenIDs equal to the children array and set children 
+    // set childrenIDs equal to the children array and set children
     this.children.forEach(kid => this.childrenIDs.push(kid.id));
     this.store.setChildren(this.childrenIDs);
 
@@ -86,6 +130,49 @@ export class ScaffoldComponent implements OnInit {
   toggleConfirmationModal(val?: boolean) {
     this.childrenConfirmation = val;
   }
+  /**
+   * Toggles the child modal
+   */
+  toggleAddChild(value: boolean = true) {
+    // [left, top]
+    const position = [
+      (this.addChildButton.nativeElement as HTMLElement).getBoundingClientRect()
+        .left,
+      (this.addChildButton.nativeElement as HTMLElement).getBoundingClientRect()
+        .top
+    ];
+
+    position[1] +=
+      (this.addChildButton.nativeElement as HTMLElement).offsetHeight - 10;
+
+    // add the payload to the DOM
+    this.isAddingChild = value;
+
+    // detect changes to populate the ViewChild with the correct element
+    this.cd.detectChanges();
+
+    // set the correct coordinates for the payload to render
+    this.renderer.setStyle(
+      this.teleporterPayload.nativeElement,
+      'left',
+      position[0] + 'px'
+    );
+    this.renderer.setStyle(
+      this.teleporterPayload.nativeElement,
+      'top',
+      position[1] + 'px'
+    );
+    this.renderer.setStyle(
+      this.teleporterPayload.nativeElement,
+      'width',
+      (this.addChildButton.nativeElement as HTMLElement).offsetWidth +
+        100 +
+        'px'
+    );
+
+    this.renderer.addClass(
+      this.teleporterPayload.nativeElement,
+      'add-child__active'
+    );
+  }
 }
-
-

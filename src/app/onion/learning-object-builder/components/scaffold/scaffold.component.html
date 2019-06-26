@@ -33,9 +33,9 @@
 </ng-template>
 
 <ng-template #addChild [ngIf]="editContent">
-  <button class="edit-children" (click)="addChild()">
-    <i class="far fa-plus"></i>
+  <button #addChildButton class="edit-children" (click)="toggleAddChild(); $event.stopPropagation()">
     Add Child
+    <i class="far fa-plus"></i>
   </button>
 </ng-template>
 
@@ -72,3 +72,9 @@
       </div>
   </div>
 </clark-popup>
+
+<clark-teleporter *ngIf="isAddingChild">
+  <div #teleporterPayload class="add-child" (click)="$event.stopPropagation()">
+    <clark-add-child></clark-add-child>
+  </div>
+</clark-teleporter>
