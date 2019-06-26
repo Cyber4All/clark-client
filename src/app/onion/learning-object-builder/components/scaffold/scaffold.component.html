@@ -6,13 +6,13 @@
   <div class="title">
     Children
   </div>
-  <button *ngIf="children?.length != 0 && learningObject?.length != 'nanomodule'" class="icon right" (click)="toggleAddDelete()">
+  <button *ngIf="children?.length != 0 && learningObject?.length != 'nanomodule'" class="edit" (click)="toggleAddDelete()">
     <i class="far fa-pencil"></i>
   </button>
 </div>
 <ng-template [ngIf]="children && children.length > 0">
   <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
-    <div *ngFor="let c of children" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
+    <div *ngFor="let c of children; let i= index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
       <div class = "info">
         <div class = "top-row">
           <div class = "child-title">{{c.name}}</div>
@@ -25,13 +25,14 @@
       <div [ngStyle]="{display: editContent ? 'none' : 'block'}" class="hamburger-handle" cdkDragHandle>
         <i class="fas fa-bars"></i>
       </div>
-      <button [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (click)="deleteChild()">
+      <button [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (click)="deleteButton(i)">
         <i class="far fa-trash-alt"></i>
       </button>
     </div>
   </div>
 </ng-template>
-<ng-template [ngIf]="editContent">
+
+<ng-template #addChild [ngIf]="editContent">
   <button class="edit-children" (click)="addChild()">
     <i class="far fa-plus"></i>
     Add Child
@@ -43,12 +44,14 @@
       <i class="far fa-spinner-third fa-spin"></i>
       Loading...
     </div>
+    <ng-container [ngTemplateOutlet]="addChild"></ng-container>
   </ng-template>
 
 <ng-template [ngIf]="children?.length == 0 && learningObject?.length != 'nanomodule'">
   <div class= "no-children">
     This learning object has no children  
   </div>
+  <ng-container [ngTemplateOutlet]="addChild"></ng-container>
 </ng-template>
 
 <ng-template [ngIf]="learningObject?.length === 'nanomodule'">
@@ -57,3 +60,15 @@
   </div>
 </ng-template>
 
+
+<!-- Children Confirmation Popup -->
+<clark-popup *ngIf="childrenConfirmation" (closed)="toggleConfirmationModal(false)">
+  <div #popupInner class="popup-inner">
+    <div class="modal-title">Just to confirm...</div>
+      <div class="modal-text">{{ childrenConfirmationMessage }}</div>
+      <div class="btn-group center">
+        <button class="button good" (click)="deleteChild(i)">Yep, do it! <i class="far fa-check"></i></button>
+        <button class="button neutral" (click)="toggleConfirmationModal(false)">Wait, nevermind! <i class="far fa-ban"></i></button>
+      </div>
+  </div>
+</clark-popup>
