@@ -1,11 +1,10 @@
 <div class="topbar"></div>
-
 <div class="side-panel">
   <div class="side-panel__object">
     <clark-panel-learning-object
       [learningObject]="learningObject"
     ></clark-panel-learning-object>
-    <div class="side-panel__button-bar">
+    <div  class="side-panel__button-bar">
       <button
         class="button"
         (click)="close()"
@@ -14,29 +13,30 @@
           learningObject.author.username,
           learningObject.name
         ]"
+        aria-label="Visit the Learning Object's public listing"
       >
         Visit <i class="far fa-external-link"></i>
       </button>
     </div>
   </div>
   <div class="side-panel__metrics">
-    <div class="metrics__title title">Metrics</div>
+    <div tab-index="0" class="metrics__title title">Metrics</div>
     <div class="metrics__grid">
       <div class="metrics__downloads">
-        <div class="metrics__amount">
+        <div aria-labelledby="downloads" tab-index="0" class="metrics__amount">
           {{ learningObject.metrics.downloads }}
         </div>
-        <div class="metrics__label">Downloads</div>
+        <div #downloads-label class="metrics__label">Downloads</div>
       </div>
       <div class="metrics__ratings">
-        <div class="metrics__amount">
+        <div tab-index="0" aria-labelledby="ratings-label" class="metrics__amount">
           <clark-rating-stars
             [rating]="averageRating"
             color="gold"
             size="26"
           ></clark-rating-stars>
         </div>
-        <div class="metrics__label">Average Rating</div>
+        <div #ratings-label class="metrics__label">Average Rating</div>
       </div>
     </div>
   </div>
