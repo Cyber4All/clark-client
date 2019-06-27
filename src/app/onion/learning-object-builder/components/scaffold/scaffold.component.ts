@@ -22,6 +22,15 @@ export class ScaffoldComponent implements OnInit {
   // boolean to indicate if edit is selected for the list
   @Input() editContent: boolean;
 
+   // array to obtain children IDs
+   childrenIDs: string[] = [];
+   childrenConfirmationMessage: string;
+   childrenConfirmation: boolean;
+
+   isAddingChild: boolean;
+
+   children: LearningObject[];
+
   @ViewChild('addChildButton') addChildButton: ElementRef;
   @ViewChild('teleporterPayload') teleporterPayload: ElementRef;
 
@@ -34,15 +43,6 @@ export class ScaffoldComponent implements OnInit {
       this.toggleAddChild(false);
     }
   }
-
-  // array to obtain children IDs
-  childrenIDs: string[] = [];
-  childrenConfirmationMessage: string;
-  childrenConfirmation: boolean;
-
-  isAddingChild: boolean;
-
-  children: LearningObject[];
   constructor(
     private store: BuilderStore,
     private renderer: Renderer2,
