@@ -6,21 +6,21 @@
 </div>
 
 <ng-template [ngIf]="children && children.length > 0">
-  <div  class="children-list">
+  <div class="children-list">
     <div *ngFor="let c of children; let i= index" class="child-box"> 
       <div class = "info">
         <div class = "top-row">
           <div class = "child-title">{{c.name}}</div>
         </div>
         <div class = "bottom-row">
-        <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
-          <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
+          <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
+            <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
         </div>
       </div>
       <button class="add" (click)="addChild(i)">
         <i class="fas fa-plus"></i>
-      </div>
-    </button>
+      </button>
+    </div>
   </div>
 </ng-template>
 
