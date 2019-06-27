@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChangelogListComponent } from './changelog-list.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ChangelogListComponent', () => {
   let component: ChangelogListComponent;
@@ -8,7 +10,9 @@ describe('ChangelogListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChangelogListComponent ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ ChangelogListComponent ],
+      imports: [ NoopAnimationsModule ]
     })
     .compileComponents();
   }));
@@ -16,6 +20,7 @@ describe('ChangelogListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangelogListComponent);
     component = fixture.componentInstance;
+    component.changelogs = [];
     fixture.detectChanges();
   });
 

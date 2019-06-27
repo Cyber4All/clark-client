@@ -1,13 +1,13 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.36.2",
+  "version": "2.37.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test:unit": "jest --verbose  --coverage",
+    "test:unit": "jest --maxWorkers=2 --verbose  --coverage",
     "test:lighthouse": "jest -c jest.config.lighthouse.js",
     "lint": "ng lint"
   },
