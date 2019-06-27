@@ -7,7 +7,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "jest --verbose  --coverage",
+    "test:unit": "jest --verbose  --coverage",
+    "test:lighthouse": "jest -c jest.config.lighthouse.js",
     "lint": "ng lint"
   },
   "dependencies": {
@@ -52,11 +53,13 @@
     "@types/jest": "^23.1.1",
     "@types/node": "^10.5.2",
     "@types/uuid": "^3.4.3",
+    "chrome-launcher": "^0.10.7",
     "codelyzer": "^4.3.0",
     "install-peers": "^1.0.2",
     "jasmine-spec-reporter": "~4.2.1",
     "jest": "^24.7.1",
     "jest-preset-angular": "^6.0.2",
+    "lighthouse": "^5.1.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.10.0",
@@ -64,23 +67,6 @@
   },
   "prettier": {
     "singleQuote": true
-  },
-  "jest": {
-    "transform": {
-      "\\.(ts|tsx)$": "ts-jest"
-    },
-    "moduleNameMapper": {
-      "route": "<rootDir>/src/environments/route.ts",
-      "tooltip-text": "<rootDir>/src/environments/tooltip-text.ts",
-      "environment": "<rootDir>/src/environments/environment.ts",
-      "auth": "<rootDir>/src/app/core/auth.service.ts"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "preset": "jest-preset-angular",
-    "setupTestFrameworkScriptFile": "<rootDir>/src/test.js"
   },
   "engines": {
     "node": "10.14.2",
