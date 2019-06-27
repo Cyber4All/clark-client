@@ -56,9 +56,15 @@ workflows:
           filters:
             branches:
               only: /master/
+      - lighthouse:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /master/
       - deploy:
           requires:
-            - test
+            - lighthouse
           filters:
             branches:
               only: /master/
