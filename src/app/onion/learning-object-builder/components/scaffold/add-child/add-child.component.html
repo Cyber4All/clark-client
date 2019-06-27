@@ -1,8 +1,6 @@
-<div class="add-child">
-  <div class="add-child__search">
-    <i class="far fa-search"></i>
-    <input type="text" placeholder="Search for your Learning Object" />
-  </div>
+<div class="search-bar">
+  <input type="search" placeholder="Search for Children" [(ngModel)]="searchStringValue" (ngModelChange)="searchString$.next($event)" />
+  <i class="far fa-search"></i>
 </div>
 
 <ng-template [ngIf]="children && children.length > 0">
@@ -17,7 +15,7 @@
             <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
         </div>
       </div>
-      <button class="add" (click)="addChild(i)">
+      <button class="add" (click)="addChildToList(i)">
         <i class="fas fa-plus"></i>
       </button>
     </div>

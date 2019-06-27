@@ -52,6 +52,7 @@ export class ScaffoldComponent implements OnInit {
   ngOnInit() {
     this.store.getChildren().then(kiddos => {
       this.children = kiddos;
+      this.children.forEach(kid => this.childrenIDs.push(kid.id));
     });
     this.childrenConfirmation = false;
   }
@@ -59,12 +60,12 @@ export class ScaffoldComponent implements OnInit {
   /**
    * Add child to children array
    */
-  addChild(child: LearningObject) {
+  addToChild(child: LearningObject) {
     // add child to the children array
-    this.children.push(child);
+    this.children.unshift(child);
 
     // add child to the childrenIDs array
-    this.childrenIDs.push(child.id);
+    this.childrenIDs.unshift(child.id);
 
     // send request to the service to set children
     this.store.setChildren(this.childrenIDs);
@@ -78,6 +79,7 @@ export class ScaffoldComponent implements OnInit {
     // change the index of the child that has been moved in the array used for display
     moveItemInArray(this.children, event.previousIndex, event.currentIndex);
 
+    this.childrenIDs = [];
     // get the ids of the children in children array
     this.children.forEach(kid => this.childrenIDs.push(kid.id));
 
@@ -114,7 +116,8 @@ export class ScaffoldComponent implements OnInit {
     // remove the child that was selected to be deleted
     this.children.splice(index, 1);
 
-    // set childrenIDs equal to the children array and set children
+    // set childrenIDs equal to the children array
+    this.childrenIDs = [];
     this.children.forEach(kid => this.childrenIDs.push(kid.id));
     this.store.setChildren(this.childrenIDs);
 
@@ -143,7 +146,7 @@ export class ScaffoldComponent implements OnInit {
     ];
 
     position[1] +=
-      (this.addChildButton.nativeElement as HTMLElement).offsetHeight - 10;
+      (this.addChildButton.nativeElement as HTMLElement).offsetHeight - 420;
 
     // add the payload to the DOM
     this.isAddingChild = value;
