@@ -88,9 +88,9 @@
     max-width: $max-width;
     box-sizing: border-box;
 
-
     & > * {
       max-height: 46px;
+      box-sizing: border-box;
 
       &:not(.clark-search-wrapper) {
         transition: all 0.2s ease;

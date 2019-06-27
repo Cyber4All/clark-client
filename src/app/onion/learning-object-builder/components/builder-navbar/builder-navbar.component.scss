@@ -25,6 +25,7 @@
   position: fixed;
   left: 0;
   right: 0;
+  box-sizing: border-box;
 
   .revising-notification {
     background-color: $tag_revision;
@@ -33,7 +34,6 @@
     top: 0;
     left: 0;
     margin: 0;
-    height: 30px;
     color: white;
     padding-top: 5px;
     padding-bottom: 10px;

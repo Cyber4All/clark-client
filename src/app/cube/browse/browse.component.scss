@@ -6,6 +6,8 @@ $learning-object-width: 820px;
   max-width: $max-width;
   width: 100%;
   margin-top: 15px;
+  padding: 0 20px;
+  box-sizing: border-box;
 
   .filters-clear-all,
   .clear-search {
