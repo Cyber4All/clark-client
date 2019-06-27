@@ -53,6 +53,9 @@ jobs:
           name: Wait for client
           command: dockerize -wait http://localhost:4200 -timeout 3m
       - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
           name: Run Lighthouse tests
           command: npm run test:lighthouse
   deploy:
