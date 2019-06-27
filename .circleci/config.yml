@@ -22,18 +22,31 @@ jobs:
           root: dist
           paths: 
             - ./
+  publish-image:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Image
+          command: | 
+            docker build -t clark-client:$CIRCLE_SHA1 .
+      - run:
+          name: Login to docker
+          command: docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+      - run:
+          name: Publish Image 
+          command: |
+            docker tag clark-client:$CIRCLE_SHA1 "${DOCKER_USER_ORG}/clark-client:${CIRCLE_SHA1}"
+            docker push $DOCKER_USER_ORG/clark-client:$CIRCLE_SHA1
   lighthouse:
     <<: *defaults
     docker:
       - image: circleci/node:9.8.0-browsers
+      - image: "${DOCKER_USER_ORG}/clark-client:${CIRCLE_SHA1}"
     steps:  
       - checkout
       - setup_remote_docker
-      - run:
-          name: Start client
-          command: |
-            docker build -t lighthouse .  
-            docker run -d -p 4200:4200 lighthouse
       - run:
           name: Wait for client
           command: dockerize -wait http://localhost:4200 -timeout 3m
@@ -55,7 +68,10 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - lighthouse
+      - publish-image
+      - lighthouse:
+          requires:
+            - publish-image
   build-test-and-deploy:
     jobs:
       - build:
