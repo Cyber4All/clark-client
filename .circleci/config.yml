@@ -24,6 +24,8 @@ jobs:
             - ./
   publish-image:
     <<: *defaults
+     docker:
+      - image: circleci/node:9.8.0
     steps:
       - checkout
       - setup_remote_docker
