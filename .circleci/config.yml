@@ -24,7 +24,7 @@ jobs:
             - ./
   publish-image:
     <<: *defaults
-     docker:
+    docker:
       - image: circleci/node:9.8.0
     steps:
       - checkout
