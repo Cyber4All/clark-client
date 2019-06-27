@@ -14,7 +14,7 @@ jobs:
           command: npm install
       - run:
           name: Unit Tests
-          command: npm test auth/ admin/ onion/dashboard/
+          command: npm run test:unit auth/ admin/ onion/dashboard/
       - run:
           name: Build Application
           command: yarn ng build --prod --no-progress
@@ -22,15 +22,18 @@ jobs:
           root: dist
           paths: 
             - ./
-  test:
+  lighthouse:
     <<: *defaults
     steps:  
-      - attach_workspace : 
-          at: ~/clark-client
+      - checkout
       - run:
-          name: Run e2e Tests
+          name: Start client
           command: |
-            echo "Test coming soon"
+            docker build -t lighthouse .  
+            docker run -p 4200:4200 lighthouse
+      - run:
+          name: Run Lighthouse tests
+          command: npm run test:lighthouse
   deploy:
     <<: *defaults
     steps:
@@ -46,19 +49,10 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      - lighthouse
   build-test-and-deploy:
     jobs:
       - build:
-          filters:
-            branches:
-              only: /master/
-      - test:
-          requires:
-            - build
           filters:
             branches:
               only: /master/
