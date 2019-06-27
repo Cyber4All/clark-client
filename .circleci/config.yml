@@ -33,7 +33,10 @@ jobs:
           name: Start client
           command: |
             docker build -t lighthouse .  
-            docker run -p 4200:4200 lighthouse
+            docker run -d -p 4200:4200 lighthouse
+      - run:
+          name: Wait for client
+          command: dockerize -wait http://localhost:4200 -timeout 1m
       - run:
           name: Run Lighthouse tests
           command: npm run test:lighthouse
