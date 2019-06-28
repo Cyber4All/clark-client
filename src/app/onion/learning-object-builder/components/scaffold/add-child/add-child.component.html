@@ -1,6 +1,8 @@
 <div class="search-bar">
-  <input type="search" placeholder="Search for Children" [(ngModel)]="searchStringValue" (ngModelChange)="searchString$.next($event)" />
-  <i class="far fa-search"></i>
+  <input type="search" placeholder="Search for Children" [(ngModel)]="childrenSearchString" />
+  <button class="search-button" (click)="search()">
+    <i class="far fa-search"></i>
+  </button>
 </div>
 
 <ng-template [ngIf]="children && children.length > 0">
@@ -27,5 +29,5 @@
     <i class="far fa-spinner-third fa-spin"></i>
     Loading...
   </div>
-  <ng-container [ngTemplateOutlet]="addChild"></ng-container>
+
 </ng-template>
