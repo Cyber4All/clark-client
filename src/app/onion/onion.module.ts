@@ -31,7 +31,7 @@ import { DashboardItemComponent } from './dashboard/components/dashboard-item/da
  * @author Sean Donnelly
  */
 @NgModule({
-  // Specifys the components included in this module
+  // Specifies the components included in this module
   declarations: [
     OnionComponent,
     DashboardComponent,
@@ -43,7 +43,7 @@ import { DashboardItemComponent } from './dashboard/components/dashboard-item/da
     LearningObjectComponent,
     DashboardItemComponent
   ],
-  // Specifys all modules to be imported
+  // Specifies all modules to be imported
   imports: [
     CommonModule,
     FormsModule,
