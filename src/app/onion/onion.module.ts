@@ -22,6 +22,7 @@ import { OnionSharedModule } from './shared/onion-shared.module';
 import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
 import { SidePanelContentComponent } from './dashboard/components/side-panel-content/side-panel-content.component';
 import { LearningObjectComponent } from './dashboard/components/side-panel-content/learning-object/learning-object.component';
+import { DashboardItemComponent } from './dashboard/components/dashboard-item/dashboard-item.component';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -40,6 +41,7 @@ import { LearningObjectComponent } from './dashboard/components/side-panel-conte
     ChangelogModalComponent,
     SidePanelContentComponent,
     LearningObjectComponent,
+    DashboardItemComponent
   ],
   // Specifys all modules to be imported
   imports: [

@@ -15,8 +15,8 @@
   ::ng-deep .row-item {
     padding: 0 20px;
     display: grid;
-    grid-template-columns: 20px 2.5fr 1fr 0.7fr 1fr 50px;
-    grid-gap: 0 40px;
+    grid-template-columns: 20px 2.5fr 100px 80px 120px 50px;
+    grid-gap: 0 50px;
     align-items: center;
   }
 
@@ -34,7 +34,7 @@
     padding-bottom: 10px;
   }
 
-  clark-dashboard-item {
+  clark-learning-object-list-item {
     position: relative;
     display: block;
   }
