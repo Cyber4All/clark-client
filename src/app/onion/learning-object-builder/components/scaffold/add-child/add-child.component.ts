@@ -75,8 +75,7 @@ export class AddChildComponent implements OnInit {
   search() {
     setTimeout(async() => {
       this.children = await this.getLearningObjects(this.childrenSearchString);
-    });
-    console.log(this.childrenSearchString);
+    }, 1000);
   }
 
 }

@@ -7,8 +7,9 @@
 
 <ng-template [ngIf]="children && children.length > 0">
   <div class="children-list">
-    <div *ngFor="let c of children; let i= index" class="child-box"> 
-      <div class = "info">
+    <virtual-scroller #scroll [style.height]="'400px'" [items]="children"> 
+      <div *ngFor="let c of scroll.viewPortItems; let i= index" class="child-box">
+        <div class = "info">
         <div class = "top-row">
           <div class = "child-title">{{c.name}}</div>
         </div>
@@ -21,7 +22,8 @@
         <i class="fas fa-plus"></i>
       </button>
     </div>
-  </div>
+    </virtual-scroller>
+    </div>
 </ng-template>
 
 <ng-template [ngIf]="!children">
@@ -29,5 +31,10 @@
     <i class="far fa-spinner-third fa-spin"></i>
     Loading...
   </div>
+</ng-template>
 
+<ng-template [ngIf]="children?.length === 0">
+  <div class="no-children">
+    No children available for this Learning Object
+  </div>
 </ng-template>
