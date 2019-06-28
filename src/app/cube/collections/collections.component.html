@@ -12,7 +12,5 @@
 </section>
 
 <div class="collections__grid">
-  <div *ngFor="let c of collections">
-    <clark-collection-card [collection]="c"></clark-collection-card>
-  </div>
+  <clark-collection-card *ngFor="let c of collections" [collection]="c"></clark-collection-card>
 </div>
