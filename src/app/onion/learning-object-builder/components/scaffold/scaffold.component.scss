@@ -139,11 +139,11 @@
 }
 
 .edit-children {
-  border-top: solid 1px $light-grey;
+  border-bottom: solid 1px $light-grey;
   width: 100%;
   font-size: $normal;
   background: transparent;
-  border-bottom: none;
+  border-top: solid 1px $light-grey;
   border-right: none;
   border-left: none;
   color: $light-blue;
