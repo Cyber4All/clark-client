@@ -171,6 +171,23 @@
       }
     }
 
+    &.proofing {
+      color: $status_proofing;
+
+      .indicator {
+        background: $status_proofing;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_proofing;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
     &.released {
       color: $status_released;
 
