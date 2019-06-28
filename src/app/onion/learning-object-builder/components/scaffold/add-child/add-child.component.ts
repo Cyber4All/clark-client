@@ -15,8 +15,11 @@ export class AddChildComponent implements OnInit {
   // emits the child that is to be added to the children array
   @Output() childToAdd: EventEmitter<{}> = new EventEmitter();
 
+  childrenSearchString = ' ';
   children: LearningObject[];
   loading: boolean;
+
+  lengths = ['nanomodule', 'micromodule', 'module', 'unit', 'course'];
 
   constructor(
     private learningObjectService: LearningObjectService,
@@ -26,7 +29,7 @@ export class AddChildComponent implements OnInit {
   ngOnInit() {
     setTimeout(async() => {
       this.children = await this.getLearningObjects();
-    });
+    }, 1000);
   }
 
   /**
@@ -40,9 +43,14 @@ export class AddChildComponent implements OnInit {
       .getLearningObjects(this.auth.username, filters)
       .then((children: LearningObject[]) => {
         this.loading = false;
+        const indx = this.lengths.indexOf(this.child.length);
+        const childrenLengths = this.lengths.slice(0, indx);
         this.currentChildren.forEach(child => {
           children.forEach(kid => {
             const idx = children.indexOf(kid);
+            if (!childrenLengths.includes(kid.length)) {
+              children.splice(idx, 1);
+            }
             if (child.id === kid.id) {
               children.splice(idx, 1);
             }
@@ -54,9 +62,21 @@ export class AddChildComponent implements OnInit {
         return children;
       });
   }
-
+  /**
+   * Takes the index of the LO within the array and emits it to the parent
+   * and also removes it from the array of candidate children for the LO
+   * @param index
+   */
   addChildToList(index) {
     this.childToAdd.emit(this.children[index]);
     this.children.splice(index, 1);
   }
+
+  search() {
+    setTimeout(async() => {
+      this.children = await this.getLearningObjects(this.childrenSearchString);
+    });
+    console.log(this.childrenSearchString);
+  }
+
 }
