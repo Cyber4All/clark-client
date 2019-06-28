@@ -145,8 +145,11 @@ export class ScaffoldComponent implements OnInit {
         .top
     ];
 
+    position[0] +=
+      (this.addChildButton.nativeElement as HTMLElement).offsetLeft + 100;
+
     position[1] +=
-      (this.addChildButton.nativeElement as HTMLElement).offsetHeight - 420;
+      (this.addChildButton.nativeElement as HTMLElement).offsetHeight - 43;
 
     // add the payload to the DOM
     this.isAddingChild = value;
@@ -169,7 +172,7 @@ export class ScaffoldComponent implements OnInit {
       this.teleporterPayload.nativeElement,
       'width',
       (this.addChildButton.nativeElement as HTMLElement).offsetWidth +
-        100 +
+        50 +
         'px'
     );
 
