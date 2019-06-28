@@ -6,11 +6,11 @@
   <div class="title">
     Children
   </div>
-  <button *ngIf="children?.length != 0 && learningObject?.length != 'nanomodule'" class="edit" (click)="toggleAddDelete()">
+  <button *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule'" class="edit" (click)="toggleAddDelete()">
     <i class="far fa-pencil"></i>
   </button>
 </div>
-<div [ngTemplateOutlet]="addChild" *ngIf="editContent || children.length == 0"></div>
+<div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
 <ng-template [ngIf]="children && children.length > 0">
   <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
     <div *ngFor="let c of children; let i= index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
@@ -34,7 +34,7 @@
 </ng-template>
 
 <ng-template #addChild>
-  <button #addChildButton class="edit-children" (click)="toggleAddChild(); $event.stopPropagation()">
+  <button #addChildButton class="edit-children" (click)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
     Add Child
     <i class="far fa-plus"></i>
   </button>
