@@ -6,6 +6,18 @@ body {
   font-family: 'Source Sans Pro', serif;
   background: $wrapper-background !important;
   height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+a,
+a:visited {
+  color: $light-blue;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 // vvv global styles vvv

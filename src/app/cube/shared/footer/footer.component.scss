@@ -11,6 +11,7 @@ footer {
   align-items: center;
   padding: 20px;
   text-align: center;
+  box-sizing: border-box;
 
   .inner {
     max-width: $max-width;

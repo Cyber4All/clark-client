@@ -126,6 +126,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     flex-shrink: 0;
     margin-top: -190px;
     z-index: 2;
+    box-sizing: border-box;
   }
 }
 
