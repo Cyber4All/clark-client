@@ -76,11 +76,12 @@ export const USER_ROUTES = {
   LOGOUT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
-  GET_MY_LEARNING_OBJECTS(username, query: any) {
+  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects?children=true&${querystring.stringify(query)}`;
+    )}/learning-objects?children=true&text=${encodeURIComponent(query)}
+    &${querystring.stringify(filters)}`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(

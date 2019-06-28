@@ -1,5 +1,5 @@
 <div class="search-bar">
-  <input aria-label="Search for Children" type="search" placeholder="Search for Children" [(ngModel)]="childrenSearchString" />
+  <input aria-label="Search for Children" type="search" placeholder="Search for Children" [(ngModel)]="childrenSearchString" (ngModelChange)="searchString$.next($event)"/>
   <button class="search-button" (click)="search()">
     <i class="far fa-search"></i>
   </button>
@@ -10,20 +10,20 @@
     <virtual-scroller #scroll [style.height]="'400px'" [items]="children"> 
       <div *ngFor="let c of scroll.viewPortItems; let i= index" class="child-box">
         <div class = "info">
-        <div class = "top-row">
-          <div class = "child-title">{{c.name}}</div>
-        </div>
-        <div class = "bottom-row">
-          <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
+          <div class = "top-row">
+            <div class = "child-title">{{c.name}}</div>
+          </div>
+          <div class = "bottom-row">
+            <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
             <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
+          </div>
         </div>
+        <button class="add" (click)="addChildToList(i)">
+         <i class="fas fa-plus"></i>
+        </button>
       </div>
-      <button class="add" (click)="addChildToList(i)">
-        <i class="fas fa-plus"></i>
-      </button>
-    </div>
     </virtual-scroller>
-    </div>
+  </div>
 </ng-template>
 
 <ng-template [ngIf]="!children">

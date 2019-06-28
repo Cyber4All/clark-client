@@ -1,35 +1,47 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth.service';
+import { takeUntil, debounceTime } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'clark-add-child',
   templateUrl: './add-child.component.html',
   styleUrls: ['./add-child.component.scss']
 })
-export class AddChildComponent implements OnInit {
+export class AddChildComponent implements OnInit, OnDestroy {
   // the child that is currently being edited
   @Input() child: LearningObject;
   @Input() currentChildren: LearningObject[];
   // emits the child that is to be added to the children array
   @Output() childToAdd: EventEmitter<{}> = new EventEmitter();
 
-  childrenSearchString = ' ';
   children: LearningObject[];
   loading: boolean;
+
+  childrenSearchString: string;
+  searchString$: BehaviorSubject<string> = new BehaviorSubject('');
+  componentDestroyed$: Subject<void> = new Subject();
 
   lengths = ['nanomodule', 'micromodule', 'module', 'unit', 'course'];
 
   constructor(
     private learningObjectService: LearningObjectService,
     public auth: AuthService,
-  ) {}
+  ) {
+    this.searchString$
+      .pipe(
+        takeUntil(this.componentDestroyed$),
+        debounceTime(650)
+      )
+      .subscribe(() => {
+        this.search();
+      });
+  }
 
-  ngOnInit() {
-    setTimeout(async() => {
-      this.children = await this.getLearningObjects();
-    }, 1000);
+  async ngOnInit() {
+    this.children = await this.getLearningObjects();
   }
 
   /**
@@ -37,28 +49,16 @@ export class AddChildComponent implements OnInit {
    * as well as the object that is currently being edited
    * @param filters
    */
-  async getLearningObjects(filters?: any): Promise<LearningObject[]> {
+  async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
-      .getLearningObjects(this.auth.username, filters)
+      .getLearningObjects(this.auth.username, filters, query)
       .then((children: LearningObject[]) => {
         this.loading = false;
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
-        this.currentChildren.forEach(child => {
-          children.forEach(kid => {
-            const idx = children.indexOf(kid);
-            if (!childrenLengths.includes(kid.length)) {
-              children.splice(idx, 1);
-            }
-            if (child.id === kid.id) {
-              children.splice(idx, 1);
-            }
-            if (this.child.id === kid.id) {
-              children.splice(idx, 1);
-            }
-          });
-        });
+        children = children.filter(child =>
+          !this.currentChildren.includes(child) && !children.includes(this.child) && childrenLengths.includes(child.length));
         return children;
       });
   }
@@ -72,10 +72,12 @@ export class AddChildComponent implements OnInit {
     this.children.splice(index, 1);
   }
 
-  search() {
-    setTimeout(async() => {
-      this.children = await this.getLearningObjects(this.childrenSearchString);
-    }, 1000);
+  async search() {
+    this.children = await this.getLearningObjects(null, this.childrenSearchString);
   }
 
+  ngOnDestroy() {
+    this.componentDestroyed$.next();
+    this.componentDestroyed$.unsubscribe();
+  }
 }
