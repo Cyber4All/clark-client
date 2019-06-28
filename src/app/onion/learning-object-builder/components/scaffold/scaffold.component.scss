@@ -20,12 +20,13 @@
     justify-content: left;
   }
   .edit {
-    background: transparent;
-    border: none;
-    color: $light-blue;
-    font-size: $large;
     margin-left: auto;
-    padding-right: 10px;
+    padding-right: 50px;
+    .text {
+      padding-right: 10px;
+      font-size: $small;
+      display: inline-block;
+    }
   }
 }
 .children-list {

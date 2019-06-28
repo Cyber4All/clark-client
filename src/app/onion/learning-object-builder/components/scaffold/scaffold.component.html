@@ -6,12 +6,10 @@
   <div class="title">
     Children
   </div>
-  <button *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule' && !editContent" class="edit" (click)="toggleAddDelete()">
-    <i class="far fa-pencil"></i>
-  </button>
-  <button *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule' && editContent" class="edit" (click)="toggleAddDelete()">
-      <i class="fas fa-bars"></i>
-    </button>
+  <div class="edit">
+    <div class="text">Add/Delete</div>
+    <clark-toggle-switch *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule'" (toggled)="toggleAddDelete()"></clark-toggle-switch>
+  </div>
 </div>
 <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
 <ng-template [ngIf]="children && children.length > 0">

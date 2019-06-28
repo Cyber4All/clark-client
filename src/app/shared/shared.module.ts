@@ -44,6 +44,7 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { CollectionPipe } from './pipes/collection.pipe';
+import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -95,7 +96,8 @@ import { CollectionPipe } from './pipes/collection.pipe';
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
     TermsOfServiceComponent,
-    CollectionPipe
+    CollectionPipe,
+    ToggleSwitchComponent
   ],
   exports: [
     NavbarComponent,
@@ -130,7 +132,8 @@ import { CollectionPipe } from './pipes/collection.pipe';
     CarouselComponent,
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
-    CollectionPipe
+    CollectionPipe,
+    ToggleSwitchComponent
   ]
 })
 export class SharedModule {}
