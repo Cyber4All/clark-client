@@ -411,7 +411,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getMaterials(username: string, objectId: string): Promise<any> {
-    const route = USER_ROUTES.GET_MATERIALS(username, objectId);
+    const route = USER_ROUTES.GET_MATERIALS(username, objectId, 'unreleased');
     return this.http.get(route, { withCredentials: true })
     .pipe(
       retry(3),
