@@ -9,6 +9,7 @@
     "build": "ng build",
     "test:unit": "jest --maxWorkers=2 --verbose  --coverage",
     "test:lighthouse": "jest -c jest.config.lighthouse.js",
+    "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c jest.config.lighthouse.js --runInBand",
     "lint": "ng lint"
   },
   "dependencies": {
