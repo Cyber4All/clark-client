@@ -75,6 +75,6 @@
 
 <clark-teleporter *ngIf="isAddingChild">
   <div #teleporterPayload class="add-child" (click)="$event.stopPropagation()">
-    <clark-add-child [currentChildren]="children" [child]="learningObject" (childToAdd)="addToChild($event)"></clark-add-child>
+    <clark-add-child [currentChildren]="childrenIDs" [child]="learningObject" (childToAdd)="addToChild($event)"></clark-add-child>
   </div>
 </clark-teleporter>

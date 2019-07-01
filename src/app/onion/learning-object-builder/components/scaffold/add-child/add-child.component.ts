@@ -13,7 +13,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class AddChildComponent implements OnInit, OnDestroy {
   // the child that is currently being edited
   @Input() child: LearningObject;
-  @Input() currentChildren: LearningObject[];
+  @Input() currentChildren: string[];
   // emits the child that is to be added to the children array
   @Output() childToAdd: EventEmitter<{}> = new EventEmitter();
 
@@ -57,8 +57,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
         this.loading = false;
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
-        children = children.filter(child =>
-          !this.currentChildren.includes(child) && !children.includes(this.child) && childrenLengths.includes(child.length));
+        children = children.filter(child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length)));
         return children;
       });
   }
