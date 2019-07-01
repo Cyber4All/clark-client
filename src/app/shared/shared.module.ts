@@ -32,7 +32,6 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
-import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
@@ -83,7 +82,6 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     ReportRatingComponent,
     ProgressComponent,
     CookiesComponent,
-    DashboardItemComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
     TextEditorComponent,
@@ -118,7 +116,6 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     CookiesComponent,
     ClarkContextMenuModule,
     EmailBannerComponent,
-    DashboardItemComponent,
     TeleporterModule,
     NewRatingResponseComponent,
     TextEditorComponent,

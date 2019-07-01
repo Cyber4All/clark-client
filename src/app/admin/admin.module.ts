@@ -20,6 +20,7 @@ import { AdminUserCardComponent } from './components/user-card/user-card.compone
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
 import { CoreModule } from './core/core.module';
+import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { CoreModule } from './core/core.module';
     AdminUserCardComponent,
     UserPrivilegesComponent,
     PrivilegesListComponent,
+    LearningObjectListItemComponent
   ],
   imports: [
     CoreModule.forRoot(),

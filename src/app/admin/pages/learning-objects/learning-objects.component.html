@@ -35,18 +35,14 @@
               scroll.viewPortInfo.startIndex && getLearningObjects($event)
             "
           >
-            <clark-dashboard-item
+            <clark-learning-object-list-item
               *ngFor="let l of scroll.viewPortItems"
               [learningObject]="l"
               [status]="l.status"
-              [hasCheckBox]="false"
-              [hasAuthor]="true"
-              [collectionDashboard]="true"
-              [isAdmin]="isAdminOrEditor"
               (viewUser)="getUserLearningObjects($event)"
               (changeStatus)="openChangeStatusModal($event)"
             >
-            </clark-dashboard-item>
+            </clark-learning-object-list-item>
             <div class="loadingOrFinished">
               <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
                 <i class="far fa-spinner-third fa-spin"></i>
