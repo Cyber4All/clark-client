@@ -96,6 +96,10 @@
         <div *ngIf="filters.get('review')" class="indicator"></div>
         <i class="far fa-sync"></i>Under Review
       </li>
+      <li class="proofing" (click)="toggleFilter('proofing')">
+        <div *ngIf="filters.get('proofing')" class="indicator"></div>
+        <i class="far fa-shield"></i>Proofing
+      </li>
       <li class="released" (click)="toggleFilter('released')">
         <div *ngIf="filters.get('released')" class="indicator"></div>
         <i class="far fa-eye"></i>Released

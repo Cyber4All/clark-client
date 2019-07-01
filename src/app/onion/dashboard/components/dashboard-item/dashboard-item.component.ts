@@ -10,7 +10,7 @@ import {
 
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
-import { ContextMenuService } from '../contextmenu/contextmenu.service';
+import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
@@ -27,18 +27,6 @@ export class DashboardItemComponent implements OnChanges {
   // the status of the learning object (passed in separately for change detection)
   @Input()
   status: string;
-  // Does this item include a checkbox
-  @Input()
-  hasCheckBox = true;
-  // Does this item include a author name
-  @Input()
-  hasAuthor = false;
-  // Does the current user have administrator privileges
-  @Input()
-  isAdmin = false;
-  // Display context menu for the collection dashboard
-  @Input()
-  collectionDashboard = false;
   // is this object selected
   @Input()
   selected = false;
@@ -71,12 +59,6 @@ export class DashboardItemComponent implements OnChanges {
   @Output()
   cancelSubmission: EventEmitter<void> = new EventEmitter();
   // fired when the view user option is selected from the context menu
-  @Output()
-  viewUser: EventEmitter<string> = new EventEmitter();
-  // Change status
-  @Output()
-  changeStatus: EventEmitter<LearningObject> = new EventEmitter();
-
   @Output()
   viewAllChangelogs: EventEmitter<string> = new EventEmitter();
 
@@ -166,7 +148,7 @@ export class DashboardItemComponent implements OnChanges {
 
    /**
    * Given a string representation of a context menu action, returns true if that action should be allowed based on
-   * parameters such as learing object length and learning object status
+   * parameters such as learning object length and learning object status
    * @param action {string} the action in question
    */
   adminActionPermissions() {
@@ -175,7 +157,7 @@ export class DashboardItemComponent implements OnChanges {
 
   /**
    * Check the logged in user's email verification status
-   * @return {boolean} true if loggedin user has verified their email, false otherwise
+   * @return {boolean} true if logged-in user has verified their email, false otherwise
    */
   get verifiedEmail(): boolean {
     return this.auth.user.emailVerified;
