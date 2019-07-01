@@ -32,7 +32,6 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
-import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
@@ -82,7 +81,6 @@ import { CollectionPipe } from './pipes/collection.pipe';
     ReportRatingComponent,
     ProgressComponent,
     CookiesComponent,
-    DashboardItemComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
     TextEditorComponent,
@@ -116,7 +114,6 @@ import { CollectionPipe } from './pipes/collection.pipe';
     CookiesComponent,
     ClarkContextMenuModule,
     EmailBannerComponent,
-    DashboardItemComponent,
     TeleporterModule,
     NewRatingResponseComponent,
     TextEditorComponent,
