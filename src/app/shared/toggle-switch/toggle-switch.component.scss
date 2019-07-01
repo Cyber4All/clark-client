@@ -19,7 +19,7 @@ $height: 20px;
   -ms-user-select: none;
   user-select: none;
 
-  .switch__background {
+  .switch__background, .switch__background_revisions, .switch__background_children {
     background: $light-grey;
     border-radius: 50px;
     border: 2px;
@@ -47,8 +47,11 @@ $height: 20px;
       transform: translateX($height);
     }
 
-    .switch__background {
+    .switch__background_revisions {
       background: $orange;
+    }
+    .switch__background_children {
+      background: $light-blue;
     }
   }
 }
