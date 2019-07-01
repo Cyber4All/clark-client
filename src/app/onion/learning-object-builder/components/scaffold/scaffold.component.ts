@@ -28,6 +28,7 @@ export class ScaffoldComponent implements OnInit {
    childrenConfirmation: boolean;
 
    isAddingChild: boolean;
+   ariaLabel: string;
 
    children: LearningObject[];
 
@@ -55,6 +56,7 @@ export class ScaffoldComponent implements OnInit {
       this.children.forEach(kid => this.childrenIDs.push(kid.id));
     });
     this.childrenConfirmation = false;
+    this.ariaLabel = 'add and delete Children';
   }
 
   /**
