@@ -1,13 +1,13 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.37.0",
+  "version": "2.39.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "jest --maxWorkers=2 --verbose  --coverage",
+    "test": "jest --maxWorkers=2 --verbose  --coverage auth/ admin/ onion/dashboard/",
     "lint": "ng lint"
   },
   "dependencies": {

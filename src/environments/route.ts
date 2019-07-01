@@ -153,12 +153,20 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/${id}/files`;
   },
-  DELETE_FILE_FROM_LEARNING_OBJECT(username, learningObjectName, id) {
+  DELETE_FILE_FROM_LEARNING_OBJECT({
+    authorUsername,
+    learningObjectId,
+    fileId
+  }: {
+    authorUsername: string;
+    learningObjectId: string;
+    fileId: string;
+  }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      authorUsername
     )}/learning-objects/${encodeURIComponent(
-      learningObjectName
-    )}/files/${encodeURIComponent(id)}`;
+      learningObjectId
+    )}/materials/files/${encodeURIComponent(fileId)}`;
   },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
@@ -227,7 +235,9 @@ export const USER_ROUTES = {
   UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects/${objectId}/files/${encodeURIComponent(fileId)}`;
+    )}/learning-objects/${objectId}/materials/files/${encodeURIComponent(
+      fileId
+    )}`;
   },
   GET_MATERIALS(username: string, objectId: string, filter?: MaterialsFilter) {
     return `${environment.apiURL}/users/${encodeURIComponent(

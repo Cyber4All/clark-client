@@ -69,9 +69,10 @@
     ::ng-deep .row-item {
       padding: 0 20px;
       display: grid;
-      grid-template-columns: 20px 60px 2fr 1fr 1fr 50px;
+      grid-template-columns: 32px 60px 1fr 180px 180px 50px;
       grid-gap: 0 20px;
       align-items: center;
+      font-size: $small;
     }
 
     ::ng-deep .row-item {
@@ -164,6 +165,23 @@
       &:hover {
         color: white;
         background: $status_review;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
+    &.proofing {
+      color: $status_proofing;
+
+      .indicator {
+        background: $status_proofing;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_proofing;
 
         .indicator {
           background: white;

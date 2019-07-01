@@ -15,23 +15,29 @@
       <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
     </div>
     <div class="learning-object-content">
-      <div *ngIf="collection !== undefined" class="card-collection">
-        {{ collection }}
+      <div class="content__topbar">
+        <div>
+          <!-- outer div here is a wrapper element to make sure the download button stays position to the right in the event the object has no collection -->
+          <div *ngIf="collection !== undefined" class="card-collection">
+            {{ collection }}
+          </div>
+        </div>
+        <button
+          *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
+          class="download-btn-card"
+          (click)="download($event)"
+          attr.aria-label="Download button for {{ learningObject.name }}"
+        >
+          <i class="fas fa-download"></i>
+        </button>
       </div>
-      <button
-        *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
-        class="download-btn-card"
-        (click)="download($event)"
-      >
-        <i class="fas fa-download"></i>
-      </button>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
         <button
           *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
           class="download-btn"
           (click)="download($event)"
-          attr.aria-label="Clickable Download button for {{ learningObject.name }}"
+          attr.aria-label="Download button for {{ learningObject.name }}"
         >
           <i class="fas fa-download"></i>
         </button>
