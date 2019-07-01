@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class ToggleSwitchComponent implements OnInit {
   @Input() state: boolean;
   @Output() toggled: EventEmitter<boolean> = new EventEmitter();
+  @Input() aria: string;
   constructor() { }
 
   ngOnInit() {
