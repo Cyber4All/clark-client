@@ -1,5 +1,6 @@
 <clark-message></clark-message>
-<div *ngIf="nav.visible" [@simpleFadeAnimation]="'in'">
+<a class="skip-link" href="pageContent">Skip directly to site content</a>
+<div role="navigation" *ngIf="nav.visible" [@simpleFadeAnimation]="'in'">
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
       <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">

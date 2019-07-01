@@ -7,6 +7,23 @@
   }
 }
 
+.skip-link {
+  left: -100px;
+  position: absolute;
+  top: auto;
+  width: 0px;
+  height: 0px;
+  z-index: -1;
+}
+.skip-link:focus, .skip-link:active {
+  position: relative;
+  left: 10px;
+  top: auto;
+  height: 25px;
+  font-size: $normal;
+  z-index: 1;
+}
+
 .clark-search-wrapper {
   max-width: 600px;
   margin: auto;
