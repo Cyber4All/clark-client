@@ -6,9 +6,9 @@
   <div class="title">
     Children
   </div>
-  <div class="edit">
+  <div *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule'" class="edit">
     <div class="text">Add/Delete</div>
-    <clark-toggle-switch *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule'" (toggled)="toggleAddDelete()"></clark-toggle-switch>
+    <clark-toggle-switch (toggled)="toggleAddDelete()"></clark-toggle-switch>
   </div>
 </div>
 <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
