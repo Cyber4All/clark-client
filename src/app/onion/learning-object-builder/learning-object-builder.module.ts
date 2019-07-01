@@ -28,6 +28,7 @@ import { ContributorPillComponent } from './components/contributor-pill/contribu
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 import {OnionSharedModule} from '../shared/onion-shared.module';
 import {EditorActionPanelModule} from './components/editor-action-panel/editor-action-panel.module';
+import { AddChildComponent } from './components/scaffold/add-child/add-child.component';
 /*
   NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
   This is because those services should be singletons across the builder, but cease to exist when the builder is
@@ -64,6 +65,7 @@ import {EditorActionPanelModule} from './components/editor-action-panel/editor-a
     UserDropdownComponent,
     ContributorPillComponent,
     ScaffoldComponent,
+    AddChildComponent,
   ],
 })
 export class LearningObjectBuilderModule {}

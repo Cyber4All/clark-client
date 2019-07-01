@@ -1,6 +1,8 @@
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
+export type MaterialsFilter = 'released' | 'unreleased';
+
 export const ADMIN_ROUTES = {
   MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
@@ -76,11 +78,12 @@ export const USER_ROUTES = {
   LOGOUT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
-  GET_MY_LEARNING_OBJECTS(username, query: any) {
+  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects?children=true&${querystring.stringify(query)}`;
+    )}/learning-objects?children=true&text=${encodeURIComponent(query)}
+    &${querystring.stringify(filters)}`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -237,10 +240,10 @@ export const USER_ROUTES = {
       fileId
     )}`;
   },
-  GET_MATERIALS(username: string, objectId: string) {
+  GET_MATERIALS(username: string, objectId: string, filter?: MaterialsFilter) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects/${objectId}/materials`;
+    )}/learning-objects/${objectId}/materials?status=${filter}`;
   },
   ADD_FILE_META(username: string, objectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(

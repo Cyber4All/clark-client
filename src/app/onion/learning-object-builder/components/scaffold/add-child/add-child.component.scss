@@ -1,0 +1,125 @@
+@import '~_vars.scss';
+.children-list {
+    width: 100%;
+    max-width: 100%;
+    min-height: 60px;
+    display: block;
+    background: white;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+  
+  .child-box {
+    padding: 20px 10px;
+    border-bottom: solid 1px $light-grey;
+    color: $dark-grey;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: white;
+  
+    .info {
+      float: left;
+      width: 90%;
+  
+      .top-row {
+        display: flex;
+        width: 100%;
+  
+        .child-title {
+          color: $darker-grey;
+          text-align: left;
+          font-size: $normal;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-break: break-all;
+          max-width: 100%;
+        }
+      }
+      .bottom-row {
+        display: flex;
+  
+        .child-length {
+          text-align: left;
+          font-size: $smaller;
+          color: white;
+          padding: 2px 5px;
+          border-radius: 2px;
+  
+          &.nanomodule {
+            background: $nanomodule-color;
+          }
+  
+          &.micromodule {
+            background: $micromodule-color;
+          }
+  
+          &.module {
+            background: $module-color;
+          }
+  
+          &.unit {
+            background: $unit-color;
+          }
+  
+          &.course {
+            background: $course-color;
+          }
+        }
+  
+        .child-last-updated {
+          color: $dark-grey;
+          font-size: $small;
+          padding-left: 20px;
+        }
+      }
+    }
+    
+    .add {
+      display: flex;
+      color: $light-blue;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      font-size: $large;
+      margin-left: auto;
+      background: transparent;
+      border: none;
+      padding-right: 20px;
+    }
+  }
+  .search-bar {
+    border-radius: 2px;
+    background: $light-grey;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+
+    input {
+      appearance: none;
+      background: transparent;
+      border: 0;
+      width: 100%;
+      padding: 6px 0;
+      outline: 0;
+    }
+    .search-button {
+      background: transparent;
+      border: none;
+    }
+    .svg-inline--fa,
+    .icon {
+      color: $dark-grey;
+    }
+  }
+  .no-children {
+    color: $dark-grey;
+    text-align: center;
+    padding: 30px;
+    font-size: $normal;
+  }
