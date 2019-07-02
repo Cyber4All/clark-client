@@ -21,8 +21,8 @@ export interface DashboardLearningObject extends LearningObject {
 
 @Component({
   selector: 'clark-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  templateUrl: './old-dashboard.component.html',
+  styleUrls: ['./old-dashboard.component.scss'],
   animations: [
     trigger('list', [
       transition(':enter', [
@@ -67,7 +67,7 @@ export interface DashboardLearningObject extends LearningObject {
     ])
   ]
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class OldDashboardComponent implements OnInit, OnDestroy {
   learningObjects: DashboardLearningObject[];
 
   @ViewChild('listInner') listInnerElement: ElementRef;

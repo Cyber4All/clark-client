@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { OnionComponent } from './onion.component';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
@@ -19,7 +19,7 @@ const onion_routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: DashboardComponent,
+        component: OldDashboardComponent,
         canActivate: [AuthGuard],
         data: { state: 'dashboard' }
       },
