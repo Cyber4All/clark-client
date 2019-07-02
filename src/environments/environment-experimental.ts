@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  experimental: false,
+  experimental: true,
   apiURL: 'http://localhost:3000',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'http://localhost:7000',
