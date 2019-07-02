@@ -198,6 +198,8 @@
     flex-shrink: 0;
     right: 0;
     position: relative;
+    background: transparent;
+    border: none;
 
     & > * {
       @include vert-center;
@@ -274,6 +276,8 @@
       display: inline-flex;
       flex-direction: row !important;
       align-items: center;
+      background: transparent;
+      border: none;
 
       .svg-inline--fa {
         font-size: $smaller;

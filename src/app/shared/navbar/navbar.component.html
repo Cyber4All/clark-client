@@ -1,17 +1,19 @@
 <clark-message></clark-message>
 <a class="skip-link" href="pageContent">Skip directly to site content</a>
+<a class="skip-link" *ngIf="!loggedin" href="login">Skip directly to Login</a>
+<a class="skip-link" *ngIf="loggedin" href="profile">Skip directly to your User profile</a>
+<a class="skip-link" href="searchBar">Skip directly to Search for Learning Objects</a>
 <div role="navigation" *ngIf="nav.visible" [@simpleFadeAnimation]="'in'">
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
       <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
         <div class="logo-image"></div>
-        <div id="clark-logo" class="logo-link">CLARK</div>
-        <div *ngIf="version" class="version-label">{{version}}</div>
+        <div tabindex="0" id="clark-logo" class="logo-link">CLARK</div>
       </div>
-      <div class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
+      <div tabindex="-1" class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
         <div class="clark-search-inner">
           <clark-search [focus]="searchFocusSubject" [blur]="searchBlurSubject" (didFocus)="showSearch();" (didBlur)="hideSearch()"></clark-search>
-          <div class="close" id="search-close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
+          <div tabindex="-1" class="close" id="search-close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
         </div>
       </div>
       <div id="clark-user" class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
@@ -20,12 +22,12 @@
 
       <ng-template #userTemplate>
         <ng-container *ngIf="loggedin">
-          <div class="contributor" id="contributor-link" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
-          <div class="right library" id="library-link" routerLink="/library"></div>
-          <div id="clark-user-dropdown" class="left flex h flex-end user-menu" (click)="userDropdown($event)">
+          <button tabindex="0" class="contributor" id="contributor-link" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></button>
+          <button tabindex="0" class="right library" id="library-link" routerLink="/library"></button>
+          <button tabindex="0" id="clark-user-dropdown" class="left flex h flex-end user-menu" (click)="userDropdown($event)">
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
             <i class="fas fa-chevron-down"></i>
-          </div>
+          </button>
         </ng-container>
         <ng-container *ngIf="!loggedin">
           <div class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
