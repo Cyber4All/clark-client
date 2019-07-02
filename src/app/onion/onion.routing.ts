@@ -1,10 +1,13 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { OnionComponent } from './onion.component';
-import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
+import { environment } from '@env/environment';
+
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
+
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
  * Route Guards are passed in an array, meaning there can be multiple, to the canActivate property.
@@ -19,7 +22,7 @@ const onion_routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: OldDashboardComponent,
+        component: environment.experimental ? DashboardComponent : OldDashboardComponent,
         canActivate: [AuthGuard],
         data: { state: 'dashboard' }
       },

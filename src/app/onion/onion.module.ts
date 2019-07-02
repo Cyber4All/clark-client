@@ -23,6 +23,7 @@ import { SidePanelModule } from './old-dashboard/components/side-panel/side-pane
 import { SidePanelContentComponent } from './old-dashboard/components/side-panel-content/side-panel-content.component';
 import { LearningObjectComponent } from './old-dashboard/components/side-panel-content/learning-object/learning-object.component';
 import { DashboardItemComponent } from './old-dashboard/components/dashboard-item/dashboard-item.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -41,7 +42,8 @@ import { DashboardItemComponent } from './old-dashboard/components/dashboard-ite
     ChangelogModalComponent,
     SidePanelContentComponent,
     LearningObjectComponent,
-    DashboardItemComponent
+    DashboardItemComponent,
+    DashboardComponent
   ],
   // Specifies all modules to be imported
   imports: [
