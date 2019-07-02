@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  experimental: false,
   apiURL: 'https://api-gateway.clark.center',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'https://api-outcome-suggestion.clark.center',

@@ -26,6 +26,12 @@
             ]
           },
           "configurations": {
+            "experimental": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment-experimental.ts"
+              }]
+            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
@@ -49,6 +55,9 @@
             "browserTarget": "clark:build"
           },
           "configurations": {
+            "experimental": {
+              "browserTarget": "clark:build:experimental"
+            },
             "production": {
               "browserTarget": "clark:build:production"
             }
