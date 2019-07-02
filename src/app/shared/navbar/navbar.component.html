@@ -23,15 +23,15 @@
       <ng-template #userTemplate>
         <ng-container *ngIf="loggedin">
           <button tabindex="0" class="contributor" id="contributor-link" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></button>
-          <button tabindex="0" class="right library" id="library-link" routerLink="/library"></button>
+          <a tabindex="0" class="right library" id="library-link" routerLink="/library"></a>
           <button tabindex="0" id="clark-user-dropdown" class="left flex h flex-end user-menu" (click)="userDropdown($event)">
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
             <i class="fas fa-chevron-down"></i>
           </button>
         </ng-container>
         <ng-container *ngIf="!loggedin">
-          <div class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
-          <div class="register" id="clark-register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
+          <a tabindex="0" class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></a>
+          <a tabindex="0" class="register" id="clark-register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></a>
         </ng-container>
       </ng-template>
 

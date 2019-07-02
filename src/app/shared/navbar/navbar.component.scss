@@ -288,6 +288,8 @@
 
     .user-menu .svg-inline--fa {
       font-size: $smaller;
+      background: transparent;
+      border: none;
       @include vert-center;
       margin-left: 7px;
     }
@@ -321,6 +323,7 @@
   .register {
     flex-direction: row !important;
     padding: 0 15px;
+    color: $dark-grey;
 
     &:not(:last-child) {
       border-right: 1px solid $light-grey;
