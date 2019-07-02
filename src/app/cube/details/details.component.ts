@@ -55,7 +55,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   revisedVersion = false;
 
   learningObjectName: string;
-
+  ariaLabel: string;
 
   userRating: {
     user?: User;
@@ -97,6 +97,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.learningObjectName,
       );
     });
+
+    this.ariaLabel = 'view revisions';
 
     this.returnUrl =
       '/browse/details/' +
