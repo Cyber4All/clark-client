@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VersionSwitchComponent } from './version-switch.component';
+import { ToggleSwitchComponent } from './toggle-switch.component';
 
-describe('VersionSwitchComponent', () => {
-  let component: VersionSwitchComponent;
-  let fixture: ComponentFixture<VersionSwitchComponent>;
+describe('ToggleSwitchComponent', () => {
+  let component: ToggleSwitchComponent;
+  let fixture: ComponentFixture<ToggleSwitchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VersionSwitchComponent ]
+      declarations: [ ToggleSwitchComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VersionSwitchComponent);
+    fixture = TestBed.createComponent(ToggleSwitchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
