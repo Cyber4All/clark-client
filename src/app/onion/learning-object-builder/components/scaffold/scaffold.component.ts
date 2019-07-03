@@ -36,7 +36,6 @@ export class ScaffoldComponent implements OnInit {
   @ViewChild('teleporterPayload') teleporterPayload: ElementRef;
 
   @HostListener('window:click', ['$event']) handleClickAway(event: MouseEvent) {
-    console.log('click detected!')
     this.toggleAddChild(false);
   }
 
