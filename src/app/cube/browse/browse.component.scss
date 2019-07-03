@@ -4,10 +4,8 @@ $learning-object-width: 820px;
 
 .container {
   max-width: $max-width;
-  width: 100%;
-  margin-top: 15px;
+  margin: 15px auto 0;
   padding: 0 20px;
-  box-sizing: border-box;
 
   .filters-clear-all,
   .clear-search {
