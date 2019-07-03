@@ -45,7 +45,6 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
-    console.log('whee')
     // create a new ContextMenuViewerComponent and project our content into it
     this.viewer = this.componentFactoryResolver
       .resolveComponentFactory(ContextMenuViewerComponent)
