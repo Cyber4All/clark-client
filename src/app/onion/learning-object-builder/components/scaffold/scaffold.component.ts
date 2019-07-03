@@ -183,7 +183,7 @@ export class ScaffoldComponent implements OnInit {
 
       this.renderer.addClass(
         this.teleporterPayload.nativeElement,
-        'add-child__active'
+        'add-child--active'
       );
     } else {
       // remove the payload from the DOM
