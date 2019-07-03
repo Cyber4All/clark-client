@@ -117,7 +117,6 @@
   box-sizing: border-box;
   background: white;
   border-radius: 2px;
-  box-shadow: 0 1px 12px 1px rgba(0, 0, 0, 0.05);
 
   .title {
     padding: 10px;
@@ -289,7 +288,7 @@
 }
 
 .hidden{
-  visibility: hidden;
+  display: none;
 }
 
 @keyframes upload-arrow {
