@@ -36,12 +36,14 @@ import { ContextMenuService } from '../contextmenu/contextmenu.service';
       state('in', style({opacity: 1})),
       // fade in
       transition(':enter', [
-        style({opacity: 0}),
-        animate(200)
+        style({ opacity: 0, transform: 'translateY(-80px)' }),
+        animate(200, style({ opacity: 1, transform: 'translateY(0px)' }))
       ]),
       // fade out
-      transition(':leave',
-        animate('250ms ease', style({opacity: 0})))
+      transition(':leave', [
+        style({ opacity: 1, transform: 'translateY(0px)' }),
+        animate('250ms ease', style({ opacity: 0, transform: 'translateY(-80px)' }))
+      ])
     ])
   ]
 })

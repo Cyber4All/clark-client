@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private navbarService: NavbarService) {
+    this.navbarService.hide();
+  }
 
   ngOnInit() {
   }
