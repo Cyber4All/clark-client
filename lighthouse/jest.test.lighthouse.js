@@ -59,18 +59,23 @@ describe('Lighthouse test runner', () => {
               : `Hey ${process.env.CIRCLE_USERNAME}, your Lighthouse tests failed in Circle CI`,
           attachments: [
             {
+              fallback: `Performance: ${scores['performance'].score * 100}% | Accessibility: ${scores['accessibility'].score * 100}%`,
               color: 
                 passed ?
                   '#00ff00'
                   : '#ff0000',
+              title: 'Lighthouse Test Results',
+              title_link: process.env.CIRCLE_BUILD_URL,
               fields: [
                 {
-                  title: 'Lighthouse Test Results',
-                  title_link: `https://circleci.com/gh/Cyber4All/clark-client/${process.env.CIRCLE_BUILD_NUM}`,
+                  title: 'Scores',
                   value: `Performance: ${scores['performance'].score * 100}% | Accessibility: ${scores['accessibility'].score * 100}%`,
                   short: false,
                 }
-              ]
+              ],
+              footer: 'CLARK',
+              footer_icon: '../src/assets/images/logo_small.png',
+              ts: Date.now()
             }
           ]
         },
