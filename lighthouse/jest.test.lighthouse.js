@@ -19,6 +19,11 @@ describe('Lighthouse test runner', () => {
     performance: 0.97,
   }
 
+  /**
+   * Opens a instance of Chrome and runs Lighthouse
+   * on localhost:4200. The Chrome instance is destroyed after test completion
+   * and the test results are stored in the scores variable.
+   */
   beforeAll(async (done) => {
     chromeLauncher.launch({ chromeFlags: opts.chromeFlags }).then(chrome => {
       opts.port = chrome.port;
@@ -43,6 +48,11 @@ describe('Lighthouse test runner', () => {
     });
   });
 
+  /**
+   * Sends a Slack message if the tests were run in Circle CI.
+   * The contents of the Slack message will change depending on if the tests
+   * passed or failed.
+   */
   afterAll(async (done) => {
     if (process.env.CI === 'true') {
       let passed;
