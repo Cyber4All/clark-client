@@ -49,7 +49,8 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
     // set overflow of body to hidden to prevent parent scrolling
     if (this.columnHeight >= 560) {
       // this check prevents obsucring the outcomes sidebar
-      document.body.style.overflow = 'hidden';
+      document.body.style['overflow-y'] = 'hidden';
+      document.body.style['overflow-x'] = 'auto';
     }
   }
 
