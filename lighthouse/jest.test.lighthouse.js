@@ -74,8 +74,7 @@ describe('Lighthouse test runner', () => {
                 }
               ],
               footer: 'CLARK',
-              footer_icon: '../src/assets/images/logo_small.png',
-              ts: Date.now()
+              ts: Math.floor(Date.now() / 1000)
             }
           ]
         },
