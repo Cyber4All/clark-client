@@ -20,7 +20,7 @@ $height: 20px;
   -ms-user-select: none;
   user-select: none;
 
-  .switch__background, .switch__background_revisions, .switch__background_children {
+  .switch__background {
     background: $light-grey;
     border-radius: 50px;
     border: 2px;
@@ -31,7 +31,6 @@ $height: 20px;
 
     &:before {
       content: '';
-      background: transparent;
       transform: scale(0, 0);
       width: inherit;
       height: inherit;
@@ -39,6 +38,7 @@ $height: 20px;
       position: absolute;
       border-radius: inherit;
       transform-origin: left;
+      opacity: 0;
     }
   }
 
@@ -62,19 +62,31 @@ $height: 20px;
       transform: translateX($height);
     }
 
-    .switch__background_revisions {
-
-      &:before {
-        background: $orange;
-        transform: scale(1, 1);
-      }
+    .switch__background:before {
+      opacity: 1;
+      transform: scale(1, 1);
     }
-    .switch__background_children {
+  }
+
+  // switch style variants
+  .switch__background--blue {
       
-      &:before {
-        background: $light-blue;
-        transform: scale(1, 1);
-      }
+    &:before {
+      background: $light-blue;
+    }
+  }
+
+  .switch__background--orange {
+
+    &:before {
+      background: $orange;
+    }
+  }
+
+  .switch__background--green {
+    
+    &:before {
+      background: $success-green;
     }
   }
 }

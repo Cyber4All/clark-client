@@ -8,7 +8,7 @@
   </div>
   <div *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule'" class="edit">
     <div class="text">Add/Delete</div>
-    <clark-toggle-switch [state]="editContent" [revisions]="false" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
+    <clark-toggle-switch [state]="editContent" style="blue" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
   </div>
 </div>
 <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
