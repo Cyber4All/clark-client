@@ -12,6 +12,7 @@ $height: 20px;
   position: absolute;
   cursor: pointer;
   display: inline-block;
+  outline: 0;
 
   // disable selection
   -webkit-user-select: none;
@@ -25,6 +26,20 @@ $height: 20px;
     border: 2px;
     width: inherit;
     height: inherit;
+    transition: background 0.2s ease;
+    position: relative;
+
+    &:before {
+      content: '';
+      background: transparent;
+      transform: scale(0, 0);
+      width: inherit;
+      height: inherit;
+      transition: all 0.2s ease;
+      position: absolute;
+      border-radius: inherit;
+      transform-origin: left;
+    }
   }
 
   .switch__fob {
@@ -48,10 +63,18 @@ $height: 20px;
     }
 
     .switch__background_revisions {
-      background: $orange;
+
+      &:before {
+        background: $orange;
+        transform: scale(1, 1);
+      }
     }
     .switch__background_children {
-      background: $light-blue;
+      
+      &:before {
+        background: $light-blue;
+        transform: scale(1, 1);
+      }
     }
   }
 }
