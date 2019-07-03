@@ -101,7 +101,7 @@ export class ScaffoldComponent implements OnInit {
    * @param index of the LO selected for deletion
    */
   deleteButton(index) {
-    this.childrenConfirmationMessage = `Just to confirm, you want to delete '
+    this.childrenConfirmationMessage = `Just to confirm, you want to remove '
         ${this.children[index].name}' as a child of '${
       this.learningObject.name
     }'?`;
