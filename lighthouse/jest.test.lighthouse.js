@@ -56,7 +56,7 @@ describe('Lighthouse test runner', () => {
           text: 
             passed ?
               'Your Lighthouse tests passed in Circle CI'
-              : 'Your Lighthouse teests failed in Circle CI',
+              : 'Your Lighthouse tests failed in Circle CI',
           attachments: [
             {
               color: 
@@ -65,9 +65,9 @@ describe('Lighthouse test runner', () => {
                   : '#ff0000',
               fields: [
                 {
-                  title: 'Lighthouse tests results',
+                  title: 'Lighthouse Test Results',
                   title_link: process.env.CIRCLE_BUILD_URL,
-                  value: `Performance: ${scores['performance'].score} | Accessibility: scores['accessibility'].score`,
+                  value: `Performance: ${scores['performance'].score * 100}% | Accessibility: ${scores['accessibility'].score * 100}%`,
                   short: false,
                 }
               ]
