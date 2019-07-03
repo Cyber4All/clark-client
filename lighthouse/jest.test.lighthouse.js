@@ -55,8 +55,8 @@ describe('Lighthouse test runner', () => {
         body: {
           text: 
             passed ?
-              'Your Lighthouse tests passed in Circle CI'
-              : 'Your Lighthouse tests failed in Circle CI',
+              `Hey ${process.env.CIRCLE_USERNAME}, your Lighthouse tests passed in Circle CI!`
+              : `Hey ${process.env.CIRCLE_USERNAME}, your Lighthouse tests failed in Circle CI`,
           attachments: [
             {
               color: 
@@ -66,7 +66,7 @@ describe('Lighthouse test runner', () => {
               fields: [
                 {
                   title: 'Lighthouse Test Results',
-                  title_link: process.env.CIRCLE_BUILD_URL,
+                  title_link: `https://circleci.com/gh/Cyber4All/clark-client/${process.env.CIRCLE_BUILD_NUM}`,
                   value: `Performance: ${scores['performance'].score * 100}% | Accessibility: ${scores['accessibility'].score * 100}%`,
                   short: false,
                 }
