@@ -1,5 +1,6 @@
 const lighthouse = require("lighthouse");
 const chromeLauncher = require("chrome-launcher");
+const request = require('request-promise');
 
 jest.setTimeout(60000);
 
@@ -20,7 +21,6 @@ describe('Lighthouse test runner', () => {
       lighthouse(url, opts, config).then(results => {
         chrome.kill().then(() => {
           scores = results.lhr.categories;
-          debugger
           done();
         });
       });
@@ -28,8 +28,8 @@ describe('Lighthouse test runner', () => {
   });
 
   describe('Performace audits', () => {
-    it ('Should return a total performance score of 100%', () => {
-      expect(scores['performance'].score).toBe(1);
+    it ('Should return a total performance score of at least 97%', () => {
+      expect(scores['performance'].score).toBeGreaterThanOrEqual(0.97);
     });
   });
 
@@ -39,8 +39,21 @@ describe('Lighthouse test runner', () => {
     });
   });
 
-  afterAll(async () => {
-    
+  afterAll(async (done) => {
+    if (process.env.CI === 'true') {
+      const options = {
+        uri: 'https://hooks.slack.com/services/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',
+        json: true,
+        body: {
+          text: 
+          `Accessibility Score: ${scores['accessibility'].score} 
+          | Performance Score: ${scores['performance'].score}`,
+        },
+        method: 'POST',
+      };
+  
+      await request(options);
+      done();
+    }
   });
-
 });
