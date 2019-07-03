@@ -73,19 +73,21 @@ workflows:
   version: 2
   build-and-test:
     jobs:
+      - build
       - publish-image
-      - lighthouse:
-          requires:
-            - publish-image
   build-test-and-deploy:
     jobs:
       - build:
           filters:
             branches:
               only: /master/
+      - publish-image: 
+          filters:
+            branches:
+              only: /master/
       - lighthouse:
           requires:
-            - build
+            - publish-image
           filters:
             branches:
               only: /master/
