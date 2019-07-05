@@ -13,15 +13,22 @@ jobs:
           name: Install Dependencies
           command: npm install
       - run:
-          name: Unit Tests
-          command: npm run test:unit auth/ admin/ onion/dashboard/
-      - run:
           name: Build Application
           command: yarn ng build --prod --no-progress
       - persist_to_workspace: 
           root: dist
           paths: 
             - ./
+  test: 
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Unit Tests
+          command: npm run test:unit auth/ admin/ onion/dashboard/
   publish-image:
     <<: *defaults
     docker:
@@ -74,14 +81,25 @@ workflows:
   build-and-test:
     jobs:
       - build
-      - publish-image
+      - test
+      - publish-image:
+          requires:
+            - build
   build-test-and-deploy:
     jobs:
       - build:
           filters:
             branches:
               only: /master/
+      - test: 
+          requires:
+            - build
+          filters:
+            branches:
+              only: /master/
       - publish-image: 
+          requires:
+            - test
           filters:
             branches:
               only: /master/
