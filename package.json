@@ -1,13 +1,13 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "2.42.0",
+  "version": "2.43.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test:unit":  "jest --maxWorkers=2 --verbose --coverage auth/ admin/ onion/dashboard/ onion/old-dashboard/",
+    "test:unit": "jest --maxWorkers=2 --verbose --coverage auth/ admin/ onion/dashboard/ onion/old-dashboard/",
     "test:lighthouse": "jest -c ./lighthouse/jest.config.lighthouse.js",
     "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c ./lighthouse/jest.config.lighthouse.js --runInBand",
     "lint": "ng lint"
