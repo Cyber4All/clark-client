@@ -6,7 +6,7 @@ textarea {
   border: none;
   width: 100%;
   outline: none;
-  font-family: 'Source Sans Pro', serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: normal;
   padding: 12px;
   font-size: $normal;
@@ -16,6 +16,7 @@ textarea {
 
 form {
   text-align: center;
+  padding: 20px;
 
   .h-group {
     display: flex;
@@ -59,7 +60,7 @@ form {
       border: none;
       font-size: $normal;
       outline: 0;
-      font-family: 'Source Sans Pro', serif;
+      font-family: 'Source Sans Pro', sans-serif;
       font-weight: normal;
       padding: 12px;
       width: 100%;

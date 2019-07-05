@@ -32,7 +32,6 @@ import { ContextMenuModule as ClarkContextMenuModule } from './contextmenu/conte
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { EmailBannerComponent } from './email-banner/email-banner.component';
 import { TeleporterModule } from './teleporter/teleporter.module';
-import { DashboardItemComponent } from './dashboard-item/dashboard-item.component';
 import { NewRatingResponseComponent } from './new-rating-response/new-rating-response.component';
 import { TextEditorComponent } from './text-editor.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
@@ -44,6 +43,7 @@ import { CollectionsGridComponent } from './collections-grid/collections-grid.co
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { CollectionPipe } from './pipes/collection.pipe';
+import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -82,7 +82,6 @@ import { CollectionPipe } from './pipes/collection.pipe';
     ReportRatingComponent,
     ProgressComponent,
     CookiesComponent,
-    DashboardItemComponent,
     EmailBannerComponent,
     NewRatingResponseComponent,
     TextEditorComponent,
@@ -95,7 +94,8 @@ import { CollectionPipe } from './pipes/collection.pipe';
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
     TermsOfServiceComponent,
-    CollectionPipe
+    CollectionPipe,
+    ToggleSwitchComponent
   ],
   exports: [
     NavbarComponent,
@@ -116,7 +116,6 @@ import { CollectionPipe } from './pipes/collection.pipe';
     CookiesComponent,
     ClarkContextMenuModule,
     EmailBannerComponent,
-    DashboardItemComponent,
     TeleporterModule,
     NewRatingResponseComponent,
     TextEditorComponent,
@@ -130,7 +129,8 @@ import { CollectionPipe } from './pipes/collection.pipe';
     CarouselComponent,
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
-    CollectionPipe
+    CollectionPipe,
+    ToggleSwitchComponent
   ]
 })
 export class SharedModule {}

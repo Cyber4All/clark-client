@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { OnionRoutingModule } from './onion.routing';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
 
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
@@ -14,14 +14,16 @@ import { SharedModule } from '../shared/shared.module';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { OnionComponent } from './onion.component';
-import { ChangelogItemComponent } from './dashboard/components/changelog-item/changelog-item.component';
-import { IdentificationPillComponent } from './dashboard/components/identification-pill/identification-pill.component';
-import { ChangelogListComponent } from './dashboard/components/changelog-list/changelog-list.component';
-import { ChangelogModalComponent } from './dashboard/components/changelog-modal/changelog-modal.component';
+import { ChangelogItemComponent } from './old-dashboard/components/changelog-item/changelog-item.component';
+import { IdentificationPillComponent } from './old-dashboard/components/identification-pill/identification-pill.component';
+import { ChangelogListComponent } from './old-dashboard/components/changelog-list/changelog-list.component';
+import { ChangelogModalComponent } from './old-dashboard/components/changelog-modal/changelog-modal.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
-import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
-import { SidePanelContentComponent } from './dashboard/components/side-panel-content/side-panel-content.component';
-import { LearningObjectComponent } from './dashboard/components/side-panel-content/learning-object/learning-object.component';
+import { SidePanelModule } from './old-dashboard/components/side-panel/side-panel.module';
+import { SidePanelContentComponent } from './old-dashboard/components/side-panel-content/side-panel-content.component';
+import { LearningObjectComponent } from './old-dashboard/components/side-panel-content/learning-object/learning-object.component';
+import { DashboardItemComponent } from './old-dashboard/components/dashboard-item/dashboard-item.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 /**
  * Defines the root module that is bootstrapped to start the application.
@@ -30,18 +32,20 @@ import { LearningObjectComponent } from './dashboard/components/side-panel-conte
  * @author Sean Donnelly
  */
 @NgModule({
-  // Specifys the components included in this module
+  // Specifies the components included in this module
   declarations: [
     OnionComponent,
-    DashboardComponent,
+    OldDashboardComponent,
     ChangelogItemComponent,
     IdentificationPillComponent,
     ChangelogListComponent,
     ChangelogModalComponent,
     SidePanelContentComponent,
     LearningObjectComponent,
+    DashboardItemComponent,
+    DashboardComponent
   ],
-  // Specifys all modules to be imported
+  // Specifies all modules to be imported
   imports: [
     CommonModule,
     FormsModule,

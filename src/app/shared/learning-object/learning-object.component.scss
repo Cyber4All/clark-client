@@ -146,6 +146,15 @@ a {
   .goals {
     white-space: normal !important;
   }
+
+  .learning-object-content{
+    width: auto !important;
+  }
+
+  .download-btn-card {
+    padding: 0 5px;
+    margin-right: -5px;
+  }
 }
 
 .learning-object {
@@ -237,8 +246,14 @@ a {
   .learning-object-content {
     padding: 10px;
     min-width: 0;
-    width: 100%;
     position: relative;
+    width: 100%;
+
+    .content__topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .title {
       font-size: $normal;
@@ -254,6 +269,7 @@ a {
         -webkit-transform: translateZ(0);
         outline: 0;
         color: $medium-grey;
+        font-size: 16px;
 
         &:hover {
           transform: scale(1.1);
@@ -283,7 +299,7 @@ a {
       outline: 0;
       color: $medium-grey;
       display: none;
-      float: right;
+      font-size: 16px;
 
       &:hover {
         transform: scale(1.1);

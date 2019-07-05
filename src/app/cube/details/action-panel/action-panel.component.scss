@@ -38,7 +38,6 @@
   .button {
     overflow: hidden;
     text-align: center;
-    font-size: $normal;
     position: relative;
 
     &.saved {
@@ -91,54 +90,51 @@
   }
 }
 
-.CCAttribution {
-  margin-top: 30px;
+.cc-attribution {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  font-size: $small;
 
-  .CC-title {
-    position: relative;
-
-    &:before {
-      content: 'Attribute this Object';
-      color: $dark-grey;
-      text-align: center;
-      padding: 0;
-      background: white;
-      position: absolute;
-      z-index: 2;
-      left: 20%;
-      right: 20%;
-      bottom: -7px;
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      height: 1px;
-      background: $light-grey;
-      width: 100%;
-      left: 0;
-      bottom: 0;
-    }
+  &:before {
+    content: 'Attribute this Object';
+    color: $dark-grey;
+    text-align: center;
+    padding: 0;
+    background: white;
+    position: absolute;
+    z-index: 2;
+    left: 20%;
+    right: 20%;
+    top: -30px
   }
-  .attribution {
+
+  &:after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    background: $light-grey;
+    width: 100%;
+    left: 0;
+    top: -20px;
+  }
+
+  .cc-attribution__title {
+    position: relative;
+  }
+
+  .attribution__attribution {
     padding-top: 20px;
     width: 80%;
     display: inline-block;
   }
 
-  .CC-Content {
-    padding-top: 25px;
+  .cc-attribution__button {
+    min-width: 50px;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 20%;
-    float: right;
-    padding-left: 15px;
-
-    a {
-      color: white !important;
-      text-decoration: none !important;
-    }
+    justify-content: flex-end;
   }
 }
 
@@ -188,8 +184,6 @@
       color: white !important;
       transform: scale(1);
       cursor: pointer;
-      flex-shrink: 0;
-      flex-grow: 0;
 
       &:active:hover {
         transform: scale(0.95);

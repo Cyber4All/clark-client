@@ -11,6 +11,7 @@ footer {
   align-items: center;
   padding: 20px;
   text-align: center;
+  box-sizing: border-box;
 
   .inner {
     max-width: $max-width;
@@ -22,6 +23,16 @@ footer {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+  }
+
+  .logo-container {
+    width: 100%;
+    max-width: 235px;
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    justify-content: space-between;
   }
 
   .logo-wrapper {

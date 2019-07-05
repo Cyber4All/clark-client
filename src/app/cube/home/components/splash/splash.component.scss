@@ -16,6 +16,7 @@ $banner-height: 90px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 
   &:after {
     // overlay gradient
@@ -55,6 +56,7 @@ $banner-height: 90px;
     align-items: center;
     padding-left: 18px;
     width: 100%;
+    box-sizing: border-box;
 
     &:focus-within {
       transform: scale(1.01);

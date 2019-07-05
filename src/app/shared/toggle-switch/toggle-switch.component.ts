@@ -1,14 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'clark-version-switch',
-  templateUrl: './version-switch.component.html',
-  styleUrls: ['./version-switch.component.scss']
+  selector: 'clark-toggle-switch',
+  templateUrl: './toggle-switch.component.html',
+  styleUrls: ['./toggle-switch.component.scss']
 })
-export class VersionSwitchComponent implements OnInit {
+export class ToggleSwitchComponent implements OnInit {
   @Input() state: boolean;
   @Output() toggled: EventEmitter<boolean> = new EventEmitter();
-
+  @Input() aria: string;
+  @Input() style: 'blue' | 'orange' = 'blue';
   constructor() { }
 
   ngOnInit() {

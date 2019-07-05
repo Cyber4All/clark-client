@@ -12,6 +12,7 @@ $height: 20px;
   position: absolute;
   cursor: pointer;
   display: inline-block;
+  outline: 0;
 
   // disable selection
   -webkit-user-select: none;
@@ -25,6 +26,20 @@ $height: 20px;
     border: 2px;
     width: inherit;
     height: inherit;
+    transition: background 0.2s ease;
+    position: relative;
+
+    &:before {
+      content: '';
+      transform: scale(0, 0);
+      width: inherit;
+      height: inherit;
+      transition: all 0.2s ease;
+      position: absolute;
+      border-radius: inherit;
+      transform-origin: left;
+      opacity: 0;
+    }
   }
 
   .switch__fob {
@@ -47,7 +62,23 @@ $height: 20px;
       transform: translateX($height);
     }
 
-    .switch__background {
+    .switch__background:before {
+      opacity: 1;
+      transform: scale(1, 1);
+    }
+  }
+
+  // switch style variants
+  .switch__background--blue {
+      
+    &:before {
+      background: $light-blue;
+    }
+  }
+
+  .switch__background--orange {
+
+    &:before {
       background: $orange;
     }
   }
