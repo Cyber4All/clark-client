@@ -1,9 +1,0 @@
-
-{
-    "home": "/",
-    "login": "auth/login",
-    "browse": "browse",
-    "dashboard": "onion/dashboard",
-    "builder": "onion/learning-object-builder",
-    "collection-dashboard": "admin"
-}

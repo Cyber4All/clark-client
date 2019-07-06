@@ -122,7 +122,7 @@ export class LearningObjectsComponent
   }
 
   /**
-   * Return te Query object
+   * Return to Query object
    *
    * @type {Query}
    * @memberof LearningObjectsComponent
