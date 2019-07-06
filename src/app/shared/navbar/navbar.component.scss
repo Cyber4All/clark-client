@@ -278,9 +278,9 @@
       background: $dark-grey;
       width: 30px;
       height: 30px;
-      mask: url('../../../../assets/images/books.svg') no-repeat center;
-      -webkit-mask: url('../../../../assets/images/books.svg') no-repeat center;
-      -moz-mask: url('../../../../assets/images/books.svg') no-repeat center;
+      mask: url('../../../assets/images/books.svg') no-repeat center;
+      -webkit-mask: url('../../../assets/images/books.svg') no-repeat center;
+      -moz-mask: url('../../../assets/images/books.svg') no-repeat center;
     }
 
     .navbar-gravatar {

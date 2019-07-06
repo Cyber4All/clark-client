@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavbarService } from 'app/core/navbar.service';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operators';
@@ -12,7 +13,7 @@ import { ToasterService } from 'app/shared/toaster';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
   authorizedCollections: Collection[] = [];
@@ -25,6 +26,7 @@ export class AdminComponent implements OnInit {
   collectionsLoaded: boolean;
 
   constructor(
+    private navbarService: NavbarService,
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
@@ -33,6 +35,9 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // hide CLARK navbar
+    this.navbarService.hide();
+
     // set the can scroll value to determine whether or not we add 30px of padding to the bottom of the content wrapper
     const canScroll = this.route.snapshot.firstChild.data.canScroll;
     this.canScroll = typeof canScroll === 'boolean' ? canScroll : true;
@@ -108,5 +113,9 @@ export class AdminComponent implements OnInit {
         // remove the initialization block
         this.collectionsLoaded = true;
       });
+  }
+
+  ngOnDestroy() {
+    this.navbarService.show();
   }
 }

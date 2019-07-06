@@ -4,6 +4,7 @@ import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { AuthGuard } from './auth-guard.service';
 import { UserVerifiedGuard } from './user-verified.guard';
 import { AuthService } from './auth.service';
+import { NavbarService } from './navbar.service';
 
 import { CartV2Service } from './cartv2.service';
 import { OutcomeService } from './outcome.service';
@@ -51,6 +52,7 @@ export class CoreModule {
         MessagesService,
         UserVerifiedGuard,
         RatingService,
+        NavbarService,
         UserAgentService,
         { provide: ErrorHandler, useClass: RavenErrorHandler },
         {

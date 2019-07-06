@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
+import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
   selector: 'clark-email-verified',

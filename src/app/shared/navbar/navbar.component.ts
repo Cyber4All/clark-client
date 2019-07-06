@@ -12,9 +12,10 @@ import {
   NavigationStart
 } from '@angular/router';
 
-import { AuthService } from '../../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
 import { Subscription ,  Subject } from 'rxjs';
+import { NavbarService } from '../../core/navbar.service';
 
 // imports for animation
 import {
@@ -86,6 +87,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     public authService: AuthService,
+    public nav: NavbarService
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -114,7 +116,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     );
 
     // pull the version number out of package.json and extract the prefix (alpha, beta, release-candidate, etc)
-    const { version: appVersion } = require('../../../../../package.json');
+    const { version: appVersion } = require('../../../../package.json');
     const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
     const matched = versionRegex.exec(appVersion);
 

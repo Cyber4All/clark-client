@@ -1,5 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavbarService } from '../../core/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -108,6 +109,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private store: BuilderStore,
     private route: ActivatedRoute,
     private router: Router,
+    private nav: NavbarService,
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
     public noteService: ToasterService,
@@ -164,6 +166,9 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     this.builderStore.serviceError$
       .pipe(takeUntil(this.destroyed$))
       .subscribe(e => this.handleBuilderError(e));
+
+    // hides clark nav bar from builder
+    this.nav.hide();
   }
 
   /**

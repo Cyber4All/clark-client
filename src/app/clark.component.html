@@ -1,3 +1,4 @@
+<clark-navbar *ngIf = "isSupportedBrowser"></clark-navbar>
 <router-outlet></router-outlet>
 <clark-popup *ngIf="isOldVersion" (closed)="isOldVersion = false">
   <div #popupInner class="popup-inner">

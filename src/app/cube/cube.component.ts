@@ -1,20 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from '../shared/modals';
 import { ToasterService } from '../shared/toaster';
+import { NavbarService } from '../core/navbar.service';
 
 @Component({
   selector: 'clark-cube',
   templateUrl: './cube.component.html',
   styleUrls: ['./cube.component.scss']
 })
-export class CubeComponent {
+export class CubeComponent implements OnInit {
   hideTopbar: any = false;
   filterButton = false;
 
   constructor(
     public noteService: ToasterService,
     public modalService: ModalService,
-  ) { }
+    public nav: NavbarService,
+  ) {
+    this.nav.show();
+  }
+
+  ngOnInit() { }
 
   filterButtonClick() {
     this.filterButton = !this.filterButton;

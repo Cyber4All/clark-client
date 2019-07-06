@@ -17,8 +17,6 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { FeaturedComponent } from './featured/featured.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { MessageComponent } from './navbar/message/message.component';
 
 @NgModule({
   imports: [
@@ -30,15 +28,11 @@ import { MessageComponent } from './navbar/message/message.component';
     SharedModule
   ],
   exports: [
-    NavbarComponent,
-    MessageComponent,
     FooterComponent,
     EscapeHtmlPipe,
     FeaturedComponent
   ],
   declarations: [
-    NavbarComponent,
-    MessageComponent,
     FooterComponent,
     EscapeHtmlPipe,
     FeaturedComponent
