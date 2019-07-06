@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'clark-dashboard-splash',
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss']
 })
-export class SplashComponent implements OnInit {
+export class SplashComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  @Output() navigateBack: EventEmitter<void> = new EventEmitter();
 
 }

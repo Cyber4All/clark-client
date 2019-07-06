@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HistoryService } from 'app/core/history.service';
+import { NavigationEnd, Router } from '@angular/router';
 import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
@@ -6,13 +8,25 @@ import { NavbarService } from 'app/core/navbar.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
+  lastLocation: NavigationEnd;
 
-  constructor(private navbarService: NavbarService) {
-    this.navbarService.hide();
+  constructor(
+    private history: HistoryService,
+    private router: Router,
+    private navbar: NavbarService
+  ) {
+    this.navbar.hide();
+    this.lastLocation = this.history.lastRoute;
   }
 
-  ngOnInit() {
-  }
+  navigateBack() {
+    let url = '/home';
 
+    if (this.lastLocation && !this.lastLocation.url.includes('onion')) {
+      url = this.lastLocation.url;
+    }
+
+    this.router.navigateByUrl(url);
+  }
 }

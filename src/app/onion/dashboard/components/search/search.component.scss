@@ -1,0 +1,29 @@
+@import '~_vars.scss';
+
+.search {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px 1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  input {
+    appearance: none;
+    border: 0;
+    outline: 0;
+    padding: 15px 10px;
+    padding-left: 35px;
+    font-size: $small;
+    flex-grow: 1;
+    background: transparent;
+  }
+
+  .svg-inline--fa {
+    color: $light-blue;
+    margin-right: -25px;
+    margin-left: 15px;
+  }
+}
