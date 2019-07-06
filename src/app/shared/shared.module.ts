@@ -10,8 +10,6 @@ import { ToasterModule } from './toaster';
 // Shared CLARK Modules
 import { ModalModule } from './modals';
 // Components
-import { MessageComponent } from './navbar/message/message.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { TooltipModule } from './tooltips/tip.module';
 import { IndicatorComponent } from './indicator/indicator.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
@@ -66,8 +64,6 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     CKEditorModule,
   ],
   declarations: [
-    NavbarComponent,
-    MessageComponent,
     IndicatorComponent,
     LearningObjectListingComponent,
     UserCardComponent,
@@ -98,7 +94,7 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     ToggleSwitchComponent
   ],
   exports: [
-    NavbarComponent,
+    SearchComponent,
     TooltipModule,
     IndicatorComponent,
     LearningObjectListingComponent,

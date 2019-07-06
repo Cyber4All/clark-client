@@ -1,17 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalService } from '../shared/modals/modal.service';
-import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit {
-  constructor(public modalService: ModalService, private nav: NavbarService) {}
-
-  ngOnInit() {
-    this.nav.hide();
-  }
+export class AuthComponent {
+  constructor(public modalService: ModalService) {}
 
 }

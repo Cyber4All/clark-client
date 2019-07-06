@@ -8,7 +8,6 @@ import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
-import { NavbarService } from 'app/core/navbar.service';
 import { CollectionService } from '../../core/collection.service';
 import { ActivatedRoute } from '@angular/router';
 import { ChangelogService } from 'app/core/changelog.service';
@@ -113,7 +112,6 @@ export class OldDashboardComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
     private notificationService: ToasterService,
-    private nav: NavbarService,
     public auth: AuthService, // used in markup,
     public route: ActivatedRoute
   ) {
@@ -128,7 +126,6 @@ export class OldDashboardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.nav.show();
     // retrieve list of users learning objects
     this.loading = true;
     setTimeout(async() => {

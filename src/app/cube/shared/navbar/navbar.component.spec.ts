@@ -1,9 +1,9 @@
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ModalService } from '../modals';
+import { ModalService } from '../../../shared/modals';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CartV2Service } from '../../core/cartv2.service';
-import { AuthService } from '../../core/auth.service';
+import { CartV2Service } from '../../../core/cartv2.service';
+import { AuthService } from '../../../core/auth.service';
 import { NavbarComponent } from './navbar.component';
 import { CookieService } from 'ngx-cookie';
 import { RouterTestingModule } from '@angular/router/testing';
