@@ -11,7 +11,40 @@
           <header class="header">Your Learning Objects <span *ngIf="editingChildren"> - Editing Children</span></header>
           <div class="btn-group to-right">
             <button *ngIf="!editingChildren" routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
-            <button *ngIf="!editingChildren" class="button neutral filters-button" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu($event)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> Filter <i class="fas fa-sort"></i></button>
+            <ng-container *ngIf="!editingChildren">
+              <button #filterMenuButtonElement class="button neutral filters-button" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu(true)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> Filter <i class="fas fa-sort"></i></button>
+              <!-- Filter Context Menu -->
+              <clark-context-menu *ngIf="filterMenuDown" [anchor]="filterMenuButtonElement" [offset]="{ top: 10, left: 5 }" (close)="toggleFilterMenu()">
+                <div #contextMenu class="filter-menu">
+                  <ul>
+                    <li class="unreleased" (click)="toggleFilter('unreleased')">
+                      <div *ngIf="filters.get('unreleased')" class="indicator"></div>
+                      <i class="far fa-eye-slash"></i>Unreleased
+                    </li>
+                    <li class="waiting" (click)="toggleFilter('waiting')">
+                      <div *ngIf="filters.get('waiting')" class="indicator"></div>
+                      <i class="far fa-hourglass"></i>Waiting for Review
+                    </li>
+                    <li class="review" (click)="toggleFilter('review')">
+                      <div *ngIf="filters.get('review')" class="indicator"></div>
+                      <i class="far fa-sync"></i>Under Review
+                    </li>
+                    <li class="proofing" (click)="toggleFilter('proofing')">
+                      <div *ngIf="filters.get('proofing')" class="indicator"></div>
+                      <i class="far fa-shield"></i>Proofing
+                    </li>
+                    <li class="released" (click)="toggleFilter('released')">
+                      <div *ngIf="filters.get('released')" class="indicator"></div>
+                      <i class="far fa-eye"></i>Released
+                    </li>
+                    <li class="denied" (click)="toggleFilter('rejected')">
+                      <div *ngIf="filters.get('rejected')" class="indicator"></div>
+                      <i class="far fa-ban"></i>Denied
+                    </li>
+                  </ul>
+                </div>
+              </clark-context-menu>
+            </ng-container>
             <button *ngIf="!editingChildren && selected.size" class="button bad" (click)="deleteConfirmation = delete(getSelectedObjects()); deleteConfirmation.next()">Delete Selected <i class="far fa-trash"></i></button>
             <button *ngIf="editingChildren" class="button green" (click)="childrenConfirmation = finishAddChildren(); childrenConfirmation.next()">Save Children <i class="fas fa-check"></i></button>
             <button *ngIf="editingChildren" class="button bad" (click)="cancelEditChildren()">Cancel <i class="far fa-ban"></i></button>
@@ -79,38 +112,6 @@
     </div>
   </div>
 </ng-template>
-
-<!-- Filter Context Menu -->
-<clark-context-menu (id)="filterMenu = $event" (close)="toggleFilterMenu(undefined)">
-  <div #contextMenu class="filter-menu">
-    <ul>
-      <li class="unreleased" (click)="toggleFilter('unreleased')">
-        <div *ngIf="filters.get('unreleased')" class="indicator"></div>
-        <i class="far fa-eye-slash"></i>Unreleased
-      </li>
-      <li class="waiting" (click)="toggleFilter('waiting')">
-        <div *ngIf="filters.get('waiting')" class="indicator"></div>
-        <i class="far fa-hourglass"></i>Waiting for Review
-      </li>
-      <li class="review" (click)="toggleFilter('review')">
-        <div *ngIf="filters.get('review')" class="indicator"></div>
-        <i class="far fa-sync"></i>Under Review
-      </li>
-      <li class="proofing" (click)="toggleFilter('proofing')">
-        <div *ngIf="filters.get('proofing')" class="indicator"></div>
-        <i class="far fa-shield"></i>Proofing
-      </li>
-      <li class="released" (click)="toggleFilter('released')">
-        <div *ngIf="filters.get('released')" class="indicator"></div>
-        <i class="far fa-eye"></i>Released
-      </li>
-      <li class="denied" (click)="toggleFilter('rejected')">
-        <div *ngIf="filters.get('rejected')" class="indicator"></div>
-        <i class="far fa-ban"></i>Denied
-      </li>
-    </ul>
-  </div>
-</clark-context-menu>
 
 
 <!-- Delete Confirmation Popup -->

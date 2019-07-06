@@ -111,3 +111,37 @@
 .help {
   text-align: center;
 }
+
+.description-popup-inner {
+  min-width: 500px;
+
+  .file-name {
+    text-align: center;
+    color: $dark-grey;
+    margin-top: 10px;
+
+    .svg-inline--fa {
+      margin-right: 3px;
+    }
+  }
+
+  textarea {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 1px;
+    box-sizing: border-box;
+    border: 1px solid $placeholder;
+    font-size: $small;
+    outline: 0;
+
+    &:focus {
+      border-color: $light-blue;
+    }
+  }
+
+  .btn-group {
+    margin-top: 20px;
+  }
+
+}

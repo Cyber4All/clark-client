@@ -10,7 +10,6 @@ import {
 
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
-import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
@@ -35,16 +34,12 @@ export class LearningObjectListItemComponent implements OnChanges {
   @Output()
   changeStatus: EventEmitter<LearningObject> = new EventEmitter();
 
-  // id of the context menu returned from the context-menu component
-  itemMenu: string;
-
   statusDescription: string;
 
   // flags
   meatballOpen = false;
 
   constructor(
-    private contextMenuService: ContextMenuService,
     private auth: AuthService,
     private statuses: StatusDescriptions
   ) {}
@@ -63,25 +58,13 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   /**
-   * Hides or shows the learning object context menu
-   * @param event {MouseEvent} the event from which to grab the anchor element
+   * Open or close the meatball menu
+   *
+   * @param {boolean} [value] true if menu is open, false otherwise
+   * @memberof LearningObjectListItemComponent
    */
-  toggleContextMenu(event: MouseEvent) {
-    if (this.itemMenu) {
-      if (!this.meatballOpen) {
-        this.contextMenuService.open(
-          this.itemMenu,
-          event.currentTarget as HTMLElement,
-          { top: 2, left: 10 }
-        );
-      } else {
-        this.contextMenuService.destroy(this.itemMenu);
-      }
-
-      this.meatballOpen = !this.meatballOpen;
-    } else {
-      console.error('Error! Attempted to open an unregistered context menu!');
-    }
+  toggleContextMenu(value?: boolean) {
+    this.meatballOpen = value;
   }
 
   /**
