@@ -6,7 +6,6 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
-import { ContextMenuService } from '../../shared/contextmenu/contextmenu.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 import { NavbarService } from 'app/core/navbar.service';
@@ -75,7 +74,6 @@ export class OldDashboardComponent implements OnInit, OnDestroy {
   greetingTime: string; // morning, afternoon, or evening depending on user's clock
   childrenConfirmationMessage: string; // string generated for children confirmation modal
   focusedLearningObject: DashboardLearningObject;
-  filterMenu: string;
 
   openChangelogModal: boolean;
   changelogLearningObject: LearningObject;
@@ -115,7 +113,6 @@ export class OldDashboardComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
     private notificationService: ToasterService,
-    private contextMenuService: ContextMenuService,
     private nav: NavbarService,
     public auth: AuthService, // used in markup,
     public route: ActivatedRoute
@@ -158,20 +155,10 @@ export class OldDashboardComponent implements OnInit, OnDestroy {
 
   /**
    * Hide or show the filter dropdown menu
-   * @param event {MouseEvent} the mouse event from clicking
+   * @param {boolean} [value] true if open, false otherwise
    */
-  toggleFilterMenu(event: MouseEvent) {
-    if (this.filterMenu) {
-      if (!this.filterMenuDown && event) {
-        this.contextMenuService.open(this.filterMenu, (event.currentTarget as HTMLElement), { top: 10, left: 5 });
-      } else {
-        this.contextMenuService.destroy(this.filterMenu);
-      }
-
-      this.filterMenuDown = event ? true : false;
-    } else {
-      console.error('Error! Attempted to use an unregistered context menu');
-    }
+  toggleFilterMenu(value?: boolean) {
+    this.filterMenuDown = value;
   }
 
   /**

@@ -17,7 +17,6 @@ import { UserService } from './user.service';
 import { UserAgentService } from './user-agent.service';
 import { MessagesService } from './messages.service';
 import { RavenErrorHandler } from './error-handler';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { CollectionService } from './collection.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
@@ -32,7 +31,6 @@ import { EditorService } from './editor.service';
     CookieModule.forRoot(),
     ModalModule.forRoot(),
     ToasterModule.forRoot(),
-    ContextMenuModule.forRoot()
   ],
   exports: []
 })

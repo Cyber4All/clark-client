@@ -101,7 +101,7 @@ export class ScaffoldComponent implements OnInit {
    * @param index of the LO selected for deletion
    */
   deleteButton(index) {
-    this.childrenConfirmationMessage = `Just to confirm, you want to delete '
+    this.childrenConfirmationMessage = `Just to confirm, you want to remove '
         ${this.children[index].name}' as a child of '${
       this.learningObject.name
     }'?`;
@@ -139,48 +139,55 @@ export class ScaffoldComponent implements OnInit {
    * Toggles the child modal
    */
   toggleAddChild(value: boolean = true) {
-    // [left, top]
-    const position = [
-      (this.addChildButton.nativeElement as HTMLElement).getBoundingClientRect()
-        .left,
-      (this.addChildButton.nativeElement as HTMLElement).getBoundingClientRect()
-        .top
-    ];
+    if (value) {
+      // [left, top]
+      const position = [
+        (this.addChildButton.nativeElement as HTMLElement).getBoundingClientRect()
+          .left,
+        (this.addChildButton.nativeElement as HTMLElement).getBoundingClientRect()
+          .top
+      ];
 
-    position[0] +=
-      (this.addChildButton.nativeElement as HTMLElement).offsetLeft + 100;
+      position[0] +=
+        (this.addChildButton.nativeElement as HTMLElement).offsetLeft + 100;
 
-    position[1] +=
-      (this.addChildButton.nativeElement as HTMLElement).offsetHeight - 43;
+      position[1] +=
+        (this.addChildButton.nativeElement as HTMLElement).offsetHeight - 43;
 
-    // add the payload to the DOM
-    this.isAddingChild = value;
+      // add the payload to the DOM
+      this.isAddingChild = value;
+      // enable the add/delete mode since the user is currently adding children
+      this.editContent = true;
 
-    // detect changes to populate the ViewChild with the correct element
-    this.cd.detectChanges();
+      // detect changes to populate the ViewChild with the correct element
+      this.cd.detectChanges();
 
-    // set the correct coordinates for the payload to render
-    this.renderer.setStyle(
-      this.teleporterPayload.nativeElement,
-      'left',
-      position[0] + 'px'
-    );
-    this.renderer.setStyle(
-      this.teleporterPayload.nativeElement,
-      'top',
-      position[1] + 'px'
-    );
-    this.renderer.setStyle(
-      this.teleporterPayload.nativeElement,
-      'width',
-      (this.addChildButton.nativeElement as HTMLElement).offsetWidth +
-        50 +
-        'px'
-    );
+      // set the correct coordinates for the payload to render
+      this.renderer.setStyle(
+        this.teleporterPayload.nativeElement,
+        'left',
+        position[0] + 'px'
+      );
+      this.renderer.setStyle(
+        this.teleporterPayload.nativeElement,
+        'top',
+        position[1] + 'px'
+      );
+      this.renderer.setStyle(
+        this.teleporterPayload.nativeElement,
+        'width',
+        (this.addChildButton.nativeElement as HTMLElement).offsetWidth +
+          50 +
+          'px'
+      );
 
-    this.renderer.addClass(
-      this.teleporterPayload.nativeElement,
-      'add-child__active'
-    );
+      this.renderer.addClass(
+        this.teleporterPayload.nativeElement,
+        'add-child--active'
+      );
+    } else {
+      // remove the payload from the DOM
+      this.isAddingChild = value;
+    }
   }
 }

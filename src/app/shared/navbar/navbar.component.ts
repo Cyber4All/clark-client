@@ -25,7 +25,6 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { ContextMenuService } from '../contextmenu/contextmenu.service';
 
 @Component({
   selector: 'clark-navbar',
@@ -64,10 +63,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   searchDown = false; // flag for whether or not the search is down
   searchOverflow = false; // flag for whether or not the search is down
 
-  userMenu: string; // holds the id of the user context menu after it's registered
   userDown = false; // flag for whether or not the user context menu is open
 
-  contributorMenu: string; // holds the id of the contributor context menu after it's registered
   contributorDown = false; // flag for whether or not the contributor context menu is open
 
   url: string;
@@ -89,7 +86,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private contextMenuService: ContextMenuService,
     public authService: AuthService,
     public nav: NavbarService
   ) {
@@ -169,38 +165,18 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   /**
    * Click events on the user section of the topbar, displays context menu
-   * @param event
+   * @param {boolean} [value] true if open, false otherwise
    */
-  userDropdown(event): void {
-    if (this.userMenu) {
-      if (!this.userDown && event) {
-        this.contextMenuService.open(this.userMenu, (event.currentTarget as HTMLElement), { top: 10, left: 5 });
-      } else {
-        this.contextMenuService.destroy(this.userMenu);
-      }
-
-      this.userDown = event ? true : false;
-    } else {
-      console.error('Error! Attempted to use an unregistered context menu');
-    }
+  userDropdown(value?: boolean): void {
+    this.userDown = value;
   }
 
   /**
    * Click events on the contributor section of the topbar, displays context menu
-   * @param event
+   * @param {boolean} [value] true if open, false otherwise
    */
-  contributorDropdown(event): void {
-    if (this.contributorMenu) {
-      if (!this.contributorDown && event) {
-        this.contextMenuService.open(this.contributorMenu, (event.currentTarget as HTMLElement), { top: 10, left: 5 });
-      } else {
-        this.contextMenuService.destroy(this.contributorMenu);
-      }
-
-      this.contributorDown = event ? true : false;
-    } else {
-      console.error('Error! Attempted to use an unregistered context menu');
-    }
+  contributorDropdown(value?: boolean): void {
+    this.contributorDown = value;
   }
 
   gravatarImage(size): string {

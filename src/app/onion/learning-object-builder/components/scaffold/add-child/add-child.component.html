@@ -5,7 +5,7 @@
   </button>
 </div>
 
-<ng-template [ngIf]="children && children.length > 0">
+<ng-container *ngIf="children && children?.length > 0">
   <div class="children-list">
     <virtual-scroller #scroll [style.height]="'400px'" [items]="children"> 
       <div *ngFor="let c of scroll.viewPortItems; let i= index" class="child-box">
@@ -24,7 +24,7 @@
       </div>
     </virtual-scroller>
   </div>
-</ng-template>
+</ng-container>
 
 <ng-template [ngIf]="!children">
   <div class="loading-template">

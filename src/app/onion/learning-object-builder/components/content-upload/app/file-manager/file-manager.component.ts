@@ -8,7 +8,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { ContextMenuComponent, ContextMenuService } from 'ngx-contextmenu';
 
 import { DirectoryNode, DirectoryTree } from 'app/shared/filesystem/DirectoryTree';
 
@@ -28,11 +27,6 @@ export interface FileEdit {
   styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
-  @ViewChild('fileOptions')
-  public fileOptions: ContextMenuComponent;
-  @ViewChild('newOptions')
-  public newOptions: ContextMenuComponent;
-
   @Input()
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
     LearningObject.Material.File[]
@@ -58,6 +52,12 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
   editDescription: boolean;
 
+  menuAnchor: HTMLElement;
+  menuItem: any;
+  showNewOptions: boolean;
+  showFileOptions: boolean;
+
+
   componentDestroyed$ = new Subject<void>();
 
   currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(null);
@@ -65,7 +65,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   directoryTree: DirectoryTree = new DirectoryTree();
   directoryTree$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(this.directoryTree);
 
-  constructor(private contextMenuService: ContextMenuService) {}
+  constructor() {}
 
   ngOnInit() {
     this.files$.pipe(
@@ -92,14 +92,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   openNewOptions($event: MouseEvent): void {
-    this.contextMenuService.show.next({
-      anchorElement: $event.currentTarget,
-      contextMenu: this.newOptions,
-      event: <any>$event,
-      item: undefined
-    });
-    $event.preventDefault();
-    $event.stopPropagation();
+    this.closeContextMenu();
+    this.menuAnchor = $event.srcElement as HTMLElement;
+    this.showNewOptions = true;
   }
 
   /**
@@ -109,14 +104,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   openFileOptions(params: { event: MouseEvent; item: any }): void {
-    this.contextMenuService.show.next({
-      anchorElement: params.event.currentTarget,
-      contextMenu: this.fileOptions,
-      event: <any>params.event,
-      item: params.item
-    });
-    params.event.preventDefault();
-    params.event.stopPropagation();
+    this.closeContextMenu();
+    this.menuItem = params.item;
+    this.menuAnchor = params.event.srcElement as HTMLElement;
+    this.showFileOptions = true;
+  }
+
+  isDirectory(item: any): boolean {
+    return item instanceof DirectoryNode;
   }
 
   /**
@@ -125,9 +120,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    * @memberof FileManagerComponent
    */
   closeContextMenu() {
-    this.contextMenuService.closeAllContextMenus({
-      eventType: 'cancel'
-    });
+    this.showNewOptions = false;
+    this.showFileOptions = false;
+    this.menuAnchor = undefined;
+
+    if (!this.editDescription) {
+      this.menuItem = undefined;
+    }
   }
 
   /**
@@ -159,6 +158,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
 
     this.fileEdited.emit(edit);
+
+    this.toggleEditDescription(false);
   }
 
   /**
@@ -258,6 +259,10 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
   toggleEditDescription(value: boolean): void {
     this.editDescription = value;
+
+    if (!value) {
+      this.menuItem = undefined;
+    }
   }
 
   ngOnDestroy() {
