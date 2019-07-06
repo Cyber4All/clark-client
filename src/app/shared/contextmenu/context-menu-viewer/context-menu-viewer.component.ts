@@ -1,26 +1,43 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Input, HostListener } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
- * This component is simply a wrapper for any content projected into it (from the ContextMenuService).
- * It signals click away closes to the service, but all other functionality is  managed directly by the service
- * or from it's controller component.
+ * This component is simply a wrapper for any content projected into it (from the original ContextMenuComponent).
+ * It signals click away and escape-key closes to the component, but all other functionality is  managed
+ * directly from it's controller component.
  */
 @Component({
   selector: 'clark-context-menu-viewer',
   template: `
-  <div class="full-screen" (click)="activateClose()">
-    <div class="context-menu" (click)="$event.stopPropagation();"><ng-content></ng-content></div>
-  </div>`,
-  styleUrls: ['context-menu-viewer.component.scss']
+    <div class="full-screen" (click)="activateClose()">
+      <div [@contextMenu] class="context-menu"><ng-content></ng-content></div>
+    </div>
+  `,
+  styleUrls: ['context-menu-viewer.component.scss'],
+  animations: [
+    trigger('contextMenu', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(0px) scale(1, 0' }),
+        animate('200ms ease', style({ opacity: 1, transform: 'translateY(0px) scale(1, 1)' }))
+      ]),
+    ])
+  ]
 })
 export class ContextMenuViewerComponent {
-  @Input() id: string;
-  @Output() close: EventEmitter<string> = new EventEmitter();
+  @Input() close: EventEmitter<void> = new EventEmitter();
+
+  @HostListener('window:keyup', ['$event']) handleKeyPress(
+    event: KeyboardEvent
+  ) {
+    if (event.keyCode === 27) {
+      this.activateClose();
+    }
+  }
 
   /**
-   * Send a close event up to the contextmenu service
+   * Send a close event up to the master component
    */
   activateClose() {
-    this.close.emit(this.id);
+    this.close.emit();
   }
 }

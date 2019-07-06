@@ -12,7 +12,6 @@ import 'rxjs/add/operator/map';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
-import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 import { LearningObject } from '@entity';
 import { ToasterService } from 'app/shared/toaster';
 
@@ -37,15 +36,12 @@ export class FilterSearchComponent implements OnInit {
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
-  filterMenu: string;
   filterMenuDown = false;
-  collectionMenu: string;
   collectionMenuDown = false;
 
   constructor(
     private collectionService: CollectionService,
     private authService: AuthService,
-    private contextMenuService: ContextMenuService,
     private toaster: ToasterService
   ) {}
 
@@ -121,56 +117,18 @@ export class FilterSearchComponent implements OnInit {
 
   /**
    * Hide or show the filter dropdown menu
-   * @param event {MouseEvent} the mouse event from clicking
+   * @param {boolean} [value] true if menu is open, false otherwise
    */
-  toggleFilterMenu(event: MouseEvent) {
-    if (this.filterMenu) {
-      if (!this.filterMenuDown && event) {
-        this.contextMenuService.open(
-          this.filterMenu,
-          event.currentTarget as HTMLElement,
-          {
-            top: 10,
-            left:
-              (event.currentTarget as HTMLElement).getBoundingClientRect()
-                .width - 200
-          }
-        );
-      } else {
-        this.contextMenuService.destroy(this.filterMenu);
-      }
-
-      this.filterMenuDown = !!event;
-    } else {
-      console.error('Error! Attempted to use an unregistered context menu');
-    }
+  toggleFilterMenu(value?: boolean) {
+    this.filterMenuDown = value;
   }
 
   /**
    * Hide or show the collection filter dropdown menu
-   * @param event {MouseEvent} the event from clicking
+   * @param {boolean} [value] true if menu is open, false otherwise
    */
-  toggleCollectionMenu(event: MouseEvent) {
-    if (this.collectionMenu) {
-      if (!this.collectionMenuDown && event) {
-        this.contextMenuService.open(
-          this.collectionMenu,
-          event.currentTarget as HTMLElement,
-          {
-            top: 10,
-            left:
-              (event.currentTarget as HTMLElement).getBoundingClientRect()
-                .width - 200
-          }
-        );
-      } else {
-        this.contextMenuService.destroy(this.collectionMenu);
-      }
-
-      this.collectionMenuDown = !!event;
-    } else {
-      console.error('Error! Attempted to use an unregistered context menu');
-    }
+  toggleCollectionMenu(value?: boolean) {
+    this.collectionMenuDown = value;
   }
 
   /**
