@@ -16,7 +16,9 @@ import {
       aria-label="Clickable checkbox"
       (click)="setStatus(!checked, true)"
       [ngClass]="{ active: checked, disabled: disabled }"
-    ></div>
+    >
+      <i class="fas fa-check"></i>
+    </div>
   `,
   styleUrls: [ 'checkbox.component.scss' ]
 })

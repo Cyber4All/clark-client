@@ -1,15 +1,32 @@
 @import '~_vars.scss';
 
 .checkbox {
-  background: white;
-  border: 2px solid $medium-grey;
+  background: transparent;
+  border: 1px solid $medium-grey;
   position: relative;
   transition: all 0.1s ease;
   cursor: pointer;
-  width: 11px;
-  height: 11px;
-  margin-top: auto !important;
-  margin-bottom: auto !important;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+  margin: auto;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    transform: scale(0);
+    background: $light-blue;
+    border-radius: 2px;
+  }
 
   &:after {
     content: '';
@@ -18,19 +35,35 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: $blue-accent;
+    background: $light-blue;
     opacity: 0;
     transform: scale(0);
-    transition: all 0.2s ease;
-    border: 1px solid white;
+    visibility: hidden;
+    transition: inherit;
+  }
+
+  .svg-inline--fa {
+    font-size: 10px;
+    color: white;
+    position: relative;
+    z-index: 1;
+    transform: scale(0.5);
+    visibility: hidden;
+    opacity: 0;
+    transition: inherit;
   }
 
   &.active {
-    border-color: $blue-accent;
+    border-color: $light-blue;
 
-    &:after {
+    &:before {
+      animation: burst 0.3s ease;
+    }
+
+    &:after, .svg-inline--fa {
       transform: scale(1);
       opacity: 1;
+      visibility: visible;
     }
   }
 
@@ -38,5 +71,17 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+  }
+}
+
+@keyframes burst {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  } 50% {
+    opacity: 0.3;
+  } 100% {
+    transform: scale(2.3);
+    opacity: 0;
   }
 }
