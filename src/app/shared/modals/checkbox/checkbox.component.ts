@@ -22,7 +22,6 @@ import {
     </div>
   `,
   styleUrls: [ 'checkbox.component.scss' ],
-  
 })
 export class CheckBoxComponent implements OnChanges {
   private _state = false;

@@ -1,16 +1,21 @@
-<div class="dashboard-list">
+<div [@accordion]="{ value: state, params: { accordionSpeed: accordionSpeed } }" class="dashboard-list" [ngClass]="{'open': state === 'open'}">
   <div class="dashboard-list__top">
-    <div class="dashboard-list__title">
-      <i class="far fa-angle-down"></i>
+    <div class="dashboard-list__title" (click)="toggle()">
+      <span class="title__icon">
+        <i class="far fa-angle-right"></i>
+      </span>
       {{ title || 'Learning Objects' }} 
       <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
     </div>
-    <div *ngIf="showOptions" class="dashboard-list__options">
+    <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
       <div class="btn-group to-right">
         <div class="button good">New <i class="far fa-plus"></i></div>
         <div class="button neutral">Filter <i class="far fa-angle-down"></i></div>
       </div>
     </div>
+    <ng-template #buttonPlaceholderTemplate>
+      <div style="height: 40px;"></div>
+    </ng-template>
   </div>
   <div class="dashboard-list__table">
     <div class="table__head">
@@ -20,6 +25,9 @@
       <div>Type</div>
       <div>Date</div>
       <div></div>
+    </div>
+    <div #tableItems class="table__items">
+      <div *ngFor="let object of learningObjects">wiohoo</div>
     </div>
   </div>
 </div>

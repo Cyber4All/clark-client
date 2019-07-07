@@ -1,39 +1,55 @@
 @import '~_vars.scss';
 
+.dashboard-list {
+  overflow: hidden;
+  padding-bottom: 10px;
+
+  &.open .title__icon {
+    transform: rotate(90deg);
+  }
+}
+
 .dashboard-list__top {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 20px;
 }
 
 .dashboard-list__title {
   color: $darker-grey;
-  font-size: $larger;
+  font-size: $large;
   font-weight: 600;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
-  .svg-inline--fa {
-    margin-right: 7px;
+  .title__icon {
+    display: inline-block;
     transition: all 0.2s ease;
+    color: $dark-grey;
+    margin-right: 15px;
+  }
+
+  &:hover {
+    color: $light-blue;
   }
 }
 
 .dashboard-list__table {
-  margin-top: 30px;
   grid-template-columns: 32px 60px 1fr 180px 180px 50px;
   grid-gap: 0 20px;
 
   .table__head {
     background: $light-grey;
     color: $dark-grey ;
-    padding: 8px 20px;
-    margin: auto -20px;
-    box-sizing: content-box;
+    padding: 8px 5px;
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: inherit;
     grid-gap: inherit;
     align-items: center;
+    font-size: $small;
   }
 }
