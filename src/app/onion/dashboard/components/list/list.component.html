@@ -1,0 +1,25 @@
+<div class="dashboard-list">
+  <div class="dashboard-list__top">
+    <div class="dashboard-list__title">
+      <i class="far fa-angle-down"></i>
+      {{ title || 'Learning Objects' }} 
+      <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
+    </div>
+    <div *ngIf="showOptions" class="dashboard-list__options">
+      <div class="btn-group to-right">
+        <div class="button good">New <i class="far fa-plus"></i></div>
+        <div class="button neutral">Filter <i class="far fa-angle-down"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-list__table">
+    <div class="table__head">
+      <clark-checkbox></clark-checkbox>
+      <div>Status</div>
+      <div>Name</div>
+      <div>Type</div>
+      <div>Date</div>
+      <div></div>
+    </div>
+  </div>
+</div>

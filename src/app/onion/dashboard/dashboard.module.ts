@@ -7,6 +7,8 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { SplashComponent } from './components/splash/splash.component';
 import { SearchComponent } from './components/search/search.component';
 import { FormsModule } from '@angular/forms';
+import { ListComponent } from './components/list/list.component';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,12 +19,14 @@ import { FormsModule } from '@angular/forms';
         path: '',
         component: DashboardComponent
       }
-    ])
+    ]),
+    SharedModule,
   ],
   declarations: [
     DashboardComponent,
     SplashComponent,
-    SearchComponent
+    SearchComponent,
+    ListComponent
   ]
 })
 export class DashboardModule { }

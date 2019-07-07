@@ -1,1 +1,20 @@
 @import '~_vars.scss';
+
+.dashboard__lists {
+  max-width: $max-width;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: -70px;
+  position: relative;
+
+  .list__wrapper {
+    background: white;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 2px 20px 1px rgba(0, 0, 0, 0.08);
+  }
+
+  & > *:not(:last-child) {
+    margin-bottom: 30px;
+  }
+}
