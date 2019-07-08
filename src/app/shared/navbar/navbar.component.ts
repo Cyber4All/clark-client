@@ -192,6 +192,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     return this.windowWidth <= this.responsiveThreshold;
   }
 
+  goToContent(value: string) {
+    document.getElementById(value).focus();
+  }
+
   ngOnDestroy() {
     // close all subscriptions
     for (let i = 0, l = this.subs.length; i < l; i++) {
