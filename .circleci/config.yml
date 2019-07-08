@@ -28,7 +28,7 @@ jobs:
           command: npm install
       - run:
           name: Unit Tests
-          command: npm run test:unit auth/ admin/ onion/dashboard/
+          command: npm run test:unit
   publish-image:
     <<: *defaults
     docker:
