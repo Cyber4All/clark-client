@@ -2,14 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { HistoryService } from 'app/core/history.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavbarService } from 'app/core/navbar.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
   lastLocation: NavigationEnd;
+  activeIndex = 0;
+
+  action$: Subject<string> = new Subject();
 
   constructor(
     private history: HistoryService,
@@ -18,6 +22,15 @@ export class DashboardComponent {
   ) {
     this.navbar.hide();
     this.lastLocation = this.history.lastRoute;
+  }
+
+  toggle() {
+    if (this.activeIndex % 2) {
+      this.action$.next('-1');
+    } else {
+      this.action$.next('+1');
+    }
+    this.activeIndex++;
   }
 
   navigateBack() {

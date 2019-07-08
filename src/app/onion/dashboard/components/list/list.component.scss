@@ -15,15 +15,10 @@
 
 .dashboard-list__title {
   color: $darker-grey;
-  font-size: $large;
+  font-size: $larger;
   font-weight: 600;
   display: flex;
   align-items: center;
-  cursor: pointer;
-
-  &:hover {
-    color: $light-blue;
-  }
 }
 
 .dashboard-list__table {
