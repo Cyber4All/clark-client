@@ -28,6 +28,10 @@
     color: white;
     cursor: pointer;
     transition: all 0.2s ease;
+    appearance: none;
+    border: 0;
+    font-size: $normal;
+    background: transparent;
   }
 
   .tabs__item--active {

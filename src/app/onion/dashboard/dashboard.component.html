@@ -4,20 +4,20 @@
   ></clark-dashboard-splash>
   <div class="dashboard__lists">
     <div class="dashboard__tabs">
-      <div
+      <button
         class="tabs__item"
         [ngClass]="{ 'tabs__item--active': !(activeIndex % 2) }"
         (click)="(activeIndex % 2) && toggle()"
       >
         Draft
-      </div>
-      <div
+    </button>
+      <button
         class="tabs__item"
         [ngClass]="{ 'tabs__item--active': activeIndex % 2 }"
         (click)="!(activeIndex % 2) && toggle()"
       >
         Released
-      </div>
+    </button>
     </div>
     <clark-carousel [action$]="action$">
       <ng-template>

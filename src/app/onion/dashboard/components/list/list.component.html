@@ -6,8 +6,8 @@
     </div>
     <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
       <div class="btn-group to-right">
-        <div class="button good">New <i class="far fa-plus"></i></div>
-        <div class="button neutral">Filter <i class="far fa-angle-down"></i></div>
+        <button class="button good">New <i class="far fa-plus"></i></button>
+        <button class="button neutral">Filter <i class="far fa-angle-down"></i></button>
       </div>
     </div>
     <ng-template #buttonPlaceholderTemplate>

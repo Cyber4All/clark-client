@@ -37,9 +37,17 @@
   justify-content: space-between;
   align-items: center;
 
+  & > * {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
   .splash__back {
     font-size: $large;
-    cursor: pointer;
+
 
     .svg-inline--fa {
       font-size: $normal;
@@ -49,6 +57,10 @@
     &:hover .svg-inline--fa {
       animation: arrow 0.2s ease;
     }
+  }
+
+  .splash__user {
+    font-size: $normal;
   }
 }
 
