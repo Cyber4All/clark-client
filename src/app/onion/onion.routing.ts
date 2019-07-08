@@ -57,4 +57,4 @@ export const OnionRoutingModule: ModuleWithProviders = RouterModule.forChild(
   onion_routes
 );
 
-console.log('dashboard', dashboard)
+console.log('dashboard', dashboard);
