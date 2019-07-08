@@ -144,6 +144,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
     for (const folder of folders) {
       const paths = getPaths(folder.path, false);
       const node = this.filesystem.traversePath(paths);
+
       if (node) {
         node.description = folder.description;
       }
