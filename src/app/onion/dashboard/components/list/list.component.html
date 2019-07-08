@@ -1,9 +1,6 @@
-<div [@accordion]="{ value: state, params: { accordionSpeed: accordionSpeed } }" class="dashboard-list" [ngClass]="{'open': state === 'open'}">
+<div class="dashboard-list">
   <div class="dashboard-list__top">
     <div class="dashboard-list__title" (click)="toggle()">
-      <span class="title__icon">
-        <i class="far fa-angle-right"></i>
-      </span>
       {{ title || 'Learning Objects' }} 
       <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
     </div>
