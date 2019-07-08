@@ -26,8 +26,6 @@
           (menuClicked)="handleMenuClicked($event, item)"
           [folder]="item"
           [showOptionButton]="canManage"
-          [contextMenu]="fileOptions"
-          [contextMenuSubject]="item"
         ></clark-folder-list-item>
 
         <!-- File -->
@@ -38,8 +36,6 @@
           (menuClicked)="handleMenuClicked($event, item)"
           [file]="item"
           [showOptionButton]="canManage"
-          [contextMenu]="fileOptions"
-          [contextMenuSubject]="item"
         ></clark-file-list-item>
       </ng-container>
     </cdk-virtual-scroll-viewport>

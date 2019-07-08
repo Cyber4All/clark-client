@@ -1,77 +1,34 @@
 <clark-file-browser [currentNode$]="currentNode$" [filesystem$]="directoryTree$" [folderMeta$]="folderMeta$" (meatballClick)="openFileOptions($event)" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
   canManage="true"></clark-file-browser>
 
-<!-- New Options Context Menu -->
-<context-menu (close)="toggleEditDescription(false)" #newOptions>
-  <ng-template contextMenuItem (execute)="openFileDialog()">
-    <div class="context-item">
-      <div class="option">
-        <i class="fas fa-file icon  icon-left light"></i>
-        File
-      </div>
-    </div>
-  </ng-template>
-  <ng-template contextMenuItem (execute)="openFolderDialog()">
-    <div class="context-item">
-      <div class="option">
-        <i class="fas fa-folder  icon icon-left light"></i>
-        Folder
-      </div>
-    </div>
-  </ng-template>
-</context-menu>
+<clark-context-menu *ngIf="showNewOptions" [anchor]="menuAnchor" (close)="closeContextMenu()">
+  <ul #contextMenu>
+    <li (click)="openFileDialog()"><i class="fas fa-file"></i> New File</li>
+    <li (click)="openFolderDialog()"><i class="fas fa-folder"></i> New Folder</li>
+  </ul>
+</clark-context-menu>
 
+<clark-context-menu *ngIf="showFileOptions" [anchor]="menuAnchor" (close)="closeContextMenu()">
+  <ul #contextMenu>
+    <li (click)="toggleEditDescription(true)"><i class="far fa-edit"></i>Edit Description</li>
+    <li *ngIf="!isDirectory(menuItem)" (click)="handleDownloadClick(menuItem)"><i class="far fa-download"></i>Download</li>
+    <li (click)="triggerDelete(menuItem)" class="bad"><i class="far fa-trash-alt"></i>Delete</li>
+  </ul>
+</clark-context-menu>
 
-<!-- File Options Context Menu -->
-<context-menu (close)="toggleEditDescription(false)" #fileOptions>
-  <ng-template contextMenuItem passive="true">
-    <div *ngIf="!editDescription" class="context-item" (click)="toggleEditDescription(true)">
-      <div>
-        Edit description
-      </div>
-      <div>
-        <i class="far fa-edit"></i>
-      </div>
+<clark-popup *ngIf="editDescription" (closed)="toggleEditDescription(false)">
+  <div class="description-popup-inner" #popupInner>
+    <div class="modal-title">
+      Edit Description
     </div>
-  </ng-template>
-  <ng-template contextMenuItem (execute)="handleDownloadClick($event.item)" let-item>
-    <div *ngIf="!item?.children" class="context-item" >
-      <div>
-        Download
-      </div>
-      <div>
-        <i class="far fa-download"></i>
-      </div>
+    <div class="file-name">
+      <span *ngIf="isDirectory(menuItem)"><i class="fas fa-folder"></i></span>
+      <span *ngIf="!isDirectory(menuItem)"><i class="fas fa-file"></i></span>
+      {{ menuItem.fullPath || menuItem.path }}
     </div>
-  </ng-template>
-  <ng-template contextMenuItem (execute)="triggerDelete($event.item)">
-    <div *ngIf="!editDescription" class="context-item bad">
-      <div>
-        Delete
-      </div>
-      <div>
-        <i class="far fa-trash-alt"></i>
-      </div>
+    <textarea #descriptionTextArea placeholder="Enter description here" [attr.aria-label]="'Enter description for the ' + (isDirectory(menuItem) ? 'folder' : 'file') + ' ' + (menuItem.fullPath || menuItem.path) + ' here'" [value]="menuItem.description"></textarea>
+    <div class="btn-group center">
+      <button (click)="saveDescription(descriptionTextArea.value, menuItem)" class="button good">Save Description <i class="far fa-arrow-right"></i></button> 
     </div>
-  </ng-template>
-
-  <ng-template let-item contextMenuItem passive="true">
-    <div *ngIf="editDescription" class="context-item stacked">
-      <form #decriptionInput="ngForm" (submit)="saveDescription(description.value, item); closeContextMenu()">
-        <div class="description-input">
-          <input #description name="description" ([ngModel])="item?.description" type="text" name="file-description" placeholder="Enter description"
-          aria-label="Enter Description" [value]="item?.description ? item?.description : ''" />
-        </div>
-        <div class="buttons">
-          <button type="button" class="button bad slim" (click)="closeContextMenu()">
-            Cancel
-          </button>
-          <button type="button" class="button good slim" (click)="saveDescription(description.value, item); closeContextMenu()">
-            Save
-          </button>
-        </div>
-      </form>
-    </div>
-  </ng-template>
-
-</context-menu>
+  </div>
+</clark-popup>

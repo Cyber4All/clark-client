@@ -8,7 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth.service';
 import { ToasterService } from 'app/shared/toaster';
-import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
 
 describe('SearchBarComponent', () => {
   let component: FilterSearchComponent;
@@ -22,8 +21,7 @@ describe('SearchBarComponent', () => {
       providers: [
         { provide: AuthService, useValue: { user: { accessGroups: [] } } },
         CollectionService,
-        ToasterService,
-        ContextMenuService
+        ToasterService
       ]
     })
     .compileComponents();

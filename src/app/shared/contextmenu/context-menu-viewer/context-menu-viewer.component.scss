@@ -19,17 +19,20 @@
   border-radius: 3px;
   box-sizing: border-box;
   box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
-  font-size: $small;
+  overflow: hidden;
+  transform-origin: top center;
 
   ul {
     margin: 0;
     padding: 0;
 
     li {
+      font-size: $small;
       list-style-type: none;
-      padding: 6px 15px;
+      padding: 10px 15px;
       color: $dark-grey;
       cursor: pointer;
+      outline: 0;
 
       .svg-inline--fa,
       .icon {
@@ -37,7 +40,7 @@
       }
 
       &:hover {
-        background: $light-blue-gradient;
+        background: $light-blue;
         color: white;
       }
 

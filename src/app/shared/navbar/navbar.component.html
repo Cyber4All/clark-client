@@ -19,12 +19,32 @@
 
       <ng-template #userTemplate>
         <ng-container *ngIf="loggedin">
-          <div class="contributor" id="contributor-link" (click)="contributorDropdown($event)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
+          <div class="contributor" id="contributor-link" #contributorDropdownButtonElement (click)="contributorDropdown(true)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
           <div class="right library" id="library-link" routerLink="/library"></div>
-          <div id="clark-user-dropdown" class="left flex h flex-end user-menu" (click)="userDropdown($event)">
+          <div id="clark-user-dropdown" #userDropdownButtonElement class="left flex h flex-end user-menu" (click)="userDropdown(true)">
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
             <i class="fas fa-chevron-down"></i>
           </div>
+
+          <clark-context-menu *ngIf="contributorDown" [anchor]="contributorDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="contributorDropdown()">
+            <div #contextMenu>
+              <ul>
+                <li routerLink="/onion/dashboard" (click)="contributorDropdown()"><i class="far fa-list"></i>Your Dashboard</li>
+                <li routerLink="/onion/learning-object-builder" (click)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
+              </ul>
+            </div>
+          </clark-context-menu>
+          
+          <clark-context-menu *ngIf="userDown" [anchor]="userDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="userDropdown()">
+            <div #contextMenu id="context-popup">
+              <ul>
+                <li *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (click)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+                <li [routerLink]="['users', authService.user?.username]" (click)="userDropdown()"><i class="far fa-user"></i>Your Profile</li>
+                <li routerLink="/auth/forgot-password" (click)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
+                <li (click)="logout(); userDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
+              </ul>
+            </div>
+          </clark-context-menu>
         </ng-container>
         <ng-container *ngIf="!loggedin">
           <div class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
@@ -76,22 +96,3 @@
   </div>
 </div>
 
-<clark-context-menu (id)="contributorMenu = $event" (close)="contributorDropdown(undefined)">
-  <div #contextMenu>
-    <ul>
-      <li routerLink="/onion/dashboard" (click)="contributorDropdown(undefined)"><i class="far fa-list"></i>Your Dashboard</li>
-      <li routerLink="/onion/learning-object-builder" (click)="contributorDropdown(undefined)"><i class="far fa-plus"></i>Create a Learning Object</li>
-    </ul>
-  </div>
-</clark-context-menu>
-
-<clark-context-menu (id)="userMenu = $event" (close)="userDropdown(undefined)">
-  <div #contextMenu id="context-popup">
-    <ul>
-      <li *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (click)="userDropdown(undefined)"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-      <li [routerLink]="['users', authService.user?.username]" (click)="userDropdown(undefined)"><i class="far fa-user"></i>Your Profile</li>
-      <li routerLink="/auth/forgot-password" (click)="userDropdown(undefined)"><i class="far fa-unlock-alt"></i>Change Password</li>
-      <li (click)="logout(); userDropdown(undefined)"><i class="far fa-sign-out"></i>Sign Out</li>
-    </ul>
-  </div>
-</clark-context-menu>
