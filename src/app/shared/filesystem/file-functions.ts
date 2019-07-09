@@ -85,7 +85,8 @@ export function getPreviewUrl(file: LearningObject.Material.File): string {
     const types = Object.keys(previewable);
     for (const type of types) {
       const extensions = previewable[type];
-      if (extensions.includes(extension.replace('.', ''))) {
+      const extensionIsValid = extensions.includes(extension.replace('.', ''));
+      if (extensionIsValid) {
         switch (type) {
           case 'microsoft':
             url = `${microsoftPreviewUrl}${file.url}`;
