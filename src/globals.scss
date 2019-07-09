@@ -35,7 +35,6 @@ a:visited {
   font-size: $small;
   cursor: pointer;
   transition: opacity 0.2s ease;
-  outline: none !important;
   position: relative;
   font-weight: normal;
 
@@ -386,10 +385,6 @@ a:visited {
   margin-left: 10px;
 }
 
-*[routerLink],
-*[ng-reflect-router-link] {
-  outline: none;
-}
 
 @keyframes fa-spin {
   0% {

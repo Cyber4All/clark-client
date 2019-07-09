@@ -1,3 +1,10 @@
 :host {
   display: none !important;
 }
+
+::ng-deep #contextMenuDummyInput {
+  position: fixed;
+  width: 50px;
+  opacity: 0;
+  left: -100px;
+}
