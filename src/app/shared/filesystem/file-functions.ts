@@ -79,6 +79,9 @@ const previewable: { [index: string]: string[] } = {
  * @returns {string} [Preview url]
  */
 export function getPreviewUrl(file: LearningObject.Material.File): string {
+  if (!file) {
+    throw new Error('file must be defined to get a preview link.');
+  }
   let url = '';
   const extension = file.extension;
   if (extension) {
