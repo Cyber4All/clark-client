@@ -1,6 +1,18 @@
 <div class="builder-navbar-wrapper">
-  <div class="top" [ngStyle]="{'margin-top': revisedVersion ?  '10px' : '0px', 'margin-bottom': revisedVersion ? '20px' : '30px'}">
-    <div *ngIf="revisedVersion && !adminMode" aria-live="assertive" class="revising-notification">Currently Revising: {{ learningObject?.name }}</div>
+  <div
+    class="top"
+    [ngStyle]="{
+      'margin-top': revisedVersion ? '10px' : '0px',
+      'margin-bottom': revisedVersion ? '20px' : '30px'
+    }"
+  >
+    <div
+      *ngIf="revisedVersion && !adminMode"
+      aria-live="assertive"
+      class="revising-notification"
+    >
+      Currently Revising: {{ learningObject?.name }}
+    </div>
     <div class="top__left">
       <a *ngIf="!adminMode" routerLink="onion/dashboard"
         ><i class="far fa-arrow-left"></i> Back to Dashboard</a
@@ -23,7 +35,8 @@
         tipLocation="bottom"
       >
         <span>{{ collection.name }}</span>
-        <div *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
+        <div
+          *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
           class="collection__image"
           [style.background-image]="
             'url(assets/images/collections/' +
@@ -36,60 +49,40 @@
         [status]="learningObject?.status"
         [states]="states"
       ></clark-lo-status-indicator>
-      <ng-container *ngIf="!adminMode">
-        <ng-container
-          *ngIf="
-            !learningObject?.status ||
-              ['unreleased', 'rejected'].includes(learningObject?.status);
-            else submittedButtonTemplate
-          "
+      <ng-container
+        *ngIf="!adminMode && ['unreleased', 'rejected'].includes(learningObject?.status); else adminModeTemplate "
+      >
+        <button
+          class="button"
+          [ngClass]="{
+            good: !submissionError,
+            bad: validator.submissionMode && submissionError,
+            disabled: !auth.user.emailVerified
+          }"
+          (click)="auth.user.emailVerified && triggerSubmit()"
         >
-          <button
-            class="button"
-            [ngClass]="{
-              good: !submissionError,
-              bad: validator.submissionMode && submissionError,
-              disabled: !auth.user.emailVerified
-            }"
-            (click)="auth.user.emailVerified && triggerSubmit()"
+          <div
+            *ngIf="validator.submissionMode && submissionError"
+            class="button__cancel"
+            tip="Cancel Submission"
+            tipLocation="bottom"
+            (click)="$event.stopPropagation(); validator.submissionMode = false"
           >
-            <div
-              *ngIf="validator.submissionMode && submissionError"
-              class="button__cancel"
-              tip="Cancel Submission"
-              tipLocation="bottom"
-              (click)="
-                $event.stopPropagation(); validator.submissionMode = false
-              "
-            >
-              <i class="far fa-times"></i>
-            </div>
-            {{
-              validator.submissionMode && submissionError
-                ? 'Try Again'
-                : 'Submit for review'
-            }}
-            <i class="far fa-arrow-right"></i>
-          </button>
-        </ng-container>
-
-        <ng-template #submittedButtonTemplate>
-          <button
-            class="button good"
-            (click)="toggleSubmissionOptionsMenu($event)"
-            [ngClass]="{
-              shadow: showSubmissionOptions,
-              disabled: !auth.user.emailVerified
-            }"
-          >
-            Submitted <i class=" far fa-angle-down"></i>
-          </button>
-        </ng-template>
+            <i class="far fa-times"></i>
+          </div>
+          {{
+            validator.submissionMode && submissionError
+              ? 'Try Again'
+              : 'Submit for review'
+          }}
+          <i class="far fa-arrow-right"></i>
+        </button>
       </ng-container>
-      <clark-editor-action-panel
-        *ngIf="adminMode"
-        [learningObject]="learningObject"
-      ></clark-editor-action-panel>
+      <ng-template #adminModeTemplate>
+        <clark-editor-action-panel
+          [learningObject]="learningObject"
+        ></clark-editor-action-panel>
+      </ng-template>
     </div>
   </div>
   <div class="builder-navbar-wrapper__bottom">
@@ -139,23 +132,12 @@
   </div>
 </div>
 
-<clark-submit *ngIf="showSubmission" [learningObject]="store.learningObject" [visible]="true" (close)="showSubmission = false; getCollectionName()"></clark-submit>
-
-<clark-context-menu
-  (id)="submissionOptionsMenu = $event"
-  (close)="toggleSubmissionOptionsMenu($event)"
->
-  <div #contextMenu>
-    <ul>
-      <li
-        class="bad"
-        (click)="cancelSubmission(); toggleSubmissionOptionsMenu($event)"
-      >
-        <i class="far fa-ban"></i> Cancel Submission
-      </li>
-    </ul>
-  </div>
-</clark-context-menu>
+<clark-submit
+  *ngIf="showSubmission"
+  [learningObject]="store.learningObject"
+  [visible]="true"
+  (close)="showSubmission = false; getCollectionName()"
+></clark-submit>
 
 <ng-template
   #navItemTemplate

@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {ContextMenuService} from '../../../../shared/contextmenu/contextmenu.service';
 import {LearningObject} from '@entity';
 
 @Component({
@@ -15,7 +14,7 @@ export class EditorActionPanelComponent {
   isMenuOpen = false;
   isModalOpen = false;
 
-  constructor(private contextMenuService: ContextMenuService, ) {
+  constructor() {
   }
 
   changeStatus() {
@@ -24,18 +23,9 @@ export class EditorActionPanelComponent {
 
   /**
    * Hides or shows the learning object context menu
-   * @param event {MouseEvent} the event from which to grab the anchor element
+   * @param {boolean} [value] true if menu os open, false otherwise
    */
-  toggleContextMenu(event) {
-    if (this.itemMenu) {
-      if (!this.isMenuOpen) {
-        this.contextMenuService.open(this.itemMenu, event.currentTarget as HTMLElement, {top: 5, left: -10});
-      } else {
-        this.contextMenuService.destroy(this.itemMenu);
-      }
-      this.isMenuOpen = !this.isMenuOpen;
-    } else {
-      console.error('Error! Attempted to open an unregistered context menu!');
-    }
+  toggleContextMenu(value?: boolean) {
+    this.isMenuOpen = value;
   }
 }

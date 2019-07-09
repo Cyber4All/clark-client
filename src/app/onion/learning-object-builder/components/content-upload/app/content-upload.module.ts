@@ -17,7 +17,6 @@ import { ContentUploadComponent } from './content-upload.component';
 import { UploadComponent } from './upload/upload.component';
 
 import { SharedModule } from '../../../../../shared/shared.module';
-import { ContextMenuModule } from 'ngx-contextmenu';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
 import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component';
@@ -37,7 +36,6 @@ import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
     SharedModule,
     FileBrowserModule,
     FormsModule,
-    ContextMenuModule,
     routes
   ],
   exports: [

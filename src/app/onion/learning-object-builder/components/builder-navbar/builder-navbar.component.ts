@@ -8,8 +8,6 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ToasterService } from 'app/shared/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
-import { ContextMenuService } from 'app/shared/contextmenu/contextmenu.service';
-import { StatusDescriptions } from '@env/status-descriptions';
 import { HistoryService } from 'app/core/history.service';
 
 @Component({
@@ -24,9 +22,6 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   showSubmission: boolean;
   showSubmissionOptions: boolean;
-
-  // this is the id of the context menu after being registered with the ContextMenuService
-  submissionOptionsMenu: string;
 
   learningObject: LearningObject;
   collection: Collection;
@@ -53,7 +48,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     private auth: AuthService,
     private toasterService: ToasterService,
     private collectionService: CollectionService,
-    private contextMenuService: ContextMenuService,
     private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore
@@ -89,25 +83,11 @@ export class BuilderNavbarComponent implements OnDestroy {
   /**
    * Toggles display of a context menu for the submitted options
    *
-   * @param {MouseEvent} event
+   * @param {boolean} [value] true if menu is open, false otherwise
    * @memberof BuilderNavbarComponent
    */
-  toggleSubmissionOptionsMenu(event: MouseEvent) {
-    if (this.submissionOptionsMenu) {
-      if (event && !this.showSubmissionOptions) {
-        this.contextMenuService.open(
-          this.submissionOptionsMenu,
-          event.currentTarget as HTMLElement,
-          { top: 5, left: 0 }
-        );
-      } else {
-        this.contextMenuService.destroy(this.submissionOptionsMenu);
-      }
-
-      this.showSubmissionOptions = !this.showSubmissionOptions;
-    } else {
-      console.error('Error! Attempted to open an unregistered context menu');
-    }
+  toggleSubmissionOptionsMenu(value?: boolean) {
+    this.showSubmissionOptions = value;
   }
 
   /**
