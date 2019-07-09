@@ -44,6 +44,7 @@ import { GenericCollectionLogoComponent } from './generic-collection-logo/generi
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { CollectionPipe } from './pipes/collection.pipe';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
+import { ActivateDirective } from './directives/activate.directive';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -95,7 +96,8 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     GenericCollectionLogoComponent,
     TermsOfServiceComponent,
     CollectionPipe,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    ActivateDirective
   ],
   exports: [
     NavbarComponent,
@@ -130,7 +132,8 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
     CollectionPipe,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    ActivateDirective
   ]
 })
 export class SharedModule {}
