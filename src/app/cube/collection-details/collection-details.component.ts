@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 
+// This component sets its own page title
 @Component({
   selector: 'cube-collection-details',
   templateUrl: 'collection-details.component.html',
@@ -24,7 +25,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private collectionService: CollectionService,
     private titleService: Title
-  ) { this.titleService.setTitle('CLARK2: ' + this.collection.name ) }
+  ) {}
 
   ngOnInit() {
     this.route.params
@@ -47,5 +48,6 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
     }
+    this.titleService.setTitle('CLARK: ' + this.collection.name);
   }
 }

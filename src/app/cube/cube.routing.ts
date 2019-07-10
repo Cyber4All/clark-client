@@ -27,8 +27,7 @@ const cube_routes: Routes = [
       { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse/:query',
-        component: BrowseComponent,
-        data: { title: ''}
+        component: BrowseComponent
       },
       {
         path: 'browse',
@@ -37,8 +36,7 @@ const cube_routes: Routes = [
       },
       {
         path: 'details/:username/:learningObjectName',
-        component: DetailsComponent,
-        data: { title: ''}
+        component: DetailsComponent
       },
       {
         path: 'library',

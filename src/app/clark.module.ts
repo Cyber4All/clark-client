@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { TitleCasePipe } from '@angular/common';
 
 import { UrlSerializer } from '@angular/router';
 import { CustomUrlSerializer } from './core/custom-url-serliazer';
@@ -23,6 +24,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
   ],
   declarations: [ClarkComponent, UnsupportedComponent, NotFoundComponent],
   bootstrap: [ClarkComponent],
-  providers: [{ provide: UrlSerializer, useClass: CustomUrlSerializer }]
+  providers: [ TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
 })
 export class ClarkModule {}

@@ -14,6 +14,7 @@ import { LearningObjectValidator } from './validators/learning-object.validator'
 import { CollectionService } from 'app/core/collection.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUploadMeta } from './components/content-upload/app/services/typings';
+import { Title } from '@angular/platform-browser';
 
 /**
  * Defines a list of actions the builder can take
@@ -105,7 +106,8 @@ export class BuilderStore {
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
     private collectionService: CollectionService,
-    private validator: LearningObjectValidator
+    private validator: LearningObjectValidator,
+    private titleService: Title
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -208,6 +210,8 @@ export class BuilderStore {
           this.learningObject,
           this.outcomes
         );
+        // set the title of page to the learning object name
+        this.titleService.setTitle('CLARK: ' + this.learningObject.name);
         return this.learningObject;
       })
       .catch(e => {
@@ -261,6 +265,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   makeNew(): LearningObject {
+    this.titleService.setTitle('CLARK: New Learning Object');
     this.learningObject = new LearningObject({ author: this.auth.user });
     this.outcomes = new Map();
     return this.learningObject;
@@ -742,6 +747,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private saveObject(data: any, delay?: boolean) {
+    this.titleService.setTitle('CLARK: ' + this.learningObject.name);
     let value = this.objectCache$.getValue();
     this.touched = true;
 
