@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CollectionService } from '../../core/collection.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'cube-collection-details',
@@ -21,8 +22,9 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private collectionService: CollectionService
-  ) { }
+    private collectionService: CollectionService,
+    private titleService: Title
+  ) { this.titleService.setTitle('CLARK2: ' + this.collection.name ) }
 
   ngOnInit() {
     this.route.params

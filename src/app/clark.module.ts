@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 
 import { UrlSerializer } from '@angular/router';
 import { CustomUrlSerializer } from './core/custom-url-serliazer';

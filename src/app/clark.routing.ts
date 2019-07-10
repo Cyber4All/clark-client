@@ -19,8 +19,8 @@ const clark_routes: Routes = [
   },
   { path: 'onion', loadChildren: 'app/onion/onion.module#OnionModule' },
   { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule' },
-  { path: 'unsupported', component: UnsupportedComponent },
-  { path: 'not-found', component: NotFoundComponent },
+  { path: 'unsupported', component: UnsupportedComponent, data: { title: 'Unsupported'}},
+  { path: 'not-found', component: NotFoundComponent, data: { title: 'Not Found'}},
   { path: '', loadChildren: 'app/cube/cube.module#CubeModule' },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
