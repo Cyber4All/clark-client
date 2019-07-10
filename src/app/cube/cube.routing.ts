@@ -27,7 +27,8 @@ const cube_routes: Routes = [
       { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse/:query',
-        component: BrowseComponent
+        component: BrowseComponent,
+        data: { title: 'Search Results'}
       },
       {
         path: 'browse',

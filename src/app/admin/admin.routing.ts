@@ -26,8 +26,9 @@ const admin_routes: Routes = [
   { path: ':collection', redirectTo: '/admin/:collection/learning-objects', pathMatch: 'full' },
   {
     path: ':collection', component: AdminComponent, children: [
-      { path: 'learning-objects', component: LearningObjectsComponent, data: { canScroll: false } },
-      { path: 'reviewers', component: UsersComponent },
+      { path: 'learning-objects', component: LearningObjectsComponent,
+        data: { canScroll: false, title: 'Collection Dashboard Learning Objects' } },
+      { path: 'reviewers', component: UsersComponent, data: { title: 'Collection Dashboard Reviewers'}},
     ],
   },
 ];

@@ -30,15 +30,13 @@ const onion_routes: Routes = [
         path: 'learning-object-builder',
         loadChildren:
           'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
-        canActivate: [AuthGuard],
-        data: { state: 'builder', title: 'New Learning Object'}
+        canActivate: [AuthGuard]
       },
       {
         path: 'learning-object-builder/:learningObjectId',
         loadChildren:
           'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
-        canActivate: [AuthGuard],
-        data: { state: 'builder', title: 'Learning Object Builder'}
+        canActivate: [AuthGuard]
       },
       { path: '**', redirectTo: 'dashboard' }
     ]
