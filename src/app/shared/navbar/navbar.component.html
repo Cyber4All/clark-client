@@ -32,7 +32,7 @@
           <clark-context-menu *ngIf="contributorDown" [anchor]="contributorDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="contributorDropdown()">
             <div #contextMenu>
               <ul>
-                <li tabindex="0" routerLink="/onion/dashboard" (click)="contributorDropdown()" id="contributorDropdown1"><i class="far fa-list"></i>Your Dashboard</li>
+                <li tabindex="0" routerLink="/onion/dashboard" (click)="contributorDropdown()"><i class="far fa-list"></i>Your Dashboard</li>
                 <li tabindex="0" routerLink="/onion/learning-object-builder" (click)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
               </ul>
             </div>
