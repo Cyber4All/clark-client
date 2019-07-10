@@ -63,6 +63,12 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     const domElem = (this.viewer.hostView as EmbeddedViewRef<any>)
       .rootNodes[0] as HTMLElement;
 
+    // for each
+    domElem.querySelectorAll('li').forEach(el => {
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+    });
+
     // calculate the position if an anchor element was given
     if (this.anchor) {
       const [top, left] = this.calculatePosition(this.anchor, this.offset);
@@ -105,6 +111,28 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
       domElem.remove();
       contextElement.style.visibility = 'visible';
       document.body.appendChild(domElem);
+
+      // create a dummy node to prevent the browser from capturing focus when tabbing out of the context menu
+      const dummyNode = document.createElement('input');
+      // hide the input immediately on render
+      dummyNode.setAttribute('id', 'contextMenuDummyInput');
+      document.body.appendChild(dummyNode);
+
+      // focus the first element in the context menu for accessibility
+      const firstElement = domElem.querySelector('li');
+      firstElement.focus();
+
+      // listen for the user to tab out of the context menu and close the menu
+      domElem.querySelectorAll('li:first-child, li:last-child').forEach(el => {
+
+        el.addEventListener('blur', (event: FocusEvent) => {
+
+          if (!event.relatedTarget || (event.relatedTarget as HTMLElement).parentElement !== firstElement.parentElement) {
+            this.close.emit();
+          }
+        });
+      });
+
     } else {
       console.error(
         'Error! Please provide an anchor element for all context menus!'
@@ -116,6 +144,12 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     this.close.emit();
     this.appRef.detachView(this.viewer.hostView);
     this.viewer.destroy();
+
+    // focus the anchor element (the element that triggered the context menu) for accessibility
+    this.anchor.focus();
+
+    // remove the dummy node from the DOM since we don't need it anymore
+    document.getElementById('contextMenuDummyInput').remove();
   }
 
   /**
