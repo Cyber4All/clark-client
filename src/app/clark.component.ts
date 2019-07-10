@@ -6,9 +6,6 @@ import { ModalService, ModalListElement } from './shared/modals';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import { LearningObject } from '@entity';
 
 @Component({
   selector: 'clark-root',
