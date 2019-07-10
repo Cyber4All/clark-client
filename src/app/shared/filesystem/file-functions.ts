@@ -1,4 +1,5 @@
 import { LearningObject } from '@entity';
+import { Injectable } from '@angular/core';
 
 /**
  * Breaks Path string into array of paths. Removes last element assuming last element is file name.
@@ -105,4 +106,11 @@ export function getPreviewUrl(file: LearningObject.Material.File): string {
     }
   }
   return url;
+}
+
+@Injectable()
+export class FileBrowserUtilityService {
+  getPreviewUrl(file: LearningObject.Material.File): string {
+    return getPreviewUrl(file);
+  }
 }

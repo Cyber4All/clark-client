@@ -1,7 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FileBrowserUtilityService } from '../file-functions';
+import { LearningObject } from '@entity';
+
+const EMPTY_URL = '';
+
+const noPreview = 'Preview is not available for this type of file. Click the "Download Now" button located above to download this object.';
+const notLoggedIn = 'Please log in to preview file. Click the "Download Now" button located above to download this object.';
 
 @Component({
   selector: 'clark-file-preview',
@@ -9,12 +16,17 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./file-preview.component.scss']
 })
 export class FilePreviewComponent implements OnInit, OnDestroy {
+
+  @Input() file: LearningObject.Material.File;
+
   private isDestroyed$ = new Subject<void>();
   loggedin: boolean;
+  previewUrl = EMPTY_URL;
 
-  constructor(public auth: AuthService) { }
+  constructor(public auth: AuthService, private fileBrowserUtilityService: FileBrowserUtilityService) { }
 
   ngOnInit() {
+    this.previewUrl = this.fileBrowserUtilityService.getPreviewUrl(this.file);
     this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
       this.loggedin = val;
     });
@@ -25,4 +37,15 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
     this.isDestroyed$.unsubscribe();
   }
 
+  get hasPreviewLink() {
+    return this.previewUrl !== EMPTY_URL;
+  }
+
+  get copy() {
+    if (!this.hasPreviewLink) {
+      return noPreview;
+    } else if (!this.loggedin) {
+      return notLoggedIn;
+    }
+  }
 }
