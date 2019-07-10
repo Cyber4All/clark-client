@@ -23,6 +23,8 @@ export class ActivateDirective {
     }
 
     this.activate.emit(event);
+
+    event.preventDefault();
   }
 
 }
