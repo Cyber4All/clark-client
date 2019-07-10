@@ -37,10 +37,17 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
     this.isDestroyed$.unsubscribe();
   }
 
+  /**
+   * Sets the previewUrl to its url string rather than leaving it as an empty string
+   */
   get hasPreviewLink() {
     return this.previewUrl !== EMPTY_URL;
   }
 
+/**
+ * Returns a response based on the value of the preview link on a specified file
+ * and whether a user is logged in or not while attempting to preview.
+ */
   get copy() {
     if (!this.hasPreviewLink) {
       return noPreview;
