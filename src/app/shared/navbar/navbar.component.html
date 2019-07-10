@@ -6,7 +6,7 @@
 <div role="navigation" *ngIf="nav.visible">
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
-      <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
+      <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" activate routerLink="/home">
         <div class="logo-image"></div>
         <div tabindex="0" id="clark-logo" class="logo-link">CLARK</div>
       </div>
@@ -32,8 +32,8 @@
           <clark-context-menu *ngIf="contributorDown" [anchor]="contributorDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="contributorDropdown()">
             <div #contextMenu>
               <ul>
-                <li tabindex="0" routerLink="/onion/dashboard" (activate)="contributorDropdown()" id="contributorDropdown1"><i class="far fa-list"></i>Your Dashboard</li>
-                <li tabindex="0" routerLink="/onion/learning-object-builder" (activate)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
+                <li routerLink="/onion/dashboard" (activate)="contributorDropdown()" id="contributorDropdown1"><i class="far fa-list"></i>Your Dashboard</li>
+                <li routerLink="/onion/learning-object-builder" (activate)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
               </ul>
             </div>
           </clark-context-menu>
