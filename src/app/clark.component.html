@@ -5,7 +5,7 @@
     <div class="modal-title">{{ errorMessage[0] }}</div>
       <div class="modal-text">{{ errorMessage[1] }}</div>
       <div class="btn-group center">
-        <button class="button good" (click)="reloadPage()">Refresh page <i class="fas fa-sync-alt"></i></button>
+        <button class="button good" (activate)="reloadPage()">Refresh page <i class="fas fa-sync-alt"></i></button>
       </div>
   </div>
 </clark-popup>

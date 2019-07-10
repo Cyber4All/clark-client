@@ -1,9 +1,9 @@
 <div (mouseenter)="toggleCardMenu(true)" (mouseleave)="toggleCardMenu(false)" class="card">
   <div *ngIf="showMiddle" class="card__middle" [@menu]>
     <div class="card__middle__header">{{ (user?.name.length > 15)? (user?.name | slice:0:15)+'..':(user?.name) }}</div>
-    <div *ngIf="!reviewer" (click)="showUserObjects()" class="card__middle__objects"><i class="far fa-eye card__middle__icon"></i> View Objects</div>
-    <div *ngIf="reviewer" (click)="removeReviewer()" class="card__middle__objects"><i class="far fa-user card__middle__icon"></i> Remove Reviewer</div>
-    <div *ngIf="canEditPrivilege" (click)="editUserPrivileges()" class="card__middle__objects"><i class="far fa-users-cog card__middle__icon"></i> Edit Privileges</div>
+    <div *ngIf="!reviewer" (activate)="showUserObjects()" class="card__middle__objects"><i class="far fa-eye card__middle__icon"></i> View Objects</div>
+    <div *ngIf="reviewer" (activate)="removeReviewer()" class="card__middle__objects"><i class="far fa-user card__middle__icon"></i> Remove Reviewer</div>
+    <div *ngIf="canEditPrivilege" (activate)="editUserPrivileges()" class="card__middle__objects"><i class="far fa-users-cog card__middle__icon"></i> Edit Privileges</div>
     <div>
       <a href="mailto:{{ user?.email }}" class="card__middle__email"><i class="far fa-envelope card__middle__icon"></i> Send Email</a>
     </div>

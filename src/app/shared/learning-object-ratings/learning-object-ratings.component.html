@@ -26,12 +26,12 @@
       </div>
       <div *ngIf="auth.user?.emailVerified" class="options">
         <ng-container *ngIf="isRatingAuthor(i); else notOwnerOptions">
-          <span tabindex="0" aria-label="Clickable Edit Rating link" (click)="submitEditRating(i)"><i class="far fa-pencil-alt"></i>Edit rating</span>
-          <span tabindex="0" aria-label="Clickable Delete Rating link" (click)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
+          <span tabindex="0" aria-label="Clickable Edit Rating link" (activate)="submitEditRating(i)"><i class="far fa-pencil-alt"></i>Edit rating</span>
+          <span tabindex="0" aria-label="Clickable Delete Rating link" (activate)="submitDeleteRating(i)"><i class="far fa-trash-alt"></i>Delete rating</span>
         </ng-container>
         <ng-template #notOwnerOptions>
-          <span tabindex="0" aria-label="Clickable Respond to Rating link" *ngIf="isLearningObjectOwner() && rating.response.length === 0" (click)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
-          <span tabindex="0" aria-label="Clickable Report Rating link" *ngIf="loggedIn" class="report" (click)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
+          <span tabindex="0" aria-label="Clickable Respond to Rating link" *ngIf="isLearningObjectOwner() && rating.response.length === 0" (activate)="openResponse(i);"><i class="far fa-comment-alt"></i>Respond</span>
+          <span tabindex="0" aria-label="Clickable Report Rating link" *ngIf="loggedIn" class="report" (activate)="reportIndex = i; showReport = true;"><i class="fas fa-flag"></i>Report rating</span>
         </ng-template>
       </div>
       <div *ngIf="rating.response.length > 0 && !isEditingResponse(i)" class="response-container">
@@ -50,8 +50,8 @@
           </div>
           <div class="options">
               <ng-container *ngIf="isResponseAuthor(i); else notOwnerOptions">
-                <button tabindex="0" (click)="openEditResponse($event, i)"><i class="far fa-pencil-alt"></i>Edit response</button>
-                <button (click)="submitDeleteResponse($event, i)"><i class="far fa-trash-alt"></i>Delete response</button>
+                <button tabindex="0" (activate)="openEditResponse($event, i)"><i class="far fa-pencil-alt"></i>Edit response</button>
+                <button (activate)="submitDeleteResponse($event, i)"><i class="far fa-trash-alt"></i>Delete response</button>
               </ng-container>
               <div *ngIf="rating.user.username === auth.username" class="email">
                 <a class="mailto" href="mailto: {{ rating.response[0].user.email }}"> Email: {{ rating.response[0].user.email }}</a>
@@ -74,9 +74,9 @@
   </ng-template>
 </div>
 <!-- This wrapper is styled from parent component -->
-<div *ngIf="showReport" class="report-rating-wrapper" [ngClass]="{'active': showReport}" (click)="showReport = false;">
-  <div class="report-inner" (click)="$event.stopPropagation();">
-    <div (click)="showReport = false;" class="closePopup"><i class="fal fa-times"></i></div>
+<div *ngIf="showReport" class="report-rating-wrapper" [ngClass]="{'active': showReport}" (activate)="showReport = false;">
+  <div class="report-inner" (activate)="$event.stopPropagation();">
+    <div (activate)="showReport = false;" class="closePopup"><i class="fal fa-times"></i></div>
     <clark-report-rating (cancel)="showRating = false;" (submit)="triggerReportRating($event)"></clark-report-rating>
   </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="grid-row wrapper" role="link" tabindex="0" attr.aria-labelledby="file-name file-description file-updated file-size">
   <div
-    (click)="handleClick($event)"
+    (activate)="handleClick($event)"
     class="text-contained inline-flex"
     [ngClass]="{ 'hover-react': previewUrl }"
     tip="{{ file?.name }}"
@@ -26,7 +26,7 @@
     tabindex="0"
     *ngIf="showOptionButton"
     class="meatballs"
-    (click)="handleMeatballClick($event)"
+    (activate)="handleMeatballClick($event)"
     attr.aria-label="Clickable Option Menu for {{ file?.name }}"
   >
     <div></div>

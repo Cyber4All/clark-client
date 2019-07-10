@@ -14,7 +14,7 @@ import {
       class="checkbox"
       id="checkbox"
       aria-label="Clickable checkbox"
-      (click)="setStatus(!checked, true)"
+      (activate)="setStatus(!checked, true)"
       [ngClass]="{ active: checked, disabled: disabled }"
     ></div>
   `,

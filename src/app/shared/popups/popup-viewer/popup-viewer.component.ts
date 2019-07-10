@@ -46,9 +46,9 @@ import {
     ])
   ],
   template: `
-    <div [@fade] class="overlay" [ngClass]="{'overlay--floating': floating}" (click)="close.emit()">
-      <div role="dialog" [@scale] (click)="$event.stopPropagation()">
-        <div class="popup-close" (click)="close.emit()" type="button" aria-label="Close Navigation">
+    <div [@fade] class="overlay" [ngClass]="{'overlay--floating': floating}" (activate)="close.emit()">
+      <div role="dialog" [@scale] (activate)="$event.stopPropagation()">
+        <div class="popup-close" (activate)="close.emit()" type="button" aria-label="Close Navigation">
           <i class="far fa-times"></i>
         </div>
         <ng-content></ng-content>

@@ -51,7 +51,7 @@
           <div directions>{{copy.SELECT}}</div>
           <div data>
             <div class="levels">
-              <div *ngFor="let level of academicLevels" class="pill" [ngClass]="{'selected': selectedLevels.includes(level)}" (click)="toggleLevel(level)">
+              <div *ngFor="let level of academicLevels" class="pill" [ngClass]="{'selected': selectedLevels.includes(level)}" (activate)="toggleLevel(level)">
                 {{ level }}
               </div>
             </div>

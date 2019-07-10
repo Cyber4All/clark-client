@@ -14,7 +14,7 @@ import { COPY } from '../details.copy';
         [attr.tabindex]="(o.mappings.length > 0)? 0 : -1"
         class="header"
         [disabled]="!(o.mappings.length > 0)"
-        (click)="toggleMappings(i)"
+        (activate)="toggleMappings(i)"
         [ngClass]="{ 'clickable': o.mappings.length > 0 }"
       >
         <span class="title">{{ o.outcome.charAt(0).toUpperCase() + o.outcome.substring(1) }}</span>

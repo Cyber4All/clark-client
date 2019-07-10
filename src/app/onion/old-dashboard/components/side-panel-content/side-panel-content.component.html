@@ -7,7 +7,7 @@
     <div  class="side-panel__button-bar">
       <button
         class="button"
-        (click)="close()"
+        (activate)="close()"
         [routerLink]="[
           '/details',
           learningObject.author.username,

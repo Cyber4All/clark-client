@@ -25,7 +25,7 @@
         <button
           *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
           class="download-btn-card"
-          (click)="download($event)"
+          (activate)="download($event)"
           attr.aria-label="Download button for {{ learningObject.name }}"
         >
           <i class="fas fa-download"></i>
@@ -36,7 +36,7 @@
         <button
           *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
           class="download-btn"
-          (click)="download($event)"
+          (activate)="download($event)"
           attr.aria-label="Download button for {{ learningObject.name }}"
         >
           <i class="fas fa-download"></i>

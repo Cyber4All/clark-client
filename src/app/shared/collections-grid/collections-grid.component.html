@@ -17,7 +17,7 @@
               c.abvName
             )
           }"
-          (click)="!isPreselected(c.abvName) && select(c.abvName)"
+          (activate)="!isPreselected(c.abvName) && select(c.abvName)"
         >
           <div
             *ngIf="c.hasLogo; else genericCollectionImage"

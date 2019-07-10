@@ -3,7 +3,7 @@
     {{ user.name | titlecase }}
   </div>
   <div *ngIf="showDropdown" class="contributor-pill__dropdown">
-    <div class="contributor-pill__dropdown-option" (click)="removeContributor.emit(user)">
+    <div class="contributor-pill__dropdown-option" (activate)="removeContributor.emit(user)">
       <i class="far fa-times"></i> Remove
     </div>
   </div>

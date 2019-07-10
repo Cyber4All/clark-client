@@ -1,8 +1,8 @@
 <div  [@privilege]="privileges?.length" class="privileges__list">
   <div *ngFor="let p of privileges; let i = index; trackBy: trackBy" class="privileges__privilege">
     <div [@deleteConfirm]="3" *ngIf="deleteMode === i" class="privilege__delete-confirm">
-      <div (click)="deleteConfirmation$.next(true)" class="micro-button">Delete</div>
-      <div (click)="deleteConfirmation$.next(false)" class="micro-button">Cancel</div>
+      <div (activate)="deleteConfirmation$.next(true)" class="micro-button">Delete</div>
+      <div (activate)="deleteConfirmation$.next(false)" class="micro-button">Cancel</div>
       <div>Are you sure you want to delete this privilege?</div>
     </div>
     <div [ngClass]="{'privilege__inner--blur': deleteMode === i}" class="privilege__inner">
@@ -10,7 +10,7 @@
         <div class="privilege__role">{{ p[0] }}</div>
         <div *ngIf="p[1] && collections[p[1]]" class="privilege__collection">{{ collections[p[1]]}}</div>
       </div>
-      <div (click)="remove(i)" class="privilege__delete">
+      <div (activate)="remove(i)" class="privilege__delete">
         Delete <i class="far fa-trash-alt"></i>
       </div>
     </div>

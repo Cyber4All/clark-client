@@ -19,7 +19,7 @@
     <div>{{ learningObject.length | titlecase }}</div>
     <div>{{ learningObject.date | date:'longDate' }}</div>
     <div>
-      <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen}" (click)="this.toggleContextMenu(true)">
+      <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen}" (activate)="this.toggleContextMenu(true)">
         <div class="icon">
           <i class="far fa-times"></i>
         </div>
@@ -31,7 +31,7 @@
 
 <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="toggleContextMenu()">
   <div #contextMenu>
-    <ul (click)="toggleContextMenu($event)">
+    <ul (activate)="toggleContextMenu($event)">
       <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.name]"><i class="far fa-cube"></i>View details</li>
     </ul>

@@ -3,7 +3,7 @@
     <div *ngIf="selected == 1" class="keyword-search input">
       <form (submit)="performSearch(searchInput)">
         <input #searchInput id="clark-search-input" type="search" placeholder="Search..." aria-label="Search" (focus)="didFocus.emit()" [value]="searchValue" />
-        <button aria-label="Search" class="icon" (click)="performSearch(searchInput)"><i class="far fa-search"></i></button>
+        <button aria-label="Search" class="icon" (activate)="performSearch(searchInput)"><i class="far fa-search"></i></button>
       </form>
     </div>
     <div *ngIf="selected == 2">
@@ -18,10 +18,10 @@
     <a href="http://about.clark.center/tutorial/#Searching" aria-label="Link to searching tutorial" target="blank"><i class="fas fa-question-circle"></i></a>
   </div>
   <div class="search-switch">
-    <button attr.aria-label="{{ copy.OPT1 }}" #optionOneSwitch class="option option-one" [ngClass]="{'active': selected === 1}" (click)="toggle(1)">
+    <button attr.aria-label="{{ copy.OPT1 }}" #optionOneSwitch class="option option-one" [ngClass]="{'active': selected === 1}" (activate)="toggle(1)">
       {{ copy.OPT1 }}
     </button>
-    <button attr.aria-label="{{ copy.OPT2 }}" id="outcomes-option" #optionTwoSwitch class="option option-two" [ngClass]="{'active': selected === 2}" (click)="toggle(2)">
+    <button attr.aria-label="{{ copy.OPT2 }}" id="outcomes-option" #optionTwoSwitch class="option option-two" [ngClass]="{'active': selected === 2}" (activate)="toggle(2)">
       {{ copy.OPT2 }}
     </button>
     <div class="highlight" [ngClass]="{'right': selected === 2}"></div>

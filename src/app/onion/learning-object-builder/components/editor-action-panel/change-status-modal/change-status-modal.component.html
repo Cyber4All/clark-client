@@ -8,15 +8,15 @@
   <div [@carousel]="direction">
     <p class="title">What would you like to do?</p>
     <div class="status-options-wrapper">
-      <div *ngFor="let status of statuses" class="status-item" [ngClass]="{ 'unfocused': selectedStatus && selectedStatus !== status }" (click)="selectedStatus = status">
+      <div *ngFor="let status of statuses" class="status-item" [ngClass]="{ 'unfocused': selectedStatus && selectedStatus !== status }" (activate)="selectedStatus = status">
         <clark-lo-status-indicator [status]="status"></clark-lo-status-indicator>
         <span class="status-item__text">{{ getStatusText(status) }}</span>
       </div>
     </div>
     <div class="btn-group to-right">
-      <button *ngIf="selectedStatus && selectedStatus === 'released'" class="button good" (click)="advance()">Next</button>
-      <button *ngIf="selectedStatus && selectedStatus !== 'released'" class="button good" (click)="updateStatus()">Confirm</button>
-      <button class="button neutral" (click)="closeModal()">Cancel</button>
+      <button *ngIf="selectedStatus && selectedStatus === 'released'" class="button good" (activate)="advance()">Next</button>
+      <button *ngIf="selectedStatus && selectedStatus !== 'released'" class="button good" (activate)="updateStatus()">Confirm</button>
+      <button class="button neutral" (activate)="closeModal()">Cancel</button>
     </div>
   </div>
 </ng-template>

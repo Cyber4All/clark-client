@@ -9,7 +9,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'clark-context-menu-viewer',
   template: `
-    <div class="full-screen" (click)="activateClose()">
+    <div class="full-screen">
       <div [@contextMenu] class="context-menu"><ng-content></ng-content></div>
     </div>
   `,
@@ -29,7 +29,7 @@ export class ContextMenuViewerComponent {
   @HostListener('window:keyup', ['$event']) handleKeyPress(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
       this.activateClose();
     }
   }

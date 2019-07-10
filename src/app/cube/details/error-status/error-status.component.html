@@ -8,7 +8,7 @@
               <div tabindex="0" class="message">This Learning Object is currently under review.</div>
               <div *ngIf="!auth.user; else unauthorized">
                 <div tabindex="0" class="message">Try logging in to see if you have access.</div>
-                <button class="auth-button" (click)="login()" aria-label="Clickable Login button">LOGIN</button>
+                <button class="auth-button" (activate)="login()" aria-label="Clickable Login button">LOGIN</button>
               </div>
               <ng-template #unauthorized>
                 <div tabindex="0" class="message">You do not have access to this Learning Object.</div>

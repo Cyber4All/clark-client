@@ -15,10 +15,9 @@ export class ActivateDirective {
   @HostListener('click', ['$event'])
   @HostListener('keypress', ['$event'])
   handleActivate(event: KeyboardEvent | MouseEvent) {
-    event.preventDefault();
 
     if (event instanceof KeyboardEvent) {
-      if (event.key !== 'Enter' && event.key !== ' ') {
+      if (event.code !== 'Enter' && event.code !== 'Space') {
         return;
       }
     }

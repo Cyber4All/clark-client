@@ -1,4 +1,4 @@
-<div #adminBadgeElement class="admin-badge" (click)="toggleContextMenu($event)">
+<div #adminBadgeElement class="admin-badge" (activate)="toggleContextMenu($event)">
   <span class="admin-badge__text">Editor Mode</span>
   <span class="admin-badge__dropdown">
     <i class="far fa-chevron-down"></i>
@@ -8,8 +8,8 @@
 
 <clark-context-menu *ngIf="isMenuOpen" [anchor]="adminBadgeElement" [offset]="{ top: 5, left: -10 }" (close)="isMenuOpen = false">
   <div #contextMenu>
-    <ul (click)="toggleContextMenu($event)">
-      <li (click)="changeStatus()"><i class="far fa-pencil"></i>Change Status</li>
+    <ul (activate)="toggleContextMenu($event)">
+      <li (activate)="changeStatus()"><i class="far fa-pencil"></i>Change Status</li>
     </ul>
   </div>
 </clark-context-menu>

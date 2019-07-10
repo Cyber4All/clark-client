@@ -10,7 +10,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'clark-revise-button',
   template: `
-    <button class="button neutral" (click)="makeRevision()" aria-label="Clickable Revise button">
+    <button class="button neutral" (activate)="makeRevision()" aria-label="Clickable Revise button">
       Revise
     </button>
     <clark-popup *ngIf="showPopup" (closed)="showPopup = false">
@@ -25,8 +25,8 @@ import { of } from 'rxjs';
         </p>
         <p tabindex="0"> Are you sure you want to do this? </p>
         <div class="btn-group to-right">
-          <button class="button bad" (click)="moveToProofing()" aria-label="Clickable Move to Proofing button"> Move to Proofing </button>
-          <button class="button neutral" (click)="showPopup = false;" aria-label="Clickable Cancel button"> Cancel </button>
+          <button class="button bad" (activate)="moveToProofing()" aria-label="Clickable Move to Proofing button"> Move to Proofing </button>
+          <button class="button neutral" (activate)="showPopup = false;" aria-label="Clickable Cancel button"> Cancel </button>
         </div>
       </div>
     </clark-popup>

@@ -9,7 +9,7 @@
     <span class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode" target="_blank">Creative Commons 4.0 license</a></span>
   </div>
   <div class="submit-btn btn-group center">
-    <button class="button good" [ngClass]="{'disabled': !licenseAccepted || currentCollection == ''}" [disabled]="!licenseAccepted || currentCollection == ''" (click)="submit()">Submit for Review <i class="far fa-arrow-right"></i></button>
-    <button class="button neutral" (click)="cancel.emit()">Nevermind <i class="far fa-ban"></i></button>
+    <button class="button good" [ngClass]="{'disabled': !licenseAccepted || currentCollection == ''}" [disabled]="!licenseAccepted || currentCollection == ''" (activate)="submit()">Submit for Review <i class="far fa-arrow-right"></i></button>
+    <button class="button neutral" (activate)="cancel.emit()">Nevermind <i class="far fa-ban"></i></button>
   </div>
 </div>

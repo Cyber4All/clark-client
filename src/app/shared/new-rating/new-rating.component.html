@@ -2,7 +2,7 @@
   <div class="stars-wrapper" [ngClass]="{'active': activeHover > -1}" (mouseleave)="reset()">
     <div class="empty-stars stars">
       <div class="star" *ngFor="let item of iterableCount; let i = index;" tip="{{ tips[i] }}" tipLocation="bottom">
-        <div (mouseover)="setHover(i)" (click)="rate(i + 1)">
+        <div (mouseover)="setHover(i)" (activate)="rate(i + 1)">
           <i class="fal fa-star"></i>
         </div>
       </div>
@@ -16,9 +16,9 @@
   <div class="comment-wrapper">
     <textarea aria-label="comment" placeholder="Why did you leave this rating?" [(ngModel)]="rating.comment" userscaleable></textarea>
     <div class="btn-group center">
-      <button class="button good" [ngClass]="{'disabled': !rating.comment || rating.comment === ''}" (click)="submitRating()">Submit
+      <button class="button good" [ngClass]="{'disabled': !rating.comment || rating.comment === ''}" (activate)="submitRating()">Submit
         <i class="far fa-arrow-right"></i></button>
-      <button class="button neutral" (click)="cancel()">Cancel <i class="far fa-ban"></i></button>
+      <button class="button neutral" (activate)="cancel()">Cancel <i class="far fa-ban"></i></button>
     </div>
   </div>
 </div>

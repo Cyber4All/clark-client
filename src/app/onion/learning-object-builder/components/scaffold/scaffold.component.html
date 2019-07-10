@@ -27,7 +27,7 @@
       <div [ngStyle]="{display: editContent ? 'none' : 'block'}" class="hamburger-handle" cdkDragHandle>
         <i class="fas fa-bars"></i>
       </div>
-      <button attr.aria-label="Delete {{ c.name }}" [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (click)="deleteButton(i)">
+      <button attr.aria-label="Delete {{ c.name }}" [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (activate)="deleteButton(i)">
         <i class="far fa-trash-alt"></i>
       </button>
     </div>
@@ -35,7 +35,7 @@
 </ng-template>
 
 <ng-template #addChild>
-  <button #addChildButton aria-lable="Add Child" class="edit-children" (click)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
+  <button #addChildButton aria-lable="Add Child" class="edit-children" (activate)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
     Add Child
     <i class="far fa-plus"></i>
   </button>
@@ -67,14 +67,14 @@
     <div class="modal-title">Just to confirm...</div>
       <div class="modal-text">{{ childrenConfirmationMessage }}</div>
       <div class="btn-group center">
-        <button class="button good" aria-label="Yep, delete child" (click)="deleteChild(i)">Yep, do it! <i class="far fa-check"></i></button>
-        <button class="button neutral" aria-label="Wait, don't delete child" (click)="toggleConfirmationModal(false)">Wait, nevermind! <i class="far fa-ban"></i></button>
+        <button class="button good" aria-label="Yep, delete child" (activate)="deleteChild(i)">Yep, do it! <i class="far fa-check"></i></button>
+        <button class="button neutral" aria-label="Wait, don't delete child" (activate)="toggleConfirmationModal(false)">Wait, nevermind! <i class="far fa-ban"></i></button>
       </div>
   </div>
 </clark-popup>
 
 <clark-teleporter *ngIf="isAddingChild">
-  <div #teleporterPayload class="add-child" (click)="$event.stopPropagation()">
+  <div #teleporterPayload class="add-child" (activate)="$event.stopPropagation()">
     <clark-add-child [currentChildren]="childrenIDs" [child]="learningObject" (childToAdd)="addToChild($event)"></clark-add-child>
   </div>
 </clark-teleporter>

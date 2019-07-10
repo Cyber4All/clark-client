@@ -1,7 +1,7 @@
 <div class="topbar">
   <div class="slide-title">URLs</div>
   <div class="btn-group to-right">
-    <button *ngIf="urls.length > 0" [disabled]="!addNew" (click)="addURL()" class="button good">Add URL
+    <button *ngIf="urls.length > 0" [disabled]="!addNew" (activate)="addURL()" class="button good">Add URL
       <i class="far fa-plus"></i>
     </button>
   </div>
@@ -10,13 +10,13 @@
   <div *ngIf="urls.length == 0" class="empty-message">
     <i class="fal fa-link"></i>
     <div class="empty-title">No URLs here!</div>
-    <button class="button good" (click)="addURL()">Click here to add a URL</button>
+    <button class="button good" (activate)="addURL()">Click here to add a URL</button>
   </div>
   <div class="section url-wrapper">
     <div *ngFor="let url of urls; let i = index;">
       <div class="link input-wrapper" [ngStyle]="{'box-shadow': (!addNew && focusMe && !urls[i].link && !urls[i].title) ? '0px 0px 5px #4f7eb4' : 'none'}">
         <clark-url-row [addNew]="addNew" [url]="url" [index]="i" (updateUrl)="updateUrl($event)"></clark-url-row>
-        <button class="button bad icon-only" (click)="removeURL(i)">
+        <button class="button bad icon-only" (activate)="removeURL(i)">
           <i class="far fa-times"></i>
         </button>
       </div>
