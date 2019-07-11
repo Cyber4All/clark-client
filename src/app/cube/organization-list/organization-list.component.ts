@@ -3,7 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/user.service';
 import { COPY } from './organization-list.copy';
+import { Title } from '@angular/platform-browser';
+import { TitleCasePipe } from '@angular/common';
 
+// This component sets its own page title
 @Component({
   selector: 'clark-organization-list',
   templateUrl: './organization-list.component.html',
@@ -16,7 +19,9 @@ export class OrganizationListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private titleService: Title,
+    private titleCasePipe: TitleCasePipe
   ) {}
 
   ngOnInit() {
@@ -26,6 +31,8 @@ export class OrganizationListComponent implements OnInit {
         : (this.organization = '');
     });
     this.fetchMembers();
+    const title = this.titleCasePipe.transform(this.organization);
+    this.titleService.setTitle(title + ' | CLARK');
   }
 
   async fetchMembers() {
