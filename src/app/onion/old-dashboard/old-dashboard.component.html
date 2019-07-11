@@ -54,7 +54,7 @@
           <div *ngIf="learningObjects?.length; else emptyTemplate">
             <div class="column-headers">
               <div>
-                <clark-checkbox *ngIf="!editingChildren" [value]="allSelected && selected.size === learningObjects.length" (action)="selectAll()"></clark-checkbox>
+                <clark-checkbox *ngIf="!editingChildren" [value]="areAllSelected" (action)="selectAll()"></clark-checkbox>
               </div>
               <div>Status</div>
               <div>Name</div>
