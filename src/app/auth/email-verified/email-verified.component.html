@@ -1,22 +1,22 @@
 <div class="wrapper">
   <div class="content-box">
     <div class="top">
-      <div class="auth-title">CLARK</div>
-      <div class="auth-title light">Cybersecurity Digital Library</div>
+      <h1 class="auth-title">CLARK</h1>
+      <h2 class="auth-title light">Cybersecurity Digital Library</h2>
       <div class="done" *ngIf="isLoading">
-        <p class="message--in-progress">Verifying your email...</p>
+        <p aria-live="assertive" class="message--in-progress">Verifying your email...</p>
         <i class="far fa-spinner-third fa-spin"></i>
       </div>
-      <div class="done" *ngIf="!isLoading">
+      <div aria-live="assertive" class="done" *ngIf="!isLoading">
         <i class="far fa-shield-check"></i>
         Your email address has been verified successfully!
       </div>
     </div>
-    <div class="bottom-link" *ngIf="hasValidToken" routerLink="/home">
+    <button aria-label="Continue" class="bottom-link" *ngIf="hasValidToken" routerLink="/home">
       <span>Continue</span>
-    </div>
-    <div class="bottom-link" *ngIf="hasValidToken === false" routerLink="../login">
+    </button>
+    <button aria-label="Sign in" class="bottom-link" *ngIf="hasValidToken === false" routerLink="../login">
       Want to get started? <span>Sign in!</span>
-    </div>
+    </button>
   </div>
 </div>
