@@ -63,7 +63,7 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     const domElem = (this.viewer.hostView as EmbeddedViewRef<any>)
       .rootNodes[0] as HTMLElement;
 
-    // for each
+    // for each list element in menu, tab index it and give it a role of button
     domElem.querySelectorAll('li').forEach(el => {
       el.setAttribute('tabindex', '0');
       el.setAttribute('role', 'button');
