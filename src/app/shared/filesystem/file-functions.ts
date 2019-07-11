@@ -108,6 +108,7 @@ export function getPreviewUrl(file: LearningObject.Material.File): string {
   return url;
 }
 
+// FIXME: bring other functions into this service for better unit testing.
 @Injectable()
 export class FileBrowserUtilityService {
   getPreviewUrl(file: LearningObject.Material.File): string {
