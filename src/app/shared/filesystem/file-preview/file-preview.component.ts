@@ -4,11 +4,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FileBrowserUtilityService } from '../file-functions';
 import { LearningObject } from '@entity';
+import { noPreview, notLoggedIn } from './file-preview.copy';
 
 const EMPTY_URL = '';
-
-const noPreview = 'Preview is not available for this type of file. Click the "Download Now" button located above to download this object.';
-const notLoggedIn = 'Please log in to preview file. Click the "Download Now" button located above to download this object.';
 
 @Component({
   selector: 'clark-file-preview',

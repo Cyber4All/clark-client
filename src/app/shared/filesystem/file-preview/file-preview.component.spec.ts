@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FilePreviewComponent } from './file-preview.component';
+import { noPreview, notLoggedIn } from './file-preview.copy';
 import { AuthService } from 'app/core/auth.service';
 import { Component } from '@angular/core';
 import { FileBrowserUtilityService } from '../file-functions';
@@ -52,9 +53,7 @@ describe('FilePreviewComponent', () => {
     describe('when the user is logged in', () => {
       describe('and it has an empty previewUrl', () => {
         it('should return the noPreview response', () => {
-          expect(component.copy).toBe(
-            'Preview is not available for this type of file. Click the \"Download Now\" button located above to download this object.'
-            );
+          expect(component.copy).toBe(noPreview);
         });
       });
     });
@@ -62,18 +61,14 @@ describe('FilePreviewComponent', () => {
     describe('when the user is not logged in', () => {
       describe('and it has an empty previewUrl', () => {
         it('should return the noPreview response', () => {
-          expect(component.copy).toBe(
-            'Preview is not available for this type of file. Click the \"Download Now\" button located above to download this object.'
-            );
+          expect(component.copy).toBe(noPreview);
         });
       });
 
       describe('and it has a non-empty previewUrl', () => {
         it('should return the notLoggedIn response', () => {
           component.previewUrl = 'https://clark.center';
-          expect(component.copy).toBe(
-            'Please log in to preview file. Click the \"Download Now\" button located above to download this object.'
-            );
+          expect(component.copy).toBe(notLoggedIn);
         });
       });
     });
