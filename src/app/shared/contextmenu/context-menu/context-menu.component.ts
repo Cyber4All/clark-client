@@ -112,7 +112,17 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
       contextElement.style.visibility = 'visible';
       document.body.appendChild(domElem);
 
-      // create a dummy node to prevent the browser from capturing focus when tabbing out of the context menu
+      /*
+        This component appends it's payload (the HTML for the context menu) to the DOM, meaning
+        it's inserted as the very last element in the <body> tag. As a result of this, when
+        tabbing out of the last context-menu item, some browsers assume the user has tabbed through
+        the entire document and thus focus some piece of the browser's UI, preventing javascript from refocusing
+        a piece of the document. When a user tabs away from the last menu item, we need to close te menu and refocus
+        its anchor element (the button/element that triggered the menu) to allow the user to continue tabbing through the document.
+        This dummy element is rendered invisible and 500px off the screen to the left, and provides another element in the <body> after the
+        context menu. Now, when the user tabs away from the last context menu item, the input is focused, allowing JS to redirect the focus
+        event to the original anchor element. The dummy input is promptly removed from the DOM in the cleanup step.
+      */
       const dummyNode = document.createElement('input');
       // hide the input immediately on render
       dummyNode.setAttribute('id', 'contextMenuDummyInput');
