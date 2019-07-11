@@ -211,7 +211,7 @@ export class BuilderStore {
           this.outcomes
         );
         // set the title of page to the learning object name
-        this.titleService.setTitle('CLARK: ' + this.learningObject.name);
+        this.titleService.setTitle(this.learningObject.name + ' | CLARK');
         return this.learningObject;
       })
       .catch(e => {
@@ -265,7 +265,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   makeNew(): LearningObject {
-    this.titleService.setTitle('CLARK: New Learning Object');
+    this.titleService.setTitle('New Learning Object | CLARK');
     this.learningObject = new LearningObject({ author: this.auth.user });
     this.outcomes = new Map();
     return this.learningObject;
@@ -747,7 +747,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private saveObject(data: any, delay?: boolean) {
-    this.titleService.setTitle('CLARK: ' + this.learningObject.name);
+    this.titleService.setTitle(this.learningObject.name + ' | CLARK');
     let value = this.objectCache$.getValue();
     this.touched = true;
 

@@ -48,6 +48,6 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
     }
-    this.titleService.setTitle('CLARK: ' + this.collection.name);
+    this.titleService.setTitle(this.collection.name + ' | CLARK');
   }
 }

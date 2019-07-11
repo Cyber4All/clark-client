@@ -32,7 +32,7 @@ export class OrganizationListComponent implements OnInit {
     });
     this.fetchMembers();
     const title = this.titleCasePipe.transform(this.organization);
-    this.titleService.setTitle('CLARK: ' + title);
+    this.titleService.setTitle(title + ' | CLARK');
   }
 
   async fetchMembers() {

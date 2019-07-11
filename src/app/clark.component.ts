@@ -121,7 +121,7 @@ export class ClarkComponent implements OnInit {
           data = activeRoute.snapshot.data.title;
         }
         if (data !== undefined) {
-          this.titleService.setTitle('CLARK: ' + data);
+          this.titleService.setTitle(data + ' | CLARK');
         }
       });
     });
