@@ -74,6 +74,7 @@ export const builderTransitions = trigger('builderTransition', [
   ])
 ]);
 
+// This component sets its own page title within the builder store
 @Component({
   selector: 'clark-learning-object-builder',
   templateUrl: './learning-object-builder.component.html',
