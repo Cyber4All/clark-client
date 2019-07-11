@@ -1,0 +1,30 @@
+<div class="dashboard-list">
+  <div class="dashboard-list__top">
+    <div class="dashboard-list__title">
+      {{ title || 'Learning Objects' }} 
+      <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
+    </div>
+    <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
+      <div class="btn-group to-right">
+        <button class="button good">New <i class="far fa-plus"></i></button>
+        <button class="button neutral">Filter <i class="far fa-angle-down"></i></button>
+      </div>
+    </div>
+    <ng-template #buttonPlaceholderTemplate>
+      <div style="height: 40px;"></div>
+    </ng-template>
+  </div>
+  <div class="dashboard-list__table">
+    <div class="table__head">
+      <clark-checkbox></clark-checkbox>
+      <div>Status</div>
+      <div>Name</div>
+      <div>Type</div>
+      <div>Date</div>
+      <div></div>
+    </div>
+    <div #tableItems class="table__items">
+      <div *ngFor="let object of learningObjects">wiohoo</div>
+    </div>
+  </div>
+</div>

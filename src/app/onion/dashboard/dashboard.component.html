@@ -1,3 +1,40 @@
-<p>
-  dashboard works!
-</p>
+<div class="dashboard">
+  <clark-dashboard-splash
+    (navigateBack)="navigateBack()"
+  ></clark-dashboard-splash>
+  <div class="dashboard__lists">
+    <div class="dashboard__tabs">
+      <button
+        class="tabs__item"
+        [ngClass]="{ 'tabs__item--active': !(activeIndex % 2) }"
+        (click)="(activeIndex % 2) && toggle()"
+      >
+        Draft
+    </button>
+      <button
+        class="tabs__item"
+        [ngClass]="{ 'tabs__item--active': activeIndex % 2 }"
+        (click)="!(activeIndex % 2) && toggle()"
+      >
+        Released
+    </button>
+    </div>
+    <clark-carousel [action$]="action$">
+      <ng-template>
+        <div class="list__wrapper">
+          <clark-dashboard-list
+            title="Draft Learning Objects"
+            [showOptions]="true"
+          ></clark-dashboard-list>
+        </div>
+      </ng-template>
+      <ng-template>
+        <div class="list__wrapper">
+          <clark-dashboard-list
+            title="Released Learning Objects"
+          ></clark-dashboard-list>
+        </div>
+      </ng-template>
+    </clark-carousel>
+  </div>
+</div>

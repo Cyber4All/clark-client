@@ -133,7 +133,8 @@ import { ActivateDirective } from './directives/activate.directive';
     GenericCollectionLogoComponent,
     CollectionPipe,
     ToggleSwitchComponent,
-    ActivateDirective
+    ActivateDirective,
+    ModalModule,
   ]
 })
 export class SharedModule {}
