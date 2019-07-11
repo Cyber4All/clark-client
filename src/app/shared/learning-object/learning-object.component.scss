@@ -43,6 +43,10 @@ a {
         }
         .download-btn{
           display: none;
+
+          &:focus, &:hover {
+            color: $light-blue;
+          }
         }
         .download-btn-card {
           display: inline;
@@ -271,7 +275,7 @@ a {
         color: $medium-grey;
         font-size: 16px;
 
-        &:hover {
+        &:hover, &:focus {
           transform: scale(1.1);
           color: $blue-accent;
         }
