@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="content-box" [ngClass]="{'failed': loginFailure}">
     <div class="top">
-      <div class="error" > {{ loginFailure || '' }} </div>
+      <div aria-live="assertive" class="error" > {{ loginFailure || '' }} </div>
       <div class="title_wrapper" routerLink="/home">
         <div class="auth-title">CLARK</div>
         <div class="auth-title light">Cybersecurity Digital Library</div>
@@ -15,7 +15,7 @@
           <input name="password" type="password" placeholder="Password" aria-label="Password" [(ngModel)]="authInfo.password" />
           <i class="far fa-key"></i>
         </div>
-        <div class="forgot" routerLink="../forgot-password">Forgot password?</div>
+        <a class="forgot" routerLink="../forgot-password">Forgot password?</a>
         <button type="type" id="auth-button" class="auth-button">
           <div class="mask"></div>
           <div class="text" *ngIf = "!loading">Login</div>
@@ -24,9 +24,9 @@
         </button>
       </form>
     </div>
-    <div class="bottom-link" routerLink="../register">
+    <button class="bottom-link" routerLink="../register">
       Don't have an account yet?
       <span id="bottom-login-link">Register!</span>
-    </div>
+    </button>
   </div>
 </div>
