@@ -1,9 +1,9 @@
 <div class="dashboard-list">
   <div class="dashboard-list__top">
-    <div class="dashboard-list__title">
+    <p class="dashboard-list__title" tabindex="0">
       {{ title || 'Learning Objects' }} 
       <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
-    </div>
+    </p>
     <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
       <div class="btn-group to-right">
         <button class="button good">New <i class="far fa-plus"></i></button>
