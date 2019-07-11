@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilePreviewComponent } from './file-preview.component';
 import { noPreview, notLoggedIn } from './file-preview.copy';
 import { AuthService } from 'app/core/auth.service';
-import { Component } from '@angular/core';
 import { FileBrowserUtilityService } from '../file-functions';
 import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
