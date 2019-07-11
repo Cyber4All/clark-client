@@ -24,6 +24,9 @@ export class DashboardComponent {
     this.lastLocation = this.history.lastRoute;
   }
 
+  /**
+   * Toggles between the draft tab and the released tab
+   */
   toggle() {
     if (this.activeIndex % 2) {
       this.action$.next('-1');
@@ -33,6 +36,9 @@ export class DashboardComponent {
     this.activeIndex++;
   }
 
+  /**
+   * Navigates back, either to the home page or to the previous non-onion page
+   */
   navigateBack() {
     let url = '/home';
 

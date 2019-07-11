@@ -55,6 +55,9 @@ export class CheckBoxComponent implements OnChanges {
     return this._animating;
   }
 
+  /**
+   * Trigger the burst animation on the checkbox
+   */
   animate() {
     this._animating = true;
     this.cd.detectChanges();
@@ -62,9 +65,12 @@ export class CheckBoxComponent implements OnChanges {
     setTimeout(() => {
       this._animating = false;
       this.cd.detectChanges();
-    }, 300);
+    }, 500);
   }
 
+  /**
+   * Emit a boolean event upwards
+   */
   sendEvent() {
     if (this._state) {
       this.checkboxChecked.emit();
