@@ -21,17 +21,19 @@ const cube_routes: Routes = [
     path: '',
     component: CubeComponent,
     children: [
-      { path: 'home', component: HomeComponent },
+      { path: 'home', component: HomeComponent, data: { title: 'Home'} },
       { path: 'c/:abvName', component: CollectionDetailsComponent },
       { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse/:query',
-        component: BrowseComponent
+        component: BrowseComponent,
+        data: { title: 'Search Results'}
       },
       {
         path: 'browse',
-        component: BrowseComponent
+        component: BrowseComponent,
+        data: { title: 'Browse Learning Objects'}
       },
       {
         path: 'details/:username/:learningObjectName',
@@ -40,15 +42,18 @@ const cube_routes: Routes = [
       {
         path: 'library',
         component: CartComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { title: 'Your Library'}
       },
       {
         path: 'system/usage',
-        loadChildren: 'app/cube/usage-stats/usage-stats.module#UsageStatsModule'
+        loadChildren: 'app/cube/usage-stats/usage-stats.module#UsageStatsModule',
+        data: { title: 'System Usage'}
       },
       {
         path: 'system/termsofservice',
-        component: TermsOfServiceComponent
+        component: TermsOfServiceComponent,
+        data: { title: 'Terms of Service'}
       },
       {
         path: 'users/:username',

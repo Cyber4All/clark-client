@@ -1,9 +1,11 @@
-import { Router } from '@angular/router';
+import { Router , NavigationEnd, ActivatedRoute} from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
 import { ModalService, ModalListElement } from './shared/modals';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Title } from '@angular/platform-browser';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'clark-root',
@@ -46,7 +48,13 @@ export class ClarkComponent implements OnInit {
   isOldVersion = false;
   errorMessage: string;
 
-  constructor(private authService: AuthService, private cartService: CartV2Service, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private cartService: CartV2Service,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title
+    ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
       this.authService.isLoggedIn.subscribe(val => {
@@ -72,6 +80,8 @@ export class ClarkComponent implements OnInit {
         this.isOldVersion = true;
       }
     }, 600000); // 10 minute interval
+
+    this.setPageTitle();
   }
 
   reloadPage() {
@@ -85,5 +95,35 @@ export class ClarkComponent implements OnInit {
   setCookieAgreement(val: boolean) {
     localStorage.setItem('cookieAgreement', val + '');
     this.cookiesAgreement = val;
+  }
+
+  /* set the document title to show location in
+  browser tabs and notify AT's of current location */
+  setPageTitle() {
+    this.router.events
+    .filter(event => event instanceof NavigationEnd)
+    .subscribe(() => {
+      let data;
+      const activeRoutes: ActivatedRoute[] = this.activatedRoute.children;
+
+      activeRoutes.forEach((route: ActivatedRoute) => {
+        let activeRoute: ActivatedRoute = route;
+        while (activeRoute.firstChild) {
+          activeRoute = activeRoute.firstChild;
+        }
+        if (activeRoute.snapshot.params.username) {
+          if (activeRoute.snapshot.params.learningObjectName) {
+            data = activeRoute.snapshot.params.learningObjectName;
+          } else {
+            data = activeRoute.snapshot.params.username;
+          }
+        } else {
+          data = activeRoute.snapshot.data.title;
+        }
+        if (data !== undefined) {
+          this.titleService.setTitle(data + ' | CLARK');
+        }
+      });
+    });
   }
 }
