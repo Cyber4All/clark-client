@@ -14,15 +14,19 @@
       <div style="height: 40px;"></div>
     </ng-template>
   </div>
-  <div class="dashboard-list__table">
-    <div class="table__head">
-      <clark-checkbox></clark-checkbox>
-      <div>Status</div>
-      <div>Name</div>
-      <div>Type</div>
-      <div>Date</div>
-      <div></div>
+  <div role="table" class="dashboard-list__table">
+    <div role="row" class="table__head">
+      <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
+      <div role="columnheader">Status</div>
+      <div role="columnheader">Name</div>
+      <div role="columnheader">Type</div>
+      <div role="columnheader">Date</div>
+      <div rle="columnheader" aria-label="Spacing element for meatball menu"></div>
     </div>
-    <div class="table__items">n</div>
+    <div role="rowgroup" class="table__items">
+      <div *ngFor="let l of learningObjects" role="row">
+        <!-- instances of DashboardListItem component here -->
+      </div>
+    </div>
   </div>
 </div>
