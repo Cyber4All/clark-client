@@ -21,13 +21,13 @@ const dashboard = environment.experimental
     loadChildren:
       'app/onion/dashboard/dashboard.module#DashboardModule',
     canActivate: [AuthGuard],
-    data: { state: 'dashboard' }
+    data: { state: 'dashboard', title: 'Your Dashboard' }
   }
   : {
     path: 'dashboard',
     component: OldDashboardComponent,
     canActivate: [AuthGuard],
-    data: { state: 'dashboard' }
+    data: { state: 'dashboard', title: 'Your Dashboard' }
   };
 const onion_routes: Routes = [
   {
