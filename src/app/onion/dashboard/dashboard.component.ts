@@ -13,7 +13,7 @@ export class DashboardComponent {
   lastLocation: NavigationEnd;
   activeIndex = 0;
 
-  action$: Subject<string> = new Subject();
+  action$: Subject<number> = new Subject();
 
   constructor(
     private history: HistoryService,
@@ -29,9 +29,9 @@ export class DashboardComponent {
    */
   toggle() {
     if (this.activeIndex % 2) {
-      this.action$.next('-1');
+      this.action$.next(-1);
     } else {
-      this.action$.next('+1');
+      this.action$.next(1);
     }
     this.activeIndex++;
   }

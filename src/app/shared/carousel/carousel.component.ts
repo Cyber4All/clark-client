@@ -25,7 +25,7 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     TemplateRef<any>
   >;
 
-  @Input() action$: Subject<string> = new Subject();
+  @Input() action$: Subject<number> = new Subject();
 
   direction: 'next' | 'prev' | 'off' = 'off';
   index = 0;
@@ -35,19 +35,13 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   constructor(private cd: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    this.action$.pipe(takeUntil(this.destroyed$)).subscribe(action => {
-      // this should be a value of either '+' or '-'
-      const direction: string = action.charAt(0);
-      // if the action string is only the direction character, default the distance to 1
-      const distance: number =
-        action.length === 1 ? 1 : parseInt(action.substring(1), 10);
-
-      if (direction === '+') {
+    this.action$.pipe(takeUntil(this.destroyed$)).subscribe(distance => {
+      if (distance > 0) {
         this.advance(distance);
-      } else if (direction === '-') {
-        this.regress(distance);
+      } else if (distance < 0) {
+        this.regress(Math.abs(distance));
       } else {
-        console.error('Error! Invalid direction property specified!');
+        console.error('Error! Invalid direction property specified! Distance must be a number greater than or less than 0.');
       }
     });
   }
