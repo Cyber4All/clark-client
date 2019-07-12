@@ -167,4 +167,10 @@ export class DashboardItemComponent implements OnChanges {
       return [];
     }
   }
+  openInfoPanel() {
+    if (!this.meatballOpen) {
+      console.log(this.meatballOpen)
+      this.viewSidePanel.emit();
+    }
+  }
 }
