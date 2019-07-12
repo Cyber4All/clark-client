@@ -4,63 +4,81 @@ import {
   Input,
   EventEmitter,
   SimpleChanges,
-  OnChanges
+  OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 
 @Component({
   selector: 'clark-checkbox',
   template: `
-    <div
+    <button
       class="checkbox"
       id="checkbox"
-      aria-label="Clickable checkbox"
-      (click)="setStatus(!checked, true)"
-      [ngClass]="{ active: checked, disabled: disabled }"
-    ></div>
+      aria-label="Checkbox"
+      tabindex="0"
+      (click)="(state = !state) && animate()"
+      [ngClass]="{ 'active': state, 'disabled': disabled, 'animating': animating }"
+    >
+      <i class="fas fa-check"></i>
+    </button>
   `,
-  styleUrls: [ 'checkbox.component.scss' ]
+  styleUrls: [ 'checkbox.component.scss' ],
 })
 export class CheckBoxComponent implements OnChanges {
-  checked = false;
-  @Input() setValue: boolean;
-  @Input() func: string;
-  @Input() externalState = false;
+  private _state = false;
+  private _animating = false;
+
+  @Input() value: boolean = undefined;
   @Input() disabled = false;
 
-  @Output() checkboxChecked: EventEmitter<string> = new EventEmitter();
-  @Output() checkboxUnchecked: EventEmitter<string> = new EventEmitter();
-  @Output() action: EventEmitter<string> = new EventEmitter();
+  @Output() checkboxChecked: EventEmitter<void> = new EventEmitter();
+  @Output() checkboxUnchecked: EventEmitter<void> = new EventEmitter();
+  @Output() action: EventEmitter<boolean> = new EventEmitter();
 
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.setValue) {
-      // this was set from the outside, so we don't need to fire an event
-      this.setStatus(changes.setValue.currentValue, false);
+    if (changes.value && this.state !== changes.value.currentValue) {
+      this._state = changes.value.currentValue;
     }
   }
 
-  setStatus(value = true, shouldFire: boolean) {
-    if (!this.externalState) {
-      this.checked = value;
-    }
-
-    if (shouldFire) {
-      this.sendEvent(this.func);
-    }
+  get state() {
+    return this._state;
   }
 
-  sendEvent(message) {
-    if (typeof message === 'undefined') {
-      message = '';
-    }
+  set state(value: boolean) {
+    this._state = value;
+    this.sendEvent();
+  }
 
-    if (this.checked) {
-      this.checkboxChecked.emit(message);
+  get animating() {
+    return this._animating;
+  }
+
+  /**
+   * Trigger the burst animation on the checkbox
+   */
+  animate() {
+    this._animating = true;
+    this.cd.detectChanges();
+
+    setTimeout(() => {
+      this._animating = false;
+      this.cd.detectChanges();
+    }, 500);
+  }
+
+  /**
+   * Emit a boolean event upwards
+   */
+  sendEvent() {
+    if (this._state) {
+      this.checkboxChecked.emit();
     } else {
-      this.checkboxUnchecked.emit(message);
+      this.checkboxUnchecked.emit();
     }
 
-    this.action.emit(this.checked ? message : '-' + message);
+    this.action.emit(this.state);
   }
 }

@@ -21,7 +21,7 @@ export class UserPrivilegesComponent implements OnInit {
   selectedRole: 'curator' | 'reviewer';
   selectedCollection: string;
 
-  carouselAction$: Subject<string> = new Subject();
+  carouselAction$: Subject<number> = new Subject();
 
   constructor(private collectionService: CollectionService, private privilegeService: PrivilegeService, private toaster: ToasterService) {}
 
@@ -73,7 +73,7 @@ export class UserPrivilegesComponent implements OnInit {
    * @memberof UserPrivilegesComponent
    */
   advance(distance: number = 1) {
-    this.carouselAction$.next('+' + distance);
+    this.carouselAction$.next(distance);
   }
 
   /**
@@ -83,7 +83,7 @@ export class UserPrivilegesComponent implements OnInit {
    * @memberof UserPrivilegesComponent
    */
   regress(distance: number = 1) {
-    this.carouselAction$.next('-' + distance);
+    this.carouselAction$.next(distance * -1);
   }
 
   /**

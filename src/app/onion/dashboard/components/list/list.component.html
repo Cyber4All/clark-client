@@ -1,0 +1,32 @@
+<div class="dashboard-list">
+  <div class="dashboard-list__top">
+    <p class="dashboard-list__title" tabindex="0">
+      {{ title || 'Learning Objects' }} 
+      <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
+    </p>
+    <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
+      <div class="btn-group to-right">
+        <button aria-label="Create a new Learning Object" class="button good">New <i class="far fa-plus"></i></button>
+        <button aria-label="Filter Learning Objects by status" class="button neutral">Filter <i class="far fa-angle-down"></i></button>
+      </div>
+    </div>
+    <ng-template #buttonPlaceholderTemplate>
+      <div style="height: 40px;"></div>
+    </ng-template>
+  </div>
+  <div role="table" class="dashboard-list__table">
+    <div role="row" class="table__head">
+      <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
+      <div role="columnheader">Status</div>
+      <div role="columnheader">Name</div>
+      <div role="columnheader">Type</div>
+      <div role="columnheader">Date</div>
+      <div rle="columnheader" aria-label="Spacing element for meatball menu"></div>
+    </div>
+    <div role="rowgroup" class="table__items">
+      <div *ngFor="let l of learningObjects" role="row">
+        <!-- TODO: instances of DashboardListItem component here -->
+      </div>
+    </div>
+  </div>
+</div>
