@@ -19,7 +19,7 @@ jobs:
           root: dist
           paths: 
             - ./
-  test: 
+  test:
     <<: *defaults
     steps:
       - checkout
@@ -28,7 +28,7 @@ jobs:
           command: npm install
       - run:
           name: Unit Tests
-          command: npm run test:unit auth/ admin/ onion/dashboard/
+          command: npm run test:unit
   publish-image:
     <<: *defaults
     docker:
@@ -38,13 +38,13 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build Image
-          command: | 
+          command: |
             docker build -t clark-client:$CIRCLE_SHA1 .
       - run:
           name: Login to docker
           command: docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
       - run:
-          name: Publish Image 
+          name: Publish Image
           command: |
             docker tag clark-client:$CIRCLE_SHA1 "${DOCKER_USER_ORG}/clark-client:${CIRCLE_SHA1}"
             docker push $DOCKER_USER_ORG/clark-client:$CIRCLE_SHA1
@@ -91,13 +91,13 @@ workflows:
           filters:
             branches:
               only: /master/
-      - test: 
+      - test:
           requires:
             - build
           filters:
             branches:
               only: /master/
-      - publish-image: 
+      - publish-image:
           requires:
             - test
           filters:

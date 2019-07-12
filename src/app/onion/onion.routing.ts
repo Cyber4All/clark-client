@@ -15,17 +15,26 @@ import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
  *
  * @author Sean Donnelly
  */
+const dashboard = environment.experimental
+  ? {
+    path: 'dashboard',
+    loadChildren:
+      'app/onion/dashboard/dashboard.module#DashboardModule',
+    canActivate: [AuthGuard],
+    data: { state: 'dashboard', title: 'Your Dashboard' }
+  }
+  : {
+    path: 'dashboard',
+    component: OldDashboardComponent,
+    canActivate: [AuthGuard],
+    data: { state: 'dashboard', title: 'Your Dashboard' }
+  };
 const onion_routes: Routes = [
   {
     path: '',
     component: OnionComponent,
     children: [
-      {
-        path: 'dashboard',
-        component: environment.experimental ? DashboardComponent : OldDashboardComponent,
-        canActivate: [AuthGuard],
-        data: { state: 'dashboard', title: 'Your Dashboard' }
-      },
+      dashboard,
       {
         path: 'learning-object-builder',
         loadChildren:
