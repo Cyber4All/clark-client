@@ -5,8 +5,11 @@
     </div>
   </div>
   <div tab-index="0" class="learning-object__row learning-object__row--delim">
-    <div tab-index="0" aria-label="Learning Object Length" [attr.class]="'learning-object__length ' + learningObject.length">{{ learningObject.length | titlecase }}</div>
-    <div tab-index="0" aria-label="Learning Object Date" class="learning-object__date">{{ learningObject.date | date:'mediumDate' }}</div>
+    <div tab-index="0" aria-label="Learning Object Length" [ngClass]="learningObject.length" class="learning-object__length">{{ learningObject.length | titlecase }}</div>
+    <div tab-index="0" aria-label="Learning Object Date" class="learning-object__date">Released on {{ learningObject.date | date:'mediumDate' }}</div>
+  </div>
+  <div class="learning-object__row">
+    <div class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/collections/' + collectionImage + ')'}"></div>
     <div tab-index="0" aria-label="Learning Object Collection" class="learning-object__collection">{{ learningObject.collection | collection | async }}</div>
   </div>
 </div>

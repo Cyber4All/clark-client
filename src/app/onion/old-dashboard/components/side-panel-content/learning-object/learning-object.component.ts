@@ -9,10 +9,11 @@ import { LearningObject } from '@entity';
 export class LearningObjectComponent implements OnInit {
 
   @Input() learningObject: LearningObject;
+  collectionImage: string;
 
   constructor() { }
 
   ngOnInit() {
+    this.collectionImage = `${this.learningObject.collection}.png`;
   }
-
 }
