@@ -19,7 +19,7 @@ export class SubmitComponent implements OnInit {
 
   @Input() visible: boolean;
 
-  carouselAction$: Subject<string> = new Subject();
+  carouselAction$: Subject<number> = new Subject();
   changelogComplete$: Subject<boolean> = new Subject();
 
   changelog: string;
@@ -86,7 +86,7 @@ export class SubmitComponent implements OnInit {
    * @memberof SubmitComponent
    */
   advance(distance: number = 1) {
-    this.carouselAction$.next('+' + distance);
+    this.carouselAction$.next(distance);
   }
 
   /**
@@ -96,7 +96,7 @@ export class SubmitComponent implements OnInit {
    * @memberof SubmitComponent
    */
   regress(distance: number = 1) {
-    this.carouselAction$.next('-' + distance);
+    this.carouselAction$.next(distance * -1);
   }
 
   /**

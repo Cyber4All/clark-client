@@ -42,7 +42,7 @@
   </div>
 </div>
 <div class="preview" *ngIf="!preview">
-  <clark-file-preview></clark-file-preview>
+  <clark-file-preview [file]="file"></clark-file-preview>
   <button (click)="returnToFileView()" class="button good">
     Return to file view
   </button>

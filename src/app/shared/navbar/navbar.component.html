@@ -1,16 +1,19 @@
 <clark-message></clark-message>
-<div *ngIf="nav.visible" [@simpleFadeAnimation]="'in'">
+<button class="skip-link" (click)="goToContent('pageContent')">Skip directly to site content</button>
+<button class="skip-link" *ngIf="!loggedin" (click)="goToContent('clark-sign-in')">Skip directly to Login</button>
+<button class="skip-link" *ngIf="loggedin" (click)="goToContent('clark-user-dropdown')">Skip directly to your User profile</button>
+<button class="skip-link" (click)="goToContent('clark-search-input')">Skip directly to Search for Learning Objects</button>
+<div role="navigation" *ngIf="nav.visible">
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
       <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" routerLink="/home">
         <div class="logo-image"></div>
-        <div id="clark-logo" class="logo-link">CLARK</div>
-        <div *ngIf="version" class="version-label">{{version}}</div>
+        <div tabindex="0" id="clark-logo" class="logo-link">CLARK</div>
       </div>
       <div class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
         <div class="clark-search-inner">
           <clark-search [focus]="searchFocusSubject" [blur]="searchBlurSubject" (didFocus)="showSearch();" (didBlur)="hideSearch()"></clark-search>
-          <div class="close" id="search-close" (click)="hideSearch();"><i class="fal fa-times"></i></div>
+          <button class="close" id="search-close" (click)="hideSearch();" aria-label="Close search options"><i class="fal fa-times"></i></button>
         </div>
       </div>
       <div id="clark-user" class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
@@ -19,18 +22,18 @@
 
       <ng-template #userTemplate>
         <ng-container *ngIf="loggedin">
-          <div class="contributor" id="contributor-link" #contributorDropdownButtonElement (click)="contributorDropdown(true)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></div>
-          <div class="right library" id="library-link" routerLink="/library"></div>
-          <div id="clark-user-dropdown" #userDropdownButtonElement class="left flex h flex-end user-menu" (click)="userDropdown(true)">
+          <button class="contributor" id="contributor-link" #contributorDropdownButtonElement (click)="contributorDropdown(true)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></button>
+          <a class="right library" id="library-link" routerLink="/library"></a>
+          <button id="clark-user-dropdown" #userDropdownButtonElement class="user" (click)="userDropdown(true)">
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
             <i class="fas fa-chevron-down"></i>
-          </div>
+          </button>
 
           <clark-context-menu *ngIf="contributorDown" [anchor]="contributorDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="contributorDropdown()">
             <div #contextMenu>
               <ul>
-                <li routerLink="/onion/dashboard" (click)="contributorDropdown()"><i class="far fa-list"></i>Your Dashboard</li>
-                <li routerLink="/onion/learning-object-builder" (click)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
+                <li tabindex="0" routerLink="/onion/dashboard" (click)="contributorDropdown()"><i class="far fa-list"></i>Your Dashboard</li>
+                <li tabindex="0" routerLink="/onion/learning-object-builder" (click)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
               </ul>
             </div>
           </clark-context-menu>
@@ -38,17 +41,17 @@
           <clark-context-menu *ngIf="userDown" [anchor]="userDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="userDropdown()">
             <div #contextMenu id="context-popup">
               <ul>
-                <li *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (click)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                <li [routerLink]="['users', authService.user?.username]" (click)="userDropdown()"><i class="far fa-user"></i>Your Profile</li>
-                <li routerLink="/auth/forgot-password" (click)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
-                <li (click)="logout(); userDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
+                <li tabindex="0" *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (click)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+                <li tabindex="0" [routerLink]="['users', authService.user?.username]" (click)="userDropdown()"><i class="far fa-user"></i>Your Profile</li>
+                <li tabindex="0" routerLink="/auth/forgot-password" (click)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
+                <li tabindex="0" (click)="logout(); userDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
               </ul>
             </div>
           </clark-context-menu>
         </ng-container>
         <ng-container *ngIf="!loggedin">
-          <div class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}"><div>Sign in</div> <i class="fas fa-sign-in-alt"></i></div>
-          <div class="register" id="clark-register" routerLink="/auth/register"><div>Register</div> <i class="fas fa-user-plus"></i></div>
+          <a tabindex="0" class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}">Sign in<i class="fas fa-sign-in-alt"></i></a>
+          <a tabindex="0" class="register" id="clark-register" routerLink="/auth/register">Register<i class="fas fa-user-plus"></i></a>
         </ng-container>
       </ng-template>
 
