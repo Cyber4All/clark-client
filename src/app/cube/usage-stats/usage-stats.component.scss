@@ -3,7 +3,7 @@
 $row-gap: 25px;
 
 .container {
-  padding: 25px 15px;
+  padding: 30px 50px;
   margin-bottom: 100px;
 }
 
@@ -22,7 +22,7 @@ $row-gap: 25px;
 
 .charts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(435px, 1fr));
   grid-column-gap: 25px;
   grid-row-gap: $row-gap;
   margin-bottom: $row-gap;

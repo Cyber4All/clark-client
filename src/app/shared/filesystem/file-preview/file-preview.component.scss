@@ -1,0 +1,13 @@
+@import '~_vars.scss';
+
+p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: $large;
+}
+
+.svg-inline--fa {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
