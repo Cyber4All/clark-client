@@ -1,4 +1,5 @@
 <div *ngIf="!hidden" class="dashboard-item" [ngClass]="{'disabled': disabled, 'shrink': small}">
+  <!--FIXME Change click to activate-->
   <div tabindex="0" class="row-item" (click)="actionPermissions('infoPanel')&&viewSidePanel.emit()" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
     <clark-checkbox *ngIf="!disabled" [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     <div>
