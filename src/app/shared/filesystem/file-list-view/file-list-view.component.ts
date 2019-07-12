@@ -45,7 +45,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   descriptionControl = new FormControl();
   preview = true;
-
+  file: LearningObject.Material.File;
   directoryListing = [];
 
   constructor(private auth: AuthService) {}
@@ -108,6 +108,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
       window.open(url, '_blank');
       this.preview = true;
     } else {
+      this.file = file;
       this.preview = false;
     }
   }

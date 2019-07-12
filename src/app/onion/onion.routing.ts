@@ -24,21 +24,19 @@ const onion_routes: Routes = [
         path: 'dashboard',
         component: environment.experimental ? DashboardComponent : OldDashboardComponent,
         canActivate: [AuthGuard],
-        data: { state: 'dashboard' }
+        data: { state: 'dashboard', title: 'Your Dashboard' }
       },
       {
         path: 'learning-object-builder',
         loadChildren:
           'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
-        canActivate: [AuthGuard],
-        data: { state: 'builder' }
+        canActivate: [AuthGuard]
       },
       {
         path: 'learning-object-builder/:learningObjectId',
         loadChildren:
           'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
-        canActivate: [AuthGuard],
-        data: { state: 'builder' }
+        canActivate: [AuthGuard]
       },
       { path: '**', redirectTo: 'dashboard' }
     ]

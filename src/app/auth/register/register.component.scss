@@ -4,7 +4,6 @@ form {
   margin: auto;
   margin-top: 15px;
   width: 100%;
-  height: 340px;
   overflow-y: hidden;
 }
 
@@ -50,7 +49,7 @@ form {
     transition: all 0.2s ease;
     border: 2px solid $blue-accent;
 
-  &:hover {
+  &:hover, &:focus {
     color: $blue-accent;
     background: transparent !important;
     transform: scale(1.05);
@@ -60,7 +59,7 @@ form {
     background: $success-green;
     border-color: $success-green;
 
-    &:hover {
+    &:hover, &:focus {
       color: $success-green;
     }
   }

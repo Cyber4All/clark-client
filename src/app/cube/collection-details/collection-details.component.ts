@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { CollectionService } from '../../core/collection.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
+// This component sets its own page title
 @Component({
   selector: 'cube-collection-details',
   templateUrl: 'collection-details.component.html',
@@ -21,8 +23,9 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private collectionService: CollectionService
-  ) { }
+    private collectionService: CollectionService,
+    private titleService: Title
+  ) {}
 
   ngOnInit() {
     this.route.params
@@ -45,5 +48,6 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community') {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
     }
+    this.titleService.setTitle(this.collection.name + ' | CLARK');
   }
 }

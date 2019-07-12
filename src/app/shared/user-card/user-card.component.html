@@ -8,21 +8,21 @@
 <ng-template #cardContent>
   <div class="user-card">
     <div class="image" id="card-image">
-      <img [src]="icon" class="img">
+      <img [src]="icon" class="img" alt="User gravatar">
       <span *ngIf="gravatarInfo" tip="What is this?" tipLocation="above" (click)="showGravatarModal($event)">
         <i class="fas fa-info-circle"></i>
       </span>
     </div>
     <div class="user-content">
-      <div class="title" id="card-title">{{user.name | titlecase}}</div>
+      <div tabindex="0" class="title" id="card-title">{{user.name | titlecase}}</div>
       <div class="details">
-        <div class="username" id="card-username">
+        <div tabindex="0" class="username" id="card-username">
           Username: {{ user.username }}
         </div>
-        <div class="email" id="card-email">
+        <div tabindex="0" class="email" id="card-email">
           Email: {{user.email}}
         </div>
-        <div *ngIf="objects" class="learning-objects">
+        <div tabindex="0" *ngIf="objects" class="learning-objects">
           Number of Learning Objects: {{objects.length}}
         </div>
       </div>

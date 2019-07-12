@@ -1,4 +1,5 @@
 import { LearningObject } from '@entity';
+import { Injectable } from '@angular/core';
 
 /**
  * Breaks Path string into array of paths. Removes last element assuming last element is file name.
@@ -79,13 +80,17 @@ const previewable: { [index: string]: string[] } = {
  * @returns {string} [Preview url]
  */
 export function getPreviewUrl(file: LearningObject.Material.File): string {
+  if (!file) {
+    throw new Error('file must be defined to get a preview link.');
+  }
   let url = '';
   const extension = file.extension;
   if (extension) {
     const types = Object.keys(previewable);
     for (const type of types) {
       const extensions = previewable[type];
-      if (extensions.includes(extension.replace('.', ''))) {
+      const extensionIsValid = extensions.includes(extension.replace('.', ''));
+      if (extensionIsValid) {
         switch (type) {
           case 'microsoft':
             url = `${microsoftPreviewUrl}${file.url}`;
@@ -101,4 +106,12 @@ export function getPreviewUrl(file: LearningObject.Material.File): string {
     }
   }
   return url;
+}
+
+// FIXME: bring other functions into this service for better unit testing.
+@Injectable()
+export class FileBrowserUtilityService {
+  getPreviewUrl(file: LearningObject.Material.File): string {
+    return getPreviewUrl(file);
+  }
 }
