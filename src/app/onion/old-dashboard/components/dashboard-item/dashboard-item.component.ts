@@ -169,7 +169,6 @@ export class DashboardItemComponent implements OnChanges {
   }
   openInfoPanel() {
     if (!this.meatballOpen) {
-      console.log(this.meatballOpen)
       this.viewSidePanel.emit();
     }
   }
