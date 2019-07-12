@@ -1,7 +1,7 @@
 <form [formGroup]= "group">
-    <div class="auth-title light" id="profile-title">Create A User Profile</div><hr/>
+    <h2 class="auth-title light" id="profile-title">Create A User Profile</h2>
   <div class="input username">
-    <input id="input-username" #usernameInput name="username" type="text" placeholder="Username" aria-label="Username" formControlName ="username"/>
+    <input autofocus id="input-username" #usernameInput name="username" type="text" placeholder="Username" aria-label="Username" formControlName ="username"/>
     <i class="far fa-user"></i>
     <div class="icon-right">
       <ng-container *ngIf="querying">

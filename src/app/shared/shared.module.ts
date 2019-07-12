@@ -130,7 +130,8 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
     CollectionPipe,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    ModalModule,
   ]
 })
 export class SharedModule {}

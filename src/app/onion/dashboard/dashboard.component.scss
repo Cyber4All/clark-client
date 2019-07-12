@@ -1,0 +1,41 @@
+@import '~_vars.scss';
+
+.dashboard__lists {
+  max-width: $max-width;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: -110px;
+  position: relative;
+
+  .list__wrapper {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px 1px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.dashboard__tabs {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+
+  .tabs__item {
+    padding: 12px 50px 14px;
+    border-radius: 4px 4px 0 0;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    border: 0;
+    font-size: $normal;
+    background: transparent;
+  }
+
+  .tabs__item--active {
+    background: white;
+    color: $light-blue;
+  }
+}
