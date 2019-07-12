@@ -33,14 +33,16 @@
       </div>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
-        <button
-          *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
-          class="download-btn"
-          (activate)="download($event)"
-          attr.aria-label="Download button for {{ learningObject.name }}"
-        >
-          <i class="fas fa-download"></i>
-        </button>
+        <form>
+          <button
+            *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
+            class="download-btn"
+            (activate)="download($event)"
+            attr.aria-label="Download button for {{ learningObject.name }}"
+          >
+            <i class="fas fa-download"></i>
+          </button>
+        </form>
       </div>
       <div *ngIf="collection !== undefined" class="collection">
         {{ collection }}

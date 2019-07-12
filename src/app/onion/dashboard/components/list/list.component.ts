@@ -7,8 +7,6 @@ import { LearningObject } from '@entity';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent {
-  @ViewChild('tableItems') tableItemsElement: ElementRef;
-
   @Input() showOptions: boolean;
   @Input() learningObjects: LearningObject[];
   @Input() title: string;

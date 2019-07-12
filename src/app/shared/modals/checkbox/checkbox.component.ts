@@ -11,15 +11,15 @@ import {
 @Component({
   selector: 'clark-checkbox',
   template: `
-    <div
+    <button
       class="checkbox"
       id="checkbox"
-      aria-label="Clickable checkbox"
+      aria-label="Checkbox"
       (activate)="(state = !state) && animate()"
       [ngClass]="{ 'active': state, 'disabled': disabled, 'animating': animating }"
     >
       <i class="fas fa-check"></i>
-    </div>
+    </button>
   `,
   styleUrls: [ 'checkbox.component.scss' ],
 })

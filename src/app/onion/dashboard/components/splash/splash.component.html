@@ -1,12 +1,8 @@
 <div class="splash">
   <div class="splash__inner">
     <div class="splash__top">
-      <button (click)="navigateBack.emit()" class="splash__back">
+      <button aria-label="Navigate back and exit your dashboard" (click)="navigateBack.emit()" class="splash__back">
         <i class="far fa-arrow-left"></i> Back
-      </button>
-      <button class="splash__user">
-        <div class="user__image"></div>
-        <i class="far fa-chevron-down"></i>
       </button>
     </div>
     <div class="splash__search">

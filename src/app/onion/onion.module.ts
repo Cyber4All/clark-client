@@ -58,7 +58,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     OnionRoutingModule,
     VirtualScrollerModule,
     SidePanelModule,
-    DashboardModule
+    DashboardModule,
   ],
   exports: [
     VirtualScrollerModule,
