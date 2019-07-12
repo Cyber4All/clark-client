@@ -4,6 +4,12 @@
   border-top: 2px solid $light-grey;
   transition: background 0.1s ease;
 
+  .row-item {
+    &.clickable {
+      cursor: pointer;
+    }
+  }
+
   &:not(.disabled):hover {
     background: $light-grey;
   }
