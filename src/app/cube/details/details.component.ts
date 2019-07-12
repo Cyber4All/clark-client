@@ -14,6 +14,7 @@ import { ModalService, ModalListElement } from '../../shared/modals';
 import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { canViewInBrowser } from 'app/shared/filesystem/file-functions';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ChangelogService } from 'app/core/changelog.service';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -53,6 +54,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   reviewer: boolean;
   showDownloadModal = false;
   revisedVersion = false;
+  openChangelogModal = false;
+  loadingChangelogs: boolean;
+  changelogs = [];
+  changelogLearningObject: LearningObject;
 
   learningObjectName: string;
   ariaLabel: string;
@@ -74,6 +79,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (event.keyCode === 27) {
       // hide the new rating popup when escape key is pressed
       this.showAddRating = false;
+      // hide the changelog popup when the escape key is pressed
+      this.openChangelogModal = false;
     }
   }
 
@@ -85,7 +92,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private ratingService: RatingService,
     private toastService: ToasterService,
     private modalService: ModalService,
-    private router: Router
+    private router: Router,
+    private changelogService: ChangelogService,
+    private notificationService: ToasterService
   ) {
   }
 
@@ -332,6 +341,30 @@ export class DetailsComponent implements OnInit, OnDestroy {
       // editing
       delete rating.editing;
       this.updateRating(rating);
+    }
+  }
+
+  async openViewAllChangelogsModal() {
+    if (this.openChangelogModal = true) {
+      this.loadingChangelogs = true;
+      this.changelogLearningObject = this.learningObject;
+      try {
+        this.changelogs = await this.changelogService.fetchAllChangelogs({
+          userId: this.changelogLearningObject.author.id,
+          learningObjectId: this.changelogLearningObject.id
+        });
+      } catch (error) {
+        let errorMessage;
+
+        if (error.status === 401) {
+          this.auth.logout();
+        } else {
+          errorMessage = `We encountered an error while attempting to
+          retrieve change logs for this Learning Object. Please try again later.`;
+        }
+        this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+      }
+      this.loadingChangelogs = false;
     }
   }
 

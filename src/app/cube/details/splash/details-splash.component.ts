@@ -13,6 +13,8 @@ export class DetailsSplashComponent implements OnInit {
   @Input() averageRating: number;
   @Input() canRate: boolean;
   @Input() owned: boolean;
+  @Input() canViewChangelogs: boolean;
+  @Output() openChangelogModal: EventEmitter<boolean> = new EventEmitter();
   @Output() showNewRating: EventEmitter<boolean> = new EventEmitter();
 
   collections = new Map();
@@ -29,6 +31,10 @@ export class DetailsSplashComponent implements OnInit {
    */
   showRatingPopup() {
     this.showNewRating.emit(true);
+  }
+
+  openViewAllChangelogsModal() {
+    this.openChangelogModal.emit(true);
   }
 
   /**
