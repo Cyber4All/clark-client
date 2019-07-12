@@ -19,7 +19,7 @@ export class SidePanelContentComponent implements OnChanges {
   loadingRatings: boolean;
 
   // FIXME will use flag when backend is implemented
-  createRevision: boolean = false;
+  createRevision = false;
 
   constructor(private ratingService: RatingService) { }
 
