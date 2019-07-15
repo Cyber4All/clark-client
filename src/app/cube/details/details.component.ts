@@ -324,6 +324,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Closes any open change log modals
+   */
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
+  }
+
+  /**
    * Determines if a rating is being created or edited and calls appropriate function
    * @param rating the rating object to be created
    */
