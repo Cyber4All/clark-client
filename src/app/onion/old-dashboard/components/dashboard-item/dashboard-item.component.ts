@@ -116,8 +116,7 @@ export class DashboardItemComponent implements OnChanges {
       view: ['released'],
       delete: ['unreleased', 'denied'],
       cancelSubmission: ['waiting', this.verifiedEmail],
-      // FIXME this is temporarily feature-locked
-      infoPanel: ['released', !environment.production]
+      infoPanel: ['released']
     };
 
     const p = permissions[action];
