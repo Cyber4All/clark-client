@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 
 @Component({
@@ -9,11 +9,12 @@ import { LearningObject } from '@entity';
 export class LearningObjectComponent implements OnInit {
 
   @Input() learningObject: LearningObject;
-  collectionImage: string;
 
   constructor() { }
 
   ngOnInit() {
-    this.collectionImage = `${this.learningObject.collection}.png`;
+  }
+  get collectionImage() {
+    return `${this.learningObject.collection}.png`;
   }
 }
