@@ -11,7 +11,6 @@ import {
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
 import { AuthService } from 'app/core/auth.service';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-dashboard-item',
