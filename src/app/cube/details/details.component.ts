@@ -57,7 +57,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   openChangelogModal = false;
   loadingChangelogs: boolean;
   changelogs = [];
-  changelogLearningObject: LearningObject;
 
   learningObjectName: string;
   ariaLabel: string;
@@ -359,11 +358,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (!this.openChangelogModal ) {
       this.openChangelogModal = true;
       this.loadingChangelogs = true;
-      this.changelogLearningObject = this.learningObject;
       try {
         this.changelogs = await this.changelogService.fetchAllChangelogs({
-          userId: this.changelogLearningObject.author.id,
-          learningObjectId: this.changelogLearningObject.id
+          userId: this.learningObject.author.id,
+          learningObjectId: this.learningObject.id,
         });
       } catch (error) {
         let errorMessage;
