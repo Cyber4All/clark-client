@@ -12,7 +12,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
    trigger('revision', [
     transition(':enter', [
       style({ opacity: 0}),
-      animate('300ms 600ms ease-out', style({ 'opacity': 1})),
+      animate('200ms 400ms ease-out', style({ 'opacity': 1})),
       ]),
     ]),
   trigger('madeRevision', [
@@ -33,6 +33,8 @@ export class SidePanelContentComponent implements OnChanges {
   averageRating: number;
   loadingRatings: boolean;
   meatballOpen: boolean;
+  
+  // Output for context menu option to submit revision for review
   @Output()
   submit: EventEmitter<void> = new EventEmitter();
 
@@ -69,10 +71,16 @@ export class SidePanelContentComponent implements OnChanges {
     this.controller$.next(false);
   }
 
+  /**
+   * Toggles the context menu on and off
+   */
   toggleContextMenu() {
     this.meatballOpen = !this.meatballOpen;
   }
 
+  /**
+   * Create a revision of the object that is currently released
+   */
   makeRevision() {
     this.hasRevision = true;
   }
