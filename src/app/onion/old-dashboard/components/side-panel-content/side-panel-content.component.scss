@@ -15,7 +15,15 @@
   padding: 50px 20px;
   background: $light-blue-gradient;
   position: relative;
+  align-content: center;
 
+  .side-panel-object__details {
+    position: absolute;
+    bottom: -75px;
+    z-index: 1;
+    right: 20px;
+    width: 90%;
+  }
   & > * {
     display: block;
     position: relative;
@@ -37,14 +45,27 @@
 
   .side-panel__button-bar {
     position: absolute;
-    bottom: -20px;
+    bottom: 40px;
     z-index: 1;
     right: 20px;
 
     button {
-      box-shadow: 0 4px 12px 2px rgba(0, 0, 0, 0.15);
       opacity: 1 !important;
     }
+  }
+}
+
+.side-panel__welcome-message {
+  text-align: center;
+  margin-top: 70px;
+  padding: 20px;
+  color: $darker-grey;
+
+  &.title {
+    font-size: $normal;
+  }
+  &.message {
+    font-size: $normal;
   }
 }
 
