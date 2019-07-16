@@ -17,9 +17,18 @@ export class SidePanelContentComponent implements OnChanges {
   ratings: any[];
   averageRating: number;
   loadingRatings: boolean;
+  meatballOpen: boolean;
 
   // FIXME will use flag when backend is implemented
-  createRevision = false;
+  createRevision = true;
+  hasRevision = true;
+
+  revision = {
+    name: 'WCAG Magic 2.1',
+    date: '1562949640759',
+    status: 'unreleased',
+    length: 'module'
+  };
 
   constructor(private ratingService: RatingService) { }
 
@@ -43,4 +52,7 @@ export class SidePanelContentComponent implements OnChanges {
     this.controller$.next(false);
   }
 
+  toggleContextMenu($event) {
+    this.meatballOpen = !this.meatballOpen;
+  }
 }

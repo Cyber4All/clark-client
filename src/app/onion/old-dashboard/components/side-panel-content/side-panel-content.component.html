@@ -49,8 +49,57 @@
   <div *ngIf="createRevision" class="side-panel__revision">
     <div class="revision__title title">Revision</div>
 
-    <div *ngIf="false; else noRevisionTemplate">
-      <!-- TODO implement revision logic here -->
+    <div *ngIf="hasRevision; else noRevisionTemplate">
+      <div class="revison__object">
+        <div class="active__revision">
+            <div class="top-row">
+              <div tab-index="0" class="status" [attr.aria-label]="'Learning Object Status: ' + revision.status + '. ' + statusDescription" [ngClass]="revision.status">
+                <span *ngIf="revision.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
+                <span *ngIf="revision.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
+                <span *ngIf="revision.status === 'review'"><i class="fas fa-sync"></i></span>
+                <span *ngIf="revision.status === 'proofing'"><i class="fas fa-shield"></i></span>
+                <span *ngIf="revision.status === 'released'"><i class="fas fa-eye"></i></span>
+                <span *ngIf="revision.status === 'rejected'"><i class="fas fa-ban"></i></span>
+              </div>
+              <p class="revision-name">{{ revision.name }}</p>
+            </div>
+            <div *ngIf="learningObject.status === 'review'; else meatball" tip="{{ statusDescription }}" tipDisabled="{{ !statusDescription }}" tipLocation="above">
+                <ng-container *ngTemplateOutlet="meatball"></ng-container>
+              </div>
+              <ng-template #meatball>
+                <ng-container *ngIf="!disabled && meatball">
+                  <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': learningObject.status === 'review'}" (click)="learningObject.status !== 'review' && this.toggleContextMenu($event)">
+                    <div class="icon">
+                      <i class="far fa-times"></i>
+                    </div>
+                    <div class="orb"></div>
+                  </div>
+              
+                  <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
+                    <div #contextMenu>
+                      <ul (click)="toggleContextMenu($event)">
+                      
+                        <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
+                        <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
+                        <li><i class="far fa-eye"></i>Submit for Review</li>
+                        <li class="bad"><i class="far fa-trash-alt"></i>Delete</li>
+                        <li *ngIf="!createRevision" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>
+                      
+                      </ul>
+                    </div>
+                  </clark-context-menu>
+                </ng-container>
+              </ng-template>
+            <div class="bottom-row">
+              <div class="revision-length" [ngClass]="revision.length">
+                {{ revision.length | titlecase }}
+              </div>
+              <div class="revision-date">
+                {{ revision.date | date:'longDate'}}
+              </div>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -60,6 +109,6 @@
     You don't have a revision for this Learning Object yet!
   </div>
   <div class="btn-group center">
-    <button class="button good">Revise <i class="fas fa-wrench"></i></button>
+    <button class="button good" (click)="makeRevision()">Revise <i class="fas fa-wrench"></i></button>
   </div>
 </ng-template>
