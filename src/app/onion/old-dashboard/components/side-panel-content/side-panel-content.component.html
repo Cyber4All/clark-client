@@ -48,7 +48,6 @@
   </div>
   <div *ngIf="createRevision" class="side-panel__revision">
     <div class="revision__title title">Revision</div>
-
     <div *ngIf="hasRevision; else noRevisionTemplate">
       <div class="revison__object">
         <div class="active__revision">
@@ -64,32 +63,32 @@
               <p class="revision-name">{{ revision.name }}</p>
             </div>
             <div *ngIf="learningObject.status === 'review'; else meatball" tip="{{ statusDescription }}" tipDisabled="{{ !statusDescription }}" tipLocation="above">
-                <ng-container *ngTemplateOutlet="meatball"></ng-container>
-              </div>
-              <ng-template #meatball>
-                <ng-container *ngIf="!disabled && meatball">
-                  <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': learningObject.status === 'review'}" (click)="learningObject.status !== 'review' && this.toggleContextMenu($event)">
-                    <div class="icon">
-                      <i class="far fa-times"></i>
-                    </div>
-                    <div class="orb"></div>
+              <ng-container *ngTemplateOutlet="meatball"></ng-container>
+            </div>
+            <ng-template #meatball>
+              <ng-container *ngIf="!disabled && meatball">
+                <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': learningObject.status === 'review'}" (click)="learningObject.status !== 'review' && this.toggleContextMenu($event)">
+                  <div class="icon">
+                    <i class="far fa-times"></i>
                   </div>
+                  <div class="orb"></div>
+                </div>
               
-                  <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
-                    <div #contextMenu>
-                      <ul (click)="toggleContextMenu($event)">
+                <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
+                  <div #contextMenu>
+                    <ul (click)="toggleContextMenu($event)">
                       
-                        <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
-                        <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
-                        <li (click)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
-                        <li *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete</li>
-                        <li *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>
+                      <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
+                      <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
+                      <li (click)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
+                      <li *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete</li>
+                      <li *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>
                       
-                      </ul>
-                    </div>
-                  </clark-context-menu>
-                </ng-container>
-              </ng-template>
+                    </ul>
+                  </div>
+                </clark-context-menu>
+              </ng-container>
+            </ng-template>
             <div class="bottom-row">
               <div class="revision-length" [ngClass]="revision.length">
                 {{ revision.length | titlecase }}
