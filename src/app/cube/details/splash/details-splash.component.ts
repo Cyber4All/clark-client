@@ -33,6 +33,9 @@ export class DetailsSplashComponent implements OnInit {
     this.showNewRating.emit(true);
   }
 
+  /**
+   * Emits an event to parent component to signal the change logs modal to open
+   */
   openViewAllChangelogsModal() {
     this.openChangelogModal.emit(true);
   }

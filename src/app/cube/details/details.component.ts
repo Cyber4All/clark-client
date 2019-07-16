@@ -352,6 +352,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Opens the Change Log modal for a specified learning object and fetches its change logs
+   */
   async openViewAllChangelogsModal() {
     if (!this.openChangelogModal ) {
       this.openChangelogModal = true;
@@ -366,6 +369,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         let errorMessage;
 
         if (error.status === 401) {
+          // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
           this.auth.logout();
         } else {
           errorMessage = `We encountered an error while attempting to
