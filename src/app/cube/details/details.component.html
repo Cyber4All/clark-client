@@ -1,6 +1,6 @@
 <ng-container *ngIf="!loading.length; else loadingTemplate">
   <div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
-    <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [canViewChangelogs]="loggedin && auth.user.emailVerified" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;" (openChangelogModal)="openChangelogModal = $event;"></cube-details-splash>
+    <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [canViewChangelogs]="loggedin && auth.user.emailVerified" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;" (openChangelogModal)="openViewAllChangelogsModal()"></cube-details-splash>
     <div class="flex">
       <div class="content">
         <div class="description">

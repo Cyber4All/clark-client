@@ -353,7 +353,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   async openViewAllChangelogsModal() {
-    if (this.openChangelogModal = true) {
+    if (!this.openChangelogModal ) {
+      this.openChangelogModal = true;
       this.loadingChangelogs = true;
       this.changelogLearningObject = this.learningObject;
       try {
