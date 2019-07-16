@@ -1,7 +1,7 @@
 <div class="splash">
   <div class="inner">
     <div class="header">    
-      <div class="name" tabindex="0">{{ learningObject.name }}</div>
+      <div class="name" tabindex="0" id="pageContent">{{ learningObject.name }}</div>
       <div class="author">
         <span tabindex="0">Created by </span>
         <a tabindex="0" [routerLink]="['/users', learningObject.author.username]" class="link" id="author-link" attr.aria-label="Clickable link {{ learningObject.author.name }}">{{learningObject.author.name | titlecase}}</a> - 

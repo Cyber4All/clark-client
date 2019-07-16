@@ -231,6 +231,7 @@ export class UsageStatsComponent implements OnInit {
     this.outcomeDistributionChart = {
       title: 'Outcomes By Bloom',
       type: 'pie',
+
       labels: [
         'Apply and Analyze',
         'Remember and Understand',

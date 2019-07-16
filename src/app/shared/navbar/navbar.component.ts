@@ -35,12 +35,14 @@ import {
       state('in', style({opacity: 1})),
       // fade in
       transition(':enter', [
-        style({opacity: 0}),
-        animate(200)
+        style({ opacity: 0, transform: 'translateY(-80px)' }),
+        animate(200, style({ opacity: 1, transform: 'translateY(0px)' }))
       ]),
       // fade out
-      transition(':leave',
-        animate('250ms ease', style({opacity: 0})))
+      transition(':leave', [
+        style({ opacity: 1, transform: 'translateY(0px)' }),
+        animate('250ms ease', style({ opacity: 0, transform: 'translateY(-80px)' }))
+      ])
     ])
   ]
 })
@@ -190,6 +192,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   get isMobile(): boolean {
     return this.windowWidth <= this.responsiveThreshold;
+  }
+
+  goToContent(value: string) {
+    document.getElementById(value).focus();
   }
 
   ngOnDestroy() {

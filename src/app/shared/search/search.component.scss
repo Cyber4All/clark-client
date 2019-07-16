@@ -38,6 +38,8 @@ $buttonWidth: 135px;
         padding: 9px 12px;
         font-size: $normal;
         cursor: pointer;
+        background: transparent;
+        border: none;
       }
 
       input {
@@ -108,6 +110,8 @@ $buttonWidth: 135px;
       position: relative;
       transition: all 0.2s ease;
       color: $dark-grey;
+      background: transparent;
+      border: none;
 
       &:not(.active) {
         cursor: pointer;

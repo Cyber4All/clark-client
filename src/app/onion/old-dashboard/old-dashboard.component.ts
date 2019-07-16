@@ -149,6 +149,17 @@ export class OldDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Returns a boolean indicating whether or not all Learning Objects are selected
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof OldDashboardComponent
+   */
+  get areAllSelected(): boolean {
+    return this.allSelected && this.selected.size === this.learningObjects.length;
+  }
+
   getInnerHeight(): number {
     return (document.getElementsByClassName('.list-inner')[0] as HTMLElement).offsetHeight;
   }

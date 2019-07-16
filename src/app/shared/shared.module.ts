@@ -142,7 +142,8 @@ import { IdentificationPillComponent } from './identification-pill/identificatio
     ChangelogModalComponent,
     ChangelogListComponent,
     ChangelogItemComponent,
-    IdentificationPillComponent
+    IdentificationPillComponent,
+    ModalModule,
   ]
 })
 export class SharedModule {}
