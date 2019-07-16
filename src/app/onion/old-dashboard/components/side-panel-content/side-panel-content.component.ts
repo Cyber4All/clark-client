@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
 import { RatingService } from 'app/core/rating.service';
+import {trigger, style, animate, transition, state} from '@angular/animations';
 
 @Component({
   selector: 'clark-side-panel-content',
@@ -21,11 +22,11 @@ export class SidePanelContentComponent implements OnChanges {
 
   // FIXME will use flag when backend is implemented
   createRevision = true;
-  hasRevision = true;
+  hasRevision = false;
 
   revision = {
     name: 'WCAG Magic 2.1',
-    date: '1562949640759',
+    date: '1592349641750',
     status: 'unreleased',
     length: 'module'
   };
@@ -54,5 +55,9 @@ export class SidePanelContentComponent implements OnChanges {
 
   toggleContextMenu($event) {
     this.meatballOpen = !this.meatballOpen;
+  }
+
+  makeRevision() {
+    this.hasRevision = true;
   }
 }
