@@ -48,7 +48,7 @@
   </div>
   <div *ngIf="createRevision" class="side-panel__revision">
     <div class="revision__title title">Revision</div>
-    <div *ngIf="hasRevision; else noRevisionTemplate">
+    <div [@revision] *ngIf="hasRevision; else noRevisionTemplate">
       <div class="revison__object">
         <div class="active__revision">
             <div class="top-row">
@@ -104,10 +104,10 @@
 </div>
 
 <ng-template #noRevisionTemplate>
-  <div class="revision__empty">
+  <div [@madeRevision] class="revision__empty">
     You don't have a revision for this Learning Object yet!
   </div>
-  <div class="btn-group center">
+  <div [@madeRevision] class="btn-group center">
     <button class="button good" (click)="makeRevision()">Revise <i class="fas fa-wrench"></i></button>
   </div>
 </ng-template>

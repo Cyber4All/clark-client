@@ -7,7 +7,21 @@ import {trigger, style, animate, transition, state} from '@angular/animations';
 @Component({
   selector: 'clark-side-panel-content',
   templateUrl: './side-panel-content.component.html',
-  styleUrls: ['./side-panel-content.component.scss']
+  styleUrls: ['./side-panel-content.component.scss'],
+  animations: [
+   trigger('revision', [
+    transition(':enter', [
+      style({ opacity: 0}),
+      animate('300ms 600ms ease-out', style({ 'opacity': 1})),
+      ]),
+    ]),
+  trigger('madeRevision', [
+    transition(':leave', [
+      style({ opacity: 1 }),
+      animate('400ms ease-out', style({ transform: 'translateY(100px)', opacity: 0 })),
+    ]),
+  ])
+  ]
 })
 export class SidePanelContentComponent implements OnChanges {
 
