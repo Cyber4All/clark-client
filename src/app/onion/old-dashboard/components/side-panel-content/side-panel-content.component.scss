@@ -102,7 +102,6 @@
   display: flex;
   padding: 20px;
   margin-top: 50px;
-  display: flex;
   flex-direction: column;
   font-size: $normal;
 
@@ -177,7 +176,7 @@
 
   .revision-length{
     color: white;
-    border-radius: 2px; 
+    border-radius: 2px;
     padding: 4px;
     font-size: $small;
     margin-right: 5px;
