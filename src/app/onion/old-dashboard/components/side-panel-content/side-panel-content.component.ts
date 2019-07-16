@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
 import { RatingService } from 'app/core/rating.service';
@@ -19,6 +19,8 @@ export class SidePanelContentComponent implements OnChanges {
   averageRating: number;
   loadingRatings: boolean;
   meatballOpen: boolean;
+  @Output()
+  submit: EventEmitter<void> = new EventEmitter();
 
   // FIXME will use flag when backend is implemented
   createRevision = true;
@@ -53,7 +55,7 @@ export class SidePanelContentComponent implements OnChanges {
     this.controller$.next(false);
   }
 
-  toggleContextMenu($event) {
+  toggleContextMenu() {
     this.meatballOpen = !this.meatballOpen;
   }
 
