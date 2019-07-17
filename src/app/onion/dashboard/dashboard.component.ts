@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit {
 
   action$: Subject<number> = new Subject();
 
+  filters: any;
+
   constructor(
     private history: HistoryService,
     private router: Router,
@@ -54,6 +56,7 @@ export class DashboardComponent implements OnInit {
       this.action$.next(1);
     }
     this.activeIndex++;
+    console.log(this.filters);
   }
 
   /**
@@ -75,6 +78,7 @@ export class DashboardComponent implements OnInit {
     return this.learningObjectService
     .getLearningObjects(this.auth.username, filters, query)
     .then((children: LearningObject[]) => {
+      this.loading = false;
       return children;
     });
   }

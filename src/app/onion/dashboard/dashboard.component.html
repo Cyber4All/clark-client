@@ -2,7 +2,7 @@
   <clark-dashboard-splash
     (navigateBack)="navigateBack()"
   ></clark-dashboard-splash>
-  <div class="dashboard__lists">
+  <div class="dashboard__lists" *ngIf="!loading; else loadingTemplate">
     <div role="tablist" class="dashboard__tabs">
       <button
         class="tabs__item"
@@ -41,9 +41,17 @@
             title="Released Learning Objects"
             [showOptions]="false"
             [learningObjects]="releasedLearningObjects"
+            (applyFilters)="filters"
           ></clark-dashboard-list>
         </div>
       </ng-template>
     </clark-carousel>
   </div>
 </div>
+
+<ng-template #loadingTemplate>
+  <div [@fade] class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading Learning Object Dashboard...
+  </div>
+</ng-template>

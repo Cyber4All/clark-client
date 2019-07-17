@@ -30,7 +30,7 @@ export class ListComponent {
     } else {
       this.filters.set(filter, true);
     }
-    console.log(this.filters);
+    this.applyFilters.emit(this.filters);
   }
 
 }
