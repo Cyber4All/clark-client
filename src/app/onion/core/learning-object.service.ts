@@ -336,7 +336,7 @@ export class LearningObjectService {
     const completed$: Subject<boolean> = new Subject<boolean>();
     const sendNextBatch$: Subject<void> = new Subject<void>();
 
-    const response = new Promise(resolve => {
+    const response = new Promise((resolve, reject) => {
       sendNextBatch$.pipe(takeUntil(completed$)).subscribe(async () => {
         const batch = files.splice(0, MAX_PER_REQUEST);
         if (batch.length) {
@@ -345,7 +345,7 @@ export class LearningObjectService {
           const fileIds = await this.handleFileMetaRequestQueueCompletion(
             completed$,
             responses$
-          );
+          ).catch(reject);
           resolve(fileIds);
         }
       });
