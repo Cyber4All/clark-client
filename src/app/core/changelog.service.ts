@@ -38,11 +38,13 @@ export class ChangelogService {
   fetchAllChangelogs(params: {
     userId: string,
     learningObjectId: string,
+    minusRevision?: boolean,
   }): Promise<any> {
     return this.http
       .get(CHANGELOG_ROUTES.FETCH_ALL_CHANGELOGS({
         userId: params.userId,
         learningObjectId: params.learningObjectId,
+        minusRevision: params.minusRevision,
       }))
       .pipe(
         retry(3),

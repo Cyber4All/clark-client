@@ -359,10 +359,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.openChangelogModal = true;
       this.loadingChangelogs = true;
       try {
-        this.changelogs = await this.changelogService.fetchAllChangelogs({
-          userId: this.learningObject.author.id,
-          learningObjectId: this.learningObject.id,
-        });
+        if (this.revisedVersion) {
+          this.changelogs = await this.changelogService.fetchAllChangelogs({
+            userId: this.learningObject.author.id,
+            learningObjectId: this.learningObject.id,
+            minusRevision: false,
+          });
+        } else {
+          this.changelogs = await this.changelogService.fetchAllChangelogs({
+            userId: this.learningObject.author.id,
+            learningObjectId: this.learningObject.id,
+            minusRevision: true,
+          });
+        }
       } catch (error) {
         let errorMessage;
 
