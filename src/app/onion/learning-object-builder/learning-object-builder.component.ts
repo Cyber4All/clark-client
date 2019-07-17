@@ -264,6 +264,14 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
           toasterIcon
         );
         break;
+      case BUILDER_ERRORS.ADD_FILE_META:
+        this.noteService.notify(
+          toasterTitle,
+          'Unable to add file(s)',
+          toasterClass,
+          toasterIcon
+        );
+        break;
       default:
         break;
     }
