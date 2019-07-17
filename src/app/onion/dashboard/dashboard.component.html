@@ -12,7 +12,7 @@
         [ngClass]="{ 'tabs__item--active': !(activeIndex % 2) }"
         (click)="(activeIndex % 2) && toggle()"
       >
-        Draft
+        Draft <span *ngIf="workingLearningObjects">({{ workingLearningObjects.length }})</span>
     </button>
       <button
         class="tabs__item"
@@ -22,7 +22,7 @@
         [ngClass]="{ 'tabs__item--active': activeIndex % 2 }"
         (click)="!(activeIndex % 2) && toggle()"
       >
-        Released
+        Released <span *ngIf="releasedLearningObjects">({{ releasedLearningObjects.length }})</span> 
     </button>
     </div>
     <clark-carousel [action$]="action$">
@@ -31,6 +31,7 @@
           <clark-dashboard-list
             title="Draft Learning Objects"
             [showOptions]="true"
+            [learningObjects]="workingLearningObjects"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -38,6 +39,8 @@
         <div id="released-objects-list-panel" class="list__wrapper">
           <clark-dashboard-list
             title="Released Learning Objects"
+            [showOptions]="false"
+            [learningObjects]="releasedLearningObjects"
           ></clark-dashboard-list>
         </div>
       </ng-template>

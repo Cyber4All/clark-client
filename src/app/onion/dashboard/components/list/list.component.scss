@@ -37,4 +37,14 @@
     align-items: center;
     font-size: $small;
   }
+
+  .table__items {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    
+    clark-dashboard-list-item {
+      display: block;
+      position: relative;
+    }
+  }
 }
