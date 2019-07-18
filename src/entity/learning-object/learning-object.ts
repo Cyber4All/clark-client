@@ -652,7 +652,7 @@ export namespace LearningObject {
       name: string;
       fileType: string;
       extension: string;
-      url: string;
+      previewUrl?: string;
       date: string;
       fullPath?: string;
       size?: number;
