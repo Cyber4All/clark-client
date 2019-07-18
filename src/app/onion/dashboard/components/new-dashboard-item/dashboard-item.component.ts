@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
-import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
+import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
@@ -20,7 +20,7 @@ import { AuthService } from 'app/core/auth.service';
 })
 export class DashboardItemComponent implements OnChanges {
   @Input()
-  learningObject: DashboardLearningObject;
+  learningObject: LearningObject;
   // the status of the learning object (passed in separately for change detection)
   @Input()
   status: string;
@@ -156,9 +156,9 @@ export class DashboardItemComponent implements OnChanges {
    * Takes a learning object and returns a list of it's children's names or an empty list
    * @return {string[]}
    */
-  objectChildrenNames(learningObject: DashboardLearningObject): string[] {
+  objectChildrenNames(learningObject: LearningObject ): string[] {
     if (learningObject.children && learningObject.children.length) {
-      return (learningObject.children as DashboardLearningObject[]).map(
+      return (learningObject.children as LearningObject[]).map(
         l => l.name
       );
     } else {

@@ -9,7 +9,10 @@ import { SearchComponent } from './components/search/search.component';
 import { FormsModule } from '@angular/forms';
 import { ListComponent } from './components/list/list.component';
 import { SharedModule } from 'app/shared/shared.module';
-
+import { DashboardItemComponent } from './components/new-dashboard-item/dashboard-item.component';
+import { SidePanelModule } from './components/side-panel/side-panel.module';
+import { SidePanelContentComponent } from './components/side-panel-content/side-panel-content.component';
+import { LearningObjectComponent } from './components/side-panel-content/learning-object/learning-object.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,12 +24,16 @@ import { SharedModule } from 'app/shared/shared.module';
       }
     ]),
     SharedModule,
+    SidePanelModule
   ],
   declarations: [
     DashboardComponent,
     SplashComponent,
     SearchComponent,
-    ListComponent
+    ListComponent,
+    DashboardItemComponent,
+    SidePanelContentComponent,
+    LearningObjectComponent
   ]
 })
 export class DashboardModule { }

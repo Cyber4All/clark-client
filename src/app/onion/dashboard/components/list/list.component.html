@@ -56,6 +56,7 @@
     <div role="rowgroup" class="table__items">
       <div [@listItem] *ngFor="let l of learningObjects" role="row">
         <span>Name: {{ l.name}} </span><span> Status: {{ l.status }}</span>
+        <clark-dashboard-item [learningObject]="l"></clark-dashboard-item>
       </div>
     </div>
   </div>

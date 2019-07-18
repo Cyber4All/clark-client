@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { OnionRoutingModule } from './onion.routing';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
-import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
 
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
@@ -15,10 +14,7 @@ import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { OnionComponent } from './onion.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
-import { SidePanelModule } from './old-dashboard/components/side-panel/side-panel.module';
-import { SidePanelContentComponent } from './old-dashboard/components/side-panel-content/side-panel-content.component';
-import { LearningObjectComponent } from './old-dashboard/components/side-panel-content/learning-object/learning-object.component';
-import { DashboardItemComponent } from './old-dashboard/components/dashboard-item/dashboard-item.component';
+import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
 /**
@@ -31,10 +27,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
   // Specifies the components included in this module
   declarations: [
     OnionComponent,
-    OldDashboardComponent,
-    SidePanelContentComponent,
-    LearningObjectComponent,
-    DashboardItemComponent,
   ],
   // Specifies all modules to be imported
   imports: [
