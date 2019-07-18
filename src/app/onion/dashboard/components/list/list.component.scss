@@ -32,19 +32,24 @@
     padding: 8px 5px;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: inherit;
+    grid-template-columns: 32px 60px 1fr 180px 180px 50px;
     grid-gap: inherit;
     align-items: center;
     font-size: $small;
+
   }
 
-  .table__items {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  .table__elements {
+    color: $dark-grey ;
+    padding: 8px 5px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 32px 60px 1fr 180px 180px 50px;
+    grid-gap: inherit;
+    align-items: center;
+    font-size: $small;
 
-    clark-dashboard-list-item {
-      display: block;
-      position: relative;
+    clark-dashboard-item {
     }
   }
 
@@ -173,5 +178,41 @@
         }
       }
     }
+  }
+}
+
+
+
+
+
+.list-body {
+  .column-headers,
+  ::ng-deep .row-item {
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 32px 60px 1fr 180px 180px 50px;
+    grid-gap: 0 20px;
+    align-items: center;
+    font-size: $small;
+  }
+
+  ::ng-deep .row-item {
+    & > div {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
+
+  .column-headers {
+    font-size: $small;
+    background: $light-grey;
+    color: $darker-grey;
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+
+  clark-dashboard-item {
+    position: relative;
+    display: block;
   }
 }

@@ -44,22 +44,28 @@
       <div style="height: 40px;"></div>
     </ng-template>
   </div>
-  <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
-    <div role="row" class="table__head">
-      <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
-      <div role="columnheader">Status</div>
-      <div role="columnheader">Name</div>
-      <div role="columnheader">Type</div>
-      <div role="columnheader">Date</div>
-      <div role="columnheader" aria-label="Spacing element for meatball menu"></div>
-    </div>
-    <div role="rowgroup" class="table__items">
-      <div [@listItem] *ngFor="let l of learningObjects" role="row">
-        <span>Name: {{ l.name}} </span><span> Status: {{ l.status }}</span>
-        <clark-dashboard-item [learningObject]="l"></clark-dashboard-item>
+  <div role="table" *ngIf="!loading; else loadingTemplate" class="list-body">
+      <div *ngIf="learningObjects?.length; else emptyTemplate">
+        <div role="row" class="column-headers">
+          <div>
+            <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
+          </div>
+          <div role="columnheader">Status</div>
+          <div role="columnheader">Name</div>
+          <div role="columnheader">Type</div>
+          <div role="columnheader">Date</div>
+          <div role="columnheader" aria-label="Spacing element for meatball menu"></div>
+        </div>
+        <div role="rowgroup" >
+          <clark-dashboard-item
+            *ngFor="let l of learningObjects; let i = index"
+            [learningObject]="l"
+            [status]="l.status"
+            >
+          </clark-dashboard-item>
+        </div>
       </div>
     </div>
-  </div>
 </div>
 
 <ng-template #noLearningObjects>

@@ -68,6 +68,7 @@ export class DashboardComponent implements OnInit {
       this.action$.next(1);
     }
     this.activeIndex++;
+    console.log(this.workingLearningObjects[0]);
   }
 
   /**
