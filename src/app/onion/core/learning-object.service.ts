@@ -302,7 +302,7 @@ export class LearningObjectService {
    * @param {string} authorUsername [The Learning Object's author's username]
    * @param {string} objectId [The Id of the Learning Object]
    * @param {FileUploadMeta[]} files [List of file meta to be added]
-   * @returns {Promise<any>}
+   * @returns {Promise<string[]>}
    * @memberof LearningObjectService
    */
   addFileMeta({
@@ -313,7 +313,7 @@ export class LearningObjectService {
     username: string;
     objectId: string;
     files: FileUploadMeta[];
-  }): Promise<any> {
+  }): Promise<string[]> {
     const route = USER_ROUTES.ADD_FILE_META(username, objectId);
     return this.handleFileMetaRequests(files, route);
   }
@@ -330,23 +330,24 @@ export class LearningObjectService {
    * @returns
    * @memberof LearningObjectService
    */
-  private handleFileMetaRequests(files: FileUploadMeta[], route: string) {
+  private handleFileMetaRequests(
+    files: FileUploadMeta[],
+    route: string
+  ): Promise<string[]> {
     const MAX_PER_REQUEST = 100;
     const responses$: Promise<string[]>[] = [];
     const completed$: Subject<boolean> = new Subject<boolean>();
     const sendNextBatch$: Subject<void> = new Subject<void>();
 
-    const response = new Promise(resolve => {
-      sendNextBatch$.pipe(takeUntil(completed$)).subscribe(async () => {
+    const response = new Promise<string[]>((resolve, reject) => {
+      sendNextBatch$.pipe(takeUntil(completed$)).subscribe(() => {
         const batch = files.splice(0, MAX_PER_REQUEST);
         if (batch.length) {
           this.handleFileMetaBatch(route, batch, responses$, sendNextBatch$);
         } else {
-          const fileIds = await this.handleFileMetaRequestQueueCompletion(
-            completed$,
-            responses$
-          );
-          resolve(fileIds);
+          this.handleFileMetaRequestQueueCompletion(completed$, responses$)
+            .then(resolve)
+            .catch(reject);
         }
       });
     });
@@ -393,7 +394,7 @@ export class LearningObjectService {
   private async handleFileMetaRequestQueueCompletion(
     completed$: Subject<boolean>,
     responses$: Promise<string[]>[]
-  ) {
+  ): Promise<string[]> {
     completed$.next(true);
     completed$.unsubscribe();
     const fileIdsArrays = await Promise.all(responses$);
