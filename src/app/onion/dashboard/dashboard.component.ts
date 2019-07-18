@@ -6,21 +6,11 @@ import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
-import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  animations: [
-    trigger('dashboardList', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('500ms 600ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
-        query( '@listItem', animateChild(), {optional: true} )
-      ]),
-    ]),
-  ]
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   lastLocation: NavigationEnd;

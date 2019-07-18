@@ -54,7 +54,7 @@
       <div role="columnheader" aria-label="Spacing element for meatball menu"></div>
     </div>
     <div role="rowgroup" class="table__items">
-      <div [@listItem] *ngFor="let l of learningObjects" role="row">
+      <div *ngFor="let l of learningObjects" role="row">
         <span>Name: {{ l.name}} </span><span> Status: {{ l.status }}</span>
       </div>
     </div>
