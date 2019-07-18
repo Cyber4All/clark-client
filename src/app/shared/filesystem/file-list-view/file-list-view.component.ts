@@ -103,7 +103,6 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   openFile(file: LearningObject.Material.File): void {
     const url = this.auth.isLoggedIn.value ? file.previewUrl : '';
-    console.log('TCL: FileListViewComponent -> constructor -> url', url);
     if (url) {
       window.open(url, '_blank');
       this.preview = true;
