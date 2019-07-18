@@ -19,13 +19,13 @@ export const CHANGELOG_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
   },
   FETCH_ALL_CHANGELOGS(params: {
-    userId: string, learningObjectId: string
+    userId: string, learningObjectId: string, minusRevision?: boolean,
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.userId,
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectId,
-      )}/changelogs`;
+      )}/changelogs?minusRevision=${params.minusRevision}`;
   }
 };
 

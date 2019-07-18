@@ -44,6 +44,10 @@ import { GenericCollectionLogoComponent } from './generic-collection-logo/generi
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { CollectionPipe } from './pipes/collection.pipe';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
+import { ChangelogModalComponent } from './changelog-modal/changelog-modal.component';
+import { ChangelogListComponent } from './changelog-list/changelog-list.component';
+import { ChangelogItemComponent } from './changelog-item/changelog-item.component';
+import { IdentificationPillComponent } from './identification-pill/identification-pill.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -95,7 +99,11 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     GenericCollectionLogoComponent,
     TermsOfServiceComponent,
     CollectionPipe,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    ChangelogModalComponent,
+    ChangelogListComponent,
+    ChangelogItemComponent,
+    IdentificationPillComponent,
   ],
   exports: [
     NavbarComponent,
@@ -131,6 +139,10 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
     GenericCollectionLogoComponent,
     CollectionPipe,
     ToggleSwitchComponent,
+    ChangelogModalComponent,
+    ChangelogListComponent,
+    ChangelogItemComponent,
+    IdentificationPillComponent,
     ModalModule,
   ]
 })
