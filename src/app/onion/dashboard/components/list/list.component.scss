@@ -47,6 +47,13 @@
       position: relative;
     }
   }
+
+  &.empty {
+    padding: 40px;
+    font-size: $large;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .filter-menu {

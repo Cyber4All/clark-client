@@ -8,8 +8,9 @@
       <div class="btn-group to-right">
         <button aria-label="Create a new Learning Object" class="button good">New <i class="far fa-plus"></i></button>
         <button #filterMenuButtonElement aria-label="Filter Learning Objects by status" class="button neutral" (click)="toggleFilterMenu(true)">Filter <i class="far fa-angle-down"></i></button>
+        <button *ngIf="filters.size > 0" aria-label="Clear all selected filters" class="button bad" (click)="clearFilters()">Clear Filters<i class="far fa-times"></i></button>
       </div>
-      <ng-container *ngIf="!editingChildren">
+      <ng-container>
         <!-- Filter Context Menu -->
         <clark-context-menu *ngIf="filterMenuDown" [anchor]="filterMenuButtonElement" [offset]="{ top: 10, left: 5 }" (close)="toggleFilterMenu()">
           <div #contextMenu class="filter-menu">
@@ -30,10 +31,6 @@
                 <div *ngIf="filters.get('proofing')" class="indicator"></div>
                 <i class="far fa-shield"></i>Proofing
               </li>
-              <li class="released" (click)="toggleFilter('released')">
-                <div *ngIf="filters.get('released')" class="indicator"></div>
-                <i class="far fa-eye"></i>Released
-              </li>
               <li class="denied" (click)="toggleFilter('rejected')">
                 <div *ngIf="filters.get('denied')" class="indicator"></div>
                 <i class="far fa-ban"></i>Denied
@@ -47,7 +44,7 @@
       <div style="height: 40px;"></div>
     </ng-template>
   </div>
-  <div role="table" class="dashboard-list__table">
+  <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
     <div role="row" class="table__head">
       <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
       <div role="columnheader">Status</div>
@@ -57,7 +54,7 @@
       <div role="columnheader" aria-label="Spacing element for meatball menu"></div>
     </div>
     <div role="rowgroup" class="table__items">
-      <div *ngFor="let l of learningObjects" role="row">
+      <div [@listItem] *ngFor="let l of learningObjects" role="row">
         <clark-dashboard-list-item 
           [learningObject]="l"
         ></clark-dashboard-list-item>
@@ -65,3 +62,14 @@
     </div>
   </div>
 </div>
+
+<ng-template #noLearningObjects>
+  <div class="dashboard-list__table empty">
+    <p *ngIf="filters.size > 1">
+      No Learning Objects found for those statuses!
+    </p>
+    <p *ngIf="filters.size === 1">
+      No Learning Objects found for that status!
+    </p>
+  </div>
+</ng-template>

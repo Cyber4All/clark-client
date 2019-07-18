@@ -6,11 +6,21 @@ import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
+import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('dashboardList', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('500ms 600ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
+        query( '@listItem', animateChild(), {optional: true} )
+      ]),
+    ]),
+  ]
 })
 export class DashboardComponent implements OnInit {
   lastLocation: NavigationEnd;
@@ -36,7 +46,7 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
-    // retrieve other status learning objects
+    // retrieve draft status learning objects
     setTimeout(async() => {
       this.workingLearningObjects = await this.getLearningObjects({status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']});
     }, 1100);
@@ -56,7 +66,19 @@ export class DashboardComponent implements OnInit {
       this.action$.next(1);
     }
     this.activeIndex++;
-    console.log(this.filters);
+  }
+
+  /**
+   * Applys status filters to the draft learning objects list
+   * @param filters
+   */
+  async applyFilters(filters: any) {
+    const filter = Array.from(filters.keys());
+    if (filter.length !== 0) {
+      this.workingLearningObjects = await this.getLearningObjects({status: filter});
+    } else {
+      this.workingLearningObjects = await this.getLearningObjects({status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']});
+    }
   }
 
   /**
@@ -72,11 +94,16 @@ export class DashboardComponent implements OnInit {
     this.router.navigateByUrl(url);
   }
 
-
-  async getLearningObjects(filters?: any, query?: any): Promise<LearningObject[]> {
+  /**
+   * Retrieves an array of learningObjects to populate the draft and released
+   * lists of learning objects
+   * @param filters
+   * @param query
+   */
+  async getLearningObjects(filters?: any, text?: any): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
-    .getLearningObjects(this.auth.username, filters, query)
+    .getLearningObjects(this.auth.username, filters, text)
     .then((children: LearningObject[]) => {
       this.loading = false;
       return children;
