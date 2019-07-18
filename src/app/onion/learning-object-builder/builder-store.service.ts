@@ -55,6 +55,7 @@ export enum BUILDER_ERRORS {
   SUBMIT_REVIEW,
   CANCEL_SUBMISSION,
   DELETE_OUTCOME,
+  ADD_FILE_META,
   SERVICE_FAILURE
 }
 
@@ -548,12 +549,18 @@ export class BuilderStore {
    */
   private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
     this.serviceInteraction$.next(true);
-    await this.learningObjectService.addFileMeta({
+    await this.learningObjectService
+      .addFileMeta({
       files,
       username: this.learningObject.author.username,
       objectId: this.learningObject.id
+      })
+      .then(() => {
+         this.fetchMaterials();
+      })
+      .catch(e => {
+        this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
     });
-    await this.fetchMaterials();
     this.serviceInteraction$.next(false);
   }
   /**
