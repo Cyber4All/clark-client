@@ -94,6 +94,22 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       font-weight: 300;
     }
 
+    .updated {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      
+      a {
+        font-size: $normal;
+        color: white;
+        cursor: pointer;
+        margin-left: 10px;
+        text-decoration: underline;
+        font-weight: 400;
+      }
+    }
+
     .rating {
       display: flex;
       flex-direction: row;
