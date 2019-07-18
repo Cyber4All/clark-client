@@ -1,4 +1,4 @@
 <div class="search">
   <i class="far fa-search"></i>
-  <input aria-label="Search your Learning Objects" type="search" placeholder="Search your Learning Objects" [ngModel]="value" />
+  <input aria-label="Search your Learning Objects" type="search" placeholder="Search your Learning Objects" [(ngModel)]="value" (keypress)="submitSearch($event)" (onblur)="submitSearch($event)"/>
 </div>

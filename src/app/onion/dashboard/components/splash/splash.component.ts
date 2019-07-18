@@ -24,5 +24,9 @@ import { trigger, transition, style, animate, animateChild, query } from '@angul
 export class SplashComponent {
 
   @Output() navigateBack: EventEmitter<void> = new EventEmitter();
+  @Output() searchText: EventEmitter<string> = new EventEmitter();
 
+  emitSearch(text: string) {
+    this.searchText.emit(text);
+  }
 }

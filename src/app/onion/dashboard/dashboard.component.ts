@@ -48,7 +48,9 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     // retrieve draft status learning objects
     setTimeout(async() => {
-      this.workingLearningObjects = await this.getLearningObjects({status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']});
+      this.workingLearningObjects = await this.getDraftLearningObjects(
+        {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}
+      );
     }, 1100);
     // retrieve released learning objects
     setTimeout(async() => {
@@ -75,9 +77,9 @@ export class DashboardComponent implements OnInit {
   async applyFilters(filters: any) {
     const filter = Array.from(filters.keys());
     if (filter.length !== 0) {
-      this.workingLearningObjects = await this.getLearningObjects({status: filter});
+      this.workingLearningObjects = await this.getDraftLearningObjects({status: filter});
     } else {
-      this.workingLearningObjects = await this.getLearningObjects({status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']});
+      this.workingLearningObjects = await this.getDraftLearningObjects({status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']});
     }
   }
 
@@ -95,8 +97,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Retrieves an array of learningObjects to populate the draft and released
-   * lists of learning objects
+   * Retrieves an array of learningObjects to populate the draft and released list of learning objects
    * @param filters
    * @param query
    */
@@ -108,5 +109,27 @@ export class DashboardComponent implements OnInit {
       this.loading = false;
       return children;
     });
+  }
+
+  /**
+   * Retrieves an array of learningObjects to populate the draft list of learning objects
+   * This will only retrieve the drafts and will not retrieve any revisions of a learning object
+   * @param filters
+   * @param text
+   */
+  async getDraftLearningObjects(filters?: any, text?: any): Promise<LearningObject[]> {
+    this.loading = true;
+    return this.learningObjectService
+    .getDraftLearningObjects(this.auth.username, filters, text)
+    .then((children: LearningObject[]) => {
+      this.loading = false;
+      return children;
+    });
+  }
+
+  async performSearch(text: string) {
+    this.releasedLearningObjects = await this.getLearningObjects({status: ['released']}, text);
+    this.workingLearningObjects = await this.getDraftLearningObjects(
+      {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}, text);
   }
 }

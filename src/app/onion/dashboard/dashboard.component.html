@@ -1,6 +1,7 @@
 <div class="dashboard">
   <clark-dashboard-splash
     (navigateBack)="navigateBack()"
+    (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
   <div class="dashboard__lists" [@dashboardList]>
     <div role="tablist" class="dashboard__tabs">
