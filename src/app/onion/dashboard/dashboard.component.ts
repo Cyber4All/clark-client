@@ -79,7 +79,9 @@ export class DashboardComponent implements OnInit {
     if (filter.length !== 0) {
       this.workingLearningObjects = await this.getDraftLearningObjects({status: filter});
     } else {
-      this.workingLearningObjects = await this.getDraftLearningObjects({status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']});
+      this.workingLearningObjects = await this.getDraftLearningObjects(
+        {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}
+      );
     }
   }
 
