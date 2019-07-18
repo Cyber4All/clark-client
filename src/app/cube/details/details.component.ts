@@ -14,6 +14,7 @@ import { ModalService, ModalListElement } from '../../shared/modals';
 import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { canViewInBrowser } from 'app/shared/filesystem/file-functions';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ChangelogService } from 'app/core/changelog.service';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -53,6 +54,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
   reviewer: boolean;
   showDownloadModal = false;
   revisedVersion = false;
+  openChangelogModal = false;
+  loadingChangelogs: boolean;
+  changelogs = [];
 
   learningObjectName: string;
   ariaLabel: string;
@@ -74,6 +78,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (event.keyCode === 27) {
       // hide the new rating popup when escape key is pressed
       this.showAddRating = false;
+      // hide the changelog popup when the escape key is pressed
+      this.openChangelogModal = false;
     }
   }
 
@@ -85,7 +91,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private ratingService: RatingService,
     private toastService: ToasterService,
     private modalService: ModalService,
-    private router: Router
+    private router: Router,
+    private changelogService: ChangelogService,
+    private notificationService: ToasterService
   ) {
   }
 
@@ -315,6 +323,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Closes any open change log modals
+   */
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
+  }
+
+  /**
    * Determines if a rating is being created or edited and calls appropriate function
    * @param rating the rating object to be created
    */
@@ -332,6 +348,43 @@ export class DetailsComponent implements OnInit, OnDestroy {
       // editing
       delete rating.editing;
       this.updateRating(rating);
+    }
+  }
+
+  /**
+   * Opens the Change Log modal for a specified learning object and fetches its change logs
+   */
+  async openViewAllChangelogsModal() {
+    if (!this.openChangelogModal ) {
+      this.openChangelogModal = true;
+      this.loadingChangelogs = true;
+      try {
+        if (this.revisedVersion) {
+          this.changelogs = await this.changelogService.fetchAllChangelogs({
+            userId: this.learningObject.author.id,
+            learningObjectId: this.learningObject.id,
+            minusRevision: false,
+          });
+        } else {
+          this.changelogs = await this.changelogService.fetchAllChangelogs({
+            userId: this.learningObject.author.id,
+            learningObjectId: this.learningObject.id,
+            minusRevision: true,
+          });
+        }
+      } catch (error) {
+        let errorMessage;
+
+        if (error.status === 401) {
+          // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
+          this.auth.logout();
+        } else {
+          errorMessage = `We encountered an error while attempting to
+          retrieve change logs for this Learning Object. Please try again later.`;
+        }
+        this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+      }
+      this.loadingChangelogs = false;
     }
   }
 
