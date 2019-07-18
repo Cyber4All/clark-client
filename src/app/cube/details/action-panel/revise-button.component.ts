@@ -10,8 +10,19 @@ import { of } from 'rxjs';
 @Component({
   selector: 'clark-revise-button',
   template: `
-    <button class="button neutral" (click)="makeRevision()" aria-label="Clickable Revise button">
+    <button
+      *ngIf="learningObject.status !== 'released'"
+      class="button neutral"
+      (click)="makeRevision()"
+      aria-label="Clickable Revise button">
       Revise
+    </button>
+    <button
+      *ngIf="learningObject.status === 'released'"
+      [disabled]="learningObject.status === 'released'"
+      class="button neutral"
+      aria-label="Released Learning Objects cannot be Revised">
+      Revisions not permitted
     </button>
     <clark-popup *ngIf="showPopup" (closed)="showPopup = false">
       <div class="popup-content" #popupInner>
@@ -48,7 +59,7 @@ export class ReviseButtonComponent {
    * TODO: This flow must be updated after the implementation of ch26
    */
   makeRevision(): void {
-    if (this.learningObject.status === LearningObject.Status.RELEASED) {
+    if (this.learningObject.status !== LearningObject.Status.RELEASED) {
       this.showPopup = true;
     } else {
       this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
