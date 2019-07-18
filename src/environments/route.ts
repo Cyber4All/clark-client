@@ -85,6 +85,11 @@ export const USER_ROUTES = {
     )}/learning-objects?children=true&text=${encodeURIComponent(query)}
     &${querystring.stringify(filters)}`;
   },
+  GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
+    // Onion Dashboard
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?children=true&text=${encodeURIComponent(query)}
+    &${querystring.stringify(filters)}&drafts`;
+  },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username

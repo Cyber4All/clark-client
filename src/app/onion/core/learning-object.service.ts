@@ -103,6 +103,30 @@ export class LearningObjectService {
   }
 
   /**
+   * Fetches user's Learning Objects (partial)
+   *
+   * @returns {Promise<LearningObject[]>}
+   * @memberof LearningObjectService
+   */
+  getDraftLearningObjects(
+    authorUsername: string,
+    filters?: any,
+    query?: string
+  ): Promise<LearningObject[]> {
+    const route = USER_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters, query);
+    return this.http
+      .get(route, { headers: this.headers, withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((response: any) => {
+        return response.map(object => new LearningObject(object));
+      });
+  }
+
+  /**
    * Sends updated Learning Object to API for updating.
    * Returns null success.
    * Returns error on error
