@@ -129,6 +129,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /**
+   * Performs search on both drafts and released learningObjects
+   * @param text
+   */
   async performSearch(text: string) {
     this.releasedLearningObjects = await this.getLearningObjects({status: ['released']}, text);
     this.workingLearningObjects = await this.getDraftLearningObjects(
