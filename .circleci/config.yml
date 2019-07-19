@@ -80,38 +80,57 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - build
-      - test
+      - build:
+          filters:
+            tags:
+              ignore: /.*/
+      - test:
+          filters:
+            tags:
+              ignore: /.*/
       - publish-image:
           requires:
             - build
+          filters:
+            tags:
+              ignore: /.*/
   build-test-and-deploy:
     jobs:
       - build:
           filters:
             branches:
               only: /master/
+            tags:
+              ignore: /.*/
       - test:
           requires:
             - build
           filters:
             branches:
               only: /master/
+            tags:
+              ignore: /.*/
       - publish-image:
           requires:
             - test
           filters:
             branches:
               only: /master/
+            tags:
+              ignore: /.*/
       - lighthouse:
           requires:
             - publish-image
           filters:
             branches:
               only: /master/
+            tags:
+              ignore: /.*/
       - deploy:
           requires:
             - lighthouse
           filters:
             branches:
               only: /master/
+            tags:
+              ignore: /.*/
