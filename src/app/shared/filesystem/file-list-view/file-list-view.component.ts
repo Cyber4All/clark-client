@@ -13,7 +13,6 @@ import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth.service';
-import { getPreviewUrl } from '../file-functions';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -103,7 +102,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    * @memberof FileListViewComponent
    */
   openFile(file: LearningObject.Material.File): void {
-    const url = this.auth.isLoggedIn.value ? getPreviewUrl(file) : '';
+    const url = this.auth.isLoggedIn.value ? file.previewUrl : '';
     if (url) {
       window.open(url, '_blank');
       this.preview = true;
