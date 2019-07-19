@@ -38,13 +38,11 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     // retrieve draft status learning objects
     setTimeout(async() => {
-      this.workingLearningObjects = await this.getDraftLearningObjects(
-        {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}
-      );
+      this.workingLearningObjects = await this.getDraftLearningObjects();
     }, 1100);
     // retrieve released learning objects
     setTimeout(async() => {
-      this.releasedLearningObjects = await this.getLearningObjects({status: ['released']});
+      this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status['RELEASED']});
     }, 1100);
   }
 
@@ -69,9 +67,7 @@ export class DashboardComponent implements OnInit {
     if (filter.length !== 0) {
       this.workingLearningObjects = await this.getDraftLearningObjects({status: filter});
     } else {
-      this.workingLearningObjects = await this.getDraftLearningObjects(
-        {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}
-      );
+      this.workingLearningObjects = await this.getDraftLearningObjects();
     }
   }
 
@@ -120,8 +116,7 @@ export class DashboardComponent implements OnInit {
   }
 
   async performSearch(text: string) {
-    this.releasedLearningObjects = await this.getLearningObjects({status: ['released']}, text);
-    this.workingLearningObjects = await this.getDraftLearningObjects(
-      {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}, text);
+    this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status['RELEASED']}, text);
+    this.workingLearningObjects = await this.getDraftLearningObjects({status: undefined}, text);
   }
 }
