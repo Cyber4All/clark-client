@@ -8,6 +8,10 @@ import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 
+export interface DashboardLearningObject extends LearningObject {
+  status: LearningObject.Status;
+  parents: string[];
+}
 @Component({
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',

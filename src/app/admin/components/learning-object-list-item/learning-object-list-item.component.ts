@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
-import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
+import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';

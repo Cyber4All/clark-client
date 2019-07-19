@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObject, User } from '@entity';
-import { DashboardLearningObject } from '../../../old-dashboard/old-dashboard.component';
+import { DashboardLearningObject } from '../../../dashboard/dashboard.component';
 
 describe('DashboardItemComponent', () => {
   let component: DashboardItemComponent;

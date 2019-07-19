@@ -10,7 +10,7 @@ import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth.service';
 import { User, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
-import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
+import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
 
 describe('DashboardItemComponent', () => {
   let component: LearningObjectListItemComponent;
