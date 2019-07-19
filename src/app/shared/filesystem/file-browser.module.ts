@@ -10,7 +10,6 @@ import { FileSizePipe } from './file-list-view/file-size.pipe';
 import { TooltipModule } from '../tooltips/tip.module';
 import { FileListItemComponent } from './file-list-view/components/file-list-item/file-list-item.component';
 import { FolderListItemComponent } from './file-list-view/components/folder-list-item/folder-list-item.component';
-import { FileBrowserUtilityService } from './file-functions';
 
 @NgModule({
   imports: [
@@ -28,6 +27,6 @@ import { FileBrowserUtilityService } from './file-functions';
     FilePreviewComponent,
     FileSizePipe
   ],
-  providers: [FileBrowserUtilityService]
+  providers: []
 })
 export class FileBrowserModule {}

@@ -48,13 +48,11 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     // retrieve draft status learning objects
     setTimeout(async() => {
-      this.workingLearningObjects = await this.getDraftLearningObjects(
-        {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}
-      );
+      this.workingLearningObjects = await this.getDraftLearningObjects();
     }, 1100);
     // retrieve released learning objects
     setTimeout(async() => {
-      this.releasedLearningObjects = await this.getLearningObjects({status: ['released']});
+      this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status.RELEASED});
     }, 1100);
   }
 
@@ -80,9 +78,7 @@ export class DashboardComponent implements OnInit {
     if (filter.length !== 0) {
       this.workingLearningObjects = await this.getDraftLearningObjects({status: filter});
     } else {
-      this.workingLearningObjects = await this.getDraftLearningObjects(
-        {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}
-      );
+      this.workingLearningObjects = await this.getDraftLearningObjects();
     }
   }
 
@@ -104,7 +100,7 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param query
    */
-  async getLearningObjects(filters?: any, text?: any): Promise<LearningObject[]> {
+  async getLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
     .getLearningObjects(this.auth.username, filters, text)
@@ -120,7 +116,10 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param text
    */
-  async getDraftLearningObjects(filters?: any, text?: any): Promise<LearningObject[]> {
+  async getDraftLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
+    if (Object.prototype.toString.call(filters) === '[object String]') {
+      text = filters;
+    }
     this.loading = true;
     return this.learningObjectService
     .getDraftLearningObjects(this.auth.username, filters, text)
@@ -131,12 +130,11 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Performs search on both drafts and released learningObjects
+   * Performs a search on the users released and working Learning Objects
    * @param text
    */
   async performSearch(text: string) {
-    this.releasedLearningObjects = await this.getLearningObjects({status: ['released']}, text);
-    this.workingLearningObjects = await this.getDraftLearningObjects(
-      {status: ['unreleased', 'proofing', 'review', 'rejected', 'waiting']}, text);
+    this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status.RELEASED}, text);
+    this.workingLearningObjects = await this.getDraftLearningObjects(text);
   }
 }

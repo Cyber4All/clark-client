@@ -11,8 +11,6 @@ import { AuthService } from '../../core/auth.service';
 import { RatingService } from '../../core/rating.service';
 import { ToasterService } from '../../shared/toaster/toaster.service';
 import { ModalService, ModalListElement } from '../../shared/modals';
-import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { canViewInBrowser } from 'app/shared/filesystem/file-functions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangelogService } from 'app/core/changelog.service';
 
@@ -171,17 +169,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         author,
         name
       );
-      this.releasedLearningObject.materials.files = this.releasedLearningObject.materials.files.map(
-        file => {
-          file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-            username: this.releasedLearningObject.author.username,
-            loId: this.releasedLearningObject.id,
-            fileId: file.id,
-            open: canViewInBrowser(file)
-          });
-          return file;
-        }
-      );
       // FIXME: This filter should be removed when service logic is updated
       this.releasedChildren = this.releasedLearningObject.children.filter(
         child => {
@@ -252,17 +239,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.resetRatings();
       this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
         this.learningObject.id
-      );
-      this.revisedLearningObject.materials.files = this.revisedLearningObject.materials.files.map(
-        file => {
-          file.url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
-          username: this.revisedLearningObject.author.username,
-          loId: this.revisedLearningObject.id,
-          fileId: file.id,
-          open: canViewInBrowser(file)
-          });
-        return file;
-        }
       );
       // FIXME: This filter should be removed when service logic is updated
       this.revisedChildren = this.revisedLearningObject.children.filter(
