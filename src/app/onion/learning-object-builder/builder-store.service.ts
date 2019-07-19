@@ -211,6 +211,11 @@ export class BuilderStore {
           this.learningObject,
           this.outcomes
         );
+        if (object.children.length > 0) {
+          object.children.forEach(child => {
+            this.fetchChildren(child.id);
+          });
+        }
         // set the title of page to the learning object name
         this.titleService.setTitle(this.learningObject.name + ' | CLARK');
         return this.learningObject;
@@ -221,6 +226,25 @@ export class BuilderStore {
       });
   }
 
+  /**
+   * Validates that children of a leanring object are submittable
+   * @param id 
+   */
+  fetchChildren(id): Promise<LearningObject> {
+    return this.learningObjectService
+      .getLearningObject(id)
+      .then(object => {
+        const outcomes = this.parseOutcomes(object.outcomes);
+        this.validator.validateLearningObject(
+          object,
+          outcomes
+        );
+      })
+      .catch(e => {
+        this.handleServiceError(e, BUILDER_ERRORS.FETCH_OBJECT);
+        return null;
+      });
+  }
   /**
    * Retrieves materials for learning object
    *
