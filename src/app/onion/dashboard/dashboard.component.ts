@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param query
    */
-  async getLearningObjects(filters?: any, text?: any): Promise<LearningObject[]> {
+  async getLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
     .getLearningObjects(this.auth.username, filters, text)
@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param text
    */
-  async getDraftLearningObjects(filters?: any, text?: any): Promise<LearningObject[]> {
+  async getDraftLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
     .getDraftLearningObjects(this.auth.username, filters, text)
@@ -115,8 +115,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /**
+   * Performs a search on the users released and working Learning Objects
+   * @param text
+   */
   async performSearch(text: string) {
     this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status.RELEASED}, text);
-    this.workingLearningObjects = await this.getDraftLearningObjects({status: undefined}, text);
+    this.workingLearningObjects = await this.getDraftLearningObjects(null, text);
   }
 }
