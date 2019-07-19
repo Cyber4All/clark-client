@@ -41,7 +41,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-      this.children = await this.getLearningObjects();
+    this.children = await this.getLearningObjects();
   }
 
   /**
