@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
     }, 1100);
     // retrieve released learning objects
     setTimeout(async() => {
-      this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status['RELEASED']});
+      this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status.RELEASED});
     }, 1100);
   }
 
