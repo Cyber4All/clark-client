@@ -3,7 +3,7 @@
     (navigateBack)="navigateBack()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
-  <div class="dashboard__lists">
+  <div class="dashboard__lists" [@dashboardList]>
     <div role="tablist" class="dashboard__tabs">
       <button
         class="tabs__item"
