@@ -116,7 +116,7 @@ export class DashboardComponent implements OnInit {
   }
 
   async performSearch(text: string) {
-    this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status['RELEASED']}, text);
+    this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status.RELEASED}, text);
     this.workingLearningObjects = await this.getDraftLearningObjects({status: undefined}, text);
   }
 }
