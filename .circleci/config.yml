@@ -84,7 +84,7 @@ workflows:
           filters:
             tags:
               ignore: /.*/
-          branches:
+            branches:
               ignore: /master/
       - test:
           filters:
@@ -94,6 +94,8 @@ workflows:
               ignore: /master/
       - test:
           filters:
+            tags:
+              ignore: /.*/
             branches:
               ignore: /master/
       - publish-image:
@@ -104,6 +106,7 @@ workflows:
               ignore: /.*/
             branches:
               ignore: /master/
+              
   build-test-and-deploy:
     jobs:
       - build:
