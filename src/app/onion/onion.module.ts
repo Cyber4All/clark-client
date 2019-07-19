@@ -14,10 +14,6 @@ import { SharedModule } from '../shared/shared.module';
 import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { OnionComponent } from './onion.component';
-import { ChangelogItemComponent } from './old-dashboard/components/changelog-item/changelog-item.component';
-import { IdentificationPillComponent } from './old-dashboard/components/identification-pill/identification-pill.component';
-import { ChangelogListComponent } from './old-dashboard/components/changelog-list/changelog-list.component';
-import { ChangelogModalComponent } from './old-dashboard/components/changelog-modal/changelog-modal.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
 import { SidePanelModule } from './old-dashboard/components/side-panel/side-panel.module';
 import { SidePanelContentComponent } from './old-dashboard/components/side-panel-content/side-panel-content.component';
@@ -36,10 +32,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
   declarations: [
     OnionComponent,
     OldDashboardComponent,
-    ChangelogItemComponent,
-    IdentificationPillComponent,
-    ChangelogListComponent,
-    ChangelogModalComponent,
     SidePanelContentComponent,
     LearningObjectComponent,
     DashboardItemComponent,
