@@ -7,7 +7,7 @@
         <a tabindex="0" [routerLink]="['/users', learningObject.author.username]" class="link" id="author-link" attr.aria-label="Clickable link {{ learningObject.author.name }}">{{learningObject.author.name | titlecase}}</a> - 
         <a tabindex="-0" [routerLink]="['/organization', learningObject.author.organization]" class="link"  attr.aria-label="Clickable link {{ learningObject.author.organization }}">{{learningObject.author.organization | titlecase}}</a>
         <div class="updated" tabindex="0">Updated {{ learningObject.date | date:'shortDate' }}
-          <a *ngIf="canViewChangelogs" id="view-changelog" (click)="openViewAllChangelogsModal()" attr.aria-label="View the changelog for {{ learningObject.name }}" tabindex="0">View the changelog</a>
+          <a *ngIf="canViewChangelogs" id="view-changelog" (activate)="openViewAllChangelogsModal()" attr.aria-label="View the changelog for {{ learningObject.name }}" tabindex="0">View the changelog</a>
         </div>
       </div>
         <div *ngIf="learningObject.contributors?.length" class="author" tabindex="0">Contributors:

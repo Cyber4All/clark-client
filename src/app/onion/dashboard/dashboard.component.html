@@ -10,7 +10,7 @@
         [attr.aria-selected]="!(activeIndex % 2)"
         aria-controls="draft-objects-list-panel"
         [ngClass]="{ 'tabs__item--active': !(activeIndex % 2) }"
-        (click)="(activeIndex % 2) && toggle()"
+        (activate)="(activeIndex % 2) && toggle()"
       >
         Draft
     </button>
@@ -20,7 +20,7 @@
         [attr.aria-selected]="!!(activeIndex % 2)"
         aria-controls="released-objects-list-panel"
         [ngClass]="{ 'tabs__item--active': activeIndex % 2 }"
-        (click)="!(activeIndex % 2) && toggle()"
+        (activate)="!(activeIndex % 2) && toggle()"
       >
         Released
     </button>
