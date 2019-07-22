@@ -2,7 +2,7 @@
   <div class="dashboard-list__top">
     <p class="dashboard-list__title" tabindex="0">
       {{ title || 'Learning Objects' }} 
-      <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
+      <span *ngIf="learningObjects; else noLearningObjects"> ({{ learningObjects.length }})</span>
     </p>
     <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
       <div class="btn-group to-right">
@@ -45,7 +45,7 @@
     </ng-template>
   </div>
   <div role="table" *ngIf="!loading; else loadingTemplate" class="list-body">
-      <div *ngIf="learningObjects?.length; else emptyTemplate">
+      <div *ngIf="learningObjects?.length; else noLearningObjects">
         <div role="row" class="column-headers">
           <div>
             <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
@@ -61,6 +61,7 @@
             *ngFor="let l of learningObjects; let i = index"
             [learningObject]="l"
             [status]="l.status"
+            (select)="toggleSelect(l, $event, i)"
             >
           </clark-dashboard-item>
         </div>
@@ -75,6 +76,9 @@
     </p>
     <p *ngIf="filters.size === 1">
       No Learning Objects found for that status!
+    </p>
+    <p *ngIf="learningObject === 0">
+      No {{ title }} Learning Objects!
     </p>
   </div>
 </ng-template>

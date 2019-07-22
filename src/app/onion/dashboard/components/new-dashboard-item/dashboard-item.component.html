@@ -41,7 +41,6 @@
           
                 <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
                 <li *ngIf="actionPermissions('infoPanel')" (click)="viewSidePanel.emit()"><i class="fas fa-info-circle"></i>Info</li>
-                <li *ngIf="actionPermissions('editChildren')" (click)="editChildren.emit()"><i class="far fa-project-diagram"></i>Edit Children</li>
                 <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
                 <li *ngIf="actionPermissions('submit')" (click)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
                 <li (click)="viewAllChangelogs.emit(learningObject.id)"><i class="far fa-comment-alt-lines"></i>View Changelogs</li>

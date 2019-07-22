@@ -26,6 +26,7 @@ export class ListComponent {
   @Output() applyFilters: EventEmitter<any> = new EventEmitter();
   filters: Map<string, boolean> = new Map();
   filterMenuDown: boolean;
+  selected: Map<string, { index: number; object: LearningObject }> = new Map();
 
 
   toggleFilterMenu(value) {
@@ -49,6 +50,13 @@ export class ListComponent {
   clearFilters() {
     this.filters.clear();
     this.applyFilters.emit(this.filters);
+  }
+  toggleSelect(l: LearningObject, value: any, i: any) {
+    if (value) {
+      this.selectLearningObject(l, index);
+    } else {
+      this.deselectLearningObject(l);
+    }
   }
 
 }
