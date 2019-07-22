@@ -154,22 +154,25 @@ export class LearningObjectValidator {
     this.errors.submitErrors.clear();
     this.outcomeValidator.errors.saveErrors.clear();
     this.outcomeValidator.errors.submitErrors.clear();
-    
+
     try {
       // submit errors
-      const testObject = new LearningObject(Object.assign(object.toPlainObject ? object.toPlainObject() : object, { 'outcomes':  outcomes ? Array.from(outcomes.values()) : undefined }));
+      const testObject = new LearningObject(Object.assign(
+        object.toPlainObject ? object.toPlainObject() : object,
+        { 'outcomes':  outcomes ? Array.from(outcomes.values()) : undefined }
+      ));
       // this is to explicitly test the validity of the objects name since the setter accepts empty strings
       testObject.name = object.name;
       submitErrors = SubmittableLearningObject.validateObject(testObject);
-      
-      for (let s in submitErrors) {
+
+      for (const s in submitErrors) {
         if (s.toLowerCase() !== 'outcomes' || typeof submitErrors[s] === 'string') {
           this.errors.setError('submit', s, submitErrors[s]); 
         } else {
           // these are outcome errors and should be stored in the outcomeValidator error Map
           const outcomeErrors: [{ index: number, text: string }] = submitErrors[s];
           const ids = Array.from(outcomes.keys());
-          
+
           for (let i = 0, l = outcomeErrors.length; i < l; i++) {
             this.outcomeValidator.errors.setOutcomeError('submit', ids[outcomeErrors[i].index], outcomeErrors[i].text);
           }
