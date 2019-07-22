@@ -167,7 +167,7 @@ export class LearningObjectValidator {
 
       for (const s in submitErrors) {
         if (s.toLowerCase() !== 'outcomes' || typeof submitErrors[s] === 'string') {
-          this.errors.setError('submit', s, submitErrors[s]); 
+          this.errors.setError('submit', s, submitErrors[s]);
         } else {
           // these are outcome errors and should be stored in the outcomeValidator error Map
           const outcomeErrors: [{ index: number, text: string }] = submitErrors[s];
