@@ -1,23 +1,29 @@
 <div class="topbar"></div>
 <div class="side-panel">
   <div class="side-panel__object">
-    <clark-panel-learning-object
-      [learningObject]="learningObject"
-    ></clark-panel-learning-object>
-    <div  class="side-panel__button-bar">
-      <button
-        class="button"
-        (activate)="close()"
-        [routerLink]="[
-          '/details',
-          learningObject.author.username,
-          learningObject.name
-        ]"
-        aria-label="Visit the Learning Object's public listing"
-      >
-        Visit <i class="far fa-external-link"></i>
-      </button>
+    <div class="side-panel-object__details">
+      <clark-panel-learning-object
+        [learningObject]="learningObject"
+      ></clark-panel-learning-object>
+      <div  class="side-panel__button-bar">
+        <button
+          class="button good"
+          (activate)="close()"
+          [routerLink]="[
+            '/details',
+            learningObject.author.username,
+            learningObject.name
+          ]"
+          attr.aria-label="Visit {{ learningObject.name }}'s public listing"
+        >
+          Visit <i class="far fa-external-link"></i>
+        </button>
+      </div>
     </div>
+  </div>
+  <div class="side-panel__welcome-message">
+    <h1 class="title"><b>Welcome to the Learning Object Information Panel!</b></h1>
+    <p class="message">Here you can currently find metrics for your Learning Object, and navigate to its public page on CLARK. We have more planned, so check back soon!</p>
   </div>
   <div class="side-panel__metrics">
     <div tab-index="0" class="metrics__title title">Metrics</div>
@@ -40,7 +46,7 @@
       </div>
     </div>
   </div>
-  <div class="side-panel__revision">
+  <div *ngIf="createRevision" class="side-panel__revision">
     <div class="revision__title title">Revision</div>
 
     <div *ngIf="false; else noRevisionTemplate">

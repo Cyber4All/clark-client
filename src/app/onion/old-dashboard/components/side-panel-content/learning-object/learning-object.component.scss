@@ -1,5 +1,11 @@
 @import '~_vars.scss';
 
+.learning-object {
+  padding: 15px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
+}
 .learning-object__row {
   display: flex;
   flex-direction: row;
@@ -38,18 +44,57 @@
 
 .learning-object__name {
   font-size: $larger;
-  color: white;
+  color: black;
 }
 
 .learning-object__length {
   color: white;
   border-radius: 2px;
+  font-size: $smaller;
+  padding: 3px;
+  margin-right: 3px;
+
+  &.nanomodule {
+    background: $nanomodule-color;
+  }
+
+  &.micromodule {
+    background: $micromodule-color;
+  }
+
+  &.module {
+    background: $module-color;
+  }
+
+  &.unit {
+    background: $unit-color;
+  }
+
+  &.course {
+    background: $course-color;
+  }
 }
 
 .learning-object__date {
-  color: white;
+  color: $darker-grey;
+  font-size: $small;
 }
 
 .learning-object__collection {
-  color: white;
+  color: $darker-grey;
+}
+
+.collection-image {
+  position: relative;
+  width: 40px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-right: 10px;
+
+    &:after {
+      content: '';
+      display: block;
+      padding-bottom: 100%;
+    }
 }

@@ -1,6 +1,6 @@
 <ng-container *ngIf="!loading.length; else loadingTemplate">
   <div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
-    <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;"></cube-details-splash>
+    <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [canViewChangelogs]="loggedin && auth.user.emailVerified" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;" (openChangelogModal)="openViewAllChangelogsModal()"></cube-details-splash>
     <div class="flex">
       <div class="content">
         <div class="description">
@@ -71,6 +71,16 @@
     </div>
   </clark-popup>
 </ng-container>
+
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+      <clark-changelog-modal
+        [learningObject] = "learningObject"
+        [changelogs] = "changelogs ? changelogs[0] : undefined"
+        [loading]="loadingChangelogs"
+      ></clark-changelog-modal>
+    </div> 
+</clark-popup>
 
 <ng-template #loadingTemplate>
   <div class="loading">

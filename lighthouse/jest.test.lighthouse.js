@@ -16,7 +16,7 @@ describe('Lighthouse test runner', () => {
   };
   const expectedLighthouseScores = {
     accessibility: 0.86,
-    performance: 0.97,
+    performance: 0.90,
   }
 
   /**
@@ -37,7 +37,7 @@ describe('Lighthouse test runner', () => {
   });
 
   describe('Performace audits', () => {
-    it ('Should return a total performance score of at least 97%', () => {
+    it ('Should return a total performance score of at least 90%', () => {
       expect(scores['performance'].score).toBeGreaterThanOrEqual(expectedLighthouseScores.performance);
     });
   });

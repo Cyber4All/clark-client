@@ -18,6 +18,9 @@ export class SidePanelContentComponent implements OnChanges {
   averageRating: number;
   loadingRatings: boolean;
 
+  // FIXME will use flag when backend is implemented
+  createRevision = false;
+
   constructor(private ratingService: RatingService) { }
 
   ngOnChanges(changes: SimpleChanges) {

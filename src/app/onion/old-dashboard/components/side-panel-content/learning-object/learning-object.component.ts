@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 
 @Component({
@@ -14,5 +14,7 @@ export class LearningObjectComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  get collectionImage() {
+    return `${this.learningObject.collection}.png`;
+  }
 }

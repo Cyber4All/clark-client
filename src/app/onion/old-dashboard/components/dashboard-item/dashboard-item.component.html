@@ -1,5 +1,6 @@
 <div *ngIf="!hidden" class="dashboard-item" [ngClass]="{'disabled': disabled, 'shrink': small}">
-  <div class="row-item">
+  <!--FIXME Change click to activate-->
+  <div role="button" tabindex="0" class="row-item" (click)="actionPermissions('infoPanel')&&openInfoPanel()" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
     <clark-checkbox *ngIf="!disabled" [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     <div>
       <div tab-index="0" class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" tip="{{ statusDescription }}" tipDisabled="{{ !statusDescription }}" tipLocation="above">

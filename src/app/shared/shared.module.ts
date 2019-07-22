@@ -45,6 +45,10 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { CollectionPipe } from './pipes/collection.pipe';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 import { ActivateDirective } from './directives/activate.directive';
+import { ChangelogModalComponent } from './changelog-modal/changelog-modal.component';
+import { ChangelogListComponent } from './changelog-list/changelog-list.component';
+import { ChangelogItemComponent } from './changelog-item/changelog-item.component';
+import { IdentificationPillComponent } from './identification-pill/identification-pill.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -97,7 +101,11 @@ import { ActivateDirective } from './directives/activate.directive';
     TermsOfServiceComponent,
     CollectionPipe,
     ToggleSwitchComponent,
-    ActivateDirective
+    ActivateDirective,
+    ChangelogModalComponent,
+    ChangelogListComponent,
+    ChangelogItemComponent,
+    IdentificationPillComponent,
   ],
   exports: [
     NavbarComponent,
@@ -134,6 +142,10 @@ import { ActivateDirective } from './directives/activate.directive';
     CollectionPipe,
     ToggleSwitchComponent,
     ActivateDirective,
+    ChangelogModalComponent,
+    ChangelogListComponent,
+    ChangelogItemComponent,
+    IdentificationPillComponent,
     ModalModule,
   ]
 })

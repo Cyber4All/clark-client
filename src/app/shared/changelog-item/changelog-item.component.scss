@@ -9,7 +9,7 @@
 
 .changelog-item__name {
   display: flex;
-  font-size: $larger;
+  font-size: $normal;
   flex-direction: row;
   align-items: center;
 }
@@ -32,8 +32,8 @@
 }
 
 .profile-image-container__avatar {
-  height: 75px;
-  width: 75px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   margin-right: 20px;
   border: 10px solid white;

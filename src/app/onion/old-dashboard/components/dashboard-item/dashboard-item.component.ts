@@ -11,7 +11,6 @@ import {
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
 import { AuthService } from 'app/core/auth.service';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -116,8 +115,7 @@ export class DashboardItemComponent implements OnChanges {
       view: ['released'],
       delete: ['unreleased', 'denied'],
       cancelSubmission: ['waiting', this.verifiedEmail],
-      // FIXME this is temporarily feature-locked
-      infoPanel: ['released', !environment.production]
+      infoPanel: ['released']
     };
 
     const p = permissions[action];
@@ -165,6 +163,11 @@ export class DashboardItemComponent implements OnChanges {
       );
     } else {
       return [];
+    }
+  }
+  openInfoPanel() {
+    if (!this.meatballOpen) {
+      this.viewSidePanel.emit();
     }
   }
 }
