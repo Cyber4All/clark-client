@@ -28,7 +28,7 @@
       </div>
       <ng-template #meatball>
         <ng-container *ngIf="!disabled && meatball">
-          <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': learningObject.status === 'review'}" (click)="learningObject.status !== 'review' && this.toggleContextMenu($event)">
+          <div tabindex="0" #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': learningObject.status === 'review'}" (click)="learningObject.status !== 'review' && this.toggleContextMenu($event)">
             <div class="icon">
               <i class="far fa-times"></i>
             </div>

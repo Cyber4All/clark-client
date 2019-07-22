@@ -48,7 +48,7 @@
       <div *ngIf="learningObjects?.length; else noLearningObjects">
         <div role="row" class="column-headers">
           <div>
-            <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
+            <clark-checkbox role="button" aria-label="Select all Learning Objects" (action)="selectAll()"></clark-checkbox>
           </div>
           <div role="columnheader">Status</div>
           <div role="columnheader">Name</div>
@@ -61,7 +61,8 @@
             *ngFor="let l of learningObjects; let i = index"
             [learningObject]="l"
             [status]="l.status"
-            (select)="toggleSelect(l, $event, i)"
+            (viewAllChangelogs)="openViewAllChangelogsModal(l.id)"
+            (viewSidePanel)="openLearningObjectSidePanel(l)"
             >
           </clark-dashboard-item>
         </div>
@@ -82,3 +83,20 @@
     </p>
   </div>
 </ng-template>
+
+<!-- View All Change Logs -->
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+    <clark-changelog-modal
+      [learningObject] = "changelogLearningObject"
+      [changelogs] = "changelogs ? changelogs[0] : undefined"
+      [loading]="loadingChangelogs  "
+    ></clark-changelog-modal>
+  </div> 
+</clark-popup>
+
+<!-- Collection Submission Popup 
+<clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
+-->
+<!-- Side panel popout -->
+<clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject"></clark-side-panel-content>
