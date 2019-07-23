@@ -3,8 +3,8 @@
     (navigateBack)="navigateBack()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
-  <div class="dashboard__lists" [@dashboardList]>
-    <div role="tablist" class="dashboard__tabs">
+  <div class="dashboard__lists">
+    <div role="tablist" class="dashboard__tabs" *ngIf="!loading; else loadingTemplate">
       <button
         class="tabs__item"
         role="tab"
@@ -28,7 +28,7 @@
     </div>
     <clark-carousel [action$]="action$">
       <ng-template>
-        <div id="draft-objects-list-panel" class="list__wrapper">
+        <div id="draft-objects-list-panel" class="list__wrapper" *ngIf="!loading">
           <clark-dashboard-list
             title="Draft Learning Objects"
             [showOptions]="true"
@@ -46,13 +46,14 @@
           ></clark-dashboard-list>
         </div>
       </ng-template>
-      <ng-template #loadingTemplate>
-        <div class="loading-template">
-          <i class="far fa-spinner-third fa-spin"></i>
-          Loading Learning Objects...
-        </div>
-      </ng-template>
     </clark-carousel>
   </div>
 </div>
 
+<!--Loading Template-->
+<ng-template #loadingTemplate>
+  <div class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading Learning Objects...
+  </div>
+</ng-template>

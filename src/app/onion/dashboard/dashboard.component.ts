@@ -35,7 +35,8 @@ export class DashboardComponent implements OnInit {
 
   action$: Subject<number> = new Subject();
 
-  filters: any;
+  // structure of filters is {status: string[]}
+  filters: object;
 
   constructor(
     private history: HistoryService,
@@ -56,7 +57,7 @@ export class DashboardComponent implements OnInit {
     }, 1100);
     // retrieve released learning objects
     setTimeout(async() => {
-      this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status.RELEASED});
+      this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
     }, 1100);
   }
 
@@ -99,11 +100,11 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Retrieves an array of learningObjects to populate the draft and released list of learning objects
+   * Retrieves an array of learningObjects to populate the released list of learning objects
    * @param filters
    * @param query
    */
-  async getLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
+  async getReleasedLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
     .getLearningObjects(this.auth.username, filters, text)
@@ -137,7 +138,7 @@ export class DashboardComponent implements OnInit {
    * @param text
    */
   async performSearch(text: string) {
-    this.releasedLearningObjects = await this.getLearningObjects({status: LearningObject.Status.RELEASED}, text);
+    this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
     this.workingLearningObjects = await this.getDraftLearningObjects(text);
   }
 }
