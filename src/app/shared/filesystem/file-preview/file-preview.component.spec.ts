@@ -3,31 +3,23 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilePreviewComponent } from './file-preview.component';
 import { noPreview, notLoggedIn } from './file-preview.copy';
 import { AuthService } from 'app/core/auth.service';
-import { FileBrowserUtilityService } from '../file-functions';
-import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
 
 describe('FilePreviewComponent', () => {
   let component: FilePreviewComponent;
   let fixture: ComponentFixture<FilePreviewComponent>;
   const AuthServiceStub = {
-    isLoggedIn: new BehaviorSubject(false),
+    isLoggedIn: new BehaviorSubject(false)
   };
-  const FileBrowserUtilityServiceStub = {
-    getPreviewUrl(file: LearningObject.Material.File): string {
-      return '';
-    }
-  };
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: AuthService, useValue: AuthServiceStub },
-        { provide: FileBrowserUtilityService, useValue: FileBrowserUtilityServiceStub}
       ],
-      declarations: [ FilePreviewComponent ]
-    })
-    .compileComponents();
+      declarations: [FilePreviewComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

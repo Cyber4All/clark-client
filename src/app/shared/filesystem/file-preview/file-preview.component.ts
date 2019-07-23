@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FileBrowserUtilityService } from '../file-functions';
 import { LearningObject } from '@entity';
 import { noPreview, notLoggedIn } from './file-preview.copy';
 
@@ -14,17 +13,18 @@ const EMPTY_URL = '';
   styleUrls: ['./file-preview.component.scss']
 })
 export class FilePreviewComponent implements OnInit, OnDestroy {
-
   @Input() file: LearningObject.Material.File;
 
   private isDestroyed$ = new Subject<void>();
   loggedin: boolean;
   previewUrl = EMPTY_URL;
 
-  constructor(public auth: AuthService, private fileBrowserUtilityService: FileBrowserUtilityService) { }
+  constructor(
+    public auth: AuthService,
+  ) {}
 
   ngOnInit() {
-    this.previewUrl = this.fileBrowserUtilityService.getPreviewUrl(this.file);
+    this.previewUrl = this.file.previewUrl;
     this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
       this.loggedin = val;
     });
@@ -42,10 +42,10 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
     return this.previewUrl !== EMPTY_URL;
   }
 
-/**
- * Returns a response based on the value of the preview link on a specified file
- * and whether a user is logged in or not while attempting to preview.
- */
+  /**
+   * Returns a response based on the value of the preview link on a specified file
+   * and whether a user is logged in or not while attempting to preview.
+   */
   get copy() {
     if (!this.hasPreviewLink) {
       return noPreview;

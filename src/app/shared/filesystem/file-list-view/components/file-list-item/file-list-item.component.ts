@@ -3,7 +3,6 @@ import { LearningObject } from '@entity';
 import { getIcon } from 'app/shared/filesystem/file-icons';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 import { AuthService } from 'app/core/auth.service';
-import { getPreviewUrl } from 'app/shared/filesystem/file-functions';
 
 @Component({
   selector: 'clark-file-list-item',
@@ -26,7 +25,7 @@ export class FileListItemComponent implements OnInit {
   ngOnInit() {
     this.icon = getIcon(this.file.extension);
     this.timestampAge = TimeFunctions.getTimestampAge(+this.file.date);
-    this.previewUrl = getPreviewUrl(this.file);
+    this.previewUrl = this.file.previewUrl;
   }
 
   /**
