@@ -8,24 +8,24 @@ import { trigger, transition, style, animate } from '@angular/animations';
   animations: [
     trigger('revision', [
      transition(':enter', [
-       style({ opacity: 0}),
-       animate('200ms 500ms ease-out', style({ 'opacity': 1})),
+       style({ opacity: 0, transform: 'translateX(-100%)', position: 'absolute', right: '20px', left: '20px'}),
+       animate('200ms 400ms ease-out', style({ 'opacity': 1, transform: 'translateX(0%)'})),
        ]),
      ]),
    trigger('madeRevision', [
      transition(':leave', [
-       style({ opacity: 1 }),
-       animate('400ms ease-out', style({ transform: 'translateY(100px)', opacity: 0 })),
+       style({ opacity: 1, position: 'absolute'}),
+       animate('200ms ease-out', style({ opacity: 0, transform: 'scale(0)'})),
      ]),
    ])
    ]
 })
 export class RevisionComponent implements OnInit {
 
-  @Input() hasRevision: boolean;
+  hasRevision: boolean;
   revision = {
     'name': 'WCAG MAGIC 2.1: Twitches',
-    'date': '99999999999999',
+    'date': '91111119555766',
     'status': 'unreleased',
     'length': 'module'
   };
@@ -35,6 +35,7 @@ export class RevisionComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.hasRevision = false;
   }
 
     /**

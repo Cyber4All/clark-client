@@ -53,10 +53,12 @@
 </div>
 
 <ng-template #noRevisionTemplate>
-  <div [@madeRevision] class="revision__empty">
-    You don't have a revision for this Learning Object yet!
-  </div>
-  <div [@madeRevision] class="btn-group center">
-    <button class="button good" (click)="makeRevision()">Revise <i class="fas fa-wrench"></i></button>
+  <div [@madeRevision]>
+    <div class="revision__empty">
+     You don't have a revision for this Learning Object yet!
+    </div>
+    <div class="btn-group center">
+      <button class="button good" (click)="makeRevision()">Revise <i class="fas fa-wrench"></i></button>
+    </div>
   </div>
 </ng-template>
