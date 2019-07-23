@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'app/core/user.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ToasterService } from 'app/shared/toaster';
+import { ToasterService } from 'app/shared/Shared Modules/toaster';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';

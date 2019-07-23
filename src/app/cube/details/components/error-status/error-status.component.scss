@@ -1,0 +1,43 @@
+
+@import '~_vars.scss';
+
+.huge {
+  font-size: $largest;
+}
+
+.not-found-logo {
+  width: 180px;
+  display: block;
+  margin: 0 auto;
+}
+.not-found.top {
+  padding-top: 500px;
+}
+
+.message {
+  font-size: $large;
+  margin-bottom: 10px;
+}
+
+.auth-button {
+  -moz-transition-duration: .2s;
+  transition-duration: .2s;
+  overflow: hidden;
+  text-align: center;
+  font-size: $normal;
+  margin-bottom: 10px;
+  position: relative;
+  background-color: $blue-accent;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 400px;
+  border-radius: 4px;
+
+  &:hover {
+    -moz-transition-duration: .2s;
+    transition-duration: .2s;
+    opacity: .9;
+  }
+}
+

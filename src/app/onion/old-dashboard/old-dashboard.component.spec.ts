@@ -3,15 +3,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OldDashboardComponent } from './old-dashboard.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TooltipModule } from 'app/shared/tooltips/tip.module';
+import { TooltipModule } from 'app/shared/Shared Modules/tooltips/tip.module';
 import { LearningObjectService } from '../core/learning-object.service';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
-import { ToasterModule } from 'app/shared/toaster';
-import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
+import { ToasterModule } from 'app/shared/Shared Modules/toaster';
+import { ContextMenuModule } from 'app/shared/Shared Modules/contextmenu/contextmenu.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { User } from '@entity';
 

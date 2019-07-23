@@ -1,11 +1,11 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
+import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
-import { CartV2Service, iframeParentID } from '../../../core/cartv2.service';
-import { ToasterService } from '../../../shared/toaster/toaster.service';
+import { CartV2Service, iframeParentID } from 'app/core/cartv2.service';
+import { ToasterService } from 'app/shared/Shared Modules/toaster/toaster.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({

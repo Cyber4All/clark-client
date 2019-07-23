@@ -3,7 +3,7 @@ import { UserService } from 'app/core/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/toaster';
+import { ToasterService } from 'app/shared/Shared Modules/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { usersComponentAnimations } from './users.component.animations';
 

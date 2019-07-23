@@ -1,0 +1,27 @@
+@import '~_vars.scss';
+@import'~globals.scss';
+.terms {
+    padding: 50px;
+}
+h1 {
+    padding-bottom: 10px;
+    font-size: $largest;
+}
+h2 {
+    font-size: $large;
+    color: $dark-grey;
+}
+hr {
+    border-width: 2px;
+}
+p {
+    font-size: $normal;
+    padding-bottom: 10px;
+}
+
+li {
+    font-size: $normal;
+}
+.underline {
+    text-decoration: underline;
+}

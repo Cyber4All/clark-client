@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SidePanelContentComponent } from './side-panel-content.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TooltipModule } from 'app/shared/tooltips/tip.module';
+import { TooltipModule } from 'app/shared/Shared Modules/tooltips/tip.module';
 import { RatingService } from 'app/core/rating.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from 'app/core/auth.service';

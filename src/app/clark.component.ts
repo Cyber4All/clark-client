@@ -2,7 +2,6 @@ import { Router , NavigationEnd, ActivatedRoute} from '@angular/router';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
-import { ModalService, ModalListElement } from './shared/modals';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';

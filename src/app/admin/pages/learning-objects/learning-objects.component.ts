@@ -8,12 +8,12 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
-import { Query } from 'app/shared/interfaces/query';
+import { Query } from 'app/interfaces/query';
 import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { ToasterService } from 'app/shared/toaster';
+import { ToasterService } from 'app/shared/Shared Modules/toaster';
 import { AuthService } from 'app/core/auth.service';
 import { Collection, CollectionService } from 'app/core/collection.service';
 

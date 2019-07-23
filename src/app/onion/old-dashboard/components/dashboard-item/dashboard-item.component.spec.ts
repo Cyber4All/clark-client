@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardItemComponent } from './dashboard-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TooltipModule } from 'app/shared/tooltips/tip.module';
+import { TooltipModule } from 'app/shared/Shared Modules/tooltips/tip.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
+import { ContextMenuModule } from 'app/shared/Shared Modules/contextmenu/contextmenu.module';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';

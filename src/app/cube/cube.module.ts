@@ -29,13 +29,15 @@ import { UserEditInformationComponent } from './user-profile/user-edit-informati
 // TODO: is ng-click-outside being used?
 import { ClickOutsideModule } from 'ng-click-outside';
 
-import { ModalModule } from '../shared/modals';
+import { ModalModule } from '../shared/Shared Modules/modals/modal.module';
 import {
   ToasterModule
-} from '../shared/toaster';
+} from '../shared/Shared Modules/toaster';
 import { CollectionModule } from './collection-details/collection-details.module';
 import { DetailsModule } from './details/details.module';
 import { CollectionsComponent } from './collections/collections.component';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { FilterComponent } from './browse/components/filter/filter.component';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -53,6 +55,8 @@ import { CollectionsComponent } from './collections/collections.component';
     UserEditInformationComponent,
     OrganizationListComponent,
     CollectionsComponent,
+    TermsOfServiceComponent,
+    FilterComponent
   ],
   imports: [
     // Angular imports

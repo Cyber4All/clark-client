@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalService } from '../shared/modals/modal.service';
+import { ModalService } from 'app/shared/Shared Modules/modals/modal.module';
 import { NavbarService } from 'app/core/navbar.service';
 
 @Component({

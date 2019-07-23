@@ -12,7 +12,7 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core';
-import { ToasterService } from '../../../../../../shared/toaster';
+import { ToasterService } from '../../../../../../shared/Shared Modules/toaster';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
