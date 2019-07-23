@@ -80,7 +80,6 @@ export class SubmittableLearningObject extends LearningObject {
     super(object);
     this.description = object.description;
     this.validateOutcomes(object.outcomes as SubmittableLearningOutcome[]);
-    this.validateChildren(object.children as SubmittableLearningObject[]);
   }
 
   /**
@@ -98,19 +97,6 @@ export class SubmittableLearningObject extends LearningObject {
         SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_OUTCOMES,
         'outcomes',
       );
-    }
-  }
-
-  /**
-   * Validates children are SubmittableOutcomes
-   *
-   * @private
-   * @param {SubmittableLearningObject[]} children
-   * @memberof SubmittableLearningObject
-   */
-  private validateChildren(children: SubmittableLearningObject[]): void {
-    if (children && children.length) {
-      children.map(child => this.addChild(child));
     }
   }
 }
@@ -180,11 +166,7 @@ export namespace SubmittableLearningObject {
       {
         function: SubmittableLearningObject.validateOutcomes,
         arguments: [object.outcomes],
-      },
-      {
-        function: SubmittableLearningObject.validateChildren,
-        arguments: [object.children],
-      },
+      }
     ];
     validationFunctions.forEach(func => {
       try {
