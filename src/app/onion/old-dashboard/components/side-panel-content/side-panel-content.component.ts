@@ -42,7 +42,9 @@ export class SidePanelContentComponent implements OnChanges {
   createRevision = true;
 
 
-  constructor(private ratingService: RatingService) { }
+  constructor(
+    private ratingService: RatingService
+    ) { }
 
   ngOnChanges(changes: SimpleChanges) {
     // loading the ratings for the object when the Learning Object input changes
