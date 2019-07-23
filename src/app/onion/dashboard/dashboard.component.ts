@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
 
   action$: Subject<number> = new Subject();
 
+  // structure of filters is {status: string[]}
   filters: object;
 
   constructor(
