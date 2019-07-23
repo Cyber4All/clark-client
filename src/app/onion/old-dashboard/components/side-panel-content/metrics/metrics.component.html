@@ -1,0 +1,19 @@
+<div tab-index="0" class="metrics__title title">Metrics</div>
+<div class="metrics__grid">
+  <div class="metrics__downloads">
+    <div aria-labelledby="downloads" tab-index="0" class="metrics__amount">
+      {{ learningObject.metrics.downloads }}
+    </div>
+    <div id="downloads-label" class="metrics__label">Downloads</div>
+  </div>
+  <div class="metrics__ratings">
+    <div tab-index="0" aria-labelledby="ratings-label" class="metrics__amount">
+      <clark-rating-stars
+        [rating]="averageRating"
+        color="gold"
+        size="26"
+      ></clark-rating-stars>
+    </div>
+    <div id="ratings-label" class="metrics__label">Average Rating</div>
+  </div>
+</div>
