@@ -8,5 +8,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class SplashComponent {
 
   @Output() navigateBack: EventEmitter<void> = new EventEmitter();
+  @Output() searchText: EventEmitter<string> = new EventEmitter();
 
+  emitSearch(text: string) {
+    this.searchText.emit(text);
+  }
 }

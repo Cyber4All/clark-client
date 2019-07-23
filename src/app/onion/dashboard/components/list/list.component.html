@@ -7,26 +7,67 @@
     <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
       <div class="btn-group to-right">
         <button aria-label="Create a new Learning Object" class="button good">New <i class="far fa-plus"></i></button>
-        <button aria-label="Filter Learning Objects by status" class="button neutral">Filter <i class="far fa-angle-down"></i></button>
+        <button #filterMenuButtonElement aria-label="Filter Learning Objects by status" class="button neutral" (click)="toggleFilterMenu(true)">Filter <i class="far fa-angle-down"></i></button>
+        <button *ngIf="filters.size > 0" aria-label="Clear all selected filters" class="button bad" (click)="clearFilters()">Clear Filters<i class="far fa-times"></i></button>
       </div>
+      <ng-container>
+        <!-- Filter Context Menu -->
+        <clark-context-menu *ngIf="filterMenuDown" [anchor]="filterMenuButtonElement" [offset]="{ top: 10, left: 5 }" (close)="toggleFilterMenu()">
+          <div #contextMenu class="filter-menu">
+            <ul>
+              <li class="unreleased" (click)="toggleFilter('unreleased')">
+                <div *ngIf="filters.get('unreleased')" class="indicator"></div>
+                <i class="far fa-eye-slash"></i>Unreleased
+              </li>
+              <li class="waiting" (click)="toggleFilter('waiting')">
+                <div *ngIf="filters.get('waiting')" class="indicator"></div>
+                <i class="far fa-hourglass"></i>Waiting for Review
+              </li>
+              <li class="review" (click)="toggleFilter('review')">
+                <div *ngIf="filters.get('review')" class="indicator"></div>
+                <i class="far fa-sync"></i>Under Review
+              </li>
+              <li class="proofing" (click)="toggleFilter('proofing')">
+                <div *ngIf="filters.get('proofing')" class="indicator"></div>
+                <i class="far fa-shield"></i>Proofing
+              </li>
+              <li class="denied" (click)="toggleFilter('rejected')">
+                <div *ngIf="filters.get('rejected')" class="indicator"></div>
+                <i class="far fa-ban"></i>Denied
+              </li>
+            </ul>
+          </div>
+        </clark-context-menu>
+      </ng-container>
     </div>
     <ng-template #buttonPlaceholderTemplate>
       <div style="height: 40px;"></div>
     </ng-template>
   </div>
-  <div role="table" class="dashboard-list__table">
+  <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
     <div role="row" class="table__head">
       <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
       <div role="columnheader">Status</div>
       <div role="columnheader">Name</div>
       <div role="columnheader">Type</div>
       <div role="columnheader">Date</div>
-      <div rle="columnheader" aria-label="Spacing element for meatball menu"></div>
+      <div role="columnheader" aria-label="Spacing element for meatball menu"></div>
     </div>
     <div role="rowgroup" class="table__items">
       <div *ngFor="let l of learningObjects" role="row">
-        <!-- TODO: instances of DashboardListItem component here -->
+        <span>Name: {{ l.name}} </span><span> Status: {{ l.status }}</span>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #noLearningObjects>
+  <div class="dashboard-list__table empty">
+    <p *ngIf="filters.size > 1">
+      No Learning Objects found for those statuses!
+    </p>
+    <p *ngIf="filters.size === 1">
+      No Learning Objects found for that status!
+    </p>
+  </div>
+</ng-template>
