@@ -63,8 +63,8 @@
   (close)="toggleFilterMenu(undefined)"
 >
   <div #contextMenu class="filter-status__container">
-    <ul *ngFor="let status of statuses">
-      <li [ngClass]="status" (click)="toggleStatusFilter(status)">
+    <ul>
+      <li *ngFor="let status of statuses" [ngClass]="status" (click)="toggleStatusFilter(status)">
         <div *ngIf="filters.has(status)" class="indicator"></div>
         <i [ngClass]="getStatusIcon(status)"></i> {{ status | titlecase }}
       </li>
