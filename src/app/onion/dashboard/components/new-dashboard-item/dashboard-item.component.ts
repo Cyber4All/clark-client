@@ -39,6 +39,9 @@ export class DashboardItemComponent implements OnChanges {
   // does this object have a meatball
   @Input()
   meatball = true;
+  // does this object have checkbox for bulk operations
+  @Input()
+  showCheck = true;
 
   // fired when the checkbox for this element is fired
   @Output()
@@ -144,7 +147,7 @@ export class DashboardItemComponent implements OnChanges {
    * @param val either the empty string (true) or a minus sign (false)
    */
   toggleSelect(val) {
-    this.select.emit(val !== '-');
+    this.select.emit(val);
   }
 
   /**

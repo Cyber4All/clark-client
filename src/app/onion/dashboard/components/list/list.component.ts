@@ -206,4 +206,47 @@ export class ListComponent {
       this.selected = new Map();
     }
   }
+
+    /**
+   * Decides based on the value whether to select or deselect the learning object
+   * @param l learning object to be selected
+   * @param value boolean, true if object is selected, false otherwise
+   * @param index the index of the learning object in the master array
+   */
+  toggleSelect(l: LearningObject, value: boolean, index: number) {
+    if (value === true) {
+      this.selectLearningObject(l, index);
+    } else {
+      this.deselectLearningObject(l);
+    }
+  }
+
+    /**
+   * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+   * @param l Learning Object to be selected
+   */
+  selectLearningObject(l: LearningObject, index: number) {
+    this.selected.set(l.id, { index, object: l });
+    this.cd.detectChanges();
+
+    if (
+      this.selected.size === this.learningObjects.length &&
+      !this.allSelected
+    ) {
+      this.allSelected = true;
+    }
+  }
+
+  /**
+   * Fired on select of a Learning Object, takes the object and removes it from the list of selected Learning Objects
+   * @param l Learning Object to be deselected
+   */
+  deselectLearningObject(l: LearningObject) {
+    this.selected.delete(l.id);
+    this.cd.detectChanges();
+
+    if (this.selected.size < this.learningObjects.length && this.allSelected) {
+      this.allSelected = false;
+    }
+  }
 }
