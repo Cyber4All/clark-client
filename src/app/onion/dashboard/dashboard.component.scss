@@ -42,7 +42,12 @@
 .loading-template {
   max-width: $max-width;
   padding: 20px;
-  box-sizing: border-box;
-  margin-top: -110px;
-  position: relative;
+  font-size: $larger;
+  text-align: center;
+  left: auto; 
+  right: auto;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 1px rgba(0, 0, 0, 0.08);
+
 }
