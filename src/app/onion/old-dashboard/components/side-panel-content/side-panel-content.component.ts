@@ -12,7 +12,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
    trigger('revision', [
     transition(':enter', [
       style({ opacity: 0}),
-      animate('200ms 500ms ease-out', style({ 'opacity': 1})),
+      animate('200ms 600ms ease-out', style({ 'opacity': 1})),
       ]),
     ]),
   trigger('madeRevision', [
@@ -39,9 +39,8 @@ export class SidePanelContentComponent implements OnChanges {
   submit: EventEmitter<void> = new EventEmitter();
 
   // FIXME will use flag when backend is implemented
-  createRevision = false;
-  // FIXME will be set based on the revision number once backend is implemented
-  hasRevision = false;
+  createRevision = true;
+
 
   constructor(private ratingService: RatingService) { }
 
@@ -63,19 +62,5 @@ export class SidePanelContentComponent implements OnChanges {
    */
   close() {
     this.controller$.next(false);
-  }
-
-  /**
-   * Toggles the context menu on and off
-   */
-  toggleContextMenu() {
-    this.meatballOpen = !this.meatballOpen;
-  }
-
-  /**
-   * Create a revision of the object that is currently released
-   */
-  makeRevision() {
-    this.hasRevision = true;
   }
 }
