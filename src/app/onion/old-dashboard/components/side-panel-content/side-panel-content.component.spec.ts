@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from 'app/core/auth.service';
 import { CookieModule } from 'ngx-cookie';
 import { LearningObject } from '@entity';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SidePanelContentComponent', () => {
   let component: SidePanelContentComponent;
@@ -18,7 +19,7 @@ describe('SidePanelContentComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [ SidePanelContentComponent ],
-      imports: [ RouterTestingModule, TooltipModule, HttpClientModule, CookieModule.forRoot() ],
+      imports: [ RouterTestingModule, TooltipModule, HttpClientModule, CookieModule.forRoot(), NoopAnimationsModule ],
       providers: [
         RatingService,
         AuthService
