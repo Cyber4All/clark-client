@@ -30,7 +30,7 @@
   .table__head {
     background: $light-grey;
     color: $dark-grey ;
-    padding: 8px 5px;
+    padding: 8px 20px;
     box-sizing: border-box;
     display: grid;
     grid-template-columns: 32px 60px 1fr 180px 180px 50px;
@@ -42,16 +42,14 @@
 
   .table__items {
     color: $dark-grey ;
-    padding: 8px 5px;
     box-sizing: border-box;
-    display: grid;
     grid-template-columns: 32px 60px 1fr 180px 180px 50px;
     grid-gap: inherit;
     align-items: center;
     font-size: $small;
 
     .table__item {
-      display: inherit;
+      grid-template-columns: inherit;
     }
   }
 
