@@ -12,7 +12,7 @@ import { ModalModule } from './modals';
 // Components
 import { MessageComponent } from './navbar/message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { TooltipModule } from './tooltips/tip.module';
+import { TipDirective } from './tooltips/tip.directive';
 import { IndicatorComponent } from './indicator/indicator.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
 import { UserCardComponent } from './user-card/user-card.component';
@@ -63,7 +63,6 @@ import { IdentificationPillComponent } from './identification-pill/identificatio
     ClickOutsideModule,
     ModalModule,
     ToasterModule,
-    TooltipModule,
     PopupModule,
     ClarkContextMenuModule.forRoot(),
     TeleporterModule,
@@ -104,10 +103,11 @@ import { IdentificationPillComponent } from './identification-pill/identificatio
     ChangelogListComponent,
     ChangelogItemComponent,
     IdentificationPillComponent,
+    TipDirective
   ],
   exports: [
     NavbarComponent,
-    TooltipModule,
+    TipDirective,
     IndicatorComponent,
     LearningObjectListingComponent,
     UserCardComponent,

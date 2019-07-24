@@ -1,4 +1,4 @@
-<div class="rating-stars {{ color ? color : '' }}" [ngStyle]="styles" tip="{{ rating }} out of {{ count }}" tipDisabled="{{ !reviewsCount }}" tipLocation="top">
+<div class="rating-stars {{ color ? color : '' }}" [ngStyle]="styles" [tip]="rating + ' out of ' + count" [tipDisabled]="!reviewsCount" tipPosition="top">
   <div class="stars" tabindex="0" attr.aria-label="Rating: {{ rating }} out of 5 stars">
     <div class="empty-stars">
       <div class="empty-star" *ngFor="let item of iterableCount">

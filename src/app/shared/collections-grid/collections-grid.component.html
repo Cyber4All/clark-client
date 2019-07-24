@@ -6,8 +6,8 @@
         [tip]="
           preselectReason || 'This collection cannot be selected right now.'
         "
-        tipDisabled="{{ !isPreselected(c.abvName) }}"
-        tipLocation="above"
+        [tipDisabled]="!isPreselected(c.abvName)"
+        tipPosition="top"
       >
         <div
           class="collection-chooser__collection"

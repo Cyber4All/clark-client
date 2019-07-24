@@ -12,7 +12,7 @@
           <div class="btn-group to-right">
             <button *ngIf="!editingChildren" routerLink="/onion/learning-object-builder" class="button good">New <i class="fas fa-plus"></i></button>
             <ng-container *ngIf="!editingChildren">
-              <button #filterMenuButtonElement class="button neutral filters-button" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu(true)"><span tip="{{'Clear filtering criteria'}}" tipLocation="{{'above'}}" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> Filter <i class="fas fa-sort"></i></button>
+              <button #filterMenuButtonElement class="button neutral filters-button" [ngClass]="{'shadow': filterMenuDown}" (click)="toggleFilterMenu(true)"><span tip="Clear filtering criteria" tipPosition="top" *ngIf="filters.size" (click)="clearFilters(); $event.stopPropagation()"><i class="far fa-times"></i></span> Filter <i class="fas fa-sort"></i></button>
               <!-- Filter Context Menu -->
               <clark-context-menu *ngIf="filterMenuDown" [anchor]="filterMenuButtonElement" [offset]="{ top: 10, left: 5 }" (close)="toggleFilterMenu()">
                 <div #contextMenu class="filter-menu">
