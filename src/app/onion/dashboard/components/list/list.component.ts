@@ -28,6 +28,7 @@ export class ListComponent {
   @Input() learningObjects: LearningObject[];
   @Input() title: string;
   @Output() applyFilters: EventEmitter<any> = new EventEmitter();
+  @Output() deleteObjects: EventEmitter<any> = new EventEmitter();
   filters: Map<string, boolean> = new Map();
   filterMenuDown: boolean;
 
@@ -44,6 +45,7 @@ export class ListComponent {
   // submission
   submitToCollection = false;
 
+  // deletion
   selected: Map<string, { index: number; object: LearningObject }> = new Map();
   allSelected = false;
 
@@ -81,8 +83,8 @@ export class ListComponent {
   }
 
   /**
-   * Publishes a learning object and adds it to a specified collection
-   * @param collection {string} the name of the collection to add this learning object to
+   * Submits an object to a collection
+   * @param collection {string} the name of the collection to submit this learning object to
    */
   async addToCollection(collection?: string) {
     if (collection) {
@@ -248,5 +250,10 @@ export class ListComponent {
     if (this.selected.size < this.learningObjects.length && this.allSelected) {
       this.allSelected = false;
     }
+  }
+
+  deleteObject(val) {
+    console.log(val);
+    this.deleteObjects.emit(val);
   }
 }

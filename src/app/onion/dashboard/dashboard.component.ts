@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
-    public auth: AuthService
+    public auth: AuthService,
   ) {
     this.navbar.hide();
     this.lastLocation = this.history.lastRoute;
@@ -138,4 +138,95 @@ export class DashboardComponent implements OnInit {
     this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
     this.workingLearningObjects = await this.getDraftLearningObjects(text);
   }
+
+    /**
+   * Delete a learning object after asking confirmation.
+   *
+   * This is a generator function.
+   * The confirmation modal is shown from the markup by setting the deleteConfirmation variable
+   * to the return value of this function and then immediately calling the .next() function,
+   * IE deleteConfirmation = delete(l); deleteConfirmation.next();
+   * To confirm or deny the confirmation, call deleteConfirmation.next(true) or deleteConfirmation.next(false)
+   * @param objects {DashboardLearningObject[]} list of objects to be deleted
+   
+  async *delete(objects: LearningObject[] | LearningObject) {
+    const confirm = yield;
+    if (!confirm) {
+      return;
+    }
+
+    if (!Array.isArray(objects) || objects.length === 1) {
+      const object = Array.isArray(objects) ? objects[0] : objects;
+      this.learningObjectService
+        .delete(object.name , object.author.username)
+        .then(async () => {
+          this.notificationService.notify(
+            'Done!',
+            'Learning Object deleted!',
+            'good',
+            'far fa-check'
+          );
+          this.learningObjects = await this.getLearningObjects();
+          this.clearSelected();
+        })
+        .catch(err => {
+          console.log(err);
+          this.notificationService.notify(
+            'Error!',
+            'Learning Object could not be deleted!',
+            'bad',
+            'far fa-times'
+          );
+        });
+    } else {
+      // multiple deletion
+      const canDelete = objects.filter(s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status));
+
+      if (canDelete.length) {
+        const authorUsername = canDelete[0].author.username;
+        this.learningObjectService
+          // TODO: Verify selected is an array of names
+          .deleteMultiple(canDelete.map(s => s.name), authorUsername)
+          .then(async () => {
+            this.clearSelected();
+            if (canDelete.length === objects.length) {
+              this.notificationService.notify(
+                'Done!',
+                'Learning Objects deleted!',
+                'good',
+                'far fa-check'
+              );
+            } else {
+              this.notificationService.notify(
+                'Warning!',
+                'Some learning objects couldn\'t be deleted! You can only delete learning objects that haven\'t been published.',
+                'warning',
+                'fas fa-exclamation'
+              );
+            }
+            this.learningObjects = await this.getLearningObjects();
+          })
+          .catch(err => {
+            console.log(err);
+            this.notificationService.notify(
+              'Error!',
+              'Learning Objects could not be deleted!',
+              'bad',
+              'far fa-times'
+            );
+          });
+      } else {
+        this.notificationService.notify(
+          'Warning!',
+          'Learning objects couldn\'t be deleted! You can only delete learning objects that haven\'t been published.',
+          'warning',
+          'fas fa-exclamation'
+        );
+      }
+    }
+
+    this.deleteConfirmation = undefined;
+
+    return;
+  } */
 }

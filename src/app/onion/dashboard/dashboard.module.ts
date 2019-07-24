@@ -13,9 +13,11 @@ import { DashboardItemComponent } from './components/new-dashboard-item/dashboar
 import { SidePanelModule } from './components/side-panel/side-panel.module';
 import { SidePanelContentComponent } from './components/side-panel-content/side-panel-content.component';
 import { LearningObjectComponent } from './components/side-panel-content/learning-object/learning-object.component';
+import { OnionSharedModule } from '../shared/onion-shared.module';
 @NgModule({
   imports: [
     CommonModule,
+    OnionSharedModule,
     FormsModule,
     RouterModule.forChild([
       {

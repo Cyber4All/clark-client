@@ -40,7 +40,7 @@
 
   }
 
-  .table__elements {
+  .table__items {
     color: $dark-grey ;
     padding: 8px 5px;
     box-sizing: border-box;
@@ -50,7 +50,8 @@
     align-items: center;
     font-size: $small;
 
-    clark-dashboard-item {
+    .table__item {
+      display: inherit;
     }
   }
 
