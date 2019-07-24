@@ -23,6 +23,7 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000;
+  overflow-y: auto;
 }
 
 .side-panel--no-padding {

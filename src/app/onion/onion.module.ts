@@ -16,11 +16,9 @@ import { ModalModule } from '../shared/modals';
 import { OnionComponent } from './onion.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
 import { SidePanelModule } from './old-dashboard/components/side-panel/side-panel.module';
-import { SidePanelContentComponent } from './old-dashboard/components/side-panel-content/side-panel-content.component';
-import { LearningObjectComponent } from './old-dashboard/components/side-panel-content/learning-object/learning-object.component';
 import { DashboardItemComponent } from './old-dashboard/components/dashboard-item/dashboard-item.component';
 import { DashboardModule } from './dashboard/dashboard.module';
-
+import { SidePanelContentModule } from './dashboard/components/side-panel-content/side-panel-content.module';
 /**
  * Defines the root module that is bootstrapped to start the application.
  * This tells Angular how to handle all of the files and dependencies in use.
@@ -32,8 +30,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
   declarations: [
     OnionComponent,
     OldDashboardComponent,
-    SidePanelContentComponent,
-    LearningObjectComponent,
     DashboardItemComponent,
   ],
   // Specifies all modules to be imported
@@ -51,6 +47,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     VirtualScrollerModule,
     SidePanelModule,
     DashboardModule,
+    SidePanelContentModule
   ],
   exports: [
     VirtualScrollerModule,
