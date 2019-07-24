@@ -58,8 +58,8 @@ export class DashboardComponent implements OnInit {
     // retrieve released learning objects
     setTimeout(async() => {
       this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+      this.loading = false;
     }, 1100);
-    this.loading = false;
   }
 
   /**
@@ -135,8 +135,9 @@ export class DashboardComponent implements OnInit {
    * @param text
    */
   async performSearch(text: string) {
-    this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
     this.workingLearningObjects = await this.getDraftLearningObjects(text);
+    this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
+    this.loading = false;
   }
 
     /**
