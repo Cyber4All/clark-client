@@ -16,7 +16,7 @@
     }
   }
 
-  &:not(.disabled):hover {
+  &:not(.disabled):hover, :focus {
     background: $light-grey;
   }
 
