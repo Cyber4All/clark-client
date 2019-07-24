@@ -1,5 +1,5 @@
 
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { iframeParentID } from '../../core/cartv2.service';
 import { LearningObjectService } from '../learning-object.service';
 import { LearningObject, User } from '@entity';
@@ -45,7 +45,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   averageRatingValue = 0;
   showAddRating = false;
   showAddResponse = false;
-  isOwnObject = false;
   errorStatus: number;
   redirectUrl: string;
   hasRevisions: boolean;
@@ -116,12 +115,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.loggedin = val;
 
       if (!this.loggedin) {
-        this.isOwnObject = false;
         this.reviewer = false;
-        this.hasRevisions = false;
+      } else {
+        this.reviewer = this.auth.hasReviewerAccess();
       }
     });
-    this.reviewer = this.auth.hasReviewerAccess();
   }
 
   /**
@@ -173,23 +171,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.releasedChildren = this.releasedLearningObject.children.filter(
         child => {
           return child.status === LearningObject.Status['RELEASED'] ||
-          child.status === LearningObject.Status['REVIEW'] ||
-          child.status === LearningObject.Status['PROOFING'] ||
-          child.status === LearningObject.Status['WAITING'];
+            child.status === LearningObject.Status['REVIEW'] ||
+            child.status === LearningObject.Status['PROOFING'] ||
+            child.status === LearningObject.Status['WAITING'];
         }
       );
 
       const owners = this.releasedLearningObject.contributors.map(user => user.username);
       owners.push(this.releasedLearningObject.author.username);
-
-      if (
-        this.auth.user &&
-        owners.includes(this.auth.username)
-      ) {
-        this.isOwnObject = true;
-      } else {
-        this.isOwnObject = false;
-      }
 
       this.learningObjectOwners = owners;
       this.hasRevisions = this.releasedLearningObject.hasRevision;
@@ -230,9 +219,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.revisedLearningObject = this.learningObject;
     }
   }
-/**
- * Loaded a revised copy of the learning object if the hasRevisions flag is true
- */
+  /**
+   * Loaded a revised copy of the learning object if the hasRevisions flag is true
+   */
   async loadRevisedLearningObject() {
     this.loading.push(1);
     try {
@@ -244,48 +233,39 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.revisedChildren = this.revisedLearningObject.children.filter(
         child => {
           return child.status === LearningObject.Status['RELEASED'] ||
-          child.status === LearningObject.Status['REVIEW'] ||
-          child.status === LearningObject.Status['PROOFING'] ||
-          child.status === LearningObject.Status['WAITING'];
+            child.status === LearningObject.Status['REVIEW'] ||
+            child.status === LearningObject.Status['PROOFING'] ||
+            child.status === LearningObject.Status['WAITING'];
         }
       );
 
       const owners = this.revisedLearningObject.contributors.map(user => user.username);
       owners.push(this.revisedLearningObject.author.username);
 
-      if (
-        this.auth.user &&
-        owners.includes(this.auth.username)
-      ) {
-        this.isOwnObject = true;
-      } else {
-        this.isOwnObject = false;
-      }
-
       this.learningObjectOwners = owners;
       this.loading.pop();
     } catch (e) {
 
-    /**
-    * TODO: change status to 404 when issue #149 is closed
-    * if server error is thrown, navigate to not-found page
-    */
+      /**
+      * TODO: change status to 404 when issue #149 is closed
+      * if server error is thrown, navigate to not-found page
+      */
 
-    if (e instanceof HttpErrorResponse) {
-      if (e.status === 404) {
-        this.router.navigate(['not-found']);
-      }
-      if (e.status === 401) {
-        let redirectUrl = '';
-        this.route.url.subscribe(segments => {
-          if (segments) {
-            segments.forEach(segment => {
-            redirectUrl = redirectUrl + '/' + segment.path;
-            });
-          }
-        });
-        this.errorStatus = e.status;
-        this.redirectUrl = redirectUrl;
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === 404) {
+          this.router.navigate(['not-found']);
+        }
+        if (e.status === 401) {
+          let redirectUrl = '';
+          this.route.url.subscribe(segments => {
+            if (segments) {
+              segments.forEach(segment => {
+                redirectUrl = redirectUrl + '/' + segment.path;
+              });
+            }
+          });
+          this.errorStatus = e.status;
+          this.redirectUrl = redirectUrl;
         }
       }
       console.log(e);
@@ -331,7 +311,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * Opens the Change Log modal for a specified learning object and fetches its change logs
    */
   async openViewAllChangelogsModal() {
-    if (!this.openChangelogModal ) {
+    if (!this.openChangelogModal) {
       this.openChangelogModal = true;
       this.loadingChangelogs = true;
       try {
@@ -507,21 +487,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
           report
         })
         .catch(response => {
-            if (response.status === 200) {
-              this.toastService.notify(
-                'Success!',
-                'Report submitted successfully!',
-                'good',
-                'far fa-check'
-              );
-            } else {
-              this.toastService.notify(
-                'Error!',
-                'An error occured and your report could not be submitted',
-                'bad',
-                'far fa-times'
-              );
-            }
+          if (response.status === 200) {
+            this.toastService.notify(
+              'Success!',
+              'Report submitted successfully!',
+              'good',
+              'far fa-check'
+            );
+          } else {
+            this.toastService.notify(
+              'Error!',
+              'An error occured and your report could not be submitted',
+              'bad',
+              'far fa-times'
+            );
+          }
         });
     } else {
       this.toastService.notify(
@@ -554,22 +534,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
           ratingId,
           response,
         });
-        if (result) {
-          this.getLearningObjectRatings();
-          this.toastService.notify(
-            'Success!',
-            'Response submitted successfully!',
-            'good',
-            'far fa-check'
-          );
-        } else {
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your response could not be submitted',
-            'bad',
-            'far fa-times'
-          );
-        }
+      if (result) {
+        this.getLearningObjectRatings();
+        this.toastService.notify(
+          'Success!',
+          'Response submitted successfully!',
+          'good',
+          'far fa-check'
+        );
+      } else {
+        this.toastService.notify(
+          'Error!',
+          'An error occured and your response could not be submitted',
+          'bad',
+          'far fa-times'
+        );
+      }
     } else {
       this.toastService.notify(
         'Error!',
@@ -602,22 +582,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
           responseId,
           updates: response,
         });
-        if (result) {
-          this.getLearningObjectRatings();
-          this.toastService.notify(
-            'Success!',
-            'Response updated successfully!',
-            'good',
-            'far fa-check'
-          );
-        } else {
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your response could not be updated',
-            'bad',
-            'far fa-times'
-          );
-        }
+      if (result) {
+        this.getLearningObjectRatings();
+        this.toastService.notify(
+          'Success!',
+          'Response updated successfully!',
+          'good',
+          'far fa-check'
+        );
+      } else {
+        this.toastService.notify(
+          'Error!',
+          'An error occured and your response could not be updated',
+          'bad',
+          'far fa-times'
+        );
+      }
     } else {
       this.toastService.notify(
         'Error!',
@@ -721,6 +701,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
         // if we found the rating, we've returned from the function at this point
         this.userRating = {};
       });
+  }
+
+  /**
+   * Returns a boolean whether or not the object is the owner's
+   * @memberof DetailsComponent
+   */
+  get isOwnObject() {
+    if (
+      this.auth.user && this.learningObjectOwners &&
+      this.learningObjectOwners.includes(this.auth.username)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
