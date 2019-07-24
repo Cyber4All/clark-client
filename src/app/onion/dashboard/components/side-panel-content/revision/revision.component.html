@@ -13,7 +13,7 @@
           </div>
           <p class="revision-name">{{ revision.name }}</p>
         </div>
-        <div tip="{{ statusDescription }}" tipDisabled="{{ !statusDescription }}" tipLocation="above">
+        <div [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
           <ng-container *ngTemplateOutlet="meatball"></ng-container>
         </div>
         <ng-template #meatball>

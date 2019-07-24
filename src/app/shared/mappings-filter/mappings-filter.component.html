@@ -1,12 +1,12 @@
 <div class="mappings-filter" (click)="preventClose('results')">
   <div class="search-bar input" [ngClass]="{'focus': focused}">
     <ng-container *ngIf="focusedOutcome && !focused">
-      <div class="mappings-filter__pill" tip="{{ focusedOutcome.outcome }}" tipLocation="bottom" (click)="focusInput(searchInput.value)">
+      <div class="mappings-filter__pill" [tip]="focusedOutcome.outcome" tipPosition="bottom" (click)="focusInput(searchInput.value)">
         {{ focusedOutcome.name }}
       </div>
     </ng-container>
     <input #searchInput [ngClass]="{'transparent': focusedOutcome && !focused}" type="search" placeholder="Search for mappings..." aria-label="Search for Mappings" (focus)="focusInput(searchInput.value)" (blur)="focused = false;" />
-    <button class="search-sources" id="search-sources" [ngClass]="{'active': source}" aria-label="Filter results by sources" tip="Filter results by sources" tipLocation="bottom" (click)="sourcesDown = true; preventClose('sources')">
+    <button class="search-sources" id="search-sources" [ngClass]="{'active': source}" aria-label="Filter results by sources" tip="Filter results by sources" tipPosition="bottom" (click)="sourcesDown = true; preventClose('sources')">
       <i class="far fa-globe-americas"></i>
       <i class="far fa-angle-down"></i>
     </button>
@@ -19,7 +19,7 @@
       <ul>
         <ng-container *ngFor="let c of outcomes">
           <li class="section">{{ c.source }}</li>
-          <li *ngFor="let o of c.outcomes" tip="{{o.outcome}}" tipLocation="right" (click)="addOutcome(o)">
+          <li *ngFor="let o of c.outcomes" [tip]="o.outcome" tipPosition="right" (click)="addOutcome(o)">
             {{ o.name }} - {{ o.outcome }}
           </li>
         </ng-container>

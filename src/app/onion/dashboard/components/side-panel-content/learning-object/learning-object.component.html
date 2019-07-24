@@ -1,15 +1,15 @@
 <div class="learning-object">
   <div class="learning-object__row">
-    <div tab-index="0" attr.aria-label="{{ learningObject.name }}" tip="{{ learningObject?.name }}" tipDisabled="{{ !learningObject?.name || learningObject?.name.length <= 70 }}" tipLocation="bottom" class="learning-object__name">
+    <div tabindex="0" attr.aria-label="{{ learningObject.name }}" [tip]="learningObject?.name" [tipDisabled]="!learningObject?.name || learningObject?.name.length <= 70" tipPosition="bottom" class="learning-object__name">
       {{ (learningObject?.name | slice:0:69) + (learningObject?.name.length > 70 ? '...' : '') }}
     </div>
   </div>
-  <div tab-index="0" class="learning-object__row learning-object__row--delim">
-    <div tab-index="0" attr.aria-label="{{ learningObject.length }}" [ngClass]="learningObject.length" class="learning-object__length">{{ learningObject.length | titlecase }}</div>
-    <div tab-index="0" attr.aria-label="Released on {{ learningObject.date }}" class="learning-object__date">Released on {{ learningObject.date | date:'mediumDate' }}</div>
+  <div tabindex="0" class="learning-object__row learning-object__row--delim">
+    <div tabindex="0" attr.aria-label="{{ learningObject.length }}" [ngClass]="learningObject.length" class="learning-object__length">{{ learningObject.length | titlecase }}</div>
+    <div tabindex="0" attr.aria-label="Released on {{ learningObject.date }}" class="learning-object__date">Released on {{ learningObject.date | date:'mediumDate' }}</div>
   </div>
   <div class="learning-object__row">
     <div aria-labelledby="collection-name" class="collection-image" [ngStyle]="{'background-image': 'url(/assets/images/collections/' + collectionImage + ')'}"></div>
-    <div id="collection-name" tab-index="0" attr.aria-label="{{ learningObject.collection }}" class="learning-object__collection">{{ learningObject.collection | collection | async }}</div>
+    <div id="collection-name" tabindex="0" attr.aria-label="{{ learningObject.collection }}" class="learning-object__collection">{{ learningObject.collection | collection | async }}</div>
   </div>
 </div>

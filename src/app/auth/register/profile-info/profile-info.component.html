@@ -8,7 +8,7 @@
         <span><i class="far fa-spinner-third fa-spin"></i></span>
       </ng-container>
       <ng-container *ngIf="!querying && usernameError">
-        <span class="email-error" tip="{{ usernameError }}"><i class="far fa-times"></i></span>
+        <span class="email-error" [tip]="usernameError"><i class="far fa-times"></i></span>
       </ng-container>
     </div>
   </div>
