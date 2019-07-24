@@ -43,7 +43,6 @@ export class StatusDescriptions {
    * @memberof StatusDescriptions
    */
   async getDescription(status: LearningObject.Status, collectionAbbreviation?: string): Promise<string> {
-    console.log('status', status, 'collection');
     let collection: string;
 
     // the list of statuses that require loading the full collection
