@@ -46,6 +46,7 @@ import { of } from 'rxjs';
 })
 export class ReviseButtonComponent {
   @Input() learningObject: LearningObject;
+  @Input() isRevision: boolean;
   showPopup = false;
 
   constructor(private router: Router, private service: EditorService, private toasterService: ToasterService) { }
@@ -62,7 +63,7 @@ export class ReviseButtonComponent {
     if (this.learningObject.status !== LearningObject.Status.RELEASED) {
       this.showPopup = true;
     } else {
-      this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
+      this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}?isRevision=${this.isRevision}`]);
     }
   }
 

@@ -101,6 +101,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   errorMessage: string;
 
   adminMode: boolean;
+  isRevision: boolean;
 
   showServiceFailureModal = false;
   adminDashboardURL = environment.adminAppUrl;
@@ -143,6 +144,12 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
           this.store.makeNew();
         }
     });
+
+    this.route.queryParamMap
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(queryParams => {
+        const revision = queryParams.get('isRevision');
+      });
 
     this.builderStore.serviceInteraction$
       .pipe(takeUntil(this.destroyed$))

@@ -20,7 +20,7 @@
           <i class="fal fa-spinner-third fa-spin"></i>
         </span>
       </button>
-      <clark-revise-button *ngIf="userCanRevise" [learningObject]="learningObject"></clark-revise-button>
+      <clark-revise-button *ngIf="userCanRevise" [isRevision]="isRevision" [learningObject]="learningObject"></clark-revise-button>
     </div>
     <ng-container *ngIf="!auth.user">
       <div tabindex="0" class="action-message" id="login-msg">Please
