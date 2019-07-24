@@ -48,8 +48,8 @@
       </div>
 
   <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
-    <div class="inner"*ngIf="reviewer">
-      <div *ngIf="hasRevisions" class="revisions">
+    <div *ngIf="reviewer" class="inner">
+      <div *ngIf="loggedin && hasRevisions" class="revisions">
         <div tabindex="0" class="text">View Revisions</div>
         <clark-toggle-switch style="orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
       </div>

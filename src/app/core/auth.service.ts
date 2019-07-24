@@ -247,8 +247,8 @@ export class AuthService {
         )
         .toPromise();
       this.user = response;
-      this.changeStatus(true);
       this.assignUserToGroup();
+      this.changeStatus(true);
     } catch (error) {
       this.endSession();
       throw error;
