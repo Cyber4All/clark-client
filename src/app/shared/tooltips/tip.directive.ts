@@ -40,11 +40,11 @@ export class TipDirective implements OnChanges, OnDestroy {
     // create the inner HTML element
     this.innerElement = document.createElement('div');
     this.innerElement.style.position = 'relative';
-    this.innerElement.classList.add('tooltip')
+    this.innerElement.classList.add('tooltip');
 
     // create the triangle HTML element
     this.triangleElement = document.createElement('div');
-    this.triangleElement.classList.add('tooltip')
+    this.triangleElement.classList.add('tooltip');
 
     // append both inner and triangle elements to outer element
     this.element.appendChild(this.triangleElement);
