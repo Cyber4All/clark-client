@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { SidePanelContentComponent } from './side-panel-content.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { RevisionComponent } from './revision/revision.component';
 import { LearningObjectComponent } from './learning-object/learning-object.component';
@@ -18,6 +17,9 @@ import { SidePanelContentComponent } from './side-panel-content.component';
     CommonModule,
     OnionRoutingModule,
     SharedModule
+  ],
+  exports: [
+    SidePanelContentComponent
   ]
 })
 export class SidePanelContentModule { }
