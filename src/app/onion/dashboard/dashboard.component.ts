@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
     setTimeout(async() => {
       this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
     }, 1100);
+    this.loading = false;
   }
 
   /**
@@ -105,11 +106,9 @@ export class DashboardComponent implements OnInit {
    * @param query
    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
-    this.loading = true;
     return this.learningObjectService
     .getLearningObjects(this.auth.username, filters, text)
     .then((children: LearningObject[]) => {
-      this.loading = false;
       return children;
     });
   }
@@ -124,11 +123,9 @@ export class DashboardComponent implements OnInit {
     if (Object.prototype.toString.call(filters) === '[object String]') {
       text = filters;
     }
-    this.loading = true;
     return this.learningObjectService
     .getDraftLearningObjects(this.auth.username, filters, text)
     .then((children: LearningObject[]) => {
-      this.loading = false;
       return children;
     });
   }
