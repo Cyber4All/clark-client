@@ -5,7 +5,8 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
@@ -76,7 +77,8 @@ export class DashboardItemComponent implements OnChanges {
 
   constructor(
     private auth: AuthService,
-    private statuses: StatusDescriptions
+    private statuses: StatusDescriptions,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -88,6 +90,7 @@ export class DashboardItemComponent implements OnChanges {
         )
         .then(desc => {
           this.statusDescription = desc;
+          this.cd.detectChanges();
         });
     }
   }

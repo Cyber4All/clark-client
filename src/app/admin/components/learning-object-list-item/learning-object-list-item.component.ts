@@ -5,14 +5,14 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/dashboard/dashboard.component';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -41,7 +41,8 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   constructor(
     private auth: AuthService,
-    private statuses: StatusDescriptions
+    private statuses: StatusDescriptions,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -53,6 +54,7 @@ export class LearningObjectListItemComponent implements OnChanges {
         )
         .then(desc => {
           this.statusDescription = desc;
+          this.cd.detectChanges();
         });
     }
   }
