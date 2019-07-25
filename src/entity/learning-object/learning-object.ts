@@ -195,6 +195,8 @@ get hasRevision(): boolean {
   return this._hasRevision;
 }
 
+  revision = 0;
+
   /**
    * Creates an instance of LearningObject.
    * @param {Partial<LearningObject>} [object]
@@ -555,6 +557,9 @@ private _hasRevision?: boolean;
     if (object.hasRevision === true) {
       this._hasRevision = object.hasRevision;
     }
+    if (object.revision != null) {
+      this.revision = object.revision;
+    }
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
     this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;
@@ -589,6 +594,7 @@ private _hasRevision?: boolean;
       status: this.status,
       metrics: this.metrics,
       hasRevision: this.hasRevision,
+      revision: this.revision
     };
     return object;
   }
