@@ -33,7 +33,7 @@ export class ListComponent {
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
   // delete logic
-  selectedObjects: Map<string, LearningObject> = new Map();;
+  selectedObjects: Map<string, LearningObject> = new Map();
 
   // Filtering variables
   filters: Map<string, boolean> = new Map();
@@ -153,7 +153,7 @@ export class ListComponent {
   /**
    * Creates a map of the objects that will be deleted. Takes either a single object or
    * sets the objects to be deleted to the objects selected in the checkboxes
-   * @param object 
+   * @param object
    */
   confirmDelete(object?: any) {
     if (object) {
