@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../core/auth-guard.service';
 import { OnionComponent } from './onion.component';
-import { environment } from '@env/environment';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -14,17 +13,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
  *
  * @author Sean Donnelly
  */
-const dashboard = environment.experimental
-  ? {
+const dashboard = {
     path: 'dashboard',
     loadChildren:
       'app/onion/dashboard/dashboard.module#DashboardModule',
-    canActivate: [AuthGuard],
-    data: { state: 'dashboard', title: 'Your Dashboard' }
-  }
-  : {
-    path: 'dashboard',
-    component: DashboardComponent,
     canActivate: [AuthGuard],
     data: { state: 'dashboard', title: 'Your Dashboard' }
   };

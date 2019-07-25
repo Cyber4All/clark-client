@@ -45,7 +45,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     DashboardModule,
   ],
   exports: [
-    VirtualScrollerModule,
+    VirtualScrollerModule
   ]
 })
 export class OnionModule { }
