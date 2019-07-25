@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HistoryService } from 'app/core/history.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavbarService } from 'app/core/navbar.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth.service';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
+import { CollectionService } from 'app/core/collection.service';
+import { ChangelogService } from 'app/core/changelog.service';
+import { ToasterService } from 'app/shared/toaster';
+import { map } from 'rxjs-compat/operator/map';
 
 export interface DashboardLearningObject extends LearningObject {
   status: LearningObject.Status;
@@ -20,9 +24,18 @@ export interface DashboardLearningObject extends LearningObject {
     trigger('dashboardList', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('500ms 600ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
-        query( '@listItem', animateChild(), {optional: true} )
+        animate('200ms 400ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
       ]),
+    ]),
+    trigger('Loading', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('500ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1, transform: 'translateY(0px)'}),
+        animate('200ms ease-out', style({opacity: 0, transform: 'translateY(20px)'})),
+      ])
     ]),
   ]
 })
@@ -38,12 +51,33 @@ export class DashboardComponent implements OnInit {
   // structure of filters is {status: string[]}
   filters: object;
 
+  // Changelogs
+  openChangelogModal: boolean;
+  loadingChangelogs: boolean;
+  changelogLearningObject: LearningObject;
+  changelogs: [];
+  learningObjects: LearningObject[];
+
+  // submission
+  submitToCollection: boolean;
+
+  // side panel
+  focusedLearningObject: LearningObject;
+  sidePanelController$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  // delete
+  objectsToDelete: LearningObject[];
+
   constructor(
     private history: HistoryService,
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
     public auth: AuthService,
+    private collectionService: CollectionService,
+    private changelogService: ChangelogService,
+    private notificationService: ToasterService,
+    private cd: ChangeDetectorRef,
   ) {
     this.navbar.hide();
     this.lastLocation = this.history.lastRoute;
@@ -72,7 +106,6 @@ export class DashboardComponent implements OnInit {
       this.action$.next(1);
     }
     this.activeIndex++;
-    console.log(this.workingLearningObjects[0]);
   }
 
   /**
@@ -141,94 +174,142 @@ export class DashboardComponent implements OnInit {
     this.loading = false;
   }
 
-    /**
-   * Delete a learning object after asking confirmation.
+  /**
+   * Submits learning object to collection
+   * @param event
+   */
+  submitLearningObjectToCollection(event: LearningObject) {
+    this.focusedLearningObject = event;
+    this.submitToCollection = true;
+  }
+
+   /**
+   * Cancel a submission while in waiting status
+   * @param l {LearningObject} learning object to be unpublished
+   */
+  cancelSubmission(l: LearningObject) {
+    this.collectionService.unsubmit({
+      learningObjectId: l.id,
+      userId: l.author.id,
+    }).then(async () => {
+      l.status = LearningObject.Status.UNRELEASED;
+      this.cd.detectChanges();
+    }).catch(err => {
+      console.error(err);
+    });
+  }
+
+  /**
+   * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
    *
-   * This is a generator function.
-   * The confirmation modal is shown from the markup by setting the deleteConfirmation variable
-   * to the return value of this function and then immediately calling the .next() function,
-   * IE deleteConfirmation = delete(l); deleteConfirmation.next();
-   * To confirm or deny the confirmation, call deleteConfirmation.next(true) or deleteConfirmation.next(false)
-   * @param objects {DashboardLearningObject[]} list of objects to be deleted
-   
-  async *delete(objects: LearningObject[] | LearningObject) {
-    const confirm = yield;
-    if (!confirm) {
-      return;
-    }
+   * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
+   * @memberof DashboardComponent
+   */
+  async openViewAllChangelogsModal(learningObjectId: string) {
+    this.openChangelogModal = true;
+    this.loadingChangelogs = true;
+    this.learningObjects = this.workingLearningObjects.concat(this.releasedLearningObjects);
+    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
+    try {
+      this.changelogs =  await this.changelogService.fetchAllChangelogs({
+        userId: this.changelogLearningObject.author.id,
+        learningObjectId: this.changelogLearningObject.id,
+      });
+    } catch (error) {
+      let errorMessage;
 
-    if (!Array.isArray(objects) || objects.length === 1) {
-      const object = Array.isArray(objects) ? objects[0] : objects;
-      this.learningObjectService
-        .delete(object.name , object.author.username)
-        .then(async () => {
-          this.notificationService.notify(
-            'Done!',
-            'Learning Object deleted!',
-            'good',
-            'far fa-check'
-          );
-          this.learningObjects = await this.getLearningObjects();
-          this.clearSelected();
-        })
-        .catch(err => {
-          console.log(err);
-          this.notificationService.notify(
-            'Error!',
-            'Learning Object could not be deleted!',
-            'bad',
-            'far fa-times'
-          );
-        });
-    } else {
-      // multiple deletion
-      const canDelete = objects.filter(s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status));
-
-      if (canDelete.length) {
-        const authorUsername = canDelete[0].author.username;
-        this.learningObjectService
-          // TODO: Verify selected is an array of names
-          .deleteMultiple(canDelete.map(s => s.name), authorUsername)
-          .then(async () => {
-            this.clearSelected();
-            if (canDelete.length === objects.length) {
-              this.notificationService.notify(
-                'Done!',
-                'Learning Objects deleted!',
-                'good',
-                'far fa-check'
-              );
-            } else {
-              this.notificationService.notify(
-                'Warning!',
-                'Some learning objects couldn\'t be deleted! You can only delete learning objects that haven\'t been published.',
-                'warning',
-                'fas fa-exclamation'
-              );
-            }
-            this.learningObjects = await this.getLearningObjects();
-          })
-          .catch(err => {
-            console.log(err);
-            this.notificationService.notify(
-              'Error!',
-              'Learning Objects could not be deleted!',
-              'bad',
-              'far fa-times'
-            );
-          });
+      if (error.status === 401) {
+        // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
+        this.auth.logout();
       } else {
-        this.notificationService.notify(
-          'Warning!',
-          'Learning objects couldn\'t be deleted! You can only delete learning objects that haven\'t been published.',
-          'warning',
-          'fas fa-exclamation'
-        );
+        errorMessage = 'We encountered an error while attempting to retrieve change logs for this Learning Object. Please try again later.';
       }
+
+      this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
     }
 
-    this.deleteConfirmation = undefined;
+    this.loadingChangelogs = false;
+  }
 
-    return;
-  } */
+  /**
+   * Closes any open change log modals
+   *
+   * @memberof DashboardComponent
+   */
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
+  }
+
+     /**
+   * Open the Learning Object's information in a side panel
+   *
+   * @memberof DashboardComponent
+   */
+  openLearningObjectSidePanel(event: LearningObject) {
+    this.focusedLearningObject = event;
+    this.cd.detectChanges();
+    this.sidePanelController$.next(true);
+  }
+
+  async deleteObjects(objects: any) {
+    this.objectsToDelete = Array.from(objects.values());
+    console.log(this.objectsToDelete[0].status);
+    const canDelete = this.objectsToDelete.filter(
+      s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
+    );
+    console.log(canDelete);
+    if (canDelete.length === 1) {
+      this.learningObjectService.delete(canDelete[0].name, canDelete[0].author.username)
+      .then(async () => {
+        this.notificationService.notify(
+          'Done!',
+          'Learning Object deleted!',
+          'good',
+          'far fa-check'
+        );
+        this.workingLearningObjects = await this.getDraftLearningObjects();
+      })
+      .catch(err => {
+        console.log(err);
+        this.notificationService.notify(
+          'Error!',
+          'Learning Object could not be deleted!',
+          'bad',
+          'far fa-times'
+        );
+      });
+    } else if (canDelete.length > 1) {
+      const objectsToDeleteNames = [];
+      canDelete.forEach(object => {
+        objectsToDeleteNames.push(object.name);
+      });
+      this.learningObjectService.deleteMultiple(objectsToDeleteNames, this.objectsToDelete[0].author.username)
+      .then(async () => {
+        this.notificationService.notify(
+          'Done!',
+          'Learning Objects deleted!',
+          'good',
+          'far fa-check'
+        );
+        this.workingLearningObjects = await this.getDraftLearningObjects();
+      })
+      .catch(err => {
+        console.log(err);
+        this.notificationService.notify(
+          'Error!',
+          'Learning Object could not be deleted!',
+          'bad',
+          'far fa-times'
+        );
+      });
+    } else {
+      this.notificationService.notify(
+        'Error!',
+        'Selected Learning Objects could not be deleted!',
+        'bad',
+        'far fa-times'
+      );
+    }
+  }
 }

@@ -11,6 +11,7 @@ import {
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth.service';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -76,7 +77,7 @@ export class DashboardItemComponent implements OnChanges {
 
   constructor(
     private auth: AuthService,
-    private statuses: StatusDescriptions
+    private statuses: StatusDescriptions,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {

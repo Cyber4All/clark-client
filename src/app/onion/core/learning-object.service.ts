@@ -125,7 +125,6 @@ export class LearningObjectService {
         return response.map(object => new LearningObject(object));
       });
   }
-
   /**
    * Sends updated Learning Object to API for updating.
    * Returns null success.

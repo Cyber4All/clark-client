@@ -8,7 +8,7 @@
       <div class="btn-group to-right">
         <button aria-label="Create a new Learning Object" routerLink="/onion/learning-object-builder" class="button good">New <i class="far fa-plus"></i></button>
         <button #filterMenuButtonElement aria-label="Filter Learning Objects by status" class="button neutral" (click)="toggleFilterMenu(true)">Filter <i class="far fa-angle-down"></i></button>
-        <button *ngIf="selected.size" class="button bad" (click)="deleteConfirmation = delete(getSelectedObjects()); deleteConfirmation.next()">Delete Selected <i class="far fa-trash"></i></button>
+        <button *ngIf="selected.size > 0" class="button bad" (click)="confirmDelete()">Delete Selected <i class="far fa-trash"></i></button>
         <button *ngIf="filters.size > 0" aria-label="Clear all selected filters" class="button bad" (click)="clearFilters()">Clear Filters<i class="far fa-times"></i></button>
       </div>
       <ng-container>
@@ -48,7 +48,7 @@
   <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
     <div role="row" class="table__head">
       <div>
-        <clark-checkbox *ngIf="showOptions" role="button" aria-label="Select all Learning Objects" [value]="areAllSelected" (action)="selectAll()"></clark-checkbox>
+        <clark-checkbox *ngIf="showOptions" role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
       </div>
         <div role="columnheader">Status</div>
       <div role="columnheader">Name</div>
@@ -66,11 +66,11 @@
         [showCheck]="showOptions"
         [selected]="this.selected.get(l.id) !== undefined"
         (select)="toggleSelect(l, $event, i)"
-        (delete)="deleteObject(l);"
-        (submit)="submitToCollection = true; focusedLearningObject = l;"
-        (cancelSubmission)="cancelSubmission(l)"
-        (viewAllChangelogs)="openViewAllChangelogsModal(l.id)"
-        (viewSidePanel)="openLearningObjectSidePanel(l)"
+        (delete)="confirmDelete(l)"
+        (submit)="submitToCollection.emit(l);"
+        (cancelSubmission)="cancelCollectionSubmission.emit(l)"
+        (viewAllChangelogs)="openChangelog.emit(l.id)"
+        (viewSidePanel)="openSidePanel.emit(l)"
         >
       </clark-dashboard-item>
       </div>
@@ -91,19 +91,15 @@
   </div>
 </ng-template>
 
-<!-- View All Change Logs -->
-<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-    <clark-changelog-modal
-      [learningObject] = "changelogLearningObject"
-      [changelogs] = "changelogs ? changelogs[0] : undefined"
-      [loading]="loadingChangelogs  "
-    ></clark-changelog-modal>
-  </div> 
+
+<!-- Delete Confirmation Popup -->
+<clark-popup *ngIf="deleteConfirmation" (closed)="deleteConfirmation = undefined">
+  <div #popupInner class="popup-inner">
+    <div class="modal-title">Are you sure?</div>
+    <div class="modal-text">You cannot undo this action!</div>
+    <div class="btn-group center">
+      <button class="button bad" (click)="delete.emit(selectedObjects); deleteConfirmation = undefined; selected.clear()">Yep, do it! <i class="far fa-trash"></i></button>
+      <button class="button neutral" (click)="deleteConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
+    </div>
+  </div>
 </clark-popup>
-
-<!--Delete Confirmation-->
-<clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
-
-<!-- Side panel popout -->
-<clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject"></clark-side-panel-content>

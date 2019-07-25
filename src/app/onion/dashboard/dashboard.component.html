@@ -3,8 +3,8 @@
     (navigateBack)="navigateBack()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
-  <div class="dashboard__lists">
-    <div role="tablist" class="dashboard__tabs" *ngIf="!loading; else loadingTemplate">
+  <div [@dashboardList] class="dashboard__lists" *ngIf="!loading; else loadingTemplate">
+    <div role="tablist" class="dashboard__tabs">
       <button
         class="tabs__item"
         role="tab"
@@ -34,6 +34,10 @@
             [showOptions]="true"
             [learningObjects]="workingLearningObjects"
             (applyFilters)="applyFilters($event)"
+            (cancelCollectionSubmission)="cancelSubmission($event)"
+            (openChangelog)="openViewAllChangelogsModal($event)"
+            (submitToCollection)="submitLearningObjectToCollection($event)"
+            (delete)="deleteObjects($event)"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -43,6 +47,8 @@
             title="Released Learning Objects"
             [showOptions]="false"
             [learningObjects]="releasedLearningObjects"
+            (openChangelog)="openViewAllChangelogsModal($event)"
+            (openSidePanel)="openLearningObjectSidePanel($event)"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -52,20 +58,27 @@
 
 <!--Loading Template-->
 <ng-template #loadingTemplate>
-  <div class="loading-template">
-    <i class="far fa-spinner-third fa-spin"></i>
-    Loading Learning Objects...
+  <div [@Loading] class="loading-template">
+    <div class="loading-content">
+      <i class="far fa-spinner-third fa-spin"></i>
+      Loading Learning Objects...
+    </div>
   </div>
 </ng-template>
 
-<!-- Delete Confirmation Popup -->
-<clark-popup *ngIf="deleteConfirmation" (closed)="deleteConfirmation = undefined">
-  <div #popupInner class="popup-inner">
-    <div class="modal-title">Are you sure?</div>
-    <div class="modal-text">You cannot undo this action!</div>
-    <div class="btn-group center">
-      <button class="button bad" (click)="deleteConfirmation?.next(true)">Yep, do it! <i class="far fa-trash"></i></button>
-      <button class="button neutral" (click)="deleteConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
-    </div>
-  </div>
+<!-- View All Change Logs -->
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+    <clark-changelog-modal
+      [learningObject] = "changelogLearningObject"
+      [changelogs] = "changelogs ? changelogs[0] : undefined"
+      [loading]="loadingChangelogs  "
+    ></clark-changelog-modal>
+  </div> 
 </clark-popup>
+
+<!-- Side panel popout -->
+<clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject"></clark-side-panel-content>
+
+<!--Delete Confirmation-->
+<clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
