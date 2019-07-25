@@ -11,8 +11,7 @@ import { ListComponent } from './components/list/list.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardItemComponent } from './components/new-dashboard-item/dashboard-item.component';
 import { SidePanelModule } from './components/side-panel/side-panel.module';
-import { SidePanelContentComponent } from './components/side-panel-content/side-panel-content.component';
-import { LearningObjectComponent } from './components/side-panel-content/learning-object/learning-object.component';
+import { SidePanelContentModule } from './components/side-panel-content/side-panel-content.module';
 import { OnionSharedModule } from '../shared/onion-shared.module';
 @NgModule({
   imports: [
@@ -26,16 +25,15 @@ import { OnionSharedModule } from '../shared/onion-shared.module';
       }
     ]),
     SharedModule,
-    SidePanelModule
+    SidePanelModule,
+    SidePanelContentModule
   ],
   declarations: [
     DashboardComponent,
     SplashComponent,
     SearchComponent,
     ListComponent,
-    DashboardItemComponent,
-    SidePanelContentComponent,
-    LearningObjectComponent
+    DashboardItemComponent
   ]
 })
 export class DashboardModule { }

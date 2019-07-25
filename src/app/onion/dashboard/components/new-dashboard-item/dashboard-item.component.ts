@@ -79,6 +79,7 @@ export class DashboardItemComponent implements OnChanges {
   constructor(
     private auth: AuthService,
     private statuses: StatusDescriptions,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {

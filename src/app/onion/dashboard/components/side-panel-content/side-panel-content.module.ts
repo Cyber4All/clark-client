@@ -19,7 +19,7 @@ import { SidePanelContentComponent } from './side-panel-content.component';
     SharedModule
   ],
   exports: [
-    SidePanelContentComponent
+    SidePanelContentComponent,
   ]
 })
 export class SidePanelContentModule { }
