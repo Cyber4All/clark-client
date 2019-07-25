@@ -8,7 +8,6 @@ import { UsersComponent } from './pages/users/users.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { FilterSearchComponent } from 'app/admin/components/filter-search/filter-search.component';
 import { FormsModule } from '@angular/forms';
-import { TooltipModule } from 'app/shared/tooltips/tip.module';
 import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
 
 import { ModalModule } from 'app/shared/modals';
@@ -36,14 +35,13 @@ import { LearningObjectListItemComponent } from './components/learning-object-li
     AdminUserCardComponent,
     UserPrivilegesComponent,
     PrivilegesListComponent,
-    LearningObjectListItemComponent
+    LearningObjectListItemComponent,
   ],
   imports: [
     CoreModule.forRoot(),
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    TooltipModule,
     ContextMenuModule,
     ModalModule,
     PopupModule,

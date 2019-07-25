@@ -1,7 +1,7 @@
 <div class="new-rating" [ngClass]="{'rated': rating.value && activePanel === 1}">
   <div class="stars-wrapper" [ngClass]="{'active': activeHover > -1}" (mouseleave)="reset()">
     <div class="empty-stars stars">
-      <div class="star" *ngFor="let item of iterableCount; let i = index;" tip="{{ tips[i] }}" tipLocation="bottom">
+      <div class="star" *ngFor="let item of iterableCount; let i = index;" [tip]="tips[i]" tipPosition="bottom">
         <div (mouseover)="setHover(i)" (click)="rate(i + 1)">
           <i class="fal fa-star"></i>
         </div>

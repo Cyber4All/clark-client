@@ -33,7 +33,7 @@
         <div #ratingsWrapper class="ratings">
           <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRatingValue" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
             (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
-            <button tabindex="0" *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review Learning Objects." tipDisabled="{{ auth.user.emailVerified }}"
+            <button tabindex="0" *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review Learning Objects." [tipDisabled]="auth.user.emailVerified"
             class="button good" (click)="showAddRating = auth.user.emailVerified" attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
             'Write a'}} review <i class="far fa-pencil"></i></button>
         </div>
@@ -48,8 +48,8 @@
       </div>
 
   <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
-    <div class="inner"*ngIf="reviewer">
-      <div *ngIf="hasRevisions" class="revisions">
+    <div *ngIf="reviewer" class="inner">
+      <div *ngIf="loggedin && hasRevisions" class="revisions">
         <div tabindex="0" class="text">View Revisions</div>
         <clark-toggle-switch style="orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
       </div>

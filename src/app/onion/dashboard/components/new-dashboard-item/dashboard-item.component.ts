@@ -5,7 +5,8 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
@@ -89,6 +90,7 @@ export class DashboardItemComponent implements OnChanges {
         )
         .then(desc => {
           this.statusDescription = desc;
+          this.cd.detectChanges();
         });
     }
   }
