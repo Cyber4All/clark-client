@@ -20,6 +20,7 @@ import {
   UploadErrorReason,
   UploadErrorUpdate
 } from './typings';
+import { UserService } from 'app/core/user.service';
 
 const DEFAULT_CONCURRENT_UPLOADS = 10;
 
@@ -27,24 +28,109 @@ const DEFAULT_CONCURRENT_UPLOADS = 10;
 export class FileManagementService {
   private S3: AWS.S3;
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    private userService: UserService
+  ) {}
 
   /**
    * Uploads files to S3 using S3 SDK
    *
-   * @param {string} bucketPath [The path within the bucket to upload files to]
+   * @param {string} authorUsername [The username of the Learning Object's author]
+   * @param {string} learningObjectId [The id of the Learning Object]
+   * @param {number} learningObjectRevisionId [The revision id of the Learning Object]
    * @param {FileInput[]} files [List of files to upload]
    * @returns {Observable<UploadUpdate>}
    * @memberof FileManagementService
    */
-  upload(bucketPath: string, files: FileInput[]): Observable<UploadUpdate> {
-    if (!bucketPath) {
-      throw new Error('bucketPath must be set!');
-    }
+  upload({
+    authorUsername,
+    learningObjectId,
+    learningObjectRevisionId,
+    files
+  }: {
+    authorUsername: string;
+    learningObjectId: string;
+    learningObjectRevisionId: number;
+    files: FileInput[];
+  }): Observable<UploadUpdate> {
+    this.validateUploadParams({
+      authorUsername,
+      learningObjectId,
+      learningObjectRevisionId
+    });
     this.configureS3Client();
     const uploadUpdate$ = new Subject<UploadUpdate>();
-    this.startUploads(files, bucketPath, uploadUpdate$);
+    this.getCognitoIdentityId(authorUsername)
+      .then(cognitoIdentityId => {
+        const bucketPath = `${cognitoIdentityId}/${learningObjectId}/${learningObjectRevisionId}`;
+        console.log('TCL: FileManagementService -> bucketPath', bucketPath);
+        this.startUploads(files, bucketPath, uploadUpdate$);
+      })
+      .catch(e => {
+        uploadUpdate$.next({ type: 'error', data: e });
+      });
+
     return uploadUpdate$;
+  }
+
+  /**
+   * Checks if required parameters for starting an upload are provided
+   * If a parameter is missing, an error is thrown
+   *
+   * @private
+   * @param {string} authorUsername [The username of the Learning Object's author]
+   * @param {string} learningObjectId [The id of the Learning Object]
+   * @param {number} learningObjectRevisionId [The revision id of the Learning Object]
+   * @memberof FileManagementService
+   */
+  private validateUploadParams({
+    authorUsername,
+    learningObjectId,
+    learningObjectRevisionId
+  }: {
+    authorUsername: string;
+    learningObjectId: string;
+    learningObjectRevisionId: number;
+  }) {
+    if (!authorUsername) {
+      throw new Error(
+        'Cannot start upload. Learning Object\'s author\'s username must be provided.'
+      );
+    }
+    if (!learningObjectId) {
+      throw new Error(
+        'Cannot start upload. Learning Object\'s id must be provided.'
+      );
+    }
+    if (learningObjectRevisionId == null) {
+      throw new Error(
+        'Cannot start upload. Learning Object\'s revision id must be provided.'
+      );
+    }
+  }
+
+  /**
+   * Retrieves Cognito Identity Id for the given user
+   *
+   * @private
+   * @param {string} username [The username to retrieve the associated Cognito Identity Id forI]
+   * @returns {Promise<string>}
+   * @memberof FileManagementService
+   */
+  private async getCognitoIdentityId(username: string): Promise<string> {
+    if (username !== this.auth.user.username && !this.auth.isAdminOrEditor()) {
+      throw new Error(
+        `Invalid access. You do not have permission to upload files for ${username}.`
+      );
+    }
+    if (username === this.auth.user.username) {
+      return this.auth.getOpenIdToken().IdentityId;
+    }
+    // Get user data and return cognito id
+    const user = await this.userService.getUser(username);
+    return user.cognitoIdentityId;
   }
 
   /**
@@ -53,7 +139,7 @@ export class FileManagementService {
    * @private
    * @memberof FileManagementService
    */
-  private configureS3Client() {
+  private configureS3Client(): void {
     const openIdToken: OpenIdToken = this.auth.getOpenIdToken();
     if (!openIdToken) {
       const credentialsError = new Error();
@@ -405,8 +491,11 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   delete(learningObject: LearningObject, fileId: string): Promise<{}> {
-    const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT(
-      { authorUsername: learningObject.author.username, learningObjectId: learningObject.id, fileId }    );
+    const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT({
+      authorUsername: learningObject.author.username,
+      learningObjectId: learningObject.id,
+      fileId
+    });
 
     return this.http
       .delete(route, { withCredentials: true, responseType: 'text' })
