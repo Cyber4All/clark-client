@@ -106,6 +106,10 @@ export class DashboardComponent implements OnInit {
       this.action$.next(1);
     }
     this.activeIndex++;
+
+    console.log(this.workingLearningObjects[2].id);
+    const parents = this.learningObjectService.fetchParents('5d3a0c0f483119855925ce5e');
+    console.log(parents);
   }
 
   /**

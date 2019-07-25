@@ -9,6 +9,7 @@ import { LearningObject, LearningOutcome } from '@entity';
 import { CookieService } from 'ngx-cookie';
 
 import { USER_ROUTES } from '@env/route';
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { AuthService } from '../../core/auth.service';
 
 import { retry, catchError, takeUntil } from 'rxjs/operators';
@@ -285,6 +286,12 @@ export class LearningObjectService {
       .toPromise();
   }
 
+  /**
+   * Sets the children of a learning object
+   * @param learningObjectName
+   * @param authorUsername
+   * @param children
+   */
   setChildren(
     learningObjectName: string,
     authorUsername: string,
@@ -303,6 +310,17 @@ export class LearningObjectService {
         catchError(this.handleError)
       )
       .toPromise();
+  }
+
+/**
+ * Fetchs the parents of a learning object
+ * @param id of learing object
+ */
+  fetchParents(id: string) {
+    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id);
+    return this.http.get(route, { withCredentials: false }).toPromise().then(parents => {
+      return parents;
+    });
   }
 
   updateReadme(authorUsername: string, id: string): any {

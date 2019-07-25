@@ -76,10 +76,14 @@ export class DashboardItemComponent implements OnChanges {
   meatballOpen = false;
   showStatus = true;
 
+  // parents
+  parents: LearningObject[];
+
   constructor(
     private auth: AuthService,
     private statuses: StatusDescriptions,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private learningObjectService: LearningObjectService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -102,6 +106,8 @@ export class DashboardItemComponent implements OnChanges {
    */
   toggleContextMenu(value?: boolean) {
     this.meatballOpen = value;
+    const parents = this.objectParentNames();
+    console.log(parents);
   }
 
   /**
@@ -171,5 +177,13 @@ export class DashboardItemComponent implements OnChanges {
     if (!this.meatballOpen) {
       this.viewSidePanel.emit();
     }
+  }
+
+  /**
+   * Takes a learning object an returns a list of it's parents
+   */
+  async objectParentNames() {
+    return this.learningObjectService
+    .fetchParents(this.learningObject.id);
   }
 }
