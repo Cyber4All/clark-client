@@ -13,7 +13,6 @@ export class ListComponent {
 
   // Event emitters to relay actions to dashboard
   @Output() applyFilters: EventEmitter<any> = new EventEmitter();
-  @Output() deleteObjects: EventEmitter<any> = new EventEmitter();
   @Output() cancelCollectionSubmission: EventEmitter<LearningObject> = new EventEmitter();
   @Output() openChangelog: EventEmitter<any> = new EventEmitter();
   @Output() openSidePanel: EventEmitter<LearningObject> = new EventEmitter();
@@ -21,15 +20,15 @@ export class ListComponent {
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
   // delete variables
-  selectedObjects: Map<string, {index: number; object: LearningObject}> = new Map();
   deleteConfirmation: boolean;
+  deleteObjects: LearningObject[];
 
   // Filtering variables
   filters: Map<string, boolean> = new Map();
   filterMenuDown: boolean;
 
   // Selection variables
-  selected: Map<string, {index: number; object: LearningObject}> = new Map();
+  selected: Map<string, LearningObject> = new Map();
   allSelected = false;
 
   constructor(
@@ -80,7 +79,7 @@ export class ListComponent {
     if (this.allSelected) {
       this.selected = new Map(
         // @ts-ignore
-        this.learningObjects.map((x, i) => [x.id, { index: i, object: x }])
+        this.learningObjects.map((learningObject) => [learningObject.id, learningObject])
       );
       this.cd.detectChanges();
     } else {
@@ -93,9 +92,9 @@ export class ListComponent {
    * @param l learning object to be selected
    * @param value boolean, true if object is selected, false otherwise
    */
-  toggleSelect(l: LearningObject, value: boolean, index: number) {
+  toggleSelect(l: LearningObject, value: boolean ) {
     if (value === true) {
-      this.selectLearningObject(l, index);
+      this.selectLearningObject(l);
     } else {
       this.deselectLearningObject(l);
     }
@@ -105,8 +104,8 @@ export class ListComponent {
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
    * @param l Learning Object to be selected
    */
-  selectLearningObject(l: LearningObject, index: number) {
-    this.selected.set(l.id, { index, object: l });
+  selectLearningObject(l: LearningObject) {
+    this.selected.set(l.id, l );
     this.cd.detectChanges();
 
     if (
@@ -136,11 +135,11 @@ export class ListComponent {
    * @param object
    */
   confirmDelete(object?: any) {
+    this.deleteObjects = [];
     if (object) {
-      this.selectedObjects = new Map();
-      this.selectedObjects.set(object.id, object);
+      this.deleteObjects.push(object);
     } else {
-      this.selectedObjects = this.selected;
+      this.deleteObjects = Array.from(this.selected.values());
     }
     this.deleteConfirmation = true;
   }
