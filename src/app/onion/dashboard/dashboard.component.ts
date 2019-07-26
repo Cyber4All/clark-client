@@ -235,7 +235,7 @@ export class DashboardComponent implements OnInit {
 
   // DELETION LOGIC
   async deleteObjects(objects: any) {
-    this.objectsToDelete = Array.from(objects.values());
+    this.objectsToDelete = objects;
     const canDelete = this.objectsToDelete.filter(
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
