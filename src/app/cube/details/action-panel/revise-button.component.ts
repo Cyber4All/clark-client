@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Router } from '@angular/router';
 import { EditorService } from 'app/core/editor.service';
@@ -18,11 +18,18 @@ import { of } from 'rxjs';
       Revise
     </button>
     <button
-      *ngIf="learningObject.status === 'released'"
+      *ngIf="learningObject.status === 'released' && hasRevision"
       [disabled]="learningObject.status === 'released'"
       class="button neutral"
       aria-label="Released Learning Objects cannot be Revised">
       Revisions not permitted
+    </button>
+    <button
+      *ngIf="learningObject.status === 'released' && !hasRevision"
+      class="button neutral"
+      (click)="openCreateRevisionModal()"
+      aria-label="Clickable Create Revision button">
+      Create a Revision
     </button>
     <clark-popup *ngIf="showPopup" (closed)="showPopup = false">
       <div class="popup-content" #popupInner>
@@ -41,11 +48,17 @@ import { of } from 'rxjs';
         </div>
       </div>
     </clark-popup>
+    <clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">
+      <div #popupInner style="max-width: 600px;">
+        <clark-revision-notice-popup (close)="closeRevisionModal()"></clark-revision-notice-popup>
+      </div>
+    </clark-popup>
   `,
   styleUrls: ['./revise-button.component.scss']
 })
 export class ReviseButtonComponent {
   @Input() learningObject: LearningObject;
+  openRevisionModal: boolean;
   showPopup = false;
 
   constructor(private router: Router, private service: EditorService, private toasterService: ToasterService) { }
@@ -64,6 +77,17 @@ export class ReviseButtonComponent {
     } else {
       this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
     }
+  }
+
+  async openCreateRevisionModal() {
+    if (!this.openRevisionModal) {
+      this.openRevisionModal = true;
+    }
+  }
+
+
+  closeRevisionModal() {
+    this.openRevisionModal = false;
   }
 
   /**
