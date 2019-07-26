@@ -21,7 +21,7 @@ export class ListComponent {
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
   // delete variables
-  selectedObjects: Map<string, LearningObject> = new Map();
+  selectedObjects: Map<string, {index: number; object: LearningObject}> = new Map();
   deleteConfirmation: boolean;
 
   // Filtering variables
@@ -29,7 +29,7 @@ export class ListComponent {
   filterMenuDown: boolean;
 
   // Selection variables
-  selected: Map<string, LearningObject> = new Map();
+  selected: Map<string, {index: number; object: LearningObject}> = new Map();
   allSelected = false;
 
   constructor(
@@ -80,7 +80,7 @@ export class ListComponent {
     if (this.allSelected) {
       this.selected = new Map(
         // @ts-ignore
-        this.learningObjects.map((x) =>  x)
+        this.learningObjects.map((x, i) => [x.id, { index: i, object: x }])
       );
       this.cd.detectChanges();
     } else {
