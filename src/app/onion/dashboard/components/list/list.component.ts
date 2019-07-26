@@ -106,7 +106,7 @@ export class ListComponent {
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject, index: number) {
-    this.selected.set( l.id, l );
+    this.selected.set(l.id, { index, object: l });
     this.cd.detectChanges();
 
     if (
