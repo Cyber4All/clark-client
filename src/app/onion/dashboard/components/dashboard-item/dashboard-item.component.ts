@@ -152,7 +152,7 @@ export class DashboardItemComponent implements OnChanges {
    * @param val either the empty string (true) or a minus sign (false)
    */
   toggleSelect(val) {
-    this.select.emit(val !== '-');
+    this.select.emit(val);
   }
 
   /**

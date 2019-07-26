@@ -48,7 +48,7 @@
   <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
     <div role="row" class="table__head">
       <div>
-        <clark-checkbox role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll"></clark-checkbox>
+        <clark-checkbox role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
       </div>
       <div role="columnheader">Status</div>
       <div role="columnheader">Name</div>
