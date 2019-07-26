@@ -71,9 +71,21 @@
   }
 
   &.disabled {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    border-color: $light-grey;
+
+    &:before {
+      background: $light-grey;
+    }
+  
+    &:after {
+      background: $light-grey;
+    }
+
+    &:after, .svg-inline--fa {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }
 
