@@ -16,7 +16,7 @@ import {
       id="checkbox"
       aria-label="Checkbox"
       tabindex="0"
-      (click)="!disabled ? (state = !state) && animate() : none"
+      (click)="(state = !state) && animate()"
       [ngClass]="{ 'active': state, 'disabled': disabled, 'animating': animating }"
     >
       <i class="fas fa-check"></i>
