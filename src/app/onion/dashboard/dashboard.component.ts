@@ -190,6 +190,12 @@ export class DashboardComponent implements OnInit {
     }).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
+      this.notificationService.notify(
+        'Done!',
+        'Learning Object Submission Cancelled!',
+        'good',
+        'far fa-check'
+      );
     }).catch(err => {
       console.error(err);
     });
