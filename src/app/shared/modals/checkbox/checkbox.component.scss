@@ -72,14 +72,7 @@
 
   &.disabled {
     border-color: $light-grey;
-
-    &:before {
-      background: $light-grey;
-    }
-  
-    &:after {
-      background: $light-grey;
-    }
+    cursor: default;
   }
 }
 
