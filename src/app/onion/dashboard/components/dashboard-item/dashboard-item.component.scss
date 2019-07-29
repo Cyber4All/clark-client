@@ -11,9 +11,6 @@
     grid-template-columns: inherit;
     grid-gap: 0 20px;
     align-items: center;
-    &.clickable {
-      cursor: pointer;
-    }
   }
 
   &:not(.disabled):hover {
@@ -31,6 +28,9 @@
 
   .name {
     font-size: $small;
+    &.clickable {
+      cursor: pointer;
+    }
   }
 
   .hierarchy-parents,

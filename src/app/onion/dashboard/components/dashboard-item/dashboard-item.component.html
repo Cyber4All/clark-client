@@ -1,9 +1,7 @@
 <div *ngIf="!hidden" class="dashboard-item">
   <!--FIXME Change click to activate-->
-  <div role="button" tabindex="0" class="row-item" (click)="actionPermissions('infoPanel')&&openInfoPanel()" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
-    <div>
-      <clark-checkbox [disabled]='disabled' [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
-    </div>
+  <div tabindex="0" class="row-item">
+    <clark-checkbox [disabled]='disabled' [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     <div>
       <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="bottom">
         <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
@@ -14,7 +12,7 @@
         <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
       </div>
     </div>
-    <div class="name">
+    <div class="name" role="button" (click)="actionPermissions('infoPanel')&&openInfoPanel()" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
       {{ learningObject.name }}
       <span *ngIf="learningObject.parents?.length" [tip]="learningObject.parents.join(', ')" tipPosition="top" class="hierarchy-parents">{{ learningObject.parents.length }} parent{{ learningObject.parents.length !== 1 ? 's' : '' }}</span>
       <span *ngIf="learningObject.children?.length" [tip]="objectChildrenNames(learningObject).join(', ')" tipPosition="top" class="hierarchy-children">{{ learningObject.children.length }} {{ learningObject.children.length !== 1 ? 'children' : 'child' }}</span>

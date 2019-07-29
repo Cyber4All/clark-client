@@ -61,7 +61,7 @@
           *ngFor="let l of learningObjects; let i = index"
           [learningObject]="l"
           [status]="l.status"
-          [disabled]="l.status !== 'unreleased'"
+          [showCheck]="l.status !== 'unreleased'"
           [selected]="this.selected.get(l.id) !== undefined"
           (select)="toggleSelect(l, $event, i)"
           (delete)="confirmDelete(l)"
@@ -84,7 +84,7 @@
     <p *ngIf="filters.size === 1">
       No Learning Objects found for that status!
     </p>
-    <p *ngIf="learningObject === 0">
+    <p *ngIf="learningObjects.length === 0">
       You don't have any {{ title }} Learning Objects!
     </p>
   </div>

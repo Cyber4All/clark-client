@@ -40,6 +40,9 @@ export class DashboardItemComponent implements OnChanges {
   // does this object have a meatball
   @Input()
   meatball = true;
+  // does this object have an active checkmark
+  @Input ()
+  showCheck = true;
 
   // fired when the checkbox for this element is fired
   @Output()
