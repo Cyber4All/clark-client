@@ -13,6 +13,8 @@ import { DashboardItemComponent } from './components/dashboard-item/dashboard-it
 import { SidePanelModule } from './components/side-panel/side-panel.module';
 import { SidePanelContentModule } from './components/side-panel-content/side-panel-content.module';
 import { OnionSharedModule } from '../shared/onion-shared.module';
+import { ToasterModule } from '../../shared/toaster';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { OnionSharedModule } from '../shared/onion-shared.module';
     SharedModule,
     OnionSharedModule,
     SidePanelModule,
-    SidePanelContentModule
+    SidePanelContentModule,
+    ToasterModule
   ],
   declarations: [
     DashboardComponent,

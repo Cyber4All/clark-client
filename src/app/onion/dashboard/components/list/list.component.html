@@ -47,9 +47,7 @@
   </div>
   <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
     <div role="row" class="table__head">
-      <div>
-        <clark-checkbox *ngIf="showOptions" role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
-      </div>
+      <clark-checkbox [disabled]="!showOptions" role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
       <div role="columnheader">Status</div>
       <div role="columnheader">Name</div>
       <div role="columnheader">Type</div>
@@ -63,7 +61,7 @@
           *ngFor="let l of learningObjects; let i = index"
           [learningObject]="l"
           [status]="l.status"
-          [showCheck]="l.status === 'unreleased'"
+          [disabled]="l.status !== 'unreleased'"
           [selected]="this.selected.get(l.id) !== undefined"
           (select)="toggleSelect(l, $event, i)"
           (delete)="confirmDelete(l)"
