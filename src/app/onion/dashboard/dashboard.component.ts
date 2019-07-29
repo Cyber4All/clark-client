@@ -9,7 +9,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
-import { ToasterService } from 'app/shared/toaster';
+import { ToasterService } from 'app/shared/toaster/toaster.service';
 
 @Component({
   selector: 'clark-dashboard',

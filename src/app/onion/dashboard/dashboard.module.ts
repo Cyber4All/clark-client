@@ -1,6 +1,6 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
@@ -13,7 +13,6 @@ import { DashboardItemComponent } from './components/dashboard-item/dashboard-it
 import { SidePanelModule } from './components/side-panel/side-panel.module';
 import { SidePanelContentModule } from './components/side-panel-content/side-panel-content.module';
 import { OnionSharedModule } from '../shared/onion-shared.module';
-import { ToasterModule } from '../../shared/toaster';
 
 @NgModule({
   imports: [
@@ -28,8 +27,7 @@ import { ToasterModule } from '../../shared/toaster';
     SharedModule,
     OnionSharedModule,
     SidePanelModule,
-    SidePanelContentModule,
-    ToasterModule
+    SidePanelContentModule
   ],
   declarations: [
     DashboardComponent,
