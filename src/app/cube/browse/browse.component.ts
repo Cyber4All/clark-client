@@ -29,6 +29,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;
   learningObjects: LearningObject[];
   totalLearningObjects = 0;
+  outcomeSources: any[];
 
   query: Query = {
     text: '',
@@ -141,9 +142,19 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       //   this.clearAllFilters(true);
       // }
       const collections = await this.collectionService.getCollections();
-      const outcomeSources = await this.outcomeService.getSources();
-      this.filters[3].values = outcomeSources.map(o => ({ name: o }));
       this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
+
+      /** FIXME pls
+      // Will try to retrieve the outcome sources, if it cannot retrieve
+      // them it will pop the guidelines element in the array so that it does
+      // not appear on the page at all
+      */
+      try {
+        this.outcomeSources = await this.outcomeService.getSources();
+        this.filters[3].values = this.outcomeSources.map(o => ({ name: o }));
+      } catch (err) {
+        this.filters.pop();
+      }
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     });
