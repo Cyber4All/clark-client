@@ -44,7 +44,9 @@ export class CheckBoxComponent implements OnChanges {
   }
 
   get state() {
-    return this._state;
+    if (!this.disabled) {
+      return this._state;
+    }
   }
 
   set state(value: boolean) {
