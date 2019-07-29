@@ -80,12 +80,6 @@
     &:after {
       background: $light-grey;
     }
-
-    &:after, .svg-inline--fa {
-      transform: scale(1);
-      opacity: 1;
-      visibility: visible;
-    }
   }
 }
 
