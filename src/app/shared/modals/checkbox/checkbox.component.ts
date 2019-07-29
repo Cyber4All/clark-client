@@ -16,7 +16,7 @@ import {
       id="checkbox"
       aria-label="Checkbox"
       tabindex="0"
-      (click)="(state = !state) && animate()"
+      (click)="!disabled ? (state = !state) && animate() : none"
       [ngClass]="{ 'active': state, 'disabled': disabled, 'animating': animating }"
     >
       <i class="fas fa-check"></i>
@@ -48,8 +48,8 @@ export class CheckBoxComponent implements OnChanges {
   }
 
   set state(value: boolean) {
-    this._state = value;
-    this.sendEvent();
+      this._state = value;
+      this.sendEvent();
   }
 
   get animating() {
