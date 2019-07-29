@@ -78,15 +78,29 @@
 
 <ng-template #noLearningObjects>
   <div class="dashboard-list__table empty">
-    <p *ngIf="filters.size > 1">
-      No Learning Objects found for those statuses!
-    </p>
-    <p *ngIf="filters.size === 1">
-      No Learning Objects found for that status!
-    </p>
-    <p *ngIf="learningObjects.length === 0">
-      You don't have any {{ title }} Learning Objects!
-    </p>
+    <div *ngIf="learningObjects.length === 0">
+      <div class="top">
+        <i class="fal fa-box-open"></i>
+        <div class="top-message">
+          Nothing here!
+        </div>
+      </div>
+      <div class="empty-text" *ngIf="showOptions && filters.size === 0">
+        Once you've made some learning objects they'll show up here.
+      </div>
+      <div class="empty-text" *ngIf="filters.size === 1">
+        You don't have any Learning Objects with that status!
+      </div>
+      <div class="empty-text" *ngIf="filters.size > 1">
+        You don't have any Learning Objects with thoses statuses!
+      </div>
+      <div class="empty-text" *ngIf="!showOptions">
+        Once you've made some learning objects they'll show up in your Draft Learning Objects list.
+      </div>
+      <div class="btn-group center">
+        <button class="button good" routerLink="/onion/learning-object-builder">Create a Learning Object <i class="fas fa-plus"></i></button>
+      </div>
+    </div>
   </div>
 </ng-template>
 
