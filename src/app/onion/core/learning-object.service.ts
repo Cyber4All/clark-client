@@ -323,9 +323,9 @@ export class LearningObjectService {
  * Fetchs the parents of a learning object
  * @param id of learing object
  */
-fetchParents(id: string): Promise<any> {
+fetchParents(id: string) {
   const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id);
-  return this.http.get(route, { withCredentials: true }).toPromise().then(parents => {
+  return this.http.get<LearningObject[]>(route, { withCredentials: true }).toPromise().then(parents => {
     return parents;
   });
 }
