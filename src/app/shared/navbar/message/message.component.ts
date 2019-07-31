@@ -8,7 +8,7 @@ import { MessagesService, Message } from '../../../core/messages.service';
 })
 export class MessageComponent implements OnInit {
 
-  showing = false;
+  showing = true;
   message: Message;
 
   constructor(private messages: MessagesService) { }

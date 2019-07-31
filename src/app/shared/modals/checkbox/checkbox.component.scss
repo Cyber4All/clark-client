@@ -71,9 +71,8 @@
   }
 
   &.disabled {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    border-color: $light-grey;
+    cursor: default;
   }
 }
 
