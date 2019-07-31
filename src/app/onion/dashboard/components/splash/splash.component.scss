@@ -6,6 +6,7 @@
   padding: 20px 20px 180px;
   position: relative;
   overflow: hidden;
+  transform-origin: left;
 
   &:before {
     content: '';
