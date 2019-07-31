@@ -15,8 +15,9 @@ import { DetailsSplashComponent } from './splash/details-splash.component';
 import { ActionPanelComponent } from './action-panel/action-panel.component';
 import { ErrorStatusComponent } from './error-status/error-status.component';
 import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
-import { ReviseButtonComponent } from './action-panel/revise-button.component';
 import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
+import { EditorialActionPadModule } from './action-panel/editorial-action-pad/editorial-action-pad.module';
+import { EditorialActionPadComponent } from './action-panel/editorial-action-pad/editorial-action-pad.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
     FormsModule,
     RouterModule,
     FileBrowserModule,
-    CubeSharedModule
+    CubeSharedModule,
+    EditorialActionPadModule,
   ],
   exports: [],
   declarations: [
@@ -39,7 +41,6 @@ import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
     ActionPanelComponent,
     ErrorStatusComponent,
     ReviewerPanelComponent,
-    ReviseButtonComponent
   ],
   providers: []
 })

@@ -48,6 +48,7 @@ import { ChangelogModalComponent } from './changelog-modal/changelog-modal.compo
 import { ChangelogListComponent } from './changelog-list/changelog-list.component';
 import { ChangelogItemComponent } from './changelog-item/changelog-item.component';
 import { IdentificationPillComponent } from './identification-pill/identification-pill.component';
+import { RevisionNoticePopupComponent } from './popup-templates/revision-notice-popup/revision-notice-popup.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -93,6 +94,7 @@ import { IdentificationPillComponent } from './identification-pill/identificatio
     CollectionCardComponent,
     CarouselComponent,
     DownloadNoticePopupComponent,
+    RevisionNoticePopupComponent,
     CollectionSelectorPopupComponent,
     CollectionsGridComponent,
     GenericCollectionLogoComponent,
@@ -132,6 +134,7 @@ import { IdentificationPillComponent } from './identification-pill/identificatio
     CollectionCardComponent,
     ToasterModule,
     DownloadNoticePopupComponent,
+    RevisionNoticePopupComponent,
     CollectionSelectorPopupComponent,
     CollectionCardComponent,
     CarouselComponent,
