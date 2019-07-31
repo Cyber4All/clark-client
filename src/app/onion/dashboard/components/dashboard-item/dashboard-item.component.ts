@@ -190,6 +190,9 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Returns the learning objects parent names in an array of strings
+   */
   async parentNames() {
     const parents = [];
     return this.learningObjectService.fetchParents(this.learningObject.id).then(returners => {

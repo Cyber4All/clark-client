@@ -8,8 +8,8 @@ import { trigger, transition, style, animate, animateChild, query } from '@angul
   animations: [
     trigger('splash', [
       transition(':enter', [
-        style({width: '0px', 'padding-left': '0px', 'padding-right': '0px', opacity: 0}),
-        animate('400ms ease-out', style({width: '100%', 'padding-left': '20px', 'padding-right': '20px', 'opacity': 1})),
+        style({transform: 'scale(0,1)', opacity: 0}),
+        animate('400ms ease-out', style({ transform: 'scale(1)', opacity: 1})),
         query( '@search', animateChild() )
       ])
     ]),
