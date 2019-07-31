@@ -31,7 +31,7 @@ export class CartComponent implements OnInit, OnDestroy {
     public cartService: CartV2Service,
     private router: Router,
     private authService: AuthService,
-    private toaster: ToasterService
+    private toaster: ToasterService,
   ) { }
 
   ngOnInit() {
