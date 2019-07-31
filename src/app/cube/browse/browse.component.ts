@@ -141,20 +141,27 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       // if (params.text && params.text !== this.query.text) {
       //   this.clearAllFilters(true);
       // }
-      const collections = await this.collectionService.getCollections();
-      this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
 
       /** FIXME pls
-      // Will try to retrieve the outcome sources, if it cannot retrieve
+      // Will try to retrieve the outcome sources and collection sources, if it cannot retrieve
       // them it will pop the guidelines element in the array so that it does
-      // not appear on the page at all
+      // not appear on the page at all and it will also remove the collections element in the array
       */
       try {
+        // fill outcomes array in filters
         this.outcomeSources = await this.outcomeService.getSources();
         this.filters[3].values = this.outcomeSources.map(o => ({ name: o }));
       } catch (err) {
         this.filters.pop();
       }
+      try {
+        // fill collections array in filters
+        const collections = await this.collectionService.getCollections();
+        this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
+      } catch (err) {
+        this.filters.shift();
+      }
+      // makes query based and sends request to fetch learning objects
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
     });
