@@ -28,17 +28,18 @@
 
   .name {
     font-size: $small;
+
+    .hierarchy-parents,
+    .hierarchy-children {
+      color: $light-blue;
+      font-size: $small;
+      margin-left: 10px;
+      font-style: bold;
+    }
+    
     &.clickable {
       cursor: pointer;
     }
-  }
-
-  .hierarchy-parents,
-  .hierarchy-children {
-    color: $light-blue;
-    font-size: $small;
-    margin-left: 10px;
-    font-style: bold;
   }
 }
 

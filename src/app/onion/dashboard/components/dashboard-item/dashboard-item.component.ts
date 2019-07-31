@@ -6,12 +6,16 @@ import {
   OnChanges,
   SimpleChanges,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnInit
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
 import { AuthService } from 'app/core/auth.service';
+import { LearningObject } from 'entity/learning-object/learning-object';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
+
 
 @Component({
   selector: 'clark-dashboard-item',
@@ -19,9 +23,9 @@ import { AuthService } from 'app/core/auth.service';
   styleUrls: ['./dashboard-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardItemComponent implements OnChanges {
+export class DashboardItemComponent implements OnInit, OnChanges {
   @Input()
-  learningObject: DashboardLearningObject;
+  learningObject: LearningObject;
   // the status of the learning object (passed in separately for change detection)
   @Input()
   status: string;
@@ -75,11 +79,19 @@ export class DashboardItemComponent implements OnChanges {
   meatballOpen = false;
   showStatus = true;
 
+  // parents
+  parents: string[];
+
   constructor(
     private auth: AuthService,
     private statuses: StatusDescriptions,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private learningObjectService: LearningObjectService
   ) {}
+
+  async ngOnInit() {
+    this.parents = await this.parentNames();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
@@ -162,9 +174,9 @@ export class DashboardItemComponent implements OnChanges {
    * Takes a learning object and returns a list of it's children's names or an empty list
    * @return {string[]}
    */
-  objectChildrenNames(learningObject: DashboardLearningObject): string[] {
+  objectChildrenNames(learningObject: LearningObject): string[] {
     if (learningObject.children && learningObject.children.length) {
-      return (learningObject.children as DashboardLearningObject[]).map(
+      return (learningObject.children as LearningObject[]).map(
         l => l.name
       );
     } else {
@@ -175,5 +187,15 @@ export class DashboardItemComponent implements OnChanges {
     if (!this.meatballOpen) {
       this.viewSidePanel.emit();
     }
+  }
+
+  async parentNames(): Promise<string[]> {
+    let parents = [];
+    this.learningObjectService.fetchParents(this.learningObject.id).then(returners => {
+      console.log(returners);
+      parents = returners;
+    });
+    console.log(parents);
+    return parents;
   }
 }
