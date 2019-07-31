@@ -67,7 +67,6 @@
   .list-body {
     .column-headers,
     ::ng-deep .row-item {
-      padding: 0 20px;
       display: grid;
       grid-template-columns: 32px 60px 1fr 180px 180px 50px;
       grid-gap: 0 20px;
@@ -75,18 +74,12 @@
       font-size: $small;
     }
 
-    ::ng-deep .row-item {
-      & > div {
-        padding-top: 20px;
-        padding-bottom: 20px;
-      }
-    }
-
     .column-headers {
       font-size: $small;
       color: $dark-grey;
       padding-top: 20px;
       padding-bottom: 10px;
+      padding-left: 20px;
     }
 
     clark-dashboard-item {
