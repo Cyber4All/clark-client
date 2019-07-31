@@ -15,7 +15,7 @@ export class RevisionNoticePopupComponent implements OnInit {
   }
 
   createRevision(): void {
-      
+
   }
 
 }
