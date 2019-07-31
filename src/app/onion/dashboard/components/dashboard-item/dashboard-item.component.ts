@@ -189,13 +189,13 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     }
   }
 
-  async parentNames(): Promise<string[]> {
-    let parents = [];
-    this.learningObjectService.fetchParents(this.learningObject.id).then(returners => {
-      console.log(returners);
-      parents = returners;
+  async parentNames() {
+    const parents = [];
+    return this.learningObjectService.fetchParents(this.learningObject.id).then(returners => {
+      returners.forEach(parent => {
+        parents.push(parent.name);
+      });
+      return parents;
     });
-    console.log(parents);
-    return parents;
   }
 }
