@@ -15,8 +15,7 @@ import { ToasterModule } from '../shared/toaster';
 import { ModalModule } from '../shared/modals';
 import { OnionComponent } from './onion.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
-import { SidePanelModule } from './old-dashboard/components/side-panel/side-panel.module';
-import { DashboardItemComponent } from './old-dashboard/components/dashboard-item/dashboard-item.component';
+import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SidePanelContentModule } from './dashboard/components/side-panel-content/side-panel-content.module';
 /**
@@ -30,7 +29,6 @@ import { SidePanelContentModule } from './dashboard/components/side-panel-conten
   declarations: [
     OnionComponent,
     OldDashboardComponent,
-    DashboardItemComponent,
   ],
   // Specifies all modules to be imported
   imports: [

@@ -1,10 +1,11 @@
+<clark-toaster [content]="notificationService.content"></clark-toaster>
 <div class="dashboard">
   <clark-dashboard-splash
     (navigateBack)="navigateBack()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
-  <div class="dashboard__lists">
-    <div role="tablist" class="dashboard__tabs" *ngIf="!loading; else loadingTemplate">
+  <div [@dashboardList] class="dashboard__lists" *ngIf="!loading; else loadingTemplate">
+    <div role="tablist" class="dashboard__tabs">
       <button
         class="tabs__item"
         role="tab"
@@ -28,12 +29,16 @@
     </div>
     <clark-carousel [action$]="action$">
       <ng-template>
-        <div id="draft-objects-list-panel" class="list__wrapper" *ngIf="!loading">
+        <div id="draft-objects-list-panel" class="list__wrapper">
           <clark-dashboard-list
             title="Draft Learning Objects"
             [showOptions]="true"
             [learningObjects]="workingLearningObjects"
             (applyFilters)="applyFilters($event)"
+            (cancelCollectionSubmission)="cancelSubmission($event)"
+            (openChangelog)="openViewAllChangelogsModal($event)"
+            (submitToCollection)="submitLearningObjectToCollection($event)"
+            (delete)="deleteObjects($event)"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -43,6 +48,8 @@
             title="Released Learning Objects"
             [showOptions]="false"
             [learningObjects]="releasedLearningObjects"
+            (openChangelog)="openViewAllChangelogsModal($event)"
+            (openSidePanel)="openLearningObjectSidePanel($event)"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -52,8 +59,30 @@
 
 <!--Loading Template-->
 <ng-template #loadingTemplate>
-  <div class="loading-template">
-    <i class="far fa-spinner-third fa-spin"></i>
-    Loading Learning Objects...
+  <div [@Loading] class="loading-template">
+    <div [@Loading] class="loading-template">
+      <div class="loading-content">
+        <i class="far fa-spinner-third fa-spin"></i>
+        Loading Learning Objects...
+      </div>
+    </div>
   </div>
 </ng-template>
+
+<!-- View All Change Logs -->
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+      <clark-changelog-modal
+        [learningObject] = "changelogLearningObject"
+        [changelogs] = "changelogs ? changelogs[0] : undefined"
+        [loading]="loadingChangelogs  "
+      ></clark-changelog-modal>
+    </div> 
+  </clark-popup>
+  
+  <!-- Side panel popout -->
+  <clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject"></clark-side-panel-content>
+  
+  <!--Delete Confirmation-->
+  <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit> 
+  

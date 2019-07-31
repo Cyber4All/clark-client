@@ -3,11 +3,14 @@
 .dashboard-item {
   border-top: 2px solid $light-grey;
   transition: background 0.1s ease;
+  grid-template-columns: inherit;
+  padding: 20px;
 
   .row-item {
-    &.clickable {
-      cursor: pointer;
-    }
+    display: grid;
+    grid-template-columns: inherit;
+    grid-gap: 0 20px;
+    align-items: center;
   }
 
   &:not(.disabled):hover {
@@ -25,14 +28,18 @@
 
   .name {
     font-size: $small;
-  }
 
-  .hierarchy-parents,
-  .hierarchy-children {
-    color: $light-blue;
-    font-size: $small;
-    margin-left: 10px;
-    font-style: bold;
+    .hierarchy-parents,
+    .hierarchy-children {
+      color: $light-blue;
+      font-size: $small;
+      margin-left: 10px;
+      font-style: bold;
+    }
+    
+    &.clickable {
+      cursor: pointer;
+    }
   }
 }
 
