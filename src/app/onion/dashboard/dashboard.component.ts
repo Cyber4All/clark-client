@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
-    private notificationService: ToasterService,
+    public notificationService: ToasterService,
     private cd: ChangeDetectorRef,
   ) {
     this.navbar.hide();
