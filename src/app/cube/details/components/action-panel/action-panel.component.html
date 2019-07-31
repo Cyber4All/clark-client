@@ -5,21 +5,11 @@
   </div>
   <div *ngIf="!revisedVersion; else reviewerPanel">
     <div class="btn-group vertical" [ngClass]="{'review-pending': !isReleased}">
-      <button [tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading}"
-        class="button good" id="download-button" (activate)="addToCart(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
-        <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
-          <span *ngIf="downloading">
-            <i class="fal fa-spinner-third fa-spin"></i>
-          </span>
-        </span>
-        <span tabindex="0" *ngIf="!hasDownloadAccess">Not available for download</span>
-      </button>
-      <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToCart()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
-        {{ saved ? 'Saved to your library!' : 'Save to Library' }}
-        <span *ngIf="addingToLibrary">
-          <i class="fal fa-spinner-third fa-spin"></i>
-        </span>
-      </button>
+      <ng-container *ngIf="disableLibraryButtons; else libraryButtonsTemplate">
+        <div [tip]="serviceOutageMessage" class="library-buttons-disabled">
+          <ng-container *ngTemplateOutlet="libraryButtonsTemplate"></ng-container>
+        </div>
+      </ng-container>
       <clark-revise-button *ngIf="userCanRevise" [learningObject]="learningObject"></clark-revise-button>
     </div>
     <ng-container *ngIf="!auth.user">
@@ -89,3 +79,21 @@
     <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
   </div>
 </clark-popup>
+
+<ng-template #libraryButtonsTemplate>
+  <button [tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons}"
+    class="button good" id="download-button" (activate)="addToCart(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
+    <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
+      <span *ngIf="downloading">
+        <i class="fal fa-spinner-third fa-spin"></i>
+      </span>
+    </span>
+    <span tabindex="0" *ngIf="!hasDownloadAccess">Not available for download</span>
+  </button>
+  <button *ngIf="!userIsAuthor" [ngClass]="{'disabled': !auth.user || disableLibraryButtons, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToCart()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
+    {{ saved ? 'Saved to your library!' : 'Save to Library' }}
+    <span *ngIf="addingToLibrary">
+      <i class="fal fa-spinner-third fa-spin"></i>
+    </span>
+  </button>
+</ng-template>

@@ -1,34 +1,58 @@
 <div tabindex="0" id="pageContent" class="wrapper">
-  <div class="title">{{ copy.TITLE }}</div>
-  <div id="library-count" class="count">{{cartItems.length || 0}} item{{(cartItems.length != 1) ? 's' : ''}}</div>
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <ng-container *ngIf="!serviceError; else errorTemplate">
+      <div class="title">{{ copy.TITLE }}</div>
+      <div id="library-count" class="count">{{cartItems.length || 0}} item{{(cartItems.length != 1) ? 's' : ''}}</div>
 
-  <div *ngIf="cartItems" class="cart">
-    <div *ngFor="let object of cartItems; let i = index;" class="object">
-      <div>
-        <div class="name" (activate)="goToItem(object)">{{object.name}}
-          <span class="length " [ngClass]="object.length">{{ object.length }}</span>
+      <div *ngIf="cartItems" class="cart">
+        <div *ngFor="let object of cartItems; let i = index;" class="object">
+          <div>
+            <div class="name" (activate)="goToItem(object)">{{object.name}}
+              <span class="length " [ngClass]="object.length">{{ object.length }}</span>
+            </div>
+            <div class="author">{{object.author.name | titlecase}}</div>
+          </div>
+          <div class="actions">
+            <button *ngIf="canDownload || object.status === statuses.RELEASED" class="button icon-only good" [ngClass]="{'disabled': downloading[i]}" (activate)="downloadObject($event, object, i)">
+              <span *ngIf="!downloading[i]">
+                <i class="far fa-download"></i>
+              </span>
+              <span *ngIf="downloading[i]">
+                <i class="fal fa-spinner-third fa-spin "></i>
+              </span>
+            </button>
+            <button id="remove-library-item" class="button icon-only bad" (activate)="removeItem($event, object)">
+              <i class="far fa-times"></i>
+            </button>
+          </div>
         </div>
-        <div class="author">{{object.author.name | titlecase}}</div>
       </div>
-      <div class="actions">
-        <button *ngIf="canDownload || object.status === statuses.RELEASED" class="button icon-only good" [ngClass]="{'disabled': downloading[i]}" (activate)="downloadObject($event, object, i)">
-          <span *ngIf="!downloading[i]">
-            <i class="far fa-download"></i>
-          </span>
-          <span *ngIf="downloading[i]">
-            <i class="fal fa-spinner-third fa-spin "></i>
-          </span>
-        </button>
-        <button id="remove-library-item" class="button icon-only bad" (activate)="removeItem($event, object)">
-          <i class="far fa-times"></i>
-        </button>
+    
+      <div *ngIf="!cartService.cartItems.length" class="no-objects">
+        {{ copy.EMPTY }}
+        <br/>Get started
+        <a routerLink="/browse" id="browse-message">browsing some learning objects!</a>
       </div>
+    </ng-container>
+  </ng-container>
+
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="loading">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading...
+  </div>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <div class="service-error">
+    <div class="service-error__icon">
+      😟 
+    </div>
+    <div class="service-error__message">
+      We're experiencing network issues that are affecting libraries. We've disabled your library while we work to resolve the issues. Please check back later.
     </div>
   </div>
+</ng-template>
 
-  <div *ngIf="!cartService.cartItems.length" class="no-objects">
-    {{ copy.EMPTY }}
-    <br/>Get started
-    <a routerLink="/browse" id="browse-message">browsing some learning objects!</a>
-  </div>
-</div>

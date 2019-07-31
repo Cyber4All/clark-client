@@ -9,6 +9,29 @@
   margin-top: 40px;
   box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 
+  .loading {
+    text-align: center;
+    color: $dark-grey;
+
+    .svg-inline--fa {
+      color: $light-blue;
+      margin-right: 5px;
+    }
+  }
+
+  .service-error {
+    text-align: center;
+
+    .service-error__icon {
+      font-size: 40px;
+    }
+
+    .service-error__message {
+      font-size: $large;
+      color: $dark-grey;
+    }
+  }
+
   .title {
     text-transform: uppercase;
     font-weight: bold;
