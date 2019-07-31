@@ -25,7 +25,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('savesRef') savesRef: ElementRef;
 
   disableLibraryButtons: boolean;
-  serviceOutageMessage = `Due to a service outage, we've temporarily disabled your library and Learning Object downloads. Please try again later.`;
+  serviceOutageMessage =
+    'We\'re currently experiencing network issues that are affecting downloads and libraries. ' +
+    'Both have been disabled while we work to resolve the issues. Please check back later.';
 
   private destroyed$ = new Subject<void>();
   hasDownloadAccess = false;

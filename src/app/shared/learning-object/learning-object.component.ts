@@ -32,7 +32,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   canDownload = false;
   showDownloadModal = false;
 
-  // FIXME soon pls
+  // FIXME this removes the download icons while issues with the Library service are resolved
   downloadService = false;
 
   constructor(
