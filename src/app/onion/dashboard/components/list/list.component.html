@@ -47,9 +47,7 @@
   </div>
   <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
     <div role="row" class="table__head">
-      <div>
-        <clark-checkbox *ngIf="showOptions" role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
-      </div>
+      <clark-checkbox [disabled]="!showOptions" role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
       <div role="columnheader">Status</div>
       <div role="columnheader">Name</div>
       <div role="columnheader">Type</div>
@@ -63,7 +61,7 @@
           *ngFor="let l of learningObjects; let i = index"
           [learningObject]="l"
           [status]="l.status"
-          [showCheck]="l.status === 'unreleased'"
+          [showCheck]="l.status !== 'unreleased'"
           [selected]="this.selected.get(l.id) !== undefined"
           (select)="toggleSelect(l, $event, i)"
           (delete)="confirmDelete(l)"
@@ -80,15 +78,29 @@
 
 <ng-template #noLearningObjects>
   <div class="dashboard-list__table empty">
-    <p *ngIf="filters.size > 1">
-      No Learning Objects found for those statuses!
-    </p>
-    <p *ngIf="filters.size === 1">
-      No Learning Objects found for that status!
-    </p>
-    <p *ngIf="learningObject === 0">
-      You don't have any {{ title }} Learning Objects!
-    </p>
+    <div *ngIf="learningObjects.length === 0">
+      <div class="top">
+        <i class="fal fa-box-open"></i>
+        <div class="top-message">
+          Nothing here!
+        </div>
+      </div>
+      <div class="empty-text" *ngIf="showOptions && filters.size === 0">
+        Once you've made some learning objects they'll show up here.
+      </div>
+      <div class="empty-text" *ngIf="filters.size === 1">
+        You don't have any Learning Objects with that status!
+      </div>
+      <div class="empty-text" *ngIf="filters.size > 1">
+        You don't have any Learning Objects with thoses statuses!
+      </div>
+      <div class="empty-text" *ngIf="!showOptions">
+        Once you've made some learning objects they'll show up in your Draft Learning Objects list.
+      </div>
+      <div class="btn-group center">
+        <button class="button good" routerLink="/onion/learning-object-builder">Create a Learning Object <i class="fas fa-plus"></i></button>
+      </div>
+    </div>
   </div>
 </ng-template>
 

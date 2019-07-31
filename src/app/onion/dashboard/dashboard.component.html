@@ -1,10 +1,11 @@
+<clark-toaster [content]="notificationService.content"></clark-toaster>
 <div class="dashboard">
   <clark-dashboard-splash
     (navigateBack)="navigateBack()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
-  <div class="dashboard__lists">
-    <div role="tablist" class="dashboard__tabs" *ngIf="!loading; else loadingTemplate">
+  <div [@dashboardList] class="dashboard__lists" *ngIf="!loading; else loadingTemplate">
+    <div role="tablist" class="dashboard__tabs">
       <button
         class="tabs__item"
         role="tab"
@@ -28,7 +29,7 @@
     </div>
     <clark-carousel [action$]="action$">
       <ng-template>
-        <div id="draft-objects-list-panel" class="list__wrapper" *ngIf="!loading">
+        <div id="draft-objects-list-panel" class="list__wrapper">
           <clark-dashboard-list
             title="Draft Learning Objects"
             [showOptions]="true"
@@ -58,9 +59,13 @@
 
 <!--Loading Template-->
 <ng-template #loadingTemplate>
-  <div class="loading-template">
-    <i class="far fa-spinner-third fa-spin"></i>
-    Loading Learning Objects...
+  <div [@Loading] class="loading-template">
+    <div [@Loading] class="loading-template">
+      <div class="loading-content">
+        <i class="far fa-spinner-third fa-spin"></i>
+        Loading Learning Objects...
+      </div>
+    </div>
   </div>
 </ng-template>
 

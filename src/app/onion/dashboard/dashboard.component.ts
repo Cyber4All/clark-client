@@ -6,15 +6,33 @@ import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
-import { ToasterService } from 'app/shared/toaster';
+import { ToasterService } from 'app/shared/toaster/toaster.service';
 
 @Component({
   selector: 'clark-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('dashboardList', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('200ms 400ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
+      ]),
+    ]),
+    trigger('Loading', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animate('400ms 500ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1, transform: 'translateY(0px)'}),
+        animate('200ms ease-out', style({opacity: 0, transform: 'translateY(20px)'})),
+      ])
+    ]),
+  ]
 })
 export class DashboardComponent implements OnInit {
   lastLocation: NavigationEnd;
@@ -54,7 +72,7 @@ export class DashboardComponent implements OnInit {
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
-    private notificationService: ToasterService,
+    public notificationService: ToasterService,
     private cd: ChangeDetectorRef,
   ) {
     this.navbar.hide();
@@ -172,6 +190,12 @@ export class DashboardComponent implements OnInit {
     }).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
+      this.notificationService.notify(
+        'Done!',
+        'Learning Object Submission Cancelled!',
+        'good',
+        'far fa-check'
+      );
     }).catch(err => {
       console.error(err);
     });
