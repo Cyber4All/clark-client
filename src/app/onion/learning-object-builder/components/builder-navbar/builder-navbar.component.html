@@ -32,7 +32,7 @@
         tip="This learning object has been submitted to the {{
           collection.name
         }} collection."
-        tipLocation="bottom"
+        tipPosition="bottom"
       >
         <span>{{ collection.name }}</span>
         <div
@@ -65,7 +65,7 @@
             *ngIf="validator.submissionMode && submissionError"
             class="button__cancel"
             tip="Cancel Submission"
-            tipLocation="bottom"
+            tipPosition="bottom"
             (activate)="$event.stopPropagation(); validator.submissionMode = false"
           >
             <i class="far fa-times"></i>
@@ -157,7 +157,7 @@
     *ngIf="disabled"
     class="disabled"
     tip="Please give this learning object a name before adding outcomes or uploading materials"
-    tipLocation="above"
+    tipPosition="top"
     ><i class="fas fa-lock"></i>{{ text }}</a
   >
 </ng-template>

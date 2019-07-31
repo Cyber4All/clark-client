@@ -19,17 +19,17 @@
       </form>
       <div class="buttons">
         <ng-container *ngIf="page !== 1">
-          <button aria-label="Back" type="type" class="reg-button" id="button-back" tip="{{tipText[page - 1].left}}" tipLocation="above" (activate)="back()">
+          <button aria-label="Back" type="type" class="reg-button" id="button-back" [tip]="tipText[page - 1].left" tipPosition="top" (activate)="back()">
             <i class="far fa-arrow-left"></i>
           </button>
         </ng-container>
         <ng-container *ngIf="page !== elements.length; else submitTemplate">
-          <button aria-label="Continue" type="type" class="reg-button right" id="button-next" tip="{{tipText[page - 1].right}}" tipLocation="above" (activate)="next()">
+          <button aria-label="Continue" type="type" class="reg-button right" id="button-next" [tip]="tipText[page - 1].right" tipPosition="top" (activate)="next()">
             <i class="far fa-arrow-right"></i>
           </button>
         </ng-container>
         <ng-template #submitTemplate>
-          <button  aria-label="Submit" type="submit" class="reg-button right submit" id="button-submit" tip="{{tipText[page - 1].right}}" tipLocation="above" (activate)="submit()">
+          <button aria-label="Submit" type="submit" class="reg-button right submit" id="button-submit" [tip]="tipText[page - 1].right" tipPosition="top" (activate)="submit()">
             <span aria-live="assertive" aria-label="Submitted" *ngIf="!loading; else loadingIcon"><i class="far fa-check"></i></span>
             <ng-template #loadingIcon><i class="far fa-spinner-third fa-spin"></i></ng-template>
           </button>

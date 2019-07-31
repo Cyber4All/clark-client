@@ -32,7 +32,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     AdminUserCardComponent,
     UserPrivilegesComponent,
     PrivilegesListComponent,
-    LearningObjectListItemComponent
+    LearningObjectListItemComponent,
   ],
   imports: [
     CoreModule.forRoot(),

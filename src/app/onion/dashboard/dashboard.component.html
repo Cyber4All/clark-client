@@ -1,9 +1,10 @@
 <div class="dashboard">
   <clark-dashboard-splash
     (navigateBack)="navigateBack()"
+    (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
   <div class="dashboard__lists">
-    <div role="tablist" class="dashboard__tabs">
+    <div role="tablist" class="dashboard__tabs" *ngIf="!loading; else loadingTemplate">
       <button
         class="tabs__item"
         role="tab"
@@ -12,7 +13,7 @@
         [ngClass]="{ 'tabs__item--active': !(activeIndex % 2) }"
         (activate)="(activeIndex % 2) && toggle()"
       >
-        Draft
+        Draft <span *ngIf="workingLearningObjects">({{ workingLearningObjects.length }})</span>
     </button>
       <button
         class="tabs__item"
@@ -22,15 +23,17 @@
         [ngClass]="{ 'tabs__item--active': activeIndex % 2 }"
         (activate)="!(activeIndex % 2) && toggle()"
       >
-        Released
+        Released <span *ngIf="releasedLearningObjects">({{ releasedLearningObjects.length }})</span> 
     </button>
     </div>
     <clark-carousel [action$]="action$">
       <ng-template>
-        <div id="draft-objects-list-panel" class="list__wrapper">
+        <div id="draft-objects-list-panel" class="list__wrapper" *ngIf="!loading">
           <clark-dashboard-list
             title="Draft Learning Objects"
             [showOptions]="true"
+            [learningObjects]="workingLearningObjects"
+            (applyFilters)="applyFilters($event)"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -38,9 +41,19 @@
         <div id="released-objects-list-panel" class="list__wrapper">
           <clark-dashboard-list
             title="Released Learning Objects"
+            [showOptions]="false"
+            [learningObjects]="releasedLearningObjects"
           ></clark-dashboard-list>
         </div>
       </ng-template>
     </clark-carousel>
   </div>
 </div>
+
+<!--Loading Template-->
+<ng-template #loadingTemplate>
+  <div class="loading-template">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading Learning Objects...
+  </div>
+</ng-template>

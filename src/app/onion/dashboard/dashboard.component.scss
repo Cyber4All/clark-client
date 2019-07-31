@@ -39,3 +39,15 @@
     color: $light-blue;
   }
 }
+.loading-template {
+  max-width: $max-width;
+  padding: 20px;
+  font-size: $larger;
+  text-align: center;
+  left: auto;
+  right: auto;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 1px rgba(0, 0, 0, 0.08);
+
+}

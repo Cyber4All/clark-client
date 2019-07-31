@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LearningObjectComponent } from './learning-object.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TooltipModule } from 'app/shared/Shared Modules/tooltips/tip.module';
 import { CollectionPipe } from 'app/shared/Shared Components/pipes/collection.pipe';
 import { CollectionService } from 'app/core/collection.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,7 +16,6 @@ describe('LearningObjectComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [ LearningObjectComponent, CollectionPipe ],
       imports: [
-        TooltipModule,
         HttpClientModule
       ],
       providers: [

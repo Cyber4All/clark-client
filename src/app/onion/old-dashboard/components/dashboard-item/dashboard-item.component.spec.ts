@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardItemComponent } from './dashboard-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TooltipModule } from 'app/shared/Shared Modules/tooltips/tip.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContextMenuModule } from 'app/shared/Shared Modules/contextmenu/contextmenu.module';
 import { AuthService } from 'app/core/auth.service';
@@ -11,6 +10,7 @@ import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObject, User } from '@entity';
 import { DashboardLearningObject } from '../../old-dashboard.component';
+import { TipDirective } from 'app/shared/Shared Modules/tooltips/tip.directive';
 
 describe('DashboardItemComponent', () => {
   let component: DashboardItemComponent;
@@ -19,9 +19,8 @@ describe('DashboardItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ DashboardItemComponent ],
+      declarations: [ DashboardItemComponent, TipDirective ],
       imports: [
-        TooltipModule,
         RouterTestingModule,
         ContextMenuModule.forRoot(),
         HttpClientModule,

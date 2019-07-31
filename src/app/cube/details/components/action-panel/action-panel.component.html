@@ -1,11 +1,11 @@
 <div class="inner">
   <div *ngIf="!isReleased && !revisedVersion" class="download-warning" tip="This learning object is pending review and may be downloaded when the review is complete."
-    tipLocation="top">
+    tipPosition="top">
     <i class="fas fa-exclamation"></i>Review Pending
   </div>
   <div *ngIf="!revisedVersion; else reviewerPanel">
     <div class="btn-group vertical" [ngClass]="{'review-pending': !isReleased}">
-      <button tip="{{ tips.DOWNLOAD_NOW }}" tipLocation="top" tipDisabled="{{hasDownloadAccess || !loggedin}}" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading}"
+      <button [tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading}"
         class="button good" id="download-button" (activate)="addToCart(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
         <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
           <span *ngIf="downloading">

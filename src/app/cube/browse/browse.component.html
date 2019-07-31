@@ -23,7 +23,7 @@
             {{ copy.FILTERS }} <i class="far fa-sliders-h"></i>
           </div>
           <div class="sort" id="sort" (activate)="showSortMenu($event)">
-            <div *ngIf="query.orderBy" class="removeSort" id="removeSort" (activate)="clearSort($event);" tip="Clear sorting criteria" tipLocation="above">
+            <div *ngIf="query.orderBy" class="removeSort" id="removeSort" (activate)="clearSort($event);" tip="Clear sorting criteria" tipPosition="bottom">
               <i class="far fa-times" id="times"></i>
             </div>
             <span>{{ (query.orderBy) ? sortString : 'Sort'}}</span><i class="far fa-chevron-down"></i>

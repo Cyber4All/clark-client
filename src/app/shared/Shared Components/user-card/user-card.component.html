@@ -9,7 +9,7 @@
   <div class="user-card">
     <div class="image" id="card-image">
       <img [src]="icon" class="img" alt="User gravatar">
-      <span *ngIf="gravatarInfo" tip="What is this?" tipLocation="above" (activate)="showGravatarModal($event)">
+      <span *ngIf="gravatarInfo" tip="What is this?" tipPosition="top" (activate)="showGravatarModal($event)">
         <i class="fas fa-info-circle"></i>
       </span>
     </div>
