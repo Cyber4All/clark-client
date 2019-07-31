@@ -10,7 +10,7 @@ import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObject, User } from '@entity';
 import { DashboardLearningObject } from '../../old-dashboard.component';
-import { TipDirective } from 'app/shared/Shared Modules/tooltips/tip.directive';
+import { TipDirective } from 'app/shared/Shared Components/directives/tip.directive';
 
 describe('DashboardItemComponent', () => {
   let component: DashboardItemComponent;

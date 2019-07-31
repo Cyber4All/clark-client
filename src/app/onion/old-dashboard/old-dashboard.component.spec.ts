@@ -13,7 +13,7 @@ import { ToasterModule } from 'app/shared/Shared Modules/toaster';
 import { ContextMenuModule } from 'app/shared/Shared Modules/contextmenu/contextmenu.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { User } from '@entity';
-import { TipDirective } from 'app/shared/Shared Modules/tooltips/tip.directive';
+import { TipDirective } from 'app/shared/Shared Components/directives/tip.directive';
 
 describe('OldDashboardComponent', () => {
   let component: OldDashboardComponent;

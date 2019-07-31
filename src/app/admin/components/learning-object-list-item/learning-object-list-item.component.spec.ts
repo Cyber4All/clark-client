@@ -10,7 +10,7 @@ import { AuthService } from 'app/core/auth.service';
 import { User, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
-import { TipDirective } from 'app/shared/Shared Modules/tooltips/tip.directive';
+import { TipDirective } from 'app/shared/Shared Components/directives/tip.directive';
 
 describe('DashboardItemComponent', () => {
   let component: LearningObjectListItemComponent;
