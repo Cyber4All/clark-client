@@ -2,12 +2,13 @@
   <div class="dashboard-list__top">
     <p class="dashboard-list__title" tabindex="0">
       {{ title || 'Learning Objects' }} 
-      <span *ngIf="learningObjects">({{ learningObjects.length }})</span>
+      <span *ngIf="learningObjects; else noLearningObjects">({{ learningObjects.length }})</span>
     </p>
     <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
       <div class="btn-group to-right">
-        <button aria-label="Create a new Learning Object" class="button good">New <i class="far fa-plus"></i></button>
+        <button aria-label="Create a new Learning Object" routerLink="/onion/learning-object-builder" class="button good">New <i class="far fa-plus"></i></button>
         <button #filterMenuButtonElement aria-label="Filter Learning Objects by status" class="button neutral" (click)="toggleFilterMenu(true)">Filter <i class="far fa-angle-down"></i></button>
+        <button *ngIf="selected.size > 0" class="button bad" (click)="confirmDelete()">Delete Selected <i class="far fa-trash"></i></button>
         <button *ngIf="filters.size > 0" aria-label="Clear all selected filters" class="button bad" (click)="clearFilters()">Clear Filters<i class="far fa-times"></i></button>
       </div>
       <ng-container>
@@ -46,16 +47,32 @@
   </div>
   <div role="table" class="dashboard-list__table" *ngIf="learningObjects.length > 0; else noLearningObjects">
     <div role="row" class="table__head">
-      <clark-checkbox role="button" aria-label="Select all Learning Objects"></clark-checkbox>
+      <div>
+        <clark-checkbox *ngIf="showOptions" role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
+      </div>
       <div role="columnheader">Status</div>
       <div role="columnheader">Name</div>
       <div role="columnheader">Type</div>
       <div role="columnheader">Date</div>
       <div role="columnheader" aria-label="Spacing element for meatball menu"></div>
     </div>
-    <div role="rowgroup" class="table__items">
-      <div *ngFor="let l of learningObjects" role="row">
-        <span>Name: {{ l.name}} </span><span> Status: {{ l.status }}</span>
+    <div role="rowgroup">
+      <div role="row" class="table__item">
+          <clark-dashboard-item
+          class="table__items"
+          *ngFor="let l of learningObjects; let i = index"
+          [learningObject]="l"
+          [status]="l.status"
+          [showCheck]="l.status === 'unreleased'"
+          [selected]="this.selected.get(l.id) !== undefined"
+          (select)="toggleSelect(l, $event, i)"
+          (delete)="confirmDelete(l)"
+          (submit)="submitToCollection.emit(l);"
+          (cancelSubmission)="cancelCollectionSubmission.emit(l)"
+          (viewAllChangelogs)="openChangelog.emit(l.id)"
+          (viewSidePanel)="openSidePanel.emit(l)"
+          >
+        </clark-dashboard-item>
       </div>
     </div>
   </div>
@@ -69,5 +86,20 @@
     <p *ngIf="filters.size === 1">
       No Learning Objects found for that status!
     </p>
+    <p *ngIf="learningObject === 0">
+      You don't have any {{ title }} Learning Objects!
+    </p>
   </div>
 </ng-template>
+
+<!-- Delete Confirmation Popup -->
+<clark-popup *ngIf="deleteConfirmation" (closed)="deleteConfirmation = undefined">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">Are you sure?</div>
+      <div class="modal-text">You cannot undo this action!</div>
+      <div class="btn-group center">
+        <button class="button bad" (click)="delete.emit(deleteObjects); deleteConfirmation = undefined; selected.clear()">Yep, do it! <i class="far fa-trash"></i></button>
+        <button class="button neutral" (click)="deleteConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
+      </div>
+    </div>
+  </clark-popup>
