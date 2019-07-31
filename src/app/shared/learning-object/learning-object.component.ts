@@ -32,6 +32,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   canDownload = false;
   showDownloadModal = false;
 
+  // FIXME soon pls
+  downloadService = false;
+
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,

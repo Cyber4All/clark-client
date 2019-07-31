@@ -22,18 +22,20 @@
             {{ collection }}
           </div>
         </div>
-        <button
-          *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
-          class="download-btn-card"
-          (click)="download($event)"
-          attr.aria-label="Download button for {{ learningObject.name }}"
-        >
-          <i class="fas fa-download"></i>
-        </button>
+        <form *ngIf="downloadService">
+          <button
+            *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
+            class="download-btn-card"
+            (click)="download($event)"
+            attr.aria-label="Download button for {{ learningObject.name }}"
+          >
+            <i class="fas fa-download"></i>
+          </button>
+      </form>
       </div>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
-        <form>
+        <form *ngIf="downloadService">
           <button
             *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
             class="download-btn"
