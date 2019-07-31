@@ -91,6 +91,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
 
   async ngOnInit() {
     this.parents = await this.parentNames();
+    this.cd.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
