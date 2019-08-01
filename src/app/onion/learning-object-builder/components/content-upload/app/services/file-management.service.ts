@@ -65,7 +65,6 @@ export class FileManagementService {
     this.getCognitoIdentityId(authorUsername)
       .then(cognitoIdentityId => {
         const bucketPath = `${cognitoIdentityId}/${learningObjectId}/${learningObjectRevisionId}`;
-        console.log('TCL: FileManagementService -> bucketPath', bucketPath);
         this.startUploads(files, bucketPath, uploadUpdate$);
       })
       .catch(e => {
