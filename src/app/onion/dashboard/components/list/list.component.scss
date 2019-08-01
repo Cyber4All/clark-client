@@ -3,6 +3,7 @@
 .dashboard-list {
   overflow: hidden;
   padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .dashboard-list__top {
@@ -29,30 +30,60 @@
   .table__head {
     background: $light-grey;
     color: $dark-grey ;
-    padding: 8px 5px;
+    padding: 8px 20px;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: inherit;
+    grid-template-columns: 32px 60px 1fr 180px 180px 50px;
     grid-gap: inherit;
     align-items: center;
     font-size: $small;
   }
 
   .table__items {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    color: $dark-grey;
+    box-sizing: border-box;
+    grid-template-columns: 32px 60px 1fr 180px 180px 50px;
+    grid-gap: inherit;
+    align-items: center;
+    font-size: $small;
 
-    clark-dashboard-list-item {
-      display: block;
-      position: relative;
+    .table-item {
+      grid-template-columns: inherit;
     }
   }
 
   &.empty {
-    padding: 40px;
-    font-size: $large;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
+    left: 0;
+    right: 0;
+    padding-top: 30px;
+    padding-bottom: 30px;
+
+    color: $darker-grey;
+    font-size: $normal;
+
+    .top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      color: $dark-grey;
+      font-size: $largest;
+      margin-bottom: 10px;
+
+      .svg-inline--fa {
+        font-size: 50px;
+        margin-right: 10px;
+      }
+    }
+
+    button {
+      margin-top: 20px;
+    }
   }
 }
 
