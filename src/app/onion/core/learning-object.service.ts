@@ -63,11 +63,12 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
-  createRevision(learningObjectId, authorUsername: string): Promise<LearningObject> {
-    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, learningObjectId);
+  createRevision(learningObject): Promise<LearningObject> {
+    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(learningObject.author.username, learningObject.id);
     return this.http
     .post(
       route,
+      { object: learningObject },
       { headers: this.headers, withCredentials: true }
     )
     .pipe(
@@ -76,7 +77,6 @@ export class LearningObjectService {
     )
     .toPromise()
     .then((res: any) => {
-      console.log(res);
       return new LearningObject(res);
     });
   }

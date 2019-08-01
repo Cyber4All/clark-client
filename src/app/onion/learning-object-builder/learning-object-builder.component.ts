@@ -21,6 +21,7 @@ import { LearningOutcomeValidator } from './validators/learning-outcome.validato
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment.prod';
+import { LearningObjectService } from '../core/learning-object.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -115,7 +116,8 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
     public noteService: ToasterService,
-    private authService: AuthService
+    private authService: AuthService,
+    private learningObjectService: LearningObjectService
   ) {}
 
   ngOnInit() {
@@ -125,6 +127,8 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       .subscribe(routeParams => {
         const id = routeParams.get('learningObjectId');
 
+        const revision = this.route.snapshot.queryParamMap.get('isRevision');
+        
         // if name parameter found, instruct store to fetch full learning object
         if (id) {
           this.store.fetch(id).then(learningObject => {
@@ -144,12 +148,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
           this.store.makeNew();
         }
     });
-
-    this.route.queryParamMap
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(queryParams => {
-        const revision = queryParams.get('isRevision');
-      });
 
     this.builderStore.serviceInteraction$
       .pipe(takeUntil(this.destroyed$))
@@ -190,6 +188,11 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     this.adminMode =
       this.authService.isAdminOrEditor() &&
       object.author.username !== this.authService.username;
+  }
+
+  async setRevisionMode(object: LearningObject) {
+    const piece = await this.learningObjectService.createRevision(object.author.username, object.id);
+    console.log('return', piece);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -21,7 +21,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
    ]
 })
 export class RevisionComponent implements OnInit {
-
+  @Output() createRevision: EventEmitter<void> = new EventEmitter();
   hasRevision: boolean;
   revision = {
     'name': 'WCAG MAGIC 2.1: Twitches',
@@ -49,6 +49,7 @@ export class RevisionComponent implements OnInit {
    * Create a revision of the object that is currently released
    */
   makeRevision() {
+    this.createRevision.emit();
     this.hasRevision = true;
   }
 

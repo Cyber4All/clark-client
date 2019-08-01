@@ -38,8 +38,10 @@ export class SidePanelContentComponent implements OnChanges {
   @Output()
   submit: EventEmitter<void> = new EventEmitter();
 
+  @Output() createRevision: EventEmitter<void> = new EventEmitter();
+
   // FIXME will use flag when backend is implemented
-  createRevision = false;
+  revision = true;
 
 
   constructor(

@@ -316,4 +316,9 @@ export class DashboardComponent implements OnInit {
       );
     }
   }
+
+  async createRevision(object: LearningObject) {
+    const revision = this.learningObjectService.createRevision(object);
+    console.log(revision);
+  }
 }
