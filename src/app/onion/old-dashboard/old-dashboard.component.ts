@@ -5,7 +5,7 @@ import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { lengths as LengthsSet } from '@cyber4all/clark-taxonomy';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from '../../shared/Shared Modules/toaster/toaster.service';
+import { ToasterService } from '../../shared/shared modules/toaster/toaster.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate, animateChild, query, stagger } from '@angular/animations';
 import { NavbarService } from 'app/core/navbar.service';

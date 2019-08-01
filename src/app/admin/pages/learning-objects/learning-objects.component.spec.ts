@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { AuthService } from 'app/core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
 import { of } from 'rxjs';

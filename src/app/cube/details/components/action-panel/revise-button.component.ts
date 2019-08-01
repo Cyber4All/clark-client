@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { EditorService } from 'app/core/editor.service';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { of } from 'rxjs';
 
 @Component({

@@ -16,7 +16,7 @@ import { ActionPanelComponent } from './components/action-panel/action-panel.com
 import { ErrorStatusComponent } from './components/error-status/error-status.component';
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
 import { ReviseButtonComponent } from './components/action-panel/revise-button.component';
-import { FileBrowserModule } from 'app/shared/Shared Modules/filesystem/file-browser.module';
+import { FileBrowserModule } from 'app/shared/shared modules/filesystem/file-browser.module';
 import { NewRatingComponent } from './components/new-rating/new-rating.component';
 import { NewRatingResponseComponent } from './components/new-rating-response/new-rating-response.component';
 import { ReportRatingComponent } from './components/report-rating/report-rating.component';

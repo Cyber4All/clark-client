@@ -29,10 +29,10 @@ import { UserEditInformationComponent } from './user-profile/user-edit-informati
 // TODO: is ng-click-outside being used?
 import { ClickOutsideModule } from 'ng-click-outside';
 
-import { ModalModule } from '../shared/Shared Modules/modals/modal.module';
+import { ModalModule } from '../shared/shared modules/modals/modal.module';
 import {
   ToasterModule
-} from '../shared/Shared Modules/toaster';
+} from '../shared/shared modules/toaster';
 import { CollectionModule } from './collection-details/collection-details.module';
 import { DetailsModule } from './details/details.module';
 import { CollectionsComponent } from './collections/collections.component';

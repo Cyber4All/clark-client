@@ -7,7 +7,7 @@ import { LearningObject } from '@entity';
 import { AuthService } from '../../core/auth.service';
 import { Subject } from 'rxjs';
 import { COPY } from './cart.copy';
-import { ToasterService } from 'app/shared/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 
 @Component({
   selector: 'cube-cart',

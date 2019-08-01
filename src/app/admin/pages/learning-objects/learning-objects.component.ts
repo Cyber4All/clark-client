@@ -13,7 +13,7 @@ import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { AuthService } from 'app/core/auth.service';
 import { Collection, CollectionService } from 'app/core/collection.service';
 

@@ -16,7 +16,7 @@ import { PopupModule } from './popups/popup.module';
 import { TeleporterModule } from './teleporter/teleporter.module';
 import { ToasterModule } from './toaster';
 import { PopupTemplatesModule } from './popup-templates/popup-templates.module';
-import { SharedComponents } from '../Shared Components/shared-components.module';
+import { SharedComponents } from '../shared components/shared-components.module';
 
 @NgModule({
   imports: [

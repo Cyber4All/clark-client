@@ -13,7 +13,7 @@ import { CollectionService, Collection } from 'app/core/collection.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 
 @Component({
   selector: 'clark-admin-filter-search',

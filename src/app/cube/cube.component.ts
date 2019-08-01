@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalService } from '../shared/Shared Modules/modals/modal.service';
-import { ToasterService } from '../shared/Shared Modules/toaster';
+import { ModalService } from '../shared/shared modules/modals/modal.service';
+import { ToasterService } from '../shared/shared modules/toaster';
 import { NavbarService } from '../core/navbar.service';
 
 @Component({

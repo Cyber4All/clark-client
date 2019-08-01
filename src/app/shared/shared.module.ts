@@ -1,7 +1,7 @@
 // Core
 import { NgModule } from '@angular/core';
-import { SharedComponents } from './Shared Components/shared-components.module';
-import { SharedModules } from './Shared Modules/shared-modules.module';
+import { SharedComponents } from './shared components/shared-components.module';
+import { SharedModules } from './shared modules/shared-modules.module';
 
 @NgModule({
   imports: [

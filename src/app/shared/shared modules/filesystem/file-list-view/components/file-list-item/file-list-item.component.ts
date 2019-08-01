@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
-import { getIcon } from 'app/shared/Shared Modules/filesystem/file-icons';
+import { getIcon } from 'app/shared/shared modules/filesystem/file-icons';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 import { AuthService } from 'app/core/auth.service';
 

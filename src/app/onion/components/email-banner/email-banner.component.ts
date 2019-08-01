@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 
 @Component({
   selector: 'clark-email-banner',

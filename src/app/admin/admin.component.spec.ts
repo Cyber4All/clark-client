@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminComponent } from './admin.component';
-import {  ToasterService } from 'app/shared/Shared Modules/toaster';
+import {  ToasterService } from 'app/shared/shared modules/toaster';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientModule } from '@angular/common/http';

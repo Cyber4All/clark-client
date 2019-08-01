@@ -11,8 +11,8 @@ import { OutcomeService } from './outcome.service';
 import { CookieModule } from 'ngx-cookie';
 
 import { RatingService } from './rating.service';
-import { ToasterModule } from '../shared/Shared Modules/toaster';
-import { ModalModule } from '../shared/Shared Modules/modals/modal.module';
+import { ToasterModule } from '../shared/shared modules/toaster';
+import { ModalModule } from '../shared/shared modules/modals/modal.module';
 import { UserService } from './user.service';
 import { UserAgentService } from './user-agent.service';
 import { MessagesService } from './messages.service';

@@ -4,7 +4,7 @@ import { User } from '@entity';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { Collection } from 'app/core/collection.service';
 
 @Component({

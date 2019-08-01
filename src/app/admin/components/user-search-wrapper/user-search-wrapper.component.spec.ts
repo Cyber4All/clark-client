@@ -7,7 +7,7 @@ import { UserService } from 'app/core/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from 'app/core/auth.service';
 import { CookieModule } from 'ngx-cookie';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { Collection } from 'app/core/collection.service';
 
 describe('UserSearchWrapperComponent', () => {

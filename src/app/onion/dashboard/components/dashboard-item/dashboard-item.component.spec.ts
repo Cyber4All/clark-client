@@ -3,14 +3,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardItemComponent } from './dashboard-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ContextMenuModule } from 'app/shared/Shared Modules/contextmenu/contextmenu.module';
+import { ContextMenuModule } from 'app/shared/shared modules/contextmenu/contextmenu.module';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObject, User } from '@entity';
-import { DashboardLearningObject } from '../../old-dashboard.component';
-import { TipDirective } from 'app/shared/Shared Components/directives/tip.directive';
+import { DashboardLearningObject } from '../../../old-dashboard/old-dashboard.component';
+import { TipDirective } from 'app/shared/shared components/directives/tip.directive';
 
 describe('DashboardItemComponent', () => {
   let component: DashboardItemComponent;

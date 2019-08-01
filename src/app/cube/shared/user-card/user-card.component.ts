@@ -2,7 +2,7 @@ import { LearningObjectService } from '../../learning-object.service';
 import { UserService } from '../../../core/user.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { User, LearningObject } from '@entity';
-import { ModalService, ModalListElement } from '../../../shared/Shared Modules/modals/modal.module';
+import { ModalService, ModalListElement } from '../../../shared/shared modules/modals/modal.module';
 
 @Component({
   selector: 'clark-user-card',

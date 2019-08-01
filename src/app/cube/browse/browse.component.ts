@@ -15,7 +15,7 @@ import { Observable, Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
-import { ModalListElement, ModalService, Position } from '../../shared/Shared Modules/modals/modal.module';
+import { ModalListElement, ModalService, Position } from '../../shared/shared modules/modals/modal.module';
 import { LearningObjectService } from '../learning-object.service';
 import { OutcomeService } from 'app/core/outcome.service';
 

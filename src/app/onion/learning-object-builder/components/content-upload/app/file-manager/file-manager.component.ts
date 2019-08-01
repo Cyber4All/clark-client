@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { DirectoryNode, DirectoryTree } from 'app/shared/Shared Modules/filesystem/DirectoryTree';
+import { DirectoryNode, DirectoryTree } from 'app/shared/shared modules/filesystem/DirectoryTree';
 
 import { LearningObject } from '@entity';
 import { takeUntil, take } from 'rxjs/operators';

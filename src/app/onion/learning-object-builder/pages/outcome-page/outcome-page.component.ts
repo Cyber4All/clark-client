@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { LearningObject } from '@entity';
 
 @Component({

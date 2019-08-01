@@ -3,7 +3,7 @@ import { AuthUser } from 'app/core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
 import { Subject } from 'rxjs';
 import { PrivilegeService } from 'app/admin/core/privilege.service';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { userPrivilegesAnimations } from './user-privileges.component.animations';
 
 @Component({

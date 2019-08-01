@@ -3,7 +3,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
 import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@entity';
-import { ToasterService } from '../../../shared/Shared Modules/toaster';
+import { ToasterService } from '../../../shared/shared modules/toaster';
 import { COPY } from './user-information.copy';
 
 @Component({

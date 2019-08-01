@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
-import { ToasterService } from 'app/shared/Shared Modules/toaster';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({

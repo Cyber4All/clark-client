@@ -5,7 +5,7 @@ import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
 import { CartV2Service, iframeParentID } from '../../../../core/cartv2.service';
-import { ToasterService } from '../../../../shared/Shared Modules/toaster/toaster.service';
+import { ToasterService } from '../../../../shared/shared modules/toaster/toaster.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({

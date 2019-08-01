@@ -9,8 +9,8 @@ import { UserService } from '../../core/user.service';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { RatingService } from '../../core/rating.service';
-import { ToasterService } from '../../shared/Shared Modules/toaster/toaster.service';
-import { ModalService, ModalListElement } from '../../shared/Shared Modules/modals/modal.module';
+import { ToasterService } from '../../shared/shared modules/toaster/toaster.service';
+import { ModalService, ModalListElement } from '../../shared/shared modules/modals/modal.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangelogService } from 'app/core/changelog.service';
 
