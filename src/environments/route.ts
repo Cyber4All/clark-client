@@ -95,6 +95,11 @@ export const USER_ROUTES = {
       username
     )}/learning-objects`;
   },
+  CREATE_REVISION_OF_LEARNING_OBJECT(username, learningObjectId) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${encodeURIComponent(learningObjectId)}/revisions`;
+  },
   UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
     return `${
       environment.apiURL
