@@ -119,17 +119,25 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   private async getCognitoIdentityId(username: string): Promise<string> {
+    let cognitoIdentityId;
     if (username !== this.auth.user.username && !this.auth.isAdminOrEditor()) {
       throw new Error(
         `Invalid access. You do not have permission to upload files for ${username}.`
       );
     }
     if (username === this.auth.user.username) {
-      return this.auth.getOpenIdToken().IdentityId;
+      cognitoIdentityId = this.auth.getOpenIdToken().IdentityId;
+    } else {
+      // Get user data and return cognito id
+      const user = await this.userService.getUser(username);
+      cognitoIdentityId = user.cognitoIdentityId;
     }
-    // Get user data and return cognito id
-    const user = await this.userService.getUser(username);
-    return user.cognitoIdentityId;
+    if (!cognitoIdentityId) {
+      throw new Error(
+        `Cannot start upload. Unable to get upload location for ${username}.`
+      );
+    }
+    return cognitoIdentityId;
   }
 
   /**
