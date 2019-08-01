@@ -16,17 +16,14 @@ export class EditorialActionPadComponent implements OnInit {
 
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
-  showRevisionPopup = false;
+  @Input() isRevision: boolean;
   openRevisionModal: boolean;
-  openEditModal: boolean;
   showPopup = false;
 
   // TODO: Make HTTP requests for creating a revision
-  // TODO: Route the user to the builder depending on what button they click
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    console.log(this.learningObject.status);
   }
 
   // Determines if an editor can create a revision of a learning object
@@ -59,15 +56,13 @@ export class EditorialActionPadComponent implements OnInit {
     this.openRevisionModal = false;
   }
 
-  // Handles opening the make edit modal
-  openMakeEditModal() {
-    if (!this.openEditModal) {
-      this.openEditModal = true;
-    }
-  }
-  // Handles closing the make edit modal
-  closeEditModal() {
-    this.openEditModal = false;
+  // Redirects the editor to the builder to make edits to a waiting, review, or proofing object
+  editLearningObject() {
+    this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
   }
 
+  // Create a revision and then redirects to the builder for the revision
+  createRevision() {
+    this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}?isRevision=${this.isRevision}`]);
+  }
 }

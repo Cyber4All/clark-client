@@ -10,7 +10,7 @@
 <button
   *ngIf="makeEdits"
   class="button neutral"
-  (click)="openMakeEditModal()"
+  (click)="editLearningObject()"
   aria-label="Edit Learning Object">
   Edit
 </button>
@@ -25,12 +25,6 @@
 
 <clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">
   <div #popupInner style="max-width: 600px;">
-    <clark-revision-notice-popup (close)="closeRevisionModal()"></clark-revision-notice-popup>
-  </div>
-</clark-popup>
-
-<clark-popup *ngIf="openEditModal" (closed)="closeMakeEditModal()">
-  <div #popupInner style="max-width: 600px;">
-    <clark-edit-notice-popup (close)="closeMakeEditModal()"></clark-edit-notice-popup>
+    <clark-revision-notice-popup (createRevision)="createRevision()" (close)="closeRevisionModal()"></clark-revision-notice-popup>
   </div>
 </clark-popup>

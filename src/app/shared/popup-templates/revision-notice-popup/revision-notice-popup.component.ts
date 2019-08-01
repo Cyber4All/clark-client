@@ -8,14 +8,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class RevisionNoticePopupComponent implements OnInit {
 
   @Output() close: EventEmitter<void> = new EventEmitter();
+  @Output() createRevision: EventEmitter<void> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-  }
-
-  createRevision(): void {
-
   }
 
 }
