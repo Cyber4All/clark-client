@@ -1,51 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Router } from '@angular/router';
 import { EditorService } from 'app/core/editor.service';
+import { ToasterService } from 'app/shared/shared modules/toaster';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ToasterService } from 'app/shared/shared modules/toaster';
 import { of } from 'rxjs';
 
 @Component({
   selector: 'clark-revise-button',
-  template: `
-    <button
-      *ngIf="learningObject.status !== 'released'"
-      class="button neutral"
-      (activate)="makeRevision()"
-      aria-label="Clickable Revise button">
-      Revise
-    </button>
-    <button
-      *ngIf="learningObject.status === 'released'"
-      [disabled]="learningObject.status === 'released'"
-      class="button neutral"
-      aria-label="Released Learning Objects cannot be Revised">
-      Revisions not permitted
-    </button>
-    <clark-popup *ngIf="showPopup" (closed)="showPopup = false">
-      <div class="popup-content" #popupInner>
-        <div class="popup-header">
-          <i class="fas fa-exclamation-triangle"></i>
-        </div>
-        <p tabindex="0">
-          Revising a released Learning Object will change the status on the user's dashboard
-          from released to proofing. The user will be able to see this, but will not be able to make any
-          edits themselves.
-        </p>
-        <p tabindex="0"> Are you sure you want to do this? </p>
-        <div class="btn-group to-right">
-          <button class="button bad" (activate)="moveToProofing()" aria-label="Clickable Move to Proofing button"> Move to Proofing </button>
-          <button class="button neutral" (activate)="showPopup = false;" aria-label="Clickable Cancel button"> Cancel </button>
-        </div>
-      </div>
-    </clark-popup>
-  `,
+  templateUrl: './revise-button.component.html',
   styleUrls: ['./revise-button.component.scss']
 })
 export class ReviseButtonComponent {
   @Input() learningObject: LearningObject;
+  @Input() isRevision: boolean;
   showPopup = false;
 
   constructor(private router: Router, private service: EditorService, private toasterService: ToasterService) { }
@@ -62,7 +31,7 @@ export class ReviseButtonComponent {
     if (this.learningObject.status !== LearningObject.Status.RELEASED) {
       this.showPopup = true;
     } else {
-      this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
+      this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}?isRevision=${this.isRevision}`]);
     }
   }
 
@@ -111,4 +80,5 @@ export class ReviseButtonComponent {
     }
     return of(error);
   }
+
 }

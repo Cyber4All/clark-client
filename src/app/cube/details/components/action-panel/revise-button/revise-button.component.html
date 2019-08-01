@@ -1,0 +1,32 @@
+<button
+  *ngIf="learningObject.status !== 'released'"
+  class="button neutral"
+  (click)="makeRevision()"
+  aria-label="Clickable Revise button">
+  Revise
+</button>
+<button
+  *ngIf="learningObject.status === 'released'"
+  [disabled]="learningObject.status === 'released'"
+  class="button neutral"
+  aria-label="Released Learning Objects cannot be Revised">
+  Revisions not permitted
+</button>
+
+<clark-popup *ngIf="showPopup" (closed)="showPopup = false">
+<div class="popup-content" #popupInner>
+  <div class="popup-header">
+    <i class="fas fa-exclamation-triangle"></i>
+  </div>
+  <p tabindex="0">
+    Revising a {{ learningObject.status }} Learning Object will change the status on the user's dashboard
+    from {{ learningObject.status }} to proofing. The user will be able to see this, but will not be able to make any
+    edits themselves.
+  </p>
+  <p tabindex="0"> Are you sure you want to do this? </p>
+  <div class="btn-group to-right">
+    <button class="button bad" (click)="moveToProofing()" aria-label="Clickable Move to Proofing button"> Move to Proofing </button>
+    <button class="button neutral" (click)="showPopup = false;" aria-label="Clickable Cancel button"> Cancel </button>
+  </div>
+</div>
+</clark-popup>

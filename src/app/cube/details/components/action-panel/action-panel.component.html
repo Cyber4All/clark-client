@@ -10,7 +10,8 @@
           <ng-container *ngTemplateOutlet="libraryButtonsTemplate"></ng-container>
         </div>
       </ng-container>
-      <clark-revise-button *ngIf="userCanRevise" [learningObject]="learningObject"></clark-revise-button>
+      <clark-editorial-action-pad *ngIf="userCanRevise && revisionsLive" [learningObject]="learningObject"></clark-editorial-action-pad>
+      <clark-revise-button *ngIf="userCanRevise && !revisionsLive" [learningObject]="learningObject"></clark-revise-button>
     </div>
     <ng-container *ngIf="!auth.user">
       <div tabindex="0" class="action-message" id="login-msg">Please

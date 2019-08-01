@@ -1,11 +1,11 @@
 import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { AuthService, DOWNLOAD_STATUS } from '../../../../core/auth.service';
+import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
-import { CartV2Service, iframeParentID } from '../../../../core/cartv2.service';
-import { ToasterService } from '../../../../shared/shared modules/toaster/toaster.service';
+import { CartV2Service, iframeParentID } from 'app/core/cartv2.service';
+import { ToasterService } from 'app/shared/shared modules/toaster/toaster.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -20,9 +20,15 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @Input() reviewer: boolean;
   @Input() revisedDate: Date;
   @Input() releasedDate: Date;
+  @Input() isRevision: boolean;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
   @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
+
+  disableLibraryButtons: boolean;
+  serviceOutageMessage =
+    'We\'re currently experiencing network issues that are affecting downloads and libraries. ' +
+    'Both have been disabled while we work to resolve the issues. Please check back later.';
 
   private destroyed$ = new Subject<void>();
   hasDownloadAccess = false;
@@ -36,6 +42,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   loggedin = false;
   showDownloadModal = false;
   userCanRevise = false;
+  // flag to determine if the revisions pipeline is live
+  revisionsLive = environment.experimental;
 
   contributorsList = [];
   iframeParent = iframeParentID;
@@ -102,7 +110,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         }
       }
     } catch (error) {
-      console.log(error);
+      if (error.status >= 500) {
+        this.disableLibraryButtons = true;
+      }
       this.toaster.notify(
         'Error!',
         'There was an error adding to your library',

@@ -15,12 +15,13 @@ import { DetailsSplashComponent } from './components/splash/details-splash.compo
 import { ActionPanelComponent } from './components/action-panel/action-panel.component';
 import { ErrorStatusComponent } from './components/error-status/error-status.component';
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
-import { ReviseButtonComponent } from './components/action-panel/revise-button.component';
 import { FileBrowserModule } from 'app/shared/shared modules/filesystem/file-browser.module';
 import { NewRatingComponent } from './components/new-rating/new-rating.component';
 import { NewRatingResponseComponent } from './components/new-rating-response/new-rating-response.component';
 import { ReportRatingComponent } from './components/report-rating/report-rating.component';
 import { LearningObjectRatingsComponent } from './components/learning-object-ratings/learning-object-ratings.component';
+import { EditorialActionPadModule } from './components/action-panel/editorial-action-pad/editorial-action-pad.module';
+import { ReviseButtonComponent } from './components/action-panel/revise-button/revise-button.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { LearningObjectRatingsComponent } from './components/learning-object-rat
     FormsModule,
     RouterModule,
     FileBrowserModule,
-    CubeSharedModule
+    CubeSharedModule,
+    EditorialActionPadModule,
   ],
   exports: [],
   declarations: [
