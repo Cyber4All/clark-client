@@ -49,7 +49,6 @@ import { ChangelogListComponent } from './changelog-list/changelog-list.componen
 import { ChangelogItemComponent } from './changelog-item/changelog-item.component';
 import { IdentificationPillComponent } from './identification-pill/identification-pill.component';
 import { RevisionNoticePopupComponent } from './popup-templates/revision-notice-popup/revision-notice-popup.component';
-import { EditNoticePopupComponent } from './popup-templates/edit-notice-popup/edit-notice-popup.component';
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -107,7 +106,6 @@ import { EditNoticePopupComponent } from './popup-templates/edit-notice-popup/ed
     ChangelogItemComponent,
     IdentificationPillComponent,
     TipDirective,
-    EditNoticePopupComponent
   ],
   exports: [
     NavbarComponent,
