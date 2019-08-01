@@ -17,7 +17,7 @@ import { ErrorStatusComponent } from './error-status/error-status.component';
 import { ReviewerPanelComponent } from './reviewer-panel/reviewer-panel.component';
 import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
 import { EditorialActionPadModule } from './action-panel/editorial-action-pad/editorial-action-pad.module';
-import { EditorialActionPadComponent } from './action-panel/editorial-action-pad/editorial-action-pad.component';
+import { ReviseButtonComponent } from './action-panel/revise-button/revise-button.component';
 
 @NgModule({
   imports: [
@@ -41,6 +41,7 @@ import { EditorialActionPadComponent } from './action-panel/editorial-action-pad
     ActionPanelComponent,
     ErrorStatusComponent,
     ReviewerPanelComponent,
+    ReviseButtonComponent
   ],
   providers: []
 })
