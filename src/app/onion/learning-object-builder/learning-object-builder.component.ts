@@ -191,7 +191,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   }
 
   async setRevisionMode(object: LearningObject) {
-    const piece = await this.learningObjectService.createRevision(object.author.username, object.id);
+    const piece = await this.learningObjectService.createRevision(object);
     console.log('return', piece);
   }
 
