@@ -31,8 +31,7 @@ export class SidePanelContentComponent implements OnChanges {
   @Input() controller$: BehaviorSubject<boolean>;
 
   @Input() learningObject: LearningObject;
- 
-  @Input() fetchRevision: boolean;
+
 
   ratings: any[];
   averageRating: number;
@@ -64,7 +63,7 @@ export class SidePanelContentComponent implements OnChanges {
     });
     if (environment.experimental) {
       this.learningObjectService.getLearningObjectRevision(
-        this.learningObject.author.username, this.learningObject.id, '1')
+        this.learningObject.author.username, this.learningObject.id, this.learningObject.revision)
         .then(revision => {
         this.revision = revision;
       });

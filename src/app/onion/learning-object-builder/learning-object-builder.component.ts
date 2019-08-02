@@ -139,16 +139,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
                 this.router.navigate(['onion/dashboard']);
               } else if (revision) {
                 this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.revision
-                ).then(object => {console.log(object);
-                });
-              } else if (revision === undefined) {
-                console.log(learningObject);
-                this.learningObjectService.createRevision(learningObject.id);
-                this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.revision
-                ).then(object => {console.log(object);
-                });
+                  learningObject.author.username, learningObject.id, learningObject.revision);
               } else {
                 this.setBuilderMode(learningObject);
               }

@@ -195,9 +195,10 @@ get hasRevision(): boolean {
   return this._hasRevision;
 }
 
-get revision() {
+get revision(): string {
   return this.revision;
 }
+
 
   /**
    * Creates an instance of LearningObject.
