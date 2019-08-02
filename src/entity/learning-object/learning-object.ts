@@ -195,6 +195,10 @@ get hasRevision(): boolean {
   return this._hasRevision;
 }
 
+get revision() {
+  return this.revision;
+}
+
   /**
    * Creates an instance of LearningObject.
    * @param {Partial<LearningObject>} [object]

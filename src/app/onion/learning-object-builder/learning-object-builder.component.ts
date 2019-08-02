@@ -128,7 +128,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
         const id = routeParams.get('learningObjectId');
 
         const revision = this.route.snapshot.queryParamMap.get('isRevision');
-        
         // if name parameter found, instruct store to fetch full learning object
         if (id) {
           this.store.fetch(id).then(learningObject => {
@@ -138,6 +137,18 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
               // redirect user to dashboard if the object is in the working stage
               if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
                 this.router.navigate(['onion/dashboard']);
+              } else if (revision) {
+                this.learningObjectService.getLearningObjectRevision(
+                  learningObject.author.username, learningObject.id, learningObject.revision
+                ).then(object => {console.log(object);
+                });
+              } else if (revision === undefined) {
+                console.log(learningObject);
+                this.learningObjectService.createRevision(learningObject.id);
+                this.learningObjectService.getLearningObjectRevision(
+                  learningObject.author.username, learningObject.id, learningObject.revision
+                ).then(object => {console.log(object);
+                });
               } else {
                 this.setBuilderMode(learningObject);
               }
@@ -188,11 +199,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     this.adminMode =
       this.authService.isAdminOrEditor() &&
       object.author.username !== this.authService.username;
-  }
-
-  async setRevisionMode(object: LearningObject) {
-    const piece = await this.learningObjectService.createRevision(object);
-    console.log('return', piece);
   }
 
   /**

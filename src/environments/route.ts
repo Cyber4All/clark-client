@@ -90,6 +90,11 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query)}
     &${querystring.stringify(filters)}&draftsOnly=true`;
   },
+  GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username)}/learning-objects/${encodeURIComponent(
+        learningObjectId)}/revisions/${encodeURIComponent(revisionId)}`;
+  },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username

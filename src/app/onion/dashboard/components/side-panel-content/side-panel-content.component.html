@@ -28,7 +28,7 @@
   <div class="side-panel__metrics">
     <clark-metrics [learningObject]="learningObject" [averageRating]="averageRating"></clark-metrics>
   </div>
-  <div *ngIf="revision" class="side-panel__revision">
-    <clark-revision (createRevision)="createRevision.emit(learningObject)"></clark-revision>
+  <div *ngIf="hasRevision" class="side-panel__revision">
+    <clark-revision [hasRevision]="hasRevision" [revision]="revision" (createRevision)="createRevision.emit(learningObject)"></clark-revision>
   </div>
 </div>
