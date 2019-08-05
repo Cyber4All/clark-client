@@ -2,7 +2,7 @@
 <button
   *ngIf="makeRevision"
   class="button neutral"
-  (click)="openCreateRevisionModal()"
+  (activate)="openCreateRevisionModal()"
   aria-label="Create a Revision">
   Create a Revision
 </button>
@@ -10,7 +10,7 @@
 <button
   *ngIf="makeEdits"
   class="button neutral"
-  (click)="editLearningObject()"
+  (activate)="editLearningObject()"
   aria-label="Edit Learning Object">
   Edit
 </button>

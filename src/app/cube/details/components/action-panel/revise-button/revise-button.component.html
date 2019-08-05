@@ -1,7 +1,7 @@
 <button
   *ngIf="learningObject.status !== 'released'"
   class="button neutral"
-  (click)="makeRevision()"
+  (activate)="makeRevision()"
   aria-label="Clickable Revise button">
   Revise
 </button>
@@ -25,8 +25,8 @@
   </p>
   <p tabindex="0"> Are you sure you want to do this? </p>
   <div class="btn-group to-right">
-    <button class="button bad" (click)="moveToProofing()" aria-label="Clickable Move to Proofing button"> Move to Proofing </button>
-    <button class="button neutral" (click)="showPopup = false;" aria-label="Clickable Cancel button"> Cancel </button>
+    <button class="button bad" (activate)="moveToProofing()" aria-label="Clickable Move to Proofing button"> Move to Proofing </button>
+    <button class="button neutral" (activate)="showPopup = false;" aria-label="Clickable Cancel button"> Cancel </button>
   </div>
 </div>
 </clark-popup>
