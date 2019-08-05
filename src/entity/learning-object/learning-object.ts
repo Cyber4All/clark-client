@@ -177,6 +177,7 @@ export class LearningObject {
   get status(): LearningObject.Status {
     return this._status;
   }
+
   set status(status: LearningObject.Status) {
     // FIXME: Remove when system has removed old valid status values
     status = this.remapStatus(status);
@@ -191,11 +192,18 @@ export class LearningObject {
     }
   }
 
-get hasRevision(): boolean {
-  return this._hasRevision;
-}
+  get hasRevision(): boolean {
+    return this._hasRevision;
+  }
 
-  revision = 0;
+  get revision(): string {
+    return this._revision;
+  }
+
+  set revision(revision: string) {
+    this._revision = revision;
+  }
+
 
   /**
    * Creates an instance of LearningObject.
@@ -256,6 +264,8 @@ get hasRevision(): boolean {
   private _collection!: string;
 
   private _status!: LearningObject.Status;
+
+  private _revision: string;
 
 /**
  * @property {boolean} hasRevision
@@ -520,46 +530,59 @@ private _hasRevision?: boolean;
     if (object.id) {
       this.id = object.id;
     }
+
     if (object.author) {
       this._author = new User(object.author);
     }
+
     if (object.name !== undefined) {
       this.name = object.name;
     }
+
     if (object.description) {
       this.description = object.description;
     }
+
     if (object.date) {
       this._date = object.date;
     }
+
     this.length = <LearningObject.Length>object.length || this.length;
+
     if (object.levels) {
       this._levels = [];
       (<LearningObject.Level[]>object.levels).map(level =>
         this.addLevel(level),
       );
     }
+
     if (object.outcomes) {
       (<LearningOutcome[]>object.outcomes).map(outcome =>
         this.addOutcome(outcome),
       );
     }
+
     this.materials =
       <LearningObject.Material>object.materials || this.materials;
+
     if (object.children) {
       (<LearningObject[]>object.children).map(child => this.addChild(child));
     }
+
     if (object.contributors) {
       (<User[]>object.contributors).map(contributor =>
         this.addContributor(contributor),
       );
     }
+
     if (object.hasRevision === true) {
       this._hasRevision = object.hasRevision;
     }
+
     if (object.revision != null) {
       this.revision = object.revision;
     }
+
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
     this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;

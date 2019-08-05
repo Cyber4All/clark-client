@@ -57,6 +57,26 @@ export class LearningObjectService {
       });
     // TODO: Verify this response gives the learning object name
   }
+
+  /**
+   * Creates a Revision of an existing learning object
+   * @param learningObjectId
+   * @param authorUsername
+   */
+  createRevision(learningObject) {
+    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(learningObject.author.username, learningObject.id);
+    return this.http
+    .post(
+      route,
+      { object: learningObject },
+      { headers: this.headers, withCredentials: true }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    )
+    .toPromise();
+  }
   /**
    * Fetches Learning Object by ID (full)
    *
@@ -76,6 +96,26 @@ export class LearningObjectService {
       .then((response: any) => {
         return new LearningObject(response);
       });
+  }
+
+  /**
+   * Fetches a learning objects revision
+   * @param username
+   * @param learningObjectID
+   * @param revisionID
+   */
+  getLearningObjectRevision(username: string, learningObjectID: string, revisionID: string) {
+    const route = USER_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
+    return this.http
+    .get(route, { headers: this.headers, withCredentials: true })
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    )
+    .toPromise()
+    .then((res: any) => {
+      return new LearningObject(res);
+    });
   }
 
   /**

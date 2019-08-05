@@ -1,5 +1,5 @@
 <div class="revision__title title">Revision</div>
-<div [@revision] *ngIf="hasRevision; else noRevisionTemplate">
+<div [@revision] *ngIf="revision && hasRevision; else noRevisionTemplate">
   <div class="revison__object">
     <div class="active__revision">
         <div class="top-row">
