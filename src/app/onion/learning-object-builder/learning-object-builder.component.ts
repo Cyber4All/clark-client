@@ -118,7 +118,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     public noteService: ToasterService,
     private authService: AuthService,
     private learningObjectService: LearningObjectService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
@@ -126,10 +126,17 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(routeParams => {
         const id = routeParams.get('learningObjectId');
+        const revision = this.route.snapshot.queryParamMap.get('revisionId');
+        const authorUsername = this.route.snapshot.queryParamMap.get('author');
 
-        const revision = this.route.snapshot.queryParamMap.get('isRevision');
         // if name parameter found, instruct store to fetch full learning object
-        if (id) {
+        if (revision !== undefined && id) {
+          this.isRevision = true;
+          this.store.isRevision = true;
+          this.store.fetch(id, revision, authorUsername).then(learningObject => {
+            this.setBuilderMode(learningObject);
+          });
+        } else if (id) {
           this.store.fetch(id).then(learningObject => {
             if (learningObject.status === LearningObject.Status.RELEASED) {
               this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
@@ -149,7 +156,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
           // otherwise instruct store to initialize and store a blank learning object
           this.store.makeNew();
         }
-    });
+      });
 
     this.builderStore.serviceInteraction$
       .pipe(takeUntil(this.destroyed$))
