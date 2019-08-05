@@ -26,6 +26,15 @@
     }
   }
 
+  .library-buttons-disabled {
+    width: 100%;
+    margin-bottom: 20px;
+
+    & > *.button {
+      width: 100%;
+    }
+  }
+
   .btn-group.review-pending {
     margin-top: 40px;
 
