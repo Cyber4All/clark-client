@@ -251,7 +251,7 @@ export class UserService {
   getUser(username: string): Promise<User> {
     return username && username !== 'undefined'
       ? this.http
-          .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
+          .get(USER_ROUTES.FETCH_USER(username), {
             withCredentials: true
           })
           .pipe(
