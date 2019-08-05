@@ -482,11 +482,19 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {FileInput[]} files [List of files to enqueue and upload]
    * @memberof UploadComponent
    */
-  private handleUpload(files: FileInput[]) {
+  private async handleUpload(files: FileInput[]) {
     this.enqueueFiles(files);
     try {
+      const learningObject = await this.learningObject$
+        .pipe(take(1))
+        .toPromise();
       this.fileManager
-        .upload(this.bucketUploadPath, files)
+        .upload({
+          authorUsername: learningObject.author.username,
+          learningObjectId: learningObject.id,
+          learningObjectRevisionId: learningObject.revision,
+          files
+        })
         .subscribe(update => this.handleUploadUpdates(update));
     } catch (e) {
       if (e.name === UploadErrorReason.Credentials) {
@@ -494,6 +502,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         this.error$.next(UPLOAD_ERRORS.SERVICE_ERROR);
       }
+      throw e;
     }
   }
 
@@ -634,7 +643,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private handleCredentialsError() {
     if (!this.credentialRefreshAttempted) {
-      console.log('RETRYING');
       this.credentialRefreshAttempted = true;
       this.auth
         .refreshToken()
