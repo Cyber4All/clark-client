@@ -7,6 +7,7 @@ import { LearningObject } from '@entity';
 import { AuthService } from '../../core/auth.service';
 import { Subject } from 'rxjs';
 import { COPY } from './cart.copy';
+import { ToasterService } from 'app/shared/toaster';
 
 @Component({
   selector: 'cube-cart',
@@ -21,12 +22,16 @@ export class CartComponent implements OnInit, OnDestroy {
   iframeParent = iframeParentID;
   canDownload = false;
 
+  loading: boolean;
+  serviceError: boolean;
+
   statuses = LearningObject.Status;
 
   constructor(
     public cartService: CartV2Service,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toaster: ToasterService,
   ) { }
 
   ngOnInit() {
@@ -37,9 +42,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   async loadCart() {
     try {
+      this.loading = true;
       this.cartItems = await this.cartService.getCart();
+      this.loading = false;
     } catch (e) {
-      console.log(e);
+      this.toaster.notify('Error!', 'Unable to load your library. Please try again later.', 'bad', 'far fa-times');
+      this.serviceError = true;
+      this.loading = false;
     }
   }
 
