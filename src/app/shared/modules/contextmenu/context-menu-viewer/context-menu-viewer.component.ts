@@ -10,7 +10,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   selector: 'clark-context-menu-viewer',
   template: `
     <div class="full-screen">
-      <div [@contextMenu] class="context-menu"><ng-content></ng-content></div>
+      <div (activate)="activateClose()" [@contextMenu] class="context-menu"><ng-content></ng-content></div>
     </div>
   `,
   styleUrls: ['context-menu-viewer.component.scss'],
