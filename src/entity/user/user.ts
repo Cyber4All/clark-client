@@ -122,6 +122,7 @@ export class User {
     return this._createdAt;
   }
 
+  cognitoIdentityId: string;
   /**
    * Creates an instance of User.
    * @param {Partial<User>} [user]
@@ -162,6 +163,7 @@ export class User {
     this.organization = user.organization || this.organization;
     this.bio = user.bio || this.bio;
     this._createdAt = user.createdAt || this.createdAt;
+    this.cognitoIdentityId = user.cognitoIdentityId;
   }
 
   /**
@@ -180,6 +182,7 @@ export class User {
       organization: this.organization,
       bio: this.bio,
       createdAt: this.createdAt,
+      cognitoIdentityId: this.cognitoIdentityId
     };
     return user;
   }
