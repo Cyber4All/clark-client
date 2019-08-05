@@ -24,6 +24,11 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
+  disableLibraryButtons: boolean;
+  serviceOutageMessage =
+    'We\'re currently experiencing network issues that are affecting downloads and libraries. ' +
+    'Both have been disabled while we work to resolve the issues. Please check back later.';
+
   private destroyed$ = new Subject<void>();
   hasDownloadAccess = false;
   downloading = false;
@@ -102,7 +107,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         }
       }
     } catch (error) {
-      console.log(error);
+      if (error.status >= 500) {
+        this.disableLibraryButtons = true;
+      }
       this.toaster.notify(
         'Error!',
         'There was an error adding to your library',
