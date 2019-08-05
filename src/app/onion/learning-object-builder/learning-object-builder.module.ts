@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 // non-angular modules
-import {ToasterModule} from 'app/shared/shared modules/toaster';
+import {ToasterModule} from 'app/shared/modules/toaster';
 import {BuilderRoutingModule} from './learning-object-builder.routing';
 import {SharedModule} from 'app/shared/shared.module';
 import {ContentUploadModule} from './components/content-upload/app/content-upload.module';

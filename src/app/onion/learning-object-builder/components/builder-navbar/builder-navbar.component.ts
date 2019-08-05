@@ -5,7 +5,7 @@ import { LearningObjectValidator } from '../../validators/learning-object.valida
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { ToasterService } from 'app/shared/shared modules/toaster';
+import { ToasterService } from 'app/shared/modules/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { HistoryService } from 'app/core/history.service';

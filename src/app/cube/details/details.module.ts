@@ -15,7 +15,7 @@ import { DetailsSplashComponent } from './components/splash/details-splash.compo
 import { ActionPanelComponent } from './components/action-panel/action-panel.component';
 import { ErrorStatusComponent } from './components/error-status/error-status.component';
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
-import { FileBrowserModule } from 'app/shared/shared modules/filesystem/file-browser.module';
+import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
 import { NewRatingComponent } from './components/new-rating/new-rating.component';
 import { NewRatingResponseComponent } from './components/new-rating-response/new-rating-response.component';
 import { ReportRatingComponent } from './components/report-rating/report-rating.component';

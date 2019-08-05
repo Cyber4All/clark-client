@@ -7,7 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Third-Party Modules
 import { CKEditorModule } from 'ng2-ckeditor';
 
-// Clark Components
+// CLARK Modules
+import { SharedDirectivesModule } from '../directives/shared-directives.module';
+import { SharedPipesModule } from '../pipes/shared-pipes.module';
+
+// CLARK Components
 import { CarouselComponent } from './carousel/carousel.component';
 import { CheckBoxComponent } from './checkbox/checkbox.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
@@ -20,14 +24,6 @@ import { TextEditorComponent } from './text-editor/text-editor.component';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 import { UserCardComponent } from './user-card/user-card.component';
 
-// CLARK Directives
-import { ActivateDirective } from './directives/activate.directive';
-import { AutofocusDirective } from './directives/autofocus.directive';
-import { LearningObjectCardDirective } from './directives/learning-object-card.directive';
-import { TipDirective } from './directives/tip.directive';
-
-// CLARK Pipes
-import { CollectionPipe } from './pipes/collection.pipe';
 
 @NgModule({
   imports: [
@@ -37,7 +33,10 @@ import { CollectionPipe } from './pipes/collection.pipe';
     ReactiveFormsModule,
     RouterModule,
     // third-party modules
-    CKEditorModule
+    CKEditorModule,
+    // CLARK Modules
+    SharedDirectivesModule,
+    SharedPipesModule
   ],
   declarations: [
     // components
@@ -52,13 +51,6 @@ import { CollectionPipe } from './pipes/collection.pipe';
     TextEditorComponent,
     ToggleSwitchComponent,
     UserCardComponent,
-    // directives
-    ActivateDirective,
-    AutofocusDirective,
-    LearningObjectCardDirective,
-    TipDirective,
-    // pipes
-    CollectionPipe
   ],
   exports: [
     // components
@@ -73,13 +65,6 @@ import { CollectionPipe } from './pipes/collection.pipe';
     TextEditorComponent,
     ToggleSwitchComponent,
     UserCardComponent,
-    // directives
-    ActivateDirective,
-    AutofocusDirective,
-    LearningObjectCardDirective,
-    TipDirective,
-    // pipes
-    CollectionPipe
   ]
 })
 export class SharedComponents {}

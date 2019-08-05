@@ -1,18 +1,26 @@
 // Core
 import { NgModule } from '@angular/core';
-import { SharedComponents } from './shared components/shared-components.module';
-import { SharedModules } from './shared modules/shared-modules.module';
+
+// CLARK Modules
+import { SharedComponents } from './components/shared-components.module';
+import { SharedDirectivesModule } from './directives/shared-directives.module';
+import { SharedModules } from './modules/shared-modules.module';
+import { SharedPipesModule } from './pipes/shared-pipes.module';
 
 @NgModule({
   imports: [
     SharedComponents,
-    SharedModules
+    SharedDirectivesModule,
+    SharedModules,
+    SharedPipesModule
   ],
   declarations: [
   ],
   exports: [
     SharedComponents,
-    SharedModules
+    SharedDirectivesModule,
+    SharedModules,
+    SharedPipesModule
   ]
 })
 export class SharedModule {}

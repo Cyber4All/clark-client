@@ -15,7 +15,7 @@ import {
   stagger,
   animateChild
 } from '@angular/animations';
-import { ToasterService } from 'app/shared/shared modules/toaster';
+import { ToasterService } from 'app/shared/modules/toaster';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { AuthService } from 'app/core/auth.service';

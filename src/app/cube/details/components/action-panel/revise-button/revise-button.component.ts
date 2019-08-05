@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Router } from '@angular/router';
 import { EditorService } from 'app/core/editor.service';
-import { ToasterService } from 'app/shared/shared modules/toaster';
+import { ToasterService } from 'app/shared/modules/toaster';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';

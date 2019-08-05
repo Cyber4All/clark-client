@@ -1,5 +1,5 @@
-import { ModalService, ModalListElement, Position } from '../shared/shared modules/modals/modal.module';
-import { ToasterService } from '../shared/shared modules/toaster';
+import { ModalService, ModalListElement, Position } from '../shared/modules/modals/modal.module';
+import { ToasterService } from '../shared/modules/toaster';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth.service';

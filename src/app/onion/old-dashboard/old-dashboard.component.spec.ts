@@ -9,11 +9,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
-import { ToasterModule } from 'app/shared/shared modules/toaster';
-import { ContextMenuModule } from 'app/shared/shared modules/contextmenu/contextmenu.module';
+import { ToasterModule } from 'app/shared/modules/toaster';
+import { ContextMenuModule } from 'app/shared/modules/contextmenu/contextmenu.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { User } from '@entity';
-import { TipDirective } from 'app/shared/shared components/directives/tip.directive';
+import { TipDirective } from 'app/shared/directives/tip.directive';
 
 describe('OldDashboardComponent', () => {
   let component: OldDashboardComponent;

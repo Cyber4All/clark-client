@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { DirectoryNode } from 'app/shared/shared modules/filesystem/DirectoryTree';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryTree';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 
 @Component({

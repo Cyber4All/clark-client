@@ -11,8 +11,8 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 // Other
 import { OnionCoreModule } from './core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { ToasterModule } from '../shared/shared modules/toaster';
-import { ModalModule } from '../shared/shared modules/modals/modal.module';
+import { ToasterModule } from '../shared/modules/toaster';
+import { ModalModule } from '../shared/modules/modals/modal.module';
 import { OnionComponent } from './onion.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
 import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';

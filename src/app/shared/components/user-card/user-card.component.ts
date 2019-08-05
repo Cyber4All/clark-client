@@ -2,7 +2,7 @@ import { LearningObjectService } from '../../../cube/learning-object.service';
 import { UserService } from 'app/core/user.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { User, LearningObject } from '@entity';
-import { ModalService, ModalListElement } from '../../shared modules/modals/modal.module';
+import { ModalService, ModalListElement } from '../../modules/modals/modal.module';
 
 @Component({
   selector: 'clark-user-card',

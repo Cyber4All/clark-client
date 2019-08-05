@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
-import { ToasterService } from '../../../shared/shared modules/toaster';
+import { ToasterService } from '../../../shared/modules/toaster';
 import { Subscription, Observable, Subject, fromEvent } from 'rxjs';
 import { COPY } from './user-edit-information.copy';
 

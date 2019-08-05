@@ -7,7 +7,7 @@ import { CollectionService } from 'app/core/collection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/shared modules/toaster';
+import { ToasterService } from 'app/shared/modules/toaster';
 
 describe('SearchBarComponent', () => {
   let component: FilterSearchComponent;

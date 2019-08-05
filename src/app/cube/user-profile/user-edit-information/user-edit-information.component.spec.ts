@@ -2,7 +2,7 @@ import { TestBed, inject, ComponentFixture } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService, CookieOptionsProvider, CookieModule } from 'ngx-cookie';
 import { UserService } from '../../../core/user.service';
-import { ToasterService } from '../../../shared/shared modules/toaster/toaster.service';
+import { ToasterService } from '../../../shared/modules/toaster/toaster.service';
 import { UserEditInformationComponent } from './user-edit-information.component';
 import { AuthService } from '../../../core/auth.service';
 
