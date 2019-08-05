@@ -6,7 +6,6 @@ import { OnionComponent } from './onion.component';
 import { environment } from '@env/environment';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
 
 /**
  * Contains all whitelisted routes for the application, stored in an Routes array.
@@ -15,17 +14,10 @@ import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
  *
  * @author Sean Donnelly
  */
-const dashboard = environment.experimental
-  ? {
+const dashboard =  {
     path: 'dashboard',
     loadChildren:
       'app/onion/dashboard/dashboard.module#DashboardModule',
-    canActivate: [AuthGuard],
-    data: { state: 'dashboard', title: 'Your Dashboard' }
-  }
-  : {
-    path: 'dashboard',
-    component: OldDashboardComponent,
     canActivate: [AuthGuard],
     data: { state: 'dashboard', title: 'Your Dashboard' }
   };
