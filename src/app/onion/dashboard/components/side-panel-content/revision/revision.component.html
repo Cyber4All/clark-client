@@ -18,7 +18,7 @@
         </div>
         <ng-template #meatball>
           <ng-container *ngIf="!disabled && meatball">
-            <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': revision.status === 'review'}" (click)="revision.status !== 'review' && this.toggleContextMenu($event)">
+            <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': revision.status === 'review'}" (activate)="revision.status !== 'review' && this.toggleContextMenu($event)">
               <div class="icon">
                 <i class="far fa-times"></i>
               </div>
@@ -27,11 +27,11 @@
           
             <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
               <div #contextMenu>
-                <ul (click)="toggleContextMenu($event)">
+                <ul (activate)="toggleContextMenu($event)">
                   
                   <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
                   <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
-                  <li (click)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
+                  <li (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
                   <li *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
                   <li *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>
                   
@@ -58,7 +58,7 @@
      You don't have a revision for this Learning Object yet!
     </div>
     <div class="btn-group center">
-      <button class="button good" (click)="makeRevision()">Revise <i class="fas fa-wrench"></i></button>
+      <button class="button good" (activate)="makeRevision()">Revise <i class="fas fa-wrench"></i></button>
     </div>
   </div>
 </ng-template>

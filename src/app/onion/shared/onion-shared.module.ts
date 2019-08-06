@@ -5,6 +5,7 @@ import { LearningObjectStatusIndicatorComponent } from './status-indicator/statu
 import { SubmitComponent } from './submit/submit.component';
 import { EditChangelogComponent } from './edit-changelog/edit-changelog.component';
 import { FormsModule } from '@angular/forms';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    VirtualScrollerModule
   ],
   exports: [
     LearningObjectStatusIndicatorComponent,

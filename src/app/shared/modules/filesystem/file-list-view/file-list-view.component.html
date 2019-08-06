@@ -1,0 +1,49 @@
+<div *ngIf="preview">
+  <div class="wrapper">
+    <div class="grid-row header">
+      <div>Name</div>
+      <div>Description</div>
+      <div>Date</div>
+      <div>Size</div>
+      <div *ngIf="canManage" class="placeholder"></div>
+    </div>
+    <!-- Render Folders -->
+
+    <!-- Render Files -->
+    <cdk-virtual-scroll-viewport itemSize="30" class="file-list-viewport">
+      <ng-container
+        *cdkVirtualFor="
+          let item of directoryListing;
+          trackBy: trackItems;
+          templateCacheSize: 0
+        "
+      >
+        <!-- Folder -->
+        <clark-folder-list-item
+          *ngIf="item.folders"
+          class="folder"
+          (clicked)="openFolder(item.name)"
+          (menuClicked)="handleMenuClicked($event, item)"
+          [folder]="item"
+          [showOptionButton]="canManage"
+        ></clark-folder-list-item>
+
+        <!-- File -->
+        <clark-file-list-item
+          *ngIf="!item.folders"
+          class="file"
+          (clicked)="openFile(item)"
+          (menuClicked)="handleMenuClicked($event, item)"
+          [file]="item"
+          [showOptionButton]="canManage"
+        ></clark-file-list-item>
+      </ng-container>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>
+<div class="preview" *ngIf="!preview">
+  <clark-file-preview [file]="file"></clark-file-preview>
+  <button (activate)="returnToFileView()" class="button good">
+    Return to file view
+  </button>
+</div>

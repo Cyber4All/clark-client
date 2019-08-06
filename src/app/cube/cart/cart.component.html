@@ -7,13 +7,13 @@
       <div *ngIf="cartItems" class="cart">
         <div *ngFor="let object of cartItems; let i = index;" class="object">
           <div>
-            <div class="name" (click)="goToItem(object)">{{object.name}}
+            <div class="name" (activate)="goToItem(object)">{{object.name}}
               <span class="length " [ngClass]="object.length">{{ object.length }}</span>
             </div>
             <div class="author">{{object.author.name | titlecase}}</div>
           </div>
           <div class="actions">
-            <button *ngIf="canDownload || object.status === statuses.RELEASED" class="button icon-only good" [ngClass]="{'disabled': downloading[i]}" (click)="downloadObject($event, object, i)">
+            <button *ngIf="canDownload || object.status === statuses.RELEASED" class="button icon-only good" [ngClass]="{'disabled': downloading[i]}" (activate)="downloadObject($event, object, i)">
               <span *ngIf="!downloading[i]">
                 <i class="far fa-download"></i>
               </span>
@@ -21,7 +21,7 @@
                 <i class="fal fa-spinner-third fa-spin "></i>
               </span>
             </button>
-            <button id="remove-library-item" class="button icon-only bad" (click)="removeItem($event, object)">
+            <button id="remove-library-item" class="button icon-only bad" (activate)="removeItem($event, object)">
               <i class="far fa-times"></i>
             </button>
           </div>

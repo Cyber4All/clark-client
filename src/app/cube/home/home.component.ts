@@ -1,7 +1,7 @@
 import { LearningObjectService } from '../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Query } from '../../shared/interfaces/query';
+import { Query } from '../../interfaces/query';
 import { COPY } from './home.copy';
 import { CollectionService, Collection } from '../../core/collection.service';
 import { UsageStats } from '../shared/types/usage-stats';

@@ -1,0 +1,31 @@
+
+@import '~_vars.scss';
+
+.not-found-top {
+  padding: 50px;
+  justify-content: center;
+
+  .not-found-logo {
+    height: 180px;
+    display: block;
+    margin: auto;
+  }
+  .huge {
+    font-size: $largest;
+    max-width: 100px;
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+  .message {
+    padding-top: 20px;
+    max-width: 400px;
+    font-size: $large;
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+}
+
+
+

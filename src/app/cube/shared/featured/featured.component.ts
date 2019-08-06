@@ -1,7 +1,7 @@
 import { LearningObject } from '@entity';
 import { Component, OnInit, Input } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
-import { Query, OrderBy, SortType } from '../../../shared/interfaces/query';
+import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

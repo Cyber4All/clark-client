@@ -1,0 +1,34 @@
+<div class="grid-row wrapper" role="link" tabindex="0" attr.aria-labelledby="file-name file-description file-updated file-size">
+  <div
+    (activate)="handleClick($event)"
+    class="text-contained inline-flex"
+    [ngClass]="{ 'hover-react': previewUrl }"
+
+    tipPosition="top"
+    id="file-name"
+  >
+    <i class="fas {{ icon }} icon"></i>
+    {{ file?.name }}
+    <span class="external-link-icon" *ngIf="previewUrl"
+      ><i class="far fa-external-link"></i
+    ></span>
+  </div>
+  <div class="text-contained description" id="file-description">
+    <span>{{ file?.description }}</span>
+  </div>
+  <div class="text-contained timestamp" id="file-updated" attr.aria-label="Last updated {{ timestampAge }}">
+    {{ timestampAge }}
+  </div>
+  <div class="text-contained filesize" id="file-size" attr.aria-label="{{ file?.size }}">
+    {{ file?.size | fileSize }}
+  </div>
+  <a
+    tabindex="0"
+    *ngIf="showOptionButton"
+    class="meatballs"
+    (activate)="handleMeatballClick($event)"
+    attr.aria-label="Clickable Option Menu for {{ file?.name }}"
+  >
+    <div></div>
+  </a>
+</div>

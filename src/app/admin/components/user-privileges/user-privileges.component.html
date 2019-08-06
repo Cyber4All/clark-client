@@ -15,14 +15,14 @@
             Active Privileges
           </div>
           <div class="privileges__actions btn-group to-right">
-            <button (click)="advance()" class="button good">Add Privilege <i class="far fa-user-plus"></i></button>
+            <button (activate)="advance()" class="button good">Add Privilege <i class="far fa-user-plus"></i></button>
           </div>
         </div>
       </ng-template>
 
       <ng-template>
         <div class="privileges__top-inner">
-          <div (click)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
+          <div (activate)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
             <i class="fas fa-arrow-left"></i> Back to privileges
           </div>
         </div>
@@ -30,11 +30,11 @@
 
       <ng-template>
         <div class="privileges__top-inner">
-          <div (click)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
+          <div (activate)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
             <i class="fas fa-arrow-left"></i> Back to role selector
           </div>
           <div class="privileges__actions btn-group to-right">
-            <button (click)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
+            <button (activate)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
           </div>
         </div>
       </ng-template>
@@ -65,11 +65,11 @@
 
 <ng-template #roleSelector>
   <div class="role-selector">
-    <div [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (click)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
       <i class="far fa-user-edit"></i>
       Reviewer
     </div>
-    <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (click)="selectedRole = 'curator'; advance()" class="role-selector__role">
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
       <i class="far fa-user-crown"></i>
       Curator
     </div>

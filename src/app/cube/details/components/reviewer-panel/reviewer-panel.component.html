@@ -1,0 +1,13 @@
+<div class="btn-group vertical">
+  <button class="button good" (activate)="downloadRevisions(true)" aria-label="Clickable Download Revisions button"> 
+    Download Revisions
+  </button>
+  <div tabindex="0" class="last-revised">
+    Last Revised {{revisedDate | date: 'shortDate'}}
+  </div>
+  <div tabindex="0" class="last-released">
+    Last Released {{releasedDate | date: 'shortDate'}}
+  </div>
+</div>
+
+

@@ -7,32 +7,32 @@
     <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
       <div class="btn-group to-right">
         <button aria-label="Create a new Learning Object" routerLink="/onion/learning-object-builder" class="button good">New <i class="far fa-plus"></i></button>
-        <button #filterMenuButtonElement aria-label="Filter Learning Objects by status" class="button neutral" (click)="toggleFilterMenu(true)">Filter <i class="far fa-angle-down"></i></button>
-        <button *ngIf="selected.size > 0" class="button bad" (click)="confirmDelete()">Delete Selected <i class="far fa-trash"></i></button>
-        <button *ngIf="filters.size > 0" aria-label="Clear all selected filters" class="button bad" (click)="clearFilters()">Clear Filters<i class="far fa-times"></i></button>
+        <button #filterMenuButtonElement aria-label="Filter Learning Objects by status" class="button neutral" (activate)="toggleFilterMenu(true)">Filter <i class="far fa-angle-down"></i></button>
+        <button *ngIf="selected.size > 0" class="button bad" (activate)="confirmDelete()">Delete Selected <i class="far fa-trash"></i></button>
+        <button *ngIf="filters.size > 0" aria-label="Clear all selected filters" class="button bad" (activate)="clearFilters()">Clear Filters<i class="far fa-times"></i></button>
       </div>
       <ng-container>
         <!-- Filter Context Menu -->
         <clark-context-menu *ngIf="filterMenuDown" [anchor]="filterMenuButtonElement" [offset]="{ top: 10, left: 5 }" (close)="toggleFilterMenu()">
           <div #contextMenu class="filter-menu">
             <ul>
-              <li class="unreleased" (click)="toggleFilter('unreleased')">
+              <li class="unreleased" (activate)="toggleFilter('unreleased')">
                 <div *ngIf="filters.get('unreleased')" class="indicator"></div>
                 <i class="far fa-eye-slash"></i>Unreleased
               </li>
-              <li class="waiting" (click)="toggleFilter('waiting')">
+              <li class="waiting" (activate)="toggleFilter('waiting')">
                 <div *ngIf="filters.get('waiting')" class="indicator"></div>
                 <i class="far fa-hourglass"></i>Waiting for Review
               </li>
-              <li class="review" (click)="toggleFilter('review')">
+              <li class="review" (activate)="toggleFilter('review')">
                 <div *ngIf="filters.get('review')" class="indicator"></div>
                 <i class="far fa-sync"></i>Under Review
               </li>
-              <li class="proofing" (click)="toggleFilter('proofing')">
+              <li class="proofing" (activate)="toggleFilter('proofing')">
                 <div *ngIf="filters.get('proofing')" class="indicator"></div>
                 <i class="far fa-shield"></i>Proofing
               </li>
-              <li class="denied" (click)="toggleFilter('rejected')">
+              <li class="denied" (activate)="toggleFilter('rejected')">
                 <div *ngIf="filters.get('rejected')" class="indicator"></div>
                 <i class="far fa-ban"></i>Denied
               </li>
@@ -92,7 +92,7 @@
         You don't have any Learning Objects with that status!
       </div>
       <div class="empty-text" *ngIf="filters.size > 1">
-        You don't have any Learning Objects with thoses statuses!
+        You don't have any Learning Objects with those statuses!
       </div>
       <div class="empty-text" *ngIf="!showOptions">
         Once you've made some learning objects they'll show up in your Draft Learning Objects list.
@@ -110,8 +110,8 @@
       <div class="modal-title">Are you sure?</div>
       <div class="modal-text">You cannot undo this action!</div>
       <div class="btn-group center">
-        <button class="button bad" (click)="delete.emit(deleteObjects); deleteConfirmation = undefined; selected.clear()">Yep, do it! <i class="far fa-trash"></i></button>
-        <button class="button neutral" (click)="deleteConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
+        <button class="button bad" (activate)="delete.emit(deleteObjects); deleteConfirmation = undefined; selected.clear()">Yep, do it! <i class="far fa-trash"></i></button>
+        <button class="button neutral" (activate)="deleteConfirmation = undefined">Wait, nevermind! <i class="far fa-ban"></i></button>
       </div>
     </div>
   </clark-popup>
