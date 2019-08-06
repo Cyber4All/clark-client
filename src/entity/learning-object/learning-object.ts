@@ -205,6 +205,8 @@ export class LearningObject {
   }
 
 
+  revision = 0;
+
   /**
    * Creates an instance of LearningObject.
    * @param {Partial<LearningObject>} [object]
@@ -578,11 +580,9 @@ private _hasRevision?: boolean;
     if (object.hasRevision === true) {
       this._hasRevision = object.hasRevision;
     }
-
     if (object.revision != null) {
       this.revision = object.revision;
     }
-
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
     this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;

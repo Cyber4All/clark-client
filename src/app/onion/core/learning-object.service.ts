@@ -63,7 +63,7 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
-  createRevision(id: string, authorUsername: string): string {
+  createRevision(id: string, authorUsername: string) {
     const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, id);
     return this.http
     .post(
