@@ -21,6 +21,7 @@ import { LearningOutcomeValidator } from './validators/learning-outcome.validato
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment.prod';
+import { LearningObjectService } from '../core/learning-object.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -101,6 +102,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   errorMessage: string;
 
   adminMode: boolean;
+  isRevision: boolean;
 
   showServiceFailureModal = false;
   adminDashboardURL = environment.adminAppUrl;
@@ -114,8 +116,9 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
     public noteService: ToasterService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private learningObjectService: LearningObjectService
+  ) { }
 
   ngOnInit() {
     // listen for route change and grab name parameter if it's there
@@ -123,9 +126,17 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(routeParams => {
         const id = routeParams.get('learningObjectId');
+        const revision = this.route.snapshot.queryParamMap.get('revisionId');
+        const authorUsername = this.route.snapshot.queryParamMap.get('author');
 
         // if name parameter found, instruct store to fetch full learning object
-        if (id) {
+        if (revision !== undefined && id) {
+          this.isRevision = true;
+          this.store.isRevision = true;
+          this.store.fetch(id, revision, authorUsername).then(learningObject => {
+            this.setBuilderMode(learningObject);
+          });
+        } else if (id) {
           this.store.fetch(id).then(learningObject => {
             if (learningObject.status === LearningObject.Status.RELEASED) {
               this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
@@ -133,6 +144,9 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
               // redirect user to dashboard if the object is in the working stage
               if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
                 this.router.navigate(['onion/dashboard']);
+              } else if (revision) {
+                this.learningObjectService.getLearningObjectRevision(
+                  learningObject.author.username, learningObject.id, learningObject.revision);
               } else {
                 this.setBuilderMode(learningObject);
               }
@@ -142,7 +156,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
           // otherwise instruct store to initialize and store a blank learning object
           this.store.makeNew();
         }
-    });
+      });
 
     this.builderStore.serviceInteraction$
       .pipe(takeUntil(this.destroyed$))

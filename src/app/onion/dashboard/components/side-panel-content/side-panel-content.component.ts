@@ -3,6 +3,9 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
 import { RatingService } from 'app/core/rating.service';
 import { trigger, style, animate, transition } from '@angular/animations';
+import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { environment } from '@env/environment';
+
 
 @Component({
   selector: 'clark-side-panel-content',
@@ -29,6 +32,7 @@ export class SidePanelContentComponent implements OnChanges {
 
   @Input() learningObject: LearningObject;
 
+
   ratings: any[];
   averageRating: number;
   loadingRatings: boolean;
@@ -38,12 +42,14 @@ export class SidePanelContentComponent implements OnChanges {
   @Output()
   submit: EventEmitter<void> = new EventEmitter();
 
+  @Output() createRevision: EventEmitter<LearningObject> = new EventEmitter();
   // FIXME will use flag when backend is implemented
-  createRevision = false;
-
+  hasRevision = environment.experimental;
+  revision: LearningObject;
 
   constructor(
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private learningObjectService: LearningObjectService
     ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -55,6 +61,13 @@ export class SidePanelContentComponent implements OnChanges {
 
       this.loadingRatings = true;
     });
+    if (environment.experimental) {
+      this.learningObjectService.getLearningObjectRevision(
+        this.learningObject.author.username, this.learningObject.id, this.learningObject.revision)
+        .then(revision => {
+        this.revision = revision;
+      });
+    }
   }
 
   /**
