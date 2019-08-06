@@ -81,7 +81,7 @@
   </clark-popup>
   
   <!-- Side panel popout -->
-  <clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject"></clark-side-panel-content>
+  <clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject" (createRevision)="createRevision($event)"></clark-side-panel-content>
   
   <!--Delete Confirmation-->
   <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit> 
