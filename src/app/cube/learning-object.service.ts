@@ -1,6 +1,6 @@
 import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { LearningObject } from '@entity';
@@ -17,10 +17,7 @@ export class LearningObjectService {
 
   constructor(
     private http: HttpClient,
-    private headers: HttpHeaders = new HttpHeaders(),
-    ) {
-      this.headers.append('Content-Type', 'application/json');
-    }
+    ) {}
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -145,25 +142,6 @@ export class LearningObjectService {
         return val
           .map(l => new LearningObject(l));
       });
-  }
-
-  // Editor Actions
-  createRevision(object: LearningObject): Promise<object> {
-    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(object.author.username, object.id);
-    return this.http
-    .post(
-      route,
-      { object: object },
-      { headers: this.headers, withCredentials: true }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise().then(response => {
-      console.log(response);
-      return response;
-    });
   }
 
   private handleError(error: HttpErrorResponse) {
