@@ -33,6 +33,9 @@ export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
+  FETCH_USER(username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}`;
+  },
   CHECK_USER_EXISTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
@@ -82,13 +85,12 @@ export const USER_ROUTES = {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects?children=true&text=${encodeURIComponent(query)}
-    &${querystring.stringify(filters)}`;
+    )}/learning-objects?children=true&text=${encodeURIComponent(query)}&${querystring.stringify(filters)}`;
   },
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query)}
-    &${querystring.stringify(filters)}&draftsOnly=true`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query
+      )}&${querystring.stringify(filters)}&draftsOnly=true`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(

@@ -11,7 +11,7 @@ import { User } from '@entity';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { UserQuery } from 'app/shared/interfaces/query';
+import { UserQuery } from 'app/interfaces/query';
 
 @Injectable()
 export class UserService {
@@ -251,7 +251,7 @@ export class UserService {
   getUser(username: string): Promise<User> {
     return username && username !== 'undefined'
       ? this.http
-          .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
+          .get(USER_ROUTES.FETCH_USER(username), {
             withCredentials: true
           })
           .pipe(

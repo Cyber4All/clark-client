@@ -14,9 +14,9 @@ import { RouterModule } from '@angular/router';
 
 // 3rd Party Modules
 import { ClickOutsideModule } from 'ng-click-outside';
-import { EscapeHtmlPipe } from '../../shared/pipes/keep-html.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { FeaturedComponent } from './featured/featured.component';
+import { LearningObjectListingComponent } from './learning-object/learning-object.component';
 
 @NgModule({
   imports: [
@@ -29,13 +29,13 @@ import { FeaturedComponent } from './featured/featured.component';
   ],
   exports: [
     FooterComponent,
-    EscapeHtmlPipe,
-    FeaturedComponent
+    FeaturedComponent,
+    LearningObjectListingComponent,
   ],
   declarations: [
     FooterComponent,
-    EscapeHtmlPipe,
-    FeaturedComponent
+    FeaturedComponent,
+    LearningObjectListingComponent,
   ],
   providers: [ProfileGuard, UserResolver]
 })

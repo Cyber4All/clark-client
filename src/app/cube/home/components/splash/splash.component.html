@@ -6,7 +6,7 @@
     <div class="search__input">
       <i class="far fa-search"></i>
       <input
-        autofocus
+        id="pageContent"
         type="text"
         class="search-input"
         aria-label="Search Across Learning Objects"
@@ -21,7 +21,7 @@
 
     <div class="search__actions">
       <a routerLink="/browse">Browse all</a>
-      <button type="button" class="button" (click)="submitSearch()">
+      <button type="button" class="button" (activate)="submitSearch()">
         Search
       </button>
     </div>

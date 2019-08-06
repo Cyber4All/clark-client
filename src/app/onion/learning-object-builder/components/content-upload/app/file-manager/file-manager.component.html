@@ -3,16 +3,16 @@
 
 <clark-context-menu *ngIf="showNewOptions" [anchor]="menuAnchor" (close)="closeContextMenu()">
   <ul #contextMenu>
-    <li (click)="openFileDialog()"><i class="fas fa-file"></i> New File</li>
-    <li (click)="openFolderDialog()"><i class="fas fa-folder"></i> New Folder</li>
+    <li (activate)="openFileDialog()"><i class="fas fa-file"></i> New File</li>
+    <li (activate)="openFolderDialog()"><i class="fas fa-folder"></i> New Folder</li>
   </ul>
 </clark-context-menu>
 
 <clark-context-menu *ngIf="showFileOptions" [anchor]="menuAnchor" (close)="closeContextMenu()">
   <ul #contextMenu>
-    <li (click)="toggleEditDescription(true)"><i class="far fa-edit"></i>Edit Description</li>
-    <li *ngIf="!isDirectory(menuItem)" (click)="handleDownloadClick(menuItem)"><i class="far fa-download"></i>Download</li>
-    <li (click)="triggerDelete(menuItem)" class="bad"><i class="far fa-trash-alt"></i>Delete</li>
+    <li (activate)="toggleEditDescription(true)"><i class="far fa-edit"></i>Edit Description</li>
+    <li *ngIf="!isDirectory(menuItem)" (activate)="handleDownloadClick(menuItem)"><i class="far fa-download"></i>Download</li>
+    <li (activate)="triggerDelete(menuItem)" class="bad"><i class="far fa-trash-alt"></i>Delete</li>
   </ul>
 </clark-context-menu>
 
@@ -28,7 +28,7 @@
     </div>
     <textarea #descriptionTextArea placeholder="Enter description here" [attr.aria-label]="'Enter description for the ' + (isDirectory(menuItem) ? 'folder' : 'file') + ' ' + (menuItem.fullPath || menuItem.path) + ' here'" [value]="menuItem.description"></textarea>
     <div class="btn-group center">
-      <button (click)="saveDescription(descriptionTextArea.value, menuItem)" class="button good">Save Description <i class="far fa-arrow-right"></i></button> 
+      <button (activate)="saveDescription(descriptionTextArea.value, menuItem)" class="button good">Save Description <i class="far fa-arrow-right"></i></button> 
     </div>
   </div>
 </clark-popup>

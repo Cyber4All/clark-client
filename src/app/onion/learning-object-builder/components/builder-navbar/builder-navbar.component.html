@@ -59,14 +59,14 @@
             bad: validator.submissionMode && submissionError,
             disabled: !auth.user.emailVerified
           }"
-          (click)="auth.user.emailVerified && triggerSubmit()"
+          (activate)="auth.user.emailVerified && triggerSubmit()"
         >
           <div
             *ngIf="validator.submissionMode && submissionError"
             class="button__cancel"
             tip="Cancel Submission"
             tipPosition="bottom"
-            (click)="$event.stopPropagation(); validator.submissionMode = false"
+            (activate)="$event.stopPropagation(); validator.submissionMode = false"
           >
             <i class="far fa-times"></i>
           </div>
@@ -150,7 +150,7 @@
     [ngClass]="{ new: isNewRoute(link) }"
     routerLink="{{ link }}"
     routerLinkActive="active"
-    (click)="triggerRouteClick(link)"
+    (activate)="triggerRouteClick(link)"
     >{{ text }}</a
   >
   <a

@@ -1,0 +1,100 @@
+<clark-message></clark-message>
+<button class="skip-link" (activate)="goToContent('pageContent')">Skip directly to site content</button>
+<button class="skip-link" *ngIf="!loggedin" (activate)="goToContent('clark-sign-in')">Skip directly to Login</button>
+<button class="skip-link" *ngIf="loggedin" (activate)="goToContent('clark-user-dropdown')">Skip directly to your User profile</button>
+<button class="skip-link" (activate)="goToContent('clark-search-input')">Skip directly to Search for Learning Objects</button>
+<div role="navigation" *ngIf="nav.visible">
+  <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
+    <div class="inner flex h left-right">
+      <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" activate routerLink="/home">
+        <div class="logo-image"></div>
+        <div tabindex="0" id="clark-logo" class="logo-link">CLARK</div>
+      </div>
+      <div class="clark-search-wrapper" [ngClass]="{'down': searchDown, 'mobile': isMobile, 'overflow': searchOverflow}">
+        <div class="clark-search-inner">
+          <clark-search></clark-search>
+        </div>
+      </div>
+      <div id="clark-user" class="user flex h flex-end" [ngClass]="{'loggedin': loggedin, 'mobile': isMobile, 'noShow': searchDown && !isMobile}">
+        <ng-container *ngIf="isMobile; else userTemplate" [ngTemplateOutlet]="mobileUserTemplate"></ng-container>
+      </div>
+
+      <ng-template #userTemplate>
+        <ng-container *ngIf="loggedin">
+          <button class="contributor" id="contributor-link" #contributorDropdownButtonElement (activate)="contributorDropdown(true)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></button>
+          <a class="right library" id="library-link" routerLink="/library"></a>
+          <button id="clark-user-dropdown" #userDropdownButtonElement class="user" (activate)="userDropdown(true)">
+            <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+
+          <clark-context-menu *ngIf="contributorDown" [anchor]="contributorDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="contributorDropdown()">
+            <div #contextMenu>
+              <ul>
+                <li routerLink="/onion/dashboard" (activate)="contributorDropdown()" id="contributorDropdown1"><i class="far fa-list"></i>Your Dashboard</li>
+                <li routerLink="/onion/learning-object-builder" (activate)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
+              </ul>
+            </div>
+          </clark-context-menu>
+          
+          <clark-context-menu *ngIf="userDown" [anchor]="userDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="userDropdown()">
+            <div #contextMenu id="context-popup">
+              <ul>
+                <li tabindex="0" *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (activate)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+                <li tabindex="0" [routerLink]="['users', authService.user?.username]" (activate)="userDropdown()"><i class="far fa-user"></i>Your Profile</li>
+                <li tabindex="0" routerLink="/auth/forgot-password" (activate)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
+                <li tabindex="0" (activate)="logout(); userDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
+              </ul>
+            </div>
+          </clark-context-menu>
+        </ng-container>
+        <ng-container *ngIf="!loggedin">
+          <a tabindex="0" class="login flex h flex-end" id="clark-sign-in" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: url}">Sign in<i class="fas fa-sign-in-alt"></i></a>
+          <a tabindex="0" class="register" id="clark-register" routerLink="/auth/register">Register<i class="fas fa-user-plus"></i></a>
+        </ng-container>
+      </ng-template>
+
+      <ng-template #mobileUserTemplate>
+        <div class="mobile-search-option" (activate)="showSearch()"><i class="far fa-search"></i></div>
+        <div class="hamburger"[ngClass]="{'active': menuOpen}" (activate)="menuOpen = !menuOpen">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Overlay under mobile slideout -->
+  <div class="slideout-underlay" *ngIf="nav.visible" [ngClass]="{'active': menuOpen || searchDown, 'underNav': !isMobile || searchDown}" (activate)="menuOpen = false; hideSearch();"></div>
+
+  <!-- Mobile menu slideout -->
+  <div class="slideout" *ngIf="nav.visible && isMobile" [ngClass]="{'active': menuOpen}">
+    <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">
+      <ng-container *ngIf="loggedin; else noUserGreeting">
+        <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
+        <div class="right">
+          <div class="greeting">Howdy, {{ authService.firstName | titlecase }}!</div>
+          <a>View your profile</a>
+        </div>
+      </ng-container>
+      <ng-template #noUserGreeting>
+        <div class="greeting">Hi there!<br />We're happy you're here!</div>
+      </ng-template>
+    </div>
+    <div class="slideout-section menu-items">
+      <ul>
+        <li *ngIf="loggedin" routerLink="/onion/dashboard">Your Dashboard</li>
+        <li *ngIf="loggedin" routerLink="/library">Your Library</li>
+        <li *ngIf="loggedin" (activate)="logout()">Logout</li>
+      </ul>
+    </div>
+    <div class="slideout-section auth" *ngIf="!loggedin">
+      <div class="btn-group vertical">
+        <button class="button good" routerLink="/auth/register">Register</button>
+        <button class="button neutral" routerLink="/auth/login">Log In</button>
+      </div>
+    </div>
+  </div>
+</div>
+

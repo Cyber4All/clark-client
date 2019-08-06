@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { CollectionService, Collection } from 'app/core/collection.service';
-import { ToasterService } from 'app/shared/toaster';
+import { ToasterService } from 'app/shared/modules/toaster';
 
 
 @Component({

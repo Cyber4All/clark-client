@@ -20,7 +20,7 @@ import { SharedModule } from '../../../../../shared/shared.module';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
 import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component';
-import { FileBrowserModule } from 'app/shared/filesystem/file-browser.module';
+import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
 
 @NgModule({
   declarations: [

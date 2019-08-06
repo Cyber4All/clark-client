@@ -8,10 +8,6 @@ import { UsersComponent } from './pages/users/users.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { FilterSearchComponent } from 'app/admin/components/filter-search/filter-search.component';
 import { FormsModule } from '@angular/forms';
-import { ContextMenuModule } from 'app/shared/contextmenu/contextmenu.module';
-
-import { ModalModule } from 'app/shared/modals';
-import { PopupModule } from 'app/shared/popups/popup.module';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { UserSearchWrapperComponent } from './components/user-search-wrapper/user-search-wrapper.component';
@@ -20,6 +16,7 @@ import { UserPrivilegesComponent } from './components/user-privileges/user-privi
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
 import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
 
 @NgModule({
@@ -42,13 +39,11 @@ import { LearningObjectListItemComponent } from './components/learning-object-li
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    ContextMenuModule,
-    ModalModule,
-    PopupModule,
     CommonModule,
     AdminRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    VirtualScrollerModule
   ],
 })
 export class AdminModule { }

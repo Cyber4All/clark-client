@@ -1,0 +1,12 @@
+<div class="download-notice-component">
+  <div class="modal-title">Information about this download!</div>
+  <div class='modal-text'>
+    To keep download times short, files over 100 megabytes are not included in the download package. You can find links to download them inside the 'ReadMe' PDF.
+    <div *ngIf="UAService.isWindows" class="windows-warning">
+      Due to the internal workings of the Windows operating system, deeply nested learning objects might not be able to be unzipped. Learn how to solve that <a target="_blank" href="http://help.clark.center/#i-downloaded-a-learning-object-on-windows-and-i-cant-open-it">here</a>.
+    </div>
+  </div>
+  <div class="btn-group center">
+    <button class="button good" (activate)="close.emit()">Ok, got it!</button>
+  </div>
+</div>

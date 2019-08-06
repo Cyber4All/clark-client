@@ -1,4 +1,4 @@
-<div class="outcomes-list-item" [ngClass]="{'selected': selected}" (click)="toggleMap.emit(!selected);">
+<div class="outcomes-list-item" [ngClass]="{'selected': selected}" (activate)="toggleMap.emit(!selected);">
   <div class="top">
     <span *ngIf="outcome.suggested" class="suggested-icon">
       <i class="fas fa-lightbulb"></i>
