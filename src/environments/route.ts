@@ -85,13 +85,12 @@ export const USER_ROUTES = {
     // Onion
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects?children=true&text=${encodeURIComponent(query)}
-    &${querystring.stringify(filters)}`;
+    )}/learning-objects?children=true&text=${encodeURIComponent(query)}&${querystring.stringify(filters)}`;
   },
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query)}
-    &${querystring.stringify(filters)}&draftsOnly=true`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query
+      )}&${querystring.stringify(filters)}&draftsOnly=true`;
   },
   GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
     return `${environment.apiURL}/users/${encodeURIComponent(

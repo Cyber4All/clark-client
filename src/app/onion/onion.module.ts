@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { OnionRoutingModule } from './onion.routing';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
-import { OldDashboardComponent } from './old-dashboard/old-dashboard.component';
 
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
@@ -28,7 +27,6 @@ import { SidePanelContentModule } from './dashboard/components/side-panel-conten
   // Specifies the components included in this module
   declarations: [
     OnionComponent,
-    OldDashboardComponent,
   ],
   // Specifies all modules to be imported
   imports: [
