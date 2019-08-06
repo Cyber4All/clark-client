@@ -195,6 +195,8 @@ get hasRevision(): boolean {
   return this._hasRevision;
 }
 
+  version = 0;
+
   revision = 0;
 
   /**
@@ -557,6 +559,9 @@ private _hasRevision?: boolean;
     if (object.hasRevision === true) {
       this._hasRevision = object.hasRevision;
     }
+    if (object.version != null) {
+      this.version = object.version;
+    }
     if (object.revision != null) {
       this.revision = object.revision;
     }
@@ -594,6 +599,7 @@ private _hasRevision?: boolean;
       status: this.status,
       metrics: this.metrics,
       hasRevision: this.hasRevision,
+      version: this.version,
       revision: this.revision
     };
     return object;
