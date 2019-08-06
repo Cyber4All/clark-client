@@ -20,21 +20,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   @Input() initialized = false;
 
-  backRoute: string;
+  navigateBack: Function;
 
   constructor(private router: Router, private history: HistoryService) { }
 
   ngOnInit() {
-    this.backRoute = this.history.lastRoute ? this.history.lastRoute.url : '/';
-  }
-
-  /**
-   * Navigate to previous location
-   *
-   * @memberof SidebarComponent
-   */
-  navigateBack() {
-    this.router.navigateByUrl(this.backRoute);
+    this.navigateBack = this.history.snapshot();
   }
 
   ngOnDestroy() {

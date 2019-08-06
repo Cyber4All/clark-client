@@ -42,6 +42,8 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   @Input() adminMode = false;
 
+  private navigateBack: Function;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -77,7 +79,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
 
-    this.redirectUrl = this.history.lastRoute ? this.history.lastRoute.url : undefined;
+    this.navigateBack = this.history.snapshot();
   }
 
   /**

@@ -63,6 +63,8 @@ export class DashboardComponent implements OnInit {
   // delete
   objectsToDelete: LearningObject[];
 
+  private navigateBack: Function;
+
 
   constructor(
     private history: HistoryService,
@@ -76,7 +78,6 @@ export class DashboardComponent implements OnInit {
     private cd: ChangeDetectorRef,
   ) {
     this.navbar.hide();
-    this.lastLocation = this.history.lastRoute;
   }
 
   async ngOnInit() {
@@ -90,6 +91,8 @@ export class DashboardComponent implements OnInit {
       this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
       this.loading = false;
     }, 1100);
+
+    this.navigateBack = this.history.snapshot();
   }
 
   /**
@@ -145,19 +148,6 @@ export class DashboardComponent implements OnInit {
     } else {
       this.workingLearningObjects = await this.getDraftLearningObjects();
     }
-  }
-
-  /**
-   * Navigates back, either to the home page or to the previous non-onion page
-   */
-  navigateBack() {
-    let url = '/home';
-
-    if (this.lastLocation && !this.lastLocation.url.includes('onion')) {
-      url = this.lastLocation.url;
-    }
-
-    this.router.navigateByUrl(url);
   }
 
   /**
