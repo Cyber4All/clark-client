@@ -138,6 +138,7 @@ export class DashboardComponent implements OnInit {
    * @param filters
    */
   async applyFilters(filters: any) {
+    this.filters = filters;
     const filter = Array.from(filters.keys());
     if (filter.length !== 0) {
       this.workingLearningObjects = await this.getDraftLearningObjects({status: filter});
@@ -165,7 +166,7 @@ export class DashboardComponent implements OnInit {
    */
   async performSearch(text: string) {
     this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
-    this.workingLearningObjects = await this.getDraftLearningObjects(text);
+    this.workingLearningObjects = await this.getDraftLearningObjects(this.filters, text);
   }
 
   // SUBMISSION AND CANCEL SUBMISSION LOGIC
