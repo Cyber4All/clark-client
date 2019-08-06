@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class HistoryService {
 
   constructor(private router: Router) {
     this.router.events.pipe(
-      filter(x => x instanceof NavigationStart)
+      filter(x => x instanceof NavigationEnd)
     ).subscribe((route: NavigationEnd) => {
 
       if (!this.skip) {
