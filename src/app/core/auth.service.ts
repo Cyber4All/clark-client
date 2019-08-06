@@ -631,6 +631,9 @@ export class AuthService {
     ) {
       // Client-side or network returned error
       return throwError(error.error);
+    } else if (error.status === 426) {
+      // If the client version is not up to date and an upgrade is required
+      return throwError(error);
     } else {
       // API returned error
       return throwError(error.error);
