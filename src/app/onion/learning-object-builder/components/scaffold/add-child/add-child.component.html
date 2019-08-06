@@ -1,6 +1,6 @@
 <div class="search-bar">
   <input aria-label="Search for Children" type="search" placeholder="Search for Children" [(ngModel)]="childrenSearchString" (ngModelChange)="searchString$.next($event)"/>
-  <button aria-label="Search for Children" class="search-button" (click)="search()">
+  <button aria-label="Search for Children" class="search-button" (activate)="search()">
     <i class="far fa-search"></i>
   </button>
 </div>
@@ -18,7 +18,7 @@
             <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
           </div>
         </div>
-        <button attr.aria-label="Add {{ c.name }} as child" class="add" (click)="addChildToList(i)">
+        <button attr.aria-label="Add {{ c.name }} as child" class="add" (activate)="addChildToList(i)">
          <i class="fas fa-plus"></i>
         </button>
       </div>

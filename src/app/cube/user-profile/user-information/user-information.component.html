@@ -9,7 +9,7 @@
   <div class="email">
     <a id="email-link" href="mailto: {{ user.email }}">{{ user.email }}</a>
   </div>
-  <div *ngIf="self && !user.emailVerified" class="verify-email button good" (click)="sendEmailVerification()">
+  <div *ngIf="self && !user.emailVerified" class="verify-email button good" (activate)="sendEmailVerification()">
     {{ copy.EMAILVERIFY }}
   </div>
 </div>
@@ -32,5 +32,5 @@
   </ng-container>
 </div>
 <section id="card-printer">
-  <button id="clark-card-link" class="print-cards button neutral" (click)="printCards()">{{ copy.PRINT }}</button>
+  <button id="clark-card-link" class="print-cards button neutral" (activate)="printCards()">{{ copy.PRINT }}</button>
 </section>

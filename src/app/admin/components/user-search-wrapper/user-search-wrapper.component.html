@@ -19,9 +19,9 @@
     <ul class="user-dropdown__list">
       <div *ngIf="searchResults.length > 0 && !loading">
         <virtual-scroller #searchResultsScroller [items]="searchResults">
-          <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems; let i = index" (click)="toggleAuthor(user)">
+          <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems; let i = index" (activate)="toggleAuthor(user)">
             <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': users.includes(u.username)}">
-              <span (click)="selectUser(i)" *ngIf="!users.includes(u.username)"><i class="fas fa-plus"></i></span>
+              <span (activate)="selectUser(i)" *ngIf="!users.includes(u.username)"><i class="fas fa-plus"></i></span>
               <span *ngIf="users.includes(u.username)"><i class="fas fa-times"></i></span>
             </span>
             <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>

@@ -2,20 +2,20 @@
 import {takeUntil, debounceTime} from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObject, StandardOutcome } from '@entity';
+import { LearningObject } from '@entity';
 import { lengths } from '@cyber4all/clark-taxonomy';
 
 
 import {
   SuggestionService
  } from '../../onion/core/suggestion.service';
- import { FilterSection } from '../../shared/filter/filter.component';
+ import { FilterSection } from './components/filter/filter.component';
  import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';
-import { OrderBy, Query, SortType } from '../../shared/interfaces/query';
-import { ModalListElement, ModalService, Position } from '../../shared/modals';
+import { OrderBy, Query, SortType } from '../../interfaces/query';
+import { ModalListElement, ModalService, Position } from '../../shared/modules/modals/modal.module';
 import { LearningObjectService } from '../learning-object.service';
 import { OutcomeService } from 'app/core/outcome.service';
 

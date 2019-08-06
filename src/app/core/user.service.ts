@@ -11,7 +11,7 @@ import { User } from '@entity';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { UserQuery } from 'app/shared/interfaces/query';
+import { UserQuery } from 'app/interfaces/query';
 
 @Injectable()
 export class UserService {

@@ -1,0 +1,22 @@
+<div role="link" tabindex="0" attr.aria-labelledby="folder-name folder-description folder-updated" (activate)="handleClick($event)" class="grid-row wrapper">
+  <div class="text-contained inline-flex" id="folder-name" attr.aria-label="{{ folder?.getName() }} Folder">
+    <i class="fas fa-folder icon"></i>
+    {{ folder?.getName() }}
+  </div>
+  <div class="text-contained description" id="folder-description" attr.aria-label="{{ folder?. description }}">
+    <span>{{ folder?.description }}</span>
+  </div>
+  <div class="text-contained timestamp" id="folder-updated" attr.aria-label="Last updated {{ timestampAge }}">
+    {{ timestampAge }}
+  </div>
+  <div class="empty"></div>
+  <a
+    tabindex="0"
+    attr.aria-label="Clickable Option Menu for {{ folder?.getName() }}"
+    *ngIf="showOptionButton"
+    class="meatballs"
+    (activate)="handleMeatballClick($event)"
+  >
+    <div></div>
+  </a>
+</div>

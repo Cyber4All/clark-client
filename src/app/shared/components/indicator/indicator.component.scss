@@ -1,0 +1,58 @@
+@import '~_vars.scss';
+
+.indicator {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+
+  & > .element {
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+
+.element {
+  $color: $medium-grey;
+  background: transparent;
+  width: 12px;
+  border-radius: 50%;
+  border: 1px solid $color;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+
+  &:after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  &.active {
+    background: transparent;
+    border-color: $blue-accent;
+  }
+
+  .description {
+    background: $blue-accent;
+    color: white;
+    position: absolute;
+    padding: 5px;
+    bottom: 0;
+    visibility: hidden;
+    opacity: 0;
+    font-size: $small;
+  }
+}
+
+.element-highlight {
+  background: $blue-accent;
+  position: absolute;
+  border-radius: 5px;
+  top: 3px;
+  transition: all 0.2s ease;
+  height: 8px;
+  width: 8px;
+}

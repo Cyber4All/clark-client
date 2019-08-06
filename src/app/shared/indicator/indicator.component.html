@@ -1,6 +1,0 @@
-<div #indicator class="indicator">
-  <div #element *ngFor="let el of elements; let i = index" class="element" [ngClass]="{'active': i === active}" (click)="signalChange(i)">
-    <div class="description">{{ el }}</div>
-  </div>
-  <div #highlight class="element-highlight"></div>
-</div>

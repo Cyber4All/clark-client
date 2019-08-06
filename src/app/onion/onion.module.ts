@@ -10,13 +10,15 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 // Other
 import { OnionCoreModule } from './core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { ToasterModule } from '../shared/toaster';
-import { ModalModule } from '../shared/modals';
+import { ToasterModule } from '../shared/modules/toaster';
+import { ModalModule } from '../shared/modules/modals/modal.module';
 import { OnionComponent } from './onion.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
 import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+
 import { SidePanelContentModule } from './dashboard/components/side-panel-content/side-panel-content.module';
+import { EmailBannerComponent } from './components/email-banner/email-banner.component';
 /**
  * Defines the root module that is bootstrapped to start the application.
  * This tells Angular how to handle all of the files and dependencies in use.
@@ -27,6 +29,7 @@ import { SidePanelContentModule } from './dashboard/components/side-panel-conten
   // Specifies the components included in this module
   declarations: [
     OnionComponent,
+    EmailBannerComponent
   ],
   // Specifies all modules to be imported
   imports: [

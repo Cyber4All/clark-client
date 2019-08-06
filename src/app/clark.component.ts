@@ -1,8 +1,7 @@
 import { Router , NavigationEnd, ActivatedRoute} from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
-import { ModalService, ModalListElement } from './shared/modals';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
@@ -47,6 +46,19 @@ export class ClarkComponent implements OnInit {
   cookiesAgreement: boolean;
   isOldVersion = false;
   errorMessage: string;
+  hidingOutlines = true;
+
+  @HostListener('window:click', ['$event'])
+  @HostListener('window:keyup', ['$event'])
+  handleOutlines(event) {
+    if (event.code === 'Tab' && this.hidingOutlines) {
+      this.hidingOutlines = false;
+      document.body.classList.remove('hide-outlines');
+    } else if (event instanceof MouseEvent && !this.hidingOutlines) {
+      this.hidingOutlines = true;
+      document.body.classList.add('hide-outlines');
+    }
+  }
 
   constructor(
     private authService: AuthService,
@@ -61,8 +73,6 @@ export class ClarkComponent implements OnInit {
         if (val) {
           this.cartService.updateUser();
           this.cartService.getCart();
-
-
         }
       });
 

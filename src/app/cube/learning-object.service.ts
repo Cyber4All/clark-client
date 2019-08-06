@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { LearningObject } from '@entity';
-import { Query } from '../shared/interfaces/query';
+import { Query } from '../interfaces/query';
 
 import * as querystring from 'querystring';
 

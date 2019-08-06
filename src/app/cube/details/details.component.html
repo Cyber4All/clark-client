@@ -34,13 +34,13 @@
           <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRatingValue" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
             (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
             <button tabindex="0" *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review Learning Objects." [tipDisabled]="auth.user.emailVerified"
-            class="button good" (click)="showAddRating = auth.user.emailVerified" attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+            class="button good" (activate)="showAddRating = auth.user.emailVerified" attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
             'Write a'}} review <i class="far fa-pencil"></i></button>
         </div>
       </div>
-      <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (click)="showAddRating = false;">
-        <div class="new-rating" (click)="$event.stopPropagation()">
-          <div class="close-new-rating" (click)="showAddRating = false;"><i class="far fa-times"></i></div>
+      <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (activate)="showAddRating = false;">
+        <div class="new-rating" (activate)="$event.stopPropagation()">
+          <div class="close-new-rating" (activate)="showAddRating = false;"><i class="far fa-times"></i></div>
           <div class="title">Rate this Learning Object</div>
           <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
             (cancelRating)="showAddRating = false;"></clark-new-rating>
