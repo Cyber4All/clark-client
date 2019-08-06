@@ -1,0 +1,8 @@
+<div class="comment-wrapper">
+    <textarea class = "text-area" aria-label="comment" placeholder="Respond to this rating" [(ngModel)]="response.comment"></textarea>
+    <div class="btn-group to-right">
+        <button class="button good" [ngClass]="{'disabled': !response.comment || response.comment === ''}" (activate)="submitResponse()">Submit
+        <i class="far fa-arrow-right"></i></button>
+        <button class="button bad" (activate)="cancelResponse()">Cancel <i class="far fa-ban"></i></button>
+    </div>
+</div>

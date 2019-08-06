@@ -13,6 +13,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { CookiesComponent } from './components/cookies/cookies.component';
+import { MessageComponent } from './components/navbar/components/message/message.component';
+import { SearchComponent } from './components/navbar/components/search/search.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -22,8 +26,15 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     BrowserAnimationsModule,
     ScrollingModule,
   ],
-  declarations: [ClarkComponent, UnsupportedComponent, NotFoundComponent],
+  declarations: [
+    ClarkComponent,
+    UnsupportedComponent,
+    NotFoundComponent,
+    NavbarComponent,
+    CookiesComponent,
+    MessageComponent,
+    SearchComponent],
   bootstrap: [ClarkComponent],
-  providers: [ TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
+  providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
 })
-export class ClarkModule {}
+export class ClarkModule { }

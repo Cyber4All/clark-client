@@ -8,7 +8,7 @@
 <ng-template #resultsTemplate>
   <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">
     <virtual-scroller #searchResultsScroller [items]="searchResults">
-      <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (click)="toggleAuthor(user)">
+      <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (activate)="toggleAuthor(user)">
         <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': selectedAuthors.includes(user.username)}">
           <span *ngIf="!selectedAuthors.includes(user.username)"><i class="fas fa-plus"></i></span>
           <span *ngIf="selectedAuthors.includes(user.username)"><i class="fas fa-times"></i></span>

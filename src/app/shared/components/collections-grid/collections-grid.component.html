@@ -1,0 +1,54 @@
+<div class="collections-grid">
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <div *ngIf="collections; else noneTemplate" class="collection-chooser">
+      <div
+        *ngFor="let c of collections"
+        [tip]="
+          preselectReason || 'This collection cannot be selected right now.'
+        "
+        [tipDisabled]="!isPreselected(c.abvName)"
+        tipPosition="top"
+      >
+        <div
+          class="collection-chooser__collection"
+          [ngClass]="{
+            selected: currentCollection === c.abvName,
+            'collection-chooser__collection--preselected': isPreselected(
+              c.abvName
+            )
+          }"
+          (activate)="!isPreselected(c.abvName) && select(c.abvName)"
+        >
+          <div
+            *ngIf="c.hasLogo; else genericCollectionImage"
+            class="collection__logo"
+            [ngStyle]="{
+              backgroundImage:
+                'url(assets/images/collections/' + c.abvName + '.png)'
+            }"
+          ></div>
+          <div class="collection__name">{{ c.name }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- loading -->
+  <ng-template #loadingTemplate>
+    <div class="loading-template">
+      <span><i class="far fa-spinner-third fa-spin"></i></span>
+      Loading collections...
+    </div>
+  </ng-template>
+
+  <ng-template #noneTemplate>
+    <div class="none-template">
+      <span><i class="far fa-times"></i></span>
+      We weren't able to get a list of collections. Please try again later.
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #genericCollectionImage>
+  <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
+</ng-template>

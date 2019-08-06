@@ -1,0 +1,22 @@
+<div class="top-wrapper">
+  <clark-file-breadcrumb [paths]="currentPath" (pathChanged)="handlePathChanged($event)"></clark-file-breadcrumb>
+  <div class="view-switcher inline-flex right">
+    <div class="inline-flex">
+      <button *ngIf="canManage && !(currentNode$ | async)?.isEmpty()" id="new-file" (activate)="emitNewOptionClick($event)" class="button good">
+        New Upload <i class="fas fa-upload"></i>
+      </button>
+    </div>
+  </div>
+
+</div>
+<div (activate)="emitContainerClick($event)" class="flex-wrapper" [ngClass]="{empty: (currentNode$| async)?.isEmpty()}">
+  <div *ngIf="canManage && (currentNode$| async)?.isEmpty()" class="dropzone-message">
+    <i class="fal fa-cloud-upload"></i>
+    <div tabindex="0" class="empty-title">No materials here!</div>
+    <button class="button good" id="new-file" (activate)="emitNewOptionClick($event)">Click here to upload</button>
+    <span *ngIf="dragAndDropSupported">or drag and drop files and folders here</span>
+  </div>
+  <clark-file-list-view *ngIf="!(currentNode$ | async)?.isEmpty()"
+    class="full-width" [node$]="currentNode$" [canManage]="canManage" (emitPath)="openFolder($event)" (emitDesc)="emitDesc($event)" (emitContextOpen)="meatballClick.emit($event)">
+  </clark-file-list-view>
+</div>

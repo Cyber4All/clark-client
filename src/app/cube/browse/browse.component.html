@@ -3,27 +3,27 @@
     <div *ngIf="filters" class="sidebar-wrapper" [ngClass]="{'active': filtersDownMobile}">
       <div class="column-title">
         {{ copy.FILTERS }}
-        <div class="filters-clear-all" id="filters-clear-all" (click)="clearAllFilters()">{{ copy.CLEARFILTERS }}</div>
+        <div class="filters-clear-all" id="filters-clear-all" (activate)="clearAllFilters()">{{ copy.CLEARFILTERS }}</div>
       </div>
       <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [filters]="filters" (add)="addFilter($event.category, $event.filter, $event.clearFirst)" (remove)="removeFilter($event.category, $event.filter)"></clark-filter>
 
       <div class="btn-group to-right">
-          <button (click)="applyFilters(); toggleFilters();" class="button good">Apply</button>
-        <button (click)="closeFilters();" class="button neutral">Cancel</button>
+          <button (activate)="applyFilters(); toggleFilters();" class="button good">Apply</button>
+        <button (activate)="closeFilters();" class="button neutral">Cancel</button>
       </div>
     </div>
     <div *ngIf="learningObjects" class="content" id="content">
       <div class="column-title" id="column-title">
         <span>{{ copy.RESULTS }} ({{this.totalLearningObjects}})
-          <span class="clear-search" id="clear-search" (click)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </span>
+          <span class="clear-search" id="clear-search" (activate)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </span>
           <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
         </span>
         <div class="results-options" id="results-options">
-          <div class="mobile-filters" (click)="toggleFilters()">
+          <div class="mobile-filters" (activate)="toggleFilters()">
             {{ copy.FILTERS }} <i class="far fa-sliders-h"></i>
           </div>
-          <div class="sort" id="sort" (click)="showSortMenu($event)">
-            <div *ngIf="query.orderBy" class="removeSort" id="removeSort" (click)="clearSort($event);" tip="Clear sorting criteria" tipPosition="bottom">
+          <div class="sort" id="sort" (activate)="showSortMenu($event)">
+            <div *ngIf="query.orderBy" class="removeSort" id="removeSort" (activate)="clearSort($event);" tip="Clear sorting criteria" tipPosition="bottom">
               <i class="far fa-times" id="times"></i>
             </div>
             <span>{{ (query.orderBy) ? sortString : 'Sort'}}</span><i class="far fa-chevron-down"></i>
@@ -36,9 +36,9 @@
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
     <ul>
-      <li (click)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"></i></li>
-      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (click)="goToPage(p)">{{ p }}</li>
-      <li (click)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
+      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"></i></li>
+      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (activate)="goToPage(p)">{{ p }}</li>
+      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
     </ul>
   </div>
 </div>

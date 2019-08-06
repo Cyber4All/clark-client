@@ -1,0 +1,23 @@
+<div class="clark-search">
+  <div class="search-options">
+    <form (submit)="performSearch(searchInput)">
+      <div class="input">
+        <input
+          #searchInput
+          id="clark-search-input"
+          type="search"
+          placeholder="Search..."
+          aria-label="Search"
+          [value]="searchValue"
+        />
+        <button
+          aria-label="Search"
+          class="icon"
+          (activate)="performSearch(searchInput)"
+        >
+          <i class="far fa-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

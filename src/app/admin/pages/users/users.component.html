@@ -11,13 +11,13 @@
 
   <div *ngIf="activeCollection && activeCollection?.name.length > 0" filter-options>
     <div class="btn-group to-right">
-      <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : reviewerModal}" (click)="toggleAddReviewerModal(true)"> Add Reviewer
+      <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : reviewerModal}" (activate)="toggleAddReviewerModal(true)"> Add Reviewer
           <i class="far fa-user-plus"></i> 
       </button>
     </div>
     <clark-teleporter *ngIf="reviewerModal">
-      <div #teleporterPayload class="reviewer-search-wrapper" (click)="toggleAddReviewerModal(false)">
-        <div class="reviewer-search" (click)="$event.stopPropagation()">
+      <div #teleporterPayload class="reviewer-search-wrapper" (activate)="toggleAddReviewerModal(false)">
+        <div class="reviewer-search" (activate)="$event.stopPropagation()">
           <clark-user-search-wrapper
             [users]="users"
             [collection]="activeCollection"
@@ -55,8 +55,8 @@
                 </div>
               </div>
               <div class="btn-group center">
-                <button type="button" (click)="removeReviewer()" class="button bad">Yes<i class="fas fa-user-minus left"></i></button>
-                <button type="button" (click)="displayRemoveReviewerModal= false" class="button neutral">Cancel<i class="far fa-ban"></i></button>
+                <button type="button" (activate)="removeReviewer()" class="button bad">Yes<i class="fas fa-user-minus left"></i></button>
+                <button type="button" (activate)="displayRemoveReviewerModal= false" class="button neutral">Cancel<i class="far fa-ban"></i></button>
               </div>
             </form>
           </div>

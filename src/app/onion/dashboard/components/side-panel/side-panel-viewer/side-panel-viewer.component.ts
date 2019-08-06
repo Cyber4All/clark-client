@@ -8,10 +8,10 @@ import { SidePanelOptions } from '../panel.directive';
   selector: 'clark-side-panel-viewer',
   template: `
     <ng-container *ngIf="isOpen">
-      <div (click)="close()" [@fade] class="overlay"></div>
+      <div (activate)="close()" [@fade] class="overlay"></div>
       <div
         [style.width]="contentWidth + 'px'"
-        (click)="$event.stopPropagation()"
+        (activate)="$event.stopPropagation()"
         [@slide]="{
           value: ':enter',
           params: {
