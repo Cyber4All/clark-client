@@ -177,7 +177,7 @@
       & > * {
 
         &:not(:first-child) {
-          margin-left: 25px;
+          margin-left: 15px;
         }
       }
     }
@@ -190,17 +190,21 @@
 
       .hamburger {
         width: 25px;
-        height: 20px;
+        height: 22px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         transition: all 0.2s ease;
         position: relative;
+        box-sizing: content-box;
+        background: transparent;
+        border: 0;
+        appearance: none;
 
         .bar {
           background: $dark-grey;
           border-radius: 2px;
-          width: 100%;
+          width: 25px;
           height: 3px;
           box-sizing: border-box;
           transition: all 0.2s ease;
