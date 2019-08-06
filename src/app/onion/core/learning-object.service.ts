@@ -105,7 +105,7 @@ export class LearningObjectService {
    * @param learningObjectID
    * @param revisionID
    */
-  getLearningObjectRevision(username: string, learningObjectID: string, revisionID: string) {
+  getLearningObjectRevision(username: string, learningObjectID: string, revisionID: number) {
     const route = USER_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
     return this.http
     .get(route, { headers: this.headers, withCredentials: true })

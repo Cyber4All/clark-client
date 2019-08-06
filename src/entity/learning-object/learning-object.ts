@@ -196,15 +196,6 @@ export class LearningObject {
     return this._hasRevision;
   }
 
-  get revision(): string {
-    return this._revision;
-  }
-
-  set revision(revision: string) {
-    this._revision = revision;
-  }
-
-
   revision = 0;
 
   /**

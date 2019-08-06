@@ -200,13 +200,13 @@ export class BuilderStore {
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string, revisionId?: string, username?: string): Promise<LearningObject> {
+  fetch(id: string, revisionId?: any, username?: string): Promise<LearningObject> {
     this.touched = true;
 
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
     const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
       // tslint:disable-next-line:triple-equals used to catch inadvertent type mismatch between number and string
-      if (revisionId == '0') {
+      if (revisionId == 0) {
         revisionId = await this.learningObjectService.createRevision(username, id);
       }
 
