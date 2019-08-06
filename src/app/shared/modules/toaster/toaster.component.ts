@@ -36,8 +36,8 @@ export class ToasterComponent implements OnChanges, AfterViewChecked {
   toRender: Array<object> = [];
   @Input() content: object = {};
 
-  private open: number = 0;
-  private closed: number = 0;
+  private open = 0;
+  private closed = 0;
 
   private notificationHeight = 90;
   private spaceBetween = 10;
@@ -70,7 +70,7 @@ export class ToasterComponent implements OnChanges, AfterViewChecked {
       }
 
       setTimeout(() => {
-        let notVisible = this.toRender.filter((x, index) => {
+        const notVisible = this.toRender.filter((x, index) => {
           if (!x['show'] && !x['dead']) {
             x['index'] = index;
             return true;

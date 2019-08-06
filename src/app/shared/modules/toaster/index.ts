@@ -6,7 +6,7 @@ import { ToasterComponent } from './toaster.component';
 
 /**
  * Details on how each class in the authentication module is used.
- * 
+ *
  * @author Sean Donnelly
  */
 

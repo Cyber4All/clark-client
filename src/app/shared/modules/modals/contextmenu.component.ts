@@ -16,18 +16,18 @@ import { Modal } from './modal';
 })
 export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChecked {
 
-    @HostListener("window:scroll", [])
+    constructor(private elementRef: ElementRef, modalService: ModalService) {
+        super(modalService);
+    }
+
+    type = 'context';
+
+    @HostListener('window:scroll', [])
     onWindowScroll() {
         // close any context menus when the document is scrolled
         this.close();
     }
 
-    type: string = 'context';
-
-    constructor(private elementRef: ElementRef, modalService: ModalService) {
-        super(modalService);
-    }
-    
     checkbox(event, func) {
         this.optionClick(event, func, true);
     }
@@ -37,7 +37,7 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
         if (this.show) {
             // we're opening
             if (this.content.el) {
-            // we passed an element    
+            // we passed an element
             this.calculatePosition(this.content.el);
             } else if (this.content.pos) {
                 // we passed coordinates
@@ -48,8 +48,8 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
 
     /**
      * Takes an x and a y coordinate, checks that they're formatted correctly, and sets Modals x and y parameters to them.
-     * @param x 
-     * @param y 
+     * @param x
+     * @param y
      */
     private assignCoords(x, y, scrolled?) {
         if (scrolled) {
@@ -62,7 +62,7 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
 
     /**
      * Takes the passed element parameter and checks to ensure the modal will display on screen, and if not, moves it so that it will.
-     * @param el 
+     * @param el
      */
     private calculatePosition(el?, pos?) {
 
@@ -77,7 +77,7 @@ export class ContextMenuComponent extends Modal implements DoCheck, AfterViewChe
             const p = this.elementRef.nativeElement.querySelector('.popup');
             const x = (this.modalService.offset(el).left + p.offsetWidth + offsetConst < windowWidth) ? this.modalService.offset(el).left + offsetConst : this.modalService.offset(el).left - p.offsetWidth;
             const y = (this.modalService.offset(el).top + p.offsetHeight + offsetConst < windowHeight) ? this.modalService.offset(el).top + offsetConst - scrolled : this.modalService.offset(el).top - p.offsetHeight - scrolled;
-            
+
             this.assignCoords(x, y);
         } else {
             console.error('ContextMenuError! Must pass either a position or an element to calculatePosition()!');
