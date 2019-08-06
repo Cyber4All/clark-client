@@ -8,7 +8,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ToasterService } from 'app/shared/modules/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
-import { HistoryService } from 'app/core/history.service';
+import { HistoryService, HistorySnapshot } from 'app/core/history.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -42,7 +42,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   @Input() adminMode = false;
 
-  private navigateBack: Function;
+  private historySnapshot: HistorySnapshot;
 
   constructor(
     private router: Router,
@@ -79,7 +79,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
 
-    this.navigateBack = this.history.snapshot();
+    this.historySnapshot = this.history.snapshot();
   }
 
   /**

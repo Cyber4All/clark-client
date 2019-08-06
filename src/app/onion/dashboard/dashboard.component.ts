@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HistoryService } from 'app/core/history.service';
+import { HistoryService, HistorySnapshot } from 'app/core/history.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavbarService } from 'app/core/navbar.service';
 import { LearningObject } from '@entity';
@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
   // delete
   objectsToDelete: LearningObject[];
 
-  private navigateBack: Function;
+  private historySnapshot: HistorySnapshot;
 
 
   constructor(
@@ -92,7 +92,7 @@ export class DashboardComponent implements OnInit {
       this.loading = false;
     }, 1100);
 
-    this.navigateBack = this.history.snapshot();
+    this.historySnapshot = this.history.snapshot();
   }
 
   /**

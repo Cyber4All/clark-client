@@ -1,7 +1,7 @@
 <clark-toaster [content]="notificationService.content"></clark-toaster>
 <div class="dashboard">
   <clark-dashboard-splash
-    (navigateBack)="navigateBack()"
+    (navigateBack)="historySnapshot.rewind()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
   <div [@dashboardList] class="dashboard__lists" *ngIf="!loading; else loadingTemplate">
@@ -24,7 +24,7 @@
         [ngClass]="{ 'tabs__item--active': activeIndex % 2 }"
         (activate)="!(activeIndex % 2) && toggle()"
       >
-        Released <span *ngIf="releasedLearningObjects">({{ releasedLearningObjects.length }})</span> 
+        Released <span *ngIf="releasedLearningObjects">({{ releasedLearningObjects.length }})</span>
     </button>
     </div>
     <clark-carousel [action$]="action$">
@@ -77,12 +77,12 @@
         [changelogs] = "changelogs ? changelogs[0] : undefined"
         [loading]="loadingChangelogs  "
       ></clark-changelog-modal>
-    </div> 
+    </div>
   </clark-popup>
-  
+
   <!-- Side panel popout -->
   <clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject"></clark-side-panel-content>
-  
+
   <!--Delete Confirmation-->
-  <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit> 
-  
+  <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
+
