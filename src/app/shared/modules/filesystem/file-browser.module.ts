@@ -15,7 +15,7 @@ import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.
   imports: [
     CommonModule,
     ScrollDispatchModule,
-    SharedDirectivesModule
+    SharedDirectivesModule,
   ],
   exports: [FileBrowserComponent],
   declarations: [
