@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../core/auth-guard.service';
 import { OnionComponent } from './onion.component';
-import { environment } from '@env/environment';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 
