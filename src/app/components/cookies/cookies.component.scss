@@ -53,5 +53,9 @@
     .dismiss {
         font-size: $larger;
         cursor: pointer;
+        appearance: none;
+        background: transparent;
+        border: 0;
+        color: white;
     }
 }
