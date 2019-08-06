@@ -9,8 +9,7 @@ import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth.service';
 import { User, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
-import { DashboardLearningObject } from 'app/onion/old-dashboard/old-dashboard.component';
-import { TipDirective } from 'app/shared/directives/tip.directive';
+import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
 
 describe('DashboardItemComponent', () => {
   let component: LearningObjectListItemComponent;
@@ -19,12 +18,13 @@ describe('DashboardItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ LearningObjectListItemComponent, TipDirective ],
+      declarations: [ LearningObjectListItemComponent ],
       imports: [
         RouterTestingModule,
         ContextMenuModule.forRoot(),
         HttpClientModule,
-        CookieModule.forRoot()
+        CookieModule.forRoot(),
+        SharedDirectivesModule
       ],
       providers: [
         { provide: AuthService, useValue: { user: new User() } },
@@ -37,7 +37,7 @@ describe('DashboardItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LearningObjectListItemComponent);
     component = fixture.componentInstance;
-    component.learningObject = new LearningObject() as DashboardLearningObject;
+    component.learningObject = new LearningObject();
     fixture.detectChanges();
   });
 
