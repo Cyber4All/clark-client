@@ -55,12 +55,12 @@
       </ng-template>
 
       <ng-template #mobileUserTemplate>
-        <div class="mobile-search-option" (activate)="showSearch()"><i class="far fa-search"></i></div>
-        <div class="hamburger"[ngClass]="{'active': menuOpen}" (activate)="menuOpen = !menuOpen">
+        <button aria-label="Show search" class="mobile-search-option" (activate)="showSearch()"><i class="far fa-search"></i></button>
+        <button aria-label="Open menu" class="hamburger"[ngClass]="{'active': menuOpen}" (activate)="menuOpen = !menuOpen">
           <div class="bar"></div>
           <div class="bar"></div>
           <div class="bar"></div>
-        </div>
+        </button>
       </ng-template>
     </div>
   </div>
