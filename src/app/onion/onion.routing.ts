@@ -13,19 +13,19 @@ import { DashboardComponent } from './dashboard/dashboard.component';
  *
  * @author Sean Donnelly
  */
-const dashboard =  {
-    path: 'dashboard',
-    loadChildren:
-      'app/onion/dashboard/dashboard.module#DashboardModule',
-    canActivate: [AuthGuard],
-    data: { state: 'dashboard', title: 'Your Dashboard' }
-  };
+
 const onion_routes: Routes = [
   {
     path: '',
     component: OnionComponent,
     children: [
-      dashboard,
+      {
+        path: 'dashboard',
+        loadChildren:
+          'app/onion/dashboard/dashboard.module#DashboardModule',
+        canActivate: [AuthGuard],
+        data: { state: 'dashboard', title: 'Your Dashboard' }
+      },
       {
         path: 'learning-object-builder',
         loadChildren:
