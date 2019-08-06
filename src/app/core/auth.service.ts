@@ -5,7 +5,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@entity';
 import { Headers } from '@angular/http';
@@ -271,14 +271,16 @@ export class AuthService {
           responseType: 'text'
         })
         .pipe(
-          retry(3),
-          catchError(this.handleError)
+          retry(3)
         )
         .toPromise();
       return Promise.resolve();
     } catch (error) {
+      console.log(error);
       if (error.status === 426) {
         return Promise.reject(error);
+      } else {
+        catchError(this.handleError);
       }
     }
   }
@@ -631,9 +633,6 @@ export class AuthService {
     ) {
       // Client-side or network returned error
       return throwError(error.error);
-    } else if (error.status === 426) {
-      // If the client version is not up to date and an upgrade is required
-      return throwError(error);
     } else {
       // API returned error
       return throwError(error.error);
