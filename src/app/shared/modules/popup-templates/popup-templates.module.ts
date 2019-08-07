@@ -7,12 +7,17 @@ import { SharedComponents } from 'app/shared/components/shared-components.module
 import { CollectionSelectorPopupComponent } from './collection-selector-popup/collection-selector-popup.component';
 import { DownloadNoticePopupComponent } from './download-notice-popup/download-notice-popup.component';
 import { RevisionNoticePopupComponent } from './revision-notice-popup/revision-notice-popup.component';
+import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
+import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     SharedComponents,
+    // CLARK Modules
+    SharedDirectivesModule,
+    SharedPipesModule
   ],
   declarations: [
     CollectionSelectorPopupComponent,
