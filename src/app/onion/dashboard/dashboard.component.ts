@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
   // delete
   objectsToDelete: LearningObject[];
 
-  private historySnapshot: HistorySnapshot;
+  historySnapshot: HistorySnapshot;
 
 
   constructor(

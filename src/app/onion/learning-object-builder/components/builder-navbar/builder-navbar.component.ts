@@ -42,7 +42,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   @Input() adminMode = false;
 
-  private historySnapshot: HistorySnapshot;
+  historySnapshot: HistorySnapshot;
 
   constructor(
     private router: Router,
