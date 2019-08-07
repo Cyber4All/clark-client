@@ -276,7 +276,6 @@ export class AuthService {
         .toPromise();
       return Promise.resolve();
     } catch (error) {
-      console.log(error);
       if (error.status === 426) {
         return Promise.reject(error);
       } else {
