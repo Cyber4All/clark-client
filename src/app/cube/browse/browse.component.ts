@@ -233,6 +233,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   clearSearch() {
     this.query.text = '';
     this.query.standardOutcomes = [];
+    this.query.currPage = 1;
     this.router.navigate(['browse'], { queryParams: {} });
   }
 
