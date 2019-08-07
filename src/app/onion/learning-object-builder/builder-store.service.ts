@@ -86,6 +86,9 @@ export class BuilderStore {
   // false until a save operation is attempted, true after that
   public touched: boolean;
 
+  // true if builder is creating/editing a revision, false otherwise
+  private _isRevision: boolean;
+
   // fired when this service needs to propagate changes to the learning object down to children components
   public learningObjectEvent: BehaviorSubject<
     LearningObject
@@ -186,6 +189,10 @@ export class BuilderStore {
     this.outcomeEvent.next(this.outcomes);
   }
 
+  set isRevision(isRevision: boolean) {
+    this._isRevision = isRevision;
+  }
+
   /**
    * Retrieve a learning object from the service by id
    *
@@ -193,10 +200,22 @@ export class BuilderStore {
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string): Promise<LearningObject> {
+  fetch(id: string, revisionId?: any, username?: string): Promise<LearningObject> {
     this.touched = true;
-    return this.learningObjectService
-      .getLearningObject(id)
+
+    // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
+    const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
+      // tslint:disable-next-line:triple-equals used to catch inadvertent type mismatch between number and string
+      if (revisionId == 0) {
+        revisionId = await this.learningObjectService.createRevision(username, id);
+      }
+
+      return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
+    } : async () => {
+      return this.learningObjectService.getLearningObject(id);
+    };
+
+    return retrieve()
       .then(object => {
         this.learningObject = object;
         // this learning object is submitted, ensure submission mode is on

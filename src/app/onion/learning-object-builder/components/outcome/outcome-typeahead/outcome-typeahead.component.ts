@@ -99,7 +99,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
   toggleMenu(value, event?) {
     if (event) {
       event.stopPropagation();
-      //when the dropdown menu is clicked, the overflow value is set to visible (true)
+      // when the dropdown menu is clicked, the overflow value is set to visible (true)
       this.overflowValue.emit(true);
     }
     this.menu = value;

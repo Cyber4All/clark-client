@@ -11,6 +11,7 @@ export class ActivateDirective {
     // since we've deemed the host element as 'activatable', adorn it with the appropriate tabindex and aria-role values
     this.el.nativeElement.setAttribute('tabindex', '0');
     this.el.nativeElement.setAttribute('role', 'button');
+    this.el.nativeElement.style.cursor = 'pointer';
   }
 
   @HostListener('click', ['$event'])
@@ -18,6 +19,10 @@ export class ActivateDirective {
   handleActivate(event: KeyboardEvent | MouseEvent) {
 
     if (event instanceof KeyboardEvent) {
+      // if the active element is an input, disregard the event
+      if (document.activeElement.tagName === 'INPUT' && document.activeElement.getAttribute('type') === 'text') {
+        return;
+      }
       // if this isn't an 'activation' key, disregard this event
       if (event.code !== 'Enter' && event.code !== 'Space') {
         return;
