@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Collection } from 'app/core/collection.service';
-import { HistoryService } from 'app/core/history.service';
-import { sidebarAnimations } from './sidebar.component.animation'
+import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { sidebarAnimations } from './sidebar.component.animation';
 
 @Component({
   selector: 'clark-admin-sidebar',
@@ -20,21 +20,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   @Input() initialized = false;
 
-  backRoute: string;
+  historySnapshot: HistorySnapshot;
 
   constructor(private router: Router, private history: HistoryService) { }
 
   ngOnInit() {
-    this.backRoute = this.history.lastRoute ? this.history.lastRoute.url : '/';
-  }
-
-  /**
-   * Navigate to previous location
-   *
-   * @memberof SidebarComponent
-   */
-  navigateBack() {
-    this.router.navigateByUrl(this.backRoute);
+    this.historySnapshot = this.history.snapshot();
   }
 
   ngOnDestroy() {
