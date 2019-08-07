@@ -19,6 +19,10 @@ export class ActivateDirective {
   handleActivate(event: KeyboardEvent | MouseEvent) {
 
     if (event instanceof KeyboardEvent) {
+      // if the active element is an input, disregard the event
+      if (document.activeElement.tagName === 'INPUT' && document.activeElement.getAttribute('type') === 'text') {
+        return;
+      }
       // if this isn't an 'activation' key, disregard this event
       if (event.code !== 'Enter' && event.code !== 'Space') {
         return;
