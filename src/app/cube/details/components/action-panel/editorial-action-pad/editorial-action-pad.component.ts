@@ -16,7 +16,6 @@ export class EditorialActionPadComponent implements OnInit {
 
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
-  @Input() isRevision: boolean;
   openRevisionModal: boolean;
   showPopup = false;
 
@@ -61,8 +60,15 @@ export class EditorialActionPadComponent implements OnInit {
     this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
   }
 
-  // Create a revision and then redirects to the builder for the revision
+  // Create a revision and then redirects to the builder for the revision˝
   createRevision() {
-    this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}?isRevision=${this.isRevision}`]);
+    this.router.navigate(
+      [`/admin/learning-object-builder/${this.learningObject.id}`],
+      {
+        queryParams: {
+          revisionId: this.learningObject.revision,
+          author: this.learningObject.author.username
+        }
+      });
   }
 }

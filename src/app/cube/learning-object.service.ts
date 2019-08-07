@@ -15,7 +15,9 @@ export class LearningObjectService {
   dataObserver;
   data;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    ) {}
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -32,7 +34,6 @@ export class LearningObjectService {
   openLearningObject(url: string) {
     window.open(url);
   }
-
   /**
    * Fetches Array of Learning Objects
    *

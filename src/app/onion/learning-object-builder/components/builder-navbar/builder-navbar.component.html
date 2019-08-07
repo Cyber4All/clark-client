@@ -14,13 +14,7 @@
       Currently Revising: {{ learningObject?.name }}
     </div>
     <div class="top__left">
-      <a *ngIf="!adminMode" routerLink="onion/dashboard"
-        ><i class="far fa-arrow-left"></i> Back to Dashboard</a
-      >
-      <!-- FIXME: Convert to routerLink when admin dashboard is pulled into CLARK -->
-      <a *ngIf="adminMode" routerLink="{{ redirectUrl || '/admin' }}"
-        ><i class="far fa-arrow-left"></i> Back to Dashboard</a
-      >
+      <a (activate)="historySnapshot.rewind()"><i class="far fa-arrow-left"></i> Back</a>
     </div>
     <div class="top__right">
       <div

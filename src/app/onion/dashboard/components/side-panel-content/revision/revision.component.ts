@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { LearningObject } from 'entity/learning-object/learning-object';
 
 @Component({
   selector: 'clark-revision',
@@ -20,22 +21,21 @@ import { trigger, transition, style, animate } from '@angular/animations';
    ])
    ]
 })
-export class RevisionComponent implements OnInit {
-
-  hasRevision: boolean;
-  revision = {
-    'name': 'WCAG MAGIC 2.1: Twitches',
-    'date': '91111119555766',
-    'status': 'unreleased',
-    'length': 'module'
-  };
+export class RevisionComponent implements OnChanges {
+  @Output() createRevision: EventEmitter<void> = new EventEmitter();
+  @Input() hasRevision: boolean;
+  @Input() revision: LearningObject[];
 
   meatballOpen: boolean;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
     this.hasRevision = false;
+    console.log(this.revision);
+    if (this.revision) {
+      this.hasRevision = true;
+    }
   }
 
     /**
@@ -49,6 +49,7 @@ export class RevisionComponent implements OnInit {
    * Create a revision of the object that is currently released
    */
   makeRevision() {
+    this.createRevision.emit();
     this.hasRevision = true;
   }
 
