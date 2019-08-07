@@ -19,6 +19,9 @@ export class HistoryService {
 
   private skipNextEvent: boolean;
 
+  /**
+   * A stack containing the URLs of a user's navigation history
+   */
   history: string[] = [];
 
   constructor(private router: Router) {
