@@ -2,26 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-export class HistorySnapshot {
-  private readonly _rewind: Function;
-
-  constructor(rewind: Function) {
-    this._rewind = rewind;
-  }
-
+export interface HistorySnapshot {
   /**
-   * Replace the service's history array with snapshot's history array and navigate to last element
+   * Rewind the history of the HistoryService to the last location in the snapshot
    *
    * @readonly
    * @memberof HistorySnapshot
    */
-  rewind() {
-    if (this._rewind) {
-      return this._rewind();
-    }
-
-    throw new Error('Rewind operation not possible: No rewind function provided!');
-  }
+  rewind(): void;
 }
 
 @Injectable({
@@ -99,6 +87,8 @@ export class HistoryService {
    */
   snapshot(): HistorySnapshot {
     const index = this.history.length - 1;
-    return new HistorySnapshot(() => { this.back(index); });
+    return {
+       rewind: () => { this.back(index); }
+    };
   }
 }
