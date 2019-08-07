@@ -5,6 +5,7 @@ import { CartV2Service } from './core/cartv2.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
+import { HistoryService } from './core/history.service';
 
 @Component({
   selector: 'clark-root',
@@ -65,7 +66,8 @@ export class ClarkComponent implements OnInit {
     private cartService: CartV2Service,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title
+    private titleService: Title,
+    private _: HistoryService,
     ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :

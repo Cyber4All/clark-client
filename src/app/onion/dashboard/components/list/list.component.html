@@ -95,9 +95,9 @@
         You don't have any Learning Objects with those statuses!
       </div>
       <div class="empty-text" *ngIf="!showOptions">
-        Once you've made some learning objects they'll show up in your Draft Learning Objects list.
+        Once you've submitted some Learning Objects and they have been released they will show up here.
       </div>
-      <div class="btn-group center">
+      <div *ngIf="showOptions" class="btn-group center">
         <button class="button good" routerLink="/onion/learning-object-builder">Create a Learning Object <i class="fas fa-plus"></i></button>
       </div>
     </div>

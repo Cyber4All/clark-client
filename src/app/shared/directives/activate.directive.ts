@@ -11,6 +11,7 @@ export class ActivateDirective {
     // since we've deemed the host element as 'activatable', adorn it with the appropriate tabindex and aria-role values
     this.el.nativeElement.setAttribute('tabindex', '0');
     this.el.nativeElement.setAttribute('role', 'button');
+    this.el.nativeElement.style.cursor = 'pointer';
   }
 
   @HostListener('click', ['$event'])
