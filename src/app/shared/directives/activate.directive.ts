@@ -19,7 +19,7 @@ export class ActivateDirective {
 
     if (event instanceof KeyboardEvent) {
       // if the active element is an input, disregard the event
-      if (document.activeElement.tagName === 'INPUT') {
+      if (document.activeElement.tagName === 'INPUT' && document.activeElement.getAttribute('type') === 'text') {
         return;
       }
       // if this isn't an 'activation' key, disregard this event
