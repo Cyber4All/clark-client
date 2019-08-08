@@ -177,6 +177,11 @@ export class UsageStatsComponent implements OnInit {
         }
       ]
     };
+    /**
+     * This for loop is creating the aria-label for the chart. It is creating a string from the labels and data points
+     * in the organizaitonBreakdownChart object. The string would look like
+     * 'Universities 200, Community Colleges 304, K-12 (Schools) 404, Companies 800, Government 304'
+     */
     this.organizationBreakdownChartAria = this.organizationBreakdownChart.labels[1] + ' ' + this.organizationBreakdownChart.data[1] + ', ';
     let i: number;
     for (i = 1; i < this.organizationBreakdownChart.labels.length; i++) {
@@ -233,6 +238,11 @@ export class UsageStatsComponent implements OnInit {
         }
       ],
     };
+    /**
+     * This for loop is creating the aria-label for the chart. It is creating a string from the labels and data points
+     * in the lengthDistributionChart object. The string would look like
+     * 'Nanomodule 200, Micromodule 304, Module 404, Unit 426, Course 4000'
+     */
     this.lengthBreakdownChartAria = this.lengthDistributionChart.labels[0] + ' ' + this.lengthDistributionChart.data[0] + ', ';
     let i: number;
     for (i = 1; i < this.lengthDistributionChart.labels.length; i++) {
@@ -286,6 +296,11 @@ export class UsageStatsComponent implements OnInit {
         }
       ]
     };
+    /**
+     * This for loop is creating the aria-label for the chart. It is creating a string from the labels and data points
+     * in the outcomeDistributionChart object. The string would look like
+     * 'Apply and Analyze 200, Remember and Understand 304, Evaluate and Synthesize 404'
+     */
     this.outcomeDistributionChartAria = this.outcomeDistributionChart.labels[0] + ' ' + this.outcomeDistributionChart.data[0] + ', ';
     let i: number;
     for (i = 1; i < this.outcomeDistributionChart.labels.length; i++) {
