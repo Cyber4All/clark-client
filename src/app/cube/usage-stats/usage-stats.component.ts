@@ -56,6 +56,12 @@ export class UsageStatsComponent implements OnInit {
   objectStats: LearningObjectStats;
   userStats: UserStats;
 
+  outcomeDistributionChartAria: string;
+  organizationBreakdownChartAria: string;
+  lengthDistributionChartAria: string;
+  lengthBreakdownChartAria: string;
+  lengthBreakdownChart: any;
+
   constructor(private statsService: UsageStatsService) {}
 
   ngOnInit() {
@@ -171,6 +177,14 @@ export class UsageStatsComponent implements OnInit {
         }
       ]
     };
+    this.organizationBreakdownChartAria = this.organizationBreakdownChart.labels[1] + ' ' + this.organizationBreakdownChart.data[1] + ', ';
+    let i: number;
+    for (i = 1; i < this.organizationBreakdownChart.labels.length; i++) {
+      this.organizationBreakdownChartAria =
+      this.organizationBreakdownChartAria +
+      this.organizationBreakdownChart.labels[i] +
+      ' ' + this.organizationBreakdownChart.data[i] + ', ';
+    }
     this.organizationDistributionReady = true;
   }
 
@@ -217,8 +231,16 @@ export class UsageStatsComponent implements OnInit {
             '#1e4b25'
           ]
         }
-      ]
+      ],
     };
+    this.lengthBreakdownChartAria = this.lengthDistributionChart.labels[0] + ' ' + this.lengthDistributionChart.data[0] + ', ';
+    let i: number;
+    for (i = 1; i < this.lengthDistributionChart.labels.length; i++) {
+      this.lengthBreakdownChartAria =
+      this.lengthBreakdownChartAria +
+      this.lengthDistributionChart.labels[i] +
+      ' ' + this.lengthDistributionChart.data[i] + ', ';
+    }
     this.lengthDistributionReady = true;
   }
   /**
@@ -264,6 +286,14 @@ export class UsageStatsComponent implements OnInit {
         }
       ]
     };
+    this.outcomeDistributionChartAria = this.outcomeDistributionChart.labels[0] + ' ' + this.outcomeDistributionChart.data[0] + ', ';
+    let i: number;
+    for (i = 1; i < this.outcomeDistributionChart.labels.length; i++) {
+      this.outcomeDistributionChartAria =
+      this.outcomeDistributionChartAria +
+      this.outcomeDistributionChart.labels[i] +
+      ' ' + this.outcomeDistributionChart.data[i] + ', ';
+    }
     this.outcomeDistributionReady = true;
   }
 

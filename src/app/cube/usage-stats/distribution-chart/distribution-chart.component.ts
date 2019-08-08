@@ -10,6 +10,8 @@ export class DistributionChartComponent implements OnInit {
   @Input() chart: PieChart | DoughnutChart;
   @Input() moreInfoLink: string;
   @Output() chartNotHovered: EventEmitter<void> = new EventEmitter<void>();
+  @Input() ariaLabel: string;
+
   constructor() {}
 
   ngOnInit() {}
