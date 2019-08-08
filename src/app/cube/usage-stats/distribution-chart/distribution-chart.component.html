@@ -8,10 +8,10 @@
         {{chart?.title}}
       </div>
       <div *ngIf="moreInfoLink" class="learn-more">
-        <a [href]="moreInfoLink" target="__blank" rel="noopener">Learn More</a>
+        <a [href]="moreInfoLink" target="__blank" rel="noopener" attr.aria-label="Learn More about {{ chart?.title }}">Learn More</a>
       </div>
     </div>
-    <canvas baseChart [data]="chart?.data" [labels]="chart?.labels" [colors]="chart?.colors" [options]="chart?.options"
+    <canvas tabindex="0" attr.aria-label="{{ ariaLabel }}" baseChart [data]="chart?.data" [labels]="chart?.labels" [colors]="chart?.colors" [options]="chart?.options"
       [legend]="chart?.legend" [chartType]="chart?.type" (mouseleave)="handleMouseleave()"></canvas>
   </div>
 </div>
