@@ -18,8 +18,8 @@
           <clark-collections-grid [currentCollection]="collection || learningObject.collection" (selected)="getCollectionSelected($event)"
             (cancel)="closeModal()"></clark-collections-grid>
           <div class="license-selection">
-            <clark-checkbox (action)="licenseAccepted = $event"></clark-checkbox>
-            <span class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode" target="_blank">Creative Commons 4.0 license</a></span>
+            <span tabindex="0" class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode" target="_blank">Creative Commons 4.0 license</a></span>
+            <clark-checkbox aria-label="Accept creative commons 4.0 license agreement" (action)="licenseAccepted = $event"></clark-checkbox>
           </div>
           <div class="submit-btn btn-group center">
             <button class="button good" [ngClass]="{'disabled': !licenseAccepted || !collection }" [disabled]="!licenseAccepted || !collection" (activate)="submitForReview()">Submit for Review <i class="far fa-arrow-right"></i></button>
