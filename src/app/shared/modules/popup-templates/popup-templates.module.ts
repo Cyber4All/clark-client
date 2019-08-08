@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 
 import { SharedComponents } from 'app/shared/components/shared-components.module';
 
-import { CollectionSelectorPopupComponent } from './collection-selector-popup/collection-selector-popup.component';
 import { DownloadNoticePopupComponent } from './download-notice-popup/download-notice-popup.component';
 import { RevisionNoticePopupComponent } from './revision-notice-popup/revision-notice-popup.component';
 import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
@@ -17,17 +16,15 @@ import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
     SharedComponents,
     // CLARK Modules
     SharedDirectivesModule,
-    SharedPipesModule
+    SharedPipesModule,
   ],
   declarations: [
-    CollectionSelectorPopupComponent,
     DownloadNoticePopupComponent,
-    RevisionNoticePopupComponent
+    RevisionNoticePopupComponent,
   ],
   exports: [
-    CollectionSelectorPopupComponent,
     DownloadNoticePopupComponent,
-    RevisionNoticePopupComponent
+    RevisionNoticePopupComponent,
   ],
 })
 export class PopupTemplatesModule { }
