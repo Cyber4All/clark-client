@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, AfterViewInit, OnDestroy } from '@angular/core';
 import {
   trigger,
   transition,
@@ -46,7 +46,7 @@ import {
     ])
   ],
   template: `
-    <div [@fade] class="overlay" [ngClass]="{'overlay--floating': floating}" (activate)="close.emit()">
+    <div trapFocus [@fade] class="overlay" [ngClass]="{'overlay--floating': floating}" (activate)="close.emit()">
       <div role="dialog" [@scale] (activate)="$event.stopPropagation()">
         <div class="popup-close" (activate)="close.emit()" type="button" aria-label="Close Navigation">
           <i class="far fa-times"></i>
