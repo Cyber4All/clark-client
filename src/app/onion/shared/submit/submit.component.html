@@ -18,7 +18,7 @@
           <clark-collections-grid [currentCollection]="collection || learningObject.collection" (selected)="getCollectionSelected($event)"
             (cancel)="closeModal()"></clark-collections-grid>
           <div class="license-selection">
-            <input type="checkbox" name="license-agreement" aria-label="license agreement checkbox" [(ngModel)]="licenseAccepted"/>
+            <clark-checkbox (action)="licenseAccepted = $event"></clark-checkbox>
             <span class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode" target="_blank">Creative Commons 4.0 license</a></span>
           </div>
           <div class="submit-btn btn-group center">
