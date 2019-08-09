@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MessagesService, Message } from '../../../../core/messages.service';
+import { MessagesService, Message} from '../../../../core/messages.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-message',
@@ -14,30 +15,19 @@ export class MessageComponent implements OnInit {
   constructor(private messages: MessagesService) { }
 
   ngOnInit() {
-    this.messages.getStatus()
-      .then(message => {
-        this.message = message;
-        const lastMessage = localStorage.getItem('maintenance');
-
-        if (!lastMessage || this.message.id !== lastMessage) {
-          this.open();
-        }
-      })
-      .catch(e => {
-        // FIXME: Suppress the error until we design a better backend solution
-      });
-  }
-
-  open() {
-    this.showing = true;
-  }
-
-  close() {
-    this.showing = false;
-    localStorage.setItem('maintenance', this.message.id);
-  }
-
-  toggle() {
-    this.showing = !this.showing;
+    if (environment.production) {
+      setInterval(async () => {
+        this.messages.getStatus()
+        .then(message => {
+          console.log(this.message);
+          this.showing = true;
+          this.message = message;
+          const lastMessage = localStorage.getItem('maintenance');
+        })
+        .catch(e => {
+          // FIXME: Suppress the error until we design a better backend solution
+        });
+      }, 300000); // 8 min interval
+    }
   }
 }
