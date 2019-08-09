@@ -6,6 +6,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
 import { HistoryService } from './core/history.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-root',
@@ -81,6 +82,16 @@ export class ClarkComponent implements OnInit {
       if (localStorage.getItem('cookieAgreement')) {
         this.cookiesAgreement = true;
       }
+
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd && event.id > 1)
+      ).subscribe(() => {
+        const content: HTMLElement = document.querySelector('#pageContent');
+
+        if (content) {
+          content.focus();
+        }
+      });
   }
 
   ngOnInit(): void {
