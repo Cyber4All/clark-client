@@ -25,10 +25,8 @@ export class MessagesService {
                 )
                 .toPromise()
                 .then((val: any) => {
-                    if (val && val.length) {
-                        this._message = new Message(val[0]['_id'], 'error', val[0]['maintenanceMessage']);
-                        return this._message;
-                    } else { throw new Error('System status returned a malformed message.'); }
+                    this._message = val;
+                    return this._message;
                 });
         }
     }
@@ -45,13 +43,11 @@ export class MessagesService {
 }
 
 export class Message {
-    id: string;
-    type: string;
+    showMessage: boolean;
     message: string;
 
-    constructor(id: string, type: string, message: string) {
-        this.id = id;
-        this.type = type;
+    constructor(showMessage: boolean, message: string) {
+        this.showMessage = showMessage;
         this.message = message;
     }
 }
