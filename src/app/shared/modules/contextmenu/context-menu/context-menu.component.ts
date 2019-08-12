@@ -126,6 +126,7 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
       const dummyNode = document.createElement('input');
       // hide the input immediately on render
       dummyNode.setAttribute('id', 'contextMenuDummyInput');
+      dummyNode.setAttribute('class', 'dummy-input');
       document.body.appendChild(dummyNode);
 
       // focus the first element in the context menu for accessibility
@@ -142,6 +143,9 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
           }
         });
       });
+
+      // mark the anchor element has the last focused element, since the menu will disappear whenever an element is selected
+      this.anchor.setAttribute('lastFocusedElement', 'true');
 
     } else {
       console.error(
@@ -160,6 +164,11 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
 
     // remove the dummy node from the DOM since we don't need it anymore
     document.getElementById('contextMenuDummyInput').remove();
+
+    setTimeout(() => {
+      // wait 1 second and remove the lastFocusedElement attribute from the anchor element
+      this.anchor.removeAttribute('lastFocusedElement');
+    }, 1000);
   }
 
   /**

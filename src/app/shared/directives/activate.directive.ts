@@ -37,7 +37,9 @@ export class ActivateDirective {
 
     this.activate.emit(event);
 
-    event.preventDefault();
+    if (event.target === this.el.nativeElement) {
+      event.preventDefault();
+    }
   }
 
 }
