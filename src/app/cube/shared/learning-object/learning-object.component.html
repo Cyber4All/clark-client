@@ -4,7 +4,7 @@
     learningObject.author.username,
     learningObject.name
   ]"
-  attr.aria-label="Clickable link to {{ learningObject.name }}"
+  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{ learningObject.author.name }}, last updated on {{ learningObject.date | date:'longDate' }}"
 >
   <div 
     class="learning-object"

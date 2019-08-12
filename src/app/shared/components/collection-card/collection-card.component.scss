@@ -11,6 +11,9 @@
   cursor: pointer;
   transition: all 0.25s ease;
   background-color: white;
+  appearance: none;
+  border: 0;
+  width: 100%;
 
   &:hover:not(:active) {
     transform: scale(1.02);
