@@ -74,7 +74,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
           font-weight: 400;
         }
 
-        .link:hover {
+        .link:hover, .link:focus {
           cursor: pointer;
           text-decoration: underline;
         }
