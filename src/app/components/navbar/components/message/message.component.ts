@@ -23,7 +23,7 @@ export class MessageComponent implements OnInit {
         })
         .catch (e => {
           // FIXME: Suppress the error
-        })
+        });
       }, 3000); // 5 min interval
     }
   }
