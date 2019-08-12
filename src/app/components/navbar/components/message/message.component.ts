@@ -9,7 +9,7 @@ import { environment } from '@env/environment';
 })
 export class MessageComponent implements OnInit {
 
-  showing = false;
+  showBanner = false;
   message: Message;
 
   constructor(private messages: MessagesService) { }
@@ -19,10 +19,11 @@ export class MessageComponent implements OnInit {
       setInterval(async () => {
         this.messages.getStatus().then(message => {
           this.message = message;
-          this.showing = this.message.isUnderMaintenance;
+          this.showBanner = this.message.isUnderMaintenance;
         })
-        .catch (e => {
-          // FIXME: Suppress the error
+        .catch ( _ => {
+          /** Suppress the error because it is being handled in Gateway.
+          If an error does occur there is not reason to show anything because a user doesn't know the request is being made. */
         });
       }, 3000); // 5 min interval
     }

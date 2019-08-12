@@ -4,6 +4,15 @@ import { MISC_ROUTES } from '@env/route';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
+export class Message {
+    isUnderMaintenance: boolean;
+    message: string;
+
+    constructor(isUnderMaintenance: boolean, message: string) {
+        this.isUnderMaintenance = isUnderMaintenance;
+        this.message = message;
+    }
+}
 @Injectable()
 export class MessagesService {
     private _message: Message;
@@ -25,7 +34,6 @@ export class MessagesService {
                 )
                 .toPromise()
                 .then((val: Message) => {
-                    // tslint:disable-next-line: no-use-before-declare
                     this._message = new Message(val.isUnderMaintenance, val.message);
                     return this._message;
                 });
@@ -43,12 +51,3 @@ export class MessagesService {
       }
 }
 
-export class Message {
-    isUnderMaintenance: boolean;
-    message: string;
-
-    constructor(isUnderMaintenance: boolean, message: string) {
-        this.isUnderMaintenance = isUnderMaintenance;
-        this.message = message;
-    }
-}
