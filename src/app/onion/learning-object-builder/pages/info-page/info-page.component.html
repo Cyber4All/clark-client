@@ -12,13 +12,13 @@
           <div title>{{copy.NAME}}</div>
           <div directions>{{copy.NAMEPLACEHOLDER}}</div>
           <div data>
-            <input class="name-field" autocomplete="off" type="text" autofocus name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" />
+            <input attr.aria-label="{{copy.NAME}} {{copy.NAMEPLACEHOLDER}}" class="name-field" autocomplete="off" type="text" autofocus name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" />
           </div>
         </clark-info-page-metadata>
         <hr />
         <clark-info-page-metadata>
-          <div title>Who else worked on this?</div>
-          <div directions>You can find users by their name, username, or email address.</div>
+          <div id="contributor-title" title>Who else worked on this?</div>
+          <div id="contributor-directions" directions>You can find users by their name, username, or email address.</div>
           <div data>
             <clark-user-dropdown [contributors]="learningObject.contributors" (addAuthor)="toggleContributor($event)" (removeAuthor)="toggleContributor($event)"></clark-user-dropdown>
             <div *ngIf="learningObject.contributors?.length" class="contributors-list">
