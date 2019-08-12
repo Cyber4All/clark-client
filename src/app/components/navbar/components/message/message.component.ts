@@ -17,17 +17,14 @@ export class MessageComponent implements OnInit {
   ngOnInit() {
     if (environment.production) {
       setInterval(async () => {
-        this.messages.getStatus()
-        .then(message => {
-          console.log(this.message);
-          this.showing = true;
+        this.messages.getStatus().then(message => {
           this.message = message;
-          const lastMessage = localStorage.getItem('maintenance');
+          this.showing = this.message.isUnderMaintenance;
         })
-        .catch(e => {
-          // FIXME: Suppress the error until we design a better backend solution
-        });
-      }, 300000); // 8 min interval
+        .catch (e => {
+          // FIXME: Suppress the error
+        })
+      }, 3000); // 5 min interval
     }
   }
 }
