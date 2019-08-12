@@ -24,8 +24,9 @@ export class MessagesService {
                     catchError(this.handleError)
                 )
                 .toPromise()
-                .then((val: any) => {
-                    this._message = val;
+                .then((val: Message) => {
+                    // tslint:disable-next-line: no-use-before-declare
+                    this._message = new Message(val.isUnderMaintenance, val.message);
                     return this._message;
                 });
         }
@@ -43,11 +44,11 @@ export class MessagesService {
 }
 
 export class Message {
-    showMessage: boolean;
+    isUnderMaintenance: boolean;
     message: string;
 
-    constructor(showMessage: boolean, message: string) {
-        this.showMessage = showMessage;
+    constructor(isUnderMaintenance: boolean, message: string) {
+        this.isUnderMaintenance = isUnderMaintenance;
         this.message = message;
     }
 }
