@@ -42,6 +42,8 @@ img {
   margin-right: auto;
   margin-left: auto;
   margin-top: 50px;
+  box-sizing: border-box;
+
   .description {
     border-radius: 2px;
     color: $dark-grey;
