@@ -23,6 +23,7 @@ import { RatingStarsComponent } from './rating-stars/rating-stars.component';
 import { TextEditorComponent } from './text-editor/text-editor.component';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 import { UserCardComponent } from './user-card/user-card.component';
+import { SkipLinkComponent } from './skip-link/skip-link.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { UserCardComponent } from './user-card/user-card.component';
     TextEditorComponent,
     ToggleSwitchComponent,
     UserCardComponent,
+    SkipLinkComponent,
   ],
   exports: [
     // components
@@ -65,6 +67,7 @@ import { UserCardComponent } from './user-card/user-card.component';
     TextEditorComponent,
     ToggleSwitchComponent,
     UserCardComponent,
+    SkipLinkComponent,
   ]
 })
 export class SharedComponents {}
