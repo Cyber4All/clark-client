@@ -1,48 +1,50 @@
-<section class="top">
-  <clark-homepage-splash [placeholderText]="placeholderText" (search)="search($event)"></clark-homepage-splash>
-</section>
-<section class="about">
-  <div class="about__grid">
-    <clark-about></clark-about>
-  </div>
-</section>
-<section class="philosophy">
-  <clark-philosophy></clark-philosophy>
-</section>
-<div class="learning-objects">
-  <div class="title-text">
-    <div class="title__icon">
-      <i class="far fa-cube"></i>
+<main aria-label="CLARK Homepage" id="pageContent" tabindex="-1">
+  <section class="top">
+    <clark-homepage-splash [placeholderText]="placeholderText" (search)="search($event)"></clark-homepage-splash>
+  </section>
+  <section class="about">
+    <div class="about__grid">
+      <clark-about></clark-about>
     </div>
-    Recently Released<br /> Learning Objects
-  </div>
-  <div class="subtitle-text">
-    A Learning Object is a self-contained piece of curriculum that has clearly identified learning outcomes. 
-  </div>
-  <div class="browse-cta">
-    <a routerLink="/browse">View all Learning Objects</a>
-  </div>
-  <cube-featured></cube-featured>
-</div>
-<section class="collections">
-  <clark-collections [collections]="collections"></clark-collections>
-</section>
-<section class="usage">
-  <clark-usage [stats]="usageStats"></clark-usage>
-</section>
-<section class="cta">
-  <div class="cta__content">
+  </section>
+  <section class="philosophy">
+    <clark-philosophy></clark-philosophy>
+  </section>
+  <div class="learning-objects">
     <div class="title-text">
       <div class="title__icon">
-        <i class="far fa-globe-americas"></i>
+        <i class="far fa-cube"></i>
       </div>
-      Join the cause
+      Recently Released<br aria-hidden="true" /> Learning Objects
     </div>
     <div class="subtitle-text">
-      Contribute your freely accessible cybersecurity material<br /> for others to use.
+      A Learning Object is a self-contained piece of curriculum that has clearly identified learning outcomes. 
     </div>
-    <div class="btn-group center">
-      <button class="button good" routerLink="/onion/dashboard">Contribute to CLARK</button>
+    <div class="browse-cta">
+      <a routerLink="/browse">View all Learning Objects</a>
     </div>
+    <cube-featured></cube-featured>
   </div>
-</section>
+  <section class="collections">
+    <clark-collections [collections]="collections"></clark-collections>
+  </section>
+  <section class="usage">
+    <clark-usage [stats]="usageStats"></clark-usage>
+  </section>
+  <section class="cta">
+    <div class="cta__content">
+      <div class="title-text">
+        <div class="title__icon">
+          <i class="far fa-globe-americas"></i>
+        </div>
+        Join the cause
+      </div>
+      <div class="subtitle-text">
+        Contribute your freely accessible cybersecurity material<br aria-hidden="true"   /> for others to use.
+      </div>
+      <div class="btn-group center">
+        <button class="button good" routerLink="/onion/dashboard">Contribute to CLARK</button>
+      </div>
+    </div>
+  </section> 
+</main> 

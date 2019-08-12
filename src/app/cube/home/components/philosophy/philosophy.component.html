@@ -1,9 +1,9 @@
 <section class="philosophy">
   <div class="philosophy__values">
-    <div *ngFor="let value of values" class="values__wrapper">
+    <div attr.aria-label="{{ value.title }}: {{ value.items.join(', ') }}" *ngFor="let value of values" class="values__wrapper">
       <i class="{{ value.icon }}"></i>
-      <p class="values__title">{{ value.title }}</p>
-      <ul class="values__list">
+      <p aria-hidden="true" class="values__title">{{ value.title }}</p>
+      <ul aria-hidden="true" class="values__list">
         <li *ngFor="let item of value.items" class="values__list-item">{{ item }}</li>
       </ul>
     </div>

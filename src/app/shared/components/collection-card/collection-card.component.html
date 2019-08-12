@@ -1,8 +1,8 @@
 
-<div class="collection-card" routerLink="/c/{{ collection.abvName }}">
-  <img *ngIf="pictureLocation; else genericLogoTemplate" class="card__image" src="{{ pictureLocation }}" alt="{{ collection.name }} logo">
-  <div class="card__name">{{ collection.name }}</div>
-</div>
+<button attr.aria-label="Navigate to {{ collection.name }} collection" class="collection-card" routerLink="/c/{{ collection.abvName }}">
+  <img aria-hidden="true" *ngIf="pictureLocation; else genericLogoTemplate" class="card__image" src="{{ pictureLocation }}" alt="{{ collection.name }} logo">
+  <div aria-hidden="true" class="card__name">{{ collection.name }}</div>
+</button>
 
 <ng-template #genericLogoTemplate>
   <clark-generic-collection-logo></clark-generic-collection-logo>
