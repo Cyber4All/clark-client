@@ -39,9 +39,9 @@
             <div #contextMenu>
               <ul (activate)="toggleContextMenu($event)">
           
-                <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
+                <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.id]" activate><i class="far fa-pencil"></i>Edit</li>
                 <li *ngIf="actionPermissions('infoPanel')" (activate)="viewSidePanel.emit()"><i class="fas fa-info-circle"></i>Info</li>
-                <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
+                <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']" activate><i class="far fa-upload"></i>Manage Materials</li>
                 <li *ngIf="actionPermissions('submit')" (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
                 <li (activate)="viewAllChangelogs.emit(learningObject.id)"><i class="far fa-comment-alt-lines"></i>View Changelogs</li>
                 <li *ngIf="actionPermissions('view')" [routerLink]="['/details', learningObject.author.username, learningObject.name]"><i class="far fa-cube"></i>Learning Object Details</li>

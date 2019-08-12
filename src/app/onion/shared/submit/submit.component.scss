@@ -60,6 +60,7 @@
   text-align: left;
   margin: auto;
   display: flex;
+  flex-direction: row-reverse;
   padding: 10px;
   border-radius: 3px;
   border: 1px solid $light-grey;
