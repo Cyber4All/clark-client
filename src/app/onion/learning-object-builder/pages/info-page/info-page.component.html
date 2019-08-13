@@ -12,7 +12,7 @@
           <div title>{{copy.NAME}}</div>
           <div directions>{{copy.NAMEPLACEHOLDER}}</div>
           <div data>
-            <input attr.aria-label="{{copy.NAME}} {{copy.NAMEPLACEHOLDER}}" class="name-field" autocomplete="off" type="text" autofocus name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" />
+            <input attr.aria-label="{{copy.NAME}} {{copy.NAMEPLACEHOLDER}}" class="name-field" autocomplete="off" type="text" name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" id="form"/>
           </div>
         </clark-info-page-metadata>
         <hr />
