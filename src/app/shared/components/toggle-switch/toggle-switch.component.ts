@@ -14,7 +14,6 @@ export class ToggleSwitchComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.identity);
   }
 
   toggle() {
