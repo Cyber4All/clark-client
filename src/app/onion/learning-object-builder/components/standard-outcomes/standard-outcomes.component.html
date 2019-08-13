@@ -1,7 +1,7 @@
 <div class="standard-outcomes">
   <div class="title">Standard Outcomes</div>
   <div class="search-bar">
-    <input type="search" placeholder="Search standard outcomes..." [(ngModel)]="searchStringValue" (ngModelChange)="searchString$.next($event)" />
+    <input type="search" placeholder="Search standard outcomes..." [(ngModel)]="searchStringValue" (ngModelChange)="searchString$.next($event)" id="search"/>
     <i class="far fa-search"></i>
   </div>
   <div class="title-bar">
@@ -12,6 +12,10 @@
     <ng-container [ngTemplateOutlet]="listTemplate" [ngTemplateOutletContext]="{ items: searchStringValue !== '' ? searchResults : suggestions }"></ng-container>
   </div>
 </div>
+<clark-skip-link title="Go back to Learning Outcome" skipLocation="outcome"></clark-skip-link>
+<clark-skip-link title="Go to Add New Learning Outcome" skipLocation="form"></clark-skip-link>
+<clark-skip-link title="Go to Search for Standard Outcomes" skipLocation="search"></clark-skip-link>
+<clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
 
 <ng-template #listTemplate let-items="items">
   <virtual-scroller #scroll [style.height]="'400px'" [items]="items" [enableUnequalChildrenSizes]="true">
