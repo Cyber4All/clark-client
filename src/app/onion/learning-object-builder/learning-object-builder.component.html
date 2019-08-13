@@ -9,7 +9,7 @@
 <div [@serviceInteraction]="showServiceInteraction || errorState ? 'open' : 'closed'" class="service-indicator" [ngClass]="{'service-indicator--error': errorState}">
   <ng-container *ngIf="!serviceInteraction || errorState; else loadingTemplate">
     <ng-container *ngIf="!errorState; else errorStateTemplate">
-      <span aria-live="passive">
+      <span aria-live="polite">
         <i class="far fa-check"></i>
         Changes saved!
       </span>
@@ -18,7 +18,7 @@
 </div>
 
 <ng-template #loadingTemplate>
-  <span aria-live="passive">
+  <span aria-live="polite">
     <i class="fas fa-spinner-third fa-spin"></i>
     Saving changes...
   </span>
