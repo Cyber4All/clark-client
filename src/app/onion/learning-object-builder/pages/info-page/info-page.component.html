@@ -35,7 +35,7 @@
           <div directions>{{copy.CHOOSE}}</div>
           <div data>
             <div class="select-wrapper">
-              <select name="type" (ngModelChange)="mutateLearningObject({ length: $event })" [ngModel]="learningObject.length" [ngModelOptions]="{standalone: true}">
+              <select name="type" attr.aria-label="{{copy.LENGTH}} {{copy.CHOOSE}}" (ngModelChange)="mutateLearningObject({ length: $event })" [ngModel]="learningObject.length" [ngModelOptions]="{standalone: true}">
                 <option value="nanomodule">{{ copy.NANO }}</option>
                 <option value="micromodule">{{ copy.MICRO }}</option>
                 <option value="module">{{ copy.MOD }}</option>
@@ -50,8 +50,8 @@
           <div title>{{copy.LEVELS}}</div>
           <div directions>{{copy.SELECT}}</div>
           <div data>
-            <div class="levels">
-              <div *ngFor="let level of academicLevels" class="pill" [ngClass]="{'selected': selectedLevels.includes(level)}" (activate)="toggleLevel(level)">
+            <div class="levels" attr.aria-label="{{copy.LEVELS}} {{copy.SELECT}}">
+              <div *ngFor="let level of academicLevels" class="pill" attr.aria-label="{{ level }} Selected: {{ selectedLevels.includes(level)}}" [ngClass]="{'selected': selectedLevels.includes(level)}" (activate)="toggleLevel(level)">
                 {{ level }}
               </div>
             </div>
@@ -61,12 +61,14 @@
         <clark-info-page-metadata [error]="descriptionTouched || validator.submissionMode ? validator.get('description') : undefined" [warning]="!validator.submissionMode">
           <div title>{{copy.QUESTION}}</div>
           <div directions>{{copy.TIP}}</div>
-          <div data>
+          <div data attr.aria-label="{{copy.QUESTION}} {{copy.TIP}}">
             <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
           </div>
         </clark-info-page-metadata>
       </form>
     </div>
+    <clark-skip-link title="Go to edit Learning Object name" skipLocation="form"></clark-skip-link>
+    <clark-skip-link title="Go to Edit Children" skipLocation="children"></clark-skip-link>
   </div>
 </clark-column-wrapper>
 

@@ -11,7 +11,7 @@
     <clark-toggle-switch identity="children" [state]="editContent" style="blue" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
   </div>
 </div>
-<clark-skip-link *ngIf="!editContent" title="Skip Builder Form" skipLocation="form"></clark-skip-link> 
+<clark-skip-link *ngIf="!editContent || learningObject?.length === 'nanomodule'" title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
 <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
 <ng-template [ngIf]="children && children.length > 0">
   <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
