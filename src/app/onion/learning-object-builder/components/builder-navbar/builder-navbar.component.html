@@ -1,4 +1,7 @@
 <div class="builder-navbar-wrapper">
+    <clark-skip-link title="Skip Builder Form" skipLocation="form"></clark-skip-link> 
+    <clark-skip-link title="Skip to Children" skipLocation="children"></clark-skip-link>
+    <clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
   <div
     class="top"
     [ngStyle]="{
@@ -47,6 +50,7 @@
         *ngIf="!adminMode && ['unreleased', 'rejected'].includes(learningObject?.status); else adminModeTemplate "
       >
         <button
+          id="submit"
           class="button"
           [ngClass]="{
             good: !submissionError,
@@ -85,6 +89,8 @@
       <ul>
         <li>
           <ng-container
+            autofocus
+            aria-label="Basic Information Link"
             [ngTemplateOutlet]="navItemTemplate"
             [ngTemplateOutletContext]="{
               disabled: false,
@@ -95,6 +101,7 @@
         </li>
         <li>
           <ng-container
+            aria-label="Learning Outcomes Link"
             [ngTemplateOutlet]="navItemTemplate"
             [ngTemplateOutletContext]="{
               disabled: !canRoute('outcomes'),
@@ -105,6 +112,7 @@
         </li>
         <li>
           <ng-container
+            aria-label="Materials Link"
             [ngTemplateOutlet]="navItemTemplate"
             [ngTemplateOutletContext]="{
               disabled: !canRoute('materials'),
@@ -148,6 +156,7 @@
     >{{ text }}</a
   >
   <a
+    aria-label="Please give this learning object a name before adding outcomes or uploading materials"
     *ngIf="disabled"
     class="disabled"
     tip="Please give this learning object a name before adding outcomes or uploading materials"
