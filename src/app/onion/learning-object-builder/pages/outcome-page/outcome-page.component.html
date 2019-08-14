@@ -5,7 +5,7 @@
   <div main>
     <div class="top">
       <div class="title">Learning Outcomes</div>
-      <button class="button good" (activate)="newOutcome()">New <i class="fas fa-plus"></i></button>
+      <button id="form" class="button good" aria-label="Add New Outcome" (activate)="newOutcome()">New <i class="fas fa-plus"></i></button>
     </div>
     <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
       <clark-outcome *ngFor="let o of iterableOutcomes"
