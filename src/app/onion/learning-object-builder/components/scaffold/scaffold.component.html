@@ -36,7 +36,7 @@
 </ng-template>
 
 <ng-template #addChild>
-  <button id="children" #addChildButton aria-lable="Add Child" class="edit-children" (activate)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
+  <button id="children" #addChildButton aria-label="Add Child" class="edit-children" (activate)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
     Add Child
     <i class="far fa-plus"></i>
   </button>
