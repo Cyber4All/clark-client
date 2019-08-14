@@ -12,7 +12,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     </div> -->
     <div class="goals list">
       <clark-text-editor (touched)="touched.emit()" [(savedContent)] = "learningObject.description"
-      editorPlaceholder = "Enter description here" (textOutput) = "bindEditorOutput($event)" name="description"></clark-text-editor>
+      editorPlaceholder = "Enter Learning Object description here"
+      (textOutput) = "bindEditorOutput($event)" name="description"></clark-text-editor>
     </div>
   </div>
   `,

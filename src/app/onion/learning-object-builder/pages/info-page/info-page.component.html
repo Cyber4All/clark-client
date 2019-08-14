@@ -12,13 +12,13 @@
           <div title>{{copy.NAME}}</div>
           <div directions>{{copy.NAMEPLACEHOLDER}}</div>
           <div data>
-            <input class="name-field" autocomplete="off" type="text" autofocus name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" />
+            <input attr.aria-label="{{copy.NAME}} {{copy.NAMEPLACEHOLDER}}" class="name-field" autocomplete="off" type="text" name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" id="form"/>
           </div>
         </clark-info-page-metadata>
         <hr />
         <clark-info-page-metadata>
-          <div title>Who else worked on this?</div>
-          <div directions>You can find users by their name, username, or email address.</div>
+          <div id="contributor-title" title>Who else worked on this?</div>
+          <div id="contributor-directions" directions>You can find users by their name, username, or email address.</div>
           <div data>
             <clark-user-dropdown [contributors]="learningObject.contributors" (addAuthor)="toggleContributor($event)" (removeAuthor)="toggleContributor($event)"></clark-user-dropdown>
             <div *ngIf="learningObject.contributors?.length" class="contributors-list">
@@ -35,7 +35,7 @@
           <div directions>{{copy.CHOOSE}}</div>
           <div data>
             <div class="select-wrapper">
-              <select name="type" (ngModelChange)="mutateLearningObject({ length: $event })" [ngModel]="learningObject.length" [ngModelOptions]="{standalone: true}">
+              <select name="type" attr.aria-label="{{copy.LENGTH}} {{copy.CHOOSE}}" (ngModelChange)="mutateLearningObject({ length: $event })" [ngModel]="learningObject.length" [ngModelOptions]="{standalone: true}">
                 <option value="nanomodule">{{ copy.NANO }}</option>
                 <option value="micromodule">{{ copy.MICRO }}</option>
                 <option value="module">{{ copy.MOD }}</option>
@@ -50,8 +50,8 @@
           <div title>{{copy.LEVELS}}</div>
           <div directions>{{copy.SELECT}}</div>
           <div data>
-            <div class="levels">
-              <div *ngFor="let level of academicLevels" class="pill" [ngClass]="{'selected': selectedLevels.includes(level)}" (activate)="toggleLevel(level)">
+            <div class="levels" attr.aria-label="{{copy.LEVELS}} {{copy.SELECT}}">
+              <div *ngFor="let level of academicLevels" class="pill" attr.aria-label="{{ level }} Selected: {{ selectedLevels.includes(level)}}" [ngClass]="{'selected': selectedLevels.includes(level)}" (activate)="toggleLevel(level)">
                 {{ level }}
               </div>
             </div>
@@ -61,12 +61,14 @@
         <clark-info-page-metadata [error]="descriptionTouched || validator.submissionMode ? validator.get('description') : undefined" [warning]="!validator.submissionMode">
           <div title>{{copy.QUESTION}}</div>
           <div directions>{{copy.TIP}}</div>
-          <div data>
+          <div data attr.aria-label="{{copy.QUESTION}} {{copy.TIP}}">
             <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
           </div>
         </clark-info-page-metadata>
       </form>
     </div>
+    <clark-skip-link title="Go to edit Learning Object name" skipLocation="form"></clark-skip-link>
+    <clark-skip-link title="Go to Edit Children" skipLocation="children"></clark-skip-link>
   </div>
 </clark-column-wrapper>
 

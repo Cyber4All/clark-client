@@ -5,13 +5,13 @@
         + outcomeNumber }}
     </div>
     <div class="outcome-header__right">
-      <div *ngIf="!!active" class="outcome-delete" (activate)="showDeleteConfirm = true" tip="Delete outcome" tipPosition="bottom">
+      <div *ngIf="!!active" class="outcome-delete" aria-label="Delete outcome" (activate)="showDeleteConfirm = true" tip="Delete outcome" tipPosition="bottom">
         <i class="far fa-trash-alt"></i>
       </div>
     </div>
   </div>
   <div class="level-select">
-    <div *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom.toLowerCase() === l.toLowerCase()}"
+    <button *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom.toLowerCase() === l.toLowerCase()}"
       (activate)="emitLevel(l)">
       <div class="icon">
         <span *ngIf="l === 'remember and understand'"><i class="fal fa-cloud"></i></span>
@@ -21,7 +21,7 @@
       <div class="level-text">
         {{ l.replace('and', '&') }}
       </div>
-    </div>
+    </button>
   </div>
   <div class="outcome-text">
     <clark-outcome-typeahead (overflowValue)="setOverflow($event)" [verb]="outcome?.verb" [bloom]="outcome?.bloom" [text]="outcome?.text" (selectedVerb)="emitVerb($event)"
@@ -31,7 +31,7 @@
   <div *ngIf="outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-component__outcome-error" [ngClass]="{'outcome-error--warning': !validator.submissionMode}">
     {{ validator.getOutcome(outcome.id) ? validator.getOutcome(outcome.id) : undefined }}
   </div>
-  <div *ngIf="!outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-component__no-save">
+  <div *ngIf="!outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-component__no-save" aria-live="assertive">
     This outcome can't be saved until a level and verb are selected!
   </div>
   <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
@@ -39,7 +39,7 @@
     <div class="pills">
       <div *ngFor="let m of outcome.mappings" class="pill">
         {{ m.author }} - {{ m.name }} - {{ m.date }}
-        <span (activate)="removeMapping(m)">
+        <span attr.aria-label="Remove mapping to {{ m.author }} - {{ m.name }} - {{ m.date }}" (activate)="removeMapping(m)">
           <i class="fal fa-times"></i>
         </span>
       </div>

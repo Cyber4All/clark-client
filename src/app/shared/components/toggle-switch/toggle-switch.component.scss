@@ -82,4 +82,11 @@ $height: 20px;
       background: $orange;
     }
   }
+
+  &:focus {
+    .switch__background {
+      outline: 2px;
+      outline-color: $light-blue;
+    }
+  }
 }

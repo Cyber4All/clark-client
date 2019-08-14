@@ -1,7 +1,7 @@
 <div class="topbar">
   <div class="slide-title">URLs</div>
   <div class="btn-group to-right">
-    <button *ngIf="urls.length > 0" [disabled]="!addNew" (activate)="addURL()" class="button good">Add URL
+    <button *ngIf="urls.length > 0" [disabled]="!addNew" (activate)="addURL()" class="button good" id="new-url">Add URL
       <i class="far fa-plus"></i>
     </button>
   </div>
@@ -23,3 +23,4 @@
     </div>
   </div>
 </div>
+<clark-skip-link title="Go to Add URL" skipLocation="new-url"></clark-skip-link>

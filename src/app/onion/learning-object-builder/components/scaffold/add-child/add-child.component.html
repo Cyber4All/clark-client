@@ -1,5 +1,5 @@
 <div class="search-bar">
-  <input aria-label="Search for Children" type="search" placeholder="Search for Children" [(ngModel)]="childrenSearchString" (ngModelChange)="searchString$.next($event)"/>
+  <input aria-label="Search for Children" type="search" placeholder="Search for Children" [(ngModel)]="childrenSearchString" (ngModelChange)="searchString$.next($event)" id="childrenSearch" autofocus/>
   <button aria-label="Search for Children" class="search-button" (activate)="search()">
     <i class="far fa-search"></i>
   </button>
@@ -25,6 +25,8 @@
     </virtual-scroller>
   </div>
 </ng-container>
+<clark-skip-link title="Return to Search for Children" skipLocation="childrenSearch"></clark-skip-link>
+<clark-skip-link title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
 
 <ng-template [ngIf]="!children">
   <div class="loading-template">

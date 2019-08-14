@@ -1,5 +1,5 @@
 <div class="user-dropdown">
-  <input type="text" aria-label="user search" class="user-dropdown__search-input" placeholder="Search for authors" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
+  <input type="text" aria-label="Find users by their name, username, or email address." class="user-dropdown__search-input" placeholder="Search for authors" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
   <ul *ngIf="showDropdown" class="user-dropdown__list">
       <ng-container *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"></ng-container>
   </ul>
