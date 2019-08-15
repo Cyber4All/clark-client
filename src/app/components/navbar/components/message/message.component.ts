@@ -25,7 +25,7 @@ export class MessageComponent implements OnInit {
           /** Suppress the error because it is being handled in Gateway.
           If an error does occur there is not reason to show anything because a user doesn't know the request is being made. */
         });
-      }, 3000); // 5 min interval
+      }, 300000); // 5 min interval
     }
   }
 }
