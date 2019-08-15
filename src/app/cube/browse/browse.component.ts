@@ -34,7 +34,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   query: Query = {
     text: '',
     currPage: 1,
-    limit: 20,
+    limit: 10,
     length: [],
     guidelines: [],
     level: [],
