@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MessagesService, Message } from '../../../../core/messages.service';
+import { MessagesService, Message} from '../../../../core/messages.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-message',
@@ -8,36 +9,23 @@ import { MessagesService, Message } from '../../../../core/messages.service';
 })
 export class MessageComponent implements OnInit {
 
-  showing = true;
+  showBanner = false;
   message: Message;
 
   constructor(private messages: MessagesService) { }
 
   ngOnInit() {
-    this.messages.getStatus()
-      .then(message => {
-        this.message = message;
-        const lastMessage = localStorage.getItem('maintenance');
-
-        if (!lastMessage || this.message.id !== lastMessage) {
-          this.open();
-        }
-      })
-      .catch(e => {
-        // FIXME: Suppress the error until we design a better backend solution
-      });
-  }
-
-  open() {
-    this.showing = true;
-  }
-
-  close() {
-    this.showing = false;
-    localStorage.setItem('maintenance', this.message.id);
-  }
-
-  toggle() {
-    this.showing = !this.showing;
+    if (environment.production) {
+      setInterval(async () => {
+        this.messages.getStatus().then(message => {
+          this.message = message;
+          this.showBanner = this.message.isUnderMaintenance;
+        })
+        .catch ( _ => {
+          /** Suppress the error because it is being handled in Gateway.
+          If an error does occur there is not reason to show anything because a user doesn't know the request is being made. */
+        });
+      }, 3000); // 5 min interval
+    }
   }
 }

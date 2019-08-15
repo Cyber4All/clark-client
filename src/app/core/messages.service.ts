@@ -4,6 +4,15 @@ import { MISC_ROUTES } from '@env/route';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
+export class Message {
+    isUnderMaintenance: boolean;
+    message: string;
+
+    constructor(isUnderMaintenance: boolean, message: string) {
+        this.isUnderMaintenance = isUnderMaintenance;
+        this.message = message;
+    }
+}
 @Injectable()
 export class MessagesService {
     private _message: Message;
@@ -24,11 +33,9 @@ export class MessagesService {
                     catchError(this.handleError)
                 )
                 .toPromise()
-                .then((val: any) => {
-                    if (val && val.length) {
-                        this._message = new Message(val[0]['_id'], 'error', val[0]['maintenanceMessage']);
-                        return this._message;
-                    } else { throw new Error('System status returned a malformed message.'); }
+                .then((val: Message) => {
+                    this._message = new Message(val.isUnderMaintenance, val.message);
+                    return this._message;
                 });
         }
     }
@@ -44,14 +51,3 @@ export class MessagesService {
       }
 }
 
-export class Message {
-    id: string;
-    type: string;
-    message: string;
-
-    constructor(id: string, type: string, message: string) {
-        this.id = id;
-        this.type = type;
-        this.message = message;
-    }
-}
