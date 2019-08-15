@@ -1,4 +1,5 @@
-<div tabindex="0" id="pageContent" class="container">
+<clark-skip-link identity="pageContent" title="Skip Directly to Learning Objects" skipLocation="results"></clark-skip-link>
+<div class="container">
   <div class="browse-columns">
     <div *ngIf="filters" class="sidebar-wrapper" [ngClass]="{'active': filtersDownMobile}">
       <div class="column-title">
@@ -12,10 +13,10 @@
         <button (activate)="closeFilters();" class="button neutral">Cancel</button>
       </div>
     </div>
-    <div *ngIf="learningObjects" class="content" id="content">
+    <div *ngIf="learningObjects" class="content" id="pageContent" tabindex="0">
       <div class="column-title" id="column-title">
-        <span>{{ copy.RESULTS }} ({{this.totalLearningObjects}})
-          <span class="clear-search" id="clear-search" (activate)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </span>
+        <span tabindex="0" id="results">{{ copy.RESULTS }} ({{this.totalLearningObjects}})
+          <a class="clear-search" id="clear-search" (activate)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </a>
           <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
         </span>
         <div class="results-options" id="results-options">

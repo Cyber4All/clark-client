@@ -9,6 +9,7 @@ export class ToggleSwitchComponent implements OnInit {
   @Input() state: boolean;
   @Output() toggled: EventEmitter<boolean> = new EventEmitter();
   @Input() aria: string;
+  @Input() identity: string;
   @Input() style: 'blue' | 'orange' = 'blue';
   constructor() { }
 

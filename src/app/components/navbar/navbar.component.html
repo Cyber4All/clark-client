@@ -1,8 +1,8 @@
 <clark-message></clark-message>
-<button class="skip-link" (activate)="goToContent('pageContent')">Skip directly to site content</button>
-<button class="skip-link" *ngIf="!loggedin" (activate)="goToContent('clark-sign-in')">Skip directly to Login</button>
-<button class="skip-link" *ngIf="loggedin" (activate)="goToContent('clark-user-dropdown')">Skip directly to your User profile</button>
-<button class="skip-link" (activate)="goToContent('clark-search-input')">Skip directly to Search for Learning Objects</button>
+<clark-skip-link *ngIf="nav.visible" title="Skip directly to site content" skipLocation="pageContent"></clark-skip-link>
+<clark-skip-link *ngIf="!loggedin && nav.visible" title="Skip directly to Login" skipLocation="clark-sign-in"></clark-skip-link>
+<clark-skip-link *ngIf="loggedin && nav.visible" title="Skip directly to your User Profile" skipLocation="clark-user-dropdown"></clark-skip-link>
+<clark-skip-link *ngIf="nav.visible" title="Skip directly to Search for Learning Objects" skipLocation="clark-search-input"></clark-skip-link>
 <div role="navigation" *ngIf="nav.visible">
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">

@@ -9,7 +9,7 @@
           totalFiles === 1 ? '' : 's'
         }}
       </div>
-      <div class="progress__progress-txt">
+      <div class="progress__progress-txt" aria-live="polite">
         {{ progress | number: '1.0-0' }}%
       </div>
     </div>
@@ -17,7 +17,7 @@
       class="text-content__upload-complete"
       [ngClass]="{ completed: progress === 100 }"
     >
-      <div class="upload-complete__uploaded-txt">
+      <div class="upload-complete__uploaded-txt" aria-live="polite">
         Uploaded {{ totalFiles }} file{{ totalFiles === 1 ? '' : 's' }}
       </div>
       <div class="upload-complete__check">

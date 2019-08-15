@@ -2,7 +2,7 @@
   <div class="manage-materials">
     <div class="tabs">
       <ul id="materials-title">
-        <li [ngClass]="{ active: slide === 1 }" (activate)="changeSlide(1)">
+        <li id="form" [ngClass]="{ active: slide === 1 }" (activate)="changeSlide(1)">
           Files and Folders
         </li>
         <li [ngClass]="{ active: slide === 2 }" (activate)="changeSlide(2)">
@@ -22,7 +22,7 @@
         (dragover)="dragover($event)"
         (drop)="handleDrop($event)"
       >
-        <div *ngIf="solutionUpload" class="solutions-warning">
+        <div *ngIf="solutionUpload" class="solutions-warning" aria-live="assertive">
           Note: While the upload of solution files are not prohibited, they
           won't be included during a Learning Object's download.
         </div>

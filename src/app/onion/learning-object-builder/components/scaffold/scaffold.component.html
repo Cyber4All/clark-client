@@ -8,9 +8,10 @@
   </div>
   <div *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule'" class="edit">
     <div class="text">Add/Delete</div>
-    <clark-toggle-switch [state]="editContent" style="blue" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
+    <clark-toggle-switch identity="children" [state]="editContent" style="blue" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
   </div>
 </div>
+<clark-skip-link *ngIf="!editContent || learningObject?.length === 'nanomodule'" title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
 <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
 <ng-template [ngIf]="children && children.length > 0">
   <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
@@ -24,7 +25,7 @@
           <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
         </div>
       </div>
-      <div [ngStyle]="{display: editContent ? 'none' : 'block'}" class="hamburger-handle" cdkDragHandle>
+      <div tabindex="0" attr.aria-label="Move {{ c.name }}" [ngStyle]="{display: editContent ? 'none' : 'block'}" class="hamburger-handle" cdkDragHandle>
         <i class="fas fa-bars"></i>
       </div>
       <button attr.aria-label="Delete {{ c.name }}" [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (activate)="deleteButton(i)">
@@ -35,7 +36,7 @@
 </ng-template>
 
 <ng-template #addChild>
-  <button #addChildButton aria-lable="Add Child" class="edit-children" (activate)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
+  <button id="children" #addChildButton aria-label="Add Child" class="edit-children" (activate)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
     Add Child
     <i class="far fa-plus"></i>
   </button>
