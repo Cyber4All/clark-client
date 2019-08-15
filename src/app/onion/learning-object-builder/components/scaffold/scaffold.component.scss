@@ -152,6 +152,11 @@
   .svg-inline--fa {
     margin-left: 10px;
   }
+  
+  &:focus, &:hover {
+    background: $light-blue-gradient;
+    color: white;
+  }
 }
 
 .cdk-drag-preview {

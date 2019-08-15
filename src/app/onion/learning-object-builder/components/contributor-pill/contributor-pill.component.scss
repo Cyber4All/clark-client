@@ -2,46 +2,26 @@
 
 .contributor-pill {
   position: relative;
-  padding: 3px;
   color: $light-blue;
   text-decoration: underline;
 }
 
-.contributor-pill__dropdown {
-  background: white;
-  position: absolute;
-  padding: 5px 0;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
-  z-index: 3;
-  min-width: 130px;
-
-  // carrot
-  &:after {
-    content: '';
-    position: absolute;
-    background: transparent;
-    width: 0;
-    height: 0;
-    border: 6px solid transparent;
-    border-bottom-color: white;
-    top: -11px;
-    left: 5px;
-  }
-}
-
 .contributor-pill__dropdown-option {
-  padding: 5px 25px;
   color: $error-red;
+  font-size: $small;
   cursor: pointer;
   text-align: center;
+  border: none;
+  display: inline-block;
 
   .svg-inline--fa,
   .icon {
     color: $error-red;
-    margin-right: 5px;
+    margin-right: 3px;
+    margin-left: 3px;
   }
 
-  &:hover {
+  &:hover, &:focus {
     color: white;
     background: $error-red;
 

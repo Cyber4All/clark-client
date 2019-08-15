@@ -10,12 +10,14 @@ import { FileSizePipe } from './file-list-view/file-size.pipe';
 import { FileListItemComponent } from './file-list-view/components/file-list-item/file-list-item.component';
 import { FolderListItemComponent } from './file-list-view/components/folder-list-item/folder-list-item.component';
 import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
+import { SharedComponents } from 'app/shared/components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ScrollDispatchModule,
     SharedDirectivesModule,
+    SharedComponents,
   ],
   exports: [FileBrowserComponent],
   declarations: [

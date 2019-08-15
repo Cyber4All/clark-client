@@ -1,10 +1,8 @@
-<div (mouseover)="showDropdown = true" (mouseleave)="showDropdown = false" class="contributor-pill">
+<div class="contributor-pill">
   <div class="contributor-pill__name">
     {{ user.name | titlecase }}
-  </div>
-  <div *ngIf="showDropdown" class="contributor-pill__dropdown">
-    <div class="contributor-pill__dropdown-option" (activate)="removeContributor.emit(user)">
-      <i class="far fa-times"></i> Remove
-    </div>
+    <button attr.aria-label="Remove {{ user.name }} as a contributor" class="contributor-pill__dropdown-option" (activate)="removeContributor.emit(user)">
+      <i class="far fa-trash-alt"></i>
+    </button>
   </div>
 </div>
