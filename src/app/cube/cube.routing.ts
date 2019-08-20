@@ -3,7 +3,8 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { DetailsComponent } from './details/details.component';
+import { OldDetailsModule } from './old-details/details.module';
+import { DetailsModule } from './details/details.module';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -15,6 +16,7 @@ import { CollectionDetailsComponent } from './collection-details/collection-deta
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { environment } from '@env/environment';
 
 const cube_routes: Routes = [
   {
@@ -37,7 +39,7 @@ const cube_routes: Routes = [
       },
       {
         path: 'details/:username/:learningObjectName',
-        component: DetailsComponent
+        loadChildren: () => { return environment.experimental ? DetailsModule : OldDetailsModule }
       },
       {
         path: 'library',

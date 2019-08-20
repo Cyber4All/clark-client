@@ -1,3 +1,4 @@
+import { environment } from 'environments/environment';
 // Core
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -34,10 +35,13 @@ import {
   ToasterModule
 } from '../shared/modules/toaster';
 import { CollectionModule } from './collection-details/collection-details.module';
-import { DetailsModule } from './details/details.module';
 import { CollectionsComponent } from './collections/collections.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { FilterComponent } from './browse/components/filter/filter.component';
+
+import { OldDetailsModule } from './old-details/details.module';
+import { DetailsModule } from './details/details.module';
+
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -73,7 +77,8 @@ import { FilterComponent } from './browse/components/filter/filter.component';
     ModalModule,
     ToasterModule,
     CollectionModule,
-    DetailsModule,
+    // TODO DETAILS DEPLOY remove this and import only DetailsModule
+    (environment.experimental ? DetailsModule : OldDetailsModule)
   ],
   providers: [LearningObjectService]
 })
