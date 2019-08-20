@@ -28,7 +28,10 @@ import { ReviseButtonComponent } from './components/action-panel/revise-button/r
     CommonModule,
     SharedModule,
     FormsModule,
-    RouterModule.forChild([{ path: 'details/:username/:learningObjectName', component: DetailsComponent }]),
+    RouterModule.forChild([
+      { path: ':username/:learningObjectName', component: DetailsComponent, pathMatch: 'full' },
+      { path: '', redirectTo: '/home', pathMatch: 'full' }
+    ]),
     FileBrowserModule,
     CubeSharedModule,
     EditorialActionPadModule,
@@ -53,4 +56,4 @@ import { ReviseButtonComponent } from './components/action-panel/revise-button/r
   ],
   providers: []
 })
-export class OldDetailsModule {}
+export class OldDetailsModule { }
