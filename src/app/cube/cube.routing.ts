@@ -38,8 +38,9 @@ const cube_routes: Routes = [
         data: { title: 'Browse Learning Objects'}
       },
       {
-        path: 'details/:username/:learningObjectName',
-        loadChildren: () => environment.experimental ? DetailsModule : OldDetailsModule
+        path: 'details',
+        loadChildren: () =>  environment.experimental ? DetailsModule : OldDetailsModule,
+        pathMatch: 'prefix'
       },
       {
         path: 'library',
