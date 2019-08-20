@@ -39,7 +39,7 @@ const cube_routes: Routes = [
       },
       {
         path: 'details/:username/:learningObjectName',
-        loadChildren: () => { return environment.experimental ? DetailsModule : OldDetailsModule }
+        loadChildren: () => environment.experimental ? DetailsModule : OldDetailsModule
       },
       {
         path: 'library',
