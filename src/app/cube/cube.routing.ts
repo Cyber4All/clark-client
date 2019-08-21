@@ -25,13 +25,7 @@ const cube_routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent, data: { title: 'Home'} },
       { path: 'c/:abvName', component: CollectionDetailsComponent },
-      { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
-      {
-        path: 'browse/:query',
-        component: BrowseComponent,
-        data: { title: 'Search Results'}
-      },
       {
         path: 'browse',
         component: BrowseComponent,
