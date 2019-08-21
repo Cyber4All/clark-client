@@ -8,7 +8,7 @@ import { LengthComponent } from './components/splash/length/length.component';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([ { path: '', component: DetailsComponent } ]),
+    RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent} ]),
   ],
   exports: [],
   declarations: [

@@ -24,7 +24,9 @@ const cube_routes: Routes = [
     component: CubeComponent,
     children: [
       { path: 'home', component: HomeComponent, data: { title: 'Home'} },
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'c/:abvName', component: CollectionDetailsComponent },
+      { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse',
@@ -60,7 +62,7 @@ const cube_routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'details/:username/:learningObjectName',
+        path: 'details',
         loadChildren: () =>  environment.experimental ? DetailsModule : OldDetailsModule,
       },
       // Catch All
