@@ -4,11 +4,13 @@
 .details-splash {
   position: relative;
   min-height: 300px;
+  padding: 40px 0;
 }
 
 .canvas-wrapper {
   position: absolute;
   right: 0;
+  top: 0;
 
   .canvas-overlay {
     position: absolute;
@@ -43,6 +45,15 @@
     color: $light-blue;
     margin-bottom: 10px;
     margin-top: -50px;
+    display: flex;
+    align-items: center;
+    white-space: pre;
+    
+    .svg-inline--fa,
+    .icon {
+      margin-right: 5px;
+      font-size: 24px;
+    }
   }
 
   .content__date {
