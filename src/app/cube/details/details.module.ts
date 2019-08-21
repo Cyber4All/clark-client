@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DetailsComponent } from './details.component';
 import { RouterModule } from '@angular/router';
 import { SplashComponent } from './components/splash/splash.component';
+import { LengthComponent } from './components/splash/length/length.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { SplashComponent } from './components/splash/splash.component';
     // root level component
     DetailsComponent,
     // page components
-    SplashComponent
+    SplashComponent,
+    LengthComponent
   ],
   providers: []
 })

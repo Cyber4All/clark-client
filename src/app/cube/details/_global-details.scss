@@ -1,0 +1,29 @@
+@import '~_vars.scss';
+
+.details-wrapper {
+  max-width: $max-width;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: content-box;
+  margin: auto;
+}
+
+h1 {
+  color: $darker-grey;
+  font-size: $largest;
+  font-weight: 600;
+  margin: 0;
+}
+
+h2 {
+  font-size: $larger;
+  font-weight: 600;
+  color: $darker-grey;
+  margin: 0;
+}
+
+.details-columns {
+  display: grid;
+  grid-gap: 40px;
+  grid-template-columns: 2fr minmax(200px, 300px)
+}

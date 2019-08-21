@@ -10,12 +10,13 @@ const defaultConfig: Config = {
   color1: '#FDFDFD',
   color2: '#FAFAFA',
   accentColor: '#1c70dd',
-  squareWidth: 90,
-  accentDots: 10
+  squareWidth: 100,
+  accentDots: 20
 }
 
 let canvas: HTMLCanvasElement;
 let context: any;
+let drawTimeout: NodeJS.Timer;
 
 
 /****************************/
@@ -80,7 +81,7 @@ function drawAccentSquare(color: string, canvasWidth: number = canvas.offsetWidt
   context.rect(x, y, size, size)
   context.fillStyle = color;
   // the min/max values here are different (smaller and larger respectively) so that no square is exactly transparent or exactly opaque
-  context.globalAlpha = Math.max((norm(x, (canvasWidth - size) / 2.5, canvasWidth - size + 100)), 0);
+  context.globalAlpha = Math.max((norm(x, (canvasWidth - size) / 2.3, (canvasWidth - size) + 200)), 0);
   context.fill();
   context.closePath();
 }
@@ -108,6 +109,15 @@ function drawGrid(config: Config = defaultConfig) {
   for (let i = 0; i < config.accentDots; i++) {
     drawAccentSquare(config.accentColor);
   }
+
+  window.addEventListener('resize', (_) => {
+    // set canvas width to 100%
+    clearTimeout(drawTimeout);
+    drawTimeout = setTimeout(() => {
+      canvas.setAttribute('width', window.innerWidth.toString());
+      drawGrid();
+    }, 150);
+  });
 }
 
 /**
