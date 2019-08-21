@@ -32,11 +32,6 @@ const cube_routes: Routes = [
         data: { title: 'Browse Learning Objects'}
       },
       {
-        path: 'details',
-        loadChildren: () =>  environment.experimental ? DetailsModule : OldDetailsModule,
-        pathMatch: 'prefix'
-      },
-      {
         path: 'library',
         component: CartComponent,
         canActivate: [AuthGuard],
@@ -63,6 +58,10 @@ const cube_routes: Routes = [
         path: 'users/:username/preferences',
         component: UserPreferencesComponent,
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'details/:username/:learningObjectName',
+        loadChildren: () =>  environment.experimental ? DetailsModule : OldDetailsModule,
       },
       // Catch All
       {

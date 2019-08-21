@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([{ path: 'details/:learningObjectAuthor/:learningObjectName', component: DetailsComponent }]),
+    RouterModule.forChild([ { path: '', component: DetailsComponent } ]),
   ],
   exports: [],
   declarations: [

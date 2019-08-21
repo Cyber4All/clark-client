@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { OutcomesDetailViewComponent } from './components/outcomes-detail-view/outcomes-detail-view.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, UrlSegment } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { DetailsIncludedInComponent } from './components/included-in/included-in.component';
 import { ChildrenDetailViewComponent } from './components/children-detail-view/children-detail-view.component';
@@ -28,10 +28,7 @@ import { ReviseButtonComponent } from './components/action-panel/revise-button/r
     CommonModule,
     SharedModule,
     FormsModule,
-    RouterModule.forChild([
-      { path: ':username/:learningObjectName', component: DetailsComponent, pathMatch: 'full' },
-      { path: '', redirectTo: '/home', pathMatch: 'full' }
-    ]),
+    RouterModule.forChild([ { path: '', component: DetailsComponent } ]),
     FileBrowserModule,
     CubeSharedModule,
     EditorialActionPadModule,
