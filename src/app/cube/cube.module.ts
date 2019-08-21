@@ -39,9 +39,6 @@ import { CollectionsComponent } from './collections/collections.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { FilterComponent } from './browse/components/filter/filter.component';
 
-import { OldDetailsModule } from './old-details/details.module';
-import { DetailsModule } from './details/details.module';
-
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -77,8 +74,6 @@ import { DetailsModule } from './details/details.module';
     ModalModule,
     ToasterModule,
     CollectionModule,
-    // TODO DETAILS DEPLOY remove this and import only DetailsModule
-    (environment.experimental ? DetailsModule : OldDetailsModule)
   ],
   providers: [LearningObjectService]
 })
