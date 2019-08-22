@@ -12,7 +12,7 @@ const defaultConfig: Config = {
   accentColor: '#1c70dd',
   squareWidth: 100,
   accentDots: 20
-}
+};
 
 let canvas: HTMLCanvasElement;
 let context: any;
@@ -78,7 +78,7 @@ function drawAccentSquare(color: string, canvasWidth: number = canvas.offsetWidt
 
   // start a new path for each square we draw
   context.beginPath();
-  context.rect(x, y, size, size)
+  context.rect(x, y, size, size);
   context.fillStyle = color;
   // the min/max values here are different (smaller and larger respectively) so that no square is exactly transparent or exactly opaque
   context.globalAlpha = Math.max((norm(x, (canvasWidth - size) / 2.3, (canvasWidth - size) + 200)), 0);
@@ -119,7 +119,7 @@ function drawGrid(wrapperElement: HTMLElement, config: Config = defaultConfig) {
   let row = 0;
 
   while (offset < canvas.offsetHeight) {
-    drawRow(config, row, row % 2 === 1)
+    drawRow(config, row, row % 2 === 1);
     row++;
     offset += config.squareWidth;
   }
