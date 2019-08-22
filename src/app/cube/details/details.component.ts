@@ -16,17 +16,17 @@ export class DetailsComponent implements OnInit {
   // flags
   loading: boolean;
 
-  constructor(private route: ActivatedRoute, private learningObjectService: LearningObjectService,) { }
+  constructor(private route: ActivatedRoute, private learningObjectService: LearningObjectService, ) { }
 
   ngOnInit() {
     this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
-      this.getLearningObject(username, learningObjectName)
+      this.getLearningObject(username, learningObjectName);
     });
   }
 
   async getLearningObject(username: string, learningObjectName: string) {
     this.loading = true;
-    this.learningObject = await this.learningObjectService.getLearningObject(username, learningObjectName)
+    this.learningObject = await this.learningObjectService.getLearningObject(username, learningObjectName);
     this.loading = false;
   }
 
