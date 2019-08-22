@@ -91,9 +91,9 @@ function setDimensions(wrapperElement: HTMLElement) {
   canvas.setAttribute('width', window.innerWidth.toString());
 
 
-  // take the height of the wrapper element, add 80 for padding, divide by 100 to get a decimal value, round up,
+  // take the height of the wrapper element, add 120 for padding, divide by 100 to get a decimal value, round up,
   // then multiply by 100 to get the lowest value that will show a) all of the content and b) no partial squares vertically
-  const newCanvasHeight = Math.max(300, Math.ceil((wrapperElement.offsetHeight + 80) / 100) * 100);
+  const newCanvasHeight = Math.max(300, Math.ceil((wrapperElement.offsetHeight + 120) / 100) * 100);
   canvas.setAttribute('height', newCanvasHeight + 'px');
 
   // show at most 20, and at lest 5, accent squares. Count is dependent on the width of the canvas (smaller canvases get fewer accents)

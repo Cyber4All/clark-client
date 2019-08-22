@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Grid } from './grid';
 
@@ -7,7 +7,7 @@ import { Grid } from './grid';
   templateUrl: './splash.component.html',
   styleUrls: ['./splash.component.scss']
 })
-export class SplashComponent implements OnInit {
+export class SplashComponent implements AfterViewInit {
   @Input() learningObject: LearningObject;
 
   @Input() col1 = 1100;
@@ -17,7 +17,7 @@ export class SplashComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     Grid.init(this.splashWrapperElement.nativeElement);
   }
 

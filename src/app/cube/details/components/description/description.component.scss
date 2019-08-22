@@ -1,0 +1,9 @@
+@import '~_vars.scss';
+
+slot {
+  color: $dark-grey;
+
+  strong {
+    font-weight: 600 !important;
+  }
+}

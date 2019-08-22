@@ -9,7 +9,7 @@ export interface HistorySnapshot {
    * @readonly
    * @memberof HistorySnapshot
    */
-  rewind(): void;
+  rewind(defaultUrl: string): void;
 }
 
 @Injectable({
@@ -91,7 +91,7 @@ export class HistoryService {
   snapshot(): HistorySnapshot {
     const index = this.history.length - 1;
     return {
-       rewind: () => { this.back(index); }
+       rewind: (defaultUrl: string = '/home') => { this.back(index); }
     };
   }
 }

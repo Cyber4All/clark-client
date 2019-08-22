@@ -11,10 +11,12 @@ import { LearningObjectService } from 'app/cube/learning-object.service';
 export class DetailsComponent implements OnInit {
   learningObject: LearningObject;
 
+  historySnapshot: HistorySnapshot;
+
   // flags
   loading: boolean;
 
-  constructor(private route: ActivatedRoute, private learningObjectService: LearningObjectService) { }
+  constructor(private route: ActivatedRoute, private learningObjectService: LearningObjectService,) { }
 
   ngOnInit() {
     this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {

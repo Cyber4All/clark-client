@@ -8,7 +8,7 @@
       <div class="details-columns">
         <div class="columns_col1">
           <div #splashWrapper class="splash__content">
-            <span class="content__collection">
+            <span *ngIf="learningObject.collection" class="content__collection">
               <i class="far fa-cubes"></i>
               Part of the <a [routerLink]="['/c', learningObject.collection]"><u>{{ (learningObject.collection | collection) | async }}</u></a> collection
             </span> 
