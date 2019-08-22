@@ -1,11 +1,13 @@
 @import '~_vars.scss';
 
 .details-wrapper {
-  max-width: $max-width;
+  box-sizing: border-box;
+  max-width: calc(#{$max-width} + 40px);
   padding-left: 20px;
   padding-right: 20px;
-  box-sizing: content-box;
   margin: auto;
+  width: 100%;
+  position: relative;
 }
 
 h1 {

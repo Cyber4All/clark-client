@@ -3,21 +3,16 @@
 
 .details-splash {
   position: relative;
-  min-height: 300px;
-  padding: 40px 0;
 }
 
 .canvas-wrapper {
-  position: absolute;
-  right: 0;
-  top: 0;
 
   .canvas-overlay {
     position: absolute;
     z-index: 1;
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0)
       rgba(255, 255, 255, 0.5)
     );
@@ -28,14 +23,23 @@
   }
 }
 
-.splash__content {
-  position: relative;
+.splash-wrapper {
+  padding: 40px 0;
+  position: absolute;
+  top: 0;
+  left: 0px;
+  right: 0px;
+  bottom: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 300px;
-  height: 100%;
+}
+
+.splash__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   & > *:not(:first-child) {
     margin-top: 10px;
@@ -43,8 +47,8 @@
 
   .content__collection {
     color: $light-blue;
-    margin-bottom: 10px;
-    margin-top: -50px;
+    margin-bottom: 15px;
+    margin-top: -20px;
     display: flex;
     align-items: center;
     white-space: pre;

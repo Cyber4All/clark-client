@@ -86,16 +86,34 @@ function drawAccentSquare(color: string, canvasWidth: number = canvas.offsetWidt
   context.closePath();
 }
 
+function setDimensions(wrapperElement: HTMLElement) {
+  // set canvas width to 100%
+  canvas.setAttribute('width', window.innerWidth.toString());
+
+
+  // take the height of the wrapper element, add 80 for padding, divide by 100 to get a decimal value, round up,
+  // then multiply by 100 to get the lowest value that will show a) all of the content and b) no partial squares vertically
+  const newCanvasHeight = Math.max(300, Math.ceil((wrapperElement.offsetHeight + 80) / 100) * 100);
+  canvas.setAttribute('height', newCanvasHeight + 'px');
+
+  // show at most 20, and at lest 5, accent squares. Count is dependent on the width of the canvas (smaller canvases get fewer accents)
+  const accentDotCount = Math.min(Math.max(5, canvas.offsetWidth / 70), 20);
+  defaultConfig.accentDots = accentDotCount;
+}
+
+function init(wrapperElement: HTMLElement) {
+  canvas = document.querySelector('.details-splash canvas');
+  context = canvas.getContext('2d');
+
+  drawGrid(wrapperElement);
+}
+
 /**
  * The main function, draws the grid with accent squares
  * @param { Config } config a configuration object containing the config for the grid system
  */
-function drawGrid(config: Config = defaultConfig) {
-  canvas = document.querySelector('.details-splash canvas');
-  context = canvas.getContext('2d');
-
-  // set canvas width to 100%
-  canvas.setAttribute('width', window.innerWidth.toString());
+function drawGrid(wrapperElement: HTMLElement, config: Config = defaultConfig) {
+  setDimensions(wrapperElement);
 
   let offset = 0;
   let row = 0;
@@ -114,9 +132,8 @@ function drawGrid(config: Config = defaultConfig) {
     // set canvas width to 100%
     clearTimeout(drawTimeout);
     drawTimeout = setTimeout(() => {
-      canvas.setAttribute('width', window.innerWidth.toString());
-      drawGrid();
-    }, 150);
+      drawGrid(wrapperElement);
+    }, 200);
   });
 }
 
@@ -147,4 +164,4 @@ function norm(val: number, min: number, max: number) {
   return (val - min) / (max - min);
 }
 
-export const Grid = { drawGrid };
+export const Grid = { init };
