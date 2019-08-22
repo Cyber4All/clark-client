@@ -3,8 +3,6 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { OldDetailsModule } from './old-details/details.module';
-import { DetailsModule } from './details/details.module';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -17,6 +15,14 @@ import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { environment } from '@env/environment';
+
+const details = environment.experimental ? {
+  path: 'details',
+  loadChildren: 'app/cube/details/details.module#DetailsModule'
+} : {
+  path: 'details',
+  loadChildren: 'app/cube/old-details/details.module#OldDetailsModule',
+};
 
 const cube_routes: Routes = [
   {
@@ -61,10 +67,7 @@ const cube_routes: Routes = [
         component: UserPreferencesComponent,
         canActivate: [AuthGuard]
       },
-      {
-        path: 'details',
-        loadChildren: () =>  environment.experimental ? DetailsModule : OldDetailsModule,
-      },
+      details,
       // Catch All
       {
         path: '**',
