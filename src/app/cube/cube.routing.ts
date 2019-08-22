@@ -22,7 +22,7 @@ const details = environment.experimental ? {
 } : {
   path: 'details',
   loadChildren: 'app/cube/old-details/details.module#OldDetailsModule',
-}
+};
 
 const cube_routes: Routes = [
   {
