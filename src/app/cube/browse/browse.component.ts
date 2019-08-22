@@ -137,29 +137,27 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
     // whenever the queryParams change, map them to the query object and perform the search
     this.route.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(async params => {
-      // FIXME: Filters should disapear on new search text
-      // if (params.text && params.text !== this.query.text) {
-      //   this.clearAllFilters(true);
-      // }
-
-      /** FIXME pls
-      // Will try to retrieve the outcome sources and collection sources, if it cannot retrieve
-      // them it will pop the guidelines element in the array so that it does
-      // not appear on the page at all and it will also remove the collections element in the array
+      /**
+        Will try to retrieve the outcome sources and collection sources, if it cannot retrieve
+        them it will pop the guidelines element in the array so that it does
+        not appear on the page at all and it will also remove the collections element in the array
       */
       try {
         // fill outcomes array in filters
         this.outcomeSources = await this.outcomeService.getSources();
         this.filters[3].values = this.outcomeSources.map(o => ({ name: o }));
       } catch (err) {
-        this.filters.pop();
+        // remove the guidelines section of the filters since we couldn't load guidelines
+        this.filters = this.filters.filter(f => f.name !== 'guidelines');
       }
+
       try {
         // fill collections array in filters
         const collections = await this.collectionService.getCollections();
         this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
       } catch (err) {
-        this.filters.shift();
+        // remove the collection section of the filters since we couldn't load collections
+        this.filters = this.filters.filter(f => f.name !== 'collection');
       }
       // makes query based and sends request to fetch learning objects
       this.makeQuery(params);
