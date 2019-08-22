@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'clark-details-description',
@@ -6,7 +6,7 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./description.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom
 })
-export class DescriptionComponent implements OnInit {
+export class DescriptionComponent {
   @Input() description: string;
 
 }
