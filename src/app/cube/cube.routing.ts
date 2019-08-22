@@ -3,7 +3,6 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { DetailsComponent } from './details/details.component';
 import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -15,6 +14,15 @@ import { CollectionDetailsComponent } from './collection-details/collection-deta
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { environment } from '@env/environment';
+
+const details = environment.experimental ? {
+  path: 'details',
+  loadChildren: 'app/cube/details/details.module#DetailsModule'
+} : {
+  path: 'details',
+  loadChildren: 'app/cube/old-details/details.module#OldDetailsModule',
+};
 
 const cube_routes: Routes = [
   {
@@ -22,22 +30,14 @@ const cube_routes: Routes = [
     component: CubeComponent,
     children: [
       { path: 'home', component: HomeComponent, data: { title: 'Home'} },
+      { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'c/:abvName', component: CollectionDetailsComponent },
       { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {
-        path: 'browse/:query',
-        component: BrowseComponent,
-        data: { title: 'Search Results'}
-      },
-      {
         path: 'browse',
         component: BrowseComponent,
         data: { title: 'Browse Learning Objects'}
-      },
-      {
-        path: 'details/:username/:learningObjectName',
-        component: DetailsComponent
       },
       {
         path: 'library',
@@ -67,6 +67,7 @@ const cube_routes: Routes = [
         component: UserPreferencesComponent,
         canActivate: [AuthGuard]
       },
+      details,
       // Catch All
       {
         path: '**',

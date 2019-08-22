@@ -1,0 +1,92 @@
+<ng-container *ngIf="!loading.length; else loadingTemplate">
+  <clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
+  <div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
+    <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [canViewChangelogs]="loggedin && auth.user.emailVerified" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;" (openChangelogModal)="openViewAllChangelogsModal()"></cube-details-splash>
+    <div class="flex">
+      <div class="content">
+        <div class="description">
+          <div class="title" tabindex="0">Description</div>
+          <p tabindex="0" [innerHtml]="learningObject.description"></p>
+        </div>
+
+        <section class="academic-levels">
+          <div class="title" tabindex="0">Academic Levels</div>
+          <a class="level" *ngFor="let l of learningObject?.levels" routerLink="/browse" [queryParams]="{ 'level': l }" attr.aria-label="Clickable link. View all {{ l }} Learning Objects">{{ l | titlecase}}</a>
+        </section>
+
+        <cube-outcomes-detail-view [outcomes]="learningObject.outcomes"></cube-outcomes-detail-view>
+        <cube-children-detail-view *ngIf="showChildren" [length]="learningObject.length" [children]="revisedVersion ? revisedChildren : releasedChildren"></cube-children-detail-view>
+        <div class="materials">
+          <onion-file-details [length]="learningObject.length" [materials]="learningObject.materials"></onion-file-details>
+        </div>
+        <div *ngIf="learningObject.collection === 'nccp'" class="disclaimer">
+          <div tabindex="0" class="title">Notice Regarding NSA NCCP Course Materials</div>
+          <p tabindex="0">These course materials were created under a U.S. Government grant. The terms of the Call for Proposals advised the course
+            creator that the materials would be made "publicly available for educational institutions" to educate and prepare their
+            graduates for potential future employment with the U.S. Government in the cybersecurity field. The terms of the grant
+            further provided that, with respect to any copyright in the materials, the U.S. Government reserved a royalty-free, nonexclusive
+            and irrevocable license to reproduce, publish, or otherwise use the work for Federal purposes, and to authorize others
+            to do so. Strengthening the Nation's cybersecurity, particularly through cybersecurity education at all levels of education
+            to foster the knowledge and skills of individuals who may ultimately join the U.S. Government, is an important Federal
+            purpose. Consistent with the Call for Proposals and the terms of the grant, in making these materials publicly available
+            the U.S. Government authorizes others to reproduce, publish and use them in furtherance of this Federal purpose.</p>
+        </div>
+        <div #ratingsWrapper class="ratings">
+          <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRatingValue" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
+            (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
+            <button tabindex="0" *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review Learning Objects." [tipDisabled]="auth.user.emailVerified"
+            class="button good" (activate)="showAddRating = auth.user.emailVerified" attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+            'Write a'}} review <i class="far fa-pencil"></i></button>
+        </div>
+      </div>
+      <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (activate)="showAddRating = false;">
+        <div class="new-rating" (activate)="$event.stopPropagation()">
+          <div class="close-new-rating" (activate)="showAddRating = false;"><i class="far fa-times"></i></div>
+          <div class="title">Rate this Learning Object</div>
+          <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
+            (cancelRating)="showAddRating = false;"></clark-new-rating>
+        </div>
+      </div>
+
+  <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
+    <div *ngIf="reviewer" class="inner">
+      <div *ngIf="loggedin && hasRevisions" class="revisions">
+        <div tabindex="0" class="text">View Revisions</div>
+        <clark-toggle-switch style="orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
+      </div>
+      <div tabindex="0" class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
+    </div>
+    <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [isRevision]="revisedVersion" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
+    <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
+  </div>
+</div>
+</div>
+
+  <div *ngIf="errorStatus">
+    <clark-error-status [statusCode]="errorStatus" [redirectUrl]="redirectUrl"></clark-error-status>
+  </div>
+
+  <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
+    <div style="max-width: 600px;" #popupInner>
+      <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
+    </div>
+  </clark-popup>
+</ng-container>
+
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+      <clark-changelog-modal
+        [learningObject] = "learningObject"
+        [changelogs] = "changelogs ? changelogs[0] : undefined"
+        [loading]="loadingChangelogs"
+      ></clark-changelog-modal>
+    </div> 
+</clark-popup>
+
+<ng-template #loadingTemplate>
+  <div class="loading">
+    <i class="far fa-spinner-third fa-spin" aria-live="assertive"></i>Loading "{{ learningObjectName }}"
+
+  </div>
+</ng-template>
+
