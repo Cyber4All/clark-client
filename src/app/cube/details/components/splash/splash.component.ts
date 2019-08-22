@@ -10,9 +10,6 @@ import { Grid } from './grid';
 export class SplashComponent implements OnInit {
   @Input() learningObject: LearningObject;
 
-  @Input() col1 = 1100;
-  @Input() col2 = 300;
-
   @ViewChild('splashWrapper') splashWrapperElement: ElementRef<HTMLElement>;
 
   constructor() { }
