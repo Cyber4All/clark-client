@@ -11,8 +11,6 @@ import { LearningObjectService } from 'app/cube/learning-object.service';
 export class DetailsComponent implements OnInit {
   learningObject: LearningObject;
 
-  historySnapshot: HistorySnapshot;
-
   // flags
   loading: boolean;
 
