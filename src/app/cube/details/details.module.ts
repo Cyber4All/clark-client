@@ -20,7 +20,7 @@ import { DescriptionComponent } from './components/description/description.compo
     // page components
     SplashComponent,
     LengthComponent,
-    DescriptionComponent
+    DescriptionComponent,
   ],
   providers: []
 })
