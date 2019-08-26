@@ -378,6 +378,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   toggleSort(sort) {
     console.log(this.query);
+    this.query.orderBy =
+      sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+    this.query.sortType =
+      dir === 'asc' ? SortType.Ascending : SortType.Descending;
   }
 
   showSortMenu(event) {
