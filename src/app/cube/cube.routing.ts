@@ -14,6 +14,7 @@ import { CollectionDetailsComponent } from './collection-details/collection-deta
 import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { environment } from '@env/environment';
 
 const details = environment.experimental ? {
@@ -54,6 +55,11 @@ const cube_routes: Routes = [
         path: 'system/termsofservice',
         component: TermsOfServiceComponent,
         data: { title: 'Terms of Service'}
+      },
+      {
+        path: 'system/accessibilityStatement',
+        component: AccessibilityStatementComponent,
+        data: { title: 'Accessibility'}
       },
       {
         path: 'users/:username',
