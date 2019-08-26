@@ -57,19 +57,18 @@ $learning-object-width: 820px;
     &.sort {
       border:none;
       color: $darker-grey;
-      font-size: small;
-      padding: 0;
+      padding: 0px;
     }
   }
 
   .clear {
     border: none;
-    color: $darker-grey;
-    font-size: $small;
+    color: $error-red;
+    font-size: $large;
     padding: 0px;
   }
 
-  .filter-menu {
+  .sort-menu {
 
     li {
       position: relative;

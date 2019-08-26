@@ -23,13 +23,13 @@
           <div class="mobile-filters" (activate)="toggleFilters()">
             {{ copy.FILTERS }} <i class="far fa-sliders-h"></i>
           </div>
-          <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria" tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i> {{ sortText }}</button>
-          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">Sort <i class="far fa-angle-down"></i></button>
+          <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria" tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
+          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">{{ showClearSort ? sortText : 'Sort' }}<i class="far fa-angle-down"></i></button>
         </div>
         <!-- Filter Context Menu -->
         <ng-container>
             <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement" [offset]="{ top: 10, left: 5, right: 0 }" (close)="toggleSortMenu(false)">
-              <div #contextMenu class="filter-menu">
+              <div #contextMenu class="sort-menu">
                 <ul>
                   <li class="list-item" (activate)="toggleSort('dd')">
                     Date (Newest first)
