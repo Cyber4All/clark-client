@@ -105,6 +105,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   shouldResetPage = false;
 
   sortMenuDown: boolean;
+  showClearSort: boolean;
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -376,12 +377,30 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.cd.detectChanges();
   }
 
-  toggleSort(sort) {
-    console.log(this.query);
-    this.query.orderBy =
-      sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-    this.query.sortType =
-      dir === 'asc' ? SortType.Ascending : SortType.Descending;
+  toggleSort(val) {
+    if (val !== null) {
+      this.showClearSort = true;
+      const sort = val.charAt(0);
+      const dir = val.charAt(1);
+      if (dir === 'd') {
+        console.log(this.query);
+        console.log(SortType.Descending);
+      }
+      console.log(dir);
+      this.query.orderBy =
+        sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+      this.query.sortType =
+        dir === 'd' ? SortType.Descending : SortType.Ascending;
+
+      this.performSearch();
+    }
+  }
+
+  clearSort(event) {
+    event.stopPropagation();
+    this.query.orderBy = undefined;
+    this.query.sortType = undefined;
+    this.performSearch();
   }
 
   showSortMenu(event) {
@@ -437,13 +456,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         }
         sub.unsubscribe();
       });
-  }
-
-  clearSort(event) {
-    event.stopPropagation();
-    this.query.orderBy = undefined;
-    this.query.sortType = undefined;
-    this.performSearch();
   }
 
   /**
