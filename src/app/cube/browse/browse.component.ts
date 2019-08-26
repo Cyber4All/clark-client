@@ -104,6 +104,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   shouldResetPage = false;
 
+  sortMenuDown: boolean;
+
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -287,6 +289,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
+
   private modifyFilter(
     key: string,
     value: string,
@@ -364,6 +368,16 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         queryParams: this.removeObjFalsy(this.query)
       });
     }
+  }
+
+
+  toggleSortMenu(state: boolean) {
+    this.sortMenuDown = state;
+    this.cd.detectChanges();
+  }
+
+  toggleSort(sort) {
+    console.log(this.query);
   }
 
   showSortMenu(event) {

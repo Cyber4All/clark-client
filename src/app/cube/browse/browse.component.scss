@@ -53,6 +53,83 @@ $learning-object-width: 820px;
     }
   }
 
+  .button{
+    &.sort {
+      border:none;
+      color: $darker-grey;
+      font-size: small;
+      padding: 0;
+    }
+  }
+
+  .filter-menu {
+
+    li {
+      position: relative;
+      color: $dark-grey;
+  
+      .indicator {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+        background: $dark-grey;
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+  
+      .svg-inline--fa,
+      .icon {
+        margin-left: 15px;
+      }
+  
+      &:hover {
+        color: white;
+        background: $dark-grey;
+  
+        .indicator {
+          background: white;
+        }
+      }
+  
+      &.waiting {
+        color: $status_waiting;
+  
+        .indicator {
+          background: $status_waiting;
+        }
+  
+        &:hover {
+          color: white;
+          background: $status_waiting;
+  
+          .indicator {
+            background: white;
+          }
+        }
+      }
+  
+      &.review {
+        color: $status_review;
+  
+        .indicator {
+          background: $status_review;
+        }
+  
+        &:hover {
+          color: white;
+          background: $status_review;
+  
+          .indicator {
+            background: white;
+          }
+        }
+      }
+    }
+  }
   .content {
     max-width: $learning-object-width;
     width: 100%;
