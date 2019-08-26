@@ -106,6 +106,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
+  sortText: string;
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -380,12 +381,17 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   toggleSort(val) {
     if (val !== null) {
       this.showClearSort = true;
+      if (val === 'da') {
+        this.sortText = 'Date (ASC)';
+      } else if (val === 'dd') {
+        this.sortText = 'Date (DESC)';
+      } else if (val === 'na') {
+        this.sortText = 'Name (ASC)';
+      } else if (val === 'nd') {
+        this.sortText = 'Name (DESC)';
+      }
       const sort = val.charAt(0);
       const dir = val.charAt(1);
-      if (dir === 'd') {
-        console.log(this.query);
-        console.log(SortType.Descending);
-      }
       console.log(dir);
       this.query.orderBy =
         sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
