@@ -23,7 +23,7 @@
           <div class="mobile-filters" (activate)="toggleFilters()">
             {{ copy.FILTERS }} <i class="far fa-sliders-h"></i>
           </div>
-          <button aria-label="Clear sort selection" (activate)="clearSort(event)"><i class="far fa-times"></i></button>
+          <button *ngIf="showClearSort" aria-label="Clear sort selection" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
           <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">Sort <i class="far fa-angle-down"></i></button>
         </div>
         <!-- Filter Context Menu -->

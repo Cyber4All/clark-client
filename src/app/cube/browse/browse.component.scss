@@ -62,6 +62,13 @@ $learning-object-width: 820px;
     }
   }
 
+  .clear {
+    border: none;
+    color: $error-red;
+    font-size: $large;
+    padding: 0px;
+  }
+
   .filter-menu {
 
     li {
@@ -79,54 +86,6 @@ $learning-object-width: 820px;
         top: 0;
         bottom: 0;
         margin: auto;
-      }
-  
-      .svg-inline--fa,
-      .icon {
-        margin-left: 15px;
-      }
-  
-      &:hover {
-        color: white;
-        background: $dark-grey;
-  
-        .indicator {
-          background: white;
-        }
-      }
-  
-      &.waiting {
-        color: $status_waiting;
-  
-        .indicator {
-          background: $status_waiting;
-        }
-  
-        &:hover {
-          color: white;
-          background: $status_waiting;
-  
-          .indicator {
-            background: white;
-          }
-        }
-      }
-  
-      &.review {
-        color: $status_review;
-  
-        .indicator {
-          background: $status_review;
-        }
-  
-        &:hover {
-          color: white;
-          background: $status_review;
-  
-          .indicator {
-            background: white;
-          }
-        }
       }
     }
   }
