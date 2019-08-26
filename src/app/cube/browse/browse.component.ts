@@ -410,60 +410,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.performSearch();
   }
 
-  showSortMenu(event) {
-    const currSort = this.query.orderBy
-      ? this.query.orderBy.replace(/_/g, '') +
-        '-' +
-        (this.query.sortType > 0 ? 'asc' : 'desc')
-      : undefined;
-    const sub = this.modalService
-      .makeContextMenu(
-        'SortContextMenu',
-        'dropdown',
-        [
-          new ModalListElement(
-            'Date (Newest first)',
-            'date-desc',
-            currSort === 'date-desc' ? 'active' : undefined
-          ),
-          new ModalListElement(
-            'Date (Oldest first)',
-            'date-asc',
-            currSort === 'date-asc' ? 'active' : undefined
-          ),
-          new ModalListElement(
-            'Name (desc)',
-            'name-desc',
-            currSort === 'name-desc' ? 'active' : undefined
-          ),
-          new ModalListElement(
-            'Name (asc)',
-            'name-asc',
-            currSort === 'name-asc' ? 'active' : undefined
-          )
-        ],
-        true,
-        null,
-        new Position(
-          this.modalService.offset(event.currentTarget).left -
-            (190 - event.currentTarget.offsetWidth),
-          this.modalService.offset(event.currentTarget).top + 50
-        )
-      )
-      .subscribe(val => {
-        if (val !== 'null' && val.length) {
-          const dir = val.split('-')[1];
-          const sort = val.split('-')[0];
-          this.query.orderBy =
-            sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-          this.query.sortType =
-            dir === 'asc' ? SortType.Ascending : SortType.Descending;
-
-          this.performSearch();
-        }
-        sub.unsubscribe();
-      });
-  }
 
   /**
    * Takes an object of parameters and attempts to map them to the query objcet
