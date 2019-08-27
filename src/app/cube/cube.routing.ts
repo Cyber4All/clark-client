@@ -57,7 +57,7 @@ const cube_routes: Routes = [
         data: { title: 'Terms of Service'}
       },
       {
-        path: 'system/accessibilityStatement',
+        path: 'system/accessibility-statement',
         component: AccessibilityStatementComponent,
         data: { title: 'Accessibility'}
       },
