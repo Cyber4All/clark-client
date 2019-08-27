@@ -196,3 +196,23 @@
     visibility: visible;
   }
 }
+
+.loading-template,
+.scaffold__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+
+  .svg-inline--fa {
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+
+  &.scaffold__error {
+    color: $error-red !important;
+  }
+}
