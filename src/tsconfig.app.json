@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
-    "module": "esNext",
+    "module": "es6",
     "types": ["node"],
     "typeRoots": [
       "../node_modules/@types"
