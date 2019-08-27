@@ -19,18 +19,22 @@ import { LearningObject } from '@entity';
 })
 export class ScaffoldComponent implements OnInit {
   @Input() learningObject: LearningObject;
+
+  // array to obtain children IDs
+  childrenIDs: string[] = [];
+  childrenConfirmationMessage: string;
+  ariaLabel: string;
+
+  loadingChildrenError: boolean;
+
+  children: LearningObject[];
+
+  // flags
+  loading: boolean;
+  childrenConfirmation: boolean;
+  isAddingChild: boolean;
   // boolean to indicate if edit is selected for the list
   @Input() editContent: boolean;
-
-   // array to obtain children IDs
-   childrenIDs: string[] = [];
-   childrenConfirmationMessage: string;
-   childrenConfirmation: boolean;
-
-   isAddingChild: boolean;
-   ariaLabel: string;
-
-   children: LearningObject[];
 
   @ViewChild('addChildButton') addChildButton: ElementRef;
   @ViewChild('teleporterPayload') teleporterPayload: ElementRef;
@@ -48,15 +52,24 @@ export class ScaffoldComponent implements OnInit {
     private store: BuilderStore,
     private renderer: Renderer2,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.store.getChildren().then(kiddos => {
-      this.children = kiddos;
-      this.children.forEach(kid => this.childrenIDs.push(kid.id));
-    });
     this.childrenConfirmation = false;
     this.ariaLabel = 'Add and delete Children';
+
+    // if the Learning Object can have children, attempt to load them
+    if (this.learningObject.id && this.learningObject.length !== LearningObject.Length.NANOMODULE) {
+      this.loading = true;
+      this.store.getChildren().then(kiddos => {
+        this.children = kiddos;
+        this.children.forEach(kid => this.childrenIDs.push(kid.id));
+        this.loading = false;
+      }).catch(error => {
+        this.loading = false;
+        this.loadingChildrenError = true;
+      });
+    }
   }
 
   /**
@@ -104,7 +117,7 @@ export class ScaffoldComponent implements OnInit {
     this.childrenConfirmationMessage = `Just to confirm, you want to remove '
         ${this.children[index].name}' as a child of '${
       this.learningObject.name
-    }'?`;
+      }'?`;
 
     this.toggleConfirmationModal(true);
   }
@@ -177,8 +190,8 @@ export class ScaffoldComponent implements OnInit {
         this.teleporterPayload.nativeElement,
         'width',
         (this.addChildButton.nativeElement as HTMLElement).offsetWidth +
-          50 +
-          'px'
+        50 +
+        'px'
       );
 
       this.renderer.addClass(

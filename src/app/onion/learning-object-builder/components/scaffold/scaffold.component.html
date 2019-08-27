@@ -42,12 +42,12 @@
   </button>
 </ng-template>
 
-<ng-template [ngIf]="!children">
-    <div class="loading-template">
-      <i class="far fa-spinner-third fa-spin"></i>
-      Loading...
-    </div>
-  </ng-template>
+<ng-template [ngIf]="loading">
+  <div class="loading-template">
+    <i class="fal fa-spinner-third fa-spin"></i>
+    Loading...
+  </div>
+</ng-template>
 
 <ng-template [ngIf]="children?.length == 0 && learningObject?.length != 'nanomodule'">
   <div class= "no-children">
@@ -58,6 +58,15 @@
 <ng-template [ngIf]="learningObject?.length === 'nanomodule'">
   <div class= "no-children">
     Nanomodules cannot have children
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="loadingChildrenError">
+  <div class="scaffold__error">
+    <div class="error__icon">
+      <i class="far fa-exclamation-triangle"></i>
+    </div>
+    Unable to load children! Please try again later!
   </div>
 </ng-template>
 
