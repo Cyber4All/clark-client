@@ -9,8 +9,11 @@ import { environment } from '@env/environment';
 })
 export class MessageComponent implements OnInit {
 
-  showBanner = false;
-  message: Message;
+  showBanner = true;
+  message: Message = {
+    isUnderMaintenance: true,
+    message: 'CLARK is currently undergoing maintenance. Learning Objects and Libraries may be temporarily unavailable.'
+  };
 
   constructor(private messages: MessagesService) { }
 
@@ -18,8 +21,8 @@ export class MessageComponent implements OnInit {
     if (environment.production) {
       setInterval(async () => {
         this.messages.getStatus().then(message => {
-          this.message = message;
-          this.showBanner = this.message.isUnderMaintenance;
+          // this.message = message;
+          // this.showBanner = this.message.isUnderMaintenance;
         })
         .catch ( _ => {
           /** Suppress the error because it is being handled in Gateway.
