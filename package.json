@@ -7,7 +7,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test:unit": "jest --maxWorkers=2 --verbose --coverage auth/ admin/",
+    "test:unit": "jest --maxWorkers=2 --verbose --coverage auth/ admin/ cube/details/",
     "test:lighthouse": "jest -c ./lighthouse/jest.config.lighthouse.js",
     "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c ./lighthouse/jest.config.lighthouse.js --runInBand",
     "lint": "ng lint"
@@ -54,6 +54,7 @@
     "@types/jest": "^23.1.1",
     "@types/node": "^10.5.2",
     "@types/uuid": "^3.4.3",
+    "canvas": "^2.6.0",
     "chrome-launcher": "^0.10.7",
     "codelyzer": "^4.3.0",
     "install-peers": "^1.0.2",

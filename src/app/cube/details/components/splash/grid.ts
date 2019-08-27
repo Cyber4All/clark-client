@@ -101,8 +101,8 @@ function setDimensions(wrapperElement: HTMLElement) {
   defaultConfig.accentDots = accentDotCount;
 }
 
-function init(wrapperElement: HTMLElement) {
-  canvas = document.querySelector('.details-splash canvas');
+function init(initCanvas: HTMLCanvasElement, wrapperElement: HTMLElement) {
+  canvas = initCanvas;
   context = canvas.getContext('2d');
 
   drawGrid(wrapperElement);

@@ -14,7 +14,7 @@ export class DetailsComponent implements OnInit {
   // flags
   loading: boolean;
 
-  constructor(private route: ActivatedRoute, private learningObjectService: LearningObjectService, ) { }
+  constructor(private route: ActivatedRoute, private learningObjectService: LearningObjectService) { }
 
   ngOnInit() {
     this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
