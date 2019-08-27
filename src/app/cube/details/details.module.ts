@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { SplashComponent } from './components/splash/splash.component';
 import { LengthComponent } from './components/splash/length/length.component';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
+import { DescriptionComponent } from './components/description/description.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
     DetailsComponent,
     // page components
     SplashComponent,
-    LengthComponent
+    LengthComponent,
+    DescriptionComponent,
   ],
   providers: []
 })

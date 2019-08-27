@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@entity';
+import { ActivatedRoute } from '@angular/router';
+import { LearningObjectService } from 'app/cube/learning-object.service';
 
 @Component({
   selector: 'clark-details',
@@ -9,9 +11,21 @@ import { LearningObject } from '@entity';
 export class DetailsComponent implements OnInit {
   learningObject: LearningObject;
 
-  constructor() { }
+  // flags
+  loading: boolean;
+
+  constructor(private route: ActivatedRoute, private learningObjectService: LearningObjectService) { }
 
   ngOnInit() {
+    this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
+      this.getLearningObject(username, learningObjectName);
+    });
+  }
+
+  async getLearningObject(username: string, learningObjectName: string) {
+    this.loading = true;
+    this.learningObject = await this.learningObjectService.getLearningObject(username, learningObjectName);
+    this.loading = false;
   }
 
 }

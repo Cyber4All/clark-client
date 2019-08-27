@@ -1,0 +1,12 @@
+@import '~_vars.scss';
+
+p {
+  color: $dark-grey;
+
+  &.description {
+    
+    ::ng-deep strong {
+      font-weight: 600 !important;
+    }
+  }
+}
