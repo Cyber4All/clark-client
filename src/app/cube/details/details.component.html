@@ -1,27 +1,27 @@
 <main id="pageContent" class="details">
-  <section class="details__back details-wrapper">
-    <button class="back__target">
-      <i class="far fa-long-arrow-left"></i> Back to browse
-    </button>
-  </section>
   <section class="details__splash">
     <clark-details-splash [learningObject]="learningObject"></clark-details-splash>
   </section>
   <div class="details-wrapper">
-    <section class="details__description">
-      <h2 class="section-title">Description</h2>
-    </section>
-    <section class="details__outcomes">
-      <h2 class="section-title">Learning Outcomes</h2>
-    </section>
-    <section class="details__levels">
-      <h2 class="section-title">Academic Levels</h2>
-    </section>
-    <section class="details__hierarchy">
-      <h2 class="section-title">Hierarchy</h2>
-    </section>
-    <section class="details__materials">
-      <h2 class="section-title">Materials</h2>
-    </section>
+    <div class="details-columns">
+      <div class="columns__col1">
+        <section class="details__description">
+          <h2 class="section-title">Description</h2>
+          <clark-details-description [description]="learningObject.description"></clark-details-description>
+        </section>
+        <section class="details__outcomes">
+          <h2 class="section-title">Learning Outcomes</h2>
+        </section>
+        <section class="details__levels">
+          <h2 class="section-title">Academic Levels</h2>
+        </section>
+        <section class="details__hierarchy">
+          <h2 class="section-title">Hierarchy</h2>
+        </section>
+        <section class="details__materials">
+          <h2 class="section-title">Materials</h2>
+        </section>
+      </div>
+    </div>
   </div>
 </main>
