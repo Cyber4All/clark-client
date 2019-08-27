@@ -53,6 +53,39 @@ $learning-object-width: 820px;
     }
   }
 
+  .button{
+    &.sort {
+      border:none;
+      color: $darker-grey;
+    }
+  }
+
+  .clear {
+    border: none;
+    color: $error-red;
+    font-size: $large;
+  }
+
+  .sort-menu {
+
+    li {
+      position: relative;
+      color: $dark-grey;
+  
+      .indicator {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+        background: $dark-grey;
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+  }
   .content {
     max-width: $learning-object-width;
     width: 100%;

@@ -104,6 +104,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   shouldResetPage = false;
 
+  sortMenuDown: boolean;
+  showClearSort: boolean;
+  sortText: string;
+
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -287,6 +291,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
+
   private modifyFilter(
     key: string,
     value: string,
@@ -366,67 +372,43 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  showSortMenu(event) {
-    const currSort = this.query.orderBy
-      ? this.query.orderBy.replace(/_/g, '') +
-        '-' +
-        (this.query.sortType > 0 ? 'asc' : 'desc')
-      : undefined;
-    const sub = this.modalService
-      .makeContextMenu(
-        'SortContextMenu',
-        'dropdown',
-        [
-          new ModalListElement(
-            'Date (Newest first)',
-            'date-desc',
-            currSort === 'date-desc' ? 'active' : undefined
-          ),
-          new ModalListElement(
-            'Date (Oldest first)',
-            'date-asc',
-            currSort === 'date-asc' ? 'active' : undefined
-          ),
-          new ModalListElement(
-            'Name (desc)',
-            'name-desc',
-            currSort === 'name-desc' ? 'active' : undefined
-          ),
-          new ModalListElement(
-            'Name (asc)',
-            'name-asc',
-            currSort === 'name-asc' ? 'active' : undefined
-          )
-        ],
-        true,
-        null,
-        new Position(
-          this.modalService.offset(event.currentTarget).left -
-            (190 - event.currentTarget.offsetWidth),
-          this.modalService.offset(event.currentTarget).top + 50
-        )
-      )
-      .subscribe(val => {
-        if (val !== 'null' && val.length) {
-          const dir = val.split('-')[1];
-          const sort = val.split('-')[0];
-          this.query.orderBy =
-            sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-          this.query.sortType =
-            dir === 'asc' ? SortType.Ascending : SortType.Descending;
 
-          this.performSearch();
-        }
-        sub.unsubscribe();
-      });
+  toggleSortMenu(state: boolean) {
+    this.sortMenuDown = state;
+    this.cd.detectChanges();
+  }
+
+  toggleSort(val) {
+    if (val !== null) {
+      this.showClearSort = true;
+      if (val === 'da') {
+        this.sortText = 'Date (ASC)';
+      } else if (val === 'dd') {
+        this.sortText = 'Date (DESC)';
+      } else if (val === 'na') {
+        this.sortText = 'Name (ASC)';
+      } else if (val === 'nd') {
+        this.sortText = 'Name (DESC)';
+      }
+      const sort = val.charAt(0);
+      const dir = val.charAt(1);
+      this.query.orderBy =
+        sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+      this.query.sortType =
+        dir === 'd' ? SortType.Descending : SortType.Ascending;
+
+      this.performSearch();
+    }
   }
 
   clearSort(event) {
+    this.showClearSort = false;
     event.stopPropagation();
     this.query.orderBy = undefined;
     this.query.sortType = undefined;
     this.performSearch();
   }
+
 
   /**
    * Takes an object of parameters and attempts to map them to the query objcet
