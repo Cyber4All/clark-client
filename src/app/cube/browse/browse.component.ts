@@ -392,7 +392,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       }
       const sort = val.charAt(0);
       const dir = val.charAt(1);
-      console.log(dir);
       this.query.orderBy =
         sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
       this.query.sortType =
