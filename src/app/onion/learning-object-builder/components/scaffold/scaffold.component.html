@@ -8,7 +8,7 @@
   </div>
   <div *ngIf="children?.length != 0 && learningObject?.length !== 'nanomodule'" class="edit">
     <div class="text">Add/Delete</div>
-    <clark-toggle-switch identity="children" [state]="editContent" style="blue" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
+    <clark-toggle-switch *ngIf="!loadingChildrenError" identity="children" [state]="editContent" style="blue" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
   </div>
 </div>
 <clark-skip-link *ngIf="!editContent || learningObject?.length === 'nanomodule'" title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 

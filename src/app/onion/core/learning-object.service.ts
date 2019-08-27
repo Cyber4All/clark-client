@@ -501,8 +501,8 @@ fetchParents(id: string) {
    */
   getChildren(learningObjectID: string): Promise<LearningObject[]> {
     const route = USER_ROUTES.GET_CHILDREN(learningObjectID);
-    return this.http.get(route, { withCredentials: true }).toPromise().then(children => {
-      return (children as []).map(c => new LearningObject(c));
+    return this.http.get(route, { withCredentials: true }).toPromise().then((children: any[]) => {
+      return children.map(c => new LearningObject(c));
     });
   }
   /**
