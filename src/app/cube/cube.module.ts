@@ -38,6 +38,7 @@ import { CollectionModule } from './collection-details/collection-details.module
 import { CollectionsComponent } from './collections/collections.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { FilterComponent } from './browse/components/filter/filter.component';
+import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 
 
 /**
@@ -57,7 +58,8 @@ import { FilterComponent } from './browse/components/filter/filter.component';
     OrganizationListComponent,
     CollectionsComponent,
     TermsOfServiceComponent,
-    FilterComponent
+    FilterComponent,
+    AccessibilityStatementComponent
   ],
   imports: [
     // Angular imports
