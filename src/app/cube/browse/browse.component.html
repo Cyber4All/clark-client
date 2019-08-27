@@ -23,13 +23,30 @@
           <div class="mobile-filters" (activate)="toggleFilters()">
             {{ copy.FILTERS }} <i class="far fa-sliders-h"></i>
           </div>
-          <div class="sort" id="sort" (activate)="showSortMenu($event)">
-            <div *ngIf="query.orderBy" class="removeSort" id="removeSort" (activate)="clearSort($event);" tip="Clear sorting criteria" tipPosition="bottom">
-              <i class="far fa-times" id="times"></i>
-            </div>
-            <span>{{ (query.orderBy) ? sortString : 'Sort'}}</span><i class="far fa-chevron-down"></i>
-          </div>
+          <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria" tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
+          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">{{ showClearSort ? sortText : 'Sort' }}<i class="far fa-angle-down"></i></button>
         </div>
+        <!-- Filter Context Menu -->
+        <ng-container>
+            <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement" [offset]="{ top: 10, left: 5, right: 0 }" (close)="toggleSortMenu(false)">
+              <div #contextMenu class="sort-menu">
+                <ul>
+                  <li class="list-item" (activate)="toggleSort('dd')">
+                    Date (Newest first)
+                  </li>
+                  <li class="list-item" (activate)="toggleSort('da')">
+                    Date (Oldest first)
+                  </li>
+                  <li class="list-item" (activate)="toggleSort('nd')">
+                    Name (desc)
+                  </li>
+                  <li class="list-item" (activate)="toggleSort('na')">
+                    Name (asc)
+                  </li>
+                </ul>
+              </div>
+            </clark-context-menu>
+          </ng-container>
       </div>
       <h3 *ngIf="!learningObjects || learningObjects.length==0">{{ copy.NORESULTS }}</h3>
       <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
@@ -37,9 +54,9 @@
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
     <ul>
-      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"></i></li>
-      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (activate)="goToPage(p)">{{ p }}</li>
-      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right"></i></li>
+      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left" aria-label="Previous page of results"></i></li>
+      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage == p}" (activate)="goToPage(p)" attr.aria-label="Page {{ p }} of results">{{ p }}</li>
+      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right" aria-lable="Next page of results"></i></li>
     </ul>
   </div>
 </div>
