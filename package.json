@@ -10,7 +10,9 @@
     "test:unit": "jest --maxWorkers=2 --verbose --coverage auth/ admin/ cube/details/",
     "test:lighthouse": "jest -c ./lighthouse/jest.config.lighthouse.js",
     "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c ./lighthouse/jest.config.lighthouse.js --runInBand",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@angular/animations": "^7.2.3",
@@ -44,7 +46,8 @@
     "rxjs-compat": "^6.0.0-rc.0",
     "tslib": "^1.9.0",
     "uuid": "^3.3.2",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "snyk": "^1.221.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.8",
@@ -73,5 +76,6 @@
   "engines": {
     "node": "10.14.2",
     "npm": "6.4.1"
-  }
+  },
+  "snyk": true
 }
