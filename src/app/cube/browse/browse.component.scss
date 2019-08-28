@@ -55,8 +55,9 @@ $learning-object-width: 820px;
 
   .button{
     &.sort {
-      border:none;
+      border: none;
       color: $darker-grey;
+      padding: 0 0 3px;
     }
   }
 
@@ -64,6 +65,7 @@ $learning-object-width: 820px;
     border: none;
     color: $error-red;
     font-size: $large;
+    padding: 0;
   }
 
   .sort-menu {
