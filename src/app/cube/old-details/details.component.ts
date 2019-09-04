@@ -167,6 +167,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         author,
         name
       );
+
       // FIXME: This filter should be removed when service logic is updated
       this.releasedChildren = this.releasedLearningObject.children.filter(
         child => {
