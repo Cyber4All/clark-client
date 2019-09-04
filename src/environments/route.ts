@@ -230,7 +230,7 @@ export const USER_ROUTES = {
   DOWNLOAD_REVISED_OBJECT(author, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       author
-    )}/learning-objects/${learningObjectName}/bundle?revision=true`;
+    )}/learning-objects/${learningObjectName}/bundle?revision`;
   },
   GET_SAME_ORGANIZATION(organization) {
     return `${
