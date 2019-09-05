@@ -9,8 +9,8 @@ export class UriRetrieverService {
 
   constructor(private http: HttpClient) { }
 
-  getLearningObject(options: array) {
-    
+  getLearningObject(options) {
+    return options;
   }
   /**
    * @param uri this is the uri that should be hit to get the objects outcomes
