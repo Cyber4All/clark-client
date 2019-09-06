@@ -7,7 +7,9 @@ import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
 import { HistoryService } from './core/history.service';
 import { filter } from 'rxjs/operators';
-
+import { UriRetrieverService } from './core/uri-retriever.service';
+import { LearningObject } from '../entity/learning-object/learning-object';
+import { Observable } from 'rxjs/Rx';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -49,6 +51,7 @@ export class ClarkComponent implements OnInit {
   isOldVersion = false;
   errorMessage: string;
   hidingOutlines = true;
+  learningObject: LearningObject;
 
   @HostListener('window:click', ['$event'])
   @HostListener('window:keyup', ['$event'])
@@ -69,6 +72,7 @@ export class ClarkComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private _: HistoryService,
+    private uriService: UriRetrieverService
     ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
@@ -95,6 +99,45 @@ export class ClarkComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let learningObject: LearningObject;
+    this.uriService.getCompleteLearningObject({ author: 'tommy_morris', name: 'SCADA Control System Network Intrusion Detection - 5/6 SCADA Module' }, ['children', 'outcomes', 'parents']).then(whee => {
+      console.log('THIS IS ATHLETIC', whee);
+    });
+
+    // this.uriService.getLearningObjectMeta('nvisal1', 'Big Win').subscribe(objectMeta => {
+    //   if (objectMeta) {
+    //     learningObject = objectMeta;
+    //     console.log(learningObject);
+
+    //     const resources = this.uriService.getLearningObjectResources(learningObject.resourceUris, ['outcomes', 'children']);
+    //     resources.get('outcomes').subscribe(outcomes => {
+    //       if (outcomes) {
+    //         learningObject.outcomes = outcomes;
+    //       }
+    //     });
+    //     resources.get('children').subscribe(children => {
+    //       if (children) {
+    //         learningObject.children = children;
+    //       }
+    //     });
+    //   }
+    // });
+
+    // this.uriService.getLearningObject('nvisal1',
+    // 'Big Win', ['outcomes', 'children']).then(val => {
+    //   this.learningObject = val;
+    //   console.log('clark-component', this.learningObject);
+    //   this.learningObject.resources.get('outcomes').subscribe(val => {
+    //     if (val) {
+    //       console.log('outcomes', val);
+    //     }
+    //   });
+    //   this.learningObject.resources.get('children').subscribe(val => {
+    //     if (val) {
+    //       console.log('children', val);
+    //     }
+    //   });
+    // });
     setInterval(async () => {
       try {
         await this.authService.checkClientVersion();
