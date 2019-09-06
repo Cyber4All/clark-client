@@ -186,6 +186,10 @@ export const USER_ROUTES = {
       learningObjectId
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
+  GET_OUTCOMES(username: string, learningObjectId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
+      ${encodeURIComponent(learningObjectId)}`;
+  },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
@@ -271,6 +275,13 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectID
     )}/children/summary`;
+  },
+  GET_METRICS(username: string, learningObjectID: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${encodeURIComponent(
+      learningObjectID
+    )}/metrics`;
   },
   INIT_MULTIPART(params: {
     username: string;
