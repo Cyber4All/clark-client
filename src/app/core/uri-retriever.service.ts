@@ -70,13 +70,27 @@ export class UriRetrieverService {
   /**
    * @param uri this is the uri that should be hit to get the objects children
    */
-  getLearningObjectChildren(uri: string): Observable<LearningObject[]> {
-    return this.http.get<LearningObject[]>(uri, { withCredentials: true })
-    .pipe(
-      retry(3),
-      catchError(this.handleError),
-      take(1)
-    );
+  getLearningObjectChildren(uri: string, unreleased?: boolean): Observable<LearningObject[]> {
+    if (unreleased === true) {
+      return this.http.get<LearningObject[]>(uri, { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+        take(1)
+      );
+    } else {
+      return this.http.get<LearningObject[]>(uri, { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+        take(1),
+        /* TODO: Remove this.
+         * It is a stopcap until the service stops returning unreleased.
+         * More info at https://github.com/Cyber4All/learning-object-service/pull/282
+         */
+        map(children => children.filter(child => child.status !== 'unreleased')),
+      );
+    }
   }
   /**
    *
@@ -101,7 +115,7 @@ export class UriRetrieverService {
    * @param uri this is the uri that should be hit to get the object's parents
    * @param unreleased this is the boolean that filters learning object parents by everything (including released)
    */
-  getLearningObjectParents(uri: string, unreleased?: boolean): Observable<any> {
+  getLearningObjectParents(uri: string, unreleased?: boolean): Observable<LearningObject[]> {
     if (unreleased === true) {
       return this.http.get<LearningObject[]>(uri, { withCredentials: true})
       .pipe(
