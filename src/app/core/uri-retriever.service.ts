@@ -14,7 +14,11 @@ export class UriRetrieverService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Gets learning object based on resources
+   * This function will return the metadata and the requested resources for a learning object as a promise of a Learning Object.
+   * @params params{ author: string, name: string, id:string } the values needed to retrieve the metadata for a learning object
+   * @params resources the resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
+   *
+   *
    */
   async getLearningObject(
     params: { author?: string, name?: string, id?: string },
@@ -48,6 +52,12 @@ export class UriRetrieverService {
     });
   }
 
+  /**
+   * This function will return a subject that includes the requested learning objects metadata and
+   * all of the requested properties.
+   * @param params the author, name, or id needed to retrieve the metadata for a learning object
+   * @param properties the properties (i.e. children, parents, etc) that have been requested
+   */
   getLearningObjectResources(
     params: { author?: string, name?: string, id?: string },
     properties?: string[]
@@ -92,6 +102,11 @@ export class UriRetrieverService {
     return responses;
   }
 
+  /**
+   * Fetches the resource of the uri that it was given
+   * @param uri the uri of the learning object resource
+   * @param callback
+   */
   private fetchUri(uri: string, callback?: Function) {
     return this.http.get(uri).pipe(
       take(1),
@@ -100,7 +115,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Retrieves the Learning Object Metadata
+   * Retrieves the Learning Object metadata
    * @params author is the username of the author
    * @params learningObjectName is the name of the learning object
    */
@@ -116,12 +131,14 @@ export class UriRetrieverService {
   }
 
   /**
+   * Retrieves the learning object outcomes
    * @param uri this is the uri that should be hit to get the objects outcomes
    */
   getLearningObjectOutcomes(uri: string): Observable<LearningOutcome[]> {
     return this.http.get<LearningOutcome[]>(uri).pipe(retry(3), catchError(this.handleError));
   }
   /**
+   * Retrieves the learning object children
    * @param uri this is the uri that should be hit to get the objects children
    */
   getLearningObjectChildren(params: {uri: string, unreleased?: boolean}): Observable<LearningObject[]> {
@@ -147,7 +164,7 @@ export class UriRetrieverService {
     }
   }
   /**
-   *
+   * Retrieves the learning object materials
    * @param uri this is the uri that hsould be hit to get the objects materials
    */
   getLearningObjectMaterials(uri: string): Observable<any> {
@@ -159,6 +176,7 @@ export class UriRetrieverService {
   }
 
   /**
+   * Retrieves the learning object metrics
    * @param uri this is the uri that should be hit to get the object's metrics
    */
   getLearningObjectMetrics(uri: string): Observable<any> {
@@ -166,6 +184,7 @@ export class UriRetrieverService {
   }
 
   /**
+   * Retrieves the learning objects parents
    * @param uri this is the uri that should be hit to get the object's parents
    * @param unreleased this is the boolean that filters learning object parents by everything (including released)
    */
@@ -193,6 +212,7 @@ export class UriRetrieverService {
   }
 
   /**
+   * Retrieves the learning objects ratings
    * @param uri this is the uri that should be hit to get the object's ratings
    */
   getLearningObjectRatings(uri: string): Observable<any> {
