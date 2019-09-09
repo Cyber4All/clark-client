@@ -20,23 +20,26 @@ export class UriRetrieverService {
 
   constructor(private http: HttpClient) { }
 
-  // async getLearningObject(author: string, learningObjectName: string, options?: string[]): Promise<LearningObject> {
-  //   const learningObject = await this.getLearningObjectMeta(author, learningObjectName);
-  //   learningObject.resources = this.getLearningObjectResources(learningObject.resourceUris, options);
-  //   console.log(learningObject.resources);
-  //   return learningObject;
-  // }
-
-  async getCompleteLearningObject(
+  /**
+   * 
+   */
+  async getLearningObject(
     params: { author?: string, name?: string, id?: string },
-    properties?: string[]
+    resources?: string[]
   ): Promise<LearningObject> {
+    let properties: string[];
+    if (resources) {
+      properties = resources;
+    } else {
+      properties = ['children', 'metrics', 'materials', 'outcomes', 'parents', 'ratings'];
+    }
+    
     const learningObject = {};
-    const request = this.getLearningObject(params, properties);
+    const request = this.getLearningObjectResources(params, properties);
 
     return new Promise((resolve) => {
       request.pipe(
-        finalize(() => resolve(new LearningObject(learningObject)))
+        finalize(() => resolve(learningObject as LearningObject))
       ).subscribe(val => {
         if (val.requestKey) {
           learningObject[val.requestKey] = val.value;
@@ -52,7 +55,7 @@ export class UriRetrieverService {
     });
   }
 
-  getLearningObject(
+  getLearningObjectResources(
     params: { author?: string, name?: string, id?: string },
     properties?: string[]
   ) {
@@ -77,7 +80,6 @@ export class UriRetrieverService {
         Object.keys(uris).map(key => {
           if (!properties || properties.includes(key)) {
             this.fetchUri(uris[key]).subscribe(value => {
-              console.log(value)
               responses.next({ requestKey: key, value });
               if (++completed === properties.length || completed === uris.length) {
                 responses.complete();
@@ -97,7 +99,7 @@ export class UriRetrieverService {
     return responses;
   }
 
-  fetchUri(uri: string, callback?: Function) {
+  private fetchUri(uri: string, callback?: Function) {
     return this.http.get(uri).pipe(
       take(1),
       map(res => callback ? callback(res) : res)
@@ -118,30 +120,6 @@ export class UriRetrieverService {
           retry(3),
           catchError(this.handleError)
         );
-  }
-
-  getLearningObjectResources(uris, options: string[]) {
-    const resourceMap = new Map<string, any>();
-
-    if (options.includes('outcomes')) {
-      resourceMap.set('outcomes', this.getLearningObjectOutcomes(uris.outcomes));
-    }
-    if (options.includes('children')) {
-      resourceMap.set('children', this.getLearningObjectChildren(uris.children));
-    }
-    if (options.includes('materials')) {
-      resourceMap.set('materials', this.getLearningObjectMaterials(uris.materials));
-    }
-    if (options.includes('metrics')) {
-      resourceMap.set('metrics', this.getLearningObjectMetrics(uris.metrics));
-    }
-    if (options.includes('parents')) {
-      resourceMap.set('parents', this.getLearningObjectParents(uris.parents));
-    }
-    if (options.includes('ratings')) {
-      resourceMap.set('ratings', this.getLearningObjectRatings(uris.ratings));
-    }
-    return resourceMap;
   }
 
   /**
