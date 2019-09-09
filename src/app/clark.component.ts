@@ -7,9 +7,7 @@ import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
 import { HistoryService } from './core/history.service';
 import { filter } from 'rxjs/operators';
-import { UriRetrieverService } from './core/uri-retriever.service';
 import { LearningObject } from '../entity/learning-object/learning-object';
-import { Observable } from 'rxjs/Rx';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -71,8 +69,7 @@ export class ClarkComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
-    private _: HistoryService,
-    private uriService: UriRetrieverService
+    private _: HistoryService
     ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
