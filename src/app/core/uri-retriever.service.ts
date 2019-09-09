@@ -6,13 +6,6 @@ import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { LearningOutcome } from '@entity';
 import { catchError, retry, map, tap, filter, take, takeUntil, finalize } from 'rxjs/operators';
 
-
-const CALLBACKS = {
-  outcomes: (outcomes: any[]) => {
-    return outcomes.map(o => new LearningOutcome(o))
-  }
-};
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +14,7 @@ export class UriRetrieverService {
   constructor(private http: HttpClient) { }
 
   /**
-   * 
+   * Gets learning object based on resources
    */
   async getLearningObject(
     params: { author?: string, name?: string, id?: string },
@@ -33,7 +26,7 @@ export class UriRetrieverService {
     } else {
       properties = ['children', 'metrics', 'materials', 'outcomes', 'parents', 'ratings'];
     }
-    
+
     const learningObject = {};
     const request = this.getLearningObjectResources(params, properties);
 

@@ -611,7 +611,6 @@ private _hasRevision?: boolean;
     if (object.revision != null) {
       this.revision = object.revision;
     }
-    
     if (object.parents) {
       this._parents = object.parents;
     }
