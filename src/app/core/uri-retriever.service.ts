@@ -28,7 +28,7 @@ export class UriRetrieverService {
     if (resources) {
       properties = resources;
     } else {
-      properties = ['children', 'metrics', 'materials', 'outcomes', 'parents', 'ratings'];
+      properties = [];
     }
 
     const learningObject = {};
@@ -119,7 +119,7 @@ export class UriRetrieverService {
    * @params author is the username of the author
    * @params learningObjectName is the name of the learning object
    */
-  getLearningObjectMeta(author: string, learningObjectName: string): Observable<any> {
+  getLearningObjectSummary(author: string, learningObjectName: string): Observable<any> {
     return this.http.get<LearningObject>(
       PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
         author, learningObjectName
