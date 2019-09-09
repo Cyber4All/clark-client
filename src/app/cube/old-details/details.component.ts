@@ -9,6 +9,7 @@ import { UserService } from '../../core/user.service';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { RatingService } from '../../core/rating.service';
+import { UriRetrieverService } from '../../core/uri-retriever.service';
 import { ToasterService } from '../../shared/modules/toaster/toaster.service';
 import { ModalService, ModalListElement } from '../../shared/modules/modals/modal.module';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -90,7 +91,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private router: Router,
     private changelogService: ChangelogService,
-    private notificationService: ToasterService
+    private notificationService: ToasterService,
+    private uriRetrieverService: UriRetrieverService
   ) {
   }
 
