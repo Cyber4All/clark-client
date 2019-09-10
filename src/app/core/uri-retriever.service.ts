@@ -15,7 +15,7 @@ export class UriRetrieverService {
 
   /**
    * This function will return the metadata and the requested resources for a learning object as a promise of a Learning Object.
-   * @params params{ author: string, name: string, id:string } the values needed to retrieve the metadata for a learning object
+   * @params params{ author: string, name: string, id:string } the values needed to retrieve the metadata for a Learning Object
    * @params resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
    */
   async getLearningObject(
@@ -36,9 +36,9 @@ export class UriRetrieverService {
   }
 
   /**
-   * This function will return a subject that includes the requested learning objects metadata and
+   * This function will return a subject that includes the requested Learning Objects metadata and
    * all of the requested properties.
-   * @param params the author, name, or id needed to retrieve the metadata for a learning object
+   * @param params the author, name, or id needed to retrieve the metadata for a Learning Object
    * @param properties the properties (i.e. children, parents, etc) that have been requested
    */
   getLearningObjectResources(
@@ -101,7 +101,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Retrieves the learning object outcomes
+   * Retrieves the Learning Object outcomes
    * @param uri this is the uri that should be hit to get the objects outcomes
    */
   getLearningObjectOutcomes(uri: string): Observable<LearningOutcome[]> {
@@ -109,7 +109,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Retrieves the learning object children
+   * Retrieves the Learning Object children
    * @param uri this is the uri that should be hit to get the objects children
    */
   getLearningObjectChildren(params: {uri: string, unreleased?: boolean}): Observable<LearningObject[]> {
@@ -136,7 +136,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Retrieves the learning object materials
+   * Retrieves the Learning Object materials
    * @param uri this is the uri that hsould be hit to get the objects materials
    */
   getLearningObjectMaterials(uri: string): Observable<any> {
@@ -148,7 +148,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Retrieves the learning object metrics
+   * Retrieves the Learning Object metrics
    * @param uri this is the uri that should be hit to get the object's metrics
    */
   getLearningObjectMetrics(uri: string): Observable<any> {
@@ -156,7 +156,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Retrieves the learning objects parents
+   * Retrieves the Learning Object parents
    * @param uri this is the uri that should be hit to get the object's parents
    * @param unreleased this is the boolean that filters learning object parents by everything (including released)
    */
@@ -184,7 +184,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Retrieves the learning objects ratings
+   * Retrieves the Learning Object ratings
    * @param uri this is the uri that should be hit to get the object's ratings
    */
   getLearningObjectRatings(uri: string): Observable<any> {
@@ -233,7 +233,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Packages a full learning object with all the resources that were requested
+   * Packages a full Learning Object with all the resources that were requested
    * @params request the resources for the Learning Object (i.e children, parents, outcomes, etc.)
    */
   private getFullLearningObject(request: any): Promise<LearningObject> {
@@ -257,7 +257,7 @@ export class UriRetrieverService {
   }
 
   /**
-   * Returns the route that needs to be hit in order to load learning object based on the params passed in
+   * Returns the route that needs to be hit in order to load Learning Object based on the params passed in
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
@@ -275,8 +275,8 @@ export class UriRetrieverService {
   }
 
   /**
-   * Returns an error message based on the params that are missing
-   * @param params either the author and name or the id of the learning object
+   * Returns an error message based on the params that are missing and are needed to retrieve Learning Object
+   * @param params either the author and name or the id of the Learning Object
    */
   private userError(params: {author?: string, name?: string, id?: string}) {
     if (params.author && !params.name) {
