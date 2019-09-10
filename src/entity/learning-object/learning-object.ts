@@ -611,9 +611,11 @@ private _hasRevision?: boolean;
     if (object.revision != null) {
       this.revision = object.revision;
     }
-    
     if (object.parents) {
       this._parents = object.parents;
+    }
+    if(object.resourceUris) {
+      this._resourceUris = object.resourceUris;
     }
 
     this.collection = <string>object.collection || this.collection;
@@ -651,7 +653,8 @@ private _hasRevision?: boolean;
       metrics: this.metrics,
       hasRevision: this.hasRevision,
       version: this.version,
-      revision: this.revision
+      revision: this.revision,
+      resourceUris: this.resourceUris,
     };
     return object;
   }
