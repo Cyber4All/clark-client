@@ -35,5 +35,8 @@
         </div>
       </ng-template>
     </clark-carousel>
+    <div *ngIf="loading.length" class="submit__loading">
+      <i class="far fa-spinner-third fa-spin"></i>
+    </div>
   </div>
 </clark-popup>

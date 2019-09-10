@@ -1,10 +1,10 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'app/shared/modules/toaster';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
@@ -43,6 +43,8 @@ export class BuilderNavbarComponent implements OnDestroy {
   @Input() adminMode = false;
 
   historySnapshot: HistorySnapshot;
+
+  @Output() closeBuilder: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private router: Router,
@@ -280,6 +282,10 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.collection = col;
         this.buildTooltip();
       });
+  }
+
+  triggerExitBuilder() {
+    this.closeBuilder.emit();
   }
 
   ngOnDestroy() {
