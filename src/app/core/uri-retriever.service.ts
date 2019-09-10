@@ -17,13 +17,12 @@ export class UriRetrieverService {
    * This function will return the metadata and the requested resources for a learning object as a promise of a Learning Object.
    * @params params{ author: string, name: string, id:string } the values needed to retrieve the metadata for a learning object
    * @params resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
-   *
-   *
    */
   async getLearningObject(
     params: { author?: string, name?: string, id?: string },
     resources?: string[]
   ): Promise<LearningObject> {
+    // fill the properties array with either the content of the resources array if it is passed in or set it to empty
     let properties: string[];
     if (resources) {
       properties = resources;
@@ -31,25 +30,9 @@ export class UriRetrieverService {
       properties = [];
     }
 
-    const learningObject = {};
     const request = this.getLearningObjectResources(params, properties);
 
-    return new Promise((resolve) => {
-      request.pipe(
-        finalize(() => resolve(learningObject as LearningObject))
-      ).subscribe(val => {
-        if (val.requestKey) {
-          learningObject[val.requestKey] = val.value;
-        } else {
-          const object = (val as LearningObject).toPlainObject();
-
-          // tslint:disable-next-line: forin
-          for (const key in object) {
-            learningObject[key] = object[key];
-          }
-        }
-      });
-    });
+    return this.getFullLearningObject(request);
   }
 
   /**
@@ -66,7 +49,7 @@ export class UriRetrieverService {
 
     if (params.id) {
       route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
-    } else {
+    } else if (params.author && params.name) {
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.name);
     }
 
@@ -115,6 +98,30 @@ export class UriRetrieverService {
   }
 
   /**
+   * Packages a full learning object with all the resources that were requested
+   * @params request the resources for the Learning Object (i.e children, parents, outcomes, etc.)
+   */
+  private getFullLearningObject(request: any): Promise<LearningObject>{
+    const learningObject = {};
+    return new Promise((resolve) => {
+      request.pipe(
+        finalize(() => resolve(learningObject as LearningObject))
+      ).subscribe(val => {
+        if (val.requestKey) {
+          learningObject[val.requestKey] = val.value;
+        } else {
+          const object = (val as LearningObject).toPlainObject();
+
+          // tslint:disable-next-line: forin
+          for (const key in object) {
+            learningObject[key] = object[key];
+          }
+        }
+      });
+    });
+  }
+
+  /**
    * Retrieves the Learning Object metadata
    * @params author is the username of the author
    * @params learningObjectName is the name of the learning object
@@ -137,6 +144,7 @@ export class UriRetrieverService {
   getLearningObjectOutcomes(uri: string): Observable<LearningOutcome[]> {
     return this.http.get<LearningOutcome[]>(uri).pipe(retry(3), catchError(this.handleError));
   }
+
   /**
    * Retrieves the learning object children
    * @param uri this is the uri that should be hit to get the objects children
@@ -163,6 +171,7 @@ export class UriRetrieverService {
       );
     }
   }
+  
   /**
    * Retrieves the learning object materials
    * @param uri this is the uri that hsould be hit to get the objects materials
