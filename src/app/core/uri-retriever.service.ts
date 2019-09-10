@@ -16,7 +16,7 @@ export class UriRetrieverService {
   /**
    * This function will return the metadata and the requested resources for a learning object as a promise of a Learning Object.
    * @params params{ author: string, name: string, id:string } the values needed to retrieve the metadata for a learning object
-   * @params resources the resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
+   * @params resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
    *
    *
    */
