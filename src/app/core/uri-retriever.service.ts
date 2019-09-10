@@ -45,13 +45,7 @@ export class UriRetrieverService {
     params: { author?: string, name?: string, id?: string },
     properties?: string[]
   ) {
-    let route;
-
-    if (params.id) {
-      route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
-    } else if (params.author && params.name) {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.name);
-    }
+    const route = this.setRoute(params);
 
     const responses: Subject<any> = new Subject();
     const end = new Subject();
@@ -87,9 +81,9 @@ export class UriRetrieverService {
 
 
   //////////////////////////
-  // INDIVIDUAL RESOURCES//
-  ////////////////////////
-  
+  // INDIVIDUAL RESOURCES //
+  /////////////////////////
+
   /**
    * Retrieves the Learning Object metadata
    * @params author is the username of the author
@@ -242,7 +236,7 @@ export class UriRetrieverService {
    * Packages a full learning object with all the resources that were requested
    * @params request the resources for the Learning Object (i.e children, parents, outcomes, etc.)
    */
-  private getFullLearningObject(request: any): Promise<LearningObject>{
+  private getFullLearningObject(request: any): Promise<LearningObject> {
     const learningObject = {};
     return new Promise((resolve) => {
       request.pipe(
@@ -260,6 +254,38 @@ export class UriRetrieverService {
         }
       });
     });
+  }
+
+  /**
+   * Returns the route that needs to be hit in order to load learning object based on the params passed in
+   * @param params includes either the author and Learning Object name or the id to set the route needed
+   * to retrieve the Learning Object
+   */
+  private setRoute(params: {author?: string, name?: string, id?: string}) {
+    let route;
+     // Sets route to be hit based on if the id or if author and Learning Object name have been provided
+     if (params.id) {
+      route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
+    } else if (params.author && params.name) {
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.name);
+    } else {
+      route = this.userError(params);
+    }
+    return route;
+  }
+
+  /**
+   * Returns an error message based on the params that are missing
+   * @param params either the author and name or the id of the learning object
+   */
+  private userError(params: {author?: string, name?: string, id?: string}) {
+    if (params.author && !params.name) {
+      return 'Cannot find Learning Object ' + params.name + 'for ' + params.author;
+    } else if (params.name && !params.author) {
+      return 'Cannot find Learning Object' + params.name + 'for ' + params.author;
+    } else if (!params.name && !params.name && !params.id) {
+      return 'Cannot find Learning Object. No identifiers found.';
+    }
   }
 
 }
