@@ -85,42 +85,11 @@ export class UriRetrieverService {
     return responses;
   }
 
-  /**
-   * Fetches the resource of the uri that it was given
-   * @param uri the uri of the learning object resource
-   * @param callback
-   */
-  private fetchUri(uri: string, callback?: Function) {
-    return this.http.get(uri).pipe(
-      take(1),
-      map(res => callback ? callback(res) : res)
-    );
-  }
 
-  /**
-   * Packages a full learning object with all the resources that were requested
-   * @params request the resources for the Learning Object (i.e children, parents, outcomes, etc.)
-   */
-  private getFullLearningObject(request: any): Promise<LearningObject>{
-    const learningObject = {};
-    return new Promise((resolve) => {
-      request.pipe(
-        finalize(() => resolve(learningObject as LearningObject))
-      ).subscribe(val => {
-        if (val.requestKey) {
-          learningObject[val.requestKey] = val.value;
-        } else {
-          const object = (val as LearningObject).toPlainObject();
-
-          // tslint:disable-next-line: forin
-          for (const key in object) {
-            learningObject[key] = object[key];
-          }
-        }
-      });
-    });
-  }
-
+  //////////////////////////
+  // INDIVIDUAL RESOURCES//
+  ////////////////////////
+  
   /**
    * Retrieves the Learning Object metadata
    * @params author is the username of the author
@@ -171,7 +140,7 @@ export class UriRetrieverService {
       );
     }
   }
-  
+
   /**
    * Retrieves the learning object materials
    * @param uri this is the uri that hsould be hit to get the objects materials
@@ -251,4 +220,46 @@ export class UriRetrieverService {
       return throwError(error);
     }
   }
+
+
+  //////////////////////
+  // HELPER FUNCTIONS///
+  //////////////////////
+
+  /**
+   * Fetches the resource of the uri that it was given
+   * @param uri the uri of the learning object resource
+   * @param callback
+   */
+  private fetchUri(uri: string, callback?: Function) {
+    return this.http.get(uri).pipe(
+      take(1),
+      map(res => callback ? callback(res) : res)
+    );
+  }
+
+  /**
+   * Packages a full learning object with all the resources that were requested
+   * @params request the resources for the Learning Object (i.e children, parents, outcomes, etc.)
+   */
+  private getFullLearningObject(request: any): Promise<LearningObject>{
+    const learningObject = {};
+    return new Promise((resolve) => {
+      request.pipe(
+        finalize(() => resolve(learningObject as LearningObject))
+      ).subscribe(val => {
+        if (val.requestKey) {
+          learningObject[val.requestKey] = val.value;
+        } else {
+          const object = (val as LearningObject).toPlainObject();
+
+          // tslint:disable-next-line: forin
+          for (const key in object) {
+            learningObject[key] = object[key];
+          }
+        }
+      });
+    });
+  }
+
 }
