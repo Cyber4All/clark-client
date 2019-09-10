@@ -2,6 +2,7 @@ import { Router , NavigationEnd, ActivatedRoute} from '@angular/router';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
+import { UriRetrieverService } from './core/uri-retriever.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
@@ -69,7 +70,8 @@ export class ClarkComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
-    private _: HistoryService
+    private _: HistoryService,
+    private uriRetrieverService: UriRetrieverService
     ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
@@ -96,6 +98,9 @@ export class ClarkComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.uriRetrieverService.getLearningObject({}).then(object => {
+      console.log('There should be an error, this shouldn\'t exist!');
+    }).catch(error => console.log('AAAAHHHHHHHHHHHHH'));
 
     setInterval(async () => {
       try {

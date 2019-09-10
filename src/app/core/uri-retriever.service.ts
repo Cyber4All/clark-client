@@ -6,6 +6,11 @@ import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { LearningOutcome } from '@entity';
 import { catchError, retry, map, tap, filter, take, takeUntil, finalize } from 'rxjs/operators';
 
+const CALLBACKS = {
+  outcomes: (outcomes: any[]) => {
+    return outcomes.map(o => new LearningOutcome(o));
+  }
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -22,17 +27,21 @@ export class UriRetrieverService {
     params: { author?: string, name?: string, id?: string },
     resources?: string[]
   ): Promise<LearningObject> {
-    // fill the properties array with either the content of the resources array if it is passed in or set it to empty
-    let properties: string[];
-    if (resources) {
-      properties = resources;
-    } else {
-      properties = [];
+    try {
+      // fill the properties array with either the content of the resources array if it is passed in or set it to empty
+      let properties: string[];
+      if (resources) {
+        properties = resources;
+      } else {
+        properties = [];
+      }
+
+      const request = this.getLearningObjectResources(params, properties);
+
+      return this.getFullLearningObject(request);
+    } catch (err) {
+      throw err;
     }
-
-    const request = this.getLearningObjectResources(params, properties);
-
-    return this.getFullLearningObject(request);
   }
 
   /**
@@ -45,38 +54,42 @@ export class UriRetrieverService {
     params: { author?: string, name?: string, id?: string },
     properties?: string[]
   ) {
-    const route = this.setRoute(params);
+    try {
+      const route = this.setRoute(params);
 
-    const responses: Subject<any> = new Subject();
-    const end = new Subject();
+      const responses: Subject<any> = new Subject();
+      const end = new Subject();
 
-    this.http.get<LearningObject>(route).pipe(
-      retry(3),
-      tap(entity => {
-        const uris = Object.assign(entity.resourceUris);
+      this.http.get<LearningObject>(route).pipe(
+        retry(3),
+        tap(entity => {
+          const uris = Object.assign(entity.resourceUris);
 
-        let completed = 0;
+          let completed = 0;
 
-        Object.keys(uris).map(key => {
-          if (!properties || properties.includes(key)) {
-            this.fetchUri(uris[key]).subscribe(value => {
-              responses.next({ requestKey: key, value });
-              if (++completed === properties.length || completed === uris.length) {
-                responses.complete();
-                end.next();
-                end.complete();
-              }
-            });
-          }
-        });
+          Object.keys(uris).map(key => {
+            if (!properties || properties.includes(key)) {
+              this.fetchUri(uris[key]).subscribe(value => {
+                responses.next({ requestKey: key, value });
+                if (++completed === properties.length || completed === uris.length) {
+                  responses.complete();
+                  end.next();
+                  end.complete();
+                }
+              });
+            }
+          });
 
-        responses.next(new LearningObject(entity));
-      }),
-      takeUntil(end),
-      catchError(this.handleError),
-    ).subscribe();
+          responses.next(new LearningObject(entity));
+        }),
+        takeUntil(end),
+        catchError(this.handleError),
+      ).subscribe();
 
-    return responses;
+      return responses;
+    } catch (err) {
+      throw err;
+    }
   }
 
 
@@ -269,7 +282,7 @@ export class UriRetrieverService {
     } else if (params.author && params.name) {
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.name);
     } else {
-      route = this.userError(params);
+      throw this.userError(params);
     }
     return route;
   }
@@ -280,11 +293,11 @@ export class UriRetrieverService {
    */
   private userError(params: {author?: string, name?: string, id?: string}) {
     if (params.author && !params.name) {
-      return 'Cannot find Learning Object ' + params.name + 'for ' + params.author;
+      return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
     } else if (params.name && !params.author) {
-      return 'Cannot find Learning Object' + params.name + 'for ' + params.author;
-    } else if (!params.name && !params.name && !params.id) {
-      return 'Cannot find Learning Object. No identifiers found.';
+      return new Error('Cannot find Learning Object' + params.name + 'for ' + params.author);
+    } else if (!params.author && !params.name && !params.id) {
+      return new Error('Cannot find Learning Object. No identifiers found.');
     }
   }
 
