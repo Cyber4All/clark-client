@@ -174,7 +174,6 @@ export class SubmitComponent implements OnInit {
    * @memberof SubmitComponent
    */
   closeModal(submitted?: boolean) {
-    console.log(submitted)
     this.close.emit(submitted || false);
   }
 }
