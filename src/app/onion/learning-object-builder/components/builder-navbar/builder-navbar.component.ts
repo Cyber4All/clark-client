@@ -44,8 +44,6 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   historySnapshot: HistorySnapshot;
 
-  @Output() closeBuilder: EventEmitter<void> = new EventEmitter();
-
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -282,10 +280,6 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.collection = col;
         this.buildTooltip();
       });
-  }
-
-  triggerExitBuilder() {
-    this.closeBuilder.emit();
   }
 
   ngOnDestroy() {

@@ -139,7 +139,7 @@
   *ngIf="showSubmission"
   [learningObject]="store.learningObject"
   [visible]="true"
-  (close)="showSubmission = false; ($event && triggerExitBuilder());"
+  (close)="showSubmission = false; ($event && historySnapshot.rewind('/dashboard'));"
 ></clark-submit>
 
 <ng-template
