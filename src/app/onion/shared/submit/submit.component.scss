@@ -73,3 +73,18 @@
 .submit-btn {
   margin-top: 30px;
 }
+
+.submit__loading {
+  position: absolute;
+  z-index: 999999;
+  background: rgba(255, 255, 255, 0.8);
+  color: $light-blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
