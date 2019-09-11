@@ -55,7 +55,7 @@ export class UriRetrieverService {
     properties?: string[]
   ) {
     try {
-      const route = this.setRoute(params);
+      const route = UriRetrieverService.setRoute(params);
 
       const responses: Subject<any> = new Subject();
       const end = new Subject();
@@ -274,7 +274,7 @@ export class UriRetrieverService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  private setRoute(params: {author?: string, name?: string, id?: string}) {
+  static setRoute(params: {author?: string, name?: string, id?: string}) {
     let route;
      // Sets route to be hit based on if the id or if author and Learning Object name have been provided
      if (params.id) {
@@ -282,7 +282,8 @@ export class UriRetrieverService {
     } else if (params.author && params.name) {
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.name);
     } else {
-      throw this.userError(params);
+      const err = this.userError(params);
+      throw err;
     }
     return route;
   }
@@ -291,7 +292,7 @@ export class UriRetrieverService {
    * Returns an error message based on the params that are missing and are needed to retrieve Learning Object
    * @param params either the author and name or the id of the Learning Object
    */
-  private userError(params: {author?: string, name?: string, id?: string}) {
+  static userError(params: {author?: string, name?: string, id?: string}) {
     if (params.author && !params.name) {
       return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
     } else if (params.name && !params.author) {

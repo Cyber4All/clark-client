@@ -1,23 +1,24 @@
-import { TestBed, fakeAsync } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { TestBed, async, inject } from '@angular/core/testing';
+import {
+  HttpModule,
+  Http,
+  Response,
+  ResponseOptions,
+  XHRBackend
+} from '@angular/http';
+import { MockBackend} from '@angular/http/testing';
 import { UriRetrieverService } from './uri-retriever.service';
 
 describe('UriRetrieverService', () => {
-  let httpTestingController: HttpTestingController;
-  let uriRetrieverService: UriRetrieverService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ UriRetrieverService ],
-      imports: [ HttpClientTestingModule ]
+      providers: [ {useValue: 'http://example.com'}, UriRetrieverService, { provide: XHRBackend, useClass: MockBackend }],
+      imports: [ HttpModule ]
     });
-
-    uriRetrieverService = TestBed.get(UriRetrieverService);
-    httpTestingController = TestBed.get(HttpTestingController);
   });
 
   afterEach(() => {
-    httpTestingController.verify();
   });
 
   /////////////////////////
@@ -60,11 +61,9 @@ describe('UriRetrieverService', () => {
 
     // FIXME!
     it('should throw an error with insufficient learning object identifiers', () => {
-      uriRetrieverService.getLearningObject({})
-        .then(object => expect(true).toEqual(false))
-        .catch(err => expect(true).toEqual(true));
-
-      const req = httpTestingController.expectNone('');
+      inject([UriRetrieverService], (uriRetrieverService) => {
+        const mockResponse = 'Cannot find Learning Object. No identifiers found.';
+        expect(2 + 2).toMatch(mockResponse);
     });
   });
 });
