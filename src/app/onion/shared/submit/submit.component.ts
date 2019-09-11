@@ -26,7 +26,9 @@ export class SubmitComponent implements OnInit {
   licenseAccepted: boolean;
   needsChangelog: boolean;
 
-  @Output() close: EventEmitter<void> = new EventEmitter();
+  loading: boolean[] = [];
+
+  @Output() close: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
     private changelogService: ChangelogService,
@@ -48,6 +50,7 @@ export class SubmitComponent implements OnInit {
    */
   createChangelog() {
     if (this.changelog) {
+      this.loading.push(true);
       this.changelogService
         .createChangelog(
           this.learningObject.author.id,
@@ -56,10 +59,11 @@ export class SubmitComponent implements OnInit {
         )
         .then(() => {
           this.changelogComplete$.next(true);
+          this.loading.pop();
         })
         .catch(e => {
-          this.closeModal();
           this.changelogComplete$.next(false);
+          this.loading.pop();
 
           if (e.status === 401) {
             // user isn't logged in, redirect to login page
@@ -75,7 +79,6 @@ export class SubmitComponent implements OnInit {
         });
     } else {
       this.changelogComplete$.next(true);
-      this.closeModal();
     }
   }
 
@@ -112,6 +115,7 @@ export class SubmitComponent implements OnInit {
     }
 
     if (proceed) {
+      this.loading.push(true);
       this.collectionService
       .submit({
         learningObjectId: this.learningObject.id,
@@ -127,7 +131,8 @@ export class SubmitComponent implements OnInit {
           'good',
           'far fa-check'
         );
-        this.closeModal();
+        this.loading.pop();
+        this.closeModal(true);
         return true;
       })
       .catch(e => {
@@ -142,6 +147,7 @@ export class SubmitComponent implements OnInit {
             'far fa-times'
           );
         }
+        this.loading.pop();
         this.closeModal();
         return false;
       });
@@ -167,7 +173,7 @@ export class SubmitComponent implements OnInit {
    *
    * @memberof SubmitComponent
    */
-  closeModal() {
-    this.close.emit();
+  closeModal(submitted?: boolean) {
+    this.close.emit(submitted || false);
   }
 }
