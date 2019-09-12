@@ -17,6 +17,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { CookiesComponent } from './components/cookies/cookies.component';
 import { MessageComponent } from './components/navbar/components/message/message.component';
 import { SearchComponent } from './components/navbar/components/search/search.component';
+import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -33,7 +34,8 @@ import { SearchComponent } from './components/navbar/components/search/search.co
     NavbarComponent,
     CookiesComponent,
     MessageComponent,
-    SearchComponent],
+    SearchComponent,
+    MaintenancePageComponent],
   bootstrap: [ClarkComponent],
   providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
 })
