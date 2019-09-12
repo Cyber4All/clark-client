@@ -23,10 +23,10 @@ export class UriRetrieverService {
    * @params params{ author: string, name: string, id:string } the values needed to retrieve the metadata for a Learning Object
    * @params resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
    */
-  async getLearningObject(
+  getLearningObject(
     params: { author?: string, name?: string, id?: string },
     resources?: string[]
-  ): Promise<LearningObject> {
+  ): Observable<LearningObject> {
     try {
       // fill the properties array with either the content of the resources array if it is passed in or set it to empty
       let properties: string[];
@@ -55,7 +55,7 @@ export class UriRetrieverService {
     properties?: string[]
   ) {
     try {
-      const route = UriRetrieverService.setRoute(params);
+      const route = this.setRoute(params);
 
       const responses: Subject<any> = new Subject();
       const end = new Subject();
@@ -66,7 +66,7 @@ export class UriRetrieverService {
           const uris = Object.assign(entity.resourceUris);
 
           let completed = 0;
-
+          console.log('Getting URI Keys')
           Object.keys(uris).map(key => {
             if (!properties || properties.includes(key)) {
               this.fetchUri(uris[key]).subscribe(value => {
@@ -80,6 +80,7 @@ export class UriRetrieverService {
             }
           });
 
+          console.log('Finished Getting URI Keys')
           responses.next(new LearningObject(entity));
         }),
         takeUntil(end),
@@ -249,24 +250,29 @@ export class UriRetrieverService {
    * Packages a full Learning Object with all the resources that were requested
    * @params request the resources for the Learning Object (i.e children, parents, outcomes, etc.)
    */
-  private getFullLearningObject(request: any): Promise<LearningObject> {
+  private getFullLearningObject(request: any): Observable<LearningObject> {
+    console.log('Request!', request);
+    const payload = new Subject<LearningObject>();
     const learningObject = {};
-    return new Promise((resolve) => {
-      request.pipe(
-        finalize(() => resolve(learningObject as LearningObject))
-      ).subscribe(val => {
-        if (val.requestKey) {
-          learningObject[val.requestKey] = val.value;
-        } else {
-          const object = (val as LearningObject).toPlainObject();
+    
+    request.pipe(
+      finalize(() => {console.log('Learning Object', learningObject);payload.next(learningObject as LearningObject);})
+    ).subscribe(val => {
+      console.log('Val!', val);
+      if (val.requestKey) {
+        learningObject[val.requestKey] = val.value;
+      } else {
+        const object = (val as LearningObject).toPlainObject();
 
-          // tslint:disable-next-line: forin
-          for (const key in object) {
-            learningObject[key] = object[key];
-          }
+        // tslint:disable-next-line: forin
+        for (const key in object) {
+          learningObject[key] = object[key];
         }
-      });
+      }
+      console.log('Val! Finished!')
     });
+
+    return payload.pipe(take(1));
   }
 
   /**
@@ -274,7 +280,7 @@ export class UriRetrieverService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  static setRoute(params: {author?: string, name?: string, id?: string}) {
+  private setRoute(params: {author?: string, name?: string, id?: string}) {
     let route;
      // Sets route to be hit based on if the id or if author and Learning Object name have been provided
      if (params.id) {
@@ -292,7 +298,7 @@ export class UriRetrieverService {
    * Returns an error message based on the params that are missing and are needed to retrieve Learning Object
    * @param params either the author and name or the id of the Learning Object
    */
-  static userError(params: {author?: string, name?: string, id?: string}) {
+  private userError(params: {author?: string, name?: string, id?: string}) {
     if (params.author && !params.name) {
       return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
     } else if (params.name && !params.author) {

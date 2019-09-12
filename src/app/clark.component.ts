@@ -98,9 +98,13 @@ export class ClarkComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.uriRetrieverService.getLearningObject({}).then(object => {
-      console.log('There should be an error, this shouldn\'t exist!');
-    }).catch(error => console.log('AAAAHHHHHHHHHHHHH'));
+    console.log('Subscribe')
+    this.uriRetrieverService.getLearningObject({author: 'evogel4', name: 'Test ReadMe Replace'}).subscribe(object => {
+      console.log('Is it me youre looking for')
+      if (object) {
+        console.log('Hello?', object);
+      }
+    });
 
     setInterval(async () => {
       try {
