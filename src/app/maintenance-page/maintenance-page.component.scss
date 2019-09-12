@@ -1,0 +1,67 @@
+@import '~_vars.scss';
+
+$spin-duration: 3.5s;
+
+.maintenance {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background: white;
+
+}
+
+.logo {
+  background: url('/assets/images/logo.png');
+  width: 200px;
+  height: 200px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: auto;
+}
+
+.cogs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 75px;
+  margin-top: 60px;
+  opacity: 0.3;
+
+  & > *:nth-child(2) {
+    margin-top: 18px;
+    margin-left: -12px;
+    margin-right: -12px;
+
+    &:nth-child(2) svg {
+      animation: spinRight $spin-duration linear forwards infinite;
+    }
+  }
+
+  svg {
+    animation: spinLeft $spin-duration linear forwards infinite;
+  }
+}
+
+h1 {
+  font-size: 60px;
+  color: $light-blue;
+  text-align: center;
+}
+
+@keyframes spinLeft {
+  0% {
+    transform: rotate(0deg);
+  } 100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes spinRight {
+  0% {
+    transform: rotate(0deg);
+  } 100% {
+    transform: rotate(360deg);
+  }
+}
