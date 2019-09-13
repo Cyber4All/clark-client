@@ -36,9 +36,11 @@ export class UriRetrieverService {
         properties = [];
       }
 
+
+
       const request = this.getLearningObjectResources(params, properties);
 
-      return this.getFullLearningObject(request);
+      return this.getFullLearningObject(request, resources);
     } catch (err) {
       throw err;
     }
@@ -64,9 +66,7 @@ export class UriRetrieverService {
         retry(3),
         tap(entity => {
           const uris = Object.assign(entity.resourceUris);
-
           let completed = 0;
-          console.log('Getting URI Keys')
           Object.keys(uris).map(key => {
             if (!properties || properties.includes(key)) {
               this.fetchUri(uris[key]).subscribe(value => {
@@ -80,7 +80,6 @@ export class UriRetrieverService {
             }
           });
 
-          console.log('Finished Getting URI Keys')
           responses.next(new LearningObject(entity));
         }),
         takeUntil(end),
@@ -250,15 +249,14 @@ export class UriRetrieverService {
    * Packages a full Learning Object with all the resources that were requested
    * @params request the resources for the Learning Object (i.e children, parents, outcomes, etc.)
    */
-  private getFullLearningObject(request: any): Observable<LearningObject> {
-    console.log('Request!', request);
+  private getFullLearningObject(request: any, resources?: any[]): Observable<LearningObject> {
     const payload = new Subject<LearningObject>();
     const learningObject = {};
-    
+
     request.pipe(
-      finalize(() => {console.log('Learning Object', learningObject);payload.next(learningObject as LearningObject);})
+      take(resources ? resources.length + 1 : 1),
+      finalize(() => payload.next(learningObject as LearningObject))
     ).subscribe(val => {
-      console.log('Val!', val);
       if (val.requestKey) {
         learningObject[val.requestKey] = val.value;
       } else {
@@ -269,7 +267,6 @@ export class UriRetrieverService {
           learningObject[key] = object[key];
         }
       }
-      console.log('Val! Finished!')
     });
 
     return payload.pipe(take(1));

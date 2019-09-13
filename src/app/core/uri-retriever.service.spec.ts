@@ -1,5 +1,5 @@
 import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { MockBackend} from '@angular/http/testing';
+import { MockBackend } from '@angular/http/testing';
 import { UriRetrieverService } from './uri-retriever.service';
 import { HttpClientModule, HttpXhrBackend, HttpResponse, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -14,7 +14,7 @@ describe('UriRetrieverService', () => {
       imports: [ HttpClientTestingModule ],
       providers: [ UriRetrieverService ]
     });
-    
+
     httpTestingController = TestBed.get(HttpTestingController);
     uriRetrieverService = TestBed.get(UriRetrieverService);
   });
@@ -29,7 +29,7 @@ describe('UriRetrieverService', () => {
 
   describe('#getLearningObject', () => {
 
-    it('should get a learning object by its name and author username', () => {
+    it('should get a learning object by its name and author username', done => {
 
       const mockParams = {
         name: 'Test Object',
@@ -46,28 +46,16 @@ describe('UriRetrieverService', () => {
           parents: 'Test Parents URI',
           ratings: 'Test Ratings URI'
         }
-      }
+      };
       const url = `http://localhost:3000/learning-objects/${encodeURIComponent('jdoe')}/${encodeURIComponent('Test Object')}`;
 
-      // uriRetrieverService.getLearningObject({author: 'jdoe', name: 'Test Object'}).then(object => {
-      //   expect(object.name).toEqual('Test Object1');
-      //   expect(object.author).toEqual('jdoe1');
-      // });
-     
       uriRetrieverService.getLearningObject(mockParams).subscribe(object => {
-        expect(object).toEqual(null);
+        expect(object.name).toBe(null);
+        done();
       });
 
       const req = httpTestingController.expectOne(url);
       req.flush(mockResponse);
-
-      // uriRetrieverService.getLearningObject({author: 'skaza', name: encodeURI('Buffer Overflow - CS0 - Java')}).then(object => {
-      //   expect(object.name).toEqual('Buffer Overflow - CS0 - Java');
-      // });
-
-      // const uri = (uriRetrieverService as any).setRoute({author: 'skaza', name: encodeURI('Buffer Overflow - CS0 - Java')});
-      // const req = httpTestingController.expectOne(uri);
-      // req.flush({name: 'Buffer Overflow - CS0 - Java'});
     });
 
     // it('should get a learning object by its id', () => {
