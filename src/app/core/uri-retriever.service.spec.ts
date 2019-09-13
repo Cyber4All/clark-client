@@ -4,6 +4,7 @@ import { UriRetrieverService } from './uri-retriever.service';
 import { HttpClientModule, HttpXhrBackend, HttpResponse, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@env/environment';
+import { catchError } from 'rxjs/operators';
 
 describe('UriRetrieverService', () => {
 
@@ -55,7 +56,8 @@ describe('UriRetrieverService', () => {
         done();
       });
 
-      const url = `${environment.apiURL}/learning-objects/${encodeURIComponent('jdoe')}/${encodeURIComponent('Test Object')}`;
+      const url = `${environment.apiURL}/learning-objects/${encodeURIComponent(mockParams.author)}/`
+        + `${encodeURIComponent(mockParams.name)}`;
       const req = httpTestingController.expectOne(url);
       req.flush(mockResponse);
     });
@@ -66,8 +68,8 @@ describe('UriRetrieverService', () => {
       };
 
       uriRetrieverService.getLearningObject(mockParams).subscribe(object => {
-        expect(object.name).toEqual(mockResponse.name);
-        expect(object.id).toEqual(mockResponse.id);
+        expect(object.name).toBe(mockResponse.name);
+        expect(object.id).toBe(mockResponse.id);
         done();
       });
 
@@ -76,25 +78,111 @@ describe('UriRetrieverService', () => {
       req.flush(mockResponse);
     });
 
-    // // FIXME!
-    // it('should get a learning object with specified resources', (() => {
-    //   uriRetrieverService.getLearningObject(
-    //     {author: 'skaza', name: encodeURI('Buffer Overflow - CS0 - Java')},
-    //     ['children', 'outcomes', 'materials', 'metrics', 'parents', 'ratings']
-    //   ).then(object => {
-    //     expect(object.children).toEqual([]);
-    //   });
-    //   const uri = (uriRetrieverService as any).setRoute({author: 'skaza', name: 'Buffer Overflow - CS0 - Java'});
-    //   const req = httpTestingController.expectOne(uri);
-    //   req.flush(uri);
-    // }));
+    it('should get a learning object by author and name with all resources', done => {
+      const mockParams = {
+        name: 'Test Object',
+        author: 'jdoe'
+      };
 
-    // // FIXME!
-    // it('should throw an error with insufficient learning object identifiers', () => {
-    //   inject([UriRetrieverService], (uriRetrieverService) => {
-    //     const mockResponse = 'Cannot find Learning Object. No identifiers found.';
-    //     expect(2 + 2).toMatch(mockResponse);
-    //   });
-    // });
+      uriRetrieverService.getLearningObject(
+        mockParams,
+        ['children', 'outcomes', 'materials', 'metrics', 'parents', 'ratings']
+      ).subscribe(object => {
+        expect(object.name).toBe(mockResponse.name);
+        expect(object.children).toEqual([]);
+        expect(object.outcomes).toEqual([]);
+        expect(object.materials).toEqual([]);
+        expect(object.metrics).toEqual({saves: 0, downloads: 0});
+        expect(object.parents).toEqual([]);
+        expect(object.ratings).toBeNull();
+        done();
+      });
+
+      const uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(mockParams.author)}/${encodeURIComponent(mockParams.name)}`;
+      httpTestingController.expectOne(uri).flush(mockResponse);
+      httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.materials).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.metrics).flush({saves: 0, downloads: 0});
+      httpTestingController.expectOne(mockResponse.resourceUris.outcomes).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.parents).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.ratings).flush(null);
+    });
+
+    it('should get a learning object by author and name with the specified resources', done => {
+      const mockParams = {
+        name: 'Test Object',
+        author: 'jdoe'
+      };
+
+      uriRetrieverService.getLearningObject(mockParams, ['children', 'metrics', 'parents']).subscribe(object => {
+        expect(object.name).toBe(mockResponse.name);
+        expect(object.children).toEqual([]);
+        expect(object.metrics).toEqual({saves: 10, downloads: 10});
+        expect(object.parents).toEqual([]);
+        done();
+      });
+
+      const uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(mockParams.author)}/${encodeURIComponent(mockParams.name)}`;
+      httpTestingController.expectOne(uri).flush(mockResponse);
+      httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.metrics).flush({saves: 10, downloads: 10});
+      httpTestingController.expectOne(mockResponse.resourceUris.parents).flush([]);
+    });
+
+    it('should get the Learning Object by id with all of the available resources', done => {
+      const mockParams = {
+        id: '12345678901234567890',
+      };
+
+      uriRetrieverService.getLearningObject(
+        mockParams,
+        ['children', 'outcomes', 'materials', 'metrics', 'parents', 'ratings']
+      ).subscribe(object => {
+        expect(object.name).toBe(mockResponse.name);
+        expect(object.children).toEqual([]);
+        expect(object.outcomes).toEqual([]);
+        expect(object.materials).toEqual([]);
+        expect(object.metrics).toEqual({saves: 0, downloads: 0});
+        expect(object.parents).toEqual([]);
+        expect(object.ratings).toBeNull();
+        done();
+      });
+
+      const uri = `${environment.apiURL}/learning-objects/${mockParams.id}`;
+      httpTestingController.expectOne(uri).flush(mockResponse);
+      httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.materials).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.metrics).flush({saves: 0, downloads: 0});
+      httpTestingController.expectOne(mockResponse.resourceUris.outcomes).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.parents).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.ratings).flush(null);
+    });
+
+    it('should get the Learning Object by id of the learning object ', done => {
+      const mockParams = {
+        id: '12345678901234567890',
+      };
+
+      uriRetrieverService.getLearningObject(
+        mockParams,
+        ['children', 'materials', 'parents']
+      ).subscribe(object => {
+        expect(object.name).toBe(mockResponse.name);
+        expect(object.children).toEqual([]);
+        expect(object.materials).toEqual([]);
+        expect(object.parents).toEqual([]);
+        done();
+      });
+
+      const uri = `${environment.apiURL}/learning-objects/${mockParams.id}`;
+      httpTestingController.expectOne(uri).flush(mockResponse);
+      httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.materials).flush([]);
+      httpTestingController.expectOne(mockResponse.resourceUris.parents).flush([]);
+    });
+
+    it('should throw and error with insufficient learning object identifiers', done => {
+      // expect(uriRetrieverService.getLearningObject({})).toThrow();
+    });
   });
 });
