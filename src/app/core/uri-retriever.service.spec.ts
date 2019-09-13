@@ -3,11 +3,26 @@ import { MockBackend } from '@angular/http/testing';
 import { UriRetrieverService } from './uri-retriever.service';
 import { HttpClientModule, HttpXhrBackend, HttpResponse, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from '@env/environment';
 
 describe('UriRetrieverService', () => {
 
   let httpTestingController: HttpTestingController;
   let uriRetrieverService: UriRetrieverService;
+
+  const mockResponse = {
+    id: '12345678901234567890',
+    name: 'Test Object',
+    author: 'jdoe',
+    resourceUris: {
+      outcomes: 'Test Outcome URI',
+      children: 'Test Children URI',
+      materials: 'Test Materials URI',
+      metrics: 'Test Metrics URI',
+      parents: 'Test Parents URI',
+      ratings: 'Test Ratings URI'
+    }
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,43 +45,36 @@ describe('UriRetrieverService', () => {
   describe('#getLearningObject', () => {
 
     it('should get a learning object by its name and author username', done => {
-
       const mockParams = {
         name: 'Test Object',
         author: 'jdoe'
       };
-      const mockResponse = {
-        name: 'Test Object',
-        author: 'jdoe',
-        resourceUris: {
-          outcomes: 'Test Outcome URI',
-          children: 'Test Children URI',
-          materials: 'Test Materials URI',
-          metrics: 'Test Metrics URI',
-          parents: 'Test Parents URI',
-          ratings: 'Test Ratings URI'
-        }
-      };
-      const url = `http://localhost:3000/learning-objects/${encodeURIComponent('jdoe')}/${encodeURIComponent('Test Object')}`;
 
       uriRetrieverService.getLearningObject(mockParams).subscribe(object => {
-        expect(object.name).toBe(null);
+        expect(object.name).toBe(mockResponse.name);
         done();
       });
 
+      const url = `${environment.apiURL}/learning-objects/${encodeURIComponent('jdoe')}/${encodeURIComponent('Test Object')}`;
       const req = httpTestingController.expectOne(url);
       req.flush(mockResponse);
     });
 
-    // it('should get a learning object by its id', () => {
-    //   uriRetrieverService.getLearningObject({id: '5aa005c3ecba9a264dcd8035'}).then(object => {
-    //     expect(object.name).toEqual('Buffer Overflow - CS0 - Java');
-    //   });
+    it('should get a learning object by its id', done => {
+      const mockParams = {
+        id: '12345678901234567890',
+      };
 
-    //   const uri = (uriRetrieverService as any).setRoute({id: '5aa005c3ecba9a264dcd8035'});
-    //   const req = httpTestingController.expectOne(uri);
-    //   req.flush({name: 'Buffer Overflow - CS0 - Java'});
-    // });
+      uriRetrieverService.getLearningObject(mockParams).subscribe(object => {
+        expect(object.name).toEqual(mockResponse.name);
+        expect(object.id).toEqual(mockResponse.id);
+        done();
+      });
+
+      const uri = `${environment.apiURL}/learning-objects/${mockParams.id}`;
+      const req = httpTestingController.expectOne(uri);
+      req.flush(mockResponse);
+    });
 
     // // FIXME!
     // it('should get a learning object with specified resources', (() => {
