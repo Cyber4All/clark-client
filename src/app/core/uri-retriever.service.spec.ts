@@ -181,7 +181,8 @@ describe('UriRetrieverService', () => {
     });
 
     it('should throw and error with insufficient learning object identifiers', done => {
-      // expect(uriRetrieverService.getLearningObject({})).toThrow();
+      expect(() => uriRetrieverService.getLearningObject({})).toThrowError();
+      done();
     });
   });
 });
