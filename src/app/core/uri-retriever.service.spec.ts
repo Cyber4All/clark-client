@@ -4,7 +4,6 @@ import { UriRetrieverService } from './uri-retriever.service';
 import { HttpClientModule, HttpXhrBackend, HttpResponse, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@env/environment';
-import { catchError } from 'rxjs/operators';
 
 describe('UriRetrieverService', () => {
 
