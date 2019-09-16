@@ -130,11 +130,6 @@ export class UriRetrieverService {
         retry(3),
         catchError(this.handleError),
         take(1),
-        /* TODO: Remove this.
-         * It is a stopcap until the service stops returning unreleased.
-         * More info at https://github.com/Cyber4All/learning-object-service/pull/282
-         */
-        map(children => children.filter(child => child.status !== 'unreleased')),
       );
     } else {
       return this.http.get<LearningObject[]>(params.uri, { withCredentials: true })
@@ -185,11 +180,6 @@ export class UriRetrieverService {
         retry(3),
         catchError(this.handleError),
         take(1),
-        /* TODO: Remove this.
-         * It is a stopcap until the service stops returning unreleased.
-         * More info at https://github.com/Cyber4All/learning-object-service/pull/282
-         */
-        map(parents => parents.filter(parent => parent.status !== 'unreleased')),
       );
     }
   }
