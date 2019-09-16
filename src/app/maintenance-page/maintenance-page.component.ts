@@ -20,9 +20,9 @@ export class MaintenancePageComponent implements AfterViewInit {
   }
 
   countCogs() {
-    // each cog is 125 pixels wide
+    // each cog is either 125 or 100 pixels wide
     const windowWidth = window.innerWidth;
-    this.cogs = new Array(Math.ceil(windowWidth / 125) + 2);
+    this.cogs = new Array(Math.ceil(windowWidth / 100) + 2);
   }
 
 }

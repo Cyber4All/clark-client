@@ -8,6 +8,14 @@ $spin-duration: 6s;
   padding: 20px;
   box-sizing: border-box;
   background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > * {
+    flex-grow: 0;
+  }
 
   &:after {
     content: '';
@@ -25,8 +33,6 @@ $spin-duration: 6s;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  margin: auto;
-  margin-top: 70px;
   position: relative;
   z-index: 1;
 }
@@ -36,14 +42,14 @@ $spin-duration: 6s;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 30px;
   box-sizing: border-box;
   position: relative;
   z-index: 1;
+  max-width: 1120px;
 }
 
 .cogs {
-  margin: auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -87,6 +93,7 @@ p {
   margin-top: 20px;
   position: relative;
   z-index: 1;
+  line-height: 1.5em;
 }
 
 @keyframes spinLeft {
