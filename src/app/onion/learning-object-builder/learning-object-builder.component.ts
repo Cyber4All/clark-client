@@ -22,6 +22,7 @@ import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment.prod';
 import { LearningObjectService } from '../core/learning-object.service';
+import { HistorySnapshot, HistoryService } from 'app/core/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -105,7 +106,8 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
   isRevision: boolean;
 
   showServiceFailureModal = false;
-  adminDashboardURL = environment.adminAppUrl;
+
+  historySnapshot: HistorySnapshot;
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -117,10 +119,13 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private validator: LearningObjectValidator,
     public noteService: ToasterService,
     private authService: AuthService,
-    private learningObjectService: LearningObjectService
+    private learningObjectService: LearningObjectService,
+    private history: HistoryService
   ) { }
 
   ngOnInit() {
+    this.historySnapshot = this.history.snapshot();
+
     // listen for route change and grab name parameter if it's there
     this.route.paramMap
       .pipe(takeUntil(this.destroyed$))
@@ -296,12 +301,12 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
    *
    * @memberof LearningObjectBuilderComponent
    */
-  routeToDashboard() {
+  exitBuilder() {
     this.showServiceFailureModal = false;
     if (!this.adminMode) {
-      this.router.navigate(['/onion/dashboard']);
+      this.historySnapshot.rewind('/onion/dashboard');
     } else {
-      window.location.href = this.adminDashboardURL;
+      this.historySnapshot.rewind('/home');
     }
   }
 

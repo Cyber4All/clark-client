@@ -363,9 +363,14 @@ export class AuthService {
         retry(3),
         catchError(this.handleError)
       )
-      .toPromise();
-    this.endSession();
-    window.location.reload();
+      .toPromise().then(() => {
+        this.endSession();
+
+        // push reload to end of execution context
+        setTimeout(() => {
+          window.location.reload();
+        });
+      });
   }
 
   /**

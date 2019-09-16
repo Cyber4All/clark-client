@@ -47,11 +47,12 @@
         [states]="states"
       ></clark-lo-status-indicator>
       <ng-container
-        *ngIf="!adminMode && ['unreleased', 'rejected'].includes(learningObject?.status); else adminModeTemplate "
+        *ngIf="!adminMode; else adminModeTemplate "
       >
         <button
           id="submit"
           class="button"
+          *ngIf="['unreleased', 'rejected'].includes(learningObject?.status)"
           [ngClass]="{
             good: !submissionError,
             bad: validator.submissionMode && submissionError,
@@ -138,7 +139,7 @@
   *ngIf="showSubmission"
   [learningObject]="store.learningObject"
   [visible]="true"
-  (close)="showSubmission = false; getCollectionName()"
+  (close)="showSubmission = false; ($event && historySnapshot.rewind('/dashboard'));"
 ></clark-submit>
 
 <ng-template
