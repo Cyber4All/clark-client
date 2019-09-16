@@ -35,6 +35,7 @@ $spin-duration: 6s;
   background-repeat: no-repeat;
   position: relative;
   z-index: 1;
+  margin-top: -70px;
 }
 
 .maintenance__title {
@@ -94,6 +95,13 @@ p {
   position: relative;
   z-index: 1;
   line-height: 1.5em;
+}
+
+span {
+  position: relative;
+  z-index: 1;
+  color: $dark-grey;
+  font-size: $large;
 }
 
 @keyframes spinLeft {
