@@ -1,6 +1,6 @@
 @import '~_vars.scss';
 
-$spin-duration: 3.5s;
+$spin-duration: 6s;
 
 .maintenance {
   width: 100vw;
@@ -9,32 +9,61 @@ $spin-duration: 3.5s;
   box-sizing: border-box;
   background: white;
 
+  &:after {
+    content: '';
+    background: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ffffff' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+  }
 }
 
 .logo {
   background: url('/assets/images/logo.png');
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   margin: auto;
+  margin-top: 70px;
+  position: relative;
+  z-index: 1;
+}
+
+.maintenance__title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
 
 .cogs {
+  margin: auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  font-size: 75px;
-  margin-top: 60px;
-  opacity: 0.3;
+  font-size: 125px;
+  color: $light-blue;
+  position: fixed;
+  opacity: 0.2  ;
+  z-index: 1;
+  margin-top: 20px;
+  left: 0;
+  right: 0;
+  bottom: -90px;
 
-  & > *:nth-child(2) {
-    margin-top: 18px;
-    margin-left: -12px;
-    margin-right: -12px;
+  & > *:nth-child(even) {
+    margin-top: -31px;
+    margin-left: -21px;
+    margin-right: -21px;
+    transform: scale(0.9);
 
-    &:nth-child(2) svg {
+    svg {
       animation: spinRight $spin-duration linear forwards infinite;
     }
   }
@@ -45,9 +74,19 @@ $spin-duration: 3.5s;
 }
 
 h1 {
-  font-size: 60px;
+  font-size: 70px;
   color: $light-blue;
   text-align: center;
+  position: relative;
+}
+
+p {
+  text-align: center;
+  font-size: $largest;
+  color: $dark-grey;
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes spinLeft {
@@ -63,5 +102,29 @@ h1 {
     transform: rotate(0deg);
   } 100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes flicker {
+  0% {
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  } 20% {
+    transform: translateX(0) translateY(0) scale(1);
+    filter: blur(0);
+  } 20.3% {
+    transform: translateX(25px) translateY(20px) scale(1);
+    filter: blur(5px);
+  } 20.6% {
+    transform: translateX(-20px) translateY(-10px);
+    filter: blur(5px);
+  } 20.9% {
+    transform: translateX(10px) translateY(0) scale(1);
+    filter: blur(0);
+  } 21.3% {
+    transform: translateX(0) translateY(0) scale(1);
+  } 100% {
+    transform: translateX(0) scale(1);
+    filter: blur(0);
   }
 }
