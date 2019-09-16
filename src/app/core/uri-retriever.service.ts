@@ -36,8 +36,6 @@ export class UriRetrieverService {
         properties = [];
       }
 
-
-
       const request = this.getLearningObjectResources(params, properties);
 
       return this.getFullLearningObject(request, resources);
@@ -69,7 +67,7 @@ export class UriRetrieverService {
           let completed = 0;
           Object.keys(uris).map(key => {
             if (!properties || properties.includes(key)) {
-              this.fetchUri(uris[key]).subscribe(value => {
+              this.fetchUri(uris[key], CALLBACKS[key]).subscribe(value => {
                 responses.next({ requestKey: key, value });
                 if (++completed === properties.length || completed === uris.length) {
                   responses.complete();
