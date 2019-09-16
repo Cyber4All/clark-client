@@ -10,7 +10,7 @@ export class MaintenancePageComponent implements AfterViewInit {
   cogs: any[];
 
   @HostListener('window:resize') resizeHandler() {
-    this.countCogs()
+    this.countCogs();
   }
 
   constructor() { }
