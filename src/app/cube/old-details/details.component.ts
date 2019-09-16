@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { iframeParentID } from '../../core/cartv2.service';
 import { LearningObjectService } from '../learning-object.service';
 import { LearningObject, User } from '@entity';
-import { Component, OnInit, OnDestroy, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/user.service';
 import { Subject } from 'rxjs';
@@ -166,7 +166,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     try {
       this.resetRatings();
 
-      const resources = ['children', 'parents', 'outcomes', 'metrics', 'ratings'];
+      const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
       this.uriRetrieverService.getLearningObject({author, name}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
