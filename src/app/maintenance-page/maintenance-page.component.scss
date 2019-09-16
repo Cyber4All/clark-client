@@ -59,9 +59,9 @@ $spin-duration: 6s;
 
   & > *:nth-child(even) {
     margin-top: -31px;
-    margin-left: -21px;
-    margin-right: -21px;
-    transform: scale(0.9);
+    margin-left: -26px;
+    margin-right: -26px;
+    transform: scale(0.8);
 
     svg {
       animation: spinRight $spin-duration linear forwards infinite;
