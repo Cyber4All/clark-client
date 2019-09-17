@@ -257,7 +257,7 @@ export class UriRetrieverService {
       }
     });
 
-    return payload.pipe(take(1));
+    return payload.pipe(take(1), map(o => new LearningObject(o)));
   }
 
   /**
