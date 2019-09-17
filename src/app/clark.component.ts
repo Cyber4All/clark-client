@@ -1,4 +1,4 @@
-import { Router , NavigationEnd, ActivatedRoute} from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
@@ -30,13 +30,13 @@ import { LearningObject } from '../entity/learning-object/learning-object';
       transition(':leave', [
         style({
           bottom: '0',
-            opacity: 1
+          opacity: 1
         }),
         animate(
           '300ms ease-out',
           style({
             bottom: '-100px',
-          opacity: 0
+            opacity: 0
           })
         )
       ])
@@ -50,6 +50,8 @@ export class ClarkComponent implements OnInit {
   errorMessage: string;
   hidingOutlines = true;
   learningObject: LearningObject;
+
+  isUnderMaintenance: boolean;
 
   @HostListener('window:click', ['$event'])
   @HostListener('window:keyup', ['$event'])
@@ -70,7 +72,10 @@ export class ClarkComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private _: HistoryService,
-    ) {
+  ) {
+    // TODO make request to determine if application is "down" or not
+    this.isUnderMaintenance = false;
+
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
       this.authService.isLoggedIn.subscribe(val => {
@@ -80,19 +85,19 @@ export class ClarkComponent implements OnInit {
         }
       });
 
-      if (localStorage.getItem('cookieAgreement')) {
-        this.cookiesAgreement = true;
+    if (localStorage.getItem('cookieAgreement')) {
+      this.cookiesAgreement = true;
+    }
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd && event.id > 1)
+    ).subscribe(() => {
+      const content: HTMLElement = document.querySelector('#pageContent');
+
+      if (content) {
+        content.focus();
       }
-
-      this.router.events.pipe(
-        filter(event => event instanceof NavigationEnd && event.id > 1)
-      ).subscribe(() => {
-        const content: HTMLElement = document.querySelector('#pageContent');
-
-        if (content) {
-          content.focus();
-        }
-      });
+    });
   }
 
   ngOnInit(): void {
@@ -126,29 +131,29 @@ export class ClarkComponent implements OnInit {
   browser tabs and notify AT's of current location */
   setPageTitle() {
     this.router.events
-    .filter(event => event instanceof NavigationEnd)
-    .subscribe(() => {
-      let data;
-      const activeRoutes: ActivatedRoute[] = this.activatedRoute.children;
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe(() => {
+        let data;
+        const activeRoutes: ActivatedRoute[] = this.activatedRoute.children;
 
-      activeRoutes.forEach((route: ActivatedRoute) => {
-        let activeRoute: ActivatedRoute = route;
-        while (activeRoute.firstChild) {
-          activeRoute = activeRoute.firstChild;
-        }
-        if (activeRoute.snapshot.params.username) {
-          if (activeRoute.snapshot.params.learningObjectName) {
-            data = activeRoute.snapshot.params.learningObjectName;
-          } else {
-            data = activeRoute.snapshot.params.username;
+        activeRoutes.forEach((route: ActivatedRoute) => {
+          let activeRoute: ActivatedRoute = route;
+          while (activeRoute.firstChild) {
+            activeRoute = activeRoute.firstChild;
           }
-        } else {
-          data = activeRoute.snapshot.data.title;
-        }
-        if (data !== undefined) {
-          this.titleService.setTitle(data + ' | CLARK');
-        }
+          if (activeRoute.snapshot.params.username) {
+            if (activeRoute.snapshot.params.learningObjectName) {
+              data = activeRoute.snapshot.params.learningObjectName;
+            } else {
+              data = activeRoute.snapshot.params.username;
+            }
+          } else {
+            data = activeRoute.snapshot.data.title;
+          }
+          if (data !== undefined) {
+            this.titleService.setTitle(data + ' | CLARK');
+          }
+        });
       });
-    });
   }
 }
