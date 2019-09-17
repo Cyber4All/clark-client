@@ -497,6 +497,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         })
         .subscribe(update => this.handleUploadUpdates(update));
     } catch (e) {
+      console.error('UPLOAD ERROR', e);
       if (e.name === UploadErrorReason.Credentials) {
         this.handleCredentialsError();
       } else {
@@ -612,6 +613,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if ((update as UploadQueueCompleteUpdate).data.failed) {
       const unUploadedFiles = this.uploadQueue.filter(file => !file.success);
       const fileNames = unUploadedFiles.map(file => file.name).join(', ');
+      console.log(Object.assign(this.uploadQueue), 'Failed Count: ' + unUploadedFiles.length);
       this.error$.next(UPLOAD_ERRORS.FILES_FAILED(fileNames));
       // TODO: Prompt user and Attempt retry?
       this.resetUploadStatuses();
