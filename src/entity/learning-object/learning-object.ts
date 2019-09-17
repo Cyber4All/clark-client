@@ -655,6 +655,7 @@ private _hasRevision?: boolean;
       version: this.version,
       revision: this.revision,
       resourceUris: this.resourceUris,
+      parents: this.parents,
     };
     return object;
   }
