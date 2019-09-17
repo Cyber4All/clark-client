@@ -93,7 +93,7 @@ describe('UriRetrieverService', () => {
         expect(object.materials).toEqual([]);
         expect(object.metrics).toEqual({saves: 0, downloads: 0});
         expect(object.parents).toEqual([]);
-        expect(object.ratings).toBeNull();
+        expect(object.ratings).toBeUndefined();
         done();
       });
 
@@ -143,7 +143,7 @@ describe('UriRetrieverService', () => {
         expect(object.materials).toEqual([]);
         expect(object.metrics).toEqual({saves: 0, downloads: 0});
         expect(object.parents).toEqual([]);
-        expect(object.ratings).toBeNull();
+        expect(object.ratings).toBeUndefined();
         done();
       });
 
