@@ -170,16 +170,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.uriRetrieverService.getLearningObject({author, name}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
-          
-          // FIXME: This filter should be removed when service logic is updated
-          this.releasedChildren = this.releasedLearningObject.children.filter(
-            child => {
-              return child.status === LearningObject.Status['RELEASED'] ||
-                child.status === LearningObject.Status['REVIEW'] ||
-                child.status === LearningObject.Status['PROOFING'] ||
-                child.status === LearningObject.Status['WAITING'];
-            }
-          );
+
+      // FIXME: This filter should be removed when service logic for filtering children is updated
+      this.releasedChildren = this.releasedLearningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+            child.status === LearningObject.Status['REVIEW'] ||
+            child.status === LearningObject.Status['PROOFING'] ||
+            child.status === LearningObject.Status['WAITING'];
+        }
+      );
 
           const owners = this.releasedLearningObject.contributors.map(user => user.username);
           owners.push(this.releasedLearningObject.author.username);

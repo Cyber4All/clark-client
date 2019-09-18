@@ -1,12 +1,28 @@
-<clark-navbar *ngIf = "isSupportedBrowser"></clark-navbar>
-<router-outlet></router-outlet>
-<clark-popup *ngIf="isOldVersion" (closed)="isOldVersion = false">
-  <div #popupInner class="popup-inner">
-    <div class="modal-title">{{ errorMessage[0] }}</div>
-      <div class="modal-text">{{ errorMessage[1] }}</div>
-      <div class="btn-group center">
-        <button class="button good" (activate)="reloadPage()">Refresh page <i class="fas fa-sync-alt"></i></button>
-      </div>
-  </div>
-</clark-popup>
-<clark-cookies [@banner] *ngIf="!cookiesAgreement" (setAgreement)="setCookieAgreement($event)"></clark-cookies>
+<ng-container [ngTemplateOutlet]="isUnderMaintenance !== undefined ? finishedLoadingTemplate : loadingTemplate"></ng-container>
+
+<ng-template #finishedLoadingTemplate>
+  <ng-container [ngTemplateOutlet]="isUnderMaintenance ? maintenanceTemplate : clarkBodyTemplate"></ng-container>
+</ng-template>
+
+<ng-template #clarkBodyTemplate>
+  <clark-navbar *ngIf = "isSupportedBrowser"></clark-navbar>
+  <router-outlet></router-outlet>
+  <clark-popup *ngIf="isOldVersion" (closed)="isOldVersion = false">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">{{ errorMessage[0] }}</div>
+        <div class="modal-text">{{ errorMessage[1] }}</div>
+        <div class="btn-group center">
+          <button class="button good" (activate)="reloadPage()">Refresh page <i class="fas fa-sync-alt"></i></button>
+        </div>
+    </div>
+  </clark-popup>
+  <clark-cookies [@banner] *ngIf="!cookiesAgreement" (setAgreement)="setCookieAgreement($event)"></clark-cookies>
+</ng-template>
+
+<ng-template #loadingTemplate>
+  Loading...
+</ng-template>
+
+<ng-template #maintenanceTemplate>
+  <clark-maintenance-page></clark-maintenance-page>
+</ng-template>
