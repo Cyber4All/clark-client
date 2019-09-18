@@ -11,6 +11,8 @@ import {
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BuilderStore } from '../../builder-store.service';
 import { LearningObject } from '@entity';
+import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-scaffold',
@@ -51,7 +53,8 @@ export class ScaffoldComponent implements OnInit {
   constructor(
     private store: BuilderStore,
     private renderer: Renderer2,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private uriRetriver: UriRetrieverService,
   ) { }
 
   ngOnInit() {

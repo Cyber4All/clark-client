@@ -15,6 +15,7 @@ import { CollectionService } from 'app/core/collection.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUploadMeta } from './components/content-upload/app/services/typings';
 import { Title } from '@angular/platform-browser';
+import { UriRetrieverService } from 'app/core/uri-retriever.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -111,7 +112,8 @@ export class BuilderStore {
     private learningObjectService: LearningObjectService,
     private collectionService: CollectionService,
     private validator: LearningObjectValidator,
-    private titleService: Title
+    private titleService: Title,
+    private uriRetriever: UriRetrieverService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -212,12 +214,14 @@ export class BuilderStore {
 
       return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
     } : async () => {
-      return this.learningObjectService.getLearningObject(id);
+      const value = this.uriRetriever.getLearningObject({id}, ['children', 'parents', 'materials', 'outcomes']);
+      return value.toPromise();
     };
 
     return retrieve()
       .then(object => {
         this.learningObject = object;
+        console.log(this.learningObject);
         // this learning object is submitted, ensure submission mode is on
         this.validator.submissionMode =
           this.learningObject.status &&
@@ -259,13 +263,14 @@ export class BuilderStore {
   }
 
   /**
-   * Retrieves the learning objects children
+   * Retrieves the Learning Objects children
    *
    */
   async getChildren(): Promise<LearningObject[]> {
-    return await this.learningObjectService.getChildren(
-      this.learningObject.id
+    const children = this.uriRetriever.getLearningObjectChildren(
+      {uri: this.learningObject.resourceUris.children }
     );
+    return children.toPromise();
 
   }
 

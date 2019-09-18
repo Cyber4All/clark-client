@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
 import { HistoryService } from './core/history.service';
 import { filter } from 'rxjs/operators';
-
+import { LearningObject } from '../entity/learning-object/learning-object';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -49,6 +49,7 @@ export class ClarkComponent implements OnInit {
   isOldVersion = false;
   errorMessage: string;
   hidingOutlines = true;
+  learningObject: LearningObject;
 
   isUnderMaintenance: boolean;
 
@@ -100,6 +101,7 @@ export class ClarkComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     setInterval(async () => {
       try {
         await this.authService.checkClientVersion();

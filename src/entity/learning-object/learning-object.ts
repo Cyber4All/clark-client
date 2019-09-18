@@ -110,6 +110,10 @@ export class LearningObject {
   get outcomes(): LearningOutcome[] {
     return this._outcomes;
   }
+
+  set outcomes(outcomes: LearningOutcome[]) {
+    this._outcomes = outcomes;
+  }
   /**
    * @property {LearningObject.Material} materials neutrino file/url storage
    *
@@ -145,6 +149,18 @@ export class LearningObject {
   get children(): LearningObject[] {
     return this._children;
   }
+
+  set children(children: LearningObject[]) {
+    this._children = children;
+  }
+
+  get parents(): LearningObject[] {
+    return this._parents;
+  }
+  set parents(parents: LearningObject[]) {
+    this._parents = parents;
+  }
+
   /**
    * @property {contributors} User[] array of Users
    *
@@ -196,6 +212,25 @@ export class LearningObject {
     return this._hasRevision;
   }
 
+  get resourceUris(): {
+    children: string,
+    materials: string,
+    metrics: string,
+    outcomes: string,
+    parents: string,
+    ratings: string,
+  } {
+    return this._resourceUris;
+  }
+
+  get ratings() {
+    return this._ratings;
+  }
+
+  set ratings(ratings) {
+    this._ratings = ratings;
+  }
+
   version = 0;
 
   revision = 0;
@@ -235,32 +270,29 @@ export class LearningObject {
   }
   private _id: string;
   private _author: User;
-
   private _name!: string;
-
   private _description!: string;
-
   private _date: string;
-
   private _length!: LearningObject.Length;
-
   private _levels: LearningObject.Level[];
-
-  private _outcomes: LearningOutcome[];
-
-  private _materials!: LearningObject.Material;
-
-  private _metrics!: LearningObject.Metrics;
-
-  private _children: LearningObject[];
-
+  private _outcomes?: LearningOutcome[];
+  private _materials?: LearningObject.Material;
+  private _metrics?: LearningObject.Metrics;
+  private _children?: LearningObject[];
+  private _parents?: LearningObject[];
   private _contributors: User[];
-
   private _collection!: string;
-
   private _status!: LearningObject.Status;
-
   private _revision: string;
+  private _ratings?: any;
+  private _resourceUris: {
+    children: string,
+    materials: string,
+    metrics: string,
+    outcomes: string,
+    parents: string,
+    ratings: string,
+  };
 
 /**
  * @property {boolean} hasRevision
@@ -579,6 +611,13 @@ private _hasRevision?: boolean;
     if (object.revision != null) {
       this.revision = object.revision;
     }
+    if (object.parents) {
+      this._parents = object.parents;
+    }
+    if(object.resourceUris) {
+      this._resourceUris = object.resourceUris;
+    }
+
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
     this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;
@@ -614,7 +653,9 @@ private _hasRevision?: boolean;
       metrics: this.metrics,
       hasRevision: this.hasRevision,
       version: this.version,
-      revision: this.revision
+      revision: this.revision,
+      resourceUris: this.resourceUris,
+      parents: this.parents,
     };
     return object;
   }
