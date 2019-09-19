@@ -29,7 +29,7 @@ export class MessagesService {
         .toPromise()
         .then((val: Message) => {
 
-          // TODO remove this
+          // TODO remove this when the messages banner no longer needs to be displayed
           val = {
             iconClass: 'far fa-exclamation-circle',
             message: 'CLARK will be offline for scheduled maintenance Saturday, September 21st, from 10AM to 12PM.',
