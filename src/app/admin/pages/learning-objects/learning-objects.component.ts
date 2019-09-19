@@ -69,18 +69,14 @@ export class LearningObjectsComponent
     private toaster: ToasterService,
     private auth: AuthService,
     private collectionService: CollectionService,
-    private messagesService: MessagesService
   ) {}
 
   ngOnInit(): void {
-    if (this.messagesService.getStatus()) {
-      // the message banner is down, adjust UI to account for it
-      setTimeout(() => {
-        this.listViewHeightOffset =
-          this.listElement.nativeElement.getBoundingClientRect().top +
-          this.headersElement.nativeElement.getBoundingClientRect().height;
-      });
-    }
+    setTimeout(() => {
+      this.listViewHeightOffset =
+        this.listElement.nativeElement.getBoundingClientRect().top +
+        this.headersElement.nativeElement.getBoundingClientRect().height;
+    });
 
     // query by a username if it's passed in
     this.route.queryParams.subscribe(params => {
