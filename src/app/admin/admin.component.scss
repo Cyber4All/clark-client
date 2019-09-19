@@ -14,8 +14,9 @@
 .admin__sidebar {
   background: white;
   padding: 20px 0;
-  height: 100vh;
+  max-height: 100vh;
   border-right: 2px solid $light-grey;
+  box-sizing: border-box;
 }
 
 .admin__main-content {

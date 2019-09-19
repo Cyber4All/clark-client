@@ -5,7 +5,6 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
-  AfterViewInit,
 } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
@@ -16,6 +15,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToasterService } from 'app/shared/modules/toaster';
 import { AuthService } from 'app/core/auth.service';
 import { Collection, CollectionService } from 'app/core/collection.service';
+import { MessagesService } from 'app/core/messages.service';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -24,8 +24,9 @@ import { Collection, CollectionService } from 'app/core/collection.service';
   providers: [PublicLearningObjectService]
 })
 export class LearningObjectsComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
+  @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
 
   learningObjects: LearningObject[] = [];
   searchBarPlaceholder = 'Learning Objects';
@@ -60,15 +61,23 @@ export class LearningObjectsComponent
 
   activeCollection: Collection;
 
+  topAdjustment: number;
+
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
     private toaster: ToasterService,
     private auth: AuthService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
   ) {}
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.listViewHeightOffset =
+        this.listElement.nativeElement.getBoundingClientRect().top +
+        this.headersElement.nativeElement.getBoundingClientRect().height;
+    });
+
     // query by a username if it's passed in
     this.route.queryParams.subscribe(params => {
       const username = params['username'];
@@ -113,12 +122,6 @@ export class LearningObjectsComponent
     if (this.isAdminOrEditor || this.activeCollection) {
       this.getLearningObjects();
     }
-  }
-
-  ngAfterViewInit() {
-    this.listViewHeightOffset =
-      // 50 here is the browser-rendered height of the table-headers
-      this.listElement.nativeElement.getBoundingClientRect().top + 50;
   }
 
   /**

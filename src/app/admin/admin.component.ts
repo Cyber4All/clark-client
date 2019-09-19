@@ -6,6 +6,7 @@ import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operato
 import { AuthService } from 'app/core/auth.service';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { ToasterService } from 'app/shared/modules/toaster';
+import { MessagesService } from 'app/core/messages.service';
 
 
 @Component({
@@ -25,18 +26,28 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   collectionsLoaded: boolean;
 
+  topAdjustment: number;
+
   constructor(
     private navbarService: NavbarService,
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
     private collectionService: CollectionService,
-    public toaster: ToasterService
+    public toaster: ToasterService,
+    private messagesService: MessagesService
   ) {}
 
   ngOnInit() {
     // hide CLARK navbar
     this.navbarService.hide();
+
+    if (this.messagesService.getStatus()) {
+      // the message banner is down, adjust UI to account for it
+      setTimeout(() => {
+        this.topAdjustment = document.querySelector('clark-message .wrapper').getBoundingClientRect().height;
+      });
+    }
 
     // set the can scroll value to determine whether or not we add 30px of padding to the bottom of the content wrapper
     const canScroll = this.route.snapshot.firstChild.data.canScroll;
