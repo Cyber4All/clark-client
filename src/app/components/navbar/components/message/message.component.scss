@@ -1,44 +1,40 @@
 @import '~_vars.scss';
 
 .wrapper {
-    position: relative;
-    z-index: 4;
-    padding: 10px;
-    background: $blue-accent;
+  position: relative;
+  z-index: 4;
+  padding: 10px;
+  background: $blue-accent;
+  color: white;
+
+  .inner-wrapper {
+    max-width: $max-width;
+    margin: auto;
+    font-size: $normal;
+    font-weight: normal;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+
+    .icon {
+      margin-right: 10px;
+    }
+  }
+
+  // styles
+  &.bad {
+    background: $error-red;
     color: white;
+  }
 
-    .inner-wrapper {
-        max-width: $max-width;
-        margin: auto;
-        text-align: center;
-        font-size: $normal;
-        font-weight: normal;
+  &.good {
+    background: $success-green;
+    color: white;
+  }
 
-        .icon {
-            padding: 5px;
-            margin-left: 20px;
-            cursor: pointer;
-            transform: scale(1);
-            transition: all 0.2s ease;
-
-            .svg-inline--fa {
-                @include vert-center;
-            }
-
-            &:hover {
-                transform: scale(1.05);
-            }
-        }
-    }
-
-    // styles
-    &.bad {
-        background: $error-red;
-        color: white;
-    }
-
-    &.good {
-        background: $success-green;
-        color: white;
-    }
+  &.warning {
+    background: #0B78CB;
+    color: white;
+  }
 }

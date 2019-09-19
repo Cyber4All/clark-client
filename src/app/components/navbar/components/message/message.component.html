@@ -1,5 +1,8 @@
-<div class="wrapper bad" *ngIf="showBanner === true">
+<div class="wrapper warning" *ngIf="showBanner === true">
   <div class="inner-wrapper">
+    <div *ngIf="true" class="icon" aria-hidden="true">
+      <i [attr.class]="message.iconClass"></i>
+    </div>
     <div aria-live="assertive">{{ message.message }}</div>
   </div>
 </div>
