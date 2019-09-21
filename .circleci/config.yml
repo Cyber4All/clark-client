@@ -101,15 +101,27 @@ workflows:
           filters:
             branches:
               only: /master/
-      - publish-image:
+      - test:
           requires:
             - build
           filters:
             branches:
               only: /master/
-      - deploy:
+      - publish-image:
+          requires:
+            - test
+          filters:
+            branches:
+              only: /master/
+      - lighthouse:
           requires:
             - publish-image
+          filters:
+            branches:
+              only: /master/
+      - deploy:
+          requires:
+            - lighthouse
           filters:
             branches:
               only: /master/
