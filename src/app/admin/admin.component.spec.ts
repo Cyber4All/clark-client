@@ -10,6 +10,7 @@ import { CollectionService } from 'app/core/collection.service';
 import { ActivatedRoute, Router, NavigationEnd, Scroll } from '@angular/router';
 import { of } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MessagesService } from 'app/core/messages.service';
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
@@ -38,6 +39,7 @@ describe('AdminComponent', () => {
         AuthService,
         ToasterService,
         CollectionService,
+        MessagesService,
         { provide: Router, useValue: routerStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ]

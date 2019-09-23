@@ -5,40 +5,34 @@ import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 export class Message {
-    isUnderMaintenance: boolean;
-    message: string;
-
-    constructor(isUnderMaintenance: boolean, message: string) {
-        this.isUnderMaintenance = isUnderMaintenance;
-        this.message = message;
-    }
+  constructor(public isUnderMaintenance: boolean, public message: string, public iconClass?: string) { }
 }
 @Injectable()
 export class MessagesService {
-    private _message: Message;
+  private _message: Message;
 
-    get message() {
-        return this._message;
+  get message() {
+    return this._message;
+  }
+
+  constructor(private http: HttpClient) { }
+
+  getStatus(): Promise<Message> {
+    if (this._message) {
+      return Promise.resolve(this._message);
+    } else {
+      return this.http.get(MISC_ROUTES.CHECK_STATUS, { withCredentials: true })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise()
+        .then((val: Message) => {
+          this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          return this._message;
+        });
     }
-
-    constructor(private http: HttpClient) { }
-
-    getStatus(): Promise<Message> {
-        if (this._message) {
-            return Promise.resolve(this._message);
-        } else {
-            return this.http.get(MISC_ROUTES.CHECK_STATUS, { withCredentials: true })
-                .pipe(
-                    retry(3),
-                    catchError(this.handleError)
-                )
-                .toPromise()
-                .then((val: Message) => {
-                    this._message = new Message(val.isUnderMaintenance, val.message);
-                    return this._message;
-                });
-        }
-    }
+  }
 
     getMaintenance() {
         return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })

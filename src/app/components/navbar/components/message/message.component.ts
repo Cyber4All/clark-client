@@ -16,16 +16,21 @@ export class MessageComponent implements OnInit {
 
   ngOnInit() {
     if (environment.production) {
+      this.getMessage();
       setInterval(async () => {
-        this.messages.getStatus().then(message => {
-          this.message = message;
-          this.showBanner = this.message.isUnderMaintenance;
-        })
-        .catch ( _ => {
-          /** Suppress the error because it is being handled in Gateway.
-          If an error does occur there is not reason to show anything because a user doesn't know the request is being made. */
-        });
+        this.getMessage();
       }, 300000); // 5 min interval
     }
+  }
+
+  getMessage() {
+    this.messages.getStatus().then(message => {
+      this.message = message;
+      this.showBanner = this.message.isUnderMaintenance;
+    })
+    .catch ( _ => {
+      /** Suppress the error because it is being handled in Gateway.
+      If an error does occur there is not reason to show anything because a user doesn't know the request is being made. */
+    });
   }
 }
