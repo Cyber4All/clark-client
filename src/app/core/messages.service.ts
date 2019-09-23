@@ -48,7 +48,7 @@ export class MessagesService {
         )
         .toPromise()
         .then(val => {
-            return val;
+            return val as boolean;
         });
     }
 
