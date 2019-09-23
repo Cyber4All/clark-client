@@ -40,6 +40,18 @@ export class MessagesService {
         }
     }
 
+    getMaintenance() {
+        return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })
+        .pipe(
+            retry(3),
+            catchError(this.handleError)
+        )
+        .toPromise()
+        .then(val => {
+            return val;
+        });
+    }
+
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
           // Client-side or network returned error
