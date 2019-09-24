@@ -41,8 +41,8 @@ export class MessagesService {
             catchError(this.handleError)
         )
         .toPromise()
-        .then(val => {
-            return val as boolean;
+        .then((val: boolean) => {
+            return val;
         });
     }
 
