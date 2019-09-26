@@ -34,14 +34,26 @@ export class MessagesService {
     }
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side or network returned error
-      return throwError(error.error.message);
-    } else {
-      // API returned error
-      return throwError(error);
+    getMaintenance() {
+        return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })
+        .pipe(
+            retry(3),
+            catchError(this.handleError)
+        )
+        .toPromise()
+        .then((val: boolean) => {
+            return val;
+        });
     }
-  }
+
+    private handleError(error: HttpErrorResponse) {
+        if (error.error instanceof ErrorEvent) {
+          // Client-side or network returned error
+          return throwError(error.error.message);
+        } else {
+          // API returned error
+          return throwError(error);
+        }
+      }
 }
 
