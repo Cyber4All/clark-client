@@ -358,7 +358,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
       .createRating({
-        learningObjectId: this.learningObject.id,
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.revision,
         rating,
       })
       .then(
@@ -402,7 +403,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
     this.ratingService
       .editRating({
-        learningObjectId: this.learningObject.id,
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.version,
         ratingId: rating.id,
         rating: updates,
       })
@@ -454,7 +456,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (shouldDelete === 'delete') {
       this.ratingService
         .deleteRating({
-          learningObjectId: this.ratings[index].source,
+          CUID: this.ratings[index].source.CUID,
+          version: this.ratings[index].source.revision,
           ratingId: this.ratings[index].id,
         })
         .then(val => {
@@ -489,7 +492,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       this.ratingService
         .flagLearningObjectRating({
-          learningObjectId: this.learningObject.id,
+          CUID: this.learningObject.cuid,
+          version: this.learningObject.revision,
           ratingId,
           report
         })
@@ -537,7 +541,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       const result = await this.ratingService
         .createResponse({
-          learningObjectId: this.learningObject.id,
+          CUID: this.learningObject.cuid,
+          version: this.learningObject.revision,
           ratingId,
           response,
         });
@@ -584,7 +589,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       const result = await this.ratingService
         .editResponse({
-          learningObjectId: this.learningObject.id,
+          CUID: this.learningObject.cuid,
+          version: this.learningObject.revision,
           ratingId,
           responseId,
           updates: response,
@@ -644,7 +650,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       if (ratingId) {
         const result = await this.ratingService
           .deleteResponse({
-            learningObjectId: this.learningObject.id,
+            CUID: this.learningObject.cuid,
+            version: this.learningObject.revision,
             ratingId,
             responseId,
           });
@@ -700,7 +707,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           return;
         }
       }
-    
       // if we found the rating, we've returned from the function at this point
       this.userRating = {};
     });
