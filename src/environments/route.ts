@@ -390,7 +390,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
-      params.version,
+      params.version.toString(),
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}`;
@@ -403,7 +403,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
-      params.version,
+      params.version.toString(),
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}`;
@@ -416,7 +416,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID
     )}/version/${encodeURIComponent(
-      params.version
+      params.version.toString(),
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}/responses`;
@@ -435,7 +435,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
-      params.version,
+      params.version.toString(),
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}/responses/${encodeURIComponent(
@@ -451,7 +451,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
-      params.version,
+      params.version.toString(),
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}/responses/${encodeURIComponent(
@@ -465,7 +465,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
-      params.version,
+      params.version.toString(),
     )}/ratings`;
   },
   GET_LEARNING_OBJECT_RATINGS(params: {
@@ -475,7 +475,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
-      params.version,
+      params.version.toString(),
     )}/ratings`;
   },
   FLAG_LEARNING_OBJECT_RATING(params: {
@@ -486,7 +486,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
-      params.version,
+      params.version.toString(),
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}/flags`;
