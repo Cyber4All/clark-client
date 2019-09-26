@@ -22,7 +22,10 @@ export interface Rating {
   value: number;
   comment: string;
   date: number;
-  source?: string;
+  source?: {
+    CUID: string,
+    version: number,
+  };
   response?: object;
 }
 
@@ -457,7 +460,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.ratingService
         .deleteRating({
           CUID: this.ratings[index].source.CUID,
-          version: this.ratings[index].source.revision,
+          version: this.ratings[index].source.version,
           ratingId: this.ratings[index].id,
         })
         .then(val => {
