@@ -8,6 +8,8 @@ import 'rxjs/add/operator/filter';
 import { HistoryService } from './core/history.service';
 import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
+import { MessagesService } from './core/messages.service';
+import { environment } from '@env/environment';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -72,8 +74,8 @@ export class ClarkComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private _: HistoryService,
+    private messages: MessagesService,
   ) {
-    // TODO make request to determine if application is "down" or not
     this.isUnderMaintenance = false;
 
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
@@ -102,14 +104,23 @@ export class ClarkComponent implements OnInit {
 
   ngOnInit(): void {
 
-    setInterval(async () => {
-      try {
-        await this.authService.checkClientVersion();
-      } catch (e) {
-        this.errorMessage = e.error.split('.');
-        this.isOldVersion = true;
-      }
-    }, 600000); // 10 minute interval
+    if (environment.production) {
+      // Determine if the application is currently under maintenance
+      setInterval(async () => {
+        this.messages.getMaintenance().then(message => {
+          this.isUnderMaintenance = message;
+        });
+      }, 300000); // 5 min interval
+      // check to see if the current version is behind the latest verison
+      setInterval(async () => {
+        try {
+          await this.authService.checkClientVersion();
+        } catch (e) {
+          this.errorMessage = e.error.split('.');
+          this.isOldVersion = true;
+        }
+      }, 600000); // 10 minute interval
+    }
 
     this.setPageTitle();
   }
