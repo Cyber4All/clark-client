@@ -95,7 +95,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.name
+        this.learningObject.id
       );
     }
 
@@ -131,7 +131,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.name
+        this.learningObject.id
       );
     }
   }
