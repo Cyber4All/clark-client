@@ -435,7 +435,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param index the index in the array of ratings that represents the rating to be deleted
    */
   async deleteRating(index) {
-    alert('whoo')
     // 'index' here is the index in the ratings array to delete
     const shouldDelete = await this.modalService
       .makeDialogMenu(
