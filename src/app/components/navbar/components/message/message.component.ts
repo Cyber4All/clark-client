@@ -15,12 +15,12 @@ export class MessageComponent implements OnInit {
   constructor(private messages: MessagesService) { }
 
   ngOnInit() {
-    if (environment.production) {
+    // if (environment.production) {
       this.getMessage();
       setInterval(async () => {
         this.getMessage();
       }, 300000); // 5 min interval
-    }
+    // }
   }
 
   getMessage() {
