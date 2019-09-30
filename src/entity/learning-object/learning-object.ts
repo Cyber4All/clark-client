@@ -25,6 +25,24 @@ export class LearningObject {
       throw new EntityError(LEARNING_OBJECT_ERRORS.ID_SET, 'id');
     }
   }
+
+  private _cuid?: string;
+
+   /**
+   * A CLARK Universal Identifier.
+   *
+   * The CUID property maintains the relationship between
+   * released Learning Objects and their working copies. Since each are separate documents, they mmust
+   * have a unique _id property that can be used as a foreign key, but can share a CUID.
+   *
+   * @private
+   * @type {string}
+   * @memberof LearningObject
+   */
+  get cuid(): string {
+    return this._cuid;
+  }
+
   /**
    * @property {User} author (immutable)
    *       the user this learning object belongs to
@@ -243,6 +261,7 @@ export class LearningObject {
   constructor(object?: Partial<LearningObject>) {
     // @ts-ignore Id will be undefined on creation
     this._id = undefined;
+    this._cuid = undefined;
     this._author = new User();
     this._name = '';
     this._description = '';
@@ -558,6 +577,10 @@ private _hasRevision?: boolean;
       this.id = object.id;
     }
 
+    if (object.cuid) {
+      this._cuid = object.cuid;
+    }
+
     if (object.author) {
       this._author = new User(object.author);
     }
@@ -632,6 +655,7 @@ private _hasRevision?: boolean;
   public toPlainObject(): Partial<LearningObject> {
     const object: Partial<LearningObject> = {
       id: this.id,
+      cuid: this.cuid,
       author: this.author.toPlainObject() as User,
       name: this.name,
       description: this.description,
