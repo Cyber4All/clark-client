@@ -88,7 +88,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private ratingService: RatingService,
     private toastService: ToasterService,
-    private modalService: ModalService,
+    public modalService: ModalService,
     private router: Router,
     private changelogService: ChangelogService,
     private notificationService: ToasterService,
