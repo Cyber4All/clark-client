@@ -32,7 +32,7 @@ export class MessagesService {
           // return this._message;
 
           // tslint:disable-next-line: max-line-length
-          this._message = new Message(true, 'Learning Object ratings have been temporarily disabled while we perform scheduled maintenance.', 'far fa-exclamation-circle');
+          this._message = new Message(true, 'CLARK will be temporarily offline for scheduled maintenance on Thursday, October 3rd, from 5PM to 7PM EDT.', 'far fa-exclamation-circle');
           return this._message;
         });
     }
