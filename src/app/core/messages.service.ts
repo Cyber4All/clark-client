@@ -28,28 +28,36 @@ export class MessagesService {
         )
         .toPromise()
         .then((val: Message) => {
+          // this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          // return this._message;
 
-          // TODO remove this when the messages banner no longer needs to be displayed
-          val = {
-            iconClass: 'far fa-exclamation-circle',
-            message: 'CLARK will be offline for scheduled maintenance Saturday, September 21st, from 10AM to 12PM.',
-            isUnderMaintenance: true
-          };
-
-          this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          // tslint:disable-next-line: max-line-length
+          this._message = new Message(true, 'Learning Object ratings have been temporarily disabled while we perform scheduled maintenance.', 'far fa-exclamation-circle');
           return this._message;
         });
     }
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side or network returned error
-      return throwError(error.error.message);
-    } else {
-      // API returned error
-      return throwError(error);
+    getMaintenance() {
+        return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })
+        .pipe(
+            retry(3),
+            catchError(this.handleError)
+        )
+        .toPromise()
+        .then((val: boolean) => {
+            return val;
+        });
     }
-  }
+
+    private handleError(error: HttpErrorResponse) {
+        if (error.error instanceof ErrorEvent) {
+          // Client-side or network returned error
+          return throwError(error.error.message);
+        } else {
+          // API returned error
+          return throwError(error);
+        }
+      }
 }
 

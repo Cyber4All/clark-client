@@ -498,7 +498,8 @@ export const RATING_ROUTES = {
   }
 };
 export const MISC_ROUTES = {
-  CHECK_STATUS: `${environment.apiURL}/status`
+  CHECK_STATUS: `${environment.apiURL}/status`,
+  CHECK_MAINTENANCE: `${environment.apiURL}/maintenance`
 };
 
 export const STATS_ROUTES = {

@@ -91,7 +91,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private ratingService: RatingService,
     private toastService: ToasterService,
-    private modalService: ModalService,
+    public modalService: ModalService,
     private router: Router,
     private changelogService: ChangelogService,
     private notificationService: ToasterService,
@@ -169,7 +169,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     try {
       this.resetRatings();
 
-      const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
+      const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics'];
       this.uriRetrieverService.getLearningObject({author, name}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
