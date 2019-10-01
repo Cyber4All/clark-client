@@ -18,7 +18,7 @@
           </span>
         </div>
         <div class="header-bottom">
-          <div class="rating">
+          <div *ngIf="false" class="rating">
             <clark-rating-stars [rating]="averageRating" [reviewsCount]="ratings?.length"></clark-rating-stars>
             <a *ngIf="canRate"  id="write-review" (activate)="showRatingPopup()" aria-label="Clickable link write a review" tabindex="0">Write a review</a>
             <span class="emailNotVerified" *ngIf="!canRate && !owned" tip="Please log in and verify your email to rate this learning object.">
