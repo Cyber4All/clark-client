@@ -383,11 +383,14 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 
 export const RATING_ROUTES = {
   DELETE_RATING(params: {
+    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
@@ -396,11 +399,14 @@ export const RATING_ROUTES = {
     )}`;
   },
   EDIT_RATING(params: {
+    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
@@ -409,11 +415,14 @@ export const RATING_ROUTES = {
     )}`;
   },
   CREATE_RESPONSE(params: {
+    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID
     )}/version/${encodeURIComponent(
       params.version.toString(),
@@ -427,12 +436,15 @@ export const RATING_ROUTES = {
     )}/ratings/${encodeURIComponent(params.ratingId)}/responses`;
   },
   UPDATE_RESPONSE(params: {
+    username: string;
     CUID: string;
     version: number;
     ratingId: string;
     responseId: string;
   }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
@@ -443,12 +455,15 @@ export const RATING_ROUTES = {
     )}`;
   },
   DELETE_RESPONSE(params: {
+    username: string;
     CUID: string;
     version: number;
     ratingId: string;
     responseId: string;
   }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
@@ -459,31 +474,40 @@ export const RATING_ROUTES = {
     )}`;
   },
   CREATE_RATING(params: {
+    username: string;
     CUID: string;
     version: number;
   }) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
     )}/ratings`;
   },
   GET_LEARNING_OBJECT_RATINGS(params: {
-    CUID: string,
-    version: number,
+    username: string;
+    CUID: string;
+    version: number;
   }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
     )}/ratings`;
   },
   FLAG_LEARNING_OBJECT_RATING(params: {
+    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),

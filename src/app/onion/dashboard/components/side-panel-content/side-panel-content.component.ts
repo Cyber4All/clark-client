@@ -56,6 +56,7 @@ export class SidePanelContentComponent implements OnChanges {
     // loading the ratings for the object when the Learning Object input changes
     this.loadingRatings = true;
     this.ratingService.getLearningObjectRatings({
+      username: this.learningObject.author.username,
       CUID: this.learningObject.cuid,
       version: this.learningObject.revision,
     }).then(val => {
