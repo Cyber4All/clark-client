@@ -1,3 +1,4 @@
+<app-dialogmenu [content]="modalService.dialogMenuContent"></app-dialogmenu>
 <ng-container *ngIf="!loading.length; else loadingTemplate">
   <clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
   <div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
