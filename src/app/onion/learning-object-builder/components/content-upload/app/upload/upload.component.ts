@@ -491,7 +491,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fileManager
         .upload({
           authorUsername: learningObject.author.username,
-          learningObjectId: learningObject.id,
+          learningObjectCuid: learningObject.cuid,
           learningObjectRevisionId: learningObject.revision,
           files
         })

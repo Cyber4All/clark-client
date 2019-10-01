@@ -46,25 +46,25 @@ export class FileManagementService {
    */
   upload({
     authorUsername,
-    learningObjectId,
+    learningObjectCuid,
     learningObjectRevisionId,
     files
   }: {
     authorUsername: string;
-    learningObjectId: string;
+    learningObjectCuid: string;
     learningObjectRevisionId: number;
     files: FileInput[];
   }): Observable<UploadUpdate> {
     this.validateUploadParams({
       authorUsername,
-      learningObjectId,
+      learningObjectId: learningObjectCuid,
       learningObjectRevisionId
     });
     this.configureS3Client();
     const uploadUpdate$ = new Subject<UploadUpdate>();
     this.getCognitoIdentityId(authorUsername)
       .then(cognitoIdentityId => {
-        const bucketPath = `${cognitoIdentityId}/${learningObjectId}/${learningObjectRevisionId}`;
+        const bucketPath = `${cognitoIdentityId}/${learningObjectCuid}/${learningObjectRevisionId}`;
         this.startUploads(files, bucketPath, uploadUpdate$);
       })
       .catch(e => {
