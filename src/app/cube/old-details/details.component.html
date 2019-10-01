@@ -32,7 +32,7 @@
             purpose. Consistent with the Call for Proposals and the terms of the grant, in making these materials publicly available
             the U.S. Government authorizes others to reproduce, publish and use them in furtherance of this Federal purpose.</p>
         </div>
-        <div #ratingsWrapper class="ratings">
+        <div *ngIf="false" #ratingsWrapper class="ratings">
           <clark-learning-object-ratings [ratings]="ratings" [averageRating]="averageRatingValue" [learningObjectOwners]="learningObjectOwners" [loggedIn]="loggedin" (editRating)="showAddRating = true;"
             (deleteRating)="deleteRating($event)" (editResponse)="editResponse($event);" (deleteResponse)="deleteResponse($event)" (reportRating)="reportRating($event)" (respondRating)="submitResponse($event)"></clark-learning-object-ratings>
             <button tabindex="0" *ngIf="!isMobile && loggedin && !isOwnObject" tip="You must verify your email in order to review Learning Objects." [tipDisabled]="auth.user.emailVerified"

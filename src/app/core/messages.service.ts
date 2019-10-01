@@ -28,7 +28,11 @@ export class MessagesService {
         )
         .toPromise()
         .then((val: Message) => {
-          this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          // this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          // return this._message;
+
+          // tslint:disable-next-line: max-line-length
+          this._message = new Message(true, 'Learning Object ratings have been temporarily disabled while we perform scheduled maintenance.', 'far fa-exclamation-circle');
           return this._message;
         });
     }
