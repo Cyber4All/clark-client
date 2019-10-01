@@ -19,13 +19,15 @@ export class RatingService {
    * @returns {Promise<any>}
    */
   createResponse(params: {
-    learningObjectId: string;
+    CUID: string;
+    version: number;
     ratingId: string;
     response: { comment: string }
   }): Promise<any> {
     const res = this.http.post(
       RATING_ROUTES.CREATE_RESPONSE({
-        learningObjectId: params.learningObjectId,
+        CUID: params.CUID,
+        version: params.version,
         ratingId: params.ratingId,
       }),
       params.response,
@@ -48,14 +50,16 @@ export class RatingService {
    * @returns {Promise<any>}
    */
   editResponse(params: {
-    learningObjectId: string;
+    CUID: string;
+    version: number;
     ratingId: string;
     responseId: string;
     updates: { comment: string };
   }): Promise<any> {
     const res = this.http.patch(
       RATING_ROUTES.UPDATE_RESPONSE({
-        learningObjectId: params.learningObjectId,
+        CUID: params.CUID,
+        version: params.version,
         ratingId: params.ratingId,
         responseId: params.responseId,
       }),
@@ -77,13 +81,15 @@ export class RatingService {
   * @returns {Promise<any>}
   */
   deleteResponse(params: {
-    learningObjectId: string;
+    CUID: string;
+    version: number;
     ratingId: string;
     responseId: string;
   }): Promise<any> {
     const res = this.http.delete(
       RATING_ROUTES.DELETE_RESPONSE({
-        learningObjectId: params.learningObjectId,
+        CUID: params.CUID,
+        version: params.version,
         ratingId: params.ratingId,
         responseId: params.responseId,
       }),
@@ -103,13 +109,15 @@ export class RatingService {
   * @returns {Promise<any>}
   */
   createRating(params: {
-    learningObjectId: string,
+    CUID: string;
+    version: number;
     rating: { value: number, comment: string };
   }) {
     return this.http
       .post(
         RATING_ROUTES.CREATE_RATING({
-          learningObjectId: params.learningObjectId,
+          CUID: params.CUID,
+          version: params.version,
         }),
         params.rating,
         {
@@ -132,14 +140,16 @@ export class RatingService {
   * @returns {Promise<any>}
   */
   editRating(params: {
-    learningObjectId: string;
+    CUID: string;
+    version: number;
     ratingId: string;
     rating: { value: number, comment: string };
   }) {
     return this.http
       .patch(
         RATING_ROUTES.EDIT_RATING({
-          learningObjectId: params.learningObjectId,
+          CUID: params.CUID,
+          version: params.version,
           ratingId: params.ratingId,
         }),
         params.rating,
@@ -158,18 +168,21 @@ export class RatingService {
   /**
    * Delete a rating
    *
-   * @param {string} learningObjectId
+   * @param {string} CUID
+   * @param {string} version
    * @param {string} ratingId
    * @returns {Promise<any>}
    */
   deleteRating(params: {
-    learningObjectId: string;
+    CUID: string;
+    version: number;
     ratingId: string;
   }) {
     return this.http
       .delete(
         RATING_ROUTES.DELETE_RATING({
-          learningObjectId: params.learningObjectId,
+          CUID: params.CUID,
+          version: params.version,
           ratingId: params.ratingId,
         }),
         {
@@ -187,16 +200,19 @@ export class RatingService {
   /**
    * Get ratings for a learning object
    *
-   * @param {string} learningObjectId
+   * @param {string} CUID
+   * @param {string} version
    * @returns {Promise<any>}
    */
   getLearningObjectRatings(params: {
-    learningObjectId: string;
+    CUID: string;
+    version: number;
   }): Promise<any> {
     return this.http
       .get(
         RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS({
-          learningObjectId: params.learningObjectId,
+          CUID: params.CUID,
+          version: params.version,
         }),
         {
           withCredentials: true
@@ -221,19 +237,22 @@ export class RatingService {
   /**
    * Flag a rating
    *
-   * @param {string} learningObjectId
+   * @param {string} CUID
+   * @param {string} version
    * @param {string} ratingId
    * @param {{concern: string, comment: string}} report
    * @returns {Promise<any>}
    */
   flagLearningObjectRating(params: {
-    learningObjectId: string;
+    CUID: string;
+    version: number;
     ratingId: string;
     report: { concern: string, comment?: string }
   }): Promise<any> {
     return this.http.post(
       RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING({
-        learningObjectId: params.learningObjectId,
+        CUID: params.CUID,
+        version: params.version,
         ratingId: params.ratingId,
       }),
       params.report,
@@ -244,27 +263,6 @@ export class RatingService {
         catchError(this.handleError)
       )
       .toPromise();
-  }
-
-  // TODO implement this
-  getUserRatings() {
-    const stubUsername = 'nvisal1';
-    const stubLearningObjectName = 'testing contributors 3';
-    return this.http
-      .get(
-        RATING_ROUTES.GET_USER_RATINGS(stubUsername),
-        {
-          withCredentials: true
-        }
-      )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then(val => {
-        // console.log(val);
-      });
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -28,7 +28,7 @@ export class LearningObject {
 
   private _cuid?: string;
 
-   /**
+  /**
    * A CLARK Universal Identifier.
    *
    * The CUID property maintains the relationship between
