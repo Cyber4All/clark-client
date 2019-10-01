@@ -1,6 +1,7 @@
 @import '~_vars.scss';
 
 $spin-duration: 6s;
+$flicker-duration: 14s;
 
 .maintenance {
   width: 100vw;
@@ -12,6 +13,7 @@ $spin-duration: 6s;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  // animation: flicker $flicker-duration linear forwards infinite;
 
   & > * {
     flex-grow: 0;

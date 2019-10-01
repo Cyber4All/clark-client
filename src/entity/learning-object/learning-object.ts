@@ -42,6 +42,7 @@ export class LearningObject {
   get cuid(): string {
     return this._cuid;
   }
+
   /**
    * @property {User} author (immutable)
    *       the user this learning object belongs to

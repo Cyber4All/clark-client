@@ -63,7 +63,7 @@ export class SidePanelContentComponent implements OnChanges {
       this.averageRating = val ? val.avgValue : 0;
       this.ratings = val ? val.ratings : [];
 
-      this.loadingRatings = true;
+      this.loadingRatings = false;
     });
     if (environment.experimental) {
       this.learningObjectService.getLearningObjectRevision(
