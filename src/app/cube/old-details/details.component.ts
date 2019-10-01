@@ -23,7 +23,7 @@ export interface Rating {
   comment: string;
   date: number;
   source?: {
-    CUID: string,
+    cuid: string,
     version: number,
   };
   response?: object;
@@ -169,7 +169,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     try {
       this.resetRatings();
 
-      const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics'];
+      const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
       this.uriRetrieverService.getLearningObject({author, name}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
@@ -462,8 +462,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.ratingService
         .deleteRating({
           username: this.learningObject.author.username,
-          CUID: this.ratings[index].source.CUID,
-          version: this.ratings[index].source.version,
+          CUID: this.learningObject.cuid,
+          version: this.learningObject.version,
           ratingId: this.ratings[index].id,
         })
         .then(val => {
