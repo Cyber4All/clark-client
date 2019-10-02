@@ -95,7 +95,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.name
+        this.learningObject.cuid,
+        this.learningObject.revision
       );
     }
 
@@ -131,17 +132,18 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.name
+        this.learningObject.cuid,
+        this.learningObject.revision
       );
     }
   }
 
 
-  download(author: string, learningObjectName: string) {
+  download(author: string, learningObjectCuid: string, version: number) {
     this.downloading = true;
     const revision = this.revisedVersion || (!this.isReleased && !this.revisedVersion);
     const loaded = this.cartService
-      .downloadLearningObject(author, learningObjectName, revision).pipe(
+      .downloadLearningObject(author, learningObjectCuid, version).pipe(
       takeUntil(this.destroyed$));
 
     this.toggleDownloadModal(true);

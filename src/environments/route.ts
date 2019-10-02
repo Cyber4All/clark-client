@@ -25,7 +25,7 @@ export const CHANGELOG_ROUTES = {
       params.userId,
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectId,
-      )}/changelogs?minusRevision=${params.minusRevision}`;
+    )}/changelogs?minusRevision=${params.minusRevision}`;
   }
 };
 
@@ -90,7 +90,7 @@ export const USER_ROUTES = {
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query
-      )}&${querystring.stringify(filters)}&draftsOnly=true`;
+    )}&${querystring.stringify(filters)}&draftsOnly=true`;
   },
   GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -110,9 +110,9 @@ export const USER_ROUTES = {
   UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
     return `${
       environment.apiURL
-    }/users/${username}/learning-objects/${encodeURIComponent(
-      learningObjectName
-    )}`;
+      }/users/${username}/learning-objects/${encodeURIComponent(
+        learningObjectName
+      )}`;
   },
   SUBMIT_LEARNING_OBJECT(params: {
     userId: string,
@@ -120,7 +120,7 @@ export const USER_ROUTES = {
   }) {
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
+      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
   },
   UNSUBMIT_LEARNING_OBJECT(params: {
     userId: string,
@@ -128,7 +128,7 @@ export const USER_ROUTES = {
   }) {
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
+      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
   },
   CHECK_FIRST_SUBMISSION(params: {
     userId: string,
@@ -141,7 +141,7 @@ export const USER_ROUTES = {
     const q = 'collection=' + params.query.collection + '&hasSubmission=' + params.query.hasSubmission;
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
+      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
@@ -226,20 +226,15 @@ export const USER_ROUTES = {
       learningObjectName
     )}`;
   },
-  DOWNLOAD_OBJECT(author, learningObjectName) {
+  DOWNLOAD_OBJECT(username: string, learningObjectCuid: string, version: number) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      author
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}/bundle`;
-  },
-  DOWNLOAD_REVISED_OBJECT(author, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      author
-    )}/learning-objects/${learningObjectName}/bundle?revision`;
+      username
+    )}/learning-objects/${encodeURIComponent(learningObjectCuid)}/versions/${encodeURIComponent(version.toString())}/bundle`;
   },
   GET_SAME_ORGANIZATION(organization) {
     return `${
       environment.apiURL
-    }/users/search?organization=${encodeURIComponent(organization)}`;
+      }/users/search?organization=${encodeURIComponent(organization)}`;
   },
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
@@ -320,7 +315,7 @@ export const USER_ROUTES = {
       params.username
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
       params.uploadId
-    }/admin`;
+      }/admin`;
   },
   ABORT_MULTIPART(params: {
     username: string;
@@ -341,7 +336,7 @@ export const USER_ROUTES = {
       params.username
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
       params.uploadId
-    }/admin`;
+      }/admin`;
   }
 };
 
@@ -350,10 +345,11 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
     return `${environment.apiURL}/learning-objects?${query}`;
   },
-  GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      author
-    )}/${encodeURIComponent(learningObjectName)}`;
+  GET_PUBLIC_LEARNING_OBJECT(author: string, cuid: string, version: number) {
+    return `${environment.apiURL}
+    /users/${encodeURIComponent(author)}
+    /learning-objects/${encodeURIComponent(cuid)}
+    /${encodeURIComponent(version.toString())}`;
   },
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_META(name: string) {
@@ -377,7 +373,7 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
       params.username
     )}/learning-objects/${params.loId}/files/${params.fileId}/download${
       params.open ? '?open=true' : ''
-    }`;
+      }`;
   }
 };
 

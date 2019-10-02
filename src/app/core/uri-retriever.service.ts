@@ -24,7 +24,7 @@ export class UriRetrieverService {
    * @params resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
    */
   getLearningObject(
-    params: { author?: string, name?: string, id?: string },
+    params: { author?: string, cuidInfo?: { cuid: string, version: number }, id?: string },
     resources?: string[]
   ): Observable<LearningObject> {
     try {
@@ -51,7 +51,7 @@ export class UriRetrieverService {
    * @param properties the properties (i.e. children, parents, etc) that have been requested
    */
   getLearningObjectResources(
-    params: { author?: string, name?: string, id?: string },
+    params: { author?: string, cuidInfo?: { cuid: string, version: number }, id?: string },
     properties?: string[]
   ) {
     try {
@@ -100,11 +100,9 @@ export class UriRetrieverService {
    * @params author is the username of the author
    * @params learningObjectName is the name of the learning object
    */
-  getLearningObjectSummary(author: string, learningObjectName: string): Observable<any> {
+  getLearningObjectSummary(author: string, cuid: string, version: number): Observable<any> {
     return this.http.get<LearningObject>(
-      PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
-        author, learningObjectName
-        ))
+      PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(author, cuid, version))
         .pipe(
           retry(3),
           catchError(this.handleError)
@@ -265,13 +263,13 @@ export class UriRetrieverService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  private setRoute(params: {author?: string, name?: string, id?: string}) {
+  private setRoute(params: {author?: string, cuidInfo?: { cuid: string, version: number }, id?: string}) {
     let route;
      // Sets route to be hit based on if the id or if author and Learning Object name have been provided
      if (params.id) {
       route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
-    } else if (params.author && params.name) {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.name);
+    } else if (params.author && params.cuidInfo) {
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;

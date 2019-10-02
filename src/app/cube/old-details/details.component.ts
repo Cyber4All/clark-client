@@ -104,7 +104,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.learningObjectName = decodeURIComponent(params['learningObjectName']);
       this.fetchReleasedLearningObject(
         params['username'],
-        this.learningObjectName,
+        this.learningObject.cuid,
+        this.learningObject.version
       );
     });
 
@@ -163,7 +164,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param author the author of the learning object
    * @param name the name of the learning object
    */
-  async fetchReleasedLearningObject(author: string, name: string) {
+  async fetchReleasedLearningObject(author: string, cuid: string, version: number) {
     this.loading.push(1);
 
     try {

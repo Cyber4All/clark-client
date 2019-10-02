@@ -160,23 +160,16 @@ export class CartV2Service {
 
   downloadLearningObject(
     author: string,
-    learningObjectName: string,
-    revisedVersion: boolean
+    learningObjectCuid: string,
+    version: number
   ): BehaviorSubject<boolean> {
     const url = USER_ROUTES.DOWNLOAD_OBJECT(
       author,
-      learningObjectName
-    );
-    const revisedUrl = USER_ROUTES.DOWNLOAD_REVISED_OBJECT(
-      author,
-      learningObjectName
+      learningObjectCuid,
+      version
     );
     const iframe = document.createElement('iframe');
-    if (revisedVersion) {
-      iframe.src = revisedUrl;
-    } else {
-      iframe.src = url;
-    }
+    iframe.src = url;
     iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
 
     const loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
