@@ -59,7 +59,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogs = [];
 
-  learningObjectName: string;
+  cuid: string;
   ariaLabel: string;
 
   userRating: {
@@ -101,11 +101,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
-      this.learningObjectName = decodeURIComponent(params['learningObjectName']);
+      this.cuid = decodeURIComponent(params['learningObjectName']);
       this.fetchReleasedLearningObject(
         params['username'],
-        this.learningObject.cuid,
-        this.learningObject.version
+        params['learningObjectName']
       );
     });
 
@@ -164,14 +163,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param author the author of the learning object
    * @param name the name of the learning object
    */
-  async fetchReleasedLearningObject(author: string, cuid: string, version: number) {
+  async fetchReleasedLearningObject(author: string, cuid: string) {
     this.loading.push(1);
 
     try {
       this.resetRatings();
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-      this.uriRetrieverService.getLearningObject({author, name}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+      this.uriRetrieverService.getLearningObject({author, cuidInfo: { cuid }}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
 

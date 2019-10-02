@@ -24,20 +24,11 @@ export class UriRetrieverService {
    * @params resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
    */
   getLearningObject(
-    params: { author?: string, cuidInfo?: { cuid: string, version: number }, id?: string },
+    params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
     resources?: string[]
   ): Observable<LearningObject> {
     try {
-      // fill the properties array with either the content of the resources array if it is passed in or set it to empty
-      let properties: string[];
-      if (resources) {
-        properties = resources;
-      } else {
-        properties = [];
-      }
-
-      const request = this.getLearningObjectResources(params, properties);
-
+      const request = this.getLearningObjectResources(params, resources || []);
       return this.getFullLearningObject(request, resources);
     } catch (err) {
       throw err;
@@ -51,7 +42,7 @@ export class UriRetrieverService {
    * @param properties the properties (i.e. children, parents, etc) that have been requested
    */
   getLearningObjectResources(
-    params: { author?: string, cuidInfo?: { cuid: string, version: number }, id?: string },
+    params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
     properties?: string[]
   ) {
     try {
@@ -63,6 +54,15 @@ export class UriRetrieverService {
       this.http.get<LearningObject>(route).pipe(
         retry(3),
         tap(entity => {
+
+          if (Array.isArray(entity)) {
+            if (entity.length > 1) {
+              entity = entity.filter(e => e.status === LearningObject.Status.RELEASED)[0];
+            } else {
+              entity = entity.pop();
+            }
+          }
+
           const uris = Object.assign(entity.resourceUris);
           let completed = 0;
           Object.keys(uris).map(key => {
@@ -263,7 +263,7 @@ export class UriRetrieverService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  private setRoute(params: {author?: string, cuidInfo?: { cuid: string, version: number }, id?: string}) {
+  private setRoute(params: {author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string}) {
     let route;
      // Sets route to be hit based on if the id or if author and Learning Object name have been provided
      if (params.id) {

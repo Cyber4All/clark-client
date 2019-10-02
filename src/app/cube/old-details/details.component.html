@@ -1,7 +1,7 @@
 <app-dialogmenu [content]="modalService.dialogMenuContent"></app-dialogmenu>
 <ng-container *ngIf="!loading.length; else loadingTemplate">
   <clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
-  <div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
+  <div *ngIf="learningObject && !errorStatus && !loading.length" class="details-wrapper" [ngClass]="learningObject.length">
     <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [canViewChangelogs]="loggedin && auth.user.emailVerified" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;" (openChangelogModal)="openViewAllChangelogsModal()"></cube-details-splash>
     <div class="flex">
       <div class="content">
@@ -86,7 +86,7 @@
 
 <ng-template #loadingTemplate>
   <div class="loading">
-    <i class="far fa-spinner-third fa-spin" aria-live="assertive"></i>Loading "{{ learningObjectName }}"
+    <i class="far fa-spinner-third fa-spin" aria-live="assertive"></i>Loading Learning Object...
 
   </div>
 </ng-template>

@@ -18,13 +18,13 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
-      this.getLearningObject(username, learningObjectName);
+      // this.getLearningObject(username, learningObjectName);
     });
   }
 
-  async getLearningObject(username: string, learningObjectName: string) {
+  async getLearningObject(username: string, cuid: string, version: number) {
     this.loading = true;
-    this.learningObject = await this.learningObjectService.getLearningObject(username, learningObjectName);
+    this.learningObject = await this.learningObjectService.getLearningObject(username, cuid, version);
     this.loading = false;
   }
 
