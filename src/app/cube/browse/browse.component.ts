@@ -250,6 +250,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   toggleFilters() {
     this.filtersDownMobile = !this.filtersDownMobile;
+    this.cd.detectChanges();
   }
 
   closeFilters() {
