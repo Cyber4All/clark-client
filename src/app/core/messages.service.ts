@@ -28,11 +28,7 @@ export class MessagesService {
         )
         .toPromise()
         .then((val: Message) => {
-          // this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
-          // return this._message;
-
-          // tslint:disable-next-line: max-line-length
-          this._message = new Message(true, 'CLARK will be temporarily offline for scheduled maintenance on Thursday, October 3rd, from 5PM to 7PM EDT.', 'far fa-exclamation-circle');
+          this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
           return this._message;
         }).catch(_ => {
           // tslint:disable-next-line: max-line-length
