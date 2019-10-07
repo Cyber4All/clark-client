@@ -1,10 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
 import { RatingService } from 'app/core/rating.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { environment } from '@env/environment';
+import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -26,16 +28,18 @@ import { environment } from '@env/environment';
   ])
   ]
 })
-export class SidePanelContentComponent implements OnChanges {
+export class SidePanelContentComponent implements OnChanges, OnDestroy {
+
+  private isDestroyed$ = new Subject<void>();
 
   @Input() controller$: BehaviorSubject<boolean>;
 
-  @Input() learningObject: LearningObject;
+  @Input() learningObjects: LearningObject[];
 
 
   ratings: any[];
   averageRating: number;
-  loadingRatings: boolean;
+  loadingResources: boolean;
   meatballOpen: boolean;
 
   // Output for context menu option to submit revision for review
@@ -45,33 +49,40 @@ export class SidePanelContentComponent implements OnChanges {
   @Output() createRevision: EventEmitter<LearningObject> = new EventEmitter();
   // FIXME will use flag when backend is implemented
   hasRevision = environment.experimental;
-  revision: LearningObject;
+  revisionLearningObject: LearningObject;
+  releasedLearningObject: LearningObject;
 
   constructor(
     private ratingService: RatingService,
-    private learningObjectService: LearningObjectService
+    private learningObjectService: LearningObjectService,
+    private uriRetrieverService: UriRetrieverService,
     ) { }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.setLearningObjects();
     // loading the ratings for the object when the Learning Object input changes
-    this.loadingRatings = true;
-    this.ratingService.getLearningObjectRatings({
-      username: this.learningObject.author.username,
-      CUID: this.learningObject.cuid,
-      version: this.learningObject.revision,
-    }).then(val => {
-      this.averageRating = val ? val.avgValue : 0;
-      this.ratings = val ? val.ratings : [];
-
-      this.loadingRatings = false;
+    this.loadingResources = true;
+    const resources = ['metrics', 'ratings'];
+    // tslint:disable-next-line:max-line-length
+    this.uriRetrieverService.getLearningObject({cuidInfo: { cuid: this.revisionLearningObject.cuid }}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+      if (object) {
+        console.log('RESOURCES', object);
+      }
     });
-    if (environment.experimental) {
-      this.learningObjectService.getLearningObjectRevision(
-        this.learningObject.author.username, this.learningObject.id, this.learningObject.revision)
-        .then(revision => {
-        this.revision = revision;
-      });
-    }
+    // this.averageRating = val ? val.avgValue : 0;
+    // this.ratings = val ? val.ratings : [];
+
+    this.loadingResources = false;
+  }
+
+  setLearningObjects() {
+    const filteredRevisionLearningObjects = this.learningObjects
+      .filter(learningObject => learningObject.status !== LearningObject.Status.RELEASED);
+    const filteredReleasedLearningObjects = this.learningObjects
+    .filter(learningObject => learningObject.status === LearningObject.Status.RELEASED);
+
+    this.revisionLearningObject = filteredRevisionLearningObjects[0];
+    this.releasedLearningObject = filteredReleasedLearningObjects[0];
   }
 
   /**
@@ -81,5 +92,10 @@ export class SidePanelContentComponent implements OnChanges {
    */
   close() {
     this.controller$.next(false);
+  }
+
+  ngOnDestroy() {
+    this.isDestroyed$.next();
+    this.isDestroyed$.unsubscribe();
   }
 }

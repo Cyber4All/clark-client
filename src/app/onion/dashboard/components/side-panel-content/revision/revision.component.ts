@@ -52,5 +52,4 @@ export class RevisionComponent implements OnChanges {
     this.createRevision.emit();
     this.hasRevision = true;
   }
-
 }
