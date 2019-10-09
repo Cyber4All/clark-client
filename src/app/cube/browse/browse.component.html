@@ -20,7 +20,7 @@
           <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
         </span>
         <div class="results-options" id="results-options">
-          <button #filterMenuButtonElement aria-label="Filter search results" class="button sort" (activate)="toggleFilters()">{{ copy.FILTERS }} <i class="far fa-sliders-h"></i></button>
+          <button *ngIf="isMobile" #filterMenuButtonElement aria-label="Filter search results" class="button sort" (activate)="toggleFilters()">{{ copy.FILTERS }} <i class="far fa-sliders-h"></i></button>
           <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria" tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
           <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">{{ showClearSort ? sortText : 'Sort' }}<i class="far fa-angle-down"></i></button>
         </div>

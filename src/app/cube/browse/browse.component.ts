@@ -111,6 +111,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
     this.windowWidth = event.target.innerWidth;
+    this.cd.detectChanges();
   }
 
   constructor(
