@@ -53,6 +53,7 @@ export class UriRetrieverService {
 
       this.http.get<LearningObject>(route).pipe(
         retry(3),
+        catchError(err => throwError(err)),
         tap(entity => {
 
           if (Array.isArray(entity)) {
@@ -81,7 +82,7 @@ export class UriRetrieverService {
           responses.next(new LearningObject(entity));
         }),
         takeUntil(end),
-        catchError(this.handleError),
+        catchError(err => throwError(err))
       ).subscribe();
 
       return responses;
@@ -105,7 +106,7 @@ export class UriRetrieverService {
       PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(author, cuid, version))
         .pipe(
           retry(3),
-          catchError(this.handleError)
+          catchError(err => throwError(err))
         );
   }
 
@@ -114,7 +115,7 @@ export class UriRetrieverService {
    * @param uri this is the uri that should be hit to get the objects outcomes
    */
   getLearningObjectOutcomes(uri: string): Observable<LearningOutcome[]> {
-    return this.http.get<LearningOutcome[]>(uri).pipe(retry(3), catchError(this.handleError));
+    return this.http.get<LearningOutcome[]>(uri).pipe(retry(3), catchError(err => throwError(err)));
   }
 
   /**
@@ -126,14 +127,14 @@ export class UriRetrieverService {
       return this.http.get<LearningObject[]>(params.uri, { withCredentials: true })
       .pipe(
         retry(3),
-        catchError(this.handleError),
+        catchError(err => throwError(err)),
         take(1),
       );
     } else {
       return this.http.get<LearningObject[]>(params.uri, { withCredentials: true })
       .pipe(
         retry(3),
-        catchError(this.handleError),
+        catchError(err => throwError(err)),
         take(1)
       );
     }
@@ -147,7 +148,7 @@ export class UriRetrieverService {
     return this.http.get(uri, { withCredentials: true })
     .pipe(
       retry(3),
-      catchError(this.handleError)
+      catchError(err => throwError(err)),
     );
   }
 
@@ -156,7 +157,7 @@ export class UriRetrieverService {
    * @param uri this is the uri that should be hit to get the object's metrics
    */
   getLearningObjectMetrics(uri: string): Observable<any> {
-    return this.http.get<any>(uri).pipe(retry(3), catchError(this.handleError));
+    return this.http.get<any>(uri).pipe(retry(3), catchError(err => throwError(err)));
   }
 
   /**
@@ -165,21 +166,12 @@ export class UriRetrieverService {
    * @param unreleased this is the boolean that filters learning object parents by everything (including released)
    */
   getLearningObjectParents(params: {uri: string, unreleased?: boolean}): Observable<LearningObject[]> {
-    if (params.unreleased === true) {
-      return this.http.get<LearningObject[]>(params.uri, { withCredentials: true})
-      .pipe(
-        retry(3),
-        catchError(this.handleError),
-        take(1)
-      );
-    } else {
-      return this.http.get<LearningObject[]>(params.uri, { withCredentials: true})
-      .pipe(
-        retry(3),
-        catchError(this.handleError),
-        take(1),
-      );
-    }
+    return this.http.get<LearningObject[]>(params.uri, { withCredentials: true})
+    .pipe(
+      retry(3),
+      catchError(err => throwError(err)),
+      take(1)
+    );
   }
 
   /**
@@ -191,7 +183,7 @@ export class UriRetrieverService {
     .get(uri, { withCredentials: true })
     .pipe(
       retry(3),
-      catchError(this.handleError),
+      catchError(err => throwError(err)),
       filter(response => response != null),
       map((response: any) => {
         const ratings = response.ratings.map((r: any) => {
@@ -202,16 +194,6 @@ export class UriRetrieverService {
         return { ...response, ratings };
       })
     );
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side or network returned error
-      return throwError(error.error.message);
-    } else {
-      // API returned error
-      return throwError(error);
-    }
   }
 
 
@@ -227,7 +209,8 @@ export class UriRetrieverService {
   private fetchUri(uri: string, callback?: Function) {
     return this.http.get(uri).pipe(
       take(1),
-      map(res => callback ? callback(res) : res)
+      map(res => callback ? callback(res) : res),
+      catchError(err => throwError(err))
     );
   }
 

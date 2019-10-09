@@ -628,16 +628,28 @@ private _hasRevision?: boolean;
     if (object.hasRevision === true) {
       this._hasRevision = object.hasRevision;
     }
+
     if (object.version != null) {
       this.version = object.version;
     }
+
     if (object.revision != null) {
       this.revision = object.revision;
     }
+
     if (object.parents) {
       this._parents = object.parents;
     }
-    if(object.resourceUris) {
+
+    if (object.metrics) {
+      this._metrics = object.metrics;
+    }
+
+    if (object.ratings) {
+      this._ratings = object.ratings;
+    }
+
+    if (object.resourceUris) {
       this._resourceUris = object.resourceUris;
     }
 

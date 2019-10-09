@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { RatingService } from 'app/core/rating.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { environment } from '@env/environment';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, catchError, take } from 'rxjs/operators';
 
 
 @Component({
@@ -34,55 +34,65 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
 
   @Input() controller$: BehaviorSubject<boolean>;
 
-  @Input() learningObjects: LearningObject[];
+  @Input() learningObject: LearningObject;
 
+  releasedLearningObject: LearningObject;
+  revisionLearningObject: LearningObject;
 
   ratings: any[];
   averageRating: number;
-  loadingResources: boolean;
   meatballOpen: boolean;
+
+  loadingObject: boolean;
+  loadingRevision: boolean;
 
   // Output for context menu option to submit revision for review
   @Output()
   submit: EventEmitter<void> = new EventEmitter();
 
   @Output() createRevision: EventEmitter<LearningObject> = new EventEmitter();
-  // FIXME will use flag when backend is implemented
-  hasRevision = environment.experimental;
-  revisionLearningObject: LearningObject;
-  releasedLearningObject: LearningObject;
+  hasRevision: boolean;
 
   constructor(
-    private ratingService: RatingService,
-    private learningObjectService: LearningObjectService,
     private uriRetrieverService: UriRetrieverService,
     ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.setLearningObjects();
-    // loading the ratings for the object when the Learning Object input changes
-    this.loadingResources = true;
-    const resources = ['metrics', 'ratings'];
-    // tslint:disable-next-line:max-line-length
-    this.uriRetrieverService.getLearningObject({cuidInfo: { cuid: this.revisionLearningObject.cuid }}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
-      if (object) {
-        console.log('RESOURCES', object);
-      }
-    });
-    // this.averageRating = val ? val.avgValue : 0;
-    // this.ratings = val ? val.ratings : [];
+    if (changes.learningObject) {
+      this.hasRevision = this.learningObject.hasRevision;
 
-    this.loadingResources = false;
-  }
+      this.loadingObject = true;
+      this.uriRetrieverService.getLearningObject({
+        author: this.learningObject.author.username,
+        cuidInfo: {
+          cuid: this.learningObject.cuid,
+          version: this.learningObject.revision,
+        },
+      }, ['metrics', 'ratings']).pipe(
+        take(1),
+      ).subscribe(object => {
+        this.releasedLearningObject = object;
+      }, _ => { }, () => {
+        this.loadingRevision = false;
+      });
 
-  setLearningObjects() {
-    const filteredRevisionLearningObjects = this.learningObjects
-      .filter(learningObject => learningObject.status !== LearningObject.Status.RELEASED);
-    const filteredReleasedLearningObjects = this.learningObjects
-    .filter(learningObject => learningObject.status === LearningObject.Status.RELEASED);
+      this.loadingObject = false;
+      this.loadingRevision = true;
 
-    this.revisionLearningObject = filteredRevisionLearningObjects[0];
-    this.releasedLearningObject = filteredReleasedLearningObjects[0];
+      this.uriRetrieverService.getLearningObject({
+        author: this.learningObject.author.username,
+        cuidInfo: {
+          cuid: this.learningObject.cuid,
+          version: this.learningObject.revision + 1,
+        },
+      }, ['metrics', 'ratings']).pipe(
+        take(1)
+      ).subscribe(object => {
+        this.revisionLearningObject = object;
+      }, _ => { }, () => {
+        this.loadingRevision = false;
+      });
+    }
   }
 
   /**

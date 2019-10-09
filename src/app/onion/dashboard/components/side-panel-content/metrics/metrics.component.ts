@@ -9,7 +9,6 @@ import { LearningObject } from '@entity';
 export class MetricsComponent implements OnInit {
 
   @Input() learningObject: LearningObject;
-  @Input() averageRating: number;
   constructor() { }
 
   ngOnInit() {

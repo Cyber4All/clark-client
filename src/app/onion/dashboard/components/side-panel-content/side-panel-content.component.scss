@@ -55,21 +55,8 @@
   }
 }
 
-.side-panel__welcome-message {
-  text-align: center;
-  margin-top: 70px;
-  padding: 20px;
-  color: $darker-grey;
-
-  &.title {
-    font-size: $normal;
-  }
-  &.message {
-    font-size: $normal;
-  }
-}
-
 .side-panel__metrics {
+  margin-top: 120px;
   padding: 20px;
 }
 
@@ -79,5 +66,21 @@
   margin-top: 50px;
   flex-direction: column;
   font-size: $normal;
+}
 
+.side-panel__loading {
+  color: $light-blue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: $dark-grey;
+  font-size: $large;
+
+  .svg-inline--fa {
+    color: $light-blue;
+    font-size: 30px;
+    margin-bottom: 15px;
+  }
 }

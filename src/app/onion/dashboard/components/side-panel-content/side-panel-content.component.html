@@ -1,34 +1,38 @@
 <div class="topbar"></div>
 <div class="side-panel">
-  <div class="side-panel__object">
-    <div class="side-panel-object__details">
-      <clark-panel-learning-object
-        [learningObject]="learningObject"
-      ></clark-panel-learning-object>
-      <div class="side-panel__button-bar">
-        <button
-          class="button good"
-          (activate)="close()"
-          [routerLink]="[
-            '/details',
-            learningObject.author.username,
-            learningObject.name
-          ]"
-          attr.aria-label="Visit {{ learningObject.name }}'s public listing"
-        >
-          Visit <i class="far fa-external-link"></i>
-        </button>
+  <ng-container *ngIf="!loadingObject && releasedLearningObject; else loadingObjectTemplate">
+    <div class="side-panel__object">
+      <div class="side-panel-object__details">
+        <clark-panel-learning-object
+          [learningObject]="releasedLearningObject"
+        ></clark-panel-learning-object>
+        <div class="side-panel__button-bar">
+          <button
+            class="button good"
+            (activate)="close()"
+            [routerLink]="[
+              '/details',
+              learningObject.author.username,
+              learningObject.name
+            ]"
+            attr.aria-label="Visit {{ learningObject.name }}'s public listing"
+          >
+            Visit <i class="far fa-external-link"></i>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="side-panel__welcome-message">
-    <h1 class="title"><b>Welcome to the Learning Object Information Panel!</b></h1>
-    <p class="message">Here you can currently find metrics for your Learning Object, and navigate to its public page on CLARK. We have more planned, so check back soon!</p>
-  </div>
-  <div class="side-panel__metrics">
-    <clark-metrics [learningObject]="learningObject" [averageRating]="averageRating"></clark-metrics>
-  </div>
-  <div *ngIf="hasRevision" class="side-panel__revision">
-    <clark-revision [hasRevision]="hasRevision" [revision]="revision" (createRevision)="createRevision.emit(learningObject)"></clark-revision>
-  </div>
+    <div class="side-panel__metrics">
+      <clark-metrics [learningObject]="releasedLearningObject"></clark-metrics>
+    </div>
+    <div *ngIf="!loadingRevision" class="side-panel__revision">
+      <clark-revision [hasRevision]="hasRevision" [revision]="revisionLearningObject" (createRevision)="createRevision.emit(learningObject)"></clark-revision>
+    </div>
+  </ng-container>
 </div>
+
+<ng-template #loadingObjectTemplate>
+  <div class="side-panel__loading">
+    <i class="far fa-spinner-third fa-spin"></i> Loading "{{ learningObject.name }}"
+  </div>
+</ng-template>
