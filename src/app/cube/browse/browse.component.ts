@@ -111,6 +111,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
     this.windowWidth = event.target.innerWidth;
+    this.cd.detectChanges();
   }
 
   constructor(
@@ -250,6 +251,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   toggleFilters() {
     this.filtersDownMobile = !this.filtersDownMobile;
+    this.cd.detectChanges();
   }
 
   closeFilters() {
