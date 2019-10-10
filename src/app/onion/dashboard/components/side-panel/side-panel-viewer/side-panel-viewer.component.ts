@@ -1,18 +1,11 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { slide, fade } from './side-panel-viewer.component.animations';
 import { SidePanelOptions } from '../panel.directive';
+import { fade } from '../panel.animations';
 
-@Component({
-  selector: 'clark-side-panel-viewer',
-  template: `
-    <ng-container *ngIf="isOpen">
-      <div (activate)="close()" [@fade] class="overlay"></div>
-      <div
-        [style.width]="contentWidth + 'px'"
-        (activate)="$event.stopPropagation()"
-        [@slide]="{
+/*
+[@slide]="{
           value: ':enter',
           params: {
             pixels: contentWidth + 40,
@@ -20,6 +13,16 @@ import { SidePanelOptions } from '../panel.directive';
             inSpeed: inSpeed
           }
         }"
+        */
+
+@Component({
+  selector: 'clark-side-panel-viewer',
+  template: `
+    <ng-container>
+      <div *ngIf="isOpen" (activate)="close.emit()" [@fade] class="overlay"></div>
+      <div
+        [style.width]="contentWidth + 'px'"
+        (activate)="$event.stopPropagation()"
         class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
       >
         <ng-content></ng-content>
@@ -27,7 +30,7 @@ import { SidePanelOptions } from '../panel.directive';
     </ng-container>
   `,
   styleUrls: ['./side-panel-viewer.component.scss'],
-  animations: [slide, fade]
+  animations: [fade]
 })
 export class SidePanelViewerComponent implements OnInit, OnDestroy {
   _controller$: BehaviorSubject<boolean>;
@@ -35,11 +38,14 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
 
   options: SidePanelOptions;
 
-  isOpen: boolean;
+  isOpen = true;
+
+  @Output() close = new EventEmitter<void>();
+
   private defaultWidth = 350;
   private destroyed$: Subject<void> = new Subject();
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Calculate the speed necessary to open te side panel
@@ -62,18 +68,11 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._controller$.pipe(takeUntil(this.destroyed$)).subscribe(val => {
-      this.isOpen = val;
-    });
-  }
-
-  /**
-   * Signals the side panel to close
-   *
-   * @memberof SidePanelViewerComponent
-   */
-  close() {
-    this._controller$.next(false);
+    this.close.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(() => {
+      this.isOpen = false;
+    })
   }
 
   ngOnDestroy() {
