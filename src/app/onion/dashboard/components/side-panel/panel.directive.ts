@@ -74,6 +74,11 @@ export class PanelDirective implements OnInit, OnDestroy {
     const domElem = (this.viewer.hostView as EmbeddedViewRef<any>)
     .rootNodes[0] as HTMLElement;
 
+    this.host.nativeElement.addEventListener('SidePanelCloseEvent', () => {
+      this.close.emit();
+      this.host.nativeElement.removeEventListener('SidePanelCloseEvent', () => { });
+    });
+
     document.body.appendChild(domElem);
     this.animationElement = domElem.querySelectorAll('.side-panel')[0] as HTMLElement;
 

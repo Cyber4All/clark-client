@@ -1,12 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { LearningObject } from '@entity';
-import { BehaviorSubject, Subject, throwError } from 'rxjs';
-import { RatingService } from 'app/core/rating.service';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { trigger, style, animate, transition } from '@angular/animations';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { environment } from '@env/environment';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { takeUntil, catchError, take } from 'rxjs/operators';
+import { take, takeUntil, filter } from 'rxjs/operators';
+import { Router, NavigationStart } from '@angular/router';
 
 
 @Component({
@@ -29,10 +27,7 @@ import { takeUntil, catchError, take } from 'rxjs/operators';
   ]
 })
 export class SidePanelContentComponent implements OnChanges, OnDestroy {
-
   private isDestroyed$ = new Subject<void>();
-
-  @Input() controller$: BehaviorSubject<boolean>;
 
   @Input() learningObject: LearningObject;
 
@@ -55,7 +50,17 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
 
   constructor(
     private uriRetrieverService: UriRetrieverService,
-    ) { }
+    private el: ElementRef,
+    private router: Router
+  ) {
+    // listen for navigation events and close the side panel
+    this.router.events.pipe(
+      takeUntil(this.isDestroyed$),
+      filter(event => event instanceof NavigationStart)
+    ).subscribe(() => {
+      this.close();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.learningObject) {
@@ -95,13 +100,8 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
     }
   }
 
-  /**
-   * Instruct the side panel directive to close the panel
-   *
-   * @memberof SidePanelContentComponent
-   */
   close() {
-    this.controller$.next(false);
+    this.el.nativeElement.dispatchEvent(new Event('SidePanelCloseEvent', { bubbles: false }));
   }
 
   ngOnDestroy() {

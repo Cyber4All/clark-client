@@ -26,11 +26,11 @@ export const slide = trigger('slide', [
 ]);
 
 export const slideIn = [
-  style({ transform: 'translateX(400px)', opacity: 0 }),
+  style({ transform: 'translateX(450px)', opacity: 0 }),
   animate('350ms 150ms ease', style({ transform: 'translateX(0px)', opacity: 1 }))
 ];
 
 export const slideOut = [
   style({ transform: 'translateX(0px)', opacity: 1 }),
-  animate('250ms ease', style({ transform: 'translateX(400px)', opacity: 0 }))
+  animate('250ms ease', style({ transform: 'translateX(450px)', opacity: 0 }))
 ]

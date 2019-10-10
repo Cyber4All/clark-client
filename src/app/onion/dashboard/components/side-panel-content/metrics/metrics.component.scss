@@ -1,33 +1,28 @@
 @import '~_vars.scss';
 
 .metrics__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 
-    & > * {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
+  & > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .metrics__amount {
-    font-size: $largest;
-    font-weight: bold;
-    color: $darker-grey;
+  font-size: $largest;
+  font-weight: bold;
+  color: $dark-grey;
+  margin-bottom: 5px;
 }
 
 .metrics__label {
-    font-size: $large;
-    color: $dark-grey;
+  font-size: $normal;
+  color: $dark-grey;
 }
 
-.metrics__title {
-    font-size: $larger;
-    color: $darker-grey;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
