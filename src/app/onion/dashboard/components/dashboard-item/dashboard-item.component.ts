@@ -181,7 +181,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    */
   async objectChildrenNames() {
     const result = [];
-    return this.uriRetriever.getLearningObjectChildren({uri: this.learningObject.resourceUris.children, unreleased: true}).toPromise().then(children => {
+    return this.uriRetriever.fetchUri(this.learningObject.resourceUris.children).toPromise().then((children: LearningObject[]) => {
       children.forEach(child => {
         result.push(child.name);
       });
