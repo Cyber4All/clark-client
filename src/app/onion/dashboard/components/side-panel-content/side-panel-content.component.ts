@@ -3,7 +3,7 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { take, takeUntil, filter } from 'rxjs/operators';
+import { take, takeUntil, filter, catchError, finalize } from 'rxjs/operators';
 import { Router, NavigationStart } from '@angular/router';
 
 
@@ -30,6 +30,9 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
   private isDestroyed$ = new Subject<void>();
 
   @Input() learningObject: LearningObject;
+  @Input() activePromise: Promise<any>;
+
+  promiseResolver = new Subject<Promise<any>>();
 
   releasedLearningObject: LearningObject;
   revisionLearningObject: LearningObject;
@@ -41,12 +44,14 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
   loadingObject: boolean;
   loadingRevision: boolean;
 
-  // Output for context menu option to submit revision for review
-  @Output()
-  submit: EventEmitter<void> = new EventEmitter();
+  hasRevision: boolean;
+
+  loadingText: string;
 
   @Output() createRevision: EventEmitter<LearningObject> = new EventEmitter();
-  hasRevision: boolean;
+  @Output() submitRevision: EventEmitter<LearningObject> = new EventEmitter();
+  @Output() cancelRevisionSubmission: EventEmitter<LearningObject> = new EventEmitter();
+  @Output() deleteRevision: EventEmitter<LearningObject> = new EventEmitter();
 
   constructor(
     private uriRetrieverService: UriRetrieverService,
@@ -64,40 +69,101 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.learningObject) {
-      this.hasRevision = this.learningObject.hasRevision;
+      this.fetchReleasedLearningObject();
+      this.fetchRevisionLearningObject();
+    } else if (changes.activePromise) {
+      this.promiseResolver.next(changes.activePromise.currentValue);
+    }
+  }
 
-      this.loadingObject = true;
+  fetchReleasedLearningObject() {
+    this.loadingObject = true;
+    this.fetchLearningObject(
+      this.learningObject.author.username,
+      this.learningObject.cuid,
+      this.learningObject.version
+    ).then(object => {
+      this.releasedLearningObject = object;
+    }).finally(() => {
+      this.loadingObject = false;
+    });
+  }
+
+  fetchRevisionLearningObject() {
+    this.loadingRevision = true;
+    this.fetchLearningObject(
+      this.learningObject.author.username,
+      this.learningObject.cuid,
+      this.learningObject.version + 1
+    ).then(object => {
+      this.revisionLearningObject = object;
+      this.hasRevision = true;
+    }).catch(_ => {
+      this.hasRevision = false;
+    }).finally(() => {
+      this.loadingRevision = false;
+    });
+  }
+
+  fetchLearningObject(username: string, cuid: string, version: number): Promise<LearningObject> {
+    return new Promise((resolve, reject) => {
       this.uriRetrieverService.getLearningObject({
-        author: this.learningObject.author.username,
-        cuidInfo: {
-          cuid: this.learningObject.cuid,
-          version: this.learningObject.revision,
-        },
+        author: username,
+        cuidInfo: { cuid, version},
       }, ['metrics', 'ratings']).pipe(
         take(1),
       ).subscribe(object => {
-        this.releasedLearningObject = object;
-      }, _ => { }, () => {
-        this.loadingRevision = false;
+        resolve(object);
+      }, err => {
+        reject(err);
       });
+    });
+  }
 
-      this.loadingObject = false;
-      this.loadingRevision = true;
-
-      this.uriRetrieverService.getLearningObject({
-        author: this.learningObject.author.username,
-        cuidInfo: {
-          cuid: this.learningObject.cuid,
-          version: this.learningObject.revision + 1,
-        },
-      }, ['metrics', 'ratings']).pipe(
-        take(1)
-      ).subscribe(object => {
-        this.revisionLearningObject = object;
-      }, _ => { }, () => {
-        this.loadingRevision = false;
+  // EVENT HANDLERS
+  createRevisionHandler() {
+    this.createRevision.emit(this.releasedLearningObject);
+    this.promiseResolver.pipe(
+      take(1)
+    ).subscribe(promise => {
+      promise.then(() => {
+        this.fetchRevisionLearningObject();
       });
-    }
+    });
+  }
+
+  submitRevisionHandler() {
+    this.submitRevision.emit(this.revisionLearningObject);
+    this.promiseResolver.pipe(
+      take(1)
+    ).subscribe(promise => {
+      promise.then(() => {
+        this.fetchRevisionLearningObject();
+      });
+    });
+  }
+
+  cancelSubmissionHandler() {
+    this.cancelRevisionSubmission.emit(this.revisionLearningObject);
+    this.promiseResolver.pipe(
+      take(1)
+    ).subscribe(promise => {
+      promise.then(() => {
+        this.fetchRevisionLearningObject();
+      });
+    });
+  }
+
+  deleteRevisionHandler() {
+    this.deleteRevision.emit(this.revisionLearningObject);
+    this.promiseResolver.pipe(
+      take(1)
+    ).subscribe(promise => {
+      promise.then(() => {
+        this.revisionLearningObject = undefined;
+        this.hasRevision = false;
+      });
+    });
   }
 
   close() {

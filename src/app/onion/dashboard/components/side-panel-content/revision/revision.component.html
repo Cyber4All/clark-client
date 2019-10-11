@@ -40,8 +40,8 @@
           <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
           <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
           <li (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
-          <li *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
-          <li *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>          
+          <li (activate)="delete.emit()" *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
+          <li (activate)="cancelSubmission.emit()" *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>          
         </ul>
       </div>
     </clark-context-menu>

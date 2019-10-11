@@ -117,12 +117,12 @@
 }
 
 .side-panel__metrics {
-  margin-top: 35px;
+  margin-top: 40px;
 }
 
 .side-panel__revision {
   padding: 20px;
-  margin-top: 35px;
+  margin-top: 40px;
 }
 
 .side-panel__visit-button {
@@ -150,6 +150,12 @@
   height: 100vh;
   color: $dark-grey;
   font-size: $large;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  position: absolute;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 2;
 
   .svg-inline--fa {
     color: $light-blue;

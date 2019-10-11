@@ -13,6 +13,9 @@ export class RevisionComponent implements OnChanges {
   @Input() revision: LearningObject;
 
   @Output() createRevision: EventEmitter<void> = new EventEmitter();
+  @Output() submit: EventEmitter<void> = new EventEmitter();
+  @Output() cancelSubmission: EventEmitter<void> = new EventEmitter();
+  @Output() delete: EventEmitter<void> = new EventEmitter();
 
   meatballOpen: boolean;
 

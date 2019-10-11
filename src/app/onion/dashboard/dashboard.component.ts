@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit {
 
   historySnapshot: HistorySnapshot;
 
+  sidePanelPromiseResolver: Promise<any>;
 
   constructor(
     private history: HistoryService,
@@ -174,8 +175,8 @@ export class DashboardComponent implements OnInit {
    * Cancel a submission while in waiting status
    * @param l {LearningObject} learning object to be unpublished
    */
-  cancelSubmission(l: LearningObject) {
-    this.collectionService.unsubmit({
+  cancelSubmission(l: LearningObject): Promise<void> {
+    return this.collectionService.unsubmit({
       learningObjectId: l.id,
       userId: l.author.id,
     }).then(async () => {
@@ -249,13 +250,13 @@ export class DashboardComponent implements OnInit {
   }
 
   // DELETION LOGIC
-  async deleteObjects(objects: any) {
+  async deleteObjects(objects: any): Promise<void> {
     this.objectsToDelete = objects;
     const canDelete = this.objectsToDelete.filter(
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      this.learningObjectService.delete(canDelete[0].name, canDelete[0].author.username)
+      return this.learningObjectService.delete(canDelete[0].author.username, canDelete[0].id)
       .then(async () => {
         this.notificationService.notify(
           'Done!',
@@ -279,7 +280,7 @@ export class DashboardComponent implements OnInit {
       canDelete.forEach(object => {
         objectsToDeleteNames.push(object.name);
       });
-      this.learningObjectService.deleteMultiple(objectsToDeleteNames, this.objectsToDelete[0].author.username)
+      return this.learningObjectService.deleteMultiple(objectsToDeleteNames, this.objectsToDelete[0].author.username)
       .then(async () => {
         this.notificationService.notify(
           'Done!',
@@ -305,11 +306,37 @@ export class DashboardComponent implements OnInit {
         'bad',
         'far fa-times'
       );
+
+      return Promise.reject();
     }
   }
 
-  async createRevision(object: LearningObject) {
-    const revisionId = this.learningObjectService.createRevision(object.cuid, object.author.username);
-    console.log(revisionId);
+  createRevision(object: LearningObject) {
+    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid, object.author.username);
+  }
+
+  submitRevision(object: LearningObject) {
+    this.submitLearningObjectToCollection(object);
+  }
+
+  submitRevisionPromiseHandler(submitted: boolean) {
+    console.log('SUBMITTED', submitted);
+    this.sidePanelPromiseResolver = new Promise((resolve, reject) => {
+      if (submitted) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  }
+
+  cancelRevisionSubmission(object: LearningObject) {
+    this.sidePanelPromiseResolver = this.cancelSubmission(object);
+  }
+
+  deleteRevision(object: LearningObject) {
+    if (confirm('Are you sure?')) {
+      this.sidePanelPromiseResolver = this.deleteObjects([object]);
+    }
   }
 }

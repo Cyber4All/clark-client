@@ -75,14 +75,26 @@
       <clark-changelog-modal
         [learningObject] = "changelogLearningObject"
         [changelogs] = "changelogs ? changelogs[0] : undefined"
-        [loading]="loadingChangelogs  "
+        [loading]="loadingChangelogs"
       ></clark-changelog-modal>
     </div>
   </clark-popup>
 
   <!-- Side panel popout -->
-  <clark-side-panel-content *ngIf="focusedLearningObject"  panel [contentWidth]="450" [options]="{ padding: false }" (close)="focusedLearningObject = undefined" [learningObject]="focusedLearningObject" (createRevision)="createRevision($event)"></clark-side-panel-content>
+  <clark-side-panel-content
+    *ngIf="focusedLearningObject"
+    panel
+    [contentWidth]="450"
+    [options]="{ padding: false }"
+    [activePromise]="sidePanelPromiseResolver"
+    (close)="focusedLearningObject = undefined"
+    [learningObject]="focusedLearningObject"
+    (createRevision)="createRevision($event)"
+    (submitRevision)="submitRevision($event)"
+    (cancelRevisionSubmission)="cancelRevisionSubmission($event)"
+    (deleteRevision)="deleteRevision($event)"
+  ></clark-side-panel-content>
   
   <!--Delete Confirmation-->
-  <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
+  <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit>
 

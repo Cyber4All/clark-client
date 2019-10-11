@@ -19,6 +19,8 @@ export class SubmitComponent implements OnInit {
 
   @Input() visible: boolean;
 
+  @Output() submitted: EventEmitter<void> = new EventEmitter();
+
   carouselAction$: Subject<number> = new Subject();
   changelogComplete$: Subject<boolean> = new Subject();
 
@@ -174,6 +176,9 @@ export class SubmitComponent implements OnInit {
    * @memberof SubmitComponent
    */
   closeModal(submitted?: boolean) {
-    this.close.emit(submitted || false);
+    if (this.visible) {
+      this.close.emit(submitted || false);
+      this.visible = false;
+    }
   }
 }
