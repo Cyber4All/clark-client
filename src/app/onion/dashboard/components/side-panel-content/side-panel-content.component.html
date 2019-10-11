@@ -1,18 +1,20 @@
 <div class="side-panel">
   <ng-container *ngIf="loadingObject" [ngTemplateOutlet]="loadingObjectTemplate"></ng-container>
   <ng-container *ngIf="!loadingObject">
-    <div class="side-panel__flex">
+    <div [@sidePanelEnter] class="side-panel__flex">
       <div class="flex__top">
-        <section class="side-panel__collection">
+        <section [@translateDown] class="side-panel__collection">
           <i class="far fa-cubes"></i> Part of the <a routerLink="/c/{{releasedLearningObject.collection}}">{{ (releasedLearningObject.collection | collection) | async }}</a> collection
         </section>
         <section class="side-panel__top-group">
-          <h1 class="side-panel__name">{{ releasedLearningObject.name }}</h1>
-          <div class="side-panel__date">Released on {{ releasedLearningObject.date | date:'longDate' }}</div>
-          <div [attr.class]="'side-panel__length ' + releasedLearningObject.length">{{ releasedLearningObject.length }}</div>
+          <h1 [@translateDown] class="side-panel__name">{{ releasedLearningObject.name }}</h1>
+          <div [@translateDown] class="side-panel__date">Released on {{ releasedLearningObject.date | date:'longDate' }}</div>
+          <div [@translateDown]>
+            <span [attr.class]="'side-panel__length ' + releasedLearningObject.length">{{ releasedLearningObject.length }}</span>
+          </div>
         </section>
         <!-- <section class="side-panel__authors"></section> -->
-        <section class="side-panel__metrics side-panel__card">
+        <section [@translateDown] class="side-panel__metrics side-panel__card">
           <h4 tab-index="0" class="card__title title">
             <div class="title__icon">
               <i class="far fa-chart-line"></i>
@@ -21,7 +23,8 @@
           </h4>
           <clark-metrics [learningObject]="releasedLearningObject"></clark-metrics>
         </section>
-        <section *ngIf="!loadingRevision && !loadingObject; else loadingRevisionTemplate" class="side-panel__revision side-panel__card">
+        <section [@translateDown] class="side-panel__revision side-panel__card">
+          <ng-container *ngIf="loadingRevision" [ngTemplateOutlet]="loadingRevisionTemplate"></ng-container>
           <h4 tab-index="0" class="card__title title">
             <div class="title__icon">
               <i class="far fa-pencil-alt"></i>
@@ -39,8 +42,8 @@
         </section>
       </div>
       <div class="flex__bottom">
-        <button activate [routerLink]="['/details', learningObject.author.username, learningObject.cuid]" class="side-panel__visit-button">
-          VISIT RELEASED LEARNING OBJECT <i class="far fa-external-link"></i>
+        <button [@buttonWipeRight] activate [routerLink]="['/details', learningObject.author.username, learningObject.cuid]" class="side-panel__visit-button">
+          <div>VISIT RELEASED LEARNING OBJECT <i class="far fa-external-link"></i></div>
         </button>
       </div>
     </div>
@@ -54,35 +57,7 @@
 </ng-template>
 
 <ng-template #loadingRevisionTemplate>
-    <div *ngIf="!loadingObject" class="side-panel__loading--revision">
-      <i class="far fa-spinner-third fa-spin"></i> Loading revision...
-    </div>
-  </ng-template>
-
-<!-- <div class="side-panel__object">
-  <div class="side-panel-object__details">
-    <clark-panel-learning-object
-      [learningObject]="releasedLearningObject"
-    ></clark-panel-learning-object>
-    <div class="side-panel__button-bar">
-      <button
-        class="button good"
-        (activate)="close()"
-        [routerLink]="[
-          '/details',
-          learningObject.author.username,
-          learningObject.name
-        ]"
-        attr.aria-label="Visit {{ learningObject.name }}'s public listing"
-      >
-        Visit <i class="far fa-external-link"></i>
-      </button>
-    </div>
+  <div *ngIf="!loadingObject || true" class="side-panel__loading side-panel__loading--revision">
+    <i class="far fa-spinner-third fa-spin"></i> Loading revision...
   </div>
-</div>
-<div class="side-panel__metrics">
-  <clark-metrics [learningObject]="releasedLearningObject"></clark-metrics>
-</div>
-<div *ngIf="!loadingRevision" class="side-panel__revision">
-  <clark-revision [hasRevision]="hasRevision" [revision]="revisionLearningObject" (createRevision)="createRevision.emit(learningObject)"></clark-revision>
-</div> -->
+</ng-template>

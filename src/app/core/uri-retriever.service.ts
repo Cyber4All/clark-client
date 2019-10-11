@@ -109,7 +109,6 @@ export class UriRetrieverService {
       return this.http.get<LearningObject[]>(params.uri, { withCredentials: true })
       .pipe(
         retry(3),
-        catchError(err => throwError(err)),
         take(1),
       );
     } else {

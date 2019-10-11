@@ -3,21 +3,25 @@
 .meatball-trigger {
   position: absolute;
   top: 20px;
-  right: 20px;
-}
-
-.revision {
-  margin-top: 10px;
+  right: 25px;
 }
 
 .revision__empty {
   text-align: center;
   color: $dark-grey;
   font-size: $normal;
+  min-height: inherit;
+  padding-top: 5px;
+  box-sizing: border-box;
 
   .empty__message {
     margin-bottom: 20px;
   }
+}
+
+.revision-wrapper {
+  min-height: 90px;
+  position: relative;
 }
   
 .top-row {

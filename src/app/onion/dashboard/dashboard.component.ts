@@ -335,7 +335,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteRevision(object: LearningObject) {
-    if (confirm('Are you sure?')) {
+    if (true) {
       this.sidePanelPromiseResolver = this.deleteObjects([object]);
     }
   }

@@ -1,30 +1,17 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { LearningObject } from '@entity';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { trigger, style, animate, transition } from '@angular/animations';
+import { Subject } from 'rxjs';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { take, takeUntil, filter, catchError, finalize } from 'rxjs/operators';
+import { take, takeUntil, filter } from 'rxjs/operators';
 import { Router, NavigationStart } from '@angular/router';
+import { translateDown, sidePanelEnter, buttonWipeRight } from './side-panel-content.animations';
 
 
 @Component({
   selector: 'clark-side-panel-content',
   templateUrl: './side-panel-content.component.html',
   styleUrls: ['./side-panel-content.component.scss'],
-  animations: [
-   trigger('revision', [
-    transition(':enter', [
-      style({ opacity: 0}),
-      animate('200ms 600ms ease-out', style({ 'opacity': 1})),
-      ]),
-    ]),
-  trigger('madeRevision', [
-    transition(':leave', [
-      style({ opacity: 1 }),
-      animate('400ms ease-out', style({ transform: 'translateY(100px)', opacity: 0 })),
-    ]),
-  ])
-  ]
+  animations: [ translateDown, sidePanelEnter, buttonWipeRight ]
 })
 export class SidePanelContentComponent implements OnChanges, OnDestroy {
   private isDestroyed$ = new Subject<void>();
@@ -122,12 +109,15 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
 
   // EVENT HANDLERS
   createRevisionHandler() {
+    this.loadingRevision = true;
     this.createRevision.emit(this.releasedLearningObject);
     this.promiseResolver.pipe(
       take(1)
     ).subscribe(promise => {
       promise.then(() => {
         this.fetchRevisionLearningObject();
+      }).catch(() => {
+        this.loadingRevision = false;
       });
     });
   }
@@ -155,6 +145,7 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
   }
 
   deleteRevisionHandler() {
+    this.loadingRevision = true;
     this.deleteRevision.emit(this.revisionLearningObject);
     this.promiseResolver.pipe(
       take(1)
@@ -162,6 +153,8 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
       promise.then(() => {
         this.revisionLearningObject = undefined;
         this.hasRevision = false;
+      }).finally(() => {
+        this.loadingRevision = false;
       });
     });
   }

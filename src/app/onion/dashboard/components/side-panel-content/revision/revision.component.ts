@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { LearningObject } from 'entity/learning-object/learning-object';
+import { card, nullAnimation } from './revision.animations';
 
 @Component({
   selector: 'clark-revision',
   templateUrl: './revision.component.html',
   styleUrls: ['./revision.component.scss'],
-  animations: []
+  animations: [ card, nullAnimation ]
 })
 export class RevisionComponent implements OnChanges {
   @Input() hasRevision: boolean;

@@ -135,6 +135,7 @@
   border: 0;
   box-shadow: 0 -2px 12px 1px rgba(0, 0, 0, 0.08);
   margin: 0;
+  transform-origin: left center;
 
   .svg-inline--fa {
     margin-left: 10px;
@@ -147,10 +148,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  
   color: $dark-grey;
   font-size: $large;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   text-align: center;
   position: absolute;
   padding: 20px;
@@ -161,5 +162,13 @@
     color: $light-blue;
     font-size: 30px;
     margin-bottom: 15px;
+  }
+
+  &.side-panel__loading--revision {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
   }
 }

@@ -1,8 +1,9 @@
-<div *ngIf="revision && hasRevision; else noRevisionTemplate">
-  <div class="meatball-trigger" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
-    <ng-container *ngTemplateOutlet="meatball"></ng-container>
-  </div>
-  <div class="revison__object">
+<div *ngIf="revision && hasRevision" class="meatball-trigger" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
+  <ng-container *ngTemplateOutlet="meatball"></ng-container>
+</div>
+
+<div class="revision-wrapper">
+  <div [@card] class="revision__object" *ngIf="revision && hasRevision; else noRevisionTemplate">
     <div class="active__revision">
       <div class="top-row">
         <div tab-index="0" class="status" [attr.aria-label]="'Learning Object Status: ' + revision.status + '. ' + statusDescription" [ngClass]="revision.status">
@@ -49,7 +50,7 @@
 </ng-template>
 
 <ng-template #noRevisionTemplate>
-  <div class="revision__empty">
+  <div [@card] class="revision__empty">
     <div class="empty__message">
      You don't have a revision for this Learning Object yet!
     </div>
