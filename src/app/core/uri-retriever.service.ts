@@ -206,6 +206,18 @@ export class UriRetrieverService {
     );
   }
 
+  /**
+   * Fetches the resource of the uri that it was given
+   * @param uri the uri of the learning object resource
+   * @param callback
+   */
+  fetchUri(uri: string, callback?: Function) {
+    return this.http.get(uri).pipe(
+      take(1),
+      map(res => callback ? callback(res) : res)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
@@ -220,18 +232,6 @@ export class UriRetrieverService {
   //////////////////////
   // HELPER FUNCTIONS///
   //////////////////////
-
-  /**
-   * Fetches the resource of the uri that it was given
-   * @param uri the uri of the learning object resource
-   * @param callback
-   */
-  private fetchUri(uri: string, callback?: Function) {
-    return this.http.get(uri).pipe(
-      take(1),
-      map(res => callback ? callback(res) : res)
-    );
-  }
 
   /**
    * Packages a full Learning Object with all the resources that were requested

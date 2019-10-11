@@ -32,7 +32,6 @@ export class RevisionComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.hasRevision = false;
-    console.log(this.revision);
     if (this.revision) {
       this.hasRevision = true;
     }

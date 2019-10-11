@@ -15,7 +15,7 @@
     <div class="name" role="button" (activate)="actionPermissions('infoPanel')&&openInfoPanel()" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
       {{ learningObject.name }}
       <span *ngIf="parents?.length" [tip]="parents.join(', ')" tipPosition="top" class="hierarchy-parents">{{ parents.length }} parent{{ parents.length !== 1 ? 's' : '' }}</span>
-      <span *ngIf="learningObject.children?.length" [tip]="objectChildrenNames(learningObject).join(', ')" tipPosition="top" class="hierarchy-children">{{ learningObject.children.length }} {{ learningObject.children.length !== 1 ? 'children' : 'child' }}</span>
+      <span *ngIf="children?.length" [tip]="children.join(', ')" tipPosition="top" class="hierarchy-children">{{ children.length }} {{ children.length !== 1 ? 'children' : 'child' }}</span>
     </div>
     <div *ngIf="hasAuthor">
       {{ learningObject.author.name | titlecase }}
