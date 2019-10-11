@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, Subject } from 'rxjs';
+import { Observable, throwError, Subject, of } from 'rxjs';
 import { LearningObject } from '@entity';
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { LearningOutcome } from '@entity';
 import { catchError, retry, map, tap, filter, take, takeUntil, finalize } from 'rxjs/operators';
 
-const CALLBACKS = {
+// TODO add callbacks for children and ratings
+export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {
     return outcomes.map(o => new LearningOutcome(o));
   }
 };
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,8 +54,11 @@ export class UriRetrieverService {
       const end = new Subject();
 
       this.http.get<LearningObject>(route).pipe(
-        retry(3),
-        catchError(err => throwError(err)),
+        catchError(err => {
+          responses.error(err);
+          end.complete();
+          return throwError(err);
+        }),
         tap(entity => {
 
           if (Array.isArray(entity)) {
@@ -82,7 +87,6 @@ export class UriRetrieverService {
           responses.next(new LearningObject(entity));
         }),
         takeUntil(end),
-        catchError(err => throwError(err))
       ).subscribe();
 
       return responses;
@@ -96,29 +100,7 @@ export class UriRetrieverService {
   // INDIVIDUAL RESOURCES //
   /////////////////////////
 
-  /**
-   * Retrieves the Learning Object metadata
-   * @params author is the username of the author
-   * @params learningObjectName is the name of the learning object
-   */
-  getLearningObjectSummary(author: string, cuid: string, version: number): Observable<any> {
-    return this.http.get<LearningObject>(
-      PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(author, cuid, version))
-        .pipe(
-          retry(3),
-          catchError(err => throwError(err))
-        );
-  }
-
-  /**
-   * Retrieves the Learning Object outcomes
-   * @param uri this is the uri that should be hit to get the objects outcomes
-   */
-  getLearningObjectOutcomes(uri: string): Observable<LearningOutcome[]> {
-    return this.http.get<LearningOutcome[]>(uri).pipe(retry(3), catchError(err => throwError(err)));
-  }
-
-  /**
+  /** TODO remove this
    * Retrieves the Learning Object children
    * @param uri this is the uri that should be hit to get the objects children
    */
@@ -134,47 +116,12 @@ export class UriRetrieverService {
       return this.http.get<LearningObject[]>(params.uri, { withCredentials: true })
       .pipe(
         retry(3),
-        catchError(err => throwError(err)),
         take(1)
       );
     }
   }
 
-  /**
-   * Retrieves the Learning Object materials
-   * @param uri this is the uri that hsould be hit to get the objects materials
-   */
-  getLearningObjectMaterials(uri: string): Observable<any> {
-    return this.http.get(uri, { withCredentials: true })
-    .pipe(
-      retry(3),
-      catchError(err => throwError(err)),
-    );
-  }
-
-  /**
-   * Retrieves the Learning Object metrics
-   * @param uri this is the uri that should be hit to get the object's metrics
-   */
-  getLearningObjectMetrics(uri: string): Observable<any> {
-    return this.http.get<any>(uri).pipe(retry(3), catchError(err => throwError(err)));
-  }
-
-  /**
-   * Retrieves the Learning Object parents
-   * @param uri this is the uri that should be hit to get the object's parents
-   * @param unreleased this is the boolean that filters learning object parents by everything (including released)
-   */
-  getLearningObjectParents(params: {uri: string, unreleased?: boolean}): Observable<LearningObject[]> {
-    return this.http.get<LearningObject[]>(params.uri, { withCredentials: true})
-    .pipe(
-      retry(3),
-      catchError(err => throwError(err)),
-      take(1)
-    );
-  }
-
-  /**
+  /** TODO remove this
    * Retrieves the Learning Object ratings
    * @param uri this is the uri that should be hit to get the object's ratings
    */
@@ -183,7 +130,6 @@ export class UriRetrieverService {
     .get(uri, { withCredentials: true })
     .pipe(
       retry(3),
-      catchError(err => throwError(err)),
       filter(response => response != null),
       map((response: any) => {
         const ratings = response.ratings.map((r: any) => {
@@ -210,7 +156,7 @@ export class UriRetrieverService {
     return this.http.get(uri).pipe(
       take(1),
       map(res => callback ? callback(res) : res),
-      catchError(err => throwError(err))
+      catchError(_ => of(undefined))
     );
   }
 
@@ -224,7 +170,11 @@ export class UriRetrieverService {
 
     request.pipe(
       take(resources ? resources.length + 1 : 1),
-      finalize(() => payload.next(learningObject as LearningObject))
+      finalize(() => payload.next(learningObject as LearningObject)),
+      catchError(err => {
+        payload.error(err);
+        return throwError(err);
+      })
     ).subscribe(val => {
       if (val.requestKey) {
         learningObject[val.requestKey] = val.value;
