@@ -38,11 +38,11 @@
     <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
       <div #contextMenu>
         <ul (activate)="toggleContextMenu($event)">
-          <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
-          <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
-          <li (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
-          <li (activate)="attemptDelete()" *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
-          <li (activate)="cancelSubmission.emit()" *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>          
+          <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
+          <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
+          <li *ngIf="actionPermissions('submit')" (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
+          <li *ngIf="actionPermissions('delete')" (activate)="attemptDelete()" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
+          <li *ngIf="actionPermissions('cancelSubmission')" (activate)="cancelSubmission.emit()" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>          
         </ul>
       </div>
     </clark-context-menu>

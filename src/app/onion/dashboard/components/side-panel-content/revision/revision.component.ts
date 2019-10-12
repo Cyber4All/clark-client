@@ -48,4 +48,34 @@ export class RevisionComponent implements OnChanges {
   attemptDelete() {
     this.deleteConfirmationOpen = true;
   }
+
+  /**
+   * Given a string representation of a context menu action, returns true if that action should be allowed based on
+   * parameters such as learing object length and learning object status
+   * @param action {string} the action in question
+   */
+  actionPermissions(action: string) {
+    const permissions = {
+      edit: ['unreleased', 'denied'],
+      editChildren: [
+        'unreleased',
+        'denied',
+        this.revision.length !== 'nanomodule'
+      ],
+      manageMaterials: ['unreleased', 'denied'],
+      submit: ['unreleased', 'denied'],
+      view: ['released'],
+      delete: ['unreleased', 'denied'],
+      cancelSubmission: ['waiting'],
+      infoPanel: ['released']
+    };
+
+    const p = permissions[action];
+
+    if (p.includes(false)) {
+      return false;
+    }
+
+    return p.includes(this.revision.status);
+  }
 }
