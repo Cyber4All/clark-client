@@ -14,17 +14,18 @@
   position: relative;
 
   .card__title {
-    font-size: $normal;
-    color: $dark-grey;
-    margin-bottom: 25px;
-    text-align: center;
-    font-weight: normal;
+    font-size: $large;
+    color: $darker-grey;
+    font-weight: 600;
     margin-top: 0;
-    text-transform: uppercase;
+    margin-bottom: 25px;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   
     .title__icon {
-      margin: auto;
-      margin-bottom: 8px;
+      margin-right: 8px;
       color: $light-blue;
   
       .svg-inline--fa {
