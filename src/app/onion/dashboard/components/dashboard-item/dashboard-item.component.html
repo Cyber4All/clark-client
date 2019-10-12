@@ -12,7 +12,7 @@
         <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
       </div>
     </div>
-    <div class="name" role="button" (activate)="actionPermissions('infoPanel')&&openInfoPanel()" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
+    <div class="name" role="button" activate [routerLink]="['./']" [queryParams]="learningObject.status === 'released' ? { activeLearningObject: learningObject.cuid, version: learningObject.version } : {}" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
       {{ learningObject.name }}
       <span *ngIf="parents?.length" [tip]="parents.join(', ')" tipPosition="top" class="hierarchy-parents">{{ parents.length }} parent{{ parents.length !== 1 ? 's' : '' }}</span>
       <span *ngIf="children?.length" [tip]="children.join(', ')" tipPosition="top" class="hierarchy-children">{{ children.length }} {{ children.length !== 1 ? 'children' : 'child' }}</span>
@@ -40,7 +40,7 @@
               <ul (activate)="toggleContextMenu($event)">
           
                 <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.id]" activate><i class="far fa-pencil"></i>Edit</li>
-                <li *ngIf="actionPermissions('infoPanel')" (activate)="viewSidePanel.emit()"><i class="fas fa-info-circle"></i>Info</li>
+                <li *ngIf="actionPermissions('infoPanel')" activate [routerLink]="['./']" [queryParams]="{ activeLearningObject: learningObject.cuid, version: learningObject.version }"><i class="fas fa-info-circle"></i>Info</li>
                 <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']" activate><i class="far fa-upload"></i>Manage Materials</li>
                 <li *ngIf="actionPermissions('submit')" (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
                 <li (activate)="viewAllChangelogs.emit(learningObject.id)"><i class="far fa-comment-alt-lines"></i>View Changelogs</li>

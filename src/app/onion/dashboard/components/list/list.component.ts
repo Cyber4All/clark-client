@@ -15,7 +15,6 @@ export class ListComponent {
   @Output() applyFilters: EventEmitter<any> = new EventEmitter();
   @Output() cancelCollectionSubmission: EventEmitter<LearningObject> = new EventEmitter();
   @Output() openChangelog: EventEmitter<any> = new EventEmitter();
-  @Output() openSidePanel: EventEmitter<LearningObject> = new EventEmitter();
   @Output() submitToCollection: EventEmitter<LearningObject> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
 

@@ -19,7 +19,7 @@ import { fade } from '../panel.animations';
   selector: 'clark-side-panel-viewer',
   template: `
     <ng-container>
-      <div *ngIf="isOpen" (activate)="close.emit()" [@fade] class="overlay"></div>
+      <div *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
       <div
         [style.width]="contentWidth + 'px'"
         (activate)="$event.stopPropagation()"
@@ -40,7 +40,8 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
 
   isOpen = true;
 
-  @Output() close = new EventEmitter<void>();
+  @Output() close = new EventEmitter<any>();
+  defaultCloseParam: any;
 
   private defaultWidth = 350;
   private destroyed$: Subject<void> = new Subject();
@@ -65,6 +66,14 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
    */
   get inSpeed() {
     return 250 + (this.contentWidth - this.defaultWidth) * 0.3;
+  }
+
+  doClose() {
+    if (this.defaultCloseParam) {
+      this.close.emit(this.defaultCloseParam);
+    } else {
+      this.close.emit();
+    }
   }
 
   ngOnInit() {

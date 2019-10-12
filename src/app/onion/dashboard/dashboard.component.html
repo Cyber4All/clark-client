@@ -49,7 +49,6 @@
             [showOptions]="false"
             [learningObjects]="releasedLearningObjects"
             (openChangelog)="openViewAllChangelogsModal($event)"
-            (openSidePanel)="openLearningObjectSidePanel($event)"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -87,7 +86,8 @@
     [contentWidth]="450"
     [options]="{ padding: false }"
     [activePromise]="sidePanelPromiseResolver"
-    (close)="focusedLearningObject = undefined"
+    [defaultCloseParam]="{ shouldRoute: true }"
+    (close)="closeSidePanel($event)"
     [learningObject]="focusedLearningObject"
     (createRevision)="createRevision($event)"
     (submitRevision)="submitRevision($event)"
@@ -96,5 +96,5 @@
   ></clark-side-panel-content>
   
   <!--Delete Confirmation-->
-  <clark-submit *ngIf="submitToCollection" [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event) "></clark-submit>
+  <clark-submit *ngIf="submitToCollection" [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit>
 

@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
 import { NavbarService } from 'app/core/navbar.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
@@ -10,6 +10,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { ToasterService } from 'app/shared/modules/toaster/toaster.service';
+import { takeUntil, take } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-dashboard',
@@ -34,14 +35,14 @@ import { ToasterService } from 'app/shared/modules/toaster/toaster.service';
     ]),
   ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   lastLocation: NavigationEnd;
   activeIndex = 0;
   loading: boolean;
   releasedLearningObjects: LearningObject[];
   workingLearningObjects: LearningObject[];
 
-  action$: Subject<number> = new Subject();
+  action$: BehaviorSubject<number> = new BehaviorSubject(this.activeIndex);
 
   // structure of filters is {status: string[]}
   filters: object;
@@ -68,8 +69,13 @@ export class DashboardComponent implements OnInit {
 
   sidePanelPromiseResolver: Promise<any>;
 
+  checkQueryParams$ = new Subject<void>();
+
+  destroyed$ = new Subject<void>();
+
   constructor(
     private history: HistoryService,
+    private route: ActivatedRoute,
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
@@ -84,15 +90,56 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
+
     // retrieve draft status learning objects
     setTimeout(async() => {
-      this.workingLearningObjects = await this.getDraftLearningObjects();
+      await this.getDraftLearningObjects();
     }, 1100);
     // retrieve released learning objects
     setTimeout(async() => {
-      this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+      await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
       this.loading = false;
     }, 1100);
+
+    this.route.queryParams.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(async params => {
+      const cuid = params.activeLearningObject;
+      const version = parseInt(params.version, 10);
+
+      let p = new Promise(resolve => resolve());
+
+      if (cuid && version >= 0) {
+        // we know we can attempt to open the sidepanel, now to see if we've finished loading released Learning Objects
+        if (!this.releasedLearningObjects) {
+          p = new Promise(resolve => {
+            this.checkQueryParams$.pipe(
+              take(1)
+            ).subscribe(() => {
+              resolve();
+            });
+          });
+        }
+
+        p.then(() => {
+          // now we know we're finished loading the released objects
+          const object = this.releasedLearningObjects.filter(o => {
+            return o.cuid === cuid && o.version === version;
+          });
+
+          if (!object || !object.length) {
+            this.router.navigate(['./']);
+          } else {
+            // navigate to the specified Learning Object and open the side panel
+            if (!(this.activeIndex % 2)) {
+              this.toggle();
+            }
+
+            this.focusedLearningObject = object[0];
+          }
+        });
+      }
+    });
 
     this.historySnapshot = this.history.snapshot();
   }
@@ -103,15 +150,16 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param text
    */
-  async getDraftLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
+  async getDraftLearningObjects(filters?: any, text?: string): Promise<void> {
     if (Object.prototype.toString.call(filters) === '[object String]') {
       text = filters;
     }
-    return this.learningObjectService
-    .getDraftLearningObjects(this.auth.username, filters, text)
-    .then((children: LearningObject[]) => {
-      return children;
-    });
+
+    this.workingLearningObjects = await this.learningObjectService
+      .getDraftLearningObjects(this.auth.username, filters, text)
+      .then((children: LearningObject[]) => {
+        return children;
+      });
   }
 
    /**
@@ -119,12 +167,14 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param query
    */
-  async getReleasedLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
-    return this.learningObjectService
-    .getLearningObjects(this.auth.username, filters, text)
-    .then((children: LearningObject[]) => {
-      return children;
-    });
+  async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
+    this.releasedLearningObjects = await this.learningObjectService
+      .getLearningObjects(this.auth.username, filters, text)
+      .then((children: LearningObject[]) => {
+        return children;
+      });
+
+      this.checkQueryParams$.next();
   }
   /**
    * Toggles between the draft tab and the released tab
@@ -146,9 +196,9 @@ export class DashboardComponent implements OnInit {
     this.filters = filters;
     const filter = Array.from(filters.keys());
     if (filter.length !== 0) {
-      this.workingLearningObjects = await this.getDraftLearningObjects({status: filter});
+      this.getDraftLearningObjects({status: filter});
     } else {
-      this.workingLearningObjects = await this.getDraftLearningObjects();
+      this.getDraftLearningObjects();
     }
   }
 
@@ -156,9 +206,9 @@ export class DashboardComponent implements OnInit {
    * Performs a search on the users released and working Learning Objects
    * @param text
    */
-  async performSearch(text: string) {
-    this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
-    this.workingLearningObjects = await this.getDraftLearningObjects(this.filters, text);
+  performSearch(text: string) {
+    this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
+    this.getDraftLearningObjects(this.filters, text);
   }
 
   // SUBMISSION AND CANCEL SUBMISSION LOGIC
@@ -265,7 +315,7 @@ export class DashboardComponent implements OnInit {
           'good',
           'far fa-check'
         );
-        this.workingLearningObjects = await this.getDraftLearningObjects();
+        await this.getDraftLearningObjects();
       })
       .catch(err => {
         console.log(err);
@@ -289,7 +339,7 @@ export class DashboardComponent implements OnInit {
           'good',
           'far fa-check'
         );
-        this.workingLearningObjects = await this.getDraftLearningObjects();
+        await this.getDraftLearningObjects();
       })
       .catch(err => {
         console.log(err);
@@ -338,5 +388,18 @@ export class DashboardComponent implements OnInit {
     if (true) {
       this.sidePanelPromiseResolver = this.deleteObjects([object]);
     }
+  }
+
+  closeSidePanel(event: any) {
+    this.focusedLearningObject = undefined;
+
+    if (event && event.shouldRoute) {
+      this.router.navigate([], { queryParams: {} });
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }

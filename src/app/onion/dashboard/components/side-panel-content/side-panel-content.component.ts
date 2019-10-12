@@ -48,9 +48,10 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
     // listen for navigation events and close the side panel
     this.router.events.pipe(
       takeUntil(this.isDestroyed$),
+      take(1),
       filter(event => event instanceof NavigationStart)
     ).subscribe(() => {
-      this.close();
+      this.close(false);
     });
   }
 
@@ -159,8 +160,8 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
     });
   }
 
-  close() {
-    this.el.nativeElement.dispatchEvent(new Event('SidePanelCloseEvent', { bubbles: false }));
+  close(shouldRoute: boolean = true) {
+    this.el.nativeElement.dispatchEvent(new CustomEvent('SidePanelCloseEvent', { bubbles: false, detail: { shouldRoute: shouldRoute } }));
   }
 
   ngOnDestroy() {

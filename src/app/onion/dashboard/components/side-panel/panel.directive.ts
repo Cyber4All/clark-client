@@ -16,7 +16,8 @@ import {
 import { SidePanelViewerComponent } from './side-panel-viewer/side-panel-viewer.component';
 import { AnimationBuilder, AnimationStyleMetadata, AnimationAnimateMetadata, AnimationPlayer } from '@angular/animations';
 import { slideIn, slideOut } from './panel.animations';
-import { take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 export interface SidePanelOptions {
   padding: boolean;
@@ -30,10 +31,13 @@ export class PanelDirective implements OnInit, OnDestroy {
 
   @Input() contentWidth: number;
   @Input() options: SidePanelOptions;
+  @Input() defaultCloseParam: any;
 
-  @Output() close = new EventEmitter<void>();
+  @Output() close = new EventEmitter<any>();
 
   animationElement: HTMLElement;
+
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private host: ElementRef,
@@ -41,7 +45,8 @@ export class PanelDirective implements OnInit, OnDestroy {
     private injector: Injector,
     private appRef: ApplicationRef,
     private builder: AnimationBuilder,
-  ) { }
+  ) {
+  }
 
   /**
    * Listen for escape key and close the panel if it's open
@@ -50,7 +55,7 @@ export class PanelDirective implements OnInit, OnDestroy {
    * @memberof PanelDirective
    */
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    this.close.emit();
+    this.doClose();
   }
 
   ngOnInit() {
@@ -66,6 +71,7 @@ export class PanelDirective implements OnInit, OnDestroy {
     this.viewer.instance.options = this.options;
 
     this.viewer.instance.close = this.close;
+    this.viewer.instance.defaultCloseParam = this.defaultCloseParam;
 
     // attach component to angular's component tree (DOES NOT ADD TO DOM)
     this.appRef.attachView(this.viewer.hostView);
@@ -74,9 +80,9 @@ export class PanelDirective implements OnInit, OnDestroy {
     const domElem = (this.viewer.hostView as EmbeddedViewRef<any>)
     .rootNodes[0] as HTMLElement;
 
-    this.host.nativeElement.addEventListener('SidePanelCloseEvent', () => {
-      this.close.emit();
-      this.host.nativeElement.removeEventListener('SidePanelCloseEvent', () => { });
+    this.host.nativeElement.addEventListener('SidePanelCloseEvent', (e: CustomEvent) => {
+      this.close.emit(e.detail);
+      this.host.nativeElement.removeEventListener('SidePanelCloseEvent', (_: CustomEvent) => { });
     });
 
     document.body.appendChild(domElem);
@@ -89,6 +95,14 @@ export class PanelDirective implements OnInit, OnDestroy {
     });
   }
 
+  doClose() {
+    if (typeof this.defaultCloseParam !== 'undefined') {
+      this.close.emit(this.defaultCloseParam);
+    } else {
+      this.close.emit();
+    }
+  }
+
   ngOnDestroy() {
     // animate off
     const player = this.animate(slideOut);
@@ -99,6 +113,9 @@ export class PanelDirective implements OnInit, OnDestroy {
       this.appRef.detachView(this.viewer.hostView);
       this.viewer.destroy();
       player.destroy();
+
+      this.destroyed$.next();
+      this.destroyed$.unsubscribe();
     }, 650);
   }
 
