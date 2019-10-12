@@ -320,7 +320,6 @@ export class DashboardComponent implements OnInit {
   }
 
   submitRevisionPromiseHandler(submitted: boolean) {
-    console.log('SUBMITTED', submitted);
     this.sidePanelPromiseResolver = new Promise((resolve, reject) => {
       if (submitted) {
         resolve();
