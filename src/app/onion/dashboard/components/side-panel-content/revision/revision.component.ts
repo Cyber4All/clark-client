@@ -18,6 +18,7 @@ export class RevisionComponent implements OnChanges {
   @Output() delete: EventEmitter<void> = new EventEmitter();
 
   meatballOpen: boolean;
+  deleteConfirmationOpen: boolean;
 
   constructor() { }
 
@@ -42,5 +43,9 @@ export class RevisionComponent implements OnChanges {
   makeRevision() {
     this.createRevision.emit();
     this.hasRevision = true;
+  }
+
+  attemptDelete() {
+    this.deleteConfirmationOpen = true;
   }
 }

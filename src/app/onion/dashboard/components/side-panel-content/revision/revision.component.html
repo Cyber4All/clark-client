@@ -41,7 +41,7 @@
           <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
           <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
           <li (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
-          <li (activate)="delete.emit()" *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
+          <li (activate)="attemptDelete()" *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
           <li (activate)="cancelSubmission.emit()" *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>          
         </ul>
       </div>
@@ -59,3 +59,14 @@
     </div>
   </div>
 </ng-template>
+
+<clark-popup *ngIf="deleteConfirmationOpen">
+  <div #popupInner>
+    <div class="modal-title bad">Are you sure?</div>
+    <div class="modal-text">This revision will be permanently deleted and won't be able to be recovered!</div>
+    <div class="btn-group center">
+      <button (activate)="delete.emit(); deleteConfirmationOpen = false;" class="button bad">Delete <i class="far fa-trash-alt"></i></button>
+      <button (activate)="deleteConfirmationOpen = false" class="button neutral">Nevermind <i class="far fa-ban"></i></button>
+    </div>
+  </div>
+</clark-popup>
