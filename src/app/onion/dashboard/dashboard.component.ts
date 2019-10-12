@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
   // side panel
   focusedLearningObject: LearningObject;
   sidePanelController$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  currentlySubmittingObject: LearningObject;
 
   // delete
   objectsToDelete: LearningObject[];
@@ -167,7 +168,7 @@ export class DashboardComponent implements OnInit {
    * @param event
    */
   submitLearningObjectToCollection(event: LearningObject) {
-    this.focusedLearningObject = event;
+    this.currentlySubmittingObject = event;
     this.submitToCollection = true;
   }
 

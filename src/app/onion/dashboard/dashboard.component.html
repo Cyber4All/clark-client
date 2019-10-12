@@ -96,5 +96,5 @@
   ></clark-side-panel-content>
   
   <!--Delete Confirmation-->
-  <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit>
+  <clark-submit *ngIf="submitToCollection" [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event) "></clark-submit>
 
