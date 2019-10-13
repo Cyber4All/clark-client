@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { RatingService } from '../../core/rating.service';
 import { UriRetrieverService } from '../../core/uri-retriever.service';
-import { ToasterService } from '../../shared/modules/toaster/toaster.service';
+import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { ModalService, ModalListElement } from '../../shared/modules/modals/modal.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangelogService } from 'app/core/changelog.service';
@@ -90,11 +90,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private auth: AuthService,
     private ratingService: RatingService,
-    private toastService: ToasterService,
+    private toastService: ToastrOvenService,
     public modalService: ModalService,
     private router: Router,
     private changelogService: ChangelogService,
-    private notificationService: ToasterService,
     private uriRetrieverService: UriRetrieverService
   ) {
   }
@@ -348,7 +347,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           errorMessage = `We encountered an error while attempting to
           retrieve change logs for this Learning Object. Please try again later.`;
         }
-        this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+        this.toastService.error('Error!', errorMessage);
       }
       this.loadingChangelogs = false;
     }
@@ -370,21 +369,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
         () => {
           this.getLearningObjectRatings();
           this.showAddRating = false;
-          this.toastService.notify(
-            'Success!',
-            'Review submitted successfully!',
-            'good',
-            'far fa-check'
-          );
+          this.toastService.success('Success!', 'Review submitted successfully!');
         },
         error => {
           this.showAddRating = false;
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your rating could not be submitted',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'An error occurred and your rating could not be submitted');
         }
       );
   }
@@ -396,12 +385,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   updateRating(rating: { value: number; comment: string; id?: string }) {
     const {id, ...updates} = rating;
     if (!rating.id) {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your rating could not be updated',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occured and your rating could not be updated');
       console.error('Error: rating id not set');
       return;
     }
@@ -417,21 +401,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
         () => {
           this.getLearningObjectRatings();
           this.showAddRating = false;
-          this.toastService.notify(
-            'Success!',
-            'Review updated successfully!',
-            'good',
-            'far fa-check'
-          );
+          this.toastService.success('Success!', 'Review updated successfully!');
         },
         error => {
           this.showAddRating = false;
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your rating could not be updated',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
           console.error(error);
         }
       );
@@ -468,20 +442,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
         .then(val => {
           this.getLearningObjectRatings();
-          this.toastService.notify(
-            'Success!',
-            'Rating deleted successfully!.',
-            'good',
-            'far fa-times'
-          );
+          this.toastService.success('Success!', 'Rating deleted successfully!.');
         })
         .catch(() => {
-          this.toastService.notify(
-            'Error!',
-            'Rating couldn\'t be deleted',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'Rating couldn\'t be deleted');
         });
     }
   }
@@ -506,28 +470,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
         .catch(response => {
           if (response.status === 200) {
-            this.toastService.notify(
-              'Success!',
-              'Report submitted successfully!',
-              'good',
-              'far fa-check'
-            );
+            this.toastService.success('Success!', 'Report submitted successfully!');
           } else {
-            this.toastService.notify(
-              'Error!',
-              'An error occured and your report could not be submitted',
-              'bad',
-              'far fa-times'
-            );
+            this.toastService.error('Error!', 'An error occured and your report could not be submitted');
           }
         });
     } else {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your report could not be submitted',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occured and your report could not be submitted');
     }
   }
 
@@ -556,27 +505,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         });
       if (result) {
         this.getLearningObjectRatings();
-        this.toastService.notify(
-          'Success!',
-          'Response submitted successfully!',
-          'good',
-          'far fa-check'
-        );
+        this.toastService.success('Success!', 'Response submitted successfully!');
       } else {
-        this.toastService.notify(
-          'Error!',
-          'An error occured and your response could not be submitted',
-          'bad',
-          'far fa-times'
-        );
+        this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
       }
     } else {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your response could not be submitted',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
     }
   }
 
@@ -606,27 +540,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         });
       if (result) {
         this.getLearningObjectRatings();
-        this.toastService.notify(
-          'Success!',
-          'Response updated successfully!',
-          'good',
-          'far fa-check'
-        );
+        this.toastService.success('Success!', 'Response updated successfully!');
       } else {
-        this.toastService.notify(
-          'Error!',
-          'An error occured and your response could not be updated',
-          'bad',
-          'far fa-times'
-        );
+        this.toastService.error('Error!', 'An error occurred and your response could not be updated');
       }
     } else {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your response could not be updated',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occurred and your response could not be updated');
     }
   }
 
@@ -668,27 +587,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
         if (result) {
           this.getLearningObjectRatings();
-          this.toastService.notify(
-            'Success!',
-            'Response deleted successfully!',
-            'good',
-            'far fa-check'
-          );
+          this.toastService.success('Success!', 'Response deleted successfully!');
         } else {
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your response could not be deleted',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'An error occured and your response could not be deleted');
         }
       } else {
-        this.toastService.notify(
-          'Error!',
-          'An error occured and your response could not be deleted',
-          'bad',
-          'far fa-times'
-        );
+        this.toastService.error('Error!', 'An error occured and your response could not be deleted');
       }
     }
   }

@@ -4,7 +4,7 @@ import { User } from '@entity';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Collection } from 'app/core/collection.service';
 
 @Component({
@@ -34,7 +34,7 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
 
   constructor(
     private user: UserService,
-    private toaster: ToasterService,
+    private toaster: ToastrOvenService,
     private authService: AuthService,
   ) { }
 
@@ -71,7 +71,7 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
         this.searchResults = results.filter(result => result.username !== this.authService.username);
         this.loading = false;
       }).catch(error => {
-        this.toaster.notify('Error!', 'There was an error fetching users. Please try again later.', 'bad', 'far fa-times');
+        this.toaster.error('Error!', 'There was an error fetching users. Please try again later.');
         console.error(error);
       });
     }

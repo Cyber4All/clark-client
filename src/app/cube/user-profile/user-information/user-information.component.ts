@@ -3,7 +3,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LearningObjectService } from '../../learning-object.service';
 import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@entity';
-import { ToasterService } from '../../../shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { COPY } from './user-information.copy';
 
 @Component({
@@ -23,7 +23,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
     private learningObjectService: LearningObjectService,
     private auth: AuthService,
     private router: Router,
-    private notifications: ToasterService
+    private notifications: ToastrOvenService
   ) {}
 
   ngOnInit() {}
@@ -55,15 +55,10 @@ export class UserInformationComponent implements OnInit, OnChanges {
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification(this.user.email).toPromise();
-        this.notifications.notify(
-          `Success!`,
-          `Email sent to ${this.user.email}. Please check your inbox and spam.`,
-          'good',
-          'far fa-check'
-        );
+        this.notifications.success(`Success!`, `Email sent to ${this.user.email}. Please check your inbox and spam.`);
       }
     } catch (e) {
-      this.notifications.notify(`Could not send email`, `${e}`, 'bad', '');
+      this.notifications.error(`Could not send email`, `${e}`);
     }
   }
 

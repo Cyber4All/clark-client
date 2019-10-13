@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Router } from '@angular/router';
 import { EditorService } from 'app/core/editor.service';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -17,7 +17,7 @@ export class ReviseButtonComponent {
   @Input() isRevision: boolean;
   showPopup = false;
 
-  constructor(private router: Router, private service: EditorService, private toasterService: ToasterService) { }
+  constructor(private router: Router, private service: EditorService, private toasterService: ToastrOvenService) { }
 
   /**
    * makeRevision handles the user clicking the revise button. If the Learning Object currently has a revision,
@@ -61,20 +61,16 @@ export class ReviseButtonComponent {
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
-      this.toasterService.notify(
+      this.toasterService.error(
         'Network Error',
         `We're having trouble with the network right now. Please check your connection and try again.`,
-        'bad',
-        'far fa-times'
       );
     } else {
       // TODO: Handle 400 series errors
       if (error.status === 500) {
-        this.toasterService.notify(
+        this.toasterService.error(
           'Oops',
           `We're having an issue with our server right now. Please try again later.`,
-          'bad',
-          'far fa-times'
         );
       }
     }

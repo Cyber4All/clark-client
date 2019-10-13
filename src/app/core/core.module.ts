@@ -11,7 +11,6 @@ import { OutcomeService } from './outcome.service';
 import { CookieModule } from 'ngx-cookie';
 
 import { RatingService } from './rating.service';
-import { ToasterModule } from '../shared/modules/toaster';
 import { ModalModule } from '../shared/modules/modals/modal.module';
 import { UserService } from './user.service';
 import { UserAgentService } from './user-agent.service';
@@ -30,7 +29,6 @@ import { EditorService } from './editor.service';
     HttpClientModule,
     CookieModule.forRoot(),
     ModalModule.forRoot(),
-    ToasterModule.forRoot(),
   ],
   exports: []
 })

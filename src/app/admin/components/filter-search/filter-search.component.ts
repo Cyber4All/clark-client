@@ -13,7 +13,7 @@ import { CollectionService, Collection } from 'app/core/collection.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -42,7 +42,7 @@ export class FilterSearchComponent implements OnInit {
   constructor(
     private collectionService: CollectionService,
     private authService: AuthService,
-    private toaster: ToasterService
+    private toaster: ToastrOvenService
   ) {}
 
   ngOnInit() {
@@ -78,7 +78,7 @@ export class FilterSearchComponent implements OnInit {
         });
       })
       .catch(error => {
-        this.toaster.notify('Error!', error, 'bad', 'far fa-times');
+        this.toaster.error('Error!', error);
         console.error(error);
       });
   }

@@ -31,9 +31,6 @@ import { UserEditInformationComponent } from './user-profile/user-edit-informati
 import { ClickOutsideModule } from 'ng-click-outside';
 
 import { ModalModule } from '../shared/modules/modals/modal.module';
-import {
-  ToasterModule
-} from '../shared/modules/toaster';
 import { CollectionModule } from './collection-details/collection-details.module';
 import { CollectionsComponent } from './collections/collections.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
@@ -74,7 +71,6 @@ import { AccessibilityStatementComponent } from './accessibility-statement/acces
     SharedModule,
     HomeModule,
     ModalModule,
-    ToasterModule,
     CollectionModule,
   ],
   providers: [LearningObjectService]

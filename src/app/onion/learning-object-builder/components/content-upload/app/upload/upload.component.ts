@@ -12,7 +12,7 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core';
-import { ToasterService } from '../../../../../../shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
@@ -161,7 +161,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   private credentialRefreshAttempted = false;
 
   constructor(
-    private notificationService: ToasterService,
+    private notificationService: ToastrOvenService,
     private changeDetector: ChangeDetectorRef,
     private fileManager: FileManagementService,
     private auth: AuthService
@@ -218,12 +218,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             message = err;
           }
-          this.notificationService.notify(
-            'Error!',
-            message,
-            'bad',
-            'far fa-times'
-          );
+          this.notificationService.error('Error!', message);
         }
       });
   }

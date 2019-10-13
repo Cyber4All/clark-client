@@ -9,7 +9,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
-import { ToasterService } from 'app/shared/modules/toaster/toaster.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
 
 @Component({
@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
-    public notificationService: ToasterService,
+    public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
   ) {
     this.navbar.hide();
@@ -233,12 +233,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
-      this.notificationService.notify(
-        'Done!',
-        'Learning Object Submission Cancelled!',
-        'good',
-        'far fa-check'
-      );
+      this.notificationService.success('Done!', 'Learning Object Submission Cancelled!');
     }).catch(err => {
       console.error(err);
     });
@@ -272,7 +267,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         errorMessage = 'We encountered an error while attempting to retrieve change logs for this Learning Object. Please try again later.';
       }
 
-      this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+      this.notificationService.error('Error!', errorMessage);
     }
 
     this.loadingChangelogs = false;
@@ -309,22 +304,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (canDelete.length === 1) {
       return this.learningObjectService.delete(canDelete[0].author.username, canDelete[0].id)
       .then(async () => {
-        this.notificationService.notify(
-          'Done!',
-          'Learning Object deleted!',
-          'good',
-          'far fa-check'
-        );
+        this.notificationService.success('Done!', 'Learning Object deleted!');
         await this.getDraftLearningObjects();
       })
       .catch(err => {
         console.log(err);
-        this.notificationService.notify(
-          'Error!',
-          'Learning Object could not be deleted!',
-          'bad',
-          'far fa-times'
-        );
+        this.notificationService.error('Error!', 'Learning Object could not be deleted!');
       });
     } else if (canDelete.length > 1) {
       const objectsToDeleteNames = [];
@@ -333,30 +318,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
       return this.learningObjectService.deleteMultiple(objectsToDeleteNames, this.objectsToDelete[0].author.username)
       .then(async () => {
-        this.notificationService.notify(
-          'Done!',
-          'Learning Objects deleted!',
-          'good',
-          'far fa-check'
-        );
+        this.notificationService.success('Done!', 'Learning Objects deleted!');
         await this.getDraftLearningObjects();
       })
       .catch(err => {
         console.log(err);
-        this.notificationService.notify(
-          'Error!',
-          'Learning Object could not be deleted!',
-          'bad',
-          'far fa-times'
-        );
+        this.notificationService.error('Error!', 'Learning Object could not be deleted!');
       });
     } else {
-      this.notificationService.notify(
-        'Error!',
-        'Selected Learning Objects could not be deleted!',
-        'bad',
-        'far fa-times'
-      );
+      this.notificationService.error('Error!', 'Selected Learning Objects could not be deleted!');
 
       return Promise.reject();
     }

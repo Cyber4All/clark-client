@@ -5,7 +5,7 @@ import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
 import { CartV2Service, iframeParentID } from 'app/core/cartv2.service';
-import { ToasterService } from 'app/shared/modules/toaster/toaster.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -61,7 +61,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private cartService: CartV2Service,
     private renderer: Renderer2,
-    private toaster: ToasterService,
+    private toaster: ToastrOvenService,
   ) { }
 
   ngOnInit() {
@@ -114,12 +114,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       if (error.status >= 500) {
         this.disableLibraryButtons = true;
       }
-      this.toaster.notify(
-        'Error!',
-        'There was an error adding to your library',
-        'bad',
-        'far fa-times'
-      );
+      this.toaster.error('Error!', 'There was an error adding to your library');
     }
     this.addingToLibrary = false;
   }
@@ -160,7 +155,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     el.select();
     document.execCommand('copy');
 
-    this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.success('Success!', 'Learning object link copied to your clipboard!');
   }
 
   /**
@@ -175,7 +170,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
 
-    this.toaster.notify('Success!', 'Attribution information has been copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.success('Success!', 'Attribution information has been copied to your clipboard!');
   }
 
   toggleDownloadModal(val?: boolean) {
@@ -272,15 +267,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();
-        this.toaster.notify(
-          `Success!`,
-          `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`,
-          'good',
-          'far fa-check'
-        );
+        this.toaster.success(`Success!`, `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`);
       }
     } catch (e) {
-      this.toaster.notify(`Could not send email`, `${e}`, 'bad', '');
+      this.toaster.error(`Could not send email`, `${e}`);
     }
   }
 

@@ -14,9 +14,9 @@ import { FileBrowserModule } from './filesystem/file-browser.module';
 import { ModalModule } from './modals/modal.module';
 import { PopupModule } from './popups/popup.module';
 import { TeleporterModule } from './teleporter/teleporter.module';
-import { ToasterModule } from './toaster';
 import { PopupTemplatesModule } from './popup-templates/popup-templates.module';
 import { SharedComponents } from '../components/shared-components.module';
+import { ToasterModule } from './toaster/toaster.module';
 
 @NgModule({
   imports: [
@@ -36,7 +36,7 @@ import { SharedComponents } from '../components/shared-components.module';
     PopupTemplatesModule,
     SharedComponents,
     TeleporterModule,
-    ToasterModule,
+    ToasterModule
   ],
   exports: [
     // CLARK modules
@@ -47,7 +47,7 @@ import { SharedComponents } from '../components/shared-components.module';
     PopupModule,
     PopupTemplatesModule,
     TeleporterModule,
-    ToasterModule,
+    ToasterModule
   ]
 })
 export class SharedModules {}

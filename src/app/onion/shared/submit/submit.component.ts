@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class SubmitComponent implements OnInit {
     private changelogService: ChangelogService,
     private collectionService: CollectionService,
     private learningObjectService: LearningObjectService,
-    private toasterService: ToasterService,
+    private toasterService: ToastrOvenService,
     private auth: AuthService
   ) {}
 
@@ -71,11 +71,9 @@ export class SubmitComponent implements OnInit {
             // user isn't logged in, redirect to login page
             this.auth.logout();
           } else {
-            this.toasterService.notify(
+            this.toasterService.error(
               'Error!',
               'We couldn\'t submit your change log at this time. Please try again later.',
-              'bad',
-              'far fa-times'
             );
           }
         });
@@ -127,11 +125,9 @@ export class SubmitComponent implements OnInit {
       .then(() => {
         this.learningObject.status = LearningObject.Status.WAITING;
         this.learningObject.collection = this.collection;
-        this.toasterService.notify(
+        this.toasterService.success(
           'Success!',
           'Learning Object submitted successfully!',
-          'good',
-          'far fa-check'
         );
         this.loading.pop();
         this.closeModal(true);
@@ -142,11 +138,9 @@ export class SubmitComponent implements OnInit {
           // user isn't logged in, redirect to login page
           this.auth.logout();
         } else {
-          this.toasterService.notify(
+          this.toasterService.error(
             'Error!',
             'We couldn\'t submit your Learning Object at this time. Please try again later.',
-            'bad',
-            'far fa-times'
           );
         }
         this.loading.pop();
