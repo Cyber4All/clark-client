@@ -3,6 +3,7 @@
 .side-panel {
   position: relative;
   cursor: default;
+  min-height: 100vh;
 }
 
 .side-panel__card {
@@ -149,7 +150,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: auto;
   color: $dark-grey;
   font-size: $large;
   background: rgba(255, 255, 255, 0.95);
@@ -163,13 +168,5 @@
     color: $light-blue;
     font-size: 30px;
     margin-bottom: 15px;
-  }
-
-  &.side-panel__loading--revision {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: auto;
   }
 }
