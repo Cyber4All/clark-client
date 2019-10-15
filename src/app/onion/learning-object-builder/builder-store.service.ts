@@ -221,7 +221,6 @@ export class BuilderStore {
     return retrieve()
       .then(object => {
         this.learningObject = object;
-        console.log(this.learningObject);
         // this learning object is submitted, ensure submission mode is on
         this.validator.submissionMode =
           this.learningObject.status &&

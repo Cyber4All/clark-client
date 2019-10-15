@@ -14,6 +14,8 @@ import { StatusDescriptions } from 'environments/status-descriptions';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -80,16 +82,19 @@ export class DashboardItemComponent implements OnInit, OnChanges {
 
   // parents
   parents: string[];
+  children: string[];
 
   constructor(
     private auth: AuthService,
     private statuses: StatusDescriptions,
     private cd: ChangeDetectorRef,
-    private learningObjectService: LearningObjectService
+    private learningObjectService: LearningObjectService,
+    private uriRetriever: UriRetrieverService
   ) {}
 
   async ngOnInit() {
     this.parents = await this.parentNames();
+    this.children = await this.objectChildrenNames();
     this.cd.detectChanges();
   }
 
@@ -174,15 +179,19 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    * Takes a learning object and returns a list of it's children's names or an empty list
    * @return {string[]}
    */
-  objectChildrenNames(learningObject: LearningObject): string[] {
-    if (learningObject.children && learningObject.children.length) {
-      return (learningObject.children as LearningObject[]).map(
-        l => l.name
-      );
-    } else {
+  async objectChildrenNames() {
+    const result = [];
+    return this.uriRetriever.fetchUri(this.learningObject.resourceUris.children).toPromise().then((children: LearningObject[]) => {
+      children.forEach(child => {
+        result.push(child.name);
+      });
+      return result;
+    }).catch(err => {
+      console.error(err);
       return [];
-    }
+    });
   }
+
   openInfoPanel() {
     if (!this.meatballOpen) {
       this.viewSidePanel.emit();
