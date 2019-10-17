@@ -33,7 +33,7 @@
   <div #contextMenu>
     <ul (activate)="toggleContextMenu($event)">
       <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
-      <li [routerLink]="['/details', learningObject.author.username, learningObject.name]"><i class="far fa-cube"></i>View details</li>
+      <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
     </ul>
   </div>
 </clark-context-menu>
