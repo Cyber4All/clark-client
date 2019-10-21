@@ -115,7 +115,8 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
     this.promiseResolver.pipe(
       take(1)
     ).subscribe(promise => {
-      promise.then(() => {
+      promise.then(revisionUri => {
+        this.learningObject.revisionUri = revisionUri;
         this.fetchRevisionLearningObject();
       }).catch(() => {
         this.loadingRevision = false;

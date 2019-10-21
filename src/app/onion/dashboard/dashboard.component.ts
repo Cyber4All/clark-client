@@ -333,7 +333,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createRevision(object: LearningObject) {
-    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid, object.author.username);
+    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid, object.author.username).then(() => {
+      this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+    });
   }
 
   submitRevision(object: LearningObject) {
@@ -356,7 +358,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   deleteRevision(object: LearningObject) {
     if (true) {
-      this.sidePanelPromiseResolver = this.deleteObjects([object]);
+      this.sidePanelPromiseResolver = this.deleteObjects([object]).then(() => {
+        this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+      });
     }
   }
 
