@@ -364,6 +364,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.focusedLearningObject = undefined;
 
     if (event && event.shouldRoute) {
+      // rewind to the history snapshot to take us to wherever we were before entering the dashboard
+      this.historySnapshot.rewind();
+
+      // now navigate back to the dashboard so that the history stack is correct
       this.router.navigate([], { queryParams: {} });
     }
   }
