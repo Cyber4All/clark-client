@@ -7,7 +7,7 @@ import { CollectionService } from 'app/core/collection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 describe('SearchBarComponent', () => {
   let component: FilterSearchComponent;
@@ -21,7 +21,7 @@ describe('SearchBarComponent', () => {
       providers: [
         { provide: AuthService, useValue: { user: { accessGroups: [] } } },
         CollectionService,
-        ToasterService
+        ToastrOvenService
       ]
     })
     .compileComponents();

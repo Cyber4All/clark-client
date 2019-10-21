@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
 import { of } from 'rxjs';
@@ -29,7 +29,7 @@ describe('LearningObjectsComponent', () => {
       declarations: [ LearningObjectsComponent ],
       imports: [ RouterTestingModule, HttpClientModule, CookieModule.forRoot() ],
       providers: [
-        ToasterService,
+        ToastrOvenService,
         AuthService,
         CollectionService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }

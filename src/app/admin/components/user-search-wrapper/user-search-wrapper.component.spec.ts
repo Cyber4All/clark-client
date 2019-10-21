@@ -7,7 +7,7 @@ import { UserService } from 'app/core/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from 'app/core/auth.service';
 import { CookieModule } from 'ngx-cookie';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Collection } from 'app/core/collection.service';
 
 describe('UserSearchWrapperComponent', () => {
@@ -19,7 +19,7 @@ describe('UserSearchWrapperComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [ FormsModule, HttpClientModule, CookieModule.forRoot() ],
       declarations: [ UserSearchWrapperComponent ],
-      providers: [ AuthService, UserService, ToasterService ]
+      providers: [ AuthService, UserService, ToastrOvenService ]
     })
     .compileComponents();
   }));
