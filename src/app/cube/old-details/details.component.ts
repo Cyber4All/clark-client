@@ -187,7 +187,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           owners.push(this.releasedLearningObject.author.username);
 
           this.learningObjectOwners = owners;
-          this.hasRevisions = this.releasedLearningObject.hasRevision;
+          this.hasRevisions = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
           await this.getLearningObjectRatings();
           this.loading.pop();
