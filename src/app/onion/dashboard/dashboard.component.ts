@@ -312,11 +312,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.notificationService.error('Error!', 'Learning Object could not be deleted!');
       });
     } else if (canDelete.length > 1) {
-      const objectsToDeleteNames = [];
+      const objectsToDeleteIDs = [];
       canDelete.forEach(object => {
-        objectsToDeleteNames.push(object.name);
+        objectsToDeleteIDs.push(object.id);
       });
-      return this.learningObjectService.deleteMultiple(objectsToDeleteNames, this.objectsToDelete[0].author.username)
+      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs, this.objectsToDelete[0].author.username)
       .then(async () => {
         this.notificationService.success('Done!', 'Learning Objects deleted!');
         await this.getDraftLearningObjects();
