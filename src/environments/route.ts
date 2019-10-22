@@ -209,24 +209,15 @@ export const USER_ROUTES = {
   },
   GET_CART(username) {
     // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/cart`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
   },
-  CLEAR_CART(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/cart`;
-  },
-  CLEAR_LEARNING_OBJECT_FROM_CART(username, author, learningObjectName) {
+  CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/cart/learning-objects/${encodeURIComponent(author)}/${encodeURIComponent(
-      learningObjectName
-    )}`;
+    )}/library/learning-objects/${encodeURIComponent(cuid)}`;
   },
-  ADD_LEARNING_OBJECT_TO_CART(username, author, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/cart/learning-objects/${encodeURIComponent(author)}/${encodeURIComponent(
-      learningObjectName
-    )}`;
+  ADD_LEARNING_OBJECT_TO_CART(username) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
   },
   DOWNLOAD_OBJECT(username: string, learningObjectCuid: string, version: number) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -528,7 +519,9 @@ export const MISC_ROUTES = {
 };
 
 export const STATS_ROUTES = {
+  // fetches stats for all objects in the system and blooms distributions
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
-  LIBRARY_STATS: `${environment.apiURL}/library/stats`,
-  USERS_STATS: `${environment.apiURL}/users/stats`
+  // fetches downloads and saves for ALL objects in system
+  LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
+  USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };

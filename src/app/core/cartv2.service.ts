@@ -56,8 +56,7 @@ export class CartV2Service {
 
   async addToCart(
     author: string,
-    learningObjectName: string,
-    download?: boolean
+    learningObject: LearningObject
   ): Promise<LearningObject[]> {
     if (!this.user) {
       return Promise.reject('User is undefined');
@@ -66,10 +65,12 @@ export class CartV2Service {
       .post(
         USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
           this.user.username,
-          author,
-          learningObjectName
         ),
-        {},
+        {
+          authorUsername: author,
+          cuid: learningObject.cuid,
+          version: learningObject.version
+        },
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
@@ -87,11 +88,7 @@ export class CartV2Service {
       });
   }
 
-  removeFromCart(
-    author: string,
-    learningObjectName: string
-  ): Promise<LearningObject[]> {
-    // tslint:disable-next-line:max-line-length
+  removeFromCart(cuid: string): Promise<LearningObject[]> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
@@ -99,8 +96,7 @@ export class CartV2Service {
       .delete(
         USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
           this.user.username,
-          author,
-          learningObjectName
+          cuid
         ),
         { headers: this.headers, withCredentials: true }
       )
@@ -114,28 +110,6 @@ export class CartV2Service {
           .map(object => new LearningObject(object));
         return this.cartItems;
       });
-  }
-
-  clearCart(): Promise<boolean> | boolean {
-    // tslint:disable-next-line:curly
-    if (this.user) {
-      return this.http
-        .delete(USER_ROUTES.CLEAR_CART(this.user.username), {
-          headers: this.headers,
-          withCredentials: true
-        })
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
-        .toPromise()
-        .then(val => {
-          this.cartItems = [];
-          return true;
-        });
-    } else {
-      return false;
-    }
   }
 
   checkout() {

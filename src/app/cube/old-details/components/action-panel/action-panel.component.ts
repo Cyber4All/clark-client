@@ -102,7 +102,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     try {
       if (!this.userIsAuthor) {
-        await this.cartService.addToCart(this.learningObject.author.username, this.learningObject.name);
+        await this.cartService.addToCart(this.learningObject.author.username, this.learningObject);
 
         this.saved = this.cartService.has(this.learningObject);
 
@@ -226,7 +226,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart() {
-    this.cartService.removeFromCart(this.learningObject.author.username, this.learningObject.name);
+    this.cartService.removeFromCart(this.learningObject.cuid);
   }
 
   private buildLocation(encoded?: boolean) {

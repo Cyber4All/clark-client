@@ -52,21 +52,10 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  async clearCart() {
-    if (await this.cartService.clearCart()) {
-      this.cartItems = [];
-    }
-  }
-
   async removeItem(event: MouseEvent, object: LearningObject) {
     event.stopPropagation();
-    const author = object.author.username;
-    const learningObjectName = object.name;
     try {
-      this.cartItems = await this.cartService.removeFromCart(
-        author,
-        learningObjectName
-      );
+      this.cartItems = await this.cartService.removeFromCart(object.cuid);
     } catch (e) {
       console.log(e);
     }

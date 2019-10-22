@@ -23,7 +23,7 @@ export class UsageStatsService {
         )
         .toPromise(),
       this.http
-        .get<{ saves: number; downloads: number }>(STATS_ROUTES.LIBRARY_STATS)
+        .get<{ saves: number; downloads: number }>(STATS_ROUTES.LIBRARY_METRICS)
         .pipe(
           retry(3),
           catchError(this.handleError)
