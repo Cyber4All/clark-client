@@ -252,7 +252,6 @@ $learning-object-width: 820px;
       align-items: flex-start;
       justify-content: flex-start;
       width: 100%;
-      overflow: scroll;
       padding: 20px;
       height: 100%;
       box-sizing: border-box;
@@ -271,6 +270,7 @@ $learning-object-width: 820px;
         transform: scale(1);
         visibility: visible;
         z-index: 4;
+        overflow: scroll;
 
         .btn-group {
           display: flex;
