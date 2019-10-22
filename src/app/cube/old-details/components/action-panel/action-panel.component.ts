@@ -233,7 +233,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     const u = window.location.protocol + '//' + window.location.host +
       '/details' +
       '/' + encodeURIComponent(this.learningObject.author.username) +
-      '/' + encodeURIComponent(this.learningObject.name);
+      '/' + encodeURIComponent(this.learningObject.cuid);
 
     return encoded ? encodeURIComponent(u) : u;
   }
