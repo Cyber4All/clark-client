@@ -15,7 +15,7 @@
 <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
 <ng-template [ngIf]="children && children.length > 0">
   <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
-    <div *ngFor="let c of children; let i= index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
+    <div *ngFor="let c of children; let i = index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
       <div class = "info">
         <div class = "top-row">
           <div class = "child-title">{{c.name}}</div>
@@ -77,7 +77,7 @@
     <div class="modal-title">Just to confirm...</div>
       <div class="modal-text">{{ childrenConfirmationMessage }}</div>
       <div class="btn-group center">
-        <button class="button good" aria-label="Yep, delete child" (activate)="deleteChild(i)">Yep, do it! <i class="far fa-check"></i></button>
+        <button class="button good" aria-label="Yep, delete child" (activate)="deleteChild()">Yep, do it! <i class="far fa-check"></i></button>
         <button class="button neutral" aria-label="Wait, don't delete child" (activate)="toggleConfirmationModal(false)">Wait, nevermind! <i class="far fa-ban"></i></button>
       </div>
   </div>

@@ -31,6 +31,8 @@ export class ScaffoldComponent implements OnInit {
 
   children: LearningObject[];
 
+  deleteIndex: number;
+
   // flags
   loading: boolean;
   childrenConfirmation: boolean;
@@ -117,6 +119,7 @@ export class ScaffoldComponent implements OnInit {
    * @param index of the LO selected for deletion
    */
   deleteButton(index) {
+    this.deleteIndex = index;
     this.childrenConfirmationMessage = `Just to confirm, you want to remove '
         ${this.children[index].name}' as a child of '${
       this.learningObject.name
@@ -127,12 +130,11 @@ export class ScaffoldComponent implements OnInit {
 
   /**
    * Sends request to update the children array of the Learning Object
-   * @param index of the LO selected for deletion
    */
-  deleteChild(index) {
+  deleteChild() {
     this.toggleConfirmationModal(false);
     // remove the child that was selected to be deleted
-    this.children.splice(index, 1);
+    this.children.splice(this.deleteIndex, 1);
 
     // set childrenIDs equal to the children array
     this.childrenIDs = [];
