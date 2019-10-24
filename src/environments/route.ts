@@ -15,16 +15,16 @@ export const ADMIN_ROUTES = {
 };
 
 export const CHANGELOG_ROUTES = {
-  CREATE_CHANGELOG(userId: string, learningObjectId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
+  CREATE_CHANGELOG(userId: string, learningObjectCuid: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(learningObjectCuid)}/changelog`;
   },
   FETCH_ALL_CHANGELOGS(params: {
-    userId: string, learningObjectId: string, minusRevision?: boolean,
+    userId: string, learningObjectCuid: string, minusRevision?: boolean,
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.userId,
     )}/learning-objects/${encodeURIComponent(
-      params.learningObjectId,
+      params.learningObjectCuid,
     )}/changelogs?minusRevision=${params.minusRevision}`;
   }
 };

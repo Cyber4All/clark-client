@@ -56,7 +56,7 @@ export class SubmitComponent implements OnInit {
       this.changelogService
         .createChangelog(
           this.learningObject.author.id,
-          this.learningObject.id,
+          this.learningObject.cuid,
           this.changelog
         )
         .then(() => {

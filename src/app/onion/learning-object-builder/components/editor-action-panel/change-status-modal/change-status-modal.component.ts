@@ -97,7 +97,7 @@ export class ChangeStatusModalComponent {
   async createChangelog(): Promise<{}> {
     return this.changelogService.createChangelog(
       this.builderStore.learningObjectEvent.getValue().author.id,
-      this.builderStore.learningObjectEvent.getValue().id,
+      this.builderStore.learningObjectEvent.getValue().cuid,
       this.changelog,
     );
   }

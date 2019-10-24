@@ -255,7 +255,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     try {
       this.changelogs =  await this.changelogService.fetchAllChangelogs({
         userId: this.changelogLearningObject.author.id,
-        learningObjectId: this.changelogLearningObject.id,
+        learningObjectCuid: this.changelogLearningObject.cuid,
       });
     } catch (error) {
       let errorMessage;
