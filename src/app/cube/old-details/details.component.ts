@@ -327,13 +327,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (this.revisedVersion) {
           this.changelogs = await this.changelogService.fetchAllChangelogs({
             userId: this.learningObject.author.id,
-            learningObjectId: this.learningObject.id,
+            learningObjectCuid: this.learningObject.cuid,
             minusRevision: false,
           });
         } else {
           this.changelogs = await this.changelogService.fetchAllChangelogs({
             userId: this.learningObject.author.id,
-            learningObjectId: this.learningObject.id,
+            learningObjectCuid: this.learningObject.cuid,
             minusRevision: true,
           });
         }
