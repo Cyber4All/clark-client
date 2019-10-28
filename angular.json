@@ -75,6 +75,9 @@
             },
             "production": {
               "browserTarget": "clark:build:production"
+            },
+            "staging": {
+              "browserTarget": "clark:build:staging"
             }
           }
         },
