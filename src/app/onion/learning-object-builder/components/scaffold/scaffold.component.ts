@@ -81,11 +81,24 @@ export class ScaffoldComponent implements OnInit {
    * Add child to children array
    */
   addToChild(child: LearningObject) {
-    // add child to the children array
-    this.children.unshift(child);
+    if (this.children) {
+      // if we already have a children array defined
 
-    // add child to the childrenIDs array
-    this.childrenIDs.unshift(child.id);
+      // add child to the children array
+      this.children.unshift(child);
+
+      // add child to the childrenIDs array
+      this.childrenIDs.unshift(child.id);
+    } else {
+      // if we DO NOT already have a children array defined
+
+      // add child to the children array
+      this.children = [ child ];
+
+      // add child to the childrenIDs array
+      this.childrenIDs = [ child.id ];
+    }
+
 
     // send request to the service to set children
     this.store.setChildren(this.childrenIDs);
