@@ -49,7 +49,7 @@ export class CartV2Service {
       .toPromise()
       .then((val: any) => {
         this.cartItems = val
-          .map(object => new LearningObject(object));
+          .map(object => new LearningObject(object.learningObject));
         return this.cartItems;
       });
   }
@@ -80,7 +80,7 @@ export class CartV2Service {
       .toPromise()
       .then(async (val: any) => {
         try {
-          this.cartItems = val.map(object => new LearningObject(object));
+          this.cartItems = val.map(object => new LearningObject(object.learningObject));
           return this.cartItems;
         } catch (error) {
           return Promise.reject('Error! ' + error);
@@ -107,7 +107,7 @@ export class CartV2Service {
       .toPromise()
       .then((val: any) => {
         this.cartItems = val
-          .map(object => new LearningObject(object));
+          .map(object => new LearningObject(object.learningObject));
         return this.cartItems;
       });
   }
