@@ -57,7 +57,7 @@
       </div>
       <div tabindex="0" class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
     </div>
-    <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [isRevision]="revisedVersion" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
+    <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [isRevision]="revisedVersion" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject" [hasRevisions]="hasRevisions"></cube-details-action-panel>
     <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
   </div>
 </div>
