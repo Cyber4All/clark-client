@@ -10,7 +10,7 @@
         <div class="privilege__role">{{ p[0] }}</div>
         <div *ngIf="p[1] && collections[p[1]]" class="privilege__collection">{{ collections[p[1]]}}</div>
       </div>
-      <div (activate)="remove(i)" class="privilege__delete">
+      <div *ngIf="!(p !== 'admin' || p !== 'editor')" (activate)="remove(i)" class="privilege__delete">
         Delete <i class="far fa-trash-alt"></i>
       </div>
     </div>
