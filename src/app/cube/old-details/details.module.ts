@@ -21,7 +21,6 @@ import { NewRatingResponseComponent } from './components/new-rating-response/new
 import { ReportRatingComponent } from './components/report-rating/report-rating.component';
 import { LearningObjectRatingsComponent } from './components/learning-object-ratings/learning-object-ratings.component';
 import { EditorialActionPadModule } from './components/action-panel/editorial-action-pad/editorial-action-pad.module';
-import { ReviseButtonComponent } from './components/action-panel/revise-button/revise-button.component';
 
 @NgModule({
   imports: [
@@ -45,7 +44,6 @@ import { ReviseButtonComponent } from './components/action-panel/revise-button/r
     ActionPanelComponent,
     ErrorStatusComponent,
     ReviewerPanelComponent,
-    ReviseButtonComponent,
     NewRatingComponent,
     NewRatingResponseComponent,
     ReportRatingComponent,
