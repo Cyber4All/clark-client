@@ -103,12 +103,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     try {
       if (!this.userIsAuthor) {
-        await this.cartService.addToCart(this.learningObject.author.username, this.learningObject);
-
         this.saved = this.cartService.has(this.learningObject);
 
         if (!this.saved) {
+          await this.cartService.addToCart(this.learningObject.author.username, this.learningObject);
           this.animateSaves();
+          this.saved = true;
         }
       }
     } catch (error) {
@@ -116,8 +116,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         this.disableLibraryButtons = true;
       }
       this.toaster.error('Error!', 'There was an error adding to your library');
+    } finally {
+      this.addingToLibrary = false;
     }
-    this.addingToLibrary = false;
   }
 
   /**
@@ -138,6 +139,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   download(author: string, learningObjectCuid: string, version: number) {
     this.downloading = true;
     const revision = this.revisedVersion || (!this.isReleased && !this.revisedVersion);
+
     const loaded = this.cartService
       .downloadLearningObject(author, learningObjectCuid, version).pipe(
       takeUntil(this.destroyed$));
