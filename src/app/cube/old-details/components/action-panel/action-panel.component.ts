@@ -96,7 +96,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       this.download(
         this.learningObject.author.username,
         this.learningObject.cuid,
-        this.learningObject.revision
+        this.learningObject.version
       );
     }
 

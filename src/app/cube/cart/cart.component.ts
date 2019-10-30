@@ -67,7 +67,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.downloadLearningObject(
         object.author.username,
         object.cuid,
-        object.revision
+        object.version
       ).pipe(
       takeUntil(this.destroyed$))
       .subscribe(finished => {
