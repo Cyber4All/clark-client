@@ -78,7 +78,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   goToItem(object: LearningObject) {
-    this.router.navigate(['/details/', object.author.username, object.name]);
+    this.router.navigate(['/details/', object.author.username, object.cuid]);
   }
 
   private async checkAccessGroup() {
