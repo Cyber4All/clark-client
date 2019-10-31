@@ -1,12 +1,18 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
+import { LearningObjectService } from 'app/cube/learning-object.service';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * EditorialActionPadComponent coordinates all editor functionality inside of the
  * action panel. This handles conditionally rendering the relevant buttons for the
  * state of the Learning Object.
  */
+
+ interface RevisionUri {
+   revisionUri: string;
+ }
 @Component({
   selector: 'clark-editorial-action-pad',
   templateUrl: './editorial-action-pad.component.html',
@@ -20,7 +26,11 @@ export class EditorialActionPadComponent implements OnInit {
   showPopup = false;
 
   // TODO: Make HTTP requests for creating a revision
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private learningObjectService: LearningObjectService,
+    private http: HttpClient,
+    ) { }
 
   ngOnInit(): void {
   }
@@ -32,14 +42,14 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Determines if an editor can make edits to a waiting, review, or proofing learning object
   get makeEdits() {
-    return this.learningObject.status !== 'released'
-      && this.learningObject.status !== 'unreleased'
-      && this.learningObject.status !== 'rejected';
+    return this.learningObject.status === 'waiting'
+      || this.learningObject.status === 'review'
+      || this.learningObject.status === 'proofing';
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
   get notPermitted() {
-    return (this.learningObject.status === 'released' && this.hasRevision) ||
+    return (this.learningObject.status === 'released' && this.learningObject.revisionUri) ||
     (this.learningObject.status === 'unreleased' || this.learningObject.status === 'rejected');
   }
 
@@ -61,14 +71,15 @@ export class EditorialActionPadComponent implements OnInit {
   }
 
   // Create a revision and then redirects to the builder for the revision˝
-  createRevision() {
-    this.router.navigate(
-      [`/admin/learning-object-builder/${this.learningObject.id}`],
-      {
-        queryParams: {
-          revisionId: this.learningObject.version,
-          author: this.learningObject.author.username
-        }
-      });
+  async createRevision() {
+    let revision: any;
+    let revisionUri: any = await this.learningObjectService
+      .createRevision(this.learningObject.cuid, this.learningObject.author.username);
+    revisionUri = JSON.stringify(revisionUri);
+    this.http.get(revisionUri.revisionUri).subscribe(res => {
+      revision = res;
+    });
+    this.router.navigate([`/onion/learning-object-builder/${revision.id}`]);
+
   }
 }

@@ -266,11 +266,15 @@ export class BuilderStore {
    *
    */
   async getChildren(): Promise<LearningObject[]> {
-    const children = this.uriRetriever.getLearningObjectChildren(
-      {uri: this.learningObject.resourceUris.children }
-    );
-    return children.toPromise();
-
+    if (this.learningObject.resourceUris !== undefined) {
+      const children = this.uriRetriever.getLearningObjectChildren(
+        {uri: this.learningObject.resourceUris.children }
+      );
+      return children.toPromise();
+    } else {
+      await this.fetch(this.learningObject.id);
+      return this.getChildren();
+    }
   }
 
   /**

@@ -146,6 +146,27 @@ export class LearningObjectService {
       });
   }
 
+  /**
+   * Creates a Revision of an existing learning object
+   * @param learningObjectId
+   * @param authorUsername
+   */
+  createRevision(cuid: string, authorUsername: string) {
+    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
+    return this.http
+    .post(
+      route, {},
+      { withCredentials: true }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    )
+    .toPromise().then(response => {
+      return response;
+    });
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
