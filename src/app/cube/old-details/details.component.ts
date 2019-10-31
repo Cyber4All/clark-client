@@ -362,7 +362,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .createRating({
         username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
-        version: this.learningObject.revision,
+        version: this.learningObject.version,
         rating,
       })
       .then(
@@ -464,7 +464,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .flagLearningObjectRating({
           username: this.learningObject.author.username,
           CUID: this.learningObject.cuid,
-          version: this.learningObject.revision,
+          version: this.learningObject.version,
           ratingId,
           report
         })
@@ -499,7 +499,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .createResponse({
           username: this.learningObject.author.username,
           CUID: this.learningObject.cuid,
-          version: this.learningObject.revision,
+          version: this.learningObject.version,
           ratingId,
           response,
         });
@@ -533,7 +533,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .editResponse({
           username: this.learningObject.author.username,
           CUID: this.learningObject.cuid,
-          version: this.learningObject.revision,
+          version: this.learningObject.version,
           ratingId,
           responseId,
           updates: response,
@@ -580,7 +580,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           .deleteResponse({
             username: this.learningObject.author.username,
             CUID: this.learningObject.cuid,
-            version: this.learningObject.revision,
+            version: this.learningObject.version,
             ratingId,
             responseId,
           });

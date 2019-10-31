@@ -66,7 +66,7 @@ export class EditorialActionPadComponent implements OnInit {
       [`/admin/learning-object-builder/${this.learningObject.id}`],
       {
         queryParams: {
-          revisionId: this.learningObject.revision,
+          revisionId: this.learningObject.version,
           author: this.learningObject.author.username
         }
       });

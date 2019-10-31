@@ -255,8 +255,6 @@ export class LearningObject {
 
   version = 0;
 
-  revision = 0;
-
   /**
    * Creates an instance of LearningObject.
    * @param {Partial<LearningObject>} [object]
@@ -306,7 +304,6 @@ export class LearningObject {
   private _contributors: User[];
   private _collection!: string;
   private _status!: LearningObject.Status;
-  private _revision: string;
   private _ratings?: any;
   private _resourceUris: {
     children: string,
