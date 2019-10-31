@@ -43,7 +43,14 @@ export class SubmitComponent implements OnInit {
   ngOnInit() {
     if (this.learningObject.collection && !this.collection) {
       this.collection = this.learningObject.collection;
-      this.getCollectionSelected(this.collection);
+
+      if (this.learningObject.version > 0) {
+        // if this is a revision, there was obviously something changed and a changelog is appropriate
+        this.needsChangelog = true;
+      } else {
+        this.getCollectionSelected(this.collection);
+      }
+
     }
   }
 
