@@ -10,7 +10,7 @@
           <ng-container *ngTemplateOutlet="libraryButtonsTemplate"></ng-container>
         </div>
       </ng-container>
-      <clark-editorial-action-pad *ngIf="userCanRevise" [hasRevision]="hasRevisions" [learningObject]="learningObject"></clark-editorial-action-pad>
+      <clark-editorial-action-pad *ngIf="userCanRevise" [hasRevision]="hasRevisions" [learningObject]="learningObject" [revision]="revisedLearningObject"></clark-editorial-action-pad>
     </div>
     <ng-container *ngIf="!auth.user">
       <div tabindex="0" class="action-message" id="login-msg">Please

@@ -19,9 +19,9 @@ export class EditorialActionPadComponent implements OnInit {
 
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
+  @Input() revision: LearningObject;
   openRevisionModal: boolean;
   showPopup = false;
-  revision: LearningObject;
 
   // TODO: Make HTTP requests for creating a revision
   constructor(
@@ -31,6 +31,8 @@ export class EditorialActionPadComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    console.log('object', this.learningObject);
+    console.log('revision', this.revision);
   }
 
   // Determines if an editor can create a revision of a learning object
@@ -41,8 +43,12 @@ export class EditorialActionPadComponent implements OnInit {
   // Determines if an editor can make edits to a waiting, review, or proofing learning object
   get makeEdits() {
     return (this.learningObject.status === 'waiting'
-      || this.learningObject.status === 'review'
-      || this.learningObject.status === 'proofing');
+            || this.learningObject.status === 'review'
+            || this.learningObject.status === 'proofing') ||
+            (this.revision.status === 'waiting'
+            || this.revision.status === 'review'
+            || this.revision.status === 'proofing'
+    );
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
