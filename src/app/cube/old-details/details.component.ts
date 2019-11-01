@@ -1,7 +1,7 @@
 
 import { takeUntil } from 'rxjs/operators';
 import { iframeParentID } from '../../core/cartv2.service';
-import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectService } from '../../core/learning-object.service';
 import { LearningObject, User } from '@entity';
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -51,7 +51,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showAddResponse = false;
   errorStatus: number;
   redirectUrl: string;
-  hasRevisions: boolean;
+  hasRevision: boolean;
   reviewer: boolean;
   showDownloadModal = false;
   revisedVersion = false;
@@ -94,7 +94,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     public modalService: ModalService,
     private router: Router,
     private changelogService: ChangelogService,
-    private uriRetrieverService: UriRetrieverService
   ) {
   }
 
@@ -136,16 +135,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @memberof DetailsComponent
    */
   get showChildren() {
-    return (!this.revisedVersion && this.releasedChildren.length) || (this.revisedVersion && this.revisedChildren.length);
+    return (!this.revisedVersion && this.releasedChildren && this.releasedChildren.length) || (this.revisedVersion  && this.revisedChildren && this.revisedChildren.length);
   }
 
   /**
    * toggles between released and revised copies of a learning object
    * @param revised the boolean for if the revised is being viewed
    */
-  viewReleased(revised: boolean) {
+  async viewReleased(revised: boolean) {
     this.revisedVersion = revised;
-    if (this.revisedVersion === true) {
+
+    if (this.revisedVersion) {
+      await this.loadRevisedLearningObject();
       this.learningObject = this.revisedLearningObject;
     } else {
       this.learningObject = this.releasedLearningObject;
@@ -169,34 +170,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.resetRatings();
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-      this.uriRetrieverService.getLearningObject({author, cuidInfo: { cuid }}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+      this.learningObjectService.fetchLearningObjectWithResources({ author, cuidInfo: { cuid }}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
 
-      // FIXME: This filter should be removed when service logic for filtering children is updated
-      this.releasedChildren = this.releasedLearningObject.children.filter(
-        child => {
-          return child.status === LearningObject.Status['RELEASED'] ||
-            child.status === LearningObject.Status['REVIEW'] ||
-            child.status === LearningObject.Status['PROOFING'] ||
-            child.status === LearningObject.Status['WAITING'];
-        }
-      );
+          // FIXME: This filter should be removed when service logic for filtering children is updated
+          this.releasedChildren = this.releasedLearningObject.children.filter(
+            child => {
+              return child.status === LearningObject.Status['RELEASED'] ||
+                child.status === LearningObject.Status['REVIEW'] ||
+                child.status === LearningObject.Status['PROOFING'] ||
+                child.status === LearningObject.Status['WAITING'];
+            }
+          );
 
           const owners = this.releasedLearningObject.contributors.map(user => user.username);
           owners.push(this.releasedLearningObject.author.username);
 
           this.learningObjectOwners = owners;
-          this.hasRevisions = !!this.releasedLearningObject.revisionUri;
+          this.hasRevision = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
           await this.getLearningObjectRatings();
           this.loading.pop();
-
-          if (this.hasRevisions) {
-            this.loadRevisedLearningObject();
-          } else {
-            this.revisedLearningObject = this.learningObject;
-          }
         }
       });
     } catch (e) {
@@ -235,9 +230,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.loading.push(1);
     try {
       this.resetRatings();
-      this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
-        this.learningObject.id
-      );
+      this.revisedLearningObject = await this.learningObjectService.fetchUri(this.learningObject.revisionUri, ([ o ]) => {
+        return new LearningObject(o);
+      }).toPromise();
+
+      this.learningObjectService.fetchLearningObjectResources(this.revisedLearningObject, ['children', 'parents', 'outcomes', 'materials', 'ratings']).subscribe(val => {
+        this.revisedLearningObject[val.name] = val.data;
+      });
+
       // FIXME: This filter should be removed when service logic is updated
       this.revisedChildren = this.revisedLearningObject.children.filter(
         child => {
@@ -603,21 +603,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
-    this.uriRetrieverService.getLearningObjectRatings(this.releasedLearningObject.resourceUris.ratings).toPromise().then(ratings => {
-      if (!ratings) {
+    this.learningObjectService.fetchLearningObjectResources(this.releasedLearningObject, ['ratings']).toPromise().then(({ name, data }) => {
+
+      if (!data) {
         this.resetRatings();
         return;
       }
 
-      this.ratings = ratings.ratings;
-      this.averageRatingValue = ratings.avgValue;
+      this.ratings = data.ratings;
+      this.averageRatingValue = data.avgValue;
 
       const u = this.auth.username;
-      for (let i = 0, l = ratings.ratings.length; i < l; i++) {
-        if (u === ratings.ratings[i].user.username) {
+      for (let i = 0, l = data.ratings.length; i < l; i++) {
+        if (u === data.ratings[i].user.username) {
           // this is the user's rating
           // we deep copy this to prevent direct modification from component subtree
-          this.userRating = Object.assign({}, ratings.ratings[i]);
+          this.userRating = Object.assign({}, data.ratings[i]);
           return;
         }
       }

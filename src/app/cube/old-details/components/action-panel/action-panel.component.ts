@@ -21,7 +21,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @Input() revisedDate: Date;
   @Input() releasedDate: Date;
   @Input() isRevision: boolean;
-  @Input() hasRevisions: boolean;
+  @Input() hasRevision: boolean;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
   @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;

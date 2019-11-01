@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, Subject, of } from 'rxjs';
 import { LearningObject } from '@entity';
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { LearningOutcome } from '@entity';
 import { catchError, retry, map, tap, filter, take, takeUntil, finalize } from 'rxjs/operators';
+
+// TODO this service should be deleted and its instances should be replced with the LearningObjectService in core
 
 // TODO add callbacks for children and ratings
 export const CALLBACKS = {
