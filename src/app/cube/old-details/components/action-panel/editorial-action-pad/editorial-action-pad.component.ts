@@ -10,9 +10,6 @@ import { HttpClient } from '@angular/common/http';
  * state of the Learning Object.
  */
 
- interface RevisionUri {
-   revisionUri: string;
- }
 @Component({
   selector: 'clark-editorial-action-pad',
   templateUrl: './editorial-action-pad.component.html',
@@ -22,6 +19,7 @@ export class EditorialActionPadComponent implements OnInit {
 
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
+  @Input() revision: LearningObject;
   openRevisionModal: boolean;
   showPopup = false;
 
@@ -33,6 +31,8 @@ export class EditorialActionPadComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    console.log('object', this.learningObject);
+    console.log('revision', this.revision);
   }
 
   // Determines if an editor can create a revision of a learning object
@@ -42,9 +42,13 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Determines if an editor can make edits to a waiting, review, or proofing learning object
   get makeEdits() {
-    return this.learningObject.status === 'waiting'
-      || this.learningObject.status === 'review'
-      || this.learningObject.status === 'proofing';
+    return (this.learningObject.status === 'waiting'
+            || this.learningObject.status === 'review'
+            || this.learningObject.status === 'proofing') ||
+            (this.revision.status === 'waiting'
+            || this.revision.status === 'review'
+            || this.revision.status === 'proofing'
+    );
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
@@ -72,10 +76,9 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Create a revision and then redirects to the builder for the revision˝
   async createRevision() {
-    let revision: any;
-    let revisionUri: any = await this.learningObjectService
+    const revisionUri: any = await this.learningObjectService
       .createRevision(this.learningObject.cuid, this.learningObject.author.username);
-    revisionUri = JSON.stringify(revisionUri);
+
     this.http.get(revisionUri.revisionUri).subscribe(res => {
       revision = res;
     });

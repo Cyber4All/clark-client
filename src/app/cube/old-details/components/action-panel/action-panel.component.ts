@@ -43,8 +43,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   loggedin = false;
   showDownloadModal = false;
   userCanRevise = false;
-  // flag to determine if the revisions pipeline is live
-  revisionsLive = environment.experimental;
 
   contributorsList = [];
   iframeParent = iframeParentID;
@@ -77,6 +75,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
+
+    console.log()
   }
 
   get isReleased(): boolean {
