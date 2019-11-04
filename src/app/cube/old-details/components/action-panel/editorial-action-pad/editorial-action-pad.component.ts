@@ -72,7 +72,11 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Redirects the editor to the builder to make edits to a waiting, review, or proofing object
   editLearningObject() {
-    this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
+    if (this.revision) {
+      this.router.navigate([`/admin/learning-object-builder/${this.revision.id}`]);
+    } else {
+      this.router.navigate([`admin/learning-object-builder/${this.learningObject.id}`]);
+    }
   }
 
   // Create a revision and then redirects to the builder for the revision˝
