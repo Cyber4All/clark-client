@@ -15,7 +15,9 @@ export class MessagesService {
     return this._message;
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this._message = new Message(true, 'The CLARK system will be temporarily offline for maintenance on Wednesday, November 6th, beginning at 3PM EST.', 'far fa-exclamation-circle');
+  }
 
   getStatus(): Promise<Message> {
     if (this._message) {
@@ -28,32 +30,32 @@ export class MessagesService {
         )
         .toPromise()
         .then((val: Message) => {
-          this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          // this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
           return this._message;
         });
     }
   }
 
-    getMaintenance() {
-        return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })
-        .pipe(
-            retry(3),
-            catchError(this.handleError)
-        )
-        .toPromise()
-        .then((val: boolean) => {
-            return val;
-        });
-    }
+  getMaintenance() {
+    return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((val: boolean) => {
+        return val;
+      });
+  }
 
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-          // Client-side or network returned error
-          return throwError(error.error.message);
-        } else {
-          // API returned error
-          return throwError(error);
-        }
-      }
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
+  }
 }
 
