@@ -40,9 +40,8 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Determines if an editor can create a revision of a learning object
   get makeRevision() {
-    return this.learningObject.status === 'released' && !this.hasRevision;
+    return ((this.learningObject.status === 'released') && (this.revision.id === this.learningObject.id));
   }
-
   // Determines if an editor can make edits to a waiting, review, or proofing learning object
   get makeEdits() {
   return (this.learningObject.status === 'waiting' || (this.revision && this.revision.status === 'waiting')) ||
