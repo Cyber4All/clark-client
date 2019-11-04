@@ -28,12 +28,11 @@
 
 <ng-template #meatball>
   <ng-container *ngIf="!disabled && meatball">
-    <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': (revision.status === 'review' || revision.status === 'proofing')}"
-      (activate)="revision.status !== 'review' && revision.status !== 'proofing' && this.toggleContextMenu($event)">
-        <div class="icon">
-          <i class="far fa-times"></i>
-        </div>
-        <div class="orb"></div>
+    <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': revision.status === 'review'}" (activate)="revision.status !== 'review' && this.toggleContextMenu($event)">
+      <div class="icon">
+        <i class="far fa-times"></i>
+      </div>
+      <div class="orb"></div>
     </div>
   
     <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
