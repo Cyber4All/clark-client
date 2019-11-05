@@ -73,6 +73,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   // This is used by the cart service to target the iframe in this component when the action-panel download function is triggered
   iframeParent = iframeParentID;
+  version: number;
 
   @HostListener('window:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
@@ -146,7 +147,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.revisedVersion = revised;
 
     if (this.revisedVersion) {
-      await this.loadRevisedLearningObject();
+      // await this.loadRevisedLearningObject();
       this.learningObject = this.revisedLearningObject;
     } else {
       this.learningObject = this.releasedLearningObject;
@@ -170,7 +171,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.resetRatings();
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-      this.learningObjectService.fetchLearningObjectWithResources({ author, cuidInfo: { cuid }}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+      await this.learningObjectService.fetchLearningObjectWithResources(
+        { author, cuidInfo: { cuid }}, resources
+        ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
 
@@ -188,12 +191,38 @@ export class DetailsComponent implements OnInit, OnDestroy {
           owners.push(this.releasedLearningObject.author.username);
 
           this.learningObjectOwners = owners;
-          this.hasRevision = !!this.releasedLearningObject.revisionUri;
+          // this.hasRevision = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
+          this.version = this.learningObject.version + 1;
           await this.getLearningObjectRatings();
-          this.loading.pop();
         }
+        this.learningObjectService.fetchLearningObjectWithResources(
+          { author, cuidInfo: { cuid: cuid, version: (this.learningObject.version + 1) }}, resources)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(async(object) => {
+          if (object) {
+            this.revisedLearningObject = object;
+
+            // FIXME: This filter should be removed when service logic for filtering children is updated
+            this.revisedChildren = this.revisedLearningObject.children.filter(
+              child => {
+                return child.status === LearningObject.Status['RELEASED'] ||
+                  child.status === LearningObject.Status['REVIEW'] ||
+                  child.status === LearningObject.Status['PROOFING'] ||
+                  child.status === LearningObject.Status['WAITING'];
+              }
+            );
+
+            const owners = this.revisedLearningObject.contributors.map(user => user.username);
+            owners.push(this.revisedLearningObject.author.username);
+
+            this.learningObjectOwners = owners;
+          }
+          if (this.revisedLearningObject) {
+            this.hasRevision = true;
+          }
+        });
       });
+      this.loading.pop();
     } catch (e) {
 
       /**

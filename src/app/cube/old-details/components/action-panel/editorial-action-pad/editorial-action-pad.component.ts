@@ -22,7 +22,7 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() learningObject: LearningObject;
   openRevisionModal: boolean;
   showPopup = false;
-  revision: LearningObject;
+  @Input() revisedLearningObject: LearningObject;
 
   constructor(
     private router: Router,
@@ -31,29 +31,25 @@ export class EditorialActionPadComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
-    if (this.learningObject.revisionUri) {
-      this.revision = (await this.learningObjectServiceUri.fetchUri(this.learningObject.revisionUri).toPromise())[0];
-    } else {
-      this.revision = this.learningObject;
-    }
   }
 
   // Determines if an editor can create a revision of a learning object
   get makeRevision() {
-    return ((this.learningObject.status === 'released') && (this.revision.id === this.learningObject.id));
+    return ((this.learningObject.status === 'released') && (!this.revisedLearningObject));
   }
   // Determines if an editor can make edits to a waiting, review, or proofing learning object
   get makeEdits() {
-  return (this.learningObject.status === 'waiting' || (this.revision && this.revision.status === 'waiting')) ||
-         (this.learningObject.status === 'review' || (this.revision && this.revision.status === 'review')) ||
-         (this.learningObject.status === 'proofing' || (this.revision && this.revision.status === 'proofing')) ||
-         (this.revision && this.revision.status === 'unreleased');
+  return (this.learningObject.status === 'waiting' || (this.revisedLearningObject && this.revisedLearningObject.status === 'waiting')) ||
+         (this.learningObject.status === 'review' || (this.revisedLearningObject && this.revisedLearningObject.status === 'review')) ||
+         (this.learningObject.status === 'proofing' || (this.revisedLearningObject && this.revisedLearningObject.status === 'proofing')) ||
+         (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased');
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
   get notPermitted() {
     return (this.learningObject.status === 'released' &&
-    (this.revision && (this.revision.status === 'unreleased' || this.revision.status === 'rejected'))) ||
+    (this.revisedLearningObject && 
+      (this.revisedLearningObject.status === 'unreleased' || this.revisedLearningObject.status === 'rejected'))) ||
     (this.learningObject.status === 'unreleased' || this.learningObject.status === 'rejected');
   }
 
@@ -71,8 +67,8 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Redirects the editor to the builder to make edits to a waiting, review, or proofing object
   editLearningObject() {
-    if (this.revision) {
-      this.router.navigate([`/admin/learning-object-builder/${this.revision.id}`]);
+    if (this.revisedLearningObject) {
+      this.router.navigate([`/admin/learning-object-builder/${this.revisedLearningObject.id}`]);
     } else {
       this.router.navigate([`admin/learning-object-builder/${this.learningObject.id}`]);
     }
@@ -82,8 +78,8 @@ export class EditorialActionPadComponent implements OnInit {
   async createRevision() {
     const revisionUri: any = await this.learningObjectService
       .createRevision(this.learningObject.cuid, this.learningObject.author.username);
-    this.revision = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
-    this.router.navigate([`/onion/learning-object-builder/${this.revision.id}`]);
+    this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
+    this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
 
   }
 }
