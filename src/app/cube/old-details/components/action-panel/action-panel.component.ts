@@ -104,7 +104,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
 
     try {
-      if (!this.userIsAuthor) {
+      if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
         this.saved = this.cartService.has(this.learningObject);
 
         if (!this.saved) {
