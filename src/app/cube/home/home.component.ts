@@ -94,4 +94,8 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
+  mailTo() {
+    window.location.href = 'mailto:?subject=Check out Learning Objects on CLARK!&body=https://www.clark.center';
+  }
 }
