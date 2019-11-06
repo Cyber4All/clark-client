@@ -22,6 +22,6 @@ export class ParentListingComponent implements OnInit {
   ngOnInit() { }
 
   public buildLink(learningObject: LearningObject) {
-    return `/details/${learningObject.author.username}/${encodeURIComponent(learningObject.name)}`;
+    return `/details/${learningObject.author.username}/${encodeURIComponent(learningObject.cuid)}`;
   }
 }

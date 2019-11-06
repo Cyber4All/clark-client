@@ -15,17 +15,17 @@ export const ADMIN_ROUTES = {
 };
 
 export const CHANGELOG_ROUTES = {
-  CREATE_CHANGELOG(userId: string, learningObjectId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(learningObjectId)}/changelog`;
+  CREATE_CHANGELOG(userId: string, learningObjectCuid: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(learningObjectCuid)}/changelog`;
   },
   FETCH_ALL_CHANGELOGS(params: {
-    userId: string, learningObjectId: string, minusRevision?: boolean,
+    userId: string, learningObjectCuid: string, minusRevision?: boolean,
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.userId,
     )}/learning-objects/${encodeURIComponent(
-      params.learningObjectId,
-      )}/changelogs?minusRevision=${params.minusRevision}`;
+      params.learningObjectCuid,
+    )}/changelogs?minusRevision=${params.minusRevision}`;
   }
 };
 
@@ -90,7 +90,7 @@ export const USER_ROUTES = {
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query
-      )}&${querystring.stringify(filters)}&draftsOnly=true`;
+    )}&${querystring.stringify(filters)}&draftsOnly=true`;
   },
   GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -102,17 +102,19 @@ export const USER_ROUTES = {
       username
     )}/learning-objects`;
   },
-  CREATE_REVISION_OF_LEARNING_OBJECT(username, learningObjectId) {
+  CREATE_REVISION_OF_LEARNING_OBJECT(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects/${encodeURIComponent(learningObjectId)}/revisions`;
+    )}/learning-objects/${encodeURIComponent(
+      cuid
+    )}/versions`;
   },
   UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
     return `${
       environment.apiURL
-    }/users/${username}/learning-objects/${encodeURIComponent(
-      learningObjectName
-    )}`;
+      }/users/${username}/learning-objects/${encodeURIComponent(
+        learningObjectName
+      )}`;
   },
   SUBMIT_LEARNING_OBJECT(params: {
     userId: string,
@@ -120,7 +122,7 @@ export const USER_ROUTES = {
   }) {
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
+      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
   },
   UNSUBMIT_LEARNING_OBJECT(params: {
     userId: string,
@@ -128,7 +130,7 @@ export const USER_ROUTES = {
   }) {
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
+      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
   },
   CHECK_FIRST_SUBMISSION(params: {
     userId: string,
@@ -141,7 +143,7 @@ export const USER_ROUTES = {
     const q = 'collection=' + params.query.collection + '&hasSubmission=' + params.query.hasSubmission;
     return `${
       environment.apiURL
-    }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
+      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
@@ -151,10 +153,10 @@ export const USER_ROUTES = {
   GET_LEARNING_OBJECT(id) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
   },
-  DELETE_LEARNING_OBJECT(username, learningObjectName) {
+  DELETE_LEARNING_OBJECT(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
+    )}/learning-objects/${encodeURIComponent(id)}`;
   },
   DELETE_MULTIPLE_LEARNING_OBJECTS(username, learningObjectNames) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -207,39 +209,25 @@ export const USER_ROUTES = {
   },
   GET_CART(username) {
     // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/cart`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
   },
-  CLEAR_CART(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/cart`;
-  },
-  CLEAR_LEARNING_OBJECT_FROM_CART(username, author, learningObjectName) {
+  CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/cart/learning-objects/${encodeURIComponent(author)}/${encodeURIComponent(
-      learningObjectName
-    )}`;
+    )}/library/learning-objects/${encodeURIComponent(cuid)}`;
   },
-  ADD_LEARNING_OBJECT_TO_CART(username, author, learningObjectName) {
+  ADD_LEARNING_OBJECT_TO_CART(username) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
+  },
+  DOWNLOAD_OBJECT(username: string, learningObjectCuid: string, version: number) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/cart/learning-objects/${encodeURIComponent(author)}/${encodeURIComponent(
-      learningObjectName
-    )}`;
-  },
-  DOWNLOAD_OBJECT(author, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      author
-    )}/learning-objects/${encodeURIComponent(learningObjectName)}/bundle`;
-  },
-  DOWNLOAD_REVISED_OBJECT(author, learningObjectName) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      author
-    )}/learning-objects/${learningObjectName}/bundle?revision`;
+    )}/learning-objects/${encodeURIComponent(learningObjectCuid)}/versions/${encodeURIComponent(version.toString())}/bundle`;
   },
   GET_SAME_ORGANIZATION(organization) {
     return `${
       environment.apiURL
-    }/users/search?organization=${encodeURIComponent(organization)}`;
+      }/users/search?organization=${encodeURIComponent(organization)}`;
   },
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
@@ -320,7 +308,7 @@ export const USER_ROUTES = {
       params.username
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
       params.uploadId
-    }/admin`;
+      }/admin`;
   },
   ABORT_MULTIPART(params: {
     username: string;
@@ -341,7 +329,7 @@ export const USER_ROUTES = {
       params.username
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
       params.uploadId
-    }/admin`;
+      }/admin`;
   }
 };
 
@@ -350,10 +338,14 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
     return `${environment.apiURL}/learning-objects?${query}`;
   },
-  GET_PUBLIC_LEARNING_OBJECT(author, learningObjectName) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      author
-    )}/${encodeURIComponent(learningObjectName)}`;
+  GET_PUBLIC_LEARNING_OBJECT(author: string, cuid: string, version?: number) {
+    let uri = `${environment.apiURL}/users/${encodeURIComponent(author)}/learning-objects/${encodeURIComponent(cuid)}`;
+
+    if (version !== undefined) {
+      uri += '?version=' + version.toString();
+    }
+
+    return uri;
   },
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_META(name: string) {
@@ -377,7 +369,7 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
       params.username
     )}/learning-objects/${params.loId}/files/${params.fileId}/download${
       params.open ? '?open=true' : ''
-    }`;
+      }`;
   }
 };
 
@@ -527,7 +519,9 @@ export const MISC_ROUTES = {
 };
 
 export const STATS_ROUTES = {
+  // fetches stats for all objects in the system and blooms distributions
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
-  LIBRARY_STATS: `${environment.apiURL}/library/stats`,
-  USERS_STATS: `${environment.apiURL}/users/stats`
+  // fetches downloads and saves for ALL objects in system
+  LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
+  USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };

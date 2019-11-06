@@ -17,9 +17,9 @@ export class ChangelogService {
    * @returns {Promise<{}>}
    * @memberof ChangelogService
    */
-  createChangelog(userId: string, learningObjectId: string, changelog: string): Promise<{}> {
+  createChangelog(userId: string, learningObjectCuid: string, changelog: string): Promise<{}> {
     return this.http
-      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(userId, learningObjectId), { changelogText: changelog }, { responseType: 'text' })
+      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(userId, learningObjectCuid), { changelogText: changelog }, { responseType: 'text' })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -37,13 +37,13 @@ export class ChangelogService {
    */
   fetchAllChangelogs(params: {
     userId: string,
-    learningObjectId: string,
+    learningObjectCuid: string,
     minusRevision?: boolean,
   }): Promise<any> {
     return this.http
       .get(CHANGELOG_ROUTES.FETCH_ALL_CHANGELOGS({
         userId: params.userId,
-        learningObjectId: params.learningObjectId,
+        learningObjectCuid: params.learningObjectCuid,
         minusRevision: params.minusRevision,
       }))
       .pipe(

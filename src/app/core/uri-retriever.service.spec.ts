@@ -44,9 +44,9 @@ describe('UriRetrieverService', () => {
 
   describe('#getLearningObject', () => {
 
-    it('should get a learning object by its name and author username', done => {
+    it('should get a learning object by its cuid, version, and author username', done => {
       const mockParams = {
-        name: 'Test Object',
+        cuidInfo: { cuid: 'whee-im-a-cuid' },
         author: 'jdoe'
       };
 
@@ -55,9 +55,8 @@ describe('UriRetrieverService', () => {
         done();
       });
 
-      const url = `${environment.apiURL}/learning-objects/${encodeURIComponent(mockParams.author)}/`
-        + `${encodeURIComponent(mockParams.name)}`;
-      const req = httpTestingController.expectOne(url);
+      const uri = `${environment.apiURL}/users/${encodeURIComponent(mockParams.author)}/learning-objects/${encodeURIComponent(mockParams.cuidInfo.cuid)}`;
+      const req = httpTestingController.expectOne(uri);
       req.flush(mockResponse);
     });
 
@@ -77,9 +76,9 @@ describe('UriRetrieverService', () => {
       req.flush(mockResponse);
     });
 
-    it('should get a learning object by author and name with all resources', done => {
+    it('should get a learning object by author, cuid, and version with all resources', done => {
       const mockParams = {
-        name: 'Test Object',
+        cuidInfo: { cuid: 'whee-im-a-cuid' },
         author: 'jdoe'
       };
 
@@ -97,7 +96,7 @@ describe('UriRetrieverService', () => {
         done();
       });
 
-      const uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(mockParams.author)}/${encodeURIComponent(mockParams.name)}`;
+      const uri = `${environment.apiURL}/users/${encodeURIComponent(mockParams.author)}/learning-objects/${encodeURIComponent(mockParams.cuidInfo.cuid)}`;
       httpTestingController.expectOne(uri).flush(mockResponse);
       httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);
       httpTestingController.expectOne(mockResponse.resourceUris.materials).flush([]);
@@ -107,9 +106,9 @@ describe('UriRetrieverService', () => {
       httpTestingController.expectOne(mockResponse.resourceUris.ratings).flush(null);
     });
 
-    it('should get a learning object by author and name with the specified resources', done => {
+    it('should get a learning object by author, cuid, and version with the specified resources', done => {
       const mockParams = {
-        name: 'Test Object',
+        cuidInfo: { cuid: 'whee-im-a-cuid' },
         author: 'jdoe'
       };
 
@@ -121,7 +120,7 @@ describe('UriRetrieverService', () => {
         done();
       });
 
-      const uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(mockParams.author)}/${encodeURIComponent(mockParams.name)}`;
+      const uri = `${environment.apiURL}/users/${encodeURIComponent(mockParams.author)}/learning-objects/${encodeURIComponent(mockParams.cuidInfo.cuid)}`;
       httpTestingController.expectOne(uri).flush(mockResponse);
       httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);
       httpTestingController.expectOne(mockResponse.resourceUris.metrics).flush({saves: 10, downloads: 10});

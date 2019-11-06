@@ -8,7 +8,7 @@ import {
   AfterViewInit,
   OnDestroy
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { carousel } from './carousel.animation';
 
@@ -25,7 +25,7 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     TemplateRef<any>
   >;
 
-  @Input() action$: Subject<number> = new Subject();
+  @Input() action$: BehaviorSubject<number> | Subject<number> = new Subject();
 
   direction: 'next' | 'prev' | 'off' = 'off';
   index = 0;

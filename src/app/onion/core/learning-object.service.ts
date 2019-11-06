@@ -63,12 +63,12 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
-  createRevision(id: string, authorUsername: string) {
-    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, id);
+  createRevision(cuid: string, authorUsername: string) {
+    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
     return this.http
     .post(
-      route,
-      { headers: this.headers, withCredentials: true }
+      route, {},
+      { withCredentials: true }
     )
     .pipe(
       retry(3),
@@ -286,10 +286,10 @@ export class LearningObjectService {
    * @returns {Promise<{}>}
    * @memberof LearningObjectService
    */
-  delete(learningObjectName: string, authorUsername: string): Promise<{}> {
+  delete(authorUsername: string, learningObjectId: string): Promise<{}> {
     const route = USER_ROUTES.DELETE_LEARNING_OBJECT(
       authorUsername,
-      learningObjectName
+      learningObjectId
     );
     return this.http
       .delete(route, {

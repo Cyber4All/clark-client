@@ -73,7 +73,11 @@ export class HistoryService {
       // we have a history of navigation through system to traverse
       if (index !== undefined) {
         // we passed an index, delete all history after this point
-        this.history = this.history.slice(0, index);
+        if (this.history[index - 1] === this.currentRoute) {  // Checks if the next route to back to is the current route
+          this.history = this.history.slice(0, index - 1);
+        } else {
+          this.history = this.history.slice(0, index);
+        }
         // now route to the current route (the specified point-in-time)
         this.router.navigateByUrl(this.currentRoute);
       }

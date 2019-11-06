@@ -12,7 +12,7 @@
   class="button neutral"
   (activate)="editLearningObject()"
   aria-label="Edit Learning Object">
-  Edit
+  {{revisedLearningObject ? 'Edit Revision' : 'Edit Submission'}}
 </button>
 
 <button

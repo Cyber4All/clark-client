@@ -1,6 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
+import { LearningObjectService } from 'app/cube/learning-object.service';
+import { LearningObjectService as LOUri} from 'app/core/learning-object.service';
+import { takeUntil, debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 /**
  * EditorialActionPadComponent coordinates all editor functionality inside of the
@@ -18,29 +22,35 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() learningObject: LearningObject;
   openRevisionModal: boolean;
   showPopup = false;
+  @Input() revisedLearningObject: LearningObject;
 
-  // TODO: Make HTTP requests for creating a revision
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private learningObjectService: LearningObjectService,
+    private learningObjectServiceUri: LOUri,
+    ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
   }
 
   // Determines if an editor can create a revision of a learning object
   get makeRevision() {
-    return this.learningObject.status === 'released' && !this.hasRevision;
+    return ((this.learningObject.status === 'released') && (!this.revisedLearningObject));
   }
-
   // Determines if an editor can make edits to a waiting, review, or proofing learning object
   get makeEdits() {
-    return this.learningObject.status !== 'released'
-      && this.learningObject.status !== 'unreleased'
-      && this.learningObject.status !== 'rejected';
+  return (this.learningObject.status === 'waiting' || (this.revisedLearningObject && this.revisedLearningObject.status === 'waiting')) ||
+         (this.learningObject.status === 'review' || (this.revisedLearningObject && this.revisedLearningObject.status === 'review')) ||
+         (this.learningObject.status === 'proofing' || (this.revisedLearningObject && this.revisedLearningObject.status === 'proofing')) ||
+         (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased');
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
   get notPermitted() {
-    return (this.learningObject.status === 'unreleased' || this.learningObject.status === 'rejected')
-      || (this.learningObject.status === 'released' && this.hasRevision);
+    return (this.learningObject.status === 'released' &&
+    (this.revisedLearningObject && 
+      (this.revisedLearningObject.status === 'unreleased' || this.revisedLearningObject.status === 'rejected'))) ||
+    (this.learningObject.status === 'unreleased' || this.learningObject.status === 'rejected');
   }
 
   // Handles opening the create revision modal
@@ -57,18 +67,19 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Redirects the editor to the builder to make edits to a waiting, review, or proofing object
   editLearningObject() {
-    this.router.navigate([`/admin/learning-object-builder/${this.learningObject.id}`]);
+    if (this.revisedLearningObject) {
+      this.router.navigate([`/admin/learning-object-builder/${this.revisedLearningObject.id}`]);
+    } else {
+      this.router.navigate([`admin/learning-object-builder/${this.learningObject.id}`]);
+    }
   }
 
   // Create a revision and then redirects to the builder for the revision˝
-  createRevision() {
-    this.router.navigate(
-      [`/admin/learning-object-builder/${this.learningObject.id}`],
-      {
-        queryParams: {
-          revisionId: this.learningObject.revision,
-          author: this.learningObject.author.username
-        }
-      });
+  async createRevision() {
+    const revisionUri: any = await this.learningObjectService
+      .createRevision(this.learningObject.cuid, this.learningObject.author.username);
+    this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
+    this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
+
   }
 }

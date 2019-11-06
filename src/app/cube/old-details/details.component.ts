@@ -1,7 +1,7 @@
 
 import { takeUntil } from 'rxjs/operators';
 import { iframeParentID } from '../../core/cartv2.service';
-import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectService } from '../../core/learning-object.service';
 import { LearningObject, User } from '@entity';
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { RatingService } from '../../core/rating.service';
 import { UriRetrieverService } from '../../core/uri-retriever.service';
-import { ToasterService } from '../../shared/modules/toaster/toaster.service';
+import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { ModalService, ModalListElement } from '../../shared/modules/modals/modal.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangelogService } from 'app/core/changelog.service';
@@ -51,7 +51,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   showAddResponse = false;
   errorStatus: number;
   redirectUrl: string;
-  hasRevisions: boolean;
+  hasRevision: boolean;
   reviewer: boolean;
   showDownloadModal = false;
   revisedVersion = false;
@@ -59,7 +59,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogs = [];
 
-  learningObjectName: string;
+  cuid: string;
   ariaLabel: string;
 
   userRating: {
@@ -73,6 +73,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   // This is used by the cart service to target the iframe in this component when the action-panel download function is triggered
   iframeParent = iframeParentID;
+  version: number;
 
   @HostListener('window:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
@@ -90,21 +91,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private auth: AuthService,
     private ratingService: RatingService,
-    private toastService: ToasterService,
+    private toastService: ToastrOvenService,
     public modalService: ModalService,
     private router: Router,
     private changelogService: ChangelogService,
-    private notificationService: ToasterService,
-    private uriRetrieverService: UriRetrieverService
   ) {
   }
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.isDestroyed$)).subscribe(params => {
-      this.learningObjectName = decodeURIComponent(params['learningObjectName']);
+      this.cuid = decodeURIComponent(params['learningObjectName']);
       this.fetchReleasedLearningObject(
         params['username'],
-        this.learningObjectName,
+        params['learningObjectName']
       );
     });
 
@@ -137,16 +136,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @memberof DetailsComponent
    */
   get showChildren() {
-    return (!this.revisedVersion && this.releasedChildren.length) || (this.revisedVersion && this.revisedChildren.length);
+    return (!this.revisedVersion && this.releasedChildren && this.releasedChildren.length) || (this.revisedVersion  && this.revisedChildren && this.revisedChildren.length);
   }
 
   /**
    * toggles between released and revised copies of a learning object
    * @param revised the boolean for if the revised is being viewed
    */
-  viewReleased(revised: boolean) {
+  async viewReleased(revised: boolean) {
     this.revisedVersion = revised;
-    if (this.revisedVersion === true) {
+
+    if (this.revisedVersion) {
+      // await this.loadRevisedLearningObject();
       this.learningObject = this.revisedLearningObject;
     } else {
       this.learningObject = this.releasedLearningObject;
@@ -163,43 +164,65 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param author the author of the learning object
    * @param name the name of the learning object
    */
-  async fetchReleasedLearningObject(author: string, name: string) {
+  async fetchReleasedLearningObject(author: string, cuid: string) {
     this.loading.push(1);
 
     try {
       this.resetRatings();
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-      this.uriRetrieverService.getLearningObject({author, name}, resources).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+      await this.learningObjectService.fetchLearningObjectWithResources(
+        { author, cuidInfo: { cuid }}, resources
+        ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.releasedLearningObject = object;
 
-      // FIXME: This filter should be removed when service logic for filtering children is updated
-      this.releasedChildren = this.releasedLearningObject.children.filter(
-        child => {
-          return child.status === LearningObject.Status['RELEASED'] ||
-            child.status === LearningObject.Status['REVIEW'] ||
-            child.status === LearningObject.Status['PROOFING'] ||
-            child.status === LearningObject.Status['WAITING'];
-        }
-      );
+          // FIXME: This filter should be removed when service logic for filtering children is updated
+          this.releasedChildren = this.releasedLearningObject.children.filter(
+            child => {
+              return child.status === LearningObject.Status['RELEASED'] ||
+                child.status === LearningObject.Status['REVIEW'] ||
+                child.status === LearningObject.Status['PROOFING'] ||
+                child.status === LearningObject.Status['WAITING'];
+            }
+          );
 
           const owners = this.releasedLearningObject.contributors.map(user => user.username);
           owners.push(this.releasedLearningObject.author.username);
 
           this.learningObjectOwners = owners;
-          this.hasRevisions = this.releasedLearningObject.hasRevision;
+          // this.hasRevision = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
+          this.version = this.learningObject.version + 1;
           await this.getLearningObjectRatings();
-          this.loading.pop();
-
-          if (this.hasRevisions) {
-            this.loadRevisedLearningObject();
-          } else {
-            this.revisedLearningObject = this.learningObject;
-          }
         }
+        this.learningObjectService.fetchLearningObjectWithResources(
+          { author, cuidInfo: { cuid: cuid, version: (this.learningObject.version + 1) }}, resources)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(async(object) => {
+          if (object) {
+            this.revisedLearningObject = object;
+
+            // FIXME: This filter should be removed when service logic for filtering children is updated
+            this.revisedChildren = this.revisedLearningObject.children.filter(
+              child => {
+                return child.status === LearningObject.Status['RELEASED'] ||
+                  child.status === LearningObject.Status['REVIEW'] ||
+                  child.status === LearningObject.Status['PROOFING'] ||
+                  child.status === LearningObject.Status['WAITING'];
+              }
+            );
+
+            const owners = this.revisedLearningObject.contributors.map(user => user.username);
+            owners.push(this.revisedLearningObject.author.username);
+
+            this.learningObjectOwners = owners;
+          }
+          if (this.revisedLearningObject) {
+            this.hasRevision = true;
+          }
+        });
       });
+      this.loading.pop();
     } catch (e) {
 
       /**
@@ -236,9 +259,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.loading.push(1);
     try {
       this.resetRatings();
-      this.revisedLearningObject = await this.learningObjectService.getRevisedLearningObject(
-        this.learningObject.id
-      );
+      this.revisedLearningObject = await this.learningObjectService.fetchUri(this.learningObject.revisionUri, ([ o ]) => {
+        return new LearningObject(o);
+      }).toPromise();
+
+      this.learningObjectService.fetchLearningObjectResources(this.revisedLearningObject, ['children', 'parents', 'outcomes', 'materials', 'ratings']).subscribe(val => {
+        this.revisedLearningObject[val.name] = val.data;
+      });
+
       // FIXME: This filter should be removed when service logic is updated
       this.revisedChildren = this.revisedLearningObject.children.filter(
         child => {
@@ -328,13 +356,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (this.revisedVersion) {
           this.changelogs = await this.changelogService.fetchAllChangelogs({
             userId: this.learningObject.author.id,
-            learningObjectId: this.learningObject.id,
+            learningObjectCuid: this.learningObject.cuid,
             minusRevision: false,
           });
         } else {
           this.changelogs = await this.changelogService.fetchAllChangelogs({
             userId: this.learningObject.author.id,
-            learningObjectId: this.learningObject.id,
+            learningObjectCuid: this.learningObject.cuid,
             minusRevision: true,
           });
         }
@@ -348,7 +376,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           errorMessage = `We encountered an error while attempting to
           retrieve change logs for this Learning Object. Please try again later.`;
         }
-        this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+        this.toastService.error('Error!', errorMessage);
       }
       this.loadingChangelogs = false;
     }
@@ -363,28 +391,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .createRating({
         username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
-        version: this.learningObject.revision,
+        version: this.learningObject.version,
         rating,
       })
       .then(
         () => {
           this.getLearningObjectRatings();
           this.showAddRating = false;
-          this.toastService.notify(
-            'Success!',
-            'Review submitted successfully!',
-            'good',
-            'far fa-check'
-          );
+          this.toastService.success('Success!', 'Review submitted successfully!');
         },
         error => {
           this.showAddRating = false;
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your rating could not be submitted',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'An error occurred and your rating could not be submitted');
         }
       );
   }
@@ -396,12 +414,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   updateRating(rating: { value: number; comment: string; id?: string }) {
     const {id, ...updates} = rating;
     if (!rating.id) {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your rating could not be updated',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occured and your rating could not be updated');
       console.error('Error: rating id not set');
       return;
     }
@@ -417,21 +430,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
         () => {
           this.getLearningObjectRatings();
           this.showAddRating = false;
-          this.toastService.notify(
-            'Success!',
-            'Review updated successfully!',
-            'good',
-            'far fa-check'
-          );
+          this.toastService.success('Success!', 'Review updated successfully!');
         },
         error => {
           this.showAddRating = false;
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your rating could not be updated',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
           console.error(error);
         }
       );
@@ -468,20 +471,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
         })
         .then(val => {
           this.getLearningObjectRatings();
-          this.toastService.notify(
-            'Success!',
-            'Rating deleted successfully!.',
-            'good',
-            'far fa-times'
-          );
+          this.toastService.success('Success!', 'Rating deleted successfully!.');
         })
         .catch(() => {
-          this.toastService.notify(
-            'Error!',
-            'Rating couldn\'t be deleted',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'Rating couldn\'t be deleted');
         });
     }
   }
@@ -500,34 +493,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .flagLearningObjectRating({
           username: this.learningObject.author.username,
           CUID: this.learningObject.cuid,
-          version: this.learningObject.revision,
+          version: this.learningObject.version,
           ratingId,
           report
         })
         .catch(response => {
           if (response.status === 200) {
-            this.toastService.notify(
-              'Success!',
-              'Report submitted successfully!',
-              'good',
-              'far fa-check'
-            );
+            this.toastService.success('Success!', 'Report submitted successfully!');
           } else {
-            this.toastService.notify(
-              'Error!',
-              'An error occured and your report could not be submitted',
-              'bad',
-              'far fa-times'
-            );
+            this.toastService.error('Error!', 'An error occured and your report could not be submitted');
           }
         });
     } else {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your report could not be submitted',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occured and your report could not be submitted');
     }
   }
 
@@ -550,33 +528,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .createResponse({
           username: this.learningObject.author.username,
           CUID: this.learningObject.cuid,
-          version: this.learningObject.revision,
+          version: this.learningObject.version,
           ratingId,
           response,
         });
       if (result) {
         this.getLearningObjectRatings();
-        this.toastService.notify(
-          'Success!',
-          'Response submitted successfully!',
-          'good',
-          'far fa-check'
-        );
+        this.toastService.success('Success!', 'Response submitted successfully!');
       } else {
-        this.toastService.notify(
-          'Error!',
-          'An error occured and your response could not be submitted',
-          'bad',
-          'far fa-times'
-        );
+        this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
       }
     } else {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your response could not be submitted',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
     }
   }
 
@@ -599,34 +562,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
         .editResponse({
           username: this.learningObject.author.username,
           CUID: this.learningObject.cuid,
-          version: this.learningObject.revision,
+          version: this.learningObject.version,
           ratingId,
           responseId,
           updates: response,
         });
       if (result) {
         this.getLearningObjectRatings();
-        this.toastService.notify(
-          'Success!',
-          'Response updated successfully!',
-          'good',
-          'far fa-check'
-        );
+        this.toastService.success('Success!', 'Response updated successfully!');
       } else {
-        this.toastService.notify(
-          'Error!',
-          'An error occured and your response could not be updated',
-          'bad',
-          'far fa-times'
-        );
+        this.toastService.error('Error!', 'An error occurred and your response could not be updated');
       }
     } else {
-      this.toastService.notify(
-        'Error!',
-        'An error occured and your response could not be updated',
-        'bad',
-        'far fa-times'
-      );
+      this.toastService.error('Error!', 'An error occurred and your response could not be updated');
     }
   }
 
@@ -661,34 +609,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
           .deleteResponse({
             username: this.learningObject.author.username,
             CUID: this.learningObject.cuid,
-            version: this.learningObject.revision,
+            version: this.learningObject.version,
             ratingId,
             responseId,
           });
 
         if (result) {
           this.getLearningObjectRatings();
-          this.toastService.notify(
-            'Success!',
-            'Response deleted successfully!',
-            'good',
-            'far fa-check'
-          );
+          this.toastService.success('Success!', 'Response deleted successfully!');
         } else {
-          this.toastService.notify(
-            'Error!',
-            'An error occured and your response could not be deleted',
-            'bad',
-            'far fa-times'
-          );
+          this.toastService.error('Error!', 'An error occured and your response could not be deleted');
         }
       } else {
-        this.toastService.notify(
-          'Error!',
-          'An error occured and your response could not be deleted',
-          'bad',
-          'far fa-times'
-        );
+        this.toastService.error('Error!', 'An error occured and your response could not be deleted');
       }
     }
   }
@@ -699,21 +632,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
-    this.uriRetrieverService.getLearningObjectRatings(this.releasedLearningObject.resourceUris.ratings).toPromise().then(ratings => {
-      if (!ratings) {
+    this.learningObjectService.fetchLearningObjectResources(this.releasedLearningObject, ['ratings']).toPromise().then(({ name, data }) => {
+
+      if (!data) {
         this.resetRatings();
         return;
       }
 
-      this.ratings = ratings.ratings;
-      this.averageRatingValue = ratings.avgValue;
+      this.ratings = data.ratings;
+      this.averageRatingValue = data.avgValue;
 
       const u = this.auth.username;
-      for (let i = 0, l = ratings.ratings.length; i < l; i++) {
-        if (u === ratings.ratings[i].user.username) {
+      for (let i = 0, l = data.ratings.length; i < l; i++) {
+        if (u === data.ratings[i].user.username) {
           // this is the user's rating
           // we deep copy this to prevent direct modification from component subtree
-          this.userRating = Object.assign({}, ratings.ratings[i]);
+          this.userRating = Object.assign({}, data.ratings[i]);
           return;
         }
       }

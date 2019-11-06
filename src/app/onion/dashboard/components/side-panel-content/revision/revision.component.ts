@@ -1,37 +1,30 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { LearningObject } from 'entity/learning-object/learning-object';
+import { card, nullAnimation } from './revision.animations';
 
 @Component({
   selector: 'clark-revision',
   templateUrl: './revision.component.html',
   styleUrls: ['./revision.component.scss'],
-  animations: [
-    trigger('revision', [
-     transition(':enter', [
-       style({ opacity: 0, transform: 'translateX(-100%)', position: 'absolute', right: '20px', left: '20px'}),
-       animate('200ms 400ms ease-out', style({ 'opacity': 1, transform: 'translateX(0%)'})),
-       ]),
-     ]),
-   trigger('madeRevision', [
-     transition(':leave', [
-       style({ opacity: 1, position: 'absolute'}),
-       animate('200ms ease-out', style({ opacity: 0, transform: 'scale(0)'})),
-     ]),
-   ])
-   ]
+  animations: [ card, nullAnimation ]
 })
 export class RevisionComponent implements OnChanges {
-  @Output() createRevision: EventEmitter<void> = new EventEmitter();
   @Input() hasRevision: boolean;
-  @Input() revision: LearningObject[];
+  @Input() revision: LearningObject;
+
+  @Output() createRevision: EventEmitter<void> = new EventEmitter();
+  @Output() submit: EventEmitter<void> = new EventEmitter();
+  @Output() cancelSubmission: EventEmitter<void> = new EventEmitter();
+  @Output() delete: EventEmitter<void> = new EventEmitter();
 
   meatballOpen: boolean;
+  deleteConfirmationOpen: boolean;
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     this.hasRevision = false;
+
     if (this.revision) {
       this.hasRevision = true;
     }
@@ -52,4 +45,37 @@ export class RevisionComponent implements OnChanges {
     this.hasRevision = true;
   }
 
+  attemptDelete() {
+    this.deleteConfirmationOpen = true;
+  }
+
+  /**
+   * Given a string representation of a context menu action, returns true if that action should be allowed based on
+   * parameters such as learing object length and learning object status
+   * @param action {string} the action in question
+   */
+  actionPermissions(action: string) {
+    const permissions = {
+      edit: ['unreleased', 'denied'],
+      editChildren: [
+        'unreleased',
+        'denied',
+        this.revision.length !== 'nanomodule'
+      ],
+      manageMaterials: ['unreleased', 'denied'],
+      submit: ['unreleased', 'denied'],
+      view: ['released'],
+      delete: ['unreleased', 'denied'],
+      cancelSubmission: ['waiting'],
+      infoPanel: ['released']
+    };
+
+    const p = permissions[action];
+
+    if (p.includes(false)) {
+      return false;
+    }
+
+    return p.includes(this.revision.status);
+  }
 }

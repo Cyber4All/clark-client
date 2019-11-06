@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PrivilegeService } from 'app/admin/core/privilege.service';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthUser } from 'app/core/auth.service';
 
 describe('UserPrivilegesComponent', () => {
@@ -20,7 +20,7 @@ describe('UserPrivilegesComponent', () => {
       providers: [
         CollectionService,
         PrivilegeService,
-        ToasterService
+        ToastrOvenService
       ]
     })
     .compileComponents();

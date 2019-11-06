@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-email-banner',
@@ -9,7 +9,7 @@ import { ToasterService } from 'app/shared/modules/toaster';
 })
 export class EmailBannerComponent implements OnInit {
 
-  constructor(private auth: AuthService, private toasterService: ToasterService) { }
+  constructor(private auth: AuthService, private toasterService: ToastrOvenService) { }
 
   ngOnInit() {
   }
@@ -25,15 +25,10 @@ export class EmailBannerComponent implements OnInit {
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();
-        this.toasterService.notify(
-          `Success!`,
-          `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`,
-          'good',
-          'far fa-check'
-        );
+        this.toasterService.success(`Success!`, `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`);
       }
     } catch (e) {
-      this.toasterService.notify(`Could not send email`, `${e}`, 'bad', '');
+      this.toasterService.error(`Could not send email`, `${e}`);
     }
   }
 

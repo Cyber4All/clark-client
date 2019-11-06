@@ -226,8 +226,12 @@ export class LearningObject {
     }
   }
 
-  get hasRevision(): boolean {
-    return this._hasRevision;
+  get revisionUri(): string {
+    return this._revisionUri;
+  }
+
+  set revisionUri(val: string) {
+    this._revisionUri = val;
   }
 
   get resourceUris(): {
@@ -250,8 +254,6 @@ export class LearningObject {
   }
 
   version = 0;
-
-  revision = 0;
 
   /**
    * Creates an instance of LearningObject.
@@ -302,7 +304,6 @@ export class LearningObject {
   private _contributors: User[];
   private _collection!: string;
   private _status!: LearningObject.Status;
-  private _revision: string;
   private _ratings?: any;
   private _resourceUris: {
     children: string,
@@ -313,12 +314,7 @@ export class LearningObject {
     ratings: string,
   };
 
-/**
- * @property {boolean} hasRevision
- * An optional field on a learning object, denoting whether or not the object
- * has a working copy with a different status in the working collection.
- */
-private _hasRevision?: boolean;
+private _revisionUri?: string;
 
   private _constructed = false;
 
@@ -625,19 +621,27 @@ private _hasRevision?: boolean;
       );
     }
 
-    if (object.hasRevision === true) {
-      this._hasRevision = object.hasRevision;
+    if (object.revisionUri) {
+      this._revisionUri = object.revisionUri;
     }
+
     if (object.version != null) {
       this.version = object.version;
     }
-    if (object.revision != null) {
-      this.revision = object.revision;
-    }
+
     if (object.parents) {
       this._parents = object.parents;
     }
-    if(object.resourceUris) {
+
+    if (object.metrics) {
+      this._metrics = object.metrics;
+    }
+
+    if (object.ratings) {
+      this._ratings = object.ratings;
+    }
+
+    if (object.resourceUris) {
       this._resourceUris = object.resourceUris;
     }
 
@@ -675,9 +679,8 @@ private _hasRevision?: boolean;
       collection: this.collection,
       status: this.status,
       metrics: this.metrics,
-      hasRevision: this.hasRevision,
+      revisionUri: this.revisionUri,
       version: this.version,
-      revision: this.revision,
       resourceUris: this.resourceUris,
       parents: this.parents,
     };

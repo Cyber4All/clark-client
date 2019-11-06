@@ -3,7 +3,7 @@ import { AuthUser } from 'app/core/auth.service';
 import { CollectionService } from 'app/core/collection.service';
 import { Subject } from 'rxjs';
 import { PrivilegeService } from 'app/admin/core/privilege.service';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { userPrivilegesAnimations } from './user-privileges.component.animations';
 
 @Component({
@@ -23,7 +23,11 @@ export class UserPrivilegesComponent implements OnInit {
 
   carouselAction$: Subject<number> = new Subject();
 
-  constructor(private collectionService: CollectionService, private privilegeService: PrivilegeService, private toaster: ToasterService) {}
+  constructor(
+    private collectionService: CollectionService,
+    private privilegeService: PrivilegeService,
+    private toaster: ToastrOvenService
+  ) {}
 
   ngOnInit() {
     this.getUserRoles();
@@ -40,7 +44,7 @@ export class UserPrivilegesComponent implements OnInit {
       this.privileges = roles.map(x => x.split('@'));
     this.getCollections();
     }).catch(error => {
-      this.toaster.notify('Error!', 'There was an error fetching this user\'s privileges. Please try again later.', 'bad', 'far fa-times');
+      this.toaster.error('Error!', 'There was an error fetching this user\'s privileges. Please try again later.');
       console.error(error);
     });
   }
@@ -62,7 +66,7 @@ export class UserPrivilegesComponent implements OnInit {
         }
       })
       ).catch(error => {
-        this.toaster.notify('Error!', 'There was an error fetching collections. Please try again later.', 'bad', 'far fa-times');
+        this.toaster.error('Error!', 'There was an error fetching collections. Please try again later.');
       });
     }
 
@@ -142,7 +146,7 @@ export class UserPrivilegesComponent implements OnInit {
       }, 400);
     })
     .catch(error => {
-      this.toaster.notify('Error!', 'There was an error adding a privilege. Please try again later.', 'bad', 'far fa-times');
+      this.toaster.error('Error!', 'There was an error adding a privilege. Please try again later.');
       console.error(error);
     });
   }
@@ -162,7 +166,7 @@ export class UserPrivilegesComponent implements OnInit {
         delete this.collections[collection];
       })
       .catch(error => {
-        this.toaster.notify('Error!', 'There was an error removing a privilege. Please try again later.', 'bad', 'far fa-times');
+        this.toaster.error('Error!', 'There was an error removing a privilege. Please try again later.');
         console.error(error);
       });
   }

@@ -15,7 +15,7 @@ import {
   stagger,
   animateChild
 } from '@angular/animations';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { AuthService } from 'app/core/auth.service';
@@ -117,7 +117,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private nav: NavbarService,
     private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
-    public noteService: ToasterService,
+    public noteService: ToastrOvenService,
     private authService: AuthService,
     private learningObjectService: LearningObjectService,
     private history: HistoryService
@@ -151,7 +151,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
                 this.router.navigate(['onion/dashboard']);
               } else if (revision) {
                 this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.revision);
+                  learningObject.author.username, learningObject.id, learningObject.version);
               } else {
                 this.setBuilderMode(learningObject);
               }
@@ -220,75 +220,57 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
         this.showServiceFailureModal = true;
         break;
       case BUILDER_ERRORS.CREATE_OBJECT:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to create Learning Object',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.CREATE_OUTCOME:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to create Learning Outcome',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.DELETE_OUTCOME:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to delete Learning Outcome',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.FETCH_OBJECT_MATERIALS:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to load materials',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.SUBMIT_REVIEW:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to submit Learning Object for review',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.UPDATE_FILE_DESCRIPTION:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to update file description',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.UPDATE_OBJECT:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to update Learning Object',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.UPDATE_OUTCOME:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to update Learning Outcome',
-          toasterClass,
-          toasterIcon
         );
         break;
       case BUILDER_ERRORS.ADD_FILE_META:
-        this.noteService.notify(
+        this.noteService.error(
           toasterTitle,
           'Unable to add file(s)',
-          toasterClass,
-          toasterIcon
         );
         break;
       default:

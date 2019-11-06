@@ -1,7 +1,7 @@
 <app-dialogmenu [content]="modalService.dialogMenuContent"></app-dialogmenu>
-<ng-container *ngIf="!loading.length; else loadingTemplate">
+<ng-container *ngIf="learningObject">
   <clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
-  <div *ngIf="learningObject && !errorStatus && revisedLearningObject" class="details-wrapper" [ngClass]="learningObject.length">
+  <div *ngIf="learningObject && !errorStatus" class="details-wrapper" [ngClass]="learningObject.length">
     <cube-details-splash [canRate]="loggedin && auth.user.emailVerified && !isOwnObject" [canViewChangelogs]="loggedin && auth.user.emailVerified" [ratings]="ratings" [averageRating]="averageRatingValue" [learningObject]="learningObject" (showNewRating)="showAddRating = $event;" (openChangelogModal)="openViewAllChangelogsModal()"></cube-details-splash>
     <div class="flex">
       <div class="content">
@@ -51,13 +51,13 @@
 
   <div class="sidebar" [ngStyle] = "{'margin-top': reviewer ? '-190px' : '-110px'}">
     <div *ngIf="reviewer" class="inner">
-      <div *ngIf="loggedin && hasRevisions" class="revisions">
+      <div *ngIf="loggedin && hasRevision" class="revisions">
         <div tabindex="0" class="text">View Revisions</div>
         <clark-toggle-switch style="orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
       </div>
-      <div tabindex="0" class="no-revisions" *ngIf="!hasRevisions">No revisions have been made since last release.</div>
+      <div tabindex="0" class="no-revisions" *ngIf="!hasRevision">No revisions have been made since last release.</div>
     </div>
-    <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject.date" [isRevision]="revisedVersion" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject"></cube-details-action-panel>
+    <cube-details-action-panel [reviewer]="reviewer" [revisedDate]="revisedLearningObject?.date" [isRevision]="revisedVersion" [releasedDate]="releasedLearningObject.date" [revisedVersion]="revisedVersion" [learningObject]="learningObject" [hasRevision]="hasRevision" [revisedLearningObject]="revisedLearningObject"></cube-details-action-panel>
     <cube-details-included-in [learningObject]="learningObject"></cube-details-included-in>
   </div>
 </div>
@@ -84,10 +84,7 @@
     </div> 
 </clark-popup>
 
-<ng-template #loadingTemplate>
-  <div class="loading">
-    <i class="far fa-spinner-third fa-spin" aria-live="assertive"></i>Loading "{{ learningObjectName }}"
-
-  </div>
-</ng-template>
+<div *ngIf="loading.length" class="loading">
+  <i class="far fa-spinner-third fa-spin" aria-live="assertive"></i>Loading Learning Object...
+</div>
 

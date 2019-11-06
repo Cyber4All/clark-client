@@ -1,9 +1,10 @@
-<div *ngIf="!hidden" class="dashboard-item">
+<div *ngIf="!hidden" class="dashboard-item" [ngClass]="{'dashboard-item--revision': learningObject.revisionUri }">
   <!--FIXME Change click to activate-->
   <div tabindex="0" class="row-item">
     <clark-checkbox [disabled]="showCheck" [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     <div>
-      <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="bottom">
+      <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="to;">
+        <div *ngIf="learningObject.revisionUri" class="dashboard-item__revision-badge"></div>
         <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
         <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
         <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
@@ -12,7 +13,7 @@
         <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
       </div>
     </div>
-    <div class="name" role="button" (activate)="actionPermissions('infoPanel')&&openInfoPanel()" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
+    <div class="name" role="button" activate [routerLink]="['./']" [queryParams]="learningObject.status === 'released' ? { activeLearningObject: learningObject.cuid, version: learningObject.version } : {}" [ngClass]="[actionPermissions('infoPanel') ? 'clickable' : 'notClickable']">
       {{ learningObject.name }}
       <span *ngIf="parents?.length" [tip]="parents.join(', ')" tipPosition="top" class="hierarchy-parents">{{ parents.length }} parent{{ parents.length !== 1 ? 's' : '' }}</span>
       <span *ngIf="children?.length" [tip]="children.join(', ')" tipPosition="top" class="hierarchy-children">{{ children.length }} {{ children.length !== 1 ? 'children' : 'child' }}</span>
@@ -40,11 +41,11 @@
               <ul (activate)="toggleContextMenu($event)">
           
                 <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.id]" activate><i class="far fa-pencil"></i>Edit</li>
-                <li *ngIf="actionPermissions('infoPanel')" (activate)="viewSidePanel.emit()"><i class="fas fa-info-circle"></i>Info</li>
+                <li *ngIf="actionPermissions('infoPanel')" activate [routerLink]="['./']" [queryParams]="{ activeLearningObject: learningObject.cuid, version: learningObject.version }"><i class="fas fa-info-circle"></i>Info</li>
                 <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']" activate><i class="far fa-upload"></i>Manage Materials</li>
                 <li *ngIf="actionPermissions('submit')" (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
                 <li (activate)="viewAllChangelogs.emit(learningObject.id)"><i class="far fa-comment-alt-lines"></i>View Changelogs</li>
-                <li *ngIf="actionPermissions('view')" [routerLink]="['/details', learningObject.author.username, learningObject.name]"><i class="far fa-cube"></i>Learning Object Details</li>
+                <li *ngIf="actionPermissions('view')" [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>Learning Object Details</li>
                 <li *ngIf="actionPermissions('delete')" class="bad" (activate)="delete.emit()"><i class="far fa-trash-alt"></i>Delete</li>
                 <li *ngIf="actionPermissions('cancelSubmission')" class="bad" (activate)="cancelSubmission.emit()"><i class="far fa-ban"></i>Cancel Submission</li>
           

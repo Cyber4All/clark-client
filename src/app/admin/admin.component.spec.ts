@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminComponent } from './admin.component';
-import {  ToasterService } from 'app/shared/modules/toaster';
+import {  ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -37,7 +37,7 @@ describe('AdminComponent', () => {
       imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
       providers: [
         AuthService,
-        ToasterService,
+        ToastrOvenService,
         CollectionService,
         MessagesService,
         { provide: Router, useValue: routerStub },

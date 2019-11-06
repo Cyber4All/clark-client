@@ -41,9 +41,27 @@
       cursor: pointer;
     }
   }
+
+  .dashboard-item__revision-badge {
+    background: $light-blue;
+    width: 10px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+
+    &:after {
+      content: '';
+      display: block;
+      padding-top: 100%;
+    }
+  }
 }
 
 .status {
+  position: relative;
   width: 32px;
   height: 32px;
   color: white;

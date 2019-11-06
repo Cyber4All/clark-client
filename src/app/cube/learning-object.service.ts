@@ -83,11 +83,13 @@ export class LearningObjectService {
    */
   getLearningObject(
     author: string,
-    learningObjectName: string,
+    cuid: string,
+    version: number
   ): Promise<LearningObject> {
     const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,
-      learningObjectName
+      cuid,
+      version
     );
     return this.http
       .get(route)
@@ -142,6 +144,27 @@ export class LearningObjectService {
         return val
           .map(l => new LearningObject(l));
       });
+  }
+
+  /**
+   * Creates a Revision of an existing learning object
+   * @param learningObjectId
+   * @param authorUsername
+   */
+  createRevision(cuid: string, authorUsername: string) {
+    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
+    return this.http
+    .post(
+      route, {},
+      { withCredentials: true }
+    )
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    )
+    .toPromise().then(response => {
+      return response;
+    });
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -5,7 +5,7 @@ import { LearningObjectValidator } from '../../validators/learning-object.valida
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
@@ -48,7 +48,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private auth: AuthService,
-    private toasterService: ToasterService,
+    private toasterService: ToastrOvenService,
     private collectionService: CollectionService,
     private history: HistoryService,
     public validator: LearningObjectValidator,
@@ -180,12 +180,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       }
 
       // notify user
-      this.toasterService.notify(
-        'Error!',
-        'Please correct the errors and try again!',
-        'bad',
-        'far fa-times'
-      );
+      this.toasterService.error('Error!', 'Please correct the errors and try again!');
 
       if (errorPages.size && !errorPages.get(currentRoute)) {
         // we've found errors on other pages and none on our current page, so route to that page

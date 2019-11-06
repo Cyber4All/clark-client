@@ -49,15 +49,14 @@ export class CartV2Service {
       .toPromise()
       .then((val: any) => {
         this.cartItems = val
-          .map(object => new LearningObject(object));
+          .map(object => new LearningObject(object.learningObject));
         return this.cartItems;
       });
   }
 
   async addToCart(
     author: string,
-    learningObjectName: string,
-    download?: boolean
+    learningObject: LearningObject
   ): Promise<LearningObject[]> {
     if (!this.user) {
       return Promise.reject('User is undefined');
@@ -66,10 +65,12 @@ export class CartV2Service {
       .post(
         USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
           this.user.username,
-          author,
-          learningObjectName
         ),
-        {},
+        {
+          authorUsername: author,
+          cuid: learningObject.cuid,
+          version: learningObject.version
+        },
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
@@ -79,7 +80,7 @@ export class CartV2Service {
       .toPromise()
       .then(async (val: any) => {
         try {
-          this.cartItems = val.map(object => new LearningObject(object));
+          this.cartItems = val.map(object => new LearningObject(object.learningObject));
           return this.cartItems;
         } catch (error) {
           return Promise.reject('Error! ' + error);
@@ -87,11 +88,7 @@ export class CartV2Service {
       });
   }
 
-  removeFromCart(
-    author: string,
-    learningObjectName: string
-  ): Promise<LearningObject[]> {
-    // tslint:disable-next-line:max-line-length
+  removeFromCart(cuid: string): Promise<LearningObject[]> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
@@ -99,8 +96,7 @@ export class CartV2Service {
       .delete(
         USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
           this.user.username,
-          author,
-          learningObjectName
+          cuid
         ),
         { headers: this.headers, withCredentials: true }
       )
@@ -111,31 +107,9 @@ export class CartV2Service {
       .toPromise()
       .then((val: any) => {
         this.cartItems = val
-          .map(object => new LearningObject(object));
+          .map(object => new LearningObject(object.learningObject));
         return this.cartItems;
       });
-  }
-
-  clearCart(): Promise<boolean> | boolean {
-    // tslint:disable-next-line:curly
-    if (this.user) {
-      return this.http
-        .delete(USER_ROUTES.CLEAR_CART(this.user.username), {
-          headers: this.headers,
-          withCredentials: true
-        })
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
-        .toPromise()
-        .then(val => {
-          this.cartItems = [];
-          return true;
-        });
-    } else {
-      return false;
-    }
   }
 
   checkout() {
@@ -160,23 +134,16 @@ export class CartV2Service {
 
   downloadLearningObject(
     author: string,
-    learningObjectName: string,
-    revisedVersion: boolean
+    learningObjectCuid: string,
+    version: number
   ): BehaviorSubject<boolean> {
     const url = USER_ROUTES.DOWNLOAD_OBJECT(
       author,
-      learningObjectName
-    );
-    const revisedUrl = USER_ROUTES.DOWNLOAD_REVISED_OBJECT(
-      author,
-      learningObjectName
+      learningObjectCuid,
+      version
     );
     const iframe = document.createElement('iframe');
-    if (revisedVersion) {
-      iframe.src = revisedUrl;
-    } else {
-      iframe.src = url;
-    }
+    iframe.src = url;
     iframe.setAttribute('style', 'visibility:hidden;position:fixed;');
 
     const loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(

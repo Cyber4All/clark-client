@@ -1,5 +1,5 @@
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewContainerRef } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { CartV2Service } from './core/cartv2.service';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -10,6 +10,7 @@ import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
 import { MessagesService } from './core/messages.service';
 import { environment } from '@env/environment';
+import { ToastrOvenService } from './shared/modules/toaster/notification.service';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -75,6 +76,8 @@ export class ClarkComponent implements OnInit {
     private titleService: Title,
     private _: HistoryService,
     private messages: MessagesService,
+    private toaster: ToastrOvenService,
+    private view: ViewContainerRef
   ) {
     this.isUnderMaintenance = false;
 
@@ -100,6 +103,9 @@ export class ClarkComponent implements OnInit {
         content.focus();
       }
     });
+
+    this.toaster.setPosition({ x: 'left', y: 'bottom' });
+    this.toaster.init(this.view);
   }
 
   ngOnInit(): void {

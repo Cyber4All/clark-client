@@ -12,10 +12,9 @@ import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 import { Collection, CollectionService } from 'app/core/collection.service';
-import { MessagesService } from 'app/core/messages.service';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -66,7 +65,7 @@ export class LearningObjectsComponent
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
-    private toaster: ToasterService,
+    private toaster: ToastrOvenService,
     private auth: AuthService,
     private collectionService: CollectionService,
   ) {}
@@ -189,11 +188,9 @@ export class LearningObjectsComponent
         })
         .catch(error => {
           console.error(error);
-          this.toaster.notify(
+          this.toaster.error(
             'Error!',
-            'There was an error fetching collections. Please try again later.',
-            'bad',
-            'far fa-times'
+            'There was an error fetching collections. Please try again later.'
           );
         })
         .finally(() => {
@@ -218,11 +215,9 @@ export class LearningObjectsComponent
         this.learningObjects = val.learningObjects;
       })
       .catch(error => {
-        this.toaster.notify(
+        this.toaster.error(
           'Error!',
           'There was an error fetching this user\'s Learning Objects. Please try again later.',
-          'bad',
-          'far fa-times'
         );
         console.error(error);
       });

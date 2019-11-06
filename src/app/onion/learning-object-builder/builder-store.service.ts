@@ -266,11 +266,15 @@ export class BuilderStore {
    *
    */
   async getChildren(): Promise<LearningObject[]> {
-    const children = this.uriRetriever.getLearningObjectChildren(
-      {uri: this.learningObject.resourceUris.children }
-    );
-    return children.toPromise();
-
+    if (this.learningObject.resourceUris !== undefined) {
+      const children = this.uriRetriever.getLearningObjectChildren(
+        {uri: this.learningObject.resourceUris.children }
+      );
+      return children.toPromise();
+    } else {
+      await this.fetch(this.learningObject.id);
+      return this.getChildren();
+    }
   }
 
   /**
@@ -278,7 +282,7 @@ export class BuilderStore {
    */
   async setChildren(children: string[]) {
     this.serviceInteraction$.next(true);
-    await this.learningObjectService.setChildren(this.learningObject.name, this.learningObject.author.username, children);
+    await this.learningObjectService.setChildren(this.learningObject.id, this.learningObject.author.username, children);
     this.serviceInteraction$.next(false);
   }
 

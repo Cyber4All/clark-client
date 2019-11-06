@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
@@ -18,6 +18,8 @@ export class SubmitComponent implements OnInit {
   @Input() learningObject: LearningObject;
 
   @Input() visible: boolean;
+
+  @Output() submitted: EventEmitter<void> = new EventEmitter();
 
   carouselAction$: Subject<number> = new Subject();
   changelogComplete$: Subject<boolean> = new Subject();
@@ -34,14 +36,21 @@ export class SubmitComponent implements OnInit {
     private changelogService: ChangelogService,
     private collectionService: CollectionService,
     private learningObjectService: LearningObjectService,
-    private toasterService: ToasterService,
+    private toasterService: ToastrOvenService,
     private auth: AuthService
   ) {}
 
   ngOnInit() {
     if (this.learningObject.collection && !this.collection) {
       this.collection = this.learningObject.collection;
-      this.getCollectionSelected(this.collection);
+
+      if (this.learningObject.version > 0) {
+        // if this is a revision, there was obviously something changed and a changelog is appropriate
+        this.needsChangelog = true;
+      } else {
+        this.getCollectionSelected(this.collection);
+      }
+
     }
   }
 
@@ -54,7 +63,7 @@ export class SubmitComponent implements OnInit {
       this.changelogService
         .createChangelog(
           this.learningObject.author.id,
-          this.learningObject.id,
+          this.learningObject.cuid,
           this.changelog
         )
         .then(() => {
@@ -69,11 +78,9 @@ export class SubmitComponent implements OnInit {
             // user isn't logged in, redirect to login page
             this.auth.logout();
           } else {
-            this.toasterService.notify(
+            this.toasterService.error(
               'Error!',
               'We couldn\'t submit your change log at this time. Please try again later.',
-              'bad',
-              'far fa-times'
             );
           }
         });
@@ -125,11 +132,9 @@ export class SubmitComponent implements OnInit {
       .then(() => {
         this.learningObject.status = LearningObject.Status.WAITING;
         this.learningObject.collection = this.collection;
-        this.toasterService.notify(
+        this.toasterService.success(
           'Success!',
           'Learning Object submitted successfully!',
-          'good',
-          'far fa-check'
         );
         this.loading.pop();
         this.closeModal(true);
@@ -140,11 +145,9 @@ export class SubmitComponent implements OnInit {
           // user isn't logged in, redirect to login page
           this.auth.logout();
         } else {
-          this.toasterService.notify(
+          this.toasterService.error(
             'Error!',
             'We couldn\'t submit your Learning Object at this time. Please try again later.',
-            'bad',
-            'far fa-times'
           );
         }
         this.loading.pop();
@@ -174,6 +177,9 @@ export class SubmitComponent implements OnInit {
    * @memberof SubmitComponent
    */
   closeModal(submitted?: boolean) {
-    this.close.emit(submitted || false);
+    if (this.visible) {
+      this.close.emit(submitted || false);
+      this.visible = false;
+    }
   }
 }

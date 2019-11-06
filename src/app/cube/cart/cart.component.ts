@@ -7,7 +7,7 @@ import { LearningObject } from '@entity';
 import { AuthService } from '../../core/auth.service';
 import { Subject } from 'rxjs';
 import { COPY } from './cart.copy';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'cube-cart',
@@ -31,7 +31,7 @@ export class CartComponent implements OnInit, OnDestroy {
     public cartService: CartV2Service,
     private router: Router,
     private authService: AuthService,
-    private toaster: ToasterService,
+    private toaster: ToastrOvenService,
   ) { }
 
   ngOnInit() {
@@ -46,27 +46,16 @@ export class CartComponent implements OnInit, OnDestroy {
       this.cartItems = await this.cartService.getCart();
       this.loading = false;
     } catch (e) {
-      this.toaster.notify('Error!', 'Unable to load your library. Please try again later.', 'bad', 'far fa-times');
+      this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;
     }
   }
 
-  async clearCart() {
-    if (await this.cartService.clearCart()) {
-      this.cartItems = [];
-    }
-  }
-
   async removeItem(event: MouseEvent, object: LearningObject) {
     event.stopPropagation();
-    const author = object.author.username;
-    const learningObjectName = object.name;
     try {
-      this.cartItems = await this.cartService.removeFromCart(
-        author,
-        learningObjectName
-      );
+      this.cartItems = await this.cartService.removeFromCart(object.cuid);
     } catch (e) {
       console.log(e);
     }
@@ -77,8 +66,8 @@ export class CartComponent implements OnInit, OnDestroy {
     this.downloading[index] = true;
     this.cartService.downloadLearningObject(
         object.author.username,
-        object.name,
-        object.hasRevision
+        object.cuid,
+        object.version
       ).pipe(
       takeUntil(this.destroyed$))
       .subscribe(finished => {
@@ -89,7 +78,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   goToItem(object: LearningObject) {
-    this.router.navigate(['/details/', object.author.username, object.name]);
+    this.router.navigate(['/details/', object.author.username, object.cuid]);
   }
 
   private async checkAccessGroup() {

@@ -6,7 +6,6 @@ import { DialogMenuComponent } from './dialogmenu.component';
 
 import { CommonModule } from '@angular/common';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { ToasterModule } from '../toaster';
 import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
 
 export * from './modal.service';
@@ -17,7 +16,7 @@ export * from './position';
 
 
 @NgModule({
-  imports: [CommonModule, ToasterModule.forRoot(), ClickOutsideModule, SharedDirectivesModule],
+  imports: [CommonModule, ClickOutsideModule, SharedDirectivesModule],
   declarations: [ContextMenuComponent, DialogMenuComponent],
   exports: [ContextMenuComponent, DialogMenuComponent]
 })

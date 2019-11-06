@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
-import { ToasterService } from '../../../shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subscription, Observable, Subject, fromEvent } from 'rxjs';
 import { COPY } from './user-edit-information.copy';
 
@@ -52,7 +52,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
 
   constructor(
     private userService: UserService,
-    private noteService: ToasterService,
+    private noteService: ToastrOvenService,
     private auth: AuthService
   ) {}
 
@@ -86,9 +86,9 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       await this.userService.editUserInfo(edits);
       await this.auth.validateAndRefreshToken();
       this.close.emit(true);
-      this.noteService.notify('Success!', 'We\'ve updated your user information!', 'good', 'far fa-check');
+      this.noteService.success('Success!', 'We\'ve updated your user information!');
     } catch (e) {
-      this.noteService.notify('Error!', 'We couldn\'t update your user information!', 'bad', 'far fa-times');
+      this.noteService.error('Error!', 'We couldn\'t update your user information!');
     }
   }
 

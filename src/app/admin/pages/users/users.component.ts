@@ -3,7 +3,7 @@ import { UserService } from 'app/core/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth.service';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { usersComponentAnimations } from './users.component.animations';
 
@@ -35,7 +35,7 @@ export class UsersComponent implements AfterViewInit {
     private user: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private toaster: ToasterService,
+    private toaster: ToastrOvenService,
     public authService: AuthService,
     private collectionService: CollectionService
   ) {
@@ -65,7 +65,7 @@ export class UsersComponent implements AfterViewInit {
         this.users = val;
         this.loading = false;
       }).catch(error => {
-        this.toaster.notify('Error!', 'There was an error fetching users. Please try again later.', 'bad', 'far fa-times');
+        this.toaster.error('Error!', 'There was an error fetching users. Please try again later.');
         this.loading = false;
         console.error(error);
       });
@@ -88,7 +88,7 @@ export class UsersComponent implements AfterViewInit {
     this.user.assignMember(user.id, this.activeCollection.abvName, 'reviewer').then(() => {
       this.users.splice(0, 0, user);
     }).catch(error => {
-      this.toaster.notify('Error!', 'Could not add reviewer. Please try again later', 'bad', 'far fa-times');
+      this.toaster.error('Error!', 'Could not add reviewer. Please try again later');
       console.error(error);
     });
   }
@@ -111,7 +111,7 @@ export class UsersComponent implements AfterViewInit {
     this.user.removeMember(this.activeCollection.abvName, userId || this.removeReviewerId ).then(() => {
       this.users = this.users.filter(x => x.id !== userId);
     }).catch(error => {
-      this.toaster.notify('Error!', 'Could not remove reviewer. Please try again later', 'bad', 'far fa-times');
+      this.toaster.error('Error!', 'Could not remove reviewer. Please try again later');
       console.error(error);
     });
   }

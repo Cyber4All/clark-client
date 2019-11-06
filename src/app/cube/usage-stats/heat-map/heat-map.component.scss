@@ -4,7 +4,7 @@
   background: white;
   border-radius: 2px;
   padding: 40px;
-  max-height: 500px;
+  height: 500px;
 
   .title {
     font-size: $large;
@@ -45,7 +45,6 @@
     }
   }
 }
-
 
 @media screen and (max-width: 998px) {
   .heat-map-wrapper {

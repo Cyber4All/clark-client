@@ -1,64 +1,72 @@
-<div class="revision__title title">Revision</div>
-<div [@revision] *ngIf="revision && hasRevision; else noRevisionTemplate">
-  <div class="revison__object">
+<div *ngIf="revision && hasRevision" class="meatball-trigger" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
+  <ng-container *ngTemplateOutlet="meatball"></ng-container>
+</div>
+
+<div class="revision-wrapper">
+  <div [@card] class="revision__object" *ngIf="revision && hasRevision; else noRevisionTemplate">
     <div class="active__revision">
-        <div class="top-row">
-          <div tab-index="0" class="status" [attr.aria-label]="'Learning Object Status: ' + revision.status + '. ' + statusDescription" [ngClass]="revision.status">
-            <span *ngIf="revision.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
-            <span *ngIf="revision.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
-            <span *ngIf="revision.status === 'review'"><i class="fas fa-sync"></i></span>
-            <span *ngIf="revision.status === 'proofing'"><i class="fas fa-shield"></i></span>
-            <span *ngIf="revision.status === 'released'"><i class="fas fa-eye"></i></span>
-            <span *ngIf="revision.status === 'rejected'"><i class="fas fa-ban"></i></span>
-          </div>
-          <p class="revision-name">{{ revision.name }}</p>
+      <div class="top-row">
+        <div tab-index="0" class="status" [attr.aria-label]="'Learning Object Status: ' + revision.status + '. ' + statusDescription" [ngClass]="revision.status">
+          <span *ngIf="revision.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
+          <span *ngIf="revision.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
+          <span *ngIf="revision.status === 'review'"><i class="fas fa-sync"></i></span>
+          <span *ngIf="revision.status === 'proofing'"><i class="fas fa-shield"></i></span>
+          <span *ngIf="revision.status === 'released'"><i class="fas fa-eye"></i></span>
+          <span *ngIf="revision.status === 'rejected'"><i class="fas fa-ban"></i></span>
         </div>
-        <div [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
-          <ng-container *ngTemplateOutlet="meatball"></ng-container>
-        </div>
-        <ng-template #meatball>
-          <ng-container *ngIf="!disabled && meatball">
-            <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': revision.status === 'review'}" (activate)="revision.status !== 'review' && this.toggleContextMenu($event)">
-              <div class="icon">
-                <i class="far fa-times"></i>
-              </div>
-              <div class="orb"></div>
-            </div>
-          
-            <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
-              <div #contextMenu>
-                <ul (activate)="toggleContextMenu($event)">
-                  
-                  <li [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
-                  <li [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
-                  <li (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
-                  <li *ngIf="revision.status === 'unreleased'" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
-                  <li *ngIf="revision.status !== 'unreleased'" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>
-                  
-                </ul>
-              </div>
-            </clark-context-menu>
-          </ng-container>
-        </ng-template>
-        <div class="bottom-row">
-          <div class="revision-length" [ngClass]="revision.length">
-            {{ revision.length | titlecase }}
-          </div>
-          <div class="revision-date">
-            {{ revision.date | date:'longDate'}}
-          </div>
-        </div>
+        <p class="revision-name">{{ revision.name }}</p>
+      </div>
+      <div class="revision-date">
+        Last updated on {{ revision.date | date:'longDate'}}
+      </div>
+      <div class="revision-length" [ngClass]="revision.length">
+        {{ revision.length | titlecase }}
+      </div>
     </div>
   </div>
 </div>
 
+<ng-template #meatball>
+  <ng-container *ngIf="!disabled && meatball">
+    <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen, 'disabled': (revision.status === 'review' || revision.status === 'proofing')}" (activate)="revision.status !== 'review' && revision.status !== 'proofing' && this.toggleContextMenu($event)">
+      <div class="icon">
+        <i class="far fa-times"></i>
+      </div>
+      <div class="orb"></div>
+    </div>
+  
+    <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
+      <div #contextMenu>
+        <ul (activate)="toggleContextMenu($event)">
+          <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', revision.id]"><i class="far fa-pencil"></i>Edit</li>
+          <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', revision.id, 'materials']"><i class="far fa-upload"></i>Manage Materials</li>
+          <li *ngIf="actionPermissions('submit')" (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
+          <li *ngIf="actionPermissions('delete')" (activate)="attemptDelete()" class="bad"><i class="far fa-trash-alt"></i>Delete Revision</li>
+          <li *ngIf="actionPermissions('cancelSubmission')" (activate)="cancelSubmission.emit()" class="bad"><i class="far fa-ban"></i>Cancel Submission</li>          
+        </ul>
+      </div>
+    </clark-context-menu>
+  </ng-container>
+</ng-template>
+
 <ng-template #noRevisionTemplate>
-  <div [@madeRevision]>
-    <div class="revision__empty">
+  <div [@card] class="revision__empty">
+    <div class="empty__message">
      You don't have a revision for this Learning Object yet!
     </div>
     <div class="btn-group center">
-      <button class="button good" (activate)="makeRevision()">Revise <i class="fas fa-wrench"></i></button>
+      <button class="button good" (activate)="makeRevision()">Create Revision</button>
     </div>
   </div>
 </ng-template>
+
+<clark-popup *ngIf="deleteConfirmationOpen">
+  <div #popupInner>
+    <div class="modal-title bad">Are you sure?</div>
+    <div class="modal-text">This revision will be permanently deleted and won't be able to be recovered!</div>
+    <div class="btn-group center">
+      <button (activate)="delete.emit(); deleteConfirmationOpen = false;" class="button bad">Delete <i class="far fa-trash-alt"></i></button>
+      <button (activate)="deleteConfirmationOpen = false" class="button neutral">Nevermind <i class="far fa-ban"></i></button>
+    </div>
+  </div>
+</clark-popup>

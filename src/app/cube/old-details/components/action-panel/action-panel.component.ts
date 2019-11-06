@@ -5,7 +5,7 @@ import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
 import { CartV2Service, iframeParentID } from 'app/core/cartv2.service';
-import { ToasterService } from 'app/shared/modules/toaster/toaster.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -21,6 +21,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @Input() revisedDate: Date;
   @Input() releasedDate: Date;
   @Input() isRevision: boolean;
+  @Input() hasRevision: boolean;
+  @Input() revisedLearningObject: LearningObject;
   @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
   @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
@@ -61,7 +63,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     private cartService: CartV2Service,
     private renderer: Renderer2,
-    private toaster: ToasterService,
+    private toaster: ToastrOvenService,
   ) { }
 
   ngOnInit() {
@@ -76,6 +78,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.saved = this.cartService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
+
   }
 
   get isReleased(): boolean {
@@ -95,32 +98,29 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.name
+        this.learningObject.cuid,
+        this.learningObject.version
       );
     }
 
     try {
       if (!this.userIsAuthor) {
-        await this.cartService.addToCart(this.learningObject.author.username, this.learningObject.name);
-
         this.saved = this.cartService.has(this.learningObject);
 
         if (!this.saved) {
+          await this.cartService.addToCart(this.learningObject.author.username, this.learningObject);
           this.animateSaves();
+          this.saved = true;
         }
       }
     } catch (error) {
       if (error.status >= 500) {
         this.disableLibraryButtons = true;
       }
-      this.toaster.notify(
-        'Error!',
-        'There was an error adding to your library',
-        'bad',
-        'far fa-times'
-      );
+      this.toaster.error('Error!', 'There was an error adding to your library');
+    } finally {
+      this.addingToLibrary = false;
     }
-    this.addingToLibrary = false;
   }
 
   /**
@@ -131,17 +131,19 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.name
+        this.learningObject.cuid,
+        this.learningObject.version
       );
     }
   }
 
 
-  download(author: string, learningObjectName: string) {
+  download(author: string, learningObjectCuid: string, version: number) {
     this.downloading = true;
     const revision = this.revisedVersion || (!this.isReleased && !this.revisedVersion);
+
     const loaded = this.cartService
-      .downloadLearningObject(author, learningObjectName, revision).pipe(
+      .downloadLearningObject(author, learningObjectCuid, version).pipe(
       takeUntil(this.destroyed$));
 
     this.toggleDownloadModal(true);
@@ -158,7 +160,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     el.select();
     document.execCommand('copy');
 
-    this.toaster.notify('Success!', 'Learning object link copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.success('Success!', 'Learning object link copied to your clipboard!');
   }
 
   /**
@@ -173,7 +175,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
 
-    this.toaster.notify('Success!', 'Attribution information has been copied to your clipboard!', 'good', 'far fa-check');
+    this.toaster.success('Success!', 'Attribution information has been copied to your clipboard!');
   }
 
   toggleDownloadModal(val?: boolean) {
@@ -229,14 +231,14 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart() {
-    this.cartService.removeFromCart(this.learningObject.author.username, this.learningObject.name);
+    this.cartService.removeFromCart(this.learningObject.cuid);
   }
 
   private buildLocation(encoded?: boolean) {
     const u = window.location.protocol + '//' + window.location.host +
       '/details' +
       '/' + encodeURIComponent(this.learningObject.author.username) +
-      '/' + encodeURIComponent(this.learningObject.name);
+      '/' + encodeURIComponent(this.learningObject.cuid);
 
     return encoded ? encodeURIComponent(u) : u;
   }
@@ -270,15 +272,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();
-        this.toaster.notify(
-          `Success!`,
-          `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`,
-          'good',
-          'far fa-check'
-        );
+        this.toaster.success(`Success!`, `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`);
       }
     } catch (e) {
-      this.toaster.notify(`Could not send email`, `${e}`, 'bad', '');
+      this.toaster.error(`Could not send email`, `${e}`);
     }
   }
 

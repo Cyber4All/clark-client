@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'app/core/user.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ToasterService } from 'app/shared/modules/toaster';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
@@ -33,7 +33,7 @@ describe('UsersComponent', () => {
       imports: [ RouterTestingModule, HttpClientModule, CookieModule.forRoot() ],
       providers: [
         AuthService,
-        ToasterService,
+        ToastrOvenService,
         CollectionService,
         UserService,
         { provide: Router, userValue: routerStub },

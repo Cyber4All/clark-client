@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalService } from '../shared/modules/modals/modal.service';
-import { ToasterService } from '../shared/modules/toaster';
 import { NavbarService } from '../core/navbar.service';
 
 @Component({
@@ -13,7 +12,6 @@ export class CubeComponent {
   filterButton = false;
 
   constructor(
-    public noteService: ToasterService,
     public modalService: ModalService,
     public nav: NavbarService,
   ) {

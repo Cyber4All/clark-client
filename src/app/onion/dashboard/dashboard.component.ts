@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
 import { NavbarService } from 'app/core/navbar.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
@@ -9,7 +9,8 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
-import { ToasterService } from 'app/shared/modules/toaster/toaster.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { takeUntil, take } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-dashboard',
@@ -34,14 +35,14 @@ import { ToasterService } from 'app/shared/modules/toaster/toaster.service';
     ]),
   ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   lastLocation: NavigationEnd;
   activeIndex = 0;
   loading: boolean;
   releasedLearningObjects: LearningObject[];
   workingLearningObjects: LearningObject[];
 
-  action$: Subject<number> = new Subject();
+  action$: BehaviorSubject<number> = new BehaviorSubject(this.activeIndex);
 
   // structure of filters is {status: string[]}
   filters: object;
@@ -59,22 +60,29 @@ export class DashboardComponent implements OnInit {
   // side panel
   focusedLearningObject: LearningObject;
   sidePanelController$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  currentlySubmittingObject: LearningObject;
 
   // delete
   objectsToDelete: LearningObject[];
 
   historySnapshot: HistorySnapshot;
 
+  sidePanelPromiseResolver: Promise<any>;
+
+  checkQueryParams$ = new Subject<void>();
+
+  destroyed$ = new Subject<void>();
 
   constructor(
     private history: HistoryService,
+    private route: ActivatedRoute,
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
-    public notificationService: ToasterService,
+    public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
   ) {
     this.navbar.hide();
@@ -82,15 +90,56 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
+
     // retrieve draft status learning objects
     setTimeout(async() => {
-      this.workingLearningObjects = await this.getDraftLearningObjects();
+      await this.getDraftLearningObjects();
     }, 1100);
     // retrieve released learning objects
     setTimeout(async() => {
-      this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+      await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
       this.loading = false;
     }, 1100);
+
+    this.route.queryParams.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(async params => {
+      const cuid = params.activeLearningObject;
+      const version = parseInt(params.version, 10);
+
+      let p = new Promise(resolve => resolve());
+
+      if (cuid && version >= 0) {
+        // we know we can attempt to open the sidepanel, now to see if we've finished loading released Learning Objects
+        if (!this.releasedLearningObjects) {
+          p = new Promise(resolve => {
+            this.checkQueryParams$.pipe(
+              take(1)
+            ).subscribe(() => {
+              resolve();
+            });
+          });
+        }
+
+        p.then(() => {
+          // now we know we're finished loading the released objects
+          const object = this.releasedLearningObjects.filter(o => {
+            return o.cuid === cuid && o.version === version;
+          });
+
+          if (!object || !object.length) {
+            this.router.navigate(['./']);
+          } else {
+            // navigate to the specified Learning Object and open the side panel
+            if (!(this.activeIndex % 2)) {
+              this.toggle();
+            }
+
+            this.focusedLearningObject = object[0];
+          }
+        });
+      }
+    });
 
     this.historySnapshot = this.history.snapshot();
   }
@@ -101,15 +150,16 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param text
    */
-  async getDraftLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
+  async getDraftLearningObjects(filters?: any, text?: string): Promise<void> {
     if (Object.prototype.toString.call(filters) === '[object String]') {
       text = filters;
     }
-    return this.learningObjectService
-    .getDraftLearningObjects(this.auth.username, filters, text)
-    .then((children: LearningObject[]) => {
-      return children;
-    });
+
+    this.workingLearningObjects = await this.learningObjectService
+      .getDraftLearningObjects(this.auth.username, filters, text)
+      .then((children: LearningObject[]) => {
+        return children;
+      });
   }
 
    /**
@@ -117,12 +167,14 @@ export class DashboardComponent implements OnInit {
    * @param filters
    * @param query
    */
-  async getReleasedLearningObjects(filters?: any, text?: string): Promise<LearningObject[]> {
-    return this.learningObjectService
-    .getLearningObjects(this.auth.username, filters, text)
-    .then((children: LearningObject[]) => {
-      return children;
-    });
+  async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
+    this.releasedLearningObjects = await this.learningObjectService
+      .getLearningObjects(this.auth.username, filters, text)
+      .then((children: LearningObject[]) => {
+        return children;
+      });
+
+      this.checkQueryParams$.next();
   }
   /**
    * Toggles between the draft tab and the released tab
@@ -144,9 +196,9 @@ export class DashboardComponent implements OnInit {
     this.filters = filters;
     const filter = Array.from(filters.keys());
     if (filter.length !== 0) {
-      this.workingLearningObjects = await this.getDraftLearningObjects({status: filter});
+      this.getDraftLearningObjects({status: filter});
     } else {
-      this.workingLearningObjects = await this.getDraftLearningObjects();
+      this.getDraftLearningObjects();
     }
   }
 
@@ -154,9 +206,9 @@ export class DashboardComponent implements OnInit {
    * Performs a search on the users released and working Learning Objects
    * @param text
    */
-  async performSearch(text: string) {
-    this.releasedLearningObjects = await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
-    this.workingLearningObjects = await this.getDraftLearningObjects(this.filters, text);
+  performSearch(text: string) {
+    this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
+    this.getDraftLearningObjects(this.filters, text);
   }
 
   // SUBMISSION AND CANCEL SUBMISSION LOGIC
@@ -166,7 +218,7 @@ export class DashboardComponent implements OnInit {
    * @param event
    */
   submitLearningObjectToCollection(event: LearningObject) {
-    this.focusedLearningObject = event;
+    this.currentlySubmittingObject = event;
     this.submitToCollection = true;
   }
 
@@ -174,19 +226,14 @@ export class DashboardComponent implements OnInit {
    * Cancel a submission while in waiting status
    * @param l {LearningObject} learning object to be unpublished
    */
-  cancelSubmission(l: LearningObject) {
-    this.collectionService.unsubmit({
+  cancelSubmission(l: LearningObject): Promise<void> {
+    return this.collectionService.unsubmit({
       learningObjectId: l.id,
       userId: l.author.id,
     }).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
-      this.notificationService.notify(
-        'Done!',
-        'Learning Object Submission Cancelled!',
-        'good',
-        'far fa-check'
-      );
+      this.notificationService.success('Done!', 'Learning Object Submission Cancelled!');
     }).catch(err => {
       console.error(err);
     });
@@ -208,7 +255,7 @@ export class DashboardComponent implements OnInit {
     try {
       this.changelogs =  await this.changelogService.fetchAllChangelogs({
         userId: this.changelogLearningObject.author.id,
-        learningObjectId: this.changelogLearningObject.id,
+        learningObjectCuid: this.changelogLearningObject.cuid,
       });
     } catch (error) {
       let errorMessage;
@@ -220,7 +267,7 @@ export class DashboardComponent implements OnInit {
         errorMessage = 'We encountered an error while attempting to retrieve change logs for this Learning Object. Please try again later.';
       }
 
-      this.notificationService.notify('Error!', errorMessage, 'bad', 'far fa-times');
+      this.notificationService.error('Error!', errorMessage);
     }
 
     this.loadingChangelogs = false;
@@ -249,66 +296,88 @@ export class DashboardComponent implements OnInit {
   }
 
   // DELETION LOGIC
-  async deleteObjects(objects: any) {
+  async deleteObjects(objects: any): Promise<void> {
     this.objectsToDelete = objects;
     const canDelete = this.objectsToDelete.filter(
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      this.learningObjectService.delete(canDelete[0].name, canDelete[0].author.username)
+      return this.learningObjectService.delete(canDelete[0].author.username, canDelete[0].id)
       .then(async () => {
-        this.notificationService.notify(
-          'Done!',
-          'Learning Object deleted!',
-          'good',
-          'far fa-check'
-        );
-        this.workingLearningObjects = await this.getDraftLearningObjects();
+        this.notificationService.success('Done!', 'Learning Object deleted!');
+        await this.getDraftLearningObjects();
       })
       .catch(err => {
         console.log(err);
-        this.notificationService.notify(
-          'Error!',
-          'Learning Object could not be deleted!',
-          'bad',
-          'far fa-times'
-        );
+        this.notificationService.error('Error!', 'Learning Object could not be deleted!');
       });
     } else if (canDelete.length > 1) {
-      const objectsToDeleteNames = [];
+      const objectsToDeleteIDs = [];
       canDelete.forEach(object => {
-        objectsToDeleteNames.push(object.name);
+        objectsToDeleteIDs.push(object.id);
       });
-      this.learningObjectService.deleteMultiple(objectsToDeleteNames, this.objectsToDelete[0].author.username)
+      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs, this.objectsToDelete[0].author.username)
       .then(async () => {
-        this.notificationService.notify(
-          'Done!',
-          'Learning Objects deleted!',
-          'good',
-          'far fa-check'
-        );
-        this.workingLearningObjects = await this.getDraftLearningObjects();
+        this.notificationService.success('Done!', 'Learning Objects deleted!');
+        await this.getDraftLearningObjects();
       })
       .catch(err => {
         console.log(err);
-        this.notificationService.notify(
-          'Error!',
-          'Learning Object could not be deleted!',
-          'bad',
-          'far fa-times'
-        );
+        this.notificationService.error('Error!', 'Learning Object could not be deleted!');
       });
     } else {
-      this.notificationService.notify(
-        'Error!',
-        'Selected Learning Objects could not be deleted!',
-        'bad',
-        'far fa-times'
-      );
+      this.notificationService.error('Error!', 'Selected Learning Objects could not be deleted!');
+
+      return Promise.reject();
     }
   }
 
-  async createRevision(object: LearningObject) {
-    const revisionId = this.learningObjectService.createRevision(object.id, object.author.username);
+  createRevision(object: LearningObject) {
+    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid, object.author.username).then(() => {
+      this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+    });
+  }
+
+  submitRevision(object: LearningObject) {
+    this.submitLearningObjectToCollection(object);
+  }
+
+  submitRevisionPromiseHandler(submitted: boolean) {
+    this.sidePanelPromiseResolver = new Promise((resolve, reject) => {
+      if (submitted) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  }
+
+  cancelRevisionSubmission(object: LearningObject) {
+    this.sidePanelPromiseResolver = this.cancelSubmission(object);
+  }
+
+  deleteRevision(object: LearningObject) {
+    if (true) {
+      this.sidePanelPromiseResolver = this.deleteObjects([object]).then(() => {
+        this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+      });
+    }
+  }
+
+  closeSidePanel(event: any) {
+    this.focusedLearningObject = undefined;
+
+    if (event && event.shouldRoute) {
+      // rewind to the history snapshot to take us to wherever we were before entering the dashboard
+      this.historySnapshot.rewind();
+
+      // now navigate back to the dashboard so that the history stack is correct
+      this.router.navigate([], { queryParams: {} });
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }

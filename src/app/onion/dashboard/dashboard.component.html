@@ -1,4 +1,3 @@
-<clark-toaster [content]="notificationService.content"></clark-toaster>
 <div class="dashboard">
   <clark-dashboard-splash
     (navigateBack)="historySnapshot.rewind()"
@@ -49,7 +48,6 @@
             [showOptions]="false"
             [learningObjects]="releasedLearningObjects"
             (openChangelog)="openViewAllChangelogsModal($event)"
-            (openSidePanel)="openLearningObjectSidePanel($event)"
           ></clark-dashboard-list>
         </div>
       </ng-template>
@@ -75,14 +73,27 @@
       <clark-changelog-modal
         [learningObject] = "changelogLearningObject"
         [changelogs] = "changelogs ? changelogs[0] : undefined"
-        [loading]="loadingChangelogs  "
+        [loading]="loadingChangelogs"
       ></clark-changelog-modal>
     </div>
   </clark-popup>
 
   <!-- Side panel popout -->
-  <clark-side-panel-content *ngIf="focusedLearningObject" panel [controller$]="sidePanelController$" [contentWidth]="450" [options]="{ padding: false }" [learningObject]="focusedLearningObject" (createRevision)="createRevision($event)"></clark-side-panel-content>
+  <clark-side-panel-content
+    *ngIf="focusedLearningObject"
+    panel
+    [contentWidth]="450"
+    [options]="{ padding: false }"
+    [activePromise]="sidePanelPromiseResolver"
+    [defaultCloseParam]="{ shouldRoute: true }"
+    (close)="closeSidePanel($event)"
+    [learningObject]="focusedLearningObject"
+    (createRevision)="createRevision($event)"
+    (submitRevision)="submitRevision($event)"
+    (cancelRevisionSubmission)="cancelRevisionSubmission($event)"
+    (deleteRevision)="deleteRevision($event)"
+  ></clark-side-panel-content>
   
   <!--Delete Confirmation-->
-  <clark-submit *ngIf="submitToCollection" [learningObject]="focusedLearningObject" [visible]="true" (close)="submitToCollection = false;"></clark-submit>
+  <clark-submit *ngIf="submitToCollection" [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit>
 
