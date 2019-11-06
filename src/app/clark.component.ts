@@ -109,8 +109,10 @@ export class ClarkComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     if (environment.production) {
+      this.messages.getMaintenance().then(message => {
+        this.isUnderMaintenance = message;
+      });
       // Determine if the application is currently under maintenance
       setInterval(async () => {
         this.messages.getMaintenance().then(message => {

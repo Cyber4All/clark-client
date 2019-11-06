@@ -270,6 +270,7 @@ $learning-object-width: 820px;
         transform: scale(1);
         visibility: visible;
         z-index: 4;
+        overflow: scroll;
 
         .btn-group {
           display: flex;
