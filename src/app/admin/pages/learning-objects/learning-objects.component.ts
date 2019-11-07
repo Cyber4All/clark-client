@@ -265,4 +265,8 @@ export class LearningObjectsComponent
     this.componentDestroyed$.next();
     this.componentDestroyed$.unsubscribe();
   }
+
+  openChangeAuthorshipModal(object: LearningObject) {
+    // TODO Add logic to make call to backend
+  }
 }

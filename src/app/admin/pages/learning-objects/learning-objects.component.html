@@ -41,6 +41,7 @@
               [status]="l.status"
               (viewUser)="getUserLearningObjects($event)"
               (changeStatus)="openChangeStatusModal($event)"
+              (changeAuthorship)="openChangeAuthorshipModal($event)"
             >
             </clark-learning-object-list-item>
             <div class="loadingOrFinished">

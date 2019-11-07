@@ -32,7 +32,9 @@ export class LearningObjectListItemComponent implements OnChanges {
   // Change status
   @Output()
   changeStatus: EventEmitter<LearningObject> = new EventEmitter();
-
+  // Change the authorship of a particular learning object
+  @Output()
+  changeAuthorship: EventEmitter<LearningObject> = new EventEmitter();
   statusDescription: string;
 
   // flags
