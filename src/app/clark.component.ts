@@ -161,11 +161,7 @@ export class ClarkComponent implements OnInit {
             activeRoute = activeRoute.firstChild;
           }
           if (activeRoute.snapshot.params.username) {
-            if (activeRoute.snapshot.params.learningObjectName) {
-              data = activeRoute.snapshot.params.learningObjectName;
-            } else {
               data = activeRoute.snapshot.params.username;
-            }
           } else {
             data = activeRoute.snapshot.data.title;
           }
