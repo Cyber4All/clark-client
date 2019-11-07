@@ -160,12 +160,10 @@ export class ClarkComponent implements OnInit {
           while (activeRoute.firstChild) {
             activeRoute = activeRoute.firstChild;
           }
+          // Determines if the route is to the users profile
           if (activeRoute.snapshot.params.username) {
-            if (activeRoute.snapshot.params.learningObjectName) {
-              data = activeRoute.snapshot.params.learningObjectName;
-            } else {
               data = activeRoute.snapshot.params.username;
-            }
+          // if not to users profile sets data to the title in the route
           } else {
             data = activeRoute.snapshot.data.title;
           }
