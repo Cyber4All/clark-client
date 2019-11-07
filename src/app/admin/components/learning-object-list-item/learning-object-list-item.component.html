@@ -33,6 +33,7 @@
   <div #contextMenu>
     <ul (activate)="toggleContextMenu($event)">
       <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
+      <li (activate)="changeAuthorship()"><i class="fas fa-exchange-alt"></i>Change Author</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
     </ul>
   </div>
