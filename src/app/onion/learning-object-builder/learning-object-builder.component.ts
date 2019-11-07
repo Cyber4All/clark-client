@@ -20,7 +20,6 @@ import { LearningObjectValidator } from './validators/learning-object.validator'
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
-import { environment } from '@env/environment.prod';
 import { LearningObjectService } from '../core/learning-object.service';
 import { HistorySnapshot, HistoryService } from 'app/core/history.service';
 
