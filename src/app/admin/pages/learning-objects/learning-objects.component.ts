@@ -62,6 +62,8 @@ export class LearningObjectsComponent
 
   topAdjustment: number;
 
+  showChangeAuthorshipModal = false;
+
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
@@ -267,6 +269,7 @@ export class LearningObjectsComponent
   }
 
   openChangeAuthorshipModal(object: LearningObject) {
+    this.showChangeAuthorshipModal = true;
     // TODO Add logic to make call to backend
   }
 }

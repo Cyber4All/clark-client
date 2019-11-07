@@ -54,6 +54,24 @@
         </div>
       </div>
     </div>
+    <clark-popup *ngIf="showChangeAuthorshipModal" (closed)="showChangeAuthorshipModal= false">
+      <div #popupInner class="popup-inner">
+        <div class="modal-title">Are You Sure?</div>
+          <div class="modal-text">
+            <form class="input-wrapper">
+              <div class="header">
+                <div class="title">
+                  <span class="lo-name">You are about to remove a reviewer from this collection!</span>
+                </div>
+              </div>
+              <div class="btn-group center">
+                <button type="button" (activate)="removeReviewer()" class="button bad">Yes<i class="fas fa-user-minus left"></i></button>
+                <button type="button" (activate)="displayRemoveReviewerModal= false" class="button neutral">Cancel<i class="far fa-ban"></i></button>
+              </div>
+            </form>
+          </div>
+      </div>
+    </clark-popup>
   </div>
 
   <ng-template #emptyTemplate>
