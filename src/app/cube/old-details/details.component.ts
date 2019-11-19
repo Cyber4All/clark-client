@@ -14,6 +14,7 @@ import { ToastrOvenService } from '../../shared/modules/toaster/notification.ser
 import { ModalService, ModalListElement } from '../../shared/modules/modals/modal.module';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangelogService } from 'app/core/changelog.service';
+import { Title } from '@angular/platform-browser';
 
 // TODO move this to clark entity?
 export interface Rating {
@@ -95,6 +96,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     public modalService: ModalService,
     private router: Router,
     private changelogService: ChangelogService,
+    private titleService: Title,
   ) {
   }
 
@@ -193,6 +195,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.learningObjectOwners = owners;
           // this.hasRevision = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
+          // Set page title
+          this.titleService.setTitle(this.learningObject.name + '| CLARK');
           this.version = this.learningObject.version + 1;
           await this.getLearningObjectRatings();
         }
