@@ -6,6 +6,10 @@ import { SplashComponent } from './components/splash/splash.component';
 import { LengthComponent } from './components/splash/length/length.component';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
 import { DescriptionComponent } from './components/description/description.component';
+import { OutcomesComponent } from './components/outcomes/outcomes.component';
+import { AcademicLevelsComponent } from './components/academic-levels/academic-levels.component';
+import { MaterialsComponent } from './components/materials/materials.component';
+import { ActionPadComponent } from './components/action-pad/action-pad.component';
 
 @NgModule({
   imports: [
@@ -21,6 +25,10 @@ import { DescriptionComponent } from './components/description/description.compo
     SplashComponent,
     LengthComponent,
     DescriptionComponent,
+    OutcomesComponent,
+    AcademicLevelsComponent,
+    MaterialsComponent,
+    ActionPadComponent,
   ],
   providers: []
 })

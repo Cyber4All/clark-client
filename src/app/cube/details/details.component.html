@@ -1,6 +1,7 @@
 <main id="pageContent" class="details">
   <section class="details__splash">
     <clark-details-splash [learningObject]="learningObject"></clark-details-splash>
+    <clark-action-pad></clark-action-pad>
   </section>
   <div class="details-wrapper">
     <div class="details-columns">
@@ -11,15 +12,18 @@
         </section>
         <section class="details__outcomes">
           <h2 class="section-title">Learning Outcomes</h2>
+          <clark-outcomes></clark-outcomes>
         </section>
         <section class="details__levels">
           <h2 class="section-title">Academic Levels</h2>
-        </section>
-        <section class="details__hierarchy">
-          <h2 class="section-title">Hierarchy</h2>
+          <clark-academic-levels></clark-academic-levels>
         </section>
         <section class="details__materials">
           <h2 class="section-title">Materials</h2>
+          <clark-materials></clark-materials>
+        </section>
+        <section class="details__ratings">
+          <h2 class="section-title">Reviews</h2>
         </section>
       </div>
     </div>

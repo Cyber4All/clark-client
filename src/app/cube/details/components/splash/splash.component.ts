@@ -2,6 +2,7 @@ import { Component, Input, AfterViewInit, ViewChild, ElementRef, PLATFORM_ID, In
 import { isPlatformBrowser } from '@angular/common';
 import { LearningObject } from '@entity';
 import { Grid } from './grid';
+import { CollectionService } from 'app/core/collection.service';
 
 @Component({
   selector: 'clark-details-splash',
@@ -11,23 +12,16 @@ import { Grid } from './grid';
 export class SplashComponent implements AfterViewInit {
   @Input() learningObject: LearningObject;
 
-  @Inject(PLATFORM_ID) platformId: string;
+  collections = new Map();
 
-  canvas;
-
-  @ViewChild('splashWrapper') splashWrapperElement: ElementRef<HTMLElement>;
-
-  constructor() { }
+  constructor(
+    private collectionService: CollectionService,
+  ) {}
 
   ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      // execute this code only in the browser
-      this.canvas = document.querySelector('.details-splash canvas');
-    }
-
-    if (this.canvas) {
-      Grid.init(this.canvas, this.splashWrapperElement.nativeElement);
-    }
+    this.collectionService.getCollections().then(collections => {
+      this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
+    });
   }
 
 }
