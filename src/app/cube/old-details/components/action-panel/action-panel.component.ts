@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component,
+        ElementRef,
+        HostListener,
+        Input, OnDestroy,
+        OnInit,
+        Renderer2,
+        ViewChild,
+        ChangeDetectionStrategy,
+        OnChanges } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
 import { environment } from '@env/environment';
@@ -11,9 +19,10 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'cube-details-action-panel',
   styleUrls: ['action-panel.component.scss'],
-  templateUrl: 'action-panel.component.html'
+  templateUrl: 'action-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ActionPanelComponent implements OnInit, OnDestroy {
+export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() learningObject: LearningObject;
   @Input() revisedVersion: boolean;
@@ -79,6 +88,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
 
+  }
+
+  ngOnChanges() {
+    this.saved = this.cartService.has(this.learningObject);
   }
 
   get isReleased(): boolean {
