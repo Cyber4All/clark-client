@@ -1,32 +1,32 @@
-<main id="pageContent" class="details">
-  <section class="details__splash">
-    <clark-details-splash [learningObject]="learningObject"></clark-details-splash>
-    <clark-action-pad></clark-action-pad>
-    <clark-version-card></clark-version-card>
+<main id='pageContent' class='details'>
+  <section class='details__splash-container'>
+    <clark-details-splash [learningObject]='learningObject'></clark-details-splash>
   </section>
-  <div class="details-wrapper">
-    <div class="details-columns">
-      <div class="columns__col1">
-        <section class="details__description">
-          <h2 class="section-title">Description</h2>
-          <clark-details-description [description]="learningObject.description"></clark-details-description>
-        </section>
-        <section class="details__outcomes">
-          <h2 class="section-title">Learning Outcomes</h2>
-          <clark-outcomes></clark-outcomes>
-        </section>
-        <section class="details__levels">
-          <h2 class="section-title">Academic Levels</h2>
-          <clark-academic-levels></clark-academic-levels>
-        </section>
-        <section class="details__materials">
-          <h2 class="section-title">Materials</h2>
-          <clark-materials></clark-materials>
-        </section>
-        <section class="details__ratings">
-          <h2 class="section-title">Reviews</h2>
-        </section>
-      </div>
-    </div>
+  <div class='details__content-container'>
+    <section class='details__content-container__action-pad-container'>
+      <clark-action-pad></clark-action-pad>
+    </section>
+    <section class='details__content-container__version-card-container'>
+      <clark-version-card></clark-version-card>
+    </section>
+    <section class='details__content-container__description-container'>
+      <h2 class='section-title'>Description</h2>
+      <clark-details-description [description]='learningObject.description'></clark-details-description>
+    </section>
+    <section class='details__content-container__learning-outcomes-container'>
+      <h2 class='section-title'>Learning Outcomes</h2>
+      <clark-outcomes></clark-outcomes>
+    </section>
+    <section class='details__content-container__academic-levels-container'>
+      <h2 class='section-title'>Academic Levels</h2>
+      <clark-academic-levels></clark-academic-levels>
+    </section>
+    <section class='details__content-container__materials-container'>
+      <h2 class='section-title'>Materials</h2>
+      <clark-materials></clark-materials>
+    </section>
+    <section class='details__content-container__ratings-container'>
+      <h2 class='section-title'>Reviews</h2>
+    </section>
   </div>
 </main>

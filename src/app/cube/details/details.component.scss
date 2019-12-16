@@ -2,9 +2,56 @@
 @import './global-details';
 
 .details {
-  background: white
+  background: white;
 }
 
 section:not(.details__splash) {
   margin-top: 70px;
+}
+
+.details__splash-container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.details__content-container {
+  display: grid;
+  grid-template-columns: 70% auto;
+  grid-template-rows: auto;
+}
+
+.details__content-container__action-pad-container {
+  grid-column-start: 2;
+  grid-row-start: 10;
+}
+
+.details__content-container__version-card-container {
+  grid-column-start: 2;
+  grid-row-start: 15;
+}
+
+.details__content-container__description-container {
+  grid-column-start: 1;
+  grid-row-start: 15;
+}
+
+.details__content-container__learning-outcomes-container {
+  grid-column-start: 1;
+  grid-row-start: 20;
+}
+
+.details__content-container__academic-levels-container {
+  grid-column-start: 1;
+  grid-row-start: 25;
+}
+
+.details__content-container__materials-container {
+  grid-column-start: 1;
+  grid-row-start: 30;
+}
+
+.details__content-container__ratings-container {
+  grid-column-start: 1;
+  grid-row-start: 35;
 }
