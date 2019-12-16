@@ -1,7 +1,6 @@
 import { Component, Input, AfterViewInit, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LearningObject } from '@entity';
-import { Grid } from './grid';
 import { CollectionService } from 'app/core/collection.service';
 
 @Component({
