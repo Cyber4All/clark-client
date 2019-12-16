@@ -10,6 +10,7 @@ import { OutcomesComponent } from './components/outcomes/outcomes.component';
 import { AcademicLevelsComponent } from './components/academic-levels/academic-levels.component';
 import { MaterialsComponent } from './components/materials/materials.component';
 import { ActionPadComponent } from './components/action-pad/action-pad.component';
+import { VersionCardComponent } from './components/version-card/version-card.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { ActionPadComponent } from './components/action-pad/action-pad.component
     AcademicLevelsComponent,
     MaterialsComponent,
     ActionPadComponent,
+    VersionCardComponent,
   ],
   providers: []
 })
