@@ -141,11 +141,10 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "project": "src/ng-package.json",
             "assets": [
               "src/assets",
               "src/favicon.ico",
