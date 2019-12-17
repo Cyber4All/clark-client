@@ -1,0 +1,38 @@
+@import '~_vars.scss';
+
+.academic-level-card {
+    border-radius: 5px;
+    box-sizing: border-box; 
+    box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    height: 350px;
+    text-align: center;
+    width: 275px;
+    padding: 30px;
+    -moz-box-sizing: border-box; 
+    -webkit-box-sizing: border-box;
+}
+
+.academic-level-card__icon-container {
+    margin-top: 20px;
+}
+
+.academic-level-card__title-container {
+    font-size: 23px;
+    margin-top: 50px;
+}
+
+.academic-level-card__applied-levels-container {
+    margin-top: 50px;
+}
+
+.academic-level-card__applied-levels-container__level {
+    margin-bottom: 10px;
+}
+
+.academic-level-card__applied-levels-container__icon-container {
+    margin-right: 7px;
+}
+
+.level-selected {
+    color: $light-blue;
+}

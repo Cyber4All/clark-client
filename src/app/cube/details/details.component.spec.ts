@@ -9,7 +9,7 @@ import { LengthComponent } from './components/splash/length/length.component';
 import { VersionCardComponent } from './components/version-card/version-card.component';
 import { OutcomesComponent } from './components/outcomes/outcomes.component';
 import { MaterialsComponent } from './components/materials/materials.component';
-import { AcademicLevelsComponent } from './components/academic-levels/academic-levels.component';
+import { AcademicLevelCardComponent } from './components/academic-level-card/academic-level-card.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -32,7 +32,7 @@ describe('DetailsComponent', () => {
         VersionCardComponent,
         OutcomesComponent,
         MaterialsComponent,
-        AcademicLevelsComponent
+        AcademicLevelCardComponent
       ],
       providers: [ LearningObjectService, CollectionService ]
     })
