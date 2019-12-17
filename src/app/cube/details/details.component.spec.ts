@@ -7,7 +7,7 @@ import { DescriptionComponent } from './components/description/description.compo
 import { ActionPadComponent } from './components/action-pad/action-pad.component';
 import { LengthComponent } from './components/splash/length/length.component';
 import { VersionCardComponent } from './components/version-card/version-card.component';
-import { OutcomesComponent } from './components/outcomes/outcomes.component';
+import { OutcomeComponent } from './components/outcome/outcome.component';
 import { MaterialsComponent } from './components/materials/materials.component';
 import { AcademicLevelCardComponent } from './components/academic-level-card/academic-level-card.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -30,7 +30,7 @@ describe('DetailsComponent', () => {
         LengthComponent,
         ActionPadComponent,
         VersionCardComponent,
-        OutcomesComponent,
+        OutcomeComponent,
         MaterialsComponent,
         AcademicLevelCardComponent
       ],

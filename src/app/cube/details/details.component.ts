@@ -64,9 +64,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         version: version,
       }
     };
-    await this.learningObjectService.fetchLearningObject(params).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
-      if (object) {
-        this.learningObject = object;
+    const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
+      await this.learningObjectService.fetchLearningObjectWithResources(
+        { author: 'nvisal1237', cuidInfo: { cuid }}, resources
+        ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+        if (object) {
+          this.learningObject = object;
         this.setAcademicLevels();
         console.log(this.learningObject);
 

@@ -1,0 +1,60 @@
+@import '~_vars.scss';
+
+.outcome {
+    border-bottom: 2px solid $light-grey;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 90%;
+}
+
+.outcome__grid-container {
+    display: grid;
+    grid-template-columns: auto 70% 100px auto;
+}
+
+.text-container__mapped-to {
+    color: $dark-grey;
+}
+
+.outcome__grid-container__icon-container {
+    align-self: center;
+    color: $light-blue;
+}
+
+.outcome__grid-container__mapped-outcomes-count-container {
+    align-self: start;
+    font-size: 12px;
+}
+
+.mapped-outcomes-count-container__number {
+    color: $light-blue;
+    text-align: center;
+}
+
+.mapped-outcomes-count-container__text {
+    color: $dark-grey;
+}
+
+.outcome__grid-container__toggle-container {
+    align-self: center;
+    grid-column-start: end;
+    justify-self: end;
+}
+
+.outcome__mappings-display__list {
+    margin-left: 9%;
+}
+
+.mappings-display__list__item {
+    color: $light-blue;
+    margin-top: 8px;
+}
+
+.list__item__header-text {
+    color: black;
+}
+
+.list__item__outcome-text {
+    color: $dark-grey;
+    font-size: 12px;
+}

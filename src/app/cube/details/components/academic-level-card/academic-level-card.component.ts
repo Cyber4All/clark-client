@@ -10,9 +10,7 @@ export class AcademicLevelCardComponent implements OnInit {
   @Input() category: string;
   @Input() academicLevels: { [name: string]: boolean };
 
-  constructor() {
-    console.log(this.academicLevels);
-   }
+  constructor() {}
 
   ngOnInit() {
   }
