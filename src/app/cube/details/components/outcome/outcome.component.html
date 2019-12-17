@@ -26,11 +26,11 @@
         Mapped Outcomes
       </div>
     </div>
-    <div class='outcome__grid-container__toggle-container'>
-        <i class='fas fa-chevron-down'></i>
+    <div (click)='toggleMappingsDisplay()' class='outcome__grid-container__toggle-container'>
+        <i [ngClass]="{'fa-chevron-down': !showMappings, 'fa-chevron-up': showMappings }" class='fas'></i>
     </div>
   </div>
-  <div class='outcome__mappings-display'>
+  <div *ngIf='showMappings' class='outcome__mappings-display'>
     <ul class='outcome__mappings-display__list'>
       <li class='mappings-display__list__item' *ngFor='let mapping of outcome.mappings'>
         <div class='list__item__header-text'>
@@ -43,8 +43,3 @@
     </ul>
   </div>
 </div>
-  
-
-
-
-<!-- {{ outcome.bloom }}  -->

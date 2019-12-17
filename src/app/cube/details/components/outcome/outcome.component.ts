@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { LearningOutcome } from '@entity';
 
 @Component({
@@ -10,9 +10,14 @@ export class OutcomeComponent implements OnInit {
 
   @Input() outcome: LearningOutcome;
 
+  private showMappings = false;
+
   constructor() {}
 
   ngOnInit() {
   }
 
+  toggleMappingsDisplay() {
+    this.showMappings = !this.showMappings;
+  }
 }
