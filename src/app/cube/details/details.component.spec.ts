@@ -4,7 +4,12 @@ import { DetailsComponent } from './details.component';
 import { LearningObjectService } from '../learning-object.service';
 import { SplashComponent } from './components/splash/splash.component';
 import { DescriptionComponent } from './components/description/description.component';
+import { ActionPadComponent } from './components/action-pad/action-pad.component';
 import { LengthComponent } from './components/splash/length/length.component';
+import { VersionCardComponent } from './components/version-card/version-card.component';
+import { OutcomesComponent } from './components/outcomes/outcomes.component';
+import { MaterialsComponent } from './components/materials/materials.component';
+import { AcademicLevelsComponent } from './components/academic-levels/academic-levels.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,7 +23,17 @@ describe('DetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule, SharedPipesModule, HttpClientModule],
-      declarations: [ DetailsComponent, SplashComponent, DescriptionComponent, LengthComponent ],
+      declarations: [
+        DetailsComponent,
+        SplashComponent,
+        DescriptionComponent,
+        LengthComponent,
+        ActionPadComponent,
+        VersionCardComponent,
+        OutcomesComponent,
+        MaterialsComponent,
+        AcademicLevelsComponent
+      ],
       providers: [ LearningObjectService, CollectionService ]
     })
     .compileComponents();
