@@ -10,11 +10,11 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
   &:before {
     content: '';
-    background: linear-gradient(90deg, white ,$light-blue, white);
+    background: linear-gradient(90deg, white, $light-blue, white);
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 20%;
+    left: 0;
     right: 0;
     mask: $cube-pattern repeat;
     z-index: 0;
@@ -26,7 +26,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
     position: absolute;
     top: 0;
-    left: 0;
+    left: 10%;
     right: 0;
     bottom: 0;
     z-index: 1;
@@ -34,7 +34,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   .inner {
     max-width: $max-width;
     margin: auto;
-    padding: 20px;
     box-sizing: border-box;
     z-index: 1;
 

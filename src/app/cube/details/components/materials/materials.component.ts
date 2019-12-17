@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { LearningObject } from '@entity';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'clark-materials',
@@ -7,9 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MaterialsComponent implements OnInit {
 
-  constructor() { }
+  @Input() files: LearningObject.Material.File[];
 
-  ngOnInit() {
-  }
+  ngOnInit(): void {}
 
 }

@@ -11,12 +11,16 @@ import { AcademicLevelCardComponent } from './components/academic-level-card/aca
 import { MaterialsComponent } from './components/materials/materials.component';
 import { ActionPadComponent } from './components/action-pad/action-pad.component';
 import { VersionCardComponent } from './components/version-card/version-card.component';
+import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
+import { TabMenuComponent } from './components/materials/components/tab-menu/tab-menu.component';
+import { NewFileBrowserComponent } from './components/materials/components/new-file-browser/new-file-browser.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent } ]),
-    SharedPipesModule
+    SharedPipesModule,
+    FileBrowserModule,
   ],
   exports: [],
   declarations: [
@@ -31,6 +35,8 @@ import { VersionCardComponent } from './components/version-card/version-card.com
     MaterialsComponent,
     ActionPadComponent,
     VersionCardComponent,
+    TabMenuComponent,
+    NewFileBrowserComponent,
   ],
   providers: []
 })

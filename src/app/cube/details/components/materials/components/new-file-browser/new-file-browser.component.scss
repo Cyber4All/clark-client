@@ -1,0 +1,20 @@
+@import '~_vars.scss';
+
+.file-browser {
+    color: $dark-grey;
+}
+
+.file-browser__grid {
+    display: grid;
+    font-weight: bold;
+    grid-template-columns: 350px 350px 200px 200px;
+    margin-bottom: 10px;
+}
+
+.file-browser__inner-grid-rows {
+    border-bottom: 1px solid $dark-grey;
+    display: grid;
+    grid-template-columns: 350px 350px 200px 200px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
