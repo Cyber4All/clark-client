@@ -19,6 +19,7 @@ import { UrlComponentComponent } from './components/materials/components/url-com
 import { NoteComponentComponent } from './components/materials/components/note-component/note-component.component';
 import { NotesComponent } from './components/materials/components/notes/notes.component';
 import { UrlsComponent } from './components/materials/components/urls/urls.component';
+import { AuthorCardComponent } from './components/author-card/author-card.component';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { UrlsComponent } from './components/materials/components/urls/urls.compo
     NoteComponentComponent,
     NotesComponent,
     UrlsComponent,
+    AuthorCardComponent,
   ],
   providers: []
 })

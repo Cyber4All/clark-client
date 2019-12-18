@@ -45,6 +45,16 @@ section:not(.details__splash) {
   justify-self: end;
 }
 
+.details__content-container__profile-cards-container {
+  grid-column-start: 2;
+  grid-row-start: 10;
+  justify-self: end;
+}
+
+.content-container__profile-cards-container-profile-card {
+  margin-bottom: 15px;
+}
+
 .details__content-container__version-card-container {
   grid-column-start: 2;
   grid-row-start: 15;

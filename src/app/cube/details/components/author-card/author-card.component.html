@@ -1,0 +1,20 @@
+<section class='author-card'>
+  <div class='author-card__grid'>
+    <div class='grid__profile-image-container'>
+      <img class='grid__profile-image-container__image' src={{profileImageURL}}>
+    </div>
+    
+    <div class='grid__profile-info-container'>
+      <div class='grid__profile-icon-container__author-name'>
+        {{ author.name | titlecase }}
+      </div>
+      <div class='grid__profile-icon-container__author-organization'>
+        {{ author.organization }}
+      </div>
+    </div>
+
+    <div class='grid__icon-container'>
+      <i class='fas fa-chevron-right'></i>
+    </div>
+  </div>
+</section>
