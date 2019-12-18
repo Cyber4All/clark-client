@@ -14,6 +14,11 @@ import { VersionCardComponent } from './components/version-card/version-card.com
 import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
 import { TabMenuComponent } from './components/materials/components/tab-menu/tab-menu.component';
 import { NewFileBrowserComponent } from './components/materials/components/new-file-browser/new-file-browser.component';
+import { SharedModules } from 'app/shared/modules/shared-modules.module';
+import { UrlComponentComponent } from './components/materials/components/url-component/url-component.component';
+import { NoteComponentComponent } from './components/materials/components/note-component/note-component.component';
+import { NotesComponent } from './components/materials/components/notes/notes.component';
+import { UrlsComponent } from './components/materials/components/urls/urls.component';
 
 @NgModule({
   imports: [
@@ -21,6 +26,7 @@ import { NewFileBrowserComponent } from './components/materials/components/new-f
     RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent } ]),
     SharedPipesModule,
     FileBrowserModule,
+    SharedModules,
   ],
   exports: [],
   declarations: [
@@ -37,6 +43,10 @@ import { NewFileBrowserComponent } from './components/materials/components/new-f
     VersionCardComponent,
     TabMenuComponent,
     NewFileBrowserComponent,
+    UrlComponentComponent,
+    NoteComponentComponent,
+    NotesComponent,
+    UrlsComponent,
   ],
   providers: []
 })

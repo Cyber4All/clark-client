@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'clark-tab-menu',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tab-menu.component.scss']
 })
 export class TabMenuComponent implements OnInit {
+
+  @Input() currentSelection: string;
+  @Output() select: EventEmitter<string> = new EventEmitter();;
 
   private options = [
     {
@@ -25,6 +28,10 @@ export class TabMenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  emitSelection(selection: string) {
+    this.select.emit(selection);
   }
 
 }

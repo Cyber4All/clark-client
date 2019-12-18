@@ -1,8 +1,14 @@
 <section class='materials'>
   <div class='materials__tab-menu-container'>
-    <clark-tab-menu></clark-tab-menu>
+    <clark-tab-menu [currentSelection]='currentSelection' (select)=setSelection($event)></clark-tab-menu>
   </div>
-  <div class='materials__file-browser-container'>
-    <clark-new-file-browser [files]='files'></clark-new-file-browser>
+  <div *ngIf='currentSelection === "Files"' class='materials__file-browser-container'>
+    <clark-file-browser [files$]="files$" [folderMeta$]="folderMeta$"></clark-file-browser>
+  </div>
+  <div *ngIf='currentSelection === "URLs"' class='materials__file-browser-container'>
+    <clark-urls [urls]='materials.urls'></clark-urls>
+  </div>
+  <div *ngIf='currentSelection === "Notes"' class='materials__file-browser-container'>
+    <clark-notes [notes]='materials.notes'></clark-notes>
   </div>
 </section>
