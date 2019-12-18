@@ -13,21 +13,25 @@ import { ActionPadComponent } from './components/action-pad/action-pad.component
 import { VersionCardComponent } from './components/version-card/version-card.component';
 import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
 import { TabMenuComponent } from './components/materials/components/tab-menu/tab-menu.component';
-import { NewFileBrowserComponent } from './components/materials/components/new-file-browser/new-file-browser.component';
 import { SharedModules } from 'app/shared/modules/shared-modules.module';
-import { UrlComponentComponent } from './components/materials/components/url-component/url-component.component';
-import { NoteComponentComponent } from './components/materials/components/note-component/note-component.component';
 import { NotesComponent } from './components/materials/components/notes/notes.component';
 import { UrlsComponent } from './components/materials/components/urls/urls.component';
 import { AuthorCardComponent } from './components/author-card/author-card.component';
-
+import { LearningObjectRatingsComponent} from './components/learning-object-ratings/learning-object-ratings.component';
+import { SharedModule } from 'app/shared/shared.module';
+import { NewRatingResponseComponent } from './components/new-rating-response/new-rating-response.component';
+import { ReportRatingComponent } from './components/report-rating/report-rating.component';
+import { FormsModule } from '@angular/forms';
+import { NewRatingComponent } from './components/new-rating/new-rating.component';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent } ]),
     SharedPipesModule,
     FileBrowserModule,
+    FormsModule,
     SharedModules,
+    SharedModule,
   ],
   exports: [],
   declarations: [
@@ -43,12 +47,13 @@ import { AuthorCardComponent } from './components/author-card/author-card.compon
     ActionPadComponent,
     VersionCardComponent,
     TabMenuComponent,
-    NewFileBrowserComponent,
-    UrlComponentComponent,
-    NoteComponentComponent,
     NotesComponent,
     UrlsComponent,
     AuthorCardComponent,
+    LearningObjectRatingsComponent,
+    NewRatingResponseComponent,
+    ReportRatingComponent,
+    NewRatingComponent,
   ],
   providers: []
 })
