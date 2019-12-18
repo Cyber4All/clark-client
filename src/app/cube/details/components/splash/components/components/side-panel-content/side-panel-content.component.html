@@ -1,0 +1,13 @@
+<section class='side-panel-content'>
+  <section class='side-panel-content__header-container'>
+    <h2 class='side-panel-content__header-container__text'>Hierarchy</h2>
+  </section>
+  <section *ngIf='parents.length' class='side-panel-content__parents-container'>
+    <h3 class='side-panel-content__parents-container__header-text'>Parents</h3>
+    <learning-object-component *ngFor="let parent of parents" [learningObject]="parent"></learning-object-component>
+  </section>
+  <section *ngIf='children.length' class='side-panel-content__children-container'>
+    <h3 class='side-panel-content__children-container__header-text'>Children</h3>
+    <learning-object-component *ngFor="let child of children" [learningObject]="child"></learning-object-component>
+  </section>
+</section>

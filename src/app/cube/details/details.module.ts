@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { NewRatingComponent } from './components/new-rating/new-rating.component';
 import { HierarchyLinkComponent } from './components/splash/components/hierarchy-link/hierarchy-link.component';
 import { CubeSharedModule } from '../shared/cube-shared.module';
+import { SidePanelContentComponent } from './components/splash/components/components/side-panel-content/side-panel-content.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -58,6 +59,7 @@ import { CubeSharedModule } from '../shared/cube-shared.module';
     ReportRatingComponent,
     NewRatingComponent,
     HierarchyLinkComponent,
+    SidePanelContentComponent,
   ],
   providers: []
 })

@@ -15,15 +15,7 @@
       </div>
    </div>
  </div>
+ <div panel>
+    <clark-side-panel-content [parents]=learningObject.parents [children]=learningObject.children></clark-side-panel-content>
+ </div>
 </div>
-
-<!-- <div class='splash' panel>
-  <div class='splash__inner-wrapper'>
-    <h2>Hierarchy</h2>
-    <h3>Included Children</h3>
-    <learning-object-component *ngFor="let child of learningObject.children" [learningObject]="child"></learning-object-component>
-    
-    <h3>Part of</h3>
-    <learning-object-component *ngFor="let parent of learningObject.parents" [learningObject]="parent"></learning-object-component>
-  </div>
-</div> -->
