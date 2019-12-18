@@ -93,10 +93,14 @@ section:not(.details__splash) {
 
 .details__content-container__ratings-container__header-container {
   display: grid;
-  grid-template-columns: 80% auto ;
+  grid-template-columns: 80% auto;
 }
 
-new-rating-wrapper {
+.content-container__ratings-container__button-container {
+  height: 40px;
+}
+
+.new-rating-wrapper {
   position: fixed;
   top: 0;
   left: 0;

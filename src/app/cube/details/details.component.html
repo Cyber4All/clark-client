@@ -1,3 +1,4 @@
+<app-dialogmenu [content]="modalService.dialogMenuContent"></app-dialogmenu>
 <main id='pageContent' class='details-background'>
   <div class='details'>
     <div class='details__content-container'>
@@ -41,17 +42,19 @@
       <section class='details__content-container__ratings-container'>
         <div class='details__content-container__ratings-container__header-container'>
           <h2 class='section-title'>Reviews</h2>
-          <button 
-            tabindex="0" 
-            *ngIf="!isMobile && loggedin && !isOwnObject"
-            tip="You must verify your email in order to review Learning Objects."
-            [tipDisabled]="auth.user.emailVerified"
-            class="button good"
-            (activate)="showAddRating = auth.user.emailVerified"
-            attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
-            'Write a'}} review 
-            <i class="far fa-pencil"></i>
-          </button>
+          <div>
+            <button 
+              tabindex="0" 
+              *ngIf="!isMobile && loggedin && !isOwnObject"
+              tip="You must verify your email in order to review Learning Objects."
+              [tipDisabled]="auth.user.emailVerified"
+              class="button good content-container__ratings-container__button-container"
+              (activate)="showAddRating = auth.user.emailVerified"
+              attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+              'Write a'}} review 
+              <i class="far fa-pencil"></i>
+            </button>
+          </div>
         </div>
         <clark-learning-object-ratings 
           [ratings]="ratings"
@@ -66,14 +69,14 @@
           (respondRating)="submitResponse($event)">
         </clark-learning-object-ratings>   
       </section>
-      <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (activate)="showAddRating = false;">
-        <div class="new-rating" (activate)="$event.stopPropagation()">
-          <div class="close-new-rating" (activate)="showAddRating = false;"><i class="far fa-times"></i></div>
-          <div class="title">Rate this Learning Object</div>
-          <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
-            (cancelRating)="showAddRating = false;"></clark-new-rating>
-        </div>
-      </div>
     </div>
   </div>
 </main>
+<div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (activate)="showAddRating = false;">
+  <div class="new-rating" (activate)="$event.stopPropagation()">
+    <div class="close-new-rating" (activate)="showAddRating = false;"><i class="far fa-times"></i></div>
+    <div class="title">Rate this Learning Object</div>
+    <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
+      (cancelRating)="showAddRating = false;"></clark-new-rating>
+  </div>
+</div>

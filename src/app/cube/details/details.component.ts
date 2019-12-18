@@ -85,6 +85,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
     this.route.params.subscribe(async ({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
       await this.getLearningObject(username, learningObjectName);
+      await this.getLearningObjectRatings();
     });
   }
 
@@ -127,6 +128,27 @@ export class DetailsComponent implements OnInit, OnDestroy {
       user.email,
       200,
     );
+  }
+
+  /**
+   * Determines if a rating is being created or edited and calls appropriate function
+   * @param rating the rating object to be created
+   */
+  handleRatingSubmission(rating: {
+    value: number;
+    comment: string;
+    editing?: boolean;
+    id?: string;
+  }) {
+    if (!rating.editing) {
+      // creating
+      delete rating.editing;
+      this.createRating(rating);
+    } else {
+      // editing
+      delete rating.editing;
+      this.updateRating(rating);
+    }
   }
 
    /**
