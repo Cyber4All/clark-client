@@ -31,6 +31,7 @@ section:not(.details__splash) {
   grid-template-columns: 70% auto;
   grid-template-rows: auto;
   width: 100%;
+  grid-gap: 10px;
 }
 
 .details__content-container__splash-container {
@@ -45,7 +46,7 @@ section:not(.details__splash) {
   justify-self: end;
 }
 
-.details__content-container__profile-cards-container {
+.details__content-container__right-side-container {
   grid-column-start: 2;
   grid-row-start: 10;
   justify-self: end;
@@ -56,24 +57,22 @@ section:not(.details__splash) {
 }
 
 .details__content-container__version-card-container {
-  grid-column-start: 2;
-  grid-row-start: 15;
-  justify-self: end;
+  margin-top: 70px;
 }
 
 .details__content-container__description-container {
   grid-column-start: 1;
-  grid-row-start: 15;
+  grid-row-start: 10;
 }
 
 .details__content-container__learning-outcomes-container {
   grid-column-start: 1;
-  grid-row-start: 20;
+  grid-row-start: 11;
 }
 
 .details__content-container__academic-levels-container {
   grid-column-start: 1;
-  grid-row-start: 25;
+  grid-row-start: 20;
 }
 
 .content-container__academic-levels-container__card-grid {
@@ -83,10 +82,10 @@ section:not(.details__splash) {
 
 .details__content-container__materials-container {
   grid-column-start: 1;
-  grid-row-start: 30;
+  grid-row-start: 25;
 }
 
 .details__content-container__ratings-container {
   grid-column-start: 1;
-  grid-row-start: 35;
+  grid-row-start: 30;
 }
