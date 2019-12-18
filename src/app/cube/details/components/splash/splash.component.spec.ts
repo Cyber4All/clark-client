@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SplashComponent } from './splash.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
-import { LengthComponent } from './length/length.component';
+import { LengthComponent } from './components/length/length.component';
 import { CollectionService } from 'app/core/collection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LearningObject } from '@entity';

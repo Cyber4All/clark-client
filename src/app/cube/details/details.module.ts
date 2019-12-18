@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DetailsComponent } from './details.component';
 import { RouterModule } from '@angular/router';
 import { SplashComponent } from './components/splash/splash.component';
-import { LengthComponent } from './components/splash/length/length.component';
+import { LengthComponent } from './components/splash/components/length/length.component';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
 import { DescriptionComponent } from './components/description/description.component';
 import { OutcomeComponent } from './components/outcome/outcome.component';
@@ -23,6 +23,7 @@ import { NewRatingResponseComponent } from './components/new-rating-response/new
 import { ReportRatingComponent } from './components/report-rating/report-rating.component';
 import { FormsModule } from '@angular/forms';
 import { NewRatingComponent } from './components/new-rating/new-rating.component';
+import { HierarchyLinkComponent } from './components/splash/components/hierarchy-link/hierarchy-link.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -54,6 +55,7 @@ import { NewRatingComponent } from './components/new-rating/new-rating.component
     NewRatingResponseComponent,
     ReportRatingComponent,
     NewRatingComponent,
+    HierarchyLinkComponent,
   ],
   providers: []
 })

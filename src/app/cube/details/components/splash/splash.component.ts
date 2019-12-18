@@ -1,5 +1,4 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 
@@ -10,6 +9,13 @@ import { CollectionService } from 'app/core/collection.service';
 })
 export class SplashComponent implements AfterViewInit {
   @Input() learningObject: LearningObject;
+  @Input() averageRating: number;
+  @Input() reviewsCount:  number;
+
+  @Input() parents: LearningObject[];
+  @Input() children: LearningObject[];
+
+  starColor = 'gold';
 
   collections = new Map();
 

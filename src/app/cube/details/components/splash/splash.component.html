@@ -7,6 +7,12 @@
        <h1 class="learning-object-name">{{ learningObject.name }}</h1>
        <p class="updated"> Last Updated {{ learningObject.date | date:'shortDate' }}</p>
        <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
+       <span class='rating-stars-container'> 
+          <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
+       </span>
+       <div class='hierarchy-link-container'>
+          <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children'></clark-hierarchy-link>
+       </div>
    </div>
  </div>
 </div>
