@@ -85,7 +85,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
     this.route.params.subscribe(async ({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
       await this.getLearningObject(username, learningObjectName);
-      await this.getLearningObjectRatings();
     });
   }
 
@@ -104,10 +103,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.learningObject = object;
-        this.setAcademicLevels();
-        console.log(this.learningObject);
+          this.resetRatings();
+          this.setAcademicLevels();
+          this.getLearningObjectRatings();
+          console.log(this.learningObject);
 
-        this.titleService.setTitle(this.learningObject.name + '| CLARK');
+          this.titleService.setTitle(this.learningObject.name + '| CLARK');
       }
     });
     this.loading = false;
