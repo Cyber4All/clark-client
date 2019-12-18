@@ -24,6 +24,7 @@ import { ReportRatingComponent } from './components/report-rating/report-rating.
 import { FormsModule } from '@angular/forms';
 import { NewRatingComponent } from './components/new-rating/new-rating.component';
 import { HierarchyLinkComponent } from './components/splash/components/hierarchy-link/hierarchy-link.component';
+import { CubeSharedModule } from '../shared/cube-shared.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,6 +34,7 @@ import { HierarchyLinkComponent } from './components/splash/components/hierarchy
     FormsModule,
     SharedModules,
     SharedModule,
+    CubeSharedModule,
   ],
   exports: [],
   declarations: [

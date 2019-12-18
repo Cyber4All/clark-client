@@ -5,7 +5,7 @@
   <span *ngIf='parents?.length' class='hierarchy-link__child-link-container'>
     Child of 
     <span class='hierarchy-link__child-link-container__link'>
-      {{ parents[0].name }}
+      {{ parents[0].name | titlecase }}
     </span>
   </span>
   <span *ngIf='parents?.length > 1' class='hierarchy-link__plus-more-link-container'>
@@ -15,7 +15,7 @@
   <span *ngIf='children?.length' class='hierarchy-link__parent-link-container'>
     Parent of
     <span class='hierarchy-link__parent-link-container__link'>
-      {{ children[0].name }}
+      {{ children[0].name | titlecase }}
     </span>
   </span>
   <span *ngIf='children?.length > 1' class='hierarchy-link__plus-more-link-container'>

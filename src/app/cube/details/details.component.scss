@@ -37,18 +37,18 @@ section:not(.details__splash) {
 .details__content-container__splash-container {
   grid-column-start: 1;
   grid-column-end: 3;
-  grid-row-start: 5;
+  grid-row-start: 1;
 }
 
 .details__content-container__action-pad-container {
   grid-column-start: 2;
-  grid-row-start: 5;
+  grid-row-start: 1;
   justify-self: end;
 }
 
 .details__content-container__right-side-container {
   grid-column-start: 2;
-  grid-row-start: 10;
+  grid-row-start: 2;
   justify-self: end;
 }
 
@@ -62,17 +62,18 @@ section:not(.details__splash) {
 
 .details__content-container__description-container {
   grid-column-start: 1;
-  grid-row-start: 10;
+  grid-row-start: 2;
 }
 
 .details__content-container__learning-outcomes-container {
   grid-column-start: 1;
-  grid-row-start: 11;
+  grid-row-start: 3;
+  align-self: start;
 }
 
 .details__content-container__academic-levels-container {
   grid-column-start: 1;
-  grid-row-start: 20;
+  grid-row-start: 4;
 }
 
 .content-container__academic-levels-container__card-grid {
@@ -82,12 +83,12 @@ section:not(.details__splash) {
 
 .details__content-container__materials-container {
   grid-column-start: 1;
-  grid-row-start: 25;
+  grid-row-start: 5;
 }
 
 .details__content-container__ratings-container {
   grid-column-start: 1;
-  grid-row-start: 26;
+  grid-row-start: 6;
   margin-bottom: 20px;
 }
 

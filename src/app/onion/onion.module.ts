@@ -13,7 +13,6 @@ import { SharedModule } from '../shared/shared.module';
 import { ModalModule } from '../shared/modules/modals/modal.module';
 import { OnionComponent } from './onion.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
-import { SidePanelModule } from './dashboard/components/side-panel/side-panel.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 
 import { SidePanelContentModule } from './dashboard/components/side-panel-content/side-panel-content.module';
@@ -42,7 +41,6 @@ import { EmailBannerComponent } from './components/email-banner/email-banner.com
     LearningObjectBuilderModule,
     OnionRoutingModule,
     VirtualScrollerModule,
-    SidePanelModule,
     DashboardModule,
     SidePanelContentModule
   ],

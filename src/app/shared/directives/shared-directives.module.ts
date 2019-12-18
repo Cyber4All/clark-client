@@ -7,8 +7,12 @@ import { AutofocusDirective } from './autofocus.directive';
 import { LearningObjectCardDirective } from './learning-object-card.directive';
 import { TipDirective } from './tip.directive';
 import { TrapFocusDirective } from './trap-focus.directive';
+import { SidePanelModule } from './side-panel/side-panel.module';
 
 @NgModule({
+  imports: [
+    SidePanelModule,
+  ],
   declarations: [
     ActivateDirective,
     AutofocusDirective,
@@ -22,6 +26,7 @@ import { TrapFocusDirective } from './trap-focus.directive';
     LearningObjectCardDirective,
     TipDirective,
     TrapFocusDirective,
+    SidePanelModule,
   ]
 })
 export class SharedDirectivesModule {}
