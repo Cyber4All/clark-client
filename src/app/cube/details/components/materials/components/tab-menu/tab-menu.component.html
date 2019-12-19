@@ -1,7 +1,8 @@
 <section class='tab-menu'>
   <div class='tab-menu__label-container' *ngFor='let option of options'>
       <span (click)=emitSelection(option.name) [ngClass]='{ "label-container__selected-label": currentSelection === option.name }'>
-        <i class='tab-menu__lab-container__icon {{ option.class }}'></i> {{ option.name }}
+        <i class='tab-menu__label-container__icon {{ option.class }}'></i> 
+        <span class='tab-menu__label-container__label'>{{ option.name }}</span>
       </span>
   </div>
 </section>
