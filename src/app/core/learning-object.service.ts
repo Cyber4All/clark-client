@@ -32,7 +32,6 @@ export class LearningObjectService {
   fetchLearningObject(
     params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
   ): Observable<LearningObject> {
-    console.log('through here');
     return this.http.get(this.buildRoute(params)).pipe(
       take(1),
       catchError(e => of(e)),
