@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OutcomesComponent } from './outcomes.component';
+import { AcademicLevelCardComponent } from './academic-level-card.component';
 
-describe('OutcomesComponent', () => {
-  let component: OutcomesComponent;
-  let fixture: ComponentFixture<OutcomesComponent>;
+describe('AcademicLevelsComponent', () => {
+  let component: AcademicLevelCardComponent;
+  let fixture: ComponentFixture<AcademicLevelCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutcomesComponent ]
+      declarations: [ AcademicLevelCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OutcomesComponent);
+    fixture = TestBed.createComponent(AcademicLevelCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

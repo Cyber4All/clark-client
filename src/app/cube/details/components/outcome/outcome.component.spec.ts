@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AcademicLevelsComponent } from './academic-levels.component';
+import { OutcomeComponent } from './outcome.component';
 
-describe('AcademicLevelsComponent', () => {
-  let component: AcademicLevelsComponent;
-  let fixture: ComponentFixture<AcademicLevelsComponent>;
+describe('OutcomeComponent', () => {
+  let component: OutcomeComponent;
+  let fixture: ComponentFixture<OutcomeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AcademicLevelsComponent ]
+      declarations: [ OutcomeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AcademicLevelsComponent);
+    fixture = TestBed.createComponent(OutcomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

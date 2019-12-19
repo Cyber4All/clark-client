@@ -15,11 +15,17 @@
     </section>
     <section class='details__content-container__learning-outcomes-container'>
       <h2 class='section-title'>Learning Outcomes</h2>
-      <clark-outcomes></clark-outcomes>
+      <div *ngFor='let outcome of learningObject.outcomes'>
+        <clark-outcome [outcome]=outcome></clark-outcome>
+      </div>
     </section>
     <section class='details__content-container__academic-levels-container'>
       <h2 class='section-title'>Academic Levels</h2>
-      <clark-academic-levels></clark-academic-levels>
+      <div class='content-container__academic-levels-container__card-grid'>
+        <div *ngFor='let data of academicLevelMetadata'>
+          <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
+        </div>
+      </div>
     </section>
     <section class='details__content-container__materials-container'>
       <h2 class='section-title'>Materials</h2>
