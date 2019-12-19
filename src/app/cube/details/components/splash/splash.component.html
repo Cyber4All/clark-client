@@ -11,7 +11,7 @@
         <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
       </span>
       <div class='hierarchy-link-container'>
-        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (click)='showPanel = true'></clark-hierarchy-link>
+        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showPanel = true'></clark-hierarchy-link>
       </div>
    </div>
   </div>

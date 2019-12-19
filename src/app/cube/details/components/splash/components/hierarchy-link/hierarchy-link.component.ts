@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
+
 
 @Component({
   selector: 'clark-hierarchy-link',
@@ -11,9 +12,15 @@ export class HierarchyLinkComponent implements OnInit {
   @Input() children: LearningObject[];
   @Input() parents: LearningObject[];
 
+  @Output() linkClickEvent: EventEmitter<void> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  emitLinkClickEvent(): void {
+    this.linkClickEvent.emit();
   }
 
 }

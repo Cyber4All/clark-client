@@ -15,4 +15,9 @@ export class AcademicLevelCardComponent implements OnInit {
   ngOnInit() {
   }
 
+  getSortedLevels(): string[] {
+    const sortedLevels = Object.keys(this.academicLevels);
+    return sortedLevels;
+  }
+
 }

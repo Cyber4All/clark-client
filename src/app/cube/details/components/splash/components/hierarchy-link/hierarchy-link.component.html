@@ -1,4 +1,4 @@
-<section *ngIf='children?.length || parents?.length' class='hierarchy-link'>
+<a *ngIf='children?.length || parents?.length' class='hierarchy-link' (click)='emitLinkClickEvent()'>
   <span class='hierarchy-link__icon-container'>
     <i class="far fa-project-diagram"></i>
   </span>
@@ -21,4 +21,4 @@
   <span *ngIf='children?.length > 1' class='hierarchy-link__plus-more-link-container'>
     + {{ children.length - 1 }} more
   </span>
-</section>
+</a>
