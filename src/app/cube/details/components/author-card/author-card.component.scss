@@ -1,6 +1,7 @@
 @import '~_vars.scss';
 
 .author-card__grid {
+    color: $dark-grey;
     display: grid;
     grid-template-columns: 60px 220px 20px;
 }
