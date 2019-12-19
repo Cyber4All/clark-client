@@ -6,16 +6,11 @@ import { LearningOutcome } from '@entity';
   templateUrl: './outcome.component.html',
   styleUrls: ['./outcome.component.scss']
 })
-export class OutcomeComponent implements OnInit {
+export class OutcomeComponent {
 
   @Input() outcome: LearningOutcome;
 
-  private showMappings = false;
-
-  constructor() {}
-
-  ngOnInit() {
-  }
+  showMappings = false;
 
   toggleMappingsDisplay() {
     this.showMappings = !this.showMappings;
