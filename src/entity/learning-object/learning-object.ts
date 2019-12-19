@@ -141,7 +141,6 @@ export class LearningObject {
   }
   set materials(material: LearningObject.Material) {
     if (material) {
-      this.updateDate();
       this._materials = material;
     } else {
       throw new EntityError(
