@@ -4,6 +4,7 @@
     border-radius: 5px;
     box-sizing: border-box; 
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    color: $dark-grey;
     height: 350px;
     text-align: center;
     width: 275px;
@@ -17,6 +18,7 @@
 }
 
 .academic-level-card__title-container {
+    color: $darker-grey;
     font-size: 23px;
     margin-top: 50px;
 }
