@@ -2,25 +2,25 @@
   <div class='outcome__grid-container'>
     <div class='outcome__grid-container__icon-container'>
       <i class='far' [ngClass]="{
-        'fa-cloud': outcome.bloom === 'remember and understand',
-        'fa-bolt': outcome.bloom === 'apply and analyze',
-        'fa-balance-scale-right': outcome.bloom === 'evalulate and synthesize'
+        'fa-cloud': outcome?.bloom === 'remember and understand',
+        'fa-bolt': outcome?.bloom === 'apply and analyze',
+        'fa-balance-scale-right': outcome?.bloom === 'evalulate and synthesize'
       }"></i>
     </div>
     <div class='outcome__grid-container__text-container'>
       <div class='text-container__outcome'>
-        {{ outcome.outcome }}
+        {{ outcome?.outcome }}
       </div>
       <div class='text-container__mapped-to'>
-        {{ outcome.mappings.length ? 'Mapped to' : 'No Mappings' }}
-        <span *ngFor='let mapping of outcome.mappings let i = index'>
-          {{ mapping.name }}<span *ngIf='i < outcome.mappings.length - 1'>,</span>
+        {{ outcome?.mappings.length ? 'Mapped to' : 'No Mappings' }}
+        <span *ngFor='let mapping of outcome?.mappings let i = index'>
+          {{ mapping?.name }}<span *ngIf='i < outcome?.mappings.length - 1'>,</span>
         </span>
       </div>
     </div>
     <div class='outcome__grid-container__mapped-outcomes-count-container'>
       <div class='mapped-outcomes-count-container__number'>
-        {{ outcome.mappings.length }}
+        {{ outcome?.mappings.length }}
       </div>
       <div class='mapped-outcomes-count-container__text'>
         Mapped Outcomes
@@ -32,12 +32,12 @@
   </div>
   <div *ngIf='showMappings' class='outcome__mappings-display'>
     <ul class='outcome__mappings-display__list'>
-      <li class='mappings-display__list__item' *ngFor='let mapping of outcome.mappings'>
+      <li class='mappings-display__list__item' *ngFor='let mapping of outcome?.mappings'>
         <div class='list__item__header-text'>
-          {{ mapping.name }} - {{ mapping.author }} - {{ mapping.date }}
+          {{ mappin?.name }} - {{ mapping?.author }} - {{ mapping?.date }}
         </div>
         <div class='list__item__outcome-text'>
-          {{ mapping.outcome }}
+          {{ mapping?.outcome }}
         </div>
       </li>
     </ul>
