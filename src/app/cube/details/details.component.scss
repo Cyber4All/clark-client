@@ -5,6 +5,10 @@
   background: white;
 }
 
+.section-title {
+  margin-bottom: 20px;
+}
+
 section:not(.details__splash) {
   margin-top: 70px;
 }
@@ -19,6 +23,7 @@ section:not(.details__splash) {
   display: grid;
   grid-template-columns: 70% auto;
   grid-template-rows: auto;
+  margin-left:10%;
 }
 
 .details__content-container__action-pad-container {
@@ -44,6 +49,11 @@ section:not(.details__splash) {
 .details__content-container__academic-levels-container {
   grid-column-start: 1;
   grid-row-start: 25;
+}
+
+.content-container__academic-levels-container__card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 300px [col-start]);
 }
 
 .details__content-container__materials-container {

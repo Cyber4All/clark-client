@@ -7,7 +7,7 @@ import { LengthComponent } from './components/splash/length/length.component';
 import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
 import { DescriptionComponent } from './components/description/description.component';
 import { OutcomesComponent } from './components/outcomes/outcomes.component';
-import { AcademicLevelsComponent } from './components/academic-levels/academic-levels.component';
+import { AcademicLevelCardComponent } from './components/academic-level-card/academic-level-card.component';
 import { MaterialsComponent } from './components/materials/materials.component';
 import { ActionPadComponent } from './components/action-pad/action-pad.component';
 import { VersionCardComponent } from './components/version-card/version-card.component';
@@ -27,7 +27,7 @@ import { VersionCardComponent } from './components/version-card/version-card.com
     LengthComponent,
     DescriptionComponent,
     OutcomesComponent,
-    AcademicLevelsComponent,
+    AcademicLevelCardComponent,
     MaterialsComponent,
     ActionPadComponent,
     VersionCardComponent,

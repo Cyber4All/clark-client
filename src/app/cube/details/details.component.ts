@@ -18,6 +18,31 @@ export class DetailsComponent implements OnInit, OnDestroy {
   // flags
   loading: boolean;
 
+  academicLevelMetadata = [
+    {
+      category: 'K-12',
+      academicLevels: {
+        elementary: false,
+        middle: false,
+        high: false,
+      },
+    },
+    {
+      category: 'College',
+      academicLevels: {
+        undergraduate: false,
+        graduate: false,
+        'post graduate': false,
+      },
+    },
+    {
+      category: 'Corporate',
+      academicLevels: {
+        training: false,
+      },
+    }
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
@@ -42,10 +67,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
     await this.learningObjectService.fetchLearningObject(params).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
       if (object) {
         this.learningObject = object;
+        this.setAcademicLevels();
+
         this.titleService.setTitle(this.learningObject.name + '| CLARK');
       }
     });
     this.loading = false;
+  }
+
+  setAcademicLevels() {
+    this.learningObject.levels.forEach(level => {
+      this.academicLevelMetadata.forEach(data => {
+        if (data.academicLevels[level] === false) {
+          data.academicLevels[level] = true;
+        }
+      });
+    });
   }
 
   ngOnDestroy() {

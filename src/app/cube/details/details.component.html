@@ -19,7 +19,11 @@
     </section>
     <section class='details__content-container__academic-levels-container'>
       <h2 class='section-title'>Academic Levels</h2>
-      <clark-academic-levels></clark-academic-levels>
+      <div class='content-container__academic-levels-container__card-grid'>
+        <div *ngFor='let data of academicLevelMetadata'>
+          <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
+        </div>
+      </div>
     </section>
     <section class='details__content-container__materials-container'>
       <h2 class='section-title'>Materials</h2>
