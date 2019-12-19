@@ -67,6 +67,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogs = [];
 
+  authors: User[] = []; 
+
   constructor(
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
@@ -112,12 +114,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.resetRatings();
           this.setAcademicLevels();
           this.getLearningObjectRatings();
+          this.setLearningObjectAuthors();
           console.log(this.learningObject);
 
           this.titleService.setTitle(this.learningObject.name + '| CLARK');
       }
     });
     this.loading = false;
+  }
+
+  setLearningObjectAuthors() {
+    this.authors.push(this.learningObject.author);
+    this.learningObject.contributors.forEach(contributor => {
+      this.authors.push(contributor);
+    });
+    console.log(this.authors);
   }
 
   setAcademicLevels() {

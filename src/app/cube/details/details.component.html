@@ -13,12 +13,15 @@
       </section>
     </section>
       
-      <!-- <section class='details__content-container__action-pad-container'>
-        <clark-action-pad></clark-action-pad>
-      </section> -->
+     
       <section class='details__content-container__right-side-container'>
-        <h2 class='section-title'>Authors</h2>
-        <div class='content-container__profile-cards-container-profile-card' *ngFor='let author of learningObject.contributors'>
+        <!-- <section class='details__content-container__action-pad-container'>
+          <cube-details-action-panel
+          
+          ></cube-details-action-panel>
+        </section> -->
+        <h3 class='section-title'>Authors</h3>
+        <div class='content-container__profile-cards-container-profile-card' *ngFor='let author of authors'>
           <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
         </div>
         <div class='details__content-container__version-card-container'>

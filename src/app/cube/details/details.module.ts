@@ -9,7 +9,7 @@ import { DescriptionComponent } from './components/description/description.compo
 import { OutcomeComponent } from './components/outcome/outcome.component';
 import { AcademicLevelCardComponent } from './components/academic-level-card/academic-level-card.component';
 import { MaterialsComponent } from './components/materials/materials.component';
-import { ActionPadComponent } from './components/action-pad/action-pad.component';
+import { ActionPanelComponent } from './components/action-panel/action-panel.component';
 import { VersionCardComponent } from './components/version-card/version-card.component';
 import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
 import { TabMenuComponent } from './components/materials/components/tab-menu/tab-menu.component';
@@ -26,6 +26,8 @@ import { NewRatingComponent } from './components/new-rating/new-rating.component
 import { HierarchyLinkComponent } from './components/splash/components/hierarchy-link/hierarchy-link.component';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SidePanelContentComponent } from './components/splash/components/components/side-panel-content/side-panel-content.component';
+import { EditorialActionPadModule } from './components/action-panel/editorial-action-pad/editorial-action-pad.module';
+import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { SidePanelContentComponent } from './components/splash/components/compon
     SharedModules,
     SharedModule,
     CubeSharedModule,
+    EditorialActionPadModule,
   ],
   exports: [],
   declarations: [
@@ -48,7 +51,7 @@ import { SidePanelContentComponent } from './components/splash/components/compon
     OutcomeComponent,
     AcademicLevelCardComponent,
     MaterialsComponent,
-    ActionPadComponent,
+    ActionPanelComponent,
     VersionCardComponent,
     TabMenuComponent,
     NotesComponent,
@@ -60,6 +63,7 @@ import { SidePanelContentComponent } from './components/splash/components/compon
     NewRatingComponent,
     HierarchyLinkComponent,
     SidePanelContentComponent,
+    ReviewerPanelComponent,
   ],
   providers: []
 })

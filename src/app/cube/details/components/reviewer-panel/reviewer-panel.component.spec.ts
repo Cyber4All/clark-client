@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionPadComponent } from './action-pad.component';
+import { ReviewerPanelComponent } from './reviewer-panel.component';
 
-describe('ActionPadComponent', () => {
-  let component: ActionPadComponent;
-  let fixture: ComponentFixture<ActionPadComponent>;
+describe('ReviewerPanelComponent', () => {
+  let component: ReviewerPanelComponent;
+  let fixture: ComponentFixture<ReviewerPanelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActionPadComponent ]
+      declarations: [ ReviewerPanelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActionPadComponent);
+    fixture = TestBed.createComponent(ReviewerPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
