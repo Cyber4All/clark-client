@@ -1,0 +1,32 @@
+@import '~_vars.scss';
+
+.version-card {
+    background: $light-blue-gradient;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: white;
+    height: 180px;
+    text-align: center;
+    width: 291px;
+    padding: 30px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.version-card__icon-container {
+    margin-bottom: 5px;
+}
+
+.version-card__text-container {
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.button {
+    font-size: 10px;
+    height: 40px;
+    width: 150px;
+    
+}

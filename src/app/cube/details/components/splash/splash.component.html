@@ -1,23 +1,12 @@
-<div class="details-splash">
-  <div class="canvas-wrapper">
-    <div class="canvas-overlay"></div>
-    <canvas id="grid-target" height=300></canvas>
-  </div>
-  <div class="splash-wrapper">
-    <div class="details-wrapper">
-      <div class="details-columns">
-        <div class="columns_col1">
-          <div #splashWrapper class="splash__content">
-            <span *ngIf="learningObject.collection" class="content__collection">
-              <i class="far fa-cubes"></i>
-              Part of the <a [routerLink]="['/c', learningObject.collection]"><u>{{ (learningObject.collection | collection) | async }}</u></a> collection
-            </span> 
-            <h1>{{ learningObject.name }}</h1>
-            <span class="content__date">Last updated {{ learningObject.date | date:'longDate' }}</span>
-            <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="splash">
+ <div class="inner">
+   <div class="header">
+      <p class="collection"><i class="fal fa-cubes"></i> Part of the 
+        <a [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{learningObject.collection}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
+       </p>
+       <h1 class="learning-object-name">{{ learningObject.name }}</h1>
+       <p class="updated"> Last Updated {{ learningObject.date | date:'shortDate' }}</p>
+       <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
+   </div>
+ </div>
 </div>
