@@ -7,9 +7,8 @@
     color: $dark-grey;
     height: 350px;
     text-align: center;
-    width: 275px;
+    max-width: 275px;
     padding: 30px;
-
 }
 
 .academic-level-card__icon-container {
@@ -19,6 +18,7 @@
 .academic-level-card__title-container {
     color: $darker-grey;
     font-size: 23px;
+    font-weight: normal;
     margin-top: 50px;
 }
 
@@ -36,4 +36,12 @@
 
 .level-selected {
     color: $light-blue;
+}
+
+li {
+    list-style-type: none;
+}
+
+ul {
+    padding: 0;
 }

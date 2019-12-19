@@ -15,7 +15,9 @@
     </section>
     <section class='details__content-container__learning-outcomes-container'>
       <h2 class='section-title'>Learning Outcomes</h2>
-      <clark-outcomes></clark-outcomes>
+      <div *ngFor='let outcome of learningObject.outcomes'>
+        <clark-outcome [outcome]=outcome></clark-outcome>
+      </div>
     </section>
     <section class='details__content-container__academic-levels-container'>
       <h2 class='section-title'>Academic Levels</h2>
