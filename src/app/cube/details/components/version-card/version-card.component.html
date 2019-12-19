@@ -3,7 +3,7 @@
     <i class="fal fa-comment-alt-lines fa-2x"></i>
   </div>
   <div class='version-card__text-container'>
-    You're seeing version 6!
+    You're seeing version {{ version }}!
   </div>
   <div *ngIf='showButton' class='version-card__button-container'>
     <button class='button' (click)='emitClickButtonEvent()'>VIEW CHANGE LOGS</button>

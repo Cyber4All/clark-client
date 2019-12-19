@@ -2,18 +2,21 @@
 <main id='pageContent' class='details-background'>
   <div class='details'>
     <section class='details__content-container__splash-container section'>
-      <clark-details-splash [learningObject]='learningObject' [averageRating]='averageRatingValue' [reviewsCount]='ratings?.length'></clark-details-splash>
+      <clark-details-splash 
+        [learningObject]='learningObject' 
+        [averageRating]='averageRatingValue'
+        [reviewsCount]='ratings?.length'
+      ></clark-details-splash>
     </section>
+
     <section class='details__content-container'>
-      
-    <section class='details__top-left-side-content-container'>
-      <section class='details__content-container__description-container section'>
-        <h2 class='section-title'>Description</h2>
-        <clark-details-description [description]='learningObject.description'></clark-details-description>
+
+      <section class='details__top-left-side-content-container'>
+        <section class='details__content-container__description-container section'>
+          <h2 class='section-title'>Description</h2>
+          <clark-details-description [description]='learningObject.description'></clark-details-description>
+        </section>
       </section>
-    </section>
-      
-     
       <section class='details__content-container__right-side-container'>
         <!-- <section class='details__content-container__action-pad-container'>
           <cube-details-action-panel
@@ -25,10 +28,9 @@
           <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
         </div>
         <div class='details__content-container__version-card-container'>
-          <clark-version-card [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
+          <clark-version-card [version]='learningObject.version' [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
         </div>
       </section>
-      
   
       <section class='details__bottom-left-side-content-container'>
         <section class='details__content-container__learning-outcomes-container section'>
@@ -37,6 +39,7 @@
             <clark-outcome [outcome]=outcome></clark-outcome>
           </div>
         </section>
+
         <section class='details__content-container__academic-levels-container section'>
           <h2 class='section-title'>Academic Levels</h2>
           <div class='content-container__academic-levels-container__card-grid'>
@@ -45,26 +48,26 @@
             </div>
           </div>
         </section>
+
         <section class='details__content-container__materials-container section'>
           <h2 class='section-title'>Materials</h2>
           <clark-materials [materials]='learningObject.materials'></clark-materials>
         </section>
+
         <section class='details__content-container__ratings-container section'>
           <div class='details__content-container__ratings-container__header-container'>
             <h2 class='section-title'>Reviews</h2>
-            
-              <button 
-                tabindex="0" 
-                *ngIf="!isMobile && loggedin && !isOwnObject"
-                tip="You must verify your email in order to review Learning Objects."
-                [tipDisabled]="auth.user.emailVerified"
-                class="button good content-container__ratings-container__button-container"
-                (activate)="showAddRating = auth.user.emailVerified"
-                attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
-                'Write a'}} review 
-                <i class="far fa-pencil"></i>
-              </button>
-        
+            <button 
+              tabindex="0" 
+              *ngIf="!isMobile && loggedin && !isOwnObject"
+              tip="You must verify your email in order to review Learning Objects."
+              [tipDisabled]="auth.user.emailVerified"
+              class="button good content-container__ratings-container__button-container"
+              (activate)="showAddRating = auth.user.emailVerified"
+              attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+              'Write a'}} review 
+              <i class="far fa-pencil"></i>
+            </button>
           </div>
           <clark-learning-object-ratings 
             [ratings]="ratings"
@@ -79,10 +82,13 @@
             (respondRating)="submitResponse($event)">
           </clark-learning-object-ratings>   
         </section>
+
       </section>
     </section>
   </div>
 </main>
+
+
 <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (activate)="showAddRating = false;">
   <div class="new-rating" (activate)="$event.stopPropagation()">
     <div class="close-new-rating" (activate)="showAddRating = false;"><i class="far fa-times"></i></div>
@@ -93,11 +99,11 @@
 </div>
 
 <clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-      <clark-changelog-modal
-        [learningObject] = "learningObject"
-        [changelogs] = "changelogs ? changelogs[0] : undefined"
-        [loading]="loadingChangelogs"
-      ></clark-changelog-modal>
-    </div> 
+  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+    <clark-changelog-modal
+      [learningObject] = "learningObject"
+      [changelogs] = "changelogs ? changelogs[0] : undefined"
+      [loading]="loadingChangelogs"
+    ></clark-changelog-modal>
+  </div> 
 </clark-popup>

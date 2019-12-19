@@ -9,7 +9,7 @@
     </span>
   </span>
   <span *ngIf='parents?.length > 1' class='hierarchy-link__plus-more-link-container'>
-    + {{ children.length - 1 }} more
+    + {{  parents?.length - 1 }} more
   </span>
   <span *ngIf='parents?.length' class='hierarchy-link__parent-child-separator'>;</span>
   <span *ngIf='children?.length' class='hierarchy-link__parent-link-container'>
@@ -19,6 +19,6 @@
     </span>
   </span>
   <span *ngIf='children?.length > 1' class='hierarchy-link__plus-more-link-container'>
-    + {{ children.length - 1 }} more
+    + {{ children?.length - 1 }} more
   </span>
 </a>
