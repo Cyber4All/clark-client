@@ -46,7 +46,7 @@ export class LearningObjectService {
           }
         }
 
-        return response as LearningObject;
+        return new LearningObject(response);
       })
     );
   }
