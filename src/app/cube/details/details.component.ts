@@ -11,6 +11,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
 import { AuthService } from 'app/core/auth.service';
 import { Rating } from '../old-details/details.component';
+import { ChangelogService } from 'app/core/changelog.service';
 
 @Component({
   selector: 'clark-details',
@@ -62,6 +63,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     date?: string;
   } = {};
 
+  openChangelogModal = false;
+  loadingChangelogs: boolean;
+  changelogs = [];
+
   constructor(
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
@@ -71,6 +76,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private toastService: ToastrOvenService,
     public modalService: ModalService,
     private auth: AuthService,
+    private changelogService: ChangelogService,
     ) { }
 
   ngOnInit() {
@@ -129,6 +135,51 @@ export class DetailsComponent implements OnInit, OnDestroy {
       user.email,
       200,
     );
+  }
+
+  /**
+  * Closes any open change log modals
+  */
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
+  }
+
+  /**
+   * Opens the Change Log modal for a specified learning object and fetches its change logs
+   */
+  async openViewAllChangelogsModal() {
+    if (!this.openChangelogModal) {
+      this.openChangelogModal = true;
+      this.loadingChangelogs = true;
+      try {
+        // if (this.revisedVersion) {
+        //   this.changelogs = await this.changelogService.fetchAllChangelogs({
+        //     userId: this.learningObject.author.id,
+        //     learningObjectCuid: this.learningObject.cuid,
+        //     minusRevision: false,
+        //   });
+        // } else {
+          this.changelogs = await this.changelogService.fetchAllChangelogs({
+            userId: this.learningObject.author.id,
+            learningObjectCuid: this.learningObject.cuid,
+            minusRevision: true,
+          });
+        // }
+      } catch (error) {
+        let errorMessage;
+
+        if (error.status === 401) {
+          // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
+          this.auth.logout();
+        } else {
+          errorMessage = `We encountered an error while attempting to
+          retrieve change logs for this Learning Object. Please try again later.`;
+        }
+        this.toastService.error('Error!', errorMessage);
+      }
+      this.loadingChangelogs = false;
+    }
   }
 
   /**

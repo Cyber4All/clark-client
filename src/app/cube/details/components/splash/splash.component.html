@@ -1,5 +1,5 @@
 <div class="splash">
- <div class="inner">
+  <div class="inner">
    <div class="header">
     <p class="collection"><i class="fal fa-cubes"></i> Part of the 
       <a [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{learningObject.collection}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
@@ -11,11 +11,19 @@
         <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
       </span>
       <div class='hierarchy-link-container'>
-        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children'></clark-hierarchy-link>
+        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (click)='showPanel = true'></clark-hierarchy-link>
       </div>
    </div>
- </div>
- <div panel>
-    <clark-side-panel-content [parents]=learningObject.parents [children]=learningObject.children></clark-side-panel-content>
- </div>
+  </div>
+ 
+  <clark-side-panel-content 
+    panel 
+    *ngIf='showPanel' 
+    [parents]=learningObject.parents
+    [children]=learningObject.children 
+    [defaultCloseParam]="{ shouldRoute: true }"
+    [contentWidth]="450"
+    (close)='showPanel = false'
+  ></clark-side-panel-content>
+ 
 </div>

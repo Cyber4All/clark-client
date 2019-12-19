@@ -5,7 +5,7 @@
   <div class='version-card__text-container'>
     You're seeing version 6!
   </div>
-  <div class='version-card__button-container'>
-    <button class='button'>VIEW CHANGE LOGS</button>
+  <div *ngIf='showButton' class='version-card__button-container'>
+    <button class='button' (click)='emitClickButtonEvent()'>VIEW CHANGE LOGS</button>
   </div>
 </div>

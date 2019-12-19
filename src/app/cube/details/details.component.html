@@ -3,7 +3,7 @@
   <div class='details'>
     <div class='details__content-container'>
       <section class='details__content-container__splash-container'>
-        <clark-details-splash [learningObject]='learningObject' [averageRating]='averageRatingValue' [reviewsCount]='ratings.length'></clark-details-splash>
+        <clark-details-splash [learningObject]='learningObject' [averageRating]='averageRatingValue' [reviewsCount]='ratings?.length'></clark-details-splash>
       </section>
       <section class='details__content-container__action-pad-container'>
         <clark-action-pad></clark-action-pad>
@@ -14,7 +14,7 @@
           <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
         </div>
         <div class='details__content-container__version-card-container'>
-          <clark-version-card></clark-version-card>
+          <clark-version-card [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
         </div>
       </section>
       <section class='details__content-container__description-container'>
@@ -80,3 +80,13 @@
       (cancelRating)="showAddRating = false;"></clark-new-rating>
   </div>
 </div>
+
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+      <clark-changelog-modal
+        [learningObject] = "learningObject"
+        [changelogs] = "changelogs ? changelogs[0] : undefined"
+        [loading]="loadingChangelogs"
+      ></clark-changelog-modal>
+    </div> 
+</clark-popup>

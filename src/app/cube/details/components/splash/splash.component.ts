@@ -15,6 +15,8 @@ export class SplashComponent implements AfterViewInit {
   @Input() parents: LearningObject[];
   @Input() children: LearningObject[];
 
+  showPanel: boolean;
+
   starColor = 'gold';
 
   collections = new Map();
