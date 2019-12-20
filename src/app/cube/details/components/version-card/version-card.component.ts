@@ -5,18 +5,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './version-card.component.html',
   styleUrls: ['./version-card.component.scss']
 })
-export class VersionCardComponent implements OnInit {
+export class VersionCardComponent {
 
   @Input() showButton: boolean;
   @Output() clickButtonEvent: EventEmitter<void> = new EventEmitter();
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
   emitClickButtonEvent(): void {
     this.clickButtonEvent.emit();
   }
-
 }

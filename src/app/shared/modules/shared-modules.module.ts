@@ -16,6 +16,7 @@ import { PopupModule } from './popups/popup.module';
 import { TeleporterModule } from './teleporter/teleporter.module';
 import { PopupTemplatesModule } from './popup-templates/popup-templates.module';
 import { SharedComponents } from '../components/shared-components.module';
+import { SidePanelModule } from './side-panel/side-panel.module';
 import { ToasterModule } from './toaster/toaster.module';
 
 @NgModule({
@@ -35,6 +36,7 @@ import { ToasterModule } from './toaster/toaster.module';
     PopupModule,
     PopupTemplatesModule,
     SharedComponents,
+    SidePanelModule,
     TeleporterModule,
     ToasterModule
   ],
@@ -46,6 +48,7 @@ import { ToasterModule } from './toaster/toaster.module';
     ModalModule,
     PopupModule,
     PopupTemplatesModule,
+    SidePanelModule,
     TeleporterModule,
     ToasterModule
   ]
