@@ -49,7 +49,6 @@
         <section class='details__content-container__ratings-container section'>
           <div class='details__content-container__ratings-container__header-container'>
             <h2 class='section-title'>Reviews</h2>
-            
               <button 
                 tabindex="0" 
                 *ngIf="!isMobile && loggedin && !isOwnObject"
@@ -61,7 +60,6 @@
                 'Write a'}} review 
                 <i class="far fa-pencil"></i>
               </button>
-        
           </div>
           <clark-learning-object-ratings 
             [ratings]="ratings"
