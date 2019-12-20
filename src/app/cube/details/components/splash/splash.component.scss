@@ -44,7 +44,13 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     }
     .collection {
       color: $light-blue;
+      margin: 0;
+
+      div {
+        padding: 16px 0;
+      }
     }
+
     .collection-link {
       cursor: pointer;
     }

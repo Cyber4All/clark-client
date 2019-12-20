@@ -1,5 +1,5 @@
 <div class='outcome'>
-  <div class='outcome__grid-container'>
+  <div (click)='outcome.mappings?.length && toggleMappingsDisplay()' class='outcome__grid-container'>
     <div class='outcome__grid-container__icon-container'>
       <i class='far fa-2x' [ngClass]="{
         'fa-cloud': outcome.bloom === 'remember and understand',
@@ -26,13 +26,13 @@
         Mapped Outcomes
       </div>
     </div>
-    <div (click)='toggleMappingsDisplay()' class='outcome__grid-container__toggle-container'>
-        <i [ngClass]="{'fa-chevron-down': !showMappings, 'fa-chevron-up': showMappings }" class='fas'></i>
+    <div class='outcome__grid-container__toggle-container' [ngClass]="{'outcome__grid-container__toggle-container--active': showMappings}">
+      <i class="far fa-chevron-down"></i>
     </div>
   </div>
-  <div *ngIf='showMappings' class='outcome__mappings-display'>
+  <div [@showOutcome] *ngIf='showMappings' class='outcome__mappings-display'>
     <ul class='outcome__mappings-display__list'>
-      <li class='mappings-display__list__item' *ngFor='let mapping of outcome.mappings'>
+      <li [@outcome] class='mappings-display__list__item' *ngFor='let mapping of outcome.mappings'>
         <div class='list__item__header-text'>
           {{ mapping.name }} - {{ mapping.author }} - {{ mapping.date }}
         </div>

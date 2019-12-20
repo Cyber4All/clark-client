@@ -12,11 +12,30 @@ import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.
 import { AuthService } from 'app/core/auth.service';
 import { Rating } from '../old-details/details.component';
 import { ChangelogService } from 'app/core/changelog.service';
+import { trigger, transition, query, style, animate, stagger } from '@angular/animations';
 
 @Component({
   selector: 'clark-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./details.component.scss'],
+  animations: [
+    trigger('enterDetails', [
+      transition(':enter', [
+        query('[shouldanimate]', [
+          style({ opacity: 0, transform: 'translateY(-20px)' }),
+          stagger(100, [
+            animate('200ms ease', style({ opacity: 1, transform: 'translateY(0px)' }))
+          ])
+        ])
+      ])
+    ]),
+    // trigger('enterPage', [
+    //   transition(':enter', [
+    //     style({ opacity: 1, transform: 'translateX(-700px) rotate(0deg) scale(200)'}),
+    //     animate('30000ms ease', style({ opacity: 1, transform: 'translateX(0px) rotateY(72000deg) scale(1)'})),
+    //   ])
+    // ])
+  ]
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   learningObject: LearningObject;
@@ -86,17 +105,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.loggedin = val;
 
       if (!this.loggedin) {
-        //this.reviewer = false;
+        // this.reviewer = false;
       } else {
-        //this.reviewer = this.auth.hasReviewerAccess();
+        // this.reviewer = this.auth.hasReviewerAccess();
       }
     });
-    this.route.params.subscribe(async ({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
-      await this.getLearningObject(username, learningObjectName);
+    this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
+      this.getLearningObject(username, learningObjectName);
     });
   }
 
-  async getLearningObject(username: string, cuid: string, version?: number) {
+  getLearningObject(username: string, cuid: string, version?: number) {
     this.loading = true;
     const params = {
       author: username,
@@ -106,9 +125,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     };
     const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-      await this.learningObjectService.fetchLearningObjectWithResources(
-        { author: 'nvisal1237', cuidInfo: { cuid }}, resources
-        ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+    this.learningObjectService.fetchLearningObjectWithResources(
+      { author: 'nvisal1237', cuidInfo: { cuid }}, resources
+      ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.learningObject = object;
           this.resetRatings();
@@ -118,9 +137,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
           console.log(this.learningObject);
 
           this.titleService.setTitle(this.learningObject.name + '| CLARK');
-      }
-    });
-    this.loading = false;
+        }
+        this.loading = false;
+      });
+
   }
 
   setLearningObjectAuthors() {

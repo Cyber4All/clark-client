@@ -1,21 +1,20 @@
 <div class="splash">
   <div class="inner">
-    <div class="header">
-      <p class="collection"><i class="fal fa-cubes"></i> Part of the 
-        <a [class.collection-link]="learningObject.collection === 'c5' || learningObject.collection === 'nccp'" routerLink="/c/{{learningObject.collection}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
-      </p>
-      <h1 class="learning-object-name">{{ learningObject.name }}</h1>
-      <p class="updated"> Last Updated {{ learningObject.date | date:'shortDate' }}</p>
-      <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
-      <span class='rating-stars-container'> 
+   <div class="header">
+    <div shouldanimate [@collection] *ngIf="collections.get(learningObject.collection)" class="collection">
+      <div>
+        <i class="fal fa-cubes"></i> Part of the 
+        <a class="collection-link" routerLink="/c/{{learningObject.collection}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
+      </div>
+    </div>
+      <h1 shouldanimate class="learning-object-name">{{ learningObject.name }}</h1>
+      <p shouldanimate class="updated"> Last Updated {{ learningObject.date | date:'shortDate' }}</p>
+      <clark-details-splash-length shouldanimate [length]="learningObject.length"></clark-details-splash-length>
+      <span shouldanimate class='rating-stars-container'> 
         <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
       </span>
-      <div class='hierarchy-link-container'>
-        <clark-hierarchy-link
-          [parents]='learningObject.parents'
-          [children]='learningObject.children'
-          (linkClickEvent)='showPanel = true'
-        ></clark-hierarchy-link>
+      <div shouldanimate class='hierarchy-link-container'>
+        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showPanel = true'></clark-hierarchy-link>
       </div>
     </div>
   </div>
@@ -25,7 +24,6 @@
     *ngIf='showPanel' 
     [parents]=learningObject.parents
     [children]=learningObject.children 
-    [defaultCloseParam]="{ shouldRoute: true }"
     [contentWidth]="450"
     (close)='showPanel = false'
   ></clark-side-panel-content>

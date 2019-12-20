@@ -1,91 +1,85 @@
-<app-dialogmenu [content]="modalService.dialogMenuContent"></app-dialogmenu>
 <main id='pageContent' class='details-background'>
-  <div class='details'>
-    <section class='details__content-container__splash-container section'>
-      <clark-details-splash 
-        [learningObject]='learningObject' 
-        [averageRating]='averageRatingValue'
-        [reviewsCount]='ratings?.length'
-      ></clark-details-splash>
-    </section>
-
-    <section class='details__content-container'>
-
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <div [@enterDetails] class='details'>
+      <section class='details__content-container__splash-container section'>
+        <clark-details-splash [learningObject]='learningObject' [averageRating]='averageRatingValue' [reviewsCount]='ratings?.length'></clark-details-splash>
+      </section>
+      <section class='details__content-container'>
+        
       <section class='details__top-left-side-content-container'>
         <section class='details__content-container__description-container section'>
           <h2 class='section-title'>Description</h2>
           <clark-details-description [description]='learningObject.description'></clark-details-description>
         </section>
       </section>
-      <section class='details__content-container__right-side-container'>
+        
         <!-- <section class='details__content-container__action-pad-container'>
-          <cube-details-action-panel
-          
-          ></cube-details-action-panel>
+          <clark-action-pad></clark-action-pad>
         </section> -->
-        <h3 class='section-title'>Authors</h3>
-        <div class='content-container__profile-cards-container-profile-card' *ngFor='let author of authors'>
-          <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
-        </div>
-        <div class='details__content-container__version-card-container'>
-          <clark-version-card [version]='learningObject.version' [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
-        </div>
-      </section>
-  
-      <section class='details__bottom-left-side-content-container'>
-        <section class='details__content-container__learning-outcomes-container section'>
-          <h2 class='section-title'>Learning Outcomes</h2>
-          <div *ngFor='let outcome of learningObject.outcomes'>
-            <clark-outcome [outcome]=outcome></clark-outcome>
+        <section class='details__content-container__right-side-container'>
+          <h2 class='section-title'>Authors</h2>
+          <div shouldanimate class='content-container__profile-cards-container-profile-card' *ngFor='let author of learningObject.contributors'>
+            <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
+          </div>
+          <div class='details__content-container__version-card-container'>
+            <clark-version-card [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
           </div>
         </section>
-
-        <section class='details__content-container__academic-levels-container section'>
-          <h2 class='section-title'>Academic Levels</h2>
-          <div class='content-container__academic-levels-container__card-grid'>
-            <div *ngFor='let data of academicLevelMetadata'>
-              <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
+        
+    
+        <section class='details__bottom-left-side-content-container'>
+          <section class='details__content-container__learning-outcomes-container section'>
+            <h2 class='section-title'>Learning Outcomes</h2>
+            <div *ngFor='let outcome of learningObject.outcomes'>
+              <clark-outcome [outcome]=outcome></clark-outcome>
             </div>
-          </div>
-        </section>
-
-        <section class='details__content-container__materials-container section'>
-          <h2 class='section-title'>Materials</h2>
-          <clark-materials [materials]='learningObject.materials'></clark-materials>
-        </section>
-
-        <section class='details__content-container__ratings-container section'>
-          <div class='details__content-container__ratings-container__header-container'>
-            <h2 class='section-title'>Reviews</h2>
-            <button 
-              tabindex="0" 
-              *ngIf="!isMobile && loggedin && !isOwnObject"
-              tip="You must verify your email in order to review Learning Objects."
-              [tipDisabled]="auth.user.emailVerified"
-              class="button good content-container__ratings-container__button-container"
-              (activate)="showAddRating = auth.user.emailVerified"
-              attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
-              'Write a'}} review 
-              <i class="far fa-pencil"></i>
-            </button>
-          </div>
-          <clark-learning-object-ratings 
-            [ratings]="ratings"
-            [averageRating]="averageRatingValue"
-            [learningObjectOwners]="learningObjectOwners"
-            [loggedIn]="loggedin" 
-            (editRating)="showAddRating = true;"
-            (deleteRating)="deleteRating($event)"
-            (editResponse)="editResponse($event);"
-            (deleteResponse)="deleteResponse($event)"
-            (reportRating)="reportRating($event)"
-            (respondRating)="submitResponse($event)">
-          </clark-learning-object-ratings>   
+          </section>
+          <section class='details__content-container__academic-levels-container section'>
+            <h2 class='section-title'>Academic Levels</h2>
+            <div class='content-container__academic-levels-container__card-grid'>
+              <div *ngFor='let data of academicLevelMetadata'>
+                <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
+              </div>
+            </div>
+          </section>
+          <section class='details__content-container__materials-container section'>
+            <h2 class='section-title'>Materials</h2>
+            <clark-materials [materials]='learningObject.materials'></clark-materials>
+          </section>
+          <section class='details__content-container__ratings-container section'>
+            <div class='details__content-container__ratings-container__header-container'>
+              <h2 class='section-title'>Reviews</h2>
+                <button 
+                  tabindex="0" 
+                  *ngIf="!isMobile && loggedin && !isOwnObject"
+                  tip="You must verify your email in order to review Learning Objects."
+                  [tipDisabled]="auth.user.emailVerified"
+                  class="button good content-container__ratings-container__button-container"
+                  (activate)="showAddRating = auth.user.emailVerified"
+                  attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+                  'Write a'}} review 
+                  <i class="far fa-pencil"></i>
+                </button>
+            </div>
+            <clark-learning-object-ratings 
+              *ngIf="ratings"
+              [ratings]="ratings"
+              [averageRating]="averageRatingValue"
+              [learningObjectOwners]="learningObjectOwners"
+              [loggedIn]="loggedin" 
+              (editRating)="showAddRating = true;"
+              (deleteRating)="deleteRating($event)"
+              (editResponse)="editResponse($event);"
+              (deleteResponse)="deleteResponse($event)"
+              (reportRating)="reportRating($event)"
+              (respondRating)="submitResponse($event)">
+            </clark-learning-object-ratings>   
+          </section>
         </section>
 
       </section>
-    </section>
-  </div>
+    </div>
+  </ng-container>
 </main>
 
 
@@ -107,3 +101,10 @@
     ></clark-changelog-modal>
   </div> 
 </clark-popup>
+
+<ng-template #loadingTemplate>
+  <div class="details-loading">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading Learning Object...
+  </div>
+</ng-template>

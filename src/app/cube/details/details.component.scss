@@ -3,6 +3,7 @@
 
 .details-background {
   background-color: white;
+  min-height: 100vh;
 }
 
 .details {
@@ -18,7 +19,7 @@
 }
 
 .section {
-  padding-top: 70px;
+  padding-top: 30px;
 }
 
 .details__splash-container {
@@ -160,5 +161,25 @@
       color: $darker-grey;
       margin-bottom: 15px;
     }
+  }
+}
+
+.details-loading {
+  text-align: center;
+  color: $dark-grey;
+  padding-top: 200px;
+  display: inline-flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: $large;
+
+  .svg-inline--fa {
+    display: block;
+    color: $light-blue;
+    font-size: 30px;
+    margin-bottom: 10px;
   }
 }

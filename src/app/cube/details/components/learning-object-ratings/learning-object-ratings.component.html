@@ -59,10 +59,10 @@
           </div>
       </div>
       <div *ngIf="isWritingResponse(i)">
-          <clark-new-rating-response [response]="{comment: '', index: i}" (submit)="submitResponse($event)" (cancel)="cancelResponse($event)" ></clark-new-rating-response>
+        <clark-new-rating-response [response]="{comment: '', index: i}" (submit)="submitResponse($event)" (cancel)="cancelResponse($event)" ></clark-new-rating-response>
       </div>
       <div *ngIf="isEditingResponse(i)">
-          <clark-new-rating-response [response]="{comment: rating.response[0].comment, index: i}"  (submit)="submitEditResponse($event)" (cancel)="cancelEditResponse($event)" ></clark-new-rating-response>
+        <clark-new-rating-response [response]="{comment: rating.response[0].comment, index: i}"  (submit)="submitEditResponse($event)" (cancel)="cancelEditResponse($event)" ></clark-new-rating-response>
       </div>
     </div>
   </div>

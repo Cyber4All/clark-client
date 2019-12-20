@@ -4,17 +4,6 @@ import { takeUntil } from 'rxjs/operators';
 import { SidePanelOptions } from '../panel.directive';
 import { fade } from '../panel.animations';
 
-/*
-[@slide]="{
-          value: ':enter',
-          params: {
-            pixels: contentWidth + 40,
-            outSpeed: outSpeed,
-            inSpeed: inSpeed
-          }
-        }"
-        */
-
 @Component({
   selector: 'clark-side-panel-viewer',
   template: `
