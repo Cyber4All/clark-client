@@ -10,7 +10,7 @@ export class TabMenuComponent implements OnInit {
   @Input() currentSelection: string;
   @Output() select: EventEmitter<string> = new EventEmitter();;
 
-  private options = [
+  options = [
     {
       name: 'Files',
       class: 'far fa-folders',
