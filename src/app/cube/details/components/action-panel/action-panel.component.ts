@@ -53,8 +53,6 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
   loggedin = false;
   showDownloadModal = false;
   userCanRevise = false;
-  // flag to determine if the revisions pipeline is live
-  revisionsLive = environment.experimental;
 
   contributorsList = [];
   iframeParent = iframeParentID;

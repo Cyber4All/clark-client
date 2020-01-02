@@ -19,18 +19,6 @@ import { HttpErrorResponse } from '@angular/common/http';
   selector: 'clark-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
-  animations: [
-    trigger('enterDetails', [
-      transition(':enter', [
-        query('[shouldanimate]', [
-          style({ opacity: 0, transform: 'translateY(-20px)' }),
-          stagger(100, [
-            animate('200ms ease', style({ opacity: 1, transform: 'translateY(0px)' }))
-          ])
-        ])
-      ])
-    ]),
-  ]
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   learningObject: LearningObject;
@@ -123,33 +111,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  // getLearningObject(username: string, cuid: string, version?: number) {
-  //   this.loading = true;
-  //   const params = {
-  //     author: username,
-  //     cuidInfo: {
-  //       cuid: cuid,
-  //       version: version,
-  //     }
-  //   };
-  //   const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-  //   this.learningObjectService.fetchLearningObjectWithResources(
-  //     { author: 'nvisal1237', cuidInfo: { cuid }}, resources
-  //     ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
-  //       if (object) {
-  //         this.learningObject = object;
-  //         this.resetRatings();
-  //         this.setAcademicLevels();
-  //         this.getLearningObjectRatings();
-  //         this.setLearningObjectAuthors();
-  //         console.log(this.learningObject);
-
-  //         this.titleService.setTitle(this.learningObject.name + '| CLARK');
-  //       }
-  //       this.loading = false;
-  //     });
-  // }
-
   /**
    * Fetches the released learning object to display first. If the object hasRevisions and the user has reviewer access
    * the revised copy is also fetched.
@@ -157,7 +118,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param name the name of the learning object
    */
   async fetchReleasedLearningObject(author: string, cuid: string) {
-    // this.loading.push(1);
+    this.loading = true;
 
     try {
       this.resetRatings();
@@ -191,6 +152,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           await this.getLearningObjectRatings();
           this.setAcademicLevels();
           this.setLearningObjectAuthors();
+          this.loading = false;
         }
         this.learningObjectService.fetchLearningObjectWithResources(
           { author, cuidInfo: { cuid: cuid, version: (this.learningObject.version + 1) }}, resources)
@@ -243,7 +205,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.redirectUrl = redirectUrl;
         }
       }
-      // this.loading.pop();
       console.log(e);
     }
   }
