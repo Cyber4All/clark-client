@@ -69,15 +69,14 @@
 
 <!-- View All Change Logs -->
 <clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-    <clark-changelog-modal
-      [
-      ] = "changelogLearningObject"
-      [changelogs] = "changelogs ? changelogs[0] : undefined"
-      [loading]="loadingChangelogs"
-    ></clark-changelog-modal>
-  </div>
-</clark-popup>
+    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+      <clark-changelog-modal
+        [learningObject] = "changelogLearningObject"
+        [changelogs] = "changelogs ? changelogs[0] : undefined"
+        [loading]="loadingChangelogs"
+      ></clark-changelog-modal>
+    </div>
+  </clark-popup>
 
   <!-- Side panel popout -->
   <clark-side-panel-content
