@@ -1,18 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-<<<<<<< HEAD
 import { LearningObject, User } from '@entity';
-=======
-import { LearningObject } from '@entity';
->>>>>>> 2abfb640fa717203a1597a9708b2f4de1ffa0f9a
 import { ActivatedRoute } from '@angular/router';
 import { LearningObjectService } from 'app/core/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-<<<<<<< HEAD
 import { UserService } from 'app/core/user.service';
-=======
->>>>>>> 2abfb640fa717203a1597a9708b2f4de1ffa0f9a
 
 @Component({
   selector: 'clark-details',
@@ -55,10 +48,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
     private titleService: Title,
-<<<<<<< HEAD
     private userService: UserService,
-=======
->>>>>>> 2abfb640fa717203a1597a9708b2f4de1ffa0f9a
     ) { }
 
   ngOnInit() {
@@ -83,10 +73,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (object) {
           this.learningObject = object;
         this.setAcademicLevels();
-<<<<<<< HEAD
-        console.log(this.learningObject);
-=======
->>>>>>> 2abfb640fa717203a1597a9708b2f4de1ffa0f9a
 
         this.titleService.setTitle(this.learningObject.name + '| CLARK');
       }
@@ -104,7 +90,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-<<<<<<< HEAD
   getGravatar(user: User) {
     return this.userService.getGravatarImage(
       user.email,
@@ -112,8 +97,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-=======
->>>>>>> 2abfb640fa717203a1597a9708b2f4de1ffa0f9a
   ngOnDestroy() {
     this.isDestroyed$.next();
     this.isDestroyed$.unsubscribe();
