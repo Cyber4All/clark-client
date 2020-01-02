@@ -1,0 +1,25 @@
+@import '~_vars.scss';
+
+.author-card__grid {
+    display: grid;
+    grid-template-columns: 60px 220px 20px;
+}
+
+.grid__profile-image-container__image {
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+    height: 45px;
+}
+
+.grid__profile-icon-container__author-name {
+    margin: 0;
+    color: $dark-grey;
+    font-size: $normal;
+}
+
+.grid__profile-icon-container__author-organization {
+    margin: 0;
+    color: $light-blue;
+    font-size: 12px;
+    font-weight: normal;
+}

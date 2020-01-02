@@ -16,6 +16,7 @@ import { TabMenuComponent } from './components/materials/components/tab-menu/tab
 import { SharedModules } from 'app/shared/modules/shared-modules.module';
 import { NotesComponent } from './components/materials/components/notes/notes.component';
 import { UrlsComponent } from './components/materials/components/urls/urls.component';
+import { AuthorCardComponent } from './components/author-card/author-card.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { UrlsComponent } from './components/materials/components/urls/urls.compo
     TabMenuComponent,
     NotesComponent,
     UrlsComponent,
+    AuthorCardComponent,
   ],
   providers: []
 })
