@@ -71,7 +71,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (object) {
           this.learningObject = object;
         this.setAcademicLevels();
-        console.log(this.learningObject);
 
         this.titleService.setTitle(this.learningObject.name + '| CLARK');
       }
