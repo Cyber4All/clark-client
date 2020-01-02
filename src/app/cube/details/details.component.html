@@ -10,7 +10,7 @@
       </section>
       <section class='details__content-container'>
 
-        <section class='details__content-container_left-side'>
+        <section class='details__content-container__left-side'>
           <section class='details__content-container__description-container section'>
             <h2 class='section-title'>Description</h2>
             <clark-details-description [description]='learningObject.description'></clark-details-description>
@@ -24,7 +24,7 @@
           <section class='details__content-container__academic-levels-container section'>
             <h2 class='section-title'>Academic Levels</h2>
             <div class='content-container__academic-levels-container__card-grid'>
-              <div *ngFor='let data of academicLevelMetadata'>
+              <div *ngFor='let data of academicLevelMetadata' class='content-container__academic-levels-container__card'>
                 <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
               </div>
             </div>
@@ -43,7 +43,7 @@
                   [tipDisabled]="auth.user.emailVerified"
                   class="button good content-container__ratings-container__button-container"
                   (activate)="showAddRating = auth.user.emailVerified"
-                  attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+                  attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit' :
                   'Write a'}} review 
                   <i class="far fa-pencil"></i>
                 </button>
@@ -63,9 +63,8 @@
             </clark-learning-object-ratings>   
           </section>
         </section>
-
              
-        <section class='details__content-container_right-side'>
+        <section class='details__content-container__right-side'>
           <section class='details__content-container__action-pad-container'>
             <cube-details-action-panel
               [reviewer]="reviewer"
@@ -92,7 +91,6 @@
     </div>
   </ng-container>
 </main>
-
 
 <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (activate)="showAddRating = false;">
   <div class="new-rating" (activate)="$event.stopPropagation()">

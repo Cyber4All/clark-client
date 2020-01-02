@@ -3,7 +3,6 @@
 
 .details-background {
   background-color: white;
-  min-height: 100vh;
 }
 
 .details {
@@ -35,9 +34,14 @@
   justify-content: space-between;
 }
 
-.details__content-container_right-side {
+.details__content-container__right-side {
+   
   margin-top: -250px;
   z-index: 99;
+}
+
+.details__content-container__left-side {
+  width: 60%;
 }
 
 .content-container__profile-cards-container-profile-card {
@@ -48,15 +52,11 @@
   margin-top: 70px;
 }
 
-.details__content-container__description-container {
-  min-width: 300px;
-  max-width: 800px;
-}
-
 .content-container__academic-levels-container__card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .details__content-container__ratings-container {
@@ -152,5 +152,18 @@
     color: $light-blue;
     font-size: 30px;
     margin-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width:  768px) {
+  .details__content-container__right-side {
+    order: 1;
+    margin-top: 0;
+    width: 75%;
+  }
+  
+  .details__content-container__left-side {
+    order: 2;
+    width: 75%;
   }
 }

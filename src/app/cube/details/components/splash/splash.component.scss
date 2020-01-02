@@ -61,7 +61,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     .learning-object-name {
       font-size: $largest;
       color: $darker-grey;
-      width: $content-width;
+      width: 100%;
     }
 
     .updated {
