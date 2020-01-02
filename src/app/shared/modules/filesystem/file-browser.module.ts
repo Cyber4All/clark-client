@@ -19,7 +19,7 @@ import { SharedComponents } from 'app/shared/components/shared-components.module
     SharedDirectivesModule,
     SharedComponents,
   ],
-  exports: [FileBrowserComponent],
+  exports: [FileBrowserComponent, FileListItemComponent],
   declarations: [
     FileBrowserComponent,
     FileListViewComponent,

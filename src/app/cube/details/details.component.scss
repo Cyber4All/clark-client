@@ -1,8 +1,15 @@
 @import '~_vars.scss';
 @import './global-details';
 
+.details-background {
+  background-color: white;
+}
+
 .details {
   background: white;
+  max-width: $max-width;
+  margin: auto;
+  padding-left: 20px;
 }
 
 .section-title {
@@ -23,17 +30,25 @@ section:not(.details__splash) {
   display: grid;
   grid-template-columns: 70% auto;
   grid-template-rows: auto;
-  margin-left:10%;
+  width: 100%;
+}
+
+.details__content-container__splash-container {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 5;
 }
 
 .details__content-container__action-pad-container {
   grid-column-start: 2;
-  grid-row-start: 10;
+  grid-row-start: 5;
+  justify-self: end;
 }
 
 .details__content-container__version-card-container {
   grid-column-start: 2;
   grid-row-start: 15;
+  justify-self: end;
 }
 
 .details__content-container__description-container {

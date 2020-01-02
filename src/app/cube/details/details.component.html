@@ -1,38 +1,40 @@
-<main id='pageContent' class='details'>
-  <section class='details__splash-container'>
-    <clark-details-splash [learningObject]='learningObject'></clark-details-splash>
-  </section>
-  <div class='details__content-container'>
-    <section class='details__content-container__action-pad-container'>
-      <clark-action-pad></clark-action-pad>
-    </section>
-    <section class='details__content-container__version-card-container'>
-      <clark-version-card></clark-version-card>
-    </section>
-    <section class='details__content-container__description-container'>
-      <h2 class='section-title'>Description</h2>
-      <clark-details-description [description]='learningObject.description'></clark-details-description>
-    </section>
-    <section class='details__content-container__learning-outcomes-container'>
-      <h2 class='section-title'>Learning Outcomes</h2>
-      <div *ngFor='let outcome of learningObject.outcomes'>
-        <clark-outcome [outcome]=outcome></clark-outcome>
-      </div>
-    </section>
-    <section class='details__content-container__academic-levels-container'>
-      <h2 class='section-title'>Academic Levels</h2>
-      <div class='content-container__academic-levels-container__card-grid'>
-        <div *ngFor='let data of academicLevelMetadata'>
-          <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
+<main id='pageContent' class='details-background'>
+  <div class='details'>
+    <div class='details__content-container'>
+      <section class='details__content-container__splash-container'>
+        <clark-details-splash [learningObject]='learningObject'></clark-details-splash>
+      </section>
+      <section class='details__content-container__action-pad-container'>
+        <clark-action-pad></clark-action-pad>
+      </section>
+      <section class='details__content-container__version-card-container'>
+        <clark-version-card></clark-version-card>
+      </section>
+      <section class='details__content-container__description-container'>
+        <h2 class='section-title'>Description</h2>
+        <clark-details-description [description]='learningObject.description'></clark-details-description>
+      </section>
+      <section class='details__content-container__learning-outcomes-container'>
+        <h2 class='section-title'>Learning Outcomes</h2>
+        <div *ngFor='let outcome of learningObject.outcomes'>
+          <clark-outcome [outcome]=outcome></clark-outcome>
         </div>
-      </div>
-    </section>
-    <section class='details__content-container__materials-container'>
-      <h2 class='section-title'>Materials</h2>
-      <clark-materials></clark-materials>
-    </section>
-    <section class='details__content-container__ratings-container'>
-      <h2 class='section-title'>Reviews</h2>
-    </section>
+      </section>
+      <section class='details__content-container__academic-levels-container'>
+        <h2 class='section-title'>Academic Levels</h2>
+        <div class='content-container__academic-levels-container__card-grid'>
+          <div *ngFor='let data of academicLevelMetadata'>
+            <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
+          </div>
+        </div>
+      </section>
+      <section class='details__content-container__materials-container'>
+        <h2 class='section-title'>Materials</h2>
+        <clark-materials [materials]='learningObject.materials'></clark-materials>
+      </section>
+      <section class='details__content-container__ratings-container'>
+        <h2 class='section-title'>Reviews</h2>
+      </section>
+    </div>
   </div>
 </main>
