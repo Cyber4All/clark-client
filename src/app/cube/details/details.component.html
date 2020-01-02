@@ -66,6 +66,13 @@
              
         <section class='details__content-container__right-side'>
           <section class='details__content-container__action-pad-container'>
+            <div *ngIf="reviewer" class="inner">
+              <div *ngIf="loggedin && hasRevision" class="revisions">
+                <div tabindex="0" class="text">View Revisions</div>
+                <clark-toggle-switch style="orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
+              </div>
+              <div tabindex="0" class="no-revisions" *ngIf="!hasRevision">No revisions have been made since last release.</div>
+            </div>
             <cube-details-action-panel
               [reviewer]="reviewer"
               [revisedDate]="revisedLearningObject?.date"

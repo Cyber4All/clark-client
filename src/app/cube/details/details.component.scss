@@ -35,7 +35,7 @@
 }
 
 .details__content-container__right-side {
-   
+  width: 291px;
   margin-top: -250px;
   z-index: 99;
 }
@@ -153,6 +153,29 @@
     font-size: 30px;
     margin-bottom: 10px;
   }
+}
+
+.inner {
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
+  padding: 20px;
+  margin-bottom: 15px;
+
+  .no-revisions {
+    font-size: $normal;
+    color: $dark-grey;
+    padding-right: 10px;
+    text-align: center;
+    display: inline-block;
+  }
+}
+.text {
+  font-size: $normal;
+  color: $dark-grey;
+  padding-right: 10px;
+  padding-left: 50px;
+  display: inline-block;
 }
 
 @media only screen and (max-width:  768px) {
