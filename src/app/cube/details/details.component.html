@@ -44,7 +44,7 @@
           <div>
             <button 
               tabindex="0" 
-              *ngIf="!isMobile && loggedin && !isOwnObject"
+              *ngIf="loggedin && !isOwnObject"
               tip="You must verify your email in order to review Learning Objects."
               [tipDisabled]="auth.user.emailVerified"
               class="button good content-container__ratings-container__button-container"
