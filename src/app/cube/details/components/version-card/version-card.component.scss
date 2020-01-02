@@ -3,23 +3,12 @@
 .version-card {
     background: $light-blue-gradient;
     border-radius: 5px;
-<<<<<<< HEAD
-    box-sizing: border-box; 
-    color: white;
-    height: 180px;
-    text-align: center;
-    width: 291px;
-    padding: 30px;
-    -moz-box-sizing: border-box; 
-    -webkit-box-sizing: border-box;
-=======
     box-sizing: border-box;
     color: white;
     height: 180px;
     text-align: center;
     max-width: 291px;
     padding: 30px;
->>>>>>> 5f3b1f37576adf6d4ccdfa5814692bd8d4d1f325
 }
 
 .version-card__icon-container {
@@ -28,11 +17,8 @@
 
 .version-card__text-container {
     font-size: 20px;
-<<<<<<< HEAD
-=======
     font-weight: normal;
     margin: 0;
->>>>>>> 5f3b1f37576adf6d4ccdfa5814692bd8d4d1f325
     margin-bottom: 20px;
 }
 
