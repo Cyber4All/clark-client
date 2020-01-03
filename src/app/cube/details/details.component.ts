@@ -123,9 +123,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     };
     const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-    this.learningObjectService.fetchLearningObjectWithResources(
-      { author: 'nvisal1237', cuidInfo: { cuid }}, resources
-      ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+      await this.learningObjectService.fetchLearningObjectWithResources(
+        { author: 'nvisal1237', cuidInfo: { cuid }}, resources
+        ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
           this.learningObject = object;
           this.resetRatings();
@@ -482,8 +482,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       this.ratings = data.ratings;
       this.averageRatingValue = data.avgValue;
-
-      console.log(this.averageRatingValue);
 
       const u = this.auth.username;
       for (let i = 0, l = data.ratings.length; i < l; i++) {

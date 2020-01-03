@@ -1,18 +1,18 @@
 <div class='academic-level-card'>
   <div class='academic-level-card__icon-container'>
-      <!-- TODO: Icon goes here -->
+      <i class="fab fa-angular fa-3x"></i>
   </div>
-  <div class='academic-level-card__title-container'>
+  <h3 class='academic-level-card__title-container'>
     {{ category }}
-  </div>
-  <div class='academic-level-card__applied-levels-container'>
-    <div *ngFor='let level of getSortedLevels()'>
-      <div class='academic-level-card__applied-levels-container__level' [ngClass]="{'level-selected' : academicLevels[level]}">
-        <span class='academic-level-card__applied-levels-container__icon-container' *ngIf='academicLevels[level]'>
+  </h3>
+  <ul class='academic-level-card__applied-levels-container'>
+    <li *ngFor='let level of academicLevels | keyvalue'>
+      <div class='academic-level-card__applied-levels-container__level' [ngClass]="{'level-selected' : level.value}">
+        <span class='academic-level-card__applied-levels-container__icon-container' *ngIf='level.value'>
           <i class="far fa-check-circle"></i>
         </span>
-        {{ level | titlecase }}
+        {{ level.key | titlecase }}
       </div>
-    </div>
-  </div>
+    </li>
+  </ul>
 </div>
