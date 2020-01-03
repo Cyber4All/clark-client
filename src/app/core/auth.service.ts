@@ -520,40 +520,6 @@ export class AuthService {
   }
 
   /**
-   * Triggers a print operation for CLARK cards with the specified username, name and organization
-   *
-   * @param {string} username
-   * @param {string} name
-   * @param {string} organization
-   * @memberof AuthService
-   */
-  printCards(username: string, name: string, organization: string) {
-    const uppercase = (word: string): string =>
-      word.charAt(0).toUpperCase() + word.slice(1);
-    // Format user information
-    const nameSplit = name.split(' ');
-    const firstname = uppercase(nameSplit[0]);
-    const lastname = uppercase(nameSplit.slice(1, nameSplit.length).join(' '));
-    const org = organization
-      .split(' ')
-      .map(word => uppercase(word))
-      .join(' ');
-
-    // Create and click a tag to open new tab
-    const newlink = document.createElement('a');
-    newlink.setAttribute('target', '_blank');
-    newlink.setAttribute(
-      'href',
-      `https://api-gateway.clark.center/users/${encodeURIComponent(
-        username
-      )}/cards?fname=${encodeURIComponent(
-        firstname
-      )}&lname=${encodeURIComponent(lastname)}&org=${encodeURIComponent(org)}`
-    );
-    newlink.click();
-  }
-
-  /**
    * Determines whether or not the currently logged-in user can download the specified learning object
    *
    * @param {LearningObject} learningObject
