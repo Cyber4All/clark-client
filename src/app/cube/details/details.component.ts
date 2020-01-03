@@ -123,7 +123,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     };
     const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-      await this.learningObjectService.fetchLearningObjectWithResources(
+      this.learningObjectService.fetchLearningObjectWithResources(
         { author: 'nvisal1237', cuidInfo: { cuid }}, resources
         ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
@@ -131,7 +131,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.resetRatings();
           this.setAcademicLevels();
           this.getLearningObjectRatings();
-          console.log(this.learningObject);
 
           this.titleService.setTitle(this.learningObject.name + '| CLARK');
         }

@@ -1,4 +1,4 @@
-<a *ngIf='children?.length || parents?.length' class='hierarchy-link' (click)='emitLinkClickEvent()'>
+<a [attr.aria-label]="'child of ' + parents[0].name + '; ' + 'parent of ' + children[0].name" *ngIf='children?.length || parents?.length' class='hierarchy-link' (click)='emitLinkClickEvent()'>
   <span class='hierarchy-link__icon-container'>
     <i class="far fa-project-diagram"></i>
   </span>
