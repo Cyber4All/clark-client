@@ -1,0 +1,21 @@
+@import '~_vars.scss';
+
+.urls {
+    padding: 20px;
+}
+
+.urls__grid {
+    border-bottom: 1px solid $light-grey;
+    display: grid;
+    grid-template-columns: 200px auto;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.urls__grid__link-title {
+    color: $dark-grey;
+}
+
+.urls__grid__link-url {
+
+}

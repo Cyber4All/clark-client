@@ -1,3 +1,10 @@
-<section *ngFor='let url of urls'>
-  <a [attr.aria-label]="url.title" href='{ url.url }'>{{ url.title }}</a>
+<section class='urls'>
+  <div *ngFor='let url of urls' class='urls__grid'>
+    <div class='urls__grid__link-title'>
+      {{ url.title }}
+    </div>
+    <a [attr.aria-label]="url.title" href='{ url.url }' class='urls__grid__link-url'>
+      Visit link
+    </a>
+  </div>
 </section>

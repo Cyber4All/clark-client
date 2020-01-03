@@ -1,15 +1,32 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'clark-details-splash',
   templateUrl: './splash.component.html',
-  styleUrls: ['./splash.component.scss']
+  styleUrls: ['./splash.component.scss'],
+  animations: [
+    trigger('collection', [
+      transition(':enter', [
+        style({ opacity: 0, height: 0 }),
+        animate('200ms ease', style({ opacity: 1, height: '*' }))
+      ])
+    ])
+  ]
 })
 export class SplashComponent implements AfterViewInit {
   @Input() learningObject: LearningObject;
+  @Input() averageRating: number;
+  @Input() reviewsCount:  number;
+
+  @Input() parents: LearningObject[];
+  @Input() children: LearningObject[];
+
+  showPanel: boolean;
+
+  starColor = 'gold';
 
   collections = new Map();
 

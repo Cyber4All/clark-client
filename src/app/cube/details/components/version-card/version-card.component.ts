@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'clark-version-card',
   templateUrl: './version-card.component.html',
   styleUrls: ['./version-card.component.scss']
 })
-export class VersionCardComponent implements OnInit {
+export class VersionCardComponent {
 
-  constructor() { }
+  @Input() showButton: boolean;
+  @Output() clickButtonEvent: EventEmitter<void> = new EventEmitter();
 
-  ngOnInit() {
+  emitClickButtonEvent(): void {
+    this.clickButtonEvent.emit();
   }
-
 }

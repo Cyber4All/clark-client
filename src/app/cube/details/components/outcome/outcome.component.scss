@@ -4,7 +4,7 @@
     border-bottom: 2px solid $light-grey;
     padding-top: 10px;
     padding-bottom: 10px;
-    width: 90%;
+    cursor: pointer;
 }
 
 .outcome__grid-container {
@@ -39,6 +39,11 @@
     align-self: center;
     grid-column-start: end;
     justify-self: end;
+    transition: transform 0.25s ease;
+
+    &.outcome__grid-container__toggle-container--active {
+        transform: rotateX(180deg);
+    }
 }
 
 .outcome__mappings-display__list {
@@ -57,6 +62,17 @@
 .list__item__outcome-text {
     color: $dark-grey;
     font-size: 12px;
+}
+
+ul {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    & > * {
+        padding: 5px 0;
+    }
 }
 
 .fa-cloud {

@@ -1,7 +1,14 @@
+.materials {
+    height: 500px;
+}
+
 .materials__tab-menu-container {
     margin-top: 55px;
 }
 
 .materials__file-browser-container {
     margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    padding: 0 20px 0 20px;
 }

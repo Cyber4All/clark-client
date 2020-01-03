@@ -1,0 +1,37 @@
+@import '~_vars.scss';
+
+.hierarchy-link {
+    cursor: pointer;
+}
+
+.hierarchy-link__icon-container {
+    color: $light-blue;
+    margin-right: 5px;
+}
+
+.hierarchy-link__child-link-container {
+    color: $dark-grey;
+}
+
+.hierarchy-link__child-link-container__link {
+    color: $light-blue;
+}
+
+.hierarchy-link__parent-child-separator {
+    color: $dark-grey;
+    margin: 0;
+    margin-right: 5px;
+}
+
+.hierarchy-link__parent-link-container {
+    color: $dark-grey
+}
+
+.hierarchy-link__parent-link-container__link {
+    color: $light-blue;
+}
+
+.hierarchy-link__plus-more-link-container {
+    color: $light-blue;
+    text-decoration: underline;
+}

@@ -1,0 +1,34 @@
+@import '~_vars.scss';
+
+.side-panel-content {
+    color: $dark-grey;
+}
+
+.side-panel-content__header-container {
+    background: $light-blue-gradient;
+    margin: -20px -20px 20px -20px;
+    padding: 20px;
+}
+
+.side-panel-content__header-container__text {
+    color: white;
+    margin: 0;
+}
+
+.side-panel-content__parents-container__header-text {
+    border-bottom: 1px solid $light-grey;
+    padding-bottom: 10px;
+}
+
+.side-panel-content__parents-container__cards-container {
+    margin-bottom: 10px;
+}
+
+.side-panel-content__children-container__header-text {
+    border-bottom: 1px solid $light-grey;
+    padding-bottom: 10px;
+}
+
+.side-panel-content__children-container__cards-container {
+    margin-bottom: 10px;
+}

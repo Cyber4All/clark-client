@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthorCardComponent } from './author-card.component';
+import { HierarchyLinkComponent } from './hierarchy-link.component';
 
-describe('AuthorCardComponent', () => {
-  let component: AuthorCardComponent;
-  let fixture: ComponentFixture<AuthorCardComponent>;
+describe('HierarchyLinkComponent', () => {
+  let component: HierarchyLinkComponent;
+  let fixture: ComponentFixture<HierarchyLinkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthorCardComponent ]
+      declarations: [ HierarchyLinkComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthorCardComponent);
+    fixture = TestBed.createComponent(HierarchyLinkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

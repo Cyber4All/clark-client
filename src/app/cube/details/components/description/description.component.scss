@@ -1,10 +1,10 @@
 @import '~_vars.scss';
 
 p {
-  color: $dark-grey;
+  color: $dark-grey; 
 
   &.description {
-    
+    display: inline-block;
     ::ng-deep strong {
       font-weight: 600 !important;
     }
