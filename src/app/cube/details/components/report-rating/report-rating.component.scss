@@ -1,0 +1,76 @@
+@import '~_vars.scss';
+
+.title {
+  font-size: $large;
+  text-align: center;
+  color: $blue-accent;
+  margin-bottom: 15px;
+  position: relative;
+
+  .icon {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    font-size: $normal;
+    cursor: pointer;
+  }
+}
+
+.type-list {
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      font-size: $large;
+      list-style-type: none;
+      padding: 10px 20px 10px 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      &:hover {
+        background: $light-grey;
+      }
+
+      .svg-inline--fa {
+        font-size: $small;
+      }
+    }
+  }
+}
+
+.comment {
+  .comment-description {
+    color: $dark-grey;
+    font-size: $normal;
+
+    span {
+      font-weight: bold;
+      color: $darker-grey;
+    }
+  }
+
+  textarea {
+    margin-top: 15px;
+    width: 100%;
+    appearance: none;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 1px;
+    min-height: 100px;
+    border: 1px solid $placeholder;
+    outline: 0;
+    resize: none;
+
+    &:focus {
+      border-color: $blue-accent;
+    }
+  }
+
+  .btn-group {
+    margin-top: 25px;
+  }
+}

@@ -17,14 +17,21 @@ import { SharedModules } from 'app/shared/modules/shared-modules.module';
 import { NotesComponent } from './components/materials/components/notes/notes.component';
 import { UrlsComponent } from './components/materials/components/urls/urls.component';
 import { AuthorCardComponent } from './components/author-card/author-card.component';
-
+import { LearningObjectRatingsComponent} from './components/learning-object-ratings/learning-object-ratings.component';
+import { SharedModule } from 'app/shared/shared.module';
+import { NewRatingResponseComponent } from './components/new-rating-response/new-rating-response.component';
+import { ReportRatingComponent } from './components/report-rating/report-rating.component';
+import { FormsModule } from '@angular/forms';
+import { NewRatingComponent } from './components/new-rating/new-rating.component';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent } ]),
     SharedPipesModule,
     FileBrowserModule,
+    FormsModule,
     SharedModules,
+    SharedModule,
   ],
   exports: [],
   declarations: [
@@ -43,6 +50,10 @@ import { AuthorCardComponent } from './components/author-card/author-card.compon
     NotesComponent,
     UrlsComponent,
     AuthorCardComponent,
+    LearningObjectRatingsComponent,
+    NewRatingResponseComponent,
+    ReportRatingComponent,
+    NewRatingComponent,
   ],
   providers: []
 })
