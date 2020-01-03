@@ -86,6 +86,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogs = [];
 
+  errorStatus: number;
+
   constructor(
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
