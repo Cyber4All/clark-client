@@ -62,6 +62,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     date?: string;
   } = {};
 
+  errorStatus: number;
+
   constructor(
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
