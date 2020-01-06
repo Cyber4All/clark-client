@@ -195,12 +195,19 @@
   .details__content-container__right-side {
     order: 1;
     margin-top: 0;
-    width: 75%;
+    width: 100%;
   }
   
   .details__content-container__left-side {
     order: 2;
-    width: 75%;
+    width: 80%;
+  }
+
+  .details__content-container__version-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
   }
 
   .details__content-container__ratings-container__header-container {
