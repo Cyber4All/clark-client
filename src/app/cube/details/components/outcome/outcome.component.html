@@ -1,5 +1,5 @@
 <div class='outcome'>
-  <div (click)='outcome.mappings?.length && toggleMappingsDisplay()' class='outcome__grid-container'>
+  <div (activate)='outcome.mappings?.length && toggleMappingsDisplay()' class='outcome__grid-container'>
     <div class='outcome__grid-container__icon-container'>
       <i class='far fa-2x' [ngClass]="{
         'fa-cloud': outcome.bloom === 'remember and understand',

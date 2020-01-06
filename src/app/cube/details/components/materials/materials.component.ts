@@ -40,6 +40,9 @@ export class MaterialsComponent implements OnInit, OnChanges {
     this.action$.next(movementLength);
   }
 
+  // files and folderDescription inputs are passed
+  // to the behavior subjects. Angular output
+  // events are not emitted here.
   emit(): void {
     const files = this.materials.files;
     const folderMeta = this.materials.folderDescriptions;
