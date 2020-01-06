@@ -74,6 +74,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 .hierarchy-link-container {
   margin-top: 20px;
   margin-left: 10px;
+  max-width: 450px;
 }
 
 .rating-stars-container {
