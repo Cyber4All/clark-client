@@ -14,7 +14,7 @@
         <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
       </span>
       <div class='hierarchy-link-container'>
-        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showPanel = true'></clark-hierarchy-link>
+        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showSidePanel()'></clark-hierarchy-link>
       </div>
    </div>
   </div>
@@ -26,7 +26,7 @@
     [children]=learningObject.children 
     [options]='showMobileSidePanel ? {showExit: true, padding: true, exitButtonColor: "white"} : {padding: true}'
     [contentWidth]='showMobileSidePanel ? 300 : 400'
-    (close)='showPanel = false'
+    (close)='hideSidePanel()'
   ></clark-side-panel-content>
  
 </div>

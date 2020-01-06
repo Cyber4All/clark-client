@@ -55,4 +55,12 @@ export class SplashComponent implements OnInit, AfterViewInit {
     });
   }
 
+  showSidePanel() {
+    this.showPanel = true;
+  }
+
+  hideSidePanel() {
+    this.showPanel = false;
+  }
+
 }
