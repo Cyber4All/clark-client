@@ -56,7 +56,7 @@ export class PanelDirective implements OnInit, OnDestroy {
    * @param {KeyboardEvent} event
    * @memberof PanelDirective
    */
-  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
+  @HostListener('window:keydown', ['$event']) handleKeyDown(event: KeyboardEvent) {
     this.doClose();
   }
 

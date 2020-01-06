@@ -8,7 +8,7 @@ import { fade } from '../panel.animations';
   selector: 'clark-side-panel-viewer',
   template: `
     <ng-container>
-      <div *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
+      <div trapFocus *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
       <div
         [style.width]="contentWidth + 'px'"
         (activate)="$event.stopPropagation()"
@@ -77,7 +77,7 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     ).subscribe(() => {
       this.isOpen = false;
-    })
+    });
   }
 
   ngOnDestroy() {
