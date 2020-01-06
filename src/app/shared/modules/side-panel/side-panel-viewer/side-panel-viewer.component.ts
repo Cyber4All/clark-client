@@ -8,8 +8,9 @@ import { fade } from '../panel.animations';
   selector: 'clark-side-panel-viewer',
   template: `
     <ng-container>
-      <div trapFocus *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
+      <div *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
       <div
+        trapFocus
         [style.width]="contentWidth + 'px'"
         (activate)="$event.stopPropagation()"
         class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
