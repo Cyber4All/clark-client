@@ -179,6 +179,16 @@
   display: inline-block;
 }
 
+@media only screen and (max-width: 1400px) {
+  .content-container__academic-levels-container__card-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 200px;
+  }
+}
+
 @media only screen and (max-width:  768px) {
   .details__content-container__right-side {
     order: 1;
@@ -191,3 +201,5 @@
     width: 75%;
   }
 }
+
+
