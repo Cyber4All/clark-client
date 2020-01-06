@@ -20,7 +20,6 @@ export class HierarchyLinkComponent implements OnInit {
   }
 
   emitLinkClickEvent(): void {
-    console.log('click');
     this.linkClickEvent.emit();
   }
 

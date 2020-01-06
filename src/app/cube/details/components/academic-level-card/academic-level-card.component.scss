@@ -2,14 +2,13 @@
 
 .academic-level-card {
     border-radius: 5px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    color: $dark-grey;
     height: 350px;
     text-align: center;
-    width: 275px;
-    padding: 20px;
-    -moz-box-sizing: border-box; 
-    -webkit-box-sizing: border-box;
+    max-width: 275px;
+    padding: 30px;
 }
 
 .academic-level-card__icon-container {
@@ -17,7 +16,9 @@
 }
 
 .academic-level-card__title-container {
+    color: $darker-grey;
     font-size: 23px;
+    font-weight: normal;
     margin-top: 50px;
 }
 

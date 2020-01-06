@@ -13,10 +13,14 @@
 }
 
 .grid__profile-icon-container__author-name {
+    margin: 0;
     color: $dark-grey;
+    font-size: $normal;
 }
 
 .grid__profile-icon-container__author-organization {
+    margin: 0;
     color: $light-blue;
     font-size: 12px;
+    font-weight: normal;
 }

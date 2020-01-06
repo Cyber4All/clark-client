@@ -61,12 +61,4 @@ export class UserInformationComponent implements OnInit, OnChanges {
       this.notifications.error(`Could not send email`, `${e}`);
     }
   }
-
-  printCards() {
-    this.auth.printCards(
-      this.user.username,
-      this.user.name,
-      this.user.organization
-    );
-  }
 }

@@ -30,7 +30,7 @@ export class OutcomeComponent {
 
   @Input() outcome: LearningOutcome;
 
-  private showMappings = false;
+  showMappings = false;
 
   toggleMappingsDisplay() {
     this.showMappings = !this.showMappings;

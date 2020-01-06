@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'clark-academic-level-card',
@@ -6,18 +6,12 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./academic-level-card.component.scss']
 })
 
-export class AcademicLevelCardComponent implements OnInit {
+export class AcademicLevelCardComponent {
   @Input() category: string;
   @Input() academicLevels: { [name: string]: boolean };
-
-  constructor() {}
-
-  ngOnInit() {
-  }
 
   getSortedLevels(): string[] {
     const sortedLevels = Object.keys(this.academicLevels);
     return sortedLevels;
   }
-
 }

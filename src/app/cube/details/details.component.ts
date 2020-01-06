@@ -659,8 +659,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.ratings = data.ratings;
       this.averageRatingValue = data.avgValue;
 
-      console.log(this.averageRatingValue);
-
       const u = this.auth.username;
       if (this.ratings.length) {
         for (let i = 0, l = this.ratings.length; i < l; i++) {

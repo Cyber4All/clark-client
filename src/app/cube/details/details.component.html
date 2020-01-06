@@ -98,7 +98,6 @@
     </div>
   </ng-container>
 </main>
-
 <div *ngIf="loggedin && !errorStatus" class="new-rating-wrapper" [ngClass]="{'active': showAddRating}" (activate)="showAddRating = false;">
   <div class="new-rating" (activate)="$event.stopPropagation()">
     <div class="close-new-rating" (activate)="showAddRating = false;"><i class="far fa-times"></i></div>
