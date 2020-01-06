@@ -24,8 +24,8 @@
     *ngIf='showPanel' 
     [parents]=learningObject.parents
     [children]=learningObject.children 
-    [options]='{showExit: true, padding: true, exitButtonColor: "white"}'
-    [contentWidth]='400'
+    [options]='showMobileSidePanel ? {showExit: true, padding: true, exitButtonColor: "white"} : {padding: true}'
+    [contentWidth]='showMobileSidePanel ? 300 : 400'
     (close)='showPanel = false'
   ></clark-side-panel-content>
  
