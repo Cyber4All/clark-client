@@ -32,3 +32,9 @@
 .side-panel-content__children-container__cards-container {
     margin-bottom: 10px;
 }
+
+@media only screen and (max-width:  750px) {
+    .side-panel-content {
+        width: 200px !important;
+    }
+}
