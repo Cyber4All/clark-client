@@ -62,7 +62,7 @@
 }
 
 .details__content-container__ratings-container {
-  margin-bottom: 100px;
+  margin-bottom: 160px;
 }
 
 .details__content-container__ratings-container__header-container {
@@ -73,6 +73,7 @@
 .content-container__ratings-container__button-container {
   height: 40px;
   justify-self: end;
+  min-width: 180px;
 }
 
 .new-rating-wrapper {
@@ -200,6 +201,15 @@
   .details__content-container__left-side {
     order: 2;
     width: 75%;
+  }
+
+  .details__content-container__ratings-container__header-container {
+    display: grid;
+    grid-template-columns: 50% auto;
+  }
+
+  .content-container__ratings-container__button-container {
+    justify-self: start;
   }
 }
 
