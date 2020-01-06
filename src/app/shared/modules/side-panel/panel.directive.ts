@@ -21,6 +21,8 @@ import { Subject } from 'rxjs';
 
 export interface SidePanelOptions {
   padding: boolean;
+  showExitColor: boolean;
+  exitButtonColor: 'white' | 'black';
 }
 
 @Directive({

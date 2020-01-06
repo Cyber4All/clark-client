@@ -14,6 +14,13 @@ import { fade } from '../panel.animations';
         (activate)="$event.stopPropagation()"
         class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
       >
+        <button
+          *ngIf="options.showExit"
+          class="side-panel__exit-button"
+          [style.color]="options.exitButtonColor"
+          (activate)='doClose()'
+          ><i class="fal fa-times"></i>
+        </button>
         <ng-content></ng-content>
       </div>
     </ng-container>
