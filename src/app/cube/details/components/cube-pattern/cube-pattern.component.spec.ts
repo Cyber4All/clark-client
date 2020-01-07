@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UrlsComponent } from './urls.component';
+import { CubePatternComponent } from './cube-pattern.component';
 
-describe('UrlsComponent', () => {
-  let component: UrlsComponent;
-  let fixture: ComponentFixture<UrlsComponent>;
+describe('CubePatternComponent', () => {
+  let component: CubePatternComponent;
+  let fixture: ComponentFixture<CubePatternComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrlsComponent ]
+      declarations: [ CubePatternComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UrlsComponent);
+    fixture = TestBed.createComponent(CubePatternComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

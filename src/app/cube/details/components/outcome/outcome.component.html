@@ -1,10 +1,10 @@
 <div class='outcome'>
-  <div (click)='outcome.mappings?.length && toggleMappingsDisplay()' class='outcome__grid-container'>
+  <div (activate)='outcome.mappings?.length && toggleMappingsDisplay()' class='outcome__grid-container' aria-label='open mapped outcomes'>
     <div class='outcome__grid-container__icon-container'>
       <i class='far fa-2x' [ngClass]="{
         'fa-cloud': outcome.bloom === 'remember and understand',
         'fa-bolt': outcome.bloom === 'apply and analyze',
-        'fa-balance-scale-right': outcome.bloom === 'evalulate and synthesize'
+        'fa-balance-scale-right': outcome.bloom === 'evaluate and synthesize'
       }"></i>
     </div>
     <div class='outcome__grid-container__text-container'>

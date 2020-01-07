@@ -20,13 +20,6 @@
 .section {
   padding-top: 30px;
 }
-
-.details__splash-container {
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
 .details__content-container {
   display: flex;
   flex-direction: row;
@@ -35,61 +28,46 @@
   justify-content: space-between;
 }
 
-.details__content-container__splash-container {
- 
+.details__content-container__right-side {
+  width: 291px;
+  margin-top: -300px;
+  z-index: 99;
+  padding-right: 20px;
 }
 
-.details__content-container__action-pad-container {
-  
+.details__content-container__top-left-side {
+  width: 60%;
 }
 
-.details__content-container__right-side-container {
- 
+.details__content-container__left-side {
+  width: 60%;
 }
 
-.details__top-left-side-content-container { 
-
-}
-
-.details__bottom-left-side-content-container { 
- 
+.details__content-container__cube-pattern-container {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  right: 0;
+  height: 350px;
 }
 
 .content-container__profile-cards-container-profile-card {
   margin-bottom: 15px;
-
 }
 
 .details__content-container__version-card-container {
   margin-top: 70px;
 }
 
-.details__content-container__description-container {
-  min-width: 300px;
-  max-width: 800px;
-}
-
-.details__content-container__learning-outcomes-container {
-
-}
-
-.details__content-container__academic-levels-container {
-  // min-width: 800px;
-}
-
 .content-container__academic-levels-container__card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 40px;
-}
-
-.details__content-container__materials-container {
-
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .details__content-container__ratings-container {
-
-  margin-bottom: 20px;
+  margin-bottom: 160px;
 }
 
 .details__content-container__ratings-container__header-container {
@@ -100,6 +78,7 @@
 .content-container__ratings-container__button-container {
   height: 40px;
   justify-self: end;
+  min-width: 180px;
 }
 
 .new-rating-wrapper {
@@ -183,3 +162,67 @@
     margin-bottom: 10px;
   }
 }
+
+.inner {
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
+  padding: 20px;
+  margin-bottom: 15px;
+
+  .no-revisions {
+    font-size: $normal;
+    color: $dark-grey;
+    padding-right: 10px;
+    text-align: center;
+    display: inline-block;
+  }
+}
+.text {
+  font-size: $normal;
+  color: $dark-grey;
+  padding-right: 10px;
+  padding-left: 50px;
+  display: inline-block;
+}
+
+@media only screen and (max-width: 1400px) {
+  .content-container__academic-levels-container__card-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 200px;
+  }
+}
+
+@media only screen and (max-width:  830px) {
+  .details__content-container__right-side {
+    order: 1;
+    margin-top: 0;
+    width: 100%;
+  }
+  
+  .details__content-container__left-side {
+    order: 2;
+    width: 80%;
+  }
+
+  .details__content-container__version-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+  }
+
+  .details__content-container__ratings-container__header-container {
+    display: grid;
+    grid-template-columns: 50% auto;
+  }
+
+  .content-container__ratings-container__button-container {
+    justify-self: start;
+  }
+}
+
+

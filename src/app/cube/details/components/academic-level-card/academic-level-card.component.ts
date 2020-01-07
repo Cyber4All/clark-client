@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'clark-academic-level-card',
@@ -9,4 +9,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class AcademicLevelCardComponent {
   @Input() category: string;
   @Input() academicLevels: { [name: string]: boolean };
+
+  getSortedLevels(): string[] {
+    const sortedLevels = Object.keys(this.academicLevels);
+    return sortedLevels;
+  }
 }

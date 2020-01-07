@@ -33,4 +33,4 @@ export const slideIn = [
 export const slideOut = [
   style({ transform: 'translateX(0px)', opacity: 1 }),
   animate('250ms ease', style({ transform: 'translateX(450px)', opacity: 0 }))
-]
+];

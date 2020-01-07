@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObjectService } from 'app/core/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -13,29 +13,12 @@ import { AuthService } from 'app/core/auth.service';
 import { Rating } from '../old-details/details.component';
 import { ChangelogService } from 'app/core/changelog.service';
 import { trigger, transition, query, style, animate, stagger } from '@angular/animations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'clark-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
-  animations: [
-    trigger('enterDetails', [
-      transition(':enter', [
-        query('[shouldanimate]', [
-          style({ opacity: 0, transform: 'translateY(-20px)' }),
-          stagger(100, [
-            animate('200ms ease', style({ opacity: 1, transform: 'translateY(0px)' }))
-          ])
-        ])
-      ])
-    ]),
-    // trigger('enterPage', [
-    //   transition(':enter', [
-    //     style({ opacity: 1, transform: 'translateX(-700px) rotate(0deg) scale(200)'}),
-    //     animate('30000ms ease', style({ opacity: 1, transform: 'translateX(0px) rotateY(72000deg) scale(1)'})),
-    //   ])
-    // ])
-  ]
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   learningObject: LearningObject;
@@ -86,7 +69,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogs = [];
 
+  reviewer: boolean;
+  revisedLearningObject: LearningObject;
+  revisedVersion = false;
+  releasedLearningObject: LearningObject;
+  hasRevision: boolean;
+  version: number;
+  revisedChildren: LearningObject[];
+  releasedChildren: LearningObject[];
   errorStatus: number;
+  redirectUrl: string;
+
+  authors: User[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -98,47 +92,232 @@ export class DetailsComponent implements OnInit, OnDestroy {
     public modalService: ModalService,
     private auth: AuthService,
     private changelogService: ChangelogService,
+    private router: Router,
     ) { }
 
   ngOnInit() {
+    this.authors = [];
     this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
       this.loggedin = val;
 
       if (!this.loggedin) {
-        // this.reviewer = false;
+        this.reviewer = false;
       } else {
-        // this.reviewer = this.auth.hasReviewerAccess();
+        this.reviewer = this.auth.hasReviewerAccess();
       }
     });
     this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
-      this.getLearningObject(username, learningObjectName);
+      this.fetchReleasedLearningObject(username, learningObjectName);
     });
   }
 
-  getLearningObject(username: string, cuid: string, version?: number) {
+  /**
+   * Fetches the released learning object to display first. If the object hasRevisions and the user has reviewer access
+   * the revised copy is also fetched.
+   * @param author the author of the learning object
+   * @param name the name of the learning object
+   */
+  async fetchReleasedLearningObject(author: string, cuid: string) {
     this.loading = true;
-    const params = {
-      author: username,
-      cuidInfo: {
-        cuid: cuid,
-        version: version,
-      }
-    };
-    const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
-      this.learningObjectService.fetchLearningObjectWithResources(
-        { author: 'nvisal1237', cuidInfo: { cuid }}, resources
+
+    try {
+      this.resetRatings();
+      this.resetAuthors();
+
+      const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
+      await this.learningObjectService.fetchLearningObjectWithResources(
+        { author, cuidInfo: { cuid }}, resources
         ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object) {
-          this.learningObject = object;
-          this.resetRatings();
-          this.setAcademicLevels();
-          this.getLearningObjectRatings();
+          this.releasedLearningObject = object;
 
+          // FIXME: This filter should be removed when service logic for filtering children is updated
+          this.releasedChildren = this.releasedLearningObject.children.filter(
+            child => {
+              return child.status === LearningObject.Status['RELEASED'] ||
+                child.status === LearningObject.Status['REVIEW'] ||
+                child.status === LearningObject.Status['PROOFING'] ||
+                child.status === LearningObject.Status['WAITING'];
+            }
+          );
+
+          const owners = this.releasedLearningObject.contributors.map(user => user.username);
+          owners.push(this.releasedLearningObject.author.username);
+
+          this.learningObjectOwners = owners;
+          // this.hasRevision = !!this.releasedLearningObject.revisionUri;
+          this.learningObject = this.releasedLearningObject;
+          // Set page title
           this.titleService.setTitle(this.learningObject.name + '| CLARK');
+          this.version = this.learningObject.version + 1;
+          await this.getLearningObjectRatings();
+          this.setAcademicLevels();
+          this.setLearningObjectAuthors();
+          this.loading = false;
         }
-        this.loading = false;
+        this.learningObjectService.fetchLearningObjectWithResources(
+          { author, cuidInfo: { cuid: cuid, version: (this.learningObject.version + 1) }}, resources)
+          .pipe(takeUntil(this.isDestroyed$)).subscribe(async(object) => {
+          if (object) {
+            this.revisedLearningObject = object;
+
+            // FIXME: This filter should be removed when service logic for filtering children is updated
+            this.revisedChildren = this.revisedLearningObject.children.filter(
+              child => {
+                return child.status === LearningObject.Status['RELEASED'] ||
+                  child.status === LearningObject.Status['REVIEW'] ||
+                  child.status === LearningObject.Status['PROOFING'] ||
+                  child.status === LearningObject.Status['WAITING'];
+              }
+            );
+
+            const owners = this.revisedLearningObject.contributors.map(user => user.username);
+            owners.push(this.revisedLearningObject.author.username);
+
+            this.learningObjectOwners = owners;
+          }
+          if (this.revisedLearningObject) {
+            this.hasRevision = true;
+          }
+        });
+      });
+      // this.loading.pop();
+    } catch (e) {
+
+      /**
+       * TODO: change status to 404 when issue #149 is closed
+       * if server error is thrown, navigate to not-found page
+       */
+
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === 404) {
+          this.router.navigate(['not-found']);
+        }
+        if (e.status === 401) {
+          let redirectUrl = '';
+          this.route.url.subscribe(segments => {
+            if (segments) {
+              segments.forEach(segment => {
+                redirectUrl = redirectUrl + '/' + segment.path;
+              });
+            }
+          });
+          this.errorStatus = e.status;
+          this.redirectUrl = redirectUrl;
+        }
+      }
+      console.log(e);
+    }
+  }
+
+  /**
+   * Returns a boolean representing whether or not the children component should be displayed
+   *
+   * true true if:
+      1) we're looking at the released version and the released object has children, or
+      2) we're looking at the revised version and the revised object has children
+   * @readonly
+   * @memberof DetailsComponent
+   */
+  get showChildren() {
+    return (
+      !this.revisedVersion &&
+      this.releasedChildren &&
+      this.releasedChildren.length)
+      ||
+      (
+      this.revisedVersion &&
+      this.revisedChildren &&
+      this.revisedChildren.length);
+  }
+
+
+  /**
+   * toggles between released and revised copies of a learning object
+   * @param revised the boolean for if the revised is being viewed
+   */
+  async viewReleased(revised: boolean) {
+    this.revisedVersion = revised;
+
+    if (this.revisedVersion) {
+      // await this.loadRevisedLearningObject();
+      this.learningObject = this.revisedLearningObject;
+    } else {
+      this.learningObject = this.releasedLearningObject;
+    }
+  }
+
+  /**
+   * Loaded a revised copy of the learning object if the hasRevisions flag is true
+   */
+  async loadRevisedLearningObject() {
+    // this.loading.push(1);
+    try {
+      this.resetRatings();
+      this.revisedLearningObject = await this.learningObjectService.fetchUri(this.learningObject.revisionUri, ([ o ]) => {
+        return new LearningObject(o);
+      }).toPromise();
+
+      this.learningObjectService.fetchLearningObjectResources(
+        this.revisedLearningObject,
+        ['children', 'parents', 'outcomes', 'materials', 'ratings']
+      ).subscribe(val => {
+        this.revisedLearningObject[val.name] = val.data;
       });
 
+      // FIXME: This filter should be removed when service logic is updated
+      this.revisedChildren = this.revisedLearningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+            child.status === LearningObject.Status['REVIEW'] ||
+            child.status === LearningObject.Status['PROOFING'] ||
+            child.status === LearningObject.Status['WAITING'];
+        }
+      );
+
+      const owners = this.revisedLearningObject.contributors.map(user => user.username);
+      owners.push(this.revisedLearningObject.author.username);
+
+      this.learningObjectOwners = owners;
+      // this.loading.pop();
+    } catch (e) {
+
+      /**
+      * TODO: change status to 404 when issue #149 is closed
+      * if server error is thrown, navigate to not-found page
+      */
+
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === 404) {
+          this.router.navigate(['not-found']);
+        }
+        if (e.status === 401) {
+          let redirectUrl = '';
+          this.route.url.subscribe(segments => {
+            if (segments) {
+              segments.forEach(segment => {
+                redirectUrl = redirectUrl + '/' + segment.path;
+              });
+            }
+          });
+          this.errorStatus = e.status;
+          this.redirectUrl = redirectUrl;
+        }
+      }
+      console.log(e);
+      // this.loading.pop();
+    }
+  }
+
+  setLearningObjectAuthors() {
+    this.authors.push(this.learningObject.author);
+    this.learningObject.contributors.forEach(contributor => {
+      this.authors.push(contributor);
+    });
+  }
+
+  resetAuthors() {
+    this.authors = [];
   }
 
   setAcademicLevels() {
@@ -174,19 +353,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.openChangelogModal = true;
       this.loadingChangelogs = true;
       try {
-        // if (this.revisedVersion) {
-        //   this.changelogs = await this.changelogService.fetchAllChangelogs({
-        //     userId: this.learningObject.author.id,
-        //     learningObjectCuid: this.learningObject.cuid,
-        //     minusRevision: false,
-        //   });
-        // } else {
+        if (this.revisedVersion) {
+          this.changelogs = await this.changelogService.fetchAllChangelogs({
+            userId: this.learningObject.author.id,
+            learningObjectCuid: this.learningObject.cuid,
+            minusRevision: false,
+          });
+        } else {
           this.changelogs = await this.changelogService.fetchAllChangelogs({
             userId: this.learningObject.author.id,
             learningObjectCuid: this.learningObject.cuid,
             minusRevision: true,
           });
-        // }
+        }
       } catch (error) {
         let errorMessage;
 
@@ -485,12 +664,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.averageRatingValue = data.avgValue;
 
       const u = this.auth.username;
-      for (let i = 0, l = data.ratings.length; i < l; i++) {
-        if (u === data.ratings[i].user.username) {
-          // this is the user's rating
-          // we deep copy this to prevent direct modification from component subtree
-          this.userRating = Object.assign({}, data.ratings[i]);
-          return;
+      if (this.ratings.length) {
+        for (let i = 0, l = this.ratings.length; i < l; i++) {
+          if (u === data.ratings[i].user.username) {
+            // this is the user's rating
+            // we deep copy this to prevent direct modification from component subtree
+            this.userRating = Object.assign({}, data.ratings[i]);
+            return;
+          }
         }
       }
       // if we found the rating, we've returned from the function at this point

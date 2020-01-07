@@ -1,10 +1,13 @@
 <section class='urls'>
   <div *ngFor='let url of urls' class='urls__grid'>
     <div class='urls__grid__link-title'>
-      {{ url.title }}
+      <p>{{ url.title }}</p>
     </div>
     <a [attr.aria-label]="url.title" href='{ url.url }' class='urls__grid__link-url'>
       Visit link
     </a>
   </div>
+  <p *ngIf='!urls.length' tab-index='0'>
+    This Learning Object does not have any links
+  </p>
 </section>
