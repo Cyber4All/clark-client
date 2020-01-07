@@ -56,8 +56,10 @@ export class PanelDirective implements OnInit, OnDestroy {
    * @param {KeyboardEvent} event
    * @memberof PanelDirective
    */
-  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    this.doClose();
+  @HostListener('window:keydown', ['$event']) handleKeyDown(event: KeyboardEvent) {
+    if (event.key === '13') {
+      this.doClose();
+    }
   }
 
   ngOnInit() {

@@ -10,6 +10,7 @@ import { fade } from '../panel.animations';
     <ng-container>
       <div *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
       <div
+        trapFocus
         [style.width]="contentWidth + 'px'"
         (activate)="$event.stopPropagation()"
         class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
@@ -77,7 +78,7 @@ export class SidePanelViewerComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     ).subscribe(() => {
       this.isOpen = false;
-    })
+    });
   }
 
   ngOnDestroy() {
