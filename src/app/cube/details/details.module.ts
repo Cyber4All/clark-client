@@ -28,6 +28,7 @@ import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SidePanelContentComponent } from './components/splash/components/components/side-panel-content/side-panel-content.component';
 import { EditorialActionPadModule } from './components/action-panel/editorial-action-pad/editorial-action-pad.module';
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
+import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -64,6 +65,7 @@ import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-pan
     HierarchyLinkComponent,
     SidePanelContentComponent,
     ReviewerPanelComponent,
+    CubePatternComponent,
   ],
   providers: []
 })

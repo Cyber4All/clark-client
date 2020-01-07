@@ -20,13 +20,6 @@
 .section {
   padding-top: 30px;
 }
-
-.details__splash-container {
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
 .details__content-container {
   display: flex;
   flex-direction: row;
@@ -37,13 +30,25 @@
 
 .details__content-container__right-side {
   width: 291px;
-  margin-top: -250px;
+  margin-top: -300px;
   z-index: 99;
   padding-right: 20px;
 }
 
+.details__content-container__top-left-side {
+  width: 60%;
+}
+
 .details__content-container__left-side {
   width: 60%;
+}
+
+.details__content-container__cube-pattern-container {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  right: 0;
+  height: 350px;
 }
 
 .content-container__profile-cards-container-profile-card {
@@ -191,7 +196,7 @@
   }
 }
 
-@media only screen and (max-width:  768px) {
+@media only screen and (max-width:  830px) {
   .details__content-container__right-side {
     order: 1;
     margin-top: 0;

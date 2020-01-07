@@ -2,15 +2,17 @@
 <main id='pageContent' class='details-background'>
   <ng-container *ngIf="!loading; else loadingTemplate">
     <div class='details'>
-      <section class='details__content-container__splash-container section'>
-        <clark-details-splash 
-          [learningObject]='learningObject'
-          [averageRating]='averageRatingValue'
-          [reviewsCount]='ratings?.length'>
-        </clark-details-splash>
+      <section class='details__content-container__cube-pattern-container section'>
+        <clark-cube-pattern></clark-cube-pattern>
       </section>
       <section class='details__content-container'>
-
+        <section class='details__content-container__top-left-side'>
+          <clark-details-splash 
+            [learningObject]='learningObject'
+            [averageRating]='averageRatingValue'
+            [reviewsCount]='ratings?.length'>
+          </clark-details-splash>
+        </section>
         <section class='details__content-container__left-side'>
           <section class='details__content-container__description-container section'>
             <h2 class='section-title'>Description</h2>
@@ -18,7 +20,7 @@
           </section>
           <section class='details__content-container__learning-outcomes-container section'>
             <h2 class='section-title'>Learning Outcomes</h2>
-            <div *ngFor='let outcome of learningObject.outcomes'>
+            <div *ngFor='let outcome of learningObject.outcomes' >
               <clark-outcome [outcome]=outcome></clark-outcome>
             </div>
           </section>
@@ -66,6 +68,7 @@
         </section>
              
         <section class='details__content-container__right-side'>
+          
           <section class='details__content-container__action-pad-container'>
             <div *ngIf="reviewer" class="inner">
               <div *ngIf="loggedin && hasRevision" class="revisions">
