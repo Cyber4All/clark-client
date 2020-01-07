@@ -16,7 +16,7 @@ import { fade } from '../panel.animations';
         class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
       >
         <button
-          *ngIf="options.showExit"
+          *ngIf="options.showExitButton"
           class="side-panel__exit-button"
           [style.color]="options.exitButtonColor"
           (activate)='doClose()'

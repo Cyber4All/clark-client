@@ -29,6 +29,7 @@ import { SidePanelContentComponent } from './components/splash/components/compon
 import { EditorialActionPadModule } from './components/action-panel/editorial-action-pad/editorial-action-pad.module';
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
 import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
+import { ActionPadComponent } from './components/action-pad/action-pad.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -66,6 +67,7 @@ import { CubePatternComponent } from './components/cube-pattern/cube-pattern.com
     SidePanelContentComponent,
     ReviewerPanelComponent,
     CubePatternComponent,
+    ActionPadComponent,
   ],
   providers: []
 })

@@ -122,6 +122,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     try {
       this.resetRatings();
+      this.resetAuthors();
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
       await this.learningObjectService.fetchLearningObjectWithResources(
@@ -313,7 +314,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.learningObject.contributors.forEach(contributor => {
       this.authors.push(contributor);
     });
-    console.log(this.authors);
+  }
+
+  resetAuthors() {
+    this.authors = [];
   }
 
   setAcademicLevels() {
