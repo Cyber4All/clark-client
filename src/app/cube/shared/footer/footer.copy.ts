@@ -5,5 +5,6 @@ export const COPY = {
     HELP: 'Ask for Help',
     TUTORIAL: 'Tutorial',
     TERMS: 'Terms of Service',
-    ACCESSIBILITY: 'Accessibility'
+    ACCESSIBILITY: 'Accessibility',
+    PRESS: 'Press and Media',
 };

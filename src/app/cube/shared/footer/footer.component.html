@@ -17,6 +17,7 @@
     <a aria-label="Clickable Ask for Help link" href="mailto:skaza@towson.edu?subject=CLARK Help">{{ copy.HELP }}</a>
     <a aria-label="Clickable Tutorial link" href="http://about.clark.center/tutorial" target="_blank">{{ copy.TUTORIAL }}</a>
     <a [routerLink]="['/system/termsofservice']" aria-label="Clickable Terms of Service link" target="_blank">{{ copy.TERMS }}</a>
-    <a [routerLink]="['/system/accessibility-statement']" aria-label="Accessbility Statement link" targer="_blank">{{ copy.ACCESSIBILITY }}</a>
+    <a [routerLink]="['/system/accessibility-statement']" aria-label="Accessbility Statement link" target="_blank">{{ copy.ACCESSIBILITY }}</a>
+    <a *ngIf="pressLive" [routerLink]="['/press']" aria-label="Press and Media link" target="_blank">{{ copy.PRESS }}</a>
   </div>
 </footer>

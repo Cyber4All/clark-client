@@ -36,6 +36,7 @@ import { CollectionsComponent } from './collections/collections.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { FilterComponent } from './browse/components/filter/filter.component';
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
+import { PressComponent } from './press/press.component';
 
 
 /**
@@ -56,7 +57,8 @@ import { AccessibilityStatementComponent } from './accessibility-statement/acces
     CollectionsComponent,
     TermsOfServiceComponent,
     FilterComponent,
-    AccessibilityStatementComponent
+    AccessibilityStatementComponent,
+    PressComponent
   ],
   imports: [
     // Angular imports
