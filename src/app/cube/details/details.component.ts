@@ -82,6 +82,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   authors: User[] = [];
 
+  canAddNewRating = true;
+
   constructor(
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
@@ -109,6 +111,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
       this.fetchReleasedLearningObject(username, learningObjectName);
     });
+    // See if the user can add new rating or will have the option to edit their current rating
+    if (this.userRating.date) {
+      this.canAddNewRating = false;
+    }
   }
 
   /**
@@ -426,6 +432,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.toastService.error('Error!', 'An error occurred and your rating could not be submitted');
         }
       );
+      this.canAddNewRating = false;
   }
 
   /**
@@ -467,37 +474,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   async deleteRating(index) {
     // 'index' here is the index in the ratings array to delete
-    const shouldDelete = await this.modalService
-      .makeDialogMenu(
-        'ratingDelete',
-        'Are you sure you want to delete this rating?',
-        'You cannot undo this action!',
-        false,
-        'title-bad',
-        'center',
-        [
-          new ModalListElement('Yup, do it!', 'delete', 'bad'),
-          new ModalListElement('No wait!', 'cancel', 'neutral')
-        ]
-      )
-      .toPromise();
-
-    if (shouldDelete === 'delete') {
-      this.ratingService
-        .deleteRating({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
-          ratingId: this.ratings[index].id,
-        })
-        .then(val => {
-          this.getLearningObjectRatings();
-          this.toastService.success('Success!', 'Rating deleted successfully!.');
-        })
-        .catch(() => {
-          this.toastService.error('Error!', 'Rating couldn\'t be deleted');
-        });
-    }
+    this.ratingService
+      .deleteRating({
+        username: this.learningObject.author.username,
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.version,
+        ratingId: this.ratings[index].id,
+      })
+      .then(val => {
+        this.getLearningObjectRatings();
+        this.toastService.success('Success!', 'Rating deleted successfully!');
+      })
+      .catch(() => {
+        this.toastService.error('Error!', 'Rating couldn\'t be deleted');
+      });
+    this.canAddNewRating = true;
   }
 
   /**
