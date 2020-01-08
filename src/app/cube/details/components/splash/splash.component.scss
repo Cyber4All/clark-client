@@ -12,7 +12,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     max-width: $max-width;
     margin: auto;
     box-sizing: border-box;
-    z-index: 1;
+    z-index: 2;
 
     .header {
       max-width: $content-width;
