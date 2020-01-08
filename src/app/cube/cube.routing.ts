@@ -18,12 +18,9 @@ import { AccessibilityStatementComponent } from './accessibility-statement/acces
 import { PressComponent } from './press/press.component';
 import { environment } from '@env/environment';
 
-const details = environment.experimental ? {
+const details = {
   path: 'details',
   loadChildren: 'app/cube/details/details.module#DetailsModule'
-} : {
-  path: 'details',
-  loadChildren: 'app/cube/old-details/details.module#OldDetailsModule',
 };
 
 const cube_routes: Routes = [

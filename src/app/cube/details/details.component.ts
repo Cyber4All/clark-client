@@ -10,11 +10,22 @@ import { RatingService } from 'app/core/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
 import { AuthService } from 'app/core/auth.service';
-import { Rating } from '../old-details/details.component';
 import { ChangelogService } from 'app/core/changelog.service';
 import { trigger, transition, query, style, animate, stagger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 
+export interface Rating {
+  id?: string;
+  user: User;
+  value: number;
+  comment: string;
+  date: number;
+  source?: {
+    cuid: string,
+    version: number,
+  };
+  response?: object;
+}
 @Component({
   selector: 'clark-details',
   templateUrl: './details.component.html',
@@ -81,6 +92,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   redirectUrl: string;
 
   authors: User[] = [];
+
+  canAddNewRating = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -426,6 +439,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.toastService.error('Error!', 'An error occurred and your rating could not be submitted');
         }
       );
+      this.canAddNewRating = false;
   }
 
   /**
@@ -467,37 +481,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   async deleteRating(index) {
     // 'index' here is the index in the ratings array to delete
-    const shouldDelete = await this.modalService
-      .makeDialogMenu(
-        'ratingDelete',
-        'Are you sure you want to delete this rating?',
-        'You cannot undo this action!',
-        false,
-        'title-bad',
-        'center',
-        [
-          new ModalListElement('Yup, do it!', 'delete', 'bad'),
-          new ModalListElement('No wait!', 'cancel', 'neutral')
-        ]
-      )
-      .toPromise();
-
-    if (shouldDelete === 'delete') {
-      this.ratingService
-        .deleteRating({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
-          ratingId: this.ratings[index].id,
-        })
-        .then(val => {
-          this.getLearningObjectRatings();
-          this.toastService.success('Success!', 'Rating deleted successfully!.');
-        })
-        .catch(() => {
-          this.toastService.error('Error!', 'Rating couldn\'t be deleted');
-        });
-    }
+    this.ratingService
+      .deleteRating({
+        username: this.learningObject.author.username,
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.version,
+        ratingId: this.ratings[index].id,
+      })
+      .then(val => {
+        this.getLearningObjectRatings();
+        this.toastService.success('Success!', 'Rating deleted successfully!');
+      })
+      .catch(() => {
+        this.toastService.error('Error!', 'Rating couldn\'t be deleted');
+      });
+    // Set the user Rating to empty so that if they choose enter a new ratings their old one isn't there
+    this.userRating = {};
+    this.canAddNewRating = true;
   }
 
   /**
@@ -670,6 +670,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
             // this is the user's rating
             // we deep copy this to prevent direct modification from component subtree
             this.userRating = Object.assign({}, data.ratings[i]);
+            // See if the user can add new rating or will have the option to edit their current rating
+            if (this.userRating) {
+              this.canAddNewRating = false;
+            }
             return;
           }
         }

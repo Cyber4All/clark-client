@@ -25,6 +25,8 @@ export class LearningObjectRatingsComponent implements OnInit {
   reportIndex: number;
   showResponse = [];
   showEditResponse = [];
+  deleteConfirmation: boolean;
+  deleteRatingIndex: number;
 
   constructor(public userService: UserService, private auth: AuthService) { }
 
@@ -64,7 +66,8 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   submitDeleteRating(index: number) {
-    this.deleteRating.emit(index);
+    this.deleteRatingIndex = index;
+    this.deleteConfirmation = true;
   }
 
   submitDeleteResponse(index: number) {
