@@ -37,6 +37,9 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { FilterComponent } from './browse/components/filter/filter.component';
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
+import { SplashComponent } from './press/components/splash/splash.component';
+import { AboutComponent } from './press/components/about/about.component';
+import { MediaCardComponent } from './press/components/media-card/media-card.component';
 
 
 /**
@@ -58,7 +61,10 @@ import { PressComponent } from './press/press.component';
     TermsOfServiceComponent,
     FilterComponent,
     AccessibilityStatementComponent,
-    PressComponent
+    PressComponent,
+    SplashComponent,
+    AboutComponent,
+    MediaCardComponent
   ],
   imports: [
     // Angular imports
