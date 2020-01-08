@@ -17,12 +17,9 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { environment } from '@env/environment';
 
-const details = environment.experimental ? {
+const details = {
   path: 'details',
   loadChildren: 'app/cube/details/details.module#DetailsModule'
-} : {
-  path: 'details',
-  loadChildren: 'app/cube/old-details/details.module#OldDetailsModule',
 };
 
 const cube_routes: Routes = [

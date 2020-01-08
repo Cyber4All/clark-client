@@ -1,4 +1,0 @@
-<section class="included-in" *ngIf="parents !== undefined && parents.length">
-  <div tabindex="0" class="header">This {{ learningObject.length | titlecase }} is used by...</div>
-  <cube-parent-listing *ngFor="let parent of parents" [parent]="parent"></cube-parent-listing>
-</section>
