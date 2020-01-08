@@ -1,20 +1,20 @@
 <div class="splash">
   <div class="inner">
    <div class="header">
-    <div shouldanimate [@collection] *ngIf="collections.get(learningObject.collection)" class="collection">
+    <div [@collection] *ngIf="collections.get(learningObject.collection)" class="collection">
       <div>
         <i class="fal fa-cubes"></i> Part of the 
         <a class="collection-link" routerLink="/c/{{learningObject.collection}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
       </div>
     </div>
-      <h1 shouldanimate class="learning-object-name">{{ learningObject.name }}</h1>
-      <p shouldanimate class="updated"> Last Updated {{ learningObject.date | date:'shortDate' }}</p>
-      <clark-details-splash-length shouldanimate [length]="learningObject.length"></clark-details-splash-length>
-      <span shouldanimate class='rating-stars-container'> 
+      <h1 class="learning-object-name">{{ learningObject.name }}</h1>
+      <p class="updated"> Last Updated {{ learningObject.date | date:'shortDate' }}</p>
+      <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
+      <span class='rating-stars-container'> 
         <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
       </span>
-      <div shouldanimate class='hierarchy-link-container'>
-        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showPanel = true'></clark-hierarchy-link>
+      <div class='hierarchy-link-container'>
+        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showSidePanel()'></clark-hierarchy-link>
       </div>
    </div>
   </div>
@@ -24,8 +24,9 @@
     *ngIf='showPanel' 
     [parents]=learningObject.parents
     [children]=learningObject.children 
-    [contentWidth]="450"
-    (close)='showPanel = false'
+    [options]='showMobileSidePanel ? {showExitButton: true, padding: true, exitButtonColor: "white"} : {padding: true}'
+    [contentWidth]='showMobileSidePanel ? 300 : 400'
+    (close)='hideSidePanel()'
   ></clark-side-panel-content>
  
 </div>

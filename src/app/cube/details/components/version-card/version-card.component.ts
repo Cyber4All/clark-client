@@ -8,6 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class VersionCardComponent {
 
   @Input() showButton: boolean;
+  @Input() version: number;
   @Output() clickButtonEvent: EventEmitter<void> = new EventEmitter();
 
   emitClickButtonEvent(): void {

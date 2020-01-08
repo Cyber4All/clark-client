@@ -7,8 +7,8 @@ import { Component,
         ViewChild,
         ChangeDetectionStrategy,
         OnChanges } from '@angular/core';
-import { LearningObject } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import { LearningObject, User } from '@entity';
+import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
@@ -53,8 +53,6 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
   loggedin = false;
   showDownloadModal = false;
   userCanRevise = false;
-  // flag to determine if the revisions pipeline is live
-  revisionsLive = environment.experimental;
 
   contributorsList = [];
   iframeParent = iframeParentID;

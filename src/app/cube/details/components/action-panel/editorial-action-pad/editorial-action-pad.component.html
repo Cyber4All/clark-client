@@ -1,0 +1,30 @@
+
+<button
+  *ngIf="makeRevision"
+  class="button neutral"
+  (activate)="openCreateRevisionModal()"
+  aria-label="Create a Revision">
+  Create a Revision
+</button>
+
+<button
+  *ngIf="makeEdits"
+  class="button neutral"
+  (activate)="editLearningObject()"
+  aria-label="Edit Learning Object">
+  {{revisedLearningObject ? 'Edit Revision' : 'Edit Submission'}}
+</button>
+
+<button
+  *ngIf="notPermitted"
+  class="button neutral disabled"
+  aria-label="Released Learning Objects cannot be Revised">
+  Edits and Revisions not Permitted
+</button>
+
+
+<clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">
+  <div #popupInner style="max-width: 600px;">
+    <clark-revision-notice-popup (createRevision)="createRevision()" (close)="closeRevisionModal()"></clark-revision-notice-popup>
+  </div>
+</clark-popup>

@@ -1,43 +1,33 @@
+<clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
 <main id='pageContent' class='details-background'>
   <ng-container *ngIf="!loading; else loadingTemplate">
-    <div [@enterDetails] class='details'>
-      <section class='details__content-container__splash-container section'>
-        <clark-details-splash [learningObject]='learningObject' [averageRating]='averageRatingValue' [reviewsCount]='ratings?.length'></clark-details-splash>
+    <div class='details'>
+      <section class='details__content-container__cube-pattern-container section'>
+        <clark-cube-pattern></clark-cube-pattern>
       </section>
       <section class='details__content-container'>
-        
-      <section class='details__top-left-side-content-container'>
-        <section class='details__content-container__description-container section'>
-          <h2 class='section-title'>Description</h2>
-          <clark-details-description [description]='learningObject.description'></clark-details-description>
+        <section class='details__content-container__top-left-side'>
+          <clark-details-splash 
+            [learningObject]='learningObject'
+            [averageRating]='averageRatingValue'
+            [reviewsCount]='ratings?.length'>
+          </clark-details-splash>
         </section>
-      </section>
-        
-        <!-- <section class='details__content-container__action-pad-container'>
-          <clark-action-pad></clark-action-pad>
-        </section> -->
-        <section class='details__content-container__right-side-container'>
-          <h2 class='section-title'>Authors</h2>
-          <div shouldanimate class='content-container__profile-cards-container-profile-card' *ngFor='let author of learningObject.contributors'>
-            <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
-          </div>
-          <div class='details__content-container__version-card-container'>
-            <clark-version-card [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
-          </div>
-        </section>
-        
-    
-        <section class='details__bottom-left-side-content-container'>
+        <section class='details__content-container__left-side'>
+          <section class='details__content-container__description-container section'>
+            <h2 class='section-title'>Description</h2>
+            <clark-details-description [description]='learningObject.description'></clark-details-description>
+          </section>
           <section class='details__content-container__learning-outcomes-container section'>
             <h2 class='section-title'>Learning Outcomes</h2>
-            <div *ngFor='let outcome of learningObject.outcomes'>
+            <div *ngFor='let outcome of learningObject.outcomes' >
               <clark-outcome [outcome]=outcome></clark-outcome>
             </div>
           </section>
           <section class='details__content-container__academic-levels-container section'>
             <h2 class='section-title'>Academic Levels</h2>
             <div class='content-container__academic-levels-container__card-grid'>
-              <div *ngFor='let data of academicLevelMetadata'>
+              <div *ngFor='let data of academicLevelMetadata' class='content-container__academic-levels-container__card'>
                 <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
               </div>
             </div>
@@ -56,7 +46,7 @@
                   [tipDisabled]="auth.user.emailVerified"
                   class="button good content-container__ratings-container__button-container"
                   (activate)="showAddRating = auth.user.emailVerified"
-                  attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit your' :
+                  attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ userRating.date ? 'Edit' :
                   'Write a'}} review 
                   <i class="far fa-pencil"></i>
                 </button>
@@ -65,7 +55,7 @@
               *ngIf="ratings"
               [ratings]="ratings"
               [averageRating]="averageRatingValue"
-              [learningObjectOwners]="learningObjectOwners"
+              [learningObjectOwners]="authors"
               [loggedIn]="loggedin" 
               (editRating)="showAddRating = true;"
               (deleteRating)="deleteRating($event)"
@@ -74,6 +64,38 @@
               (reportRating)="reportRating($event)"
               (respondRating)="submitResponse($event)">
             </clark-learning-object-ratings>   
+          </section>
+        </section>
+             
+        <section class='details__content-container__right-side'>
+          
+          <section class='details__content-container__action-pad-container'>
+            <div *ngIf="reviewer" class="inner">
+              <div *ngIf="loggedin && hasRevision" class="revisions">
+                <div tabindex="0" class="text">View Revisions</div>
+                <clark-toggle-switch style="orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
+              </div>
+              <div tabindex="0" class="no-revisions" *ngIf="!hasRevision">No revisions have been made since last release.</div>
+            </div>
+            <cube-details-action-panel
+              [reviewer]="reviewer"
+              [revisedDate]="revisedLearningObject?.date"
+              [isRevision]="revisedVersion"
+              [releasedDate]="releasedLearningObject?.date"
+              [revisedVersion]="revisedVersion"
+              [learningObject]="learningObject"
+              [hasRevision]="hasRevision"
+              [revisedLearningObject]="revisedLearningObject">
+            </cube-details-action-panel>
+          </section>
+          <section class='details__content-container__right-side-container'>
+            <h3 class='section-title'>Authors</h3>
+            <div shouldanimate class='content-container__profile-cards-container-profile-card' *ngFor='let author of authors'>
+              <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
+            </div>
+            <div class='details__content-container__version-card-container'>
+              <clark-version-card [version]='learningObject.version' [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
+            </div>
           </section>
         </section>
       </section>
@@ -90,13 +112,13 @@
 </div>
 
 <clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-      <clark-changelog-modal
-        [learningObject] = "learningObject"
-        [changelogs] = "changelogs ? changelogs[0] : undefined"
-        [loading]="loadingChangelogs"
-      ></clark-changelog-modal>
-    </div> 
+  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+    <clark-changelog-modal
+      [learningObject] = "learningObject"
+      [changelogs] = "changelogs ? changelogs[0] : undefined"
+      [loading]="loadingChangelogs"
+    ></clark-changelog-modal>
+  </div> 
 </clark-popup>
 
 <ng-template #loadingTemplate>

@@ -1,7 +1,8 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+
 
 @Component({
   selector: 'clark-details-splash',
@@ -16,7 +17,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class SplashComponent implements AfterViewInit {
+export class SplashComponent implements OnInit, AfterViewInit {
   @Input() learningObject: LearningObject;
   @Input() averageRating: number;
   @Input() reviewsCount:  number;
@@ -24,20 +25,42 @@ export class SplashComponent implements AfterViewInit {
   @Input() parents: LearningObject[];
   @Input() children: LearningObject[];
 
-  showPanel: boolean;
+  showPanel = false;
 
   starColor = 'gold';
 
   collections = new Map();
 
+  showMobileSidePanel: boolean;
+
+  @HostListener('window:resize', []) onResize() {
+    if (window.innerWidth >= 750) {
+      this.showMobileSidePanel = false;
+    } else {
+      this.showMobileSidePanel = true;
+    }
+  }
+
   constructor(
     private collectionService: CollectionService,
   ) {}
+
+  ngOnInit() {
+    this.showMobileSidePanel = window.innerWidth < 750;
+  }
 
   ngAfterViewInit() {
     this.collectionService.getCollections().then(collections => {
       this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
     });
+  }
+
+  showSidePanel() {
+    this.showPanel = true;
+  }
+
+  hideSidePanel() {
+    this.showPanel = false;
   }
 
 }

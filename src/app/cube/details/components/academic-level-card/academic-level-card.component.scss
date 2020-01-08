@@ -3,11 +3,11 @@
 .academic-level-card {
     border-radius: 5px;
     box-sizing: border-box;
-    box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
     color: $dark-grey;
     height: 350px;
     text-align: center;
-    max-width: 275px;
+    min-width: 275px;
     padding: 30px;
 }
 
@@ -38,10 +38,30 @@
     color: $light-blue;
 }
 
-li {
-    list-style-type: none;
-}
-
 ul {
+    list-style-type: none;
     padding: 0;
 }
+
+@media only screen and (max-width: 1400px) {
+    .academic-level-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: 150px;
+        text-align: center;
+        font-size: 12px;
+        width: 275px;
+        margin-bottom: 20px;
+    }
+
+    .academic-level-card__title-container {
+        font-size: 18px;
+        margin-top: 0;
+    }
+
+
+    .academic-level-card__applied-levels-container {
+        margin-top: 0;
+    }
+}
+
