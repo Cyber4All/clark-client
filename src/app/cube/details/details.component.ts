@@ -495,7 +495,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .catch(() => {
         this.toastService.error('Error!', 'Rating couldn\'t be deleted');
       });
-    // Set the user Rating to empty so that if they choose enter a new 
+    // Set the user Rating to empty so that if they choose enter a new ratings their old one isn't there
     this.userRating = {};
     this.canAddNewRating = true;
   }
