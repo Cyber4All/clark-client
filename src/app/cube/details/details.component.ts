@@ -10,11 +10,22 @@ import { RatingService } from 'app/core/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
 import { AuthService } from 'app/core/auth.service';
-import { Rating } from '../old-details/details.component';
 import { ChangelogService } from 'app/core/changelog.service';
 import { trigger, transition, query, style, animate, stagger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 
+export interface Rating {
+  id?: string;
+  user: User;
+  value: number;
+  comment: string;
+  date: number;
+  source?: {
+    cuid: string,
+    version: number,
+  };
+  response?: object;
+}
 @Component({
   selector: 'clark-details',
   templateUrl: './details.component.html',
@@ -111,10 +122,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
       this.fetchReleasedLearningObject(username, learningObjectName);
     });
-    // See if the user can add new rating or will have the option to edit their current rating
-    if (this.userRating.date) {
-      this.canAddNewRating = false;
-    }
   }
 
   /**
@@ -488,6 +495,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .catch(() => {
         this.toastService.error('Error!', 'Rating couldn\'t be deleted');
       });
+    // Set the user Rating to empty so that if they choose enter a new 
+    this.userRating = {};
     this.canAddNewRating = true;
   }
 
@@ -661,6 +670,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
             // this is the user's rating
             // we deep copy this to prevent direct modification from component subtree
             this.userRating = Object.assign({}, data.ratings[i]);
+            // See if the user can add new rating or will have the option to edit their current rating
+            if (this.userRating) {
+              this.canAddNewRating = false;
+            }
             return;
           }
         }
