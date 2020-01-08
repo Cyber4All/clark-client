@@ -5,7 +5,7 @@ $sidebar-width: 320px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
 
 .splash {
-  padding: 50px 0;
+  padding-top: 50px;
   position: relative;
 
   .inner {
@@ -17,7 +17,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     .header {
       max-width: $content-width;
       padding-right: 20px;
-      padding-bottom: 60px;
+      
     }
     .collection {
       color: $light-blue;
@@ -51,6 +51,11 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 .hierarchy-link-container {
   margin-top: 20px;
   margin-left: 10px;
+  padding-bottom: 20px;
+
+  &.empty{
+    height: 50px;
+  }
 }
 
 .rating-stars-container {

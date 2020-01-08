@@ -13,9 +13,10 @@
       <span class='rating-stars-container'> 
         <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
       </span>
-      <div class='hierarchy-link-container'>
+      <div class='hierarchy-link-container' *ngIf="learningObject.parents.length > 0 || learningObject.children.length > 0">
         <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showSidePanel()'></clark-hierarchy-link>
       </div>
+      <div class='hierarchy-link-container empty' *ngIf="learningObject.parents.length === 0 && learningObject.children.length === 0"></div>
    </div>
   </div>
  
