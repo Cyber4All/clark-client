@@ -3,6 +3,7 @@ import {filter} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { COPY } from './footer.copy';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'cube-footer',
@@ -12,6 +13,7 @@ import { COPY } from './footer.copy';
 export class FooterComponent implements OnInit {
   copy = COPY;
   hideFooter = false;
+  pressLive = environment.experimental;
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 

@@ -15,6 +15,7 @@ import { ProfileGuard } from './core/profile.guard';
 import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
+import { PressComponent } from './press/press.component';
 import { environment } from '@env/environment';
 
 const details = {
@@ -42,6 +43,11 @@ const cube_routes: Routes = [
         component: CartComponent,
         canActivate: [AuthGuard],
         data: { title: 'Your Library'}
+      },
+      {
+        path: 'press',
+        component: PressComponent,
+        data: { title: 'Press and Media'}
       },
       {
         path: 'system/usage',
