@@ -17,7 +17,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     .header {
       max-width: $content-width;
       padding-right: 20px;
-      
     }
     .collection {
       color: $light-blue;
