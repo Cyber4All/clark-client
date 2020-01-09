@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { HttpClient } from '@angular/common/http';
+import { Mention } from '../../../entity/mention/mention';
 @Component({
   selector: 'clark-press',
   templateUrl: './press.component.html',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PressComponent implements OnInit {
 
-  constructor() { }
+  mentions: Mention = [];
+
+  constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {
+    console.log('hi');
+    this.httpClient.get('assets/images/press/mentions.json', { responseType: 'json' }).toPromise().then((data: Mention) => {
+      this.mentions = data;
+    });
   }
 
 }
