@@ -51,6 +51,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   margin-top: 20px;
   margin-left: 10px;
   padding-bottom: 20px;
+  min-height: 50px;
 
   &.empty{
     height: 50px;
