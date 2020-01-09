@@ -664,7 +664,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.averageRatingValue = data.avgValue;
 
       const u = this.auth.username;
-      if (this.ratings.length) {
+      if (this.ratings && this.ratings.length) {
         for (let i = 0, l = this.ratings.length; i < l; i++) {
           if (u === data.ratings[i].user.username) {
             // this is the user's rating
