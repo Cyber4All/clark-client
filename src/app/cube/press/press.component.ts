@@ -17,4 +17,8 @@ export class PressComponent implements OnInit {
       this.mentions = mentions;
     });
   }
+
+  downloadPressKit() {
+    // TODO
+  }
 }

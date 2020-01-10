@@ -1,0 +1,13 @@
+@import '~_vars.scss';
+
+.about {
+    align-content: center;
+    max-width: 1200px;
+    padding: 50px 90px;
+    display: inline-block;
+    p {
+        font-size: $large;
+        color: $darker-grey;
+        text-align: center;
+    }
+}

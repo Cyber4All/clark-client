@@ -1,0 +1,47 @@
+@import '~_vars.scss';
+
+$top-height: 500px;
+$banner-height: 90px;
+
+.splash {
+    background: url('/assets/images/news.jpg') no-repeat;
+    background-size: cover;
+    background-position: right 35% center;
+    width: 100%;
+    position: relative;
+    padding: 0 20px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  
+    &:after {
+      // overlay gradient
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: $light-blue-gradient;
+      opacity: 0.8;
+      z-index: 1;
+    }
+  }
+
+  .splash-inner {
+    z-index: 99;
+    text-align: center;
+      h1 {
+        font-size: $largest;
+        color: white;
+      }
+      .contact-link {
+          font-size: $normal;
+          color: white;
+          text-decoration: underline;
+          margin-left: 20px;
+      }
+  }
