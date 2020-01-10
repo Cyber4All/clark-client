@@ -2,9 +2,6 @@
 <clark-press-about></clark-press-about>
 <div class="media-feature-cards">
   <div class="cards">
-    <clark-media-card></clark-media-card>
-    <div>
-      {{ mentions }}
-    </div>
+    <clark-media-card *ngFor="let m of mentions" [mention]="m"></clark-media-card>
   </div>
 </div>

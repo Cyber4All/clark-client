@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-
-// Structure of the Mention objecticon: string;
-export class Mention {
-  constructor(public title: string, public link: string, public icon: string) { }
-}
+import { PressCoverageService, Mention } from '../../core/press-coverage.service';
 
 @Component({
   selector: 'clark-press',
@@ -16,12 +10,11 @@ export class PressComponent implements OnInit {
 
   mentions: Mention[];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private coverageService: PressCoverageService) { }
 
   ngOnInit() {
-    this.httpClient.get('assets/images/press/mentions.json', { responseType: 'json' }).toPromise().then((data: Mention[]) => {
-      this.mentions = data;
+    this.coverageService.getMentions().then(mentions => {
+      this.mentions = mentions;
     });
   }
-
 }
