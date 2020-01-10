@@ -18,7 +18,7 @@ export class PressCoverageService {
   }
   constructor(private http: HttpClient) { }
 
-  getMentions(): Promise<Mention[]> {
+  async getMentions(): Promise<Mention[]> {
     if (this._mentions) {
       return Promise.resolve(this._mentions);
     } else {
