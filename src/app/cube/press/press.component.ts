@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Mention } from '../../../entity/mention/mention';
+
+
+// Structure of the Mention objecticon: string;
+export class Mention {
+  constructor(public title: string, public link: string, public icon: string) { }
+}
+
 @Component({
   selector: 'clark-press',
   templateUrl: './press.component.html',
