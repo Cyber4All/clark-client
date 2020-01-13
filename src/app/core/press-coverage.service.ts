@@ -4,7 +4,7 @@ import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 export class Mention {
-  constructor(public title: string, public link: string, public icon: string) { }
+  constructor(public title: string, public link: string, public icon: string, public source: string) { }
 }
 
 @Injectable({
@@ -31,7 +31,7 @@ export class PressCoverageService {
         .then((val: Mention[]) => {
           this._mentions = [];
           val.forEach(v => {
-            this._mentions.push(new Mention(v.title, v.link, v.icon));
+            this._mentions.push(new Mention(v.title, v.link, v.icon, v.source));
           });
           return this._mentions;
         });
