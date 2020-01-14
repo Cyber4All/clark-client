@@ -20,7 +20,7 @@
 
 form {
     margin: auto;
-    margin-top: 40px;
+    margin-top: 20px;
     width: 100%;
 
     .forgot {
@@ -41,4 +41,13 @@ form {
     &:hover, &:focus{
         text-decoration:underline;
     }
+}
+
+.focus-button {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+    border: none;
+    padding: 0px;
+    margin: 0px;
 }
