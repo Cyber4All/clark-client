@@ -31,9 +31,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Get the username input so that on mobile the submit button is not automatically given focus when
+    // Get an element that is outside of the form so that on mobile the submit button is not automatically given focus when
     // an incorrect username or password is entered
-    this.element = document.getElementById('username');
+    this.element = document.getElementById('focus');
   }
 
   submit() {
@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
       .catch(error => {
         this.loading = false;
         this.error(error.error || error.message || error);
+        // Focus the focus element so that the form is not automatically submitted
         this.element.focus();
       });
   }

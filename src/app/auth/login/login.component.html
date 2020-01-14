@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="content-box" [ngClass]="{'failed': loginFailure}">
-    <div class="top">
+    <div id="focus" class="top">
       <div aria-live="assertive" class="error" > {{ loginFailure || '' }} </div>
       <div class="title_wrapper" routerLink="/home">
         <div class="auth-title">CLARK</div>
@@ -8,7 +8,7 @@
       </div>
       <form (ngSubmit)="submit()">
         <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
-          <input id="username" name="username" type="text" placeholder="Username" aria-label="Username" [(ngModel)]="authInfo.username" [autofocus]/>
+          <input name="username" type="text" placeholder="Username" aria-label="Username" [(ngModel)]="authInfo.username" [autofocus]/>
           <i class="far fa-user"></i>
         </div>
         <div class="input password" [ngClass]="{'active': authInfo.password !== ''}">
