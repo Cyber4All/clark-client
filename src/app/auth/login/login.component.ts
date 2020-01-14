@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   loginFailureTimer;
   redirectUrl;
   loading = false;
-
+  element: any;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -30,7 +30,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Get the username input so that on mobile the submit button is not automatically given focus when
+    // an incorrect username or password is entered
+    this.element = document.getElementById('username');
+  }
 
   submit() {
     this.loginFailure = undefined;
@@ -55,6 +59,7 @@ export class LoginComponent implements OnInit {
       .catch(error => {
         this.loading = false;
         this.error(error.error || error.message || error);
+        this.element.focus();
       });
   }
 

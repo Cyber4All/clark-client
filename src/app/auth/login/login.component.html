@@ -8,7 +8,7 @@
       </div>
       <form (ngSubmit)="submit()">
         <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
-          <input name="username" type="text" placeholder="Username" aria-label="Username" [(ngModel)]="authInfo.username" [autofocus]/>
+          <input id="username" name="username" type="text" placeholder="Username" aria-label="Username" [(ngModel)]="authInfo.username" [autofocus]/>
           <i class="far fa-user"></i>
         </div>
         <div class="input password" [ngClass]="{'active': authInfo.password !== ''}">
