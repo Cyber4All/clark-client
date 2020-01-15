@@ -1,12 +1,14 @@
-<div class="splash-container">
-  <clark-press-splash (downloadPressKit)="downloadPressKit()"></clark-press-splash>
-</div>
-<div class="about-container">
-  <clark-press-about></clark-press-about>
-</div>
-<div class="media-feature-cards-container">
-  <h1>Recent Coverage</h1>
-  <div class="cards">
-    <clark-media-card *ngFor="let m of mentions" [mention]="m"></clark-media-card>
+<div class="container">
+  <div class="splash-container">
+    <clark-press-splash (downloadPressKit)="downloadPressKit()"></clark-press-splash>
+  </div>
+  <div class="about-container">
+    <clark-press-about></clark-press-about>
+  </div>
+  <div class="media-feature-cards-container">
+    <h1>Recent Coverage</h1>
+    <div class="card-container">
+      <clark-media-card *ngFor="let m of mentions" [mention]="m"></clark-media-card>
+    </div>
   </div>
 </div>

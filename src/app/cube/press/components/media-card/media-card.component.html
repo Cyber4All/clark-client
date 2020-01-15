@@ -1,4 +1,11 @@
-<p>
-  {{ mention.title }}
-</p>
-
+<div class="card" (activate)="followLink()" role="link" attr.aria-label="Go to {{ mention.title }}">
+  <div class="icon">
+    <img [src]='imgSrc' width="100%" height="100%" attr.alt="{{ mention.source }} logo">
+  </div>
+  <div class="title">
+    <h4>{{ mention.title }}</h4>
+  </div>
+  <div class="link">
+    <i class="far fa-external-link"></i>
+  </div>
+</div>
