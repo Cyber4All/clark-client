@@ -12,6 +12,7 @@ import {
   stagger
 } from '@angular/animations';
 import { environment } from '@env/environment';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'clark-register',
@@ -106,6 +107,10 @@ export class RegisterComponent implements OnInit {
   ];
 
   elements = ['Personal Information', 'User Information', 'Preview'];
+
+  // components for carousel component functionality
+  activeIndex = 0;
+  action$: BehaviorSubject<number> = new BehaviorSubject(this.activeIndex);
 
   @HostListener('window:keyup', ['$event'])
   keyup(event) {
@@ -221,9 +226,9 @@ export class RegisterComponent implements OnInit {
       this.slide = !this.slide;
     }
     if (this.page === 1 && this.isValidPage) {
-      this.page = 2;
+      this.action$.next(2);
     } else if (this.page === 2 && this.isValidPage) {
-      this.page = 3;
+      this.action$.next(3);
     }
   }
 
@@ -231,10 +236,11 @@ export class RegisterComponent implements OnInit {
   back() {
     this.fall = !this.fall;
     if (this.page === 2) {
-      this.page = 1;
+      this.action$.next(1);
     } else if (this.page === 3) {
-      this.page = 2;
+      this.action$.next(2)
     }
+    this.activeIndex--;
   }
 
   // Checks for specific items on pages 1 and 2
