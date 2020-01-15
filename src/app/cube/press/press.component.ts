@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PressCoverageService, Mention } from '../../core/press-coverage.service';
 
 @Component({
   selector: 'clark-press',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PressComponent implements OnInit {
 
-  constructor() { }
+  mentions: Mention[];
+
+  constructor(private coverageService: PressCoverageService) { }
 
   ngOnInit() {
+    this.coverageService.getMentions().then(mentions => {
+      this.mentions = mentions;
+    });
   }
 
+  downloadPressKit() {
+    window.open('https://s3.amazonaws.com/clark.press/About_CLARK.pdf', '_blank');
+  }
 }
