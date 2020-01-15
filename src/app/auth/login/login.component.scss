@@ -4,6 +4,7 @@
     padding-bottom: 0px;
     padding-left: 0px;
     padding-right: 0px;
+    text-align: center;
 
     & > div {
         box-sizing: border-box;
@@ -22,12 +23,14 @@ form {
     margin: auto;
     margin-top: 40px;
     width: 100%;
+    text-align: left;
 
     .forgot {
-        color: $blue-accent;
+        color: $light-blue;
         margin-top: 10px;
         cursor: pointer;
         outline: 0;
+        
         
         &:hover, &:focus {
             text-decoration: underline;
@@ -40,5 +43,6 @@ form {
 
     &:hover, &:focus{
         text-decoration:underline;
+        color: $light-blue;
     }
 }

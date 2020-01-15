@@ -32,11 +32,11 @@
 
   &.active {
     background: transparent;
-    border-color: $blue-accent;
+    border-color: $light-blue;
   }
 
   .description {
-    background: $blue-accent;
+    background: $light-blue;
     color: white;
     position: absolute;
     padding: 5px;
@@ -48,7 +48,7 @@
 }
 
 .element-highlight {
-  background: $blue-accent;
+  background: $light-blue;
   position: absolute;
   border-radius: 5px;
   top: 3px;

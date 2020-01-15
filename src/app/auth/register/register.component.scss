@@ -36,7 +36,7 @@ form {
 
 .reg-button {
     -webkit-appearance: nine;
-    background: $blue-accent;
+    background: $light-blue;
     color: white;
     border-radius: 50%;
     width: 41px;
@@ -47,10 +47,10 @@ form {
     font-size: $larger;
     outline: 0;
     transition: all 0.2s ease;
-    border: 2px solid $blue-accent;
+    border: 2px solid $light-blue;
 
   &:hover, &:focus {
-    color: $blue-accent;
+    color: $light-blue;
     background: transparent !important;
     transform: scale(1.05);
   }

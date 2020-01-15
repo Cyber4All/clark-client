@@ -15,32 +15,28 @@
   }
 
   .background {
-    z-index: 1;
-    background: linear-gradient(180deg, #0d1928, #1e2e40);
-
-    &:after {
+    &:before {
       content: '';
-      position: fixed;
+      background: linear-gradient(45deg,  white, $light-blue, white);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      mask: $cube-pattern repeat;
+      z-index: 99;
+      opacity: .15;
+  }
+  &:after {
+      content: '';
+      background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+      position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: $cube-pattern;
-      opacity: 0.02;
       z-index: 1;
-    }
-
-    .image {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-size: cover;
-      background-position: center bottom;
-      background-image: url(/assets/images/background_mask_compressed.png);
-      z-index: 3;
-    }
+  }
 
     .pulse {
       position: fixed;
@@ -54,7 +50,8 @@
       left: 50%;
       /* bring your own prefixes */
       transform: translate(-50%, -50%);
-      z-index: 2;
+      z-index: 99;
+      opacity: .2;
       border-radius: 50%;
     }
   }
@@ -75,7 +72,6 @@
       max-width: 520px;
       width: 100%;
       box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.1);
-      border-top: 7px solid $blue-accent;
       position: relative;
       overflow: hidden;
       transition: all 0.2s ease;
@@ -123,15 +119,16 @@
         cursor: pointer;
         margin-top: 40px;
         text-align: center;
-        background: $light-grey;
-        color: $dark-grey;
+        background: transparent;
+        color: $darker-grey;
         width: 100%;
         height: 40px;
         border: none;
         font-size: $normal;
+        padding-bottom: 20px;
 
         span {
-          color: $blue-accent;
+          color: $light-blue;
         }
 
         &:hover, &:focus {
@@ -144,19 +141,19 @@
   }
 
   ::ng-deep .auth-title {
-    font-size: $larger;
-    color: $blue-accent;
-    font-weight: bolder;
+    font-size: $largest;
+    color: $light-blue;
+    font-weight: bold;
     text-align: center;
 
     &.light {
-      font-weight: lighter;
+      font-weight: normal;
       font-size: $large;
     }
   }
 
   ::ng-deep .auth-button {
-    background: $blue-gradient;
+    background: $light-blue-gradient;
     border-radius: 2px;
     color: white;
     padding: 15px;
@@ -172,39 +169,17 @@
     -webkit-appearance: none;
     -moz-appearance: none;
 
-    .mask {
-      width: calc(100% - 6px);
-      height: calc(100% - 6px);
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      position: absolute;
-      margin: auto;
-      background: white;
-      z-index: 1;
-      transition: all 0.2s ease;
-      border-radius: 0;
-      opacity: 0;
-      border-radius: 1px;
-    }
-
     .text {
       color: white;
       z-index: 2;
       position: relative;
       transition: all 0.2s ease;
     }
+  }
 
-    &:hover, &:focus {
-      .mask {
-        opacity: 1;
-      }
-
-      .text {
-        color: $blue-accent;
-      }
-    }
+  ::ng-deep .auth-button:hover,:focus {
+    opacity: .8;
+    color: white;
   }
 
   ::ng-deep .input {
@@ -222,7 +197,7 @@
     input {
       -webkit-appearance: none;
       -moz-appearance: none;
-      color: $blue-accent;
+      color: $light-blue;
       flex-grow: 1;
       flex-shrink: 1;
       border: none;
@@ -234,7 +209,7 @@
       width: 100%;
 
       &:focus ~ .svg-inline--fa {
-        color: $blue-accent;
+        color: $light-blue;
       }
     }
 
@@ -250,7 +225,7 @@
     }
   
     &.active > .svg-inline--fa {
-      color: $blue-accent;
+      color: $light-blue;
     }
 
     .icon-right {
