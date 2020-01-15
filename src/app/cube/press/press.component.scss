@@ -1,3 +1,34 @@
 @import '~_vars.scss';
 @import'~globals.scss';
 
+
+.about-container {
+    text-align: center;
+}
+.media-feature-cards-container {
+    text-align: center;
+
+    h1 {
+        font-size: $largest;
+        color: $darker-grey;
+        display: inline-block;
+        font-weight: normal !important;
+    }
+}
+
+
+.card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 1375px;
+    min-height: 350px;
+    align-items: stretch;
+    margin: auto;
+  
+    clark-media-card {
+      margin-top: 24px;
+    }
+  }

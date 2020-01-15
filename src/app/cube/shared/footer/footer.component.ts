@@ -13,7 +13,6 @@ import { environment } from '@env/environment';
 export class FooterComponent implements OnInit {
   copy = COPY;
   hideFooter = false;
-  pressLive = environment.experimental;
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
