@@ -19,6 +19,6 @@ export class PressComponent implements OnInit {
   }
 
   downloadPressKit() {
-    // TODO
+    window.open('https://s3.amazonaws.com/clark.press/About_CLARK.pdf', '_blank');
   }
 }
