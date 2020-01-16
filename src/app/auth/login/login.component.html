@@ -7,7 +7,8 @@
         <br>
         <span class="auth-title light">Cybersecurity Digital Library</span>
       </a>
-      <form (ngSubmit)="submit()">
+      <button id="focus" class="focus-button"></button>
+      <form>
         <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
           <input name="username" type="text" placeholder="Username" aria-label="Username" [(ngModel)]="authInfo.username" [autofocus]/>
           <i class="far fa-user"></i>
@@ -17,7 +18,7 @@
           <i class="far fa-key"></i>
         </div>
         <a class="forgot" routerLink="../forgot-password">Forgot password?</a>
-        <button type="submit" id="auth-button" class="auth-button">
+        <button type="submit" id="auth-button" class="auth-button" (activate)="submit()">
           <div class="mask"></div>
           <div class="text" *ngIf = "!loading">Login</div>
           <span *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i>
