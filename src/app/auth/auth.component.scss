@@ -25,7 +25,7 @@
       right: 0;
       mask: $cube-pattern repeat;
       z-index: 99;
-      opacity: .15;
+      opacity: .12;
   }
   &:after {
       content: '';
@@ -272,9 +272,8 @@
 
 @media (max-width: 640px) {
   ::ng-deep .content-box {
-    //background: transparent !important;
     border-top-color: transparent !important;
-    box-shadow: 0px 0px 0px 0px transparent !important;
+    margin: 20px;
   }
 }
 
