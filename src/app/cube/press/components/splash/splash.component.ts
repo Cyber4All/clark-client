@@ -7,6 +7,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class SplashComponent implements OnInit {
   @Output() viewPressKit: EventEmitter<void> = new EventEmitter();
+  @Output() viewLogo: EventEmitter<void> = new EventEmitter();
 
   constructor() { }
 
