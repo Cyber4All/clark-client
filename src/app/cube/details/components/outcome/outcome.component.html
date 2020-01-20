@@ -9,12 +9,12 @@
     </div>
     <div class='outcome__grid-container__text-container'>
       <div class='text-container__outcome'>
-        {{ outcome?.outcome }}
+        {{ outcomeText }}
       </div>
       <div class='text-container__mapped-to'>
         {{ outcome?.mappings.length ? 'Mapped to' : 'No Mappings' }}
         <span *ngFor='let mapping of outcome?.mappings let i = index'>
-          {{ mapping?.name }}<span *ngIf='i < outcome?.mappings.length - 1'>,</span>
+          {{ mapping?.source }}<span *ngIf='i < outcome?.mappings.length - 1'>,</span>
         </span>
       </div>
     </div>

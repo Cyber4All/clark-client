@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { LearningOutcome } from '@entity';
 import { trigger, transition, style, animate, query, animateChild, stagger } from '@angular/animations';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'clark-outcome',
@@ -26,13 +27,23 @@ import { trigger, transition, style, animate, query, animateChild, stagger } fro
     ])
   ]
 })
-export class OutcomeComponent {
+export class OutcomeComponent implements OnInit {
 
   @Input() outcome: LearningOutcome;
 
+  outcomeText: string;
+
   showMappings = false;
+
+  ngOnInit() {
+    // Capitilize the outcome verb
+    if (this.outcome.outcome) {
+      this.outcomeText = this.outcome.outcome.charAt(0).toUpperCase().concat(this.outcome.outcome.slice(1));
+    }
+  }
 
   toggleMappingsDisplay() {
     this.showMappings = !this.showMappings;
   }
+
 }
