@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { LearningOutcome } from '@entity';
 import { trigger, transition, style, animate, query, animateChild, stagger } from '@angular/animations';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'clark-outcome',
