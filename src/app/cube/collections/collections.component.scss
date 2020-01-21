@@ -87,8 +87,8 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   max-width: $max-width;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 2em;
+  grid-gap: 30px;
   margin: 40px auto;
   padding: 20px;
-  padding-bottom: 6em;
+  padding-bottom: 120px;
 }
