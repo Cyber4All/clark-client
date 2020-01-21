@@ -1,7 +1,10 @@
 <div class="splash">
   <div class="splash-inner">
     <h1>Press & Media</h1>
-    <button (activate)="this.viewPressKit.emit()" class="button">View Information Kit</button>
+    <div class="content-box">
+      <button (activate)="this.viewPressKit.emit()" class="button">View Information Kit</button>
+      <button (activate)="this.viewLogo.emit()" class="button">View Logo</button>
+    </div>
     <a class="contact-link" href="mailto:skaza@towson.edu?subject=CLARK Information">Contact Us</a>
   </div>
 </div>
