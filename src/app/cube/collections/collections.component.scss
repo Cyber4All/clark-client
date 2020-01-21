@@ -5,32 +5,31 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 70px 10px 130px;
-  background: $blue-gradient;
+  padding: 100px;
 
   &:after {
     content: '';
-    background: white;
+    background: repeating-linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) );
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    opacity: 0.03;
-    mask: $cube-pattern repeat;
-  }
+    z-index: 1;
+}
 
   &:before {
     content: '';
-    background: $wrapper-background;
+    background: linear-gradient(to bottom, white, $light-blue, white);
     position: absolute;
-    width: 100%;
-    height: 100vw;
-    top: 370px;
+    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    transform: skewY(-2deg);
-  }
+    mask: $cube-pattern repeat;
+    z-index: 0;
+    opacity: .15;
+}
 
   .inner {
     display: flex;
@@ -38,6 +37,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin-bottom: 100px;
 
     .title__icon {
       display: flex;
@@ -45,8 +45,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
       justify-content: center;
       text-align: center;
       margin: auto;
-      margin-bottom: 20px;
-      background: white;
       color: $light-blue;
       width: 100px;
       height: 100px;
@@ -70,26 +68,25 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   }
 
   .header {
-    color: white;
+    color: $dark-grey;
     font-size: $largest;
     text-transform: uppercase;
     font-weight: bold;
-    text-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   }
 
   .description {
-    color: white;
+    color: $dark-grey;
     font-size: $large;
-    text-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 45px rgba(0, 0, 0, 0.5);
     font-weight: normal;
   }
 }
 
 .collections__grid {
-  max-width: $max-width;
+  max-width: 1600px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-gap: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2em;
   margin: 40px auto;
-  padding: 0 10px;
+  padding-bottom: 6em;
 }
