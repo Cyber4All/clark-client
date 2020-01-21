@@ -37,7 +37,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 
     .title__icon {
       display: flex;
@@ -79,6 +79,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
     font-size: $large;
     text-shadow: 0 0 45px rgba(0, 0, 0, 0.5);
     font-weight: normal;
+    padding: 10px;
   }
 }
 
@@ -88,5 +89,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 2em;
   margin: 40px auto;
+  padding: 20px;
   padding-bottom: 6em;
 }
