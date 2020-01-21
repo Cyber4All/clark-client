@@ -77,7 +77,6 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   .description {
     color: $darker-grey;
     font-size: $large;
-    text-shadow: 0 0 45px rgba(0, 0, 0, 0.5);
     font-weight: normal;
     padding: 10px;
   }
