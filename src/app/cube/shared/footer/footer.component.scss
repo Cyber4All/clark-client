@@ -7,63 +7,50 @@ footer {
   color: whitesmoke;
   background: linear-gradient(45deg, #393f4d, lighten(#1d1e22, 10));
   display: flex;
-  flex-flow: column;
-  align-items: center;
+  flex-flow: row;
+  align-items: flex-start;
   padding: 20px;
-  text-align: center;
+  justify-content: space-around;
   box-sizing: border-box;
 
-  .inner {
-    max-width: $max-width;
-  }
-
-  .funding-info {
-    font-size: $normal;
-    flex: 1;
+  .links {
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
 
-  .logo-container {
-    width: 100%;
-    max-width: 235px;
-    display: flex;
-    flex-flow: row nowrap;
-    margin-bottom: 15px;
-    margin-top: 25px;
-    justify-content: space-between;
-  }
+    div {
+      margin-right: 60px;
 
-  .logo-wrapper {
-    margin-bottom: 10px;
+      h3 {
+        font-size: $normal;
+      }
 
-    img {
-      height: 100px;
+      a {
+        display: block;
+        margin-bottom: 5px;
+        font-size: $small;
+        color: whitesmoke;
+      }
     }
   }
 
-  .small-links {
-    position: relative;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    display: flex;
-    flex-flow: row nowrap;
-    margin-bottom: auto;
-    justify-content: center;
-    margin-top: 20px;
+  .grants {
+    width: 300px;
+    text-align: center;
+    font-size: $small;
 
-    & > *:not(:last-child):after {
-      content: '|';
-      padding: 0 8px;
-      position: relative;
+    .images {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100px;
+        margin: 0 10px;
+      }
     }
-  }
-
-  a,
-  .small-links {
-    color: whitesmoke;
-    font-size: $normal;
   }
 }
 
