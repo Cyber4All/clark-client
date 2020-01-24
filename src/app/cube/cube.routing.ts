@@ -17,6 +17,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
 import { environment } from '@env/environment';
+import { OutagePageComponent } from './outage-page/outage-page.component';
 
 const details = {
   path: 'details',
@@ -63,6 +64,10 @@ const cube_routes: Routes = [
         path: 'system/accessibility-statement',
         component: AccessibilityStatementComponent,
         data: { title: 'Accessibility'}
+      },
+      {
+        path: 'system/outages',
+        component: OutagePageComponent
       },
       {
         path: 'users/:username',
