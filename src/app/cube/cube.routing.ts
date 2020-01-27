@@ -23,6 +23,17 @@ const details = {
   loadChildren: 'app/cube/details/details.module#DetailsModule'
 };
 
+const library = environment.experimental ? {
+  path: 'library',
+  canActivate: [AuthGuard],
+  loadChildren: 'app/cube/library/library.module#LibraryModule'
+} : {
+  path: 'library',
+  component: CartComponent,
+  canActivate: [AuthGuard],
+  loadChildren: 'app/cube/cart/cart.component'
+};
+
 const cube_routes: Routes = [
   {
     path: '',
@@ -37,12 +48,6 @@ const cube_routes: Routes = [
         path: 'browse',
         component: BrowseComponent,
         data: { title: 'Browse Learning Objects'}
-      },
-      {
-        path: 'library',
-        component: CartComponent,
-        canActivate: [AuthGuard],
-        data: { title: 'Your Library'}
       },
       {
         path: 'press',
@@ -77,6 +82,7 @@ const cube_routes: Routes = [
         canActivate: [AuthGuard]
       },
       details,
+      library,
       // Catch All
       {
         path: '**',
