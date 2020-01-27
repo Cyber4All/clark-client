@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([ { path: '/library', component: LibraryComponent }])
+    RouterModule.forChild([{ path: '', component: LibraryComponent }])
   ],
   declarations: [
     // root component
