@@ -52,3 +52,20 @@
         padding: 10px;
     }
 }
+
+.wrapper {
+    margin: 50px auto 0 auto;
+    padding: 0 50px;
+    width: 100%;
+    max-width: 1200px;
+
+    h1 {
+        color: $darker-grey;
+        font-size: $larger;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

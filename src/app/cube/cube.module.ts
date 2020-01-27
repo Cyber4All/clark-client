@@ -41,6 +41,7 @@ import { SplashComponent } from './press/components/splash/splash.component';
 import { AboutComponent } from './press/components/about/about.component';
 import { MediaCardComponent } from './press/components/media-card/media-card.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
+import { OutageCardComponent } from './outage-page/outage-card/outage-card.component';
 
 
 /**
@@ -66,7 +67,8 @@ import { OutagePageComponent } from './outage-page/outage-page.component';
     SplashComponent,
     AboutComponent,
     MediaCardComponent,
-    OutagePageComponent
+    OutagePageComponent,
+    OutageCardComponent
   ],
   imports: [
     // Angular imports
