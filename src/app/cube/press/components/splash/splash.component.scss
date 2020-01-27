@@ -26,7 +26,7 @@ $banner-height: 90px;
       right: 0;
       bottom: 0;
       background: $light-blue-gradient;
-      opacity: 0.8;
+      opacity: 0.85;
       z-index: 1;
     }
   }
@@ -38,8 +38,14 @@ $banner-height: 90px;
         font-size: $largest;
         color: white;
       }
+      .content-box {
+        margin: 20px;
+      }
+      .button {
+        margin-left: 20px;
+      }
       .contact-link {
-          font-size: $normal;
+          font-size: $large;
           color: white;
           text-decoration: underline;
           margin-left: 20px;
