@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'clark-outage-card',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./outage-card.component.scss']
 })
 export class OutageCardComponent implements OnInit {
+
+  @Input() status;
 
   constructor() { }
 

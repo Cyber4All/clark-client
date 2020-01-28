@@ -7,9 +7,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OutagePageComponent implements OnInit {
 
+  statusList = ['downloads', 'search'];
+  statuses = [];
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  getStatus(name: string) {
+    let result;
+    this.statuses.forEach(status => {
+      if (status.name === name) {
+        result = status;
+      }
+    });
+    if (result === undefined) {
+      result = {
+        name,
+        accessGroups: [],
+        issues: [],
+        discovered: undefined
+      };
+    }
+    return result;
   }
 
 }
