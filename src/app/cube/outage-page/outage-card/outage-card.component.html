@@ -1,1 +1,8 @@
-{{ status | json }}
+<div class="card" [ngClass]="{ 'warning': status.issues.length > 0, 'error': status.accessGroups.length === 4 }">
+  <i class="{{ icon }}" [ngClass]="{ 'warning': status.issues.length > 0, 'error': status.accessGroups.length === 4 }"></i>
+  <div>{{ status.name | uppercase }}</div>
+  <div class="info" *ngIf="status.issues.length > 0">
+    <div>This functionality is currently experiencing {{ status.accessGroups.length === 4 ? 'major' : 'minor' }} problems.</div>
+    <div>{{ status.discovered | date:'mediumDate' }} - Ongoing</div>
+  </div>
+</div>
