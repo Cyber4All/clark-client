@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OutageReport } from './types/outageReport';
 
 @Component({
   selector: 'clark-outage-page',
@@ -8,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class OutagePageComponent implements OnInit {
 
   statusList = ['downloads', 'search'];
-  statuses = [];
+  statuses: OutageReport[] = [];
+  pastIssues;
 
   constructor() { }
 
@@ -16,7 +18,7 @@ export class OutagePageComponent implements OnInit {
   }
 
   getStatus(name: string) {
-    let result;
+    let result: OutageReport;
     this.statuses.forEach(status => {
       if (status.name === name) {
         result = status;

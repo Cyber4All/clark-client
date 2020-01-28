@@ -12,6 +12,6 @@
         <clark-outage-card *ngFor="let status of statusList" [status]="getStatus(status)"></clark-outage-card>
     </div>
 </section>
-<section class="wrapper">
+<section *ngIf="pastIssues" class="wrapper">
     <h1>Past Issues</h1>
 </section>

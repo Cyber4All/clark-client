@@ -40,3 +40,9 @@
         font-size: $large;
     }
 }
+
+@media (max-width: 900px) {
+    .card {
+        margin: 20px;
+    }
+}

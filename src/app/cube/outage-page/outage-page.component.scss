@@ -54,18 +54,30 @@
 }
 
 .wrapper {
-    margin: 50px auto 0 auto;
+    margin: 50px auto 50px auto;
     padding: 0 50px;
-    width: 100%;
     max-width: 1200px;
 
     h1 {
         color: $darker-grey;
         font-size: $larger;
+        width: 100%;
     }
 
     .grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .wrapper {
+        margin: 20px auto 20px auto;
+        padding: 0 20px;
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
     }
 }
