@@ -1,5 +1,10 @@
 @import '~_vars.scss';
 
+.background {
+    background-color: white;
+    min-height: calc(100vh - 40px);
+}
+
 .hero {
     position: relative;
     overflow: hidden;
@@ -73,8 +78,8 @@
 
 @media (max-width: 700px) {
     .wrapper {
-        margin: 20px auto 20px auto;
-        padding: 0 20px;
+        margin: 20px auto 0 auto;
+        padding: 0 20px 20px 20px;
 
         .grid {
             grid-template-columns: 1fr;
