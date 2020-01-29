@@ -18,7 +18,7 @@
     <div *ngFor="let c of children; let i = index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
       <div class = "info">
         <div class = "top-row">
-          <div class = "child-title">{{c.name}}</div>
+          <div class = "child-title" [tip]="c.name" tipPosition="top">{{c.name}}</div>
         </div>
         <div class = "bottom-row">
         <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
