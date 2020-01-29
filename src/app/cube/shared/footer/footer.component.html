@@ -4,7 +4,7 @@
       <div>
         <h3>Platform</h3>
         <a [routerLink]="['/system/accessibility-statement']" aria-label="Accessbility Statement link" target="_blank">{{ copy.ACCESSIBILITY }}</a>
-        <!-- <a [routerLink]="['/system/outages']" aria-label="Clickable System Outages link" target="_blank">{{ copy.OUTAGES }}</a> -->
+        <a *ngIf="experimental" [routerLink]="['/system/status']" aria-label="Clickable System Outages link" target="_blank">{{ copy.OUTAGES }}</a>
         <a [routerLink]="['/system/termsofservice']" aria-label="Clickable Terms of Service link" target="_blank">{{ copy.TERMS }}</a>
         <a aria-label="Clickable Usage Statistics ink" [routerLink]="['/system/usage']" target="_blank">{{ copy.USAGE }}</a>
       </div>

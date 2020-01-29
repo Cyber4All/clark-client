@@ -2,7 +2,7 @@
   <i class="{{ icon }}" [ngClass]="{ 'warning': status.issues.length > 0, 'error': status.accessGroups.length === 4 }"></i>
   <div>{{ status.name | uppercase }}</div>
   <div class="info" *ngIf="status.issues.length > 0">
-    <div>This functionality is currently experiencing {{ status.accessGroups.length === 4 ? 'major' : 'minor' }} problems.</div>
-    <div>{{ status.discovered | date:'mediumDate' }} - Ongoing</div>
+    <p>This functionality is currently experiencing {{ status.accessGroups.length === 4 ? 'major' : 'minor' }} problems.</p>
+    <p>{{ status.discovered | date:'mediumDate' }} - Ongoing</p>
   </div>
 </div>

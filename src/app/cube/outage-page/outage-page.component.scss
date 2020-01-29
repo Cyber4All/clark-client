@@ -48,6 +48,7 @@
         font-size: $largest;
         text-transform: uppercase;
         font-weight: bold;
+        z-index: 2;
     }
     
     .description {
@@ -55,6 +56,7 @@
         font-size: $large;
         font-weight: normal;
         padding: 10px;
+        z-index: 2;
     }
 }
 
@@ -63,7 +65,7 @@
     padding: 0 50px;
     max-width: 1200px;
 
-    h1 {
+    h2 {
         color: $darker-grey;
         font-size: $larger;
         width: 100%;

@@ -66,7 +66,7 @@ const cube_routes: Routes = [
         data: { title: 'Accessibility'}
       },
       {
-        path: 'system/outages',
+        path: 'system/status',
         component: OutagePageComponent
       },
       {
