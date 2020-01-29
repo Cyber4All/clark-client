@@ -1,0 +1,145 @@
+@import '~_vars.scss';
+
+.library {
+    background-color: white;
+}
+
+.test {
+    height: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background-color: inherit;
+}
+
+.library__splash-container {
+
+    padding-top: 125px;
+    box-sizing: border-box; 
+
+    &:before {
+        content: '';
+        background: linear-gradient(90deg, white, $light-blue, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: .15;
+  }
+
+    &:after {
+        content: '';
+        background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+}
+
+.library__splash-container__title {
+    color: $dark-grey;
+    margin: 0;
+    font-size: $largest;
+}
+
+.library__content-container {
+    max-width: $max-width;
+    margin: auto;
+    padding: 20px;
+    margin-top: 250px;
+}
+
+.library__cards-container__title {
+    color: $light-blue;
+    padding: 0 20px;
+    font-size: $larger;
+    margin-bottom: 30px;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.library__cards-container {
+    margin-bottom: 250px;
+    padding: 0 20px;
+}
+
+.cards-container__arrow-container {
+    font-size: 36px;
+    color: $dark-grey;
+    align-self: center;
+}
+
+.cards-container__arrow-container:hover {
+    color: $light-blue;
+    cursor: pointer;
+}
+
+.library__content-container__saved-items {
+    max-width: $max-width;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.library-items__title {
+    color: $light-blue;
+    font-size: $larger;
+}
+
+.library-items__list-items {
+    max-width: $max-width;
+    background-color: white;
+    border-radius: 5px;
+    padding: 40px;
+    color: $dark-grey;
+    box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.library-items__pagination-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.library-items__pagination-container__button {
+    color: $medium-grey;
+    font-size: $small;
+    margin: 0 10px;
+}
+
+.library-items__pagination-container__button:hover {
+    color: $light-blue;
+    cursor: pointer;
+}
+
+.library-items__pagination-container__arrow-button {
+    color: white;
+    background-color: $light-blue;
+    border-radius: 5px;
+    font-size: $small;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: white;
+}
+
+
+
+
+
+

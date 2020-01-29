@@ -1,1 +1,76 @@
-<p>Hello, welcome to the library I am awesome and understand cybersecurity</p>
+<section class='library'>
+    <div class='test'>
+        <div class='library__splash-container'>
+            <h1 class='library__splash-container__title'>
+                Your Library
+            </h1>
+        </div>
+    </div>
+  
+    <div class='library__content-container'>
+        <h2 class='library__cards-container__title'>
+            Updates Since You've Last Downloaded
+        </h2>
+        
+        <div class='library__cards-container'>
+            <clark-carousel>
+                <ng-template>
+                    <div class='cards-container'>
+                        <div class='cards-container__arrow-container'>
+                            <i class="fal fa-arrow-circle-left"></i>
+                        </div>
+                        <clark-notification-card></clark-notification-card>
+                        <clark-notification-card></clark-notification-card>
+                        <clark-notification-card></clark-notification-card>
+                        <clark-notification-card></clark-notification-card>
+                        <clark-notification-card></clark-notification-card>
+                        <div class='cards-container__arrow-container'>
+                            <i class="fal fa-arrow-circle-right"></i>
+                        </div>
+                    </div>
+                </ng-template>
+            </clark-carousel>
+        </div>
+        
+        <div class='library__content-container__saved-items'>
+            <h2 class='library-items__title'>
+                Saved Items
+            </h2>
+            <div class='library-items__list-items'>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <clark-library-item></clark-library-item>
+                <div class='library-items__pagination-container'>
+                    <button class='library-items__pagination-container__arrow-button'>
+                        <i class="far fa-arrow-left"></i>
+                    </button>
+                    <button class='library-items__pagination-container__button'>
+                        1
+                    </button>
+                    <button class='library-items__pagination-container__button'>
+                        2
+                    </button>
+                    <button class='library-items__pagination-container__button'>
+                        3
+                    </button>
+                    <button class='library-items__pagination-container__button'>
+                        4
+                    </button>
+                    <button class='library-items__pagination-container__button'>
+                        5
+                    </button>
+                    <button class='library-items__pagination-container__arrow-button'>
+                        <i class="far fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

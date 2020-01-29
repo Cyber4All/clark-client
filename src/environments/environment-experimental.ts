@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   experimental: true,
-  apiURL: 'http://localhost:3000',
+  apiURL: 'http://localhost:3001',
   STATE_STORAGE_LOCATION: 'state',
   suggestionUrl: 'http://localhost:7000',
   contentManagerURL: 'http://localhost:5000',
