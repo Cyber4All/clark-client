@@ -6,6 +6,7 @@ import { NotificationCardComponent } from './components/notification-card/notifi
 import { LibraryItemComponent } from './components/library-item/library-item.component';
 import { SharedModules } from 'app/shared/modules/shared-modules.module';
 import { SharedModule } from 'app/shared/shared.module';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { SharedModule } from 'app/shared/shared.module';
     LibraryComponent,
     NotificationCardComponent,
     LibraryItemComponent,
+    PaginationComponent,
   ],
 })
 export class LibraryModule { }

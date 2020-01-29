@@ -76,7 +76,7 @@
 
 .cards-container__arrow-container {
     font-size: 36px;
-    color: $dark-grey;
+    color: $medium-grey;
     align-self: center;
 }
 
@@ -100,43 +100,14 @@
     max-width: $max-width;
     background-color: white;
     border-radius: 5px;
-    padding: 40px;
+    // padding: 40px;
     color: $dark-grey;
-    box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     text-align: center;
 }
 
-.library-items__pagination-container {
-    text-align: center;
-    margin: 30px 0;
-}
 
-.library-items__pagination-container__button {
-    color: $medium-grey;
-    font-size: $small;
-    margin: 0 10px;
-}
-
-.library-items__pagination-container__button:hover {
-    color: $light-blue;
-    cursor: pointer;
-}
-
-.library-items__pagination-container__arrow-button {
-    color: white;
-    background-color: $light-blue;
-    border-radius: 5px;
-    font-size: $small;
-    cursor: pointer;
-    margin: 0 10px;
-}
-
-button {
-    border: none;
-    outline: none;
-    background-color: white;
-}
 
 
 
