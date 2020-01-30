@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { OutageReport } from '../types/outageReport';
 
 @Component({
   selector: 'clark-past-issue',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./past-issue.component.scss']
 })
 export class PastIssueComponent implements OnInit {
+
+  @Input() issue: OutageReport;
+  icon: string;
 
   constructor() { }
 

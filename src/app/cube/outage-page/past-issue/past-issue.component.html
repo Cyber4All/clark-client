@@ -1,3 +1,14 @@
-<p>
-  past-issue works!
-</p>
+<div>
+  <div>
+    <i class="{{ icon }}"></i>
+    <div>{{ issue.name | uppercase }}</div>
+  </div>
+  <div>
+    <p>{{ issue.discovered | date:'mediumDate' }} to {{ issue.resolved | date:'mediumDate' }}</p>
+    <p *ngFor="let i of issue.issues">{{ i }}</p>
+  </div>
+  <div>
+    <i class="fas fa-exclamation-triangle"></i>
+    <p>Warning</p>
+  </div>
+</div>
