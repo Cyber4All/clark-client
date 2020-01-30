@@ -14,6 +14,13 @@
         </div>
     </section>
     <section *ngIf="pastIssues" class="wrapper">
-        <h2>Past Issues</h2>
+        <div *ngIf="pastIssues.length > 0; else noPastIssuesTemplate">
+            <h2>Past Issues</h2>
+            <clark-past-issue *ngFor="let issue of pastIssues" [issue]="issue"></clark-past-issue>
+        </div>
     </section>
 </div>
+
+<ng-template #noPastIssuesTemplate>
+    <h2>There are no past issues...</h2>
+</ng-template>

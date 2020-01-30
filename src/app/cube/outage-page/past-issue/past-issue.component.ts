@@ -14,6 +14,14 @@ export class PastIssueComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    switch (this.issue.name) {
+      case 'search':
+        this.icon = 'fas fa-search';
+        break;
+      case 'downloads':
+        this.icon = 'fas fa-download';
+        break;
+    }
   }
 
 }
