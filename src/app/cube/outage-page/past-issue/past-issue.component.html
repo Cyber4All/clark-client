@@ -1,13 +1,13 @@
-<div>
-  <div>
+<div class="card">
+  <div class="name">
     <i class="{{ icon }}"></i>
     <div>{{ issue.name | uppercase }}</div>
   </div>
-  <div>
+  <div class="info">
     <p>{{ issue.discovered | date:'mediumDate' }} to {{ issue.resolved | date:'mediumDate' }}</p>
     <p *ngFor="let i of issue.issues">{{ i }}</p>
   </div>
-  <div>
+  <div class="status">
     <i class="fas fa-exclamation-triangle"></i>
     <p>Warning</p>
   </div>

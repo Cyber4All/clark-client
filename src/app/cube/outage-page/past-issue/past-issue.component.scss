@@ -1,0 +1,46 @@
+@import '~_vars.scss';
+
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    border-bottom: 3px solid $light-blue;
+    color: $darker-grey;
+
+    &:first-child {
+        border-top-left-radius: 3px;
+    }
+
+    &:last-child {
+        border-bottom: none;
+        border-bottom-left-radius: 3px;
+    }
+
+    .name {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: $light-blue;
+        color: whitesmoke;
+        padding: 30px;
+        font-size: $large;
+
+        svg {
+            margin-bottom: 10px;
+        }
+    }
+
+    .info {
+        padding: 20px;
+        width: 100%;
+    }
+
+    .status {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
