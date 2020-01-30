@@ -42,7 +42,6 @@ import { AboutComponent } from './press/components/about/about.component';
 import { MediaCardComponent } from './press/components/media-card/media-card.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { OutageCardComponent } from './outage-page/outage-card/outage-card.component';
-import { PastIssueComponent } from './outage-page/past-issue/past-issue.component';
 
 
 /**
@@ -69,8 +68,7 @@ import { PastIssueComponent } from './outage-page/past-issue/past-issue.componen
     AboutComponent,
     MediaCardComponent,
     OutagePageComponent,
-    OutageCardComponent,
-    PastIssueComponent
+    OutageCardComponent
   ],
   imports: [
     // Angular imports
