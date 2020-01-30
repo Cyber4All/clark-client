@@ -1,0 +1,19 @@
+<div class="background">
+    <section class="hero">
+        <div class="inner">
+            <h1 class="header">CLARK Platform Status</h1>
+            <p class="description">
+                The CLARK Team is constantly working on keeping the system fully functional and efficient. If you find a issue that is not specified below, then please refer to the Help section in the footer.
+            </p>
+        </div>
+    </section>
+    <section class="wrapper">
+        <h2>Current Status</h2>
+        <div class="grid">
+            <clark-outage-card *ngFor="let status of statusList" [status]="getStatus(status)"></clark-outage-card>
+        </div>
+    </section>
+    <section *ngIf="pastIssues" class="wrapper">
+        <h2>Past Issues</h2>
+    </section>
+</div>

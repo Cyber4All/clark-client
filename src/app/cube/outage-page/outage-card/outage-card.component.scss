@@ -1,0 +1,48 @@
+@import '~_vars.scss';
+
+.card {
+    background: white;
+    border: 3px solid $success-green;
+    margin:  20px 50px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+    font-size: $larger;
+
+    &.warning {
+        border-color: $orange;
+    }
+
+    &.error {
+        border-color: $error-red;
+    }
+
+    svg {
+        color: $success-green;
+        font-size: 40px;
+        margin-bottom: 10px;
+
+        &.warning {
+            color: $orange;
+        }
+
+        &.error {
+            color: $error-red;
+        }
+    }
+
+    div {
+        margin-top: 10px;
+    }
+
+    .info {
+        font-size: $large;
+    }
+}
+
+@media (max-width: 900px) {
+    .card {
+        margin: 20px;
+    }
+}

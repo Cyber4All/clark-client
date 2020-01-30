@@ -7,6 +7,7 @@ export const environment = {
   contentManagerURL: 'https://api-learning-objects.clark.center',
   contentManagerURLAdmin: 'https://api-file-upload.clark.center',
   adminAppUrl: 'https://admin.clark.center',
+  utilityWebsocket: 'wss://api-utilities.clark.center',
   s3Bucket: 'clark-prod-file-uploads',
   s3BucketRegion: 'us-east-1',
   cognitoRegion: 'us-east-1',

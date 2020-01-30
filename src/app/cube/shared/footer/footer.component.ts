@@ -13,10 +13,12 @@ import { environment } from '@env/environment';
 export class FooterComponent implements OnInit {
   copy = COPY;
   hideFooter = false;
+  experimental: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.experimental = environment.experimental;
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       const root: ActivatedRoute = this.route.root;
       this.hideFooter = root.children[0].snapshot.data.hideNavbar;
