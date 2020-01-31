@@ -3,8 +3,12 @@
     <i class="{{ icon }}"></i>
     <div>{{ issue.name | uppercase }}</div>
   </div>
+  <div class="date">
+    <p>{{ issue.discovered | date:'mediumDate' }}</p>
+    <p>to</p>
+    <p>{{ issue.resolved | date:'mediumDate' }}</p>
+  </div>
   <div class="info">
-    <p>{{ issue.discovered | date:'mediumDate' }} to {{ issue.resolved | date:'mediumDate' }}</p>
     <p *ngFor="let i of issue.issues">{{ i }}</p>
   </div>
   <div class="status">

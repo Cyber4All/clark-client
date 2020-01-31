@@ -8,6 +8,20 @@
     border-bottom: 2px solid $light-blue;
     color: $darker-grey;
 
+    &:first-child {
+        .name {
+            border-top-left-radius: 5px;
+        }
+    }
+
+    &:last-child {
+        border-bottom-left-radius: 5px;
+
+        .name {
+            border-bottom-left-radius: 4px;
+        }
+    }
+
     .name {
         display: flex;
         flex-direction: column;
@@ -24,7 +38,19 @@
         }
     }
 
+    .date {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        width: 15%;
+        min-width: 130px;
+    }
+
     .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding: 20px;
         width: 100%;
     }
@@ -48,5 +74,9 @@
                 color: $error-red;
             }
         }
+    }
+
+    p {
+        margin: 5px 0;
     }
 }
