@@ -8,7 +8,7 @@
     <p *ngFor="let i of issue.issues">{{ i }}</p>
   </div>
   <div class="status">
-    <i class="fas fa-exclamation-triangle"></i>
-    <p>Warning</p>
+    <i class="fas fa-exclamation-triangle" [ngClass]="{ 'warning': true, 'error': issue.accessGroups.length === 4 }"></i>
+    <p>{{ issue.accessGroups.length !== 4 ? 'Warning' : 'Error' }}</p>
   </div>
 </div>
