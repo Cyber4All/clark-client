@@ -103,7 +103,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       canSearch: false,
       values: [
         {
-          name: 'videos',
+          name: 'video',
         }
       ]
     }
