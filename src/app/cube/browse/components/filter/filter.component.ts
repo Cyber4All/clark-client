@@ -53,6 +53,7 @@ export class FilterComponent implements AfterContentInit {
 }
 
 export interface FilterSection {
+  title: string,
   name: string;
   type: 'select-many' | 'select-one' | 'dropdown-one' | 'custom';
   canSearch?: boolean;

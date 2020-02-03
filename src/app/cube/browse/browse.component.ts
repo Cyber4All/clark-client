@@ -59,12 +59,14 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   filtering = false;
   filters: FilterSection[] = [
     {
+      title: 'collection',
       name: 'collection',
       type: 'select-many',
       canSearch: false,
       values: []
     },
     {
+      title: 'length',
       name: 'length',
       type: 'select-many',
       canSearch: false,
@@ -76,6 +78,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       ]
     },
     {
+      title: 'level',
       name: 'level',
       type: 'select-many',
       canSearch: false,
@@ -87,10 +90,22 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       ]
     },
     {
+      title: 'curricular guideline sources',
       name: 'guidelines',
       type: 'select-many',
       canSearch: false,
       values: []
+    },
+    {
+      title: 'type of materials included',
+      name: 'fileTypes',
+      type: 'select-many',
+      canSearch: false,
+      values: [
+        {
+          name: 'videos',
+        }
+      ]
     }
   ];
   searchDelaySubject: any;
