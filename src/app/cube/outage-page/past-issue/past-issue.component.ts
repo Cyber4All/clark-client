@@ -9,6 +9,7 @@ import { OutageReport } from '../types/outageReport';
 export class PastIssueComponent implements OnInit {
 
   @Input() issue: OutageReport;
+  @Input() order: { first: boolean, last: boolean };
   icon: string;
 
   constructor() { }

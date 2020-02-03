@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" [ngClass]="{ 'first': order.first, 'last': order.last }">
   <div class="name">
     <i class="{{ icon }}"></i>
     <div>{{ issue.name | uppercase }}</div>
@@ -9,7 +9,7 @@
     <p>{{ issue.resolved | date:'mediumDate' }}</p>
   </div>
   <div class="info">
-    <p *ngFor="let i of issue.issues">{{ i }}</p>
+    <p>This functionality experienced {{ issue.accessGroups.length !== 4 ? 'minor' : 'major' }} problems.</p>
   </div>
   <div class="status">
     <i class="fas fa-exclamation-triangle" [ngClass]="{ 'warning': true, 'error': issue.accessGroups.length === 4 }"></i>

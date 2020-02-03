@@ -16,7 +16,7 @@
     <section *ngIf="pastIssues" class="wrapper">
         <div *ngIf="pastIssues.length > 0; else noPastIssuesTemplate">
             <h2>Past Issues</h2>
-            <clark-past-issue *ngFor="let issue of pastIssues" [issue]="issue"></clark-past-issue>
+            <clark-past-issue *ngFor="let issue of pastIssues; let i = index" [issue]="issue" [order]="{ first: i === 0, last: i === pastIssues.length - 1 }"></clark-past-issue>
         </div>
     </section>
 </div>

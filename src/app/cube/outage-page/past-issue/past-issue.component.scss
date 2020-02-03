@@ -8,13 +8,14 @@
     border-bottom: 2px solid $light-blue;
     color: $darker-grey;
 
-    &:first-child {
+    &.first {
         .name {
             border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
     }
 
-    &:last-child {
+    &.last {
         border-bottom-left-radius: 5px;
 
         .name {
@@ -78,5 +79,48 @@
 
     p {
         margin: 5px 0;
+    }
+}
+
+@media(max-width: 900px) {
+    .card {
+        .info, .date, .name, .status {
+            padding: 10px;
+        }
+
+        .status {
+            svg {
+                font-size: 30px;
+            }
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .card {
+        flex-direction: column;
+        border: none;
+
+        .name {
+            border-radius: 5px;
+        }
+
+        .date {
+            display: flex;
+            flex-direction: row;
+            box-sizing: border-box;
+            // align-items: center;
+            width: 100%;
+            
+            p {
+                display: inline;
+                margin: 5px;
+            }
+        }
+
+        .info {
+            text-align: center;
+            box-sizing: border-box;
+        }
     }
 }
