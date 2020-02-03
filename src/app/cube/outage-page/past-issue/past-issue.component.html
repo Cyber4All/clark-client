@@ -1,6 +1,6 @@
 <div class="card" [ngClass]="{ 'first': order.first, 'last': order.last }">
   <div class="name">
-    <i class="{{ icon }}"></i>
+    <i aria-hidden=true class="{{ icon }}"></i>
     <div>{{ issue.name | uppercase }}</div>
   </div>
   <div class="date">
@@ -12,7 +12,7 @@
     <p>This functionality experienced {{ issue.accessGroups.length !== 4 ? 'minor' : 'major' }} problems.</p>
   </div>
   <div class="status">
-    <i class="fas fa-exclamation-triangle" [ngClass]="{ 'warning': true, 'error': issue.accessGroups.length === 4 }"></i>
+    <i aria-hidden=true class="fas fa-exclamation-triangle" [ngClass]="{ 'warning': true, 'error': issue.accessGroups.length === 4 }"></i>
     <p>{{ issue.accessGroups.length !== 4 ? 'Warning' : 'Error' }}</p>
   </div>
 </div>
