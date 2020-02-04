@@ -1,0 +1,140 @@
+@import '~_vars.scss';
+
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    border-bottom: 2px solid $light-blue;
+    color: $darker-grey;
+
+    &.first {
+        .name {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+    }
+
+    &.last {
+        border-bottom-left-radius: 5px;
+
+        .name {
+            border-bottom-left-radius: 4px;
+        }
+    }
+
+    .name {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: $light-blue;
+        color: whitesmoke;
+        padding: 30px;
+        font-size: $large;
+
+        svg {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .date {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        width: 15%;
+        min-width: 130px;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .status {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+
+        svg {
+            margin-bottom: 10px;
+            font-size: 40px;
+    
+            &.warning {
+                color: $orange;
+            }
+    
+            &.error {
+                color: $error-red;
+            }
+        }
+    }
+
+    p {
+        margin: 5px 0;
+    }
+}
+
+@media(max-width: 900px) {
+    .card {
+        .info, .date, .name, .status {
+            padding: 10px;
+        }
+
+        .status {
+            svg {
+                font-size: 30px;
+            }
+        }
+    }
+}
+
+@media (max-width: 700px) {
+    .card {
+        flex-direction: column;
+        border: 3px solid $light-blue;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        margin: 30px 20px;
+
+        &.first {
+            .name {
+                border-radius: 0;
+            }
+        }
+    
+        &.last {
+            .name {
+                border-radius: 0;
+            }
+        }
+
+        .name {
+            border-radius: 0;
+        }
+
+        .date {
+            display: flex;
+            flex-direction: row;
+            box-sizing: border-box;
+            width: 100%;
+            
+            p {
+                display: inline;
+                margin: 5px;
+            }
+        }
+
+        .info {
+            text-align: center;
+            box-sizing: border-box;
+        }
+    }
+}
