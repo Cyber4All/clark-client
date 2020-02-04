@@ -12,7 +12,7 @@ footer {
 
   p {
     font-size: $small;
-    margin-top: 50px;
+    margin-top: 20px;
   }
 
   .footer-info {
@@ -62,7 +62,34 @@ footer {
       }
     }
   }
+
+  .share-icons {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  
+    & > a {
+      background: $blue-accent;
+      color: white !important;
+      transform: scale(1);
+      cursor: pointer;
+      margin-left: 10px;
+  
+      &:active:hover {
+        transform: scale(0.95);
+      }
+  
+      &.twitter {
+        background: #1da1f2;
+      }
+  
+      &.linkedin {
+        background: #0077b5;
+      }
+    }
+  }
 }
+
 
 @media(max-width: 800px) {
   .footer-info {
