@@ -1,0 +1,18 @@
+<div class="card" [ngClass]="{ 'first': order.first, 'last': order.last }">
+  <div class="name">
+    <i aria-hidden=true class="{{ icon }}"></i>
+    <div>{{ issue.name | uppercase }}</div>
+  </div>
+  <div class="date">
+    <p>{{ issue.discovered | date:'mediumDate' }}</p>
+    <p>to</p>
+    <p>{{ issue.resolved | date:'mediumDate' }}</p>
+  </div>
+  <div class="info">
+    <p>This functionality experienced {{ issue.accessGroups.length !== 4 ? 'minor' : 'major' }} problems.</p>
+  </div>
+  <div class="status">
+    <i aria-hidden=true class="fas fa-exclamation-triangle" [ngClass]="{ 'warning': true, 'error': issue.accessGroups.length === 4 }"></i>
+    <p>{{ issue.accessGroups.length !== 4 ? 'Warning' : 'Error' }}</p>
+  </div>
+</div>
