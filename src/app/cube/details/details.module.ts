@@ -30,10 +30,11 @@ import { EditorialActionPadModule } from './components/action-panel/editorial-ac
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
 import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
 import { ActionPadComponent } from './components/action-pad/action-pad.component';
+import { RouteBackwardsCompatGuard } from '../core/route-backwards-compat.guard';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent } ]),
+    RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent, canActivate: [ RouteBackwardsCompatGuard ]} ]),
     SharedPipesModule,
     FileBrowserModule,
     FormsModule,
