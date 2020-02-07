@@ -207,9 +207,9 @@ export const USER_ROUTES = {
       learningObjectId
     )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
-  GET_CART(username) {
+  GET_CART(username, page?, limit?) {
     // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects?page=${page}&limit=${limit}`;
   },
   CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(

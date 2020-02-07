@@ -37,16 +37,16 @@
                 Saved Items
             </h2>
             <div class='library-items__list-items'>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
-                <clark-library-item></clark-library-item>
+                <div *ngFor='let item of cartItems; let i = index'>
+                    <clark-library-item
+                        [learningObjectTitle]='item.name'
+                        [learningObjectLength]='item.length'
+                        [learningObjectAuthorName]='item.author.name'
+                        [learningObjectContributorCount]='item.contributors.length'
+                        [learningObjectAverageRating]='4'
+                        (downloadButtonClicked)='downloadObject($event, item, i)'
+                    ></clark-library-item>
+                </div>
                 <clark-pagination></clark-pagination>
             </div>
         </div>

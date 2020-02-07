@@ -43,7 +43,7 @@ export class CartComponent implements OnInit, OnDestroy {
   async loadCart() {
     try {
       this.loading = true;
-      this.cartItems = await this.cartService.getCart();
+      // this.cartItems = await this.cartService.getCart();
       this.loading = false;
     } catch (e) {
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');

@@ -1,15 +1,16 @@
 <div class='library-item'>
 
-    <h5 class='library-item__length'>Micromodule</h5>
+    <h5 class='library-item__length'>{{ learningObjectLength }}</h5>
 
-    <h5 class='library-item__title'>Cyber Policy and Law Cyber Policy and Law Cyber Policy and Law Cyber Policy and Law</h5>
+    <h5 class='library-item__title'>{{ learningObjectTitle }}</h5>
 
-    <h5 class='library-item__author '>Sidd Kaza Sidd Kaza Sidd Kaza and 2 more</h5>
+    <h5 class='library-item__author '>{{ learningObjectAuthorName }}
+        <span *ngIf='learningObjectContributorCount'>and {{ learningObjectContributorCount }} more</span>
+    </h5>
   
-    
-    <clark-rating-stars rating='5' color='gold'></clark-rating-stars>
+    <clark-rating-stars rating='{{ learningObjectAverageRating }}' color='gold'></clark-rating-stars>
     <div class='library-item__actions-container'>
-        <button class='library-item__download-button'><i class="far fa-download"></i></button>
-        <button class='library-item__delete-button'><i class="far fa-trash-alt"></i></button> 
+        <button class='library-item__download-button' (activate)='onDownloadClick($event)'><i class="far fa-download"></i></button>
+        <button class='library-item__delete-button' (activate)='deleteButtonClicked.emit()'><i class="far fa-trash-alt"></i></button> 
     </div>
 </div>

@@ -32,13 +32,13 @@ export class CartV2Service {
     window.open(url);
   }
 
-  getCart(reloadUser = false): Promise<LearningObject[]> {
+  getCart(page?: number, limit?: number, reloadUser = false): Promise<LearningObject[]> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
     return this.http
-      .get(USER_ROUTES.GET_CART(this.user.username), {
+      .get(USER_ROUTES.GET_CART(this.user.username, page, limit), {
         withCredentials: true,
         headers: this.headers
       })
