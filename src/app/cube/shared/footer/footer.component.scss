@@ -6,92 +6,80 @@ footer {
   width: 100%;
   color: whitesmoke;
   background: linear-gradient(45deg, #393f4d, lighten(#1d1e22, 10));
-  display: flex;
-  flex-flow: column;
-  align-items: center;
   padding: 20px;
   text-align: center;
   box-sizing: border-box;
 
-  .inner {
-    max-width: $max-width;
+  p {
+    font-size: $small;
+    margin-top: 50px;
   }
 
-  .funding-info {
-    font-size: $normal;
-    flex: 1;
+  .footer-info {
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .logo-container {
+    flex-flow: row;
+    align-items: flex-start;
+    justify-content: space-around;
     width: 100%;
-    max-width: 235px;
-    display: flex;
-    flex-flow: row nowrap;
-    margin-bottom: 15px;
-    margin-top: 25px;
-    justify-content: space-between;
   }
 
-  .logo-wrapper {
-    margin-bottom: 10px;
+  .links {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
 
-    img {
-      height: 100px;
+    div {
+      margin-right: 60px;
+      text-align: left;
+
+      h3 {
+        font-size: $normal;
+      }
+
+      a {
+        display: block;
+        margin-bottom: 5px;
+        font-size: $small;
+        color: whitesmoke;
+      }
     }
   }
 
-  .small-links {
-    position: relative;
-    box-sizing: border-box;
-    flex-shrink: 0;
-    display: flex;
-    flex-flow: row nowrap;
-    margin-bottom: auto;
-    justify-content: center;
-    margin-top: 20px;
+  .grants {
+    width: 300px;
+    text-align: center;
 
-    & > *:not(:last-child):after {
-      content: '|';
-      padding: 0 8px;
-      position: relative;
+    .images {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100px;
+        margin: 0 10px;
+      }
     }
-  }
-
-  a,
-  .small-links {
-    color: whitesmoke;
-    font-size: $normal;
   }
 }
 
-@media(max-width: 750px) {
+@media(max-width: 800px) {
+  .footer-info {
+    flex-flow: column !important;
+    align-items: center !important;
 
-  footer {
+    .links {
+      display: inline-block;
+      text-align: left;
 
-    & > * {
-
-      &:not(:last-child) {
-        margin-bottom: 25px;
+      div {
+        margin: 0 0 30px;
       }
+    }
 
-      &.small-links {
-        display: block;
-        padding-left: 0 !important;
-
-        a {
-          padding: 5px;
-          display: block;
-          border: 0;
-
-          &:after {
-            content: '' !important;
-            padding: 0 !important;
-          }
-        }
-      }
+    .grants {
+      margin-top: 50px;
     }
   }
 }
