@@ -12,6 +12,7 @@ export const environment = {
   contentManagerURL: 'http://localhost:5000',
   contentManagerURLAdmin: 'http://localhost:5100',
   adminAppUrl: 'http://localhost:4100',
+  utilityWebsocket: 'ws://localhost:9000',
   s3Bucket: 'neutrino-file-uploads',
   s3BucketRegion: 'us-east-2',
   cognitoRegion: 'us-east-1',
