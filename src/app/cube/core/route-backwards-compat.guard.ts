@@ -18,7 +18,6 @@ export class RouteBackwardsCompatGuard implements CanActivate {
       if (next.params.learningObjectName.search(cuidRegex) === 0) {
         return true;
       } else {
-        // http://localhost:4200/details/kkuczynski/Principles%20of%20Cyber%20Law%20and%20Policy
         return this.http.get(`${environment.apiURL}}/learning-objects/${next.params.username}/${next.params.learningObjectName}`, { withCredentials: false }).toPromise().then(cuid => {
           return this.router.createUrlTree([`/details/${next.params.username}/${cuid}`]);
         }).catch(err => {
