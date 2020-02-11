@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { router } from 'app/onion/learning-object-builder/components/content-upload/app/content-upload.routes';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 
