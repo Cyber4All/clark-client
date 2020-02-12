@@ -34,7 +34,13 @@ import { RouteBackwardsCompatGuard } from '../core/route-backwards-compat.guard'
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent, canActivate: [ RouteBackwardsCompatGuard ]} ]),
+    RouterModule.forChild([
+      {
+        path: ':username/:learningObjectName',
+        component: DetailsComponent,
+        canActivate: [ RouteBackwardsCompatGuard ]
+      }
+    ]),
     SharedPipesModule,
     FileBrowserModule,
     FormsModule,

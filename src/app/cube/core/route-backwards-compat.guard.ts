@@ -28,5 +28,5 @@ export class RouteBackwardsCompatGuard implements CanActivate {
         });
       }
   }
-  
+
 }
