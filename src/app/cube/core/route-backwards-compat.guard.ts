@@ -3,25 +3,26 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RouteBackwardsCompatGuard implements CanActivate {
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient, private toaster: ToastrOvenService) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      const cuidRegex = /([a-z0-9]){8}-([a-z0-9]){4}-([a-z0-9]){4}-([a-z0-9]){4}-([a-z0-9]){12}/;
-      if (next.params.learningObjectName.search(cuidRegex) === 0) {
+      if (next.params.learningObjectName.indexOf('-') === 8) {
         return true;
       } else {
-        return this.http.get(`${environment.apiURL}}/learning-objects/${next.params.username}/${next.params.learningObjectName}`, { withCredentials: false }).toPromise().then(cuid => {
+        return this.http.get(`${environment.apiURL}/learning-objects/${encodeURI(next.params.username)}/${encodeURI(next.params.learningObjectName)}`, { withCredentials: true }).toPromise().then(cuid => {
           return this.router.createUrlTree([`/details/${next.params.username}/${cuid}`]);
         }).catch(err => {
           console.error(err);
+          this.toaster.error('Error!', `There was an error getting this learning object's details.`);
           // TODO: Route to Not Found page instead of home
           return this.router.createUrlTree(['']);
         });
