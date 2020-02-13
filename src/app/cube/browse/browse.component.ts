@@ -97,7 +97,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       values: []
     },
     {
-      title: 'type of materials included',
+      title: 'type of materials',
       name: 'fileTypes',
       type: 'select-many',
       canSearch: false,
