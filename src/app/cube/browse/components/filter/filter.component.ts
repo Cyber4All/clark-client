@@ -52,6 +52,9 @@ export class FilterComponent implements AfterContentInit {
   }
 }
 
+// The title of the FilterSection is the title that appears in the UI.
+// The name of the FilterSection is the name that is sent to the backend for the specific filter.
+// Determining the title here will allow us to change the title without changing backend logic for the name of the specific filter.
 export interface FilterSection {
   title: string;
   name: string;
