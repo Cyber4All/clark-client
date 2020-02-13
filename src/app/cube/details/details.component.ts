@@ -363,7 +363,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   async openViewAllChangelogsModal() {
     if (!this.openChangelogModal) {
-      this.openChangelogModal = true;
       this.loadingChangelogs = true;
       try {
         if (this.revisedVersion) {
@@ -392,6 +391,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.toastService.error('Error!', errorMessage);
       }
       this.loadingChangelogs = false;
+      this.openChangelogModal = true;
     }
   }
 
