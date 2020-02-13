@@ -90,7 +90,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       ]
     },
     {
-      title: 'curricular guideline sources',
+      title: 'guidelines',
       name: 'guidelines',
       type: 'select-many',
       canSearch: false,
