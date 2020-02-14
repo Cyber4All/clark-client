@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { LearningObject } from 'entity/learning-object/learning-object';
 
 @Component({
   selector: 'clark-library-item',
@@ -7,10 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class LibraryItemComponent implements OnInit {
 
-  @Input() learningObjectTitle: string;
-  @Input() learningObjectLength: string;
-  @Input() learningObjectAuthorName: string;
-  @Input() learningObjectContributorCount: number;
+  @Input() learningObject: LearningObject;
   @Input() learningObjectAverageRating: number;
 
   @Output() downloadButtonClicked: EventEmitter<void> = new EventEmitter();
@@ -22,7 +20,7 @@ export class LibraryItemComponent implements OnInit {
   }
 
   onDownloadClick(e: Event) {
-    this.downloadButtonClicked.emit(e);
+    this.downloadButtonClicked.emit();
   }
 
 

@@ -9,7 +9,6 @@
 
 .library-item__length {
     border-radius: 5px;
-    background-color: $nanomodule-color;
     color: white;
     padding: 5px;
     max-width: 100px;
@@ -17,13 +16,34 @@
     font-size: 12px;
     justify-self: start;
     font-weight: 500;
+
+    &.nanomodule {
+        background: $nanomodule-color;
+      }
+    
+      &.micromodule {
+        background: $micromodule-color;
+      }
+    
+      &.module {
+        background: $module-color;
+      }
+    
+      &.unit {
+        background: $unit-color;
+      }
+    
+      &.course {
+        background: $course-color;
+      }
 }
 
 .library-item__title {
-    color: $dark-grey;
+    color: $darker-grey;
     margin: 0;
     margin-top: 5px;
     justify-self: start;
+    font-weight: 500;
 }
 
 .library-item__author {
