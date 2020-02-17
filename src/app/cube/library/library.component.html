@@ -18,13 +18,13 @@
                     <i class="fal fa-arrow-circle-left"></i>
                 </div>
 
-                <clark-carousel>
-                    <ng-template ngFor let-page [ngForOf]="notPagesYo">
-                        <div class='cards-container'>
-                            {{ $implicit }}
-                        </div>
-                    </ng-template>
-                </clark-carousel>
+                <div *ngFor='let notification of notifications' class='cards-container__card'>
+                    <clark-notification-card 
+                        [notification]='notification'
+                        (deleteButtonClicked)='deleteNotification(notification)'
+                        (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'>
+                    </clark-notification-card>
+                </div>
                 
                 <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container right'>
                     <i class="fal fa-arrow-circle-right"></i>
@@ -56,4 +56,14 @@
   <div style="max-width: 600px;" #popupInner>
     <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
   </div>
+</clark-popup>
+
+<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
+  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+    <clark-changelog-modal
+      [learningObject] = "changelogLearningObject"
+      [changelogs] = "changelogs ? changelogs[0] : undefined"
+      [loading]="loadingChangelogs"
+    ></clark-changelog-modal>
+  </div> 
 </clark-popup>

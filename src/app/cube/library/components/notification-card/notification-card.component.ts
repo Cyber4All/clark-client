@@ -10,6 +10,7 @@ export class NotificationCardComponent implements OnInit {
   @Input() notification: { text: string, timestamp: string, link: string, attributes: any };
 
   @Output() deleteButtonClicked = new EventEmitter<Event>();
+  @Output() changeLogButtonClicked = new EventEmitter<Event>();
   constructor() { }
 
   ngOnInit() {
@@ -17,5 +18,9 @@ export class NotificationCardComponent implements OnInit {
 
   onDeleteButtonClick(e: Event) {
     this.deleteButtonClicked.emit(e);
+  }
+
+  onChangelogButtonClick(e: Event) {
+    this.changeLogButtonClicked.emit(e);
   }
 }

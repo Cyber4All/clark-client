@@ -8,6 +8,7 @@ import { AuthService } from 'app/core/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user.service';
 import { RatingService } from 'app/core/rating.service';
+import { ChangelogService } from 'app/core/changelog.service';
 
 @Component({
   selector: 'clark-library',
@@ -26,6 +27,10 @@ export class LibraryComponent implements OnInit, OnDestroy{
   notificationPages = {};
   notificationPageKeys = [];
   showDownloadModal = false;
+  openChangelogModal = false;
+  loadingChangelogs = false;
+  changelogs = [];
+  changelogLearningObject;
 
   get notPagesYo() {
     return Object.entries(this.notificationPages).map(x => x[1]);
@@ -38,6 +43,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
     private router: Router,
     private user: UserService,
     private ratings: RatingService,
+    private changelogService: ChangelogService,
   ) { }
 
   ngOnInit() {
@@ -143,6 +149,47 @@ export class LibraryComponent implements OnInit, OnDestroy{
   toggleDownloadModal(val?: boolean) {
     this.showDownloadModal = val;
   }
+
+  /**
+   * Opens the Change Log modal for a specified learning object and fetches its change logs
+   */
+  async openViewAllChangelogsModal(notification: any) {
+    const libraryItem = this.libraryItems.find(libraryItem => libraryItem.cuid === notification.attributes.cuid);
+    this.changelogLearningObject = libraryItem;
+    if (!this.openChangelogModal) {
+      this.loadingChangelogs = true;
+      try {
+        
+        this.changelogs = await this.changelogService.fetchAllChangelogs({
+          userId: libraryItem.author.id,
+          learningObjectCuid: libraryItem.cuid,
+          minusRevision: true,
+        });
+        
+      } catch (error) {
+        let errorMessage;
+
+        if (error.status === 401) {
+          // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
+          this.authService.logout();
+        } else {
+          errorMessage = `We encountered an error while attempting to
+          retrieve change logs for this Learning Object. Please try again later.`;
+        }
+        this.toaster.error('Error!', errorMessage);
+      }
+      this.loadingChangelogs = false;
+      this.openChangelogModal = true;
+    }
+  }
+
+ /**
+  * Closes any open change log modals
+  */
+ closeChangelogsModal() {
+  this.openChangelogModal = false;
+  this.changelogs = undefined;
+}
 
   private async checkAccessGroup() {
     this.canDownload = this.authService.hasReviewerAccess();
