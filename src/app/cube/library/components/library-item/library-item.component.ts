@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit,
+  Input, Output, EventEmitter,
+} from '@angular/core';
 
 @Component({
   selector: 'clark-library-item',
@@ -13,8 +16,9 @@ export class LibraryItemComponent implements OnInit {
   @Input() learningObjectContributorCount: number;
   @Input() learningObjectAverageRating: number;
 
-  @Output() downloadButtonClicked: EventEmitter<void> = new EventEmitter();
-  @Output() deleteButtonClicked: EventEmitter<void> = new EventEmitter();
+  @Output() downloadButtonClicked = new EventEmitter<Event>();
+  @Output() deleteButtonClicked = new EventEmitter<Event>();
+  @Output() titleClicked = new EventEmitter<Event>();
 
   constructor() { }
 
@@ -23,6 +27,14 @@ export class LibraryItemComponent implements OnInit {
 
   onDownloadClick(e: Event) {
     this.downloadButtonClicked.emit(e);
+  }
+
+  onDeleteButtonClick(e: Event) {
+    this.deleteButtonClicked.emit(e);
+  }
+
+  onTitleClick(e: Event) {
+    this.titleClicked.emit(e);
   }
 
 

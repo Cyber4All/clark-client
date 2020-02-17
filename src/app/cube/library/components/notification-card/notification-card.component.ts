@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'clark-notification-card',
@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationCardComponent implements OnInit {
 
+  @Input() notification: { text: string, timestamp: string, link: string, attributes: any };
+
+  @Output() deleteButtonClicked = new EventEmitter<Event>();
   constructor() { }
 
   ngOnInit() {
   }
 
+  onDeleteButtonClick(e: Event) {
+    this.deleteButtonClicked.emit(e);
+  }
 }

@@ -13,23 +13,28 @@
         </h2>
         
         <div class='library__cards-container'>
-            <clark-carousel>
-                <ng-template>
-                    <div class='cards-container'>
-                        <div class='cards-container__arrow-container'>
-                            <i class="fal fa-arrow-circle-left"></i>
+            <div class='notifications-container'>
+                <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container left'>
+                    <i class="fal fa-arrow-circle-left"></i>
+                </div>
+
+                <clark-carousel>
+                    <ng-template>
+                        <div class='cards-container'>
+                            <div *ngFor='let notification of notifications' class='cards-container__card'>
+                                <clark-notification-card 
+                                    [notification]='notification'
+                                    (deleteButtonClicked)='deleteNotification(notification)'>
+                                </clark-notification-card>
+                            </div>
                         </div>
-                        <clark-notification-card></clark-notification-card>
-                        <clark-notification-card></clark-notification-card>
-                        <clark-notification-card></clark-notification-card>
-                        <clark-notification-card></clark-notification-card>
-                        <clark-notification-card></clark-notification-card>
-                        <div class='cards-container__arrow-container'>
-                            <i class="fal fa-arrow-circle-right"></i>
-                        </div>
-                    </div>
-                </ng-template>
-            </clark-carousel>
+                    </ng-template>
+                </clark-carousel>
+                
+                <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container right'>
+                    <i class="fal fa-arrow-circle-right"></i>
+                </div>
+            </div>
         </div>
         
         <div class='library__content-container__saved-items'>
@@ -45,6 +50,8 @@
                         [learningObjectContributorCount]='item.contributors.length'
                         [learningObjectAverageRating]='4'
                         (downloadButtonClicked)='downloadObject($event, item, i)'
+                        (deleteButtonClicked)='removeItem($event, item)'
+                        (titleClicked)='goToItem(item)'
                     ></clark-library-item>
                 </div>
                 <clark-pagination></clark-pagination>

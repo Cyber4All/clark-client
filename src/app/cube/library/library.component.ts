@@ -6,6 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
 import { Router } from '@angular/router';
+import { UserService } from 'app/core/user.service';
+import { UriRetrieverService } from 'app/core/uri-retriever.service';
 
 @Component({
   selector: 'clark-library',
@@ -20,29 +22,41 @@ export class LibraryComponent implements OnInit, OnDestroy{
   downloading = [];
   destroyed$ = new Subject<void>();
   canDownload = false;
+  notifications: { text: string, timestamp: string, link: string, attributes: any }[];
 
   constructor(
     public cartService: CartV2Service,
     private toaster: ToastrOvenService,
     private authService: AuthService,
     private router: Router,
+    private user: UserService,
+    private uri: UriRetrieverService,
   ) { }
 
   ngOnInit() {
     this.loadCart();
+    this.getNotifications();
   }
 
   async loadCart() {
     try {
       this.loading = true;
       this.cartItems = await this.cartService.getCart(1, 10);
-      console.log(this.cartItems);
       this.loading = false;
     } catch (e) {
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;
     }
+  }
+
+  async getNotifications() {
+    this.notifications = await this.user.getNotifications(this.authService.user.username);
+  }
+
+  async deleteNotification(notificationID: any) {
+    console.log(notificationID);
+    // await this.user.deleteNotification(this.authService.user.username, notificationID);
   }
 
   async removeItem(event: MouseEvent, object: LearningObject) {
@@ -55,7 +69,6 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   downloadObject(event: MouseEvent, object: LearningObject, index: number) {
-    console.log(event);
     event.stopPropagation();
     this.downloading[index] = true;
     this.cartService.downloadLearningObject(
@@ -73,6 +86,16 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   goToItem(object: LearningObject) {
     this.router.navigate(['/details/', object.author.username, object.cuid]);
+  }
+
+  getRatings(learningObject: LearningObject) {
+    const params: {
+      author: learningObject.a,
+      cuidInfo: {
+        cuid: 
+      }
+    };
+    const ratings = this.uri.getLearningObjectResources(params);
   }
 
   private async checkAccessGroup() {

@@ -64,9 +64,19 @@
     margin-bottom: 30px;
 }
 
+.notifications-container {
+  position: relative;
+}
+
 .cards-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    margin-left: 40px;
+}
+
+.cards-container__card {
+    margin: 0 10px;
+    max-width: 300px;
 }
 
 .library__cards-container {
@@ -77,7 +87,6 @@
 .cards-container__arrow-container {
     font-size: 36px;
     color: $medium-grey;
-    align-self: center;
 }
 
 .cards-container__arrow-container:hover {
@@ -101,6 +110,15 @@
     text-align: center;
 }
 
+.right {
+    position: absolute;
+    right: 0;
+}
+
+.left {
+    position: absolute;
+    left: 0;
+}
 
 
 

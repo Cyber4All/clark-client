@@ -271,6 +271,20 @@ export class UserService {
       : Promise.resolve(null);
   }
 
+  getNotifications(username: string): Promise<any> {
+    return this.http.get(`http://localhost:8000/users/${username}/notifications`, {
+      withCredentials: true,
+    })
+    .toPromise();
+  }
+
+  deleteNotification(username: string, notificationID: string) {
+    return this.http.delete(`http://localhost:8000/users/${username}/notifications/${notificationID}`, {
+      withCredentials: true,
+    })
+    .toPromise();
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

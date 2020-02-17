@@ -1,16 +1,16 @@
 <div class='notification-card'>
-  <button class='notification-card__exit-button'>
+  <button class='notification-card__exit-button' (activate)='onDeleteButtonClick($event)'>
     <i class="fal fa-times"></i>
   </button>
   <h4 class='notification-card__title'>
-    Cyber Policy and Law
+    {{ (notification.attributes?.name.length>30) ? (notification.attributes?.name | slice:0:30)+'...' : notification.attributes?.name }}
   </h4>
   <div class='notification-card__version-history'>
     <div>
-      Version: 3
+      Version {{ notification.attributes?.version }}
     </div>
     <div>
-      Released on December 20, 2019
+      Released on {{ notification.timestamp | date }}
     </div>
   </div>
   <div class='notification-card__links'>
