@@ -9,10 +9,10 @@
     <p>{{ issue.resolved | date:'mediumDate' }}</p>
   </div>
   <div class="info">
-    <p>This functionality experienced {{ issue.accessGroups.length !== 4 ? 'minor' : 'major' }} problems.</p>
+    <p>This functionality experienced {{ !issue.accessGroups || issue.accessGroups.length !== 4 ? 'minor' : 'major' }} problems.</p>
   </div>
   <div class="status">
-    <i aria-hidden=true class="fas fa-exclamation-triangle" [ngClass]="{ 'warning': true, 'error': issue.accessGroups.length === 4 }"></i>
-    <p>{{ issue.accessGroups.length !== 4 ? 'Warning' : 'Error' }}</p>
+    <i aria-hidden=true class="fas fa-exclamation-triangle" [ngClass]="{ 'warning': true, 'error': issue.accessGroups && issue.accessGroups.length === 4 }"></i>
+    <p>{{ !issue.accessGroups || issue.accessGroups.length !== 4 ? 'Warning' : 'Error' }}</p>
   </div>
 </div>
