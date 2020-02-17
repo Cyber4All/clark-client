@@ -12,21 +12,16 @@
             Updates Since You've Last Downloaded
         </h2>
         
-        <div class='library__cards-container'>
+        <div class='library__cards-container' *ngIf='notificationPageKeys.length'>
             <div class='notifications-container'>
                 <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container left'>
                     <i class="fal fa-arrow-circle-left"></i>
                 </div>
 
                 <clark-carousel>
-                    <ng-template>
+                    <ng-template ngFor let-page [ngForOf]="notPagesYo">
                         <div class='cards-container'>
-                            <div *ngFor='let notification of notifications' class='cards-container__card'>
-                                <clark-notification-card 
-                                    [notification]='notification'
-                                    (deleteButtonClicked)='deleteNotification(notification)'>
-                                </clark-notification-card>
-                            </div>
+                            {{ $implicit }}
                         </div>
                     </ng-template>
                 </clark-carousel>
@@ -56,3 +51,9 @@
         </div>
     </div>
 </section>
+
+<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
+  <div style="max-width: 600px;" #popupInner>
+    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
+  </div>
+</clark-popup>

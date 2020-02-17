@@ -7,7 +7,6 @@ import { Subject } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user.service';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
 import { RatingService } from 'app/core/rating.service';
 
 @Component({
@@ -24,6 +23,13 @@ export class LibraryComponent implements OnInit, OnDestroy{
   destroyed$ = new Subject<void>();
   canDownload = false;
   notifications: { text: string, timestamp: string, link: string, attributes: any }[];
+  notificationPages = {};
+  notificationPageKeys = [];
+  showDownloadModal = false;
+
+  get notPagesYo() {
+    return Object.entries(this.notificationPages).map(x => x[1]);
+  }
 
   constructor(
     public cartService: CartV2Service,
@@ -31,7 +37,6 @@ export class LibraryComponent implements OnInit, OnDestroy{
     private authService: AuthService,
     private router: Router,
     private user: UserService,
-    private uri: UriRetrieverService,
     private ratings: RatingService,
   ) { }
 
@@ -45,7 +50,10 @@ export class LibraryComponent implements OnInit, OnDestroy{
       this.loading = true;
       this.libraryItems = await this.cartService.getCart(1, 10);
       this.libraryItems.map(async (libraryItem: LearningObject) => {
-        libraryItem['avgRating'] = (await this.getRatings(libraryItem)).avgValue;
+        const ratings = await this.getRatings(libraryItem);
+        if (ratings) {
+          libraryItem['avgRating'] = ratings.avgValue;
+        }
       });
       this.loading = false;
     } catch (e) {
@@ -57,6 +65,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   async getNotifications() {
     this.notifications = await this.user.getNotifications(this.authService.user.username);
+    this.setNotificationPages();
   }
 
   async deleteNotification(notificationID: any) {
@@ -87,6 +96,8 @@ export class LibraryComponent implements OnInit, OnDestroy{
           this.downloading[index] = false;
         }
       });
+
+    this.showDownloadModal = true;
   }
 
   goToItem(object: LearningObject) {
@@ -94,7 +105,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   async getRatings(learningObject: LearningObject) {
-    const { author, cuid, version, id } = learningObject;
+    const { author, cuid, version } = learningObject;
     const params = {
       username: author.username,
       CUID: cuid,
@@ -106,6 +117,31 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   async getChangelogs() {
 
+  }
+
+  setNotificationPages() {
+    const perPageCount = 5;
+    const pageCount = Math.floor(this.notifications.length / perPageCount);
+    const trailingNotificationsCount = this.notifications.length % perPageCount;
+    let lastSavedIndex = 0;
+
+    for (let i = 0; i < pageCount; i++) {
+      for (let j = lastSavedIndex; j < lastSavedIndex + 5; j++) {
+        this.notificationPages[i] ? this.notificationPages[i].push(this.notifications[j]) : this.notificationPages[i] = [this.notifications[j]];
+      }
+      lastSavedIndex = lastSavedIndex + 5;
+    }
+
+    for (let x = 0; x < trailingNotificationsCount; x++) {
+      lastSavedIndex += 1;
+      this.notificationPages[pageCount] = this.notifications[lastSavedIndex - 1];
+    }
+
+    this.notificationPageKeys = Object.keys(this.notificationPages).map(element => parseInt(element, 10));
+  }
+
+  toggleDownloadModal(val?: boolean) {
+    this.showDownloadModal = val;
   }
 
   private async checkAccessGroup() {

@@ -21,7 +21,7 @@ export class LibraryItemComponent implements OnInit {
   }
 
   onDownloadClick(e: Event) {
-    this.downloadButtonClicked.emit();
+    this.downloadButtonClicked.emit(e);
   }
 
   onDeleteButtonClick(e: Event) {

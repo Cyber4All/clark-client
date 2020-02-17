@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'clark-pagination',
@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaginationComponent implements OnInit {
 
+  @Input() currentPageNumber: number;
+
+
+  @Output() newPageNumberClicked = new EventEmitter<number>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onPageNumberClick(index: number) {
+    this.newPageNumberClicked.emit(index);
+  }
+
+  onLeftArrowClick() {
+    this.newPageNumberClicked.emit(this.currentPageNumber - 1);
+  }
+
+  onRightArrowClick() {
+    this.newPageNumberClicked.emit(this.currentPageNumber + 1);
   }
 
 }
