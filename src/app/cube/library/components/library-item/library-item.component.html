@@ -1,11 +1,11 @@
 <div class='library-item'>
 
-    <h5 class='library-item__length'>{{ learningObjectLength }}</h5>
+    <h5 [attr.class]="'library-item__length  ' + learningObject.length">{{ learningObject.length | titlecase }}</h5>
 
-    <h5 class='library-item__title' (activate)='onTitleClick($event)'>{{ learningObjectTitle }}</h5>
+    <h5 class='library-item__title' (activate)='onTitleClick($event)'>{{ learningObject.name }}</h5>
 
-    <h5 class='library-item__author '>{{ learningObjectAuthorName }}
-        <span *ngIf='learningObjectContributorCount'>and {{ learningObjectContributorCount }} more</span>
+    <h5 class='library-item__author '>{{ learningObject.author.name | titlecase }}
+        <span *ngIf='learningObjectContributorCount'>and {{ learningObject.contributors.length }} more</span>
     </h5>
   
     <clark-rating-stars rating='{{ learningObjectAverageRating }}' color='gold'></clark-rating-stars>

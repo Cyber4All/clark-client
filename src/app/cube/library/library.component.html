@@ -1,5 +1,5 @@
 <section class='library'>
-    <div class='test'>
+    <div class='library__splash'>
         <div class='library__splash-container'>
             <h1 class='library__splash-container__title'>
                 Your Library
@@ -44,10 +44,7 @@
             <div class='library-items__list-items'>
                 <div *ngFor='let item of cartItems; let i = index'>
                     <clark-library-item
-                        [learningObjectTitle]='item.name'
-                        [learningObjectLength]='item.length'
-                        [learningObjectAuthorName]='item.author.name'
-                        [learningObjectContributorCount]='item.contributors.length'
+                        [learningObject]='item'
                         [learningObjectAverageRating]='4'
                         (downloadButtonClicked)='downloadObject($event, item, i)'
                         (deleteButtonClicked)='removeItem($event, item)'

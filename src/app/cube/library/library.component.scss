@@ -4,7 +4,7 @@
     background-color: white;
 }
 
-.test {
+.library__splash {
     height: 250px;
     position: absolute;
     top: 0;
@@ -120,7 +120,15 @@
     left: 0;
 }
 
+@media only screen and (max-width:  830px) {
+  .library__cards-container__title, .library-items__title {
+    font-size: $large;
+  }
 
+  .cards-container__arrow-container, .library__cards-container {
+    display: none;
+  }
+}
 
 
 

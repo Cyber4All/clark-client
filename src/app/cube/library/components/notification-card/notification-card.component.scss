@@ -11,7 +11,7 @@
 .notification-card__exit-button {
     border: none;
     outline: none;
-    font-size: 15px;
+    font-size: $normal;
     margin-right: 0;
     margin-left: auto;
     display: block;
@@ -32,5 +32,5 @@
     color: $light-blue;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    font-size: 13px;
+    font-size: $small;
 }
