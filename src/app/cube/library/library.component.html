@@ -17,13 +17,15 @@
                 <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container left'>
                     <i class="fal fa-arrow-circle-left"></i>
                 </div>
-
-                <div *ngFor='let notification of notifications' class='cards-container__card'>
-                    <clark-notification-card 
-                        [notification]='notification'
-                        (deleteButtonClicked)='deleteNotification(notification)'
-                        (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'>
-                    </clark-notification-card>
+                
+                <div class='notifications-container__cards'>
+                    <div *ngFor='let notification of notifications' class='cards-container__card'>
+                        <clark-notification-card 
+                            [notification]='notification'
+                            (deleteButtonClicked)='deleteNotification(notification)'
+                            (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'>
+                        </clark-notification-card>
+                    </div>
                 </div>
                 
                 <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container right'>
@@ -42,7 +44,7 @@
                         [learningObject]='item'
                         [learningObjectAverageRating]='item.avgRating'
                         (downloadButtonClicked)='downloadObject($event, item, i)'
-                        (deleteButtonClicked)='removeItem($event, item)'
+                        (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemToDelete = item;'
                         (titleClicked)='goToItem(item)'
                     ></clark-library-item>
                 </div>
@@ -67,3 +69,17 @@
     ></clark-changelog-modal>
   </div> 
 </clark-popup>
+
+<clark-popup *ngIf="showDeleteLibraryItemModal" (closed)="toggleDeleteLibraryItemModal(false)">
+    <div style="max-width: 600px;" #popupInner>
+        <div class='delete-library-item-modal'>
+            <h3 class='delete-library-item-modal__header'>Are you sure?</h3>
+            <p class='delete-library-item-modal__warning'>You're deleting an item from your Library!</p>
+            <div>
+                <button class='button neutral' (activate)="toggleDeleteLibraryItemModal(false)">Cancel</button>
+                <button class='delete-library-item-modal__button button' (activate)="removeItem()">Delete</button>
+            </div>
+        </div>
+    </div>
+</clark-popup>
+

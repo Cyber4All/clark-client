@@ -68,6 +68,10 @@
   position: relative;
 }
 
+.notifications-container__cards {
+    display: flex;
+}
+
 .cards-container {
     display: flex;
     justify-content: flex-start;
@@ -113,11 +117,33 @@
 .right {
     position: absolute;
     right: 0;
+    top: 0;
 }
 
 .left {
     position: absolute;
     left: 0;
+    top: 0;
+}
+
+.delete-library-item-modal {
+    text-align: center;
+}
+
+.delete-library-item-modal__header {
+    color: $error-red;
+    font-size: $larger;
+}
+
+.delete-library-item-modal__warning {
+    color: $medium-grey;
+    font-size: $large;
+}
+
+.delete-library-item-modal__button {
+    background-color: $error-red;
+    color: white;
+    margin-left: 10px;
 }
 
 @media only screen and (max-width:  830px) {

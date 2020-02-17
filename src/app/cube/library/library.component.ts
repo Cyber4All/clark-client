@@ -29,8 +29,10 @@ export class LibraryComponent implements OnInit, OnDestroy{
   showDownloadModal = false;
   openChangelogModal = false;
   loadingChangelogs = false;
+  showDeleteLibraryItemModal = false;
   changelogs = [];
   changelogLearningObject;
+  libraryItemToDelete;
 
   get notPagesYo() {
     return Object.entries(this.notificationPages).map(x => x[1]);
@@ -75,14 +77,16 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   async deleteNotification(notificationID: any) {
-    console.log(notificationID);
-    // await this.user.deleteNotification(this.authService.user.username, notificationID);
+    await this.user.deleteNotification(this.authService.user.username, notificationID);
+    await this.getNotifications();
+    console.log('hello');
   }
 
-  async removeItem(event: MouseEvent, object: LearningObject) {
-    event.stopPropagation();
+  async removeItem() {
     try {
-      this.libraryItems = await this.cartService.removeFromCart(object.cuid);
+      await this.cartService.removeFromCart(this.libraryItemToDelete.cuid);
+      this.libraryItems = await this.cartService.getCart(1, 10);
+      this.showDeleteLibraryItemModal = false;
     } catch (e) {
       console.log(e);
     }
@@ -150,6 +154,10 @@ export class LibraryComponent implements OnInit, OnDestroy{
     this.showDownloadModal = val;
   }
 
+  toggleDeleteLibraryItemModal(val: boolean) {
+    this.showDeleteLibraryItemModal = val;
+  }
+
   /**
    * Opens the Change Log modal for a specified learning object and fetches its change logs
    */
@@ -183,13 +191,13 @@ export class LibraryComponent implements OnInit, OnDestroy{
     }
   }
 
- /**
-  * Closes any open change log modals
-  */
- closeChangelogsModal() {
-  this.openChangelogModal = false;
-  this.changelogs = undefined;
-}
+  /**
+   * Closes any open change log modals
+   */
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
+  }
 
   private async checkAccessGroup() {
     this.canDownload = this.authService.hasReviewerAccess();
