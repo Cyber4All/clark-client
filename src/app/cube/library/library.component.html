@@ -42,10 +42,10 @@
                 Saved Items
             </h2>
             <div class='library-items__list-items'>
-                <div *ngFor='let item of cartItems; let i = index'>
+                <div *ngFor='let item of libraryItems; let i = index'>
                     <clark-library-item
                         [learningObject]='item'
-                        [learningObjectAverageRating]='4'
+                        [learningObjectAverageRating]='item.avgRating'
                         (downloadButtonClicked)='downloadObject($event, item, i)'
                         (deleteButtonClicked)='removeItem($event, item)'
                         (titleClicked)='goToItem(item)'

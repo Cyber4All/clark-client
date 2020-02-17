@@ -8,6 +8,7 @@ import { AuthService } from 'app/core/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user.service';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { RatingService } from 'app/core/rating.service';
 
 @Component({
   selector: 'clark-library',
@@ -18,7 +19,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   loading: boolean;
   serviceError: boolean;
-  cartItems: LearningObject[] = [];
+  libraryItems: LearningObject[] = [];
   downloading = [];
   destroyed$ = new Subject<void>();
   canDownload = false;
@@ -31,6 +32,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
     private router: Router,
     private user: UserService,
     private uri: UriRetrieverService,
+    private ratings: RatingService,
   ) { }
 
   ngOnInit() {
@@ -41,7 +43,10 @@ export class LibraryComponent implements OnInit, OnDestroy{
   async loadCart() {
     try {
       this.loading = true;
-      this.cartItems = await this.cartService.getCart(1, 10);
+      this.libraryItems = await this.cartService.getCart(1, 10);
+      this.libraryItems.map(async (libraryItem: LearningObject) => {
+        libraryItem['avgRating'] = (await this.getRatings(libraryItem)).avgValue;
+      });
       this.loading = false;
     } catch (e) {
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
@@ -62,7 +67,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   async removeItem(event: MouseEvent, object: LearningObject) {
     event.stopPropagation();
     try {
-      this.cartItems = await this.cartService.removeFromCart(object.cuid);
+      this.libraryItems = await this.cartService.removeFromCart(object.cuid);
     } catch (e) {
       console.log(e);
     }
@@ -88,14 +93,19 @@ export class LibraryComponent implements OnInit, OnDestroy{
     this.router.navigate(['/details/', object.author.username, object.cuid]);
   }
 
-  getRatings(learningObject: LearningObject) {
-    const params: {
-      author: learningObject.a,
-      cuidInfo: {
-        cuid: 
-      }
+  async getRatings(learningObject: LearningObject) {
+    const { author, cuid, version, id } = learningObject;
+    const params = {
+      username: author.username,
+      CUID: cuid,
+      version,
     };
-    const ratings = this.uri.getLearningObjectResources(params);
+    const ratings = await this.ratings.getLearningObjectRatings(params);
+    return ratings;
+  }
+
+  async getChangelogs() {
+
   }
 
   private async checkAccessGroup() {
