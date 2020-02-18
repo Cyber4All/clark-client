@@ -6,7 +6,8 @@ import { Component,
         Renderer2,
         ViewChild,
         ChangeDetectionStrategy,
-        OnChanges } from '@angular/core';
+        OnChanges, 
+        ChangeDetectorRef} from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
 import { environment } from '@env/environment';
@@ -22,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: 'action-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
+export class ActionPanelComponent implements OnInit,OnDestroy {
 
   @Input() learningObject: LearningObject;
   @Input() revisedVersion: boolean;
@@ -71,6 +72,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     private cartService: CartV2Service,
     private renderer: Renderer2,
     private toaster: ToastrOvenService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -86,10 +88,6 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
 
-  }
-
-  ngOnChanges() {
-    this.saved = this.cartService.has(this.learningObject);
   }
 
   get isReleased(): boolean {
@@ -113,26 +111,26 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
         this.learningObject.version
       );
     }
-
-    try {
-      if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
-        this.saved = this.cartService.has(this.learningObject);
-
-        if (!this.saved) {
-          await this.cartService.addToCart(this.learningObject.author.username, this.learningObject);
-          this.animateSaves();
-          this.saved = true;
-        }
+    if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
+      this.saved = this.cartService.has(this.learningObject);
+      if (!this.saved) {
+          await this.cartService.addToCart(this.learningObject.author.username, this.learningObject).then(objects => {
+            this.toaster.success('Successfully Added!', 'Learning Object added to your library');
+            this.saved = true;
+            this.animateSaves();
+          })
+          .catch (error => {
+            if (error.status >= 500) {
+              this.disableLibraryButtons = true;
+            }
+          this.toaster.error('Error!', 'There was an error adding to your library');
+          });
+          this.addingToLibrary = false;
+          this.changeDetectorRef.detectChanges();
       }
-    } catch (error) {
-      if (error.status >= 500) {
-        this.disableLibraryButtons = true;
-      }
-      this.toaster.error('Error!', 'There was an error adding to your library');
-    } finally {
-      this.addingToLibrary = false;
     }
   }
+
 
   /**
    * Download the revised copy of a learning object. This does not add the object to the users cart
@@ -258,14 +256,11 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     const saves = this.learningObject.metrics.saves + 1;
 
     this.renderer.addClass(this.savesRef.nativeElement, 'animate');
+    this.learningObject.metrics.saves = saves;
 
     setTimeout(() => {
-      this.learningObject.metrics.saves = saves;
-
-      setTimeout(() => {
-        this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
-      }, 1000);
-    }, 400);
+      this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
+    }, 1000);
   }
 
   get isMobile() {
