@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 export class OutagePageComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
-  statusList = ['downloads', 'search'];
+  statusList = ['downloads'];
   statuses: OutageReport[] = [];
   pastIssues: OutageReport[];
 
