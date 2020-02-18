@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: 'action-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ActionPanelComponent implements OnInit,OnDestroy {
+export class ActionPanelComponent implements OnInit, OnDestroy {
 
   @Input() learningObject: LearningObject;
   @Input() revisedVersion: boolean;
