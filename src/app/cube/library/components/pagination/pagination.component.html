@@ -1,23 +1,21 @@
 <div class='library-items__pagination-container'>
-  <button class='library-items__pagination-container__arrow-button'>
+  <button 
+    *ngIf='!getPageNumberList().includes(1)'
+    class='library-items__pagination-container__arrow-button' 
+    (activate)='onLeftArrowClick()'>
       <i class="far fa-arrow-left"></i>
   </button>
-  <button class='library-items__pagination-container__button'>
-      1
+  <button 
+    *ngFor='let pageNumber of getPageNumberList()' 
+    class='library-items__pagination-container__button' 
+    [ngClass]="{'selected': currentPageNumber === pageNumber }"
+    (activate)='onPageNumberClick(pageNumber)'>
+      {{ pageNumber }}
   </button>
-  <button class='library-items__pagination-container__button'>
-      2
-  </button>
-  <button class='library-items__pagination-container__button'>
-      3
-  </button>
-  <button class='library-items__pagination-container__button'>
-      4
-  </button>
-  <button class='library-items__pagination-container__button'>
-      5
-  </button>
-  <button class='library-items__pagination-container__arrow-button'>
+  <button 
+    *ngIf='!getPageNumberList().includes(lastPageNumber)'
+    class='library-items__pagination-container__arrow-button'
+    (activate)='onRightArrowClick()'>
       <i class="far fa-arrow-right"></i>
   </button>
 </div>

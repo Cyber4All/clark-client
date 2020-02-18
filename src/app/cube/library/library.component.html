@@ -48,7 +48,11 @@
                         (titleClicked)='goToItem(item)'
                     ></clark-library-item>
                 </div>
-                <clark-pagination></clark-pagination>
+                <clark-pagination
+                    [lastPageNumber] = lastPageNumber
+                    [currentPageNumber] = currentPageNumber
+                    (newPageNumberClicked) = 'changeLibraryItemPage($event)'
+                ></clark-pagination>
             </div>
         </div>
     </div>

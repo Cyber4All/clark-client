@@ -33,6 +33,8 @@ export class LibraryComponent implements OnInit, OnDestroy{
   changelogs = [];
   changelogLearningObject;
   libraryItemToDelete;
+  lastPageNumber;
+  currentPageNumber = 1;
 
   get notPagesYo() {
     return Object.entries(this.notificationPages).map(x => x[1]);
@@ -56,7 +58,9 @@ export class LibraryComponent implements OnInit, OnDestroy{
   async loadCart() {
     try {
       this.loading = true;
-      this.libraryItems = await this.cartService.getCart(1, 10);
+      const libraryItemInformation = await this.cartService.getCart(this.currentPageNumber, 10);
+      this.libraryItems = libraryItemInformation.cartItems;
+      this.lastPageNumber = libraryItemInformation.lastPage;
       this.libraryItems.map(async (libraryItem: LearningObject) => {
         const ratings = await this.getRatings(libraryItem);
         if (ratings) {
@@ -85,7 +89,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   async removeItem() {
     try {
       await this.cartService.removeFromCart(this.libraryItemToDelete.cuid);
-      this.libraryItems = await this.cartService.getCart(1, 10);
+      this.libraryItems = (await this.cartService.getCart(1, 10)).cartItems;
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
       console.log(e);
@@ -201,6 +205,17 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   private async checkAccessGroup() {
     this.canDownload = this.authService.hasReviewerAccess();
+  }
+
+  async changeLibraryItemPage(pageNumber: number) {
+    console.log(pageNumber);
+    const libraryItemInformation = await this.cartService.getCart(pageNumber, 10);
+    this.libraryItems = libraryItemInformation.cartItems;
+    this.lastPageNumber = libraryItemInformation.lastPage;
+    this.currentPageNumber = pageNumber;
+
+    console.log(this.lastPageNumber);
+    console.log(this.currentPageNumber);
   }
 
   ngOnDestroy() {

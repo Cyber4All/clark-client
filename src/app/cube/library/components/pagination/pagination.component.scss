@@ -25,6 +25,12 @@
     margin: 0 10px;
 }
 
+.selected { 
+    color: $light-blue;
+    font-size: $normal;
+    font-weight: 500;
+}
+
 button {
     border: none;
     outline: none;

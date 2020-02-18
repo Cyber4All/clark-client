@@ -32,7 +32,7 @@ export class CartV2Service {
     window.open(url);
   }
 
-  getCart(page?: number, limit?: number, reloadUser = false): Promise<LearningObject[]> {
+  getCart(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
@@ -48,9 +48,8 @@ export class CartV2Service {
       )
       .toPromise()
       .then((val: any) => {
-        this.cartItems = val
-          .map(object => new LearningObject(object.learningObject));
-        return this.cartItems;
+        this.cartItems = val.userLibraryItems.map(object => new LearningObject(object.learningObject));
+        return { cartItems: this.cartItems, lastPage: val.lastPage };
       });
   }
 
