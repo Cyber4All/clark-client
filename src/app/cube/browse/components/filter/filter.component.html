@@ -2,7 +2,7 @@
   <div class="filter-section" id="filter-section" *ngFor="let f of filters">
     <ng-container *ngIf="f.values || f.template">
       <div class="filter-section-inner" id="filter-section-inner">
-        <div class="filter-section-name">{{ f.name }}</div>
+        <div class="filter-section-name">{{ f.title }}</div>
         <div *ngIf="f.canSearch" class="filter-section-search">
           <!-- TODO search bar here -->
         </div>
