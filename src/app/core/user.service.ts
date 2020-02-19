@@ -279,6 +279,7 @@ export class UserService {
   }
 
   deleteNotification(username: string, notificationID: string) {
+    
     return this.http.delete(`http://localhost:8000/users/${username}/notifications/${notificationID}`, {
       withCredentials: true,
     })

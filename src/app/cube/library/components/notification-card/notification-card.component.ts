@@ -26,6 +26,6 @@ export class NotificationCardComponent implements OnInit {
   }
 
   onDetailsButtonClick(e: Event) {
-    this.deleteButtonClicked.emit(e);
+    this.detailsButtonClicked.emit(e);
   }
 }

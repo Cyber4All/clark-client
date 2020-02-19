@@ -80,15 +80,14 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   async getNotifications(page: number) {
-    console.log(page);
     const result = await this.user.getNotifications(this.authService.user.username, page, 5);
     this.notifications = result.notifications;
     this.lastNotificationsPageNumber = result.lastPage;
     this.currentNotificationsPageNumber = page;
   }
 
-  async deleteNotification(notificationID: any) {
-    await this.user.deleteNotification(this.authService.user.username, notificationID);
+  async deleteNotification(notification: any) {
+    await this.user.deleteNotification(this.authService.user.username, notification.id);
     await this.getNotifications(this.currentPageNumber);
   }
 
@@ -122,7 +121,6 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   goToNotification(notification: any) {
     const parsedDetailsPath = notification.link.split('/');
-    console.log(parsedDetailsPath);
     this.router.navigate(['/details/', parsedDetailsPath[2], parsedDetailsPath[3]]);
   }
 
