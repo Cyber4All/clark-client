@@ -66,10 +66,14 @@
 
 .notifications-container {
   position: relative;
+  height: 100%;
 }
 
 .notifications-container__cards {
     display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 50px;
 }
 
 .cards-container {
@@ -84,7 +88,7 @@
 }
 
 .library__cards-container {
-    margin-bottom: 250px;
+    margin-bottom: 100px;
     padding: 0 20px;
 }
 
@@ -117,13 +121,13 @@
 .right {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 35%;
 }
 
 .left {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 35%;
 }
 
 .delete-library-item-modal {

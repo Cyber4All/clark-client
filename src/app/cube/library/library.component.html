@@ -12,9 +12,12 @@
             Updates Since You've Last Downloaded
         </h2>
         
-        <div class='library__cards-container' *ngIf='notificationPageKeys.length'>
+        <div class='library__cards-container' *ngIf='notifications?.length'>
             <div class='notifications-container'>
-                <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container left'>
+                <div 
+                    *ngIf='currentNotificationsPageNumber > 1' 
+                    class='cards-container__arrow-container left'
+                    (activate)='getNotifications(currentNotificationsPageNumber - 1)'>
                     <i class="fal fa-arrow-circle-left"></i>
                 </div>
                 
@@ -23,12 +26,16 @@
                         <clark-notification-card 
                             [notification]='notification'
                             (deleteButtonClicked)='deleteNotification(notification)'
-                            (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'>
+                            (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'
+                            (deleteButtonClicked)='goToNotification(notification)'>
                         </clark-notification-card>
                     </div>
                 </div>
                 
-                <div *ngIf='notifications?.length > 5' class='cards-container__arrow-container right'>
+                <div 
+                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === 5'
+                    class='cards-container__arrow-container right'
+                    (activate)='getNotifications(currentNotificationsPageNumber + 1)'>
                     <i class="fal fa-arrow-circle-right"></i>
                 </div>
             </div>

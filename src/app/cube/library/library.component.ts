@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'app/core/user.service';
 import { RatingService } from 'app/core/rating.service';
 import { ChangelogService } from 'app/core/changelog.service';
+import { LearningObjectService } from '../learning-object.service';
 
 @Component({
   selector: 'clark-library',
@@ -35,6 +36,8 @@ export class LibraryComponent implements OnInit, OnDestroy{
   libraryItemToDelete;
   lastPageNumber;
   currentPageNumber = 1;
+  currentNotificationsPageNumber = 1;
+  lastNotificationsPageNumber;
 
   get notPagesYo() {
     return Object.entries(this.notificationPages).map(x => x[1]);
@@ -48,11 +51,12 @@ export class LibraryComponent implements OnInit, OnDestroy{
     private user: UserService,
     private ratings: RatingService,
     private changelogService: ChangelogService,
+    private learningObjectService: LearningObjectService,
   ) { }
 
   ngOnInit() {
     this.loadCart();
-    this.getNotifications();
+    this.getNotifications(this.currentNotificationsPageNumber);
   }
 
   async loadCart() {
@@ -75,15 +79,17 @@ export class LibraryComponent implements OnInit, OnDestroy{
     }
   }
 
-  async getNotifications() {
-    this.notifications = await this.user.getNotifications(this.authService.user.username);
-    this.setNotificationPages();
+  async getNotifications(page: number) {
+    console.log(page);
+    const result = await this.user.getNotifications(this.authService.user.username, page, 5);
+    this.notifications = result.notifications;
+    this.lastNotificationsPageNumber = result.lastPage;
+    this.currentNotificationsPageNumber = page;
   }
 
   async deleteNotification(notificationID: any) {
     await this.user.deleteNotification(this.authService.user.username, notificationID);
-    await this.getNotifications();
-    console.log('hello');
+    await this.getNotifications(this.currentPageNumber);
   }
 
   async removeItem() {
@@ -114,6 +120,12 @@ export class LibraryComponent implements OnInit, OnDestroy{
     this.showDownloadModal = true;
   }
 
+  goToNotification(notification: any) {
+    const parsedDetailsPath = notification.link.split('/');
+    console.log(parsedDetailsPath);
+    this.router.navigate(['/details/', parsedDetailsPath[2], parsedDetailsPath[3]]);
+  }
+
   goToItem(object: LearningObject) {
     this.router.navigate(['/details/', object.author.username, object.cuid]);
   }
@@ -133,27 +145,6 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   }
 
-  setNotificationPages() {
-    const perPageCount = 5;
-    const pageCount = Math.floor(this.notifications.length / perPageCount);
-    const trailingNotificationsCount = this.notifications.length % perPageCount;
-    let lastSavedIndex = 0;
-
-    for (let i = 0; i < pageCount; i++) {
-      for (let j = lastSavedIndex; j < lastSavedIndex + 5; j++) {
-        this.notificationPages[i] ? this.notificationPages[i].push(this.notifications[j]) : this.notificationPages[i] = [this.notifications[j]];
-      }
-      lastSavedIndex = lastSavedIndex + 5;
-    }
-
-    for (let x = 0; x < trailingNotificationsCount; x++) {
-      lastSavedIndex += 1;
-      this.notificationPages[pageCount] = this.notifications[lastSavedIndex - 1];
-    }
-
-    this.notificationPageKeys = Object.keys(this.notificationPages).map(element => parseInt(element, 10));
-  }
-
   toggleDownloadModal(val?: boolean) {
     this.showDownloadModal = val;
   }
@@ -166,18 +157,19 @@ export class LibraryComponent implements OnInit, OnDestroy{
    * Opens the Change Log modal for a specified learning object and fetches its change logs
    */
   async openViewAllChangelogsModal(notification: any) {
-    const libraryItem = this.libraryItems.find(libraryItem => libraryItem.cuid === notification.attributes.cuid);
-    this.changelogLearningObject = libraryItem;
+    this.changelogLearningObject = await this.learningObjectService.getLearningObject(
+      notification.attributes.learningObjectAuthorUsername,
+      notification.attributes.cuid,
+      notification.attributes.version
+    );
     if (!this.openChangelogModal) {
       this.loadingChangelogs = true;
       try {
-        
         this.changelogs = await this.changelogService.fetchAllChangelogs({
-          userId: libraryItem.author.id,
-          learningObjectCuid: libraryItem.cuid,
+          userId: notification.attributes.learningObjectAuthorID,
+          learningObjectCuid: notification.attributes.cuid,
           minusRevision: true,
         });
-        
       } catch (error) {
         let errorMessage;
 

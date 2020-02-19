@@ -271,8 +271,8 @@ export class UserService {
       : Promise.resolve(null);
   }
 
-  getNotifications(username: string): Promise<any> {
-    return this.http.get(`http://localhost:8000/users/${username}/notifications`, {
+  getNotifications(username: string, page: number, limit: number): Promise<any> {
+    return this.http.get(`http://localhost:8000/users/${username}/notifications?page=${page}&limit=${limit}`, {
       withCredentials: true,
     })
     .toPromise();
