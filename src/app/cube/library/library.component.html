@@ -40,6 +40,11 @@
                 </div>
             </div>
         </div>
+
+        <div *ngIf='!notifications?.length' class='empty-notification-container'>
+            <i class="far fa-4x fa-thumbs-up empty-notification-container__icon"></i>
+            <p class='empty-notification-container__message'>All of your saved items are up-to-date!</p>
+        </div>
         
         <div class='library__content-container__saved-items'>
             <h2 class='library-items__title'>

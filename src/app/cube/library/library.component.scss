@@ -150,6 +150,21 @@
     margin-left: 10px;
 }
 
+.empty-notification-container {
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.empty-notification-container__icon {
+    color: $light-blue;
+    margin-bottom: 10px;
+}
+
+.empty-notification-container__message {
+    color: $dark-grey;
+    font-size: 18px;
+}
+
 @media only screen and (max-width:  830px) {
   .library__cards-container__title, .library-items__title {
     font-size: $large;
