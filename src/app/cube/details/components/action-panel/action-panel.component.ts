@@ -6,7 +6,7 @@ import { Component,
         Renderer2,
         ViewChild,
         ChangeDetectionStrategy,
-        OnChanges, 
+        OnChanges,
         ChangeDetectorRef} from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
