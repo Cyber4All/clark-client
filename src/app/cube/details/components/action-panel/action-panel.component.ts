@@ -204,7 +204,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
         }, function (response) { });
         break;
       case 'twitter':
-        const text = 'Check out this learning object on CLARK!';
+        const text = 'Check out this learning object on CLARK! ClarkCan';
         window.open('http://twitter.com/share?url='
           + encodeURIComponent(this.url) + '&text='
           + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
@@ -212,7 +212,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
         break;
       case 'linkedin':
         const payload = {
-          'comment': 'Check out this learning object on CLARK! ' + this.url,
+          'comment': 'Check out this learning object on CLARK! ' + this.url + ' #ClarkCan',
           'visibility': {
             'code': 'anyone'
           }
