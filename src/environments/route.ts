@@ -330,7 +330,30 @@ export const USER_ROUTES = {
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
       params.uploadId
       }/admin`;
-  }
+  },
+  GET_NOTIFICATIONS(params: {
+    username: string,
+    page: number,
+    limit: number,
+  }): string {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/notifications?page=${encodeURIComponent(
+      params.page,
+    )}&limit=${encodeURIComponent(
+      params.limit,
+    )}`;
+  },
+  DELETE_NOTIFICATION(params: {
+    username: string,
+    id: string,
+  }): string {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/notifications/${encodeURIComponent(
+      params.id,
+    )}`;
+  },
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {

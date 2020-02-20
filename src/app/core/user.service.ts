@@ -272,15 +272,14 @@ export class UserService {
   }
 
   getNotifications(username: string, page: number, limit: number): Promise<any> {
-    return this.http.get(`http://localhost:8000/users/${username}/notifications?page=${page}&limit=${limit}`, {
+    return this.http.get(USER_ROUTES.GET_NOTIFICATIONS({ username, page, limit }), {
       withCredentials: true,
     })
     .toPromise();
   }
 
   deleteNotification(username: string, notificationID: string) {
-    
-    return this.http.delete(`http://localhost:8000/users/${username}/notifications/${notificationID}`, {
+    return this.http.delete(USER_ROUTES.DELETE_NOTIFICATION({ username, id: notificationID }), {
       withCredentials: true,
     })
     .toPromise();
