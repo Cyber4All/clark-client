@@ -60,7 +60,7 @@ export class PaginationComponent implements OnInit {
 
   calculateSurroundingPageNumbers() {
     let rightSideCount = this.getCappedRemainingPageCount()
-    let leftSideCount = this.getCappdePreviousPageCount();
+    let leftSideCount = this.getCappedPreviousPageCount();
 
     // If there are less page numbers to show on the
     // right side, show more on the left side
