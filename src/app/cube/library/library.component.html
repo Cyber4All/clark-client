@@ -92,8 +92,8 @@
             <h3 class='delete-library-item-modal__header'>Are you sure?</h3>
             <p class='delete-library-item-modal__warning'>You're deleting an item from your Library!</p>
             <div>
-                <button class='button neutral' (activate)="toggleDeleteLibraryItemModal(false)">Cancel</button>
-                <button class='delete-library-item-modal__button button' (activate)="removeItem()">Delete</button>
+                <button aria-label='cancel saved item deletion' class='button neutral' (activate)="toggleDeleteLibraryItemModal(false)">Cancel</button>
+                <button aria-label='delete saved item' class='delete-library-item-modal__button button' (activate)="removeItem()">Delete</button>
             </div>
         </div>
     </div>

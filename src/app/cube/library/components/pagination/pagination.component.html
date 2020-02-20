@@ -2,20 +2,23 @@
   <button 
     *ngIf='!getPageNumberList().includes(1)'
     class='library-items__pagination-container__arrow-button' 
-    (activate)='onLeftArrowClick()'>
+    (activate)='onLeftArrowClick()'
+    aria-label='to previous Saved Items page'>
       <i class="far fa-arrow-left"></i>
   </button>
   <button 
     *ngFor='let pageNumber of getPageNumberList()' 
     class='library-items__pagination-container__button' 
     [ngClass]="{'selected': currentPageNumber === pageNumber }"
-    (activate)='onPageNumberClick(pageNumber)'>
+    (activate)='onPageNumberClick(pageNumber)'
+    aria-label='to new Saved Items page'>
       {{ pageNumber }}
   </button>
   <button 
     *ngIf='!getPageNumberList().includes(lastPageNumber)'
     class='library-items__pagination-container__arrow-button'
-    (activate)='onRightArrowClick()'>
+    (activate)='onRightArrowClick()'
+    aria-label='to next Saved Items page'>
       <i class="far fa-arrow-right"></i>
   </button>
 </div>

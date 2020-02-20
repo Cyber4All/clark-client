@@ -1,5 +1,5 @@
 <div class='notification-card'>
-  <button class='notification-card__exit-button' (activate)='onDeleteButtonClick($event)'>
+  <button aria-label='delete notification' class='notification-card__exit-button' (activate)='onDeleteButtonClick($event)'>
     <i class="fal fa-times"></i>
   </button>
   <h4 class='notification-card__title'>
@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class='notification-card__links'>
-    <a href="" (activate)='onDetailsButtonClick($event)'>VIEW DETAILS <i class="far fa-external-link"></i></a>
-    <a href="" (activate)='onChangelogButtonClick($event)'>VIEW CHANGELOGS <i class="fal fa-comment-alt-edit"></i></a>
+    <a aria-label='to Details page' href="" (activate)='onDetailsButtonClick($event)'>VIEW DETAILS <i class="far fa-external-link"></i></a>
+    <a aria-label='view change logs' href="" (activate)='onChangelogButtonClick($event)'>VIEW CHANGELOGS <i class="fal fa-comment-alt-edit"></i></a>
   </div>
 </div>
