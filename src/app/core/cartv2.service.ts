@@ -32,7 +32,7 @@ export class CartV2Service {
     window.open(url);
   }
 
-  getCart(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  getLibrary(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
@@ -53,7 +53,7 @@ export class CartV2Service {
       });
   }
 
-  async addToCart(
+  async addToLibrary(
     author: string,
     learningObject: LearningObject
   ): Promise<LearningObject[]> {
@@ -87,7 +87,7 @@ export class CartV2Service {
       });
   }
 
-  removeFromCart(cuid: string): Promise<void> {
+  removeFromLibrary(cuid: string): Promise<void> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }

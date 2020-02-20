@@ -55,8 +55,8 @@ export class CartComponent implements OnInit, OnDestroy {
   async removeItem(event: MouseEvent, object: LearningObject) {
     event.stopPropagation();
     try {
-      await this.cartService.removeFromCart(object.cuid);
-      this.cartItems = (await this.cartService.getCart()).cartItems;
+      await this.cartService.removeFromLibrary(object.cuid);
+      this.cartItems = (await this.cartService.getLibrary()).cartItems;
     } catch (e) {
       console.log(e);
     }
