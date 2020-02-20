@@ -50,7 +50,7 @@ export class PaginationComponent implements OnInit {
     return cappedRemainingPageCount;
   }
 
-  getCappdePreviousPageCount() {
+  getCappedPreviousPageCount() {
     // Always display two numbers to the left
     // of the selected number. If the selected
     // number is 1 or 2, display less.
