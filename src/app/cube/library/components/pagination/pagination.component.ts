@@ -50,7 +50,7 @@ export class PaginationComponent implements OnInit {
     return cappedRemainingPageCount;
   }
 
-  getCappdePreviousPageCount() {
+  getCappedPreviousPageCount() {
     // Always display two numbers to the left
     // of the selected number. If the selected
     // number is 1 or 2, display less.
@@ -60,7 +60,7 @@ export class PaginationComponent implements OnInit {
 
   calculateSurroundingPageNumbers() {
     let rightSideCount = this.getCappedRemainingPageCount()
-    let leftSideCount = this.getCappdePreviousPageCount();
+    let leftSideCount = this.getCappedPreviousPageCount();
 
     // If there are less page numbers to show on the
     // right side, show more on the left side
