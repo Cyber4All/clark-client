@@ -5,7 +5,7 @@
     <a class='library-item__title' (activate)='onTitleClick($event)'>{{ learningObject.name }}</a>
 
     <h5 class='library-item__author '>{{ learningObject.author.name | titlecase }}
-        <span *ngIf='learningObjectContributorCount'>and {{ learningObject.contributors.length }} more</span>
+        <span *ngIf='learningObject.contributors.length'>and {{ learningObject.contributors.length }} more</span>
     </h5>
   
     <clark-rating-stars rating='{{ learningObjectAverageRating }}' color='gold'></clark-rating-stars>
