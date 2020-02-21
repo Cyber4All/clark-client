@@ -96,7 +96,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     return this.learningObject.status === LearningObject.Status.RELEASED;
   }
 
-  async addToCart(download?: boolean) {
+  async addToLibrary(download?: boolean) {
     this.error = false;
 
     if (!download) {
@@ -119,7 +119,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
         this.saved = this.cartService.has(this.learningObject);
 
         if (!this.saved) {
-          await this.cartService.addToCart(this.learningObject.author.username, this.learningObject);
+          await this.cartService.addToLibrary(this.learningObject.author.username, this.learningObject);
           this.animateSaves();
           this.saved = true;
         }
@@ -241,8 +241,8 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     }, 600);
   }
 
-  removeFromCart() {
-    this.cartService.removeFromCart(this.learningObject.cuid);
+  removeFromLibrary() {
+    this.cartService.removeFromLibrary(this.learningObject.cuid);
   }
 
   private buildLocation(encoded?: boolean) {
