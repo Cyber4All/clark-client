@@ -56,7 +56,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
     this.getNotifications(this.currentNotificationsPageNumber);
   }
 
-  async loadCart() {
+  async loadLibrary() {
     try {
       this.loading = true;
       const libraryItemInformation = await this.cartService.getLibrary(this.currentPageNumber, 10);
