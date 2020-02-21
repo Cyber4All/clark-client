@@ -23,7 +23,7 @@
         <ng-container *ngIf="loggedin">
           <button id="clark-user-dropdown" #userDropdownButtonElement class="user" (activate)="userDropdown(true)">
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
-            <div style="margin: 0 15px 0 10px; font-weight: 500;">Hi, {{ authService.firstName | titlecase }}!</div>
+            <div class="navbar-greeting">Hi, {{ authService.firstName | titlecase }}!</div>
             <i class="fas fa-chevron-down"></i>
           </button>
           
@@ -31,7 +31,7 @@
             <div #contextMenu id="context-popup">
               <ul>
                 <li tabindex="0" *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (activate)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                <li tabindex="0" routerLink="/library" (activate)="userDropdown()"><i class="fas fa-books"></i>Library</li>
+                <li tabindex="0" routerLink="/library" (activate)="userDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="false" class="notifications"> 20</span></li>
                 <li tabindex="0" routerLink="/onion/dashboard" (activate)="userDropdown()"><i class="far fa-columns"></i>Dashboard</li>
                 <li tabindex="0" [routerLink]="['users', authService.user?.username]" (activate)="userDropdown()"><i class="far fa-user"></i>Profile</li>
                 <li tabindex="0" routerLink="/auth/forgot-password" (activate)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
