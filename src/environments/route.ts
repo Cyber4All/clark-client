@@ -339,9 +339,9 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.username,
     )}/notifications?page=${encodeURIComponent(
-      params.page,
+      params.page.toString(),
     )}&limit=${encodeURIComponent(
-      params.limit,
+      params.limit.toString(),
     )}`;
   },
   DELETE_NOTIFICATION(params: {

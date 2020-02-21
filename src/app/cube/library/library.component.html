@@ -14,12 +14,12 @@
         
         <div class='library__cards-container' *ngIf='notifications?.length'>
             <div class='notifications-container'>
-                <div 
+                <button 
                     *ngIf='currentNotificationsPageNumber > 1' 
                     class='cards-container__arrow-container left'
                     (activate)='getNotifications(currentNotificationsPageNumber - 1)'>
-                    <i class="fal fa-arrow-circle-left"></i>
-                </div>
+                    <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
+                </button>
                 
                 <div class='notifications-container__cards'>
                     <div *ngFor='let notification of notifications' class='cards-container__card'>
@@ -32,12 +32,12 @@
                     </div>
                 </div>
                 
-                <div 
+                <button
                     *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === 5'
                     class='cards-container__arrow-container right'
                     (activate)='getNotifications(currentNotificationsPageNumber + 1)'>
-                    <i class="fal fa-arrow-circle-right"></i>
-                </div>
+                    <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>
+                </button>
             </div>
         </div>
 

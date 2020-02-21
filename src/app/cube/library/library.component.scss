@@ -95,6 +95,9 @@
 .cards-container__arrow-container {
     font-size: 36px;
     color: $medium-grey;
+    background-color: transparent;
+    border: none;
+    outline: none;
 }
 
 .cards-container__arrow-container:hover {

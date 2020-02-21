@@ -52,7 +52,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   ) { }
 
   ngOnInit() {
-    this.loadCart();
+    this.loadLibrary();
     this.getNotifications(this.currentNotificationsPageNumber);
   }
 
