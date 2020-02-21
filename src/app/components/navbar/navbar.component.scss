@@ -139,12 +139,12 @@
     }
 
     .logo-link {
-      font-size: 23px;
+      font-size: $larger;
       font-weight: bold;
       padding-right: 15px;
       position: relative;
       margin-left: 10px;
-
+      color: $dark-grey;
     }
 
     .right {
@@ -265,18 +265,6 @@
       border: none;
       @include vert-center;
       margin-left: 7px;
-    }
-
-    .library {
-      @include vert-center;
-      outline: none;
-      margin-left: 20px;
-      background: $dark-grey;
-      width: 30px;
-      height: 30px;
-      mask: url('../../../assets/images/books.svg') no-repeat center;
-      -webkit-mask: url('../../../assets/images/books.svg') no-repeat center;
-      -moz-mask: url('../../../assets/images/books.svg') no-repeat center;
     }
 
     .navbar-gravatar {
