@@ -25,6 +25,7 @@
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
             <div class="navbar-greeting">Hi, {{ authService.firstName | titlecase }}!</div>
             <i class="fas fa-chevron-down"></i>
+            <span *ngIf="false" class="navbar-notifications"></span>
           </button>
           
           <clark-context-menu *ngIf="userDown" [anchor]="userDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="userDropdown()">

@@ -268,11 +268,10 @@
     }
 
     .navbar-gravatar {
-      margin-left: 8px;
-      margin-right: 8px;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      margin-left: 5px;
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -280,8 +279,20 @@
     }
 
     .navbar-greeting {
-      margin: 0 15px 0 10px;
+      margin: 0 15px;
       font-weight: 500;
+    }
+
+    .navbar-notifications {
+      position: absolute;
+      display: inline-block;
+      top: 0;
+      left: 0;
+      width: $small;
+      height: $small;
+      background-color: #ca2e1f;
+      border: 3px solid white;
+      border-radius: 20px;
     }
   }
 
