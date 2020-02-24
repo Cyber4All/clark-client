@@ -50,7 +50,7 @@
             <h2 class='library-items__title'>
                 Saved Items
             </h2>
-            <div class='library-items__list-items'>
+            <div *ngIf='libraryItems?.length' class='library-items__list-items'>
                 <div *ngFor='let item of libraryItems; let i = index'>
                     <clark-library-item
                         [learningObject]='item'
@@ -65,6 +65,10 @@
                     [currentPageNumber] = currentPageNumber
                     (newPageNumberClicked) = 'changeLibraryItemPage($event)'
                 ></clark-pagination>
+            </div>
+            <div *ngIf='!libraryItems?.length' class='empty-notification-container'>
+                <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
+                <a [routerLink]="['/browse']">Browse Learning Objects</a>
             </div>
         </div>
     </div>
