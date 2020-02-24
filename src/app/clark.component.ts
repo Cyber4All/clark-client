@@ -86,7 +86,7 @@ export class ClarkComponent implements OnInit {
       this.authService.isLoggedIn.subscribe(val => {
         if (val) {
           this.cartService.updateUser();
-          this.cartService.getCart();
+          this.cartService.getLibrary();
         }
       });
 

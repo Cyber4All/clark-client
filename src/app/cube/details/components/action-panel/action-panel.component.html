@@ -82,7 +82,7 @@
 
 <ng-template #libraryButtonsTemplate>
   <button [tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons}"
-    class="button good" id="download-button" (activate)="addToCart(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
+    class="button good" id="download-button" (activate)="addToLibrary(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
     <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
       <span *ngIf="downloading">
         <i class="fal fa-spinner-third fa-spin"></i>
@@ -90,7 +90,7 @@
     </span>
     <span tabindex="0" *ngIf="!hasDownloadAccess">Not available for download</span>
   </button>
-  <button *ngIf="learningObject?.status === 'released' && !userIsAuthor" [ngClass]="{'disabled': !auth.user || disableLibraryButtons, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToCart()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
+  <button *ngIf="learningObject?.status === 'released' && !userIsAuthor" [ngClass]="{'disabled': !auth.user || disableLibraryButtons, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToLibrary()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
     {{ saved ? 'Saved to your library!' : 'Save to Library' }}
     <span *ngIf="addingToLibrary">
       <i class="fal fa-spinner-third fa-spin"></i>

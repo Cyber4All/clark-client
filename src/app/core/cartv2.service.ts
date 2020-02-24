@@ -32,13 +32,13 @@ export class CartV2Service {
     window.open(url);
   }
 
-  getCart(reloadUser = false): Promise<LearningObject[]> {
+  getLibrary(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
     return this.http
-      .get(USER_ROUTES.GET_CART(this.user.username), {
+      .get(USER_ROUTES.GET_CART(this.user.username, page, limit), {
         withCredentials: true,
         headers: this.headers
       })
@@ -48,13 +48,12 @@ export class CartV2Service {
       )
       .toPromise()
       .then((val: any) => {
-        this.cartItems = val
-          .map(object => new LearningObject(object.learningObject));
-        return this.cartItems;
+        this.cartItems = val.userLibraryItems.map(object => new LearningObject(object.learningObject));
+        return { cartItems: this.cartItems, lastPage: val.lastPage };
       });
   }
 
-  async addToCart(
+  async addToLibrary(
     author: string,
     learningObject: LearningObject
   ): Promise<LearningObject[]> {
@@ -88,11 +87,11 @@ export class CartV2Service {
       });
   }
 
-  removeFromCart(cuid: string): Promise<LearningObject[]> {
+  removeFromLibrary(cuid: string): Promise<void> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-    return this.http
+    this.http
       .delete(
         USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
           this.user.username,
@@ -104,12 +103,7 @@ export class CartV2Service {
         retry(3),
         catchError(this.handleError)
       )
-      .toPromise()
-      .then((val: any) => {
-        this.cartItems = val
-          .map(object => new LearningObject(object.learningObject));
-        return this.cartItems;
-      });
+      .toPromise();
   }
 
   checkout() {

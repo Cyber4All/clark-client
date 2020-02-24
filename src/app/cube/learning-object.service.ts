@@ -99,7 +99,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((res: any) => {
-        const learningObject = new LearningObject(res);
+        const learningObject = new LearningObject(res[0]);
         return learningObject;
       });
   }

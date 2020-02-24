@@ -1,0 +1,92 @@
+@import '~_vars.scss';
+
+.library-item {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 150px 100px;
+    align-items: center;
+    border-bottom: solid 1px $light-grey;
+}
+
+.library-item__length {
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    max-width: 100px;
+    text-align: center;
+    font-size: 12px;
+    justify-self: start;
+    font-weight: 500;
+
+    &.nanomodule {
+        background: $nanomodule-color;
+      }
+    
+      &.micromodule {
+        background: $micromodule-color;
+      }
+    
+      &.module {
+        background: $module-color;
+      }
+    
+      &.unit {
+        background: $unit-color;
+      }
+    
+      &.course {
+        background: $course-color;
+      }
+}
+
+.library-item__title {
+    color: $darker-grey;
+    margin: 0;
+    margin-top: 5px;
+    justify-self: start;
+    font-weight: 500;
+}
+
+.library-item__author {
+    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: $medium-grey;
+    justify-self: start;
+    font-weight: 500;
+}
+
+.library-item__title__icon {
+    color: $light-blue;
+    margin-left: 10px;
+    font-size: $normal;
+}
+
+.library-item__actions-container {
+    justify-self: end;
+}
+
+.library-item__download-button {
+    color: $light-blue;
+    margin-right: 10px;
+    
+}
+
+.library-item__delete-button {
+    color: $error-red;
+}
+
+button {
+    border: none;
+    outline: none;
+    font-size: 1.0em;
+    cursor: pointer;
+    background-color: white;
+}
+
+@media only screen and (max-width:  830px) {
+    .library-item {
+        display: block;
+        align-items: left;
+        border-bottom: solid 1px $light-grey;
+    }
+}
