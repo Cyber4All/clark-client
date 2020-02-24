@@ -114,19 +114,19 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
       this.saved = this.cartService.has(this.learningObject);
       if (!this.saved) {
-          await this.cartService.addToLibrary(this.learningObject.author.username, this.learningObject).then(objects => {
+          await this.cartService.addToLibrary(this.learningObject.author.username, this.learningObject).then(val => {
             this.toaster.success('Successfully Added!', 'Learning Object added to your library');
             this.saved = true;
             this.animateSaves();
+            this.addingToLibrary = false;
+            this.changeDetectorRef.detectChanges();
           })
           .catch (error => {
             if (error.status >= 500) {
               this.disableLibraryButtons = true;
             }
-          this.toaster.error('Error!', 'There was an error adding to your library');
+            this.toaster.error('Error!', 'There was an error adding to your library');
           });
-          this.addingToLibrary = false;
-          this.changeDetectorRef.detectChanges();
       }
     }
   }
