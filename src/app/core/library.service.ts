@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, switchMap, tap } from 'rxjs/operators';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
@@ -26,10 +26,6 @@ export class LibraryService {
     // reset headers with new users auth token
     this.headers = new HttpHeaders();
     // this.headers.append('Content-Type', 'application/json');
-  }
-
-  openLearningObject(url: string) {
-    window.open(url);
   }
 
   getLibrary(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
@@ -60,36 +56,31 @@ export class LibraryService {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-    const res = this.http
-      .post(
-        User
-      )
     try {
-    await this.http
-      .post(
-        USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
-          this.user.username,
-        ),
-        {
-          authorUsername: author,
-          cuid: learningObject.cuid,
-          version: learningObject.version
-        },
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-        retry(3),
-      )
-      .toPromise();
-      return Promise.resolve();
-    } catch (error) {
-      // If the error is a 200 let it be
-      if (error.status < 300) {
-        return Promise.resolve();
-      } else {
-        catchError(this.handleError);
+      const res = this.http
+        .post(
+          USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
+            this.user.username,
+          ),
+          {
+            authorUsername: author,
+            cuid: learningObject.cuid,
+            version: learningObject.version
+          },
+          { headers: this.headers, withCredentials: true }
+        )
+        .pipe(
+          retry(3),
+        ).
+        toPromise();
+        return res;
+      } catch (error) {
+        if (error.status < 300) {
+          return Promise.resolve();
+        } else {
+          catchError(this.handleError);
+        }
       }
-    }
   }
 
   removeFromLibrary(cuid: string): Promise<void> {
