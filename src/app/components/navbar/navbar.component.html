@@ -21,27 +21,20 @@
 
       <ng-template #userTemplate>
         <ng-container *ngIf="loggedin">
-          <button class="contributor" id="contributor-link" #contributorDropdownButtonElement (activate)="contributorDropdown(true)"><span>Contribute</span> <i class="fas fa-chevron-down"></i></button>
-          <a class="right library" id="library-link" routerLink="/library"></a>
           <button id="clark-user-dropdown" #userDropdownButtonElement class="user" (activate)="userDropdown(true)">
             <div class="navbar-gravatar" id="gravatar" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
+            <div class="navbar-greeting">Hi, {{ authService.firstName | titlecase }}!</div>
             <i class="fas fa-chevron-down"></i>
+            <span *ngIf="false" class="navbar-notifications"></span>
           </button>
-
-          <clark-context-menu *ngIf="contributorDown" [anchor]="contributorDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="contributorDropdown()">
-            <div #contextMenu>
-              <ul>
-                <li routerLink="/onion/dashboard" (activate)="contributorDropdown()" id="contributorDropdown1"><i class="far fa-list"></i>Your Dashboard</li>
-                <li routerLink="/onion/learning-object-builder" (activate)="contributorDropdown()"><i class="far fa-plus"></i>Create a Learning Object</li>
-              </ul>
-            </div>
-          </clark-context-menu>
           
           <clark-context-menu *ngIf="userDown" [anchor]="userDropdownButtonElement" [offset]="{ top: 10, left: 5 }" (close)="userDropdown()">
             <div #contextMenu id="context-popup">
               <ul>
                 <li tabindex="0" *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (activate)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                <li tabindex="0" [routerLink]="['users', authService.user?.username]" (activate)="userDropdown()"><i class="far fa-user"></i>Your Profile</li>
+                <li tabindex="0" routerLink="/library" (activate)="userDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="false" class="notifications"> 20</span></li>
+                <li tabindex="0" routerLink="/onion/dashboard" (activate)="userDropdown()"><i class="far fa-columns"></i>Dashboard</li>
+                <li tabindex="0" [routerLink]="['users', authService.user?.username]" (activate)="userDropdown()"><i class="far fa-user"></i>Profile</li>
                 <li tabindex="0" routerLink="/auth/forgot-password" (activate)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
                 <li tabindex="0" (activate)="logout(); userDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
               </ul>
@@ -74,7 +67,7 @@
       <ng-container *ngIf="loggedin; else noUserGreeting">
         <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>
         <div class="right">
-          <div class="greeting">Howdy, {{ authService.firstName | titlecase }}!</div>
+          <div class="greeting">Hi, {{ authService.firstName | titlecase }}!</div>
           <a>View your profile</a>
         </div>
       </ng-container>
