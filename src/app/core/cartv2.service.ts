@@ -56,11 +56,12 @@ export class CartV2Service {
   async addToLibrary(
     author: string,
     learningObject: LearningObject
-  ): Promise<LearningObject[]> {
+  ): Promise<void> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-    return this.http
+    try {
+    await this.http
       .post(
         USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
           this.user.username,
@@ -74,17 +75,16 @@ export class CartV2Service {
       )
       .pipe(
         retry(3),
-        catchError(this.handleError)
       )
-      .toPromise()
-      .then(async (val: any) => {
-        try {
-          this.cartItems = val.map(object => new LearningObject(object.learningObject));
-          return this.cartItems;
-        } catch (error) {
-          return Promise.reject('Error! ' + error);
-        }
-      });
+      .toPromise();
+      return Promise.resolve();
+    } catch (error) {
+      if (error.status < 300) {
+        return Promise.resolve();
+      } else {
+        catchError(this.handleError);
+      }
+    }
   }
 
   removeFromLibrary(cuid: string): Promise<void> {
