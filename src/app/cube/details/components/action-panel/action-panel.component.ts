@@ -114,26 +114,25 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
       this.saved = this.libraryService.has(this.learningObject);
       if (!this.saved) {
-        try {
-          const hello = await this.libraryService.addToLibrary(this.learningObject.author.username, this.learningObject);
-        } catch (error) {
-          // Error is in the 200s so everything is all good
-          if (error.status < 300) {
-            this.toaster.success('Successfully Added!', 'Learning Object added to your library');
-            this.saved = true;
-            this.animateSaves();
-            // Library service is down and we should disable library buttons
-          } else if (error.status >= 500) {
-            this.disableLibraryButtons = true;
-            this.toaster.error('Error!', 'There was an error adding to your library');
-            // There was another error show toaster
-          } else {
-            this.toaster.error('Error!', 'There was an error adding to your library');
-          }
-        }
+          await this.libraryService.addToLibrary(this.learningObject.author.username, this.learningObject)
+          .catch(error => {
+            // If the response is in the 200s everything is going just fine
+            if (error.status < 300) {
+              this.toaster.success('Successfully Added!', 'Learning Object added to your library');
+              this.saved = true;
+              this.animateSaves();
+              // Library is broken disable the buttons
+            } else if (error.status >= 500) {
+              this.disableLibraryButtons = true;
+              this.toaster.error('Error!', 'There was an error adding to your library');
+              // Something else happened
+            } else {
+              this.toaster.error('Error!', 'There was an error adding to your library');
+            }
+          });
         this.addingToLibrary = false;
         this.changeDetectorRef.detectChanges();
-      }
+       }
     }
   }
 

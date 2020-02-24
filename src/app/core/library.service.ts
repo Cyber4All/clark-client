@@ -56,11 +56,10 @@ export class LibraryService {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-    try {
-      const res = this.http
+    return await this.http
         .post(
           USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
-            this.user.username,
+            this.user.username
           ),
           {
             authorUsername: author,
@@ -69,18 +68,7 @@ export class LibraryService {
           },
           { headers: this.headers, withCredentials: true }
         )
-        .pipe(
-          retry(3),
-        ).
-        toPromise();
-        return res;
-      } catch (error) {
-        if (error.status < 300) {
-          return Promise.resolve();
-        } else {
-          catchError(this.handleError);
-        }
-      }
+        .toPromise();
   }
 
   removeFromLibrary(cuid: string): Promise<void> {
