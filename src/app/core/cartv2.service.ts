@@ -106,26 +106,6 @@ export class CartV2Service {
       .toPromise();
   }
 
-  checkout() {
-    this.http
-      .get(USER_ROUTES.GET_CART(this.user.username) + '?download=true', {
-        headers: this.headers,
-        responseType: 'blob',
-        withCredentials: true
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .subscribe(
-        res => {
-          importedSaveAs(res, `${Date.now()}.zip`);
-        },
-        err => err,
-        () => {}
-      );
-  }
-
   downloadLearningObject(
     author: string,
     learningObjectCuid: string,
