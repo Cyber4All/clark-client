@@ -35,15 +35,15 @@ export class CartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.loadCart();
+    this.loadLibrary();
     // TODO: This should check on an object by object basis if the user has download access
     this.checkAccessGroup();
   }
 
-  async loadCart() {
+  async loadLibrary() {
     try {
       this.loading = true;
-      this.cartItems = await this.cartService.getCart();
+      this.cartItems = (await this.cartService.getLibrary()).cartItems;
       this.loading = false;
     } catch (e) {
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
@@ -55,7 +55,8 @@ export class CartComponent implements OnInit, OnDestroy {
   async removeItem(event: MouseEvent, object: LearningObject) {
     event.stopPropagation();
     try {
-      this.cartItems = await this.cartService.removeFromCart(object.cuid);
+      await this.cartService.removeFromLibrary(object.cuid);
+      this.cartItems = (await this.cartService.getLibrary()).cartItems;
     } catch (e) {
       console.log(e);
     }

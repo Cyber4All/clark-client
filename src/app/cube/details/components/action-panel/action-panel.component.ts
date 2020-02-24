@@ -94,7 +94,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     return this.learningObject.status === LearningObject.Status.RELEASED;
   }
 
-  async addToCart(download?: boolean) {
+  async addToLibrary(download?: boolean) {
     this.error = false;
 
     if (!download) {
@@ -114,7 +114,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
       this.saved = this.cartService.has(this.learningObject);
       if (!this.saved) {
-          await this.cartService.addToCart(this.learningObject.author.username, this.learningObject).then(objects => {
+          await this.cartService.addToLibrary(this.learningObject.author.username, this.learningObject).then(objects => {
             this.toaster.success('Successfully Added!', 'Learning Object added to your library');
             this.saved = true;
             this.animateSaves();
@@ -202,7 +202,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         }, function (response) { });
         break;
       case 'twitter':
-        const text = 'Check out this learning object on CLARK!';
+        const text = 'Check out this learning object on CLARK! ClarkCan';
         window.open('http://twitter.com/share?url='
           + encodeURIComponent(this.url) + '&text='
           + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
@@ -210,7 +210,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         break;
       case 'linkedin':
         const payload = {
-          'comment': 'Check out this learning object on CLARK! ' + this.url,
+          'comment': 'Check out this learning object on CLARK! ' + this.url + ' #ClarkCan',
           'visibility': {
             'code': 'anyone'
           }
@@ -239,8 +239,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }, 600);
   }
 
-  removeFromCart() {
-    this.cartService.removeFromCart(this.learningObject.cuid);
+  removeFromLibrary() {
+    this.cartService.removeFromLibrary(this.learningObject.cuid);
   }
 
   private buildLocation(encoded?: boolean) {
