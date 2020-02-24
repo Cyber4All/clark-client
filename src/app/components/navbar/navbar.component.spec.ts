@@ -2,7 +2,7 @@ import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@ang
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalService } from '../../shared/advanced/modals';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CartV2Service } from '../../core/cartv2.service';
+import { LibraryService } from '../../core/library.service';
 import { AuthService } from '../../core/auth.service';
 import { NavbarComponent } from './navbar.component';
 import { CookieService } from 'ngx-cookie';
@@ -16,7 +16,7 @@ describe('NavbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientModule, ActivatedRoute ],
-      providers: [ ModalService, CartV2Service, AuthService, CookieService ],
+      providers: [ ModalService, LibraryService, AuthService, CookieService ],
       declarations: [ NavbarComponent ]
     })
     .compileComponents();

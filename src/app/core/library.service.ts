@@ -9,7 +9,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
-export class CartV2Service {
+export class LibraryService {
   private user;
   private headers = new HttpHeaders();
 
@@ -56,10 +56,14 @@ export class CartV2Service {
   async addToLibrary(
     author: string,
     learningObject: LearningObject
-  ): Promise<void> {
+  ): Promise<any> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
+    const res = this.http
+      .post(
+        User
+      )
     try {
     await this.http
       .post(
