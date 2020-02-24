@@ -118,9 +118,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         if (!this.saved) {
           try {
             await this.libraryService.addToLibrary(this.learningObject.author.username, this.learningObject);
-            this.toaster.success('Successfully Added!', 'Learning Object added to your library');
           } catch (e) {
             if (e.status === 201) {
+              this.toaster.success('Successfully Added!', 'Learning Object added to your library');
               this.saved = true;
               this.animateSaves();
             }
