@@ -79,6 +79,7 @@ export class CartV2Service {
       .toPromise();
       return Promise.resolve();
     } catch (error) {
+      // If the error is a 200 let it be
       if (error.status < 300) {
         return Promise.resolve();
       } else {
