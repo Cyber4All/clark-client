@@ -15,7 +15,7 @@
         <div class='library__cards-container' *ngIf='notifications?.length'>
             <div class='notifications-container'>
                 <button 
-                    *ngIf='currentNotificationsPageNumber > 1' 
+                    *ngIf='currentNotificationsPageNumber > 1 && !mobile' 
                     class='cards-container__arrow-container left'
                     (activate)='getNotifications(currentNotificationsPageNumber - 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
@@ -33,7 +33,7 @@
                 </div>
                 
                 <button
-                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === 5'
+                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === 5 && !mobile'
                     class='cards-container__arrow-container right'
                     (activate)='getNotifications(currentNotificationsPageNumber + 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>

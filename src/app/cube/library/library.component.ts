@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CartV2Service } from 'app/core/cartv2.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -38,6 +38,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
   lastNotificationsPageNumber;
+  mobile = false;
 
 
   constructor(
@@ -49,7 +50,17 @@ export class LibraryComponent implements OnInit, OnDestroy{
     private ratings: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
-  ) { }
+  ) {
+    this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize() {
+        const width = window.innerWidth;
+        if (width <= 830) {
+          this.mobile = true;
+        }
+  }
 
   ngOnInit() {
     this.loadLibrary();
