@@ -32,7 +32,7 @@ const library = environment.experimental ? {
   path: 'library',
   component: CartComponent,
   canActivate: [AuthGuard],
-  loadChildren: 'app/cube/cart/cart.component'
+  data: { title: 'Your Library' }
 };
 
 const cube_routes: Routes = [
