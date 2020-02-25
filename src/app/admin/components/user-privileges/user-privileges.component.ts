@@ -18,7 +18,7 @@ export class UserPrivilegesComponent implements OnInit {
   privileges: string[][] = [];
   collections: { [index: string]: string } = {};
 
-  selectedRole: 'curator' | 'reviewer';
+  selectedRole: 'curator' | 'reviewer' | 'mapper';
   selectedCollection: string;
 
   carouselAction$: Subject<number> = new Subject();
@@ -40,7 +40,7 @@ export class UserPrivilegesComponent implements OnInit {
    * @memberof UserPrivilegesComponent
    */
   private getUserRoles() {
-    this.privilegeService.getRoles(this.user.id).then(roles => {
+    this.privilegeService.getCollectionRoles(this.user.id).then(roles => {
       this.privileges = roles.map(x => x.split('@'));
     this.getCollections();
     }).catch(error => {
@@ -121,10 +121,10 @@ export class UserPrivilegesComponent implements OnInit {
     // or grant that user privilege in the collection if it doesn't
     if (collectionIndex >= 0) {
       // user is already a member of this collection, should attempt to modify membership
-      responsePromise = this.privilegeService.modifyMembership(this.selectedCollection, this.user.id, this.selectedRole);
+      responsePromise = this.privilegeService.modifyCollectionMembership(this.selectedCollection, this.user.id, this.selectedRole);
     } else {
       // user isn't a member of this collection, let's add them
-      responsePromise = this.privilegeService.addMembership(this.selectedCollection, this.user.id, this.selectedRole);
+      responsePromise = this.privilegeService.addCollectionMembership(this.selectedCollection, this.user.id, this.selectedRole);
     }
 
     responsePromise.then(() => {
@@ -151,6 +151,10 @@ export class UserPrivilegesComponent implements OnInit {
     });
   }
 
+  async addMapper() {
+    const responsePromise = await this.privilegeService.addMapperMembership(this.user.id);
+  }
+
   /**
    * Remove the privilege at the specified index
    *
@@ -160,7 +164,7 @@ export class UserPrivilegesComponent implements OnInit {
   async remove(index: number) {
     const [_, collection] = this.privileges[index];
     this.privilegeService
-      .removeMembership(collection, this.user.id)
+      .removeCollectionMembership(collection, this.user.id)
       .then(() => {
       this.privileges.splice(index, 1);
         delete this.collections[collection];

@@ -38,6 +38,14 @@
           </div>
         </div>
       </ng-template>
+
+      <ng-template>
+        <div class="privileges__top-inner">
+          <div (activate)="regress(2)" class="privileges__subtitle privileges__subtitle--interactable">
+            <i class="fas fa-arrow-left"></i> Back to privileges
+          </div>
+        </div>
+      </ng-template>
       
     </clark-carousel>
   </div>
@@ -59,6 +67,17 @@
       <clark-collections-grid [preselect]="collectionsWithSelectedRole" preselectReason="This user is already a {{ selectedRole }} in this collection." (selected)="selectCollection($event)"></clark-collections-grid>
     </ng-template>
 
+    <ng-template>
+      <div class='mapper-confirmation'>
+        <h2 class='mapper-confirmation__header'>Are you sure?</h2>
+        <p class='mapper-confirmation__sub'>You are about to promote this user to a Mapper.</p>
+        <div class='btn-group center'>
+          <button class='button neutral'>Cancel</button>
+          <button class='button good'>Submit</button>
+        </div>
+      </div>
+    </ng-template>
+
   </clark-carousel>
 
 </div>
@@ -72,6 +91,10 @@
     <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
       <i class="far fa-user-crown"></i>
       Curator
+    </div>
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
+      <i class="far fa-map"></i>
+      Mapper
     </div>
   </div>
 </ng-template>

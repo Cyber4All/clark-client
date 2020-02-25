@@ -15,7 +15,7 @@ export class PrivilegeService {
    * @returns {Promise<string[]>}
    * @memberof PrivilegeService
    */
-  getRoles(id: string): Promise<string[]> {
+  getCollectionRoles(id: string): Promise<string[]> {
     return this.http
       .get<{ roles: string[] }>(ADMIN_ROUTES.GET_USER_ROLES(id))
       .pipe(
@@ -35,7 +35,7 @@ export class PrivilegeService {
    * @returns {Promise<{}>}
    * @memberof PrivilegeService
    */
-  addMembership(abvCollectionName: string, userId: string, role: string): Promise<{}> {
+  addCollectionMembership(abvCollectionName: string, userId: string, role: string): Promise<{}> {
     return this.http
       .put(
         ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
@@ -58,7 +58,7 @@ export class PrivilegeService {
    * @returns
    * @memberof PrivilegeService
    */
-  modifyMembership(abvCollectionName: string, userId: string, role: string) {
+  modifyCollectionMembership(abvCollectionName: string, userId: string, role: string) {
     return this.http
       .patch(
         ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
@@ -80,11 +80,50 @@ export class PrivilegeService {
    * @returns
    * @memberof PrivilegeService
    */
-  removeMembership(abvCollectionName: string, userId: string) {
+  removeCollectionMembership(abvCollectionName: string, userId: string) {
     return this.http
       .delete(
         ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
         { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  addMapperMembership(userId: string) {
+    return this.http
+      .put(
+        ADMIN_ROUTES.ADD_MAPPER(userId),
+        { withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  getMappers() {
+    return this.http
+      .get(
+        ADMIN_ROUTES.GET_MAPPERS(),
+        { withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  removeMapperMembership(userId: string) {
+    return this.http
+      .delete(
+        ADMIN_ROUTES.REMOVE_MAPPER(userId),
+        { withCredentials: true }
       )
       .pipe(
         retry(3),
