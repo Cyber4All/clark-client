@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { CartV2Service } from 'app/core/cartv2.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LibraryService } from 'app/core/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
@@ -42,7 +42,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
 
   constructor(
-    public cartService: CartV2Service,
+    public libraryService: LibraryService,
     private toaster: ToastrOvenService,
     private authService: AuthService,
     private router: Router,
@@ -70,7 +70,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   async loadLibrary() {
     try {
       this.loading = true;
-      const libraryItemInformation = await this.cartService.getLibrary(this.currentPageNumber, 10);
+      const libraryItemInformation = await this.libraryService.getLibrary(this.currentPageNumber, 10);
       this.libraryItems = libraryItemInformation.cartItems;
       this.lastPageNumber = libraryItemInformation.lastPage;
       this.libraryItems.map(async (libraryItem: LearningObject) => {
@@ -101,8 +101,8 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   async removeItem() {
     try {
-      await this.cartService.removeFromLibrary(this.libraryItemToDelete.cuid);
-      this.libraryItems = (await this.cartService.getLibrary(1, 10)).cartItems;
+      await this.libraryService.removeFromLibrary(this.libraryItemToDelete.cuid);
+      this.libraryItems = (await this.libraryService.getLibrary(1, 10)).cartItems;
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
       console.log(e);
@@ -112,7 +112,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   downloadObject(event: MouseEvent, object: LearningObject, index: number) {
     event.stopPropagation();
     this.downloading[index] = true;
-    this.cartService.downloadLearningObject(
+    this.libraryService.downloadLearningObject(
         object.author.username,
         object.cuid,
         object.version
@@ -198,7 +198,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   async changeLibraryItemPage(pageNumber: number) {
-    const libraryItemInformation = await this.cartService.getLibrary(pageNumber, 10);
+    const libraryItemInformation = await this.libraryService.getLibrary(pageNumber, 10);
     this.libraryItems = libraryItemInformation.cartItems;
     this.lastPageNumber = libraryItemInformation.lastPage;
     this.currentPageNumber = pageNumber;
