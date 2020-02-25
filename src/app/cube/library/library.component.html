@@ -60,15 +60,17 @@
                         (titleClicked)='goToItem(item)'
                     ></clark-library-item>
                 </div>
-                <clark-pagination
-                    [lastPageNumber] = lastPageNumber
-                    [currentPageNumber] = currentPageNumber
-                    (newPageNumberClicked) = 'changeLibraryItemPage($event)'
-                ></clark-pagination>
+                <div *ngIf='!libraryItems?.length' class='empty-notification-container'>
+                    <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
+                    <a [routerLink]="['/browse']">Browse Learning Objects</a>
+                </div>
             </div>
-            <div *ngIf='!libraryItems?.length' class='empty-notification-container'>
-                <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
-                <a [routerLink]="['/browse']">Browse Learning Objects</a>
+            <div class="pagination-container">
+                <clark-pagination
+                [lastPageNumber] = lastPageNumber
+                [currentPageNumber] = currentPageNumber
+                (newPageNumberClicked) = 'changeLibraryItemPage($event)'
+                ></clark-pagination>
             </div>
         </div>
     </div>

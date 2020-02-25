@@ -2,7 +2,9 @@
 
 .library {
     background-color: white;
+    position: relative;
     min-height: 100vh;
+    overflow: auto;
 }
 
 .library__splash {
@@ -119,6 +121,7 @@
 
 .library-items__list-items {
     max-width: $max-width;
+    min-height: 650px;
     text-align: center;
 }
 
@@ -167,6 +170,13 @@
 .empty-notification-container__message {
     color: $dark-grey;
     font-size: $normal;
+}
+
+.pagination-container {
+    bottom: 0;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    width: 100%;
 }
 
 @media only screen and (max-width:  830px) {
