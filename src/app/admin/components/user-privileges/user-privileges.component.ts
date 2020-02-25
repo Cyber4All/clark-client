@@ -152,7 +152,7 @@ export class UserPrivilegesComponent implements OnInit {
   }
 
   async addMapper() {
-    const responsePromise = await this.privilegeService.addMapperMembership(this.user.id);
+    await this.privilegeService.addMapperMembership(this.user.id);
   }
 
   /**

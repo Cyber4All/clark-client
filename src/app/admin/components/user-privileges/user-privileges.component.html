@@ -72,8 +72,7 @@
         <h2 class='mapper-confirmation__header'>Are you sure?</h2>
         <p class='mapper-confirmation__sub'>You are about to promote this user to a Mapper.</p>
         <div class='btn-group center'>
-          <button class='button neutral'>Cancel</button>
-          <button class='button good'>Submit</button>
+          <button (activate)='addMapper()' class='button good'>Submit</button>
         </div>
       </div>
     </ng-template>
