@@ -1,7 +1,7 @@
 
 import {takeUntil} from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { CartV2Service, iframeParentID } from '../../core/cartv2.service';
+import { LibraryService, iframeParentID } from '../../core/library.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 import { AuthService } from '../../core/auth.service';
@@ -28,7 +28,7 @@ export class CartComponent implements OnInit, OnDestroy {
   statuses = LearningObject.Status;
 
   constructor(
-    public cartService: CartV2Service,
+    public libraryService: LibraryService,
     private router: Router,
     private authService: AuthService,
     private toaster: ToastrOvenService,
@@ -43,7 +43,7 @@ export class CartComponent implements OnInit, OnDestroy {
   async loadLibrary() {
     try {
       this.loading = true;
-      this.cartItems = (await this.cartService.getLibrary()).cartItems;
+      this.cartItems = (await this.libraryService.getLibrary()).cartItems;
       this.loading = false;
     } catch (e) {
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
@@ -55,8 +55,8 @@ export class CartComponent implements OnInit, OnDestroy {
   async removeItem(event: MouseEvent, object: LearningObject) {
     event.stopPropagation();
     try {
-      await this.cartService.removeFromLibrary(object.cuid);
-      this.cartItems = (await this.cartService.getLibrary()).cartItems;
+      await this.libraryService.removeFromLibrary(object.cuid);
+      this.cartItems = (await this.libraryService.getLibrary()).cartItems;
     } catch (e) {
       console.log(e);
     }
@@ -65,7 +65,7 @@ export class CartComponent implements OnInit, OnDestroy {
   downloadObject(event: MouseEvent, object: LearningObject, index: number) {
     event.stopPropagation();
     this.downloading[index] = true;
-    this.cartService.downloadLearningObject(
+    this.libraryService.downloadLearningObject(
         object.author.username,
         object.cuid,
         object.version

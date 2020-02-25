@@ -1,7 +1,7 @@
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, HostListener, ViewContainerRef } from '@angular/core';
 import { AuthService } from './core/auth.service';
-import { CartV2Service } from './core/cartv2.service';
+import { LibraryService } from './core/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import 'rxjs/add/operator/filter';
@@ -70,7 +70,7 @@ export class ClarkComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private cartService: CartV2Service,
+    private libraryService: LibraryService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
@@ -85,8 +85,8 @@ export class ClarkComponent implements OnInit {
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
       this.authService.isLoggedIn.subscribe(val => {
         if (val) {
-          this.cartService.updateUser();
-          this.cartService.getLibrary();
+          this.libraryService.updateUser();
+          this.libraryService.getLibrary();
         }
       });
 
