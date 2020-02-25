@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { LibraryService } from 'app/core/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -65,6 +65,10 @@ export class LibraryComponent implements OnInit, OnDestroy{
   ngOnInit() {
     this.loadLibrary();
     this.getNotifications(this.currentNotificationsPageNumber);
+
+    // Attach event listener to the notifications-container__cards class if this.mobile is true
+
+
   }
 
   async loadLibrary() {
@@ -88,10 +92,17 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   async getNotifications(page: number) {
-    const result = await this.user.getNotifications(this.authService.user.username, page, 5);
-    this.notifications = result.notifications;
-    this.lastNotificationsPageNumber = result.lastPage;
-    this.currentNotificationsPageNumber = page;
+    if (this.mobile === true) {
+      const result = await this.user.getNotifications(this.authService.user.username, page, 1);
+      this.notifications = result.notifications;
+      this.lastNotificationsPageNumber = result.lastPage;
+      this.currentNotificationsPageNumber = page;
+    } else {
+      const result = await this.user.getNotifications(this.authService.user.username, page, 5);
+      this.notifications = result.notifications;
+      this.lastNotificationsPageNumber = result.lastPage;
+      this.currentNotificationsPageNumber = page;
+    }
   }
 
   async deleteNotification(notification: any) {

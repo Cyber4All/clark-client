@@ -6,6 +6,8 @@
     padding: 10px;
     color: $dark-grey;
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    width: 250px;
+    height: 150px;
 }
 
 .notification-card__exit-button {
@@ -22,6 +24,9 @@
 .notification-card__title {
     margin: 0;
     margin-bottom: 15px;
+    max-width: 80%;
+    text-overflow: ellipsis;
+    min-height: 40px;
 }
 
 .notification-card__version-history {
@@ -29,8 +34,13 @@
 }
 
 .notification-card__links {
+    position: absolute;
+    bottom: 10px;
     color: $light-blue;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    font-size: $smaller;
+    display: inline-block;
+    font-size: $small;
+
+    .details {
+        padding-right: 20px;
+    }
 }
