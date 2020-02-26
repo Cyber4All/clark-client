@@ -83,15 +83,15 @@
 
 <ng-template #roleSelector>
   <div class="role-selector">
-    <button [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
+    <button aria-label='Reviewer' [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
       <i class="far fa-user-edit"></i>
       Reviewer
     </button>
-    <button [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
+    <button aria-label='Curator' [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
       <i class="far fa-user-crown"></i>
       Curator
     </button>
-    <button*ngIf="!privileges[0]?.includes('mapper')"[ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
+    <button aria-label='Mapper' *ngIf="!privileges[0]?.includes('mapper')"[ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
       <i class="far fa-map"></i>
       Mapper
     </button>
