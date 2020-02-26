@@ -39,6 +39,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   currentNotificationsPageNumber = 1;
   lastNotificationsPageNumber;
   mobile = false;
+  touch;
 
 
   constructor(
@@ -65,9 +66,6 @@ export class LibraryComponent implements OnInit, OnDestroy{
   ngOnInit() {
     this.loadLibrary();
     this.getNotifications(this.currentNotificationsPageNumber);
-
-    // Attach event listener to the notifications-container__cards class if this.mobile is true
-
 
   }
 
