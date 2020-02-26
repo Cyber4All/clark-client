@@ -91,7 +91,7 @@
       <i class="far fa-user-crown"></i>
       Curator
     </div>
-    <div [ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
+    <div *ngIf="!privileges[0]?.includes('mapper')"[ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
       <i class="far fa-map"></i>
       Mapper
     </div>

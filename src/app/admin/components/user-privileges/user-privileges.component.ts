@@ -42,6 +42,7 @@ export class UserPrivilegesComponent implements OnInit {
   private getUserRoles() {
     this.privilegeService.getCollectionRoles(this.user.id).then(roles => {
       this.privileges = roles.map(x => x.split('@'));
+    console.log(this.privileges);
     this.getCollections();
     }).catch(error => {
       this.toaster.error('Error!', 'There was an error fetching this user\'s privileges. Please try again later.');

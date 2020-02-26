@@ -99,10 +99,6 @@ export class PrivilegeService {
         ADMIN_ROUTES.ADD_MAPPER(userId),
         { withCredentials: true }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
       .toPromise();
   }
 
@@ -112,10 +108,6 @@ export class PrivilegeService {
         ADMIN_ROUTES.GET_MAPPERS(),
         { withCredentials: true }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
       .toPromise();
   }
 
@@ -124,10 +116,6 @@ export class PrivilegeService {
       .delete(
         ADMIN_ROUTES.REMOVE_MAPPER(userId),
         { withCredentials: true }
-      )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
       )
       .toPromise();
   }
