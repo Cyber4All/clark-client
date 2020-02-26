@@ -6,7 +6,7 @@ import { UserVerifiedGuard } from './user-verified.guard';
 import { AuthService } from './auth.service';
 import { NavbarService } from './navbar.service';
 
-import { CartV2Service } from './cartv2.service';
+import { LibraryService } from './library.service';
 import { OutcomeService } from './outcome.service';
 import { CookieModule } from 'ngx-cookie';
 
@@ -41,7 +41,7 @@ export class CoreModule {
         AuthGuard,
         AdminGuard,
         AuthService,
-        CartV2Service,
+        LibraryService,
         ChangelogService,
         CollectionService,
         EditorService,

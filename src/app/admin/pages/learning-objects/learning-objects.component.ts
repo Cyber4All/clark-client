@@ -187,7 +187,6 @@ export class LearningObjectsComponent
           }
         })
         .catch(error => {
-          console.error(error);
           this.toaster.error(
             'Error!',
             'There was an error fetching collections. Please try again later.'
