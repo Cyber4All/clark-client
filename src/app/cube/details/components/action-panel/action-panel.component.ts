@@ -6,13 +6,14 @@ import { Component,
         Renderer2,
         ViewChild,
         ChangeDetectionStrategy,
-        OnChanges } from '@angular/core';
+        OnChanges,
+        ChangeDetectorRef} from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
 import { environment } from '@env/environment';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
-import { CartV2Service, iframeParentID } from 'app/core/cartv2.service';
+import { LibraryService, iframeParentID } from 'app/core/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
 
@@ -22,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: 'action-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
+export class ActionPanelComponent implements OnInit, OnDestroy {
 
   @Input() learningObject: LearningObject;
   @Input() revisedVersion: boolean;
@@ -36,7 +37,6 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
   @ViewChild('savesRef') savesRef: ElementRef;
 
-  disableLibraryButtons: boolean;
   serviceOutageMessage =
     'We\'re currently experiencing network issues that are affecting downloads and libraries. ' +
     'Both have been disabled while we work to resolve the issues. Please check back later.';
@@ -68,9 +68,10 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     public auth: AuthService,
-    private cartService: CartV2Service,
+    private libraryService: LibraryService,
     private renderer: Renderer2,
     private toaster: ToastrOvenService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -82,21 +83,17 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     this.hasDownloadAccess = (this.auth.hasReviewerAccess() || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
 
     this.url = this.buildLocation();
-    this.saved = this.cartService.has(this.learningObject);
+    this.saved = this.libraryService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
 
-  }
-
-  ngOnChanges() {
-    this.saved = this.cartService.has(this.learningObject);
   }
 
   get isReleased(): boolean {
     return this.learningObject.status === LearningObject.Status.RELEASED;
   }
 
-  async addToCart(download?: boolean) {
+  async addToLibrary(download?: boolean) {
     this.error = false;
 
     if (!download) {
@@ -113,26 +110,30 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
         this.learningObject.version
       );
     }
-
     try {
       if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
-        this.saved = this.cartService.has(this.learningObject);
+        this.saved = this.libraryService.has(this.learningObject);
 
         if (!this.saved) {
-          await this.cartService.addToCart(this.learningObject.author.username, this.learningObject);
-          this.animateSaves();
-          this.saved = true;
+          try {
+            await this.libraryService.addToLibrary(this.learningObject.author.username, this.learningObject);
+          } catch (e) {
+            if (e.status === 201) {
+              this.toaster.success('Successfully Added!', 'Learning Object added to your library');
+              this.saved = true;
+              this.animateSaves();
+            }
+          }
         }
       }
     } catch (error) {
-      if (error.status >= 500) {
-        this.disableLibraryButtons = true;
-      }
       this.toaster.error('Error!', 'There was an error adding to your library');
-    } finally {
-      this.addingToLibrary = false;
     }
+    this.libraryService.getLibrary();
+    this.addingToLibrary = false;
+    this.changeDetectorRef.detectChanges();
   }
+
 
   /**
    * Download the revised copy of a learning object. This does not add the object to the users cart
@@ -153,7 +154,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     this.downloading = true;
     const revision = this.revisedVersion || (!this.isReleased && !this.revisedVersion);
 
-    const loaded = this.cartService
+    const loaded = this.libraryService
       .downloadLearningObject(author, learningObjectCuid, version).pipe(
       takeUntil(this.destroyed$));
 
@@ -204,7 +205,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
         }, function (response) { });
         break;
       case 'twitter':
-        const text = 'Check out this learning object on CLARK!';
+        const text = 'Check out this learning object on CLARK! ClarkCan';
         window.open('http://twitter.com/share?url='
           + encodeURIComponent(this.url) + '&text='
           + encodeURIComponent(text), '', 'left=0,top=0,width=550,height=450,personalbar=0,toolbar=0,scrollbars=0,resizable=0');
@@ -212,7 +213,7 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
         break;
       case 'linkedin':
         const payload = {
-          'comment': 'Check out this learning object on CLARK! ' + this.url,
+          'comment': 'Check out this learning object on CLARK! ' + this.url + ' #ClarkCan',
           'visibility': {
             'code': 'anyone'
           }
@@ -241,8 +242,8 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     }, 600);
   }
 
-  removeFromCart() {
-    this.cartService.removeFromCart(this.learningObject.cuid);
+  removeFromLibrary() {
+    this.libraryService.removeFromLibrary(this.learningObject.cuid);
   }
 
   private buildLocation(encoded?: boolean) {
@@ -258,14 +259,11 @@ export class ActionPanelComponent implements OnInit, OnChanges, OnDestroy {
     const saves = this.learningObject.metrics.saves + 1;
 
     this.renderer.addClass(this.savesRef.nativeElement, 'animate');
+    this.learningObject.metrics.saves = saves;
 
     setTimeout(() => {
-      this.learningObject.metrics.saves = saves;
-
-      setTimeout(() => {
-        this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
-      }, 1000);
-    }, 400);
+      this.renderer.removeClass(this.savesRef.nativeElement, 'animate');
+    }, 1000);
   }
 
   get isMobile() {

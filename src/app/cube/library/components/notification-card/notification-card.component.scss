@@ -1,0 +1,36 @@
+@import '~_vars.scss';
+
+.notification-card {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    color: $dark-grey;
+    box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+}
+
+.notification-card__exit-button {
+    border: none;
+    outline: none;
+    font-size: $normal;
+    margin-right: 0;
+    margin-left: auto;
+    display: block;
+    cursor: pointer;
+    background-color: white;
+}
+
+.notification-card__title {
+    margin: 0;
+    margin-bottom: 15px;
+}
+
+.notification-card__version-history {
+    margin-bottom: 20px;
+}
+
+.notification-card__links {
+    color: $light-blue;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: $smaller;
+}

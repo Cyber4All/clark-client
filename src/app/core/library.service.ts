@@ -5,11 +5,11 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, switchMap, tap } from 'rxjs/operators';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
-export class CartV2Service {
+export class LibraryService {
   private user;
   private headers = new HttpHeaders();
 
@@ -28,17 +28,13 @@ export class CartV2Service {
     // this.headers.append('Content-Type', 'application/json');
   }
 
-  openLearningObject(url: string) {
-    window.open(url);
-  }
-
-  getCart(reloadUser = false): Promise<LearningObject[]> {
+  getLibrary(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
     return this.http
-      .get(USER_ROUTES.GET_CART(this.user.username), {
+      .get(USER_ROUTES.GET_CART(this.user.username, page, limit), {
         withCredentials: true,
         headers: this.headers
       })
@@ -48,51 +44,38 @@ export class CartV2Service {
       )
       .toPromise()
       .then((val: any) => {
-        this.cartItems = val
-          .map(object => new LearningObject(object.learningObject));
-        return this.cartItems;
+        this.cartItems = val.userLibraryItems.map(object => new LearningObject(object.learningObject));
+        return { cartItems: this.cartItems, lastPage: val.lastPage };
       });
   }
 
-  async addToCart(
+  async addToLibrary(
     author: string,
     learningObject: LearningObject
-  ): Promise<LearningObject[]> {
+  ): Promise<any> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-    return this.http
-      .post(
-        USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
-          this.user.username,
-        ),
-        {
-          authorUsername: author,
-          cuid: learningObject.cuid,
-          version: learningObject.version
-        },
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then(async (val: any) => {
-        try {
-          this.cartItems = val.map(object => new LearningObject(object.learningObject));
-          return this.cartItems;
-        } catch (error) {
-          return Promise.reject('Error! ' + error);
-        }
-      });
+    return await this.http
+        .post(
+          USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
+            this.user.username
+          ),
+          {
+            authorUsername: author,
+            cuid: learningObject.cuid,
+            version: learningObject.version
+          },
+          { headers: this.headers, withCredentials: true }
+        )
+        .toPromise();
   }
 
-  removeFromCart(cuid: string): Promise<LearningObject[]> {
+  removeFromLibrary(cuid: string): Promise<void> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-    return this.http
+    this.http
       .delete(
         USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
           this.user.username,
@@ -104,32 +87,7 @@ export class CartV2Service {
         retry(3),
         catchError(this.handleError)
       )
-      .toPromise()
-      .then((val: any) => {
-        this.cartItems = val
-          .map(object => new LearningObject(object.learningObject));
-        return this.cartItems;
-      });
-  }
-
-  checkout() {
-    this.http
-      .get(USER_ROUTES.GET_CART(this.user.username) + '?download=true', {
-        headers: this.headers,
-        responseType: 'blob',
-        withCredentials: true
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .subscribe(
-        res => {
-          importedSaveAs(res, `${Date.now()}.zip`);
-        },
-        err => err,
-        () => {}
-      );
+      .toPromise();
   }
 
   downloadLearningObject(

@@ -207,9 +207,9 @@ export const USER_ROUTES = {
       learningObjectId
     )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
-  GET_CART(username) {
+  GET_CART(username, page?, limit?) {
     // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects?page=${page}&limit=${limit}`;
   },
   CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -330,7 +330,30 @@ export const USER_ROUTES = {
     )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
       params.uploadId
       }/admin`;
-  }
+  },
+  GET_NOTIFICATIONS(params: {
+    username: string,
+    page: number,
+    limit: number,
+  }): string {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/notifications?page=${encodeURIComponent(
+      params.page.toString(),
+    )}&limit=${encodeURIComponent(
+      params.limit.toString(),
+    )}`;
+  },
+  DELETE_NOTIFICATION(params: {
+    username: string,
+    id: string,
+  }): string {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username,
+    )}/notifications/${encodeURIComponent(
+      params.id,
+    )}`;
+  },
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
