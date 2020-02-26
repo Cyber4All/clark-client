@@ -11,7 +11,7 @@ import {
   ChangeDetectionStrategy,
   OnDestroy
 } from '@angular/core';
-import { CartV2Service } from '../../../core/cartv2.service';
+import { LibraryService } from '../../../core/library.service';
 import { LearningObject } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
 import { CollectionService } from '../../../core/collection.service';
@@ -38,7 +38,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,
-    private cart: CartV2Service,
+    private library: LibraryService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
@@ -133,7 +133,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   download(e) {
     // Stop the event propagation so that the routerLink of the parent doesn't trigger
     e.stopPropagation();
-    this.cart
+    this.library
       .downloadLearningObject(
         this.learningObject.author.username,
         this.learningObject.cuid,
