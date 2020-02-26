@@ -72,7 +72,7 @@
         <h2 class='mapper-confirmation__header'>Are you sure?</h2>
         <p class='mapper-confirmation__sub'>You are about to promote this user to a Mapper.</p>
         <div class='btn-group center'>
-          <button (activate)='addMapper()' class='button good'>Submit</button>
+          <button aria-label='add mapper' (activate)='addMapper()' class='button good'>Submit</button>
         </div>
       </div>
     </ng-template>
@@ -83,18 +83,18 @@
 
 <ng-template #roleSelector>
   <div class="role-selector">
-    <div [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
+    <button [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
       <i class="far fa-user-edit"></i>
       Reviewer
-    </div>
-    <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
+    </button>
+    <button [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
       <i class="far fa-user-crown"></i>
       Curator
-    </div>
-    <div *ngIf="!privileges[0]?.includes('mapper')"[ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
+    </button>
+    <button*ngIf="!privileges[0]?.includes('mapper')"[ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
       <i class="far fa-map"></i>
       Mapper
-    </div>
+    </button>
   </div>
 </ng-template>
 
