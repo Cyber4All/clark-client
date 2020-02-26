@@ -21,7 +21,7 @@
                     <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
                 </button>
                 
-                <div class='notifications-container__cards' hammertime >
+                <div class='notifications-container__cards' hammertime (swipeRight)='getNotifications(currentNotificationsPageNumber + 1)' (swipeLeft)='getNotifications(currentNotificationsPageNumber -1)' >
                     <div *ngFor='let notification of notifications' class='cards-container__card'>
                         <clark-notification-card 
                             [notification]='notification'
@@ -33,7 +33,7 @@
                 </div>
                 
                 <button
-                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === 5 && !mobile'
+                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === notificationCardCount && !mobile'
                     class='cards-container__arrow-container right'
                     (activate)='getNotifications(currentNotificationsPageNumber + 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>

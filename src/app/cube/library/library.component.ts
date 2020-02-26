@@ -25,6 +25,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   destroyed$ = new Subject<void>();
   canDownload = false;
   notifications: { text: string, timestamp: string, link: string, attributes: any }[];
+  notificationsToShow: { text: string, timestamp: string, link: string, attributes: any }[];
   notificationPages = {};
   notificationPageKeys = [];
   showDownloadModal = false;
@@ -38,8 +39,9 @@ export class LibraryComponent implements OnInit, OnDestroy{
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
   lastNotificationsPageNumber;
+  // Notification Card variables
   mobile = false;
-  touch;
+  notificationCardCount = 5;
 
 
   constructor(
@@ -60,13 +62,16 @@ export class LibraryComponent implements OnInit, OnDestroy{
         const width = window.innerWidth;
         if (width <= 830) {
           this.mobile = true;
+          this.notificationCardCount = 1;
+        } else if (width <= 1024 && width > 830) {
+          this.mobile = false;
+          this.notificationCardCount = 3;
         }
   }
 
   ngOnInit() {
     this.loadLibrary();
     this.getNotifications(this.currentNotificationsPageNumber);
-
   }
 
   async loadLibrary() {
@@ -90,17 +95,10 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   async getNotifications(page: number) {
-    if (this.mobile === true) {
-      const result = await this.user.getNotifications(this.authService.user.username, page, 1);
+      const result = await this.user.getNotifications(this.authService.user.username, page, this.notificationCardCount);
       this.notifications = result.notifications;
       this.lastNotificationsPageNumber = result.lastPage;
       this.currentNotificationsPageNumber = page;
-    } else {
-      const result = await this.user.getNotifications(this.authService.user.username, page, 5);
-      this.notifications = result.notifications;
-      this.lastNotificationsPageNumber = result.lastPage;
-      this.currentNotificationsPageNumber = page;
-    }
   }
 
   async deleteNotification(notification: any) {
