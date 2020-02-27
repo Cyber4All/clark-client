@@ -138,11 +138,3 @@ export class LibraryService {
   }
 }
 
-const MAX_CHAR = 255;
-export function sanitizeFileName(name: string): string {
-  let clean = name.replace(/[\\/:"*?<>|]/gi, '_');
-  if (clean.length > MAX_CHAR) {
-    clean = clean.slice(0, MAX_CHAR);
-  }
-  return clean;
-}
