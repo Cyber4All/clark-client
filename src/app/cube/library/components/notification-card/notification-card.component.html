@@ -4,7 +4,7 @@
     <i class="fal fa-times"></i>
   </button>
   <h4 class='notification-card__title'>
-    {{ (notification.attributes?.name.length>30) ? (notification.attributes?.name | slice:0:30)+'...' : notification.attributes?.name }}
+    {{ (notification.attributes?.name.length>25) ? (notification.attributes?.name | slice:0:22)+'...' : notification.attributes?.name }}
   </h4>
   <div class='notification-card__version-history'>
     <div>
@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class='notification-card__links'>
-    <a class='details' aria-label='to Details page' href="" (activate)='onDetailsButtonClick($event)'>VIEW DETAILS <i class="far fa-external-link"></i></a>
-    <a aria-label='view change logs' href="" (activate)='onChangelogButtonClick($event)'>VIEW CHANGELOGS <i class="fal fa-comment-alt-edit"></i></a>
+    <a class='details' aria-label='to Details page' href="" (activate)='onDetailsButtonClick($event)'>VIEW DETAILS</a>
+    <a class='changelogs' aria-label='view change logs' href="" (activate)='onChangelogButtonClick($event)'>VIEW CHANGELOGS</a>
   </div>
 </div>

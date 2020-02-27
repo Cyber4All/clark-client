@@ -7,7 +7,7 @@
     color: $dark-grey;
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
     width: 250px;
-    height: 150px;
+    height: 130px;
 }
 
 .notification-card__exit-button {
@@ -25,22 +25,20 @@
     margin: 0;
     margin-bottom: 15px;
     max-width: 80%;
-    text-overflow: ellipsis;
-    min-height: 40px;
+    min-height: 20px;
 }
 
 .notification-card__version-history {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .notification-card__links {
-    position: absolute;
-    bottom: 10px;
+    width: 250px;
     color: $light-blue;
-    display: inline-block;
+    display: flex;
     font-size: $small;
 
-    .details {
-        padding-right: 20px;
+    .changelogs {
+        margin-left: auto;
     }
 }
