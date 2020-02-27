@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, OnChanges } from '@angular/core';
 import { LibraryService } from 'app/core/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -16,7 +16,7 @@ import { LearningObjectService } from '../learning-object.service';
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.scss']
 })
-export class LibraryComponent implements OnInit, OnDestroy{
+export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
 
   loading: boolean;
   serviceError: boolean;
@@ -42,6 +42,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   // Notification Card variables
   mobile = false;
   notificationCardCount = 5;
+  notificationToShow = [];
 
 
   constructor(
@@ -59,19 +60,30 @@ export class LibraryComponent implements OnInit, OnDestroy{
 
   @HostListener('window:resize', ['$event'])
   getScreenSize() {
-        const width = window.innerWidth;
-        if (width <= 830) {
-          this.mobile = true;
-          this.notificationCardCount = 1;
-        } else if (width <= 1024 && width > 830) {
-          this.mobile = false;
-          this.notificationCardCount = 3;
-        }
+    const width = window.innerWidth;
+    // Mobile devices
+    if (width <= 500) {
+      this.mobile = true;
+      this.notificationCardCount = 1;
+      // Normal tablets
+    } else if (width > 500 && width < 1024) {
+      this.mobile = false;
+      this.notificationCardCount = 2;
+      // Larger tablets
+    } else if (width <= 1024 && width > 830) {
+      this.mobile = false;
+      this.notificationCardCount = 3;
+    }
   }
 
   ngOnInit() {
     this.loadLibrary();
     this.getNotifications(this.currentNotificationsPageNumber);
+    this.getScreenSize();
+  }
+
+  ngOnChanges () {
+    this.getScreenSize();
   }
 
   async loadLibrary() {
@@ -95,7 +107,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   }
 
   async getNotifications(page: number) {
-      const result = await this.user.getNotifications(this.authService.user.username, page, this.notificationCardCount);
+      const result = await this.user.getNotifications(this.authService.user.username, page, 5);
       this.notifications = result.notifications;
       this.lastNotificationsPageNumber = result.lastPage;
       this.currentNotificationsPageNumber = page;

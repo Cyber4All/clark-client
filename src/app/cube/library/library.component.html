@@ -22,7 +22,7 @@
                 </button>
                 
                 <div class='notifications-container__cards' hammertime (swipeRight)='getNotifications(currentNotificationsPageNumber + 1)' (swipeLeft)='getNotifications(currentNotificationsPageNumber -1)' >
-                    <div *ngFor='let notification of notifications' class='cards-container__card'>
+                    <div *ngFor='let notification of notifications | slice:0:notificationCardCount' class='cards-container__card'>
                         <clark-notification-card 
                             [notification]='notification'
                             (deleteButtonClicked)='deleteNotification(notification)'
