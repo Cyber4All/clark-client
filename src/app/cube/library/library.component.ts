@@ -71,7 +71,7 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
       this.notificationCardCount = 2;
       // Larger tablets
     } else if (width >= 800 && width < 1000) {
-      this.mobile = true;
+      this.mobile = false;
       this.notificationCardCount = 3;
       // Smaller Desktops
     } else if (width >= 1000 && width < 1200) {
@@ -82,7 +82,6 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
       this.mobile = false;
       this.notificationCardCount = 5;
     }
-    console.log(this.notificationCardCount);
     this.getNotifications(this.currentNotificationsPageNumber);
   }
 
@@ -118,66 +117,12 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async getNotifications(page: number) {
-    // If this is a mobile device retrieve all the notifications at once so we don't have multiple requests to the backend. 
-    if (this.mobile === true) {
-      if (this.localNotifications.length <= 0) {
-        const result = await this.user.getNotifications(this.authService.user.username, page, 1000);
-        this.localNotifications = result.notifications;
-        this.lastNotificationsPageNumber = Math.ceil(this.localNotifications.length / this.notificationCardCount);
-        this.currentNotificationsPageNumber = page;
-        console.log('count', this.notificationCardCount);
-        this.notifications = this.localNotifications.slice(0, this.notificationCardCount);
-      }
-      if (page < this.currentNotificationsPageNumber) {
-        if (this.indexOfLastNotification - this.notificationCardCount > 0) {
-          this.notifications = this.localNotifications.slice(
-            this.indexOfLastNotification - (2 * this.notificationCardCount), this.indexOfLastNotification - this.notificationCardCount
-          );
-          this.indexOfLastNotification = this.indexOfLastNotification - this.notificationCardCount;
-        }
-      } else {
-        if (this.localNotifications.length >= (this.indexOfLastNotification + this.notificationCardCount)) {
-          this.notifications = this.localNotifications.slice(
-            this.indexOfLastNotification, this.indexOfLastNotification + this.notificationCardCount
-          );
-          this.indexOfLastNotification = this.indexOfLastNotification + this.notificationCardCount;
-        } else {
-          this.notifications = this.localNotifications.slice(this.indexOfLastNotification, this.localNotifications.length);
-        }
-      }
+      const result = await this.user.getNotifications(this.authService.user.username, page, 1000);
+      this.localNotifications = result.notifications;
+      this.lastNotificationsPageNumber = Math.ceil(this.localNotifications.length / this.notificationCardCount);
       this.currentNotificationsPageNumber = page;
-      // If this is not a mobile device do incremental requests for notifications
-    } else if (this.mobile === false) {
-      if (this.localNotifications.length <= 0) {
-        const result = await this.user.getNotifications(this.authService.user.username, page, 5);
-        this.localNotifications = result.notifications;
-        this.notifications = this.localNotifications.splice(0, this.notificationCardCount);
-        this.lastNotificationsPageNumber = result.lastPage;
-        console.log(this.notifications);
-        this.currentNotificationsPageNumber = page;
-      }
-      if (page < this.currentNotificationsPageNumber) {
-        if (this.indexOfLastNotification - this.notificationCardCount > 0) {
-          this.notifications = this.localNotifications.slice(
-            this.indexOfLastNotification - (2 * this.notificationCardCount), this.indexOfLastNotification - this.notificationCardCount
-          );
-          this.indexOfLastNotification = this.indexOfLastNotification - this.notificationCardCount;
-        }
-      // tslint:disable-next-line: max-line-length
-      } else if (page > this.currentNotificationsPageNumber) {
-        if (this.localNotifications.length >= (this.indexOfLastNotification + this.notificationCardCount)) {
-          this.notifications = this.localNotifications.slice(
-            this.indexOfLastNotification, this.indexOfLastNotification + this.notificationCardCount
-          );
-          this.indexOfLastNotification = this.indexOfLastNotification + this.notificationCardCount;
-        } else if (this.localNotifications.length <= (this.indexOfLastNotification + this.notificationCardCount)) {
-          const result = await this.user.getNotifications(this.authService.user.username, page, 5);
-          this.localNotifications = this.localNotifications + result.notifications;
-          this.currentNotificationsPageNumber = page;
-        }
-      }
+      this.notifications = this.localNotifications.slice(0, this.notificationCardCount);
     }
-  }
 
   async deleteNotification(notification: any) {
     await this.user.deleteNotification(this.authService.user.username, notification.id);
@@ -188,6 +133,7 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
     try {
       await this.libraryService.removeFromLibrary(this.libraryItemToDelete.cuid);
       this.libraryItems = (await this.libraryService.getLibrary(1, 10)).cartItems;
+      this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
       console.log(e);
