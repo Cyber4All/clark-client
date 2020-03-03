@@ -33,7 +33,7 @@
                 </div>
                 
                 <button
-                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === notificationCardCount && !mobile'
+                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && !mobile'
                     class='cards-container__arrow-container right'
                     (activate)='getNotifications(currentNotificationsPageNumber + 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>

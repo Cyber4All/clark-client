@@ -38,7 +38,7 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
   lastPageNumber;
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
-  lastNotificationsPageNumber;
+  lastNotificationsPageNumber = 1;
   // Notification Card variables
   mobile = false;
   notificationCardCount = 5;
@@ -62,24 +62,20 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
   getScreenSize() {
     const width = window.innerWidth;
     // Mobile devices
-    if (width < 600) {
+    if (width <= 750) {
       this.mobile = true;
       this.notificationCardCount = 1;
       // Normal tablets
-    } else if (width >= 600 && width < 800) {
-      this.mobile = true;
+    } else if (width > 750 && width <= 1000) {
       this.notificationCardCount = 2;
       // Larger tablets
-    } else if (width >= 800 && width < 1000) {
-      this.mobile = false;
+    } else if (width > 1000 && width <= 1350) {
       this.notificationCardCount = 3;
       // Smaller Desktops
-    } else if (width >= 1000 && width < 1200) {
-      this.mobile = false;
+    } else if (width > 1350 && width <= 1650) {
       this.notificationCardCount = 4;
       // Bigger Desktops
-    } else if (width >= 1200) {
-      this.mobile = false;
+    } else if (width > 1650) {
       this.notificationCardCount = 5;
     }
     this.getNotifications(this.currentNotificationsPageNumber);
@@ -88,12 +84,10 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.loadLibrary();
     this.getScreenSize();
-    this.getNotifications(this.currentNotificationsPageNumber);
   }
 
   ngOnChanges () {
     this.getScreenSize();
-    this.getNotifications(this.currentNotificationsPageNumber);
   }
 
   async loadLibrary() {
@@ -117,12 +111,52 @@ export class LibraryComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async getNotifications(page: number) {
-      const result = await this.user.getNotifications(this.authService.user.username, page, 1000);
-      this.localNotifications = result.notifications;
-      this.lastNotificationsPageNumber = Math.ceil(this.localNotifications.length / this.notificationCardCount);
-      this.currentNotificationsPageNumber = page;
-      this.notifications = this.localNotifications.slice(0, this.notificationCardCount);
+    // If the total number of cards being shown is greater than 3 make incremental requests for notifications
+    if (this.notificationCardCount > 3) {
+      if (page <= this.lastNotificationsPageNumber && page > 0) {
+        const result = await this.user.getNotifications(this.authService.user.username, page, this.notificationCardCount);
+        this.notifications = result.notifications;
+        this.lastNotificationsPageNumber = result.lastPage;
+        this.currentNotificationsPageNumber = page;
+      }
+    } else {
+      // Make sure that the page is not 0 and that it is not over the max number of page numbers
+      if (page <= this.lastNotificationsPageNumber && page > 0) {
+        // If localNotifications is empty go and retrieve all of them from Notifications Service
+        if (this.localNotifications.length <= 0) {
+          const results = await this.user.getNotifications(this.authService.user.username, page, 1000);
+          this.localNotifications = results.notifications;
+          this.notifications = this.localNotifications.slice(this.indexOfLastNotification, this.notificationCardCount);
+          this.indexOfLastNotification = this.notificationCardCount;
+          this.lastNotificationsPageNumber = Math.ceil(this.localNotifications.length / this.notificationCardCount);
+          this.currentNotificationsPageNumber = page;
+          // If notifications.length is not equal to the number of cards being shown adjust the notifications array
+        }
+        if (this.notifications.length !== this.notificationCardCount) {
+          // tslint:disable-next-line: max-line-length
+          this.notifications = this.localNotifications.slice(this.indexOfLastNotification, this.indexOfLastNotification + this.notificationCardCount);
+          this.indexOfLastNotification = this.notificationCardCount;
+          this.lastNotificationsPageNumber = Math.ceil(this.localNotifications.length / this.notificationCardCount);
+          this.currentNotificationsPageNumber = page;
+          console.log(this.currentNotificationsPageNumber);
+          console.log(this.lastNotificationsPageNumber);
+        }
+        // If the page requested is less than the current page
+        if (page < this.currentNotificationsPageNumber && ((this.localNotifications.length - this.notificationCardCount) > 0)) {
+          // tslint:disable-next-line: max-line-length
+          this.notifications = this.localNotifications.slice(this.indexOfLastNotification - (2 * this.notificationCardCount), this.indexOfLastNotification - this.notificationCardCount);
+          this.indexOfLastNotification = this.indexOfLastNotification - this.notificationCardCount;
+          this.currentNotificationsPageNumber = page;
+          // If the page requested is more than the current page
+        } else if (page > this.currentNotificationsPageNumber) {
+          // tslint:disable-next-line: max-line-length
+          this.notifications = this.localNotifications.slice(this.indexOfLastNotification, this.indexOfLastNotification + this.notificationCardCount);
+          this.indexOfLastNotification = this.indexOfLastNotification + this.notificationCardCount;
+          this.currentNotificationsPageNumber = page;
+        }
+      }
     }
+  }
 
   async deleteNotification(notification: any) {
     await this.user.deleteNotification(this.authService.user.username, notification.id);
