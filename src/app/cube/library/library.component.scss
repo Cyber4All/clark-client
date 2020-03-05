@@ -185,6 +185,24 @@
   }
 }
 
+@media only screen and (max-width:  600px) {
+    .notifications-container__cards {
+        position: relative;
+        z-index: 1;
+    }
+    .cards-container__arrow-container {
+        position: absolute;
+        background-color: white;
+        color: white;
+        box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+        width: 200px;
+        height: 130px;
+        border-radius: 5px;
+        top: 10px;
+        z-index: 0;
+    }
+}
+
 
 
 

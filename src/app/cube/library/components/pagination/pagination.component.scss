@@ -36,3 +36,10 @@ button {
     outline: none;
     background-color: white;
 }
+
+@media only screen and (max-width:  750px) {
+    .cards-container__arrow-container {
+        color: purple;
+        font-size: 90px;
+    }
+}

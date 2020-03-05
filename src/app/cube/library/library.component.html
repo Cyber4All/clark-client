@@ -13,17 +13,17 @@
         </h2>
         
         <div class='library__cards-container' *ngIf='notifications?.length'>
-            <div class='notifications-container'>
+            <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex -1)'>
                 <button 
-                    *ngIf='currentNotificationsPageNumber > 1 && !mobile' 
+                    *ngIf='firstIndex > 0' 
                     class='cards-container__arrow-container left'
-                    (activate)='getNotifications(currentNotificationsPageNumber - 1)'>
+                    (activate)='setNotifications(firstIndex - 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
                 </button>
                 
-                <div class='notifications-container__cards' hammertime (swipeRight)='getNotifications(currentNotificationsPageNumber + 1)' (swipeLeft)='getNotifications(currentNotificationsPageNumber -1)' >
+                <div class='notifications-container__cards'>
                     <div *ngFor='let notification of notifications' class='cards-container__card'>
-                        <clark-notification-card 
+                        <clark-notification-card
                             [notification]='notification'
                             (deleteButtonClicked)='deleteNotification(notification)'
                             (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'
@@ -33,9 +33,9 @@
                 </div>
                 
                 <button
-                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && !mobile'
+                    *ngIf='lastIndex < localNotifications.length'
                     class='cards-container__arrow-container right'
-                    (activate)='getNotifications(currentNotificationsPageNumber + 1)'>
+                    (activate)='setNotifications(firstIndex + 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>
                 </button>
             </div>
