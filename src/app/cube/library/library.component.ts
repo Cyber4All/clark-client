@@ -60,9 +60,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
   lastNotificationsPageNumber = 1;
   // Notification Card variables
   notificationCardCount = 0;
-  indexOfLastNotification = 0;
-  indexOfFirstNotification = 0;
-  lastNotificationIndex;
+  lastIndex = 0;
+  firstIndex = 0;
 
 
   constructor(
@@ -148,20 +147,19 @@ export class LibraryComponent implements OnInit, OnDestroy {
    */
   setNotifications(index: number) {
     // If the index is equal to the index of the first notification
-    if (index === this.indexOfFirstNotification) {
-      this.indexOfFirstNotification = this.indexOfFirstNotification;
-      this.indexOfLastNotification = this.notificationCardCount;
+    if (index === this.firstIndex) {
+      this.lastIndex = this.notificationCardCount;
       // If the index requested is less than the index of the first notification
-    } else if (index < this.indexOfFirstNotification && index >= 0) {
-      this.indexOfFirstNotification = this.indexOfFirstNotification - this.notificationCardCount;
-      this.indexOfLastNotification = this.indexOfLastNotification - this.notificationCardCount;
+    } else if (index < this.firstIndex && index >= 0) {
+      this.firstIndex = this.firstIndex - this.notificationCardCount;
+      this.lastIndex = this.lastIndex - this.notificationCardCount;
       // If the index requested is greater than the index of the first notification
-    } else if (index > this.indexOfFirstNotification && this.indexOfLastNotification + this.notificationCardCount <= this.localNotifications.length) {
-      this.indexOfFirstNotification = this.indexOfFirstNotification + this.notificationCardCount;
-      this.indexOfLastNotification = this.indexOfLastNotification + this.notificationCardCount;
+    } else if (index > this.firstIndex && this.lastIndex + this.notificationCardCount <= this.localNotifications.length) {
+      this.firstIndex = this.firstIndex + this.notificationCardCount;
+      this.lastIndex = this.lastIndex + this.notificationCardCount;
     }
     console.log(index);
-    this.notifications = this.localNotifications.slice(this.indexOfFirstNotification, this.indexOfLastNotification);
+    this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
   }
 
   async deleteNotification(notification: any) {
