@@ -11,29 +11,28 @@ import { RatingService } from 'app/core/rating.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, state, transition, animate } from '@angular/animations';
-
+import { shiftRight, shiftLeft } from './library-animations';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.scss'],
-  // animations: [
-  //   // the fade-in/fade-out animation.
-  //   trigger('simpleFadeAnimation', [
+  animations: [
+    // the fade-in/fade-out animation.
+    trigger('slide', [
 
-  //     // the "in" style determines the "resting" state of the element when it is visible.
-  //     state('in', style({opacity: 1})),
+      // the "in" style determines the "resting" state of the element when it is visible.
+      state('in', style({opacity: 1})),
 
-  //     // fade in when created. this could also be written as transition('void => *')
-  //     transition(':enter', [
-  //       style({opacity: 1, transform: 'translateX(90px)'}),
-  //       animate(200)
-  //     ]),
+      // fade in when created. this could also be written as transition('void => *')
+      transition(':enter', [
+        animate('0.4s ease-in', style({ opacity: 1, transform: 'translate(-200px)'}))
+      ]),
 
-  //     // // fade out when destroyed. this could also be written as transition('void => *')
-  //     // transition(':leave',
-  //     //   animate(200, style({opacity: 0, transform: 'translateX(-90px)'})))
-  //   ])
-  // ]
+      // fade out when destroyed. this could also be written as transition('void => *')
+      transition(':leave',
+        animate('0.3s ease-out', style({ opacity: 0, transform: 'translateX(200px)'})))
+    ])
+  ]
 })
 export class LibraryComponent implements OnInit, OnDestroy {
 

@@ -22,7 +22,7 @@
                 </button>
                 
                 <div class='notifications-container__cards'>
-                    <div *ngFor='let notification of notifications' class='cards-container__card'>
+                    <div [@slide]='firstIndex' *ngFor='let notification of notifications' class='cards-container__card'>
                         <clark-notification-card
                             [notification]='notification'
                             (deleteButtonClicked)='deleteNotification(notification)'
