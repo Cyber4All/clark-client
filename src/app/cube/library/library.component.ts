@@ -11,7 +11,6 @@ import { RatingService } from 'app/core/rating.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, state, transition, animate } from '@angular/animations';
-import { shiftRight, shiftLeft } from './library-animations';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
@@ -25,12 +24,12 @@ import { shiftRight, shiftLeft } from './library-animations';
 
       // fade in when created. this could also be written as transition('void => *')
       transition(':enter', [
-        animate('0.4s ease-in', style({ opacity: 1, transform: 'translate(-200px)'}))
+        animate('0.4s 0.3s ease-in', style({ opacity: 1, transform: 'translateY(-20px)'}))
       ]),
 
       // fade out when destroyed. this could also be written as transition('void => *')
       transition(':leave',
-        animate('0.3s ease-out', style({ opacity: 0, transform: 'translateX(200px)'})))
+        animate('0.1s ease-out', style({ opacity: 0, transform: 'translateX(-900px)'})))
     ])
   ]
 })
@@ -99,7 +98,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
       if (this.localNotifications.length <= 0) {
         await this.getNotifications(this.currentNotificationsPageNumber);
       }
-      this.firstIndex = 0;
       this.lastIndex = this.firstIndex + this.notificationCardCount;
       this.setNotifications(this.firstIndex);
     }
@@ -164,31 +162,37 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param page The current page that the user is on
    */
   async setNotifications(index: number) {
-    // If the index is equal to the index of the first notification; we ca
     if (index === this.firstIndex) {
       this.lastIndex = this.notificationCardCount;
-      // If the index requested is less than the index of the first notification
-    } else if (index < this.firstIndex && (this.firstIndex - this.notificationCardCount) >= 0 && index >= 0) {
+    } else if (index < this.firstIndex && index >= 0) {
+      this.goBackNotifications();
+    } else if (index > this.firstIndex) {
+      await this.goForwardNotifications();
+    }
+    this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
+  }
+
+  goBackNotifications() {
+    if ((this.firstIndex - this.notificationCardCount >= 0)) {
       this.firstIndex = this.firstIndex - this.notificationCardCount;
       this.lastIndex = this.firstIndex + this.notificationCardCount;
-      // If the index requested is going to be a negative number once
-    } else if (index < this.firstIndex && (this.firstIndex - this.notificationCardCount) <= 0 && index >= 0) {
+    } else if ((this.firstIndex - this.notificationCardCount <= 0)) {
       this.firstIndex = this.firstIndex - (this.localNotifications.length - this.notificationCardCount);
       this.lastIndex = this.firstIndex + this.notificationCardCount;
-      // If the index requested is greater than the index of the first notification
-    } else if (index > this.firstIndex && (this.lastIndex + this.notificationCardCount) <= this.localNotifications.length) {
+    }
+  }
+
+  async goForwardNotifications() {
+    if ((this.lastIndex + this.notificationCardCount) <= this.localNotifications.length) {
       this.firstIndex = this.firstIndex + this.notificationCardCount;
       this.lastIndex = this.lastIndex + this.notificationCardCount;
-      // If the lastIndex + notificationCardCount is going to go over the array
-    } else if (index > this.firstIndex && (this.lastIndex + this.notificationCardCount) >= this.localNotifications.length) {
-      // If there is more notifications in the service that we don't have locally yet
+    } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length) {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
       this.firstIndex = this.firstIndex + (this.localNotifications.length - this.lastIndex);
       this.lastIndex = this.localNotifications.length;
     }
-    this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
   }
 
   async deleteNotification(notification: any) {
