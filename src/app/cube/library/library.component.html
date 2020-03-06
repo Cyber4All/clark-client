@@ -33,7 +33,7 @@
                 </div>
                 
                 <button
-                    *ngIf='lastIndex < localNotifications.length'
+                    *ngIf='lastIndex < localNotifications.length || currentNotificationsPageNumber < lastNotificationsPageNumber'
                     class='cards-container__arrow-container right'
                     (activate)='setNotifications(firstIndex + 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>

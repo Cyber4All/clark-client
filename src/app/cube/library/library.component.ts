@@ -72,7 +72,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private user: UserService,
     private ratings: RatingService,
     private changelogService: ChangelogService,
-    private cd: ChangeDetectorRef,
     private learningObjectService: LearningObjectService,
   ) {
     this.getScreenSize();
@@ -86,9 +85,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
     if (width <= 750) {
       this.notificationCardCount = 1;
       // Normal tablets
-    } else if (width > 750 && width <= 1350) {
+    } else if (width > 750 && width <= 1050) {
       this.notificationCardCount = 2;
       // Smaller Desktops
+    } else if (width > 1050 && width <= 1350) {
+      this.notificationCardCount = 3;
     } else if (width > 1350 && width <= 1650) {
       this.notificationCardCount = 4;
       // Bigger Desktops
@@ -99,9 +100,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
       if (this.localNotifications.length <= 0) {
         await this.getNotifications(this.currentNotificationsPageNumber);
       }
-      // this.indexOfFirstNotification = (this.indexOfFirstNotification + this.indexOfLastNotification) - this.notificationCardCount;
-      // this.indexOfLastNotification = this.notificationCardCount;
-      this.setNotifications(this.indexOfFirstNotification);
+      this.firstIndex = 0;
+      this.lastIndex = this.firstIndex + this.notificationCardCount;
+      this.setNotifications(this.firstIndex);
     }
   }
 
@@ -130,35 +131,64 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * This function retrieves the notifications from Notification service
+   * @param apiPage The page that we need to retrieve from Notifications service
+   */
   async getNotifications(apiPage: number) {
-    // Clicked to new page
     if (apiPage <= this.lastNotificationsPageNumber && apiPage > 0) {
       const result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
-      this.localNotifications = result.notifications;
+      this.localNotifications = [...this.localNotifications, ...result.notifications];
       this.lastNotificationsPageNumber = result.lastPage;
-      this.currentNotificationsPageNumber = apiPage;
+      // If the lastPage value is equal to the localNotifications then set it to the currentPageNumber
+      // FIXME I believe this is an issue with notification service
+      if (this.lastNotificationsPageNumber === this.localNotifications.length) {
+        this.currentNotificationsPageNumber = this.localNotifications.length;
+      } else {
+        this.currentNotificationsPageNumber = apiPage;
+      }
     }
   }
 
   /**
    * This will set the notifications array according to the number of cards that are to be displayed and
    * the page number the user is currently on.
+   * There are 5 cases covered in this function:
+   * 1. The index of the localNotifications array being requested is equal to the firstIndex of the notification array
+   * 2. The index of the localNotifications array being requested is less than the
+   *    first Index and there are more than enough in the array to display
+   * 3. The index of the localNotifications array being requested is less than the first Index and there are not enough left in the array
+   *    to display
+   * 4. The index of the localNotifications array being requested is larger than the array and there are plenty left in the array to show
+   * 5. The index of the localNotifications array being requested is larger than the array and there are no enough left
+   *    in the array to display
    * @param page The current page that the user is on
    */
-  setNotifications(index: number) {
-    // If the index is equal to the index of the first notification
+  async setNotifications(index: number) {
+    // If the index is equal to the index of the first notification; we ca
     if (index === this.firstIndex) {
       this.lastIndex = this.notificationCardCount;
       // If the index requested is less than the index of the first notification
-    } else if (index < this.firstIndex && index >= 0) {
+    } else if (index < this.firstIndex && (this.firstIndex - this.notificationCardCount) >= 0 && index >= 0) {
       this.firstIndex = this.firstIndex - this.notificationCardCount;
-      this.lastIndex = this.lastIndex - this.notificationCardCount;
+      this.lastIndex = this.firstIndex + this.notificationCardCount;
+      // If the index requested is going to be a negative number once
+    } else if (index < this.firstIndex && (this.firstIndex - this.notificationCardCount) <= 0 && index >= 0) {
+      this.firstIndex = this.firstIndex - (this.localNotifications.length - this.notificationCardCount);
+      this.lastIndex = this.firstIndex + this.notificationCardCount;
       // If the index requested is greater than the index of the first notification
-    } else if (index > this.firstIndex && this.lastIndex + this.notificationCardCount <= this.localNotifications.length) {
+    } else if (index > this.firstIndex && (this.lastIndex + this.notificationCardCount) <= this.localNotifications.length) {
       this.firstIndex = this.firstIndex + this.notificationCardCount;
       this.lastIndex = this.lastIndex + this.notificationCardCount;
+      // If the lastIndex + notificationCardCount is going to go over the array
+    } else if (index > this.firstIndex && (this.lastIndex + this.notificationCardCount) >= this.localNotifications.length) {
+      // If there is more notifications in the service that we don't have locally yet
+      if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
+        await this.getNotifications(this.currentNotificationsPageNumber + 1);
+      }
+      this.firstIndex = this.firstIndex + (this.localNotifications.length - this.lastIndex);
+      this.lastIndex = this.localNotifications.length;
     }
-    console.log(index);
     this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
   }
 
