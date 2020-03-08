@@ -28,7 +28,7 @@ import { trigger, style, group, transition, animate, query } from '@angular/anim
         ]),
         query(':leave', [
           animate('1.2s ease-out', style({
-            transform: 'translateX(-700px)',
+            transform: 'translateX(-650px)',
             opacity: 0,
             width: '0px',
             zIndex: 0
