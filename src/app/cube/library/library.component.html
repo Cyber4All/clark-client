@@ -21,8 +21,8 @@
                     <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
                 </button>
                 
-                <div class='notifications-container__cards'>
-                    <div [@slide] *ngFor='let notification of notifications' class='cards-container__card'>
+                <div [@slider]='firstIndex' class='notifications-container__cards'>
+                    <div *ngFor='let notification of notifications' class='cards-container__card'>
                         <clark-notification-card
                             [notification]='notification'
                             (deleteButtonClicked)='deleteNotification(notification)'

@@ -10,26 +10,47 @@ import { UserService } from 'app/core/user.service';
 import { RatingService } from 'app/core/rating.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
-import { trigger, style, state, transition, animate } from '@angular/animations';
+import { trigger, style, group, transition, animate, query } from '@angular/animations';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.scss'],
   animations: [
-    // the fade-in/fade-out animation.
-    trigger('slide', [
-
-      // the "in" style determines the "resting" state of the element when it is visible.
-      state('in', style({opacity: 1})),
-
-      // fade in when created. this could also be written as transition('void => *')
-      transition(':enter', [
-        animate('0.4s 0.3s ease-in', style({ opacity: 1, transform: 'translateY(-20px)'}))
-      ]),
-
-      // fade out when destroyed. this could also be written as transition('void => *')
-      transition(':leave',
-        animate('0.1s ease-out', style({ opacity: 0, transform: 'translateX(-900px)'})))
+    trigger('slider', [
+      transition(':increment', group([
+        query(':enter', [
+          style({
+            transform: 'translateX(800px)',
+            opacity: 1,
+            zIndex: 1,
+          }),
+          animate('1.2s ease-out', style('*'))
+        ]),
+        query(':leave', [
+          animate('1.2s ease-out', style({
+            transform: 'translateX(-700px)',
+            opacity: 0,
+            width: '0px',
+            zIndex: 0
+          }))
+        ])
+      ])),
+      transition(':decrement', group([
+        query(':enter', [
+          style({
+            transform: 'translateX(-100px)',
+            opacity: 1
+          }),
+          animate('0.9s ease-out', style('*'))
+        ]),
+        query(':leave', [
+          animate('0.9s ease-out', style({
+            transform: 'translateX(100px)',
+            opacity: 0,
+            width: '0px'
+          }))
+        ])
+      ]))
     ])
   ]
 })
@@ -98,6 +119,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       if (this.localNotifications.length <= 0) {
         await this.getNotifications(this.currentNotificationsPageNumber);
       }
+      this.firstIndex = 0;
       this.lastIndex = this.firstIndex + this.notificationCardCount;
       this.setNotifications(this.firstIndex);
     }
@@ -170,6 +192,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       await this.goForwardNotifications();
     }
     this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
+    console.log(this.firstIndex);
   }
 
   goBackNotifications() {
