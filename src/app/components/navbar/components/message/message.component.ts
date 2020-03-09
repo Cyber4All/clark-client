@@ -9,7 +9,7 @@ import { environment } from '@env/environment';
 })
 export class MessageComponent implements OnInit {
 
-  showBanner = true;
+  showBanner = false;
   message: Message;
 
   constructor(private messages: MessagesService) { }
