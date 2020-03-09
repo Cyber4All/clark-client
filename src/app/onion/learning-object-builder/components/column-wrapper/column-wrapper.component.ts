@@ -15,7 +15,7 @@ import { MessagesService } from 'app/core/messages.service';
   styleUrls: ['./column-wrapper.component.scss']
 })
 export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('columnWrapper') columnWrapper: ElementRef;
+  @ViewChild('columnWrapper', { static: true }) columnWrapper: ElementRef;
 
   @Input() columns = 'lmr';
 

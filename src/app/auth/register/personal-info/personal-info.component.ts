@@ -24,7 +24,7 @@ import { map, debounceTime, takeUntil } from 'rxjs/operators';
 export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   @Input() group: FormGroup;
   @Output() hasResults = new EventEmitter();
-  @ViewChild('emailInput', { read: ElementRef })
+  @ViewChild('emailInput', { read: ElementRef, static: true })
   emailInput: ElementRef;
   emailError = false;
   querying = false;

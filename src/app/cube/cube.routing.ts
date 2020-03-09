@@ -21,13 +21,13 @@ import { OutagePageComponent } from './outage-page/outage-page.component';
 
 const details = {
   path: 'details',
-  loadChildren: 'app/cube/details/details.module#DetailsModule'
+  loadChildren: () => import('app/cube/details/details.module').then(m => m.DetailsModule)
 };
 
 const library = environment.experimental ? {
   path: 'library',
   canActivate: [AuthGuard],
-  loadChildren: 'app/cube/library/library.module#LibraryModule'
+  loadChildren: () => import('app/cube/library/library.module').then(m => m.LibraryModule)
 } : {
   path: 'library',
   component: CartComponent,
@@ -57,7 +57,7 @@ const cube_routes: Routes = [
       },
       {
         path: 'system/usage',
-        loadChildren: 'app/cube/usage-stats/usage-stats.module#UsageStatsModule',
+        loadChildren: () => import('app/cube/usage-stats/usage-stats.module').then(m => m.UsageStatsModule),
         data: { title: 'System Usage'}
       },
       {

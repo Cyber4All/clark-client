@@ -24,8 +24,8 @@ import { Collection, CollectionService } from 'app/core/collection.service';
 })
 export class LearningObjectsComponent
   implements OnInit, OnDestroy {
-  @ViewChild('list') listElement: ElementRef<HTMLElement>;
-  @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
+  @ViewChild('list', { static: true }) listElement: ElementRef<HTMLElement>;
+  @ViewChild('headers', { static: false }) headersElement: ElementRef<HTMLElement>;
 
   learningObjects: LearningObject[] = [];
   searchBarPlaceholder = 'Learning Objects';
