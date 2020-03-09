@@ -1,0 +1,19 @@
+<div class='background'>
+  <section class="hero">
+    <div class="inner">
+        <h1 class="header">Browse By Topic</h1>
+        <p class="description">
+            CLARK has {{ topics.length }} topics to browse
+        </p>
+    </div>
+  </section>
+  <div class='topics-grid'>
+    <div *ngFor='let topic of topics'>
+      <div class='topic-card'>
+        {{ topic }}
+      </div>
+    </div>
+  </div>
+</div>
+
+

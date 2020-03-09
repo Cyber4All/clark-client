@@ -18,6 +18,7 @@ import { AccessibilityStatementComponent } from './accessibility-statement/acces
 import { PressComponent } from './press/press.component';
 import { environment } from '@env/environment';
 import { OutagePageComponent } from './outage-page/outage-page.component';
+import { TopicBrowseComponent } from './topic-browse/topic-browse.component';
 
 const details = {
   path: 'details',
@@ -47,7 +48,7 @@ const cube_routes: Routes = [
       { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'browse',
-        component: BrowseComponent,
+        component: TopicBrowseComponent,
         data: { title: 'Browse Learning Objects'}
       },
       {
