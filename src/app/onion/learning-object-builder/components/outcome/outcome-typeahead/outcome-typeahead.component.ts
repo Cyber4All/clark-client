@@ -3,9 +3,6 @@ import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
 
-import { LearningOutcome } from '@entity';
-import { text } from '@angular/core/src/render3/instructions';
-
 @Component({
   selector: 'clark-outcome-typeahead',
   templateUrl: './outcome-typeahead.component.html',

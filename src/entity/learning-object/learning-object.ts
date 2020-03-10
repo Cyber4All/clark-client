@@ -693,7 +693,7 @@ export namespace LearningObject {
     MICROMODULE = 'micromodule',
     MODULE = 'module',
     UNIT = 'unit',
-    COURSE = 'course',
+    COURSE = 'course'
   }
 
   export enum Status {
@@ -703,6 +703,7 @@ export namespace LearningObject {
     REVIEW = 'review',
     PROOFING = 'proofing',
     RELEASED = 'released',
+    ALL = 'all',
   }
 
   export enum Level {

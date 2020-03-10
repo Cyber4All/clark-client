@@ -34,7 +34,7 @@ export class FilterSearchComponent implements OnInit {
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() clearAll = new EventEmitter<void>();
-  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
+  @ViewChild('searchInput') searchInput: ElementRef;
 
   filterMenuDown = false;
   collectionMenuDown = false;
@@ -50,7 +50,7 @@ export class FilterSearchComponent implements OnInit {
     this.findUserRestrictions();
 
     // add the 'all' option into the list of statuses
-    this.statuses.splice(0, 0, 'All');
+    this.statuses.splice(0, 0, LearningObject.Status.ALL );
 
     this.statuses = this.statuses.filter(
       s => !['rejected', 'unreleased'].includes(s.toLowerCase())

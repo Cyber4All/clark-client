@@ -6,4 +6,4 @@ export const router: Routes = [
   // { path: 'upload/:learningObjectName', component: UploadComponent }
 ];
 
-export const routes: ModuleWithProviders = RouterModule.forChild(router);
+export const routes: ModuleWithProviders<RouterModule> = RouterModule.forChild(router);

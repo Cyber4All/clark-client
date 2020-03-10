@@ -10,7 +10,7 @@ import { map, debounceTime, takeUntil } from 'rxjs/operators';
 export class SearchBarComponent implements AfterViewInit {
   @Input() placeholder: string;
   @Output() userInput = new EventEmitter<string>();
-  @ViewChild('searchInput', { read: ElementRef, static: true })
+  @ViewChild('searchInput', { read: ElementRef })
   searchInput: ElementRef;
   destroyed$: Subject<void> = new Subject();
 
