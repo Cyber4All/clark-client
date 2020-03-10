@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/clark-client
   docker:
-    - image: cyber4all/circleci-aws:node-alpine@10.9.0
+    - image: cyber4all/circleci-aws:node-alpine
 
 version: 2
 jobs:
