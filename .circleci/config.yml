@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/clark-client
   docker:
-    - image: cyber4all/circleci-aws:node-alpine
+    - image: cyber4all/circleci-aws:node-alpine@10.9.0
 
 version: 2
 jobs:
@@ -32,7 +32,7 @@ jobs:
   publish-image:
     <<: *defaults
     docker:
-      - image: circleci/node:10.0.0
+      - image: circleci/node:10.9.0
     steps:
       - checkout
       - setup_remote_docker
