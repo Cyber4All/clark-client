@@ -9,8 +9,12 @@
   </section>
   <div class='topics-grid'>
     <div *ngFor='let topic of topics'>
-      <div class='topic-card'>
-        {{ topic }}
+      <div 
+        class='topic-card'
+        [routerLink]="['/browse']"
+        [queryParams]="{ topic: topic }"
+      >
+        {{ topic }} 
       </div>
     </div>
   </div>

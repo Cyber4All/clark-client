@@ -42,6 +42,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     orderBy: undefined,
     sortType: undefined,
     collection: '',
+    topic: '',
   };
 
   tooltipText = {
@@ -181,6 +182,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       }
       // makes query based and sends request to fetch learning objects
       this.makeQuery(params);
+
       this.fetchLearningObjects(this.query);
     });
   }
@@ -454,6 +456,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   async fetchLearningObjects(query: Query) {
+    console.log(query);
     this.loading = true;
     this.learningObjects = Array(20).fill(new LearningObject());
     this.cd.detectChanges();
