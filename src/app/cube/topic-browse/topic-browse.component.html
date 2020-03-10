@@ -1,12 +1,14 @@
 <div class='background'>
-  <section class="hero">
-    <div class="inner">
-        <h1 class="header">Browse By Topic</h1>
-        <p class="description">
-            CLARK has {{ topics.length }} topics to browse
-        </p>
+  <div class='top-bar'>
+    <div class='top-bar__inner'>
+      <div class='top-bar__inner__left'>
+        BROWSE BY TOPIC
+      </div>
+      <div class='top-bar__inner__right'>
+        CLARK has {{ topics.length }} topics to browse
+      </div>
     </div>
-  </section>
+  </div>
   <div class='topics-grid'>
     <div *ngFor='let topic of topics'>
       <div 
