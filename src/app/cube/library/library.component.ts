@@ -143,7 +143,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       });
       this.loading = false;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;
@@ -192,7 +192,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
       await this.goForwardNotifications();
     }
     this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
-    console.log(this.firstIndex);
   }
 
   goBackNotifications() {
@@ -230,7 +229,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
