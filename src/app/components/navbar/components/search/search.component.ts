@@ -18,9 +18,9 @@ import { takeUntil, filter } from 'rxjs/operators';
 export class SearchComponent implements OnInit, OnDestroy {
   copy = COPY;
 
-  @ViewChild('searchInput') searchInput: ElementRef;
-  @ViewChild('optionOneSwitch') optionOneSwitch: ElementRef;
-  @ViewChild('optionTwoSwitch') optionTwoSwitch: ElementRef;
+  @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
+  @ViewChild('optionOneSwitch', { static: false }) optionOneSwitch: ElementRef;
+  @ViewChild('optionTwoSwitch', { static: false }) optionTwoSwitch: ElementRef;
 
   searchValue = '';
 

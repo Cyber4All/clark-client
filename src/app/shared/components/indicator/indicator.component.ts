@@ -12,8 +12,8 @@ const highlightWidth = 6;
 export class IndicatorComponent implements OnChanges, AfterViewInit {
 
   @ViewChildren('element') elementRefs;
-  @ViewChild('highlight') highlight: ElementRef;
-  @ViewChild('indicator') indicator: ElementRef;
+  @ViewChild('highlight', { static: true }) highlight: ElementRef;
+  @ViewChild('indicator', { static: true }) indicator: ElementRef;
 
   // inputs
   @Input() elements: string[];

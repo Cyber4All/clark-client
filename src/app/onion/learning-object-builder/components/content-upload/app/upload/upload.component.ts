@@ -74,8 +74,8 @@ export interface EnqueuedFile extends FileInput {
   ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('fileInput') fileInput: ElementRef;
-  @ViewChild('folderInput') folderInput: ElementRef;
+  @ViewChild('fileInput', { static: true }) fileInput: ElementRef;
+  @ViewChild('folderInput', { static: true }) folderInput: ElementRef;
 
   @Input()
   error$: Subject<string> = new Subject<string>();

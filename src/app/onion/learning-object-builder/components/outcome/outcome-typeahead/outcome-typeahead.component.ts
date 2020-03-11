@@ -13,7 +13,7 @@ import { text } from '@angular/core/src/render3/instructions';
 })
 export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('verbElement') verbElement: ElementRef;
+  @ViewChild('verbElement', { static: false }) verbElement: ElementRef;
 
   @Input() verb: string;
   @Input() bloom: string;

@@ -21,7 +21,7 @@ import { TeleporterDestinationComponent } from './teleporter-destination/telepor
 })
 export class TeleporterComponent implements AfterViewInit, OnDestroy {
   // grab the #teleporterPayload element to be used as the rendered body body
-  @ContentChild('teleporterPayload') content: ElementRef;
+  @ContentChild('teleporterPayload', /* TODO: add static flag */ {}) content: ElementRef;
 
   viewer: ComponentRef<TeleporterDestinationComponent>;
 
