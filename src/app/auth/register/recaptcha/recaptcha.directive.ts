@@ -80,7 +80,7 @@ export class RecaptchaDirective
   }
 
   ngAfterViewInit() {
-    this.control = this.injector.get(NgControl).control;
+    this.control = this.injector.get(FormControl);
     this.setValidators();
   }
 

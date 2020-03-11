@@ -14,9 +14,9 @@ import { takeUntil, debounceTime, map } from 'rxjs/operators';
 export class ProfileInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
 
-  @ViewChild('usernameInput', { static: true }) usernameInput: ElementRef;
-  @ViewChild('passwordInput', { static: true }) passwordInput: ElementRef;
-  @ViewChild('passwordVerifyInput', { static: true }) passwordVerifyInput: ElementRef;
+  @ViewChild('usernameInput') usernameInput: ElementRef;
+  @ViewChild('passwordInput') passwordInput: ElementRef;
+  @ViewChild('passwordVerifyInput') passwordVerifyInput: ElementRef;
 
   result: boolean;
 

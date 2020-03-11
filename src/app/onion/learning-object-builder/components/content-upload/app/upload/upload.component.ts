@@ -74,8 +74,8 @@ export interface EnqueuedFile extends FileInput {
   ]
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('fileInput', { static: true }) fileInput: ElementRef;
-  @ViewChild('folderInput', { static: true }) folderInput: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('folderInput') folderInput: ElementRef;
 
   @Input()
   error$: Subject<string> = new Subject<string>();
@@ -759,7 +759,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   confirmDeletion() {
-    this.handleDeleteGenerator.next(true);
+    this.handleDeleteGenerator.next();
     this.hideDeleteConfirmation();
   }
 
@@ -769,7 +769,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   cancelDeletion() {
-    this.handleDeleteGenerator.next(false);
+    this.handleDeleteGenerator.next();
     this.hideDeleteConfirmation();
   }
 
