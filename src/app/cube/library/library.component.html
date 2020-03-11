@@ -12,7 +12,7 @@
             Updates Since You've Last Downloaded
         </h2>
         
-        <div class='library__cards-container' *ngIf='notifications?.length'>
+        <div *ngIf='notifications?.length; else emptyNotificationsTemplate' class='library__cards-container'>
             <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex -1)'>
                 <button 
                     *ngIf='firstIndex > 0' 
@@ -40,17 +40,12 @@
                 </button>
             </div>
         </div>
-
-        <div *ngIf='!notifications?.length' class='empty-notification-container'>
-            <i class="far fa-4x fa-thumbs-up empty-notification-container__icon"></i>
-            <p class='empty-notification-container__message'>All of your saved items are up-to-date!</p>
-        </div>
         
         <div class='library__content-container__saved-items'>
             <h2 class='library-items__title'>
                 Saved Items
             </h2>
-            <div *ngIf='libraryItems?.length' class='library-items__list-items'>
+            <div *ngIf='libraryItems?.length; else emptyLibraryTemplate' class='library-items__list-items'>
                 <div *ngFor='let item of libraryItems; let i = index'>
                     <clark-library-item
                         [learningObject]='item'
@@ -59,10 +54,6 @@
                         (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemToDelete = item;'
                         (titleClicked)='goToItem(item)'
                     ></clark-library-item>
-                </div>
-                <div *ngIf='!libraryItems?.length' class='empty-notification-container'>
-                    <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
-                    <a [routerLink]="['/browse']">Browse Learning Objects</a>
                 </div>
             </div>
             <div class="pagination-container">
@@ -75,6 +66,20 @@
         </div>
     </div>
 </section>
+
+<ng-template #emptyNotificationsTemplate>
+    <div class='empty-notification-container'>
+        <i class="far fa-4x fa-thumbs-up empty-notification-container__icon"></i>
+        <p class='empty-notification-container__message'>All of your saved items are up-to-date!</p>
+    </div>
+</ng-template>
+
+<ng-template #emptyLibraryTemplate>
+    <div class='empty-notification-container'>
+        <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
+        <a [routerLink]="['/browse']">Browse Learning Objects</a>
+    </div>
+</ng-template>
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>
