@@ -16,7 +16,7 @@
   "dependencies": {
     "@angular/animations": "^9.0.6",
     "@angular/cdk": "^7.3.7",
-    "@angular/cli": "^9.0.5",
+    "@angular/cli": "^9.0.6",
     "@angular/common": "^9.0.6",
     "@angular/compiler": "^9.0.6",
     "@angular/compiler-cli": "^9.0.6",
@@ -26,7 +26,7 @@
     "@angular/platform-browser-dynamic": "^9.0.6",
     "@angular/router": "^9.0.6",
     "@cyber4all/clark-taxonomy": "^4.0.1",
-    "aws-sdk": "^2.637.0",
+    "aws-sdk": "^2.638.0",
     "chance": "^1.1.4",
     "chart.js": "^2.9.3",
     "core-js": "^2.6.11",
@@ -34,7 +34,7 @@
     "install": "^0.12.2",
     "md5": "^2.2.1",
     "ng-click-outside": "^4.0.0",
-    "ng2-charts": "^1.6.0",
+    "ng2-charts": "^2.3.0",
     "ng2-ckeditor": "^1.2.7",
     "ngx-cookie": "4.0.2",
     "ngx-virtual-scroller": "^1.0.11",
@@ -48,7 +48,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.5",
+    "@angular-devkit/build-angular": "^0.900.6",
     "@angular/language-service": "^9.0.6",
     "@babel/core": "^7.8.7",
     "@storybook/angular": "^5.3.14",
