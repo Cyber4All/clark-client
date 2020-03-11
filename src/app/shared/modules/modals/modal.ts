@@ -1,7 +1,8 @@
 
 import { ModalService } from './modal.service';
-import { Output, Input, EventEmitter } from '@angular/core';
+import { Output, Input, EventEmitter, Directive } from '@angular/core';
 
+@Directive()
 export abstract class Modal {
     protected name: string;
     protected x: number;
