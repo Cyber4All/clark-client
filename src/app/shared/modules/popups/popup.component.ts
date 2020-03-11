@@ -27,7 +27,7 @@ import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
 })
 export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
   // grab the #popupInner element to be used as the popup body
-  @ContentChild('popupInner', /* TODO: add static flag */ {}) content: ElementRef;
+  @ContentChild('popupInner', {static: false}) content: ElementRef;
 
   // specify whether or not the modal should float
   @Input() floating: boolean;

@@ -4,7 +4,6 @@ import { RATING_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError, map, filter } from 'rxjs/operators';
-import { stringify } from '@angular/core/src/render3/util';
 
 @Injectable()
 export class RatingService {

@@ -1,11 +1,7 @@
-import { EventEmitter, forwardRef } from '@angular/core';
+import { EventEmitter, forwardRef, OnInit, AfterViewInit } from '@angular/core';
 import { Output } from '@angular/core';
 import { RecaptchaValidator } from './recaptcha-validator.service';
 import { ElementRef, Injector, NgZone } from '@angular/core';
-import {
-  OnInit,
-  AfterViewInit
-} from '@angular/core/src/metadata/lifecycle_hooks';
 import { Input } from '@angular/core';
 import { Directive } from '@angular/core';
 import {

@@ -1,7 +1,6 @@
-import { StaticInjector } from '@angular/core/src/di/injector';
+
 import { ModalService } from './modal.service';
-import { ComponentRef, Output, Input, Injector, EventEmitter } from '@angular/core';
-import { element } from 'protractor';
+import { Output, Input, EventEmitter } from '@angular/core';
 
 export abstract class Modal {
     protected name: string;
