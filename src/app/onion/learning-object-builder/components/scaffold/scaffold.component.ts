@@ -40,8 +40,8 @@ export class ScaffoldComponent implements OnInit {
   // boolean to indicate if edit is selected for the list
   @Input() editContent: boolean;
 
-  @ViewChild('addChildButton', { static: false }) addChildButton: ElementRef;
-  @ViewChild('teleporterPayload', { static: false }) teleporterPayload: ElementRef;
+  @ViewChild('addChildButton') addChildButton: ElementRef;
+  @ViewChild('teleporterPayload') teleporterPayload: ElementRef;
 
   @HostListener('window:click', ['$event']) handleClickAway(event: MouseEvent) {
     this.toggleAddChild(false);

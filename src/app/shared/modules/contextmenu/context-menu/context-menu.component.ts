@@ -27,7 +27,7 @@ import { ContextMenuViewerComponent } from '../context-menu-viewer/context-menu-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContextMenuComponent implements AfterViewInit, OnDestroy {
-  @ContentChild('contextMenu', {static: false}) menuElement: ElementRef<HTMLElement>;
+  @ContentChild('contextMenu') menuElement: ElementRef<HTMLElement>;
 
   @Input() anchor?: HTMLElement;
 

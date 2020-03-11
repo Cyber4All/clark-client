@@ -33,9 +33,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   @Input() isRevision: boolean;
   @Input() hasRevision: boolean;
   @Input() revisedLearningObject: LearningObject;
-  @ViewChild('objectLinkElement', { static: false }) objectLinkElement: ElementRef;
-  @ViewChild('objectAttributionElement', { static: false }) objectAttributionElement: ElementRef;
-  @ViewChild('savesRef', { static: false }) savesRef: ElementRef;
+  @ViewChild('objectLinkElement') objectLinkElement: ElementRef;
+  @ViewChild('objectAttributionElement') objectAttributionElement: ElementRef;
+  @ViewChild('savesRef') savesRef: ElementRef;
 
   serviceOutageMessage =
     'We\'re currently experiencing network issues that are affecting downloads and libraries. ' +

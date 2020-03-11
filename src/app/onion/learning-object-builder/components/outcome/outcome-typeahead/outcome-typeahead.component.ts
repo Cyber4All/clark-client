@@ -10,7 +10,7 @@ import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
 })
 export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('verbElement', { static: false }) verbElement: ElementRef;
+  @ViewChild('verbElement') verbElement: ElementRef;
 
   @Input() verb: string;
   @Input() bloom: string;
