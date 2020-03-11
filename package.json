@@ -43,6 +43,7 @@
     "request-promise": "^4.2.5",
     "rxjs": "^6.5.4",
     "rxjs-compat": "^6.5.4",
+    "rxjs-tslint": "^0.1.7",
     "tslib": "^1.9.0",
     "uuid": "^3.4.0",
     "zone.js": "^0.8.26"
