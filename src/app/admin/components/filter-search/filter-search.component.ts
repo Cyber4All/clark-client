@@ -7,8 +7,8 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/map';
+
+
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
