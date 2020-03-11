@@ -14,17 +14,17 @@
     "storybook": "start-storybook"
   },
   "dependencies": {
-    "@angular/animations": "^8.2.14",
+    "@angular/animations": "^9.0.6",
     "@angular/cdk": "^7.3.7",
-    "@angular/cli": "^8.3.25",
-    "@angular/common": "^8.2.14",
-    "@angular/compiler": "^8.2.14",
-    "@angular/compiler-cli": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "@angular/forms": "^8.2.14",
-    "@angular/platform-browser": "^8.2.14",
-    "@angular/platform-browser-dynamic": "^8.2.14",
-    "@angular/router": "^8.2.14",
+    "@angular/cli": "^9.0.5",
+    "@angular/common": "^9.0.6",
+    "@angular/compiler": "^9.0.6",
+    "@angular/compiler-cli": "^9.0.6",
+    "@angular/core": "^9.0.6",
+    "@angular/forms": "^9.0.6",
+    "@angular/platform-browser": "^9.0.6",
+    "@angular/platform-browser-dynamic": "^9.0.6",
+    "@angular/router": "^9.0.6",
     "@cyber4all/clark-taxonomy": "^4.0.1",
     "aws-sdk": "^2.637.0",
     "chance": "^1.1.4",
@@ -45,11 +45,11 @@
     "rxjs-tslint": "^0.1.7",
     "tslib": "^1.11.1",
     "uuid": "^3.4.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.25",
-    "@angular/language-service": "^8.2.14",
+    "@angular-devkit/build-angular": "~0.900.5",
+    "@angular/language-service": "^9.0.6",
     "@babel/core": "^7.8.7",
     "@storybook/angular": "^5.3.14",
     "@types/aws-sdk": "^2.7.0",
@@ -69,7 +69,7 @@
     "protractor": "^5.4.3",
     "ts-node": "~7.0.0",
     "tslint": "~5.10.0",
-    "typescript": "3.5.3"
+    "typescript": "3.7.5"
   },
   "prettier": {
     "singleQuote": true
