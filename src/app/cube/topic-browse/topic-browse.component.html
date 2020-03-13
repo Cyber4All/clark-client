@@ -16,7 +16,7 @@
         [routerLink]="['/browse']"
         [queryParams]="{ topic: topic }"
       >
-        {{ topic }} 
+        {{ topic.length > 50 ? topic.slice(0, 50) + ' ...' : topic }} 
       </div>
     </div>
   </div>
