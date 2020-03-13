@@ -29,10 +29,17 @@ import { SidePanelContentComponent } from './components/splash/components/compon
 import { EditorialActionPadModule } from './components/action-panel/editorial-action-pad/editorial-action-pad.module';
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
 import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
+import { RouteBackwardsCompatGuard } from '../core/route-backwards-compat.guard';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild([ { path: ':username/:learningObjectName', component: DetailsComponent } ]),
+    RouterModule.forChild([
+      {
+        path: ':username/:learningObjectName',
+        component: DetailsComponent,
+        canActivate: [ RouteBackwardsCompatGuard ]
+      }
+    ]),
     SharedPipesModule,
     FileBrowserModule,
     FormsModule,
