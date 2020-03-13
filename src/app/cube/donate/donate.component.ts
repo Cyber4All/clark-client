@@ -12,4 +12,8 @@ export class DonateComponent implements OnInit {
   ngOnInit() {
   }
 
+  donate() {
+    window.open('https://towsonuniversity.givingfuel.com/towson-fund', '_blank');
+  }
+
 }
