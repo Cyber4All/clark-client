@@ -12,7 +12,7 @@
     <a routerLink="/c">View all Collections</a>
   </div>
   <div class="collections__grid">
-    <div *ngFor="let c of collections">
+    <div class="card-wrapper" *ngFor="let c of collections">
       <clark-collection-card [collection]="c"></clark-collection-card>
     </div>
   </div>

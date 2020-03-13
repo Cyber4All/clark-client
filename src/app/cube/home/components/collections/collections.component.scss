@@ -22,11 +22,18 @@
 
 .collections__grid {
   max-width: 800px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-gap: 50px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: auto;
   margin-top: 40px;
+}
+
+.card-wrapper {
+  margin: 20px;
+  min-width: 240px;
+  width: 1fr;
 }
 
 .collection-card {
