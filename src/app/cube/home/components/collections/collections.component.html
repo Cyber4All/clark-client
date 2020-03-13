@@ -7,14 +7,16 @@
   </div>
   <div class="collections__description">
     {{ copy.COLLECTION_BLURB }}
-    <div class="plan-c-blurb">{{ copy.PLAN_C_BLURB }}</div>
   </div>
   <div class="featured-collections-cta">
     <a routerLink="/c">View all Collections</a>
   </div>
   <div class="collections__grid">
-    <div class="card-wrapper" *ngFor="let c of collections">
-      <clark-collection-card [collection]="c"></clark-collection-card>
+    <div *ngFor="let c of collections">
+      <div class="card-wrapper" [ngClass]="{'center': c.abvName === 'plan c'}">
+        <clark-collection-card [collection]="c"></clark-collection-card>
+      </div>
+      <div *ngIf="c.abvName === 'plan c'" class="plan-c-blurb">{{ copy.PLAN_C_BLURB }}</div>
     </div>
   </div>
 </div>

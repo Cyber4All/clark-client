@@ -31,16 +31,21 @@
 }
 
 .plan-c-blurb {
-  margin-top: 20px;
+  margin: 20px 0;
   font-size: $small;
-  font-weight: bold;
+  // font-weight: bold;
   font-style: italic;
+  text-align: center;
 }
 
 .card-wrapper {
   margin: 20px;
-  min-width: 240px;
-  width: 1fr;
+  width: 240px;
+  text-align: center;
+
+  &.center {
+    margin: 20px auto;
+  }
 }
 
 .collection-card {
