@@ -13,6 +13,7 @@ export class DonateComponent implements OnInit {
   }
 
   donate() {
+    console.log('oh yest');
     window.open('https://towsonuniversity.givingfuel.com/towson-fund', '_blank');
   }
 
