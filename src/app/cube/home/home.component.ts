@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit {
       organizations: 0
     }
   };
+  donateModal = false;
 
   constructor(
     public learningObjectService: LearningObjectService,
@@ -97,5 +98,10 @@ export class HomeComponent implements OnInit {
 
   mailTo() {
     window.location.href = 'mailto:?subject=Check out Learning Objects on CLARK!&body=https://www.clark.center';
+  }
+
+  donateToClark() {
+    this.router.navigate(['donate'], {
+    });
   }
 }

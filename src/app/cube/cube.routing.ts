@@ -19,6 +19,7 @@ import { PressComponent } from './press/press.component';
 import { environment } from '@env/environment';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { TopicBrowseComponent } from './topic-browse/topic-browse.component';
+import { DonateComponent } from './donate/donate.component';
 
 const details = {
   path: 'details',
@@ -60,6 +61,11 @@ const cube_routes: Routes = [
         path: 'press',
         component: PressComponent,
         data: { title: 'Press and Media'}
+      },
+      {
+        path: 'donate',
+        component: DonateComponent,
+        data: { title: 'Donate to CLARK'}
       },
       {
         path: 'system/usage',
