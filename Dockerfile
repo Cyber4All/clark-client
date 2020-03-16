@@ -11,7 +11,7 @@ EXPOSE 4200 49153
 WORKDIR /opt
 COPY package.json package-lock.json* ./
 RUN npm install && npm cache clean --force
-RUN npm install -g @angular/cli@7.3.9
+RUN npm install -g @angular/cli@9.0.6
 ENV PATH /opt/node_modules/.bin:$PATH
 
 # Copy source to the app's directory
