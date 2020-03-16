@@ -15,5 +15,5 @@ export const COPY = {
     COLLECTION_BLURB: `Learning Objects are grouped into Collections within CLARK.
      Each collection is unique, has its own peer-review process, and is supported by its own community.`,
     PLAN_C_BLURB: `Notice Regarding Plan C: Plan C is a new collection that has a streamlined peer review process.
-     It was created to meet the growing need for cyber content developed for online teaching and learning in response to the COVID-19 pandemic.`
+     It was created to meet the growing need for cyber content developed for online teaching and learning in response to the COVID-19 pandemic.`,
 };
