@@ -1,6 +1,6 @@
 <div class="wrapper warning" *ngIf="showBanner === true">
   <div class="inner-wrapper">
     <div aria-live="assertive">{{ message.message }} </div>
-    <a class="status-link" [routerLink]="['/system/status']" aria-label="Clickable System Outages link" target="_blank"> View Status</a>
+    <a *ngIf="downtime" class="status-link" [routerLink]="['/system/status']" aria-label="Clickable System Outages link" target="_blank"> View Status</a>
   </div>
 </div>
