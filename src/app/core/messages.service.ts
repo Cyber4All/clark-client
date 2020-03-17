@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 export class Message {
-  constructor(public isUnderMaintenance: boolean, public message: string, public iconClass?: string) { }
+  constructor(public isUnderMaintenance: boolean, public message: string) { }
 }
 @Injectable()
 export class MessagesService {
@@ -28,7 +28,7 @@ export class MessagesService {
         )
         .toPromise()
         .then((val: Message) => {
-          this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          this._message = new Message(val.isUnderMaintenance, val.message);
           return this._message;
         });
     }

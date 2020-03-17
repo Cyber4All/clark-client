@@ -1,8 +1,6 @@
 <div class="wrapper warning" *ngIf="showBanner === true">
   <div class="inner-wrapper">
-    <div *ngIf="true" class="icon" aria-hidden="true">
-      <i [attr.class]="message.iconClass"></i>
-    </div>
-    <div aria-live="assertive">{{ message.message }}</div>
+    <div aria-live="assertive">{{ message.message }} </div>
+    <a *ngIf="downtime" class="status-link" [routerLink]="['/system/status']" aria-label="Clickable System Outages link" target="_blank"> View Status</a>
   </div>
 </div>
