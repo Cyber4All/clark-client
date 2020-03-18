@@ -16,6 +16,7 @@
     <ul>
       <a routerLink="./learning-objects" routerLinkActive="sidebar__menu--active"><li><i class="far fa-archive"></i>Objects</li></a>
       <a [routerLink]="editorMode ? './users' : './reviewers'" routerLinkActive="sidebar__menu--active"><li><i class="far fa-users"></i>{{ editorMode ? 'Users' : 'Reviewers' }}</li></a>
+      <a *ngIf='editorMode' routerLink="./topics" routerLinkActive="sidebar__menu--active"><li><i class="far fa-book"></i>Topics</li></a>
     </ul>
   </div>
 </ng-template>

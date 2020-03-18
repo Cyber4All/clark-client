@@ -50,6 +50,10 @@ export class LearningObjectService {
     );
   }
 
+  fetchUnassignedLearningObjects() {
+    return this.http.get('http://localhost:5001/learning-objects/unassigned').toPromise();
+  }
+
   fetchLearningObjectWithResources(
     params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
     resources?: string[],

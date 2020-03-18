@@ -1,0 +1,73 @@
+<clark-admin-content-wrapper>
+  <div #list2 class="el"></div>
+  <div page-title>{{ learningObjects.length }} Unassigned Learning Objects</div>
+  <clark-admin-search-bar
+    search
+    [placeholder]="searchBarPlaceholder"
+    (userInput)="userSearchInput$.next($event)"
+  ></clark-admin-search-bar>
+  <button filter-options class='button good'>Discover Topics</button>
+  <div #list class="list" main>
+    <div #listInner>
+      <div class="list__body">
+        <div *ngIf="learningObjects?.length || loading; else emptyTemplate">
+          <div #headers class="body__column-headers">
+            <div>Status</div>
+            <div>Name</div>
+            <div>Author</div>
+            <div>Type</div>
+            <div>Date</div>
+          </div>
+          <virtual-scroller
+            #scroll
+            [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
+            [items]="learningObjects"
+            [bufferAmount]="query.limit"
+            [enableUnequalChildrenSizes]="true"
+            (vsEnd)="
+              scroll.viewPortInfo.startIndex && getLearningObjects($event)
+            "
+          >
+            <clark-learning-object-list-item
+              *ngFor="let l of scroll.viewPortItems"
+              [learningObject]="l"
+              [status]="l.status"
+              (viewUser)="getUserLearningObjects($event)"
+              (changeStatus)="openChangeStatusModal($event)"
+            >
+            </clark-learning-object-list-item>
+            <div class="loadingOrFinished">
+              <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
+                <i class="far fa-spinner-third fa-spin"></i>
+                Loading learning objects...
+              </div>
+            </div>
+          </virtual-scroller>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #emptyTemplate>
+    <div class="empty-template">
+      <div class="empty-template__top">
+        <i class="fal fa-box-open"></i>
+        <div class="top-message">
+          Nothing here!
+        </div>
+      </div>
+      <div class="empty-text">
+        Learning Objects will appear here after they are submitted to your
+        collection
+      </div>
+    </div>
+  </ng-template>
+</clark-admin-content-wrapper>
+
+<ng-template #finishedLoadingTemplate>
+  <div class="loadingOrFinished__content">
+    <i class="far fa-thumbs-up"></i>
+    You've reached the end of the list!
+  </div>
+</ng-template>
+

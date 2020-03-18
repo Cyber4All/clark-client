@@ -17,6 +17,7 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
 import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { TopicsComponent } from './pages/topics/topics.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     UserPrivilegesComponent,
     PrivilegesListComponent,
     LearningObjectListItemComponent,
+    TopicsComponent,
   ],
   imports: [
     CoreModule.forRoot(),
