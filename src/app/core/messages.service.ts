@@ -5,11 +5,11 @@ import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 export class Message {
-  constructor(public isUnderMaintenance: boolean, public message: string, public iconClass?: string) { }
+  constructor(public isUnderMaintenance: boolean, public message: string) { }
 }
 @Injectable()
 export class MessagesService {
-  private _message: Message;
+  private _message: Message = new Message(true, 'Clark is now accepting curriculum submissions to the Plan C collection.');
 
   get message() {
     return this._message;
@@ -18,6 +18,7 @@ export class MessagesService {
   constructor(private http: HttpClient) { }
 
   getStatus(): Promise<Message> {
+    console.log('Getting status... ', this._message);
     if (this._message) {
       return Promise.resolve(this._message);
     } else {
@@ -28,7 +29,7 @@ export class MessagesService {
         )
         .toPromise()
         .then((val: Message) => {
-          this._message = new Message(val.isUnderMaintenance, val.message, val.iconClass);
+          this._message = new Message(val.isUnderMaintenance, val.message);
           return this._message;
         });
     }

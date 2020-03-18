@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MessagesService, Message} from '../../../../core/messages.service';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-message',
@@ -10,6 +9,7 @@ import { environment } from '@env/environment';
 export class MessageComponent implements OnInit {
 
   showBanner = false;
+  downtime = false;
   message: Message;
 
   constructor(private messages: MessagesService) { }
