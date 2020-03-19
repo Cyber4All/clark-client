@@ -88,3 +88,69 @@
     }
   }
   
+.header__text {
+  color: $dark-grey;
+}
+
+.prompt {
+  padding: 20px;
+}
+
+.fa-spin {
+  color: $light-blue;
+}
+
+.prompt__text {
+  color: $dark-grey;
+  margin-bottom: 10px;
+}
+
+.left-side-panel {
+  padding: 20px;
+  text-align: left;
+  background-color: white;
+  overflow: scroll;
+  max-height: 600px;
+}
+
+.right-side-panel {
+  max-height: 600px;
+  padding: 20px;
+  overflow: scroll;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  padding: 20px;
+  height: 100vh;
+  overflow: auto;
+}
+
+.topic-object__card {
+  color: $dark-grey;
+  padding-bottom: 10px;
+  text-align: left;
+  width: 500px;
+}
+
+.topic-name__card {
+  color: $dark-grey;
+  border-bottom: 1px solid $medium-grey;
+  padding: 10px 0;
+  display: flex;
+}
+
+.selected {
+  color: $light-blue;
+}
+
+.topic-header {
+  color: $dark-grey;
+  font-weight: 500;
+}
+
+.results-popup {
+  max-height: 700px;
+  overflow: hidden;
+}

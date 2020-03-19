@@ -18,6 +18,7 @@ import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { TopicsComponent } from './pages/topics/topics.component';
+import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
 
 
 @NgModule({
@@ -45,7 +46,9 @@ import { TopicsComponent } from './pages/topics/topics.component';
     AdminRoutingModule,
     SharedModule,
     FormsModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    CubeSharedModule,
+    
   ],
 })
 export class AdminModule { }

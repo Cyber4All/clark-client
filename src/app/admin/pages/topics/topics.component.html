@@ -1,12 +1,16 @@
 <clark-admin-content-wrapper>
   <div #list2 class="el"></div>
-  <div page-title>{{ learningObjects.length }} Unassigned Learning Objects</div>
+  <div page-title>{{ learningObjects?.length }} Unassigned Learning Objects</div>
   <clark-admin-search-bar
     search
     [placeholder]="searchBarPlaceholder"
     (userInput)="userSearchInput$.next($event)"
   ></clark-admin-search-bar>
-  <button filter-options class='button good'>Discover Topics</button>
+  <button 
+    filter-options 
+    class='button good'
+    (activate)='discoverLearningObjectTopics()'
+  >Discover Topics</button>
   <div #list class="list" main>
     <div #listInner>
       <div class="list__body">
@@ -47,6 +51,58 @@
       </div>
     </div>
   </div>
+
+  <clark-popup *ngIf="discoveringTopics" (closed)="discoveringTopics=false">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">Discovering Topics</div>
+        <div class="modal-text">
+          <form class="input-wrapper">
+            <div class="header">
+              <span class="header__text">Our AI is finding the best topic for each unassigned Learning Object</span>
+              <div class="prompt">
+                <div class="prompt__text">This might take a minute...</div>
+                <i class="far fa-spinner-third fa-spin"></i>
+              </div>
+            </div>
+          </form>
+        </div>
+    </div>
+  </clark-popup>
+
+  <clark-popup *ngIf="displayTopicsBuilderModal" (closed)="displayTopicsBuilderModal=false">
+      <div #popupInner class="popup-inner results-popup">
+        <div class="modal-text">
+          <form class="input-wrapper">
+            <div class="columns">
+              <div class="left-side-panel">
+
+                <h3 class='topic-header'>New Topics</h3>
+                <div *ngFor='let new_topic of objectKeys(newTopicDistribution)'>
+                  <div class='topic-name__card' (activate)='selectNewTopic(new_topic)' [ngClass]="{'selected': new_topic === selectedTopicName}">
+                    {{ new_topic }}
+                  </div>
+                </div>
+
+                <h3 class='topic-header'>Standard Topics</h3>
+                <div *ngFor='let standard_topic of objectKeys(standardTopicDistribution)'>
+                  <div class='topic-name__card' (activate)='selectStandardTopic(standard_topic)' [ngClass]="{'selected': standard_topic === selectedTopicName}">
+                    <clark-checkbox attr.aria-label="checkbox" [value]="true"></clark-checkbox>
+                    <div>{{ standard_topic }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class='right-side-panel'>
+                <div *ngFor="let topicObject of selectedTopicObjects">
+                  <div class='topic-object__card'>
+                    <learning-object-component [learningObject]="topicObject"></learning-object-component>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </clark-popup>
   
   <ng-template #emptyTemplate>
     <div class="empty-template">
