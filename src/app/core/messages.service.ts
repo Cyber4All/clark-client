@@ -18,7 +18,6 @@ export class MessagesService {
   constructor(private http: HttpClient) { }
 
   getStatus(): Promise<Message> {
-    console.log('Getting status... ', this._message);
     if (this._message) {
       return Promise.resolve(this._message);
     } else {
