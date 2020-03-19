@@ -2,10 +2,9 @@ import { USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { saveAs as importedSaveAs } from 'file-saver';
 import { AuthService } from './auth.service';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, retry, switchMap, tap } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
@@ -13,7 +12,7 @@ export class LibraryService {
   private user;
   private headers = new HttpHeaders();
 
-  public cartItems: Array<LearningObject> = [];
+  public libraryItems: Array<LearningObject> = [];
 
   constructor(private http: HttpClient, private auth: AuthService) {
     this.updateUser();
@@ -44,8 +43,8 @@ export class LibraryService {
       )
       .toPromise()
       .then((val: any) => {
-        this.cartItems = val.userLibraryItems.map(object => new LearningObject(object.learningObject));
-        return { cartItems: this.cartItems, lastPage: val.lastPage };
+        this.libraryItems = val.userLibraryItems.map(object => new LearningObject(object.learningObject));
+        return { cartItems: this.libraryItems, lastPage: val.lastPage };
       });
   }
 
@@ -57,18 +56,18 @@ export class LibraryService {
       return Promise.reject('User is undefined');
     }
     return await this.http
-        .post(
-          USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
-            this.user.username
-          ),
-          {
-            authorUsername: author,
-            cuid: learningObject.cuid,
-            version: learningObject.version
-          },
-          { headers: this.headers, withCredentials: true }
-        )
-        .toPromise();
+      .post(
+        USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
+          this.user.username
+        ),
+        {
+          authorUsername: author,
+          cuid: learningObject.cuid,
+          version: learningObject.version
+        },
+        { headers: this.headers, withCredentials: true }
+      )
+      .toPromise();
   }
 
   removeFromLibrary(cuid: string): Promise<void> {
@@ -120,7 +119,7 @@ export class LibraryService {
 
   has(object: LearningObject): boolean {
     return (
-      this.cartItems.filter(
+      this.libraryItems.filter(
         o =>
           o.name === object.name && o.author.username === object.author.username
       ).length > 0
@@ -138,11 +137,3 @@ export class LibraryService {
   }
 }
 
-const MAX_CHAR = 255;
-export function sanitizeFileName(name: string): string {
-  let clean = name.replace(/[\\/:"*?<>|]/gi, '_');
-  if (clean.length > MAX_CHAR) {
-    clean = clean.slice(0, MAX_CHAR);
-  }
-  return clean;
-}
