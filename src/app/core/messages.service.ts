@@ -9,7 +9,7 @@ export class Message {
 }
 @Injectable()
 export class MessagesService {
-  private _message: Message = new Message(true, 'Clark is now accepting curriculum submissions to the Plan C collection.');
+  private _message: Message;
 
   get message() {
     return this._message;
@@ -18,7 +18,6 @@ export class MessagesService {
   constructor(private http: HttpClient) { }
 
   getStatus(): Promise<Message> {
-    console.log('Getting status... ', this._message);
     if (this._message) {
       return Promise.resolve(this._message);
     } else {
