@@ -76,25 +76,41 @@
             <div class="columns">
               <div class="left-side-panel">
 
-                <h3 class='topic-header'>New Topics</h3>
-                <div *ngFor='let new_topic of objectKeys(newTopicDistribution)'>
-                  <div class='topic-name__card' (activate)='selectNewTopic(new_topic)' [ngClass]="{'selected': new_topic === selectedTopicName}">
-                    {{ new_topic }}
+                <h2 class='panel-header'>Topics</h2>
+           
+                <div class='side-panel__scrollable'>
+                  <h3 class='topic-header'>New Topics</h3>
+                  <div class='topic-names__container'>
+                    <div *ngFor='let new_topic of objectKeys(newTopicDistribution)'>
+                      <div class='topic-name__card'>
+                        <clark-checkbox attr.aria-label="checkbox" [value]="false" (action)="toggleTopicToSubmissionGroup($event, new_topic)"></clark-checkbox>
+                        <input class='topic-name__card__name' (activate)='selectNewTopic(new_topic)' [(ngModel)]='new_topic' [ngModelOptions]="{standalone: true}"  [ngClass]="{'selected': new_topic === selectedTopicName}"/>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <h3 class='topic-header'>Standard Topics</h3>
+                  <div class='topic-names__container'>
+                    <div *ngFor='let standard_topic of objectKeys(standardTopicDistribution)'>
+                      <div class='topic-name__card'>
+                        <clark-checkbox attr.aria-label="checkbox" [value]="false" (action)="toggleTopicToSubmissionGroup($event, standard_topic)"></clark-checkbox>
+                        <div class='topic-name__card__name' (activate)='selectStandardTopic(standard_topic)' [ngClass]="{'selected': standard_topic === selectedTopicName}">{{ standard_topic }}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <h3 class='topic-header'>Standard Topics</h3>
-                <div *ngFor='let standard_topic of objectKeys(standardTopicDistribution)'>
-                  <div class='topic-name__card' (activate)='selectStandardTopic(standard_topic)' [ngClass]="{'selected': standard_topic === selectedTopicName}">
-                    <clark-checkbox attr.aria-label="checkbox" [value]="true"></clark-checkbox>
-                    <div>{{ standard_topic }}</div>
-                  </div>
+                
+                <div class='submit-button'>
+                  <button class='button good' (activate)='submitChanges()'>Submit</button>
                 </div>
               </div>
               <div class='right-side-panel'>
-                <div *ngFor="let topicObject of selectedTopicObjects">
-                  <div class='topic-object__card'>
-                    <learning-object-component [learningObject]="topicObject"></learning-object-component>
+                <h2 class='panel-header'>Learning Objects</h2>
+                <div class='side-panel__scrollable'>
+                  <div *ngFor="let topicObject of selectedTopicObjects">
+                    <div class='topic-object__card'>
+                      <learning-object-component [learningObject]="topicObject"></learning-object-component>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -24,6 +24,8 @@ export class TopicsComponent implements OnInit {
 
   selectedTopicObjects = [];
   selectedTopicName = '';
+
+  submissionGroup = {};
   
   query: Query = {
     currPage: 1,
@@ -61,5 +63,24 @@ export class TopicsComponent implements OnInit {
   selectNewTopic(topicName: string) {
     this.selectedTopicObjects = this.newTopicDistribution[topicName];
     this.selectedTopicName = topicName;
+  }
+
+  toggleTopicToSubmissionGroup(isSelected: boolean, topicName: string) {
+    if (isSelected) {
+      // If the checkbox is selected, add the topic the submission group
+      const topicDistribution = this.newTopicDistribution[topicName] ? this.newTopicDistribution : this.standardTopicDistribution;
+      this.submissionGroup[topicName] = topicDistribution[topicName];
+    } else {
+      // If the checkbox is unselected, remove the topic from the submissin group
+      delete this.submissionGroup[topicName];
+    }
+  }
+
+  changeNewTopicName() {
+
+  } 
+
+  submitChanges() {
+    console.log(this.submissionGroup);
   }
 }

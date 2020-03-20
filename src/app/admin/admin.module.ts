@@ -45,7 +45,6 @@ import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
     CommonModule,
     AdminRoutingModule,
     SharedModule,
-    FormsModule,
     VirtualScrollerModule,
     CubeSharedModule,
     

@@ -109,14 +109,13 @@
   padding: 20px;
   text-align: left;
   background-color: white;
-  overflow: scroll;
-  max-height: 600px;
+  overflow: hidden;
 }
 
 .right-side-panel {
-  max-height: 600px;
   padding: 20px;
-  overflow: scroll;
+  overflow: hidden;
+  text-align: left;
 }
 
 .columns {
@@ -136,7 +135,7 @@
 
 .topic-name__card {
   color: $dark-grey;
-  border-bottom: 1px solid $medium-grey;
+  border-bottom: 1px solid $light-grey;
   padding: 10px 0;
   display: flex;
 }
@@ -153,4 +152,30 @@
 .results-popup {
   max-height: 700px;
   overflow: hidden;
+}
+
+.topic-names__container {
+  padding: 20px;
+}
+
+.topic-name__card__name {
+  margin-left: 10px;
+  padding-bottom: 5px;
+  font-size: $normal;
+  border: none;
+  outline: none;
+}
+
+.panel-header {
+  color: $light-blue;
+}
+
+.side-panel__scrollable {
+  max-height: 500px;
+  overflow: scroll;
+}
+
+.submit-button {
+  margin-top: 10px;
+  text-align: right;
 }
