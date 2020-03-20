@@ -21,16 +21,19 @@ export class FeaturedComponent implements OnInit {
     status: [LearningObject.Status.RELEASED]
   };
   loading = false;
+  collectionName: string;
 
   constructor(private learningObjectService: LearningObjectService) {
     this.learningObjects = this.learningObjects.fill(new LearningObject());
   }
 
   ngOnInit() {
+    console.log(this.collection);
     if (this.collection) {
       this.loading = true;
       this.collection.pipe(takeUntil(this.destroyed$)).subscribe({
         next: collection => {
+          this.collectionName = collection;
           this.query.collection = collection;
           this.fetchLearningObjects();
         }
