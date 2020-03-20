@@ -44,6 +44,7 @@
     margin-top: 5px;
     justify-self: start;
     font-weight: 500;
+    text-align: left;
 }
 
 .library-item__author {
@@ -53,16 +54,13 @@
     color: $medium-grey;
     justify-self: start;
     font-weight: 500;
+    text-align: left;
 }
 
 .library-item__title__icon {
     color: $light-blue;
     margin-left: 10px;
     font-size: $normal;
-}
-
-.library-item__actions-container {
-    justify-self: end;
 }
 
 .library-item__download-button {
@@ -84,9 +82,26 @@ button {
 }
 
 @media only screen and (max-width:  830px) {
+    .library-item__length {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
     .library-item {
         display: block;
-        align-items: left;
+        text-align: left;
         border-bottom: solid 1px $light-grey;
+        padding-bottom: 10px;
+
+        .library-item__actions-container {
+            text-align: right;
+
+            .library-item__download-button {
+                margin-top: -40px;
+            }
+            
+            .library-item__delete-button {
+                margin-top: -40px;
+            }
+        }
     }
 }
