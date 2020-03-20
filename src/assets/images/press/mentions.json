@@ -1,5 +1,11 @@
 [
     {
+        "title":"Meet CLARK, the Cybersecurity Learning Platform that’s Powered by a Team of Towson Students",
+        "link":"https://technical.ly/baltimore/2020/03/19/clark-cybersecurity-learning-platform-towson-university-students",
+        "icon":"technically.jpg",
+        "source":"technical.ly"
+    },
+    {
         "title":"It's Time to Consider a Career in Cybersecurity",
         "link": "https://www.cobizmag.com/Trends/Its-Time-to-Consider-a-Career-in-Cybersecurity/",
         "icon":"ColoradoBiz-Magazine-Web.gif",
@@ -28,11 +34,5 @@
         "link":"https://news.psu.edu/story/584839/2019/08/23/academics/penn-state-professors-create-nationwide-cyber-law-and-policy",
         "icon":"post-PSU-News.jpg",
         "source":"Penn State University News"
-    },
-    {
-        "title":"Meet CLARK, the Cybersecurity Learning Platform that’s Powered by a Team of Towson Students",
-        "link":"https://technical.ly/baltimore/2020/03/19/clark-cybersecurity-learning-platform-towson-university-students",
-        "icon":"technically.jpg",
-        "source":"technical.ly"
     }
 ]
