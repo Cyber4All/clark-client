@@ -28,7 +28,6 @@ export class FeaturedComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.collection);
     if (this.collection) {
       this.loading = true;
       this.collection.pipe(takeUntil(this.destroyed$)).subscribe({
