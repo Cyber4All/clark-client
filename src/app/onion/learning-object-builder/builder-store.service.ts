@@ -596,7 +596,6 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private addUrl(): void {
-    console.log('yup');
     this.learningObject.materials.urls.push({ url: '', title: '' });
     this.learningObjectEvent.next(this.learningObject);
   }
