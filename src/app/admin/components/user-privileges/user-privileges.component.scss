@@ -58,6 +58,9 @@
   text-transform: uppercase;
   color: $dark-grey;
   font-size: $large;
+  border: none;
+  outline: none;
+  background: transparent;
 
   .svg-inline--fa,
   .icon {
@@ -68,6 +71,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
+    border: none;
 
     &:after {
       content: '';
@@ -150,10 +154,7 @@
   color: $dark-grey;
 }
 
-.mapper-confirmation__header {
-
-}
-
 .mapper-confirmation__sub {
   font-size: $larger;
 }
+
