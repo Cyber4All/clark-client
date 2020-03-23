@@ -17,8 +17,14 @@
     align-items: flex-start;
     justify-content: center;
 
-    .icon {
-      margin-right: 10px;
+    .status-link {
+      color: white;
+      margin-left: 5px;
+      text-decoration: underline;
+    }
+
+    a:hover, a:focus{
+      cursor: pointer;
     }
   }
 
