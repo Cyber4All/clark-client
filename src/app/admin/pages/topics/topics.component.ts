@@ -76,8 +76,21 @@ export class TopicsComponent implements OnInit {
     }
   }
 
-  changeNewTopicName() {
+  changeNewTopicName(newName: string, original: string) {
+    if (this.newTopicDistribution[original]) {
+      this.newTopicDistribution[newName] = this.newTopicDistribution[original];
+      delete this.newTopicDistribution[original]; 
+    }
+    
+    if (this.standardTopicDistribution[original]) {
+      this.standardTopicDistribution[newName] = this.standardTopicDistribution[original];
+      delete this.standardTopicDistribution[original];
+    }
 
+    if (this.submissionGroup[original]) {
+      this.submissionGroup[newName] = this.submissionGroup[original];
+      delete this.submissionGroup[original];
+    }
   } 
 
   submitChanges() {

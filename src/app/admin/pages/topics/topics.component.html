@@ -84,7 +84,7 @@
                     <div *ngFor='let new_topic of objectKeys(newTopicDistribution)'>
                       <div class='topic-name__card'>
                         <clark-checkbox attr.aria-label="checkbox" [value]="false" (action)="toggleTopicToSubmissionGroup($event, new_topic)"></clark-checkbox>
-                        <input class='topic-name__card__name' (activate)='selectNewTopic(new_topic)' [(ngModel)]='new_topic' [ngModelOptions]="{standalone: true}"  [ngClass]="{'selected': new_topic === selectedTopicName}"/>
+                        <input class='topic-name__card__name' (activate)='selectNewTopic(new_topic)' (ngModelChange)='changeNewTopicName($event, new_topic)' [(ngModel)]='new_topic' [ngModelOptions]="{standalone: true}"  [ngClass]="{'selected': new_topic === selectedTopicName}"/>
                       </div>
                     </div>
                   </div>
