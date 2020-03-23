@@ -12,7 +12,7 @@
     </div>
     <h1>Recent Press</h1>
     <div class="old-news-container">
-      <div *ngFor="let m of mentions">{{m | json}}</div>
+      <clark-media-item *ngFor="let m of mentions" [mention]="m"></clark-media-item>
     </div>
   </div>
 </div>
