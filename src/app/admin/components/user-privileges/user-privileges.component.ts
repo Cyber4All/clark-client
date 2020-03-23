@@ -42,7 +42,6 @@ export class UserPrivilegesComponent implements OnInit {
   private getUserRoles() {
     this.privilegeService.getCollectionRoles(this.user.id).then(roles => {
       this.privileges = roles.map(x => x.split('@'));
-    console.log(this.privileges);
     this.getCollections();
     }).catch(error => {
       this.toaster.error('Error!', 'There was an error fetching this user\'s privileges. Please try again later.');
@@ -129,7 +128,7 @@ export class UserPrivilegesComponent implements OnInit {
     }
 
     responsePromise.then(() => {
-      this.advance();
+      this.advance(2);
 
       // wait for the carousel animation to complete before updating the list of privileges
       // in the UI so that the user can visualize the addition of the privilege
@@ -152,8 +151,26 @@ export class UserPrivilegesComponent implements OnInit {
     });
   }
 
-  async addMapper() {
-    await this.privilegeService.addMapperMembership(this.user.id);
+  addMapper() {
+    const responsePromise = this.privilegeService.addMapperMembership(this.user.id);
+    
+    responsePromise
+      .catch(error => {
+        if (error.status == 201) {
+          this.advance();
+
+          setTimeout(() => {
+    
+            
+            this.privileges.push([this.selectedRole, '']);
+            this.getCollections();
+    
+            this.selectedCollection = undefined;
+            this.selectedRole = undefined;
+          }, 400);
+
+        }
+      });
   }
 
   /**
