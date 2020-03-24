@@ -118,12 +118,11 @@ export class LibraryService {
   iframeLoaded(this: HTMLIFrameElement, event: Event) {}
 
   has(object: LearningObject): boolean {
-    return (
-      this.libraryItems.filter(
-        o =>
-          o.name === object.name && o.author.username === object.author.username
-      ).length > 0
-    );
+    const inLibrary = this.libraryItems.filter(
+      o =>
+        o.cuid === object.cuid
+    ).length > 0;
+    return inLibrary;
   }
 
   private handleError(error: HttpErrorResponse) {
