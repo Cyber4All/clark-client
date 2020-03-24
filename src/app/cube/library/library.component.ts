@@ -92,9 +92,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private ratings: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
-  ) {
-    this.getScreenSize();
-  }
+  ) {}
 
   @HostListener('window:resize', ['$event'])
   async getScreenSize() {
@@ -125,7 +123,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.getScreenSize();
     this.loadLibrary();
   }
 
@@ -157,6 +156,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async getNotifications(apiPage: number) {
     if (apiPage <= this.lastNotificationsPageNumber && apiPage > 0) {
       const result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
+      if (result.notifications === null) {
+        result.notifications = [];
+      }
       this.localNotifications = [...this.localNotifications, ...result.notifications];
       this.lastNotificationsPageNumber = result.lastPage;
       // If the lastPage value is equal to the localNotifications then set it to the currentPageNumber
