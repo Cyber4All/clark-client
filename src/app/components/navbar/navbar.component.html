@@ -50,6 +50,7 @@
       <ng-template #mobileUserTemplate>
         <button aria-label="Show search" class="mobile-search-option" (activate)="showSearch()"><i class="far fa-search"></i></button>
         <button aria-label="Open menu" class="hamburger"[ngClass]="{'active': menuOpen}" (activate)="menuOpen = !menuOpen">
+          <span *ngIf="notifications?.length > 0" class="navbar-notifications mobile"></span>
           <div class="bar"></div>
           <div class="bar"></div>
           <div class="bar"></div>
@@ -78,7 +79,7 @@
     <div class="slideout-section menu-items">
       <ul>
         <li *ngIf="loggedin" routerLink="/onion/dashboard">Your Dashboard</li>
-        <li *ngIf="loggedin" routerLink="/library">Your Library</li>
+        <li *ngIf="loggedin" routerLink="/library">Your Library<span *ngIf="notifications?.length > 0" class="notifications"> {{ libraryNotificationCount }}</span></li>
         <li *ngIf="loggedin" (activate)="logout()">Logout</li>
       </ul>
     </div>
