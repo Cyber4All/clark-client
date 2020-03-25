@@ -15,6 +15,7 @@ import { UserQuery } from 'app/interfaces/query';
 
 @Injectable()
 export class UserService {
+  userNotifications: number;
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**

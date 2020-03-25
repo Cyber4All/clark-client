@@ -9,7 +9,7 @@
   
     <div class='library__content-container'>
         <h2 class='library__cards-container__title'>
-            {{ notifications?.length }} Updates to Items in Your Library
+            {{ notificationCount }} Updates to Items in Your Library
         </h2>
         
         <div *ngIf='notifications?.length; else emptyNotificationsTemplate' class='library__cards-container'>

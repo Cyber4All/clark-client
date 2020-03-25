@@ -15,44 +15,44 @@ import { trigger, style, group, transition, animate, query } from '@angular/anim
   selector: 'clark-library',
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.scss'],
-  animations: [
-    trigger('slider', [
-      transition(':increment', group([
-        query(':enter', [
-          style({
-            transform: 'translateX(1000px)',
-            opacity: 0,
-            zIndex: 1,
-          }),
-          animate('0.9s ease-out', style('*'))
-        ]),
-        query(':leave', [
-          style({ zIndex: 0}),
-          animate('0.7s ease-out', style({
-            transform: 'translateX(-1000px)',
-            opacity: 0,
-            width: 0,
-          }))
-        ])
-      ])),
-      transition(':decrement', group([
-        query(':enter', [
-          style({
-            transform: 'translateX(-100%)',
-            opacity: 1,
-          }),
-          animate('0.9s ease-out', style('*'))
-        ]),
-        query(':leave', [
-          animate('0.7s ease-out', style({
-            transform: 'translateX(100%)',
-            opacity: 0,
-            width: 0
-          }))
-        ])
-      ]))
-    ])
-  ]
+  // animations: [
+  //   trigger('slider', [
+  //     transition(':increment', group([
+  //       query(':enter', [
+  //         style({
+  //           transform: 'translateX(1000px)',
+  //           opacity: 0,
+  //           zIndex: 1,
+  //         }),
+  //         animate('0.9s ease-out', style('*'))
+  //       ]),
+  //       query(':leave', [
+  //         style({ zIndex: 0}),
+  //         animate('0.7s ease-out', style({
+  //           transform: 'translateX(-1000px)',
+  //           opacity: 0,
+  //           width: 0,
+  //         }))
+  //       ])
+  //     ])),
+  //     transition(':decrement', group([
+  //       query(':enter', [
+  //         style({
+  //           transform: 'translateX(-100%)',
+  //           opacity: 1,
+  //         }),
+  //         animate('0.9s ease-out', style('*'))
+  //       ]),
+  //       query(':leave', [
+  //         animate('0.7s ease-out', style({
+  //           transform: 'translateX(100%)',
+  //           opacity: 0,
+  //           width: 0
+  //         }))
+  //       ])
+  //     ]))
+  //   ])
+  // ]
 })
 export class LibraryComponent implements OnInit, OnDestroy {
 
@@ -77,6 +77,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
   lastNotificationsPageNumber = 1;
+  notificationCount = 0;
   // Notification Card variables
   notificationCardCount = 0;
   lastIndex = 0;
@@ -124,6 +125,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    const result = await this.user.getNotifications(this.authService.username, 1, 1);
+    this.notificationCount = result.lastPage;
     this.getScreenSize();
     this.loadLibrary();
   }
@@ -154,20 +157,18 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param apiPage The page that we need to retrieve from Notifications service
    */
   async getNotifications(apiPage: number) {
-    if (apiPage <= this.lastNotificationsPageNumber && apiPage > 0) {
-      const result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
-      if (result.notifications === null) {
-        result.notifications = [];
-      }
-      this.localNotifications = [...this.localNotifications, ...result.notifications];
-      this.lastNotificationsPageNumber = result.lastPage;
-      // If the lastPage value is equal to the localNotifications then set it to the currentPageNumber
-      // FIXME I believe this is an issue with notification service
-      if (this.lastNotificationsPageNumber === this.localNotifications.length) {
-        this.currentNotificationsPageNumber = this.localNotifications.length;
-      } else {
-        this.currentNotificationsPageNumber = apiPage;
-      }
+    let result = { 'notifications': [], 'lastPage': 0 };
+    if (this.notificationCount <= 20) {
+      result = await this.user.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
+    } else {
+      result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
+    }
+    this.localNotifications = [...this.localNotifications, ...result.notifications];
+    this.lastNotificationsPageNumber = result.lastPage;
+    if (this.lastNotificationsPageNumber === this.localNotifications.length) {
+      this.currentNotificationsPageNumber = this.localNotifications.length;
+    } else {
+      this.currentNotificationsPageNumber = apiPage;
     }
   }
 
@@ -214,7 +215,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
-      this.firstIndex = this.firstIndex + (this.localNotifications.length - this.lastIndex);
+      this.firstIndex = this.lastIndex;
       this.lastIndex = this.localNotifications.length;
     }
   }
