@@ -15,7 +15,7 @@ import { UserQuery } from 'app/interfaces/query';
 
 @Injectable()
 export class UserService {
-  userNotifications: number;
+  userNotifications: any;
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
@@ -279,11 +279,22 @@ export class UserService {
     .toPromise();
   }
 
+  getNotificationCount(username: string) {
+    this.http.get(USER_ROUTES.GET_NOTIFICATIONS({ username, page: 1, limit: 1 }), {
+      withCredentials: true,
+    })
+    .toPromise().then((val: any) => {
+      this.userNotifications = val;
+    });
+  }
+
   deleteNotification(username: string, notificationID: string) {
-    return this.http.delete(USER_ROUTES.DELETE_NOTIFICATION({ username, id: notificationID }), {
+    const deleteValue = this.http.delete(USER_ROUTES.DELETE_NOTIFICATION({ username, id: notificationID }), {
       withCredentials: true,
     })
     .toPromise();
+    this.getNotificationCount(username);
+    return deleteValue;
   }
 
   private handleError(error: HttpErrorResponse) {

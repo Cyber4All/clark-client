@@ -15,44 +15,44 @@ import { trigger, style, group, transition, animate, query } from '@angular/anim
   selector: 'clark-library',
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.scss'],
-  // animations: [
-  //   trigger('slider', [
-  //     transition(':increment', group([
-  //       query(':enter', [
-  //         style({
-  //           transform: 'translateX(1000px)',
-  //           opacity: 0,
-  //           zIndex: 1,
-  //         }),
-  //         animate('0.9s ease-out', style('*'))
-  //       ]),
-  //       query(':leave', [
-  //         style({ zIndex: 0}),
-  //         animate('0.7s ease-out', style({
-  //           transform: 'translateX(-1000px)',
-  //           opacity: 0,
-  //           width: 0,
-  //         }))
-  //       ])
-  //     ])),
-  //     transition(':decrement', group([
-  //       query(':enter', [
-  //         style({
-  //           transform: 'translateX(-100%)',
-  //           opacity: 1,
-  //         }),
-  //         animate('0.9s ease-out', style('*'))
-  //       ]),
-  //       query(':leave', [
-  //         animate('0.7s ease-out', style({
-  //           transform: 'translateX(100%)',
-  //           opacity: 0,
-  //           width: 0
-  //         }))
-  //       ])
-  //     ]))
-  //   ])
-  // ]
+  animations: [
+    trigger('slider', [
+      transition(':increment', group([
+        query(':enter', [
+          style({
+            transform: 'translateX(1000px)',
+            opacity: 0,
+            zIndex: 1,
+          }),
+          animate('0.9s ease-out', style('*'))
+        ]),
+        query(':leave', [
+          style({ zIndex: 0}),
+          animate('0.7s ease-out', style({
+            transform: 'translateX(-1000px)',
+            opacity: 0,
+            width: 0,
+          }))
+        ])
+      ])),
+      transition(':decrement', group([
+        query(':enter', [
+          style({
+            transform: 'translateX(-100%)',
+            opacity: 1,
+          }),
+          animate('0.9s ease-out', style('*'))
+        ]),
+        query(':leave', [
+          animate('0.7s ease-out', style({
+            transform: 'translateX(100%)',
+            opacity: 0,
+            width: 0
+          }))
+        ])
+      ]))
+    ])
+  ]
 })
 export class LibraryComponent implements OnInit, OnDestroy {
 
@@ -187,8 +187,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param page The current page that the user is on
    */
   async setNotifications(index: number) {
-    if (index === this.firstIndex) {
-      this.lastIndex = this.firstIndex + this.notificationCardCount;
+    if (index === this.lastIndex) {
+      this.lastIndex = this.notificationCardCount;
     } else if (index < this.firstIndex && index >= 0) {
       this.goBackNotifications();
     } else if (index > this.firstIndex) {
@@ -215,11 +215,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
+      this.firstIndex = this.lastIndex;
       this.lastIndex = this.localNotifications.length;
-      this.firstIndex = this.lastIndex - this.notificationCardCount;
     }
-    console.log(this.firstIndex);
-    console.log(this.lastIndex);
   }
 
   async deleteNotification(notification: any) {
