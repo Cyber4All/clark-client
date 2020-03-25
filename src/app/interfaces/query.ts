@@ -23,6 +23,7 @@ export interface Query {
     | { id: string; name: string; date: string; outcome: string }[];
   collection?: string;
   status?: string[];
+  fileTypes?: string[];
 }
 
 export interface MappingQuery extends Query {

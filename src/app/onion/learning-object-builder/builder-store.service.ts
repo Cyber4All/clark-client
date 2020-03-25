@@ -608,7 +608,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private updateUrl(index: number, url: LearningObject.Material.Url): void {
-    const validUrlExpr = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    const validUrlExpr = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+\%,;=.]+$/;
     if (url.url.match(validUrlExpr) && url.title !== '') {
       this.learningObject.materials.urls[index] = url;
       this.learningObjectEvent.next(this.learningObject);
