@@ -215,9 +215,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
-      this.firstIndex = this.lastIndex;
       this.lastIndex = this.localNotifications.length;
+      this.firstIndex = this.lastIndex - this.notificationCardCount;
     }
+    console.log(this.firstIndex);
+    console.log(this.lastIndex);
   }
 
   async deleteNotification(notification: any) {
