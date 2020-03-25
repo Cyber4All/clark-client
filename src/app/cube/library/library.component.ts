@@ -125,8 +125,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    const result = await this.user.getNotifications(this.authService.username, 1, 1);
-    this.notificationCount = result.lastPage;
     this.getScreenSize();
     this.loadLibrary();
   }
@@ -158,6 +156,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
    */
   async getNotifications(apiPage: number) {
     let result = { 'notifications': [], 'lastPage': 0 };
+    const notificationCount = await this.user.getNotifications(this.authService.username, 1, 1);
+    this.notificationCount = notificationCount.lastPage;
     if (this.notificationCount <= 20) {
       result = await this.user.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
     } else {
@@ -188,7 +188,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
    */
   async setNotifications(index: number) {
     if (index === this.firstIndex) {
-      this.lastIndex = this.notificationCardCount;
+      this.lastIndex = this.firstIndex + this.notificationCardCount;
     } else if (index < this.firstIndex && index >= 0) {
       this.goBackNotifications();
     } else if (index > this.firstIndex) {
@@ -222,7 +222,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async deleteNotification(notification: any) {
     await this.user.deleteNotification(this.authService.user.username, notification.id);
+    this.localNotifications = [];
     await this.getNotifications(this.currentPageNumber);
+    this.setNotifications(this.firstIndex);
   }
 
   async removeItem() {
