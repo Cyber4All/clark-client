@@ -32,7 +32,7 @@
             <div #contextMenu id="context-popup">
               <ul>
                 <li tabindex="0" *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (activate)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                <li tabindex="0" routerLink="/library" (activate)="userDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="userService.userNotifications.notifications?.length > 0" class="notifications"> {{ userService.userNotifications.lastPage }}</span></li>
+                <li tabindex="0" routerLink="/library" (activate)="userDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="userService.userNotifications.notifications?.length > 0" class="notifications"> {{ userService.userNotifications?.lastPage }}</span></li>
                 <li tabindex="0" routerLink="/onion/dashboard" (activate)="userDropdown()"><i class="far fa-columns"></i>Dashboard</li>
                 <li tabindex="0" [routerLink]="['users', authService.user?.username]" (activate)="userDropdown()"><i class="far fa-user"></i>Profile</li>
                 <li tabindex="0" routerLink="/auth/forgot-password" (activate)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
@@ -79,7 +79,7 @@
     <div class="slideout-section menu-items">
       <ul>
         <li *ngIf="loggedin" routerLink="/onion/dashboard">Your Dashboard</li>
-        <li *ngIf="loggedin" routerLink="/library">Your Library<span *ngIf="userService.userNotifications.notifications.length > 0" class="notifications"> {{ userService.userNotifications.lastPage }}</span></li>
+        <li *ngIf="loggedin" routerLink="/library">Your Library<span *ngIf="userService.userNotifications.notifications?.length > 0" class="notifications"> {{ userService.userNotifications.lastPage }}</span></li>
         <li *ngIf="loggedin" (activate)="logout()">Logout</li>
       </ul>
     </div>
