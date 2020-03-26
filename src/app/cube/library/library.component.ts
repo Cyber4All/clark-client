@@ -198,7 +198,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
     if ((this.lastIndex + this.notificationCardCount) <= this.localNotifications.length) {
       this.firstIndex = this.firstIndex + this.notificationCardCount;
       this.lastIndex = this.lastIndex + this.notificationCardCount;
-    } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length) {
+    } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length 
+                && this.lastIndex !== this.localNotifications.length) {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
