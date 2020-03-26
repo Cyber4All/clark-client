@@ -181,6 +181,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     } else if (index > this.firstIndex) {
       await this.goForwardNotifications();
     }
+    this.notifications = [];
     this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
   }
 
