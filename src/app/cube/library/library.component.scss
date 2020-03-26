@@ -103,7 +103,7 @@
     outline: none;
 }
 
-.cards-container__arrow-container:hover {
+.cards-container__arrow-container:hover, :focus {
     color: $light-blue;
     cursor: pointer;
 }

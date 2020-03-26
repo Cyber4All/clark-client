@@ -20,36 +20,23 @@ import { trigger, style, group, transition, animate, query } from '@angular/anim
       transition(':increment', group([
         query(':enter', [
           style({
-            transform: 'translateX(1000px)',
+            transform: 'translateX(100%)',
             opacity: 0,
             zIndex: 1,
+            'pointer-events': 'none',
           }),
-          animate('0.9s ease-out', style('*'))
+          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
         ]),
-        query(':leave', [
-          style({ zIndex: 0}),
-          animate('0.7s ease-out', style({
-            transform: 'translateX(-1000px)',
-            opacity: 0,
-            width: 0,
-          }))
-        ])
       ])),
       transition(':decrement', group([
         query(':enter', [
           style({
             transform: 'translateX(-100%)',
             opacity: 1,
+            'pointer-events': 'none',
           }),
-          animate('0.9s ease-out', style('*'))
+          animate('0.4s ease-out', style('*'))
         ]),
-        query(':leave', [
-          animate('0.7s ease-out', style({
-            transform: 'translateX(100%)',
-            opacity: 0,
-            width: 0
-          }))
-        ])
       ]))
     ])
   ]
@@ -77,6 +64,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
   lastNotificationsPageNumber = 1;
+  notificationCount = 0;
   // Notification Card variables
   notificationCardCount = 0;
   lastIndex = 0;
@@ -92,9 +80,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private ratings: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
-  ) {
-    this.getScreenSize();
-  }
+  ) {}
 
   @HostListener('window:resize', ['$event'])
   async getScreenSize() {
@@ -125,7 +111,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.getScreenSize();
     this.loadLibrary();
   }
 
@@ -155,17 +142,20 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param apiPage The page that we need to retrieve from Notifications service
    */
   async getNotifications(apiPage: number) {
-    if (apiPage <= this.lastNotificationsPageNumber && apiPage > 0) {
-      const result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
-      this.localNotifications = [...this.localNotifications, ...result.notifications];
-      this.lastNotificationsPageNumber = result.lastPage;
-      // If the lastPage value is equal to the localNotifications then set it to the currentPageNumber
-      // FIXME I believe this is an issue with notification service
-      if (this.lastNotificationsPageNumber === this.localNotifications.length) {
-        this.currentNotificationsPageNumber = this.localNotifications.length;
-      } else {
-        this.currentNotificationsPageNumber = apiPage;
-      }
+    let result = { 'notifications': [], 'lastPage': 0 };
+    const notificationCount = await this.user.getNotifications(this.authService.username, 1, 1);
+    this.notificationCount = notificationCount.lastPage;
+    if (this.notificationCount <= 20) {
+      result = await this.user.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
+    } else {
+      result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
+    }
+    this.localNotifications = [...this.localNotifications, ...result.notifications];
+    this.lastNotificationsPageNumber = result.lastPage;
+    if (this.lastNotificationsPageNumber === this.localNotifications.length) {
+      this.currentNotificationsPageNumber = this.localNotifications.length;
+    } else {
+      this.currentNotificationsPageNumber = apiPage;
     }
   }
 
@@ -191,6 +181,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     } else if (index > this.firstIndex) {
       await this.goForwardNotifications();
     }
+    this.notifications = [];
     this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
   }
 
@@ -208,18 +199,21 @@ export class LibraryComponent implements OnInit, OnDestroy {
     if ((this.lastIndex + this.notificationCardCount) <= this.localNotifications.length) {
       this.firstIndex = this.firstIndex + this.notificationCardCount;
       this.lastIndex = this.lastIndex + this.notificationCardCount;
-    } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length) {
+    } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length
+                && this.lastIndex !== this.localNotifications.length) {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
-      this.firstIndex = this.firstIndex + (this.localNotifications.length - this.lastIndex);
+      this.firstIndex = this.lastIndex;
       this.lastIndex = this.localNotifications.length;
     }
   }
 
   async deleteNotification(notification: any) {
     await this.user.deleteNotification(this.authService.user.username, notification.id);
+    this.localNotifications = [];
     await this.getNotifications(this.currentPageNumber);
+    this.setNotifications(this.firstIndex);
   }
 
   async removeItem() {

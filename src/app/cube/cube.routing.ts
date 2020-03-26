@@ -25,16 +25,12 @@ const details = {
   loadChildren: () => import('app/cube/details/details.module').then(m => m.DetailsModule)
 };
 
-const library = environment.experimental ? {
+const library = {
   path: 'library',
   canActivate: [AuthGuard],
-  loadChildren: () => import('app/cube/library/library.module').then(m => m.LibraryModule)
-} : {
-  path: 'library',
-  component: CartComponent,
-  canActivate: [AuthGuard],
-  data: { title: 'Your Library' }
-};
+  loadChildren: 'app/cube/library/library.module#LibraryModule',
+  data : {title: 'Your Library'},
+}
 
 const cube_routes: Routes = [
   {
