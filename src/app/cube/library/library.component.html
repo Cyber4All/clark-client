@@ -13,7 +13,7 @@
         </h2>
         
         <div *ngIf='notifications?.length; else emptyNotificationsTemplate' class='library__cards-container'>
-            <div class='notifications-container' hammertime (swipeRight)='setNotifications(lastIndex + 1)' (swipeLeft)='setNotifications(lastIndex -1)'>
+            <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex - 1)'>
                 <button 
                     *ngIf='firstIndex > 0' 
                     class='cards-container__arrow-container left'

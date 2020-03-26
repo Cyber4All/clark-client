@@ -25,7 +25,7 @@ import { trigger, style, group, transition, animate, query } from '@angular/anim
             zIndex: 1,
             'pointer-events': 'none',
           }),
-          animate('0.7s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
+          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
         ]),
       ])),
       transition(':decrement', group([
@@ -35,7 +35,7 @@ import { trigger, style, group, transition, animate, query } from '@angular/anim
             opacity: 1,
             'pointer-events': 'none',
           }),
-          animate('0.9s ease-out', style('*'))
+          animate('0.4s ease-out', style('*'))
         ]),
       ]))
     ])
@@ -174,7 +174,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param page The current page that the user is on
    */
   async setNotifications(index: number) {
-    if (index === this.lastIndex) {
+    if (index === this.firstIndex) {
       this.lastIndex = this.notificationCardCount;
     } else if (index < this.firstIndex && index >= 0) {
       this.goBackNotifications();
