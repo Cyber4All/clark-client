@@ -9,11 +9,11 @@
   
     <div class='library__content-container'>
         <h2 class='library__cards-container__title'>
-            Updates Since You've Last Downloaded
+            {{ notificationCount }} Updates to Items in Your Library
         </h2>
         
         <div *ngIf='notifications?.length; else emptyNotificationsTemplate' class='library__cards-container'>
-            <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex -1)'>
+            <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex - 1)'>
                 <button 
                     *ngIf='firstIndex > 0' 
                     class='cards-container__arrow-container left'
@@ -21,7 +21,7 @@
                     <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
                 </button>
                 
-                <div [@slider]='firstIndex' class='notifications-container__cards'>
+                <div [@slider]='lastIndex' class='notifications-container__cards'>
                     <div *ngFor='let notification of notifications' class='cards-container__card'>
                         <clark-notification-card
                             [notification]='notification'
