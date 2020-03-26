@@ -20,36 +20,23 @@ import { trigger, style, group, transition, animate, query } from '@angular/anim
       transition(':increment', group([
         query(':enter', [
           style({
-            transform: 'translateX(1000px)',
+            transform: 'translateX(100%)',
             opacity: 0,
             zIndex: 1,
+            'pointer-events': 'none',
           }),
-          animate('0.9s ease-out', style('*'))
+          animate('0.7s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
         ]),
-        query(':leave', [
-          style({ zIndex: 0}),
-          animate('0.7s ease-out', style({
-            transform: 'translateX(-1000px)',
-            opacity: 0,
-            width: 0,
-          }))
-        ])
       ])),
       transition(':decrement', group([
         query(':enter', [
           style({
             transform: 'translateX(-100%)',
             opacity: 1,
+            'pointer-events': 'none',
           }),
           animate('0.9s ease-out', style('*'))
         ]),
-        query(':leave', [
-          animate('0.7s ease-out', style({
-            transform: 'translateX(100%)',
-            opacity: 0,
-            width: 0
-          }))
-        ])
       ]))
     ])
   ]
