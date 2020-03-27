@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'unauthorized',
@@ -10,11 +11,12 @@ import { AuthService } from 'app/core/auth.service';
 export class UnauthorizedComponent implements OnInit {
 
   statusCode: string;
-
+  redirectUrl: any;
   constructor(private router: Router, private route: ActivatedRoute, private auth: AuthService) { }
 
   ngOnInit() {
     this.statusCode = this.route.snapshot.paramMap.get('code');
+    this.redirectUrl = this.route.snapshot.paramMap.get('redirectUrl');
   }
 
   login() {

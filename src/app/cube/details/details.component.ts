@@ -174,11 +174,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
           }
         } else {
           if (object instanceof HttpErrorResponse) {
+            console.log(object.status);
             if (object.status === 404) {
               this.router.navigate(['not-found']);
             }
-            if (object.status === 401) {
-              // this.router.navigate(['unauthorized']);
+            if (object.status === 401 || object.status === 403) {
+              this.redirectUrl = window.location.href;
+              this.router.navigate(['unauthorized', object.status, this.redirectUrl ]);
             }
           }
         }

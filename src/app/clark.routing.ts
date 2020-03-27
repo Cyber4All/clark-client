@@ -22,7 +22,7 @@ const clark_routes: Routes = [
   { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule' },
   { path: 'unsupported', component: UnsupportedComponent, data: { title: 'Unsupported'}},
   { path: 'not-found', component: NotFoundComponent, data: { title: 'Not Found'}},
-  { path: 'unauthorized/:code', component: UnauthorizedComponent, data: {title: 'Unauthorized'}},
+  { path: 'unauthorized/:code/:redirect', component: UnauthorizedComponent, data: {title: 'Unauthorized'}},
   { path: '', loadChildren: 'app/cube/cube.module#CubeModule' },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
