@@ -141,7 +141,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       await this.learningObjectService.fetchLearningObjectWithResources(
         { author, cuidInfo: { cuid }}, resources
         ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
-        if (object) {
+        if (object instanceof LearningObject) {
           this.releasedLearningObject = object;
 
           // FIXME: This filter should be removed when service logic for filtering children is updated
@@ -167,32 +167,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.setAcademicLevels();
           this.setLearningObjectAuthors();
           this.loading = false;
-        }
-        this.learningObjectService.fetchLearningObjectWithResources(
-          { author, cuidInfo: { cuid: cuid, version: (this.learningObject.version + 1) }}, resources)
-          .pipe(takeUntil(this.isDestroyed$)).subscribe(async(object) => {
-          if (object) {
-            this.revisedLearningObject = object;
 
-            // FIXME: This filter should be removed when service logic for filtering children is updated
-            this.revisedChildren = this.revisedLearningObject.children.filter(
-              child => {
-                return child.status === LearningObject.Status['RELEASED'] ||
-                  child.status === LearningObject.Status['REVIEW'] ||
-                  child.status === LearningObject.Status['PROOFING'] ||
-                  child.status === LearningObject.Status['WAITING'];
-              }
-            );
-
-            const owners = this.revisedLearningObject.contributors.map(user => user.username);
-            owners.push(this.revisedLearningObject.author.username);
-
-            this.learningObjectOwners = owners;
-          }
-          if (this.revisedLearningObject) {
+          if (this.learningObject.revisionUri) {
             this.hasRevision = true;
+            await this.loadRevisedLearningObject();
           }
-        });
+        } else {
+          if (object instanceof HttpErrorResponse) {
+            if (object.status === 404) {
+              this.router.navigate(['not-found']);
+            }
+            if (object.status === 401) {
+              // this.router.navigate(['unauthorized']);
+            }
+          }
+        }
       });
       // this.loading.pop();
     } catch (e) {
@@ -202,23 +191,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
        * if server error is thrown, navigate to not-found page
        */
 
-      if (e instanceof HttpErrorResponse) {
-        if (e.status === 404) {
-          this.router.navigate(['not-found']);
-        }
-        if (e.status === 401) {
-          let redirectUrl = '';
-          this.route.url.subscribe(segments => {
-            if (segments) {
-              segments.forEach(segment => {
-                redirectUrl = redirectUrl + '/' + segment.path;
-              });
-            }
-          });
-          this.errorStatus = e.status;
-          this.redirectUrl = redirectUrl;
-        }
-      }
       console.log(e);
     }
   }
@@ -277,7 +249,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       ).subscribe(val => {
         this.revisedLearningObject[val.name] = val.data;
       });
-
       // FIXME: This filter should be removed when service logic is updated
       this.revisedChildren = this.revisedLearningObject.children.filter(
         child => {
