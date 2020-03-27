@@ -30,7 +30,7 @@ const library = {
   canActivate: [AuthGuard],
   loadChildren: 'app/cube/library/library.module#LibraryModule',
   data : {title: 'Your Library'},
-}
+};
 
 const cube_routes: Routes = [
   {
