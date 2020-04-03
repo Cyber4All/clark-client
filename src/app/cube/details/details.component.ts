@@ -174,7 +174,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           }
         } else {
           if (object instanceof HttpErrorResponse) {
-            console.log(object.status);
             if (object.status === 404) {
               this.router.navigate(['not-found']);
             }
