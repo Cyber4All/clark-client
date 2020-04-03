@@ -6,7 +6,7 @@
     <div *ngIf="!auth.user; else unauthorized">
       <div tabindex="0" class="message">Try logging in to see if you have access.</div><br>
       <div class="btn-group center">
-        <button class="button good" (activate)="login()" aria-label="Clickable Login button">LOGIN</button>
+        <a class="message" [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}" aria-label="Login">Login</a>
       </div>
     </div>
     <ng-template #unauthorized>
