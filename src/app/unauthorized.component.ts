@@ -19,8 +19,4 @@ export class UnauthorizedComponent implements OnInit {
     this.redirectUrl = this.route.snapshot.paramMap.get('redirect');
   }
 
-  login() {
-    this.router.navigate(['auth/login', { queryParams: { redirectUrl: this.redirectUrl }}]);
-  }
-
 }
