@@ -3,7 +3,7 @@
   tipPosition="top">
     <i class="fal fa-times"></i>
   </button>
-  <h4 class='notification-card__title'>
+  <h4 class='notification-card__title' [tip]="notification.attributes?.name" tipPosition="top" tabindex="0">
     {{ (notification.attributes?.name.length>25) ? (notification.attributes?.name | slice:0:22)+'...' : notification.attributes?.name }}
   </h4>
   <div class='notification-card__version-history'>

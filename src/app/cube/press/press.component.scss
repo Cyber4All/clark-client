@@ -31,4 +31,11 @@
     clark-media-card {
       margin-top: 24px;
     }
-  }
+}
+
+.old-news-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0 auto 50px auto;
+    max-width: 800px;
+}

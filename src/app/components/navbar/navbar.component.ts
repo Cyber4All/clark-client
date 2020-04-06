@@ -150,9 +150,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   async getNotifications() {
-    const result = await this.userService.getNotifications(this.authService.username, 1, 1);
-    this.notifications = result.notifications;
-    this.libraryNotificationCount = result.lastPage;
+    await this.userService.getNotificationCount(this.authService.username);
   }
 
   showSearch() {
