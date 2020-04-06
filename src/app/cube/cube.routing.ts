@@ -3,7 +3,6 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
@@ -16,7 +15,6 @@ import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
-import { environment } from '@env/environment';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { DonateComponent } from './donate/donate.component';
 
@@ -28,7 +26,7 @@ const details = {
 const library = {
   path: 'library',
   canActivate: [AuthGuard],
-  loadChildren: 'app/cube/library/library.module#LibraryModule',
+  loadChildren: () => import('app/cube/library/library.module').then(l => l.LibraryModule),
   data : {title: 'Your Library'},
 };
 
