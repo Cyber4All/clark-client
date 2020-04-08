@@ -40,12 +40,6 @@
               (changeStatus)="openChangeStatusModal($event)"
             >
             </clark-learning-object-list-item>
-            <div class="loadingOrFinished">
-              <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
-                <i class="far fa-spinner-third fa-spin"></i>
-                Loading learning objects...
-              </div>
-            </div>
           </virtual-scroller>
         </div>
       </div>
