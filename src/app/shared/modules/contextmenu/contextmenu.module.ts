@@ -10,7 +10,7 @@ import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.
   entryComponents: [ContextMenuViewerComponent]
 })
 export class ContextMenuModule {
-  static forRoot(): ModuleWithProviders<ContextMenuModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: ContextMenuModule,
     };

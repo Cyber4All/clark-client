@@ -703,7 +703,6 @@ export namespace LearningObject {
     REVIEW = 'review',
     PROOFING = 'proofing',
     RELEASED = 'released',
-    ALL = 'all',
   }
 
   export enum Level {

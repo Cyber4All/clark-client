@@ -9,7 +9,6 @@ export enum SortType {
 }
 
 export interface Query {
-  [index: string]: any;
   currPage?: number;
   limit?: number;
   length?: string[] | string;

@@ -6,7 +6,7 @@ import {
   HttpEvent
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { CookieService } from 'ngx-cookie';
 
 @Injectable()

@@ -22,7 +22,7 @@ export * from './position';
 })
 
 export class ModalModule {
-  static forRoot(): ModuleWithProviders<ModalModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: ModalModule,
       providers: [ModalService]

@@ -3,6 +3,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
+import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
@@ -15,20 +16,21 @@ import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
+import { environment } from '@env/environment';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { DonateComponent } from './donate/donate.component';
 
 const details = {
   path: 'details',
-  loadChildren: () => import('app/cube/details/details.module').then(m => m.DetailsModule)
+  loadChildren: 'app/cube/details/details.module#DetailsModule'
 };
 
 const library = {
   path: 'library',
   canActivate: [AuthGuard],
-  loadChildren: () => import('app/cube/library/library.module').then(l => l.LibraryModule),
+  loadChildren: 'app/cube/library/library.module#LibraryModule',
   data : {title: 'Your Library'},
-};
+}
 
 const cube_routes: Routes = [
   {
@@ -57,7 +59,7 @@ const cube_routes: Routes = [
       },
       {
         path: 'system/usage',
-        loadChildren: () => import('app/cube/usage-stats/usage-stats.module').then(m => m.UsageStatsModule),
+        loadChildren: 'app/cube/usage-stats/usage-stats.module#UsageStatsModule',
         data: { title: 'System Usage'}
       },
       {

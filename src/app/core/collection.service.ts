@@ -3,7 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, retry ,  skipWhile } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
+import { skipWhile } from 'rxjs/operators';
 
 export interface Collection {
   name: string;

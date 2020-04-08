@@ -22,20 +22,20 @@ const onion_routes: Routes = [
       {
         path: 'dashboard',
         loadChildren:
-          () => import('app/onion/dashboard/dashboard.module').then(m => m.DashboardModule),
+          'app/onion/dashboard/dashboard.module#DashboardModule',
         canActivate: [AuthGuard],
         data: { state: 'dashboard', title: 'Your Dashboard' }
       },
       {
         path: 'learning-object-builder',
         loadChildren:
-          () => import('app/onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
+          'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
         canActivate: [AuthGuard]
       },
       {
         path: 'learning-object-builder/:learningObjectId',
         loadChildren:
-          () => import('app/onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
+          'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
         canActivate: [AuthGuard]
       },
       { path: '**', redirectTo: 'dashboard' }
