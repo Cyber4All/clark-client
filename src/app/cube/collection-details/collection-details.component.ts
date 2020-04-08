@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CollectionService } from '../../core/collection.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,7 +24,8 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private collectionService: CollectionService,
-    private titleService: Title
+    private titleService: Title,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -33,7 +34,11 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe(params => {
-        this.fetchCollection(params.abvName);
+        if (params.abvName === 'plan c') {
+          this.router.navigate(['/home']);
+        } else {
+          this.fetchCollection(params.abvName);
+        }
       });
   }
 
