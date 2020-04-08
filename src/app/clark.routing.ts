@@ -7,21 +7,21 @@ import { AccessGroupGuard } from './core/access-group-guard';
 const clark_routes: Routes = [
   {
     path: 'auth',
-    loadChildren: 'app/auth/auth.module#AuthModule',
+    loadChildren: () => import('app/auth/auth.module').then(m => m.AuthModule),
     data: { hideNavbar: true }
   },
   {
     path: 'admin/learning-object-builder/:learningObjectId',
     loadChildren:
-      'app/onion/learning-object-builder/learning-object-builder.module#LearningObjectBuilderModule',
+      () => import('app/onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
     canActivate: [AccessGroupGuard],
     data: { state: 'builder', accessGroups: ['admin', 'editor'] }
   },
-  { path: 'onion', loadChildren: 'app/onion/onion.module#OnionModule' },
-  { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule' },
+  { path: 'onion', loadChildren: () => import('app/onion/onion.module').then(m => m.OnionModule) },
+  { path: 'admin', loadChildren: () => import('app/admin/admin.module').then(m => m.AdminModule) },
   { path: 'unsupported', component: UnsupportedComponent, data: { title: 'Unsupported'}},
   { path: 'not-found', component: NotFoundComponent, data: { title: 'Not Found'}},
-  { path: '', loadChildren: 'app/cube/cube.module#CubeModule' },
+  { path: '', loadChildren: () => import('app/cube/cube.module').then(m => m.CubeModule) },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

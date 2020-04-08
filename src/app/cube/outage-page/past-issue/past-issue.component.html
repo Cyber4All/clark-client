@@ -4,9 +4,9 @@
     <div>{{ issue.name | uppercase }}</div>
   </div>
   <div class="date">
-    <p>{{ issue.discovered | date:'mediumDate' }}</p>
+    <p>{{ issue.discovered | date:'medium' }}</p>
     <p>to</p>
-    <p>{{ issue.resolved | date:'mediumDate' }}</p>
+    <p>{{ issue.resolved | date:'medium' }}</p>
   </div>
   <div class="info">
     <p>This functionality experienced {{ !issue.accessGroups || issue.accessGroups.length !== 4 ? 'minor' : 'major' }} problems.</p>

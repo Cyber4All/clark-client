@@ -5,5 +5,8 @@ module.exports = {
   moduleNameMapper: {
     '@env(.*)': '<rootDir>/src/environments/$1',
     '@entity(.*)': '<rootDir>/src/entity/$1'
-  }
+  },
+  transform: {
+    "^.+\\.(ts|js|html)$": "ts-jest"
+  },
 }

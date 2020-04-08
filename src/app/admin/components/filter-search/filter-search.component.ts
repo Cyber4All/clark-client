@@ -7,8 +7,8 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/map';
+
+
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
@@ -50,7 +50,7 @@ export class FilterSearchComponent implements OnInit {
     this.findUserRestrictions();
 
     // add the 'all' option into the list of statuses
-    this.statuses.splice(0, 0, 'All');
+    this.statuses.splice(0, 0);
 
     this.statuses = this.statuses.filter(
       s => !['rejected', 'unreleased'].includes(s.toLowerCase())
