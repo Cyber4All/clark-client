@@ -156,7 +156,7 @@ export class UserPrivilegesComponent implements OnInit {
 
     responsePromise
       .catch(error => {
-        if (error.status == 201) {
+        if (error.status === 201) {
           this.advance();
 
           setTimeout(() => {
