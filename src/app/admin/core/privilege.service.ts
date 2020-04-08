@@ -15,7 +15,7 @@ export class PrivilegeService {
    * @returns {Promise<string[]>}
    * @memberof PrivilegeService
    */
-  getCollectionRoles(id: string): Promise<string[]> {
+  getRoles(id: string): Promise<string[]> {
     return this.http
       .get<{ roles: string[] }>(ADMIN_ROUTES.GET_USER_ROLES(id))
       .pipe(
@@ -35,7 +35,7 @@ export class PrivilegeService {
    * @returns {Promise<{}>}
    * @memberof PrivilegeService
    */
-  addCollectionMembership(abvCollectionName: string, userId: string, role: string): Promise<{}> {
+  addMembership(abvCollectionName: string, userId: string, role: string): Promise<{}> {
     return this.http
       .put(
         ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
@@ -58,7 +58,7 @@ export class PrivilegeService {
    * @returns
    * @memberof PrivilegeService
    */
-  modifyCollectionMembership(abvCollectionName: string, userId: string, role: string) {
+  modifyMembership(abvCollectionName: string, userId: string, role: string) {
     return this.http
       .patch(
         ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
@@ -80,7 +80,7 @@ export class PrivilegeService {
    * @returns
    * @memberof PrivilegeService
    */
-  removeCollectionMembership(abvCollectionName: string, userId: string) {
+  removeMembership(abvCollectionName: string, userId: string) {
     return this.http
       .delete(
         ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
@@ -89,33 +89,6 @@ export class PrivilegeService {
       .pipe(
         retry(3),
         catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  addMapperMembership(userId: string) {
-    return this.http
-      .put(
-        ADMIN_ROUTES.ADD_MAPPER(userId),
-        { withCredentials: true }
-      )
-      .toPromise();
-  }
-
-  getMappers() {
-    return this.http
-      .get(
-        ADMIN_ROUTES.GET_MAPPERS(),
-        { withCredentials: true }
-      )
-      .toPromise();
-  }
-
-  removeMapperMembership(userId: string) {
-    return this.http
-      .delete(
-        ADMIN_ROUTES.REMOVE_MAPPER(userId),
-        { withCredentials: true }
       )
       .toPromise();
   }

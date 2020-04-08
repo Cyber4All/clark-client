@@ -4,22 +4,13 @@ import * as querystring from 'querystring';
 export type MaterialsFilter = 'released' | 'unreleased';
 
 export const ADMIN_ROUTES = {
-  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string): string {
+  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
       abvCollectionName
     )}/members/${encodeURIComponent(userId)}`;
   },
-  GET_USER_ROLES(id: string): string {
+  GET_USER_ROLES(id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(id)}/roles`;
-  },
-  GET_MAPPERS(): string {
-    return `${environment.apiURL}/guidelines/members`;
-  },
-  ADD_MAPPER(userId: string): string {
-    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
-  },
-  REMOVE_MAPPER(userId: string): string {
-    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
   }
 };
 

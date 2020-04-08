@@ -22,9 +22,9 @@
 
       <ng-template>
         <div class="privileges__top-inner">
-          <button aria-label='to privileges' (activate)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
+          <div (activate)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
             <i class="fas fa-arrow-left"></i> Back to privileges
-          </button>
+          </div>
         </div>
       </ng-template>
 
@@ -36,14 +36,6 @@
           <div class="privileges__actions btn-group to-right">
             <button (activate)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
           </div>
-        </div>
-      </ng-template>
-
-      <ng-template>
-        <div class="privileges__top-inner">
-          <button aria-label='to privileges' (activate)="regress(2)" class="privileges__subtitle privileges__subtitle--interactable">
-            <i class="fas fa-arrow-left"></i> Back to privileges
-          </button>
         </div>
       </ng-template>
       
@@ -67,34 +59,20 @@
       <clark-collections-grid [preselect]="collectionsWithSelectedRole" preselectReason="This user is already a {{ selectedRole }} in this collection." (selected)="selectCollection($event)"></clark-collections-grid>
     </ng-template>
 
-    <ng-template>
-      <div class='mapper-confirmation'>
-        <h2 class='mapper-confirmation__header'>Are you sure?</h2>
-        <p class='mapper-confirmation__sub'>You are about to promote this user to a Mapper.</p>
-        <div class='btn-group center'>
-          <button aria-label='add mapper' (activate)='addMapper()' class='button good'>Submit</button>
-        </div>
-      </div>
-    </ng-template>
-
   </clark-carousel>
 
 </div>
 
 <ng-template #roleSelector>
   <div class="role-selector">
-    <button aria-label='Reviewer' [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
       <i class="far fa-user-edit"></i>
       Reviewer
-    </button>
-    <button aria-label='Curator' [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
+    </div>
+    <div [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
       <i class="far fa-user-crown"></i>
       Curator
-    </button>
-    <button aria-label='Mapper' *ngIf="!privileges[0]?.includes('mapper')"[ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
-      <i class="far fa-map"></i>
-      Mapper
-    </button>
+    </div>
   </div>
 </ng-template>
 
