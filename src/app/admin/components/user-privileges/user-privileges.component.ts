@@ -153,18 +153,17 @@ export class UserPrivilegesComponent implements OnInit {
 
   addMapper() {
     const responsePromise = this.privilegeService.addMapperMembership(this.user.id);
-    
+
     responsePromise
       .catch(error => {
         if (error.status == 201) {
           this.advance();
 
           setTimeout(() => {
-    
-            
+
             this.privileges.push([this.selectedRole, '']);
             this.getCollections();
-    
+
             this.selectedCollection = undefined;
             this.selectedRole = undefined;
           }, 400);
