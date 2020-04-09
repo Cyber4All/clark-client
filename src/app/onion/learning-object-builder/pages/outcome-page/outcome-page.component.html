@@ -4,7 +4,7 @@
   </div>
   <div main class="main">
     <div class="top">
-      <div class="title" *ngIf = "iterableOutcomes.length !== 1; else singleOutcome">{{iterableOutcomes.length}} Learning Outcomes</div>
+      <div class="title">{{iterableOutcomes.length}} Learning Outcome<span *ngIf = "iterableOutcomes.length !== 1">s</span></div>
     </div>
     <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
       <clark-outcome *ngFor="let o of iterableOutcomes"
@@ -28,10 +28,6 @@
     <clark-standard-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-standard-outcomes>
   </div>
 </clark-column-wrapper>
-
-<ng-template #singleOutcome>
-  <div class="title">{{iterableOutcomes.length}} Learning Outcome </div>
-</ng-template>
 
 <ng-template #noOutcomesTemplate>
   <div class="no-outcomes">
