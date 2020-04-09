@@ -16,7 +16,7 @@ export class RecaptchaValidator {
             return this.http.get(USER_ROUTES.VALIDATE_CAPTCHA(), { params: { token } }).pipe(
             map((res: any) => {
                 if (!res.success) {
-                    return { tokenInvalid: true }
+                    return { tokenInvalid: true };
                 }
                 return null;
             }))
