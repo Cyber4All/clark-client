@@ -149,7 +149,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     );
   }
 
-  // This functions validates that an outcome is valid. if valid, enables the Add Outcome buton
+  // This functions validates that an outcome is valid. if valid, enables the Add Outcome button
   validateNewOutcome() {
     const lastOutcome = this.iterableOutcomes[this.iterableOutcomes.length - 1];
     if (lastOutcome === undefined) {
