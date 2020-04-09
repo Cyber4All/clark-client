@@ -2,10 +2,9 @@
   <div left>
     <clark-scaffold *ngIf="learningObject" [learningObject]= "learningObject"></clark-scaffold>
   </div>
-  <div main>
+  <div main class="main">
     <div class="top">
-      <div class="title">Learning Outcomes</div>
-      <button id="form" class="button good" aria-label="Add New Outcome" (activate)="newOutcome()">Add Outcome<i class="fas fa-plus"></i></button>
+      <div class="title" *ngIf = "iterableOutcomes.length !== 1; else singleOutcome">{{iterableOutcomes.length}} Learning Outcomes</div>
     </div>
     <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
       <clark-outcome *ngFor="let o of iterableOutcomes"
@@ -20,15 +19,19 @@
         (activate)="setActiveOutcome(o.id)"
       >
       </clark-outcome>
-      <div class="addButton" >
-        <button id="form" class="button good" aria-label="Add New Outcome" (activate)="newOutcome()">Add Outcome<i class="fas fa-plus"></i></button>
-      </div>
     </ng-container>
+    <div class="add-button btn-group to-right">
+      <button id="form" class="button good" [ngClass]="{'disabled': !saveable}" aria-label="Add New Outcome" (activate)="newOutcome()">Add Outcome<i class="fas fa-plus"></i></button>
+    </div>
   </div>
   <div *ngIf="outcomes.size" right>
     <clark-standard-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-standard-outcomes>
   </div>
 </clark-column-wrapper>
+
+<ng-template #singleOutcome>
+  <div class="title">{{iterableOutcomes.length}} Learning Outcome </div>
+</ng-template>
 
 <ng-template #noOutcomesTemplate>
   <div class="no-outcomes">
