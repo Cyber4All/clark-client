@@ -52,7 +52,7 @@
         <div class="modal-text">
           <form class="input-wrapper">
             <div class="header">
-              <span class="header__text">Our AI is finding the best topic for each unassigned Learning Object</span>
+              <span class="header__text">Our machine learning algorithm is finding the best topic for each unassigned Learning Object</span>
               <div class="prompt">
                 <div class="prompt__text">This might take a minute...</div>
                 <i class="far fa-spinner-third fa-spin"></i>
@@ -75,10 +75,10 @@
                 <div class='side-panel__scrollable'>
                   <h3 class='topic-header'>New Topics</h3>
                   <div class='topic-names__container'>
-                    <div *ngFor='let new_topic of objectKeys(newTopicDistribution)'>
+                    <div *ngFor='let new_topic of newTopicNames; let i=index; trackBy:trackByFn'>
                       <div class='topic-name__card'>
                         <clark-checkbox attr.aria-label="checkbox" [value]="false" (action)="toggleTopicToSubmissionGroup($event, new_topic)"></clark-checkbox>
-                        <input class='topic-name__card__name' (activate)='selectNewTopic(new_topic)' (ngModelChange)='changeNewTopicName($event, new_topic)' [(ngModel)]='new_topic' [ngModelOptions]="{standalone: true}"  [ngClass]="{'selected': new_topic === selectedTopicName}"/>
+                        <input class='topic-name__card__name' (click)='selectNewTopic(new_topic)' (ngModelChange)='changeNewTopicName($event, new_topic)' [(ngModel)]='new_topic' [ngModelOptions]="{standalone: true}"  [ngClass]="{'selected': new_topic === selectedTopicName}"/>
                       </div>
                     </div>
                   </div>
@@ -99,14 +99,32 @@
                 </div>
               </div>
               <div class='right-side-panel'>
-                <h2 class='panel-header'>Learning Objects</h2>
-                <div class='side-panel__scrollable'>
-                  <div *ngFor="let topicObject of selectedTopicObjects">
-                    <div class='topic-object__card'>
-                      <learning-object-component [learningObject]="topicObject"></learning-object-component>
+                <clark-carousel [action$]="carouselAction$">
+                  <ng-template>
+                    <h2 class='panel-header'>Learning Objects</h2>
+                    <div class='side-panel__scrollable'>
+                      <div *ngFor="let topicObject of selectedTopicObjects">
+                        <div class='topic-object__card'>
+                          <learning-object-component [learningObject]="topicObject"></learning-object-component>
+                          <button class='move-button' (activate)='advance(topicObject)'><i class='fas fa-edit move-icon'></i>Change Topic</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </ng-template>
+                  <ng-template>
+                    <h2 class='panel-header'>Moving "{{ movingLearningObject.name }}"</h2>
+                    <div class='side-panel__scrollable'>
+                      <div *ngFor='let topicName of topicNames' (activate)='selectNewTopicName(topicName)' class='change-topic-name__item' [ngClass]="{ 'selected': changeTopicSelectedTopic === topicName }">
+                        {{ topicName }}
+                      </div>
+                    </div>
+
+                    <div>
+                      <button class='button good change-topic-name__back-button' (activate)=regress()>Back</button>
+                      <button class='button good change-topic-name__submit-button' (activate)=changeTopic()>Change Topic</button>
+                    </div>
+                  </ng-template>
+                </clark-carousel>
               </div>
             </div>
           </form>

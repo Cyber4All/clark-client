@@ -102,7 +102,7 @@
 
 .prompt__text {
   color: $dark-grey;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .left-side-panel {
@@ -116,6 +116,7 @@
   padding: 20px;
   overflow: hidden;
   text-align: left;
+  width: 700px;
 }
 
 .columns {
@@ -127,10 +128,11 @@
 }
 
 .topic-object__card {
+  display: grid;
+  grid-template-columns: 500px 130px;
   color: $dark-grey;
   padding-bottom: 10px;
   text-align: left;
-  width: 500px;
 }
 
 .topic-name__card {
@@ -152,6 +154,7 @@
 .results-popup {
   max-height: 700px;
   overflow: hidden;
+  padding: 20px;
 }
 
 .topic-names__container {
@@ -173,9 +176,45 @@
 .side-panel__scrollable {
   max-height: 500px;
   overflow: scroll;
+  padding: 0 20px;
 }
 
 .submit-button {
   margin-top: 10px;
   text-align: right;
+}
+
+.move-button {
+  font-size: $smaller;
+  text-align: center;
+  height: 20px;
+  color: $light-blue;
+  border: none;
+  outline: none;
+  margin-top: 40%;
+  font-size: $small;
+}
+
+.move-button:hover {
+  text-decoration: underline;
+}
+
+.move-icon {
+  font-size: .75em;
+  margin-left: 10px;
+}
+
+.change-topic-name__item {
+  border-bottom: 1px solid $light-grey;
+  padding: 10px 0;
+}
+
+.change-topic-name__back-button {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.change-topic-name__submit-button {
+  margin-top: 10px;
+  float: right;
 }

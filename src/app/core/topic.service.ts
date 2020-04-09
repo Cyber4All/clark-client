@@ -18,7 +18,7 @@ export class TopicService {
    */
   getLearningObjectTopics(): Promise<any> {
     return this.http
-      .get('http://localhost:9001/metadata', { withCredentials: true }).toPromise();
+      .get('http://localhost:5001/topics', { withCredentials: true }).toPromise();
   }
 
 }
