@@ -1,7 +1,5 @@
 import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
 import { UriRetrieverService } from './uri-retriever.service';
-import { HttpClientModule, HttpXhrBackend, HttpResponse, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@env/environment';
 
