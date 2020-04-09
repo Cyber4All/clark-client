@@ -4,7 +4,7 @@ import { AuthService } from './core/auth.service';
 import { LibraryService } from './core/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
-import 'rxjs/add/operator/filter';
+
 import { HistoryService } from './core/history.service';
 import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
@@ -149,8 +149,8 @@ export class ClarkComponent implements OnInit {
   /* set the document title to show location in
   browser tabs and notify AT's of current location */
   setPageTitle() {
-    this.router.events
-      .filter(event => event instanceof NavigationEnd)
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         let data;
         const activeRoutes: ActivatedRoute[] = this.activatedRoute.children;
