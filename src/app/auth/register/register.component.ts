@@ -133,10 +133,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    // If development/testing set verified to true in order to skip reCaptcha check in e2e tests
-    if (environment.production === false) {
-      this.verified = true;
-    }
+
   }
 
   submit() {
@@ -229,6 +226,7 @@ export class RegisterComponent implements OnInit {
 
   // navigation
   back() {
+    // PLEASE FIX THIS SOON
     this.fall = !this.fall;
     if (this.page === 2) {
       this.page = 1;

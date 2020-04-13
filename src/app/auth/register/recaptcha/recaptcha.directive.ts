@@ -9,7 +9,8 @@ import {
   FormControl,
   NgControl,
   Validators,
-  NG_VALUE_ACCESSOR
+  NG_VALUE_ACCESSOR,
+  FormsModule
 } from '@angular/forms';
 
 export interface ReCaptchaConfig {
@@ -59,7 +60,8 @@ export class RecaptchaDirective
     private element: ElementRef,
     private ngZone: NgZone,
     private injector: Injector,
-    private validator: RecaptchaValidator
+    private validator: RecaptchaValidator,
+
   ) {}
 
   ngOnInit() {
@@ -142,8 +144,7 @@ export class RecaptchaDirective
    * @param token
    */
   verifyToken(token: string) {
-    this.control.setAsyncValidators(this.validator.validateToken(token));
-    this.control.updateValueAndValidity();
+    this.validator.validateToken(token);
   }
 
   /**
