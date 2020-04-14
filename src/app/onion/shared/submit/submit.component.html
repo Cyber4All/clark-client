@@ -3,6 +3,10 @@
     <div class="banner">
       <clark-carousel [action$]="carouselAction$">
           <ng-template>
+            <div class="banner__title">Submission Reminders</div>
+            <div class="banner__sub">Please read and review the following.</div>
+          </ng-template>
+          <ng-template>
             <div class="banner__title">Select a Collection</div>
             <div class="banner__sub">Please submit to CAE Community collection if not associated with other collections.</div>
           </ng-template>
@@ -15,6 +19,23 @@
     <clark-carousel [action$]="carouselAction$">
       <ng-template>
         <div class="carousel__item">
+          <div class="center-content">
+            <p>Before continuing in the submission process, have you checked that all of your materials are:</p>
+            <ol>
+              <li>Proofread for errors?</li>
+              <li>Accessible to reviewers?</li>
+              <li>Uploaded and not missing any files?</li>
+            </ol>
+            <p>Continue your submission if the answer to all of these questions is yes.</p>
+            <div class="submit-btn btn-group center center-content">
+              <button class="button good" (activate)="advance()">Continue</button>
+              <button class="button neutral" (activate)="closeModal()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template>
+        <div class="carousel__item">
           <clark-collections-grid [currentCollection]="collection || learningObject.collection" (selected)="getCollectionSelected($event)"
             (cancel)="closeModal()"></clark-collections-grid>
           <div class="license-selection">
@@ -23,7 +44,7 @@
           </div>
           <div class="submit-btn btn-group center">
             <button class="button good" [ngClass]="{'disabled': !licenseAccepted || !collection }" [disabled]="!licenseAccepted || !collection" (activate)="submitForReview()">Submit for Review <i class="far fa-arrow-right"></i></button>
-            <button class="button neutral" (activate)="closeModal()">Nevermind <i class="far fa-ban"></i></button>
+            <button class="button neutral" (activate)="regress()">Back</button>
           </div>
         </div>
       </ng-template>
