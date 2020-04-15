@@ -20,15 +20,19 @@
       <ng-template>
         <div class="carousel__item">
           <div class="center-content">
-            <p>Before continuing in the submission process, have you checked that all of your materials are:</p>
-            <ol>
-              <li>Proofread for errors?</li>
-              <li>Accessible to reviewers?</li>
-              <li>Uploaded and not missing any files?</li>
-            </ol>
-            <p>Continue your submission if the answer to all of these questions is yes.</p>
-            <div class="submit-btn btn-group center center-content">
-              <button class="button good" (activate)="advance()">Continue</button>
+            <p>Before continuing in the submission process, please verify that you have:</p>
+            <ul>
+              <li>Checked for spelling and grammar errors</li>
+              <li>All materials that are needed for this Learning Object are uploaded</li>
+              <li>All materials (i.e. PowerPoints, PDFs, videos etc.) are accessible under Section 508 of the Americans with Disability Act</li>
+              <li>All child objects of this Learning Object are in the hierarchy</li>
+            </ul>
+            <div class="license-selection">
+              <span tabindex="0" class="statement">I have checked this Learning Object for the errors listed above and would like to continue my submission to a collection</span>
+              <clark-checkbox aria-label="Accept that you have reviewed the submission reminder" (action)="submissionReminder = $event"></clark-checkbox>
+            </div>
+            <div class="submit-btn btn-group center">
+              <button class="button good" [ngClass]="{'disabled': !submissionReminder}" [disabled]="!submissionReminder" (activate)="advance()">Continue</button>
               <button class="button neutral" (activate)="closeModal()">Cancel</button>
             </div>
           </div>

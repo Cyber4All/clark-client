@@ -52,9 +52,15 @@
   }
 
   .center-content {
-    font-size: $large;
     color: $dark-grey;
-    margin-top: 150px;
+
+    ul {
+      font-size: $large;
+    }
+
+    .license-selection {
+      margin-top: 70px;
+    }
   }
 }
 
