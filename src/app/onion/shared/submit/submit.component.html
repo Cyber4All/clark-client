@@ -32,8 +32,8 @@
               <clark-checkbox aria-label="Accept that you have reviewed the submission reminder" (action)="submissionReminder = $event"></clark-checkbox>
             </div>
             <div class="submit-btn btn-group center">
-              <button class="button good" [ngClass]="{'disabled': !submissionReminder}" [disabled]="!submissionReminder" (activate)="advance()">Continue</button>
-              <button class="button neutral" (activate)="closeModal()">Cancel</button>
+              <button class="button good" [ngClass]="{'disabled': !submissionReminder}" [disabled]="!submissionReminder" (activate)="advance()" aria-label="Continue the submission">Continue</button>
+              <button class="button neutral" (activate)="closeModal()" aria-label="Cancel the submission">Cancel</button>
             </div>
           </div>
         </div>
@@ -47,8 +47,8 @@
             <clark-checkbox aria-label="Accept creative commons 4.0 license agreement" (action)="licenseAccepted = $event"></clark-checkbox>
           </div>
           <div class="submit-btn btn-group center">
-            <button class="button good" [ngClass]="{'disabled': !licenseAccepted || !collection }" [disabled]="!licenseAccepted || !collection" (activate)="submitForReview()">Submit for Review <i class="far fa-arrow-right"></i></button>
-            <button class="button neutral" (activate)="regress()">Back</button>
+            <button class="button good" [ngClass]="{'disabled': !licenseAccepted || !collection }" [disabled]="!licenseAccepted || !collection" (activate)="submitForReview()" aria-label="Submit object for review">Submit for Review <i class="far fa-arrow-right"></i></button>
+            <button class="button neutral" (activate)="regress()" aria-label="Go back to the previous page">Back</button>
           </div>
         </div>
       </ng-template>
