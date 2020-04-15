@@ -7,7 +7,7 @@
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 100px;
+  padding: 50px;
 
   &:after {
       content: '';
@@ -43,12 +43,98 @@
       z-index: 2;
   }
 
+  .logos {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .title__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+    background: white;
+    color: $light-blue;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    border: 2px solid $light-blue;
+    svg {
+      width: 60px;
+      height: 60px;
+    }
+   }
+
+
   .header {
-      color: $darker-grey;
+      color: $light-blue;
       font-size: $largest;
       text-transform: uppercase;
       font-weight: bold;
+      padding: 0;
+      margin-top: 10px;
       z-index: 2;
   }
   
+}
+
+.collection-container {
+  max-width: $max-width;
+  padding-bottom: 100px;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 50px;
+  box-sizing: border-box;
+  .description {
+    color: $dark-grey;
+    margin-bottom: 40px;
+    padding: 20px;
+
+    .heading {
+      font-weight: bold;
+      font-size: $larger;
+    }
+  }
+  .featured--header {
+    display: flex;
+    justify-content: space-between;
+
+    .recently-released {
+      padding: 20px;
+      color: $dark-grey;
+      font-weight: bold;
+      font-size: $larger;
+    }
+
+    .view-all {
+      color: $light-blue;
+      font-size: $large;
+      width: 100px;
+      cursor: pointer;
+      @include vert-center;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      text-align: right;
+      padding-right: 12px;
+      &:hover {
+        text-decoration: underline;
+      }
+      .svg-inline--fa {
+        @include vert-center;
+        margin-left: 15px;
+      }
+    }
+  }
 }

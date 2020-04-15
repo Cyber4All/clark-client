@@ -1,7 +1,28 @@
 <div class="background">
   <section class="hero">
       <div class="inner">
-        <collection-action-panel [showContribute]=true [collectionAbv]=collection?.abvName [collectionName]=collection?.name></collection-action-panel>
+        <div class="logos">
+          <img *ngIf="pictureLocation" src="{{ pictureLocation }}" alt="collection logo">
+          <div *ngIf="!pictureLocation" class="title__icon">
+            <i class="far fa-cubes"></i>
+          </div>
+        </div>
+        <h1 class="header">{{ collection?.name }}</h1>
+        <collection-action-panel [showContribute]=showContribute [collectionAbv]=collection?.abvName [collectionName]=collection?.name></collection-action-panel>
       </div>
+  </section>
+  <section class="collection-container">
+    <div *ngIf="collection?.description" class="description">
+      <div class="heading">Description</div>
+      <p [innerHtml]="collection?.description"></p>
+    </div>
+    <div class="featured--header">
+      <div class="recently-released">Featured</div>
+      <a id="view-all" class="view-all" [routerLink]="['/browse']"
+        [queryParams]="{ collection: collection?.abvName }">{{ COPY.VIEWALL }}
+        <i class="far fa-angle-right"></i>
+      </a>
+    </div>
+    <cube-featured [collection]="key"></cube-featured>
   </section>
 </div>

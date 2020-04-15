@@ -17,7 +17,7 @@ export class CollectionsComponent implements OnInit {
     this.collectionService
       .getCollections()
       .then((collections: Collection[]) => {
-        this.collections = collections.filter(collection => collection.abvName !== 'plan c');
+        this.collections = collections;
       })
       .catch(e => {
         console.error(e.message);
