@@ -18,6 +18,7 @@ import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { FeaturedObjectsComponent } from './pages/featured-objects/featured-objects.component';
+import { FeaturedListComponent } from './components/featured-list/featured-list.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { FeaturedObjectsComponent } from './pages/featured-objects/featured-obje
     PrivilegesListComponent,
     LearningObjectListItemComponent,
     FeaturedObjectsComponent,
+    FeaturedListComponent,
   ],
   imports: [
     CoreModule.forRoot(),
