@@ -1,7 +1,7 @@
 <div class="title">
 </div>
 
-<div *ngIf="learningObjects.length > 0; else noObjectsTemplate" class="card-container">
+<div *ngIf="learningObjects?.length > 0; else noObjectsTemplate" class="card-container">
   <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" learningObjectCard
     [loading]="loading">
   </learning-object-component>
