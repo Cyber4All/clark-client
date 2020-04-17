@@ -44,21 +44,6 @@ export class FeaturedObjectsComponent implements OnInit, OnDestroy {
 
   loading: boolean;
 
-
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
-
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
