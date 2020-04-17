@@ -19,6 +19,7 @@ import { LearningObjectListItemComponent } from './components/learning-object-li
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { FeaturedObjectsComponent } from './pages/featured-objects/featured-objects.component';
 import { FeaturedListComponent } from './components/featured-list/featured-list.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { FeaturedListComponent } from './components/featured-list/featured-list.
     AdminRoutingModule,
     SharedModule,
     FormsModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    DragDropModule,
   ],
 })
 export class AdminModule { }

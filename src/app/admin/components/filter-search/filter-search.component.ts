@@ -30,7 +30,7 @@ export class FilterSearchComponent implements OnInit {
   private _selectedCollection: Collection;
 
   @Input() adminOrEditor: boolean;
-
+  @Input() learningObjectPage: boolean;
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() clearAll = new EventEmitter<void>();
