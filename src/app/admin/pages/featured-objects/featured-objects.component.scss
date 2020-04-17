@@ -12,7 +12,7 @@
 
 .list__body {
   .body__column-headers,
-   .row-item {
+   ::ng-deep .row-item {
     padding: 0 20px;
     display: grid;
     grid-template-columns: 32px 2.5fr 100px 80px 120px 50px;
@@ -20,7 +20,7 @@
     align-items: center;
   }
 
-  .row-item {
+  ::ng-deep .row-item {
     & > div {
       padding-top: 20px;
       padding-bottom: 20px;
