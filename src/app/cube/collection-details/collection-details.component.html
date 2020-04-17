@@ -18,8 +18,12 @@
     </div>
     <div class="featured--header">
       <div class="recently-released">Featured</div>
-      <a id="view-all" class="view-all" [routerLink]="['/browse']"
+      <a *ngIf="collection?.abvName !== 'plan c'" id="view-all" class="view-all" [routerLink]="['/browse']"
         [queryParams]="{ collection: collection?.abvName }">{{ COPY.VIEWALL }}
+        <i class="far fa-angle-right"></i>
+      </a>
+      <a *ngIf="collection?.abvName === 'plan c'" id="view-all" class="view-all" [routerLink]="['/browse']"
+        [queryParams]="{ fileTypes: 'video' }">{{ COPY.VIEWALL }}
         <i class="far fa-angle-right"></i>
       </a>
     </div>
