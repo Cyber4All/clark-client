@@ -12,10 +12,7 @@
     margin: auto;
     font-size: $normal;
     font-weight: normal;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
+    text-align: center;
 
     .status-link {
       color: white;
@@ -42,4 +39,8 @@
     background: #0B78CB;
     color: white;
   }
+}
+
+.status-link {
+  display: block;
 }
