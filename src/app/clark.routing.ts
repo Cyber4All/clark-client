@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
 import { AccessGroupGuard } from './core/access-group-guard';
+import { UnauthorizedComponent } from './unauthorized.component';
 
 const clark_routes: Routes = [
   {
@@ -21,6 +22,7 @@ const clark_routes: Routes = [
   { path: 'admin', loadChildren: () => import('app/admin/admin.module').then(m => m.AdminModule) },
   { path: 'unsupported', component: UnsupportedComponent, data: { title: 'Unsupported'}},
   { path: 'not-found', component: NotFoundComponent, data: { title: 'Not Found'}},
+  { path: 'unauthorized/:code/:redirect', component: UnauthorizedComponent, data: {title: 'Unauthorized'}},
   { path: '', loadChildren: () => import('app/cube/cube.module').then(m => m.CubeModule) },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
