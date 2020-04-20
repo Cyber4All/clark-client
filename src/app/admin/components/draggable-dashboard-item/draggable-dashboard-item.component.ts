@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./draggable-dashboard-item.component.scss']
 })
 export class DraggableDashboardItemComponent implements OnInit {
-
   constructor() { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
   }
-
 }

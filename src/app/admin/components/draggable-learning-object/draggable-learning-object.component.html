@@ -1,1 +1,31 @@
-<p>draggable-learning-object works!</p>
+<div class="learning-object" [ngClass]="learningObject.length">
+    <div class="image">
+        <div class="length">{{ learningObject.length.toUpperCase() }}</div>
+    </div>
+    <div class="learning-object-content">
+        <div class="content__topbar">
+            <div *ngIf="collection?.name !== undefined" class="card-collection">{{ collection.name }}</div>
+        </div>
+    </div>
+    <div class="title">
+        {{ truncateText(learningObject.name, 45)}}
+    </div>
+    <div class="details">
+        <span class="author">
+            {{ learningObject.author.name | titlecase }} |
+            {{ learningObject.author.organization.trim() | titlecase
+            }}{{
+            learningObject.contributors?.length
+              ? ', and ' + learningObject.contributors.length + ' more'
+              : ''
+            }}
+        </span>
+        <div class="date">Updated {{ date | date: 'mediumDate' }}</div>
+        <div
+            class="goals"
+            *ngIf="this.learningObject.description"
+            [innerHtml]="goals()"
+        ></div>
+    </div>
+</div>
+
