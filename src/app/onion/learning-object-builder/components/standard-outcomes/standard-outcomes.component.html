@@ -1,7 +1,7 @@
 <div class="standard-outcomes">
-  <div class="title">Standard Outcomes</div>
+  <div class="title">Curricular Guidelines</div>
   <div class="search-bar">
-    <input type="search" placeholder="Search standard outcomes..." [(ngModel)]="searchStringValue" (ngModelChange)="searchString$.next($event)" id="search" aria-label="Search for standard outcomes"/>
+    <input type="search" placeholder="Search curricular guidelines..." [(ngModel)]="searchStringValue" (ngModelChange)="searchString$.next($event)" id="search" aria-label="Search for curricular guidelines"/>
     <i class="far fa-search"></i>
   </div>
   <div class="title-bar">
@@ -14,7 +14,7 @@
 </div>
 <clark-skip-link title="Go back to Learning Outcome" skipLocation="outcome"></clark-skip-link>
 <clark-skip-link title="Go to Add New Learning Outcome" skipLocation="form"></clark-skip-link>
-<clark-skip-link title="Go to Search for Standard Outcomes" skipLocation="search"></clark-skip-link>
+<clark-skip-link title="Go to Search for Curricular Guidelines" skipLocation="search"></clark-skip-link>
 <clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
 
 <ng-template #listTemplate let-items="items">

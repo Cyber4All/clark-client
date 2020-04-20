@@ -1,7 +1,10 @@
 @import '~_vars.scss';
 $sidebar-width: 350px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
-
+.background {
+  background-color: white;
+  min-height: 100vh;
+}
 .hero {
   position: relative;
   overflow: hidden;
@@ -87,7 +90,8 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 30px;
-  margin: 40px auto;
+  margin-left: auto;
+  margin-right: auto;
   padding: 20px;
   padding-bottom: 120px;
 }

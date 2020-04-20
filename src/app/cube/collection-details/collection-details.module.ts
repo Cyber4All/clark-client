@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { ActionPanelComponent } from './components/action-panel/action-panel.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   exports: [],
-  declarations: [CollectionDetailsComponent]
+  declarations: [CollectionDetailsComponent, ActionPanelComponent]
 })
 export class CollectionModule {}
