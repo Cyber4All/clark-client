@@ -17,6 +17,9 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
 import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { FeaturedComponent } from './pages/featured/featured.component';
+import { DraggableDashboardItemComponent } from './components/draggable-dashboard-item/draggable-dashboard-item.component';
+import { DraggableLearningObjectComponent } from './components/draggable-learning-object/draggable-learning-object.component';
 
 
 @NgModule({
@@ -33,6 +36,9 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     UserPrivilegesComponent,
     PrivilegesListComponent,
     LearningObjectListItemComponent,
+    FeaturedComponent,
+    DraggableDashboardItemComponent,
+    DraggableLearningObjectComponent,
   ],
   imports: [
     CoreModule.forRoot(),
