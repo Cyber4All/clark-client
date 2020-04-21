@@ -2,10 +2,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: flex-start stretch;
     justify-content: center;
     max-width: 1375px;
-    align-items: stretch;
     margin: auto;
     // this margin offsets each individual card's top margin
     margin-top: -24px;
