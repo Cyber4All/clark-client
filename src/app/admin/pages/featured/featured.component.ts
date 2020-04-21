@@ -12,4 +12,7 @@ export class FeaturedComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  saveFeatured() {
+
+  }
 }

@@ -1,3 +1,9 @@
-<p>Oh hello</p>
-<clark-draggable-learning-object></clark-draggable-learning-object>
+<clark-admin-content-wrapper>
+    <div #list2 class="el"></div>
+    <div page-title>Featured Learning Objects</div>
+    <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
+</clark-admin-content-wrapper>
+<div class="card-container">
+    <clark-draggable-learning-object clarkDraggableLearningObjectCard ></clark-draggable-learning-object>
+</div>
 <clark-draggable-dashboard-item></clark-draggable-dashboard-item>
