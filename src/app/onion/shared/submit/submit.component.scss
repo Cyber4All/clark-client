@@ -50,6 +50,18 @@
     font-size: $large;
     margin: 5px 0 20px;
   }
+
+  .center-content {
+    color: $dark-grey;
+
+    ul {
+      font-size: $large;
+    }
+
+    .license-selection {
+      margin-top: 70px;
+    }
+  }
 }
 
 

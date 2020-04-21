@@ -26,6 +26,7 @@ export class SubmitComponent implements OnInit {
 
   changelog: string;
   licenseAccepted: boolean;
+  submissionReminder: boolean;
   needsChangelog: boolean;
 
   loading: boolean[] = [];
