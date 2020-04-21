@@ -1,1 +1,25 @@
-<p>Item is fine</p>
+<div class="dashboard-item">
+    <div class="row-item">
+        <div>
+            <div class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
+                <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
+                <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
+                <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
+                <span *ngIf="learningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
+                <span *ngIf="learningObject.status === 'released'"><i class="fas fa-eye"></i></span>
+                <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
+            </div>
+        </div>
+        <div>
+            {{ learningObject.name }}
+        </div>
+        <div>
+            {{ learningObject.author.name | titlecase }}
+        </div>
+        <div>{{ learningObject.length | titlecase }}</div>
+        <div>{{ learningObject.date | date:'longDate' }}</div>
+        <div>
+            <i class="far fa-bars"></i>
+        </div>
+    </div>
+</div>

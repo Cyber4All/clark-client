@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'clark-draggable-dashboard-item',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./draggable-dashboard-item.component.scss']
 })
 export class DraggableDashboardItemComponent implements OnInit {
+  @Input() learningObject: LearningObject;
   constructor() { }
 
   async ngOnInit() {
