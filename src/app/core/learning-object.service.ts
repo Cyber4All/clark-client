@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { take, map, catchError, zip, tap, mergeMap, finalize } from 'rxjs/operators';
 import { of, Observable, merge, Subject } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
@@ -31,7 +31,7 @@ export class LearningObjectService {
 
   fetchLearningObject(
     params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
-  ): Observable<LearningObject> {
+  ): Observable<LearningObject | HttpErrorResponse> {
     return this.http.get(this.buildRoute(params)).pipe(
       take(1),
       catchError(e => of(e)),
@@ -44,8 +44,11 @@ export class LearningObjectService {
             response = response.pop();
           }
         }
-
-        return new LearningObject(response);
+        if (response instanceof HttpErrorResponse) {
+          return response;
+        } else {
+          return new LearningObject(response);
+        }
       })
     );
   }
@@ -63,20 +66,25 @@ export class LearningObjectService {
         mergeMap((object: LearningObject) => this.fetchLearningObjectResources(object, resources))
       );
     } else {
-      const s = new Subject<LearningObject>();
+      const s = new Subject<LearningObject | HttpErrorResponse>();
 
       this.fetchLearningObject(params).pipe(
         take(1)
       ).subscribe(object => {
-        this.fetchLearningObjectResources(object, resources).pipe(
-          take(resources.length),
-          finalize(() => {
-            s.next(object);
-            s.complete();
-          })
-        ).subscribe(resource => {
-          object[resource.name] = resource.data;
-        });
+        if (object instanceof LearningObject) {
+          this.fetchLearningObjectResources(object, resources).pipe(
+            take(resources.length),
+            finalize(() => {
+              s.next(object);
+              s.complete();
+            })
+          ).subscribe(resource => {
+            object[resource.name] = resource.data;
+          });
+        } else {
+          s.next(object);
+          s.complete();
+        }
       });
 
       return s;

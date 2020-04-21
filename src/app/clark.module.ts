@@ -18,6 +18,7 @@ import { CookiesComponent } from './components/cookies/cookies.component';
 import { MessageComponent } from './components/navbar/components/message/message.component';
 import { SearchComponent } from './components/navbar/components/search/search.component';
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
+import { UnauthorizedComponent } from './unauthorized.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -35,7 +36,8 @@ import { MaintenancePageComponent } from './maintenance-page/maintenance-page.co
     CookiesComponent,
     MessageComponent,
     SearchComponent,
-    MaintenancePageComponent],
+    MaintenancePageComponent,
+    UnauthorizedComponent],
   bootstrap: [ClarkComponent],
   providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
 })

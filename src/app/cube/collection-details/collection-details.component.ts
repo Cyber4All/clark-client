@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CollectionService } from '../../core/collection.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,6 +16,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
   key = new Subject<string>();
   collection;
   pictureLocation: string;
+  showContribute = false;
 
   COPY = {
     VIEWALL: 'View All'
@@ -25,7 +26,6 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private collectionService: CollectionService,
     private titleService: Title,
-    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -34,11 +34,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe(params => {
-        if (params.abvName === 'plan c') {
-          this.router.navigate(['/home']);
-        } else {
-          this.fetchCollection(params.abvName);
-        }
+        this.fetchCollection(params.abvName);
       });
   }
 
@@ -52,6 +48,9 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     this.key.next(this.collection.abvName);
     if (this.collection.abvName !== 'intro_to_cyber' && this.collection.abvName !== 'secure_coding_community' && this.collection.abvName !== 'plan c') {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
+    }
+    if (this.collection.abvName === 'plan c') {
+      this.showContribute = true;
     }
     this.titleService.setTitle(this.collection.name + ' | CLARK');
   }
