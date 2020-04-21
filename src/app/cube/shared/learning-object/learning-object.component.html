@@ -46,6 +46,9 @@
           </button>
         </form>
       </div>
+      <div *ngIf="collection !== undefined" class="collection">
+        {{ collection }}
+      </div>
       <div class="details">
         <span class="author">
           {{ learningObject.author.name | titlecase }} |

@@ -8,24 +8,19 @@
         </div>
     </div>
     <div class="title">
-        {{ truncateText(learningObject.name, 45)}}
+        {{ (learningObject?.name.length>45) ? (learningObject?.name | slice:0:45)+'...' : learningObject?.name }}
     </div>
     <div class="details">
         <span class="author">
             {{ learningObject.author.name | titlecase }} |
-            {{ learningObject.author.organization.trim() | titlecase
-            }}{{
-            learningObject.contributors?.length
+            {{ learningObject.author.organization | titlecase}}
+            {{ learningObject.contributors?.length
               ? ', and ' + learningObject.contributors.length + ' more'
               : ''
             }}
         </span>
         <div class="date">Updated {{ date | date: 'mediumDate' }}</div>
-        <div
-            class="goals"
-            *ngIf="this.learningObject.description"
-            [innerHtml]="goals()"
-        ></div>
+        <div class="description" [innerHtml]="learningObject.description"></div>
     </div>
 </div>
 
