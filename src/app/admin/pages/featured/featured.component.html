@@ -4,6 +4,19 @@
     <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
 <div class="card-container">
-    <clark-draggable-learning-object clarkDraggableLearningObjectCard ></clark-draggable-learning-object>
-</div>
-<clark-draggable-dashboard-item></clark-draggable-dashboard-item>
+    <div *ngFor="let l in learningObjects" class="featured-learning-object card">
+        <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
+    </div>
+  </div>
+
+<clark-admin-content-wrapper>
+    <div #list2 class="el"></div>
+    <div page-title>Not Currently Featured Learning Objects</div>
+</clark-admin-content-wrapper>
+  
+<ng-template #finishedLoadingTemplate>
+    <div class="loadingOrFinished__content">
+      <i class="far fa-thumbs-up"></i>
+      You've reached the end of the list!
+    </div>
+</ng-template>

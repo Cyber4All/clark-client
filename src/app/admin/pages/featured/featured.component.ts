@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LearningObject } from '@entity';
 
 @Component({
   selector: 'clark-featured',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./featured.component.scss']
 })
 export class FeaturedComponent implements OnInit {
-
+  learningObjects: LearningObject[];
   constructor() { }
 
   ngOnInit(): void {
