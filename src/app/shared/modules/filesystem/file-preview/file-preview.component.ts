@@ -18,6 +18,7 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
   private isDestroyed$ = new Subject<void>();
   loggedin: boolean;
   previewUrl = EMPTY_URL;
+  message = '';
 
   constructor(
     public auth: AuthService,
@@ -25,8 +26,10 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.previewUrl = this.file.previewUrl;
+    this.copy();
     this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
       this.loggedin = val;
+      this.copy();
     });
   }
 
@@ -39,18 +42,20 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
    * Sets the previewUrl to its url string rather than leaving it as an empty string
    */
   get hasPreviewLink() {
-    return this.previewUrl !== EMPTY_URL;
+    return this.previewUrl !== EMPTY_URL && this.previewUrl !== null && this.previewUrl !== undefined;
   }
 
   /**
    * Returns a response based on the value of the preview link on a specified file
    * and whether a user is logged in or not while attempting to preview.
    */
-  get copy() {
+  copy() {
+    this.message = '';
     if (!this.hasPreviewLink) {
-      return noPreview;
+      this.message = noPreview;
     } else if (!this.loggedin) {
-      return notLoggedIn;
+      this.message = notLoggedIn;
     }
+    console.log(this.hasPreviewLink);
   }
 }
