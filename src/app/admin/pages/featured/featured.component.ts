@@ -14,9 +14,8 @@ export class FeaturedComponent implements OnInit {
   learningObjects: LearningObject[];
   featuredObjects: LearningObject[];
 
-  // Booleans for functionality
-  disableListDragging: boolean;
 
+  // Query for retrieve
   query: Query = {
     limit: 20,
     status: [LearningObject.Status.RELEASED]
@@ -28,15 +27,10 @@ export class FeaturedComponent implements OnInit {
   async ngOnInit() {
     this.featuredObjects = await this.featureService.getFeaturedObjects();
     this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.featuredObjects, this.query)).learningObjects;
-    console.log(this.learningObjects);
   }
 
   saveFeatured() {
-    if (this.featuredObjects.length === 5) {
-      this.disableListDragging = true;
-    } else {
-      
-    }
+
   }
 }
 
