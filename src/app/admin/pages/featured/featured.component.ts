@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@entity';
-import { FeaturedService } from 'app/core/featured.service';
+import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 @Component({
@@ -21,7 +21,7 @@ export class FeaturedComponent implements OnInit {
     status: [LearningObject.Status.RELEASED]
   };
   constructor(
-    private featureService: FeaturedService
+    private featureService: FeaturedObjectsService,
   ) { }
 
   async ngOnInit() {

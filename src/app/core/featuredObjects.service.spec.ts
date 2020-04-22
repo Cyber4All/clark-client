@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FeaturedService } from './featured.service';
+import { FeaturedObjectsService } from './featuredObjects.service';
 
 describe('FeaturedService', () => {
-  let service: FeaturedService;
+  let service: FeaturedObjectsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FeaturedService);
+    service = TestBed.inject(FeaturedObjectsService);
   });
 
   it('should be created', () => {

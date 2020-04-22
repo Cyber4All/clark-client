@@ -10,7 +10,7 @@ import * as querystring from 'querystring';
 @Injectable({
   providedIn: 'root'
 })
-export class FeaturedService {
+export class FeaturedObjectsService {
 
   private headers = new HttpHeaders();
 
