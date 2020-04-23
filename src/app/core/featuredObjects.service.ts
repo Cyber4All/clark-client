@@ -43,7 +43,7 @@ export class FeaturedObjectsService {
   }
 
   /**
-   * Fetches Array of Learning Objects that are not featured
+   * Fetches Array of Learning Objects that are not currently featured
    *
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
@@ -84,7 +84,7 @@ export class FeaturedObjectsService {
   }
 
   /**
-   * Filters out the featured Learning Objects from general list
+   * Filters out the featured Learning Objects from general list of Learning Objects
    * @param featured Array of learning objects that are currently featured
    * @param learningObjects Array of learning objects returned from API
    */
