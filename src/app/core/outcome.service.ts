@@ -3,12 +3,24 @@ import { environment } from '@env/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as querystring from 'querystring';
 import { LearningObject, StandardOutcome } from '@entity';
-import { throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { throwError, Observable } from 'rxjs';
+import { retry, catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class OutcomeService {
-  constructor(public http: HttpClient) {}
+
+  private sources: Observable<string[]>;
+
+  constructor(public http: HttpClient) {
+    // Load guideline sources only once
+    this.sources = this.http
+      .get<string[]>(environment.suggestionUrl + '/outcomes/sources')
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+        map(sources => sources.filter(source => source !== 'CAE CDE 2019'))
+      );
+  }
 
   getOutcomes(
     filter?
@@ -32,22 +44,8 @@ export class OutcomeService {
       });
   }
 
-  getSources(): Promise<string[]> {
-    return this.http
-      .get(environment.suggestionUrl + '/outcomes/sources')
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((res: any) => {
-        const sources = res.filter(source => {
-          if (source !== 'CAE CDE 2019') {
-            return source;
-          }
-        });
-        return sources;
-      });
+  getSources(): Observable<string[]> {
+    return this.sources;
   }
 
   suggestOutcomes(source: LearningObject, filter): Promise<StandardOutcome[]> {
