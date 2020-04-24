@@ -16,10 +16,12 @@ export class DraggableLearningObjectComponent implements OnInit {
 
   async ngOnInit() {
     await this.fetchCollection(this.learningObject.collection);
+    console.log('collection', this.collection);
   }
 
   async fetchCollection(abvName: string) {
     this.collection = await this.collectionService.getCollectionMetadata(abvName);
+    console.log(this.collection);
   }
 
     get date() {

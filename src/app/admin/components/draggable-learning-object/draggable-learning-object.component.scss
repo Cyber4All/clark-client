@@ -1,5 +1,13 @@
+@import '~_vars.scss';
 .learning-object {
     width: inherit;
     background-color: white;
     border-radius: 8px;
+    max-height: 300px;
+    font-size: $smaller;
+
+    .description {
+        height: 60px;
+        overflow: hidden;
+    }
 }

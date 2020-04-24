@@ -1,12 +1,12 @@
 <div class="learning-object" [ngClass]="learningObject.length">
     <div class="image">
-        <div class="length">{{ learningObject.length.toUpperCase() }}</div>
+        <div class="length">{{ learningObject?.length.toUpperCase() }}</div>
     </div>
     <div class="learning-object-content">
         <div class="content__topbar">
-            <div *ngIf="collection?.name !== undefined" class="card-collection">{{ collection.name }}</div>
+            <div *ngIf="collection" class="card-collection">{{ collection?.name }}</div>
         </div>
-    </div>
+    </div> 
     <div class="title">
         {{ (learningObject?.name.length>45) ? (learningObject?.name | slice:0:45)+'...' : learningObject?.name }}
     </div>
