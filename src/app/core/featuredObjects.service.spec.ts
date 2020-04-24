@@ -9,7 +9,7 @@ describe('FeaturedService', () => {
 
   const mockLearningObjects = [];
   const mockFeatured = [];
-  
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],

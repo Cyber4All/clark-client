@@ -13,7 +13,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 export class FeaturedComponent implements OnInit {
   // Object Arrays
   learningObjects: LearningObject[];
-  featuredObjects: LearningObject[];
+  featuredObjects: any;
 
 
   // Query for retrieve
@@ -28,18 +28,18 @@ export class FeaturedComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.featuredObjects = await this.featureService.getFeaturedObjects();
-    this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.featuredObjects, this.query)).learningObjects;
+    this.featuredObjects = this.featureService.featuredObjects;
+    await this.featureService.getFeaturedObjects();
+    this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.query)).learningObjects;
   }
 
-  async saveFeatured() {
-    try {
-      await this.featureService.setFeaturedObjects(this.featuredObjects);
-    } catch (e) {
-      this.toaster.error('Error!', e);
-      this.saveError = true;
-    }
+  dropFeatured() {
+    this.featureService.addFeaturedObject(this.learningObjects[1]);
   }
+  removeFeatured() {
+    this.featureService.removeFeaturedObject(this.learningObjects[1]);
+  }
+
 }
 
 

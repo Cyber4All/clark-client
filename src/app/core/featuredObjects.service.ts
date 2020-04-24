@@ -3,7 +3,7 @@ import { LearningObject } from '@entity';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { FEATURED_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { catchError, retry } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
 
@@ -11,12 +11,18 @@ import * as querystring from 'querystring';
   providedIn: 'root'
 })
 export class FeaturedObjectsService {
+  private _featuredObjects = new BehaviorSubject<LearningObject[]>([]);
+  private featuredStore: { featured: LearningObject[] } = { featured: []};
 
   private headers = new HttpHeaders();
 
   constructor(private http: HttpClient) { }
 
-  async getFeaturedObjects(): Promise<LearningObject[]> {
+  get featuredObjects() {
+    return this._featuredObjects.asObservable();
+  }
+
+  async getFeaturedObjects() {
     return this.http
       .get(FEATURED_ROUTES.GET_FEATURED)
       .pipe(
@@ -25,18 +31,31 @@ export class FeaturedObjectsService {
       ).toPromise()
       .then((featured: any) => {
         const featuredObjects = featured.map(object => new LearningObject(object));
-        return featuredObjects;
+        this.featuredStore.featured = featuredObjects;
+        this._featuredObjects.next(Object.assign({}, this.featuredStore).featured);
       });
   }
 
-  async setFeaturedObjects(learningObjects: LearningObject[]): Promise<any> {
-    if (learningObjects.length !== 5) {
-      throw new Error('Featured Learning Objects must contain 5 Learning Objects');
-    } else if (learningObjects.length === 5) {
+  addFeaturedObject(featured: LearningObject) {
+    this.featuredStore.featured.push(featured);
+    this._featuredObjects.next(Object.assign({}, this.featuredStore).featured);
+  }
+
+  removeFeaturedObject(featured: LearningObject) {
+    this.featuredStore.featured = this.featuredStore.featured.filter(object => {
+      return object.id !== featured.id;
+    });
+    this._featuredObjects.next(Object.assign({}, this.featuredStore).featured);
+  }
+
+  async saveFeaturedObjects() {
+    if (this.featuredStore.featured.length !== 5) {
+      throw new Error('You must save exactly 5 Learning Objects to Featured');
+    } else {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,
           {
-            learningObjects: learningObjects,
+            learningObjects: this._featuredObjects,
           },
           { headers: this.headers, withCredentials: true }
         ).toPromise();
@@ -52,7 +71,7 @@ export class FeaturedObjectsService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getNotFeaturedLearningObjects(featured: LearningObject[], query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
+  getNotFeaturedLearningObjects(query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
@@ -82,7 +101,7 @@ export class FeaturedObjectsService {
       .toPromise()
       .then((response: any) => {
         const objects = response.objects;
-        const learningObjects = this.filterOutFeatured(featured, objects);
+        const learningObjects = this.filterOutFeatured(this.featuredStore.featured, objects);
         return { learningObjects: learningObjects, total: learningObjects.length };
       });
   }

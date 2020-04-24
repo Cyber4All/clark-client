@@ -1,10 +1,11 @@
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
     <div page-title>Featured Learning Objects</div>
-    <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
+    <button filter-options class="button good" (activate)="dropFeatured()">Save<i class="far fa-save"></i></button>
+    <button filter-options class="button good" (activate)="removeFeatured()">Remove</button>
 </clark-admin-content-wrapper>
 <div class="card-container">
-    <div *ngFor="let l of featuredObjects" class="featured-learning-object card">
+    <div *ngFor="let l of featuredObjects | async" class="featured-learning-object card">
         <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
     </div>
 </div>
