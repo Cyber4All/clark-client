@@ -30,15 +30,19 @@ export class FeaturedObjectsService {
   }
 
   async setFeaturedObjects(learningObjects: LearningObject[]): Promise<any> {
-    try {
-      this.http.patch(FEATURED_ROUTES.SET_FEATURED,
-        {
-          learningObjects: learningObjects,
-        },
-        { headers: this.headers, withCredentials: true }
-      ).toPromise();
-    } catch (e) {
-
+    if (learningObjects.length !== 5) {
+      throw new Error('Featured Learning Objects must contain 5 Learning Objects');
+    } else if (learningObjects.length === 5) {
+      try {
+        this.http.patch(FEATURED_ROUTES.SET_FEATURED,
+          {
+            learningObjects: learningObjects,
+          },
+          { headers: this.headers, withCredentials: true }
+        ).toPromise();
+      } catch (e) {
+        throw e;
+      }
     }
   }
 

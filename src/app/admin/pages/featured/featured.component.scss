@@ -1,3 +1,4 @@
+@import '~_vars.scss';
 .card-container {
     display: flex;
     flex-direction: row;
@@ -13,7 +14,7 @@
       margin-top: 24px;
   
       &.card {
-        max-width: 250px;
+        max-width: 200px;
         margin-right: 12px;
         margin-left: 12px;
       }
