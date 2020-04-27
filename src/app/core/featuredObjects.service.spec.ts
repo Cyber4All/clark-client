@@ -21,10 +21,10 @@ describe('FeaturedService', () => {
   });
 
   afterEach(() => {
-    httpTestingController.verify()
+    httpTestingController.verify();
   });
 
-  it('should be created', () => {
+  it('should be ', () => {
     expect(featuredObjectsService).toBeTruthy();
   });
 });

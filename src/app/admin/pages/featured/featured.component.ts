@@ -13,7 +13,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 export class FeaturedComponent implements OnInit {
   // Object Arrays
   learningObjects: LearningObject[];
-  featuredObjects: any;
+  featuredObjects;
 
 
   // Query for retrieve
