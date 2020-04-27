@@ -33,7 +33,6 @@ export class FeaturedComponent implements OnInit {
 
   async ngOnInit() {
     this.featuredObjects = this.featureService.featuredObjects;
-    this.mutationError = this.featureService.
     await this.featureService.getFeaturedObjects();
     this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.query)).learningObjects;
   }
