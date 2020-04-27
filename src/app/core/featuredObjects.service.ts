@@ -11,7 +11,11 @@ import * as querystring from 'querystring';
   providedIn: 'root'
 })
 export class FeaturedObjectsService {
-  private _featuredObjects = new BehaviorSubject<LearningObject[]>([]);
+  private _featuredObjects$ = new BehaviorSubject<LearningObject[]>([]);
+  // Errors that occur if the featuredObjects array cannot be added to or changed
+  private _mutationError$ = new BehaviorSubject<boolean>(false);
+  // Errors that occur if the featuredObjects array does not contain exactly 5 objects
+  private _submitError$ = new BehaviorSubject<boolean>(false);
   private featuredStore: { featured: LearningObject[] } = { featured: []};
 
   private headers = new HttpHeaders();
@@ -19,7 +23,7 @@ export class FeaturedObjectsService {
   constructor(private http: HttpClient) { }
 
   get featuredObjects() {
-    return this._featuredObjects.asObservable();
+    return this._featuredObjects$.asObservable();
   }
 
   async getFeaturedObjects() {
@@ -32,20 +36,27 @@ export class FeaturedObjectsService {
       .then((featured: any) => {
         const featuredObjects = featured.map(object => new LearningObject(object));
         this.featuredStore.featured = featuredObjects;
-        this._featuredObjects.next(Object.assign({}, this.featuredStore).featured);
+        this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
       });
   }
 
   addFeaturedObject(featured: LearningObject) {
-    this.featuredStore.featured.push(featured);
-    this._featuredObjects.next(Object.assign({}, this.featuredStore).featured);
+    if (this.featuredStore.featured.length === 5) {
+      this._mutationError$.next(Object.assign({}, true));
+    } else if (this.featuredStore.featured.length < 5) {
+      this.featuredStore.featured.push(featured);
+      if (this.featuredStore.featured.length === 5) {
+        this._submitError$.next(Object.assign({}, false));
+      }
+      this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
+    }
   }
 
   removeFeaturedObject(featured: LearningObject) {
     this.featuredStore.featured = this.featuredStore.featured.filter(object => {
       return object.id !== featured.id;
     });
-    this._featuredObjects.next(Object.assign({}, this.featuredStore).featured);
+    this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
   async saveFeaturedObjects() {
@@ -55,7 +66,7 @@ export class FeaturedObjectsService {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,
           {
-            learningObjects: this._featuredObjects,
+            learningObjects: this._featuredObjects$,
           },
           { headers: this.headers, withCredentials: true }
         ).toPromise();
