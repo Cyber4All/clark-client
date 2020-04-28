@@ -3,34 +3,76 @@
     <div page-title cdkDrag>Featured Learning Objects</div>
     <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
-<div 
-    cdkDropList
-    class="card-container">
-    <div *ngFor="let l of featuredObjects" class="featured-learning-object card">
-        <div cdkDragBoundary=".card-container" cdkDragLockAxis="x" cdkDrag>
-            <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
-        </div>
-    </div>
-</div>
-
-<clark-admin-content-wrapper>
-    <div #list2 class="el"></div>
-    <div page-title>Not Currently Featured Learning Objects</div>
-</clark-admin-content-wrapper>
-
-
 <div cdkDropListGroup>
-    <div class="example-container">
-      <h2>To do</h2>
-  
-      <div
+    <div 
         cdkDropList
         [cdkDropListData]="featuredObjects"
-        class="example-list"
-        (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of featuredObjects" cdkDrag>{{item.name}}</div>
-      </div>
+        class="card-container"
+        (cdkDropListDropped)="drop($event)"
+        >
+        <div *ngFor="let l of featuredObjects" class="featured-learning-object card">
+            <div cdkDragBoundary=".card-container" cdkDragLockAxis="x" cdkDrag>
+                <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
+            </div>
+        </div>
     </div>
+
+    <clark-admin-content-wrapper>
+        <div #list2 class="el"></div>
+        <div page-title>Not Currently Featured Learning Objects</div>
+        <clark-admin-search-bar
+            search
+            [placeholder]="searchBarPlaceholder"
+            (userInput)="userSearchInput$.next($event)"
+        ></clark-admin-search-bar>
+        <clark-admin-filter-search
+            filter-options
+            (statusFilter)="getStatusFilteredLearningObjects($event)"
+            (collectionFilter)="getCollectionFilteredLearningObjects($event)"
+            (clearAll)="clearStatusAndCollectionFilters()"
+            [adminOrEditor]="isAdminOrEditor"
+        ></clark-admin-filter-search>
+        <div #list class="list" main>
+            <div #listInner>
+              <div class="list__body">
+                <div *ngIf="learningObjects?.length || loading">
+                  <div #headers class="body__column-headers">
+                    <div>Status</div>
+                    <div>Name</div>
+                    <div>Author</div>
+                    <div>Type</div>
+                    <div>Date</div>
+                  </div>
+                  <virtual-scroller
+                    #scroll
+                    [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
+                    [items]="learningObjects"
+                    [bufferAmount]="query.limit"
+                    [enableUnequalChildrenSizes]="true"
+                    (vsEnd)="
+                      scroll.viewPortInfo.startIndex && getLearningObjects($event)
+                    "
+                  >
+                    <clark-learning-object-list-item
+                      *ngFor="let l of scroll.viewPortItems"
+                      [learningObject]="l"
+                      [status]="l.status"
+                      (viewUser)="getUserLearningObjects($event)"
+                      (changeStatus)="openChangeStatusModal($event)"
+                    >
+                    </clark-learning-object-list-item>
+                    <div class="loadingOrFinished">
+                      <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
+                        <i class="far fa-spinner-third fa-spin"></i>
+                        Loading learning objects...
+                      </div>
+                    </div>
+                  </virtual-scroller>
+                </div>
+              </div>
+            </div>
+          </div>
+    </clark-admin-content-wrapper>
   
     <div class="example-container">
       <h2>Done</h2>
@@ -43,7 +85,7 @@
         <div class="example-box" *ngFor="let item of learningObjects" cdkDrag>{{item.name}}</div>
       </div>
     </div>
-  </div>
+</div>
 
 
 

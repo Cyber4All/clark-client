@@ -40,6 +40,11 @@ export class FeaturedObjectsService {
       });
   }
 
+  setFeatured(objects: LearningObject[]) {
+    this.featuredStore.featured = objects;
+    this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
+  }
+
   addFeaturedObject(featured: LearningObject) {
     if (this.featuredStore.featured.length === 5) {
       this._mutationError$.next(Object.assign({}, true));
