@@ -13,11 +13,11 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 export class FeaturedComponent implements OnInit {
   // Object Arrays
   learningObjects: LearningObject[];
-  featuredObjects;
+  featuredObjects$;
 
   // Error states
-  mutationError;
-  submitError;
+  mutationError$;
+  submitError$;
 
 
   // Query for retrieve
@@ -32,7 +32,7 @@ export class FeaturedComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.featuredObjects = this.featureService.featuredObjects;
+    this.featuredObjects$ = this.featureService.featuredObjects;
     await this.featureService.getFeaturedObjects();
     this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.query)).learningObjects;
   }
@@ -40,8 +40,13 @@ export class FeaturedComponent implements OnInit {
   dropFeatured() {
     this.featureService.addFeaturedObject(this.learningObjects[1]);
   }
+
   removeFeatured() {
-    this.featureService.removeFeaturedObject(this.learningObjects[1]);
+    let objects;
+    this.featuredObjects$.subscribe(learningObjects => {
+      objects = learningObjects;
+    });
+    this.featureService.removeFeaturedObject(objects[1]);
   }
 
 }
