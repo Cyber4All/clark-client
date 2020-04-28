@@ -6,7 +6,7 @@
 <div 
     cdkDropList
     class="card-container">
-    <div *ngFor="let l of featuredObjects | async" class="featured-learning-object card">
+    <div *ngFor="let l of featuredObjects" class="featured-learning-object card">
         <div cdkDragBoundary=".card-container" cdkDragLockAxis="x" cdkDrag>
             <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
         </div>
@@ -17,6 +17,35 @@
     <div #list2 class="el"></div>
     <div page-title>Not Currently Featured Learning Objects</div>
 </clark-admin-content-wrapper>
+
+
+<div cdkDropListGroup>
+    <div class="example-container">
+      <h2>To do</h2>
+  
+      <div
+        cdkDropList
+        [cdkDropListData]="featuredObjects"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of featuredObjects" cdkDrag>{{item.name}}</div>
+      </div>
+    </div>
+  
+    <div class="example-container">
+      <h2>Done</h2>
+  
+      <div
+        cdkDropList
+        [cdkDropListData]="learningObjects"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of learningObjects" cdkDrag>{{item.name}}</div>
+      </div>
+    </div>
+  </div>
+
+
 
 <ng-template #finishedLoadingTemplate>
     <div class="loadingOrFinished__content">

@@ -4,7 +4,7 @@ import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 @Component({
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
@@ -33,13 +33,15 @@ export class FeaturedComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.featuredObjects = this.featureService.featuredObjects;
+    this.featureService.featuredObjects.subscribe(objects => {
+      this.featuredObjects = objects;
+    });
     await this.featureService.getFeaturedObjects();
     this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.query)).learningObjects;
   }
 
   dropFeatured() {
-    this.featureService.addFeaturedObject();
+    this.featureService.addFeaturedObject(this.learningObjects[1]);
   }
   removeFeatured() {
     this.featureService.removeFeaturedObject(this.learningObjects[1]);
@@ -48,6 +50,19 @@ export class FeaturedComponent implements OnInit {
     this.featureService.saveFeaturedObjects();
   }
 
+
+
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+    this.featureService.setFeatured(this.featuredObjects);
+  }
 }
 
 
