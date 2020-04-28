@@ -86,15 +86,6 @@ export class FeaturedObjectsService {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
-      if (
-        queryClone.standardOutcomes &&
-        queryClone.standardOutcomes.length &&
-        typeof queryClone.standardOutcomes[0] !== 'string'
-      ) {
-        queryClone.standardOutcomes = (<string[]>(
-          queryClone.standardOutcomes
-        )).map(o => o['id']);
-      }
       const queryString = querystring.stringify(queryClone);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
         queryString
