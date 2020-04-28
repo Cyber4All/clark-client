@@ -1,12 +1,15 @@
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
-    <div page-title>Featured Learning Objects</div>
-    <button filter-options class="button good" (activate)="dropFeatured()">Save<i class="far fa-save"></i></button>
-    <button filter-options class="button good" (activate)="removeFeatured()">Remove</button>
+    <div page-title cdkDrag>Featured Learning Objects</div>
+    <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
-<div class="card-container">
+<div 
+    cdkDropList
+    class="card-container">
     <div *ngFor="let l of featuredObjects | async" class="featured-learning-object card">
-        <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
+        <div cdkDragBoundary=".card-container" cdkDragLockAxis="x" cdkDrag>
+            <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
+        </div>
     </div>
 </div>
 
@@ -14,7 +17,7 @@
     <div #list2 class="el"></div>
     <div page-title>Not Currently Featured Learning Objects</div>
 </clark-admin-content-wrapper>
-  
+
 <ng-template #finishedLoadingTemplate>
     <div class="loadingOrFinished__content">
       <i class="far fa-thumbs-up"></i>

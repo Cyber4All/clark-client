@@ -4,6 +4,7 @@ import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
@@ -38,10 +39,13 @@ export class FeaturedComponent implements OnInit {
   }
 
   dropFeatured() {
-    this.featureService.addFeaturedObject(this.learningObjects[1]);
+    this.featureService.addFeaturedObject();
   }
   removeFeatured() {
     this.featureService.removeFeaturedObject(this.learningObjects[1]);
+  }
+  saveFeatured() {
+    this.featureService.saveFeaturedObjects();
   }
 
 }
