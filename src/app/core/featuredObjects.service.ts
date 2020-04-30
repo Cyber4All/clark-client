@@ -71,7 +71,7 @@ export class FeaturedObjectsService {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,
           {
-            learningObjects: this._featuredObjects$,
+            learningObjects: this.featuredStore.featured,
           },
           { headers: this.headers, withCredentials: true }
         ).toPromise();

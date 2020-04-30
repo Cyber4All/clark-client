@@ -3,21 +3,33 @@
     <div page-title cdkDrag>Featured Learning Objects</div>
     <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
-<div cdkDropListGroup>
-    <div 
-        cdkDropList
-        [cdkDropListData]="featuredObjects"
-        class="card-container"
-        (cdkDropListDropped)="drop($event)"
-        >
-        <div *ngFor="let l of featuredObjects" class="featured-learning-object card">
-            <div cdkDragBoundary=".card-container" cdkDragLockAxis="x" cdkDrag>
-                <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
-            </div>
-        </div>
+  <div>
+    <div
+      cdkDropList
+      #featuredList="cdkDropList"
+      [cdkDropListData]="featuredObjects"
+      cdkDropListOrientation="horizontal"
+      class="featured-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="featured-card" *ngFor="let item of featuredObjects" cdkDragLockAxis="x" cdkDrag>
+        <clark-draggable-learning-object [learningObject]="item" learningObjectCard></clark-draggable-learning-object>
+      </div>
     </div>
+  </div>
+  
+  <div class="example-container">
+    <div
+      cdkDropList
+      [cdkDropListData]="learningObjects"
+      [cdkDropListConnectedTo]="[featuredList]"
+      cdkDropListOrientation="vertical"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let item of learningObjects" cdkDrag>{{item.name}}</div>
+    </div>
+  </div>
 
-    <clark-admin-content-wrapper>
+    <!-- <clark-admin-content-wrapper>
         <div #list2 class="el"></div>
         <div page-title>Not Currently Featured Learning Objects</div>
         <clark-admin-search-bar
@@ -27,7 +39,6 @@
         ></clark-admin-search-bar>
         <clark-admin-filter-search
             filter-options
-            (statusFilter)="getStatusFilteredLearningObjects($event)"
             (collectionFilter)="getCollectionFilteredLearningObjects($event)"
             (clearAll)="clearStatusAndCollectionFilters()"
             [adminOrEditor]="isAdminOrEditor"
@@ -73,19 +84,8 @@
             </div>
           </div>
     </clark-admin-content-wrapper>
-  
-    <div class="example-container">
-      <h2>Done</h2>
-  
-      <div
-        cdkDropList
-        [cdkDropListData]="learningObjects"
-        class="example-list"
-        (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of learningObjects" cdkDrag>{{item.name}}</div>
-      </div>
-    </div>
-</div>
+   -->
+
 
 
 

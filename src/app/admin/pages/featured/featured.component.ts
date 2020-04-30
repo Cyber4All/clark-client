@@ -37,7 +37,7 @@ export class FeaturedComponent implements OnInit {
 
   // Query for retrieve
   query: Query = {
-    limit: 20,
+    limit: 50,
     status: [LearningObject.Status.RELEASED],
     test: ''
   };
