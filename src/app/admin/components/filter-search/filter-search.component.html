@@ -36,6 +36,7 @@
         </clark-context-menu>
       </ng-container>
       <button
+        *ngIf="showStatus"
         #toggleFilterMenuElement
         class="button neutral filters-button"
         (activate)="toggleFilterMenu(true)"

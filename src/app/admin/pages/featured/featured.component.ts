@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { LearningObject, Collection } from '@entity';
+import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { CollectionService, Collection } from 'app/core/collection.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
@@ -16,13 +18,13 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 export class FeaturedComponent implements OnInit {
   // Object Arrays
   learningObjects: LearningObject[];
-  featuredObjects;
+  featuredObjects: LearningObject[];
 
   // Error states
   mutationError$;
   submitError$;
 
-  //Search 
+  // Search
   searchBarPlaceholder = 'Learning Objects';
   total: number;
   loading: boolean;
@@ -33,24 +35,41 @@ export class FeaturedComponent implements OnInit {
   isAdminOrEditor: boolean;
   activeCollection: Collection;
 
-
-
   // Query for retrieve
   query: Query = {
     limit: 50,
     status: [LearningObject.Status.RELEASED],
     test: ''
   };
-  saveError: boolean;
   constructor(
     private featureService: FeaturedObjectsService,
     private toaster: ToastrOvenService,
+    private collectionService: CollectionService,
+    private route: ActivatedRoute,
   ) { }
 
   async ngOnInit() {
     this.featureService.featuredObjects.subscribe(objects => {
       this.featuredObjects = objects;
     });
+
+     // listen for changes in the route and append the collection to the query
+     this.route.parent.params
+     .pipe(takeUntil(this.componentDestroyed$))
+     .subscribe(async params => {
+       this.activeCollection = await (params.collection
+         ? await this.collectionService.getCollection(params.collection)
+         : undefined);
+
+       if (this.activeCollection) {
+         this.query = { collection: this.activeCollection.abvName };
+       } else {
+         this.query = { collection: undefined };
+       }
+
+       this.getLearningObjects();
+     });
+
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
       .pipe(
@@ -61,18 +80,49 @@ export class FeaturedComponent implements OnInit {
         this.query = { currPage: 1, text: searchTerm };
         this.learningObjects = [];
 
-        this.featureService.getNotFeaturedLearningObjects();
+        this.getLearningObjects();
       });
     await this.featureService.getFeaturedObjects();
-    this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.query)).learningObjects;
+    // this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.query)).learningObjects;
+  }
+
+  async getLearningObjects() {
+    this.featureService.getNotFeaturedLearningObjects(this.query).then(objects => {
+      this.learningObjects = objects.learningObjects;
+    });
+  }
+
+  /**
+   * Update the Query's collection parameter and reset the Learning Objects query
+   *
+   * @param {string} collection the abbreviated name of the collection by which to filter
+   * @memberof LearningObjectsComponent
+   */
+  getCollectionFilteredLearningObjects(collection: string) {
+    this.query = { collection, currPage: 1 };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
+
+   /**
+   * Clear the filters of both collection and status and reset the Learning Objects query
+   *
+   * @memberof LearningObjectsComponent
+   */
+  clearCollectionFilters() {
+    this.query = { collection: undefined, currPage: 1 };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
   }
 
   dropFeatured() {
     this.featureService.addFeaturedObject(this.learningObjects[1]);
   }
 
-  removeFeatured() {
-    this.featureService.removeFeaturedObject(this.featuredObjects[1]);
+  removeFeatured(object) {
+    this.featureService.removeFeaturedObject(object);
   }
   saveFeatured() {
     this.featureService.saveFeaturedObjects();

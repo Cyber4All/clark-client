@@ -19,7 +19,7 @@
     <div>{{ learningObject.length | titlecase }}</div>
     <div>{{ learningObject.date | date:'longDate' }}</div>
     <div>
-      <div #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen}" (activate)="this.toggleContextMenu(true)">
+      <div *ngIf="dragging === false" #meatballMenuElement class="meatball" [ngClass]="{'open': meatballOpen}" (activate)="this.toggleContextMenu(true)">
         <div class="icon">
           <i class="far fa-times"></i>
         </div>

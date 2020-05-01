@@ -12,6 +12,7 @@
     (collectionFilter)="getCollectionFilteredLearningObjects($event)"
     (clearAll)="clearStatusAndCollectionFilters()"
     [adminOrEditor]="isAdminOrEditor"
+    [showStatus]="true"
   ></clark-admin-filter-search>
 
   <div #list class="list" main>
@@ -39,6 +40,7 @@
               *ngFor="let l of scroll.viewPortItems"
               [learningObject]="l"
               [status]="l.status"
+              [dragging]="false"
               (viewUser)="getUserLearningObjects($event)"
               (changeStatus)="openChangeStatusModal($event)"
             >

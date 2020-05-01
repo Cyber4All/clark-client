@@ -1,4 +1,15 @@
 @import '~_vars.scss';
+.remove {
+  position: absolute;
+  top: 5px;
+  z-index: 99;
+  right: 0;
+  border-radius: 4px;
+  border: none;
+  background-color: $error-red;
+  color: white;
+  font-size: $normal;
+}
 //Styles for Cards 
 @media (min-width: 751px) {
   :host.card {
@@ -35,8 +46,6 @@
     }
   }
 }
-
-
 
 :host.loading {
   // loading styles
@@ -97,11 +106,6 @@
 
   .learning-object-content{
     width: auto !important;
-  }
-
-  .download-btn-card {
-    padding: 0 5px;
-    margin-right: -5px;
   }
 }
 
@@ -252,19 +256,5 @@
       min-width: 0;
       overflow: hidden;
     }
-}
-
-@keyframes loading {
-  0% {
-    left: -200px;
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    left: 100%;
-  }
 }
 

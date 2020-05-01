@@ -3,90 +3,104 @@
     <div page-title cdkDrag>Featured Learning Objects</div>
     <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
-  <div>
-    <div
-      cdkDropList
-      #featuredList="cdkDropList"
-      [cdkDropListData]="featuredObjects"
-      cdkDropListOrientation="horizontal"
-      class="featured-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="featured-card" *ngFor="let item of featuredObjects" cdkDragLockAxis="x" cdkDrag>
-        <clark-draggable-learning-object [learningObject]="item" learningObjectCard></clark-draggable-learning-object>
-      </div>
+<div
+    cdkDropList
+    #featuredList="cdkDropList"
+    [cdkDropListData]="featuredObjects"
+    cdkDropListOrientation="horizontal"
+    class="featured-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="featured-card" *ngFor="let l of featuredObjects" cdkDragLockAxis="x" cdkDrag>
+        <clark-draggable-learning-object [learningObject]="l" (delete)="removeFeatured($event)" learningObjectCard></clark-draggable-learning-object>
     </div>
-  </div>
-  
-  <div class="example-container">
-    <div
-      cdkDropList
-      [cdkDropListData]="learningObjects"
-      [cdkDropListConnectedTo]="[featuredList]"
-      cdkDropListOrientation="vertical"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let item of learningObjects" cdkDrag>{{item.name}}</div>
-    </div>
-  </div>
-
-    <!-- <clark-admin-content-wrapper>
-        <div #list2 class="el"></div>
-        <div page-title>Not Currently Featured Learning Objects</div>
-        <clark-admin-search-bar
-            search
-            [placeholder]="searchBarPlaceholder"
-            (userInput)="userSearchInput$.next($event)"
-        ></clark-admin-search-bar>
-        <clark-admin-filter-search
-            filter-options
-            (collectionFilter)="getCollectionFilteredLearningObjects($event)"
-            (clearAll)="clearStatusAndCollectionFilters()"
-            [adminOrEditor]="isAdminOrEditor"
-        ></clark-admin-filter-search>
-        <div #list class="list" main>
-            <div #listInner>
-              <div class="list__body">
-                <div *ngIf="learningObjects?.length || loading">
-                  <div #headers class="body__column-headers">
-                    <div>Status</div>
-                    <div>Name</div>
-                    <div>Author</div>
-                    <div>Type</div>
-                    <div>Date</div>
-                  </div>
-                  <virtual-scroller
-                    #scroll
-                    [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
-                    [items]="learningObjects"
-                    [bufferAmount]="query.limit"
-                    [enableUnequalChildrenSizes]="true"
-                    (vsEnd)="
-                      scroll.viewPortInfo.startIndex && getLearningObjects($event)
-                    "
-                  >
-                    <clark-learning-object-list-item
-                      *ngFor="let l of scroll.viewPortItems"
-                      [learningObject]="l"
-                      [status]="l.status"
-                      (viewUser)="getUserLearningObjects($event)"
-                      (changeStatus)="openChangeStatusModal($event)"
-                    >
-                    </clark-learning-object-list-item>
-                    <div class="loadingOrFinished">
-                      <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
-                        <i class="far fa-spinner-third fa-spin"></i>
-                        Loading learning objects...
-                      </div>
-                    </div>
-                  </virtual-scroller>
+</div>
+<clark-admin-content-wrapper>
+    <div #list2 class="el"></div>
+    <div page-title>Not Currently Featured Learning Objects</div>
+    <clark-admin-search-bar
+        search
+        [placeholder]="searchBarPlaceholder"
+        (userInput)="userSearchInput$.next($event)"
+    ></clark-admin-search-bar>
+    <clark-admin-filter-search
+        filter-options
+        (collectionFilter)="getCollectionFilteredLearningObjects($event)"
+        (clearAll)="clearCollectionFilters()"
+        [adminOrEditor]="true"
+        [showStatus]="false"
+    ></clark-admin-filter-search>
+    <div #list class="list" main>
+        <div #listInner>
+          <div class="list__body">
+            <div *ngIf="learningObjects?.length || loading; else emptyTemplate">
+              <div #headers class="body__column-headers">
+                <div>Status</div>
+                <div>Name</div>
+                <div>Author</div>
+                <div>Type</div>
+                <div>Date</div>
+              </div>
+              <div
+                #scroll
+                cdkDropList
+                [cdkDropListData]="learningObjects"
+                [cdkDropListConnectedTo]="[featuredList]"
+                cdkDropListOrientation="vertical"
+                class="row-items"
+                (cdkDropListDropped)="drop($event)">
+                <div *ngFor="let l of learningObjects" cdkDrag>
+                  <clark-learning-object-list-item
+                    [learningObject]="l"
+                    [status]="l.status"
+                    [dragging]="true"
+                  ></clark-learning-object-list-item>
                 </div>
               </div>
+              <!-- <virtual-scroller
+                #scroll
+                [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
+                [items]="learningObjects"
+                [bufferAmount]="query.limit"
+                [enableUnequalChildrenSizes]="true"
+                (vsEnd)="
+                  scroll.viewPortInfo.startIndex && getLearningObjects($event)
+                "
+              >
+                <clark-learning-object-list-item
+                  *ngFor="let l of scroll.viewPortItems"
+                  [learningObject]="l"
+                  [status]="l.status"
+                  (viewUser)="getUserLearningObjects($event)"
+                  (changeStatus)="openChangeStatusModal($event)"
+                >
+                </clark-learning-object-list-item>
+                <div class="loadingOrFinished">
+                  <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
+                    <i class="far fa-spinner-third fa-spin"></i>
+                    Loading learning objects...
+                  </div>
+                </div>
+              </virtual-scroller> -->
             </div>
           </div>
-    </clark-admin-content-wrapper>
-   -->
-
-
+        </div>
+      </div>
+    
+</clark-admin-content-wrapper>
+   <ng-template #emptyTemplate>
+    <div class="empty-template">
+      <div class="empty-template__top">
+        <i class="fal fa-box-open"></i>
+        <div class="top-message">
+          Nothing here!
+        </div>
+      </div>
+      <div class="empty-text">
+        Learning Objects will appear here after they are submitted to your
+        collection
+      </div>
+    </div>
+  </ng-template>
 
 
 <ng-template #finishedLoadingTemplate>

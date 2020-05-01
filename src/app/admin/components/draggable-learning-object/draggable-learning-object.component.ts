@@ -1,58 +1,34 @@
-import { Component, OnInit, Input, ElementRef, Renderer2, ChangeDetectorRef, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CollectionService } from '../../../core/collection.service';
 import { LearningObject, Collection } from '@entity';
-import { DOWNLOAD_STATUS, AuthService } from 'app/core/auth.service';
-import { LibraryService } from 'app/core/library.service';
-import { take } from 'rxjs/operators';
+
 
 @Component({
   selector: 'clark-draggable-learning-object',
   templateUrl: './draggable-learning-object.component.html',
   styleUrls: ['./draggable-learning-object.component.scss']
 })
-export class DraggableLearningObjectComponent implements OnInit, OnChanges, OnDestroy {
+export class DraggableLearningObjectComponent implements OnInit {
   @Input() learningObject: LearningObject;
   @Input() loading: boolean;
+  @Output() delete: EventEmitter<LearningObject> = new EventEmitter();
 
   collections = new Map<string, string>();
   collection;
 
-  canDownload = false;
-  showDownloadModal = false;
-
-  // FIXME this removes the download icons while issues with the Library service are resolved
-  downloadService = false;
-
   constructor(
-    private hostEl: ElementRef,
-    private renderer: Renderer2,
-    private library: LibraryService,
-    public auth: AuthService,
     private collectionService: CollectionService,
-    private cd: ChangeDetectorRef
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.loading) {
-      if (changes.loading.currentValue) {
-        this.renderer.addClass(this.hostEl.nativeElement, 'loading');
-      } else {
-        this.renderer.removeClass(this.hostEl.nativeElement, 'loading');
-      }
-    }
-  }
-
   ngOnInit() {
-    this.auth.isLoggedIn.subscribe(() => {
-      this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
-        this.canDownload = isAuthorized === DOWNLOAD_STATUS.CAN_DOWNLOAD;
-      });
-    });
     this.collectionService.getCollection(this.learningObject.collection).then(collection => {
       this.collection = collection;
     });
   }
 
+  removeFromList() {
+    this.delete.emit(this.learningObject);
+  }
   goals() {
     const punc = ['.', '!', '?'];
     const descriptionString = this.learningObject.description;
@@ -112,33 +88,6 @@ export class DraggableLearningObjectComponent implements OnInit, OnChanges, OnDe
   get date() {
     // tslint:disable-next-line:radix
     return new Date(parseInt(this.learningObject.date));
-  }
-
-  download(e) {
-    // Stop the event propagation so that the routerLink of the parent doesn't trigger
-    e.stopPropagation();
-    this.library
-      .downloadLearningObject(
-        this.learningObject.author.username,
-        this.learningObject.cuid,
-        this.learningObject.version
-      )
-      .pipe(take(1));
-
-    this.toggleDownloadModal(true);
-  }
-
-  toggleDownloadModal(val?: boolean) {
-    if (!val) {
-      this.showDownloadModal = val;
-    } else if (!localStorage.getItem('downloadWarning')) {
-      this.showDownloadModal = val;
-      localStorage.setItem('downloadWarning', 'true');
-    }
-  }
-
-  ngOnDestroy() {
-    this.cd.detach();
   }
 
 }

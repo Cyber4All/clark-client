@@ -1,3 +1,4 @@
+<button class="remove" (activate)="removeFromList()">X</button>
 <div 
     class="learning-object"
     id="learning-object"
@@ -14,29 +15,9 @@
             {{ collection }}
           </div>
         </div>
-        <form *ngIf="downloadService">
-          <button
-            *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
-            class="download-btn-card"
-            (activate)="download($event)"
-            attr.aria-label="Download button for {{ learningObject.name }}"
-          >
-            <i class="fas fa-download"></i>
-          </button>
-        </form>
       </div>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
-        <form *ngIf="downloadService">
-          <button
-            *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
-            class="download-btn"
-            (activate)="download($event)"
-            attr.aria-label="Download button for {{ learningObject.name }}"
-          >
-            <i class="fas fa-download"></i>
-          </button>
-        </form>
       </div>
       <div *ngIf="collection !== undefined" class="collection">
         {{ collection }}
