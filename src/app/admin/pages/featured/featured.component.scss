@@ -59,6 +59,7 @@
       grid-template-columns: 32px 2.5fr 100px 80px 120px 50px;
       grid-gap: 0 50px;
       align-items: center;
+      cursor: move;
     }
   
     ::ng-deep .row-item {
@@ -104,11 +105,10 @@
     color: $dark-grey;
     font-size: $larger;
     margin-bottom: 10px;
-  }
-  
-  .svg-inline--fa {
-    font-size: $largest;
-    margin-right: 10px;
+    .svg-inline--fa {
+      font-size: $largest;
+      margin-right: 10px;
+    }
   }
   
   .loadingOrFinished__content {

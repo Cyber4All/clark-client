@@ -36,11 +36,8 @@ export class FeaturedComponent implements OnInit {
   activeCollection: Collection;
 
   // Query for retrieve
-  query: Query = {
-    limit: 50,
-    status: [LearningObject.Status.RELEASED],
-    test: ''
-  };
+  query: Query;
+
   constructor(
     private featureService: FeaturedObjectsService,
     private toaster: ToastrOvenService,
@@ -62,14 +59,13 @@ export class FeaturedComponent implements OnInit {
          : undefined);
 
        if (this.activeCollection) {
-         this.query = { collection: this.activeCollection.abvName };
+         this.query = { collection: this.activeCollection.abvName, status: [LearningObject.Status.RELEASED] };
        } else {
-         this.query = { collection: undefined };
+         this.query = { collection: undefined, status: [LearningObject.Status.RELEASED] };
        }
 
        this.getLearningObjects();
      });
-
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
       .pipe(
@@ -77,13 +73,12 @@ export class FeaturedComponent implements OnInit {
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, text: searchTerm };
+        this.query = { currPage: 1, text: searchTerm, status: [LearningObject.Status.RELEASED] };
         this.learningObjects = [];
 
         this.getLearningObjects();
       });
     await this.featureService.getFeaturedObjects();
-    // this.learningObjects = (await this.featureService.getNotFeaturedLearningObjects(this.query)).learningObjects;
   }
 
   async getLearningObjects() {

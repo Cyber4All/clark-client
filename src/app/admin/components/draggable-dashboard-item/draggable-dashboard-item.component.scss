@@ -1,0 +1,49 @@
+@import '~_vars.scss';
+.dashboard-item {
+    border-top: 2px solid $light-grey;
+    transition: background 0.1s ease;
+    font-size: $small;
+  }
+  
+  .status {
+    width: 32px;
+    height: 32px;
+    color: white;
+    font-size: $normal;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $status_unreleased;
+    transition: all 0.2s ease;
+    box-shadow: none;
+  
+    &.waiting {
+      background: $status_waiting;
+    }
+  
+    &.review {
+      background: $status_review;
+    }
+  
+    &.proofing {
+      background: $status_proofing;
+    }
+  
+    &.released {
+      background: $status_released;
+    }
+  
+    &.denied {
+      background: $status_rejected;
+    }
+  
+    &:hover {
+      box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
+    }
+  }
+  
+  .handle-bar {
+    font-size: $large;
+    color: $medium-grey;
+  }

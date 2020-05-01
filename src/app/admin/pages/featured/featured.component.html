@@ -49,11 +49,8 @@
                 class="row-items"
                 (cdkDropListDropped)="drop($event)">
                 <div *ngFor="let l of learningObjects" cdkDrag>
-                  <clark-learning-object-list-item
-                    [learningObject]="l"
-                    [status]="l.status"
-                    [dragging]="true"
-                  ></clark-learning-object-list-item>
+                  <clark-draggable-dashboard-item
+                    [learningObject]="l"></clark-draggable-dashboard-item>
                 </div>
               </div>
               <!-- <virtual-scroller
