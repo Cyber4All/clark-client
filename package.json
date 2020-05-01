@@ -11,7 +11,9 @@
     "test:lighthouse": "jest -c ./lighthouse/jest.config.lighthouse.js",
     "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c ./lighthouse/jest.config.lighthouse.js --runInBand",
     "lint": "ng lint",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@angular/animations": "^9.0.6",
@@ -46,7 +48,8 @@
     "ts-jest": "^25.2.1",
     "tslib": "^1.10.0",
     "uuid": "^3.4.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.900.6",
@@ -78,5 +81,6 @@
   "engines": {
     "node": "10.14.2",
     "npm": "6.4.1"
-  }
+  },
+  "snyk": true
 }
