@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { ActivatedRoute } from '@angular/router';
+import { ChangeEvent as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
 @Component({
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
@@ -16,13 +17,17 @@ import { ActivatedRoute } from '@angular/router';
   providers: [LearningObjectService]
 })
 export class FeaturedComponent implements OnInit {
+  @ViewChild('list') listElement: ElementRef<HTMLElement>;
+  @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
+
   // Object Arrays
   learningObjects: LearningObject[];
   featuredObjects: LearningObject[];
 
   // Error states
-  mutationError$;
-  submitError$;
+  // Mutation Errors occurs when the featured array cannot be added to
+  mutationError;
+  submitError;
 
   // Search
   searchBarPlaceholder = 'Learning Objects';
@@ -33,39 +38,45 @@ export class FeaturedComponent implements OnInit {
 
   allResultsReceived: boolean;
   isAdminOrEditor: boolean;
-  activeCollection: Collection;
+  activeCollection: string;
 
+  listViewHeightOffset: number;
   // Query for retrieve
-  query: Query;
+  query: Query = {
+    collection: undefined,
+    status: [LearningObject.Status.RELEASED],
+    limit: 20,
+    currPage: 1,
+    text: '',
+  };
 
   constructor(
     private featureService: FeaturedObjectsService,
     private toaster: ToastrOvenService,
     private collectionService: CollectionService,
-    private route: ActivatedRoute,
   ) { }
 
   async ngOnInit() {
+    setTimeout(() => {
+      this.listViewHeightOffset =
+        this.listElement.nativeElement.getBoundingClientRect().top +
+        this.headersElement.nativeElement.getBoundingClientRect().height;
+    });
+
     this.featureService.featuredObjects.subscribe(objects => {
       this.featuredObjects = objects;
     });
+    await this.featureService.getFeaturedObjects();
+    // Subscribe to mutation Error
+    this.featureService.mutationError.subscribe(mutationError => {
+      this.mutationError = mutationError;
+    });
+    // Subscribe to Submit Error
+    this.featureService.submitError.subscribe(submitError => {
+      this.submitError = submitError;
+    });
 
-     // listen for changes in the route and append the collection to the query
-     this.route.parent.params
-     .pipe(takeUntil(this.componentDestroyed$))
-     .subscribe(async params => {
-       this.activeCollection = await (params.collection
-         ? await this.collectionService.getCollection(params.collection)
-         : undefined);
-
-       if (this.activeCollection) {
-         this.query = { collection: this.activeCollection.abvName, status: [LearningObject.Status.RELEASED] };
-       } else {
-         this.query = { collection: undefined, status: [LearningObject.Status.RELEASED] };
-       }
-
-       this.getLearningObjects();
-     });
+    this.getLearningObjects();
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
       .pipe(
@@ -73,17 +84,23 @@ export class FeaturedComponent implements OnInit {
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, text: searchTerm, status: [LearningObject.Status.RELEASED] };
+        this.query = { currPage: 1, text: searchTerm, status: [LearningObject.Status.RELEASED], collection: this.activeCollection };
         this.learningObjects = [];
 
         this.getLearningObjects();
       });
-    await this.featureService.getFeaturedObjects();
   }
 
   async getLearningObjects() {
+    if (this.learningObjects) {
+      this.query.currPage = this.query.currPage + 1;
+    }
+
     this.featureService.getNotFeaturedLearningObjects(this.query).then(objects => {
       this.learningObjects = objects.learningObjects;
+      if (this.learningObjects.length === objects.total) {
+        this.allResultsReceived = true;
+      }
     });
   }
 
@@ -94,7 +111,8 @@ export class FeaturedComponent implements OnInit {
    * @memberof LearningObjectsComponent
    */
   getCollectionFilteredLearningObjects(collection: string) {
-    this.query = { collection, currPage: 1 };
+    this.activeCollection = collection;
+    this.query = { collection, currPage: 1, status: [LearningObject.Status.RELEASED]};
     this.learningObjects = [];
 
     this.getLearningObjects();
@@ -112,9 +130,9 @@ export class FeaturedComponent implements OnInit {
     this.getLearningObjects();
   }
 
-  dropFeatured() {
-    this.featureService.addFeaturedObject(this.learningObjects[1]);
-  }
+  // dropFeatured() {
+  //   this.featureService.addFeaturedObject(this.learningObjects[1]);
+  // }
 
   removeFeatured(object) {
     this.featureService.removeFeaturedObject(object);
@@ -123,16 +141,16 @@ export class FeaturedComponent implements OnInit {
     this.featureService.saveFeaturedObjects();
   }
 
-
-
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+      if (this.featuredObjects.length < 5) {
+        transferArrayItem(event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex);
+      }
     }
     this.featureService.setFeatured(this.featuredObjects);
   }

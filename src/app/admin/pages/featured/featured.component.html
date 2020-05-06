@@ -1,9 +1,10 @@
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
     <div page-title cdkDrag>Featured Learning Objects</div>
-    <button filter-options class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
+    <button filter-options [ngClass]="{'disabled': submitError }" class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
 <div
+    *ngIf="featuredObjects?.length; else noFeaturedTemplate"
     cdkDropList
     #featuredList="cdkDropList"
     [cdkDropListData]="featuredObjects"
@@ -41,43 +42,18 @@
                 <div>Date</div>
               </div>
               <div
-                #scroll
                 cdkDropList
                 [cdkDropListData]="learningObjects"
                 [cdkDropListConnectedTo]="[featuredList]"
                 cdkDropListOrientation="vertical"
                 class="row-items"
-                (cdkDropListDropped)="drop($event)">
-                <div *ngFor="let l of learningObjects" cdkDrag>
+                (cdkDropListDropped)="drop($event)"
+                >
+                <div *ngFor="let l of learningObjects" cdkDrag [cdkDragDisabled]="mutationError">
                   <clark-draggable-dashboard-item
                     [learningObject]="l"></clark-draggable-dashboard-item>
                 </div>
               </div>
-              <!-- <virtual-scroller
-                #scroll
-                [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
-                [items]="learningObjects"
-                [bufferAmount]="query.limit"
-                [enableUnequalChildrenSizes]="true"
-                (vsEnd)="
-                  scroll.viewPortInfo.startIndex && getLearningObjects($event)
-                "
-              >
-                <clark-learning-object-list-item
-                  *ngFor="let l of scroll.viewPortItems"
-                  [learningObject]="l"
-                  [status]="l.status"
-                  (viewUser)="getUserLearningObjects($event)"
-                  (changeStatus)="openChangeStatusModal($event)"
-                >
-                </clark-learning-object-list-item>
-                <div class="loadingOrFinished">
-                  <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
-                    <i class="far fa-spinner-third fa-spin"></i>
-                    Loading learning objects...
-                  </div>
-                </div>
-              </virtual-scroller> -->
             </div>
           </div>
         </div>
@@ -105,4 +81,18 @@
       <i class="far fa-thumbs-up"></i>
       You've reached the end of the list!
     </div>
+</ng-template>
+
+<ng-template #noFeaturedTemplate>
+  <div class="empty-template">
+    <div class="empty-template__top">
+      <i class="fal fa-box-open"></i>
+      <div class="top-message">
+        Nothing here!
+      </div>
+    </div>
+    <div class="empty-text">
+      Select Learning Objects to Feature on the Homepage!
+    </div>
+  </div>
 </ng-template>

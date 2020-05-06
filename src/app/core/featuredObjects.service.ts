@@ -25,6 +25,12 @@ export class FeaturedObjectsService {
   get featuredObjects() {
     return this._featuredObjects$.asObservable();
   }
+  get mutationError() {
+    return this._mutationError$.asObservable();
+  }
+  get submitError() {
+    return this._submitError$.asObservable();
+  }
 
   async getFeaturedObjects() {
     return this.http
@@ -36,37 +42,34 @@ export class FeaturedObjectsService {
       .then((featured: any) => {
         const featuredObjects = featured.map(object => new LearningObject(object));
         this.featuredStore.featured = featuredObjects;
+        this._mutationError$.next(true);
         this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
       });
   }
 
   setFeatured(objects: LearningObject[]) {
     this.featuredStore.featured = objects;
-    this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
-  }
-
-  addFeaturedObject(featured: LearningObject) {
     if (this.featuredStore.featured.length === 5) {
-      this._mutationError$.next(Object.assign({}, true));
-    } else if (this.featuredStore.featured.length < 5) {
-      this.featuredStore.featured.push(featured);
-      if (this.featuredStore.featured.length === 5) {
-        this._submitError$.next(Object.assign({}, false));
-      }
-      this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
+      this._submitError$.next(false);
+      this._mutationError$.next(true);
     }
+    this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
   removeFeaturedObject(featured: LearningObject) {
     this.featuredStore.featured = this.featuredStore.featured.filter(object => {
       return object.id !== featured.id;
     });
+    if (this.featuredStore.featured.length !== 5) {
+      this._mutationError$.next(false);
+      this._submitError$.next(true);
+    }
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
   async saveFeaturedObjects() {
     if (this.featuredStore.featured.length !== 5) {
-      throw new Error('You must save exactly 5 Learning Objects to Featured');
+      this._submitError$.next(true);
     } else {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,

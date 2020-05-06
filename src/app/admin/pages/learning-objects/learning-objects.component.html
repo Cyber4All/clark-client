@@ -40,7 +40,6 @@
               *ngFor="let l of scroll.viewPortItems"
               [learningObject]="l"
               [status]="l.status"
-              [dragging]="false"
               (viewUser)="getUserLearningObjects($event)"
               (changeStatus)="openChangeStatusModal($event)"
             >

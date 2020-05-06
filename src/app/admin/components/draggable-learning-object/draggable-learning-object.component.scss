@@ -1,21 +1,21 @@
 @import '~_vars.scss';
+
 .remove {
-  position: absolute;
-  top: 5px;
-  z-index: 99;
-  right: 0;
-  border-radius: 4px;
+  position: relative;
+  float: right;
+  border-radius: 3px;
   border: none;
   background-color: $error-red;
   color: white;
   font-size: $normal;
 }
+
 //Styles for Cards 
 @media (min-width: 751px) {
   :host.card {
     height: 100%;
     padding-bottom: 10px;
-    min-width: 250px;
+    max-width: 250px;
 
     .learning-object {
       height: 100%;
@@ -76,7 +76,6 @@
   }
 
   .learning-object {
-    overflow: hidden;
 
     &:after {
       content: '';

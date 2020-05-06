@@ -25,9 +25,6 @@ export class LearningObjectListItemComponent implements OnChanges {
   // the status of the learning object (passed in separately for change detection)
   @Input()
   status: string;
-  // Input for using this as a draggable item
-  @Input()
-  dragging: boolean;
 
   // fired when the view user option is selected from the context menu
   @Output()
