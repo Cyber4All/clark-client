@@ -128,6 +128,7 @@ export class FeaturedObjectsService {
     });
     return { learningObjects: objects, total: response.total };
   }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
