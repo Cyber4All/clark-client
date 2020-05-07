@@ -36,7 +36,7 @@ export class DraggableLearningObjectComponent implements OnInit {
     const final = this.truncateText(
       descriptionString.charAt(0).toUpperCase() +
         descriptionString.substring(1),
-      150
+      120
     );
 
     if (punc.includes(final.charAt(final.length - 1))) {
