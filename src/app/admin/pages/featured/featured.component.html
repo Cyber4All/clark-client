@@ -1,8 +1,9 @@
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
-    <div page-title cdkDrag>Featured Learning Objects</div>
+    <div page-title>Featured Learning Objects</div>
     <button filter-options [ngClass]="{'disabled': submitError }" class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
+<div *ngIf="submitError" class="error-notice">Featured Learning Objects must contain 5 Learning Objects</div>
 <div
     cdkDropList
     #featuredList="cdkDropList"

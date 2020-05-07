@@ -23,7 +23,7 @@ export class DraggableLearningObjectComponent implements OnInit {
 
   ngOnInit() {
     this.collectionService.getCollection(this.learningObject.collection).then(collection => {
-      this.collection = collection;
+      this.collection = collection.name;
     });
   }
 

@@ -40,8 +40,10 @@ export class FeaturedObjectsService {
         catchError(this.handleError)
       ).toPromise()
       .then((featured: any) => {
-        console.log(featured);
-        const featuredObjects = featured.map(object => new LearningObject(object));
+        const featuredObjects = featured.map(object => {
+          object.collection = object.collectionName;
+          return new LearningObject(object);
+        });
         this.featuredStore.featured = featuredObjects;
         this._mutationError$.next(true);
         this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);

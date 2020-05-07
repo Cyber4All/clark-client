@@ -142,5 +142,12 @@
     }
   }
 
+  .error-notice {
+    float: right;
+    background: $error-red;
+    border-radius: 3px;
+    color: white;
+    padding: 5px;
+  }
     
   
