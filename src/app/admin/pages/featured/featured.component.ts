@@ -103,15 +103,6 @@ export class FeaturedComponent implements OnInit {
       this.learningObjects = objects.learningObjects;
       this.lastPage = Math.ceil(objects.total / 5);
     });
-    console.log('yee yee')
-    if (this.learningObjects.length !== 5) {
-      console.log('yes')
-      this.query.limit = 5 - this.learningObjects.length;
-      this.query.currPage = this.query.currPage + 1;
-      this.featureService.getNotFeaturedLearningObjects(this.query).then(objects => {
-        this.learningObjects = this.learningObjects.concat(objects.learningObjects);
-      })
-    }
   }
 
   /**
