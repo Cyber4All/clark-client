@@ -260,7 +260,6 @@ export class LearningObject {
    * @memberof LearningObject
    */
   constructor(object?: Partial<LearningObject>) {
-    console.log(object);
     // @ts-ignore Id will be undefined on creation
     this._id = undefined;
     this._cuid = undefined;
