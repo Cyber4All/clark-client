@@ -110,28 +110,22 @@ export class FeaturedObjectsService {
       )
       .toPromise()
       .then((response: any) => {
-        const objects = response.objects;
-        const learningObjects = this.filterOutFeatured(this.featuredStore.featured, objects);
-        return { learningObjects: learningObjects, total: learningObjects.length };
+        return this.filterOutFeaturedObjects(response);
       });
   }
 
-  /**
-   * Filters out the featured Learning Objects from general list of Learning Objects
-   * @param featured Array of learning objects that are currently featured
-   * @param learningObjects Array of learning objects returned from API
-   */
-  filterOutFeatured(featured, learningObjects: LearningObject[]): LearningObject[] {
-    const featuredIds = [];
-    featured.forEach(feature => {
-      featuredIds.push(feature.id);
+  filterOutFeaturedObjects(response) {
+    const featuredObjectIds = [];
+    this.featuredStore.featured.forEach(object => {
+      featuredObjectIds.push(object.id);
     });
-    const filtered = learningObjects.filter(object => {
-        return !featuredIds.includes(object.id);
+    const objects = response.objects.filter(object => {
+      if (!featuredObjectIds.includes(object.id)) {
+        return object;
+      }
     });
-    return filtered;
+    return { learningObjects: objects, total: response.total };
   }
-
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

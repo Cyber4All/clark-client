@@ -7,9 +7,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { CollectionService, Collection } from 'app/core/collection.service';
-import { ActivatedRoute } from '@angular/router';
-import { ChangeEvent as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
+import { CollectionService } from 'app/core/collection.service';
 @Component({
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
@@ -45,10 +43,11 @@ export class FeaturedComponent implements OnInit {
   query: Query = {
     collection: undefined,
     status: [LearningObject.Status.RELEASED],
-    limit: 20,
+    limit: 5,
     currPage: 1,
     text: '',
   };
+  lastPage: number;
 
   constructor(
     private featureService: FeaturedObjectsService,
@@ -84,27 +83,28 @@ export class FeaturedComponent implements OnInit {
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, text: searchTerm, status: [LearningObject.Status.RELEASED], collection: this.activeCollection };
+        this.query = {
+          currPage: 1,
+          text: searchTerm,
+          status: [LearningObject.Status.RELEASED],
+          collection: this.activeCollection,
+          limit: 5
+        };
         this.learningObjects = [];
 
         this.getLearningObjects();
       });
   }
 
-  goForward() {
-    console.log('pagination go');
-  }
-
-  goBackward() {
-    console.log('pagination back');
+  changePage(pageNum) {
+    this.query.currPage = pageNum;
+    this.getLearningObjects();
   }
 
   async getLearningObjects() {
     this.featureService.getNotFeaturedLearningObjects(this.query).then(objects => {
       this.learningObjects = objects.learningObjects;
-      if (this.learningObjects.length === objects.total) {
-        this.allResultsReceived = true;
-      }
+      this.lastPage = Math.ceil(objects.total / 5);
     });
   }
 
@@ -136,6 +136,7 @@ export class FeaturedComponent implements OnInit {
 
   removeFeatured(object) {
     this.featureService.removeFeaturedObject(object);
+    this.getLearningObjects();
   }
   saveFeatured() {
     this.featureService.saveFeaturedObjects();

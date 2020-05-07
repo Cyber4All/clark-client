@@ -59,11 +59,15 @@
                     </div>
                 </div>
               </div>
+              <clark-admin-pagination
+                [lastPageNumber] = lastPage
+                [currentPageNumber] = query.currPage
+                (newPageNumberClicked) = 'changePage($event)'
+              ></clark-admin-pagination>
             </div>
           </div>
         </div>
       </div>
-    
 </clark-admin-content-wrapper>
    <ng-template #emptyTemplate>
     <div class="empty-template">
@@ -72,10 +76,6 @@
         <div class="top-message">
           Nothing here!
         </div>
-      </div>
-      <div class="empty-text">
-        Learning Objects will appear here after they are submitted to your
-        collection
       </div>
     </div>
   </ng-template>

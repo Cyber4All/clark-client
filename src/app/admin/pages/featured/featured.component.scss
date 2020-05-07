@@ -11,12 +11,11 @@
     padding-bottom: 10px;
 
     .empty-drag {
-      position: absolute;
+      position: relative;
       text-align: center;
       font-size: $large;
       color: $dark-grey;
-      border-style: dashed;
-      min-width: 80%;
+      width: 100%;
       min-height: 350px;
     }
   }
