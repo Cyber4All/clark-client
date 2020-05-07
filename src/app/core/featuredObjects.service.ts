@@ -71,7 +71,6 @@ export class FeaturedObjectsService {
   }
 
   async saveFeaturedObjects() {
-    console.log(this.featuredStore.featured);
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
     } else {
