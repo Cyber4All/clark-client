@@ -2,19 +2,29 @@
   .featured-list {
     width: 1375px;
     max-width: 100%;
-    min-height: 60px;
+    min-height: 350px;
     display: flex;
     flex-direction: row;
     overflow: hidden;
     margin-top: -24px;
     margin: auto;
     padding-bottom: 10px;
+
+    .empty-drag {
+      position: absolute;
+      text-align: center;
+      font-size: $large;
+      color: $dark-grey;
+      border-style: dashed;
+      min-width: 80%;
+      min-height: 350px;
+    }
   }
   
   .featured-card {
     padding: 20px 10px;
     display: flex;
-    width: 200px;
+    max-width: 250px;
     height: 375px;
     flex-direction: row;
     align-items: center;
@@ -28,6 +38,10 @@
   }
   
   // Drag and drop
+  .cdk-drag-preview {
+    width: 250px;
+    height:400px;
+  }
   .cdk-drag-placeholder {
     opacity: 0;
   }

@@ -40,6 +40,7 @@ export class FeaturedObjectsService {
         catchError(this.handleError)
       ).toPromise()
       .then((featured: any) => {
+        console.log(featured);
         const featuredObjects = featured.map(object => new LearningObject(object));
         this.featuredStore.featured = featuredObjects;
         this._mutationError$.next(true);
@@ -47,7 +48,7 @@ export class FeaturedObjectsService {
       });
   }
 
-  setFeatured(objects: LearningObject[]) {
+  setFeatured(objects) {
     this.featuredStore.featured = objects;
     if (this.featuredStore.featured.length === 5) {
       this._submitError$.next(false);
@@ -56,7 +57,7 @@ export class FeaturedObjectsService {
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
-  removeFeaturedObject(featured: LearningObject) {
+  removeFeaturedObject(featured) {
     this.featuredStore.featured = this.featuredStore.featured.filter(object => {
       return object.id !== featured.id;
     });
@@ -68,14 +69,13 @@ export class FeaturedObjectsService {
   }
 
   async saveFeaturedObjects() {
+    console.log(this.featuredStore.featured);
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
     } else {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,
-          {
-            learningObjects: this.featuredStore.featured,
-          },
+            this.featuredStore.featured,
           { headers: this.headers, withCredentials: true }
         ).toPromise();
       } catch (e) {
@@ -121,7 +121,7 @@ export class FeaturedObjectsService {
    * @param featured Array of learning objects that are currently featured
    * @param learningObjects Array of learning objects returned from API
    */
-  filterOutFeatured(featured: LearningObject[], learningObjects: LearningObject[]): LearningObject[] {
+  filterOutFeatured(featured, learningObjects: LearningObject[]): LearningObject[] {
     const featuredIds = [];
     featured.forEach(feature => {
       featuredIds.push(feature.id);

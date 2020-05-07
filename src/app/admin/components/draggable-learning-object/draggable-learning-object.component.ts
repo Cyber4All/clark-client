@@ -11,6 +11,7 @@ import { LearningObject, Collection } from '@entity';
 export class DraggableLearningObjectComponent implements OnInit {
   @Input() learningObject: LearningObject;
   @Input() loading: boolean;
+  @Input() preview: boolean;
   @Output() delete: EventEmitter<LearningObject> = new EventEmitter();
 
   collections = new Map<string, string>();

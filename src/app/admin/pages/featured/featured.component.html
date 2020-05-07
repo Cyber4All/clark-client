@@ -4,15 +4,17 @@
     <button filter-options [ngClass]="{'disabled': submitError }" class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
 <div
-    *ngIf="featuredObjects?.length; else noFeaturedTemplate"
     cdkDropList
     #featuredList="cdkDropList"
     [cdkDropListData]="featuredObjects"
     cdkDropListOrientation="horizontal"
     class="featured-list"
     (cdkDropListDropped)="drop($event)">
+    <div *ngIf="featuredObjects?.length < 1" class="empty-drag">
+      <p>Drag Learning Objects here to feature</p>
+    </div> 
     <div class="featured-card" *ngFor="let l of featuredObjects" cdkDragLockAxis="x" cdkDrag>
-        <clark-draggable-learning-object [learningObject]="l" (delete)="removeFeatured($event)" learningObjectCard></clark-draggable-learning-object>
+        <clark-draggable-learning-object [learningObject]="l" [preview]="false" (delete)="removeFeatured($event)" learningObjectCard></clark-draggable-learning-object>
     </div>
 </div>
 <clark-admin-content-wrapper>
@@ -51,7 +53,10 @@
                 >
                 <div *ngFor="let l of learningObjects" cdkDrag [cdkDragDisabled]="mutationError">
                   <clark-draggable-dashboard-item
-                    [learningObject]="l"></clark-draggable-dashboard-item>
+                      [learningObject]="l"></clark-draggable-dashboard-item>
+                    <div class="drag-preview" *cdkDragPreview>
+                      <clark-draggable-learning-object [learningObject]="l" [preview]="true" (delete)="removeFeatured($event)" learningObjectCard></clark-draggable-learning-object>
+                    </div>
                 </div>
               </div>
             </div>
@@ -81,18 +86,4 @@
       <i class="far fa-thumbs-up"></i>
       You've reached the end of the list!
     </div>
-</ng-template>
-
-<ng-template #noFeaturedTemplate>
-  <div class="empty-template">
-    <div class="empty-template__top">
-      <i class="fal fa-box-open"></i>
-      <div class="top-message">
-        Nothing here!
-      </div>
-    </div>
-    <div class="empty-text">
-      Select Learning Objects to Feature on the Homepage!
-    </div>
-  </div>
 </ng-template>

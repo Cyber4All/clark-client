@@ -91,11 +91,15 @@ export class FeaturedComponent implements OnInit {
       });
   }
 
-  async getLearningObjects() {
-    if (this.learningObjects) {
-      this.query.currPage = this.query.currPage + 1;
-    }
+  goForward() {
+    console.log('pagination go');
+  }
 
+  goBackward() {
+    console.log('pagination back');
+  }
+
+  async getLearningObjects() {
     this.featureService.getNotFeaturedLearningObjects(this.query).then(objects => {
       this.learningObjects = objects.learningObjects;
       if (this.learningObjects.length === objects.total) {
@@ -129,10 +133,6 @@ export class FeaturedComponent implements OnInit {
 
     this.getLearningObjects();
   }
-
-  // dropFeatured() {
-  //   this.featureService.addFeaturedObject(this.learningObjects[1]);
-  // }
 
   removeFeatured(object) {
     this.featureService.removeFeaturedObject(object);

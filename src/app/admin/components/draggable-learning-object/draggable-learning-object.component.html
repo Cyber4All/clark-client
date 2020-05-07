@@ -1,4 +1,4 @@
-<button class="remove" (activate)="removeFromList()">X</button>
+<button *ngIf="!preview" class="remove" (activate)="removeFromList()">X</button>
 <div 
     class="learning-object"
     id="learning-object"
