@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Collection } from 'app/core/collection.service';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
 import { sidebarAnimations } from './sidebar.component.animation';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-admin-sidebar',
@@ -22,8 +20,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Input() initialized = false;
 
   historySnapshot: HistorySnapshot;
-  experimental = environment.experimental;
-  constructor(private router: Router, private history: HistoryService) { }
+  constructor(private history: HistoryService) { }
 
   ngOnInit() {
     this.historySnapshot = this.history.snapshot();

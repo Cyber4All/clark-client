@@ -19,8 +19,11 @@
         <div>{{ learningObject.length | titlecase }}</div>
         <div>{{ learningObject.date | date:'longDate' }}</div>
         <div>
-            <div class="handle-bar">
+            <div *ngIf="!disabled" class="handle-bar">
                 <i class="far fa-bars"></i>
+            </div>
+            <div *ngIf="disabled" class="already-featured">
+                <i class="fas fa-star"></i>
             </div>
         </div>
     </div>

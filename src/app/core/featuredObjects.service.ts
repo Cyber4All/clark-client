@@ -19,6 +19,7 @@ export class FeaturedObjectsService {
   private featuredStore: { featured: LearningObject[] } = { featured: []};
 
   private headers = new HttpHeaders();
+  featuredObjectIds: string[];
 
   constructor(private http: HttpClient) { }
 
@@ -45,13 +46,22 @@ export class FeaturedObjectsService {
           return new LearningObject(object);
         });
         this.featuredStore.featured = featuredObjects;
+        this.filterOutFeaturedObjects();
         this._mutationError$.next(true);
         this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
       });
   }
 
+  filterOutFeaturedObjects() {
+    this.featuredObjectIds = [];
+    this.featuredStore.featured.forEach(object => {
+      this.featuredObjectIds.push(object.id);
+    });
+  }
+
   setFeatured(objects) {
     this.featuredStore.featured = objects;
+    this.filterOutFeaturedObjects();
     if (this.featuredStore.featured.length === 5) {
       this._submitError$.next(false);
       this._mutationError$.next(true);
@@ -63,6 +73,7 @@ export class FeaturedObjectsService {
     this.featuredStore.featured = this.featuredStore.featured.filter(object => {
       return object.id !== featured.id;
     });
+    this.filterOutFeaturedObjects();
     if (this.featuredStore.featured.length !== 5) {
       this._mutationError$.next(false);
       this._submitError$.next(true);
@@ -111,21 +122,8 @@ export class FeaturedObjectsService {
       )
       .toPromise()
       .then((response: any) => {
-        return this.filterOutFeaturedObjects(response);
+        return { learningObjects: response.objects, total: response.total };
       });
-  }
-
-  filterOutFeaturedObjects(response) {
-    const featuredObjectIds = [];
-    this.featuredStore.featured.forEach(object => {
-      featuredObjectIds.push(object.id);
-    });
-    const objects = response.objects.filter(object => {
-      if (!featuredObjectIds.includes(object.id)) {
-        return object;
-      }
-    });
-    return { learningObjects: objects, total: response.total };
   }
 
   private handleError(error: HttpErrorResponse) {
