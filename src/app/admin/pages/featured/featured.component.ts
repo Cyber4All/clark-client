@@ -3,11 +3,10 @@ import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { CollectionService } from 'app/core/collection.service';
+
 @Component({
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
@@ -51,8 +50,6 @@ export class FeaturedComponent implements OnInit {
 
   constructor(
     private featureService: FeaturedObjectsService,
-    private toaster: ToastrOvenService,
-    private collectionService: CollectionService,
   ) { }
 
   async ngOnInit() {

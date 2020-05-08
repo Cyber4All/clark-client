@@ -52,9 +52,11 @@
                 class="row-items"
                 (cdkDropListDropped)="drop($event)"
                 >
-                <div *ngFor="let l of learningObjects" cdkDrag [cdkDragDisabled]="mutationError">
-                  <clark-draggable-dashboard-item
-                      [learningObject]="l"></clark-draggable-dashboard-item>
+                <div *ngFor="let l of learningObjects"  cdkDrag [cdkDragDisabled]="mutationError || featureService.featuredObjectIds?.includes(l.id)">
+                    <clark-draggable-dashboard-item
+                      [learningObject]="l"
+                      [disabled]="featureService.featuredObjectIds?.includes(l.id)"
+                      ></clark-draggable-dashboard-item>
                     <div class="drag-preview" *cdkDragPreview>
                       <clark-draggable-learning-object [learningObject]="l" [preview]="true" (delete)="removeFeatured($event)" learningObjectCard></clark-draggable-learning-object>
                     </div>

@@ -42,8 +42,15 @@
       box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
     }
   }
+
+  .already-featured {
+    font-size: $large;
+    color: $gold;
+    margin-left: -5px;
+  }
   
   .handle-bar {
     font-size: $large;
     color: $medium-grey;
+    cursor: move;
   }
