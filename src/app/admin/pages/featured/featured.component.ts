@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
@@ -13,7 +13,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
   styleUrls: ['./featured.component.scss'],
   providers: [LearningObjectService]
 })
-export class FeaturedComponent implements OnInit {
+export class FeaturedComponent implements OnInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
   @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
 
@@ -47,6 +47,7 @@ export class FeaturedComponent implements OnInit {
     text: '',
   };
   lastPage: number;
+  destroyed$: any;
 
   constructor(
     private featureService: FeaturedObjectsService,
@@ -151,6 +152,11 @@ export class FeaturedComponent implements OnInit {
       }
     }
     this.featureService.setFeatured(this.featuredObjects);
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 }
 
