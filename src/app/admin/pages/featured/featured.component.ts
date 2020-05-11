@@ -152,6 +152,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
       }
     }
     this.featureService.setFeatured(this.featuredObjects);
+    this.getLearningObjects();
   }
 
   ngOnDestroy() {
