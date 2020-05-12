@@ -47,7 +47,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     text: '',
   };
   lastPage: number;
-  destroyed$: any;
+  destroyed$: Subject<void> = new Subject();
 
   constructor(
     private featureService: FeaturedObjectsService,
