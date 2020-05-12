@@ -91,9 +91,7 @@ export class FeaturedObjectsService {
     } else {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,
-          {
-            featured: this.featuredStore.featured,
-          },
+          this.featuredStore.featured,
           { headers: this.headers, withCredentials: true }
         ).toPromise();
       } catch (e) {
