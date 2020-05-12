@@ -195,6 +195,7 @@ export class TopicsComponent implements OnInit {
 
 
   submitChanges() {
-    console.log(this.submissionGroup);
+    this.topicService.assignNewTopics(this.submissionGroup);
+    this.displayTopicsBuilderModal = false;
   }
 }

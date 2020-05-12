@@ -15,7 +15,7 @@ export class TopicBrowseComponent implements OnInit {
   ngOnInit() {
     this.topicService.getLearningObjectTopics()
       .then((topicResponse) => {
-        this.topics = topicResponse.topics;
+        this.topics = topicResponse.topics.sort();
       });
   }
 }

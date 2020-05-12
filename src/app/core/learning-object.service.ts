@@ -51,7 +51,7 @@ export class LearningObjectService {
   }
 
   fetchUnassignedLearningObjects() {
-    return this.http.get('http://localhost:5001/learning-objects/unassigned').toPromise();
+    return this.http.get('http://localhost:5001/learning-objects/unassigned', { withCredentials: true }).toPromise();
   }
 
   discoverLearningObjectTopics() {

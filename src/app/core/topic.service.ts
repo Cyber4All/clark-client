@@ -21,6 +21,11 @@ export class TopicService {
       .get('http://localhost:5001/topics', { withCredentials: true }).toPromise();
   }
 
+  assignNewTopics(body: any): Promise<any> {
+    return this.http
+      .post('http://localhost:5001/topics/assign/update', body, { withCredentials: true }).toPromise();
+  }
+
 }
 
 
