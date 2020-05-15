@@ -8,6 +8,7 @@ import { LearningObject } from '@entity';
 })
 export class DraggableDashboardItemComponent implements OnInit {
   @Input() learningObject: LearningObject;
+  @Input() disabled: boolean;
   constructor() { }
 
   async ngOnInit() {

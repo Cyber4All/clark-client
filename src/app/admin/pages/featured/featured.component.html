@@ -1,20 +1,89 @@
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
     <div page-title>Featured Learning Objects</div>
-    <button filter-options class="button good" (activate)="dropFeatured()">Save<i class="far fa-save"></i></button>
-    <button filter-options class="button good" (activate)="removeFeatured()">Remove</button>
+    <button filter-options [ngClass]="{'disabled': submitError }" class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
 </clark-admin-content-wrapper>
-<div class="card-container">
-    <div *ngFor="let l of featuredObjects | async" class="featured-learning-object card">
-        <clark-draggable-learning-object [learningObject]="l"></clark-draggable-learning-object>
+<div *ngIf="submitError" class="error-notice">Featured Learning Objects must contain 5 Learning Objects</div>
+<div
+    cdkDropList
+    #featuredList="cdkDropList"
+    [cdkDropListData]="featuredObjects"
+    cdkDropListOrientation="horizontal"
+    class="featured-list"
+    (cdkDropListDropped)="drop($event)">
+    <div *ngIf="featuredObjects?.length < 1" class="empty-drag">
+      <p>Drag Learning Objects here to feature</p>
+    </div> 
+    <div class="featured-card" *ngFor="let l of featuredObjects" cdkDragLockAxis="x" cdkDrag>
+        <clark-draggable-learning-object [learningObject]="l" [preview]="false" (delete)="removeFeatured($event)" learningObjectCard></clark-draggable-learning-object>
     </div>
 </div>
-
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
     <div page-title>Not Currently Featured Learning Objects</div>
+    <clark-admin-search-bar
+        search
+        [placeholder]="searchBarPlaceholder"
+        (userInput)="userSearchInput$.next($event)"
+    ></clark-admin-search-bar>
+    <clark-admin-filter-search
+        filter-options
+        (collectionFilter)="getCollectionFilteredLearningObjects($event)"
+        (clearAll)="clearCollectionFilters()"
+        [adminOrEditor]="true"
+        [showStatus]="false"
+    ></clark-admin-filter-search>
+    <div #list class="list" main>
+        <div #listInner>
+          <div class="list__body">
+            <div *ngIf="learningObjects?.length || loading; else emptyTemplate">
+              <div #headers class="body__column-headers">
+                <div>Status</div>
+                <div>Name</div>
+                <div>Author</div>
+                <div>Type</div>
+                <div>Date</div>
+              </div>
+              <div
+                cdkDropList
+                [cdkDropListData]="learningObjects"
+                [cdkDropListConnectedTo]="[featuredList]"
+                cdkDropListOrientation="vertical"
+                class="row-items"
+                (cdkDropListDropped)="drop($event)"
+                >
+                <div *ngFor="let l of learningObjects"  cdkDrag [cdkDragDisabled]="mutationError || featureService.featuredObjectIds?.includes(l.id)">
+                    <clark-draggable-dashboard-item
+                      [learningObject]="l"
+                      [disabled]="featureService.featuredObjectIds?.includes(l.id)"
+                      ></clark-draggable-dashboard-item>
+                    <div class="drag-preview" *cdkDragPreview>
+                      <clark-draggable-learning-object [learningObject]="l" [preview]="true" (delete)="removeFeatured($event)" learningObjectCard></clark-draggable-learning-object>
+                    </div>
+                </div>
+              </div>
+              <clark-admin-pagination
+                [lastPageNumber] = lastPage
+                [currentPageNumber] = query.currPage
+                (newPageNumberClicked) = 'changePage($event)'
+              ></clark-admin-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
 </clark-admin-content-wrapper>
-  
+   <ng-template #emptyTemplate>
+    <div class="empty-template">
+      <div class="empty-template__top">
+        <i class="fal fa-box-open"></i>
+        <div class="top-message">
+          Nothing here!
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+
 <ng-template #finishedLoadingTemplate>
     <div class="loadingOrFinished__content">
       <i class="far fa-thumbs-up"></i>

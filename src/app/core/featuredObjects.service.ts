@@ -16,14 +16,21 @@ export class FeaturedObjectsService {
   private _mutationError$ = new BehaviorSubject<boolean>(false);
   // Errors that occur if the featuredObjects array does not contain exactly 5 objects
   private _submitError$ = new BehaviorSubject<boolean>(false);
-  private featuredStore: { featured: LearningObject[] } = { featured: []};
+  private featuredStore: { featured } = { featured: []};
 
   private headers = new HttpHeaders();
+  featuredObjectIds: string[];
 
   constructor(private http: HttpClient) { }
 
   get featuredObjects() {
     return this._featuredObjects$.asObservable();
+  }
+  get mutationError() {
+    return this._mutationError$.asObservable();
+  }
+  get submitError() {
+    return this._submitError$.asObservable();
   }
 
   async getFeaturedObjects() {
@@ -34,40 +41,57 @@ export class FeaturedObjectsService {
         catchError(this.handleError)
       ).toPromise()
       .then((featured: any) => {
-        const featuredObjects = featured.map(object => new LearningObject(object));
+        const featuredObjects = featured.map(object => {
+          object.collection = object.collectionName;
+          return object;
+        });
         this.featuredStore.featured = featuredObjects;
+        if (featuredObjects.length === 5) {
+          this.filterOutFeaturedObjects();
+          this._mutationError$.next(true);
+        } else if (featuredObjects.length !== 5) {
+          this._submitError$.next(true);
+        }
         this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
       });
   }
 
-  addFeaturedObject(featured: LearningObject) {
-    if (this.featuredStore.featured.length === 5) {
-      this._mutationError$.next(Object.assign({}, true));
-    } else if (this.featuredStore.featured.length < 5) {
-      this.featuredStore.featured.push(featured);
-      if (this.featuredStore.featured.length === 5) {
-        this._submitError$.next(Object.assign({}, false));
-      }
-      this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
-    }
+  filterOutFeaturedObjects() {
+    this.featuredObjectIds = [];
+    this.featuredStore.featured.forEach(object => {
+      this.featuredObjectIds.push(object.id);
+    });
   }
 
-  removeFeaturedObject(featured: LearningObject) {
+  setFeatured(objects) {
+    this.featuredStore.featured = objects;
+    this.filterOutFeaturedObjects();
+    if (this.featuredStore.featured.length === 5) {
+      this._submitError$.next(false);
+      this._mutationError$.next(true);
+    }
+    this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
+  }
+
+  removeFeaturedObject(featured) {
     this.featuredStore.featured = this.featuredStore.featured.filter(object => {
       return object.id !== featured.id;
     });
+    this.filterOutFeaturedObjects();
+    if (this.featuredStore.featured.length !== 5) {
+      this._mutationError$.next(false);
+      this._submitError$.next(true);
+    }
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
   async saveFeaturedObjects() {
     if (this.featuredStore.featured.length !== 5) {
-      throw new Error('You must save exactly 5 Learning Objects to Featured');
+      this._submitError$.next(true);
     } else {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,
-          {
-            learningObjects: this._featuredObjects$,
-          },
+          this.featuredStore.featured,
           { headers: this.headers, withCredentials: true }
         ).toPromise();
       } catch (e) {
@@ -102,26 +126,8 @@ export class FeaturedObjectsService {
       )
       .toPromise()
       .then((response: any) => {
-        const objects = response.objects;
-        const learningObjects = this.filterOutFeatured(this.featuredStore.featured, objects);
-        return { learningObjects: learningObjects, total: learningObjects.length };
+        return { learningObjects: response.objects, total: response.total };
       });
-  }
-
-  /**
-   * Filters out the featured Learning Objects from general list of Learning Objects
-   * @param featured Array of learning objects that are currently featured
-   * @param learningObjects Array of learning objects returned from API
-   */
-  filterOutFeatured(featured: LearningObject[], learningObjects: LearningObject[]): LearningObject[] {
-    const featuredIds = [];
-    featured.forEach(feature => {
-      featuredIds.push(feature.id);
-    });
-    const filtered = learningObjects.filter(object => {
-        return !featuredIds.includes(object.id);
-    });
-    return filtered;
   }
 
   private handleError(error: HttpErrorResponse) {
