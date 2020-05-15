@@ -16,7 +16,7 @@ export class FeaturedObjectsService {
   private _mutationError$ = new BehaviorSubject<boolean>(false);
   // Errors that occur if the featuredObjects array does not contain exactly 5 objects
   private _submitError$ = new BehaviorSubject<boolean>(false);
-  private featuredStore: { featured: LearningObject[] } = { featured: []};
+  private featuredStore: { featured } = { featured: []};
 
   private headers = new HttpHeaders();
   featuredObjectIds: string[];
@@ -43,11 +43,15 @@ export class FeaturedObjectsService {
       .then((featured: any) => {
         const featuredObjects = featured.map(object => {
           object.collection = object.collectionName;
-          return new LearningObject(object);
+          return object;
         });
         this.featuredStore.featured = featuredObjects;
-        this.filterOutFeaturedObjects();
-        this._mutationError$.next(true);
+        if (featuredObjects.length === 5) {
+          this.filterOutFeaturedObjects();
+          this._mutationError$.next(true);
+        } else if (featuredObjects.length !== 5) {
+          this._submitError$.next(true);
+        }
         this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
       });
   }
@@ -87,7 +91,7 @@ export class FeaturedObjectsService {
     } else {
       try {
         this.http.patch(FEATURED_ROUTES.SET_FEATURED,
-            this.featuredStore.featured,
+          this.featuredStore.featured,
           { headers: this.headers, withCredentials: true }
         ).toPromise();
       } catch (e) {

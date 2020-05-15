@@ -4,6 +4,7 @@ import { LearningObjectService } from '../../learning-object.service';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 
 @Component({
   selector: 'cube-featured',
@@ -23,7 +24,7 @@ export class FeaturedComponent implements OnInit {
   loading = false;
   collectionName: string;
 
-  constructor(private learningObjectService: LearningObjectService) {
+  constructor(private learningObjectService: LearningObjectService, private featureService: FeaturedObjectsService) {
     this.learningObjects = this.learningObjects.fill(new LearningObject());
   }
 
@@ -38,7 +39,10 @@ export class FeaturedComponent implements OnInit {
         }
       });
     } else {
-      this.fetchLearningObjects();
+      this.featureService.getFeaturedObjects();
+      this.featureService.featuredObjects.subscribe(objects => {
+        this.learningObjects = objects;
+      })
     }
   }
 
