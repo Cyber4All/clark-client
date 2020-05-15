@@ -12,7 +12,7 @@
   font-size: $normal;
 }
 
-//Styles for Cards 
+//Styles for Cards
 @media (min-width: 751px) {
   :host.card {
     height: 100%;
@@ -216,19 +216,6 @@
       flex-direction: row;
       justify-content: space-between;
       }
-    }
-
-    .card-collection {
-      background: $light-blue;
-      padding: 2px 5px;
-      margin-bottom: 5px;
-      border-radius: 3px;
-      display: inline-block;
-      position: relative;
-      color: white;
-      font-size: $smaller;
-      font-weight: 400;
-      display: none;
     }
 
     .collection {
