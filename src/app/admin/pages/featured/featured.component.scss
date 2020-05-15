@@ -1,21 +1,151 @@
-.card-container {
+@import '~_vars.scss';
+  .featured-list {
+    width: 1375px;
+    max-width: 100%;
+    min-height: 350px;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start stretch;
-    justify-content: center;
-    max-width: 1375px;
-    margin: auto;
-    // this margin offsets each individual card's top margin
+    overflow: hidden;
     margin-top: -24px;
-  
-    .featured-learning-object {
-      margin-top: 24px;
-  
-      &.card {
-        max-width: 250px;
-        margin-right: 12px;
-        margin-left: 12px;
-      }
+    margin: auto;
+    padding-bottom: 10px;
+
+    .empty-drag {
+      position: relative;
+      text-align: center;
+      font-size: $large;
+      color: $dark-grey;
+      width: 100%;
+      min-height: 350px;
     }
   }
+  
+  .featured-card {
+    padding: 20px 10px;
+    display: flex;
+    max-width: 250px;
+    height: 375px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;
+    font-size: 14px;
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+  
+  // Drag and drop
+  .cdk-drag-preview {
+    width: 250px;
+    height:400px;
+  }
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  // Not Featured List Styles
+  .list {
+    max-width: 100%;
+    position: relative;
+    margin: auto;
+    box-sizing: border-box;
+    min-height: 500px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  
+  .list__body {
+    .body__column-headers,
+    ::ng-deep .row-item {
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 32px 2.5fr 100px 80px 120px 50px;
+      grid-gap: 0 50px;
+      align-items: center;
+    }
+  
+    ::ng-deep .row-item {
+      & > div {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    }
+  
+    .body__column-headers {
+      font-size: $small;
+      color: $dark-grey;
+      padding-top: 20px;
+      padding-bottom: 10px;
+    }
+  
+    clark-learning-object-list-item {
+      position: relative;
+      display: block;
+    }
+  }
+  
+  .empty-template {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    color: $dark-grey;
+    font-size: $normal;
+  }
+  
+  .empty-template__top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: $dark-grey;
+    font-size: $larger;
+    margin-bottom: 10px;
+    .svg-inline--fa {
+      font-size: $largest;
+      margin-right: 10px;
+    }
+  }
+  
+  .loadingOrFinished__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  
+    color: $dark-grey;
+    font-size: $large;
+    padding: 40px;
+  
+    .svg-inline--fa {
+      color: $light-blue;
+      font-size: $larger;
+      margin-bottom: 20px;
+    }
+  }
+
+  .error-notice {
+    float: right;
+    background: $error-red;
+    border-radius: 3px;
+    color: white;
+    padding: 5px;
+  }
+    
+  

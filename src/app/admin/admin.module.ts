@@ -20,8 +20,8 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { FeaturedComponent } from './pages/featured/featured.component';
 import { DraggableDashboardItemComponent } from './components/draggable-dashboard-item/draggable-dashboard-item.component';
 import { DraggableLearningObjectComponent } from './components/draggable-learning-object/draggable-learning-object.component';
-
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PaginationComponent } from './components/pagination/pagination.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -39,6 +39,7 @@ import { DraggableLearningObjectComponent } from './components/draggable-learnin
     FeaturedComponent,
     DraggableDashboardItemComponent,
     DraggableLearningObjectComponent,
+    PaginationComponent,
   ],
   imports: [
     CoreModule.forRoot(),
@@ -49,7 +50,8 @@ import { DraggableLearningObjectComponent } from './components/draggable-learnin
     AdminRoutingModule,
     SharedModule,
     FormsModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    DragDropModule,
   ],
 })
 export class AdminModule { }
