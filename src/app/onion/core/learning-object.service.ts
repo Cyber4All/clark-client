@@ -202,19 +202,21 @@ export class LearningObjectService {
    *
    * @param {string} learningObjectId the id of the source learning object
    * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
+   * @param username The learning object author's username
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
   saveOutcome(
     learningObjectId: string,
-    outcome: { id: string; [key: string]: any }
+    outcome: { id: string; [key: string]: any },
+    username: string
   ): Promise<any> {
     const outcomeId = outcome.id;
     delete outcome.id;
 
     return this.http
       .patch(
-        USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId),
+        USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId, username),
         { outcome },
         { withCredentials: true }
       )
@@ -225,9 +227,16 @@ export class LearningObjectService {
       .toPromise();
   }
 
-  deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
+  /**
+   * Deletes an outcome on a given learning object
+   * 
+   * @param learningObjectId The learning object id to delete the outcome from
+   * @param outcomeId The outcome Id
+   * @param username The username of the learning object author
+   */
+  deleteOutcome(learningObjectId: string, outcomeId: string, username: string): Promise<any> {
     return this.http
-      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
+      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId, username), { withCredentials: true })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -544,12 +553,13 @@ export class LearningObjectService {
    *
    * @param {LearningObject} source the learningObject
    * @param {LearningOutcome} outcome
+   * @param username The username of the learning object author
    * @memberof LearningObjectService
    */
-  addLearningOutcome(sourceId: string, outcome: LearningOutcome): Promise<any> {
+  addLearningOutcome(sourceId: string, outcome: LearningOutcome, username: string): Promise<any> {
     return this.http
       .post(
-        USER_ROUTES.CREATE_AN_OUTCOME(sourceId),
+        USER_ROUTES.CREATE_AN_OUTCOME(sourceId, username),
         { source: sourceId, outcome },
         { withCredentials: true, responseType: 'text' }
       )

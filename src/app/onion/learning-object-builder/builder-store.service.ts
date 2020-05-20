@@ -425,7 +425,8 @@ export class BuilderStore {
       .deleteOutcome(
         this.learningObject.id,
         (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
-          .serviceId || id
+          .serviceId || id,
+        this._learningObject.author.username
       )
       .then(() => {
         this.serviceInteraction$.next(false);
@@ -933,7 +934,7 @@ export class BuilderStore {
   private createLearningOutcome(newOutcome: LearningOutcome) {
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .addLearningOutcome(this.learningObject.id, newOutcome)
+      .addLearningOutcome(this.learningObject.id, newOutcome, this._learningObject.author.username)
       .then((serviceId: string) => {
         this.serviceInteraction$.next(false);
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
@@ -972,7 +973,7 @@ export class BuilderStore {
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .saveOutcome(this.learningObject.id, updateValue as any)
+      .saveOutcome(this.learningObject.id, updateValue as any, this._learningObject.author.username)
       .then(() => {
         this.serviceInteraction$.next(false);
       })

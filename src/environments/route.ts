@@ -197,24 +197,35 @@ export const USER_ROUTES = {
       learningObjectId
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
+  // Unused
   GET_OUTCOMES(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
-      ${encodeURIComponent(learningObjectId)}`;
+      ${encodeURIComponent(learningObjectId)}/outcomes`;
   },
-  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string, username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
+    )}/outcomes/${encodeURIComponent(outcomeId)}`;
   },
-  CREATE_AN_OUTCOME(learningObjectId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+  CREATE_AN_OUTCOME(learningObjectId: string, username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/learning-outcomes`;
+    )}/outcomes`;
   },
-  DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+  DELETE_OUTCOME(learningObjectId: string, outcomeId: string, username: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
+    )}/outcomes/${encodeURIComponent(outcomeId)}`;
+  },
+  // Unused
+  POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectId)}
+    /outcomes/${encodeURIComponent(outcomeId)}/mappings`;
+  },
+  // Unused
+  DELETE_MAPPING(username: string, learningObjectId: string, outcomeId: string, mappingsId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectId)}
+    /outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
   },
   GET_CART(username, page?, limit?) {
     // CUBE
