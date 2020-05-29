@@ -1,0 +1,248 @@
+@import '~_vars.scss';
+
+.remove {
+  position: absolute;
+  z-index: 99;
+  right: 0;
+  margin-top: -5px;
+  border-radius: 3px;
+  border: none;
+  background-color: $error-red;
+  color: white;
+  font-size: $normal;
+}
+
+//Styles for Cards
+@media (min-width: 751px) {
+  :host.card {
+    height: 100%;
+    padding-bottom: 10px;
+
+    .learning-object {
+      height: 100%;
+      flex-direction: column;
+      align-items: stretch;
+
+      .image {
+        width: 100%;
+        height: 150px;
+
+        .initials {
+          font-size: $normal;
+        }
+      }
+
+      .learning-object-content {
+        flex: 1;
+
+        .details {
+          margin-bottom: 10px;
+
+          .author {
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+:host.loading {
+  // loading styles
+  $color: $light-grey;
+  pointer-events: none;
+  overflow: hidden;
+
+  .image {
+    background: $color !important;
+  }
+
+  .initials {
+    visibility: hidden;
+  }
+
+  .learning-object-content {
+    width: 100%;
+
+    & > * {
+      color: transparent !important;
+      background: $color !important;
+      margin-bottom: 20px;
+      height: 15px;
+      max-width: 500px;
+      width: 100% !important;
+    }
+  }
+
+  .learning-object {
+
+    &:after {
+      content: '';
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0),
+        white,
+        rgba(255, 255, 255, 0)
+      );
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      max-width: 200px;
+      width: 70%;
+      animation: loading 2s linear forwards infinite;
+    }
+  }
+}
+
+:host.card {
+  .image {
+    max-height: 120px;
+  }
+
+  .goals {
+    white-space: normal !important;
+  }
+
+  .learning-object-content{
+    width: auto !important;
+  }
+}
+
+.learning-object {
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 1px 12px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: row;
+  max-width: 850px;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  align-items: stretch;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding-bottom: 20px;
+
+  @function gradient($color) {
+    @return linear-gradient(45deg, $color, lighten($color, 10));
+  }
+
+  &.nanomodule {
+    .image {
+      background: gradient($nanomodule-color);
+    }
+  }
+
+  &.micromodule {
+    .image {
+      background: gradient($micromodule-color);
+    }
+  }
+
+  &.module {
+    .image {
+      background: gradient($module-color);
+    }
+  }
+
+  &.unit {
+    .image {
+      background: gradient($unit-color);
+    }
+  }
+
+  &.course {
+    .image {
+      background: gradient($course-color);
+    }
+  }
+
+  .image {
+    background: white;
+    width: 150px;
+    flex: 0 0 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    ::ng-deep canvas {
+      opacity: 0.4;
+    }
+
+    .initials {
+      color: white;
+      font-size: $normal;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 5px;
+      z-index: 2;
+    }
+
+    &:after {
+      content: '';
+      background: white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.05;
+      mask: $cube-pattern repeat;
+    }
+  }
+
+  .learning-object-content {
+    padding: 10px;
+    min-width: 0;
+    position: relative;
+    width: 100%;
+
+    .content__topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .title {
+      font-size: $normal;
+      color: $darker-grey;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      }
+    }
+
+    .collection {
+      background: $light-blue;
+      padding: 2px 5px;
+      border-radius: 3px;
+      display: inline-block;
+      position: relative;
+      color: white;
+      font-size: $smaller;
+      font-weight: 400;
+    }
+
+    .details {
+      font-size: $small;
+      color: $dark-grey;
+      margin-top: 5px;
+    }
+
+    .goals {
+      font-size: $small;
+      color: $dark-grey;
+      margin-top: 5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      min-width: 0;
+      overflow: hidden;
+    }
+}
+
