@@ -42,7 +42,7 @@ export class FeaturedComponent implements OnInit {
       this.featureService.getFeaturedObjects();
       this.featureService.featuredObjects.subscribe(objects => {
         this.learningObjects = objects;
-      })
+      });
     }
   }
 

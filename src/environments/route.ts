@@ -563,4 +563,4 @@ export const FEATURED_ROUTES = {
   SET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
   // retrieves the featured objects
   GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
-}
+};

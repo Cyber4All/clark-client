@@ -144,7 +144,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
         this.toaster.success('Success!', 'Featured learning objects updated!');
       },
       error => {
-        this.toaster.error('Error!', 'Unable to update Featured learning objects.')
+        this.toaster.error('Error!', 'Unable to update Featured learning objects.');
       }
     );
   }
