@@ -6,6 +6,7 @@ import { Query } from 'app/interfaces/query';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-featured',
@@ -51,6 +52,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
 
   constructor(
     private featureService: FeaturedObjectsService,
+    public toaster: ToastrOvenService,
   ) { }
 
   async ngOnInit() {
@@ -136,8 +138,15 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     this.featureService.removeFeaturedObject(object);
     this.getLearningObjects();
   }
-  saveFeatured() {
-    this.featureService.saveFeaturedObjects();
+  async saveFeatured() {
+    this.featureService.saveFeaturedObjects().then(
+      () => {
+        this.toaster.success('Success!', 'Featured learning objects updated!');
+      },
+      error => {
+        this.toaster.error('Error!', 'Unable to update Featured learning objects.')
+      }
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {

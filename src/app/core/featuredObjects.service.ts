@@ -89,14 +89,10 @@ export class FeaturedObjectsService {
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
     } else {
-      try {
-        this.http.patch(FEATURED_ROUTES.SET_FEATURED,
+        return this.http.patch(FEATURED_ROUTES.SET_FEATURED,
           this.featuredStore.featured,
           { headers: this.headers, withCredentials: true }
         ).toPromise();
-      } catch (e) {
-        throw e;
-      }
     }
   }
 
