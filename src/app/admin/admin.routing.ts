@@ -4,6 +4,7 @@ import { AdminComponent } from './admin.component';
 import { AdminGuard } from 'app/core/admin.guard';
 import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
 import { UsersComponent } from './pages/users/users.component';
+import { FeaturedComponent } from './pages/featured/featured.component';
 
 /**
  * Contains all routes for the module, stored in a Routes array.
@@ -18,6 +19,10 @@ const admin_routes: Routes = [
       { path: 'learning-objects',
       component: LearningObjectsComponent,
       data: { canScroll: false, title: 'Collection Dashboard Learning Objects'}
+      },
+      { path: 'featured/learning-objects',
+      component: FeaturedComponent,
+      data: { canScroll: false, title: 'Collection Dashboard Featured Learning Objects'}
       },
       { path: 'users', component: UsersComponent, data: { title: 'Collection Dashboard Users'} },
       { path: '', redirectTo: 'learning-objects', pathMatch: 'full' }
