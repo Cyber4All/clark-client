@@ -229,7 +229,7 @@ export class LearningObjectService {
 
   /**
    * Deletes an outcome on a given learning object
-   * 
+   *
    * @param learningObjectId The learning object id to delete the outcome from
    * @param outcomeId The outcome Id
    * @param username The username of the learning object author
