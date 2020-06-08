@@ -76,7 +76,7 @@ export class StandardOutcome implements Outcome {
     return this._date;
   }
   set date(date: string) {
-    if (date && date.trim()) {
+    if (date) {
       this._date = date;
     } else {
       throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_DATE, 'date');
