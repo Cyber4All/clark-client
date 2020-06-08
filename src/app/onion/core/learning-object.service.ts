@@ -215,7 +215,6 @@ export class LearningObjectService {
     const outcomeId = outcome.id;
     delete outcome.id;
 
-    console.log('out', outcome);
     return this.http
       .patch(
         USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId, username),
@@ -257,16 +256,43 @@ export class LearningObjectService {
    */
   addGuideline(
     learningObjectId: string,
-    outcome: { id: string; [key: string]: any },
+    outcome: Partial<LearningOutcome>,
     username: string
   ): Promise<any> {
     const outcomeId = outcome.id;
-    delete outcome.id;
 
     return this.http
       .post(
-        USER_ROUTES.POST_MAPPING(learningObjectId, outcomeId, username),
-        outcome.mappings,
+        USER_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
+        { guidelineID: outcome.mappings[outcome.mappings.length - 1] },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Add a guideline to the guidelines array of a Learning Outcome
+   *
+   * @param {string} learningObjectId the id of the source learning object
+   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
+   * @param username The learning object author's username
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
+  deleteGuideline(
+    learningObjectId: string,
+    outcome: string,
+    username: string,
+    mappingId: string,
+  ): Promise<any> {
+
+    return this.http
+      .delete(
+        USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
         { headers: this.headers, withCredentials: true }
       )
       .pipe(

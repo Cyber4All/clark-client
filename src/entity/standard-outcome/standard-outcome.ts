@@ -102,7 +102,7 @@ export class StandardOutcome implements Outcome {
    * @param {Partial<StandardOutcome>} [outcome]
    * @memberof StandardOutcome
    */
-  constructor(outcome?: Partial<StandardOutcome>) {
+  constructor(outcome?: any) {
     // @ts-ignore Id will be undefined on creation
     this._id = undefined;
     this._author = '';
@@ -121,9 +121,9 @@ export class StandardOutcome implements Outcome {
    * @param {Partial<StandardOutcome>} outcome
    * @memberof StandardOutcome
    */
-  private copyOutcome(outcome: Partial<StandardOutcome>): void {
-    if (outcome.id) {
-      this.id = outcome.id;
+  private copyOutcome(outcome: any): void {
+    if (outcome._id) {
+      this.id = outcome._id;
     }
     if (outcome.author) {
       this.author = outcome.author;

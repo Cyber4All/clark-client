@@ -217,12 +217,14 @@ export const USER_ROUTES = {
     )}/outcomes/${encodeURIComponent(outcomeId)}`;
   },
   POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectId)}
-    /outcomes/${encodeURIComponent(outcomeId)}/mappings`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+      learningObjectId
+      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
   },
   DELETE_MAPPING(username: string, learningObjectId: string, outcomeId: string, mappingsId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectId)}
-    /outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+      learningObjectId
+      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
   },
   GET_CART(username, page?, limit?) {
     // CUBE

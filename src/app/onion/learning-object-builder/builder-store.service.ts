@@ -455,7 +455,6 @@ export class BuilderStore {
     // validateLearningObject here over validateLearningOutcome to remove a "must contain one valid outcome" error if it exists
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
-    console.log(outcome);
     this.saveOutcome(
       {
         id: outcome.id,
@@ -514,7 +513,7 @@ export class BuilderStore {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        mappings: outcome.mappings.map(x => x.id)
+        deleteMapping: standardOutcome.id
       },
       true
     );
@@ -918,6 +917,8 @@ export class BuilderStore {
         // this is an existing outcome, modify it
         if (newValue.mappings) {
           this.addGuideline(newValue);
+        } else if (newValue.deleteMapping) {
+          this.deleteGuideline(newValue.id, newValue.deleteMapping);
         } else {
           this.updateLearningOutcome(newValue);
         }
@@ -937,7 +938,6 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private createLearningOutcome(newOutcome: LearningOutcome) {
-    console.log(newOutcome);
     this.serviceInteraction$.next(true);
     this.learningObjectService
       .addLearningOutcome(this.learningObject.id, newOutcome, this._learningObject.author.username)
@@ -998,6 +998,23 @@ export class BuilderStore {
     this.serviceInteraction$.next(true);
     this.learningObjectService
       .addGuideline(this.learningObject.id, outcome, this._learningObject.author.username)
+      .then(() => {
+        this.serviceInteraction$.next(false);
+      })
+      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
+  }
+
+    /**
+   * Handles service interaction for deleting a mapping to a LearningOutcome
+   *
+   * @private
+   * @param {Partial<LearningOutcome>} outcome
+   * @memberof BuilderStore
+   */
+  private deleteGuideline(outcomeId: string, mappingId: string) {
+    this.serviceInteraction$.next(true);
+    this.learningObjectService
+      .deleteGuideline(this.learningObject.id, outcomeId, this._learningObject.author.username, mappingId)
       .then(() => {
         this.serviceInteraction$.next(false);
       })
