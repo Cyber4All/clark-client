@@ -455,6 +455,7 @@ export class BuilderStore {
     // validateLearningObject here over validateLearningOutcome to remove a "must contain one valid outcome" error if it exists
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
+    console.log(outcome);
     this.saveOutcome(
       {
         id: outcome.id,
@@ -915,7 +916,11 @@ export class BuilderStore {
         this.createLearningOutcome(newValue);
       } else {
         // this is an existing outcome, modify it
-        this.updateLearningOutcome(newValue);
+        if (newValue.mappings) {
+          this.addGuideline(newValue);
+        } else {
+          this.updateLearningOutcome(newValue);
+        }
       }
 
       if (this.objectCache$.getValue()) {
@@ -932,6 +937,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private createLearningOutcome(newOutcome: LearningOutcome) {
+    console.log(newOutcome);
     this.serviceInteraction$.next(true);
     this.learningObjectService
       .addLearningOutcome(this.learningObject.id, newOutcome, this._learningObject.author.username)
@@ -974,6 +980,24 @@ export class BuilderStore {
     this.serviceInteraction$.next(true);
     this.learningObjectService
       .saveOutcome(this.learningObject.id, updateValue as any, this._learningObject.author.username)
+      .then(() => {
+        this.serviceInteraction$.next(false);
+      })
+      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
+  }
+
+
+  /**
+   * Handles service interaction for adding a mapping to a LearningOutcome
+   *
+   * @private
+   * @param {Partial<LearningOutcome>} outcome
+   * @memberof BuilderStore
+   */
+  private addGuideline(outcome: Partial<LearningOutcome>) {
+    this.serviceInteraction$.next(true);
+    this.learningObjectService
+      .addGuideline(this.learningObject.id, outcome, this._learningObject.author.username)
       .then(() => {
         this.serviceInteraction$.next(false);
       })

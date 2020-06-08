@@ -197,7 +197,6 @@ export const USER_ROUTES = {
       learningObjectId
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
-  // Unused
   GET_OUTCOMES(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
       ${encodeURIComponent(learningObjectId)}/outcomes`;
@@ -217,12 +216,10 @@ export const USER_ROUTES = {
       learningObjectId
     )}/outcomes/${encodeURIComponent(outcomeId)}`;
   },
-  // Unused
   POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectId)}
     /outcomes/${encodeURIComponent(outcomeId)}/mappings`;
   },
-  // Unused
   DELETE_MAPPING(username: string, learningObjectId: string, outcomeId: string, mappingsId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(learningObjectId)}
     /outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
