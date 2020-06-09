@@ -139,7 +139,6 @@ export class LearningOutcome {
    * @memberof LearningOutcome
    */
   constructor(outcome?: Partial<LearningOutcome>) {
-    console.log('new')
     // @ts-ignore Id will be undefined on creation
     this._id = undefined;
     this._bloom = levels[0];
