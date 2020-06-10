@@ -1,0 +1,44 @@
+<div class="user-dropdown">
+  <div class="input-container">
+    <i class="fas fa-search"></i> 
+    <input type="text" aria-label="Find users by their name, username, or email address." class="user-dropdown__search-input" placeholder="Search for authors" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
+  </div>
+    <ul *ngIf="showDropdown" class="user-dropdown__list">
+        <ng-container *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"></ng-container>
+    </ul>
+
+    <div *ngIf="selectedAuthor && selectedAuthor.username" class="author-details-container">
+      <div class="left">
+        <span class="user-dropdown__navbar-gravatar image" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(selectedAuthor.email, 200) + ')'}"></span>
+        <span class="details">
+              <p>{{selectedAuthor.username}}</p>
+              <p>{{selectedAuthor.organization}} - {{selectedAuthor.email}}</p>
+        </span>
+      </div>
+      <div (click)="toggleAuthor()" class="right"><i class="fas fa-times"></i></div>
+  </div>
+  </div>
+
+  <ng-template #resultsTemplate>
+    <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">
+      <virtual-scroller #searchResultsScroller [items]="searchResults">
+        <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (activate)="toggleAuthor(user)">
+         
+          <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
+          {{ user.username }} - {{ user.name | titlecase }} from {{ user.organization | titlecase }}
+        </li>
+      </virtual-scroller>
+    </ng-container>
+  </ng-template>
+  
+  <ng-template #loadingTemplate>
+    <span class="user-dropdown__message">
+      <i class="far fa-spinner-third fa-spin"></i>
+    </span>
+  </ng-template>
+  
+  <ng-template #noResultsTemplate>
+    <span class="user-dropdown__message">
+      No results!
+    </span>
+  </ng-template>

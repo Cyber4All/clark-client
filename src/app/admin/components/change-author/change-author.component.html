@@ -1,0 +1,69 @@
+<ng-container *ngTemplateOutlet="finalStage ? confirmation : chooseAuthor"></ng-container>
+
+<ng-template #chooseAuthor>
+  <div class="change-author-banner">
+    <h3 class="banner-title">Change Learning Object Author </h3>
+    <p class="banner-sub">The previous author will be added to the list of contributors</p>
+</div>
+<div class="change-author-content">
+<div class="content-header"> Learning Object </div>
+
+<div class="card-container">
+    <div class="row-item">
+        <div class="left">
+          <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + highlightedLearningObject.status + '. ' + statusDescription" [ngClass]="highlightedLearningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
+            <span *ngIf="highlightedLearningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'review'"><i class="fas fa-sync"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'released'"><i class="fas fa-eye"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
+          </div>
+          <div>
+            {{ highlightedLearningObject.name }}
+          </div>
+        </div>
+        <div class="right">
+            <div>
+                {{ highlightedLearningObject.author.name | titlecase }}
+              </div>
+              <div>{{ highlightedLearningObject.length | titlecase }}</div>
+              <div>{{ highlightedLearningObject.date | date:'longDate' }}</div>
+        </div>
+       
+
+      </div>
+</div>
+<div class="content-header"> New Author </div>
+    <clark-change-author-user-dropdown (newAuthor)="setSelectedAuthor($event)"></clark-change-author-user-dropdown>
+      <div class="btn-group center">
+        <button class="button good" (click)="toggleState(true)">Continue</button>
+
+        <button class="button neutral">Cancel</button>
+      </div>
+</div>
+</ng-template>
+
+<ng-template #confirmation>
+
+  <div class="change-author-banner">
+    <h3 class="banner-title">Change Author Confirmation </h3>
+    <p class="banner-sub">Please confirm this change</p>
+</div>
+<div class="change-author-content">
+  <div>Are you sure you want to change this learning object's author?</div>
+  <div>Change the learning object author of "{{highlightedLearningObject.name}}" from {{highlightedLearningObject.author.name}} ({{highlightedLearningObject.author.organization}}) to {{selectedAuthor._username}} ({{selectedAuthor._organization}})). </div>
+  <div>Please Check to ensure that the new author is the correct user that you would like to change authorship of. Note that 
+    changing the author will add the previous author onto the list of contributors for the object. 
+  </div>
+
+</div>
+<div class="btn-group center">
+
+  <button class="button good">Change Author</button>
+  <button class="button neutral" (click)="toggleState(false)">Back</button>
+
+</div>
+</ng-template>
+
+

@@ -17,6 +17,8 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
 import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { ChangeAuthorComponent } from './components/change-author/change-author.component';
+import { ChangeAuthorUserDropdownComponent } from './components/change-author/components/change-author-user-dropdown/change-author-user-dropdown.component';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     UserPrivilegesComponent,
     PrivilegesListComponent,
     LearningObjectListItemComponent,
+    ChangeAuthorComponent,
+    ChangeAuthorUserDropdownComponent,
   ],
   imports: [
     CoreModule.forRoot(),

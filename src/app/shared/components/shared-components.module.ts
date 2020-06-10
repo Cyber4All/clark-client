@@ -26,6 +26,7 @@ import { UserCardComponent } from './user-card/user-card.component';
 import { SkipLinkComponent } from './skip-link/skip-link.component';
 
 
+
 @NgModule({
   imports: [
     // angular modules
@@ -53,6 +54,7 @@ import { SkipLinkComponent } from './skip-link/skip-link.component';
     ToggleSwitchComponent,
     UserCardComponent,
     SkipLinkComponent,
+  
   ],
   exports: [
     // components
