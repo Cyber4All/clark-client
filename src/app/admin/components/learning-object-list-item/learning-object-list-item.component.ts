@@ -12,6 +12,7 @@ import {
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -34,6 +35,8 @@ export class LearningObjectListItemComponent implements OnChanges {
   changeStatus: EventEmitter<LearningObject> = new EventEmitter();
 
   statusDescription: string;
+
+  showChangeAuthor: boolean;
 
   // flags
   meatballOpen = false;
@@ -68,6 +71,10 @@ export class LearningObjectListItemComponent implements OnChanges {
     this.meatballOpen = value;
   }
 
+  toggleChangeAuthorModal(value: boolean){
+    this.showChangeAuthor = value;
+    console.log(this.learningObject);
+  }
   /**
    * Check the logged in user's email verification status
    * @return {boolean} true if loggedin user has verified their email, false otherwise
