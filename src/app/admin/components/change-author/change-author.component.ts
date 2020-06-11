@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { LearningObject, User } from '@entity';
 
 @Component({
@@ -8,25 +8,47 @@ import { LearningObject, User } from '@entity';
 })
 export class ChangeAuthorComponent implements OnInit {
 
-  finalStage: boolean = false;
-
+  finalStage = false;
+  selectAuthorFailure: string;
+  consentGiven = false;
+  failureTimer;
   constructor() { }
   @Input() highlightedLearningObject: LearningObject;
   @Input() statusDescription;
+  @Output() close: EventEmitter<void> = new EventEmitter();
 
   selectedAuthor: User;
   ngOnInit(): void {
   }
 
-  toggleState(renderFinalStage: boolean){
-    this.finalStage = renderFinalStage;
+  toggleState(renderFinalStage: boolean) {
+    if (this.selectedAuthor && this.selectedAuthor.username) {
+      this.finalStage = renderFinalStage;
+    } else {
+      this.renderError();
+    }
   }
 
-  setSelectedAuthor(author){
-    if(author){
-      console.log('author exists ', author);
-
+  setSelectedAuthor(author) {
+    if (author) {
+      this.selectAuthorFailure = undefined;
       this.selectedAuthor = author;
     }
+  }
+
+  toggleConsent(event) {
+    if (event.target.checked) {
+      this.consentGiven = true;
+    } else {
+      this.consentGiven = false;
+    }
+  }
+
+  renderError() {
+    this.selectAuthorFailure = 'Please select an author before continuing';
+
+    this.failureTimer = setTimeout(() => {
+      this.selectAuthorFailure = undefined;
+    }, 4000);
   }
 }

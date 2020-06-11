@@ -1,7 +1,7 @@
 <ng-container *ngTemplateOutlet="finalStage ? confirmation : chooseAuthor"></ng-container>
 
 <ng-template #chooseAuthor>
-  <div class="change-author-banner">
+  <div class="change-author-banner" >
     <h3 class="banner-title">Change Learning Object Author </h3>
     <p class="banner-sub">The previous author will be added to the list of contributors</p>
 </div>
@@ -35,11 +35,13 @@
       </div>
 </div>
 <div class="content-header"> New Author </div>
+<div aria-live="assertive" *ngIf='selectAuthorFailure && selectAuthorFailure.length > 0' class="error" ><i  class="fas fa-info-circle"></i> {{ selectAuthorFailure || '' }} </div>
     <clark-change-author-user-dropdown (newAuthor)="setSelectedAuthor($event)"></clark-change-author-user-dropdown>
+
       <div class="btn-group center">
         <button class="button good" (click)="toggleState(true)">Continue</button>
 
-        <button class="button neutral">Cancel</button>
+        <button class="button neutral" (activate)="close.emit()">Cancel</button>
       </div>
 </div>
 </ng-template>

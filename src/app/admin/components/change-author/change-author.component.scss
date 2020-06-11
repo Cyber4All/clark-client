@@ -61,6 +61,7 @@
     background: $status_unreleased;
     transition: all 0.2s ease;
     box-shadow: none;
+    margin: 0px 10px;
   
     &.waiting {
       background: $status_waiting;
@@ -100,9 +101,7 @@
     .left { 
         display: flex;
         align-items: center;
-        width: 45%;
         flex-direction: row;
-        justify-content: space-around;
     }
     .right { 
         display: flex;
