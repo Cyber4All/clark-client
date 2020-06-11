@@ -41,7 +41,7 @@
 
 <clark-popup *ngIf="showChangeAuthor" (closed)="toggleChangeAuthorModal(false)">
   <div class="modal-container" #popupInner>
-<clark-change-author [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
+<clark-change-author (close)="toggleChangeAuthorModal(false)" [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
   
     </div>
     
