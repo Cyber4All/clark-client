@@ -11,7 +11,7 @@ import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
+ 
 @Component({
   selector: 'clark-change-author-user-dropdown',
   templateUrl: './change-author-user-dropdown.component.html',
@@ -89,7 +89,6 @@ export class ChangeAuthorUserDropdownComponent implements OnInit {
         }
 
         this.searchResults = results;
-        console.log(results);
         this.loading = false;
       });
     }
@@ -111,7 +110,6 @@ export class ChangeAuthorUserDropdownComponent implements OnInit {
     if (user) {
       this.selectedAuthor = user;
       this.clearSearch();
-      console.log(this.selectedAuthor);
       this.newAuthor.emit(user);
     } else {
       this.selectedAuthor = null;
