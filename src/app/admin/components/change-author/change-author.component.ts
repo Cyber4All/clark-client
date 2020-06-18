@@ -12,12 +12,14 @@ export class ChangeAuthorComponent implements OnInit {
   selectAuthorFailure: string;
   consentGiven = false;
   failureTimer;
-  constructor() { }
+  selectedAuthor: User;
   @Input() highlightedLearningObject: LearningObject;
   @Input() statusDescription;
   @Output() close: EventEmitter<void> = new EventEmitter();
 
-  selectedAuthor: User;
+  constructor() { }
+
+
   ngOnInit(): void {
   }
 

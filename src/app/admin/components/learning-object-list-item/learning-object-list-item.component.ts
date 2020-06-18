@@ -73,7 +73,6 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   toggleChangeAuthorModal(value: boolean){
     this.showChangeAuthor = value;
-    console.log(this.learningObject);
   }
   /**
    * Check the logged in user's email verification status

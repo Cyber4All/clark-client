@@ -5,6 +5,7 @@ import {
   IterableDiffer,
   EventEmitter,
   Output,
+  OnDestroy,
 } from '@angular/core';
 import { User } from '@entity';
 import { UserService } from 'app/core/user.service';
@@ -17,7 +18,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
   templateUrl: './change-author-user-dropdown.component.html',
   styleUrls: ['./change-author-user-dropdown.component.scss'],
 })
-export class ChangeAuthorUserDropdownComponent implements OnInit {
+export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
   // array of usernames representing all selected users
   selectedAuthor: User;
 
@@ -71,6 +72,11 @@ export class ChangeAuthorUserDropdownComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
   }
 
   /**

@@ -54,7 +54,6 @@ import { SkipLinkComponent } from './skip-link/skip-link.component';
     ToggleSwitchComponent,
     UserCardComponent,
     SkipLinkComponent,
-  
   ],
   exports: [
     // components

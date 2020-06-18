@@ -39,9 +39,9 @@
     <clark-change-author-user-dropdown (newAuthor)="setSelectedAuthor($event)"></clark-change-author-user-dropdown>
 
       <div class="btn-group center">
-        <button class="button good" (click)="toggleState(true)">Continue</button>
+        <button class="button good" aria-label="Change author" (click)="toggleState(true)">Continue</button>
 
-        <button class="button neutral" (activate)="close.emit()">Cancel</button>
+        <button class="button neutral" aria-label="Cancel" (activate)="close.emit()">Cancel</button>
       </div>
 </div>
 </ng-template>
@@ -61,13 +61,13 @@
 
 </div>
 <div class="change-author-confirmation">
-  <input (change)="toggleConsent($event)" name='change-author-checkbox' id='change-author-checkbox' type="checkbox">
+  <input (change)="toggleConsent($event)" aria-label="Change author confirmation checkbox" name='change-author-checkbox' id='change-author-checkbox' type="checkbox">
   <label for='change-author-checkbox' class="description xs">I have checked that the user I want to change authorship to is the correct user</label>
 </div>
 <div class="btn-group center">
 
-  <button class="button good">Change Author</button>
-  <button class="button neutral" (click)="toggleState(false)">Back</button>
+  <button class="button good" aria-label="Change author button">Change Author</button>
+  <button class="button neutral" aria-label="Back" (click)="toggleState(false)">Back</button>
 
 </div>
 </ng-template>
