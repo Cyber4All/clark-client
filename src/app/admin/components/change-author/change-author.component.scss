@@ -176,10 +176,14 @@
     }
   }
 
+  .error-wrapper{
+    min-height: 12px;
+  }
+
   .error{ 
     color: $light-blue;
     font-size: $small;
-    padding: 10px;
+    padding: 5px;
     animation: fade-in-out .5s  ;
   }
 

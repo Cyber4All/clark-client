@@ -12,7 +12,7 @@ import {
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
-import { Subject } from 'rxjs';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -37,6 +37,8 @@ export class LearningObjectListItemComponent implements OnChanges {
   statusDescription: string;
 
   showChangeAuthor: boolean;
+
+  experimental = environment.experimental;
 
   // flags
   meatballOpen = false;

@@ -35,7 +35,10 @@
       </div>
 </div>
 <div class="content-header"> New Author </div>
-<div aria-live="assertive" *ngIf='selectAuthorFailure && selectAuthorFailure.length > 0' class="error" ><i  class="fas fa-info-circle"></i> {{ selectAuthorFailure || '' }} </div>
+<div class="error-wrapper">
+  <div aria-live="assertive" *ngIf='selectAuthorFailure && selectAuthorFailure.length > 0' class="error" ><i  class="fas fa-info-circle"></i> {{ selectAuthorFailure || '' }} </div>
+
+</div>
     <clark-change-author-user-dropdown [currentAuthor]="selectedAuthor" (newAuthor)="setSelectedAuthor($event)"></clark-change-author-user-dropdown>
 
       <div class="btn-group center">
