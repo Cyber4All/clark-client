@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Output,
   OnDestroy,
+  Input,
 } from '@angular/core';
 import { User } from '@entity';
 import { UserService } from 'app/core/user.service';
@@ -39,7 +40,8 @@ export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
 
 
   // fired when an author is selected
-  @Output() newAuthor: EventEmitter<User> = new EventEmitter();
+  @Input() currentAuthor: User;
+  @Output() newAuthor: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private userService: UserService,
@@ -50,6 +52,10 @@ export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // If there's still an active selected author, set that user as the selected author
+    if (this.currentAuthor) {
+      this.selectedAuthor = this.currentAuthor;
+    }
     // subscribe to the search input and fire search after debounce
     this.userSearchInput$
       .pipe(debounceTime(650), takeUntil(this.destroyed$))
@@ -93,7 +99,6 @@ export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
             results.splice(i, 1);
           }
         }
-
         this.searchResults = results;
         this.loading = false;
       });
@@ -119,6 +124,7 @@ export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
       this.newAuthor.emit(user);
     } else {
       this.selectedAuthor = null;
+      this.newAuthor.emit({});
     }
   }
 
