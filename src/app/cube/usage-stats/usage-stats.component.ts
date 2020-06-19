@@ -24,6 +24,7 @@ export class UsageStatsComponent implements OnInit {
       review: -1,
       downloads: -1,
       collections: { number: -1 },
+      topDownloads: [],
       lengths: {
         nanomodule: -1,
         micromodule: -1,
@@ -72,6 +73,7 @@ export class UsageStatsComponent implements OnInit {
       this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
       this.usageStats.objects.collections = stats.collections;
+      this.usageStats.objects.topDownloads = stats.topDownloads;
       this.usageStats.objects.lengths = {
         nanomodule: stats.lengths.nanomodule,
         micromodule: stats.lengths.micromodule,
@@ -117,16 +119,16 @@ export class UsageStatsComponent implements OnInit {
           value: this.usageStats.objects.collections.number
         },
         {
+          title: 'Downloads',
+          value: this.usageStats.objects.downloads
+        },
+        {
           title: 'Users',
           value: this.usageStats.users.accounts
         },
         {
           title: 'Affiliated Organizations',
           value: this.usageStats.users.organizations
-        },
-        {
-          title: 'Downloads',
-          value: this.usageStats.objects.downloads
         }
       ];
   }
@@ -292,7 +294,7 @@ export class UsageStatsComponent implements OnInit {
       },
       colors: [
         {
-          backgroundColor: ['#21aba5', '#1d566e', '#163a5f']
+          backgroundColor: ['#5ec9da', '#f5a623', '#bd5eda']
         }
       ]
     };
