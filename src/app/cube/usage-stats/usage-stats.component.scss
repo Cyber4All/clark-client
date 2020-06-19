@@ -5,6 +5,7 @@ $row-gap: 25px;
 .container {
   padding: 30px 50px;
   margin-bottom: 100px;
+  background-color: white;
 }
 
 .header {
@@ -14,7 +15,7 @@ $row-gap: 25px;
 
 .stat-counters {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-column-gap: 25px;
   grid-row-gap: $row-gap;
   margin-bottom: $row-gap;

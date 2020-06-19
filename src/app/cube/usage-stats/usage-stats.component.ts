@@ -107,7 +107,7 @@ export class UsageStatsComponent implements OnInit {
     // Empty the array to avoid pushing duplicates
     this.counterStats = [
         {
-          title: 'Learning Objects Released',
+          title: 'Released Learning Objects',
           value: this.usageStats.objects.released
         },
         {
