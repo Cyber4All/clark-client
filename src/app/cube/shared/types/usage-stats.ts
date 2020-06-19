@@ -3,6 +3,7 @@ export interface LearningObjectStats {
   review: number;
   downloads: number;
   collections: { number: number };
+  topDownloads: any[];
   lengths: {
     nanomodule: number;
     micromodule: number;
