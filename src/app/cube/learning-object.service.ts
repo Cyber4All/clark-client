@@ -84,7 +84,7 @@ export class LearningObjectService {
   getLearningObject(
     author: string,
     cuid: string,
-    version: number
+    version?: number
   ): Promise<LearningObject> {
     const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,

@@ -12,6 +12,11 @@
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
     <cube-distribution-chart [ariaLabel]="organizationBreakdownChartAria" class="chart" [chart]="organizationBreakdownChart" 
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
+      <div class="top-downloads">
+        <ol *ngFor="let lo of learningObjects">
+          {{ lo.name }}       {{ lo.metrics.downloads }}
+        </ol>
+      </div>
   </div>
   <div class="heat-map-wrapper">
     <cube-heat-map class="heat-map"></cube-heat-map>
@@ -23,6 +28,15 @@
     </div>
     <div class="iframe-wrapper">
       <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/1G5G89oiyTxdJ7yvfaP6trc0qI7n6epKI/page/ma0f"
+        frameborder="0" style="border:0"></iframe>
+    </div>
+  </div>
+  <div class="active-users-wrapper">
+    <div class="title" tabindex="0">
+      <span>Active Users</span>
+    </div>
+    <div class="iframe-wrapper">
+      <iframe class="resp-iframe" src=""
         frameborder="0" style="border:0"></iframe>
     </div>
   </div>
