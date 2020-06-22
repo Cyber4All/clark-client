@@ -108,27 +108,33 @@ export class UsageStatsComponent implements OnInit {
     this.counterStats = [
         {
           title: 'Released Learning Objects',
-          value: this.usageStats.objects.released
+          value: this.usageStats.objects.released,
+          class: 'released',
         },
         {
           title: 'Learning Objects Under Review',
-          value: this.usageStats.objects.review
+          value: this.usageStats.objects.review,
+          class: 'review',
         },
         {
           title: 'Quality-Assured Collections',
-          value: this.usageStats.objects.collections.number
+          value: this.usageStats.objects.collections.number,
+          class: 'collections',
         },
         {
           title: 'Downloads',
-          value: this.usageStats.objects.downloads
+          value: this.usageStats.objects.downloads,
+          class: 'downloads',
         },
         {
           title: 'Users',
-          value: this.usageStats.users.accounts
+          value: this.usageStats.users.accounts,
+          class: 'users'
         },
         {
           title: 'Affiliated Organizations',
-          value: this.usageStats.users.organizations
+          value: this.usageStats.users.organizations,
+          class: 'organizations',
         }
       ];
   }
