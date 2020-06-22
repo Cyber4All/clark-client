@@ -23,6 +23,31 @@
     margin-top: 30px;
     margin-left: 55px;
     margin-bottom: 20px;
+
+    &.released {
+      color: $light-blue;
+      background: lighten($light-blue, 35);
+    }
+
+    &.downloads {
+      color: $orange;
+      background: lighten($orange, 35);
+    }
+
+    &.users {
+      color: rebeccapurple;
+      background: lighten(rebeccapurple, 35);
+    }
+
+    &.organizations {
+      color: $success-green;
+      background: lighten($success-green, 35);
+    }
+
+    &.collections {
+      color: $error-red;
+      background: lighten($error-red, 35);
+    }
   }
 
   .title {

@@ -1,5 +1,5 @@
 <div class="counter-wrapper">
-  <div class="stats__icon">
+  <div class="stats__icon" [ngClass]="stat.class">
     <i *ngIf="stat?.title === 'Released Learning Objects' || stat?.title === 'Learning Objects Under Review'" class="far fa-cube"></i>
     <i *ngIf="stat?.title === 'Quality-Assured Collections'" class="far fa-cubes"></i>
     <i *ngIf="stat?.title === 'Downloads'" class="far fa-cloud-download"></i>
