@@ -12,6 +12,7 @@
     (collectionFilter)="getCollectionFilteredLearningObjects($event)"
     (clearAll)="clearStatusAndCollectionFilters()"
     [adminOrEditor]="isAdminOrEditor"
+    [showStatus]="true"
   ></clark-admin-filter-search>
 
   <div #list class="list" main>

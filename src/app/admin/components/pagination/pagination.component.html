@@ -1,0 +1,24 @@
+<div class='pagination-container'>
+    <button 
+      *ngIf='!getPageNumberList().includes(1)'
+      class='pagination-container__arrow-button' 
+      (activate)='onLeftArrowClick()'
+      [attr.aria-label]="'To page: ' + currentPageNumber - 1">
+        <i class="far fa-arrow-left"></i>
+    </button>
+    <button 
+      *ngFor='let pageNumber of getPageNumberList()' 
+      class='pagination-container__button' 
+      [ngClass]="{'selected': currentPageNumber === pageNumber }"
+      (activate)='onPageNumberClick(pageNumber)'
+      [attr.aria-label]="'To page: ' + pageNumber">
+        {{ pageNumber }}
+    </button>
+    <button 
+      *ngIf='!getPageNumberList().includes(lastPageNumber)'
+      class='pagination-container__arrow-button'
+      (activate)='onRightArrowClick()'
+      [attr.aria-label]="'To page: ' + currentPageNumber + 1">
+        <i class="far fa-arrow-right"></i>
+    </button>
+  </div>

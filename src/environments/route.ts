@@ -557,3 +557,10 @@ export const STATS_ROUTES = {
   LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
   USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };
+
+export const FEATURED_ROUTES = {
+  // sets the featured objects
+  SET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
+  // retrieves the featured objects
+  GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
+};
