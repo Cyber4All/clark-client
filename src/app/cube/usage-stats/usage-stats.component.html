@@ -20,25 +20,29 @@
           <a class="name" [routerLink]="['/details', lo.author.username, lo.cuid]">
             {{ lo.name }}
           </a>
-          <div class="count">
+          <p class="count">
             {{ lo.metrics.downloads }}
-          </div>
+          </p>
         </div>
       </div>
   </div>
   <div class="heat-map-wrapper">
     <cube-heat-map class="heat-map"></cube-heat-map>
   </div>
-  <h2 class="span">Active Users</h2>
   <div class="active-users-wrapper">
-    <div class="iframe-wrapper">
-      <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/1G5G89oiyTxdJ7yvfaP6trc0qI7n6epKI/page/ma0f"
-        frameborder="0" style="border:0"></iframe>
+    <div>
+      <h2 class="title">Active Users</h2>
+      <div class="iframe-wrapper">
+        <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/1G5G89oiyTxdJ7yvfaP6trc0qI7n6epKI/page/ma0f"
+          frameborder="0" style="border:0"></iframe>
+      </div>
     </div>
-    <h2 class="title">Sessions</h2>
-    <div class="iframe-wrapper">
-      <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/0555e3e0-3b95-4143-83f0-e243292bfb74/page/tRERB"
-        frameborder="0" style="border:0"></iframe>
+    <div>
+      <h2 class="title">Sessions</h2>
+      <div class="iframe-wrapper">
+        <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/0555e3e0-3b95-4143-83f0-e243292bfb74/page/tRERB"
+          frameborder="0" style="border:0"></iframe>
+      </div>
     </div>
   </div>
 </div>

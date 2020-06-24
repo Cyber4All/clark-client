@@ -3,14 +3,15 @@
 $row-gap: 25px;
 
 .container {
-  padding: 30px 50px;
+  padding: 20px 50px;
   background-color: white;
 }
 
 .header {
   margin-bottom: 25px;
-  font-size: $larger;
+  font-size: $largest;
   color: $darker-grey;
+  font-weight: 500;
 }
 
 .stat-counters {
@@ -30,13 +31,12 @@ $row-gap: 25px;
 
   .top-downloads {
     color: $dark-grey;
-    font-size: $normal;
+    font-size: $large;
     padding: 20px;
-    width: 50%;
 
     .title {
       color: $darker-grey;
-      font-size: $large;
+      font-size: $larger;
       font-weight: 500;
       margin-bottom: 15px;
     }
@@ -59,19 +59,25 @@ $row-gap: 25px;
 }
 
 .active-users-wrapper {
-  // display: grid;
-  // grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  // grid-column-gap: 25px;
-  // grid-row-gap: $row-gap;
-  // margin-bottom: $row-gap;
-  // overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-column-gap: 25px;
+  grid-row-gap: $row-gap;
+  margin-bottom: $row-gap;
+  overflow: hidden;
+
+  .title {
+    color: $darker-grey;
+    font-size: $larger;
+    font-weight: 500;
+  }
 }
 
 
 
 
 .iframe-wrapper {
-  // position: relative;
+  position: relative;
   display: inline-block;
   overflow: hidden;
   padding-top: 56.25%; // Maintains aspect ratio of heat map (Original 1366w X 768h)
