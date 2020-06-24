@@ -332,8 +332,8 @@ export class UsageStatsComponent implements OnInit {
     for (let i = 0; i < this.usageStats.objects.topDownloads.length; i++) {
       const cuid = this.usageStats.objects.topDownloads[i].learningObjectCuid;
       // This will need to be fixed once we add logic to learning object service to verify the author. As of right now
-      // learning object service will return a learning object as long as the learningObject cuid is found.
-      const object = await this.learningObjectService.getLearningObject('clark', cuid);
+      // learning object service will return a released learning object as long as the learningObject cuid is found.
+      const object = await this.learningObjectService.getLearningObject(undefined, cuid);
       object.metrics.downloads = this.usageStats.objects.topDownloads[i].downloads;
       this.learningObjects.push(object);
     }

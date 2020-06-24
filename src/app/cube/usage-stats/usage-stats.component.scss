@@ -10,6 +10,7 @@ $row-gap: 25px;
 .header {
   margin-bottom: 25px;
   font-size: $larger;
+  color: $darker-grey;
 }
 
 .stat-counters {
@@ -22,38 +23,59 @@ $row-gap: 25px;
 
 .charts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(435px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   grid-column-gap: 25px;
   grid-row-gap: $row-gap;
   margin-bottom: $row-gap;
+
+  .top-downloads {
+    color: $dark-grey;
+    font-size: $normal;
+    padding: 20px;
+    width: 50%;
+
+    .title {
+      color: $darker-grey;
+      font-size: $large;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .name {
+      color: $darker-grey;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .count {
+      float: right;
+    }
+  }
 }
 
 .heat-map-wrapper {
   margin-bottom: $row-gap;
+  height: 100%;
 }
 
 .active-users-wrapper {
-  background: white;
-  border-radius: 2px;
-  padding: 20px;
-
-  .title {
-    font-size: $large;
-    color: $darker-grey;
-  }
-
-  overflow: hidden;
+  // display: grid;
+  // grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  // grid-column-gap: 25px;
+  // grid-row-gap: $row-gap;
+  // margin-bottom: $row-gap;
+  // overflow: hidden;
 }
 
 
 
 
 .iframe-wrapper {
-  position: relative;
+  // position: relative;
+  display: inline-block;
   overflow: hidden;
   padding-top: 56.25%; // Maintains aspect ratio of heat map (Original 1366w X 768h)
   width: 100%;
-  height: 100%;
 }
 
 .resp-iframe {

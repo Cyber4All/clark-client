@@ -52,13 +52,14 @@
 
   .title {
     font-size: $large;
-    color: $darker-grey;
+    color: $dark-grey;
     margin-bottom: 6px;
   }
 
   .number {
     font-weight: 600;
     font-size: $largest;
+    color: $darker-grey;
   }
 }
 
