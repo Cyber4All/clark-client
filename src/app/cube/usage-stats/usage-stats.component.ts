@@ -66,6 +66,8 @@ export class UsageStatsComponent implements OnInit {
   lengthBreakdownChartAria: string;
   lengthBreakdownChart: any;
 
+  loading: boolean;
+
   constructor(private statsService: UsageStatsService, private learningObjectService: LearningObjectService) {}
 
   ngOnInit() {
@@ -329,6 +331,7 @@ export class UsageStatsComponent implements OnInit {
    * Library Service
    */
   private async buildTopDownloads() {
+    this.loading = true;
     for (let i = 0; i < this.usageStats.objects.topDownloads.length; i++) {
       const cuid = this.usageStats.objects.topDownloads[i].learningObjectCuid;
       // This will need to be fixed once we add logic to learning object service to verify the author. As of right now
@@ -337,6 +340,7 @@ export class UsageStatsComponent implements OnInit {
       object.metrics.downloads = this.usageStats.objects.topDownloads[i].downloads;
       this.learningObjects.push(object);
     }
+    this.loading = false;
   }
 
   /**
