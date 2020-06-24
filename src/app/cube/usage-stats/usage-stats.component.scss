@@ -32,7 +32,7 @@ $row-gap: 25px;
   .top-downloads {
     color: $dark-grey;
     font-size: $large;
-    padding: 20px;
+    padding: 15px 20px 15px;
 
     .title {
       color: $darker-grey;
@@ -40,15 +40,21 @@ $row-gap: 25px;
       font-weight: 500;
       margin-bottom: 15px;
     }
+    
+    .downloads-container {
+      padding: 20px;
+      width: 80%;
+      
+      .name {
+        color: $darker-grey;
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+  
+      .count {
+        float: right;
+      }
 
-    .name {
-      color: $darker-grey;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
-
-    .count {
-      float: right;
     }
   }
 }

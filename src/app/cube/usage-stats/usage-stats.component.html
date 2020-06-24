@@ -14,17 +14,19 @@
   <div class="charts bottom">
     <cube-distribution-chart [ariaLabel]="organizationBreakdownChartAria" class="chart" [chart]="organizationBreakdownChart" 
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
-      <div class="top-downloads">
-        <h2 class="title">Most Downloaded Learning Objects</h2>
+    <div class="top-downloads">
+      <h2 class="title">Most Downloaded Learning Objects</h2>
+      <div class="downloads-container">
         <div *ngFor="let lo of learningObjects">
           <a class="name" [routerLink]="['/details', lo.author.username, lo.cuid]">
             {{ lo.name }}
           </a>
-          <p class="count">
+          <div class="count">
             {{ lo.metrics.downloads }}
-          </p>
+          </div>
         </div>
       </div>
+    </div>
   </div>
   <div class="heat-map-wrapper">
     <cube-heat-map class="heat-map"></cube-heat-map>
