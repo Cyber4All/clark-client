@@ -144,7 +144,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (object instanceof LearningObject) {
           this.releasedLearningObject = object;
 
-          console.log(object.outcomes);
           // FIXME: This filter should be removed when service logic for filtering children is updated
           this.releasedChildren = this.releasedLearningObject.children.filter(
             child => {
