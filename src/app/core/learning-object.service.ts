@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { take, map, catchError, zip, tap, mergeMap, finalize } from 'rxjs/operators';
 import { of, Observable, merge, Subject } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
@@ -26,7 +26,6 @@ export const CALLBACKS = {
   providedIn: 'root'
 })
 export class LearningObjectService {
-  private headers = new HttpHeaders();
 
   constructor(private http: HttpClient) { }
 
@@ -112,10 +111,7 @@ export class LearningObjectService {
    * @param callback
    */
   fetchUri(uri: string, callback?: Function) {
-    return this.http.get(
-      uri,
-      { headers: this.headers, withCredentials: true }
-      ).pipe(
+    return this.http.get(uri).pipe(
       take(1),
       map(res => callback ? callback(res) : res),
       catchError(e => of(e))
