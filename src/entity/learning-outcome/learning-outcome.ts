@@ -146,7 +146,6 @@ export class LearningOutcome {
     this._verb = (taxonomy.taxons[this.bloom] as { verbs: string[] }).verbs[0];
     this._text = '';
     this._mappings = [];
-
     if (outcome) {
       this.copyOutcome(outcome);
     }
@@ -156,12 +155,12 @@ export class LearningOutcome {
    * Copies properties of outcome to this outcome if defined
    *
    * @private
-   * @param outcome
+   * @param {Partial<LearningOutcome>} outcome
    * @memberof LearningOutcome
    */
-  private copyOutcome(outcome: any): void {
-    if (outcome._id) {
-      this.id = outcome._id;
+  private copyOutcome(outcome: Partial<LearningOutcome>): void {
+    if (outcome.id) {
+      this.id = outcome.id;
     }
     this.bloom = outcome.bloom || this.bloom;
     this.verb = outcome.verb || this.verb;

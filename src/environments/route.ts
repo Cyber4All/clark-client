@@ -199,32 +199,22 @@ export const USER_ROUTES = {
   },
   GET_OUTCOMES(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
-      ${encodeURIComponent(learningObjectId)}/outcomes`;
+      ${encodeURIComponent(learningObjectId)}`;
   },
-  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string, username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/outcomes/${encodeURIComponent(outcomeId)}`;
+    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
-  CREATE_AN_OUTCOME(learningObjectId: string, username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+  CREATE_AN_OUTCOME(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/outcomes`;
+    )}/learning-outcomes`;
   },
-  DELETE_OUTCOME(learningObjectId: string, outcomeId: string, username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+  DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/outcomes/${encodeURIComponent(outcomeId)}`;
-  },
-  POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
-      learningObjectId
-      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
-  },
-  DELETE_MAPPING(username: string, learningObjectId: string, outcomeId: string, mappingsId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
-      learningObjectId
-      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
+    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
   GET_CART(username, page?, limit?) {
     // CUBE

@@ -76,7 +76,7 @@ export class StandardOutcome implements Outcome {
     return this._date;
   }
   set date(date: string) {
-    if (date) {
+    if (date && date.trim()) {
       this._date = date;
     } else {
       throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_DATE, 'date');
@@ -102,7 +102,7 @@ export class StandardOutcome implements Outcome {
    * @param {Partial<StandardOutcome>} [outcome]
    * @memberof StandardOutcome
    */
-  constructor(outcome?: any) {
+  constructor(outcome?: Partial<StandardOutcome>) {
     // @ts-ignore Id will be undefined on creation
     this._id = undefined;
     this._author = '';
@@ -121,9 +121,9 @@ export class StandardOutcome implements Outcome {
    * @param {Partial<StandardOutcome>} outcome
    * @memberof StandardOutcome
    */
-  private copyOutcome(outcome: any): void {
-    if (outcome._id) {
-      this.id = outcome._id;
+  private copyOutcome(outcome: Partial<StandardOutcome>): void {
+    if (outcome.id) {
+      this.id = outcome.id;
     }
     if (outcome.author) {
       this.author = outcome.author;
