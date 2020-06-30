@@ -3,6 +3,8 @@ import { UsageStats, LearningObjectStats, UserStats } from '../shared/types/usag
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
 import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
+import { LearningObject } from '@entity';
+import { LearningObjectService } from '../learning-object.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -44,6 +46,7 @@ export class UsageStatsComponent implements OnInit {
     }
   };
 
+  learningObjects: LearningObject[] = [];
   organizationBreakdownChart: PieChart;
 
   outcomeDistributionChart: PieChart;
@@ -63,7 +66,9 @@ export class UsageStatsComponent implements OnInit {
   lengthBreakdownChartAria: string;
   lengthBreakdownChart: any;
 
-  constructor(private statsService: UsageStatsService) {}
+  loading: boolean;
+
+  constructor(private statsService: UsageStatsService, private learningObjectService: LearningObjectService) {}
 
   ngOnInit() {
     this.buildOrganizationBreakdownChart();
@@ -87,6 +92,7 @@ export class UsageStatsComponent implements OnInit {
       this.buildCounterStats();
       this.buildOutcomeDistributionChart();
       this.buildLengthDistributionChart();
+      this.buildTopDownloads();
     });
 
     this.statsService.getUserStats().then(stats => {
@@ -107,28 +113,34 @@ export class UsageStatsComponent implements OnInit {
     // Empty the array to avoid pushing duplicates
     this.counterStats = [
         {
-          title: 'Learning Objects Released',
-          value: this.usageStats.objects.released
+          title: 'Released Learning Objects',
+          value: this.usageStats.objects.released,
+          class: 'released',
         },
         {
           title: 'Learning Objects Under Review',
-          value: this.usageStats.objects.review
+          value: this.usageStats.objects.review,
+          class: 'review',
         },
         {
           title: 'Quality-Assured Collections',
-          value: this.usageStats.objects.collections.number
+          value: this.usageStats.objects.collections.number,
+          class: 'collections',
         },
         {
           title: 'Downloads',
-          value: this.usageStats.objects.downloads
+          value: this.usageStats.objects.downloads,
+          class: 'downloads',
         },
         {
           title: 'Users',
-          value: this.usageStats.users.accounts
+          value: this.usageStats.users.accounts,
+          class: 'users'
         },
         {
           title: 'Affiliated Organizations',
-          value: this.usageStats.users.organizations
+          value: this.usageStats.users.organizations,
+          class: 'organizations',
         }
       ];
   }
@@ -312,6 +324,23 @@ export class UsageStatsComponent implements OnInit {
       ' ' + this.outcomeDistributionChart.data[i] + ', ';
     }
     this.outcomeDistributionReady = true;
+  }
+
+  /**
+   * Builds the top downloads list based on information coming back from
+   * Library Service
+   */
+  private async buildTopDownloads() {
+    this.loading = true;
+    for (let i = 0; i < this.usageStats.objects.topDownloads.length; i++) {
+      const cuid = this.usageStats.objects.topDownloads[i].learningObjectCuid;
+      // This will need to be fixed once we add logic to learning object service to verify the author. As of right now
+      // learning object service will return a released learning object as long as the learningObject cuid is found.
+      const object = await this.learningObjectService.getLearningObject(undefined, cuid);
+      object.metrics.downloads = this.usageStats.objects.topDownloads[i].downloads;
+      this.learningObjects.push(object);
+    }
+    this.loading = false;
   }
 
   /**
