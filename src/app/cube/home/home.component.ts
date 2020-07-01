@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
       review: 0,
       downloads: 0,
       collections: { number: 0 },
+      topDownloads: [],
       lengths: {
         nanomodule: 0,
         micromodule: 0,

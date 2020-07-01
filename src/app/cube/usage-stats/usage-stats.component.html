@@ -5,25 +5,34 @@
   <div class="stat-counters">
     <cube-counter-block *ngFor="let stat of counterStats" [stat]="stat"></cube-counter-block>
   </div>
-  <div class="charts">
+  <div class="charts top">
     <cube-distribution-chart [ariaLabel]="outcomeDistributionChartAria" class="chart" [chart]="outcomeDistributionChart" [moreInfoLink]="outcomeLearnMoreLink"
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
     <cube-distribution-chart [ariaLabel]="lengthBreakdownChartAria" class="chart" [chart]="lengthDistributionChart" [moreInfoLink]="lengthLearnMoreLink"
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
+  </div>
+  <div class="charts bottom">
     <cube-distribution-chart [ariaLabel]="organizationBreakdownChartAria" class="chart" [chart]="organizationBreakdownChart" 
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
+    <clark-top-downloads [learningObjects]="learningObjects" [loading]="loading"></clark-top-downloads>
   </div>
   <div class="heat-map-wrapper">
     <cube-heat-map class="heat-map"></cube-heat-map>
   </div>
-
   <div class="active-users-wrapper">
-    <div class="title" tabindex="0">
-      <span>Active Users</span>
+    <div>
+      <h2 class="title">Active Users</h2>
+      <div class="iframe-wrapper">
+        <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/1G5G89oiyTxdJ7yvfaP6trc0qI7n6epKI/page/ma0f"
+          frameborder="0" style="border:0"></iframe>
+      </div>
     </div>
-    <div class="iframe-wrapper">
-      <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/1G5G89oiyTxdJ7yvfaP6trc0qI7n6epKI/page/ma0f"
-        frameborder="0" style="border:0"></iframe>
+    <div>
+      <h2 class="title">Sessions</h2>
+      <div class="iframe-wrapper">
+        <iframe class="resp-iframe" src="https://datastudio.google.com/embed/reporting/0555e3e0-3b95-4143-83f0-e243292bfb74/page/tRERB"
+          frameborder="0" style="border:0"></iframe>
+      </div>
     </div>
   </div>
 </div>

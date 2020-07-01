@@ -2,18 +2,64 @@
 @import '~_vars.scss';
 .counter-wrapper {
   background: white;
-  border-radius: 2px;
+  border-radius: 4px;
+  width: 150px;
+  min-height: 200px;
   padding: 10px 15px;
+  text-align: center;
+  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.05);
+
+  .stats__icon {
+    display: inline-block;
+    font-size: $large;
+    width: 40px;
+    height: 40px;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $status_unreleased;
+    margin-top: 30px;
+    margin-left: 55px;
+    margin-bottom: 20px;
+
+    &.released {
+      color: $light-blue;
+      background: lighten($light-blue, 35);
+    }
+
+    &.downloads {
+      color: $orange;
+      background: lighten($orange, 35);
+    }
+
+    &.users {
+      color: rebeccapurple;
+      background: lighten(rebeccapurple, 35);
+    }
+
+    &.organizations {
+      color: $success-green;
+      background: lighten($success-green, 35);
+    }
+
+    &.collections {
+      color: $error-red;
+      background: lighten($error-red, 35);
+    }
+  }
 
   .title {
-    font-size: $normal;
-    color: $darker-grey;
+    font-size: $large;
+    color: $dark-grey;
     margin-bottom: 6px;
   }
 
   .number {
     font-weight: 600;
     font-size: $largest;
+    color: $darker-grey;
   }
 }
 

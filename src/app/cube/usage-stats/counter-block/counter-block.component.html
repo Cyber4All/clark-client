@@ -1,9 +1,16 @@
 <div class="counter-wrapper">
-  <div class="title" tabindex="0">
-    <span>{{stat?.title}}</span>
+  <div class="stats__icon" [ngClass]="stat.class">
+    <i *ngIf="stat?.title === 'Released Learning Objects' || stat?.title === 'Learning Objects Under Review'" class="far fa-cube"></i>
+    <i *ngIf="stat?.title === 'Quality-Assured Collections'" class="far fa-cubes"></i>
+    <i *ngIf="stat?.title === 'Downloads'" class="far fa-cloud-download"></i>
+    <i *ngIf="stat?.title === 'Users'" class="far fa-users"></i>
+    <i *ngIf="stat?.title === 'Affiliated Organizations'" class="far fa-university"></i>
   </div>
-  <div class="number" tabindex="0">
+  <div class="number">
     <span *ngIf="stat?.value === -1"><i class="fal fa-spinner-third fa-spin"></i></span>
     <span *ngIf="stat?.value > -1">{{ stat?.value | number }}</span>
+  </div>
+  <div class="title">
+    <span>{{stat?.title}}</span>
   </div>
 </div>
