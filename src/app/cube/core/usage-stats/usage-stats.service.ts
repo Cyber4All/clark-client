@@ -16,8 +16,6 @@ export class UsageStatsService {
   constructor(private http: HttpClient) {}
 
   async getLearningObjectStats(): Promise<LearningObjectStats> {
-    console.log(STATS_ROUTES.OUTCOMES_STATS);
-    console.log(STATS_ROUTES.LEARNING_OBJECT_STATS);
     const [objects, outcomes, library] = await Promise.all([
       this.http
         .get<Partial<LearningObjectStats>>(STATS_ROUTES.LEARNING_OBJECT_STATS)
