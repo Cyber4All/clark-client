@@ -16,6 +16,8 @@ export class UsageStatsService {
   constructor(private http: HttpClient) {}
 
   async getLearningObjectStats(): Promise<LearningObjectStats> {
+    console.log(STATS_ROUTES.OUTCOMES_STATS);
+    console.log(STATS_ROUTES.LEARNING_OBJECT_STATS);
     const [objects, outcomes, library] = await Promise.all([
       this.http
         .get<Partial<LearningObjectStats>>(STATS_ROUTES.LEARNING_OBJECT_STATS)
@@ -25,7 +27,7 @@ export class UsageStatsService {
         )
         .toPromise(),
       this.http
-        .get<BloomsDistribution>(STATS_ROUTES.OUTCOME_STATS)
+        .get<BloomsDistribution>(STATS_ROUTES.OUTCOMES_STATS)
         .pipe(
           retry(3),
           catchError(this.handleError)
@@ -40,7 +42,6 @@ export class UsageStatsService {
         .toPromise()
     ]);
 
-    console.log(outcomes);
     // map service data to LearningObjectStats object
     objects.outcomes = {
       remember_and_understand: outcomes.remember,
@@ -48,6 +49,7 @@ export class UsageStatsService {
       evaluate_and_synthesize: outcomes.evaluate,
     };
 
+    console.log(objects.outcomes);
     return { ...objects, ...library } as  LearningObjectStats;
   }
   getUserStats(): Promise<UserStats> {
