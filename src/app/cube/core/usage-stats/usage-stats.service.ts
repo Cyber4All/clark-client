@@ -47,7 +47,6 @@ export class UsageStatsService {
       evaluate_and_synthesize: outcomes.evaluate,
     };
 
-    console.log(objects.outcomes);
     return { ...objects, ...library } as  LearningObjectStats;
   }
   getUserStats(): Promise<UserStats> {
