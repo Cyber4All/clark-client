@@ -35,18 +35,38 @@
           </div>
         </clark-context-menu>
       </ng-container>
-      <button
-        *ngIf="showStatus"
-        #toggleFilterMenuElement
-        class="button neutral filters-button"
-        (activate)="toggleFilterMenu(true)"
-        [ngClass]="{ 'filters-button--down': filterMenuDown }"
-      >
-        <span class="filter-badge" *ngIf="filters.size">
-          {{ filters.size }}
-        </span>
-        All Statuses <i class="fas fa-chevron-down"></i>
-      </button>
+      <ng-container *ngIf="showStatus">
+        <button
+          #toggleFilterMenuElement
+          class="button neutral filters-button"
+          (activate)="toggleFilterMenu(true)"
+          [ngClass]="{ 'filters-button--down': filterMenuDown }"
+        >
+          <span class="filter-badge" *ngIf="filters.size">
+            {{ filters.size }}
+          </span>
+          All Statuses <i class="fas fa-chevron-down"></i>
+        </button>
+        <clark-context-menu
+          *ngIf="filterMenuDown"
+          class="filter-status"
+          [anchor]="toggleFilterMenuElement"
+          [offset]="{ top: 10, left: 10 }"
+          (close)="toggleFilterMenu(undefined)"
+        >
+          <div #contextMenu class="filter-status__container">
+            <ul>
+              <li 
+                *ngFor="let status of statuses"
+                [ngClass]="status"
+                (activate)="toggleStatusFilter(status)">
+                  <div *ngIf="filters.has(status)" class="indicator"></div>
+                  <i [ngClass]="getStatusIcon(status)"></i> {{ status | titlecase }}
+              </li>
+            </ul>
+          </div>
+        </clark-context-menu>
+      </ng-container>
       <a
         *ngIf="filters.size || selectedCollection"
         (activate)="clearAllFilters()"
@@ -56,22 +76,3 @@
     </div>
   </div>
 </div>
-<clark-context-menu
-  *ngIf="filterMenuDown"
-  class="filter-status"
-  [anchor]="toggleFilterMenuElement"
-  [offset]="{ top: 10, left: 10 }"
-  (close)="toggleFilterMenu(undefined)"
->
-  <div #contextMenu class="filter-status__container">
-    <ul>
-      <li 
-        *ngFor="let status of statuses"
-        [ngClass]="status"
-        (activate)="toggleStatusFilter(status)">
-          <div *ngIf="filters.has(status)" class="indicator"></div>
-          <i [ngClass]="getStatusIcon(status)"></i> {{ status | titlecase }}
-      </li>
-    </ul>
-  </div>
-</clark-context-menu>
