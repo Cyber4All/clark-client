@@ -48,7 +48,6 @@
       </div>
 </div>
 </ng-template>
-
 <ng-template #confirmation>
 
   <div class="change-author-banner">
@@ -60,7 +59,11 @@
   <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})). </div>
   <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Note that 
     changing the author will add the previous author onto the list of contributors for the object. 
-  </div>
+</div>
+<div *ngIf="hasChildren" class="change-author-content">
+  <div class="content-header padding-extra">This learning Object has children</div>
+  <div class="description sm padding-indent">By changing the authorship of {{ highlightedLearningObject.name | titlecase }} from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})).</div>
+</div>
 
 </div>
 <div class="change-author-confirmation">

@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { LearningObject, User } from '@entity';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '@env/environment';
+import { take, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'clark-change-author',
@@ -9,6 +13,7 @@ import { LearningObject, User } from '@entity';
 export class ChangeAuthorComponent implements OnInit {
 
   finalStage = false;
+  hasChildren = false;
   selectAuthorFailure: string;
   consentGiven = false;
   failureTimer;
@@ -16,11 +21,31 @@ export class ChangeAuthorComponent implements OnInit {
   @Input() highlightedLearningObject: LearningObject;
   @Input() statusDescription;
   @Output() close: EventEmitter<void> = new EventEmitter();
+  private headers = new HttpHeaders();
+  children: LearningObject[];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    const uri = `${environment.apiURL}/users/${encodeURIComponent(
+      this.highlightedLearningObject.author.username
+      )}/learning-objects/${encodeURIComponent(
+      this.highlightedLearningObject.id
+    )}/children`;
+
+    this.http.get(
+      uri,
+      { headers: this.headers, withCredentials: true }
+      ).pipe(
+      take(1),
+      catchError(e => of(e))
+    ).subscribe(object => {
+      if (object && object.length) {
+        this.hasChildren = true;
+        this.children = object;
+      }
+    });
   }
 
   toggleState(renderFinalStage: boolean) {
