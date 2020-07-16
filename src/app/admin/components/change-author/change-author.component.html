@@ -42,7 +42,7 @@
     <clark-change-author-user-dropdown [currentAuthor]="selectedAuthor" (newAuthor)="setSelectedAuthor($event)"></clark-change-author-user-dropdown>
 
       <div class="btn-group center">
-        <button class="button good" aria-label="Change author" (click)="toggleState(true)">Continue</button>
+        <button class="button good" aria-label="Change author" (activate)="toggleState(true)">Continue</button>
 
         <button class="button neutral" aria-label="Cancel" (activate)="close.emit()">Cancel</button>
       </div>
@@ -70,8 +70,8 @@
   </div>
   <div class="btn-group center">
 
-    <button class="button good" aria-label="Change author button">Change Author</button>
-    <button class="button neutral" aria-label="Back" (click)="toggleState(false)">Back</button>
+    <button class="button good" aria-label="Change author button" (activate)="changeAuthor()">Change Author</button>
+    <button class="button neutral" aria-label="Back" (activate)="toggleState(false)">Back</button>
 
   </div>
 </ng-template>

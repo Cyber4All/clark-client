@@ -71,6 +71,11 @@ export class ChangeAuthorComponent implements OnInit {
     }
   }
 
+  changeAuthor() {
+    console.log('bye');
+    this.close.emit();
+  }
+
   renderError() {
     this.selectAuthorFailure = 'Please select an author before continuing';
 
