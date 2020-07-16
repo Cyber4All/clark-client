@@ -13,6 +13,9 @@ import { StatusDescriptions } from 'environments/status-descriptions';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { take, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -43,13 +46,17 @@ export class LearningObjectListItemComponent implements OnChanges {
   // flags
   meatballOpen = false;
 
+  hasParents: boolean = false;
+
+  private headers = new HttpHeaders();
   constructor(
     private auth: AuthService,
     private statuses: StatusDescriptions,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private http: HttpClient,
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
       this.statuses
         .getDescription(
@@ -61,6 +68,7 @@ export class LearningObjectListItemComponent implements OnChanges {
           this.cd.detectChanges();
         });
     }
+    await this.checkForParents();
   }
 
   /**
@@ -82,6 +90,26 @@ export class LearningObjectListItemComponent implements OnChanges {
    */
   get verifiedEmail(): boolean {
     return this.auth.user.emailVerified;
+  }
+
+  async checkForParents() {
+    const parentUri = `${environment.apiURL}/users/${encodeURIComponent(
+      this.learningObject.author.username
+      )}/learning-objects/${encodeURIComponent(
+      this.learningObject.id
+    )}/parents`;
+
+    await this.http.get(
+      parentUri,
+      { headers: this.headers, withCredentials: true }
+      ).pipe(
+      take(1),
+      catchError(e => of(e))
+    ).subscribe(object => {
+      if (object && object.length) {
+        this.hasParents = true;
+      }
+    });
   }
 
 }
