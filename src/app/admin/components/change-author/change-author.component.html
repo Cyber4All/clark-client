@@ -53,29 +53,27 @@
   <div class="change-author-banner">
     <h3 class="banner-title">Change Author Confirmation </h3>
     <p class="banner-sub">Please confirm this change</p>
-</div>
-<div class="change-author-content">
-  <div class="content-header padding-extra">Are you sure you want to change this learning object's author?</div>
-  <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})). </div>
-  <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Note that 
-    changing the author will add the previous author onto the list of contributors for the object. 
-</div>
-<div *ngIf="hasChildren" class="change-author-content">
-  <div class="content-header padding-extra">This learning Object has children</div>
-  <div class="description sm padding-indent">By changing the authorship of {{ highlightedLearningObject.name | titlecase }} from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})).</div>
-</div>
+  </div>
+  <div class="change-author-content">
+    <div class="content-header padding-extra">Are you sure you want to change this learning object's author?</div>
+    <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})). </div>
+    <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Note that 
+      changing the author will add the previous author onto the list of contributors for the object. </div>
+  </div>
+  <div *ngIf="hasChildren">
+    <div class="content-header padding-extra">This learning object has {{ children.length }} children</div>
+    <div class="description sm padding-indent">By changing the author of "{{ highlightedLearningObject.name | titlecase }}" you will also be changing the authorship of its {{ children.length }} children.</div>
+  </div>
+  <div class="change-author-confirmation">
+    <input (change)="toggleConsent($event)" aria-label="Change author confirmation checkbox" name='change-author-checkbox' id='change-author-checkbox' type="checkbox">
+    <label for='change-author-checkbox' class="description xs">I have checked that the user I want to change authorship to is the correct user <span *ngIf="hasChildren">and I would like to change the authorship of all of its children</span></label>
+  </div>
+  <div class="btn-group center">
 
-</div>
-<div class="change-author-confirmation">
-  <input (change)="toggleConsent($event)" aria-label="Change author confirmation checkbox" name='change-author-checkbox' id='change-author-checkbox' type="checkbox">
-  <label for='change-author-checkbox' class="description xs">I have checked that the user I want to change authorship to is the correct user</label>
-</div>
-<div class="btn-group center">
+    <button class="button good" aria-label="Change author button">Change Author</button>
+    <button class="button neutral" aria-label="Back" (click)="toggleState(false)">Back</button>
 
-  <button class="button good" aria-label="Change author button">Change Author</button>
-  <button class="button neutral" aria-label="Back" (click)="toggleState(false)">Back</button>
-
-</div>
+  </div>
 </ng-template>
 
 
