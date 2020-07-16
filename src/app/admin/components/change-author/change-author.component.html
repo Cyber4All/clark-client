@@ -20,7 +20,7 @@
             <span *ngIf="highlightedLearningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
           </div>
           <div>
-            {{ highlightedLearningObject.name }}
+            {{ (highlightedLearningObject.name.length > 40) ? (highlightedLearningObject.name | slice:0:40) + '...' : highlightedLearningObject.name }}
           </div>
         </div>
         <div class="right">
