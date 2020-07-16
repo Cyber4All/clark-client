@@ -160,8 +160,8 @@ export class LearningOutcome {
    * @memberof LearningOutcome
    */
   private copyOutcome(outcome: any): void {
-    if (outcome._id) {
-      this.id = outcome._id;
+    if (outcome.id) {
+      this.id = outcome.id;
     }
     this.bloom = outcome.bloom || this.bloom;
     this.verb = outcome.verb || this.verb;

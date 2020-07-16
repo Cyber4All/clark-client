@@ -201,20 +201,20 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
       ${encodeURIComponent(learningObjectId)}/outcomes`;
   },
-  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string, username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/outcomes/${encodeURIComponent(outcomeId)}`;
+    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
-  CREATE_AN_OUTCOME(learningObjectId: string, username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+  CREATE_AN_OUTCOME(learningObjectId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/outcomes`;
+    )}/learning-outcomes`;
   },
-  DELETE_OUTCOME(learningObjectId: string, outcomeId: string, username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+  DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
-    )}/outcomes/${encodeURIComponent(outcomeId)}`;
+    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
   POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(

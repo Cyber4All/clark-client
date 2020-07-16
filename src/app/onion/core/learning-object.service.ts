@@ -203,23 +203,22 @@ export class LearningObjectService {
    *
    * @param {string} learningObjectId the id of the source learning object
    * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @param username The learning object author's username
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
   saveOutcome(
     learningObjectId: string,
-    outcome: { id: string; [key: string]: any },
-    username: string
+    outcome: { id: string; [key: string]: any }
   ): Promise<any> {
     const outcomeId = outcome.id;
     delete outcome.id;
 
+    console.log(outcomeId);
     return this.http
       .patch(
-        USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId, username),
-        outcome,
-        { headers: this.headers, withCredentials: true }
+        USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId),
+        { outcome },
+        { withCredentials: true }
       )
       .pipe(
         retry(3),
@@ -233,11 +232,10 @@ export class LearningObjectService {
    *
    * @param learningObjectId The learning object id to delete the outcome from
    * @param outcomeId The outcome Id
-   * @param username The username of the learning object author
    */
-  deleteOutcome(learningObjectId: string, outcomeId: string, username: string): Promise<any> {
+  deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
     return this.http
-      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId, username), { headers: this.headers, withCredentials: true })
+      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -614,10 +612,10 @@ export class LearningObjectService {
    * @param username The username of the learning object author
    * @memberof LearningObjectService
    */
-  addLearningOutcome(sourceId: string, outcome: LearningOutcome, username: string): Promise<any> {
+  addLearningOutcome(sourceId: string, outcome: LearningOutcome): Promise<any> {
     return this.http
       .post(
-        USER_ROUTES.CREATE_AN_OUTCOME(sourceId, username),
+        USER_ROUTES.CREATE_AN_OUTCOME(sourceId),
         outcome,
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
