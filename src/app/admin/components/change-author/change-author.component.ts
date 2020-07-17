@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { AuthorshipService } from '../../core/authorship.service';
 
 @Component({
   selector: 'clark-change-author',
@@ -24,7 +25,10 @@ export class ChangeAuthorComponent implements OnInit {
   private headers = new HttpHeaders();
   children: LearningObject[];
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authorshipService: AuthorshipService
+  ) { }
 
 
   async ngOnInit() {
@@ -71,8 +75,8 @@ export class ChangeAuthorComponent implements OnInit {
     }
   }
 
-  changeAuthor() {
-    console.log('bye');
+  async changeAuthor() {
+    await this.authorshipService.changeAuthor(this.highlightedLearningObject.author.username, this.highlightedLearningObject.cuid);
     this.close.emit();
   }
 
