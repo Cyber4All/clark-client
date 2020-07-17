@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ADMIN_ROUTES } from '../../../environments/route';
-import { retry, catchError, map } from 'rxjs/operators';
+import { retry, catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
@@ -11,13 +11,13 @@ export class AuthorshipService {
 
   constructor(private http: HttpClient) { }
 
-  async changeAuthorship(userId: string, cuid: string, newAuthor: string) {
+  async changeAuthorship(userId: string, id: string, newAuthor: string) {
     return this.http
-    .post(ADMIN_ROUTES.CHANGE_AUTHOR(userId, cuid),
+    .post(ADMIN_ROUTES.CHANGE_AUTHOR(userId, id),
     { 
       'fromUserID': userId,
       'toUserID': newAuthor,
-      'objectID': cuid,
+      'objectID': id,
     },
     { withCredentials: true, responseType: 'text'}
     )

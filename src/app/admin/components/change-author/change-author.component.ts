@@ -76,7 +76,10 @@ export class ChangeAuthorComponent implements OnInit {
   }
 
   async changeAuthor() {
-    await this.authorshipService.changeAuthor(this.highlightedLearningObject.author.username, this.highlightedLearningObject.cuid);
+    await this.authorshipService.changeAuthorship(
+      this.highlightedLearningObject.author.username,
+      this.highlightedLearningObject.id,
+      this.selectedAuthor.username);
     this.close.emit();
   }
 
