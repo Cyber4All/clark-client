@@ -41,8 +41,6 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   showChangeAuthor: boolean;
 
-  experimental = environment.experimental;
-
   // flags
   meatballOpen = false;
 
