@@ -5,6 +5,7 @@ import { environment } from '@env/environment';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthorshipService } from '../../core/authorship.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-change-author',
@@ -27,7 +28,8 @@ export class ChangeAuthorComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private authorshipService: AuthorshipService
+    private authorshipService: AuthorshipService,
+    public toaster: ToastrOvenService,
   ) { }
 
 
@@ -76,11 +78,18 @@ export class ChangeAuthorComponent implements OnInit {
   }
 
   async changeAuthor() {
-    await this.authorshipService.changeAuthorship(
+    this.authorshipService.changeAuthorship(
       this.highlightedLearningObject.author.username,
       this.highlightedLearningObject.id,
-      this.selectedAuthor.username);
-    this.close.emit();
+      this.selectedAuthor.username).then(
+        () => {
+          this.toaster.success('Success!', 'Learning Object Author changed.');
+          this.close.emit();
+        },
+        error => {
+          this.toaster.error('Error!', 'Unable to change authorship');
+        }
+      );
   }
 
   renderError() {
