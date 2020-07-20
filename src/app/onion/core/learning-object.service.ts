@@ -213,7 +213,6 @@ export class LearningObjectService {
     const outcomeId = outcome.id;
     delete outcome.id;
 
-    console.log(outcomeId);
     return this.http
       .patch(
         USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId),
