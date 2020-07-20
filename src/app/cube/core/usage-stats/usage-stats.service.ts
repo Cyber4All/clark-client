@@ -6,9 +6,11 @@ import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 interface BloomsDistribution {
-  remember: number;
-  apply: number;
-  evaluate: number;
+  blooms_distribution: {
+    remember: number;
+    apply: number;
+    evaluate: number;
+  }
 }
 
 @Injectable()
@@ -16,16 +18,9 @@ export class UsageStatsService {
   constructor(private http: HttpClient) {}
 
   async getLearningObjectStats(): Promise<LearningObjectStats> {
-    const [objects, outcomes, library] = await Promise.all([
+    const [objects, library] = await Promise.all([
       this.http
-        .get<Partial<LearningObjectStats>>(STATS_ROUTES.LEARNING_OBJECT_STATS)
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
-        .toPromise(),
-      this.http
-        .get<BloomsDistribution>(STATS_ROUTES.OUTCOMES_STATS)
+        .get<Partial<LearningObjectStats> & BloomsDistribution>(STATS_ROUTES.LEARNING_OBJECT_STATS)
         .pipe(
           retry(3),
           catchError(this.handleError)
@@ -42,10 +37,12 @@ export class UsageStatsService {
 
     // map service data to LearningObjectStats object
     objects.outcomes = {
-      remember_and_understand: outcomes.remember,
-      apply_and_analyze: outcomes.apply,
-      evaluate_and_synthesize: outcomes.evaluate,
+      remember_and_understand: objects.blooms_distribution.remember,
+      apply_and_analyze: objects.blooms_distribution.apply,
+      evaluate_and_synthesize: objects.blooms_distribution.evaluate,
     };
+
+    delete objects.blooms_distribution;
 
     return { ...objects, ...library } as  LearningObjectStats;
   }

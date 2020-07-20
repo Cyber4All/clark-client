@@ -426,7 +426,6 @@ export class BuilderStore {
         this.learningObject.id,
         (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
           .serviceId || id,
-        this._learningObject.author.username
       )
       .then(() => {
         this.serviceInteraction$.next(false);
@@ -915,13 +914,8 @@ export class BuilderStore {
         this.createLearningOutcome(newValue);
       } else {
         // this is an existing outcome, modify it
-        if (newValue.mappings) {
-          this.addGuideline(newValue);
-        } else if (newValue.deleteMapping) {
-          this.deleteGuideline(newValue.id, newValue.deleteMapping);
-        } else {
-          this.updateLearningOutcome(newValue);
-        }
+        console.log(newValue);
+        this.updateLearningOutcome(newValue);
       }
 
       if (this.objectCache$.getValue()) {
@@ -940,7 +934,7 @@ export class BuilderStore {
   private createLearningOutcome(newOutcome: LearningOutcome) {
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .addLearningOutcome(this.learningObject.id, newOutcome, this._learningObject.author.username)
+      .addLearningOutcome(this.learningObject.id, newOutcome)
       .then((serviceId: string) => {
         this.serviceInteraction$.next(false);
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
@@ -975,11 +969,12 @@ export class BuilderStore {
     if (updateValue.serviceId) {
       updateValue.id = updateValue.serviceId;
     }
+    console.log('outcome',outcome);
     // delete any lingering serviceId properties before sending to service
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .saveOutcome(this.learningObject.id, updateValue as any, this._learningObject.author.username)
+      .saveOutcome(this.learningObject.id, updateValue as any)
       .then(() => {
         this.serviceInteraction$.next(false);
       })
