@@ -6,6 +6,7 @@ import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthorshipService } from '../../core/authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { UserService } from '../../../../app/core/user.service';
 
 @Component({
   selector: 'clark-change-author',
@@ -30,6 +31,7 @@ export class ChangeAuthorComponent implements OnInit {
     private http: HttpClient,
     private authorshipService: AuthorshipService,
     public toaster: ToastrOvenService,
+    private userService: UserService,
   ) { }
 
 
@@ -78,8 +80,10 @@ export class ChangeAuthorComponent implements OnInit {
   }
 
   async changeAuthor() {
+    const author: User = await this.userService.getUser(this.highlightedLearningObject.author.username);
+    console.log(author);
     this.authorshipService.changeAuthorship(
-      this.highlightedLearningObject.author.username,
+      author,
       this.highlightedLearningObject.id,
       this.selectedAuthor.username).then(
         () => {
@@ -87,7 +91,7 @@ export class ChangeAuthorComponent implements OnInit {
           this.close.emit();
         },
         error => {
-          this.toaster.error('Error!', 'Unable to change authorship');
+          this.toaster.error('Error!', 'Unable to change authorship at this time.');
         }
       );
   }
