@@ -22,7 +22,7 @@ export const ADMIN_ROUTES = {
     return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
   },
   CHANGE_AUTHOR(userId: string, cuid: string): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learningObjects/${cuid}/change-author`;
+    return `${environment.apiURL}/admin/users/${encodeURIComponent(userId)}/learning-objects/${cuid}/change-author`;
   }
 };
 
