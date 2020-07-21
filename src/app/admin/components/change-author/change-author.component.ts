@@ -81,7 +81,6 @@ export class ChangeAuthorComponent implements OnInit {
 
   async changeAuthor() {
     const author: User = await this.userService.getUser(this.highlightedLearningObject.author.username);
-    console.log(author);
     this.authorshipService.changeAuthorship(
       author,
       this.highlightedLearningObject.id,
