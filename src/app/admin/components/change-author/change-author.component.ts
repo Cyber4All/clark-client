@@ -84,7 +84,7 @@ export class ChangeAuthorComponent implements OnInit {
     this.authorshipService.changeAuthorship(
       author,
       this.highlightedLearningObject.id,
-      this.selectedAuthor.username).then(
+      this.selectedAuthor.id).then(
         () => {
           this.toaster.success('Success!', 'Learning Object Author changed.');
           this.close.emit();

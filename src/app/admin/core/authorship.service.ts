@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ADMIN_ROUTES } from '../../../environments/route';
 import { retry, catchError } from 'rxjs/operators';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { User } from '@entity';
 
@@ -10,7 +10,9 @@ import { User } from '@entity';
 })
 export class AuthorshipService {
 
-  constructor(private http: HttpClient) { }
+  private headers = new HttpHeaders();
+
+  constructor(private http: HttpClient) {}
 
   async changeAuthorship(oldAuthor: User, id: string, newAuthor: string) {
     return this.http
