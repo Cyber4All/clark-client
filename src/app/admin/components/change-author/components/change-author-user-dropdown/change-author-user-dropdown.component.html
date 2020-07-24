@@ -4,7 +4,7 @@
     <input type="text" aria-label="Find users by their name, username, or email address." class="user-dropdown__search-input" placeholder="Search for authors" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
   </div>
     <ul *ngIf="showDropdown" class="user-dropdown__list">
-        <ng-container *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"></ng-container>
+        <ng-container *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
     </ul>
 
     <div *ngIf="selectedAuthor && selectedAuthor.username" class="author-details-container">

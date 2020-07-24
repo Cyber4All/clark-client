@@ -100,8 +100,8 @@ export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
           }
         }
         this.searchResults = results;
-        this.loading = false;
       });
+      this.loading = false;
     }
   }
 
