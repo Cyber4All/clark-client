@@ -9,6 +9,7 @@ export enum SortType {
 }
 
 export interface Query {
+  [index: string]: any;
   currPage?: number;
   limit?: number;
   length?: string[] | string;
@@ -23,6 +24,7 @@ export interface Query {
   collection?: string;
   status?: string[];
   topic?: string;
+  fileTypes?: string[];
 }
 
 export interface MappingQuery extends Query {

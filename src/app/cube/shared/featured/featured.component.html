@@ -1,14 +1,17 @@
 <div class="title">
 </div>
 
-<div *ngIf="learningObjects.length > 0; else noObjectsTemplate" class="card-container">
+<div *ngIf="learningObjects?.length > 0; else noObjectsTemplate" class="card-container">
   <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" learningObjectCard
     [loading]="loading">
   </learning-object-component>
 </div>
 
 <ng-template #noObjectsTemplate>
-  <div class="no-objects">
-    There are no Learning Objects released for this collection. Click <a routerLink="/browse">here</a> to browse all.
+  <div *ngIf="collectionName !== 'plan c'" class="no-objects">
+    Click <a routerLink="/browse">here</a> to browse all.
+  </div>
+  <div *ngIf="collectionName === 'plan c'" class="no-objects">
+    Click <a [routerLink]="['/browse']" [queryParams]="{ fileTypes: 'video' }">here</a> to browse Learning Objects with video content.
   </div>
 </ng-template>

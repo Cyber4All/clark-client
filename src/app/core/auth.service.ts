@@ -8,7 +8,6 @@ import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@entity';
-import { Headers } from '@angular/http';
 import { catchError, retry } from 'rxjs/operators';
 
 export enum DOWNLOAD_STATUS {
@@ -46,7 +45,6 @@ const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
 @Injectable()
 export class AuthService {
   user: AuthUser;
-  headers = new Headers();
   httpHeaders = new HttpHeaders();
   inUse: object;
   isLoggedIn = new BehaviorSubject<boolean>(false);

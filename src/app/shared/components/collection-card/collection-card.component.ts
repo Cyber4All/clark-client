@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CollectionCardComponent implements OnInit {
 
+  @Input() homepage = false;
   @Input() collection;
   pictureLocation: string;
 

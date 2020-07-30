@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export interface CounterStat {
   title: string;
   value: number;
+  class?: string;
 }
 
 @Component({

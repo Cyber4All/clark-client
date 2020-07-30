@@ -25,6 +25,8 @@ import {
   animate,
   transition
 } from '@angular/animations';
+import { UserService } from 'app/core/user.service';
+
 
 @Component({
   selector: 'clark-navbar',
@@ -69,6 +71,9 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   url: string;
 
+  notifications: [];
+  libraryNotificationCount = 0;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -87,7 +92,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     public authService: AuthService,
-    public nav: NavbarService
+    public nav: NavbarService,
+    private userService: UserService,
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -129,6 +135,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.subs.push(
       this.authService.isLoggedIn.subscribe(val => {
         this.loggedin = val ? true : false;
+        this.getNotifications();
       })
     );
   }
@@ -140,6 +147,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
     } else {
       this.hideNavbar = false;
     }
+  }
+
+  async getNotifications() {
+    await this.userService.getNotificationCount(this.authService.username);
   }
 
   showSearch() {

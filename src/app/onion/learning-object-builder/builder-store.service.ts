@@ -425,7 +425,7 @@ export class BuilderStore {
       .deleteOutcome(
         this.learningObject.id,
         (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
-          .serviceId || id
+          .serviceId || id,
       )
       .then(() => {
         this.serviceInteraction$.next(false);
@@ -512,7 +512,7 @@ export class BuilderStore {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        mappings: outcome.mappings.map(x => x.id)
+        deleteMapping: standardOutcome.id
       },
       true
     );
@@ -608,7 +608,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private updateUrl(index: number, url: LearningObject.Material.Url): void {
-    const validUrlExpr = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    const validUrlExpr = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+\%,;=.]+$/;
     if (url.url.match(validUrlExpr) && url.title !== '') {
       this.learningObject.materials.urls[index] = url;
       this.learningObjectEvent.next(this.learningObject);
@@ -914,6 +914,7 @@ export class BuilderStore {
         this.createLearningOutcome(newValue);
       } else {
         // this is an existing outcome, modify it
+        console.log(newValue);
         this.updateLearningOutcome(newValue);
       }
 
@@ -968,11 +969,47 @@ export class BuilderStore {
     if (updateValue.serviceId) {
       updateValue.id = updateValue.serviceId;
     }
+    console.log('outcome',outcome);
     // delete any lingering serviceId properties before sending to service
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
     this.learningObjectService
       .saveOutcome(this.learningObject.id, updateValue as any)
+      .then(() => {
+        this.serviceInteraction$.next(false);
+      })
+      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
+  }
+
+
+  /**
+   * Handles service interaction for adding a mapping to a LearningOutcome
+   *
+   * @private
+   * @param {Partial<LearningOutcome>} outcome
+   * @memberof BuilderStore
+   */
+  private addGuideline(outcome: Partial<LearningOutcome>) {
+    this.serviceInteraction$.next(true);
+    this.learningObjectService
+      .addGuideline(this.learningObject.id, outcome, this._learningObject.author.username)
+      .then(() => {
+        this.serviceInteraction$.next(false);
+      })
+      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
+  }
+
+    /**
+   * Handles service interaction for deleting a mapping to a LearningOutcome
+   *
+   * @private
+   * @param {Partial<LearningOutcome>} outcome
+   * @memberof BuilderStore
+   */
+  private deleteGuideline(outcomeId: string, mappingId: string) {
+    this.serviceInteraction$.next(true);
+    this.learningObjectService
+      .deleteGuideline(this.learningObject.id, outcomeId, this._learningObject.author.username, mappingId)
       .then(() => {
         this.serviceInteraction$.next(false);
       })

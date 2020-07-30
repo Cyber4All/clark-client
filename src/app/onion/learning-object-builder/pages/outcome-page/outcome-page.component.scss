@@ -1,5 +1,10 @@
 @import '~_vars.scss';
 
+.main {
+  padding-bottom: 80px;
+  border-top: 1px solid $light-grey;
+  border-width: thin;
+}
 .title {
   font-size: $large;
   color: $darker-grey;
@@ -7,12 +12,17 @@
 }
 
 .top {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   padding: 20px;
-  margin-bottom: 20px;
+  margin: 20px;
+  .title {
+    float: left;
+  }
+}
+
+.add-button {
+  display: flex;
+  float: right;
+  padding: 20px;
 }
 
 .no-outcomes {

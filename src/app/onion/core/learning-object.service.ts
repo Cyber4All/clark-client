@@ -26,7 +26,8 @@ export class LearningObjectService {
     private cookies: CookieService
   ) {
     const token = this.cookies.get('presence');
-    this.headers.append('Content-Type', 'application/json');
+    this.headers = new HttpHeaders().append('Content-Type', 'application/json');
+    this.headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
   }
 
   /**
@@ -225,9 +226,72 @@ export class LearningObjectService {
       .toPromise();
   }
 
+  /**
+   * Deletes an outcome on a given learning object
+   *
+   * @param learningObjectId The learning object id to delete the outcome from
+   * @param outcomeId The outcome Id
+   */
   deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
     return this.http
       .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Add a guideline to the guidelines array of a Learning Outcome
+   *
+   * @param {string} learningObjectId the id of the source learning object
+   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
+   * @param username The learning object author's username
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
+  addGuideline(
+    learningObjectId: string,
+    outcome: Partial<LearningOutcome>,
+    username: string
+  ): Promise<any> {
+    const outcomeId = outcome.id;
+
+    return this.http
+      .post(
+        USER_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
+        { guidelineID: outcome.mappings[outcome.mappings.length - 1] },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Add a guideline to the guidelines array of a Learning Outcome
+   *
+   * @param {string} learningObjectId the id of the source learning object
+   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
+   * @param username The learning object author's username
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
+  deleteGuideline(
+    learningObjectId: string,
+    outcome: string,
+    username: string,
+    mappingId: string,
+  ): Promise<any> {
+
+    return this.http
+      .delete(
+        USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
+        { headers: this.headers, withCredentials: true }
+      )
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -361,11 +425,11 @@ export class LearningObjectService {
   }
 
   /**
-   * Fetchs the parents of a learning object
-   * @param id of learing object
+   * Fetches the parents of a learning object
+   * @param id of learning object
    */
-  fetchParents(id: string) {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id);
+  fetchParents(username: string, id: string) {
+    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(username, id);
     return this.http.get<LearningObject[]>(route, { withCredentials: true }).toPromise().then(parents => {
       return parents;
     });
@@ -544,14 +608,15 @@ export class LearningObjectService {
    *
    * @param {LearningObject} source the learningObject
    * @param {LearningOutcome} outcome
+   * @param username The username of the learning object author
    * @memberof LearningObjectService
    */
   addLearningOutcome(sourceId: string, outcome: LearningOutcome): Promise<any> {
     return this.http
       .post(
         USER_ROUTES.CREATE_AN_OUTCOME(sourceId),
-        { source: sourceId, outcome },
-        { withCredentials: true, responseType: 'text' }
+        outcome,
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
         retry(3),

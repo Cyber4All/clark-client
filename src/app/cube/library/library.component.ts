@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
 import { LibraryService } from 'app/core/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -10,13 +10,38 @@ import { UserService } from 'app/core/user.service';
 import { RatingService } from 'app/core/rating.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
-
+import { trigger, style, group, transition, animate, query } from '@angular/animations';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
-  styleUrls: ['./library.component.scss']
+  styleUrls: ['./library.component.scss'],
+  animations: [
+    trigger('slider', [
+      transition(':increment', group([
+        query(':enter', [
+          style({
+            transform: 'translateX(100%)',
+            opacity: 0,
+            zIndex: 1,
+            'pointer-events': 'none',
+          }),
+          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
+        ]),
+      ])),
+      transition(':decrement', group([
+        query(':enter', [
+          style({
+            transform: 'translateX(-100%)',
+            opacity: 1,
+            'pointer-events': 'none',
+          }),
+          animate('0.4s ease-out', style('*'))
+        ]),
+      ]))
+    ])
+  ]
 })
-export class LibraryComponent implements OnInit, OnDestroy{
+export class LibraryComponent implements OnInit, OnDestroy {
 
   loading: boolean;
   serviceError: boolean;
@@ -25,6 +50,7 @@ export class LibraryComponent implements OnInit, OnDestroy{
   destroyed$ = new Subject<void>();
   canDownload = false;
   notifications: { text: string, timestamp: string, link: string, attributes: any }[];
+  localNotifications: { text: string, timestamp: string, link: string, attributes: any }[] = [];
   notificationPages = {};
   notificationPageKeys = [];
   showDownloadModal = false;
@@ -37,7 +63,12 @@ export class LibraryComponent implements OnInit, OnDestroy{
   lastPageNumber;
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
-  lastNotificationsPageNumber;
+  lastNotificationsPageNumber = 1;
+  notificationCount = 0;
+  // Notification Card variables
+  notificationCardCount = 0;
+  lastIndex = 0;
+  firstIndex = 0;
 
 
   constructor(
@@ -49,11 +80,40 @@ export class LibraryComponent implements OnInit, OnDestroy{
     private ratings: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
-  ) { }
+  ) {}
 
-  ngOnInit() {
+  @HostListener('window:resize', ['$event'])
+  async getScreenSize() {
+    const width = window.innerWidth;
+    const previousCardCount = this.notificationCardCount;
+    // Mobile devices
+    if (width <= 750) {
+      this.notificationCardCount = 1;
+      // Normal tablets
+    } else if (width > 750 && width <= 1050) {
+      this.notificationCardCount = 2;
+      // Smaller Desktops
+    } else if (width > 1050 && width <= 1350) {
+      this.notificationCardCount = 3;
+    } else if (width > 1350 && width <= 1650) {
+      this.notificationCardCount = 4;
+      // Bigger Desktops
+    } else if (width > 1650) {
+      this.notificationCardCount = 5;
+    }
+    if (previousCardCount !== this.notificationCardCount) {
+      if (this.localNotifications.length <= 0) {
+        await this.getNotifications(this.currentNotificationsPageNumber);
+      }
+      this.firstIndex = 0;
+      this.lastIndex = this.firstIndex + this.notificationCardCount;
+      this.setNotifications(this.firstIndex);
+    }
+  }
+
+  async ngOnInit() {
+    this.getScreenSize();
     this.loadLibrary();
-    this.getNotifications(this.currentNotificationsPageNumber);
   }
 
   async loadLibrary() {
@@ -70,31 +130,100 @@ export class LibraryComponent implements OnInit, OnDestroy{
       });
       this.loading = false;
     } catch (e) {
+      console.error(e);
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;
     }
   }
 
-  async getNotifications(page: number) {
-    const result = await this.user.getNotifications(this.authService.user.username, page, 5);
-    this.notifications = result.notifications;
+  /**
+   * This function retrieves the notifications from Notification service
+   * @param apiPage The page that we need to retrieve from Notifications service
+   */
+  async getNotifications(apiPage: number) {
+    let result = { 'notifications': [], 'lastPage': 0 };
+    const notificationCount = await this.user.getNotifications(this.authService.username, 1, 1);
+    this.notificationCount = notificationCount.lastPage;
+    if (this.notificationCount <= 20) {
+      result = await this.user.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
+    } else {
+      result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
+    }
+    this.localNotifications = [...this.localNotifications, ...result.notifications];
     this.lastNotificationsPageNumber = result.lastPage;
-    this.currentNotificationsPageNumber = page;
+    if (this.lastNotificationsPageNumber === this.localNotifications.length) {
+      this.currentNotificationsPageNumber = this.localNotifications.length;
+    } else {
+      this.currentNotificationsPageNumber = apiPage;
+    }
+  }
+
+  /**
+   * This will set the notifications array according to the number of cards that are to be displayed and
+   * the page number the user is currently on.
+   * There are 5 cases covered in this function:
+   * 1. The index of the localNotifications array being requested is equal to the firstIndex of the notification array
+   * 2. The index of the localNotifications array being requested is less than the
+   *    first Index and there are more than enough in the array to display
+   * 3. The index of the localNotifications array being requested is less than the first Index and there are not enough left in the array
+   *    to display
+   * 4. The index of the localNotifications array being requested is larger than the array and there are plenty left in the array to show
+   * 5. The index of the localNotifications array being requested is larger than the array and there are no enough left
+   *    in the array to display
+   * @param page The current page that the user is on
+   */
+  async setNotifications(index: number) {
+    if (index === this.firstIndex) {
+      this.lastIndex = this.notificationCardCount;
+    } else if (index < this.firstIndex && index >= 0) {
+      this.goBackNotifications();
+    } else if (index > this.firstIndex) {
+      await this.goForwardNotifications();
+    }
+    this.notifications = [];
+    this.notifications = this.localNotifications.slice(this.firstIndex, this.lastIndex);
+  }
+
+  goBackNotifications() {
+    if ((this.firstIndex - this.notificationCardCount >= 0)) {
+      this.firstIndex = this.firstIndex - this.notificationCardCount;
+      this.lastIndex = this.firstIndex + this.notificationCardCount;
+    } else if ((this.firstIndex - this.notificationCardCount <= 0)) {
+      this.firstIndex = this.firstIndex - (this.localNotifications.length - this.notificationCardCount);
+      this.lastIndex = this.firstIndex + this.notificationCardCount;
+    }
+  }
+
+  async goForwardNotifications() {
+    if ((this.lastIndex + this.notificationCardCount) <= this.localNotifications.length) {
+      this.firstIndex = this.firstIndex + this.notificationCardCount;
+      this.lastIndex = this.lastIndex + this.notificationCardCount;
+    } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length
+                && this.lastIndex !== this.localNotifications.length) {
+      if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
+        await this.getNotifications(this.currentNotificationsPageNumber + 1);
+      }
+      this.firstIndex = this.lastIndex;
+      this.lastIndex = this.localNotifications.length;
+    }
   }
 
   async deleteNotification(notification: any) {
     await this.user.deleteNotification(this.authService.user.username, notification.id);
+    this.localNotifications = [];
     await this.getNotifications(this.currentPageNumber);
+    this.setNotifications(this.firstIndex);
   }
 
   async removeItem() {
     try {
       await this.libraryService.removeFromLibrary(this.libraryItemToDelete.cuid);
       this.libraryItems = (await this.libraryService.getLibrary(1, 10)).cartItems;
+      this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 

@@ -6,7 +6,11 @@ import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 interface BloomsDistribution {
-  blooms_distribution: { remember: number, apply: number, evaluate: number };
+  blooms_distribution: {
+    remember: number;
+    apply: number;
+    evaluate: number;
+  }
 }
 
 @Injectable()
@@ -38,7 +42,6 @@ export class UsageStatsService {
       evaluate_and_synthesize: objects.blooms_distribution.evaluate,
     };
 
-    // delete irrelevant property
     delete objects.blooms_distribution;
 
     return { ...objects, ...library } as  LearningObjectStats;

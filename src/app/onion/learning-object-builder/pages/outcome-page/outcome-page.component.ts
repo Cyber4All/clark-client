@@ -26,6 +26,8 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   // passed outcome id from query params
   passedId: string;
 
+  saveable: boolean;
+
   constructor(
     private toaster: ToastrOvenService,
     private store: BuilderStore,
@@ -56,6 +58,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
           this.outcomes = payload;
         }
       });
+      this.validateNewOutcome();
   }
 
   /**
@@ -99,6 +102,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   mutateOutcome(id: string, params: any) {
     this.store.execute(actions.MUTATE_OUTCOME, { id, params }).then((outcome: LearningOutcome) => {
       this.validator.validateLearningOutcome(outcome);
+      this.validateNewOutcome();
     });
   }
 
@@ -107,6 +111,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
       // TODO remove this
       const outcome = this.store.outcomeEvent.getValue().get(id);
       this.validator.validateLearningOutcome(outcome);
+      this.validateNewOutcome();
       setTimeout(() => {
         this.activeOutcome = id;
       }, 100);
@@ -115,6 +120,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   deleteOutcome(id: string) {
     this.store.execute(actions.DELETE_OUTCOME, { id }).then(() => {
+      this.validateNewOutcome();
       if (this.iterableOutcomes.length) {
         setTimeout(() => {
           this.activeOutcome = this.iterableOutcomes[
@@ -141,6 +147,20 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
         : actions.UNMAP_STANDARD_OUTCOME,
       { id: this.activeOutcome, standardOutcome: data.standardOutcome }
     );
+  }
+
+  // This functions validates that an outcome is valid. if valid, enables the Add Outcome button
+  validateNewOutcome() {
+    const lastOutcome = this.iterableOutcomes[this.iterableOutcomes.length - 1];
+    if (lastOutcome === undefined) {
+      this.saveable = true;
+    } else {
+      if (lastOutcome.bloom !== '' && lastOutcome.text !== '' && lastOutcome.verb !== '') {
+        this.saveable = true;
+      } else {
+        this.saveable = false;
+      }
+    }
   }
 
   ngOnDestroy() {

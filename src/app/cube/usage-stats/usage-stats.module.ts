@@ -6,6 +6,7 @@ import { DistributionChartComponent } from './distribution-chart/distribution-ch
 import { UsageStatsRoutingModule } from './usage-stats.router';
 import { HeatMapComponent } from './heat-map/heat-map.component';
 import { CounterBlockComponent } from './counter-block/counter-block.component';
+import { TopDownloadsComponent } from './top-downloads/top-downloads.component';
 
 @NgModule({
   imports: [CommonModule, ChartsModule, UsageStatsRoutingModule],
@@ -14,7 +15,8 @@ import { CounterBlockComponent } from './counter-block/counter-block.component';
     UsageStatsComponent,
     DistributionChartComponent,
     HeatMapComponent,
-    CounterBlockComponent
+    CounterBlockComponent,
+    TopDownloadsComponent
   ],
   providers: []
 })

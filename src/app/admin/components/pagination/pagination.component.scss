@@ -1,0 +1,38 @@
+@import '~_vars.scss';
+
+.pagination-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.pagination-container__button {
+    color: $dark-grey;
+    font-size: $small;
+    margin: 0 10px;
+}
+
+.pagination-container__button:hover {
+    color: $light-blue;
+    cursor: pointer;
+}
+
+.pagination-container__arrow-button {
+    color: white;
+    background-color: $light-blue;
+    border-radius: 5px;
+    font-size: $small;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.selected { 
+    color: $light-blue;
+    font-size: $normal;
+    font-weight: 500;
+}
+
+button {
+    border: none;
+    outline: none;
+    background: transparent;
+}

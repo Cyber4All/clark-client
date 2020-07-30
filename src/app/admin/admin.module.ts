@@ -19,8 +19,13 @@ import { LearningObjectListItemComponent } from './components/learning-object-li
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { TopicsComponent } from './pages/topics/topics.component';
 import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
-
-
+import { ChangeAuthorComponent } from './components/change-author/change-author.component';
+import { ChangeAuthorUserDropdownComponent } from './components/change-author/components/change-author-user-dropdown/change-author-user-dropdown.component';
+import { FeaturedComponent } from './pages/featured/featured.component';
+import { DraggableDashboardItemComponent } from './components/draggable-dashboard-item/draggable-dashboard-item.component';
+import { DraggableLearningObjectComponent } from './components/draggable-learning-object/draggable-learning-object.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PaginationComponent } from './components/pagination/pagination.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -36,6 +41,12 @@ import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
     PrivilegesListComponent,
     LearningObjectListItemComponent,
     TopicsComponent,
+    ChangeAuthorComponent,
+    ChangeAuthorUserDropdownComponent,
+    FeaturedComponent,
+    DraggableDashboardItemComponent,
+    DraggableLearningObjectComponent,
+    PaginationComponent,
   ],
   imports: [
     CoreModule.forRoot(),
@@ -47,7 +58,6 @@ import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
     SharedModule,
     VirtualScrollerModule,
     CubeSharedModule,
-    
   ],
 })
 export class AdminModule { }

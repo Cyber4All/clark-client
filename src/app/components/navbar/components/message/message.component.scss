@@ -12,13 +12,16 @@
     margin: auto;
     font-size: $normal;
     font-weight: normal;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
+    text-align: center;
 
-    .icon {
-      margin-right: 10px;
+    .status-link {
+      color: white;
+      margin-left: 5px;
+      text-decoration: underline;
+    }
+
+    a:hover, a:focus{
+      cursor: pointer;
     }
   }
 
@@ -36,4 +39,8 @@
     background: #0B78CB;
     color: white;
   }
+}
+
+.status-link {
+  display: block;
 }

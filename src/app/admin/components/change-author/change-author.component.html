@@ -1,0 +1,79 @@
+<ng-container *ngTemplateOutlet="finalStage ? confirmation : chooseAuthor"></ng-container>
+
+<ng-template #chooseAuthor>
+  <div class="change-author-banner" >
+    <h3 class="banner-title">Change Learning Object Author </h3>
+    <p class="banner-sub">The previous author will be added to the list of contributors</p>
+</div>
+<div class="change-author-content">
+<div class="content-header"> Learning Object </div>
+
+<div class="card-container">
+    <div class="row-item">
+        <div class="left">
+          <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + highlightedLearningObject.status + '. ' + statusDescription" [ngClass]="highlightedLearningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
+            <span *ngIf="highlightedLearningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'review'"><i class="fas fa-sync"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'released'"><i class="fas fa-eye"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
+          </div>
+          <div>
+            {{ (highlightedLearningObject.name.length > 40) ? (highlightedLearningObject.name | slice:0:40) + '...' : highlightedLearningObject.name }}
+          </div>
+        </div>
+        <div class="right">
+            <div>
+                {{ highlightedLearningObject.author.name | titlecase }}
+              </div>
+              <div>{{ highlightedLearningObject.length | titlecase }}</div>
+              <div>{{ highlightedLearningObject.date | date:'longDate' }}</div>
+        </div>
+       
+
+      </div>
+</div>
+<div class="content-header"> New Author </div>
+<div class="error-wrapper">
+  <div aria-live="assertive" *ngIf='selectAuthorFailure && selectAuthorFailure.length > 0' class="error" ><i  class="fas fa-info-circle"></i> {{ selectAuthorFailure || '' }} </div>
+
+</div>
+    <clark-change-author-user-dropdown [currentAuthor]="selectedAuthor" (newAuthor)="setSelectedAuthor($event)"></clark-change-author-user-dropdown>
+
+      <div class="btn-group center">
+        <button class="button good" aria-label="Change author" (activate)="toggleState(true)">Continue</button>
+
+        <button class="button neutral" aria-label="Cancel" (activate)="close.emit()">Cancel</button>
+      </div>
+</div>
+</ng-template>
+<ng-template #confirmation>
+
+  <div class="change-author-banner">
+    <h3 class="banner-title">Change Author Confirmation </h3>
+    <p class="banner-sub">Please confirm this change</p>
+  </div>
+  <div class="change-author-content">
+    <div class="content-header padding-extra">Are you sure you want to change this learning object's author?</div>
+    <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})). </div>
+    <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Note that 
+      changing the author will add the previous author onto the list of contributors for the object. </div>
+  </div>
+  <div *ngIf="hasChildren">
+    <div class="content-header padding-extra">This learning object has {{ children.length }} children</div>
+    <div class="description sm padding-indent">By changing the author of "{{ highlightedLearningObject.name | titlecase }}" you will also be changing the authorship of its {{ children.length }} children.</div>
+  </div>
+  <div class="change-author-confirmation">
+    <input (change)="toggleConsent($event)" aria-label="Change author confirmation checkbox" name='change-author-checkbox' id='change-author-checkbox' type="checkbox">
+    <label for='change-author-checkbox' class="description xs">I have checked that the user I want to change authorship to is the correct user <span *ngIf="hasChildren">and I would like to change the authorship of all of its children</span></label>
+  </div>
+  <div class="btn-group center">
+
+    <button class="button good" aria-label="Change author button" (activate)="changeAuthor()">Change Author</button>
+    <button class="button neutral" aria-label="Back" (activate)="toggleState(false)">Back</button>
+
+  </div>
+</ng-template>
+
+

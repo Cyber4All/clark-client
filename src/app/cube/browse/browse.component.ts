@@ -43,6 +43,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     sortType: undefined,
     collection: '',
     topic: '',
+    fileTypes: [],
   };
 
   tooltipText = {
@@ -165,7 +166,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       */
       try {
         // fill outcomes array in filters
-        this.outcomeSources = await this.outcomeService.getSources();
+        this.outcomeSources = await this.outcomeService.getSources().toPromise();
         this.filters[3].values = this.outcomeSources.map(o => ({ name: o }));
       } catch (err) {
         // remove the guidelines section of the filters since we couldn't load guidelines
