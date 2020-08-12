@@ -108,6 +108,16 @@
             .item_icon {
                 color: $light-blue;
                 font-size: 48px;
+
+                &.bronze {
+                    color: #d2b48c;
+                }
+                &.silver {
+                    color: $light-grey;
+                }
+                &.gold {
+                    color: #D4AF37;
+                }
             }
         }
     }
