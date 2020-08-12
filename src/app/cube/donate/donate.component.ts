@@ -13,7 +13,7 @@ export class DonateComponent implements OnInit {
   }
 
   donate() {
-    window.open('https://towsonuniversity.givingfuel.com/towson-fund', '_blank');
+    window.open('https://towsonuniversity.givingfuel.com/cybersecurity-education-initiatives', '_blank');
   }
 
 }
