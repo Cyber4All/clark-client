@@ -44,7 +44,7 @@
     }
 
     .header {
-        color: $darker-grey;
+        color: $light-blue;
         font-size: $largest;
         text-transform: uppercase;
         font-weight: bold;
@@ -64,8 +64,13 @@
         color: $darker-grey;
         font-size: $large;
         font-weight: normal;
-        padding: 10px;
         z-index: 2;
+    }
+
+    h1 {
+        color: $light-blue;
+        font-size: $largest;
+        width: 100%;
     }
 
     h2 {
@@ -73,21 +78,48 @@
         font-size: $larger;
         width: 100%;
     }
-
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+    h3 {
+        color: $dark-grey;
+        font-size: $large;
         width: 100%;
     }
-}
 
-@media (max-width: 700px) {
-    .wrapper {
-        margin: 20px auto 0;
-        padding: 0 20px 20px;
+    .donation_methods {
+        .corporate, .contributor { 
+            padding-top: 20px;
 
-        .grid {
-            grid-template-columns: 1fr;
+            .level {
+                padding: 20px;
+    
+                &.corporate {
+                    border-color: $light-blue;
+                    border-style: solid;
+                    border-radius: 3px;
+                    width: 60%;
+                    margin: 20px auto;
+                    padding-top: 20px;
+                }
+    
+                &.individual {
+                    padding-top: 10px;
+                    margin: 0px;
+                }
+                
+            }
+            .item_icon {
+                color: $light-blue;
+                font-size: 48px;
+
+                &.bronze {
+                    color: #d2b48c;
+                }
+                &.silver {
+                    color: $light-grey;
+                }
+                &.gold {
+                    color: #D4AF37;
+                }
+            }
         }
     }
 }
