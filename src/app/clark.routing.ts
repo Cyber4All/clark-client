@@ -20,6 +20,7 @@ const clark_routes: Routes = [
   },
   { path: 'onion', loadChildren: () => import('app/onion/onion.module').then(m => m.OnionModule) },
   { path: 'admin', loadChildren: () => import('app/admin/admin.module').then(m => m.AdminModule) },
+  { path: 'collection', loadChildren: () => import('app/collection/collection.module').then(m => m.CollectionModule)},
   { path: 'unsupported', component: UnsupportedComponent, data: { title: 'Unsupported'}},
   { path: 'not-found', component: NotFoundComponent, data: { title: 'Not Found'}},
   { path: 'unauthorized/:code/:redirect', component: UnauthorizedComponent, data: {title: 'Unauthorized'}},
