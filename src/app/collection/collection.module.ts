@@ -4,13 +4,18 @@ import { CollectionIndexComponent } from './pages/collection-index/collection-in
 import { GenericPageComponent } from './pages/generic-page/generic-page.component';
 import { CuratorCardComponent } from './shared/included/curator-card/curator-card.component';
 import { StatCardComponent } from './shared/included/stat-card/stat-card.component';
-import { C5Component } from './pages/c5/c5.component';
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
 
 
 
 @NgModule({
-  declarations: [CollectionIndexComponent, GenericPageComponent, CuratorCardComponent, StatCardComponent, C5Component, SecurityInjectionsComponent],
+  declarations: [
+    CollectionIndexComponent,
+    GenericPageComponent,
+    CuratorCardComponent,
+    StatCardComponent,
+    SecurityInjectionsComponent
+  ],
   imports: [
     CommonModule
   ]
