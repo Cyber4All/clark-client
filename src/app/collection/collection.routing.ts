@@ -4,7 +4,7 @@ import { CollectionIndexComponent } from './pages/collection-index/collection-in
 
 const collection_routes: Routes = [
     {
-        path: '/index',
+        path: '',
         component: CollectionIndexComponent,
     },
 ];
