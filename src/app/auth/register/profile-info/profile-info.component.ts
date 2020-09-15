@@ -82,7 +82,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
    */
   checkPassword(password: string) {
     // no need to pass through regex loop if length is bad
-    if (password.length < 3) {
+    if (password.length < 8) {
       return false;
     }
 
