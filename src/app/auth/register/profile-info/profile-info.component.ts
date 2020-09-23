@@ -14,9 +14,9 @@ import { takeUntil, debounceTime, map } from 'rxjs/operators';
 export class ProfileInfoComponent implements OnInit, OnDestroy {
   @Input() group: FormGroup;
 
-  @ViewChild('usernameInput') usernameInput: ElementRef;
-  @ViewChild('passwordInput') passwordInput: ElementRef;
-  @ViewChild('passwordVerifyInput') passwordVerifyInput: ElementRef;
+  @ViewChild('usernameInput', {static: true}) usernameInput: ElementRef;
+  @ViewChild('passwordInput', {static: true}) passwordInput: ElementRef;
+  @ViewChild('passwordVerifyInput', {static: true}) passwordVerifyInput: ElementRef;
 
   result: boolean;
 
@@ -65,15 +65,15 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     ).subscribe(val => {
         this.passwordError = !this.checkPassword(val);
-      })
-    
+      });
+
     fromEvent(this.passwordVerifyInput.nativeElement, 'input').pipe(
       map(x => x['currentTarget'].value),
       debounceTime(650),
       takeUntil(this.destroyed$)
     ).subscribe(val => {
         this.passwordVerifyError = !this.checkPasswordsIdentical(val);
-      })
+      });
   }
 
   /**
@@ -82,7 +82,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
    */
   checkPassword(password: string) {
     // no need to pass through regex loop if length is bad
-    if (password.length < 3) {
+    if (password.length < 8) {
       return false;
     }
 
