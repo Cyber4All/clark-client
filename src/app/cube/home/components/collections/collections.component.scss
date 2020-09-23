@@ -21,21 +21,13 @@
 }
 
 .collections__grid {
-  max-width: 800px;
+  max-width: 1000px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   margin: auto;
   margin-top: 40px;
-}
-
-.plan-c-blurb {
-  margin: 20px 0;
-  font-size: $small;
-  // font-weight: bold;
-  font-style: italic;
-  text-align: center;
 }
 
 .card-wrapper {

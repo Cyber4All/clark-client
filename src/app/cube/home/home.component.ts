@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
       .getCollections()
       .then(collections => {
         this.collections = collections.filter(
-          c => c.abvName === 'nccp' || c.abvName === 'c5'
+          c => c.abvName === 'nccp' || c.abvName === 'c5' || c.abvName === 'plan c'
         );
       })
       .catch(e => {
