@@ -167,6 +167,7 @@ export class UsageStatsComponent implements OnInit {
       legend: true,
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         legend: {
           position: 'bottom'
         },
@@ -228,6 +229,7 @@ export class UsageStatsComponent implements OnInit {
       legend: true,
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         legend: {
           position: 'bottom'
         },
@@ -291,6 +293,7 @@ export class UsageStatsComponent implements OnInit {
       legend: true,
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         legend: {
           position: 'bottom'
         },
