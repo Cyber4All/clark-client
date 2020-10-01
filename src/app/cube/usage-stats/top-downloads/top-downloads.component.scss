@@ -19,9 +19,14 @@ $row-gap: 25px;
       width: 80%;
       
       .name {
-        color: $darker-grey;
+        color: $light-blue;
         display: inline-block;
         margin-bottom: 10px;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
   
       .count {
@@ -33,5 +38,17 @@ $row-gap: 25px;
   .loading {
     padding-top: 100px;
     text-align: center;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .downloads-container {
+    padding: 0;
+    width: auto;
+
+    .count {
+      float: none;
+      margin-bottom: 20px;
+    }
   }
 }
