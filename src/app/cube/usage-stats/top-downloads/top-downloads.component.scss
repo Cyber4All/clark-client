@@ -41,6 +41,12 @@ $row-gap: 25px;
   }
 }
 
+@media screen and (max-width: 600px) {
+  .top-downloads {
+    padding: 20px 0;
+  }
+}
+
 @media only screen and (max-width: 450px) {
   .downloads-container {
     padding: 0;

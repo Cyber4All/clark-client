@@ -36,6 +36,12 @@
   }
 }
 
+@media screen and (max-width: 600px) {
+  .chart-wrapper {
+    padding: 20px 0;
+  }
+}
+
 @media print {
   .chart-wrapper {
     padding: 0;

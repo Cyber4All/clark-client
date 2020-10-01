@@ -63,6 +63,12 @@
   }
 }
 
+@media screen and (max-width: 600px) {
+  .counter-wrapper {
+    margin: 0 auto;
+  }
+}
+
 @media print {
   .counter-wrapper {
     padding: 0;
