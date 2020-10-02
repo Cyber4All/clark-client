@@ -41,7 +41,6 @@
   .heat-map-wrapper {
     .title {
       top: 10px;
-      font-size: $normal;
     }
   }
 }
@@ -59,14 +58,18 @@
 @media screen and (max-width: 600px) {
   .heat-map-wrapper {
     max-height: none;
+    padding: 20px 0;
   }
 
   .graph-wrapper {
     display: block;
+    max-width: 100%;
+    overflow-x: scroll;
   }
 
   .iframe-wrapper {
     margin-bottom: 15px;
     min-height: 250px;
+    height: auto;
   }
 }

@@ -71,6 +71,12 @@ $row-gap: 25px;
   border: 0;
 }
 
+@media only screen and (max-width: 450px) {
+  .charts {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+  }
+}
+
 
 @media print {
   .container {
