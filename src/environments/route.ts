@@ -21,8 +21,8 @@ export const ADMIN_ROUTES = {
   REMOVE_MAPPER(userId: string): string {
     return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
   },
-  CHANGE_AUTHOR(userId: string, cuid: string): string {
-    return `${environment.apiURL}/admin/users/${encodeURIComponent(userId)}/learning-objects/${cuid}/change-author`;
+  CHANGE_AUTHOR(userId: string, id: string): string {
+    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${id}/change-author`;
   }
 };
 
