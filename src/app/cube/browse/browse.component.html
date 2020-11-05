@@ -47,7 +47,7 @@
           </ng-container>
       </div>
       <h3 *ngIf="!learningObjects || learningObjects.length==0">{{ copy.NORESULTS }}</h3>
-      <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></learning-object-component>
+      <clark-learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></clark-learning-object-component>
     </div>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">

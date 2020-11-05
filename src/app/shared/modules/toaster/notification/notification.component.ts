@@ -2,7 +2,7 @@ import { ToastrOvenService, ToastrOven } from '../notification.service';
 import { Component, ElementRef, AfterViewChecked } from '@angular/core';
 
 @Component({
-  selector: '<toastr-oven></toastr-oven>',
+  selector: '<clark-toastr-oven></clark-toastr-oven>',
   template: `
     <div
       *ngFor="let el of toRender; let i = index"

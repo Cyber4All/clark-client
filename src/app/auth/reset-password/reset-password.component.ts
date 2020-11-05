@@ -3,7 +3,7 @@ import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-reset-password',
+  selector: 'clark-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })

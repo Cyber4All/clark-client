@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'collection-action-panel',
+  selector: 'clark-collection-action-panel',
   templateUrl: './action-panel.component.html',
   styleUrls: ['./action-panel.component.scss']
 })

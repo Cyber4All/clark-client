@@ -7,7 +7,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { COPY } from './user-information.copy';
 
 @Component({
-  selector: 'app-user-information',
+  selector: 'clark-user-information',
   templateUrl: './user-information.component.html',
   styleUrls: ['./user-information.component.scss']
 })

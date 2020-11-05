@@ -9,7 +9,7 @@ import {
 import { Modal } from './modal';
 
 @Component({
-  selector: '<app-contextmenu></app-contextmenu>',
+  selector: '<clark-contextmenu></clark-contextmenu>',
   template: `
     <div
       id="context-popup"

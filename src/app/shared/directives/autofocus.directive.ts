@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 /**
  * A directive to simulate the functionality of the autofocus attribute on inputs in Angular.
@@ -12,24 +12,24 @@ import { Directive, ElementRef, Input } from '@angular/core';
  * @class AutofocusDirective
  */
 @Directive({
-    selector: '[autofocus]'
+  selector: '[autofocus]',
 })
-export class AutofocusDirective {
-    private focus = true;
+export class AutofocusDirective implements OnInit {
+  private focus = true;
 
-    constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef) {}
 
-    @Input() set autofocus(condition: boolean) {
-        this.focus = condition !== false;
+  @Input() set autofocus(condition: boolean) {
+    this.focus = condition !== false;
+  }
+
+  ngOnInit() {
+    if (this.focus) {
+      // Prevents expression has changed after it was checked error
+      window.setTimeout(() => {
+        // For SSR (server side rendering) this is not safe. Use: https://github.com/angular/angular/issues/15008#issuecomment-285141070)
+        this.el.nativeElement.focus();
+      });
     }
-
-    ngOnInit() {
-        if (this.focus) {
-            // Prevents expression has changed after it was checked error
-            window.setTimeout(() => {
-                // For SSR (server side rendering) this is not safe. Use: https://github.com/angular/angular/issues/15008#issuecomment-285141070)
-                this.el.nativeElement.focus();
-            });
-        }
-    }
+  }
 }
