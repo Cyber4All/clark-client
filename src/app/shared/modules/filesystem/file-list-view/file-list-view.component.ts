@@ -5,10 +5,10 @@ import {
   Input,
   OnDestroy,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { DirectoryNode } from '../DirectoryTree';
+import { DirectoryNode } from '../DirectoryNode';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { LearningObject } from '@entity';
@@ -17,7 +17,7 @@ import { AuthService } from 'app/core/auth.service';
 @Component({
   selector: 'clark-file-list-view',
   templateUrl: 'file-list-view.component.html',
-  styleUrls: ['file-list-view.component.scss']
+  styleUrls: ['file-list-view.component.scss'],
 })
 export class FileListViewComponent implements OnInit, OnDestroy {
   @Input()
@@ -61,7 +61,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    * @memberof FileListViewComponent
    */
   private subToDirChange() {
-    this.node$.pipe(takeUntil(this.killSub$)).subscribe(node => {
+    this.node$.pipe(takeUntil(this.killSub$)).subscribe((node) => {
       this.directoryListing = node.getFolders().concat(node.getFiles() as any);
     });
   }
@@ -74,11 +74,8 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   private subToDescription() {
     this.descriptionControl.valueChanges
-      .pipe(
-        takeUntil(this.killSub$),
-        debounceTime(1000)
-      )
-      .subscribe(description => {
+      .pipe(takeUntil(this.killSub$), debounceTime(1000))
+      .subscribe((description) => {
         if (description) {
           this.updateDescription(description);
         }

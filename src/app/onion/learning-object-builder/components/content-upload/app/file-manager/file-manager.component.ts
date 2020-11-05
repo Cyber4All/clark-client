@@ -5,11 +5,11 @@ import {
   OnDestroy,
   EventEmitter,
   Output,
-  ViewChild
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { DirectoryNode, DirectoryTree } from 'app/shared/modules/filesystem/DirectoryTree';
+import { DirectoryTree } from 'app/shared/modules/filesystem/DirectoryTree';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 
 import { LearningObject } from '@entity';
 import { takeUntil, take } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export interface FileEdit {
 @Component({
   selector: 'onion-file-manager',
   templateUrl: './file-manager.component.html',
-  styleUrls: ['./file-manager.component.scss', '../../dropzone.scss']
+  styleUrls: ['./file-manager.component.scss', '../../dropzone.scss'],
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
   @Input()
@@ -57,20 +57,21 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   showNewOptions: boolean;
   showFileOptions: boolean;
 
-
   componentDestroyed$ = new Subject<void>();
 
-  currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(null);
+  currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
+    DirectoryNode
+  >(null);
 
   directoryTree: DirectoryTree = new DirectoryTree();
-  directoryTree$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(this.directoryTree);
+  directoryTree$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(
+    this.directoryTree
+  );
 
   constructor() {}
 
   ngOnInit() {
-    this.files$.pipe(
-      takeUntil(this.componentDestroyed$)
-    ).subscribe(files => {
+    this.files$.pipe(takeUntil(this.componentDestroyed$)).subscribe((files) => {
       this.directoryTree.addFiles(files);
       this.directoryTree$.next(this.directoryTree);
     });
@@ -147,7 +148,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     const edit: FileEdit = {
       id: '',
       path: '',
-      description: description
+      description: description,
     };
 
     if (!(file instanceof DirectoryNode)) {
@@ -183,22 +184,21 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
     this.fileDeleted.emit(scheduledDeletions);
 
-    this.deletionSuccessful$.pipe(
-      takeUntil(this.componentDestroyed$),
-      take(1)
-    ).subscribe(files => {
-      if (files === scheduledDeletions) {
-        const node = this.currentNode$.getValue();
+    this.deletionSuccessful$
+      .pipe(takeUntil(this.componentDestroyed$), take(1))
+      .subscribe((files) => {
+        if (files === scheduledDeletions) {
+          const node = this.currentNode$.getValue();
 
-        if (isFolder) {
-          node.removeFolder(name);
-        } else {
-          node.removeFile(name);
+          if (isFolder) {
+            node.removeFolder(name);
+          } else {
+            node.removeFile(name);
+          }
+
+          this.currentNode$.next(node);
         }
-
-        this.currentNode$.next(node);
-      }
-    });
+      });
   }
 
   /**
