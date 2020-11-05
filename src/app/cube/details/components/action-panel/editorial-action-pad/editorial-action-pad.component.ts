@@ -48,7 +48,7 @@ export class EditorialActionPadComponent implements OnInit {
   // Determines if an editor is not permitted to create a revision or make edits
   get notPermitted() {
     return (this.learningObject.status === 'released' &&
-    (this.revisedLearningObject && 
+    (this.revisedLearningObject &&
       (this.revisedLearningObject.status === 'unreleased' || this.revisedLearningObject.status === 'rejected'))) ||
     (this.learningObject.status === 'unreleased' || this.learningObject.status === 'rejected');
   }

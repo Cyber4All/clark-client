@@ -1,24 +1,37 @@
 import { ToastrOvenService, ToastrOven } from '../notification.service';
-import { Component, ElementRef, AfterViewChecked, Inject } from '@angular/core';
+import { Component, ElementRef, AfterViewChecked } from '@angular/core';
 
 @Component({
   selector: '<toastr-oven></toastr-oven>',
   template: `
-    <div *ngFor="let el of toRender; let i = index;" [attr.data-notification]="i" [ngStyle]="el.style" [attr.class]="'toastr-oven-notification ' + el.classes">
-        <div class="icon">
-          <div *ngIf="el.classes.includes('success')"><i class="far fa-check"></i></div>
-          <div *ngIf="el.classes.includes('error')"><i class="far fa-times"></i></div>
-          <div *ngIf="el.classes.includes('warning')"><i class="fas fa-exclamation-triangle"></i></div>
-          <div *ngIf="el.classes === ''"><i class="fas fa-exclamation"></i></div>
-          <div *ngIf="el.classes.includes('alert')"><i class="fas fa-exclamation"></i></div>
+    <div
+      *ngFor="let el of toRender; let i = index"
+      [attr.data-notification]="i"
+      [ngStyle]="el.style"
+      [attr.class]="'toastr-oven-notification ' + el.classes"
+    >
+      <div class="icon">
+        <div *ngIf="el.classes.includes('success')">
+          <i class="far fa-check"></i>
         </div>
-        <div class="note-content">
-            <div *ngIf="el.title" class="title">{{el.title}}</div>
-            <div class="text">{{el.text}}</div>
+        <div *ngIf="el.classes.includes('error')">
+          <i class="far fa-times"></i>
         </div>
+        <div *ngIf="el.classes.includes('warning')">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div *ngIf="el.classes === ''"><i class="fas fa-exclamation"></i></div>
+        <div *ngIf="el.classes.includes('alert')">
+          <i class="fas fa-exclamation"></i>
+        </div>
+      </div>
+      <div class="note-content">
+        <div *ngIf="el.title" class="title">{{ el.title }}</div>
+        <div class="text">{{ el.text }}</div>
+      </div>
     </div>
-    `,
-  styleUrls: ['notification.component.scss']
+  `,
+  styleUrls: ['notification.component.scss'],
 })
 export class ToastrOvenComponent implements AfterViewChecked {
   toRender: Array<ToastrOvenElement> = [];
@@ -52,15 +65,24 @@ export class ToastrOvenComponent implements AfterViewChecked {
         for (let i = 0; i < this.toRender.length - 1; i++) {
           let below = 0;
           if (count > 1) {
-            below = this.toRender.slice(i + 1)
-              .map(n => this.el.nativeElement.children[n['index']].offsetHeight + this.spaceBetween)
-              .reduce((x, y) => x + y) + this.spaceBetween;
+            below =
+              this.toRender
+                .slice(i + 1)
+                .map(
+                  (n) =>
+                    this.el.nativeElement.children[n['index']].offsetHeight +
+                    this.spaceBetween
+                )
+                .reduce((x, y) => x + y) + this.spaceBetween;
           } else {
             below +=
-              (this.el.nativeElement.children[this.toRender.length - 1].offsetHeight + this.spaceBetween);
+              this.el.nativeElement.children[this.toRender.length - 1]
+                .offsetHeight + this.spaceBetween;
           }
           this.toRender[i].style[this.service.position.y] =
-            parseInt(this.toRender[i].style[this.service.position.y], 10) + below + 'px';
+            parseInt(this.toRender[i].style[this.service.position.y], 10) +
+            below +
+            'px';
         }
       }
 
@@ -74,15 +96,23 @@ export class ToastrOvenComponent implements AfterViewChecked {
       setTimeout(async () => {
         for (let i = 0; i < notVisible.length; i++) {
           const el = this.toRender[notVisible[i].index];
-          await this.show(el, el.style[this.service.position.y]
-            ? parseInt(el.style[this.service.position.y], 10) + 20
-            : 20);
+          await this.show(
+            el,
+            el.style[this.service.position.y]
+              ? parseInt(el.style[this.service.position.y], 10) + 20
+              : 20
+          );
         }
       }, 50);
     }
   }
 
-  private show(el: ToastrOvenElement, below: number, timeout = 200, close = true): Promise<void> {
+  private show(
+    el: ToastrOvenElement,
+    below: number,
+    timeout = 200,
+    close = true
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       // set params
       el.show = true;

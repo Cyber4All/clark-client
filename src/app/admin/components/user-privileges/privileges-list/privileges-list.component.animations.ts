@@ -39,4 +39,4 @@ export const privilegesListAnimations = [
       animate('200ms ease', style({ opacity: 0 }))
     ])
   ])
-]
+];

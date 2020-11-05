@@ -5,13 +5,11 @@ import {
   SimpleChanges,
   OnDestroy,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { LearningOutcome, StandardOutcome } from '@entity';
 import { OutcomeService } from 'app/core/outcome.service';
-import {
-  BuilderStore
-} from '../../builder-store.service';
+import { BuilderStore } from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';
 
@@ -22,7 +20,7 @@ export interface SuggestedOutcome extends StandardOutcome {
 @Component({
   selector: 'clark-standard-outcomes',
   templateUrl: './standard-outcomes.component.html',
-  styleUrls: ['./standard-outcomes.component.scss']
+  styleUrls: ['./standard-outcomes.component.scss'],
 })
 export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   // id of the currently selected outcome
@@ -58,20 +56,14 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   ) {
     // handle searching
     this.searchString$
-      .pipe(
-        takeUntil(this.componentDestroyed$),
-        debounceTime(650)
-      )
+      .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
       .subscribe(() => {
         this.performSearch();
       });
 
     // handle suggesting
     this.suggestString$
-      .pipe(
-        takeUntil(this.componentDestroyed$),
-        debounceTime(1000)
-      )
+      .pipe(takeUntil(this.componentDestroyed$), debounceTime(1000))
       .subscribe((val: string) => {
         this.performSuggest(val);
       });
@@ -90,8 +82,8 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       this.activeOutcomeSubscription = this.store.outcomeEvent
         .pipe(
           takeUntil(this.componentDestroyed$),
-          filter(x => x && !!x.get(this.activeOutcome)),
-          map(x => x.get(this.activeOutcome))
+          filter((x) => x && !!x.get(this.activeOutcome)),
+          map((x) => x.get(this.activeOutcome))
         )
         .subscribe((outcome: LearningOutcome) => {
           // this outcome is the currently selected outcome, this function fires everytime the outcome's text changes
@@ -107,7 +99,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
 
             // update the selected outcomes list
             if (outcome.mappings) {
-              this.selectedOutcomeIDs = outcome.mappings.map(x => x.id);
+              this.selectedOutcomeIDs = outcome.mappings.map((x) => x.id);
             }
           } else {
             this.suggestions = [];
@@ -130,14 +122,15 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       this.loading = 'search';
       this.outcomeService
         .getOutcomes({
-          text: this.searchStringValue
+          text: this.searchStringValue,
         })
-        .then(results => {
+        .then((results) => {
           if (this.suggestions.length) {
             // if we have suggestions, tag any of the search results that are also suggestions
-            const suggestedIds: string[] = this.suggestions.map(o => o.id);
-            this.searchResults = results.outcomes.map(o => {
-              // @ts-ignore temporary non-saveable property indicating whether or not this outcome was BOTH suggested and retrieved from the search result
+            const suggestedIds: string[] = this.suggestions.map((o) => o.id);
+            this.searchResults = results.outcomes.map((o) => {
+              // @ts-ignore temporary non-saveable property indicating whether or not this outcome
+              // was BOTH suggested and retrieved from the search result
               o.suggested = suggestedIds.includes(o.id);
               return o;
             });
@@ -155,11 +148,12 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       this.loading = 'suggest';
       this.outcomeService
         .suggestOutcomes(this.store.learningObjectEvent.getValue(), {
-          text: val
+          text: val,
         })
-        .then(results => {
-          this.suggestions = results.map(o => {
-            // @ts-ignore temporary non-saveable property indicating whether or not this outcome was BOTH suggested and retrieved from the search result
+        .then((results) => {
+          this.suggestions = results.map((o) => {
+            // @ts-ignore temporary non-saveable property indicating whether or not this outcome
+            // was BOTH suggested and retrieved from the search result
             o.suggested = true;
             return o;
           });

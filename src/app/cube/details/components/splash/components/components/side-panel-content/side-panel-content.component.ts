@@ -10,7 +10,7 @@ export class SidePanelContentComponent implements OnInit {
 
   @Input() parents: LearningObject[];
   @Input() children: LearningObject[];
-  
+
   constructor() { }
 
   ngOnInit() {

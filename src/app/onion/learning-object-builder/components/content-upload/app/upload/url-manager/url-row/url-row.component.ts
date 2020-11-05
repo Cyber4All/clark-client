@@ -25,7 +25,7 @@ export class UrlRowComponent implements OnInit {
     url: ''
   };
   @Input()
-  index: number = 0;
+  index = 0;
 
   @Output()
   updateUrl: EventEmitter<{}> = new EventEmitter();

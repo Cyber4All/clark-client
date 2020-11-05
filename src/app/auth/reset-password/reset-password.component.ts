@@ -34,7 +34,7 @@ export class ResetPasswordComponent implements OnInit {
     const goodPassword = this.checkPassword(this.password);
 
     if (!goodPassword) {
-      this.error('Password is not strong enough. Must contain 1 lowercase, 1 uppercase, 1 number, and 1 symbol')
+      this.error('Password is not strong enough. Must contain 1 lowercase, 1 uppercase, 1 number, and 1 symbol');
     }
 
     this.auth.resetPassword(this.password, this.otaCode).subscribe(val => {
