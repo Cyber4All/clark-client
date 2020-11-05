@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
-  selector: 'unauthorized',
+  selector: 'clark-unauthorized',
   templateUrl: './unauthorized.component.html',
   styleUrls: ['./unauthorized.component.scss']
 })
