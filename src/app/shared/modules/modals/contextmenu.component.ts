@@ -6,7 +6,7 @@ import {
   AfterViewChecked,
   HostListener,
 } from '@angular/core';
-import { Modal } from './modal';
+import { ModalDirective } from './modal';
 
 @Component({
   selector: '<clark-contextmenu></clark-contextmenu>',
@@ -32,7 +32,7 @@ import { Modal } from './modal';
   `,
 })
 export class ContextMenuComponent
-  extends Modal
+  extends ModalDirective
   implements DoCheck, AfterViewChecked {
   constructor(private elementRef: ElementRef, modalService: ModalService) {
     super(modalService);

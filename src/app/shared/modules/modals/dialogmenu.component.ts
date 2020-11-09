@@ -5,7 +5,7 @@ import {
   DoCheck,
   AfterViewChecked,
 } from '@angular/core';
-import { Modal } from './modal';
+import { ModalDirective } from './modal';
 
 @Component({
   selector: '<clark-dialogmenu></clark-dialogmenu>',
@@ -43,7 +43,7 @@ import { Modal } from './modal';
   `,
 })
 export class DialogMenuComponent
-  extends Modal
+  extends ModalDirective
   implements DoCheck, AfterViewChecked {
   type = 'dialog';
 
