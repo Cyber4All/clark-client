@@ -969,7 +969,7 @@ export class BuilderStore {
     if (updateValue.serviceId) {
       updateValue.id = updateValue.serviceId;
     }
-    console.log('outcome', outcome);
+
     // delete any lingering serviceId properties before sending to service
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
