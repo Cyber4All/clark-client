@@ -57,12 +57,12 @@
   <div class="change-author-content">
     <div class="content-header padding-extra">Are you sure you want to change this learning object's author?</div>
     <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})). </div>
-    <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Note that 
-      changing the author will add the previous author onto the list of contributors for the object. </div>
+    <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Any revisions of the learning object will also have their authorship changed. Note that 
+      changing the author will add the previous author onto the list of contributors for the object.</div>
   </div>
   <div *ngIf="hasChildren">
     <div class="content-header padding-extra">This learning object has {{ children.length }} children</div>
-    <div class="description sm padding-indent">By changing the author of "{{ highlightedLearningObject.name | titlecase }}" you will also be changing the authorship of its {{ children.length }} children.</div>
+    <div class="description sm padding-indent">By changing the author of "{{ highlightedLearningObject.name | titlecase }}" you will also be changing the authorship of its {{ children.length }} children and their revisions.</div>
   </div>
   <div class="change-author-confirmation">
     <input (change)="toggleConsent($event)" aria-label="Change author confirmation checkbox" name='change-author-checkbox' id='change-author-checkbox' type="checkbox">
