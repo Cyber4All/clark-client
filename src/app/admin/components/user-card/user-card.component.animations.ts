@@ -20,4 +20,4 @@ export const userCardAnimations = [
       animate('200ms ease', style({ opacity: 0 }))
     ]),
   ]),
-]
+];

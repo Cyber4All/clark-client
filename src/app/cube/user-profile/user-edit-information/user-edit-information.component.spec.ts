@@ -8,7 +8,6 @@ import { AuthService } from '../../../core/auth.service';
 
 
 describe('UserEditInformationComponent', () => {
-  let component: UserEditInformationComponent;
   let fixture: ComponentFixture<UserEditInformationComponent>;
 
   beforeEach(() => {
@@ -22,7 +21,6 @@ describe('UserEditInformationComponent', () => {
 
   test('snapshot of user-edit', () => {
     fixture = TestBed.createComponent(UserEditInformationComponent);
-    // component = fixture.componentInstance;
     fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();

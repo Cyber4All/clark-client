@@ -11,4 +11,4 @@ export const userPrivilegesAnimations = [
       animate('300ms ease', style({ opacity: 1, transform: 'scale(1, 1)' }))
     ])
   ])
-]
+];

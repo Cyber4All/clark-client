@@ -53,6 +53,7 @@ describe('UriRetrieverService', () => {
         done();
       });
 
+      // tslint:disable-next-line: max-line-length
       const uri = `${environment.apiURL}/users/${encodeURIComponent(mockParams.author)}/learning-objects/${encodeURIComponent(mockParams.cuidInfo.cuid)}`;
       const req = httpTestingController.expectOne(uri);
       req.flush(mockResponse);
@@ -94,6 +95,7 @@ describe('UriRetrieverService', () => {
         done();
       });
 
+      // tslint:disable-next-line: max-line-length
       const uri = `${environment.apiURL}/users/${encodeURIComponent(mockParams.author)}/learning-objects/${encodeURIComponent(mockParams.cuidInfo.cuid)}`;
       httpTestingController.expectOne(uri).flush(mockResponse);
       httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);
@@ -118,6 +120,7 @@ describe('UriRetrieverService', () => {
         done();
       });
 
+      // tslint:disable-next-line: max-line-length
       const uri = `${environment.apiURL}/users/${encodeURIComponent(mockParams.author)}/learning-objects/${encodeURIComponent(mockParams.cuidInfo.cuid)}`;
       httpTestingController.expectOne(uri).flush(mockResponse);
       httpTestingController.expectOne(mockResponse.resourceUris.children).flush([]);

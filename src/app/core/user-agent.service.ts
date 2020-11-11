@@ -8,6 +8,6 @@ export class UserAgentService {
   isWindows: boolean;
 
   constructor() {
-    this.isWindows = (navigator.appVersion.indexOf('Win') != -1);
+    this.isWindows = (navigator.appVersion.indexOf('Win') !== -1);
   }
 }

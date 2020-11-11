@@ -10,7 +10,7 @@ interface BloomsDistribution {
     remember: number;
     apply: number;
     evaluate: number;
-  }
+  };
 }
 
 @Injectable()

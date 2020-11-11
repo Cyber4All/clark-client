@@ -2,7 +2,7 @@
 import {map} from 'rxjs/operators';
 import { USER_ROUTES } from '@env/route';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, InjectionToken, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
 @Injectable()
@@ -21,6 +21,6 @@ export class RecaptchaValidator {
                 return null;
             }))
             ;
-        }
+        };
     }
 }

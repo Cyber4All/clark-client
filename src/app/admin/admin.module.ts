@@ -18,6 +18,7 @@ import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { ChangeAuthorComponent } from './components/change-author/change-author.component';
+// tslint:disable-next-line: max-line-length
 import { ChangeAuthorUserDropdownComponent } from './components/change-author/components/change-author-user-dropdown/change-author-user-dropdown.component';
 import { FeaturedComponent } from './pages/featured/featured.component';
 import { DraggableDashboardItemComponent } from './components/draggable-dashboard-item/draggable-dashboard-item.component';

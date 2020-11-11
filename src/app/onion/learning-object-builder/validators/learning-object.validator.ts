@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { LearningOutcomeValidator } from './learning-outcome.validator';
-import { LearningOutcome, LearningObject, SubmittableLearningOutcome, SubmittableLearningObject } from '@entity';
+import {
+  LearningOutcome,
+  LearningObject,
+  SubmittableLearningOutcome,
+  SubmittableLearningObject,
+} from '@entity';
 
 export interface LearningObjectError {
   [key: string]: {
-    value: any,
-    error: string
+    value: any;
+    error: string;
   };
 }
 
@@ -92,7 +97,7 @@ export class LearningObjectValidator {
   submissionMode: boolean;
   errors = new LearningObjectErrorGroup();
 
-  constructor(public outcomeValidator: LearningOutcomeValidator) { }
+  constructor(public outcomeValidator: LearningOutcomeValidator) {}
 
   /**
    * Retrieves the first string error for a learning object, checks save errors first, then checks submit errors if
@@ -139,7 +144,10 @@ export class LearningObjectValidator {
    * @memberof LearningObjectValidator
    */
   get submittable(): boolean {
-    return !this.errors.submitErrors.size && !this.outcomeValidator.errors.submitErrors.size;
+    return (
+      !this.errors.submitErrors.size &&
+      !this.outcomeValidator.errors.submitErrors.size
+    );
   }
 
   /**
@@ -148,7 +156,10 @@ export class LearningObjectValidator {
    * @param {LearningObject} object
    * @memberof LearningObjectValidator
    */
-  validateLearningObject(object: Partial<LearningObject>, outcomes?: Map<string, Partial<LearningOutcome>>) {
+  validateLearningObject(
+    object: Partial<LearningObject>,
+    outcomes?: Map<string, Partial<LearningOutcome>>
+  ) {
     let submitErrors;
     this.errors.saveErrors.clear();
     this.errors.submitErrors.clear();
@@ -157,24 +168,33 @@ export class LearningObjectValidator {
 
     try {
       // submit errors
-      const testObject = new LearningObject(Object.assign(
-        object.toPlainObject ? object.toPlainObject() : object,
-        { 'outcomes':  outcomes ? Array.from(outcomes.values()) : undefined }
-      ));
+      const testObject = new LearningObject(
+        Object.assign(object.toPlainObject ? object.toPlainObject() : object, {
+          outcomes: outcomes ? Array.from(outcomes.values()) : undefined,
+        })
+      );
       // this is to explicitly test the validity of the objects name since the setter accepts empty strings
       testObject.name = object.name;
       submitErrors = SubmittableLearningObject.validateObject(testObject);
 
       for (const s in submitErrors) {
-        if (s.toLowerCase() !== 'outcomes' || typeof submitErrors[s] === 'string') {
+        if (
+          s.toLowerCase() !== 'outcomes' ||
+          typeof submitErrors[s] === 'string'
+        ) {
           this.errors.setError('submit', s, submitErrors[s]);
         } else {
           // these are outcome errors and should be stored in the outcomeValidator error Map
-          const outcomeErrors: [{ index: number, text: string }] = submitErrors[s];
+          const outcomeErrors: [{ index: number; text: string }] =
+            submitErrors[s];
           const ids = Array.from(outcomes.keys());
 
           for (let i = 0, l = outcomeErrors.length; i < l; i++) {
-            this.outcomeValidator.errors.setOutcomeError('submit', ids[outcomeErrors[i].index], outcomeErrors[i].text);
+            this.outcomeValidator.errors.setOutcomeError(
+              'submit',
+              ids[outcomeErrors[i].index],
+              outcomeErrors[i].text
+            );
           }
         }
       }
@@ -192,14 +212,25 @@ export class LearningObjectValidator {
 
     try {
       // submit errors
-      submitErrors = SubmittableLearningOutcome.validateOutcome(new LearningOutcome(outcome));
-      
-      for(let s in submitErrors) {
-        this.outcomeValidator.errors.setOutcomeError('submit', outcome.id, submitErrors[s]);
+      submitErrors = SubmittableLearningOutcome.validateOutcome(
+        new LearningOutcome(outcome)
+      );
+
+      // tslint:disable-next-line: forin
+      for (const s in submitErrors) {
+        this.outcomeValidator.errors.setOutcomeError(
+          'submit',
+          outcome.id,
+          submitErrors[s]
+        );
       }
     } catch (error) {
       // save errors
-      this.outcomeValidator.errors.setOutcomeError('save', outcome.id, error.message);
+      this.outcomeValidator.errors.setOutcomeError(
+        'save',
+        outcome.id,
+        error.message
+      );
     }
   }
 
@@ -227,7 +258,8 @@ export class LearningObjectValidator {
    * there is no error for the id in the outcomes saveErrors Map, the outcomes submitErrors map is checked
    *
    * @param {string} property
-   * @returns {string | undefined} either returns undefined or an array where the first index is the error and the second index is the type (save or submit)
+   * @returns {string | undefined} either returns undefined or an array where
+   * the first index is the error and the second index is the type (save or submit)
    * @memberof LearningObjectValidator
    */
   getOutcome(id: string): string | undefined {
@@ -250,7 +282,9 @@ export class LearningObjectValidator {
    * @memberof LearningObjectValidator
    */
   checkValidProperty(property: string, submit?: boolean): boolean {
-    const value = !submit ? this.errors.saveErrors.get(property) : this.errors.submitErrors.get(property);
+    const value = !submit
+      ? this.errors.saveErrors.get(property)
+      : this.errors.submitErrors.get(property);
 
     // not tracking property so it should default to valid
     if (typeof value === 'undefined') {

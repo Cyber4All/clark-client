@@ -20,4 +20,4 @@ export const usersComponentAnimations = [
       animate('350ms ease', style({ opacity: 0, transform: 'translateY(20px)' }))
     ])
   ])
-]
+];

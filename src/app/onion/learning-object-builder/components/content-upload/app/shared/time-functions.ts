@@ -14,7 +14,7 @@ export class TimeFunctions {
       currTimeInSeconds - submittedSeconds >= 60 &&
       currTimeInSeconds - submittedSeconds < 3600
     ) {
-      if (Math.floor((currTimeInSeconds - submittedSeconds) / 60) == 1) {
+      if (Math.floor((currTimeInSeconds - submittedSeconds) / 60) === 1) {
         return (
           Math.floor((currTimeInSeconds - submittedSeconds) / 60) +
           ' minute ago'
@@ -28,8 +28,7 @@ export class TimeFunctions {
       Math.floor((currTimeInSeconds - submittedSeconds) / 60) < 1440
     ) {
       if (
-        Math.floor((currTimeInSeconds - submittedSeconds) / Math.pow(60, 2)) ==
-        1
+        Math.floor((currTimeInSeconds - submittedSeconds) / Math.pow(60, 2)) === 1
       ) {
         return (
           Math.floor((currTimeInSeconds - submittedSeconds) / Math.pow(60, 2)) +

@@ -44,7 +44,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   // flags
   meatballOpen = false;
 
-  hasParents: boolean = false;
+  hasParents = false;
 
   private headers = new HttpHeaders();
   constructor(
@@ -79,7 +79,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     this.meatballOpen = value;
   }
 
-  toggleChangeAuthorModal(value: boolean){
+  toggleChangeAuthorModal(value: boolean) {
     this.showChangeAuthor = value;
   }
   /**

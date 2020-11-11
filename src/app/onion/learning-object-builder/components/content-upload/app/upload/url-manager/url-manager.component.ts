@@ -104,7 +104,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
       const url:   string = event['url'];
       const title: string = event['title'];
       this.urlUpdated$.next({index, url, title });
-    } else { 
+    } else {
       this.addNew = false;
     }
   }

@@ -5,13 +5,13 @@
   <section *ngIf='parents.length' class='side-panel-content__parents-container'>
     <h3 class='side-panel-content__parents-container__header-text'>Parents</h3>
     <div *ngFor='let parent of parents' class='side-panel-content__parents-container__cards-container'>
-      <learning-object-component  [learningObject]="parent"></learning-object-component>
+      <clark-learning-object-component  [learningObject]="parent"></clark-learning-object-component>
     </div>
   </section>
   <section *ngIf='children.length' class='side-panel-content__children-container'>
     <h3 class='side-panel-content__children-container__header-text'>Children</h3>
     <div *ngFor='let child of children' class='side-panel-content__children-container__cards-container'>
-      <learning-object-component [learningObject]="child"></learning-object-component>
+      <clark-learning-object-component [learningObject]="child"></clark-learning-object-component>
     </div>
   </section>
 </section>

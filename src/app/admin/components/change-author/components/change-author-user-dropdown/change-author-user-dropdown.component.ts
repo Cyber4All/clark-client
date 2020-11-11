@@ -13,7 +13,7 @@ import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
- 
+
 @Component({
   selector: 'clark-change-author-user-dropdown',
   templateUrl: './change-author-user-dropdown.component.html',

@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, EventEmitter, Output, OnChanges, SimpleChanges, ViewChildren, ElementRef, ViewChild, AfterViewInit
+  Component, Input, EventEmitter, Output, OnChanges, SimpleChanges, ViewChildren, ElementRef, ViewChild, AfterViewInit
 } from '@angular/core';
 
 const highlightWidth = 6;
@@ -15,15 +15,13 @@ export class IndicatorComponent implements OnChanges, AfterViewInit {
   @ViewChild('highlight') highlight: ElementRef;
   @ViewChild('indicator') indicator: ElementRef;
 
-  // inputs
   @Input() elements: string[];
   @Input() active = 0;
   @Input() increment: number;
   @Input() decrement: number;
 
-  // outputs
-  @Output('change') change = new EventEmitter<number>();
-  @Output('shouldChange') shouldChange = new EventEmitter<number>();
+  @Output() change = new EventEmitter<number>();
+  @Output() shouldChange = new EventEmitter<number>();
 
   // state
   initialized = false;

@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie';
 
 /**
  * Defines an AuthGuard which contains the logic for determining of a user can activate a route protected by the guard.
- * 
+ *
  * @author Sean Donnelly
  */
 @Injectable()

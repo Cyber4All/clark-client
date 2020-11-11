@@ -3,7 +3,7 @@ import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-reset-password',
+  selector: 'clark-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
@@ -34,7 +34,7 @@ export class ResetPasswordComponent implements OnInit {
     const goodPassword = this.checkPassword(this.password);
 
     if (!goodPassword) {
-      this.error('Password is not strong enough. Must contain 1 lowercase, 1 uppercase, 1 number, and 1 symbol')
+      this.error('Password is not strong enough. Must contain 1 lowercase, 1 uppercase, 1 number, and 1 symbol');
     }
 
     this.auth.resetPassword(this.password, this.otaCode).subscribe(val => {
