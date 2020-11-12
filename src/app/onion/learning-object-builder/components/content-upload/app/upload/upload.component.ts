@@ -759,7 +759,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   confirmDeletion() {
-    console.log(this.handleDeleteGenerator.next(true));
+    this.handleDeleteGenerator.next(true);
     this.hideDeleteConfirmation();
   }
 
