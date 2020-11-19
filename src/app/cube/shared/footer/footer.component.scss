@@ -56,9 +56,14 @@ footer {
       justify-content: center;
       align-items: center;
 
+
       img {
         width: 100px;
         margin: 0 10px;
+      }
+
+      .ncyte {
+        width: 200px;
       }
     }
   }
@@ -106,7 +111,15 @@ footer {
     }
 
     .grants {
-      margin-top: 50px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      .images {
+        flex-direction: column;
+
+        img {
+          margin-top: 20px;
+        }
+      }
     }
   }
 }
