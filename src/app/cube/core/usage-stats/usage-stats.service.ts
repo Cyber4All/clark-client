@@ -10,7 +10,7 @@ interface BloomsDistribution {
     remember: number;
     apply: number;
     evaluate: number;
-  }
+  };
 }
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UsageStatsService {
         )
         .toPromise(),
       this.http
-        .get<{ saves: number; downloads: number }>(STATS_ROUTES.LIBRARY_METRICS)
+        .get<{metrics: any}>(STATS_ROUTES.LIBRARY_METRICS)
         .pipe(
           retry(3),
           catchError(this.handleError)
@@ -43,8 +43,7 @@ export class UsageStatsService {
     };
 
     delete objects.blooms_distribution;
-
-    return { ...objects, ...library } as  LearningObjectStats;
+    return { ...objects, ...library.metrics } as  LearningObjectStats;
   }
   getUserStats(): Promise<UserStats> {
     return this.http.get<UserStats>(STATS_ROUTES.USERS_STATS)

@@ -30,7 +30,7 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   elementRef: any;
   @Input() user;
   @Input() self = false;
-  @Output('close') close = new EventEmitter<boolean>();
+  @Output() close = new EventEmitter<boolean>();
 
   counter = 140;
 

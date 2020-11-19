@@ -2,9 +2,9 @@
 </div>
 
 <div *ngIf="learningObjects?.length > 0; else noObjectsTemplate" class="card-container">
-  <learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" learningObjectCard
+  <clark-learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" learningObjectCard
     [loading]="loading">
-  </learning-object-component>
+  </clark-learning-object-component>
 </div>
 
 <ng-template #noObjectsTemplate>

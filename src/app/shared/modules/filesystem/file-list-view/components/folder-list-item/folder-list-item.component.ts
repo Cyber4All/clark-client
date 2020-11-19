@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryTree';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 
 @Component({
   selector: 'clark-folder-list-item',
   templateUrl: 'folder-list-item.component.html',
-  styleUrls: ['folder-list-item.component.scss']
+  styleUrls: ['folder-list-item.component.scss'],
 })
 export class FolderListItemComponent implements OnInit {
   @Input() folder: DirectoryNode;
@@ -38,7 +38,7 @@ export class FolderListItemComponent implements OnInit {
     // cost that comes through this type of iteration in the browser.
     const derivedTimestamp = node
       .getFiles()
-      .map(x => parseInt(x.date, 10))
+      .map((x) => parseInt(x.date, 10))
       .sort((a, b) => (a < b ? 1 : -1))[0];
     timestamp = timestamp > derivedTimestamp ? timestamp : derivedTimestamp;
 

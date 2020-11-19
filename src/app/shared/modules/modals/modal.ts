@@ -1,11 +1,11 @@
 
 import { ModalService } from './modal.service';
-import { Output, Input, EventEmitter, Directive } from '@angular/core';
+import { Output, Input, EventEmitter, Directive, AfterViewChecked, DoCheck, OnDestroy } from '@angular/core';
 
 @Directive({
     selector: '[modal]'
   })
-export abstract class Modal {
+export abstract class ModalDirective implements AfterViewChecked, DoCheck, OnDestroy {
     protected name: string;
     protected x: number;
     protected y: number;
@@ -22,13 +22,11 @@ export abstract class Modal {
 
     constructor(protected modalService: ModalService) { }
 
-    // tslint:disable-next-line:use-life-cycle-interface
     ngDoCheck(): void {
         this.name = this.content.name;
         this.show = (Object.keys(this.content).length > 0);
     }
 
-    // tslint:disable-next-line:use-life-cycle-interface
     ngAfterViewChecked() {
         if (!this.show && this.type !== 'dialog') {
             this.justCreated = true;
@@ -72,7 +70,6 @@ export abstract class Modal {
         this.justCreated = true;
     }
 
-    // tslint:disable-next-line:use-life-cycle-interface
     ngOnDestroy() {
         // close menues when navigating away
         this.close();

@@ -32,7 +32,7 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
   currentOrganization: string;
   organizationsList = [];
   isValid: boolean;
-  
+
   destroyed$: Subject<void> = new Subject();
 
   constructor(private auth: AuthService, private register: RegisterComponent) {}
@@ -59,7 +59,7 @@ export class PersonalInfoComponent implements AfterViewInit, OnDestroy {
           this.register.setInUseEmail(this.result);
         }
       });
-    })
+    });
   }
 
   ngOnDestroy() {

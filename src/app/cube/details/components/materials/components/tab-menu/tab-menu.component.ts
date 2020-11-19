@@ -8,7 +8,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 export class TabMenuComponent {
 
   @Input() currentSelection: string;
-  @Output() select: EventEmitter<string> = new EventEmitter();;
+  @Output() select: EventEmitter<string> = new EventEmitter();
 
   options = [
     {
