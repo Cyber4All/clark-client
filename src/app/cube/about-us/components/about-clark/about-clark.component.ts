@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsageStats } from '../../../shared/types/usage-stats';
 import { UsageStatsService } from '../../../core/usage-stats/usage-stats.service';
+import { TopDownloadsComponent } from 'app/cube/usage-stats/top-downloads/top-downloads.component';
 
 @Component({
   selector: 'clark-about-clark',
@@ -8,7 +9,6 @@ import { UsageStatsService } from '../../../core/usage-stats/usage-stats.service
   styleUrls: ['./about-clark.component.scss']
 })
 export class AboutClarkComponent implements OnInit {
-  
   objectStatsLoaded = false;
   userStatsLoaded = false;
 
@@ -17,7 +17,8 @@ export class AboutClarkComponent implements OnInit {
       released: 0,
       review: 0,
       downloads: 0,
-      collections: { number: 0 },
+      collections: { number: 0},
+      topDownloads: [],
       lengths: {
         nanomodule: 0,
         micromodule: 0,
@@ -52,6 +53,7 @@ export class AboutClarkComponent implements OnInit {
       this.usageStats.users.organizations = stats.organizations;
       this.userStatsLoaded = true;
     });
+
   }
 
 }

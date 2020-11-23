@@ -21,7 +21,7 @@ import { CollectionsComponent } from './components/collections/collections.compo
     RouterModule
   ],
   exports: [
-    HomeComponent, 
+    HomeComponent,
     UsageComponent,
   ],
   declarations: [HomeComponent, PhilosophyComponent, SplashComponent, AboutComponent, UsageComponent, CollectionsComponent],

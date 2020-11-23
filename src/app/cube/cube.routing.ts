@@ -42,7 +42,7 @@ const cube_routes: Routes = [
       { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
       {
-        path: 'about-us',
+        path: 'about',
         component: AboutUsComponent,
       },
       {

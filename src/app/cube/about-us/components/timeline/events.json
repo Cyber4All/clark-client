@@ -1,0 +1,36 @@
+/* tslint:disable */
+[
+      {
+          "id": 1,
+          "date": "Date",
+          "description": "684 Learning Objects 174 Users NSA NCCP NSF C5",
+          "image": "../../../../../assets/images/collections/c5.png"
+      },
+      {
+          "id": 2,
+          "date": "4th of July",
+          "description": "Version 1 of Clark.Center is realeased"
+      },
+      {
+          "id": 3,
+          "date": "Date",
+          "description": "CyberEd Tahoe",
+          "image": "../../../../../assets/images/collections/c5.png"
+      },
+      {
+          "id": 4,
+          "date": "April Fools",
+          "description": "System Enhancements"
+      },
+      {
+          "id": 5,
+          "date": "Valentine's Day",
+          "description": "Public beta released",
+          "image": "../../../../../assets/images/collections/c5.png"
+      },
+      {
+          "id": 6,
+          "date": "Labor Day 2017",
+          "description": "Development Begins"
+      }
+]
