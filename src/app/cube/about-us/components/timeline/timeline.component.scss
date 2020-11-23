@@ -1,0 +1,112 @@
+@import '~_vars.scss';
+
+*{
+    color: $darker-grey;
+}
+
+.timeline-container{
+   align-items: center;
+   margin-bottom: 75px;
+   
+   .title-container{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 50px;
+   }
+
+   .content-container{  
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        
+        
+        .left-container{
+            .event-container{
+                padding-top: 30px;
+                display: flex;
+                margin-left: 50px;
+                border-left: 3px solid $darker-grey;
+                
+                .line-container{
+                    width: 20%;
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    
+                    .connector{
+                        border: 1px solid $darker-grey;
+                    }
+                }
+                
+                .text-container{
+                    width: 70%;
+                    margin-top:auto;
+                    margin-bottom: auto;
+                    box-shadow: 0px 4px 10px $light-grey;
+                    border-radius: 5px;
+
+                    .text-box{
+                        margin: 30px;
+                        width: 70%;
+
+                        .date-container{
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        .right-container{
+            width: 50%;
+            display: flex;
+            justify-content: space-around;
+            
+            .img-container{
+                .timeline-img{
+                    height: 175px;
+                    width: auto;
+                }
+            }
+        
+        }
+   }
+}
+
+@media screen and (max-width: 1000px){
+    .text-container{
+        margin:0px;
+        text-align: center;
+    }
+    img{
+        height: 150px !important;
+    }
+}
+@media screen and(max-width: 700px){
+    .right-container{
+        position: absolute;
+        visibility: hidden;
+    }
+    .line-container{
+        width: 10% !important;
+    }
+    .text-box{
+        width: auto !important;
+    }
+}
+
+@media screen and (max-width: 500px){
+    *{
+        font-size: $normal;
+    }
+    .title-container{
+        margin-bottom: 25px !important;
+        h1{
+            font-size: $large;
+        }
+    }
+    .event-container{ 
+        margin-left: 25px !important;
+    }
+}

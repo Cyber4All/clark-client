@@ -18,6 +18,7 @@ import { AccessibilityStatementComponent } from './accessibility-statement/acces
 import { PressComponent } from './press/press.component';
 import { environment } from '@env/environment';
 import { OutagePageComponent } from './outage-page/outage-page.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 const details = {
   path: 'details',
@@ -45,6 +46,10 @@ const cube_routes: Routes = [
       { path: 'c/:abvName', component: CollectionDetailsComponent },
       { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
+      {
+        path: 'about-us',
+        component: AboutUsComponent,
+      },
       {
         path: 'browse',
         component: BrowseComponent,
