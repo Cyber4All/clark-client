@@ -150,7 +150,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   solutionUpload = false;
 
   showDeletePopup = false;
-  handleDeleteGenerator: Iterator<void>;
+  handleDeleteGenerator: Iterator<void, any, boolean>;
 
   dragAndDropSupported = false;
 
@@ -239,7 +239,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     fromEvent(document.getElementsByTagName('body')[0], 'dragleave')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((event: any) => {
-        if (event.target.classList.contains('uploader')) {
+        if (event.target && event.target.classList.contains('uploader')) {
           this.toggleDrag(false);
         }
       });

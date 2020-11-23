@@ -2,7 +2,6 @@ import { User } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/user.service';
-import { COPY } from './organization-list.copy';
 import { Title } from '@angular/platform-browser';
 import { TitleCasePipe } from '@angular/common';
 
@@ -13,7 +12,6 @@ import { TitleCasePipe } from '@angular/common';
   styleUrls: ['./organization-list.component.scss']
 })
 export class OrganizationListComponent implements OnInit {
-  copy = COPY;
   organization;
   members: Array<User>;
 

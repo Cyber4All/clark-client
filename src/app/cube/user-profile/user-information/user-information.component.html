@@ -17,9 +17,9 @@
   <ng-container *ngIf="objects?.length > 0">
     <div class="section-title">{{ copy.LEARNINGOBJECTS }}</div>
     <div *ngFor="let l of objects">
-      <learning-object-component routerLink="/details/{{ l.author.username }}/{{l.name}}"
+      <clark-learning-object-component routerLink="/details/{{ l.author.username }}/{{l.name}}"
         [learningObject]="l" [loading]="loading">
-      </learning-object-component>
+      </clark-learning-object-component>
     </div>
   </ng-container>
   <ng-container *ngIf="!objects || !objects.length">

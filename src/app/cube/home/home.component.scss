@@ -159,3 +159,18 @@
     font-size: $large;
   }
 }
+
+@media only screen and(max-width: 600px) {
+  .btn-group {
+    flex-direction: column;
+
+    .button {
+      text-align: center;
+    }
+
+    .button:not(:last-child) {
+      margin-left: 0;
+      margin-bottom: 15px;
+    }
+  }
+}

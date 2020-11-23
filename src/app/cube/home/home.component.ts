@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
       review: 0,
       downloads: 0,
       collections: { number: 0 },
+      topDownloads: [],
       lengths: {
         nanomodule: 0,
         micromodule: 0,
@@ -48,6 +49,7 @@ export class HomeComponent implements OnInit {
       organizations: 0
     }
   };
+  donateModal = false;
 
   constructor(
     public learningObjectService: LearningObjectService,
@@ -75,7 +77,7 @@ export class HomeComponent implements OnInit {
       .getCollections()
       .then(collections => {
         this.collections = collections.filter(
-          c => c.abvName === 'nccp' || c.abvName === 'c5'
+          c => c.abvName === 'nccp' || c.abvName === 'c5' || c.abvName === 'plan c'
         );
       })
       .catch(e => {
@@ -97,5 +99,10 @@ export class HomeComponent implements OnInit {
 
   mailTo() {
     window.location.href = 'mailto:?subject=Check out Learning Objects on CLARK!&body=https://www.clark.center';
+  }
+
+  donateToClark() {
+    this.router.navigate(['donate'], {
+    });
   }
 }

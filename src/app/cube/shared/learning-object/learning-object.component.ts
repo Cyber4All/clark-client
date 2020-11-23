@@ -17,7 +17,7 @@ import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
 import { CollectionService } from '../../../core/collection.service';
 
 @Component({
-  selector: 'learning-object-component',
+  selector: 'clark-learning-object-component',
   templateUrl: 'learning-object.component.html',
   styleUrls: ['./learning-object.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -3,7 +3,6 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
@@ -16,24 +15,23 @@ import { UserResolver } from './core/user.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
-import { environment } from '@env/environment';
 import { OutagePageComponent } from './outage-page/outage-page.component';
+<<<<<<< HEAD
 import { AboutUsComponent } from './about-us/about-us.component';
+=======
+import { DonateComponent } from './donate/donate.component';
+>>>>>>> 07824bc10364c00cc69e118911bfb3f11d20e84c
 
 const details = {
   path: 'details',
-  loadChildren: 'app/cube/details/details.module#DetailsModule'
+  loadChildren: () => import('app/cube/details/details.module').then(m => m.DetailsModule)
 };
 
-const library = environment.experimental ? {
+const library = {
   path: 'library',
   canActivate: [AuthGuard],
-  loadChildren: 'app/cube/library/library.module#LibraryModule'
-} : {
-  path: 'library',
-  component: CartComponent,
-  canActivate: [AuthGuard],
-  data: { title: 'Your Library' }
+  loadChildren: () => import('app/cube/library/library.module').then(l => l.LibraryModule),
+  data : {title: 'Your Library'},
 };
 
 const cube_routes: Routes = [
@@ -61,8 +59,13 @@ const cube_routes: Routes = [
         data: { title: 'Press and Media'}
       },
       {
+        path: 'donate',
+        component: DonateComponent,
+        data: { title: 'Donate to CLARK'}
+      },
+      {
         path: 'system/usage',
-        loadChildren: 'app/cube/usage-stats/usage-stats.module#UsageStatsModule',
+        loadChildren: () => import('app/cube/usage-stats/usage-stats.module').then(m => m.UsageStatsModule),
         data: { title: 'System Usage'}
       },
       {

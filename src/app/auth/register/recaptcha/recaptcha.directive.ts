@@ -1,11 +1,7 @@
-import { EventEmitter, forwardRef } from '@angular/core';
+import { EventEmitter, forwardRef, OnInit, AfterViewInit } from '@angular/core';
 import { Output } from '@angular/core';
 import { RecaptchaValidator } from './recaptcha-validator.service';
 import { ElementRef, Injector, NgZone } from '@angular/core';
-import {
-  OnInit,
-  AfterViewInit
-} from '@angular/core/src/metadata/lifecycle_hooks';
 import { Input } from '@angular/core';
 import { Directive } from '@angular/core';
 import {
@@ -13,7 +9,8 @@ import {
   FormControl,
   NgControl,
   Validators,
-  NG_VALUE_ACCESSOR
+  NG_VALUE_ACCESSOR,
+  FormsModule
 } from '@angular/forms';
 
 export interface ReCaptchaConfig {
@@ -63,7 +60,8 @@ export class RecaptchaDirective
     private element: ElementRef,
     private ngZone: NgZone,
     private injector: Injector,
-    private validator: RecaptchaValidator
+    private validator: RecaptchaValidator,
+
   ) {}
 
   ngOnInit() {
@@ -84,7 +82,7 @@ export class RecaptchaDirective
   }
 
   ngAfterViewInit() {
-    this.control = this.injector.get(NgControl).control;
+    this.control = this.injector.get(FormControl);
     this.setValidators();
   }
 
@@ -146,8 +144,7 @@ export class RecaptchaDirective
    * @param token
    */
   verifyToken(token: string) {
-    this.control.setAsyncValidators(this.validator.validateToken(token));
-    this.control.updateValueAndValidity();
+    this.validator.validateToken(token);
   }
 
   /**

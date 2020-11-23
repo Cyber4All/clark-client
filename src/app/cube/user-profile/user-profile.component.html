@@ -8,7 +8,7 @@
       <span id="edit-profile">{{ copy.EDIT }}</span>
     </div>
     <div *ngIf="!editContent">
-      <app-user-information [user]="user" [self]="self"></app-user-information>
+      <clark-user-information [user]="user" [self]="self"></clark-user-information>
     </div>
     <div *ngIf="editContent">
       <cube-app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></cube-app-user-edit-information>

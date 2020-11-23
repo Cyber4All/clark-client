@@ -38,6 +38,17 @@
         margin-right: 10px;
       }
 
+      .notifications {
+        background-color: $error-red;
+        border: 1px solid white;
+        border-radius: 20px;
+        color: white;
+        padding: 1px 5px;
+        text-align: center;
+        display: inline-block;
+        margin-left: 5px;
+      }
+
       &:hover {
         background: $light-blue;
         color: white;

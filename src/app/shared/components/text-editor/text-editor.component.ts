@@ -1,20 +1,28 @@
-import { Input, Output, EventEmitter, Component, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import {
+  Input,
+  Output,
+  EventEmitter,
+  Component,
+  OnChanges,
+  SimpleChanges,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'clark-text-editor',
   template: `
-  <div *ngIf="showBox">
-    <ckeditor
+    <div *ngIf="showBox">
+      <ckeditor
         [(ngModel)]="editorContent"
         [config]="config"
         [readonly]="false"
         (change)="onChange($event)"
         (focus)="touched.emit()"
-        >
-    </ckeditor>
-  </div>
+      >
+      </ckeditor>
+    </div>
   `,
-  styles: ['#cke_bottom_detail, .cke_bottom { display: none; }']
+  styles: ['#cke_bottom_detail, .cke_bottom { display: none; }'],
 })
 export class TextEditorComponent implements OnInit, OnChanges {
   @Input() savedContent: string;
@@ -27,7 +35,8 @@ export class TextEditorComponent implements OnInit, OnChanges {
   counter: any;
   buttonText: string;
 
-  // this flag is set to true to prevent loading an existing description triggering a save operation. when false, the emit onChanges will take no action except to toggle it back to true
+  // this flag is set to true to prevent loading an existing description triggering a save operation.
+  // when false, the emit onChanges will take no action except to toggle it back to true
   initialized = true;
   acceptExternalChanges = true;
   showBox = true;
@@ -40,7 +49,10 @@ export class TextEditorComponent implements OnInit, OnChanges {
       this.editorContent = changes.savedContent.currentValue;
 
       // this is it's first change which means we're loading an existing value, prevent emit
-      if (changes.savedContent.firstChange && changes.savedContent.currentValue) {
+      if (
+        changes.savedContent.firstChange &&
+        changes.savedContent.currentValue
+      ) {
         this.initialized = false;
       }
 
@@ -66,7 +78,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
       removePlugins: 'elementspath,wsc,scayt',
       autoGrow_onStartup: true,
       entities: false,
-      wordcount: this.counter
+      wordcount: this.counter,
     };
     if (this.savedContent) {
       // this.editorContent = this.savedContent;
@@ -74,7 +86,6 @@ export class TextEditorComponent implements OnInit, OnChanges {
       // this.toggleBox();
     } else {
       this.buttonText = 'Add Content';
-
     }
   }
 

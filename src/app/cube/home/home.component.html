@@ -7,7 +7,7 @@
       <div class="title__icon">
         <i class="far fa-cube"></i>
       </div>
-      Recently Released<br aria-hidden="true" /> Learning Objects
+      Featured<br aria-hidden="true" /> Learning Objects
     </div>
     <div class="subtitle-text">
       A Learning Object is a self-contained piece of curriculum that has clearly identified learning outcomes. 
@@ -17,6 +17,9 @@
     </div>
     <cube-featured></cube-featured>
   </div>
+  <section class="usage">
+    <clark-usage [stats]="usageStats"></clark-usage>
+  </section>
   <section class="collections">
     <clark-collections [collections]="collections"></clark-collections>
   </section>
@@ -27,9 +30,6 @@
   </section>
   <section class="philosophy">
     <clark-philosophy></clark-philosophy>
-  </section>
-  <section class="usage">
-    <clark-usage [stats]="usageStats"></clark-usage>
   </section>
   <section class="cta">
     <div class="cta__content">
@@ -43,7 +43,8 @@
         All material on CLARK is quality-assured and freely accessible.<br>
       </div>
       <div class="btn-group center">
-        <button class="button good" (activate)="mailTo()">Spread the word</button>
+        <button class="button good" aria-label="Spread the word" (activate)="mailTo()">Spread the word</button>
+        <button class="button good" aria-label="Donate to CLARK" (activate)="donateToClark()">Donate to CLARK</button>
       </div>
     </div>
   </section> 

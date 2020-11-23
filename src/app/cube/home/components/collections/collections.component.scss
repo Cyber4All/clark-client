@@ -21,12 +21,23 @@
 }
 
 .collections__grid {
-  max-width: 800px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-gap: 50px;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: auto;
   margin-top: 40px;
+}
+
+.card-wrapper {
+  margin: 20px;
+  width: 240px;
+  text-align: center;
+
+  &.center {
+    margin: 20px auto;
+  }
 }
 
 .collection-card {

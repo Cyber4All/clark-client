@@ -1,0 +1,20 @@
+<div class="top-downloads">
+    <h2 class="title">Most Downloaded Learning Objects</h2>
+    <div class="downloads-container" *ngIf="!loading; else loadingTemplate">
+      <div *ngFor="let lo of learningObjects">
+        <a class="name" [routerLink]="['/details', lo.author.username, lo.cuid]">
+          {{ lo.name }}
+        </a>
+        <div class="count">
+          {{ lo.metrics.downloads }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+<ng-template #loadingTemplate>
+    <div class="loading">
+        <i class="far fa-spinner-third fa-spin"></i>
+        <p>Loading ...</p>
+    </div>
+</ng-template>

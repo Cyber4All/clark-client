@@ -1,18 +1,26 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+  HostListener,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
 
-import { LearningOutcome } from '@entity';
-import { text } from '@angular/core/src/render3/instructions';
-
 @Component({
   selector: 'clark-outcome-typeahead',
   templateUrl: './outcome-typeahead.component.html',
-  styleUrls: ['./outcome-typeahead.component.scss']
+  styleUrls: ['./outcome-typeahead.component.scss'],
 })
 export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
-
   @ViewChild('verbElement') verbElement: ElementRef;
 
   @Input() verb: string;
@@ -42,7 +50,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
     this.overflowValue.emit(false);
   }
 
-  constructor() { }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.bloom && changes.verb) {
@@ -51,15 +59,18 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-
     // listen for 'input' events on the input and parse verb & category (level)
     this.input$
       .pipe(
         map((event) => (event.target as HTMLInputElement).value.trim()),
         takeUntil(this.componentDestroyed$)
-      ).subscribe((val: string) => {
+      )
+      .subscribe((val: string) => {
         // remove bullets and update the text of the outcome
-        val = val.replace(/\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/g, '');
+        val = val.replace(
+          /\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/g,
+          ''
+        );
 
         const index = val.indexOf(' ');
         this.text = val;
@@ -69,7 +80,8 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
           if (index >= 0) {
             // make sure we're doing this after a 'space' character
             this.verb = val.substring(0, index);
-            this.verb = this.verb.charAt(0).toUpperCase() + this.verb.substring(1); // capitalize the first letter of the verb
+            this.verb =
+              this.verb.charAt(0).toUpperCase() + this.verb.substring(1); // capitalize the first letter of the verb
             this.text = val.substring(index).trim();
             this.goodVerb = this.isGoodVerb(this.verb);
 
@@ -159,5 +171,4 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
     this.componentDestroyed$.next();
     this.componentDestroyed$.unsubscribe();
   }
-
 }

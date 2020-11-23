@@ -13,5 +13,5 @@ export const COPY = {
     CALLTOACTION: `Contribute to CLARK`,
 
     COLLECTION_BLURB: `Learning Objects are grouped into Collections within CLARK.
-     Each collection is unique, has its own peer-review process, and is supported by its own community.`
+     Each collection is unique, has its own peer-review process, and is supported by its own community.`,
 };

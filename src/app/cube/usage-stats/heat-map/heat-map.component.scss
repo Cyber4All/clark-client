@@ -1,13 +1,12 @@
 @import '~_vars.scss';
 .heat-map-wrapper {
-
   background: white;
   border-radius: 2px;
   padding: 40px;
-  height: 500px;
+  height: 100%;
 
   .title {
-    font-size: $large;
+    font-size: $larger;
     color: $darker-grey;
   }
 
@@ -20,10 +19,11 @@
 }
 
 .iframe-wrapper {
+  padding-top: 45.25%; // Maintains aspect ratio of the report
   position: relative;
   overflow: hidden;
   width: 100%;
-  min-height: 395px;
+  height: 395px;
   box-sizing: border-box;
 }
 
@@ -41,7 +41,6 @@
   .heat-map-wrapper {
     .title {
       top: 10px;
-      font-size: $normal;
     }
   }
 }
@@ -59,14 +58,18 @@
 @media screen and (max-width: 600px) {
   .heat-map-wrapper {
     max-height: none;
+    padding: 20px 0;
   }
 
   .graph-wrapper {
     display: block;
+    max-width: 100%;
+    overflow-x: scroll;
   }
 
   .iframe-wrapper {
     margin-bottom: 15px;
     min-height: 250px;
+    height: auto;
   }
 }

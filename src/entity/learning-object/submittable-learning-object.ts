@@ -38,7 +38,8 @@ export class SubmittableLearningObject extends LearningObject {
 
   /**
    * Removes the object's i-th learning outcome.
-   * Attempts to remove last outcome results in an error because the object must have at least one SubmittableOutcome to be a SubmittableLearningObject
+   * Attempts to remove last outcome results in an error because the object must have
+   * at least one SubmittableOutcome to be a SubmittableLearningObject
    *
    * @param {number} index
    * @returns {SubmittableLearningOutcome} the learning outcome which was remove

@@ -4,13 +4,25 @@ import * as querystring from 'querystring';
 export type MaterialsFilter = 'released' | 'unreleased';
 
 export const ADMIN_ROUTES = {
-  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string) {
+  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string): string {
     return `${environment.apiURL}/collections/${encodeURIComponent(
       abvCollectionName
     )}/members/${encodeURIComponent(userId)}`;
   },
-  GET_USER_ROLES(id: string) {
+  GET_USER_ROLES(id: string): string {
     return `${environment.apiURL}/users/${encodeURIComponent(id)}/roles`;
+  },
+  GET_MAPPERS(): string {
+    return `${environment.apiURL}/guidelines/members`;
+  },
+  ADD_MAPPER(userId: string): string {
+    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
+  },
+  REMOVE_MAPPER(userId: string): string {
+    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
+  },
+  CHANGE_AUTHOR(userId: string, id: string): string {
+    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${id}/change-author`;
   }
 };
 
@@ -190,7 +202,7 @@ export const USER_ROUTES = {
   },
   GET_OUTCOMES(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
-      ${encodeURIComponent(learningObjectId)}`;
+      ${encodeURIComponent(learningObjectId)}/outcomes`;
   },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
@@ -206,6 +218,16 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
     )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
+  },
+  POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+      learningObjectId
+      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
+  },
+  DELETE_MAPPING(username: string, learningObjectId: string, outcomeId: string, mappingsId: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+      learningObjectId
+      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
   },
   GET_CART(username, page?, limit?) {
     // CUBE
@@ -379,8 +401,8 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
       username
     )}/learning-objects`;
   },
-  GET_LEARNING_OBJECT_PARENTS(id: string) {
-    return `${environment.apiURL}/learning-objects/${id}/parents`;
+  GET_LEARNING_OBJECT_PARENTS(username: string, id: string) {
+    return `${environment.apiURL}/users/${username}/learning-objects/${id}/parents`;
   },
   DOWNLOAD_FILE(params: {
     username: string;
@@ -542,9 +564,18 @@ export const MISC_ROUTES = {
 };
 
 export const STATS_ROUTES = {
-  // fetches stats for all objects in the system and blooms distributions
+  // fetches stats for all objects in the system
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
   // fetches downloads and saves for ALL objects in system
   LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
+  // fetches the blooms distribution
+  OUTCOMES_STATS: `${environment.apiURL}/outcomes/stats`,
   USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
+};
+
+export const FEATURED_ROUTES = {
+  // sets the featured objects
+  SET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
+  // retrieves the featured objects
+  GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
 };

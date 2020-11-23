@@ -4,10 +4,11 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { DirectoryNode, DirectoryTree } from '../DirectoryTree';
+import { DirectoryTree } from '../DirectoryTree';
+import { DirectoryNode } from '../DirectoryNode';
 import { LearningObject } from '@entity';
 import { getPaths } from '../file-functions';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -29,7 +30,7 @@ export type DescriptionUpdate = {
 @Component({
   selector: 'clark-file-browser',
   templateUrl: 'file-browser.component.html',
-  styleUrls: ['file-browser.component.scss']
+  styleUrls: ['file-browser.component.scss'],
 })
 export class FileBrowserComponent implements OnInit, OnDestroy {
   @Input() canManage = false;
@@ -50,12 +51,16 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
     DescriptionUpdate
   >();
 
-  @Input() filesystem$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(new DirectoryTree());
+  @Input() filesystem$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(
+    new DirectoryTree()
+  );
   private filesystem;
 
   private killSub$: Subject<boolean> = new Subject();
 
-  @Input() currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(null);
+  @Input() currentNode$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<
+    DirectoryNode
+  >(null);
 
   currentPath: string[] = [];
   tips = TOOLTIP_TEXT;
@@ -83,9 +88,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
     this.subToFiles();
     this.subToFolderMeta();
 
-    this.filesystem$.pipe(
-      takeUntil(this.killSub$)
-    ).subscribe(filesystem => {
+    this.filesystem$.pipe(takeUntil(this.killSub$)).subscribe((filesystem) => {
       if (!filesystem.isEmpty) {
         this.filesystem = filesystem;
         this.refreshFilesystem();
@@ -99,7 +102,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    * @memberof FileBrowserComponent
    */
   private subToFiles(): void {
-    this.files$.pipe(takeUntil(this.killSub$)).subscribe(files => {
+    this.files$.pipe(takeUntil(this.killSub$)).subscribe((files) => {
       this.refreshFilesystem(files);
     });
   }
@@ -128,7 +131,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    * @memberof FileBrowserComponent
    */
   private subToFolderMeta(): void {
-    this.folderMeta$.pipe(takeUntil(this.killSub$)).subscribe(folders => {
+    this.folderMeta$.pipe(takeUntil(this.killSub$)).subscribe((folders) => {
       this.linkFolderMeta(folders);
     });
   }

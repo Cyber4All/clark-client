@@ -9,21 +9,21 @@
   
     <div class='library__content-container'>
         <h2 class='library__cards-container__title'>
-            Updates Since You've Last Downloaded
+            {{ notificationCount }} Update<span *ngIf="notificationCount !== 1">s</span> to Items in Your Library
         </h2>
         
-        <div class='library__cards-container' *ngIf='notifications?.length'>
-            <div class='notifications-container'>
+        <div *ngIf='notifications?.length; else emptyNotificationsTemplate' class='library__cards-container'>
+            <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex - 1)'>
                 <button 
-                    *ngIf='currentNotificationsPageNumber > 1' 
+                    *ngIf='firstIndex > 0' 
                     class='cards-container__arrow-container left'
-                    (activate)='getNotifications(currentNotificationsPageNumber - 1)'>
+                    (activate)='setNotifications(firstIndex - 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
                 </button>
                 
-                <div class='notifications-container__cards'>
+                <div [@slider]='lastIndex' class='notifications-container__cards'>
                     <div *ngFor='let notification of notifications' class='cards-container__card'>
-                        <clark-notification-card 
+                        <clark-notification-card
                             [notification]='notification'
                             (deleteButtonClicked)='deleteNotification(notification)'
                             (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'
@@ -33,24 +33,19 @@
                 </div>
                 
                 <button
-                    *ngIf='currentNotificationsPageNumber < lastNotificationsPageNumber && notifications.length === 5'
+                    *ngIf='lastIndex < localNotifications.length || currentNotificationsPageNumber < lastNotificationsPageNumber'
                     class='cards-container__arrow-container right'
-                    (activate)='getNotifications(currentNotificationsPageNumber + 1)'>
+                    (activate)='setNotifications(firstIndex + 1)'>
                     <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>
                 </button>
             </div>
-        </div>
-
-        <div *ngIf='!notifications?.length' class='empty-notification-container'>
-            <i class="far fa-4x fa-thumbs-up empty-notification-container__icon"></i>
-            <p class='empty-notification-container__message'>All of your saved items are up-to-date!</p>
         </div>
         
         <div class='library__content-container__saved-items'>
             <h2 class='library-items__title'>
                 Saved Items
             </h2>
-            <div class='library-items__list-items'>
+            <div *ngIf='libraryItems?.length; else emptyLibraryTemplate' class='library-items__list-items'>
                 <div *ngFor='let item of libraryItems; let i = index'>
                     <clark-library-item
                         [learningObject]='item'
@@ -60,15 +55,31 @@
                         (titleClicked)='goToItem(item)'
                     ></clark-library-item>
                 </div>
+            </div>
+            <div class="pagination-container">
                 <clark-pagination
-                    [lastPageNumber] = lastPageNumber
-                    [currentPageNumber] = currentPageNumber
-                    (newPageNumberClicked) = 'changeLibraryItemPage($event)'
+                [lastPageNumber] = lastPageNumber
+                [currentPageNumber] = currentPageNumber
+                (newPageNumberClicked) = 'changeLibraryItemPage($event)'
                 ></clark-pagination>
             </div>
         </div>
     </div>
 </section>
+
+<ng-template #emptyNotificationsTemplate>
+    <div class='empty-notification-container'>
+        <i class="far fa-4x fa-thumbs-up empty-notification-container__icon"></i>
+        <p class='empty-notification-container__message'>All of your saved items are up-to-date!</p>
+    </div>
+</ng-template>
+
+<ng-template #emptyLibraryTemplate>
+    <div class='empty-notification-container'>
+        <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
+        <a [routerLink]="['/browse']">Browse Learning Objects</a>
+    </div>
+</ng-template>
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>

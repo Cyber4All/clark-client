@@ -18,7 +18,10 @@ export class RouteBackwardsCompatGuard implements CanActivate {
       if (next.params.learningObjectName.indexOf('-') === 8) {
         return true;
       } else {
-        return this.http.get(`${environment.apiURL}/learning-objects/${encodeURI(next.params.username)}/${encodeURI(next.params.learningObjectName)}`, { withCredentials: true }).toPromise().then(cuid => {
+        return this.http
+          .get(`${environment.apiURL}/learning-objects/${encodeURI(next.params.username)}/${encodeURI(next.params.learningObjectName)}`,
+            { withCredentials: true })
+          .toPromise().then(cuid => {
           return this.router.createUrlTree([`/details/${next.params.username}/${cuid}`]);
         }).catch(err => {
           console.error(err);

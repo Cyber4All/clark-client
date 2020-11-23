@@ -1,28 +1,32 @@
-<section tabindex="0" id="pageContent" class="hero">
-  <div class="inner">
-    <div class="logos">
-      <img *ngIf="pictureLocation" src="{{ pictureLocation }}" alt="collection logo">
-      <div *ngIf="!pictureLocation" class="title__icon">
-        <i class="far fa-cubes"></i>
+<div class="background">
+  <section class="hero">
+      <div class="inner">
+        <div class="logos">
+          <img *ngIf="pictureLocation" src="{{ pictureLocation }}" alt="collection logo">
+          <div *ngIf="!pictureLocation" class="title__icon">
+            <i class="far fa-cubes"></i>
+          </div>
+        </div>
+        <h1 class="header">{{ collection?.name }}</h1>
+        <clark-collection-action-panel [showContribute]=showContribute [collectionAbv]=collection?.abvName [collectionName]=collection?.name></clark-collection-action-panel>
       </div>
+  </section>
+  <section class="collection-container">
+    <div *ngIf="collection?.description" class="description">
+      <div class="heading">Description</div>
+      <p [innerHtml]="collection?.description"></p>
     </div>
-    <div class="name" *ngIf="collection?.name">{{ collection?.name }}</div>
-    <div *ngIf="collection?.fullName" class="long-name">{{ collection?.fullName }}</div>
-  </div>
-  <div class="logo"></div>
-</section>
-<section class="collection-container">
-  <div *ngIf="collection?.description" class="description">
-    <div class="heading">Description</div>
-    <p [innerHtml]="collection?.description"></p>
-  </div>
-
-  <div class="featured--header">
-      <div class="recently-released">Recently Released</div>
-      <a id="view-all" class="view-all" [routerLink]="['/browse']"
+    <div class="featured--header">
+      <div class="recently-released">Featured</div>
+      <a *ngIf="collection?.abvName !== 'plan c'" id="view-all" class="view-all" [routerLink]="['/browse']"
         [queryParams]="{ collection: collection?.abvName }">{{ COPY.VIEWALL }}
         <i class="far fa-angle-right"></i>
       </a>
-  </div>
-  <cube-featured [collection]="key"></cube-featured>
-</section>
+      <a *ngIf="collection?.abvName === 'plan c'" id="view-all" class="view-all" [routerLink]="['/browse']"
+        [queryParams]="{ fileTypes: 'video' }">{{ COPY.VIEWALL }}
+        <i class="far fa-angle-right"></i>
+      </a>
+    </div>
+    <cube-featured [collection]="key"></cube-featured>
+  </section>
+</div>
