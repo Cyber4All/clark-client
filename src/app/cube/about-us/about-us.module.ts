@@ -6,7 +6,7 @@ import { DiversityComponent } from './components/diversity/diversity.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
 import { AboutUsComponent } from './about-us.component';
 import { AboutClarkComponent } from './components/about-clark/about-clark.component';
-import { UsageComponent } from '../home/components/usage/usage.component';
+import { HomeModule } from '../home/home.module';
 
 @NgModule({
   declarations: [
@@ -15,10 +15,10 @@ import { UsageComponent } from '../home/components/usage/usage.component';
     TimelineComponent,
     AboutUsComponent,
     AboutClarkComponent,
-    UsageComponent,
   ],
   imports: [
     CommonModule,
+    HomeModule,
   ],
   exports: [
     AboutUsComponent

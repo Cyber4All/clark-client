@@ -43,11 +43,7 @@ import { MediaCardComponent } from './press/components/media-card/media-card.com
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { OutageCardComponent } from './outage-page/outage-card/outage-card.component';
 import { PastIssueComponent } from './outage-page/past-issue/past-issue.component';
-import { AboutUsComponent } from './about-us/about-us.component';
-import { MissionComponent } from './about-us/components/mission/mission.component';
-import { DiversityComponent } from './about-us/components/diversity/diversity.component';
-import { TimelineComponent } from './about-us/components/timeline/timeline.component';
-import { AboutClarkComponent } from './about-us/components/about-clark/about-clark.component';
+import { AboutUsModule } from './about-us/about-us.module';
 
 /**
  * A feature collection module that bundles all feature modules related to the cube.
@@ -75,11 +71,6 @@ import { AboutClarkComponent } from './about-us/components/about-clark/about-cla
     OutagePageComponent,
     OutageCardComponent,
     PastIssueComponent,
-    AboutUsComponent,
-    MissionComponent,
-    DiversityComponent,
-    TimelineComponent,
-    AboutClarkComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -99,6 +90,7 @@ import { AboutClarkComponent } from './about-us/components/about-clark/about-cla
     HomeModule,
     ModalModule,
     CollectionModule,
+    AboutUsModule,
   ],
   providers: [LearningObjectService]
 })
