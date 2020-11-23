@@ -16,11 +16,8 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
-<<<<<<< HEAD
 import { AboutUsComponent } from './about-us/about-us.component';
-=======
 import { DonateComponent } from './donate/donate.component';
->>>>>>> 07824bc10364c00cc69e118911bfb3f11d20e84c
 
 const details = {
   path: 'details',
