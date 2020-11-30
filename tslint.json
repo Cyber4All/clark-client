@@ -4,7 +4,7 @@
   ],
   "linterOptions": {
     "exclude": [
-        "events.json"
+        "src/app/cube/about-us/components/timeline/events.json"
     ]
   },
   "rules": {
