@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {default as events} from './events.json';
+import {default as events} from '../../../../../assets/events.json';
 
 @Component({
   selector: 'clark-timeline',

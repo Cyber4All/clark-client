@@ -3,7 +3,7 @@
 ### How to Add timeline Events
 
 1. Find the file events.json 
-> src/app/cube/about-us/componenets/timeline/events.json
+> src/assets/events.json
 
 2. Add Event
     - The format of a timeline event is:

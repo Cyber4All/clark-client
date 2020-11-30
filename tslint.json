@@ -2,11 +2,6 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
-  "linterOptions": {
-    "exclude": [
-        "src/app/cube/about-us/components/timeline/events.json"
-    ]
-  },
   "rules": {
     "arrow-return-shorthand": true,
     "callable-types": true,
