@@ -1,0 +1,113 @@
+@import '~_vars.scss';
+
+.about-clark-container{
+    align-items: center;
+    margin-bottom: 50px;
+
+    .vertical-container{
+        margin-top: 50px;
+        margin-left: 50px;
+        margin-right: 50px;
+        padding: 20px;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        
+        color: $darker-grey;
+        
+        .blue_text{
+            color: $light-blue;
+        } 
+
+        .first-section{
+            display: flex;
+            padding-bottom: 50px;
+            .fs-text-container{
+                width: 65%;
+                line-height: 35px;
+                font-size: $large;
+            }
+            .fs-img{
+                width: 200px;
+                height: auto;
+                display: block;
+                margin: auto;
+                filter: drop-shadow(0px 4px 10px $medium-grey);
+            }
+        }
+
+        .second-section{
+            display:flex;
+            padding-bottom: 50px;
+            .ss-text-container{
+                width: 65%;
+                line-height: 35px;
+                font-size: $large;
+            }
+            .ss-img{
+                width: 200px;
+                height: auto;
+                border-radius: 5px;
+                display: block;
+                margin: auto;
+                filter: drop-shadow(0px 4px 10px $medium-grey);
+            }
+        }
+
+        .third-section{
+            line-height: 35px;
+            font-size: $large;
+        }
+    }
+
+
+}
+
+@media screen and (max-width: 950px){
+    *{
+        font-size: $normal;
+    }
+    .about-clark-container{
+        margin-bottom: 0px !important;
+    }
+    .first-section{
+        flex-direction: column;
+        .fs-text-container{
+            width: 100% !important;
+            padding-bottom: 20px;
+        }
+    }
+    .second-section{
+        flex-direction: column-reverse;
+        
+        .ss-text-container{
+            width: 100% !important;
+            padding-bottom: 20px;
+        }
+    }
+    img{
+        width: 150px !important;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .vertical-container{
+        margin: 10px !important;
+    }   
+    .first-section{
+        padding-bottom: 20px !important; 
+    }
+    .second-section{
+        padding-bottom: 20px !important; 
+    }
+    img {
+        width: 125px !important;
+    }
+}
+
+@media screen and (max-width: 500px){
+    img{
+        width: 115px !important;
+    }
+}

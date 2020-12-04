@@ -20,7 +20,10 @@ import { CollectionsComponent } from './components/collections/collections.compo
     CubeSharedModule,
     RouterModule
   ],
-  exports: [HomeComponent],
+  exports: [
+    HomeComponent,
+    UsageComponent,
+  ],
   declarations: [HomeComponent, PhilosophyComponent, SplashComponent, AboutComponent, UsageComponent, CollectionsComponent],
   providers: []
 })

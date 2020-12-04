@@ -1,0 +1,87 @@
+@import '~_vars.scss';
+
+.mission-container{
+    padding: 50px;
+    position: relative;
+    
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: $light-blue;
+
+    &:before {
+        content: '';
+        background: linear-gradient(white, #f6f9fc, #f6f9fc);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: 10%;
+      }
+    
+    &:after {
+        content: '';
+        background: linear-gradient(90deg, white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+
+    .right-side{ 
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        .text-container{
+            font-size: $largest;
+            color: $wrapper-background;
+        }
+    }
+
+    .left-side{
+        display: flex;
+        justify-content: space-around;
+        .mission-logo{
+            width: 85%;
+            height: auto;
+            z-index: 2;
+        }
+    }
+    
+}
+
+@media screen and (max-width:1030px){
+    .mission-container{
+        flex-direction: column;
+        padding: 50px 25px 25px 25px; 
+
+        .right-side{
+            width: 85%;
+            .text-container{
+                text-align: center;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 700px){
+    .mission-container{
+        .left-side{
+            .mission-logo{
+                width: 60%;
+                height: auto;
+            }
+        }
+        .right-side{
+            width: 100%;
+            .text-container{
+                font-size: $large;
+            }
+        }
+    }
+}

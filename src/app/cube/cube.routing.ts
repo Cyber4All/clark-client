@@ -16,6 +16,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 import { DonateComponent } from './donate/donate.component';
 
 const details = {
@@ -40,6 +41,10 @@ const cube_routes: Routes = [
       { path: 'c/:abvName', component: CollectionDetailsComponent },
       { path: 'c', component: CollectionsComponent },
       { path: 'organization/:query', component: OrganizationListComponent },
+      {
+        path: 'about',
+        component: AboutUsComponent,
+      },
       {
         path: 'browse',
         component: BrowseComponent,
