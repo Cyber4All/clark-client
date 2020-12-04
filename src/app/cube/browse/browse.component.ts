@@ -9,8 +9,8 @@ import { lengths } from '@cyber4all/clark-taxonomy';
 import {
   SuggestionService
  } from '../../onion/core/suggestion.service';
- import { FilterSection } from './components/filter/filter.component';
- import { COPY } from './browse.copy';
+import { FilterSection } from './components/filter/FilterSection';
+import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
 import { CollectionService } from '../../core/collection.service';

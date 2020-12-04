@@ -1,5 +1,5 @@
 <div class="clark-filter" id="clark-filter" [ngClass]="{'vertical': display === 'vertical', 'horizontal': display === 'horizontal'}">
-  <div class="filter-section" id="filter-section" *ngFor="let f of filters">
+  <div class="filter-section" id="filter-section" *ngFor="let f of filterSections">
     <ng-container *ngIf="f.values || f.template">
       <div class="filter-section-inner" id="filter-section-inner">
         <div class="filter-section-name">{{ f.title }}</div>
@@ -22,7 +22,7 @@
       <ng-container [ngTemplateOutlet]="selectMany" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="'select-one'">
-      <ng-container [ngTemplateOutlet]="selectOne" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
+      <ng-container [ngTemplateOutlet]="selectOne" [ngTemplateOutletContext]="{name: f.name, filters: f.values, isExpanded: f.isExpanded}"></ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="'dropdown-one'">
       dropdown-one hasn't been implemented yet :0
@@ -43,13 +43,17 @@
 </ng-template>
 
 <!-- Select One -->
-<ng-template #selectOne let-filters="filters" let-name="name">
+<ng-template #selectOne let-filters="filters" let-name="name" let-isExpanded="isExpanded">
   <div class="filter-section-type select-many" id="filter-section-type">
-    <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of filters">
+    <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of isExpanded ? filters : filters.slice(0,7)">
       <span [tip]="f.toolTip ? f.toolTip : ''" [tipDisabled]="!f.toolTip" tipPosition="right">
         <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.value ? f.value : f.name, true)" (checkboxUnchecked)="removeFilter(name, f.value ? f.value : f.name)"></clark-checkbox>
         <span>{{ f.name }}</span>
       </span>
+    </div>
+    <div>
+      <button *ngIf="!isExpanded" (click)="expand(name)">See More</button>
+      <button *ngIf="isExpanded" (click)="collapse(name)">See Less</button>
     </div>
   </div>
 </ng-template>

@@ -1,6 +1,7 @@
 import {
-  Component, Input, EventEmitter, Output, TemplateRef, ContentChildren, QueryList, AfterContentInit
+  Component, Input, EventEmitter, Output, TemplateRef, ContentChildren, QueryList, AfterContentInit, ChangeDetectorRef
 } from '@angular/core';
+import { FilterSection } from './FilterSection';
 
 @Component({
   selector: 'clark-filter',
@@ -8,7 +9,7 @@ import {
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements AfterContentInit {
-  @Input() filters: FilterSection[];
+  @Input() filterSections: FilterSection[];
   @Input() display: 'horizontal' | 'vertical' = 'horizontal';
 
   @Output() add: EventEmitter<{category: string, filter: string, clearFirst?: boolean}> = new EventEmitter();
@@ -16,17 +17,19 @@ export class FilterComponent implements AfterContentInit {
 
   @ContentChildren(TemplateRef) template: QueryList<TemplateRef<any>>;
 
+  constructor(private readonly changeDetector: ChangeDetectorRef) {}
+
   ngAfterContentInit() {
     const indexes = [];
 
-    for (let i = 0, l = this.filters.length; i < l; i++) {
-      if (this.filters[i].type === 'custom') {
+    for (let i = 0, l = this.filterSections.length; i < l; i++) {
+      if (this.filterSections[i].type === 'custom') {
         indexes.push(i);
       }
     }
 
     this.template.forEach((item, index) => {
-      this.filters[indexes[index]].template = item;
+      this.filterSections[indexes[index]].template = item;
     });
 
   }
@@ -50,21 +53,14 @@ export class FilterComponent implements AfterContentInit {
   removeFilter(category: string, filter: string) {
     this.remove.emit({category, filter});
   }
-}
 
-// The title of the FilterSection is the title that appears in the UI.
-// The name of the FilterSection is the name that is sent to the backend for the specific filter.
-// Determining the title here will allow us to change the title without changing backend logic for the name of the specific filter.
-export interface FilterSection {
-  title: string;
-  name: string;
-  type: 'select-many' | 'select-one' | 'dropdown-one' | 'custom';
-  canSearch?: boolean;
-  values?: {
-    name: string;
-    value?: string;
-    active?: boolean;
-    toolTip?: string;
-  }[];
-  template?: TemplateRef<any>;
+  expand(name: string): void {
+    this.filterSections.find((filterSection) => filterSection.name === name).isExpanded = true;
+    this.changeDetector.detectChanges();
+  }
+
+  collapse(name: string): void {
+    this.filterSections.find((filterSection) => filterSection.name === name).isExpanded = false;
+    this.changeDetector.detectChanges();
+  }
 }
