@@ -1,6 +1,6 @@
 import { environment } from 'environments/environment';
 // Core
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -44,6 +44,7 @@ import { MediaItemComponent } from './press/components/media-item/media-item.com
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { OutageCardComponent } from './outage-page/outage-card/outage-card.component';
 import { PastIssueComponent } from './outage-page/past-issue/past-issue.component';
+import { AboutUsModule } from './about-us/about-us.module';
 import { DonateComponent } from './donate/donate.component';
 
 
@@ -76,6 +77,10 @@ import { DonateComponent } from './donate/donate.component';
     PastIssueComponent,
     DonateComponent,
   ],
+  schemas: [
+    NO_ERRORS_SCHEMA,
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
   imports: [
     // Angular imports
     FormsModule,
@@ -90,6 +95,7 @@ import { DonateComponent } from './donate/donate.component';
     HomeModule,
     ModalModule,
     CollectionModule,
+    AboutUsModule,
   ],
   providers: [LearningObjectService]
 })

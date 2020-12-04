@@ -1,0 +1,131 @@
+@import '~_vars.scss';
+
+*{
+    color: $darker-grey;
+}
+
+.timeline-container{
+   align-items: center;
+   margin-bottom: 75px;
+   
+   .title-container{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 50px;
+   }
+
+   .content-container{  
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+
+        .left-container{
+            width: 50%;
+            .event-container{
+                
+                padding-top: 30px;
+                display: flex;
+                margin-left: 100px;
+                border-left: 3px solid $darker-grey;
+                
+                .line-container{
+                    width: 75px;
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    
+                    .connector{
+                        border: 1px solid $darker-grey;
+                    }
+                }
+                
+                .text-container{
+                    width: 500px;
+                    margin-top:auto;
+                    margin-bottom: auto;
+                    box-shadow: 0px 4px 10px $light-grey;
+                    border-radius: 5px;
+
+                    .text-box{
+                        margin: 30px;
+                        width: 70%;
+
+                        .date-container{
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        .right-container{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            
+            
+            .img-container{
+                .timeline-img{
+                    height: 150px;
+                    width: auto;
+                }
+            }
+        
+        }
+   }
+}
+
+@media screen and (max-width: 1000px){
+    .text-container{
+        margin:0px;
+        text-align: center;
+    }
+    .event-container{
+        margin-left: 50px !important;
+    }
+    img{
+        height: 125px !important;
+    }
+}
+@media screen and(max-width: 700px){
+    .right-container{
+        position: absolute;
+        visibility: hidden;
+    }
+    .left-container{
+        width: 100% !important;
+        .event-container{
+
+            .line-container{
+                width: 25px !important;
+            }
+            .text-container{
+                width: 300px !important;
+            }
+        }
+    }
+    
+}
+
+@media screen and (max-width: 500px){
+    *{
+        font-size: $normal;
+    }
+    .title-container{
+        margin-bottom: 25px !important;
+        h1{
+            font-size: $large;
+        }
+    }
+    .event-container{ 
+        margin-left: 25px !important;
+        .line-container{
+            width: 10% !important;
+        }
+        .text-container{
+            width: 150px !important;
+        }
+    }
+    
+}

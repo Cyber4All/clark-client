@@ -7,5 +7,6 @@ export const COPY = {
     TERMS: 'Terms of Service',
     ACCESSIBILITY: 'Accessibility',
     PRESS: 'Press and Media',
-    OUTAGES: 'System Outages'
+    OUTAGES: 'System Outages',
+    ABOUT: 'About Us'
 };

@@ -1,0 +1,41 @@
+<div class="timeline-container">
+  
+  <div class="title-container">
+    <h1>CLARK Through The Years</h1>
+  </div>
+  
+  <div class="content-container" *ngFor="let e of events">
+    
+    <div class="left-container" >
+      <div class="event-container" >
+        
+        <div class="line-container">
+          <hr class= "connector">
+        </div>
+
+        <div class="text-container">
+          <div class="text-box">
+            
+            <div class="date-container">
+              <h2>{{e.date}}</h2>
+            </div>
+            <div class="about-container">
+              <p>{{e.description}}</p>
+            </div>
+
+          </div> 
+        </div>
+          
+
+      </div>
+    </div>
+
+    <div class="right-container" >
+      <div class="img-container" >
+          <img  *ngIf="e.image" class = "timeline-img" src="{{ e.image }}" alt="Img left left-side">
+      
+      </div>
+    </div>
+
+  </div>
+</div>
