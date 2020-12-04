@@ -9,6 +9,7 @@ import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
+import { TopicListLoader } from './core/topic-list.loader';
 
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
@@ -97,6 +98,6 @@ import { DonateComponent } from './donate/donate.component';
     CollectionModule,
     AboutUsModule,
   ],
-  providers: [LearningObjectService]
+  providers: [LearningObjectService, TopicListLoader]
 })
 export class CubeModule {}
