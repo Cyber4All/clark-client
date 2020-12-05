@@ -14,7 +14,7 @@ export class TopicListLoader {
       .get(topicListUrl)
       .pipe(
         take(1),
-        catchError((e) => of(e))
+        catchError((e) => of(e)),
       )
       .toPromise();
 

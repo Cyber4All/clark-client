@@ -51,9 +51,13 @@
         <span>{{ f.name }}</span>
       </span>
     </div>
-    <div>
-      <button *ngIf="!isExpanded" (click)="expand(name)">See More</button>
-      <button *ngIf="isExpanded" (click)="collapse(name)">See Less</button>
+    <div class="filter filter-list-control">
+      <button *ngIf="!isExpanded" (click)="expand(name)" class="filter-list-control button show-more">
+        See more <i class="far fa-angle-down"></i>
+      </button>
+      <button *ngIf="isExpanded" (click)="collapse(name)" class="filter-list-control button show-less">
+        See less <i class="far fa-angle-up"></i>
+      </button>
     </div>
   </div>
 </ng-template>

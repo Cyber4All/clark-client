@@ -39,6 +39,21 @@
           margin-right: 10px;
         }
       }
+
+      &.filter-list-control {
+        display: block;
+        padding-top: 2px;
+        .show-more, .show-less {
+          border: none;
+          color: $light-blue;
+          padding: 0 0 3px;
+          font-size: 10.5pt;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          text-transform: none;
+        }
+      }
     }
   }
 }
