@@ -44,7 +44,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     sortType: undefined,
     collection: '',
     fileTypes: [],
-    topic: [], // TODO: Note that this was very pesky!
+    topic: [],
   };
 
   tooltipText = {
@@ -403,6 +403,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       } else {
         this.shouldResetPage = true;
       }
+
       this.router.navigate(['browse'], {
         queryParams: this.removeObjFalsy(this.query)
       });
