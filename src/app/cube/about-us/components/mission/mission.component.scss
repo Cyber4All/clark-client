@@ -18,19 +18,20 @@
         left: 0;
         right: 0;
         mask: $cube-pattern repeat;
+        opacity: .2;
         z-index: 0;
-        opacity: 10%;
       }
     
     &:after {
         content: '';
-        background: linear-gradient(90deg, white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        background: linear-gradient(90deg, white,rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: -1;
+        z-index: 1;
+        opacity: .15;
     }
 
     .right-side{ 
