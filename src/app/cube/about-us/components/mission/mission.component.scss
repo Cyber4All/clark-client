@@ -11,6 +11,18 @@
 
     &:before {
         content: '';
+        background: linear-gradient(90deg, white,rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        opacity: .15;
+      }
+    
+    &:after {
+        content: '';
         background: linear-gradient(white, #f6f9fc, #f6f9fc);
         position: absolute;
         top: 0;
@@ -19,19 +31,7 @@
         right: 0;
         mask: $cube-pattern repeat;
         opacity: .2;
-        z-index: 0;
-      }
-    
-    &:after {
-        content: '';
-        background: linear-gradient(90deg, white,rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-        opacity: .15;
+        z-index: 3;
     }
 
     .right-side{ 
@@ -41,6 +41,7 @@
         .text-container{
             font-size: $largest;
             color: $wrapper-background;
+            z-index: 99;
         }
     }
 
@@ -50,7 +51,7 @@
         .mission-logo{
             width: 85%;
             height: auto;
-            z-index: 2;
+            z-index: 99;
         }
     }
     
