@@ -18,7 +18,7 @@
             justify-content: space-around;
             .ts-img{
                 width: 200px;
-                height: auto;
+                height: 255.84px;
             }
         }
         .middle-section{
@@ -38,11 +38,11 @@
             justify-content: space-around;
             .bsl-img{
                 width: 200px;
-                height: auto;
+                height: 255.84px;
             }
             .bsr-img{
                 width: 200px;
-                height: auto;
+                height: 255.84px;
             }
         }
     }
@@ -72,11 +72,13 @@
     }
     img{
         width: 125px !important;
+        height: 159.89px !important;
     }
 }
 
 @media screen and (max-width: 500px){
     img{
         width: 115px !important;
+        height: 147.11px !important;
     }
 }
