@@ -147,6 +147,15 @@ export class AuthService {
   }
 
   /**
+   * Checks if user's group equals admin
+   * @returns {boolean}
+   * @memberof AuthService
+   */
+  public isAdmin(): boolean {
+    return this.group.value === AUTH_GROUP.ADMIN;
+  }
+
+  /**
    * Set's the user's logged-in status
    *
    * @private
