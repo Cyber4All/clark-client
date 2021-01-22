@@ -122,8 +122,8 @@ export class StandardOutcome implements Outcome {
    * @memberof StandardOutcome
    */
   private copyOutcome(outcome: any): void {
-    if (outcome._id) {
-      this.id = outcome._id;
+    if (outcome.id) {
+      this.id = outcome.id;
     }
     if (outcome.author) {
       this.author = outcome.author;
