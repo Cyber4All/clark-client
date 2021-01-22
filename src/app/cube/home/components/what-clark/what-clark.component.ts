@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { COPY } from '../../home.copy';
 
 @Component({
-  selector: 'what-clark',
+  selector: 'cube-what-clark',
   templateUrl: './what-clark.component.html',
   styleUrls: ['./what-clark.component.scss']
 })

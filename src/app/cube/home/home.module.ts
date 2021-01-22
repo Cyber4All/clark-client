@@ -25,7 +25,15 @@ import { WhatClarkComponent } from './components/what-clark/what-clark.component
     HomeComponent,
     UsageComponent,
   ],
-  declarations: [HomeComponent, PhilosophyComponent, SplashComponent, AboutComponent, UsageComponent, CollectionsComponent, WhatClarkComponent],
+  declarations: [
+    HomeComponent,
+    PhilosophyComponent,
+    SplashComponent,
+    AboutComponent,
+    UsageComponent,
+    CollectionsComponent,
+    WhatClarkComponent,
+  ],
   providers: []
 })
 export class HomeModule {}
