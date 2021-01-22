@@ -1,0 +1,42 @@
+@import '~_vars.scss';
+@import '../../home';
+
+.title-text {
+    color: $light-blue;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .title__icon {
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  .what__description {
+    max-width: 800px;
+    margin: auto;
+    font-size: $large;
+    color: $dark-grey;
+    text-align: center;
+  }
+
+  .what__actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  .about__link {
+    margin-top: 20px;
+    display: inline-block;
+
+    a {
+        margin-left: 25px;
+        color: $light-blue;
+        font-size: $large;
+        text-decoration: underline;
+        padding: 10px;
+        cursor: pointer;
+      }
+  }

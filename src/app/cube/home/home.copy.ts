@@ -14,4 +14,6 @@ export const COPY = {
 
     COLLECTION_BLURB: `Learning Objects are grouped into Collections within CLARK.
      Each collection is unique, has its own peer-review process, and is supported by its own community.`,
+
+    WHAT_BLURB: 'CLARK is a platform for building and sharing free cybersecurity curriculum. It includes three components – the model for building curriculum, the digital library system, and the curriculum collections. It provides cybersecurity faculty the building blocks to train the next wave of researchers and better prepare the cybersecurity workforce.',
 };
