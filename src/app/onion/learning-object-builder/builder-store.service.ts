@@ -512,7 +512,7 @@ export class BuilderStore {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        deleteMapping: standardOutcome.id
+        mappings: mappedOutcomes.map(x => x.id)
       },
       true
     );
@@ -914,7 +914,6 @@ export class BuilderStore {
         this.createLearningOutcome(newValue);
       } else {
         // this is an existing outcome, modify it
-        console.log(newValue);
         this.updateLearningOutcome(newValue);
       }
 
