@@ -67,7 +67,8 @@ footer {
       }
 
       .csusb {
-        width: 150px;
+        width: 175px;
+        margin-right: 50px;
       }
     }
   }
@@ -122,6 +123,9 @@ footer {
 
         img {
           margin-top: 20px;
+        }
+        .csusb {
+          margin-right: 0 !important;
         }
       }
     }
