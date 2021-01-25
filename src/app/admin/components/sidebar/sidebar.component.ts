@@ -27,8 +27,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.historySnapshot = this.history.snapshot();
   }
 
-  isAdmin(): boolean {
-    return this.authService.isAdmin();
+  isAdminOrEditor(): boolean {
+    return this.authService.isAdminOrEditor();
   }
 
   ngOnDestroy() {
