@@ -1,0 +1,175 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.header{
+    display: flex;
+}
+.ncyte-title{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    padding-right: 2rem;
+}
+.logo, .logo-header{
+   max-width: 60%;
+   font-size: 1rem;
+}
+.logo-header{
+    padding-top: 1.5rem;
+    color:hsl(200, 100%, 51%); 
+    text-align: center;
+}
+.section-accent{
+    background-color: hsl(200, 100%, 40%);
+    border-radius: 10px;
+    padding: 10rem 0;
+}
+// need to work around viewport margin
+.section-browse{
+    display: flex;
+    justify-content: flex-end;
+}
+.section-stats{
+    display: flex;
+
+}
+.section-featured-learning, .resources, .section-curators, .section-stats{
+    display: flex; 
+    align-items: flex-start;
+}
+.section-featured-learning{
+     margin-top: 20rem;
+}
+.section-curators{
+    justify-content: space-between;
+}
+
+.resources, .section-curators{
+    margin-bottom: 20rem;
+}
+
+.resource-info-1{
+    margin: 0 2rem;
+}
+.resource-info-2{
+    margin-left: 8rem;
+}
+.logo-tech-ncyte, .logo-tech-whatcom{
+    max-width: 50%;
+
+}
+.logo-tech-ncyte{
+    margin-bottom: 2rem;
+}
+.logo-tech-whatcom{
+    margin-top: 2rem;
+}
+.desc-ncyte, .desc-whatcom{
+    max-width: 50%;
+    line-height: 1.75;
+}
+
+.resources p{
+    display: flex;
+    flex-direction: column;
+}
+.section-stats{
+    display: flex;
+    justify-content: space-between;
+}
+.section-browse .section-accent, .section-featured-learning .section-accent,.section-tech-innovation.section-accent, .section-curators .section-accent, .section-numbers.section-accent{
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-width: 30%;
+    color: #fff;
+    padding: 2rem;
+    line-height: 1.5;
+}
+.section-stats{
+    margin-bottom: 10rem;
+}
+.section-stats .icon{
+    margin-bottom: 5rem;
+}
+
+.icon{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: space-between;
+    margin-top: 2.2rem;
+    padding: 0 2rem;
+    text-align: center;
+    line-height: 1.75;
+}
+
+.btn{
+    outline: none;
+    cursor: pointer;
+    border: 0;
+    border-color: hsl(61, 100%, 50%);
+    background-color: hsl(61, 100%, 50%);
+    padding: .3em;
+    margin-top: 1rem;
+    border-radius: .3rem;
+}
+.section-objects{
+    display: grid;
+    grid-template-rows: repeat(3, minmax(auto, 2fr));
+    grid-template-columns: repeat(2, minmax(auto, 2fr));
+    padding-left: 2rem;
+}
+.curators{
+    display: flex;
+    margin: 1rem;
+    flex-direction: row;
+}
+.curators-title{
+    font-size: 1.5rem;
+}
+.curators-desc{
+    font-size: 1rem;
+}
+.curator-1, .curator-2{
+    display: flex;
+    flex-direction: column;
+    margin-right: calc(10.3 * 1rem);
+    text-align: center;
+}
+.curator-1{
+    margin-right: 20rem;
+}
+
+.list1, .list2{
+    list-style: none;
+}
+.list1{
+    padding-left: 1rem;
+}
+
+.footer{
+    background-color: #555;
+    color: #fff;
+    line-height: 2;
+}
+.learn-more{
+    text-decoration: none;
+}
+.learn-more .link{
+    text-decoration: none;
+    cursor: pointer;
+}
+.ncyte-down{
+ margin-bottom: 2rem;
+}
+.logo-nsf{
+    max-width: 10%;
+}

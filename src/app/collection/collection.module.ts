@@ -5,7 +5,8 @@ import { GenericPageComponent } from './pages/generic-page/generic-page.componen
 import { CuratorCardComponent } from './shared/included/curator-card/curator-card.component';
 import { StatCardComponent } from './shared/included/stat-card/stat-card.component';
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
-
+import { CollectionsRoutingModule} from './collection.routing';
+import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
 
 
 @NgModule({
@@ -14,10 +15,12 @@ import { SecurityInjectionsComponent } from './pages/security-injections/securit
     GenericPageComponent,
     CuratorCardComponent,
     StatCardComponent,
-    SecurityInjectionsComponent
+    SecurityInjectionsComponent,
+    CollectionNcyteComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    CollectionsRoutingModule
   ]
 })
 export class CollectionModule { }
