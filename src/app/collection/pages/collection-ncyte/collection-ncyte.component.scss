@@ -28,9 +28,11 @@
 .logo-header{
     padding-left: 10px;
     color:$blue-accent; 
-    max-width: 60%;
+    max-width: 55%;
+    margin-top: 30px;
     margin-right: 10px;
     padding: 30px 0px;
+    font-size: $largest;
 
 }
 .section-accent{
@@ -42,94 +44,120 @@
     line-height: 1.75;
     min-width: 250px;
     color: #fff;
-    max-width: 60%;
+    max-width: 30%;
     border-radius: 5px;
     background-color: $blue-accent;
+    font-size: $larger;
     
 }
 
 .section-browse{
    display: flex;
    justify-content: flex-end;
-}
-.section-stats{
+   text-align: left;
    
+}
+.section-browse .section-accent{
+    padding-left: 80px;
+    padding-right: 50px;
+    max-width: 65%;
+    text-align: left;
+}
 
-}
-.section-featured-learning, .resources, .section-curators, .section-stats{
-   
-}
 .section-featured-learning{
     display: flex;
     margin-top: 20px;
     font-size: $large;
 }
+.featured-learning-title{
+    font-size: $largest;
+}
 .section-featured-learning .section-accent{
     justify-content: space-between;
-    padding: 200px 0;
-    max-width: 60%;
-
+    margin-top: 120px;
+    padding: 80px 0;
+    padding-right: 10px;
+    height: 80vh;
+    width: 450px;
 }
-
 
 .section-curators{
-    
+    text-align: center;
+}
+.section-curators .section-accent{
+    padding: 60px 30px;
 }
 
-.resources, .section-curators{
-    
+
+.section-resource{
+    display: flex;
+    font-size: $normal;
 }
 
-.resource-info-1{
-    
+.resource-info-1, .resource-info-2{
+    margin-top: 100px;
 }
-.resource-info-2{
-   
-}
-.logo-tech-ncyte, .logo-tech-whatcom{
- 
-}
+
 .logo-tech-ncyte{
-   
+   max-width: 80%;
+   margin-bottom: 30px;
 }
 .logo-tech-whatcom{
-    
+    max-width: 60%;
+    margin-top: 30px;
+    margin-left: 90px;
 }
 .desc-ncyte, .desc-whatcom{
-   
+   line-height: 1.75;
 }
-
-.resources p{
-   
+.desc-whatcom{
+    margin-left: 55px;
 }
 .section-stats{
-   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
 }
-
-.section-browse .section-accent, .section-featured-learning .section-accent,.section-tech-innovation.section-accent, .section-curators .section-accent, .section-numbers.section-accent{
- 
-}
-
 .section-stats{
-    
+    margin-top: 200px;
 }
-.section-stats .icon{
-    
-}
-// four class icon div elements have own container so how would align-self apply?
 .icon{
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: $large;
+    margin: 20px;
+}
+.icon p {
+    max-width: 80%;
+    margin-top: 20px;
+    color: $medium-grey;
+}
+.num{
+    color: $dark-grey;
+    font-size: $largest;
+}
+.section-numbers.section-accent{
+    display: flex;
+    flex-direction: column;
+    font-size: $largest;
+    padding: 30px 50px;
 }
 
 .btn{
     outline: none;
     cursor: pointer;
     border: 0;
-    border-color: hsl(61, 100%, 50%);
-    background-color: hsl(61, 100%, 50%);
+    border-color: $gold;
+    background-color: $gold;
     padding: .3em;
     margin-top: 16px;
     border-radius: 4.8px;
+    
+}
+.btn-name{
+    font-size: $large;
 }
 
 .section-objects{
@@ -141,42 +169,78 @@
     margin-left: 100px;
     margin-top: 200px;
 }
+.section-tech-innovation{
+    padding: 80px 20px;
+}
+.section-curators{
+    display: flex;
+    margin-top: 50px;
+}
 .curators{
-   
-}
-.curators-title{
-    
-}
-.curators-desc{
-    
-}
-.curator-1, .curator-2{
-    
+    display: flex;
+    margin-left: 150px;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
 }
 .curator-1{
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: $larger;
+}
+.curator-2{
+    display: flex;
+    margin-left: 200px;
+    font-size: $larger;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.curators-title{
+    font-size:  $largest;
+}
+.curators-desc{
+    font-size: $larger;
 }
 
 .list1, .list2{
-    
+    margin-left: 20px;
+    max-width: 80%;
+    font-size: $small;
+    list-style: none;
 }
 .list1{
-  
+  margin-right: 100px;
+}
+
+.section.section-stats{
+    margin-bottom: 120px;
 }
 
 .footer{
- 
+  background-color: $dark-grey;
+  color: #fff;
+  height: 35vh;
+  width: 100%;
 }
-.learn-more{
 
-}
-.learn-more .link{
-    
+a:link{
+    text-decoration: none;
+    cursor: pointer;
+    color: #fff;
 }
 .ncyte-down{
-
+    display: flex;
+    margin-top: 100px;
+}
+.ncyte-down .fund{
+    align-self: center;
+    margin-left: 30px;
 }
 .logo-nsf{
    
+   width: 100px;
 }
 
