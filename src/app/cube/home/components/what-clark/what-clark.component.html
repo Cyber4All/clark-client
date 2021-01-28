@@ -7,12 +7,28 @@
     </div>
     <div class="what__description">
       {{ copy.WHAT_BLURB }}
+      <a routerLink="/about">Learn more</a>
     </div>
     <div class="what__actions">
         <div class="about__link">
-            <button class="button good">Watch Video</button>
-            <a routerLink="/about">Learn more</a>
+            <div role=button class="play-button" (activate)="openModal()" aria-label="Play CLARK Video"><i class="fal fa-play-circle"></i><span class="button-text">Watch our video</span></div>
         </div>
-        <p>bi</p>
     </div>
   </div>
+
+
+
+
+  <!--Modal Content-->
+  <clark-popup [floating]="true" *ngIf="openVideoModal" (closed)="closeModal()">
+    <div #popupInner style="min-width: 550px; max-width: 650px; padding: 20px;" class="popup-inner">
+      <iframe
+        width="560"
+        height="300"
+        src="https://www.youtube.com/embed/ADbBWaqAsDs"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div> 
+  </clark-popup>

@@ -18,6 +18,13 @@
     font-size: $large;
     color: $dark-grey;
     text-align: center;
+
+    a {
+      color: $light-blue;
+      font-size: $normal;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 
   .what__actions {
@@ -31,12 +38,21 @@
     margin-top: 20px;
     display: inline-block;
 
-    a {
-        margin-left: 25px;
-        color: $light-blue;
-        font-size: $large;
+    .play-button {
+      background: transparent;
+      border: none;
+      font-size: $larger;
+      color: $light-blue;
+
+    }
+
+    .button-text {
+      margin-left: 5px;
+      color: $dark-grey;
+
+      &:hover {
         text-decoration: underline;
-        padding: 10px;
-        cursor: pointer;
       }
+    }
+
   }

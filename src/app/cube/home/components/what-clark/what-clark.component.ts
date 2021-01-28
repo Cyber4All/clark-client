@@ -10,9 +10,19 @@ export class WhatClarkComponent implements OnInit {
 
   copy = COPY;
 
+  openVideoModal = false;
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+
+  openModal() {
+    this.openVideoModal = true;
+  }
+
+  closeModal() {
+    this.openVideoModal = false;
   }
 
 }
