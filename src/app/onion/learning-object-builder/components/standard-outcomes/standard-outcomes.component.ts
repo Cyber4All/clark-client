@@ -110,6 +110,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   }
 
   toggleStandardOutcome(standardOutcome: StandardOutcome, value: boolean) {
+    standardOutcome = new StandardOutcome(standardOutcome);
     this.toggleMapping.emit({ standardOutcome, value });
   }
 
