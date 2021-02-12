@@ -1,0 +1,61 @@
+@import '~_vars.scss';
+@use 'collection-globals.scss';
+
+$ncyte-blue: #2757A4;
+$ncyte-yellow: #FFDF21;
+
+.section-featured-learning{
+    
+    margin-top: 100px;
+    display: flex;
+    flex-basis: 100vh;
+}
+
+.section-accent {
+    flex-basis: 30%;
+    color: #fff;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: $ncyte-blue;
+    text-align: center;
+
+    .accent-content{
+        padding-top: 150px;
+    }
+
+    .featured-learning-title{
+        font-size: $largest;
+    }
+
+    p {
+        font-size: $larger;
+    }
+
+}
+.object-list{
+    margin-left: 300px;
+    flex-basis: 20%;
+}
+
+@media (max-width: 1200px){
+    .section-featured-learning{
+        flex-wrap: wrap;
+    }
+    .object-list{
+        margin: auto;
+        padding-left: 200px;
+        padding-top: 50px;
+    }
+    .section-accent{
+        flex-basis: 100%;
+    }
+    .accent-content{
+       padding-bottom: 80px;
+    }
+}
+@media (max-width: 800px){
+    .object-list{
+        padding-left: 250px;
+    }
+}
+

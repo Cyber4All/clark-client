@@ -1,0 +1,31 @@
+<div class =  "container">
+    <div> 
+    <div *ngIf = "learnObj.length !== 'micromodule'">
+        <div class="module-background">
+            <img class ="background"src="../../../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash 1.png" alt="image not shown">
+            <img class = "module" src="../../../../../../../assets/images/MODULE.png" alt="image not shown">
+        </div>
+    </div>
+    <div *ngIf = "learnObj.length === 'micromodule'">
+        <div class= "module-background" >
+            <img class = "background"src="../../../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash 2.png" alt="">
+            <img class = "micromodule" src="../../../../../../../assets/images/MICROMODULE.png" alt="image not shown">
+        </div>
+
+    </div>
+        <div>
+      {{ learnObj.name }}
+        </div>
+        <div>
+            {{learnObj.author.email}}
+        </div>
+         <div>
+             {{learnObj.constributors}}
+         </div>
+         <div>
+             {{learnObj.date | date:'longDate'}}
+         </div>
+         <div [innerHtml] = "learnObj.description" class = "desc">
+         </div>
+    </div>
+</div>

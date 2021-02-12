@@ -1,0 +1,66 @@
+@import '~_vars.scss';
+@use '~collection-globals.scss';
+
+$ncyte-blue: #2757A4;
+$ncyte-yellow: #FFDF21;
+
+header {
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+}
+
+.ncyte-title {
+    flex-basis: 75%;
+    padding-top: 50px;
+    text-align: center;
+
+    .logo-header {
+        text-align: center;
+        color: $ncyte-blue;
+    }
+}
+
+.section-browse {
+    flex-basis: 25%;
+    text-align: center;
+
+    .section-accent {
+        background-color: $ncyte-blue;
+        padding: 30px;
+        border-radius: 0 0 0 5px;
+        height: inherit;
+        color: #fff; 
+            
+        .icon {
+            font-size: 50px;
+            color: #fff;
+            padding: 10px;
+        }
+        p {
+            font-size: $large;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        .button {
+            margin-top: 20px;
+            color: $darker-grey;
+            font-weight: 700;
+
+            &.ncyte {
+                background-color: $ncyte-yellow;
+            }
+        }
+    }
+}
+
+@media (max-width: 900px){
+    .ncyte-title{
+        flex-basis: 100%;
+    }
+    .section-browse {
+        flex-basis: 100%;
+    }
+}
+

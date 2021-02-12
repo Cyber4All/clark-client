@@ -1,0 +1,41 @@
+@import '~_vars.scss';
+.container{
+    width: 30vh;
+    
+}
+
+.module-background{
+    position: relative;
+    right: 150px;
+    top: 100px;
+}
+
+.module-background .background{
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.module{
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    z-index: 1;
+
+}
+.micromodule{
+    position: absolute;
+    right: 5px;
+    top: 50px;
+    z-index: 1;
+}
+div{ 
+    font-size: $smaller;
+    padding-right: 50px;
+}
+
+.desc{
+    height: 90px;
+    overflow: hidden;
+}
+
+

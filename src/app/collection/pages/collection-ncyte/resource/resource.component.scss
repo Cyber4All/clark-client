@@ -1,0 +1,46 @@
+@import '~_vars.scss';
+
+$ncyte-blue: #2757A4;
+$ncyte-yellow: #FFDF21;
+
+.section-resource{
+    display: flex;
+    flex-wrap: wrap;
+    font-size: $normal;
+    margin-top: 100px;
+    flex-basis: 100vh;
+    text-align: center;
+}
+.logo-tech-ncyte{
+    width: 300px;
+}
+.logo-tech-whatcom{
+    width: 300px;
+    margin-left: 30px;
+}
+
+.resource-info-1, .resource-info-2{
+    margin-top: 100px;
+    flex-basis: 20%;
+    margin: auto;
+}
+.section-accent{
+    background-color: $ncyte-blue;
+    margin-bottom: 20px;
+    color: #fff;
+    min-height: 30vh;
+    flex-basis: 30%;
+    padding: 10px;
+    padding-top: 50px;
+    font-size: $large;
+}
+
+@media (max-width: 1110px){
+    .section-accent{
+        flex-basis: 100%;
+    }
+    
+}
+
+
+

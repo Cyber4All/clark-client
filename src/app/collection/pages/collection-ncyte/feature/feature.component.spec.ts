@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ObjectItemComponent } from './object-item.component';
+import { FeatureComponent } from './feature.component';
 
-describe('ObjectItemComponent', () => {
-  let component: ObjectItemComponent;
-  let fixture: ComponentFixture<ObjectItemComponent>;
+describe('FeatureComponent', () => {
+  let component: FeatureComponent;
+  let fixture: ComponentFixture<FeatureComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ObjectItemComponent ]
+      declarations: [ FeatureComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ObjectItemComponent);
+    fixture = TestBed.createComponent(FeatureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
