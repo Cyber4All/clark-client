@@ -9,12 +9,12 @@
 # BUILD STAGE
 # ----------------------------------------------------------------
 FROM node:12 as build
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 # Create a build folder to work in
-COPY . /build-tmp
-WORKDIR /build-tmp
+COPY . /build
+WORKDIR /build
 # Install dependencies and run the build command
 RUN npm install
+RUN chmod 777 node_modules
 RUN npm run build
 
 # ----------------------------------------------------------------
@@ -23,5 +23,5 @@ RUN npm run build
 FROM nginx:alpine as serve
 # Copy the build folder from the build stage into the nginx folder
 # and expose the port
-COPY --from=build /build-tmp/dist /usr/share/nginx/html
+COPY --from=build /build/dist /usr/share/nginx/html
 EXPOSE 80
