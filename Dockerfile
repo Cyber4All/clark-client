@@ -1,22 +1,26 @@
-# Create image based on the official Node 10 image from dockerhub
-FROM node:10
+# ----------------------------------------------------------------
+# This Dockerfile uses multiple stages to build out the image in
+# order to cut down on the final image size. To learn more about
+# multistage Dockerfiles, refer to this article:
+# https://docs.docker.com/develop/develop-images/multistage-build/
+# ----------------------------------------------------------------
 
-# Create a directory where our app will be placed
-RUN mkdir -p /opt/src/app
+# ----------------------------------------------------------------
+# BUILD STAGE
+# ----------------------------------------------------------------
+FROM node:12 as build
+# Create a build folder to work in
+COPY . /build
+WORKDIR /build
+# Install dependencies and run the build command
+RUN npm install
+RUN npm run build
 
-# Expose the port the app runs in and the webpack server port
-EXPOSE 4200 49153
-
-# install dependencies in a different location for easier app bind mounting for local development
-WORKDIR /opt
-COPY package.json package-lock.json* ./
-RUN npm install && npm cache clean --force
-RUN npm install -g @angular/cli@9.0.6
-ENV PATH /opt/node_modules/.bin:$PATH
-
-# Copy source to the app's directory
-WORKDIR /opt/src/app
-COPY . /opt/src/app
-
-# Serve the app
-CMD ng serve --host 0.0.0.0
+# ----------------------------------------------------------------
+# SERVE STAGE
+# ----------------------------------------------------------------
+FROM nginx:alpine as serve
+# Copy the build folder from the build stage into the nginx folder
+# and expose the port
+COPY --from=build /build/dist /usr/share/nginx/html
+EXPOSE 80
