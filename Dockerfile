@@ -10,8 +10,8 @@
 # ----------------------------------------------------------------
 FROM node:12 as build
 # Create a build folder to work in
-COPY . /build
-WORKDIR /build
+COPY . /build-tmp
+WORKDIR /build-tmp
 # Install dependencies and run the build command
 RUN npm install
 RUN npm run build
@@ -22,5 +22,5 @@ RUN npm run build
 FROM nginx:alpine as serve
 # Copy the build folder from the build stage into the nginx folder
 # and expose the port
-COPY --from=build /build/dist /usr/share/nginx/html
+COPY --from=build /build-tmp/dist /usr/share/nginx/html
 EXPOSE 80
