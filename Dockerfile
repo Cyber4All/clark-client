@@ -13,7 +13,8 @@ FROM node:12 as build
 COPY . /build-tmp
 WORKDIR /build-tmp
 # Install dependencies and run the build command
-RUN npm install
+RUN npm install && npm cache clean --force
+RUN npm install -g @angular/cli@9.0.6
 RUN npm run build
 
 # ----------------------------------------------------------------
