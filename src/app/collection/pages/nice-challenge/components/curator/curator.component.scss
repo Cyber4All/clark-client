@@ -1,0 +1,44 @@
+@import '~_vars.scss';
+@use '~collection-globals.scss';
+
+$nice-blue: #3693CC;
+
+.wrapper {
+  margin-top: 100px;
+  display: flex;
+  
+  
+  .left-container {
+    background: $nice-blue;
+    flex-basis: 25%;
+    border-radius: 0px 10px 10px 0px;
+
+    .collection-curators {
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      color: white;
+      text-align: center;
+      align-items: center;
+      
+    }
+  }
+
+  .curator-container {
+    display: flex;
+    flex-basis: 75%;
+    justify-content: space-evenly;
+    align-items: center;
+
+    .curator-card {
+      width: 200px;
+      text-align: center;
+
+      img {
+        width: 200px;
+        border-radius: 125px;
+      }
+    }
+  }
+}

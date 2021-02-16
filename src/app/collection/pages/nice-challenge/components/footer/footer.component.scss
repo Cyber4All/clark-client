@@ -1,0 +1,44 @@
+@import '~_vars.scss';
+@use '~collection-globals.scss';
+
+
+a {
+  color: white;
+}
+
+.wrapper {
+  margin-top: 100px;
+  color: white;
+  background: $dark-grey;
+
+  .rights-container {
+    padding: 50px ;
+  }
+
+  .logo-container {
+    padding: 0 100px 25px 100px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    img {
+      width: 150px;
+    }
+  }
+  .grant-and-media {
+    padding: 25px 50px 25px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .grants-text-box {
+      padding-right: 20px;
+    }
+    .media {
+      display: flex;
+      justify-content: space-evenly;
+      img {
+        padding: 15px;
+      }
+    }
+  }
+}

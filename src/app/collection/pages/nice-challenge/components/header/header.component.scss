@@ -1,0 +1,65 @@
+@import '~_vars.scss';
+@use '~collection-globals.scss';
+
+
+$nice-blue: #3693CC;
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-basis: 75%;
+    align-items: center;
+
+    .logo {
+      width: 500px;
+    }
+    .title {
+      margin-top: 20px;
+      color: $nice-blue;
+      text-align: center;
+      .title-header {
+         width: 415px;
+      }
+      h2 {
+        margin: 0px;
+        .nice-link {
+          color: $nice-blue;  
+        }
+      }
+    }
+  }
+  .browse-container {
+    flex-basis: 25%;
+    background: $nice-blue;
+    border-radius: 0px 0px 0px 10px;
+
+    .section-accent {
+      padding: 60px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: $large; 
+
+      .icon {
+        font-size: 50px;
+        padding: 10px;
+      }
+      p {
+         padding: 10px 0 20px 0; 
+      }
+      .browse-nice {
+        padding: 10px 25px 10px 25px;
+        color: $darker-grey;
+        font-size: $large;
+        border: none;
+        border-radius: 5px;
+      }
+    }
+  }
+}

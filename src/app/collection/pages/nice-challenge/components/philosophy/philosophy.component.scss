@@ -1,0 +1,58 @@
+@import '~_vars.scss';
+@use '~collection-globals.scss';
+
+$nice-blue: #3693CC;
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  .philosophy-content {
+    display: flex;
+    flex-basis: 75%;
+    justify-content: center;
+
+    .grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-row: auto auto;
+      justify-content: space-evenly;
+      grid-row-gap: 20px;
+
+      .grid-item {
+        padding: 20px;
+        margin: auto;
+      }
+    }
+  }
+
+  .philosophy-container {
+    display: flex;
+    flex-basis: 25%;
+    background: $nice-blue;
+    border-radius: 10px 0px 0px 10px;
+    
+    .content {
+      padding: 60px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: $large;
+
+      h2 {
+        text-align: center;
+      }
+    }
+  }
+}
+
+p{
+  max-width: 400px;
+}
+.logo-img {
+  max-width: 400px;
+  max-height: 400px;
+  display: block;
+}
