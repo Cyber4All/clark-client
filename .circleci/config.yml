@@ -36,7 +36,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-        version: 20.10.2
+          version: 20.10.2
       - run:
           name: Build Image
           command: |
@@ -57,7 +57,7 @@ jobs:
     steps:  
       - checkout
       - setup_remote_docker:
-        version: 20.10.2
+          version: 20.10.2
       - run:
           name: Wait for client
           command: dockerize -wait http://localhost:80 -timeout 3m
