@@ -14,7 +14,6 @@ COPY . /build
 WORKDIR /build
 # Install dependencies and run the build command
 RUN npm install
-RUN chmod 777 node_modules
 RUN npm run build
 
 # ----------------------------------------------------------------
