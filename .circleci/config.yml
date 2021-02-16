@@ -58,7 +58,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Wait for client
-          command: dockerize -wait http://localhost:4200 -timeout 3m
+          command: dockerize -wait http://localhost:80 -timeout 3m
       - run:
           name: Install Dependencies
           command: npm install
