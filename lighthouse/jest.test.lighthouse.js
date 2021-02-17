@@ -6,7 +6,7 @@ jest.setTimeout(60000);
 
 describe('Lighthouse test runner', () => {
   let scores;
-  const url = 'http://localhost:4200';
+  const url = 'http://localhost:80';
   const opts = { chromeFlags: [] };
   const config = {
     extends: 'lighthouse:default', // Extends Google's default config (https://github.com/GoogleChrome/lighthouse/blob/8f500e00243e07ef0a80b39334bedcc8ddc8d3d0/lighthouse-core/config/constants.js#L30-L48)
