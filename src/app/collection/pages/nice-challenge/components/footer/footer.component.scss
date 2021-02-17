@@ -42,3 +42,22 @@ a {
     }
   }
 }
+
+@media screen and (max-width: 800px) {
+  .logo-container {
+    flex-direction: column;
+  }
+  .grant-and-media {
+    flex-direction: column;
+    
+  }
+  .logo {
+      margin: 20px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+  .logo {
+    width: 100px !important;
+  }
+}

@@ -34,7 +34,7 @@ $nice-blue: #3693CC;
     }
   }
   .browse-container {
-    flex-basis: 25%;
+    width: 440px;
     background: $nice-blue;
     border-radius: 0px 0px 0px 10px;
 
@@ -63,3 +63,82 @@ $nice-blue: #3693CC;
     }
   }
 }
+
+@media screen and (max-width: 1000px) {
+  .logo {
+    width: 400px !important;
+  }
+  .title-header {
+    width: 400px !important;
+  }
+  h2 {
+    font-size: $large;
+  }
+
+
+  .browse-container {
+    width: 350px !important;
+  }
+  .browse-nice {
+    font-size: $normal !important;
+  }
+  .icon {
+    font-size: 35px !important;
+  }
+  .section-accent {
+    font-size: $normal !important;
+    padding: 40px !important;
+  }
+}
+
+
+@media screen and (max-width: 800px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .title-container {
+    margin-top: 50px;
+  }
+  .browse-container {
+    margin-top: 50px;
+    width: 100% !important;
+    border-radius: 0 !important;
+  }
+  .section-accent {
+    
+    text-align: center;
+    font-size: $large !important;
+  }
+  .browse-nice {
+    font-size: $large !important;
+  }
+  .icon {
+    font-size: 50px !important;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .logo {
+    width: 300px !important;
+  }
+  .title-header {
+    width: 300px !important;
+  }
+  h2 {
+    font-size: $normal;
+  }
+
+  .browse-nice {
+    font-size: $normal !important;
+  }
+  .icon {
+    font-size: 35px !important;
+  }
+  .section-accent {
+    font-size: $normal !important;
+  }
+}
+
+
+
