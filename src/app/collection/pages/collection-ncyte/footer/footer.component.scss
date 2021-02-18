@@ -4,11 +4,12 @@
     background-color: $dark-grey;
     color: #fff;
     min-height: 40vh;
-    min-width: 65vh;
+    min-width: 30vw;
     margin-top: 50px;
+    padding: 100px 0px;
   }
   
-  a:link{
+  div a{
       text-decoration: none;
       cursor: pointer;
       color: #fff;
@@ -18,7 +19,6 @@
       margin-top: 150px;
   }
   .ncyte-down .fund{
-    //   align-self: center;
       margin-left: 30px;
   }
   .logo-nsf{

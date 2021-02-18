@@ -11,7 +11,6 @@ import { FooterComponent } from './pages/collection-ncyte/footer/footer.componen
 import { CuratorsComponent } from './pages/collection-ncyte/curators/curators.component';
 import { StatsComponent } from './pages/collection-ncyte/stats/stats.component';
 import { ResourceComponent } from './pages/collection-ncyte/resource/resource.component';
-import { ResourceInfoComponent } from './pages/collection-ncyte/resource/resource-info/resource-info.component';
 import { FeatureComponent } from './pages/collection-ncyte/feature/feature.component';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { IncludedModule } from './shared/included/included.module';
@@ -41,7 +40,6 @@ import { CuratorCardComponent } from './pages/collection-ncyte/curators/curator-
     CuratorsComponent,
     StatsComponent,
     ResourceComponent,
-    ResourceInfoComponent,
     FeatureComponent,
     CuratorCardComponent,
   ],

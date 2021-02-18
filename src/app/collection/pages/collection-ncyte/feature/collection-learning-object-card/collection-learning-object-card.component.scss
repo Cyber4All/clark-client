@@ -1,13 +1,14 @@
 @import '~_vars.scss';
 .container{
-    width: 30vh;
-    
+    width: 20vw;
+    display: flex;
+    margin-bottom: 50px;
 }
 
 .module-background{
     position: relative;
-    right: 150px;
-    top: 100px;
+    margin: auto;
+    right: 200px;
 }
 
 .module-background .background{
@@ -17,25 +18,48 @@
 
 .module{
     position: absolute;
-    right: 20px;
-    top: 50px;
+    bottom: 40px;
+    left: 50px;
     z-index: 1;
+    color: #fff;
+    width: 100%;
 
 }
 .micromodule{
     position: absolute;
-    right: 5px;
-    top: 50px;
+    left: 40px;
+    bottom: 40px;
     z-index: 1;
+    color: #fff;
 }
 div{ 
     font-size: $smaller;
     padding-right: 50px;
 }
 
-.desc{
-    height: 90px;
-    overflow: hidden;
+.obj-info{
+    position: relative;
+    right: 250px;
+    margin: auto;
+    min-height: 10vh;
+
 }
+
+.obj-title{
+    font-weight: 700;
+}
+
+@media (max-width: 400px){
+    .container{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .obj-info{
+        right: 150px;
+    }
+}
+
+
+
 
 

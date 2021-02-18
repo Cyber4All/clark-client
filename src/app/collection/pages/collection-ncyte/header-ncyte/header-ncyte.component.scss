@@ -6,7 +6,7 @@ $ncyte-yellow: #FFDF21;
 
 header {
     display: flex;
-    flex-basis: 100%;
+    flex-basis: 100vw;
     flex-wrap: wrap;
 }
 
@@ -15,6 +15,9 @@ header {
     padding-top: 50px;
     text-align: center;
 
+    .logo{
+        width: 600px;
+    }
     .logo-header {
         text-align: center;
         color: $ncyte-blue;
@@ -42,12 +45,15 @@ header {
             font-weight: 500;
             margin-top: 20px;
         }
-
-        .button {
+        
+        .button{
+            display: inline-block;
             margin-top: 20px;
             color: $darker-grey;
             font-weight: 700;
-
+            i{
+                display: inline;
+            }
             &.ncyte {
                 background-color: $ncyte-yellow;
             }
@@ -56,6 +62,9 @@ header {
 }
 
 @media (max-width: 900px){
+    .logo{
+        width: 300px !important;
+    }
     .ncyte-title{
         flex-basis: 100%;
     }

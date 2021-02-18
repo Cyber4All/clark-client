@@ -1,22 +1,21 @@
 @import '~_vars.scss';
-
-$ncyte-blue: #2757A4;
-$ncyte-yellow: #FFDF21;
+@import '../../../collection-globals.scss';
 
 .section-resource{
     display: flex;
     flex-wrap: wrap;
     font-size: $normal;
     margin-top: 100px;
-    flex-basis: 100vh;
+    flex-basis: 100vw;
     text-align: center;
 }
 .logo-tech-ncyte{
     width: 300px;
 }
-.logo-tech-whatcom{
-    width: 300px;
-    margin-left: 30px;
+a{
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
 }
 
 .resource-info-1, .resource-info-2{
@@ -26,13 +25,15 @@ $ncyte-yellow: #FFDF21;
 }
 .section-accent{
     background-color: $ncyte-blue;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     color: #fff;
-    min-height: 30vh;
+    min-height: 20vh;
     flex-basis: 30%;
-    padding: 10px;
-    padding-top: 50px;
+    padding: 50px 20px;
+    padding-left: 30px;
     font-size: $large;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 @media (max-width: 1110px){

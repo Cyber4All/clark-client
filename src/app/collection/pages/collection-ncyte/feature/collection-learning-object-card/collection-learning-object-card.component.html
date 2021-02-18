@@ -1,31 +1,33 @@
-<div class =  "container">
-    <div> 
+<div class = "container">
+
     <div *ngIf = "learnObj.length !== 'micromodule'">
         <div class="module-background">
             <img class ="background"src="../../../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash 1.png" alt="image not shown">
-            <img class = "module" src="../../../../../../../assets/images/MODULE.png" alt="image not shown">
+            <div class = "module">MODULE</div>
         </div>
     </div>
     <div *ngIf = "learnObj.length === 'micromodule'">
         <div class= "module-background" >
             <img class = "background"src="../../../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash 2.png" alt="">
-            <img class = "micromodule" src="../../../../../../../assets/images/MICROMODULE.png" alt="image not shown">
+            <div class = "micromodule">MICROMODULE</div>
         </div>
-
+        
     </div>
-        <div>
-      {{ learnObj.name }}
+    <div class="obj-info">
+         <div class = "obj-title">
+            {{learnObj.name}}
         </div>
         <div>
-            {{learnObj.author.email}}
+            {{learnObj.date | date:'longDate'}}
         </div>
-         <div>
-             {{learnObj.constributors}}
-         </div>
-         <div>
-             {{learnObj.date | date:'longDate'}}
-         </div>
-         <div [innerHtml] = "learnObj.description" class = "desc">
-         </div>
+        
+        <p *ngIf = "learnObj.description" class = "desc">
+            {{
+            learnObj.description.length > 30
+                ? learnObj.description.substring(3, 30) + "..."
+                : learnObj.description.substring(3, learnObj.description.length-4)
+            }}
+        </p>
     </div>
 </div>
+

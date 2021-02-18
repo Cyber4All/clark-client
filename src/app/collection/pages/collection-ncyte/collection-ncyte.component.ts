@@ -11,8 +11,7 @@ import {NavbarService} from '../../../core/navbar.service';
 export class CollectionNcyteComponent implements OnInit, OnDestroy {
 
   constructor(private navbarService: NavbarService, private collectionService: CollectionService) { }
-  @Input() collectionName: Object;
-  metricsData: Object;
+  @Input() collectionName: String;
   ngOnInit(): void {
     this.navbarService.show();
   }

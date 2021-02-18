@@ -8,11 +8,11 @@ $ncyte-yellow: #FFDF21;
     
     margin-top: 100px;
     display: flex;
-    flex-basis: 100vh;
+    flex-basis: 100vw;
 }
 
-.section-accent {
-    flex-basis: 30%;
+.section-accent{
+    flex-basis: 40%;
     color: #fff;
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
@@ -20,7 +20,8 @@ $ncyte-yellow: #FFDF21;
     text-align: center;
 
     .accent-content{
-        padding-top: 150px;
+        margin: auto;
+        padding-top: 100px;
     }
 
     .featured-learning-title{
@@ -33,7 +34,7 @@ $ncyte-yellow: #FFDF21;
 
 }
 .object-list{
-    margin-left: 300px;
+    margin-left: 250px;
     flex-basis: 20%;
 }
 

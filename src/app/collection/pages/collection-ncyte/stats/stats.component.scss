@@ -1,13 +1,12 @@
 @import '~_vars.scss';
-
-$ncyte-blue: #2757A4;
+@import '../../../collection-globals.scss';
 
 .section-stats{
     display: flex;
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    flex-basis: 100vh;
+    flex-basis: 100vw;
 }
 .section-stats{
     margin-top: 100px;
@@ -19,41 +18,60 @@ $ncyte-blue: #2757A4;
     align-items: center;
     font-size: $large;
     margin: 20px;
-
 }
-
 .icon p {
-
     color: $medium-grey;
 }
 .num{
     color: $dark-grey;
     font-size: $larger;
 }
-
 .section-accent{
     color: #fff;
-    border-radius: 5px;
     background-color: $ncyte-blue;
     font-size: $largest;
-    min-height: 40vh;
-    
+    min-height: 20vh;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 .accent-content{
-    padding-top: 40px;
+    padding: 40px 20px;
+}
+
+.blue svg{
+    background-color: hsl(226, 91%, 63%);
+    padding: 15px;
+    border-radius: 1000px;
+    color: #fff;
+}
+.grey svg{
+    background-color: grey;
+    padding: 15px;
+    border-radius: 1000px;
+    color: #fff;
+}
+.yellow svg{
+    padding: 15px;
+    border-radius: 1000px;
+    background-color: hsl(51, 100%, 80%);
+    color: orange;
+
+}
+.purple svg{
+    padding: 15px;
+    border-radius: 1000px;
+    background-color: hsl(258, 100%, 82%);
+    color:hsl(258, 100%, 64%);
 }
 
 @media (max-width: 1110px){
     .section-stats{
         flex-wrap: wrap;
-        flex-basis: 100vh;
+        flex-basis: 100vw;
     }
 
     .section-accent{
         margin-bottom: 80px;
         flex-basis: 100%;
     }
-    
-    
-
 }
