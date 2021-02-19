@@ -11,7 +11,7 @@ import { LearningObject } from 'entity/learning-object/learning-object';
   styleUrls: ['./collection-learning-object-list.component.scss']
 })
 export class CollectionLearningObjectListComponent implements OnInit {
-  @Input() collectionName : string;
+  @Input() collectionName: string;
   constructor(private learningObjectService: LearningObjectService) { }
 
   @Input() collection: string;

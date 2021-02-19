@@ -19,7 +19,7 @@ import { StatsComponent } from './stats/stats.component';
   imports: [
     CommonModule,
   ],
-  exports:[
+  exports: [
     CollectionLearningObjectCardComponent,
     CollectionLearningObjectListComponent,
     CuratorCardComponent,

@@ -8,7 +8,7 @@ import { UserService } from 'app/core/user.service';
   styleUrls: ['./curators.component.scss']
 })
 export class CuratorsComponent implements OnInit {
-  @Input() collectionName : string;
+  @Input() collectionName: string;
   curators: any;
 
   constructor(private userService: UserService, private collectionService: CollectionService) { }

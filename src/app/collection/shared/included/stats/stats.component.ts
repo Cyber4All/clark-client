@@ -8,7 +8,7 @@ import { CollectionService } from 'app/core/collection.service';
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
-  @Input() collectionName : string;
+  @Input() collectionName: string;
   constructor(private collectionService: CollectionService) {
 
    }
