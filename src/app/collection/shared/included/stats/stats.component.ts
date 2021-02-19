@@ -8,7 +8,7 @@ import { CollectionService } from 'app/core/collection.service';
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
-
+  @Input() collectionName : string;
   constructor(private collectionService: CollectionService) {
 
    }
@@ -20,7 +20,7 @@ export class StatsComponent implements OnInit {
   public objReleased;
 
   ngOnInit(): void {
-    this.collectionService.getCollectionMetricsData('ncyte').then((res: any) => {
+    this.collectionService.getCollectionMetricsData(this.collectionName).then((res: any) => {
       this.collectionMetrics = res;
 
       this.authorCollection = res.metrics.authorsCount;
