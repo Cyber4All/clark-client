@@ -35,7 +35,8 @@ jobs:
       - image: circleci/node:10.13.0
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.2
       - run:
           name: Build Image
           command: |
@@ -55,10 +56,11 @@ jobs:
       - image: "${DOCKER_USER_ORG}/clark-client:${CIRCLE_SHA1}"
     steps:  
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.2
       - run:
           name: Wait for client
-          command: dockerize -wait http://localhost:4200 -timeout 3m
+          command: dockerize -wait http://localhost:80 -timeout 3m
       - run:
           name: Install Dependencies
           command: npm install
