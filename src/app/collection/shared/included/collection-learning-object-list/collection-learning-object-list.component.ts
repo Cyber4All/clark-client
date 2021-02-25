@@ -26,7 +26,7 @@ export class CollectionLearningObjectListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.query.collection = 'nccp';
+    this.query.collection = this.collectionName;
     this.learningObjectService.getLearningObjects(this.query).then((res) => {
       console.log(res);
       this.learningObjects = res.learningObjects;
