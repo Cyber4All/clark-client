@@ -14,18 +14,19 @@ export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;
   constructor(private learningObjectService: LearningObjectService) { }
 
-  @Input() collection: string;
   @Input() learnObj;
   learningObjects: LearningObject[];
   query: Query = {
     limit: 6,
     orderBy: OrderBy.Date,
     sortType: SortType.Descending,
-    status: [LearningObject.Status.RELEASED]
+    status: [LearningObject.Status.RELEASED],
+
   };
 
 
   ngOnInit() {
+    this.query.collection = "nccp";
     this.learningObjectService.getLearningObjects(this.query).then((res) => {
       console.log(res);
       this.learningObjects = res.learningObjects;

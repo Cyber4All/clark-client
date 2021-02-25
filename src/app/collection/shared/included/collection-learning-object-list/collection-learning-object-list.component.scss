@@ -1,13 +1,16 @@
 
 
-.container{
+.grid-container{
     display: grid;
-    grid-template-columns: auto auto; 
+    grid-template-columns: auto auto;
     grid-template-rows: repeat(3, auto);
     column-gap: 100px;
 }
+
 @media (max-width: 800px){
-    .container{
+
+    .grid-container{
         grid-template-columns: auto;
     }
 }
+

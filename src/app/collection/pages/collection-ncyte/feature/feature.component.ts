@@ -10,6 +10,7 @@ export class FeatureComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
 }

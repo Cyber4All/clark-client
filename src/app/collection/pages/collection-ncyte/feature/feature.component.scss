@@ -42,11 +42,7 @@ $ncyte-yellow: #FFDF21;
     .section-featured-learning{
         flex-wrap: wrap;
     }
-    .object-list{
-        margin: auto;
-        padding-left: 200px;
-        padding-top: 50px;
-    }
+
     .section-accent{
         flex-basis: 100%;
     }
@@ -54,9 +50,12 @@ $ncyte-yellow: #FFDF21;
        padding-bottom: 80px;
     }
 }
-@media (max-width: 800px){
-    .object-list{
-        padding-left: 250px;
-    }
-}
 
+.object-list{
+    margin: auto;
+}
+@media (max-width: 1200px){
+.object-list{
+    margin-top: 50px;
+}
+}

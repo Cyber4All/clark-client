@@ -18,10 +18,11 @@ a{
     color: black;
 }
 
-.resource-info-1, .resource-info-2{
+.resource-info-1{
     margin-top: 100px;
     flex-basis: 20%;
     margin: auto;
+    padding-bottom: 50px;
 }
 .section-accent{
     background-color: $ncyte-blue;
@@ -39,6 +40,9 @@ a{
 @media (max-width: 1110px){
     .section-accent{
         flex-basis: 100%;
+    }
+    .resource-info-1{
+        padding-right: 20px;
     }
     
 }

@@ -1,18 +1,14 @@
 <div class = "container">
 
-    <div *ngIf = "learnObj.length !== 'micromodule'">
-        <div class="module-background">
-            <img class ="background"src="../../../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash 1.png" alt="image not shown">
-            <div class = "module">MODULE</div>
-        </div>
+
+    <div class = "header" [ngClass] = "{'unit':learnObj.length==='unit', 'nanomodule':learnObj.length==='nanomodule'
+    , 'micromodule':learnObj.length==='micromodule', 'course':learnObj.length==='course', 'module':learnObj.length==='module'}">
+            <div class = "overlay">
+                {{learnObj.length}}
+            </div>
     </div>
-    <div *ngIf = "learnObj.length === 'micromodule'">
-        <div class= "module-background" >
-            <img class = "background"src="../../../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash 2.png" alt="">
-            <div class = "micromodule">MICROMODULE</div>
-        </div>
-        
-    </div>
+
+    
     <div class="obj-info">
          <div class = "obj-title">
             {{learnObj.name}}
