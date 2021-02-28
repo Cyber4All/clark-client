@@ -14,8 +14,7 @@
         </div>
    </div>
    <div *ngIf="curators && curators.length > 0" class = "curators">
-
-        <clark-curator-card *ngFor="let curator of curators" [curator]="curator"></clark-curator-card>
-      
+        <clark-curator-card *ngFor="let curator of curators" [curator]="curator">         
+        </clark-curator-card>     
     </div>
 </section>

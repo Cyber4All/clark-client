@@ -1,8 +1,7 @@
 <div class = "container">
 
 
-    <div class = "header" [ngClass] = "{'unit':learnObj.length==='unit', 'nanomodule':learnObj.length==='nanomodule'
-    , 'micromodule':learnObj.length==='micromodule', 'course':learnObj.length==='course', 'module':learnObj.length==='module'}">
+    <div class = "header" [ngClass] = "learnObj.length">
             <div class = "overlay">
                 {{learnObj.length}}
             </div>

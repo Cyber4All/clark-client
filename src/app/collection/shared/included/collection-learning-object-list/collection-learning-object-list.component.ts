@@ -14,7 +14,6 @@ export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;
   constructor(private learningObjectService: LearningObjectService) { }
 
-  @Input() learnObj;
   learningObjects: LearningObject[];
   query: Query = {
     limit: 6,
@@ -28,11 +27,7 @@ export class CollectionLearningObjectListComponent implements OnInit {
   ngOnInit() {
     this.query.collection = this.collectionName;
     this.learningObjectService.getLearningObjects(this.query).then((res) => {
-      console.log(res);
       this.learningObjects = res.learningObjects;
-    }).catch((err) => {
-      console.log('\n \n \n \n \n');
-      console.log(err);
     });
   }
 

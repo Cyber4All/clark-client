@@ -1,11 +1,8 @@
 @import '~_vars.scss';
-@use 'collection-globals.scss';
+@import '../../../collection-globals.scss';
 
-$ncyte-blue: #2757A4;
-$ncyte-yellow: #FFDF21;
 
 .section-featured-learning{
-    
     margin-top: 100px;
     display: flex;
     flex-basis: 100vw;

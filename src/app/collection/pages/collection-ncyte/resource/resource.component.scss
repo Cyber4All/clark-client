@@ -8,6 +8,7 @@
     margin-top: 100px;
     flex-basis: 100vw;
     text-align: center;
+    align-items: center;
 }
 .logo-tech-ncyte{
     width: 300px;
@@ -15,7 +16,7 @@
 a{
     text-decoration: none;
     cursor: pointer;
-    color: black;
+    color: $dark-grey;
 }
 
 .resource-info-1{

@@ -24,5 +24,10 @@
   .logo-nsf{
     width: 100px;
   }
+  @media (max-width: 800px){
+      .learn-more, .ncyte-down{
+          padding: 0 15px;
+      }
+  }
   
   

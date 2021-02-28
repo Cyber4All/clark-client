@@ -1,4 +1,5 @@
 @import '~_vars.scss';
+@import '../../../collection-globals.scss';
 .container{
     width: 20vw;
     margin-bottom: 50px;
@@ -44,12 +45,16 @@
 
 
 .overlay{
-    background-color: rgba(85,89,94, .6);;
+    background-color: $obj-grey;
     width: 100%;
     text-align: center;
     padding: 5px 0;
     text-transform: uppercase;
     height: auto;
+}
+
+.obj-info{
+    margin-left: 10px;
 }
 
 
@@ -62,10 +67,14 @@ div{
     font-weight: 700;
 }
 
+
 @media (max-width: 800px){
     .container{
         display: flex;
         flex-wrap: wrap;
+    }
+    .obj-info{
+        margin-top: 5px;
     }
  
 }

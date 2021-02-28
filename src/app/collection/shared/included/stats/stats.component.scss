@@ -39,13 +39,13 @@
 }
 
 .blue svg{
-    background-color: hsl(226, 91%, 63%);
+    background-color: $stats-blue;
     padding: 15px;
     border-radius: 1000px;
     color: #fff;
 }
 .grey svg{
-    background-color: grey;
+    background-color: $stats-grey;
     padding: 15px;
     border-radius: 1000px;
     color: #fff;
@@ -53,25 +53,25 @@
 .yellow svg{
     padding: 15px;
     border-radius: 1000px;
-    background-color: hsl(51, 100%, 80%);
-    color: orange;
+    background-color:$stats-yellow;
+    color: $stats-orange;
 
 }
 .purple svg{
     padding: 15px;
     border-radius: 1000px;
-    background-color: hsl(258, 100%, 82%);
-    color:hsl(258, 100%, 64%);
+    background-color: $stats-light-purple;
+    color: $stats-purple;
 }
 
 @media (max-width: 1110px){
     .section-stats{
-        flex-wrap: wrap;
-        flex-basis: 100vw;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .section-accent{
         margin-bottom: 80px;
-        flex-basis: 100%;
+        width: 100%;
     }
 }
