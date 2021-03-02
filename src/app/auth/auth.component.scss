@@ -260,6 +260,17 @@
     }
   }
 }
+.cookie-wrapper {
+  display: block;
+  max-width: 100px;
+  z-index: 2;
+  bottom: 0;
+  right: 0;
+  clark-cookie-popup {
+    position: relative;
+  }
+}
+
 
 @keyframes validate-failure {
   0% {

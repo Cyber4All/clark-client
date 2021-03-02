@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavbarService } from '../../core/navbar.service';
-import { CookieAgreementService } from 'app/core/cookie-agreement.service';
+import { CookieAgreementService } from '../../core/cookie-agreement.service';
 
 @Component({
   selector: 'clark-login',

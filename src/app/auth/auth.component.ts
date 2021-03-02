@@ -8,9 +8,7 @@ import { NavbarService } from 'app/core/navbar.service';
 })
 export class AuthComponent implements OnInit {
   constructor(public modalService: ModalService, private nav: NavbarService) {}
-
   ngOnInit() {
     this.nav.hide();
   }
-
 }

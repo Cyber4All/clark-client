@@ -23,11 +23,11 @@
           <span *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i>
           </span>
         </button>
+        <clark-cookie-popup
+          *ngIf="!checkCookieAgreement() && !cookieBannerVisible()"
+          (acceptsCookie)="acceptsCookieAgreement($event)"
+        ></clark-cookie-popup>
       </form>
-      <clark-cookie-popup
-        *ngIf="!checkCookieAgreement() && !cookieBannerVisible()"
-        (acceptsCookie)="acceptsCookieAgreement($event)"
-      ></clark-cookie-popup>
     </div>
     <button class="bottom-link" routerLink="../register">
       Don't have an account yet?
