@@ -1,15 +1,19 @@
 @import '~_vars.scss';
 
 .wrapper {
-  max-height: 100px;
-  max-width: 520px;
+  max-height: 50px;
   padding: 15px;
   background: white;
-  border: 2px solid $darker-grey;
+
   .container {
     padding: 10px 15px 10px 15px;
     text-align: center;
     font-size: $normal;
+    
+    p {
+      display: inline-block;
+    }
+
     button {
       margin: 0 10px 0 10px;
       appearance: none;
