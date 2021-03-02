@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <div class="container">
+    <p>
+      Must accept cookies outlined in the
+      <a
+        [routerLink]="['/system/termsofservice']"
+        routerLinkActive="active"
+        aria-label="Terms of Service link"
+        target="_blank"
+      >
+        Terms of Service
+      </a>
+      to login/create an account with CARD.
+    </p>
+    <button
+      aria-label="Button that accepts the use of Cookies on this website."
+      class="accept"
+      (click)="agree()"
+    >
+      Accept
+    </button>
+  </div>
+</div>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from 'app/shared/modules/modals/modal.module';
 import { NavbarService } from 'app/core/navbar.service';
-
 @Component({
   selector: 'clark-auth',
   templateUrl: './auth.component.html',

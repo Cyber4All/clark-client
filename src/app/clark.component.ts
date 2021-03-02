@@ -11,6 +11,7 @@ import { LearningObject } from '../entity/learning-object/learning-object';
 import { MessagesService } from './core/messages.service';
 import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
+import { CookieAgreementService } from './core/cookie-agreement.service';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -77,7 +78,8 @@ export class ClarkComponent implements OnInit {
     private _: HistoryService,
     private messages: MessagesService,
     private toaster: ToastrOvenService,
-    private view: ViewContainerRef
+    private view: ViewContainerRef,
+    private cookieAgreement: CookieAgreementService
   ) {
     this.isUnderMaintenance = false;
 
@@ -138,12 +140,24 @@ export class ClarkComponent implements OnInit {
   }
 
   /**
-   * Stores cookie agreement value in localStorage and hides banner
-   * @param val the value to store in cookieAgreement (always true at this point)
+   * Function passes cookie agreement service val to create new agreement
+   * Then updates banner visibilty flag
+   * @param val is value of clicking agreement event (will be true)
    */
+  showCookieBanner(val: boolean) {
+    this.cookieAgreement.setShowCookieBanner(val);
+  }
+
   setCookieAgreement(val: boolean) {
-    localStorage.setItem('cookieAgreement', val + '');
-    this.cookiesAgreement = val;
+    this.cookieAgreement.setCookieAgreement(val);
+  }
+
+  /**
+   * Calls Service to do the work to check the agreement value and
+   * return what said value is.
+   */
+  check_cookie() {
+    return this.cookieAgreement.getShowCookieBannerVal();
   }
 
   /* set the document title to show location in

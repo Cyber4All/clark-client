@@ -1,33 +1,24 @@
 @import '~_vars.scss';
 
 .cookies-component {
-    width: 100%;
     padding: 20px;
     position: relative;
     background: $dark-overlay;
     color: white;
-    box-sizing: border-box;
-
+    
     .inner {
         width: 100%;
         max-width: $max-width;
         margin: auto;
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
         align-items: center;
     }
-
     .logo,
-    .dismiss {
-        flex-shrink: 0;
-        flex-grow: 0;
-    }
 
     .left {
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
         align-items: center;
 
         .logo {
@@ -47,15 +38,31 @@
 
         .text {
             font-size: $normal;
+            a {
+                color: white;
+            }
         }
     }
 
-    .dismiss {
-        font-size: $larger;
-        cursor: pointer;
-        appearance: none;
-        background: transparent;
-        border: 0;
-        color: white;
+    .right {
+        display: flex;
+        button {
+            margin: 0 10px 0 10px;
+            appearance: none;
+            border-radius: 4px;
+            border: none;
+            padding: 12px 25px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+    }
+}
+
+@media screen and(max-width: 800px) {
+    .logo {
+        display: none !important;
+    }
+    .inner {
+        flex-direction: column;
     }
 }

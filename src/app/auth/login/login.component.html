@@ -24,6 +24,10 @@
           </span>
         </button>
       </form>
+      <clark-cookie-popup
+        *ngIf="!checkCookieAgreement() && !cookieBannerVisible()"
+        (acceptsCookie)="acceptsCookieAgreement($event)"
+      ></clark-cookie-popup>
     </div>
     <button class="bottom-link" routerLink="../register">
       Don't have an account yet?

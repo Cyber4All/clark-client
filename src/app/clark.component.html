@@ -16,7 +16,12 @@
         </div>
     </div>
   </clark-popup>
-  <clark-cookies [@banner] *ngIf="!cookiesAgreement" (setAgreement)="setCookieAgreement($event)"></clark-cookies>
+  <clark-cookies 
+    [@banner] 
+    *ngIf="check_cookie()" 
+    (showCookieBanner)="showCookieBanner($event)"
+    (cookieAgreement)="setCookieAgreement($event)"
+  ></clark-cookies>
 </ng-template>
 
 <ng-template #loadingTemplate>

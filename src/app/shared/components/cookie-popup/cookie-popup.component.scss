@@ -1,0 +1,11 @@
+@import '~_vars.scss';
+
+.wrapper {
+  margin-top: 20px;
+  border: 2px solid;
+  .container {
+    padding: 10px 15px 10px 15px;
+    text-align: center;
+    font-size: $normal;
+  }
+}

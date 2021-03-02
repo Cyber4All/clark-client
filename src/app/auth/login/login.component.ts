@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavbarService } from '../../core/navbar.service';
+import { CookieAgreementService } from 'app/core/cookie-agreement.service';
 
 @Component({
   selector: 'clark-login',
@@ -18,10 +19,12 @@ export class LoginComponent implements OnInit {
   redirectUrl;
   loading = false;
   element: any;
+
   constructor(
     private auth: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cookieAgreement: CookieAgreementService
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
@@ -74,5 +77,17 @@ export class LoginComponent implements OnInit {
     this.loginFailureTimer = setTimeout(() => {
       this.loginFailure = undefined;
     }, duration);
+  }
+
+  acceptsCookieAgreement(val: boolean) {
+    this.cookieAgreement.setCookieAgreement(true);
+    this.cookieAgreement.setShowCookieBanner(false);
+  }
+
+  checkCookieAgreement() {
+    return this.cookieAgreement.getCookieAgreementVal();
+  }
+  cookieBannerVisible() {
+    return !localStorage.getItem('acceptCookieAgreement');
   }
 }

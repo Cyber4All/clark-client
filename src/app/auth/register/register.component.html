@@ -41,5 +41,9 @@
       Already have an account? 
       <span id="bottom-register-link">Sign in!</span>
     </button>
+    <clark-cookie-popup
+      *ngIf="!checkCookieAgreement() && !cookieBannerVisible()"
+      (acceptsCookie)="acceptsCookieAgreement($event)"
+    ></clark-cookie-popup>
   </div>
 </div>
