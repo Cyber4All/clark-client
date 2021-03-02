@@ -1,5 +1,5 @@
 <div>
     <img class = "grav" *ngIf="profileImg" src="{{ profileImg }}"/>
-    <p>{{curator.name}}</p>
-    <p>{{curator.organization}}</p>
+    <p>{{curator.name|uppercase}}</p>
+    <p>{{curator.organization|uppercase}}</p>
 </div>

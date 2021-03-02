@@ -6,7 +6,6 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./feature.component.scss']
 })
 export class FeatureComponent implements OnInit {
-  @Input() featureMetrics: Object;
   constructor() { }
 
   ngOnInit(): void {

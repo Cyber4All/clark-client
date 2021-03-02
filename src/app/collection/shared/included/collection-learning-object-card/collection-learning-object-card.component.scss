@@ -11,23 +11,23 @@
 .header{
     &.module{
         background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
-    
+        margin: 0 15px;
     }
     &.micromodule{
         background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
-    
+        margin: 0 15px;
     }
     &.nanomodule{
         background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
-    
+        margin: 0 15px;
     }
     &.unit{
         background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
-    
+        margin: 0 15px;
     }
     &.course{
         background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
-    
+        margin: 0 15px;
     }
     display: flex;
     align-items: center;
@@ -45,18 +45,13 @@
 
 
 .overlay{
-    background-color: $obj-grey;
+    background-color: $medium-grey;
     width: 100%;
     text-align: center;
     padding: 5px 0;
     text-transform: uppercase;
     height: auto;
 }
-
-.obj-info{
-    margin-left: 10px;
-}
-
 
 
 div{ 

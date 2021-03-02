@@ -130,7 +130,7 @@ export class CollectionService {
     });
   }
   getCollectionMetricsData(name: string ) {
-    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS(name), {withCredentials: true })
+    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS(name))
       .pipe(
         retry(3),
         catchError(this.handleError)

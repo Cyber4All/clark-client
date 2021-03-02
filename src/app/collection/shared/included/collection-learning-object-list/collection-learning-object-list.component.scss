@@ -5,7 +5,7 @@
     grid-template-columns: auto auto;
     grid-template-rows: repeat(3, auto);
     column-gap: 100px;
-    align-content: center;
+    align-items: center;
 }
 
 @media (max-width: 800px){

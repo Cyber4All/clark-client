@@ -39,13 +39,13 @@
 }
 
 .blue svg{
-    background-color: $stats-blue;
+    background-color: $light-blue;
     padding: 15px;
     border-radius: 1000px;
     color: #fff;
 }
 .grey svg{
-    background-color: $stats-grey;
+    background-color: $medium-grey;
     padding: 15px;
     border-radius: 1000px;
     color: #fff;
@@ -53,15 +53,15 @@
 .yellow svg{
     padding: 15px;
     border-radius: 1000px;
-    background-color:$stats-yellow;
-    color: $stats-orange;
+    background-color:$gold;
+    color: $orange;
 
 }
 .purple svg{
     padding: 15px;
     border-radius: 1000px;
-    background-color: $stats-light-purple;
-    color: $stats-purple;
+    background-color: $status_proofing;
+    color: $tag_revision;
 }
 
 @media (max-width: 1110px){

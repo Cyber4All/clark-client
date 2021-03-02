@@ -1,5 +1,4 @@
 import { environment } from '@env/environment';
-import { CollectionsRoutingModule } from 'app/collection/collection.routing';
 import * as querystring from 'querystring';
 
 export type MaterialsFilter = 'released' | 'unreleased';
@@ -45,7 +44,7 @@ export const CHANGELOG_ROUTES = {
 export const COLLECTIONS_ROUTES = {
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_METRICS(name: string) {
-    return `${environment.apiURL}${encodeURIComponent(name)}/metrics`;
+    return `${environment.apiURL}/${encodeURIComponent(name)}/metrics`;
   },
   GET_COLLECTION_CURATORS(name: string ) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
