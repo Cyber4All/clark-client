@@ -20,10 +20,14 @@ a{
 }
 
 .resource-info-1{
-    margin-top: 100px;
     flex-basis: 20%;
     margin: auto;
     padding-bottom: 50px;
+}
+.resource-info-2{
+    flex-basis: 30%;
+    margin: auto;
+    padding-top: 20px;
 }
 .section-accent{
     background-color: $ncyte-blue;
@@ -31,8 +35,9 @@ a{
     color: #fff;
     min-height: 20vh;
     flex-basis: 30%;
-    padding: 50px 20px;
-    padding-left: 30px;
+    padding: 50px 0;
+    padding-left: 50px;
+    padding-right: 40px;
     font-size: $large;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;

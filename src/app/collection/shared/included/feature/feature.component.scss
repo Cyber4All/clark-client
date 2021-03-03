@@ -19,6 +19,8 @@
     .accent-content{
         margin: auto;
         padding-top: 100px;
+        padding-right: 40px;
+        padding-left: 40px;
     }
 
     .featured-learning-title{
@@ -30,8 +32,10 @@
     }
 
 }
+
 .object-list{
-    margin-left: 250px;
+    margin: auto;
+    padding-top: 40px;
     flex-basis: 20%;
 }
 
@@ -48,9 +52,6 @@
     }
 }
 
-.object-list{
-    margin: auto;
-}
 @media (max-width: 1200px){
 .object-list{
     margin-top: 50px;

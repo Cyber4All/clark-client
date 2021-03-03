@@ -1,4 +1,3 @@
-@import '~_vars.scss';
 @import '../../../collection-globals.scss';
 .container{
     width: 20vw;
@@ -37,7 +36,7 @@
     background-size: cover;
     background-position: center;
     min-height: 100px;
-    max-width: 200px;
+    max-width: 150px;
     border-radius: 10px;
     width: 100%;
     
@@ -58,6 +57,7 @@ div{
     font-size: $smaller;
 }
 
+
 .obj-title{
     font-weight: 700;
 }
@@ -70,6 +70,7 @@ div{
     }
     .obj-info{
         margin-top: 5px;
+        margin-left: 15px;
     }
  
 }

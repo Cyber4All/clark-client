@@ -6,6 +6,7 @@ import {CollectionLearningObjectListComponent} from './collection-learning-objec
 import {CuratorsComponent} from './curators/curators.component';
 import {CuratorCardComponent} from './curators/curator-card/curator-card.component';
 import { StatsComponent } from './stats/stats.component';
+import { FeatureComponent } from './feature/feature.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { StatsComponent } from './stats/stats.component';
     CollectionLearningObjectListComponent,
     CuratorCardComponent,
     CuratorsComponent,
-    StatsComponent
+    StatsComponent,
+    FeatureComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { StatsComponent } from './stats/stats.component';
     CollectionLearningObjectListComponent,
     CuratorCardComponent,
     CuratorsComponent,
-    StatsComponent
+    StatsComponent,
+    FeatureComponent
   ],
   providers: [LearningObjectService]
 })
