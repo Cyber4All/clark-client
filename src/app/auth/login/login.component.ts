@@ -79,15 +79,8 @@ export class LoginComponent implements OnInit {
     }, duration);
   }
 
-  acceptsCookieAgreement(val: boolean) {
-    this.cookieAgreement.setCookieAgreement(true);
-    this.cookieAgreement.setShowCookieBanner(false);
-  }
-
   checkCookieAgreement() {
     return this.cookieAgreement.getCookieAgreementVal();
   }
-  cookieBannerVisible() {
-    return !localStorage.getItem('acceptCookieAgreement');
-  }
+
 }
