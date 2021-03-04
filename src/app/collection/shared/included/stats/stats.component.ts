@@ -27,8 +27,4 @@ ngOnInit(): void {
       this.objReleased = res.metrics.saves;
    });
   }
-
-
-
-
 }
