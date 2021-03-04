@@ -46,6 +46,7 @@
 
     .section-accent{
         flex-basis: 100%;
+        border-radius: 0px !important;
     }
     .accent-content{
        padding-bottom: 80px;
@@ -56,4 +57,9 @@
 .object-list{
     margin-top: 50px;
 }
+}
+@media (max-width: 800px){
+    .object-list{
+        padding-right: 35px;
+    }
 }

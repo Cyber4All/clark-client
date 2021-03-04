@@ -46,12 +46,14 @@ a{
 @media (max-width: 1110px){
     .section-accent{
         flex-basis: 100%;
+        border-radius: 0px !important;
     }
     .resource-info-1{
         padding-right: 20px;
     }
     .resource-info-2{
         flex-basis: 50%;
+        padding-bottom: 25px;
     }
     
 }

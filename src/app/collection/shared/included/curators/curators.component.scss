@@ -37,15 +37,17 @@
 @media (max-width: 1110px){
     .section-accent{
         flex-basis: 100% !important;
+        border-radius: 0px !important;
     }
     .accent-content{
         padding-bottom: 50px;
     } 
 }
 
-@media (max-width: 400px){
+@media (max-width: 800px){
     .curators{
         display: flex;
         flex-wrap: wrap;
+        padding-top: 80px;
     }
 }

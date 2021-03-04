@@ -23,6 +23,7 @@
     color: $medium-grey;
 }
 .num{
+    padding-top: 10px;
     color: $dark-grey;
     font-size: $larger;
 }
@@ -53,15 +54,15 @@
 .yellow svg{
     padding: 15px;
     border-radius: 1000px;
-    background-color:$gold;
+    background-color: lighten($orange, 35);
     color: $orange;
 
 }
 .purple svg{
     padding: 15px;
     border-radius: 1000px;
-    background-color: $status_proofing;
-    color: $tag_revision;
+    background-color: lighten(rebeccapurple, 35);
+    color: rebeccapurple;
 }
 
 @media (max-width: 1110px){
@@ -73,5 +74,6 @@
     .section-accent{
         margin-bottom: 80px;
         width: 100%;
+        border-radius: 0px !important;
     }
 }

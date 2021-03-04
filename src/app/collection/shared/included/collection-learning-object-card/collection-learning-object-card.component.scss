@@ -37,6 +37,7 @@
     background-position: center;
     min-height: 100px;
     max-width: 150px;
+    min-width: 120px;
     border-radius: 10px;
     width: 100%;
     
@@ -45,11 +46,11 @@
 
 .overlay{
     background-color: $medium-grey;
+    max-width: 150px;
     width: 100%;
     text-align: center;
     padding: 5px 0;
     text-transform: uppercase;
-    height: auto;
 }
 
 
@@ -69,8 +70,15 @@ div{
         flex-wrap: wrap;
     }
     .obj-info{
-        margin-top: 5px;
-        margin-left: 15px;
+        margin: auto;
+        padding-top: 5px;
+        padding-left: 40px;
+    }
+    .header{
+        padding-right: 15px;
+    }
+    .overlay{
+        min-width: 135px;
     }
  
 }
