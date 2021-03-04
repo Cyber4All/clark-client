@@ -20,11 +20,11 @@ export class CookieAgreementService {
   }
 
   /**
-   * @Check_Functions
-   * checks local storage for value of
+   * The checking functions are helper functions to check the values stored
+   * in users localStorage.
    */
   private checkCookieAgreement() {
-    const agreement = localStorage.getItem('acceptCookieAgreement');
+    const agreement = localStorage.getItem('cookieAgreement');
     this.cookiesAgreement = agreement !== null && agreement === 'true';
   }
   private checkShowCookieBanner() {
@@ -37,7 +37,7 @@ export class CookieAgreementService {
    * @param val the value to store in acceptCookieAgreement (always false before called)
    */
   setCookieAgreement(val: boolean) {
-    localStorage.setItem('acceptCookieAgreement', val.toString());
+    localStorage.setItem('cookieAgreement', val.toString());
     this.cookiesAgreement = val;
   }
 

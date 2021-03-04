@@ -156,8 +156,8 @@ export class ClarkComponent implements OnInit {
    * Calls Service to do the work to check the agreement value and
    * return what said value is.
    */
-  check_cookie() {
-    return this.cookieAgreement.getShowCookieBannerVal();
+  displayCookieBanner() {
+    return this.cookieAgreement.getShowCookieBannerVal() && !this.cookieAgreement.getCookieAgreementVal();
   }
 
   /* set the document title to show location in

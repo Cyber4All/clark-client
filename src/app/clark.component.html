@@ -18,7 +18,7 @@
   </clark-popup>
   <clark-cookies 
     [@banner] 
-    *ngIf="check_cookie()" 
+    *ngIf="displayCookieBanner()" 
     (showCookieBanner)="showCookieBanner($event)"
     (cookieAgreement)="setCookieAgreement($event)"
   ></clark-cookies>
