@@ -11,7 +11,7 @@ export class StatsComponent implements OnInit {
   @Input() collectionName: string;
   constructor(private collectionService: CollectionService) {
 
-   }
+  }
 
   public collectionMetrics;
   public authorCollection;
@@ -25,11 +25,7 @@ ngOnInit(): void {
       this.objDownload = res.metrics.downloads;
       this.objReview = res.metrics.saves;
       this.objReleased = res.metrics.saves;
-
    });
-
-
-
   }
 
 
