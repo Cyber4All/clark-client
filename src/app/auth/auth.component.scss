@@ -5,8 +5,7 @@
     font-size: $normal;
   }
 
-  ::ng-deep .background,
-  ::ng-deep .wrapper {
+  ::ng-deep .background {
     position: fixed;
     top: 0;
     left: 0;
@@ -331,4 +330,12 @@
     height: 0;
     opacity: 0;
   }
+}
+
+clark-cookie-popup {
+  z-index: 20;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
