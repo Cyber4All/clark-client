@@ -10,7 +10,6 @@
 .header{
     &.module{
         background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
-        margin: 0 15px;
     }
     &.micromodule{
         background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
@@ -18,19 +17,16 @@
     }
     &.nanomodule{
         background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
-        margin: 0 15px;
     }
     &.unit{
         background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
-        margin: 0 15px;
     }
     &.course{
         background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
-        margin: 0 15px;
     }
     display: flex;
     align-items: center;
-    margin: 0;
+    margin: 0 15px;
     color: #fff;
     background-repeat: no-repeat;
     background-size: cover;
@@ -65,14 +61,9 @@ div{
 
 
 @media (max-width: 800px){
-    .container{
-        display: flex;
-        flex-wrap: wrap;
-    }
     .obj-info{
         margin: auto;
         padding-top: 5px;
-        padding-left: 40px;
     }
     .header{
         padding-right: 15px;
