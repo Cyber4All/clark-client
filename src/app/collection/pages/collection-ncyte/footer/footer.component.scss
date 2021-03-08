@@ -3,10 +3,18 @@
 .footer{
     background-color: $dark-grey;
     color: #fff;
-    min-height: 40vh;
+    min-height: 20vh;
     min-width: 30vw;
-    margin-top: 50px;
-    padding: 40px 10px 40px 10px;
+    margin-top: 30px;
+    padding: 20px 10px 20px 10px;
+  }
+
+  .learn-more{
+      display: flex;
+      margin: auto;
+      padding-left: 20px;
+      flex-wrap: wrap;
+      align-items: center;
   }
   
   div a{
@@ -16,18 +24,22 @@
   }
   .ncyte-down{
       display: flex;
-      margin-top: 150px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding-top: 40px;
   }
   .ncyte-down .fund{
-      margin-left: 30px;
+      margin-left: 20px;
   }
   .logo-nsf{
     width: 100px;
+    padding-left: 10px;
   }
-  @media (max-width: 800px){
-      .learn-more, .ncyte-down{
-          padding: 0 15px;
-      }
+
+  @media (max-width: 950px){
+     .logo-nsf{
+         padding-bottom: 30px;
+     }
   }
   
   

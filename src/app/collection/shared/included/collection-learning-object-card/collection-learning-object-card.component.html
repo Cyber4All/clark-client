@@ -1,21 +1,16 @@
 <div class = "container">
-
-
     <div class = "header" [ngClass] = "learnObj.length">
             <div class = "overlay">
                 {{learnObj.length}}
             </div>
     </div>
-
-    
     <div class="obj-info">
          <div class = "obj-title">
             {{learnObj.name}}
         </div>
         <div>
             {{learnObj.date | date:'longDate'}}
-        </div>
-        
+        </div>  
         <p *ngIf = "learnObj.description" class = "desc">
             {{
             learnObj.description.length > 30
@@ -25,4 +20,3 @@
         </p>
     </div>
 </div>
-
