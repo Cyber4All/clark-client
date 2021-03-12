@@ -11,7 +11,7 @@
         <div>
             {{learnObj.date | date:'longDate'}}
         </div>  
-        <p *ngIf = "learnObj.description" class = "desc">
+        <p *ngIttf = "learnObj.description" class = "desc">
             {{
             learnObj.description.length > 30
                 ? learnObj.description.substring(3, 30) + "..."

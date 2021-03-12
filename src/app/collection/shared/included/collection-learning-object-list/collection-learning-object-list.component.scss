@@ -9,8 +9,10 @@
 }
 
 @media (max-width: 800px){
-
     .grid-container{
+        position: relative;
         grid-template-columns: auto;
+        left: -150%;
     }
+
 }

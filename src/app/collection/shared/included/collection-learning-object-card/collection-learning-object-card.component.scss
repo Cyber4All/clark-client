@@ -54,6 +54,15 @@ div{
     .obj-info{
         margin: auto;
         padding-top: 5px;
+        min-width: 20vw;
+        align-items: flex-start;
+    }
+    .header{
+        min-width: 60vw;
+        min-height: 20vh;
+    }
+    .overlay{
+        min-width: 60vw;
     }
  
 }
