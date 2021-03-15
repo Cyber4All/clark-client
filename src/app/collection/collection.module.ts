@@ -18,9 +18,6 @@ import { CuratorCardComponent } from './shared/included/curators/curator-card/cu
   declarations: [
     CollectionIndexComponent,
     GenericPageComponent,
-    CuratorCardComponent,
-    StatCardComponent,
-    SecurityInjectionsComponent,
     SecurityInjectionsComponent,
     CollectionNcyteComponent,
     HeaderNcyteComponent,

@@ -7,6 +7,7 @@ import { CuratorComponent } from './components/curator/curator.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NiceChallengeComponent } from './nice-challenge.component';
+import { IncludedModule } from '../../../collection/shared/included/included.module';
 
 
 
@@ -21,6 +22,7 @@ import { NiceChallengeComponent } from './nice-challenge.component';
     NiceChallengeComponent,
   ],
   imports: [
+    IncludedModule,
     CommonModule,
   ],
   exports: [

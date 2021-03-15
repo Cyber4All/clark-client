@@ -19,5 +19,4 @@ const collection_routes: Routes = [
     }
 ];
 
-
 export const CollectionsRoutingModule: ModuleWithProviders = RouterModule.forChild(collection_routes);
