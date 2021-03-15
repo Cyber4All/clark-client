@@ -9,8 +9,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NiceChallengeComponent } from './nice-challenge.component';
 import { IncludedModule } from '../../../collection/shared/included/included.module';
 
-
-
 @NgModule({
   declarations: [
     HeaderComponent,
