@@ -1,0 +1,18 @@
+
+
+.grid-container{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: repeat(3, auto);
+    column-gap: 100px;
+    align-items: center;
+}
+
+@media (max-width: 800px){
+    .grid-container{
+        position: relative;
+        grid-template-columns: auto;
+        left: -100%;
+    }
+
+}

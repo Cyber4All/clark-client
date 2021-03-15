@@ -1,0 +1,22 @@
+<section class = "section section-curators">
+    <div class="section-accent">
+        <div class="accent-content">
+            <i class="fa-2x fas fa-users"></i>
+            <div class="curators-title">
+             COLLECTION 
+             CURATORS
+            </div>
+            <p class="curators-desc">
+                Collection curators are 
+                responsible for their collection’s 
+                review process and continued quality
+            </p>
+        </div>
+   </div>
+   <div *ngIf="curators && curators.length > 0" class = "curators">
+       <div *ngFor="let curator of curators">
+           <clark-curator-card [curator]="curator">         
+           </clark-curator-card>     
+       </div>
+    </div>
+</section>

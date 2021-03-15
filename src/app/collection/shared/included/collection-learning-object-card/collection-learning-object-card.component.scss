@@ -1,0 +1,67 @@
+@import '../../../collection-globals.scss';
+.container{
+    width: 20vw;
+    margin-bottom: 50px;
+    display: flex;
+}
+.header{
+    &.module{
+        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
+    }
+    &.micromodule{
+        background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
+    }
+    &.nanomodule{
+        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
+    }
+    &.unit{
+        background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
+    }
+    &.course{
+        background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
+    }
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    max-width: 150px;
+    min-width: 150px;
+    min-height: 100px;
+    border-radius: 10px;
+    width: 100%;
+}
+.overlay{
+    background-color: $medium-grey;
+    max-width: 150px;
+    width: 100%;
+    text-align: center;
+    padding: 5px 0;
+    text-transform: uppercase;
+}
+div{ 
+    font-size: $smaller;
+}
+.obj-title{
+    font-weight: 700;
+}
+@media (max-width: 800px){
+    .container{
+        justify-content: space-between;
+    }
+    .obj-info{
+        margin: auto;
+        padding-top: 5px;
+        min-width: 60vw;
+    }
+    .header{
+        min-width: 30vw;
+        min-height: 20vh;
+    }
+    .overlay{
+        min-width: 30vw;
+    }
+ 
+}

@@ -1,0 +1,53 @@
+@import '~_vars.scss';
+@import '../../../collection-globals.scss';
+
+.section-curators{
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 100vw;
+    text-align: center;
+    color: #fff;
+    margin-top: 50px;
+    font-size: $larger;
+
+    .accent-content{
+        padding-top: 70px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .section-accent{
+        background-color: $ncyte-blue;
+        flex-basis: 30%;
+        min-height: 20vh;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+}
+
+.curators {
+    color: $dark-grey;
+    flex-basis: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    padding-top: 20px;
+}
+
+@media (max-width: 1110px){
+    .section-accent{
+        flex-basis: 100% !important;
+        border-radius: 0px !important;
+    }
+    .accent-content{
+        padding-bottom: 50px;
+    } 
+}
+
+@media (max-width: 800px){
+    .curators{
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 80px;
+    }
+}

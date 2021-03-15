@@ -41,6 +41,16 @@ export const CHANGELOG_ROUTES = {
   }
 };
 
+export const COLLECTIONS_ROUTES = {
+  GET_COLLECTIONS: `${environment.apiURL}/collections`,
+  GET_COLLECTION_METRICS(name: string) {
+    return `${environment.apiURL}/${encodeURIComponent(name)}/metrics`;
+  },
+  GET_COLLECTION_CURATORS(name: string ) {
+    return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
+  }
+};
+
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,
@@ -72,6 +82,7 @@ export const USER_ROUTES = {
       memberId
     )}`;
   },
+
   REMOVE_COLLECTION_MEMBER(collection: string, memberId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
       collection

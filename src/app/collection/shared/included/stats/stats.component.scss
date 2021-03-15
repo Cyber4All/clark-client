@@ -1,0 +1,79 @@
+@import '~_vars.scss';
+@import '../../../collection-globals.scss';
+
+.section-stats{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    flex-basis: 100vw;
+}
+.section-stats{
+    margin-top: 100px;
+}
+.icon{
+    flex-basis: 12%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: $large;
+    margin: 20px;
+}
+.icon p {
+    color: $medium-grey;
+}
+.num{
+    padding-top: 10px;
+    color: $dark-grey;
+    font-size: $larger;
+}
+.section-accent{
+    color: #fff;
+    background-color: $ncyte-blue;
+    font-size: $largest;
+    min-height: 20vh;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.accent-content{
+    padding: 40px 30px;
+}
+
+.blue svg{
+    background-color: $light-blue;
+    padding: 15px;
+    border-radius: 1000px;
+    color: #fff;
+}
+.grey svg{
+    background-color: $medium-grey;
+    padding: 15px;
+    border-radius: 1000px;
+    color: #fff;
+}
+.yellow svg{
+    padding: 15px;
+    border-radius: 1000px;
+    background-color: lighten($orange, 35);
+    color: $orange;
+
+}
+.purple svg{
+    padding: 15px;
+    border-radius: 1000px;
+    background-color: lighten(rebeccapurple, 35);
+    color: rebeccapurple;
+}
+
+@media (max-width: 1110px){
+    .section-stats{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .section-accent{
+        margin-bottom: 80px;
+        width: 100%;
+        border-radius: 0px !important;
+    }
+}

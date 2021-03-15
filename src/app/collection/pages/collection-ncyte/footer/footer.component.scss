@@ -1,0 +1,48 @@
+@import '~_vars.scss';
+
+.footer{
+    background-color: $dark-grey;
+    color: #fff;
+    min-height: 20vh;
+    min-width: 30vw;
+    margin-top: 30px;
+    padding: 20px 10px 20px 10px;
+  }
+
+  .learn-more{
+      display: flex;
+      margin: auto;
+      padding-left: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+  }
+  .link{
+      margin-left: 5px;
+  }
+  
+  div a{
+      text-decoration: none;
+      cursor: pointer;
+      color: #fff;
+  }
+  .ncyte-down{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      padding-top: 40px;
+  }
+  .ncyte-down .fund{
+      margin-left: 20px;
+  }
+  .logo-nsf{
+    width: 100px;
+    padding-left: 10px;
+  }
+
+  @media (max-width: 950px){
+     .logo-nsf{
+         padding-bottom: 30px;
+     }
+  }
+  
+  
