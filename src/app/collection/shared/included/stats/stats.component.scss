@@ -8,9 +8,6 @@
     text-align: center;
     flex-basis: 100vw;
 }
-.section-stats{
-    margin-top: 100px;
-}
 .icon{
     flex-basis: 12%;
     display: flex;
@@ -29,11 +26,17 @@
 }
 .section-accent{
     color: #fff;
-    background-color: $ncyte-blue;
     font-size: $largest;
     min-height: 20vh;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+
+    &.NICE {
+        background-color: $nice-blue;
+    }
+    &.NCyTE {
+        background-color: $ncyte-blue;
+    }
 }
 .accent-content{
     padding: 40px 30px;

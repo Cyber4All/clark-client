@@ -7,7 +7,6 @@ a {
 }
 
 .wrapper {
-  margin-top: 100px;
   color: white;
   background: $dark-grey;
 
@@ -27,18 +26,9 @@ a {
   }
   .grant-and-media {
     padding: 25px 50px 25px 50px;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     .grants-text-box {
       padding-right: 20px;
-    }
-    .media {
-      display: flex;
-      justify-content: space-evenly;
-      img {
-        padding: 15px;
-      }
     }
   }
 }

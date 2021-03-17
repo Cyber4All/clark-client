@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./feature.component.scss']
 })
 export class FeatureComponent implements OnInit {
-  @Input() name: string;
+  @Input() collectionName: string;
   constructor() { }
 
   ngOnInit(): void {

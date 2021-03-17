@@ -1,8 +1,5 @@
 @import '~_vars.scss';
-@use '~collection-globals.scss';
-
-
-$nice-blue: #3693CC;
+@import '../../../../collection-globals.scss';
 
 .wrapper {
   display: flex;
@@ -60,6 +57,10 @@ $nice-blue: #3693CC;
         border: none;
         border-radius: 5px;
       }
+      .browse-nice:hover {
+        cursor: pointer;
+      }
+
     }
   }
 }

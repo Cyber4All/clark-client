@@ -1,7 +1,5 @@
 @import '~_vars.scss';
-@use '~collection-globals.scss';
-
-$nice-blue: #3693CC;
+@import '../../../../collection-globals.scss';
 
 .wrapper {
   display: flex;

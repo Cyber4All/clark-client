@@ -1,8 +1,20 @@
 <div class="wrapper">
-  <clark-header></clark-header>
-  <clark-feature [name] = "'nice'"></clark-feature>
-  <clark-philosophy></clark-philosophy>
-  <clark-curators [collectionName] = "'nice'"></clark-curators>
-  <clark-stats [collectionName] = "'nice'"></clark-stats>
-  <clark-footer></clark-footer>
+  <div class="component">
+    <clark-header></clark-header>
+  </div>
+  <div class="component-with-top-margin">
+    <clark-feature [collectionName] = "'NICE'"></clark-feature>
+  </div>
+  <div class="component-with-top-margin">
+    <clark-philosophy></clark-philosophy>
+  </div>
+  <div class="component-with-top-margin">
+    <clark-curators [collectionName] = "'NICE'"></clark-curators>
+  </div>
+  <div class="component-with-top-margin">
+    <clark-stats [collectionName] = "'NICE'"></clark-stats>
+  </div>
+  <div class="component-with-top-margin">
+    <clark-footer></clark-footer>
+  </div>
 </div>

@@ -1,10 +1,7 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
-import { LearningObjectsComponent } from './components/learning-objects/learning-objects.component';
 import { PhilosophyComponent } from './components/philosophy/philosophy.component';
-import { CuratorComponent } from './components/curator/curator.component';
-import { StatisticsComponent } from './components/statistics/statistics.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NiceChallengeComponent } from './nice-challenge.component';
 import { IncludedModule } from '../../../collection/shared/included/included.module';
@@ -12,10 +9,7 @@ import { IncludedModule } from '../../../collection/shared/included/included.mod
 @NgModule({
   declarations: [
     HeaderComponent,
-    LearningObjectsComponent,
     PhilosophyComponent,
-    CuratorComponent,
-    StatisticsComponent,
     FooterComponent,
     NiceChallengeComponent,
   ],
@@ -25,6 +19,10 @@ import { IncludedModule } from '../../../collection/shared/included/included.mod
   ],
   exports: [
     NiceChallengeComponent,
+  ],
+  schemas: [
+    NO_ERRORS_SCHEMA,
+    CUSTOM_ELEMENTS_SCHEMA
   ],
 })
 export class NiceChallengeModule { }

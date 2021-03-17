@@ -3,24 +3,26 @@
 
 
 .section-featured-learning{
-    margin-top: 100px;
     display: flex;
     flex-basis: 100vw;
 }
 
 .section-accent{
     flex-basis: 40%;
-    color: #fff;
+    color: white;
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
-    background-color: $ncyte-blue;
     text-align: center;
 
+    &.NICE {
+        background-color: $nice-blue;
+    }
+    &.NCyTE {
+        background-color: $ncyte-blue;
+    }
+
     .accent-content{
-        margin: auto;
-        padding-top: 100px;
-        padding-right: 40px;
-        padding-left: 40px;
+        padding: 50px 40px 50px 40px;
     }
 
     .featured-learning-title{
