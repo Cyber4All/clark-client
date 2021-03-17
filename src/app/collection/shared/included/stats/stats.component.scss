@@ -28,8 +28,7 @@
     color: #fff;
     font-size: $largest;
     min-height: 20vh;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-radius: 10px 0 0 10px;
 
     &.NICE {
         background-color: $nice-blue;

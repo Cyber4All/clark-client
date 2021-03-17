@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // This module
-import { CookieModule } from 'ngx-cookie';
 import { LoginComponent } from './login/login.component';
 import { AuthRoutingModule } from './auth.routing';
 import { RegisterComponent } from './register/register.component';

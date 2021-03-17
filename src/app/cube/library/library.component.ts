@@ -142,7 +142,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param apiPage The page that we need to retrieve from Notifications service
    */
   async getNotifications(apiPage: number) {
-    let result = { 'notifications': [], 'lastPage': 0 };
+    let result = { 'notifications': [], 'lastPage': 1 };
     const notificationCount = await this.user.getNotifications(this.authService.username, 1, 1);
     this.notificationCount = notificationCount.lastPage;
     if (this.notificationCount <= 20) {

@@ -10,8 +10,7 @@
 .section-accent{
     flex-basis: 40%;
     color: white;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
+    border-radius: 0 10px 10px 0;
     text-align: center;
 
     &.NICE {

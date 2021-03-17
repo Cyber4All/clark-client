@@ -7,15 +7,21 @@ import { GLOBAL } from '@env/strings';
   styleUrls: ['./cookies.component.scss']
 })
 export class CookiesComponent {
-  strings = GLOBAL;
 
-  @Output() setAgreement: EventEmitter<boolean> = new EventEmitter();
+  @Output() showCookieBanner: EventEmitter<boolean> = new EventEmitter();
+  @Output() cookieAgreement: EventEmitter<boolean> = new EventEmitter();
 
   /**
    * Emits agreement event to parent component
    */
-  dismiss() {
-    this.setAgreement.emit(true);
+  agree() {
+    this.showCookieBanner.emit(false);
+    this.cookieAgreement.emit(true);
+  }
+
+  decline() {
+    this.showCookieBanner.emit(false);
+    this.cookieAgreement.emit(false);
   }
 
 }
