@@ -12,6 +12,7 @@ import {
   stagger
 } from '@angular/animations';
 import { environment } from '@env/environment';
+import { CookieAgreementService } from 'app/core/cookie-agreement.service';
 
 @Component({
   selector: 'clark-register',
@@ -121,7 +122,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cookieAgreement: CookieAgreementService
   ) {
     this.route.parent.data.subscribe(() => {
       if (route.snapshot.queryParams.redirectUrl) {
@@ -344,5 +346,9 @@ export class RegisterComponent implements OnInit {
 
   setInUseUsername(inUse: boolean) {
     this.inUseUsername = inUse;
+  }
+
+  checkCookieAgreement() {
+    return this.cookieAgreement.getCookieAgreementVal();
   }
 }
