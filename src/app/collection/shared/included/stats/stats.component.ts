@@ -9,9 +9,9 @@ import { CollectionService } from 'app/core/collection.service';
 })
 export class StatsComponent implements OnInit {
   @Input() collectionName: string;
-  constructor(private collectionService: CollectionService) {
+  name: string;
 
-  }
+  constructor(private collectionService: CollectionService) {}
 
   public collectionMetrics;
   public authorCollection;
@@ -19,12 +19,21 @@ export class StatsComponent implements OnInit {
   public objReview;
   public objReleased;
 
-ngOnInit(): void {
+  ngOnInit(): void {
     this.collectionService.getCollectionMetricsData(this.collectionName).then((res: any ) => {
-    this.authorCollection = res.metrics.authorsCount;
+      this.authorCollection = res.metrics.authorsCount;
       this.objDownload = res.metrics.downloads;
       this.objReview = res.metrics.saves;
       this.objReleased = res.metrics.saves;
-   });
+    });
+
+    switch (this.collectionName) {
+      case 'nice':
+        this.name = 'NICE';
+        break;
+      case 'ncyte':
+        this.name = 'NCyTE';
+        break;
+    }
   }
 }

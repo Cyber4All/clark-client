@@ -1,0 +1,145 @@
+@import '~_vars.scss';
+@import '../../../../collection-globals.scss';
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-basis: 75%;
+    align-items: center;
+
+    .logo {
+      width: 500px;
+    }
+    .title {
+      margin-top: 20px;
+      color: $nice-blue;
+      text-align: center;
+      .title-header {
+         width: 415px;
+      }
+      h2 {
+        margin: 0px;
+        .nice-link {
+          color: $nice-blue;  
+        }
+      }
+    }
+  }
+  .browse-container {
+    width: 440px;
+    background: $nice-blue;
+    border-radius: 0px 0px 0px 10px;
+
+    .section-accent {
+      padding: 60px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: $large; 
+
+      .icon {
+        font-size: 50px;
+        padding: 10px;
+      }
+      p {
+         padding: 10px 0 20px 0; 
+      }
+      .browse-nice {
+        padding: 10px 25px 10px 25px;
+        color: $darker-grey;
+        font-size: $large;
+        border: none;
+        border-radius: 5px;
+      }
+      .browse-nice:hover {
+        cursor: pointer;
+      }
+
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .logo {
+    width: 400px !important;
+  }
+  .title-header {
+    width: 400px !important;
+  }
+  h2 {
+    font-size: $large;
+  }
+
+
+  .browse-container {
+    width: 350px !important;
+  }
+  .browse-nice {
+    font-size: $normal !important;
+  }
+  .icon {
+    font-size: 35px !important;
+  }
+  .section-accent {
+    font-size: $normal !important;
+    padding: 40px !important;
+  }
+}
+
+
+@media screen and (max-width: 800px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .title-container {
+    margin-top: 50px;
+  }
+  .browse-container {
+    margin-top: 50px;
+    width: 100% !important;
+    border-radius: 0 !important;
+  }
+  .section-accent {
+    
+    text-align: center;
+    font-size: $large !important;
+  }
+  .browse-nice {
+    font-size: $large !important;
+  }
+  .icon {
+    font-size: 50px !important;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .logo {
+    width: 300px !important;
+  }
+  .title-header {
+    width: 300px !important;
+  }
+  h2 {
+    font-size: $normal;
+  }
+
+  .browse-nice {
+    font-size: $normal !important;
+  }
+  .icon {
+    font-size: 35px !important;
+  }
+  .section-accent {
+    font-size: $normal !important;
+  }
+}
+
+
+
