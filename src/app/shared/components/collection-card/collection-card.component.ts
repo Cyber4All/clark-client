@@ -9,6 +9,7 @@ export class CollectionCardComponent implements OnInit {
   @Input() homepage = false;
   @Input() collection;
   pictureLocation: string;
+  link: string;
 
   constructor() {}
 
@@ -23,6 +24,14 @@ export class CollectionCardComponent implements OnInit {
         '../../../assets/images/collections/' +
         this.collection.abvName +
         '.png';
+    }
+    if (
+      this.collection.abvName === 'ncyte' ||
+      this.collection.abvName === 'nice'
+    ) {
+      this.link = '/collections/' + this.collection.abvName;
+    } else {
+      this.link = '/c/' + this.collection.abvname;
     }
   }
 }
