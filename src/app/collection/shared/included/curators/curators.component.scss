@@ -34,6 +34,11 @@
     justify-content: space-evenly;
     margin: auto;
     padding-top: 20px;
+
+    p {
+        font-weight: normal;
+        font-size: $large;
+    }
 }
 
 @media (max-width: 1110px){
