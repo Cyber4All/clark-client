@@ -33,13 +33,13 @@ header {
         background-color: $ncyte-blue;
         padding: 30px 40px 30px 40px;
         border-radius: 0 0 0 10px;
-        height: inherit;
+        height: 100%;
         color: #fff; 
             
         .icon {
             font-size: 50px;
             color: #fff;
-            padding: 10px;
+            padding: 50px 10px 10px;
         }
         p {
             font-size: $large;
