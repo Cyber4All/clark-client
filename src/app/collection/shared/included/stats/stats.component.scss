@@ -77,8 +77,8 @@
 .section-accent{
     color: #fff;
     font-size: $largest;
-    min-height: 20vh;
     border-radius: 10px 0 0 0px;
+    min-height: 200px;
 
     &.nice {
         background-color: $nice-blue;
@@ -88,7 +88,8 @@
     }
 }
 .accent-content{
-    padding: 40px 30px;
+    padding: 10%;
+    max-height: 300px;
 }
 
 @media (max-width: 1110px){
@@ -98,7 +99,6 @@
     }
 
     .section-accent{
-        margin-bottom: 80px;
         width: 100%;
         border-radius: 0px !important;
     }
