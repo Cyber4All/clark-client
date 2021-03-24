@@ -1,7 +1,8 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CollectionIndexComponent } from './pages/collection-index/collection-index.component';
-import {CollectionNcyteComponent} from './pages/collection-ncyte/collection-ncyte.component';
+import { NiceChallengeComponent } from './pages/nice-challenge/nice-challenge.component';
+import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
 
 const collection_routes: Routes = [
     {
@@ -9,12 +10,13 @@ const collection_routes: Routes = [
         component: CollectionIndexComponent,
     },
     {
+        path: 'nice',
+        component: NiceChallengeComponent
+    },
+    {
         path: 'ncyte',
         component: CollectionNcyteComponent
     }
-
-
 ];
-
 
 export const CollectionsRoutingModule: ModuleWithProviders = RouterModule.forChild(collection_routes);
