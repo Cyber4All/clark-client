@@ -1,6 +1,10 @@
 @import '../../../collection-globals.scss';
 a {
     text-decoration: none;
+    color: $darker-grey;
+}
+a:visited {
+    color: $darker-grey;
 }
 .container{
     width: 20vw;
@@ -48,6 +52,8 @@ div{
     font-size: $smaller;
 }
 .obj-title{
+    padding-top: 20px;
+    font-size: $normal;
     font-weight: 700;
 }
 @media (max-width: 800px){
