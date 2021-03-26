@@ -7,6 +7,8 @@ import {CuratorsComponent} from './curators/curators.component';
 import {CuratorCardComponent} from './curators/curator-card/curator-card.component';
 import { StatsComponent } from './stats/stats.component';
 import { FeatureComponent } from './feature/feature.component';
+import { RouterModule } from '@angular/router';
+
 
 
 @NgModule({
@@ -20,6 +22,7 @@ import { FeatureComponent } from './feature/feature.component';
   ],
   imports: [
     CommonModule,
+    RouterModule
   ],
   exports: [
     CollectionLearningObjectCardComponent,

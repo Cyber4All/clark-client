@@ -138,7 +138,7 @@ export class CollectionService {
       .toPromise();
 
   }
-  getCollectionCuratorsInfo(name: string ) {
+  getCollectionCuratorsInfo(name: string) {
     return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
     .pipe(
       retry(3),
