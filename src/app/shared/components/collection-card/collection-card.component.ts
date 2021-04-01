@@ -31,7 +31,7 @@ export class CollectionCardComponent implements OnInit {
     ) {
       this.link = '/collections/' + this.collection.abvName;
     } else {
-      this.link = '/c/' + this.collection.abvname;
+      this.link = '/c/' + this.collection.abvName;
     }
   }
 }
