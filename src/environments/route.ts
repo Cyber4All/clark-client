@@ -98,9 +98,11 @@ export const USER_ROUTES = {
   SEARCH_USERS(query: {}) {
     return `${environment.apiURL}/users/search?text=${encodeURIComponent(querystring.stringify(query))}`;
   },
+  // Deprecated
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
+  // Deprecated
   LOGOUT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
@@ -168,6 +170,7 @@ export const USER_ROUTES = {
       environment.apiURL
       }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
+  // Deprecated
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
@@ -186,11 +189,13 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
   },
+  // Deprecated
   POST_FILE_TO_LEARNING_OBJECT(id: string, username: string) {
     return `${environment.contentManagerURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${id}/files`;
   },
+  // Deprecated
   POST_FILE_TO_LEARNING_OBJECT_ADMIN(id: string, username: string) {
     return `${environment.contentManagerURLAdmin}/users/${encodeURIComponent(
       username
