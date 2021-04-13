@@ -13,7 +13,7 @@ export class CuratorsComponent implements OnInit {
   constructor(private collectionService: CollectionService) { }
 
   async ngOnInit(): Promise<void> {
-      this.curators = await this.collectionService.getCollectionCuratorsInfo(this.collectionName);
+    this.curators = await this.collectionService.getCollectionCuratorsInfo(this.collectionName);
   }
 
 }
