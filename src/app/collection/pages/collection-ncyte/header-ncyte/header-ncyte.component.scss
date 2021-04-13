@@ -8,34 +8,38 @@ header {
 }
 
 .ncyte-title {
-    flex-basis: 75%;
+    flex-basis: 70%;
     padding-top: 50px;
     text-align: center;
+    width: 100%;
 
     .logo{
-        width: 600px;
+        width: 450px;
+        height: 200px;
     }
     .logo-header {
         text-align: center;
         color: $ncyte-blue;
+        font-size: $larger;
+        padding-right: 10px;
     }
 }
 
 .section-browse {
-    flex-basis: 25%;
+    flex-basis: 30%;
     text-align: center;
 
     .section-accent {
         background-color: $ncyte-blue;
         padding: 30px 40px 30px 40px;
         border-radius: 0 0 0 10px;
-        height: inherit;
+        height: 100%;
         color: #fff; 
             
         .icon {
             font-size: 50px;
             color: #fff;
-            padding: 10px;
+            padding: 50px 10px 10px;
         }
         p {
             font-size: $large;

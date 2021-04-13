@@ -4,7 +4,7 @@
     <div [@collection] *ngIf="collections.get(learningObject.collection)" class="collection">
       <div>
         <i class="fal fa-cubes"></i> Part of the 
-        <a class="collection-link" routerLink="/c/{{learningObject.collection}}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
+        <a class="collection-link" routerLink="{{ link }}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
       </div>
     </div>
       <h1 class="learning-object-name">{{ learningObject.name }}</h1>
