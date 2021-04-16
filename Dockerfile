@@ -23,4 +23,5 @@ FROM nginx:alpine as serve
 # Copy the build folder from the build stage into the nginx folder
 # and expose the port
 COPY --from=build /build/dist /usr/share/nginx/html
+COPY /nginx-custom.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

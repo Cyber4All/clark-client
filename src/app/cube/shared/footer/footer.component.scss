@@ -100,6 +100,18 @@ footer {
   }
 }
 
+@media(max-width: 1575px) {
+  .grants {
+    .images {
+      flex-wrap: wrap;
+
+      img {
+        margin: 10px !important;
+      }
+    }
+  }
+}
+
 
 @media(max-width: 800px) {
   .footer-info {
