@@ -35,15 +35,11 @@
     <div class="cc-attribution">
       <div class="cc-attribution__text-content">
         <div tabindex="0" class="cc-attribution__title"></div>
-        <div tabindex="0" class="cc-attribution__attribution" #objectAttributionElement id="objectAttribution"> 
-          <a attr.aria-label="Clickable link to {{ learningObject.name | titlecase }}" href='https://clark.center/details/{{learningObject.author.username}}/{{learningObject.cuid}}'>"{{ learningObject.name }}"</a>
-          is licensed under <a attr.aria-label="Clickable link to Creative Commons License" href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>CC BY-NC-SA 4.0</a>
+        <div class="attribution__attribution">
+          This learning-object is licensed under 
+          <a attr.aria-label="Creative Commons License" href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>CC BY-NC-SA 4.0</a>.<br>
+          Attribution format can be found <a attr.aria-label="Creative Commons Best Practices for Attribution" href="https://wiki.creativecommons.org/wiki/Best_practices_for_attribution">here.</a>
         </div>
-      </div>
-      <div class="cc-attribution__button">
-        <button aria-label="Clickable Copy CC Attribution button" class="button icon-only green" (activate)="copyAttribution()" id="copyAttribution">
-          <i class="fas fa-clipboard"></i>
-        </button>
       </div>
     </div>
     <div class="details-share">
