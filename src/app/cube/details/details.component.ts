@@ -305,7 +305,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   setLearningObjectAuthors() {
-    this.authors.push(this.learningObject.author);
     this.learningObject.contributors.forEach(contributor => {
       this.authors.push(contributor);
     });
