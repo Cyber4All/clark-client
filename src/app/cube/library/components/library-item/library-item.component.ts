@@ -32,5 +32,21 @@ export class LibraryItemComponent implements OnInit {
     this.titleClicked.emit(e);
   }
 
+  getContributorsList() {
+    let attribution = '';
+    if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+      attribution = this.capitalizeName(this.learningObject.contributors[0].name);
+      if (this.learningObject.contributors.length > 1) {
+        attribution += ' and ' + (this.learningObject.contributors.length - 1)
+        + ' other contributor' + (this.learningObject.contributors.length > 2 ? 's' : '');
+      }
+    } else {
+      attribution = 'No contributors';
+    }
+    return attribution;
+  }
 
+  private capitalizeName(name) {
+    return name.replace(/\b(\w)/g, s => s.toUpperCase());
+  }
 }
