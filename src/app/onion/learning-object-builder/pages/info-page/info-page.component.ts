@@ -76,6 +76,27 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     this.mutateLearningObject({ levels: this.selectedLevels });
   }
 
+  getContributorAttribution() {
+    let attribution = '';
+    if (this.learningObject.contributors && this.learningObject.contributors.length >= 3) {
+      // 3 or more contributors: 'a, b, and c'
+      for (let i = 0; i < this.learningObject.contributors.length; i++) {
+        attribution += i === this.learningObject.contributors.length - 1 ?
+          'and ' + this.learningObject.contributors[i].name : this.learningObject.contributors[i].name + ', ';
+      }
+    } else if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+      // 1 or 2 contributors: 'a' or 'a and b'
+      attribution = this.learningObject.contributors[0].name;
+      if (this.learningObject.contributors.length === 2) {
+        attribution += ' and ' + this.learningObject.contributors[1].name;
+      }
+    } else {
+      // No contributors added
+      attribution = 'List of Contributors';
+    }
+    return attribution;
+  }
+
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();

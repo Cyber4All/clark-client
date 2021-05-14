@@ -18,7 +18,7 @@
         <hr />
         <clark-info-page-metadata>
           <div id="contributor-title" title>Who else worked on this?</div>
-          <div id="contributor-directions" directions>You can find users by their name, username, or email address.</div>
+          <div id="contributor-directions" directions>You can find users by their name, username, or email address. <b>Make sure to include yourself if you would like to be included in the object's attribution.</b></div>
           <div data>
             <clark-user-dropdown [contributors]="learningObject.contributors" (addAuthor)="toggleContributor($event)" (removeAuthor)="toggleContributor($event)"></clark-user-dropdown>
             <div *ngIf="learningObject.contributors?.length" class="contributors-list">
@@ -29,6 +29,7 @@
             </div>
           </div>
         </clark-info-page-metadata>
+        <div class="attribution-preview">Attribution preview: <i>{{ learningObject.name ? learningObject.name : 'Learning Object Name' }}</i> by <i>{{ getContributorAttribution() }}</i>, <i>{{ learningObject.collection ? learningObject.collection : 'Submitted Collection Name' }}</i> is licensed under CC BY-NC-SA 4.0.</div>
         <hr>
         <clark-info-page-metadata>
           <div title>{{copy.LENGTH}}</div>
