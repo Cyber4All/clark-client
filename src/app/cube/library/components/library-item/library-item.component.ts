@@ -34,6 +34,7 @@ export class LibraryItemComponent implements OnInit {
 
   getContributorsList() {
     let attribution = '';
+    // Creates the attribution string: 'a' or 'a and # of other contributor(s)'
     if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
       attribution = this.capitalizeName(this.learningObject.contributors[0].name);
       if (this.learningObject.contributors.length > 1) {
