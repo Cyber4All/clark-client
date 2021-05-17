@@ -18,7 +18,7 @@
         <hr />
         <clark-info-page-metadata>
           <div id="contributor-title" title>Who else worked on this?</div>
-          <div id="contributor-directions" directions>You can find users by their name, username, or email address. <b>Make sure to include yourself if you would like to be included in the object's attribution.</b></div>
+          <div id="contributor-directions" directions>You can find users by their name, username, or email address. <b>Make sure to include yourself as a contributor if you participated in the development of the materials for this Learning Object.</b></div>
           <div data>
             <clark-user-dropdown [contributors]="learningObject.contributors" (addAuthor)="toggleContributor($event)" (removeAuthor)="toggleContributor($event)"></clark-user-dropdown>
             <div *ngIf="learningObject.contributors?.length" class="contributors-list">
