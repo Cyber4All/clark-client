@@ -16,7 +16,7 @@
           </div>
         </clark-info-page-metadata>
         <hr />
-        <clark-info-page-metadata>
+        <clark-info-page-metadata [error]="validator.get('contributors') || undefined">
           <div id="contributor-title" title>Who else worked on this?</div>
           <div id="contributor-directions" directions>You can find users by their name, username, or email address. <b>Make sure to include yourself as a contributor if you participated in the development of the materials for this Learning Object.</b></div>
           <div data>
@@ -29,7 +29,8 @@
             </div>
           </div>
         </clark-info-page-metadata>
-        <div class="attribution-preview">Attribution preview: <i>{{ learningObject.name ? learningObject.name : 'Learning Object Name' }}</i> by <i>{{ getContributorAttribution() }}</i>, <i>{{ learningObject.collection ? learningObject.collection : 'Submitted Collection Name' }}</i> is licensed under CC BY-NC-SA 4.0.</div>
+        <div class="attribution-preview"><b>Note: </b><i>Submitted Collection Name</i> will be replaced with the collection name you submit to. So if you submit to NSA NCCP, 'NSA NCCP' will be shown instead of 'Submitted Collection Name'.</div>
+        <div class="attribution-preview bottom"><b>Attribution preview: </b><i>{{ learningObject.name ? learningObject.name : 'Learning Object Name' }}</i> by <i>{{ getContributorAttribution() }}</i>, <i>{{ learningObject.collection ? learningObject.collection : 'Submitted Collection Name' }}</i> is licensed under CC BY-NC-SA 4.0.</div>
         <hr>
         <clark-info-page-metadata>
           <div title>{{copy.LENGTH}}</div>
