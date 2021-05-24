@@ -16,6 +16,7 @@ import { Subject } from 'rxjs';
 import { LibraryService, iframeParentID } from 'app/core/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
+import { CollectionService } from 'app/core/collection.service';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -47,6 +48,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   addingToLibrary = false;
   author: string;
   learningObjectName: string;
+  collectionName = '';
   saved = false;
   url: string;
   windowWidth: number;
@@ -72,6 +74,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private toaster: ToastrOvenService,
     private changeDetectorRef: ChangeDetectorRef,
+    private collectionService: CollectionService,
   ) { }
 
   ngOnInit() {
@@ -86,7 +89,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.saved = this.libraryService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
-
+    this.getCollection();
   }
 
   get isReleased(): boolean {
@@ -286,6 +289,39 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.toaster.error(`Could not send email`, `${e}`);
     }
+  }
+
+  getContributorAttribution() {
+    let attribution = '';
+    if (this.learningObject.contributors && this.learningObject.contributors.length >= 3) {
+      // 3 or more contributors: 'a, b, and c'
+      for (let i = 0; i < this.learningObject.contributors.length; i++) {
+        const name = this.capitalizeName(this.learningObject.contributors[i].name);
+
+        attribution += i === this.learningObject.contributors.length - 1 ?
+          'and ' + name : name + ', ';
+      }
+    } else if (this.learningObject.contributors && this.learningObject.contributors.length > 0) {
+      // 1 or 2 contributors: 'a' or 'a and b'
+      attribution = this.capitalizeName(this.learningObject.contributors[0].name);
+      if (this.learningObject.contributors.length === 2) {
+        attribution += ' and ' + this.capitalizeName(this.learningObject.contributors[1].name);
+      }
+    } else {
+      // No contributors added
+      attribution = 'List of Contributors';
+    }
+    return attribution;
+  }
+
+  private capitalizeName(name) {
+    return name.replace(/\b(\w)/g, s => s.toUpperCase());
+  }
+
+  async getCollection() {
+    const collection = await this.collectionService.getCollection(this.learningObject.collection);
+    this.collectionName = collection.name;
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy() {

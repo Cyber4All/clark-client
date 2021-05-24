@@ -3,6 +3,7 @@ import { SubmittableLearningOutcome } from '../learning-outcome/submittable-lear
 import { SUBMITTABLE_LEARNING_OBJECT_ERRORS } from './error-messages';
 import { EntityError } from '../errors/entity-error';
 import { LearningOutcome } from '../learning-outcome/learning-outcome';
+import { User } from '@entity';
 
 export class SubmittableLearningObject extends LearningObject {
   get description(): string {
@@ -18,6 +19,15 @@ export class SubmittableLearningObject extends LearningObject {
   set description(description: string) {
     SubmittableLearningObject.validateDescription(description);
     this.description = description.trim();
+  }
+
+  get contributors(): User[] {
+    return this.contributors;
+  }
+
+  set contributors(contributors: User[]) {
+    SubmittableLearningObject.validateContributors(contributors);
+    this.contributors = contributors;
   }
 
   /**
@@ -151,6 +161,12 @@ export namespace SubmittableLearningObject {
     }
   }
 
+  export function validateContributors(contributors: User[]) {
+    if (contributors.length <= 0) {
+      throw { property: 'contributors', message: 'At least one contributor must be added to the object' };
+    }
+  }
+
   export function validateObject(
     object: LearningObject,
   ): { [index: string]: EntityError } | undefined {
@@ -167,6 +183,10 @@ export namespace SubmittableLearningObject {
       {
         function: SubmittableLearningObject.validateOutcomes,
         arguments: [object.outcomes],
+      },
+      {
+        function: SubmittableLearningObject.validateContributors,
+        arguments: [object.contributors]
       }
     ];
     validationFunctions.forEach(func => {
