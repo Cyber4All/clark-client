@@ -90,6 +90,10 @@
             </cube-details-action-panel>
           </section>
           <section class='details__content-container__right-side-container'>
+            <h3 class='section-title'>Authors</h3>
+            <div shouldanimate class='content-container__profile-cards-container-profile-card' *ngFor='let author of authors'>
+              <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
+            </div>
             <div class='details__content-container__version-card-container'>
               <clark-version-card [version]='learningObject.version' [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
             </div>

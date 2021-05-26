@@ -50,14 +50,6 @@
         {{ collection }}
       </div>
       <div class="details">
-        <span class="author">
-          {{ learningObject.author.organization.trim() | titlecase
-          }}{{
-            learningObject.contributors?.length
-              ? ', and ' + learningObject.contributors.length + ' more'
-              : ''
-          }}
-        </span>
         <div class="date">Updated {{ date | date: 'mediumDate' }}</div>
       </div>
       <div
