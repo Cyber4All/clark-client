@@ -51,10 +51,10 @@
       </div>
       <div class="details">
         <span class="author">
-          {{learningObject.contributors[0]?.name | titlecase}}
+          {{ learningObject.contributors[0]?.name | titlecase }}
           {{
-            learningObject.contributors?.length
-              ? ', and ' + learningObject.contributors.length + ' more'
+            learningObject.contributors?.length - 1
+              ? 'and ' + learningObject.contributors.length  + ' more'
               : ''
           }}
         </span>
