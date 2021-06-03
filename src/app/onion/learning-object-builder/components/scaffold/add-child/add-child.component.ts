@@ -52,7 +52,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
-      .getLearningObjects(this.child.author.username, filters, query)
+      .getLearningObjects(this.child.author.username, filters, query, this.child.id)
       .then((children: LearningObject[]) => {
         this.loading = false;
         const indx = this.lengths.indexOf(this.child.length);
