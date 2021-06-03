@@ -55,7 +55,7 @@
           {{ learningObject.contributors[0]?.organization | titlecase }}
           {{
             learningObject.contributors?.length - 1
-              ? 'and ' + learningObject.contributors.length  + ' more'
+              ? 'and ' + (learningObject.contributors.length - 1)  + ' more'
               : ''
           }}
         </span>
