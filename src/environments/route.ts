@@ -106,11 +106,15 @@ export const USER_ROUTES = {
   LOGOUT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
-  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string) {
+  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string, childId?: string) {
     // Onion
-    return `${environment.apiURL}/users/${encodeURIComponent(
+    let uri = `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects?children=true&text=${encodeURIComponent(query)}&${querystring.stringify(filters)}`;
+    if (childId) {
+      uri = uri + `&currentId=${encodeURIComponent(childId)}`;
+    }
+    return uri;
   },
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
