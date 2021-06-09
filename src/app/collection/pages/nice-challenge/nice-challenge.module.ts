@@ -5,6 +5,8 @@ import { PhilosophyComponent } from './components/philosophy/philosophy.componen
 import { FooterComponent } from './components/footer/footer.component';
 import { NiceChallengeComponent } from './nice-challenge.component';
 import { IncludedModule } from '../../../collection/shared/included/included.module';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { IncludedModule } from '../../../collection/shared/included/included.mod
   imports: [
     IncludedModule,
     CommonModule,
+    RouterModule,
+    SharedModule
   ],
   exports: [
     NiceChallengeComponent,
