@@ -22,12 +22,9 @@
         Developing strong cybersecurity programs and faculty 
         is key to developing a stronger cybersecurity workforce.
       </p>
-      <form>
-        <button formaction="https://clark.center/browse?currPage=1&limit=10&collection=nice" class="browse-nice">
-          Browse Curriculum
-          <i class="fas fa-arrow-right"></i>
-        </button>
-      </form>
+      <button (activate)="navigateToBrowse()" aria-label="Browse Nice Curriculum" class="button">Browse Curriculum
+        <i class="fas fa-arrow-right"></i>
+      </button>
     </section>
   </div>
 </div>

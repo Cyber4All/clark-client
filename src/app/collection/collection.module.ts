@@ -13,6 +13,7 @@ import { FooterComponent } from './pages/collection-ncyte/footer/footer.componen
 import { ResourceComponent } from './pages/collection-ncyte/resource/resource.component';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { IncludedModule } from './shared/included/included.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { IncludedModule } from './shared/included/included.module';
     CollectionsRoutingModule,
     NiceChallengeModule,
     RouterModule,
+    SharedModule,
   ],
   providers: [LearningObjectService]
 })
