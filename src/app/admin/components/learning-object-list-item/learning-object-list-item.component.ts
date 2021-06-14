@@ -16,6 +16,7 @@ import { environment } from '@env/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/internal/observable/of';
+import { UnreleaseService } from 'app/admin/core/unrelease.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -40,6 +41,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   statusDescription: string;
 
   showChangeAuthor: boolean;
+  showUnreleaseConfirm: boolean;
 
   // flags
   meatballOpen = false;
@@ -49,6 +51,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   private headers = new HttpHeaders();
   constructor(
     private auth: AuthService,
+    private unreleaseService: UnreleaseService,
     private statuses: StatusDescriptions,
     private cd: ChangeDetectorRef,
     private http: HttpClient,
@@ -79,9 +82,44 @@ export class LearningObjectListItemComponent implements OnChanges {
     this.meatballOpen = value;
   }
 
+  /**
+   * Toggles the change author modal from showing/hiding
+   *
+   * @param value True if showing, false otherwise
+   */
   toggleChangeAuthorModal(value: boolean) {
     this.showChangeAuthor = value;
   }
+
+  /**
+   * Toggles the unrelease confirm modal from showing/hiding
+   *
+   * @param value True if showing, false otherwise
+   */
+  toggleUnreleaseConfirm(value: boolean) {
+    this.showUnreleaseConfirm = value;
+  }
+
+  /**
+   * Closes the unrelease a object modal with a value for if the user
+   * confirmed they want to unrelease a object
+   *
+   * @param value True if wanting to unrelease, false otherwise
+   */
+  closeUnreleaseModal(value: boolean) {
+    this.toggleUnreleaseConfirm(false);
+    if (value) {
+      this.unreleaseLearningObject();
+    }
+  }
+
+  /**
+   * Reaches to a service to unrelease the object.
+   */
+  async unreleaseLearningObject() {
+    await this.unreleaseService.unreleaseLearningObject(this.learningObject.author.username, this.learningObject.cuid);
+  }
+
   /**
    * Check the logged in user's email verification status
    * @return {boolean} true if loggedin user has verified their email, false otherwise

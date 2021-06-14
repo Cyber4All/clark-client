@@ -10,6 +10,7 @@ import { AuthService } from 'app/core/auth.service';
 import { User, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
+import { UnreleaseService } from 'app/admin/core/unrelease.service';
 
 describe('DashboardItemComponent', () => {
   let component: LearningObjectListItemComponent;
@@ -28,7 +29,8 @@ describe('DashboardItemComponent', () => {
       ],
       providers: [
         { provide: AuthService, useValue: { user: new User() } },
-        CollectionService
+        CollectionService,
+        { provide: UnreleaseService, useClass: {} },
       ]
     })
     .compileComponents();

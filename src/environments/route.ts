@@ -23,7 +23,10 @@ export const ADMIN_ROUTES = {
   },
   CHANGE_AUTHOR(userId: string, id: string): string {
     return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${id}/change-author`;
-  }
+  },
+  UNRELEASE_OBJECT(username: string, cuid: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/status`;
+  },
 };
 
 export const CHANGELOG_ROUTES = {
