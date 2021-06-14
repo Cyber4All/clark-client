@@ -17,6 +17,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -55,6 +56,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     private statuses: StatusDescriptions,
     private cd: ChangeDetectorRef,
     private http: HttpClient,
+    private toaster: ToastrOvenService,
   ) {}
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -116,8 +118,10 @@ export class LearningObjectListItemComponent implements OnChanges {
   /**
    * Reaches to a service to unrelease the object.
    */
-  async unreleaseLearningObject() {
-    await this.unreleaseService.unreleaseLearningObject(this.learningObject.author.username, this.learningObject.cuid);
+  unreleaseLearningObject() {
+    this.unreleaseService.unreleaseLearningObject(this.learningObject.author.username, this.learningObject.cuid)
+      .then(() => this.toaster.success('Success', 'Learning object was successfully unreleased'))
+      .catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
   }
 
   /**

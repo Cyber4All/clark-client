@@ -41,7 +41,7 @@ export class UnreleaseService {
    * @returns
    * @memberof PrivilegeService
    */
-   private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
       return throwError(error.error.message);
