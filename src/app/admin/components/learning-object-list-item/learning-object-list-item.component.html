@@ -42,7 +42,7 @@
 
 <clark-popup *ngIf="showUnreleaseConfirm" (closed)="toggleUnreleaseConfirm(false)">
   <div class="modal-container center" #popupInner>
-    <p>Are you sure you want to unrelease this learning object?</p>
+    <p>Are you sure you want to unrelease this learning object? This action will change the status to proofing.</p>
     <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
     <button (click)="closeUnreleaseModal(false)" class="button">No</button>
   </div>
