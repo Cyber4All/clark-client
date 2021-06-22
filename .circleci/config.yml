@@ -43,7 +43,7 @@ jobs:
             docker build -t clark-client:$CIRCLE_SHA1 .
       - run:
           name: Login to docker
-          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+          command: docker login -u ${DOCKER_USERNAME} -p "${DOCKER_PASSWORD}"
       - run:
           name: Publish Image
           command: |
