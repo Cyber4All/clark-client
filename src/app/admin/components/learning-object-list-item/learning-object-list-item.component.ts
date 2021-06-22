@@ -120,8 +120,10 @@ export class LearningObjectListItemComponent implements OnChanges {
    */
   unreleaseLearningObject() {
     this.unreleaseService.unreleaseLearningObject(this.learningObject.author.username, this.learningObject.cuid)
-      .then(() => this.toaster.success('Success', 'Learning object was successfully unreleased'))
-      .catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
+      .then(() => {
+      this.toaster.success('Success', 'Learning object was successfully unreleased');
+      this.learningObject.status = LearningObject.Status.PROOFING;
+    }).catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
   }
 
   /**

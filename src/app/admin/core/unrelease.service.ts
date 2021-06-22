@@ -24,7 +24,7 @@ export class UnreleaseService {
     return this.http
       .post(
         ADMIN_ROUTES.UNRELEASE_OBJECT(username, cuid),
-        { status: LearningObject.Status.UNRELEASED },
+        { status: LearningObject.Status.PROOFING },
         { withCredentials: true, responseType: 'text'}
       ).pipe(
         retry(3),
