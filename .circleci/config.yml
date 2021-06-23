@@ -53,7 +53,7 @@ jobs:
     <<: *defaults
     docker:
       - image: circleci/node:10.13.0-browsers
-      - image: "${DOCKER_USER_ORG}/clark-client:${CIRCLE_SHA1}"
+      - image: "$DOCKER_USER_ORG/clark-client:${CIRCLE_SHA1}"
     steps:  
       - checkout
       - setup_remote_docker:
@@ -122,12 +122,16 @@ workflows:
       - lighthouse:
           requires:
             - publish-image
+          context: 
+            - DockerHub
           filters:
             branches:
               only: /master/
       - deploy:
           requires:
             - lighthouse
+          context: 
+            - DockerHub
           filters:
             branches:
               only: /master/
