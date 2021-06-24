@@ -86,7 +86,7 @@
         <i class="fal fa-spinner-third fa-spin"></i>
       </span>
     </span>
-    <span tabindex="0" *ngIf="!hasDownloadAccess">Not available for download</span>
+    <span tabindex="0" *ngIf="!hasDownloadAccess">Log in to Download</span>
   </button>
   <button *ngIf="learningObject?.status === 'released' && !userIsAuthor" [ngClass]="{'disabled': !auth.user || disableLibraryButtons, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToLibrary()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
     {{ saved ? 'Saved to your library!' : 'Save to Library' }}
