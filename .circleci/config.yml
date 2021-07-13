@@ -8,7 +8,7 @@ orbs:
 commands:
   install-aws: aws-cli/install
   setup-aws-cli: aws-cli/setup
-version: 2
+version: 2.1
 jobs:
   build:
     <<: *defaults
@@ -91,7 +91,7 @@ jobs:
           command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
       
 workflows:
-  version: 2
+  version: 2.1
   build-and-test:
     jobs:
       - build:
