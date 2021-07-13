@@ -79,9 +79,9 @@ jobs:
           at: ~/clark-client/dist
       - checkout
       - setup-aws-cli:
-          aws-access-key-id: AWS_ECS_AccessKey
+          aws-access-key-id: AWS_CF_AccessKey
           aws-region: AWS_REGION_N_VA
-          aws-secret-access-key: AWS_ECS_SecretKey
+          aws-secret-access-key: AWS_CF_SecretKey
           version: "1"
       - run:
           name: Deploy to S3 
