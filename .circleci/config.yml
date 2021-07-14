@@ -77,7 +77,6 @@ jobs:
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
-      - checkout
       - setup-aws-cli:
           aws-access-key-id: AWS_CF_AccessKey
           aws-region: AWS_REGION_N_VA
