@@ -2,8 +2,13 @@ defaults: &defaults
   working_directory: ~/clark-client
   docker:
     - image: cyber4all/circleci-aws:debian
-
-version: 2
+orbs:
+  aws-cli: circleci/aws-cli@1.2.1
+  docker: circleci/docker@1.4.0
+commands:
+  install-aws: aws-cli/install
+  setup-aws-cli: aws-cli/setup
+version: 2.1
 jobs:
   build:
     <<: *defaults
@@ -72,6 +77,12 @@ jobs:
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
+      - checkout
+      - setup-aws-cli:
+          aws-access-key-id: AWS_CF_AccessKey
+          aws-region: AWS_REGION_N_VA
+          aws-secret-access-key: AWS_CF_SecretKey
+          version: "1"
       - run:
           name: Deploy to S3 
           command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
@@ -80,7 +91,7 @@ jobs:
           command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
       
 workflows:
-  version: 2
+  version: 2.1
   build-and-test:
     jobs:
       - build:
@@ -132,6 +143,7 @@ workflows:
             - lighthouse
           context: 
             - DockerHub
+            - AWS
           filters:
             branches:
               only: /master/
