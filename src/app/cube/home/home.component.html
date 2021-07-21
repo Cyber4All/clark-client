@@ -2,6 +2,12 @@
   <section class="top">
     <clark-homepage-splash [placeholderText]="placeholderText" (search)="search($event)"></clark-homepage-splash>
   </section>
+  <section class="about">
+    <cube-what-clark></cube-what-clark>
+  </section>
+  <section class="usage">
+    <clark-usage [stats]="usageStats"></clark-usage>
+  </section>
   <div class="learning-objects">
     <div class="title-text">
       <div class="title__icon">
@@ -17,22 +23,8 @@
     </div>
     <cube-featured></cube-featured>
   </div>
-  <section class="what-is-clark">
-    <cube-what-clark></cube-what-clark>
-  </section>
-  <section class="usage">
-    <clark-usage [stats]="usageStats"></clark-usage>
-  </section>
   <section class="collections">
     <clark-collections [collections]="collections"></clark-collections>
-  </section>
-  <section class="about">
-    <div class="about__grid">
-      <clark-about></clark-about>
-    </div>
-  </section>
-  <section class="philosophy">
-    <clark-philosophy></clark-philosophy>
   </section>
   <section class="cta">
     <div class="cta__content">

@@ -8,10 +8,10 @@ import { CommonModule } from '@angular/common';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { PhilosophyComponent } from './components/philosophy/philosophy.component';
 import { SplashComponent } from './components/splash/splash.component';
-import { AboutComponent } from './components/about/about.component';
 import { UsageComponent } from './components/usage/usage.component';
 import { CollectionsComponent } from './components/collections/collections.component';
 import { WhatClarkComponent } from './components/what-clark/what-clark.component';
+import { FeaturedCollectionCardComponent } from './components/featured-collection-card/featured-collection-card.component';
 
 @NgModule({
   imports: [
@@ -29,10 +29,10 @@ import { WhatClarkComponent } from './components/what-clark/what-clark.component
     HomeComponent,
     PhilosophyComponent,
     SplashComponent,
-    AboutComponent,
     UsageComponent,
     CollectionsComponent,
     WhatClarkComponent,
+    FeaturedCollectionCardComponent,
   ],
   providers: []
 })
