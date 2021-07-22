@@ -8,15 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class PhilosophyComponent implements OnInit {
   values = [
     {
-      title: 'Open',
-      items: [
-        'Source',
-        'API',
-        'Access'
-      ],
-      icon: 'fal fa-box-open'
-    },
-    {
       title: 'Easy In',
       items: [
         'Bloom\'s Taxonomy',
@@ -44,11 +35,11 @@ export class PhilosophyComponent implements OnInit {
       icon: 'fal fa-cloud-download'
     },
     {
-      title: 'Crowdsourced',
+      title: 'Maintained',
       items: [
-        'Curriculum',
-        'Quality Control',
-        'Currency'
+        'Curriculum Revisions',
+        'Relevancy Checks',
+        'Crowdsourced Reviews'
       ],
       icon: 'fal fa-users'
     },

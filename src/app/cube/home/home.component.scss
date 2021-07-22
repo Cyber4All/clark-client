@@ -34,7 +34,7 @@
 .about {
   margin-top: -160px;
   padding: 80px 20px;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
   position: relative;
   z-index: 1;
   padding: 0 20px;
@@ -54,8 +54,12 @@
   }
 }
 
+.usage {
+  padding-bottom: 60px;
+}
+
 .learning-objects {
-  padding: 80px 20px;
+  padding: 60px 40px 120px 40px;
   position: relative;
 
   .title-text {
@@ -74,6 +78,7 @@
     margin: auto;
     margin-bottom: 20px;
     text-align: center;
+    color: $dark-grey;
   }
 
   .browse-cta {
@@ -162,6 +167,8 @@
     text-align: center;
     margin: auto;
     margin-bottom: 40px;
+    color: $darker-grey;
+    font-weight: 300;
   }
 
   .button.good {
