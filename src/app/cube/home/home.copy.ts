@@ -16,7 +16,7 @@ export const COPY = {
     It includes three components – the model for building curriculum, the digital
     library system, and the curriculum collections.`,
 
-    WHAT_BLURB_2: `It was created because there is a
+    WHAT_BLURB_2: `CLARK fulfills a
     demonstrated need for a high-quality and high-availability repository for
     curricular and ancillary resources in the cybersecurity education community.
     It provides cybersecurity faculty the building blocks to train the next

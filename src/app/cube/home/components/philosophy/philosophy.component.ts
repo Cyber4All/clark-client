@@ -35,11 +35,11 @@ export class PhilosophyComponent implements OnInit {
       icon: 'fal fa-cloud-download'
     },
     {
-      title: 'Maintained',
+      title: 'Relevant',
       items: [
-        'Curriculum Revisions',
-        'Relevancy Checks',
-        'Crowdsourced Reviews'
+        'Crowdsourced Reviews',
+        'Pertinent Topics',
+        'Curriculum Revisions'
       ],
       icon: 'fal fa-users'
     },
