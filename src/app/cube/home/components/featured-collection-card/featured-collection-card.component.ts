@@ -32,6 +32,10 @@ export class FeaturedCollectionCardComponent implements OnInit {
     } else {
       this.link = '/c/' + this.collection.abvName;
     }
+
+    if (this.collection.abvName === 'nccp') {
+      this.collection.name = 'NSA funded curriculum';
+    }
   }
 
 }

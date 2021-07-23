@@ -37,11 +37,11 @@ export class PhilosophyComponent implements OnInit {
     {
       title: 'Relevant',
       items: [
+        'Curriculum Revisions',
         'Crowdsourced Reviews',
         'Pertinent Topics',
-        'Curriculum Revisions'
       ],
-      icon: 'fal fa-users'
+      icon: 'fal fa-history'
     },
     {
       title: 'Ownership',

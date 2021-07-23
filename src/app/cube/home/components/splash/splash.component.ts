@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { LearningObjectService } from 'app/cube/learning-object.service';
 
 @Component({
   selector: 'clark-homepage-splash',
@@ -10,12 +11,18 @@ export class SplashComponent implements OnInit {
   @Input() placeholderText: string;
   @Output() input: EventEmitter<string> = new EventEmitter();
   @Output() search: EventEmitter<string> = new EventEmitter();
+  learningObjectCount!: number;
 
   searchText: string;
 
-  constructor() { }
+  constructor(
+    private learningObjectService: LearningObjectService
+  ) { }
 
-  ngOnInit() { }
+  async ngOnInit() {
+    const objects = await this.learningObjectService.getLearningObjects();
+    this.learningObjectCount = objects.total;
+  }
 
   submitSearch(event?: KeyboardEvent) {
     if (!event || event.keyCode === 13) {
