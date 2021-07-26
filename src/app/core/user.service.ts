@@ -273,6 +273,9 @@ export class UserService {
   }
 
   getNotifications(username: string, page: number, limit: number): Promise<any> {
+    if (limit <= 0) {
+      limit = 1;
+    }
     return this.http.get(USER_ROUTES.GET_NOTIFICATIONS({ username, page, limit }), {
       withCredentials: true,
     })
@@ -284,7 +287,9 @@ export class UserService {
       withCredentials: true,
     })
     .toPromise().then((val: any) => {
-      this.userNotifications = val;
+      if (val > 0) {
+        this.userNotifications = val;
+      }
     });
   }
 
