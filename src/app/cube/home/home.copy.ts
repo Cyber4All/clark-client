@@ -12,13 +12,13 @@ export const COPY = {
      Each collection is unique, has its own peer-review process, and is supported by its own community.`,
 
     WHAT_BLURB: `CLARK, the Cybersecurity Labs and Resource Knowledge-base, is a platform
-    for building and sharing free cybersecurity curriculum.
+    for building and sharing free cybersecurity curricula.
     It includes a model for building curriculum, the digital
     library system, and distinct curriculum collections.`,
 
     WHAT_BLURB_2: `CLARK fulfills a
     demonstrated need for a high-quality and high-availability repository for
     curricular resources for the cybersecurity education community.
-    It provides cybersecurity faculty the building blocks to train the next
+    It provides cybersecurity educators with the building blocks to train the next
     wave of researchers and better prepare the cybersecurity workforce.`,
 };
