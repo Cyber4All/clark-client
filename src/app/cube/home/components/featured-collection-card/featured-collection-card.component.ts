@@ -34,7 +34,7 @@ export class FeaturedCollectionCardComponent implements OnInit {
     }
 
     if (this.collection.abvName === 'nccp') {
-      this.collection.name = 'NSA funded curriculum';
+      this.collection.name = 'NSA Funded Curriculum';
     }
   }
 
