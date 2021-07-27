@@ -284,9 +284,7 @@ export class UserService {
       withCredentials: true,
     })
     .toPromise().then((val: any) => {
-      if (val > 0) {
-        this.userNotifications = val;
-      }
+      this.userNotifications = val;
     });
   }
 
