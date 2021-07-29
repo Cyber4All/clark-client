@@ -24,8 +24,7 @@ export class MessageComponent implements OnInit {
   getMessage() {
     this.messages.getStatus().then(message => {
       this.message = message;
-      this.message.message = 'Clark will be unavailable during scheduled maintenance on Thursday July 29th 2021 from 5PM EDT - 6PM EDT.';
-      this.showBanner = this.message.isUnderMaintenance;
+      this.showBanner = false;
     })
     .catch ( _ => {
       /** Suppress the error because it is being handled in Gateway.
