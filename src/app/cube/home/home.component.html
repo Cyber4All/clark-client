@@ -2,6 +2,13 @@
   <section class="top">
     <clark-homepage-splash [placeholderText]="placeholderText" (search)="search($event)"></clark-homepage-splash>
   </section>
+  <section class="about">
+    <cube-what-clark></cube-what-clark>
+    <clark-philosophy></clark-philosophy>
+  </section>
+  <section class="usage">
+    <clark-usage [stats]="usageStats"></clark-usage>
+  </section>
   <div class="learning-objects">
     <div class="title-text">
       <div class="title__icon">
@@ -10,29 +17,15 @@
       Featured<br aria-hidden="true" /> Learning Objects
     </div>
     <div class="subtitle-text">
-      A Learning Object is a self-contained piece of curriculum that has clearly identified learning outcomes. 
+      A learning object in CLARK is a self-contained piece of curriculum that has clearly identified learning outcomes. 
     </div>
     <div class="browse-cta">
       <a routerLink="/browse">View all Learning Objects</a>
     </div>
     <cube-featured></cube-featured>
   </div>
-  <section class="what-is-clark">
-    <cube-what-clark></cube-what-clark>
-  </section>
-  <section class="usage">
-    <clark-usage [stats]="usageStats"></clark-usage>
-  </section>
   <section class="collections">
     <clark-collections [collections]="collections"></clark-collections>
-  </section>
-  <section class="about">
-    <div class="about__grid">
-      <clark-about></clark-about>
-    </div>
-  </section>
-  <section class="philosophy">
-    <clark-philosophy></clark-philosophy>
   </section>
   <section class="cta">
     <div class="cta__content">
