@@ -39,6 +39,17 @@
           margin-right: 10px;
         }
       }
+
+      .checkbox-grid {
+        display: inline-grid;
+        grid-template-columns: auto auto;
+        align-items: start !important;
+
+        clark-checkbox {
+          align-self: start;
+          margin-top: 2px;
+        }
+      }
     }
   }
 }
