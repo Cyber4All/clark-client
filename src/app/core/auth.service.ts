@@ -9,6 +9,7 @@ import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { User, LearningObject } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
+import { EncryptionService } from './encryption.service';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -51,7 +52,7 @@ export class AuthService {
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
   private openIdToken: OpenIdToken;
 
-  constructor(private http: HttpClient, private cookies: CookieService) {
+  constructor(private http: HttpClient, private cookies: CookieService, private encryptionService: EncryptionService) {
     if (this.cookies.get('presence')) {
       this.validateAndRefreshToken();
     }
@@ -320,10 +321,11 @@ export class AuthService {
    */
   async login(user: { username: string; password: string }): Promise<any> {
     try {
+      const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
         .post<AuthUser & { tokens: Tokens }>(
           environment.apiURL + '/users/tokens',
-          user,
+          data,
           {
             withCredentials: true
           }
@@ -378,10 +380,11 @@ export class AuthService {
    */
   async register(user: any): Promise<User> {
     try {
+      const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
         .post<AuthUser & { tokens: Tokens }>(
           environment.apiURL + '/users',
-          user,
+          data,
           {
             withCredentials: true
           }

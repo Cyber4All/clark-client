@@ -339,6 +339,9 @@ export const USER_ROUTES = {
       params.id,
     )}`;
   },
+  GET_KEY_PAIR(): string {
+    return `${environment.apiURL}/keys`;
+  },
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
