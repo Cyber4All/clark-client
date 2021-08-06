@@ -25,6 +25,7 @@ import { DraggableDashboardItemComponent } from './components/draggable-dashboar
 import { DraggableLearningObjectComponent } from './components/draggable-learning-object/draggable-learning-object.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { RelevancyDateComponent } from './components/relevancy-date/relevancy-date.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -45,6 +46,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     DraggableDashboardItemComponent,
     DraggableLearningObjectComponent,
     PaginationComponent,
+    RelevancyDateComponent,
   ],
   imports: [
     CoreModule.forRoot(),

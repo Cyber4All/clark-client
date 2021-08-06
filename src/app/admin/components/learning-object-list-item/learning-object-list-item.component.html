@@ -34,6 +34,7 @@
     <ul (activate)="toggleContextMenu($event)">
       <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
+      <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
     </ul>
@@ -51,7 +52,11 @@
 <clark-popup *ngIf="showChangeAuthor" (closed)="toggleChangeAuthorModal(false)">
   <div class="modal-container" #popupInner>
 <clark-change-author (close)="toggleChangeAuthorModal(false)" [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
-  
-    </div>
-    
+  </div>
 </clark-popup> 
+
+<clark-popup *ngIf="showRelevancyDate" (closed)="toggleRelevancyDate(false)">
+  <div class="modal-container" #popupInner>
+    <clark-relevancy-date></clark-relevancy-date>
+  </div>
+</clark-popup>
