@@ -1,0 +1,66 @@
+@import '~_vars.scss';
+@import '../../../collection-globals.scss';
+
+
+.section-featured-learning{
+    display: flex;
+    flex-basis: 100vw;
+}
+
+.section-accent{
+    flex-basis: 40%;
+    color: white;
+    border-radius: 0 10px 10px 0;
+    text-align: center;
+
+    &.nice {
+        background-color: $nice-blue;
+    }
+    &.ncyte {
+        background-color: $ncyte-blue;
+    }
+
+    .accent-content{
+        padding: 20%;
+    }
+
+    .featured-learning-title{
+        font-size: $largest;
+    }
+
+    p {
+        font-size: $larger;
+    }
+
+}
+
+.object-list{
+    margin: auto;
+    padding-top: 40px;
+    flex-basis: 20%;
+}
+
+@media (max-width: 1200px){
+    .section-featured-learning{
+        flex-wrap: wrap;
+    }
+
+    .section-accent{
+        flex-basis: 100%;
+        border-radius: 0px !important;
+    }
+    .accent-content{
+       padding-bottom: 80px;
+    }
+}
+
+@media (max-width: 1200px){
+.object-list{
+    margin-top: 50px;
+}
+}
+@media (max-width: 800px){
+    .object-list{
+        padding-right: 80px;
+    }
+}

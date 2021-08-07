@@ -35,9 +35,18 @@
       <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
+      <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
     </ul>
   </div>
 </clark-context-menu>
+
+<clark-popup *ngIf="showUnreleaseConfirm" (closed)="toggleUnreleaseConfirm(false)">
+  <div class="modal-container center" #popupInner>
+    <p>Are you sure you want to unrelease this learning object? This action will change the status to proofing.</p>
+    <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
+    <button (click)="closeUnreleaseModal(false)" class="button">No</button>
+  </div>
+</clark-popup>
 
 <clark-popup *ngIf="showChangeAuthor" (closed)="toggleChangeAuthorModal(false)">
   <div class="modal-container" #popupInner>

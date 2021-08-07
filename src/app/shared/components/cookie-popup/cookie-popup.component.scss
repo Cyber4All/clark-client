@@ -1,0 +1,25 @@
+@import '~_vars.scss';
+
+.wrapper {
+  padding: 15px;
+  background: white;
+
+  .container {
+    text-align: center;
+    font-size: $normal;
+    
+    p {
+      display: inline-block;
+    }
+
+    button {
+      margin: 0 20px 0 20px;
+      appearance: none;
+      border-radius: 4px;
+      border: none;
+      padding: 12px 25px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+  }
+}

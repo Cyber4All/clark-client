@@ -3,11 +3,22 @@
     <div class="left">
       <div class="logo"></div>
       <div class="text">
-        {{ strings.COOKIE_WARNING }}
+        <p>
+          CLARK uses cookies for authorization and website traffic analysis. By accepting the use of 
+          cookies, you agree to the uses outlined in our 
+          <a [routerLink]="['/system/termsofservice']" aria-label="Clickable Terms of Service link" target="_blank">
+            Terms of Service
+          </a>.
+        </p>
       </div>
     </div>
-    <button aria-label="Dismiss the cookie notification" class="dismiss" (activate)="dismiss()">
-      <i class="far fa-times"></i>
-    </button>
+    <div class="right">
+      <button aria-label="Button to decline cookie aggreement" class="decline" (click)="decline()">
+        Decline
+      </button>
+      <button aria-label="Button to accept cookie aggreement" class="accept" (click)="agree()">
+        Accept
+      </button>
+    </div>
   </div>
 </div>

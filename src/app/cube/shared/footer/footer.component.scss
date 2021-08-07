@@ -65,6 +65,11 @@ footer {
       .ncyte {
         width: 200px;
       }
+
+      .csusb {
+        width: 175px;
+        margin-right: 50px;
+      }
     }
   }
 
@@ -95,6 +100,18 @@ footer {
   }
 }
 
+@media(max-width: 1575px) {
+  .grants {
+    .images {
+      flex-wrap: wrap;
+
+      img {
+        margin: 10px !important;
+      }
+    }
+  }
+}
+
 
 @media(max-width: 800px) {
   .footer-info {
@@ -118,6 +135,9 @@ footer {
 
         img {
           margin-top: 20px;
+        }
+        .csusb {
+          margin-right: 0 !important;
         }
       }
     }

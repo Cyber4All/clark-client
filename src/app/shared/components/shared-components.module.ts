@@ -24,6 +24,7 @@ import { TextEditorComponent } from './text-editor/text-editor.component';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { SkipLinkComponent } from './skip-link/skip-link.component';
+import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
 
 
 
@@ -54,6 +55,7 @@ import { SkipLinkComponent } from './skip-link/skip-link.component';
     ToggleSwitchComponent,
     UserCardComponent,
     SkipLinkComponent,
+    CookiePopupComponent,
   ],
   exports: [
     // components
@@ -69,6 +71,7 @@ import { SkipLinkComponent } from './skip-link/skip-link.component';
     ToggleSwitchComponent,
     UserCardComponent,
     SkipLinkComponent,
+    CookiePopupComponent,
   ]
 })
 export class SharedComponents {}

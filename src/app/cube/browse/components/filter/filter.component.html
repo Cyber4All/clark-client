@@ -34,7 +34,7 @@
 <ng-template #selectMany let-filters="filters" let-name="name">
   <div class="filter-section-type select-many" id="filter-section-type">
     <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of filters">
-      <span [tip]="f.toolTip ? f.toolTip : ''" [tipDisabled]="!f.toolTip" tipPosition="right">
+      <span class="checkbox-grid" [tip]="f.toolTip ? f.toolTip : ''" [tipDisabled]="!f.toolTip" tipPosition="right">
         <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.value ? f.value : f.name)" (checkboxUnchecked)="removeFilter(name, f.value ? f.value : f.name)"></clark-checkbox>
         <span>{{ f.name }}</span>
       </span>
@@ -46,7 +46,7 @@
 <ng-template #selectOne let-filters="filters" let-name="name" let-isExpanded="isExpanded">
   <div class="filter-section-type select-many" id="filter-section-type">
     <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of isExpanded ? filters : filters.slice(0,7)">
-      <span [tip]="f.toolTip ? f.toolTip : ''" [tipDisabled]="!f.toolTip" tipPosition="right">
+      <span class="checkbox-grid" [tip]="f.toolTip ? f.toolTip : ''" [tipDisabled]="!f.toolTip" tipPosition="right">
         <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.value ? f.value : f.name, true)" (checkboxUnchecked)="removeFilter(name, f.value ? f.value : f.name)"></clark-checkbox>
         <span>{{ f.name }}</span>
       </span>

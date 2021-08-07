@@ -5,7 +5,7 @@ $top-height: 500px;
 $banner-height: 90px;
 
 .splash {
-  background: url('/assets/images/lecturer.jpg') no-repeat;
+  background: url('/assets/images/students_working.jpg') no-repeat;
   background-size: cover;
   background-position: right 35% center;
   width: 100%;
@@ -42,6 +42,12 @@ $banner-height: 90px;
   .search__text {
     color: white;
     margin-bottom: 20px;
+
+    &.label-text {
+      margin-bottom: 10px;
+      font-weight: 200;
+      font-size: $large;
+    }
   }
 
   .search__input {

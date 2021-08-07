@@ -1,0 +1,105 @@
+@import '~_vars.scss';
+@import '../../../collection-globals.scss';
+
+.section-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    flex-basis: 100vw;
+
+    .icon {
+        flex-basis: 12%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: $large;
+        margin: 20px;
+        min-height: 250px;
+
+        &.icon-release {
+            .stats__icon {
+                font-size: 24px;
+                padding: 15px;
+                width: 30px;
+                margin-bottom: 20px;
+                background-color: $light-blue;
+                border-radius: 1000px;
+                color: #fff;
+            }   
+        }
+
+        &.icon-review {
+            .stats__icon {
+                font-size: 24px;
+                padding: 15px;
+                margin-bottom: 20px;
+                width: 30px;
+                background-color: $medium-grey;
+                border-radius: 1100px;
+                color: #fff;
+            }
+        }
+
+        &.icon-download {
+            .stats__icon {
+                font-size: 24px;
+                padding: 15px;
+                margin-bottom: 20px;
+                border-radius: 1100px;
+                background-color: lighten($orange, 35);
+                color: $orange;
+            }
+        }
+
+        &.icon-authors {
+            .stats__icon {
+                font-size: 24px;
+                padding: 15px;
+                margin-bottom: 20px;
+                border-radius: 1100px;
+                background-color: lighten(rebeccapurple, 35);
+                color: rebeccapurple;
+            }
+        }
+    }
+}
+.icon p {
+    color: $dark-grey;
+    font-size: $large;
+}
+.num{
+    padding-top: 10px;
+    color: $dark-grey;
+    font-size: $larger;
+    font-weight: bold;
+}
+.section-accent{
+    color: #fff;
+    font-size: $largest;
+    border-radius: 10px 0 0 0px;
+    min-height: 200px;
+
+    &.nice {
+        background-color: $nice-blue;
+    }
+    &.ncyte {
+        background-color: $ncyte-blue;
+    }
+}
+.accent-content{
+    padding: 10%;
+    max-height: 300px;
+}
+
+@media (max-width: 1110px){
+    .section-stats{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .section-accent{
+        width: 100%;
+        border-radius: 0px !important;
+    }
+}

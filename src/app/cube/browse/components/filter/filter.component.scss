@@ -43,7 +43,8 @@
       &.filter-list-control {
         display: block;
         padding-top: 2px;
-        .show-more, .show-less {
+        .show-more,
+        .show-less {
           border: none;
           color: $light-blue;
           padding: 0 0 3px;
@@ -52,6 +53,16 @@
           display: flex;
           align-items: center;
           text-transform: none;
+        }
+        .checkbox-grid {
+          display: inline-grid;
+          grid-template-columns: auto auto;
+          align-items: start !important;
+
+          clark-checkbox {
+            align-self: start;
+            margin-top: 2px;
+          }
         }
       }
     }

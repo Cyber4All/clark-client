@@ -25,14 +25,12 @@ export class ForgotPasswordComponent implements OnInit {
     this.auth.initiateResetPassword(this.email).subscribe(val => {
       this.done = true;
     }, error => {
-      console.log(error);
-      this.error(error.error);
+      this.error(error);
     });
   }
 
-  error(text: string = 'An error occured', duration: number = 4000) {
+  error(text: string, duration: number = 4000) {
     this.failure = text;
-
     this.failureTimer = setTimeout(() => {
       this.failure = undefined;
     }, duration);

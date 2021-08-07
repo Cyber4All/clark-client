@@ -165,6 +165,10 @@
 /*Styles for change learning object author*/
 
 .modal-container{ 
-  width: 600px; 
+  width: 600px;
+
+  &.center {
+    text-align: center;
+  }
 }
 

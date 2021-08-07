@@ -23,7 +23,10 @@ export const ADMIN_ROUTES = {
   },
   CHANGE_AUTHOR(userId: string, id: string): string {
     return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${id}/change-author`;
-  }
+  },
+  UNRELEASE_OBJECT(username: string, cuid: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/status`;
+  },
 };
 
 export const CHANGELOG_ROUTES = {
@@ -38,6 +41,16 @@ export const CHANGELOG_ROUTES = {
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectCuid,
     )}/changelogs?minusRevision=${params.minusRevision}`;
+  }
+};
+
+export const COLLECTIONS_ROUTES = {
+  GET_COLLECTIONS: `${environment.apiURL}/collections`,
+  GET_COLLECTION_METRICS(name: string) {
+    return `${environment.apiURL}/${encodeURIComponent(name)}/metrics`;
+  },
+  GET_COLLECTION_CURATORS(name: string ) {
+    return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   }
 };
 
@@ -72,6 +85,7 @@ export const USER_ROUTES = {
       memberId
     )}`;
   },
+
   REMOVE_COLLECTION_MEMBER(collection: string, memberId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
       collection
@@ -87,17 +101,23 @@ export const USER_ROUTES = {
   SEARCH_USERS(query: {}) {
     return `${environment.apiURL}/users/search?text=${encodeURIComponent(querystring.stringify(query))}`;
   },
+  // Deprecated
   VALIDATE_TOKEN(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
+  // Deprecated
   LOGOUT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
-  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string) {
+  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string, childId?: string) {
     // Onion
-    return `${environment.apiURL}/users/${encodeURIComponent(
+    let uri = `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects?children=true&text=${encodeURIComponent(query)}&${querystring.stringify(filters)}`;
+    if (childId) {
+      uri = uri + `&currentId=${encodeURIComponent(childId)}`;
+    }
+    return uri;
   },
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
@@ -157,6 +177,7 @@ export const USER_ROUTES = {
       environment.apiURL
       }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
+  // Deprecated
   ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
@@ -175,11 +196,13 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
   },
+  // Deprecated
   POST_FILE_TO_LEARNING_OBJECT(id: string, username: string) {
     return `${environment.contentManagerURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${id}/files`;
   },
+  // Deprecated
   POST_FILE_TO_LEARNING_OBJECT_ADMIN(id: string, username: string) {
     return `${environment.contentManagerURLAdmin}/users/${encodeURIComponent(
       username
@@ -293,66 +316,6 @@ export const USER_ROUTES = {
       learningObjectID
     )}/metrics`;
   },
-  INIT_MULTIPART(params: {
-    username: string;
-    objectId: string;
-    fileId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
-    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
-  },
-  INIT_MULTIPART_ADMIN(params: {
-    username: string;
-    objectId: string;
-    fileId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
-    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/admin`;
-  },
-  FINALIZE_MULTIPART(params: {
-    username: string;
-    objectId: string;
-    fileId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
-    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
-  },
-  FINALIZE_MULTIPART_ADMIN(params: {
-    username: string;
-    objectId: string;
-    fileId: string;
-    uploadId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
-    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
-      params.uploadId
-      }/admin`;
-  },
-  ABORT_MULTIPART(params: {
-    username: string;
-    objectId: string;
-    fileId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
-    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart`;
-  },
-  ABORT_MULTIPART_ADMIN(params: {
-    username: string;
-    objectId: string;
-    fileId: string;
-    uploadId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
-    )}/learning-objects/${params.objectId}/files/${params.fileId}/multipart/${
-      params.uploadId
-      }/admin`;
-  },
   GET_NOTIFICATIONS(params: {
     username: string,
     page: number,
@@ -375,6 +338,9 @@ export const USER_ROUTES = {
     )}/notifications/${encodeURIComponent(
       params.id,
     )}`;
+  },
+  GET_KEY_PAIR(): string {
+    return `${environment.apiURL}/keys`;
   },
 };
 

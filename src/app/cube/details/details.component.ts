@@ -95,6 +95,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   canAddNewRating = true;
 
+  link: string;
+
   constructor(
     private route: ActivatedRoute,
     private learningObjectService: LearningObjectService,
@@ -167,6 +169,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.setAcademicLevels();
           this.setLearningObjectAuthors();
           this.loading = false;
+          if (
+            this.learningObject.collection === 'ncyte' ||
+            this.learningObject.collection === 'nice'
+          ) {
+            this.link = '/collections/' + this.learningObject.collection;
+          } else {
+            this.link = '/c/' + this.learningObject.collection;
+          }
 
           if (this.learningObject.revisionUri) {
             this.hasRevision = true;
@@ -295,7 +305,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   setLearningObjectAuthors() {
-    this.authors.push(this.learningObject.author);
     this.learningObject.contributors.forEach(contributor => {
       this.authors.push(contributor);
     });

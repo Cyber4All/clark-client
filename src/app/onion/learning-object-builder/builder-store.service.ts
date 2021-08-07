@@ -512,7 +512,7 @@ export class BuilderStore {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        deleteMapping: standardOutcome.id
+        mappings: mappedOutcomes.map(x => x.id)
       },
       true
     );
@@ -540,7 +540,8 @@ export class BuilderStore {
   }
 
   private addContributor(user: User) {
-    this.learningObject.contributors.push(user);
+    this.learningObject.addContributor(user);
+    this.validator.validateLearningObject(this.learningObject);
 
     this.saveObject(
       {
@@ -555,7 +556,13 @@ export class BuilderStore {
       .map(x => x.username)
       .indexOf(user.username);
     if (index >= 0) {
-      this.learningObject.contributors.splice(index, 1);
+      this.learningObject.removeContributor(this.learningObject.contributors.indexOf(user));
+      this.validator.validateLearningObject(this.learningObject);
+
+      const message = this.validator.errors.submitErrors.get('contributors');
+      if (message) {
+        this.validator.errors.saveErrors.set('contributors', message);
+      }
 
       this.saveObject(
         {
@@ -914,7 +921,6 @@ export class BuilderStore {
         this.createLearningOutcome(newValue);
       } else {
         // this is an existing outcome, modify it
-        console.log(newValue);
         this.updateLearningOutcome(newValue);
       }
 

@@ -11,6 +11,18 @@
 
     &:before {
         content: '';
+        background: linear-gradient(90deg, white,rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        opacity: .15;
+      }
+    
+    &:after {
+        content: '';
         background: linear-gradient(white, #f6f9fc, #f6f9fc);
         position: absolute;
         top: 0;
@@ -18,19 +30,8 @@
         left: 0;
         right: 0;
         mask: $cube-pattern repeat;
-        z-index: 0;
-        opacity: 10%;
-      }
-    
-    &:after {
-        content: '';
-        background: linear-gradient(90deg, white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
+        opacity: .2;
+        z-index: 3;
     }
 
     .right-side{ 
@@ -40,6 +41,7 @@
         .text-container{
             font-size: $largest;
             color: $wrapper-background;
+            z-index: 99;
         }
     }
 
@@ -47,9 +49,12 @@
         display: flex;
         justify-content: space-around;
         .mission-logo{
+            width: 290px;
+            height: 320px;
+            z-index: 2;
             width: 85%;
             height: auto;
-            z-index: 2;
+            z-index: 99;
         }
     }
     
@@ -73,8 +78,8 @@
     .mission-container{
         .left-side{
             .mission-logo{
-                width: 60%;
-                height: auto;
+                width: 150px;
+                height: 167.84px;
             }
         }
         .right-side{

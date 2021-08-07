@@ -1,0 +1,79 @@
+@import '~_vars.scss';
+@import '../../../collection-globals.scss';
+
+header {
+    display: flex;
+    flex-basis: 100vw;
+    flex-wrap: wrap;
+}
+
+.ncyte-title {
+    flex-basis: 70%;
+    padding-top: 50px;
+    text-align: center;
+    width: 100%;
+
+    .logo{
+        width: 450px;
+        height: 200px;
+    }
+    .logo-header {
+        text-align: center;
+        color: $ncyte-blue;
+        font-size: $larger;
+        padding-right: 10px;
+    }
+}
+
+.section-browse {
+    flex-basis: 30%;
+    text-align: center;
+
+    .section-accent {
+        background-color: $ncyte-blue;
+        padding: 30px 40px 30px 40px;
+        border-radius: 0 0 0 10px;
+        height: 100%;
+        color: #fff; 
+            
+        .icon {
+            font-size: 50px;
+            color: #fff;
+            padding: 50px 10px 10px;
+        }
+        p {
+            font-size: $large;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        
+        .button{
+            display: inline-block;
+            margin-top: 20px;
+            color: $darker-grey;
+            font-weight: 700;
+            i{
+                display: inline;
+            }
+            &.ncyte {
+                background-color: $ncyte-yellow;
+            }
+        }
+    }
+}
+
+@media (max-width: 900px){
+    .logo{
+        width: 300px !important;
+    }
+    .ncyte-title{
+        flex-basis: 100%;
+    }
+    .section-browse {
+        flex-basis: 100%;
+    }
+    .section-accent{
+        border-radius: 0px !important;
+    }
+}
+

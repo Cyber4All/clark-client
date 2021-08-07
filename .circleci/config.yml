@@ -2,8 +2,13 @@ defaults: &defaults
   working_directory: ~/clark-client
   docker:
     - image: cyber4all/circleci-aws:debian
-
-version: 2
+orbs:
+  aws-cli: circleci/aws-cli@1.2.1
+  docker: circleci/docker@1.4.0
+commands:
+  install-aws: aws-cli/install
+  setup-aws-cli: aws-cli/setup
+version: 2.1
 jobs:
   build:
     <<: *defaults
@@ -35,14 +40,15 @@ jobs:
       - image: circleci/node:10.13.0
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.2
       - run:
           name: Build Image
           command: |
             docker build -t clark-client:$CIRCLE_SHA1 .
       - run:
           name: Login to docker
-          command: docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
       - run:
           name: Publish Image
           command: |
@@ -52,13 +58,14 @@ jobs:
     <<: *defaults
     docker:
       - image: circleci/node:10.13.0-browsers
-      - image: "${DOCKER_USER_ORG}/clark-client:${CIRCLE_SHA1}"
+      - image: "$DOCKER_USER_ORG/clark-client:${CIRCLE_SHA1}"
     steps:  
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.2
       - run:
           name: Wait for client
-          command: dockerize -wait http://localhost:4200 -timeout 3m
+          command: dockerize -wait http://localhost:80 -timeout 3m
       - run:
           name: Install Dependencies
           command: npm install
@@ -70,6 +77,11 @@ jobs:
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
+      - setup-aws-cli:
+          aws-access-key-id: AWS_CF_AccessKey
+          aws-region: AWS_REGION_N_VA
+          aws-secret-access-key: AWS_CF_SecretKey
+          version: "1"
       - run:
           name: Deploy to S3 
           command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
@@ -78,7 +90,7 @@ jobs:
           command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
       
 workflows:
-  version: 2
+  version: 2.1
   build-and-test:
     jobs:
       - build:
@@ -92,6 +104,8 @@ workflows:
       - publish-image:
           requires:
             - build
+          context: 
+            - DockerHub
           filters:
             branches:
               ignore: /master/
@@ -110,18 +124,25 @@ workflows:
       - publish-image:
           requires:
             - test
+          context: 
+            - DockerHub
           filters:
             branches:
               only: /master/
       - lighthouse:
           requires:
             - publish-image
+          context: 
+            - DockerHub
           filters:
             branches:
               only: /master/
       - deploy:
           requires:
             - lighthouse
+          context: 
+            - DockerHub
+            - AWS
           filters:
             branches:
               only: /master/

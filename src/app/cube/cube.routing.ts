@@ -66,6 +66,11 @@ const cube_routes: Routes = [
         data: { title: 'System Usage'}
       },
       {
+        path: 'collections/:collectionName',
+        loadChildren: () => import('app/collection/collection.module').then(m => m.CollectionModule),
+        data: { title: 'Collections'}
+      },
+      {
         path: 'system/termsofservice',
         component: TermsOfServiceComponent,
         data: { title: 'Terms of Service'}

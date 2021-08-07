@@ -26,6 +26,7 @@ export const LEARNING_OBJECT_ERRORS = {
   INVALID_OUTCOME: 'Outcome must be a valid outcome.',
   INVALID_CHILD: 'Child object must be defined.',
   INVALID_CONTRIBUTOR: 'Contributor must be defined.',
+  INVALID_CONTRIBUTOR_LENGTH: 'Object must contain at least one contributor.',
   INVALID_MATERIAL: 'Material must be defined.',
   INVALID_METRICS: 'Metrics must be defined.',
   INVALID_COLLECTION: 'Collection must be defined.',

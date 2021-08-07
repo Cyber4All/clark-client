@@ -52,7 +52,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
-      .getLearningObjects(this.child.author.username, filters, query)
+      .getLearningObjects(this.child.author.username, filters, query, this.child.id)
       .then((children: LearningObject[]) => {
         this.loading = false;
         const indx = this.lengths.indexOf(this.child.length);
@@ -66,8 +66,8 @@ export class AddChildComponent implements OnInit, OnDestroy {
    * and also removes it from the array of candidate children for the LO
    * @param index
    */
-  addChildToList(index) {
-    this.childToAdd.emit(this.children[index]);
+  addChildToList(child, index) {
+    this.childToAdd.emit(child);
     this.children.splice(index, 1);
   }
 

@@ -25,7 +25,6 @@ export class ResetPasswordComponent implements OnInit {
   submit() {
     this.failure = undefined;
     clearTimeout(this.failureTimer);
-
     if (this.password !== this.password_conf) {
       this.error('Passwords do not match!');
       return;
@@ -35,6 +34,7 @@ export class ResetPasswordComponent implements OnInit {
 
     if (!goodPassword) {
       this.error('Password is not strong enough. Must contain 1 lowercase, 1 uppercase, 1 number, and 1 symbol');
+      return;
     }
 
     this.auth.resetPassword(this.password, this.otaCode).subscribe(val => {
@@ -44,7 +44,7 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
 
-  error(text: string = 'An error occured', duration: number = 4000) {
+  error(text: string, duration: number = 4000) {
     this.failure = text;
 
     this.failureTimer = setTimeout(() => {
@@ -59,7 +59,7 @@ export class ResetPasswordComponent implements OnInit {
     }
 
     // length is OK, let's check for proper structure
-    const r: RegExp = /([0-9]{1})|([a-z]){1}|([A-Z]){1}|([!,@#$%^&|~`\]\[\{\}<>.\\_\-+=\(\)/?]{1})/g;
+    const r: RegExp = /([0-9]{1})|([a-z]){1}|([A-Z]){1}|([!,@#$%^&*|~`\]\[\{\}<>.\\_\-+=\(\)/?]{1})/g;
     let match = r.exec(password);
 
     /**

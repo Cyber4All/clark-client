@@ -77,3 +77,13 @@ input {
 .contributors-list__pill {
   display: block;
 }
+
+.attribution-preview {
+  padding: 0 20px 10px;
+  color: $dark-grey;
+  font-size: $small;
+
+  &.bottom {
+    padding-bottom: 40px;
+  }
+}

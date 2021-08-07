@@ -18,7 +18,7 @@
             <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
           </div>
         </div>
-        <button attr.aria-label="Add {{ c.name }} as child" class="add" (activate)="addChildToList(i)">
+        <button attr.aria-label="Add {{ c.name }} as child" class="add" (activate)="addChildToList(c, i)">
          <i class="fas fa-plus"></i>
         </button>
       </div>

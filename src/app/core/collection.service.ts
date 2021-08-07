@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '@env/route';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, retry ,  skipWhile } from 'rxjs/operators';
 
@@ -129,7 +129,23 @@ export class CollectionService {
       }
     });
   }
+  getCollectionMetricsData(name: string ) {
+    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS(name))
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
 
+  }
+  getCollectionCuratorsInfo(name: string) {
+    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    )
+    .toPromise();
+  }
   getCollectionMetadata(name: string) {
     return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTION_META(name))
       .pipe(
@@ -138,6 +154,7 @@ export class CollectionService {
       )
       .toPromise();
   }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

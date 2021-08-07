@@ -1,0 +1,49 @@
+<section class = "section-stats">
+    <div class = "icon icon-release">
+        <div class = "stats__icon">
+            <i class="fal fa-cube"></i>
+        </div>
+        <div class = "num">{{objReleased}}</div>
+        <p class="release-desc">
+            Released  Learning Objects
+        </p>
+    
+    </div>
+    <div class = "icon icon-review">
+        <div class="stats__icon">
+            <i class="fal fa-cube"></i>
+        </div>
+        <div class = "num">{{objReview}}</div>
+        <p class="review-desc">
+            Learning Objects
+            Under Review
+        </p>
+    </div>
+    <div class = "icon icon-download">
+        <div class="stats__icon">
+            <i class="fal fa-cloud-download"></i>
+        </div>
+        <div class = "num">{{objDownload}}</div>
+        <p class="download-desc">
+            Learning Object Downloads
+        </p>
+    </div>
+    <div class = "icon icon-authors">
+        <div class="stats__icon">
+            <i class="fal fa-users"></i>
+        </div>
+        <div class = "num">{{authorCollection}}</div>
+        <p class="authors-desc">
+            Collection Author<span *ngIf="authorCollection > 1">s</span>
+        </p>
+    </div>
+
+    <div [ngClass]="collectionName" class = "section-accent">
+        <div class="accent-content">
+            <i class="fa-lg fal fa-chart-bar"></i>
+            <p class="numbers-desc-title">
+                {{name}} CURRICULUM BY THE NUMBERS
+            </p>
+        </div>
+    </div>
+</section>

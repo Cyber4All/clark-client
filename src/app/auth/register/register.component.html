@@ -29,7 +29,7 @@
           </button>
         </ng-container>
         <ng-template #submitTemplate>
-          <button aria-label="Submit" type="submit" class="reg-button right submit" id="button-submit" [tip]="tipText[page - 1].right" tipPosition="top" (activate)="submit()">
+          <button [attr.disabled]="checkCookieAgreement()? null: 'disabled'" aria-label="Submit" type="submit" class="reg-button right submit" id="button-submit" [tip]="tipText[page - 1].right" tipPosition="top" (activate)="submit()">
             <span aria-live="assertive" aria-label="Submitted" *ngIf="!loading; else loadingIcon"><i class="far fa-check"></i></span>
             <ng-template #loadingIcon><i class="far fa-spinner-third fa-spin"></i></ng-template>
           </button>

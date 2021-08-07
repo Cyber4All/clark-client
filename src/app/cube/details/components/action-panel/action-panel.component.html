@@ -35,10 +35,8 @@
     <div class="cc-attribution">
       <div class="cc-attribution__text-content">
         <div tabindex="0" class="cc-attribution__title"></div>
-        <div tabindex="0" class="cc-attribution__attribution" #objectAttributionElement id="objectAttribution"> 
-          <a attr.aria-label="Clickable link to {{ learningObject.name | titlecase }}" href='https://clark.center/details/{{learningObject.author.username}}/{{learningObject.cuid}}'>"{{ learningObject.name }}"</a>
-          by <a attr.aria-label="Clickable link to {{ learningObject.author.name | titlecase }} profile" href='https://clark.center/users/{{learningObject.author.username}}'>{{ learningObject.author.name | titlecase }}</a>
-          is licensed under <a attr.aria-label="Clickable link to Creative Commons License" href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>CC BY-NC-SA 4.0</a>
+        <div tabindex="0" class="cc-attribution__attribution" #objectAttributionElement id="objectAttribution">
+          "{{ learningObject?.name }}" by {{ getContributorAttribution() }}, {{ collectionName }} is licensed under <a attr.aria-label="Creative Commons License" href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>CC BY-NC-SA 4.0</a>.
         </div>
       </div>
       <div class="cc-attribution__button">
@@ -88,7 +86,7 @@
         <i class="fal fa-spinner-third fa-spin"></i>
       </span>
     </span>
-    <span tabindex="0" *ngIf="!hasDownloadAccess">Not available for download</span>
+    <span tabindex="0" *ngIf="!hasDownloadAccess">Log in to Download</span>
   </button>
   <button *ngIf="learningObject?.status === 'released' && !userIsAuthor" [ngClass]="{'disabled': !auth.user || disableLibraryButtons, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToLibrary()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
     {{ saved ? 'Saved to your library!' : 'Save to Library' }}

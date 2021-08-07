@@ -7,7 +7,15 @@ import { NavbarService } from 'app/core/navbar.service';
   styles: [
     `.message--in-progress {
       margin-bottom: 20px;
-    }`
+    }
+    .wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+  }
+    `
   ],
   templateUrl: './email-verified.component.html'
 })
