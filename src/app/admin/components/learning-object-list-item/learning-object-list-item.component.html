@@ -57,6 +57,6 @@
 
 <clark-popup *ngIf="showRelevancyDate" (closed)="toggleRelevancyDate(false)">
   <div class="modal-container" #popupInner>
-    <clark-relevancy-date></clark-relevancy-date>
+    <clark-relevancy-date [learningObject]="learningObject" (close)="toggleRelevancyDate(false)"></clark-relevancy-date>
   </div>
 </clark-popup>

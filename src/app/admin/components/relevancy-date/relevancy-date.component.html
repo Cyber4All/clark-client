@@ -1,1 +1,10 @@
-<p>relevancy-date works!</p>
+<div class="modal-title">Select Date for Next Relevancy Check</div>
+<div class="inline-calendar-card">
+    <mat-calendar (selectedChange)="toggleDate($event)"></mat-calendar>
+</div>
+<p class="notice">{{ learningObject.name }} will checked on: {{selected | date: 'mediumDate'}}</p>
+<div class="btn-group center">
+    <button class="button good" (activate)="setDate()">Update</button>
+    <button class="button neutral" (activate)="cancelUpdate()">Cancel</button>
+</div>
+

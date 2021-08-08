@@ -26,6 +26,11 @@ import { DraggableLearningObjectComponent } from './components/draggable-learnin
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { RelevancyDateComponent } from './components/relevancy-date/relevancy-date.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -53,12 +58,13 @@ import { RelevancyDateComponent } from './components/relevancy-date/relevancy-da
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    CommonModule,
-    AdminRoutingModule,
     SharedModule,
-    FormsModule,
     VirtualScrollerModule,
     DragDropModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
 })
 export class AdminModule { }
