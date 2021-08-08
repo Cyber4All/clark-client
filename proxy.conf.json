@@ -1,0 +1,10 @@
+{
+  "/topics": {
+    "target": "https://api-topics.clark.center/topics",
+    "secure": true,
+    "pathRewrite": {
+      "^/topics": ""
+    },
+    "changeOrigin": true
+  }
+}
