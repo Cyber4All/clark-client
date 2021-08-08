@@ -35,10 +35,10 @@ export class RelevancyService {
     return this.http
       .patch(RELEVANCY_ROUTES.NEXT_CHECK(username, learningObjectId),
         { date },
-        { 
+        {
           headers: this.headers,
           withCredentials: true,
-          responseType: 'text'
+          responseType: 'text',
         }
       )
       .pipe(
