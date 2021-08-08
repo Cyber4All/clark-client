@@ -252,8 +252,14 @@ export class LearningObject {
     this._ratings = ratings;
   }
 
-  version = 0;
+  get nextCheck() {
+    return this._nextCheck;
+  }
 
+  set nextCheck(check) {
+    this._nextCheck = check;
+  }
+  version = 0;
   /**
    * Creates an instance of LearningObject.
    * @param {Partial<LearningObject>} [object]
@@ -312,6 +318,7 @@ export class LearningObject {
     parents: string,
     ratings: string,
   };
+  private _nextCheck: Date;
 
 private _revisionUri?: string;
 
@@ -643,6 +650,7 @@ private _revisionUri?: string;
     if (object.resourceUris) {
       this._resourceUris = object.resourceUris;
     }
+    this._nextCheck = object.nextCheck;
 
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
@@ -682,6 +690,7 @@ private _revisionUri?: string;
       version: this.version,
       resourceUris: this.resourceUris,
       parents: this.parents,
+      nextCheck: this.nextCheck,
     };
     return object;
   }

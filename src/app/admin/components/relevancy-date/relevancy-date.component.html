@@ -1,6 +1,6 @@
 <div class="modal-title">Select Date for Next Relevancy Check</div>
 <div class="inline-calendar-card">
-    <mat-calendar (selectedChange)="toggleDate($event)"></mat-calendar>
+    <mat-calendar [(selected)]="selected" [startAt]="selected" [minDate]="minDate" [maxDate]="maxDate" (selectedChange)="toggleDate($event)"></mat-calendar>
 </div>
 <p class="notice">{{ learningObject.name }} will checked on: {{selected | date: 'mediumDate'}}</p>
 <div class="btn-group center">
