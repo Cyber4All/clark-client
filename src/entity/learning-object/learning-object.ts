@@ -651,7 +651,7 @@ export class LearningObject {
     if (object.resourceUris) {
       this._resourceUris = object.resourceUris;
     }
-    if(object.nextCheck) {
+    if (object.nextCheck) {
       this._nextCheck = object.nextCheck;
     }
 
