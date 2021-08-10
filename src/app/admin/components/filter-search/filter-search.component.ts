@@ -33,7 +33,7 @@ export class FilterSearchComponent implements OnInit {
   @Input() showStatus: boolean;
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
-  @Output() relevancyCheck = new EventEmitter<{start: Date, end: Date}>();
+  @Output() relevancyCheck = new EventEmitter<{start: string, end: string}>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
@@ -137,12 +137,25 @@ export class FilterSearchComponent implements OnInit {
     this.collectionMenuDown = value;
   }
 
+  /**
+   * Toggles the relevancy modal menu
+   * @param value
+   */
   toggleRelevancyMenu (value?: boolean) {
     this.relevancyMenuDown = value;
   }
 
   setDates() {
-    console.log('wow');
+    let start = new Date().getTime().toString();
+    let end;
+    if (this.relevancyStart !== undefined) {
+      start = this.relevancyStart.getTime().toString();
+    }
+    if (this.relevancyEnd !== undefined) {
+      end = this.relevancyEnd.getTime().toString();
+    }
+    this.relevancyCheck.emit({start, end});
+    this.toggleRelevancyMenu(false);
   }
 
   /**
