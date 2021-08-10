@@ -3,6 +3,12 @@
     <div class="btn-group to-right">
       <ng-container *ngIf="adminOrEditor">
         <button
+          class="button neutral filters-button"
+          (activate)="toggleRelevancyMenu(true)"
+        >
+          Next Check Date Range
+        </button>
+        <button
           #toggleCollectionMenuElement
           class="button neutral filters-button"
           (activate)="toggleCollectionMenu(true)"
@@ -76,3 +82,26 @@
     </div>
   </div>
 </div>
+
+
+<clark-popup *ngIf="relevancyMenuDown" (closed)="toggleRelevancyMenu(false)">
+  <div class="modal-container" #popupInner>
+    <div class="modal-title">Filter Learning Objects by Next Check Date</div>
+    <div class="modal__inner">
+      <mat-form-field class="input">
+        <input matInput [matDatepicker]="startPicker" placeholder="Choose a start date">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker startView="year" [startAt]="relevancyStart"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="input">
+        <input matInput [matDatepicker]="endPicker" placeholder="Choose an end date">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker startView="year" [startAt]="relevancyEnd"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="btn-group center">
+      <button class="button good" (activate)="setDates()">Apply</button>
+      <button class="button neutral" (activate)="toggleRelevancyMenu()">Cancel</button>
+  </div>
+  </div>
+</clark-popup>
