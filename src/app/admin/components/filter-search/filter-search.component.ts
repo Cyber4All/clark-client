@@ -197,10 +197,6 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleRelevancyDateFilter(date: Date) {
-    console.log(date);
-  }
-
   /**
    * Remove all applied status filters
    */
