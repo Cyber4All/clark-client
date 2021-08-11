@@ -141,6 +141,12 @@
   display: inline-block;
 }
 
+.relevancy__notice {
+  color: $dark-grey;
+  padding: 10px;
+  text-align: center;
+}
+
 @media only screen and (max-width: 1400px) {
   .content-container__academic-levels-container__card-grid {
     display: flex;

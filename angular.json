@@ -23,6 +23,7 @@
               "src/env.js"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/globals.scss"
             ]
           },
@@ -94,6 +95,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/globals.scss"
             ],
             "assets": [
