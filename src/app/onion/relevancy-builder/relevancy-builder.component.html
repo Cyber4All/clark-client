@@ -1,55 +1,5 @@
 <div class="relevancy-builder" >
+  <relevancy-builder-navbar></relevancy-builder-navbar>
+  <clark-outcome></clark-outcome>
   <p>yeet</p>
 </div>
-<!-- <div class="relevancy-builder">
-    <clark-dashboard-splash
-      
-    >
-<-- (navigateBack)="historySnapshot.rewind()"
-      (searchText)="performSearch($event)" --
-</clark-dashboard-splash>
-    
-  </div>
-  
-  <--Loading Template--
-  <ng-template #loadingTemplate>
-    <div [@Loading] class="loading-template">
-      <div [@Loading] class="loading-template">
-        <div class="loading-content">
-          <i class="far fa-spinner-third fa-spin"></i>
-          Loading Learning Objects...
-        </div>
-      </div>
-    </div>
-  </ng-template>
-  
-  <-- View All Change Logs --
-  <clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-      <clark-changelog-modal
-        [
-        ] = "changelogLearningObject"
-        [changelogs] = "changelogs ? changelogs[0] : undefined"
-        [loading]="loadingChangelogs"
-      ></clark-changelog-modal>
-    </div>
-  </clark-popup>
-  
-    <-- Side panel popout --
-    <clark-side-panel-content
-      *ngIf="focusedLearningObject"
-      panel
-      [contentWidth]="450"
-      [options]="{ padding: false }"
-      [activePromise]="sidePanelPromiseResolver"
-      [defaultCloseParam]="{ shouldRoute: true }"
-      (close)="closeSidePanel($event)"
-      [learningObject]="focusedLearningObject"
-      (createRevision)="createRevision($event)"
-      (submitRevision)="submitRevision($event)"
-      (cancelRevisionSubmission)="cancelRevisionSubmission($event)"
-      (deleteRevision)="deleteRevision($event)"
-    ></clark-side-panel-content>
-    
-    <--Delete Confirmation-->
-    <!-- <clark-submit *ngIf="submitToCollection" [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit> -->

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'clark-builder-navbar',
+  selector: 'relevancy-builder-navbar',
   templateUrl: './builder-navbar.component.html',
   styleUrls: ['./builder-navbar.component.scss']
 })
