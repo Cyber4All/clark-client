@@ -33,11 +33,17 @@ export class FilterSearchComponent implements OnInit {
   @Input() showStatus: boolean;
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
+  @Output() relevancyCheck = new EventEmitter<{start: string, end: string}>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
   filterMenuDown = false;
   collectionMenuDown = false;
+
+  relevancyStart: Date;
+  relevancyEnd: Date;
+  relevancyMenuDown: boolean;
+
 
   constructor(
     private collectionService: CollectionService,
@@ -55,6 +61,7 @@ export class FilterSearchComponent implements OnInit {
     this.statuses = this.statuses.filter(
       s => !['rejected', 'unreleased'].includes(s.toLowerCase())
     );
+    this.relevancyStart = new Date();
   }
 
   /**
@@ -79,7 +86,6 @@ export class FilterSearchComponent implements OnInit {
       })
       .catch(error => {
         this.toaster.error('Error!', error);
-        console.error(error);
       });
   }
 
@@ -119,7 +125,7 @@ export class FilterSearchComponent implements OnInit {
    * Hide or show the filter dropdown menu
    * @param {boolean} [value] true if menu is open, false otherwise
    */
-  toggleFilterMenu(value?: boolean) {
+  toggleFilterMenu (value?: boolean) {
     this.filterMenuDown = value;
   }
 
@@ -127,8 +133,29 @@ export class FilterSearchComponent implements OnInit {
    * Hide or show the collection filter dropdown menu
    * @param {boolean} [value] true if menu is open, false otherwise
    */
-  toggleCollectionMenu(value?: boolean) {
+  toggleCollectionMenu (value?: boolean) {
     this.collectionMenuDown = value;
+  }
+
+  /**
+   * Toggles the relevancy modal menu
+   * @param value
+   */
+  toggleRelevancyMenu (value?: boolean) {
+    this.relevancyMenuDown = value;
+  }
+
+  setDates() {
+    let start = new Date().getTime().toString();
+    let end;
+    if (this.relevancyStart !== undefined) {
+      start = this.relevancyStart.getTime().toString();
+    }
+    if (this.relevancyEnd !== undefined) {
+      end = this.relevancyEnd.getTime().toString();
+    }
+    this.relevancyCheck.emit({start, end});
+    this.toggleRelevancyMenu(false);
   }
 
   /**
@@ -189,12 +216,22 @@ export class FilterSearchComponent implements OnInit {
   }
 
   /**
+   * Removes the Relevancy check date
+   */
+  clearRelevancyDateFilters() {
+    this.relevancyStart = undefined;
+    this.relevancyEnd = undefined;
+    this.relevancyCheck.emit(undefined);
+  }
+
+  /**
    * Remove all active status filters and collection filters
    *
    * @memberof FilterSearchComponent
    */
   clearAllFilters() {
     this.setSelectedCollection(undefined);
+    this.clearRelevancyDateFilters();
     this.filters.clear();
     this.clearAll.emit();
   }

@@ -20,7 +20,7 @@ export class SplashComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const objects = await this.learningObjectService.getLearningObjects();
+    const objects = await this.learningObjectService.getLearningObjects({status: ['released']});
     this.learningObjectCount = objects.total;
   }
 

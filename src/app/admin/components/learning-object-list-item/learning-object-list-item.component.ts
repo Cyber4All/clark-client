@@ -44,6 +44,8 @@ export class LearningObjectListItemComponent implements OnChanges {
   showChangeAuthor: boolean;
   showUnreleaseConfirm: boolean;
 
+  showRelevancyDate: boolean;
+
   // flags
   meatballOpen = false;
 
@@ -153,5 +155,13 @@ export class LearningObjectListItemComponent implements OnChanges {
       }
     });
   }
+
+  /**
+   * Toggles the modal for Relevancy Date selection
+   */
+
+   toggleRelevancyDate(toggle: boolean) {
+    this.showRelevancyDate = toggle;
+   }
 
 }
