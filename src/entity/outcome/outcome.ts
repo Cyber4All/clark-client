@@ -9,11 +9,11 @@
 export interface Outcome {
   // properties of source
   id?: string;
-  author: string; // standard outcome sources have 'authors' like 'NCWF' or 'CAE'
-  name: string; // standard outcome sources have 'names' like 'K0027' or 'Operating Systems Concepts'
-  date: string;
-  // specifics of outcome
-  outcome: string;
+  name: string;
+  levels: string[];
+  year: string;
+  frameworkId: string;
+  guideline: string;
 }
 
 export interface OutcomeSuggestion extends Outcome {

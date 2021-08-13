@@ -4,6 +4,7 @@
 import { Outcome } from '../outcome/outcome';
 import { STANDARD_OUTCOME_ERRORS } from './error-messages';
 import { EntityError } from '../errors/entity-error';
+import { String } from 'aws-sdk/clients/batch';
 
 /**
  * A class to represent a standard outcome. Immutable.
@@ -21,41 +22,10 @@ export class StandardOutcome implements Outcome {
       throw new EntityError(STANDARD_OUTCOME_ERRORS.ID_SET, 'id');
     }
   }
-  _author: string;
-  /**
-   * @property {string} source
-   *       the organization or document this outcome is drawn from
-   */
-  get author(): string {
-    return this._author;
-  }
-  set author(author: string) {
-    if (author && author.trim()) {
-      this._author = author;
-    } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_AUTHOR, 'author');
-    }
-  }
-
-  _source: string;
-  /**
-   * @property {string} source
-   *       the organization or document this outcome is drawn from
-   */
-  get source(): string {
-    return this._source;
-  }
-  set source(source: string) {
-    if (source && source.trim()) {
-      this._source = source;
-    } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_AUTHOR, 'source');
-    }
-  }
 
   _name: string;
   /**
-   * @property {string} name the label or unit of the outcome
+   * @property {string} name the label of the guideline
    */
   get name(): string {
     return this._name;
@@ -68,32 +38,67 @@ export class StandardOutcome implements Outcome {
     }
   }
 
-  _date: string;
+  _levels: string[];
   /**
-   * @property {string} date the year this standard was established
+   *
+   * @property {string[]} levels the levels the guideline applies to
    */
-  get date(): string {
-    return this._date;
+  get levels(): string[] {
+    return this._levels;
   }
-  set date(date: string) {
-    if (date) {
-      this._date = date;
+  set levels(levels: string[]) {
+    if (levels && Array.isArray(levels)) {
+      this._levels = levels;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_DATE, 'date');
+      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_LEVELS, 'levels');
     }
   }
+
+  _year: string;
   /**
-   * @property {string} outcome the text of the outcome
+   *
+   * @property {string[]} year the year that the guideline is published
    */
-  _outcome: string;
-  get outcome(): string {
-    return this._outcome;
+  get year(): string {
+    return this._year;
   }
-  set outcome(outcome: string) {
-    if (outcome && outcome.trim()) {
-      this._outcome = outcome;
+  set year(year: string) {
+    if (year && year.trim() && !isNaN(Number(year))) {
+      this._year = year;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_OUTCOME, 'outcome');
+      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_YEAR, 'year');
+    }
+  }
+
+  _frameworkId: String;
+  /**
+   *
+   * @property {string[]} frameworkId the framework identifier that the guideline is associated with
+   */
+  get frameworkId(): string {
+    return this._frameworkId;
+  }
+  set frameworkId(frameworkId: string) {
+    if (frameworkId && frameworkId.trim()) {
+      this._frameworkId = frameworkId;
+    } else {
+      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_FRAMEWORK_ID, 'frameworkId');
+    }
+  }
+
+  _guideline: String;
+  /**
+   *
+   * @property {string[]} guideline the description of the guideline
+   */
+  get guideline(): string {
+    return this._guideline;
+  }
+  set guideline(guideline: string) {
+    if (guideline && guideline.trim()) {
+      this._guideline = guideline;
+    } else {
+      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_GUIDELINE, 'guideline');
     }
   }
 
@@ -105,11 +110,12 @@ export class StandardOutcome implements Outcome {
   constructor(outcome?: any) {
     // @ts-ignore Id will be undefined on creation
     this._id = undefined;
-    this._author = '';
-    this._source = '';
     this._name = '';
-    this._date = '';
-    this._outcome = '';
+    this._levels = [];
+    this._year = '';
+    this._frameworkId = undefined;
+    this._guideline = '';
+
     if (outcome) {
       this.copyOutcome(outcome);
     }
@@ -125,20 +131,20 @@ export class StandardOutcome implements Outcome {
     if (outcome.id) {
       this.id = outcome.id;
     }
-    if (outcome.author) {
-      this.author = outcome.author;
-    }
-    if (outcome.source) {
-      this.source = outcome.source;
-    }
     if (outcome.name) {
       this.name = outcome.name;
     }
-    if (outcome.date) {
-      this.date = outcome.date;
+    if (outcome.levels) {
+      this.levels = outcome.levels;
     }
-    if (outcome.outcome) {
-      this.outcome = outcome.outcome;
+    if (outcome.year) {
+      this.year = outcome.year;
+    }
+    if (outcome.frameworkId) {
+      this.frameworkId = outcome.frameworkId;
+    }
+    if (outcome.guideline) {
+      this.guideline = outcome.guideline;
     }
   }
 
@@ -151,11 +157,11 @@ export class StandardOutcome implements Outcome {
   public toPlainObject(): Partial<StandardOutcome> {
     const outcome: Partial<StandardOutcome> = {
       id: this.id,
-      author: this.author,
-      source: this.source,
       name: this.name,
-      date: this.date,
-      outcome: this.outcome,
+      levels: this.levels,
+      year: this.year,
+      frameworkId: this.frameworkId,
+      guideline: this.guideline
     };
     return outcome;
   }
