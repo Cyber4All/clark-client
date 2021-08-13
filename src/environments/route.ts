@@ -556,3 +556,99 @@ export const RELEVANCY_ROUTES = {
       )}/relevancy-check`;
   }
 };
+
+export const STANDARD_GUIDELINE_ROUTES = {
+  /**
+   * AUTH ROUTES
+   */
+
+  // authenticates a user
+  AUTHENTICATE() {
+    return `${environment.apiURL}/authenticate`;
+  },
+
+  /**
+   * FRAMEWORK ROUTES
+   */
+
+  // Gets a framework by id
+  GET_FRAMEWORK(id: string) {
+    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}`;
+  },
+  // Creates a new framework
+  CREATE_FRAMEWORK() {
+    return `${environment.apiURL}/frameworks`;
+  },
+  // Updates an existing framework by id
+  UPDATE_FRAMEWORK(id: string) {
+    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}`;
+  },
+  // Deletes an existing framework by id
+  DELETE_FRAMEWORK(id: string) {
+    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}`;
+  },
+
+  /**
+   * GUIDELINE ROUTES
+   */
+
+  // Gets all the Standards and Guidelines associated with a specific framework id
+  GET_GUIDELINES_FOR_FRAMEWORK_ID(id: string) {
+    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}/guidelines`;
+  },
+  // Gets a guideline by id
+  GET_GUIDELINE_BY_ID(id: string) {
+    return `${environment.apiURL}/guidelines/${encodeURIComponent(id)}`;
+  },
+  // Creates a new guideline
+  CREATE_GUIDELINE() {
+    return `${environment.apiURL}/guidelines`;
+  },
+  // Updates an existing guideline by id
+  UPDATE_GUIDELINE_BY_ID(id: string) {
+    return `${environment.apiURL}/guidelines/${encodeURIComponent(id)}`;
+  },
+  // Deletes an existing guideline by id
+  DELETE_GUIDELINE_BY_ID(id: string) {
+    return `${environment.apiURL}/guidelines/${encodeURIComponent(id)}`;
+  },
+
+  /**
+   * SEARCH ROUTES
+   */
+
+  // Searches frameworks given a text query
+  SEARCH_FRAMEWORKS(params: {
+    text?: string,
+    year?: string,
+    levels?: string,
+    page?: string,
+    limit?: string,
+    type?: string
+  }) {
+    return `${environment.apiURL}/frameworks?
+      text=${encodeURIComponent(params.text)}&
+      year=${encodeURIComponent(params.year)}&
+      levels=${encodeURIComponent(params.levels)}&
+      page=${encodeURIComponent(params.page)}&
+      limit=${encodeURIComponent(params.limit)}&
+      type=${encodeURIComponent(params.type)}`;
+  },
+  // Searches guidelines/standards given a text, year, and level query
+  SEARCH_GUIDELINES(params: {
+    text?: string,
+    year?: string,
+    levels?: string,
+    page?: string,
+    limit?: string,
+    type?: string
+  }) {
+    return `${environment.apiURL}/guidelines?
+      text=${encodeURIComponent(params.text)}&
+      year=${encodeURIComponent(params.year)}&
+      levels=${encodeURIComponent(params.levels)}&
+      page=${encodeURIComponent(params.page)}&
+      limit=${encodeURIComponent(params.limit)}&
+      type=${encodeURIComponent(params.type)}`;
+  }
+};
