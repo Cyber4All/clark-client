@@ -247,6 +247,18 @@ export class LearningObjectsComponent
 
     this.getLearningObjects();
   }
+  /**
+   * Updates the queries startNextcheck and endNextCheck values
+   *
+   * @param dates The start and end dates for the relevancy date filter
+   */
+
+  getRelevancyFilteredLearningObjects(dates: any) {
+    this.query = { startNextCheck: dates.start, endNextCheck: dates.end, currPage: 1};
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
 
   /**
    * Clear the filters of both collection and status and reset the Learning Objects query

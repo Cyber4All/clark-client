@@ -545,3 +545,14 @@ export const FEATURED_ROUTES = {
   // retrieves the featured objects
   GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
 };
+
+export const RELEVANCY_ROUTES = {
+  // Sets the nextCheck date for a relevancy
+  NEXT_CHECK(username: string, id: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+      )}/learning-objects/${encodeURIComponent(
+        id
+      )}/relevancy-check`;
+  }
+};

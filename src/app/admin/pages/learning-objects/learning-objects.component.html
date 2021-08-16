@@ -10,6 +10,7 @@
     filter-options
     (statusFilter)="getStatusFilteredLearningObjects($event)"
     (collectionFilter)="getCollectionFilteredLearningObjects($event)"
+    (relevancyCheck)="getRelevancyFilteredLearningObjects($event)"
     (clearAll)="clearStatusAndCollectionFilters()"
     [adminOrEditor]="isAdminOrEditor"
     [showStatus]="true"

@@ -167,3 +167,22 @@
     }
   }
 }
+
+
+.modal-container {
+  width: 500px;
+
+  .modal-title {
+    padding-top: 10px;
+    font-size: $large;
+  }
+
+  .modal__inner {
+    text-align: center;
+  }
+
+  .input {
+    padding-top: 20px;
+    padding-right: 20px;
+  }
+}

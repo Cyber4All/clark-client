@@ -97,6 +97,7 @@
             <div class='details__content-container__version-card-container'>
               <clark-version-card [version]='learningObject.version' [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
             </div>
+            <p class="relevancy__notice">Relevancy check next due on or around {{learningObject?.nextCheck | date:'mediumDate'}}</p>
           </section>
         </section>
       </section>
