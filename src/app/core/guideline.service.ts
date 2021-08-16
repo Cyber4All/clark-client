@@ -4,8 +4,8 @@ import * as querystring from 'querystring';
 import { throwError, Observable } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 import { STANDARD_GUIDELINE_ROUTES } from '@env/route';
-import { FrameworkDocument } from 'entity/standard-guidelines/framework';
-import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
+import { FrameworkDocument } from '../../entity/standard-guidelines/framework';
+import { SearchItemDocument } from '../../entity/standard-guidelines/search-index';
 
 @Injectable()
 export class GuidelineService {

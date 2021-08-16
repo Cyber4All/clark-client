@@ -3,7 +3,7 @@ import {
   LearningObject,
   LearningOutcome,
   User,
-  StandardOutcome
+  Guideline
 } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -471,10 +471,10 @@ export class BuilderStore {
 
   private mapStandardOutcomeMapping(
     id: string,
-    standardOutcome: StandardOutcome
+    guideline: Guideline
   ) {
     const outcome = this.outcomes.get(id);
-    outcome.mappings.push(standardOutcome);
+    outcome.mappings.push(guideline);
 
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);

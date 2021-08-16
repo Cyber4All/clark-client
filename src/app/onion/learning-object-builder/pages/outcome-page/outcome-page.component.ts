@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LearningOutcome, StandardOutcome } from '@entity';
+import { LearningOutcome, Guideline } from '@entity';
 import {
   BuilderStore,
   BUILDER_ACTIONS as actions
@@ -138,14 +138,14 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   }
 
   toggleStandardOutcome(data: {
-    standardOutcome: StandardOutcome;
+    guideline: Guideline;
     value: boolean;
   }) {
     this.store.execute(
       data.value
         ? actions.MAP_STANDARD_OUTCOME
         : actions.UNMAP_STANDARD_OUTCOME,
-      { id: this.activeOutcome, standardOutcome: data.standardOutcome }
+      { id: this.activeOutcome, standardOutcome: data.guideline }
     );
   }
 
