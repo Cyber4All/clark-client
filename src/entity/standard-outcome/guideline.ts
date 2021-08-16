@@ -1,16 +1,13 @@
-/**
- * Provide abstract representations for standard outcomes.
- */
-import { Outcome } from '../outcome/outcome';
-import { STANDARD_OUTCOME_ERRORS } from './error-messages';
+import { GUIDELINE_ERRORS } from './error-messages';
 import { EntityError } from '../errors/entity-error';
 import { String } from 'aws-sdk/clients/batch';
+import { IGuideline, LEVEL, VALID_LEVELS } from '../standard-guidelines/IGuideline';
 
 /**
  * A class to represent a standard outcome. Immutable.
  * @class
  */
-export class StandardOutcome implements Outcome {
+export class Guideline implements IGuideline {
   private _id: string;
   get id(): string {
     return this._id;
@@ -19,7 +16,7 @@ export class StandardOutcome implements Outcome {
     if (!this.id) {
       this._id = id;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.ID_SET, 'id');
+      throw new EntityError(GUIDELINE_ERRORS.ID_SET, 'id');
     }
   }
 
@@ -34,23 +31,28 @@ export class StandardOutcome implements Outcome {
     if (name && name.trim()) {
       this._name = name;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_NAME, 'name');
+      throw new EntityError(GUIDELINE_ERRORS.INVALID_NAME, 'name');
     }
   }
 
-  _levels: string[];
+  _levels: LEVEL[];
   /**
    *
-   * @property {string[]} levels the levels the guideline applies to
+   * @property {LEVEL[]} levels the levels the guideline applies to
    */
-  get levels(): string[] {
+  get levels(): LEVEL[] {
     return this._levels;
   }
-  set levels(levels: string[]) {
+  set levels(levels: LEVEL[]) {
     if (levels && Array.isArray(levels)) {
+      for (let i = 0; i < levels.length; i++) {
+        if (!VALID_LEVELS.includes(levels[0])) {
+          throw new EntityError(GUIDELINE_ERRORS.INVALID_LEVELS, 'levels');
+        }
+      }
       this._levels = levels;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_LEVELS, 'levels');
+      throw new EntityError(GUIDELINE_ERRORS.INVALID_LEVELS, 'levels');
     }
   }
 
@@ -66,7 +68,7 @@ export class StandardOutcome implements Outcome {
     if (year && year.trim() && !isNaN(Number(year))) {
       this._year = year;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_YEAR, 'year');
+      throw new EntityError(GUIDELINE_ERRORS.INVALID_YEAR, 'year');
     }
   }
 
@@ -82,7 +84,7 @@ export class StandardOutcome implements Outcome {
     if (frameworkId && frameworkId.trim()) {
       this._frameworkId = frameworkId;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_FRAMEWORK_ID, 'frameworkId');
+      throw new EntityError(GUIDELINE_ERRORS.INVALID_FRAMEWORK_ID, 'frameworkId');
     }
   }
 
@@ -98,14 +100,14 @@ export class StandardOutcome implements Outcome {
     if (guideline && guideline.trim()) {
       this._guideline = guideline;
     } else {
-      throw new EntityError(STANDARD_OUTCOME_ERRORS.INVALID_GUIDELINE, 'guideline');
+      throw new EntityError(GUIDELINE_ERRORS.INVALID_GUIDELINE, 'guideline');
     }
   }
 
   /**
-   * Creates an instance of StandardOutcome.
-   * @param {Partial<StandardOutcome>} [outcome]
-   * @memberof StandardOutcome
+   * Creates an instance of Guideline.
+   * @param {Partial<Guideline>} [outcome]
+   * @memberof Guideline
    */
   constructor(outcome?: any) {
     // @ts-ignore Id will be undefined on creation
@@ -124,8 +126,8 @@ export class StandardOutcome implements Outcome {
    * Copies properties of outcome to this outcome if defined
    *
    * @private
-   * @param {Partial<StandardOutcome>} outcome
-   * @memberof StandardOutcome
+   * @param {Partial<Guideline>} outcome
+   * @memberof Guideline
    */
   private copyOutcome(outcome: any): void {
     if (outcome.id) {
@@ -149,13 +151,13 @@ export class StandardOutcome implements Outcome {
   }
 
   /**
-   * Converts StandardOutcome to plain object without functions and private properties
+   * Converts Guideline to plain object without functions and private properties
    *
-   * @returns {Partial<StandardOutcome>}
-   * @memberof StandardOutcome
+   * @returns {Partial<Guideline>}
+   * @memberof Guideline
    */
-  public toPlainObject(): Partial<StandardOutcome> {
-    const outcome: Partial<StandardOutcome> = {
+  public toPlainObject(): Partial<Guideline> {
+    const outcome: Partial<Guideline> = {
       id: this.id,
       name: this.name,
       levels: this.levels,

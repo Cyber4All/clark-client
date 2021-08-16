@@ -1,5 +1,5 @@
-import { StandardOutcome } from './standard-outcome';
-import { STANDARD_OUTCOME_ERRORS } from './error-messages';
+import { Guideline } from './guideline';
+import { GUIDELINE_ERRORS } from './error-messages';
 
 // Defaults
 
@@ -15,27 +15,27 @@ const invalidName: null = undefined;
 const invalidDate: null = null;
 const invalidOutcome = '';
 
-describe('Class: StandardOutcome', () => {
-  let outcome: StandardOutcome;
+describe('Class: Guideline', () => {
+  let outcome: Guideline;
   beforeEach(() => {
-    outcome = new StandardOutcome();
+    outcome = new Guideline();
   });
 
-  it('should return a new blank StandardOutcome', () => {
+  it('should return a new blank Guideline', () => {
     expect(outcome).toBeDefined();
   });
-  it('should return a new StandardOutcome with valid properties', () => {
-    const someOutcome: Partial<StandardOutcome> = {
+  it('should return a new Guideline with valid properties', () => {
+    const someOutcome: Partial<Guideline> = {
       author: validAuthor,
       name: validName,
       date: validDate,
       outcome: validOutcome,
     };
-    const newOutcome = new StandardOutcome(someOutcome);
+    const newOutcome = new Guideline(someOutcome);
     expect(newOutcome).toBeDefined();
   });
   it('should set invalid author and thrown an error', () => {
-    const errorMessage = STANDARD_OUTCOME_ERRORS.INVALID_AUTHOR;
+    const errorMessage = GUIDELINE_ERRORS.INVALID_AUTHOR;
     try {
       // @ts-ignore Value may or may not match type signature for test purposes
       outcome.author = invalidAuthor;
@@ -45,7 +45,7 @@ describe('Class: StandardOutcome', () => {
     }
   });
   it('should set invalid name and thrown an error', () => {
-    const errorMessage = STANDARD_OUTCOME_ERRORS.INVALID_NAME;
+    const errorMessage = GUIDELINE_ERRORS.INVALID_NAME;
     try {
       // @ts-ignore Value may or may not match type signature for test purposes
       outcome.name = invalidName;
@@ -55,7 +55,7 @@ describe('Class: StandardOutcome', () => {
     }
   });
   it('should set invalid date and thrown an error', () => {
-    const errorMessage = STANDARD_OUTCOME_ERRORS.INVALID_DATE;
+    const errorMessage = GUIDELINE_ERRORS.INVALID_DATE;
     try {
       // @ts-ignore Value may or may not match type signature for test purposes
       outcome.date = invalidDate;
@@ -65,7 +65,7 @@ describe('Class: StandardOutcome', () => {
     }
   });
   it('should set invalid outcome and thrown an error', () => {
-    const errorMessage = STANDARD_OUTCOME_ERRORS.INVALID_OUTCOME;
+    const errorMessage = GUIDELINE_ERRORS.INVALID_OUTCOME;
     try {
       // @ts-ignore Value may or may not match type signature for test purposes
       outcome.outcome = invalidOutcome;

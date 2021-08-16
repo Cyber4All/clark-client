@@ -635,20 +635,7 @@ export const STANDARD_GUIDELINE_ROUTES = {
       type=${encodeURIComponent(params.type)}`;
   },
   // Searches guidelines/standards given a text, year, and level query
-  SEARCH_GUIDELINES(params: {
-    text?: string,
-    year?: string,
-    levels?: string,
-    page?: string,
-    limit?: string,
-    type?: string
-  }) {
-    return `${environment.apiURL}/guidelines?
-      text=${encodeURIComponent(params.text)}&
-      year=${encodeURIComponent(params.year)}&
-      levels=${encodeURIComponent(params.levels)}&
-      page=${encodeURIComponent(params.page)}&
-      limit=${encodeURIComponent(params.limit)}&
-      type=${encodeURIComponent(params.type)}`;
+  SEARCH_GUIDELINES(query: string) {
+    return `${environment.apiURL}/guidelines?${query}`;
   }
 };

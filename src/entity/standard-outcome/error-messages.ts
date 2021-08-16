@@ -1,4 +1,4 @@
-export const STANDARD_OUTCOME_ERRORS = {
+export const GUIDELINE_ERRORS = {
   INVALID_NAME: 'Name must be a defined non-empty string.',
   ID_SET: 'Id has already been set and cannot be modified.',
   INVALID_LEVELS: 'Level must be a valid level from the list',
