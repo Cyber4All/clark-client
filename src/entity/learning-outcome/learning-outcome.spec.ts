@@ -1,7 +1,7 @@
 import { LearningOutcome } from './learning-outcome';
 import { levels, taxonomy } from '@cyber4all/clark-taxonomy';
 import { LEARNING_OUTCOME_ERROR_MESSAGES } from './error-messages';
-import { Guideline } from '../standard-outcome/guideline';
+import { Guideline } from '../guideline/guideline';
 
 // Defaults
 

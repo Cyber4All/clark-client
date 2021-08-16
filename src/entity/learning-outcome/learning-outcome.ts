@@ -1,4 +1,4 @@
-import { Guideline } from '../standard-outcome/guideline';
+import { Guideline } from '../guideline/guideline';
 import { levels, taxonomy } from '@cyber4all/clark-taxonomy';
 import { LEARNING_OUTCOME_ERROR_MESSAGES } from './error-messages';
 import { EntityError } from '../errors/entity-error';
