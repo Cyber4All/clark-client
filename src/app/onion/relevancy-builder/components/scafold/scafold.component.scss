@@ -1,0 +1,218 @@
+@import '~_vars.scss';
+
+.header {
+  display: flex;
+  padding-top: 18px;
+  padding-left: 20px;
+
+  .icon {
+    color: $light-blue;
+    font-size: $large;
+    align-items: left;
+    justify-content: left;
+  }
+  .title {
+    text-align: left;
+    font-size: $large;
+    font-weight: 600;
+    margin: 0 30px 10px 10px;
+    align-items: left;
+    justify-content: left;
+  }
+  .edit {
+    .text {
+      padding-right: 10px;
+      font-size: $small;
+      display: inline-block;
+    }
+  }
+}
+.children-list {
+  width: 100%;
+  max-width: 100%;
+  min-height: 60px;
+  display: block;
+  background: white;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.child-box {
+  padding: 20px 10px;
+  border-bottom: solid 1px $light-grey;
+  color: $dark-grey;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: white;
+
+  .info {
+    float: left;
+    width: 90%;
+
+    .top-row {
+      display: flex;
+      width: 100%;
+
+      .child-title {
+        color: $darker-grey;
+        text-align: left;
+        font-size: $normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        word-break: break-all;
+        max-width: 100%;
+      }
+    }
+    .bottom-row {
+      display: flex;
+
+      .child-length {
+        text-align: left;
+        font-size: $smaller;
+        color: white;
+        padding: 2px 5px;
+        border-radius: 2px;
+
+        &.nanomodule {
+          background: $nanomodule-color;
+        }
+
+        &.micromodule {
+          background: $micromodule-color;
+        }
+
+        &.module {
+          background: $module-color;
+        }
+
+        &.unit {
+          background: $unit-color;
+        }
+
+        &.course {
+          background: $course-color;
+        }
+      }
+
+      .child-last-updated {
+        color: $dark-grey;
+        font-size: $small;
+        padding-left: 20px;
+      }
+    }
+  }
+  
+  .hamburger-handle {
+    display: flex;
+    color: $medium-grey;
+    cursor: move;
+    width: 20px;
+    height: 20px;
+    font-size: $large;
+    margin-left: auto;
+  }
+
+  .delete {
+    display: flex;
+    color: $error-red;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    font-size: $large;
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    padding-right: 20px;
+  }
+}
+
+.no-children {
+  color: $dark-grey;
+  text-align: center;
+  padding: 30px 30px;
+  font-size: $normal;
+}
+
+.edit-children {
+  border-bottom: solid 1px $light-grey;
+  width: 100%;
+  font-size: $normal;
+  background: transparent;
+  border-top: solid 1px $light-grey;
+  border-right: none;
+  border-left: none;
+  color: $light-blue;
+  padding: 10px;
+  outline: 0;
+
+  .svg-inline--fa {
+    margin-left: 10px;
+  }
+  
+  &:focus, &:hover {
+    background: $light-blue-gradient;
+    color: white;
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.child-box:last-child {
+  border: none;
+}
+
+.child-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.add-child {
+  position: fixed;
+  z-index: 20;
+  background: white;
+  visibility: hidden;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 12px 2px rgba(0, 0, 0, 0.1);
+  width: 100%;
+
+  &.add-child--active {
+    visibility: visible;
+  }
+}
+
+.loading-template,
+.scaffold__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+
+  .svg-inline--fa {
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+
+  &.scaffold__error {
+    color: $error-red !important;
+  }
+}

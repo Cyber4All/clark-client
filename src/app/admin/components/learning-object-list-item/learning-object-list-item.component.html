@@ -36,7 +36,7 @@
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
-      <li [routerLink]="['/onion/learning-object', learningObject.id, 'relevancy-builder']"><i class="far fa-puzzle-piece"></i>Object Relevancy</li>
+      <li [routerLink]="['/onion/relevancy-builder', learningObject.id]"><i class="far fa-puzzle-piece"></i>Object Relevancy</li>
     </ul>
   </div>
 </clark-context-menu>

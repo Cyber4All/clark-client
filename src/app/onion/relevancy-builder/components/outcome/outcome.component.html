@@ -1,1 +1,54 @@
-<p>outcome works!</p>
+<div [@outcome]="noAnimation ? 'off' : (active ? 'open' : 'closed')" (@outcome.done)="noAnimation = false" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
+    <div class="outcome-header">
+      <div class="outcome-header__left">
+          {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
+          + outcomeNumber }}
+      </div>
+    </div>
+    <div class="level-select">
+      <button *ngFor="let l of outcomeLevels" class="level" [ngClass]="{'active': outcome?.bloom.toLowerCase() === l.toLowerCase()}"
+        (activate)="emitLevel(l)">
+        <div class="icon">
+          <span *ngIf="l === 'remember and understand'"><i class="fal fa-cloud"></i></span>
+          <span *ngIf="l === 'apply and analyze'"><i class="fal fa-bolt"></i></span>
+          <span *ngIf="l === 'evaluate and synthesize'"><i class="fal fa-balance-scale-right"></i></span>
+        </div>
+        <div class="level-text">
+          {{ l.replace('and', '&') }}
+        </div>
+      </button>
+    </div>
+    <div class="outcome-text">
+      <clark-outcome-relevancy-typeahead (overflowValue)="setOverflow($event)" [verb]="outcome?.verb" [bloom]="outcome?.bloom" [text]="outcome?.text" (selectedVerb)="emitVerb($event)"
+        (selectedCategory)="emitLevel($event)" (enteredText)="emitText($event)" class="absolute-position">
+      </clark-outcome-relevancy-typeahead>
+    </div>
+    <div *ngIf="outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-component__outcome-error" [ngClass]="{'outcome-error--warning': !validator.submissionMode}">
+      {{ validator.getOutcome(outcome.id) ? validator.getOutcome(outcome.id) : undefined }}
+    </div>
+    <div *ngIf="!outcomeValidator.outcomeSaveable(outcome.id)" class="outcome-component__no-save" aria-live="assertive">
+      This outcome can't be saved until a level and verb are selected!
+    </div>
+    <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
+      <div class="outcome-header">Maps to: </div>
+      <div class="pills">
+        <div *ngFor="let m of outcome.mappings" class="pill">
+          {{ m.author }} - {{ m.name }} - {{ m.date }}
+          <span attr.aria-label="Remove mapping to {{ m.author }} - {{ m.name }} - {{ m.date }}" (activate)="removeMapping(m)">
+            <i class="fal fa-times"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <clark-popup *ngIf="showDeleteConfirm" (closed)="showDeleteConfirm = false">
+    <div #popupInner>
+      <div class="modal-title bad">Are you sure?</div>
+      <div class="modal-text">You cannot undo this action!</div>
+      <div class="btn-group center">
+        <button class="button bad" (activate)="emitDeletion()">Delete <i class="far fa-trash-alt"></i></button>
+        <button class="button neutral" (activate)="showDeleteConfirm = false">Cancel <i class="far fa-ban"></i></button>
+      </div>
+    </div>
+  </clark-popup>

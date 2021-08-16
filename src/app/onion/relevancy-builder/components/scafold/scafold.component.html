@@ -1,1 +1,83 @@
-<p>scafold works!</p>
+
+<div class="header">
+    <div class="title">
+      Topics
+    </div>
+  </div>
+  <clark-skip-link *ngIf="!editContent || learningObject?.length === 'nanomodule'" title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
+  <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
+  <ng-template [ngIf]="children && children.length > 0">
+    <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let c of children; let i = index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
+        <div class = "info">
+          <div class = "top-row">
+            <div class = "child-title" [tip]="c.name" tipPosition="top">{{c.name}}</div>
+          </div>
+          <div class = "bottom-row">
+          <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
+            <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
+          </div>
+        </div>
+        <div tabindex="0" attr.aria-label="Move {{ c.name }}" [ngStyle]="{display: editContent ? 'none' : 'block'}" class="hamburger-handle" cdkDragHandle>
+          <i class="fas fa-bars"></i>
+        </div>
+        <button attr.aria-label="Delete {{ c.name }}" [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (activate)="deleteButton(i)">
+          <i class="far fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #addChild>
+    <button id="children" #addChildButton aria-label="Add Child" class="edit-children" (activate)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
+      Add Child
+      <i class="far fa-plus"></i>
+    </button>
+  </ng-template>
+  
+  <ng-template [ngIf]="loading">
+    <div class="loading-template">
+      <i class="fal fa-spinner-third fa-spin"></i>
+      Loading...
+    </div>
+  </ng-template>
+  
+  <ng-template [ngIf]="children?.length == 0 && learningObject?.length != 'nanomodule'">
+    <div class= "no-children">
+      This learning object has no children  
+    </div>
+  </ng-template>
+  
+  <ng-template [ngIf]="learningObject?.length === 'nanomodule'">
+    <div class= "no-children">
+      yeet
+    </div>
+  </ng-template>
+  
+  <ng-template [ngIf]="loadingChildrenError">
+    <div class="scaffold__error">
+      <div class="error__icon">
+        <i class="far fa-exclamation-triangle"></i>
+      </div>
+      Unable to load children! Please try again later!
+    </div>
+  </ng-template>
+  
+  
+  <!-- Children Confirmation Popup -->
+  <clark-popup *ngIf="childrenConfirmation" (closed)="toggleConfirmationModal(false)">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">Just to confirm...</div>
+        <div class="modal-text">{{ childrenConfirmationMessage }}</div>
+        <div class="btn-group center">
+          <button class="button good" aria-label="Yep, delete child" (activate)="deleteChild()">Yep, do it! <i class="far fa-check"></i></button>
+          <button class="button neutral" aria-label="Wait, don't delete child" (activate)="toggleConfirmationModal(false)">Wait, nevermind! <i class="far fa-ban"></i></button>
+        </div>
+    </div>
+  </clark-popup>
+  
+  <clark-teleporter *ngIf="isAddingChild">
+    <div #teleporterPayload class="add-child" (activate)="$event.stopPropagation()">
+      <clark-add-child [currentChildren]="childrenIDs" [child]="learningObject" (childToAdd)="addToChild($event)"></clark-add-child>
+    </div>
+  </clark-teleporter>

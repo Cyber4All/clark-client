@@ -1,0 +1,58 @@
+@import '~_vars.scss';
+
+.typeahead {
+  width: 500px;
+  font-family: 'Arial', sans-serif;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .input {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  input {
+    pointer-events: none;
+    appearance: none;
+    border: 0;
+    width: 100%;
+    padding: 8px 0 6px;
+    border-bottom: 2px solid $light-blue;
+    outline: 0;
+    font-size: $normal;
+    margin: 0;
+    margin-left: -1px;
+    flex-grow: 2;
+    background: transparent;
+    color: $dark-grey;
+
+    &.withVerb {
+      padding-left: 0.3em;
+    }
+  }
+
+  .verb {
+    pointer-events:none;
+    background: $light-blue-gradient;
+    color: white;
+    padding: 8px 12px;
+    font-size: $normal;
+    top: 0;
+    left: -8px;
+    bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px 4px 0 0;
+
+    .svg-inline--fa {
+      font-size: $smaller;
+      margin-left: 10px;
+    }
+  }
+}

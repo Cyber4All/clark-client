@@ -1,0 +1,43 @@
+<onion-column-wrapper>
+    <div left>
+      <clark-relevancy-scafold *ngIf="learningObject" [learningObject]= "learningObject"></clark-relevancy-scafold>
+    </div>
+    <div main class="main">
+      <div class="top">
+        <div class="title">{{iterableOutcomes?.length}} Learning Outcome<span *ngIf = "iterableOutcomes?.length !== 1">s</span></div>
+      </div>
+      <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
+        <clark-relevancy-outcome *ngFor="let o of iterableOutcomes"
+          [outcome]="o"
+          [totalOutcomes]="iterableOutcomes.length"
+          [active]="activeOutcome === o.id"
+          (textChanged)="mutateOutcome(o.id, { text: $event })"
+          (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
+          (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
+          (deleted)="deleteOutcome(o.id)"
+          (unmap)="toggleStandardOutcome($event)"
+          (activate)="setActiveOutcome(o.id)"
+        >
+        </clark-relevancy-outcome>
+      </ng-container>
+      <div class="add-button btn-group to-right">
+        <!-- <button id="form" class="button good" [ngClass]="{'disabled': !saveable}" aria-label="Add New Outcome" (activate)="newOutcome()">Add Outcome<i class="fas fa-plus"></i></button> -->
+      </div>
+    </div>
+    <div *ngIf="outcomes.size" right>
+      <clark-standard-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-standard-outcomes>
+    </div>
+  </onion-column-wrapper>
+  
+  <ng-template #noOutcomesTemplate>
+    <div class="no-outcomes">
+      <i class="far fa-box-open"></i>
+      <div class="no-outcomes__title">No outcomes yet!</div>
+      <!-- TODO someone rewrite this pls -->
+      <div class="no-outcomes__description">Learning Outcomes are a collection of statements that describe different actions a user should be able to accomplish after experiencing the materials in the Learning Object.</div>
+      <div *ngIf="validator.submissionMode" class="no-outcomes__error">
+        A learning object must have outcomes to submit
+      </div>
+    </div>
+  </ng-template>
+  
