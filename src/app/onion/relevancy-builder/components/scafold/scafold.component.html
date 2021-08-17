@@ -5,7 +5,6 @@
     </div>
   </div>
   <clark-skip-link *ngIf="!editContent || learningObject?.length === 'nanomodule'" title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
-  <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length == 0"></div>
   <ng-template [ngIf]="children && children.length > 0">
     <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
       <div *ngFor="let c of children; let i = index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
@@ -27,14 +26,7 @@
       </div>
     </div>
   </ng-template>
-  
-  <ng-template #addChild>
-    <button id="children" #addChildButton aria-label="Add Child" class="edit-children" (activate)="toggleAddChild(); $event.stopPropagation()" *ngIf="learningObject?.length !== 'nanomodule'">
-      Add Child
-      <i class="far fa-plus"></i>
-    </button>
-  </ng-template>
-  
+
   <ng-template [ngIf]="loading">
     <div class="loading-template">
       <i class="fal fa-spinner-third fa-spin"></i>
@@ -42,27 +34,12 @@
     </div>
   </ng-template>
   
+  <!-- Change to Topics did not load -->
   <ng-template [ngIf]="children?.length == 0 && learningObject?.length != 'nanomodule'">
     <div class= "no-children">
       This learning object has no children  
     </div>
   </ng-template>
-  
-  <ng-template [ngIf]="learningObject?.length === 'nanomodule'">
-    <div class= "no-children">
-      yeet
-    </div>
-  </ng-template>
-  
-  <ng-template [ngIf]="loadingChildrenError">
-    <div class="scaffold__error">
-      <div class="error__icon">
-        <i class="far fa-exclamation-triangle"></i>
-      </div>
-      Unable to load children! Please try again later!
-    </div>
-  </ng-template>
-  
   
   <!-- Children Confirmation Popup -->
   <clark-popup *ngIf="childrenConfirmation" (closed)="toggleConfirmationModal(false)">

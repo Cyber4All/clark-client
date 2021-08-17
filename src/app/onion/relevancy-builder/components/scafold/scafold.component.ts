@@ -61,18 +61,19 @@ export class ScafoldComponent implements OnInit {
 
   ngOnInit() {
     this.childrenConfirmation = false;
-    this.ariaLabel = 'Add and delete Children';
+    this.ariaLabel = 'Add and delete Topics';
+
+    this.loading = true;
 
     // if the Learning Object can have children, attempt to load them
-    if (this.learningObject.id && this.learningObject.length !== LearningObject.Length.NANOMODULE) {
-      this.loading = true;
+    if (this.learningObject.id && this.learningObject.length) {
       this.store.getChildren().then(kiddos => {
         this.children = kiddos;
         this.children.forEach(kid => this.childrenIDs.push(kid.id));
         this.loading = false;
+
       }).catch(error => {
         this.loading = false;
-        this.loadingChildrenError = true;
       });
     }
   }
