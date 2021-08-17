@@ -336,12 +336,12 @@ export class BuilderStore {
       case BUILDER_ACTIONS.MAP_STANDARD_OUTCOME:
         return await this.mapStandardOutcomeMapping(
           data.id,
-          data.standardOutcome
+          data.guideline
         );
       case BUILDER_ACTIONS.UNMAP_STANDARD_OUTCOME:
         return await this.unmapStandardOutcomeMapping(
           data.id,
-          data.standardOutcome
+          data.guideline
         );
       case BUILDER_ACTIONS.ADD_CONTRIBUTOR:
         return await this.addContributor(data.user);
@@ -475,16 +475,14 @@ export class BuilderStore {
   ) {
     const outcome = this.outcomes.get(id);
     outcome.mappings.push(guideline);
-
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
-
     this.saveOutcome(
       {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        mappings: outcome.mappings.map(x => x.id)
+        mappings: outcome.mappings.map(x => x.guidelineId)
       },
       true
     );
@@ -492,13 +490,12 @@ export class BuilderStore {
 
   private unmapStandardOutcomeMapping(
     id: string,
-    standardOutcome: LearningOutcome
+    standardOutcome: any
   ) {
     const outcome = this.outcomes.get(id);
     const mappedOutcomes = outcome.mappings;
-
     for (let i = 0, l = mappedOutcomes.length; i < l; i++) {
-      if (mappedOutcomes[i].id === standardOutcome.id) {
+      if (mappedOutcomes[i].guidelineId === standardOutcome.guidelineId) {
         outcome.mappings.splice(i, 1);
         break;
       }
@@ -512,7 +509,7 @@ export class BuilderStore {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        mappings: mappedOutcomes.map(x => x.id)
+        mappings: mappedOutcomes.map(x => x.guidelineId)
       },
       true
     );

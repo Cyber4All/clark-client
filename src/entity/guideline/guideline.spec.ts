@@ -17,11 +17,10 @@ describe('Class: Guideline', () => {
   });
   it('should return a new Guideline with valid properties', () => {
     const someOutcome: Partial<Guideline> = {
-      name: 'guideline',
-      guideline: '1111111111111111111111',
+      guidelineName: 'guideline',
+      guidelineId: '1111111111111111111111',
       levels: [LEVEL.HIGH],
       year: '2021',
-      frameworkId: '111111111111111111111',
     };
     const newOutcome = new Guideline(someOutcome);
     expect(newOutcome).toBeDefined();

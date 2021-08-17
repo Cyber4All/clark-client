@@ -30,19 +30,3 @@ export enum GUIDELINE_STANDARD_PROPERTY {
     FRAMEWORK_ID = 'framework id',
     GUIDELINE_OR_DESCRIPTION = 'guideline or description',
 }
-
-export enum GUIDELINE_PROPERTY {
-    GUIDELINE = 'guideline',
-}
-
-export interface IGuideline {
-    name: string;
-    guideline: string;
-    levels: LEVEL[];
-    year: string;
-    frameworkId: string;
-}
-
-export interface GuidelineDocument extends IGuideline {
-    _id: string;
-}

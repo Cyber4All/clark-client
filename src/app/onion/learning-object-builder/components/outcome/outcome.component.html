@@ -38,7 +38,7 @@
     <div class="outcome-header">Maps to: </div>
     <div class="pills">
       <div *ngFor="let m of outcome.mappings" class="pill">
-        {{ m.author }} - {{ m.name }} - {{ m.date }}
+        {{ m.author }} - {{ m.guidelineName }} - {{ m.year }}
         <span attr.aria-label="Remove mapping to {{ m.author }} - {{ m.name }} - {{ m.date }}" (activate)="removeMapping(m)">
           <i class="fal fa-times"></i>
         </span>

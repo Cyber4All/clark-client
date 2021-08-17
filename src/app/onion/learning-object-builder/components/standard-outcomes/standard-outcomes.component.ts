@@ -14,7 +14,7 @@ import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 
-export interface SuggestedOutcome extends Guideline {
+export interface SuggestedOutcome extends SearchItemDocument {
   suggested?: boolean;
 }
 
@@ -30,7 +30,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
 
   @Output()
   toggleMapping: EventEmitter<{
-    guideline: Guideline;
+    standardOutcome: Guideline;
     value: boolean;
   }> = new EventEmitter();
 
@@ -42,8 +42,8 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
 
   componentDestroyed$: Subject<void> = new Subject();
 
-  suggestions: SearchItemDocument[] = [];
-  searchResults: SearchItemDocument[] = [];
+  suggestions: SuggestedOutcome[] = [];
+  searchResults: SuggestedOutcome[] = [];
 
   selectedOutcomeIDs: string[] = [];
 
@@ -100,7 +100,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
 
             // update the selected outcomes list
             if (outcome.mappings) {
-              this.selectedOutcomeIDs = outcome.mappings.map((x) => x.id);
+              this.selectedOutcomeIDs = outcome.mappings.map((x) => x.guidelineId);
             }
           } else {
             this.suggestions = [];
@@ -110,9 +110,9 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     }
   }
 
-  toggleStandardOutcome(guideline: Guideline, value: boolean) {
+  toggleStandardOutcome(guideline: any, value: boolean) {
     guideline = new Guideline(guideline);
-    this.toggleMapping.emit({ guideline, value });
+    this.toggleMapping.emit({ standardOutcome: guideline, value: value });
   }
 
   performSearch() {
@@ -123,7 +123,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       // perform search
       this.loading = 'search';
       this.guidelineService
-        .getOutcomes({
+        .getGuidelines({
           text: this.searchStringValue,
         })
         .then((res) => {
@@ -149,7 +149,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     if (val && val !== '') {
       this.loading = 'suggest';
       this.guidelineService
-        .getOutcomes({
+        .getGuidelines({
           text: val,
         })
         .then((res) => {

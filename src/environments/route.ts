@@ -223,10 +223,6 @@ export const USER_ROUTES = {
       learningObjectId
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
-  GET_OUTCOMES(username: string, learningObjectId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
-      ${encodeURIComponent(learningObjectId)}/outcomes`;
-  },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
@@ -558,61 +554,6 @@ export const RELEVANCY_ROUTES = {
 };
 
 export const STANDARD_GUIDELINE_ROUTES = {
-  /**
-   * AUTH ROUTES
-   */
-
-  // authenticates a user
-  AUTHENTICATE() {
-    return `${environment.apiURL}/authenticate`;
-  },
-
-  /**
-   * FRAMEWORK ROUTES
-   */
-
-  // Gets a framework by id
-  GET_FRAMEWORK(id: string) {
-    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}`;
-  },
-  // Creates a new framework
-  CREATE_FRAMEWORK() {
-    return `${environment.apiURL}/frameworks`;
-  },
-  // Updates an existing framework by id
-  UPDATE_FRAMEWORK(id: string) {
-    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}`;
-  },
-  // Deletes an existing framework by id
-  DELETE_FRAMEWORK(id: string) {
-    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}`;
-  },
-
-  /**
-   * GUIDELINE ROUTES
-   */
-
-  // Gets all the Standards and Guidelines associated with a specific framework id
-  GET_GUIDELINES_FOR_FRAMEWORK_ID(id: string) {
-    return `${environment.apiURL}/frameworks/${encodeURIComponent(id)}/guidelines`;
-  },
-  // Gets a guideline by id
-  GET_GUIDELINE_BY_ID(id: string) {
-    return `${environment.apiURL}/guidelines/${encodeURIComponent(id)}`;
-  },
-  // Creates a new guideline
-  CREATE_GUIDELINE() {
-    return `${environment.apiURL}/guidelines`;
-  },
-  // Updates an existing guideline by id
-  UPDATE_GUIDELINE_BY_ID(id: string) {
-    return `${environment.apiURL}/guidelines/${encodeURIComponent(id)}`;
-  },
-  // Deletes an existing guideline by id
-  DELETE_GUIDELINE_BY_ID(id: string) {
-    return `${environment.apiURL}/guidelines/${encodeURIComponent(id)}`;
-  },
-
   /**
    * SEARCH ROUTES
    */

@@ -138,14 +138,14 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   }
 
   toggleStandardOutcome(data: {
-    guideline: Guideline;
+    standardOutcome: Guideline;
     value: boolean;
   }) {
     this.store.execute(
       data.value
         ? actions.MAP_STANDARD_OUTCOME
         : actions.UNMAP_STANDARD_OUTCOME,
-      { id: this.activeOutcome, standardOutcome: data.guideline }
+      { id: this.activeOutcome, guideline: data.standardOutcome }
     );
   }
 

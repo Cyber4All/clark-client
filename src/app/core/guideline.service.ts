@@ -4,7 +4,7 @@ import * as querystring from 'querystring';
 import { throwError, Observable } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 import { STANDARD_GUIDELINE_ROUTES } from '@env/route';
-import { FrameworkDocument } from '../../entity/standard-guidelines/framework';
+import { FrameworkDocument } from '../../entity/standard-guidelines/Framework';
 import { SearchItemDocument } from '../../entity/standard-guidelines/search-index';
 
 @Injectable()
@@ -19,17 +19,16 @@ export class GuidelineService {
       .pipe(
         retry(3),
         catchError(this.handleError),
-        map(res =>
-          res.results.map(result => {
-            if (result.name !== 'CAE CDE 2019') {
-              return result.name;
-            }
-          })
-        )
+        map((res) => {
+          // This should be removed once guidelines begin to be added
+          const sources = res.results.map(result => result.name);
+          const index = sources.indexOf('CAE CDE 2019');
+          return sources.splice(index);
+        })
       );
   }
 
-  getOutcomes(
+  getGuidelines(
     filter?
   ): Promise<{ total: number; results: SearchItemDocument[] }> {
     let query = '';
