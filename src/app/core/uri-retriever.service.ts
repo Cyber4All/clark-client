@@ -55,7 +55,7 @@ export class UriRetrieverService {
       const responses: Subject<any> = new Subject();
       const end = new Subject();
 
-      this.http.get<LearningObject>(route).pipe(
+      this.http.get<LearningObject | any>(route).pipe(
         catchError(err => {
           responses.error(err);
           end.complete();

@@ -1,4 +1,4 @@
-import { StandardOutcome } from '../standard-outcome/standard-outcome';
+import { Guideline } from '../guideline/guideline';
 import { levels, taxonomy } from '@cyber4all/clark-taxonomy';
 import { LEARNING_OUTCOME_ERROR_MESSAGES } from './error-messages';
 import { EntityError } from '../errors/entity-error';
@@ -92,28 +92,28 @@ export class LearningOutcome {
     return `${this._verb} ${this._text}`;
   }
 
-  private _mappings: StandardOutcome[];
+  private _mappings: Guideline[];
   /**
-   * @property {StandardOutcome[]} mappings (immutable)
+   * @property {Guideline[]} mappings (immutable)
    *       outcomes which presumably achieve similar things as this
    *
    * NOTE: individual elements are freely accessible, but the array
    *       reference itself is immutable, and elements can only be
    *       added and removed by the below functions
    */
-  get mappings(): StandardOutcome[] {
+  get mappings(): Guideline[] {
     return this._mappings;
   }
   /**
-   * Maps a StandardOutcome to this learning outcome.
+   * Maps a Guideline to this learning outcome.
    * @returns {number} the index of the mapping
    */
-  mapTo(mapping: StandardOutcome): number {
+  mapTo(mapping: Guideline): number {
     if (mapping) {
       const addingMapping =
-        mapping instanceof StandardOutcome
+        mapping instanceof Guideline
           ? mapping
-          : new StandardOutcome(mapping);
+          : new Guideline(mapping);
       return this._mappings.push(addingMapping) - 1;
     } else {
       throw new EntityError(
@@ -127,9 +127,9 @@ export class LearningOutcome {
    * Removes the outcome's i-th mapping.
    * @param {number} i the index to remove from the mappings array
    *
-   * @returns {StandardOutcome} the outcome which was removed
+   * @returns {Guideline} the outcome which was removed
    */
-  unmap(i: number): StandardOutcome {
+  unmap(i: number): Guideline {
     return this._mappings.splice(i, 1)[0];
   }
 
@@ -167,7 +167,7 @@ export class LearningOutcome {
     this.verb = outcome.verb || this.verb;
     this.text = outcome.text || this.text;
     if (outcome.mappings) {
-      (<StandardOutcome[]>outcome.mappings).map(o => this.mapTo(o));
+      (<Guideline[]>outcome.mappings).map(o => this.mapTo(o));
     }
   }
   /**
@@ -184,7 +184,7 @@ export class LearningOutcome {
       text: this.text,
       outcome: this.outcome,
       mappings: this.mappings.map(
-        mapping => mapping.toPlainObject() as StandardOutcome,
+        mapping => mapping.toPlainObject() as Guideline,
       ),
     };
     return outcome;
