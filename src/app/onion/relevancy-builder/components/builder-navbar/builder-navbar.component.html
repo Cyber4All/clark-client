@@ -6,64 +6,21 @@
       'margin-bottom': revisedVersion ? '20px' : '30px'
     }"
   >
-    <div
-      *ngIf="revisedVersion && !adminMode"
-      aria-live="assertive"
-      class="revising-notification"
-    >
-      Currently Revising: {{ learningObject?.name }}
-    </div>
     <div class="top__left">
-      <a (activate)="historySnapshot.rewind('/home')"><i class="far fa-arrow-left"></i> Back</a>
-    </div>
-    <div class="top__right">
-      <p>my man</p>
       <clark-lo-status-indicator
         [status]="learningObject?.status"
         [states]="states"
       ></clark-lo-status-indicator>
-      <ng-container
-        *ngIf="!adminMode; else adminModeTemplate "
-      >
-        <button
-          id="submit"
-          class="button"
-          *ngIf="['unreleased', 'rejected'].includes(learningObject?.status)"
-          [ngClass]="{
-            good: !submissionError,
-            bad: validator.submissionMode && submissionError,
-            disabled: !auth.user.emailVerified
-          }"
-          (activate)="auth.user.emailVerified && triggerSubmit()"
-        >
-          <div
-            *ngIf="validator.submissionMode && submissionError"
-            class="button__cancel"
-            tip="Cancel Submission"
-            tipPosition="bottom"
-            (activate)="$event.stopPropagation(); validator.submissionMode = false"
-          >
-            <i class="far fa-times"></i>
-          </div>
-          {{
-            validator.submissionMode && submissionError
-              ? 'Try Again'
-              : 'Submit for review'
-          }}
-          <i class="far fa-arrow-right"></i>
-        </button>
-      </ng-container>
-      <ng-template #adminModeTemplate>
-        <clark-editor-action-panel
-          [learningObject]="learningObject"
-        ></clark-editor-action-panel>
-      </ng-template>
+      <!-- learning object and new tab  preview go here -->
+    </div>
+    <div class="top__right">
+      <a (activate)="historySnapshot.rewind('/admin/learning-objects')">Cancel</a>
     </div>
   </div>
   <div class="builder-navbar-wrapper__bottom">
     <div class="builder-navbar-wrapper__bottom-left-menu">
       <!-- update routerLinkActive with class used to show that link is active -->
-      <ul>
+      <!-- <ul>
         <li>
           <ng-container
             aria-label="Learning Outcomes Link"
@@ -75,50 +32,16 @@
             }"
           ></ng-container>
         </li>
-      </ul>
-      <div class="builder-navbar-wrapper__saving-indicator">
+      </ul> -->
+      <!-- <div class="builder-navbar-wrapper__saving-indicator">
         <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator"
           >to da moon .. .. .. 
         </span>
         <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator"
           >Doge coin</span
         >
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
 
-<clark-submit
-  *ngIf="showSubmission"
-  [learningObject]="store.learningObject"
-  [visible]="true"
-  (close)="showSubmission = false; ($event && historySnapshot.rewind('/dashboard'));"
-></clark-submit>
-
-<ng-template
-  #navItemTemplate
-  let-link="link"
-  let-disabled="disabled"
-  let-text="text"
->
-  <a
-    *ngIf="!disabled"
-    [ngClass]="{ new: isNewRoute(link) }"
-    routerLink="{{ link }}"
-    routerLinkActive="active"
-    (activate)="triggerRouteClick(link)"
-    >{{ text }}</a
-  >
-  <a
-    aria-label="Please give this learning object a name before adding outcomes or uploading materials"
-    *ngIf="disabled"
-    class="disabled"
-    tip="Please give this learning object a name before adding outcomes or uploading materials"
-    tipPosition="top"
-    ><i class="fas fa-lock"></i>{{ text }}</a
-  >
-</ng-template>
-
-<ng-template #genericCollectionLogoTemplate>
-  <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
-</ng-template>

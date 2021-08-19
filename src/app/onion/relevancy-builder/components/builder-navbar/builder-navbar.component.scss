@@ -1,20 +1,5 @@
 @import '~_vars.scss';
 
-.top__collection {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  .collection__image {
-    width: 30px;
-    height: 30px;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-left: 10px;
-  }
-}
-
 .builder-navbar-wrapper {
   background: white;
   padding: 35px 25px 0;
@@ -26,21 +11,6 @@
   left: 0;
   right: 0;
   box-sizing: border-box;
-
-  .revising-notification {
-    background-color: $tag_revision;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    margin: 0;
-    color: white;
-    padding-top: 5px;
-    padding-bottom: 10px;
-    font-size: $normal;
-    text-align: center;
-    box-shadow: 0 2px 4px 0 rgba(136, 135, 135, 0.3);
-  }
   
   .top {
     margin-bottom: 30px;
@@ -59,15 +29,10 @@
         margin-right: 10px;
       }
     }
-
-    &.banner {
-      margin-bottom: 20px;
-      margin-top: 10px;
-    }
     
   }
 
-  .top__right {
+  .top__left {
     display: flex;
     flex-direction: row;
     align-items: center;

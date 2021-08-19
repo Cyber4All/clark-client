@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import {
   LearningObject,
   LearningOutcome,
-  User,
   StandardOutcome
 } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection.service';
@@ -109,7 +107,6 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
-    private collectionService: CollectionService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
@@ -260,6 +257,10 @@ export class BuilderStore {
       });
   }
 
+  getTopics(): string[] {
+    return ['I', 'am', 'a', 'genius'];
+  }
+
   /**
    * Retrieves the Learning Objects children
    *
@@ -324,14 +325,6 @@ export class BuilderStore {
    */
   async execute(action: BUILDER_ACTIONS, data?: any): Promise<any> {
     switch (action) {
-      case BUILDER_ACTIONS.MUTATE_OBJECT:
-        return await this.mutateObject(data);
-      case BUILDER_ACTIONS.CREATE_OUTCOME:
-        return await this.createOutcome();
-      case BUILDER_ACTIONS.DELETE_OUTCOME:
-        return await this.deleteOutcome(data.id);
-      case BUILDER_ACTIONS.MUTATE_OUTCOME:
-        return await this.mutateOutcome(data.id, data.params);
       case BUILDER_ACTIONS.MAP_STANDARD_OUTCOME:
         return await this.mapStandardOutcomeMapping(
           data.id,
@@ -342,31 +335,6 @@ export class BuilderStore {
           data.id,
           data.standardOutcome
         );
-      case BUILDER_ACTIONS.ADD_CONTRIBUTOR:
-        return await this.addContributor(data.user);
-      case BUILDER_ACTIONS.REMOVE_CONTRIBUTOR:
-        return await this.removeContributor(data.user);
-      case BUILDER_ACTIONS.ADD_URL:
-        return await this.addUrl();
-      case BUILDER_ACTIONS.UPDATE_URL:
-        return await this.updateUrl(data.index, data.url);
-      case BUILDER_ACTIONS.REMOVE_URL:
-        return await this.removeUrl(data);
-      case BUILDER_ACTIONS.UPDATE_MATERIAL_NOTES:
-        return await this.updateNotes(data);
-      case BUILDER_ACTIONS.UPDATE_FILE_DESCRIPTION:
-        return await this.updateFileDescription(data.id, data.description);
-      case BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION:
-        return await this.updateFolderDescription({
-          path: data.path,
-          index: data.index,
-          description: data.description
-        });
-      case BUILDER_ACTIONS.DELETE_FILES:
-        return await this.removeFiles(data.fileIds);
-      default:
-        console.error('Error! Invalid action taken!');
-        return;
     }
   }
 
@@ -385,87 +353,6 @@ export class BuilderStore {
   ///////////////////////////////
   //  BUILDER ACTION HANDLERS  //
   ///////////////////////////////
-
-  private createOutcome() {
-    const outcome: Partial<LearningOutcome> = {
-      bloom: '',
-      verb: '',
-      text: '',
-      mappings: []
-    };
-    outcome.id = genId();
-
-    // this outcome needs to be created in the API, not modified, so store it in newOutcomes map
-    this.newOutcomes.set(outcome.id, true);
-
-    this.outcomes.set(outcome.id, outcome);
-    this.outcomeEvent.next(this.outcomes);
-
-    this.validator.validateLearningOutcome(outcome);
-
-    return outcome.id;
-  }
-
-  private deleteOutcome(id: string) {
-    // grab the outcome that's about to be deleted
-    const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
-
-    // delete the outcome
-    this.outcomes.delete(id);
-    this.outcomeEvent.next(this.outcomes);
-
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
-
-    // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .deleteOutcome(
-        this.learningObject.id,
-        (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
-          .serviceId || id,
-      )
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
-  }
-
-  private mutateOutcome(
-    id: string,
-    params: { verb?: string; bloom?: string; text?: string }
-  ) {
-    const outcome = this.outcomes.get(id);
-
-    if (params.bloom && params.bloom !== outcome.bloom) {
-      outcome.bloom = params.bloom;
-      outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
-    } else if (params.verb) {
-      outcome.verb = params.verb;
-    } else if (typeof params.text === 'string') {
-      outcome.text = params.text;
-    }
-
-    this.outcomes.set(outcome.id, outcome);
-    this.outcomeEvent.next(this.outcomes);
-
-    // validateLearningObject here over validateLearningOutcome to remove a "must contain one valid outcome" error if it exists
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
-
-    this.saveOutcome(
-      {
-        id: outcome.id,
-        bloom: outcome.bloom,
-        verb: outcome.verb,
-        text: outcome.text,
-        serviceId: (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
-          .serviceId
-      },
-      true
-    );
-
-    return outcome;
-  }
-
   private mapStandardOutcomeMapping(
     id: string,
     standardOutcome: StandardOutcome
@@ -515,213 +402,6 @@ export class BuilderStore {
     );
   }
 
-  // TODO type this parameter
-  private mutateObject(data: any) {
-    const dataProperties = Object.keys(data);
-
-    const learningObject: Partial<
-      LearningObject
-    > = this.learningObject.toPlainObject();
-
-    for (const k of dataProperties) {
-      learningObject[k] = data[k];
-    }
-
-    this.validator.validateLearningObject(learningObject, this.outcomes);
-
-    if (!this.validator.get('name')) {
-      this.learningObject = new LearningObject(learningObject);
-    }
-
-    this.saveObject(data, true);
-  }
-
-  private addContributor(user: User) {
-    this.learningObject.addContributor(user);
-    this.validator.validateLearningObject(this.learningObject);
-
-    this.saveObject(
-      {
-        contributors: this.learningObject.contributors.map(x => x.id)
-      },
-      true
-    );
-  }
-
-  private removeContributor(user: User) {
-    const index = this.learningObject.contributors
-      .map(x => x.username)
-      .indexOf(user.username);
-    if (index >= 0) {
-      this.learningObject.removeContributor(this.learningObject.contributors.indexOf(user));
-      this.validator.validateLearningObject(this.learningObject);
-
-      const message = this.validator.errors.submitErrors.get('contributors');
-      if (message) {
-        this.validator.errors.saveErrors.set('contributors', message);
-      }
-
-      this.saveObject(
-        {
-          contributors: this.learningObject.contributors.map(x => x.id)
-        },
-        true
-      );
-    } else {
-      console.error(
-        'Error removing contributor! User not found in contributors array!'
-      );
-    }
-  }
-  /**
-   * Adds Url to Learning Object's materials
-   *
-   * @memberof BuilderStore
-   */
-  private addUrl(): void {
-    this.learningObject.materials.urls.push({ url: '', title: '' });
-    this.learningObjectEvent.next(this.learningObject);
-  }
-
-  /**
-   * Updates Url at given index
-   * Also checks for valid Url and title field input against the supplied regex pattern
-   * @param {number} index
-   * @param {Url} url
-   * @memberof BuilderStore
-   */
-  private updateUrl(index: number, url: LearningObject.Material.Url): void {
-    const validUrlExpr = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+\%,;=.]+$/;
-    if (url.url.match(validUrlExpr) && url.title !== '') {
-      this.learningObject.materials.urls[index] = url;
-      this.learningObjectEvent.next(this.learningObject);
-      this.saveObject({
-        'materials.urls': this.learningObject.materials.urls
-      });
-    }
-  }
-
-  /**
-   * Removes Url from Learning Object's materials at given index
-   *
-   * @param {number} index
-   * @memberof BuilderStore
-   */
-  private removeUrl(index: number): void {
-    if (index !== undefined) {
-      this.learningObject.materials.urls.splice(index, 1);
-    }
-    this.learningObjectEvent.next(this.learningObject);
-    this.saveObject({
-      'materials.urls': this.learningObject.materials.urls
-    });
-  }
-
-  /**
-   * Updates Learning Object's material notes
-   *
-   * @param {string} notes
-   * @returns {*}
-   * @memberof BuilderStore
-   */
-  private updateNotes(notes: string): void {
-    this.learningObject.materials.notes = notes;
-    this.learningObjectEvent.next(this.learningObject);
-    this.saveObject({ 'materials.notes': notes });
-  }
-
-  /**
-   * Updates description for file and re-fetches Learning Object
-   *
-   * @param {*} fileId
-   * @param {*} description
-   * @returns void
-   * @memberof BuilderStore
-   */
-  private updateFileDescription(fileId: any, description: any): void {
-    const index = this.findFile(fileId);
-    this.learningObject.materials.files[index].description = description;
-    this.learningObjectService
-      .updateFileDescription(
-        this.learningObject.author.username,
-        this.learningObject.id,
-        fileId,
-        description
-      )
-      .then(e => {
-        this.learningObjectEvent.next(this.learningObject);
-      })
-      .catch(e =>
-        this.handleServiceError(e, BUILDER_ERRORS.UPDATE_FILE_DESCRIPTION)
-      );
-  }
-
-  /**
-   * Updates folder description if index is provided. Else creates adds new folder description
-   *
-   * @param {string} [path]
-   * @param {number} [index]
-   * @param {string} description
-   * @memberof BuilderStore
-   */
-  private updateFolderDescription(params: {
-    path?: string;
-    index?: number;
-    description: string;
-  }): void {
-    if (params.index !== undefined) {
-      this.learningObject.materials.folderDescriptions[
-        params.index
-      ].description = params.description;
-    } else {
-      this.learningObject.materials.folderDescriptions.push({
-        path: params.path,
-        description: params.description
-      });
-    }
-    this.learningObjectEvent.next(this.learningObject);
-    this.saveObject({
-      'materials.folderDescriptions': this.learningObject.materials
-        .folderDescriptions
-    });
-  }
-
-  /**
-   * Removes files from array of file meta
-   *
-   * @private
-   * @param {string[]} fileIds
-   * @memberof BuilderStore
-   */
-  private removeFiles(fileIds: string[]) {
-    fileIds.forEach(fileId => {
-      const index = this.findFile(fileId);
-      this.learningObject.materials.files.splice(index, 1);
-    });
-    this.learningObjectEvent.next(this.learningObject);
-    this.learningObjectEvent.next(this.learningObject);
-  }
-
-  /**
-   * Returns index of file
-   *
-   * @private
-   * @param {string} fileId
-   * @returns {number}
-   * @memberof BuilderStore
-   */
-  private findFile(fileId: string): number {
-    let index = -1;
-    for (let i = 0; i < this.learningObject.materials.files.length; i++) {
-      const file = this.learningObject.materials.files[i];
-      if (file.id === fileId) {
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
-
   ///////////////////////////
   //  SERVICE INTERACTION  //
   ///////////////////////////
@@ -736,22 +416,6 @@ export class BuilderStore {
     this.validator.submissionMode = true;
 
     return this.validator.saveable && this.validator.submittable;
-  }
-
-  public cancelSubmission(): void {
-    this.collectionService
-      .unsubmit({
-        learningObjectId: this.learningObject.id,
-        userId: this.learningObject.author.id,
-      })
-      .then(() => {
-        this.learningObject.status = LearningObject.Status.UNRELEASED;
-        this.validator.submissionMode = false;
-        this.learningObjectEvent.next(this.learningObject);
-      })
-      .catch(e => {
-        this.handleServiceError(e, BUILDER_ERRORS.CANCEL_SUBMISSION);
-      });
   }
 
   /**
@@ -1019,29 +683,4 @@ export class BuilderStore {
       this.serviceError$.next(builderError);
     }
   }
-}
-
-/**
- * Generate a unique id. (straight from stack overflow)
- * Used for learning outcomes that are blank and cannot be saved. Replaced once saveable with an ID from the service
- */
-function genId() {
-  const S4 = () => {
-    // tslint:disable-next-line:no-bitwise
-    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-  };
-  return (
-    S4() +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    S4() +
-    S4()
-  );
 }

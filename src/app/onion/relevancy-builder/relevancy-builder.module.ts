@@ -11,7 +11,6 @@ import { RelevancyBuilderComponent } from './relevancy-builder.component';
 import { OnionSharedModule } from '../shared/onion-shared.module';
 import { BuilderNavbarComponent } from './components/builder-navbar/builder-navbar.component';
 import { ColumnWrapperComponent } from './components/column-wrapper/column-wrapper.component';
-import { EditorActionPanelComponent } from './components/editor-action-panel/editor-action-panel.component';
 import { OutcomeComponent } from './components/outcome/outcome.component';
 import { OutcomeTypeaheadComponent } from './components/outcome/outcome-typeahead/outcome-typeahead.component';
 import { ScafoldComponent } from './components/scafold/scafold.component';
@@ -25,7 +24,6 @@ import { OutcomeListItemComponent } from './components/standard-outcomes/outcome
     RelevancyBuilderComponent,
     BuilderNavbarComponent,
     ColumnWrapperComponent,
-    EditorActionPanelComponent,
     OutcomeComponent,
     OutcomeTypeaheadComponent,
     ScafoldComponent,
