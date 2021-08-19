@@ -57,26 +57,26 @@ export class DraggableLearningObjectComponent implements OnInit {
     }
 
     // ok now we know we need to truncate text
-    let outcome = text.substring(0, max);
-    const spaceAfter = text.substring(max).indexOf(' ') + outcome.length; // first space before the truncation index
-    const spaceBefore = outcome.lastIndexOf(' '); // first space after the truncation index
+    let guideline = text.substring(0, max);
+    const spaceAfter = text.substring(max).indexOf(' ') + guideline.length; // first space before the truncation index
+    const spaceBefore = guideline.lastIndexOf(' '); // first space after the truncation index
     const punc = ['.', '!', '?'];
 
     // if we've truncated such that the last char is a space or a natural punctuation, just return
-    if (punc.includes(outcome.charAt(outcome.length - 1))) {
-      outcome = outcome.trim();
-    } else if (outcome.charAt(outcome.length - 1) === ' ') {
-      outcome = outcome.substring(0, outcome.length - 1).trim() + '...';
+    if (punc.includes(guideline.charAt(guideline.length - 1))) {
+      guideline = guideline.trim();
+    } else if (guideline.charAt(guideline.length - 1) === ' ') {
+      guideline = guideline.substring(0, guideline.length - 1).trim() + '...';
     }
 
     // otherwise we're in the middle of a word and should attempt to finsih the word before adding an ellpises
-    if (spaceAfter - outcome.length <= margin) {
-      outcome = text.substring(0, spaceAfter + 1).trim();
+    if (spaceAfter - guideline.length <= margin) {
+      guideline = text.substring(0, spaceAfter + 1).trim();
     } else {
-      outcome = text.substring(0, spaceBefore + 1).trim();
+      guideline = text.substring(0, spaceBefore + 1).trim();
     }
 
-    return outcome.trim() + '...';
+    return guideline.trim() + '...';
   }
 
   stripHtml(str: string): string {

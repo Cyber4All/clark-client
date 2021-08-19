@@ -223,10 +223,6 @@ export const USER_ROUTES = {
       learningObjectId
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
-  GET_OUTCOMES(username: string, learningObjectId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/
-      ${encodeURIComponent(learningObjectId)}/outcomes`;
-  },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId
@@ -554,5 +550,33 @@ export const RELEVANCY_ROUTES = {
       )}/learning-objects/${encodeURIComponent(
         id
       )}/relevancy-check`;
+  }
+};
+
+export const STANDARD_GUIDELINE_ROUTES = {
+  /**
+   * SEARCH ROUTES
+   */
+
+  // Searches frameworks given a text query
+  SEARCH_FRAMEWORKS(params: {
+    text?: string,
+    year?: string,
+    levels?: string,
+    page?: string,
+    limit?: string,
+    type?: string
+  }) {
+    return `${environment.apiURL}/frameworks?
+      text=${encodeURIComponent(params.text)}&
+      year=${encodeURIComponent(params.year)}&
+      levels=${encodeURIComponent(params.levels)}&
+      page=${encodeURIComponent(params.page)}&
+      limit=${encodeURIComponent(params.limit)}&
+      type=${encodeURIComponent(params.type)}`;
+  },
+  // Searches guidelines/standards given a text, year, and level query
+  SEARCH_GUIDELINES(query: string) {
+    return `${environment.apiURL}/guidelines?${query}`;
   }
 };

@@ -1,7 +1,7 @@
 import { LearningOutcome } from './learning-outcome';
 import { levels, taxonomy } from '@cyber4all/clark-taxonomy';
 import { LEARNING_OUTCOME_ERROR_MESSAGES } from './error-messages';
-import { StandardOutcome } from '../standard-outcome/standard-outcome';
+import { Guideline } from '../guideline/guideline';
 
 // Defaults
 
@@ -10,7 +10,7 @@ const validBloom = levels[0];
 // @ts-ignore
 const validVerb = (taxonomy.taxons[validBloom] as { verbs: string[] }).verbs[0];
 const validText = 'This is valid text';
-const validStandardOutcome = new StandardOutcome({
+const validGuideline = new Guideline({
   author: 'Some developer',
   name: 'Valid StandardOutcome',
   date: Date.now().toString(),
@@ -36,7 +36,7 @@ describe('Class: LearningOutcome', () => {
       bloom: validBloom,
       verb: validVerb,
       text: validText,
-      mappings: [validStandardOutcome],
+      mappings: [validGuideline],
     };
     const newOutcome = new LearningOutcome(someOutcome);
     expect(newOutcome).toBeDefined();
@@ -89,12 +89,12 @@ describe('Class: LearningOutcome', () => {
     }
   });
   it('should map learning outcome to standard outcome', () => {
-    const index = outcome.mapTo(validStandardOutcome);
-    expect(outcome.mappings[index]).toEqual(validStandardOutcome);
+    const index = outcome.mapTo(validGuideline);
+    expect(outcome.mappings[index]).toEqual(validGuideline);
   });
   it('should unmap learning outcome from standard outcome', () => {
-    const index = outcome.mapTo(validStandardOutcome);
-    expect(outcome.unmap(index)).toEqual(validStandardOutcome);
+    const index = outcome.mapTo(validGuideline);
+    expect(outcome.unmap(index)).toEqual(validGuideline);
     expect(outcome.mappings[index]).not.toBeDefined();
   });
 });

@@ -17,7 +17,7 @@ import { CollectionService } from '../../core/collection.service';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { ModalListElement, ModalService, Position } from '../../shared/modules/modals/modal.module';
 import { LearningObjectService } from '../learning-object.service';
-import { OutcomeService } from 'app/core/outcome.service';
+import { GuidelineService } from 'app/core/guideline.service';
 
 @Component({
   selector: 'cube-browse',
@@ -139,7 +139,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private auth: AuthService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
-    private outcomeService: OutcomeService,
+    private guidelineService: GuidelineService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -165,7 +165,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       */
       try {
         // fill outcomes array in filters
-        this.outcomeSources = await this.outcomeService.getSources().toPromise();
+        this.outcomeSources = await this.guidelineService.getSources().toPromise();
         this.filters[3].values = this.outcomeSources.map(o => ({ name: o }));
       } catch (err) {
         // remove the guidelines section of the filters since we couldn't load guidelines

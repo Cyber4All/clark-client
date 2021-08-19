@@ -21,7 +21,7 @@
   <virtual-scroller #scroll [style.height]="'400px'" [items]="items" [enableUnequalChildrenSizes]="true">
     <ng-container *ngIf="!loading; else loadingTemplate">
       <div *ngFor="let i of scroll.viewPortItems">
-        <clark-outcomes-list-item [outcome]="i" [selected]="selectedOutcomeIDs.includes(i.id)" (toggleMap)="toggleStandardOutcome(i, $event)"></clark-outcomes-list-item>
+        <clark-outcomes-list-item [guideline]="i" [selected]="selectedOutcomeIDs.includes(i.guidelineId)" (toggleMap)="toggleStandardOutcome(i, $event)"></clark-outcomes-list-item>
       </div>
     </ng-container>
   </virtual-scroller>

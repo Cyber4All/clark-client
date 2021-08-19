@@ -21,7 +21,6 @@ export class RelevancyDateComponent implements OnInit {
   ngOnInit(): void {
     // Set the current nextCheck
     this.selected = new Date(this.learningObject.nextCheck);
-    this.selected.setFullYear(this.selected.getFullYear() + 1);
 
     // Set min and maxes for calendar picks
     this.minDate = new Date();

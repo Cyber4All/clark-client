@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 import { NavbarService } from './navbar.service';
 
 import { LibraryService } from './library.service';
-import { OutcomeService } from './outcome.service';
+import { GuidelineService } from './guideline.service';
 import { CookieModule } from 'ngx-cookie';
 
 import { RatingService } from './rating.service';
@@ -46,7 +46,7 @@ export class CoreModule {
         CollectionService,
         EditorService,
         UserService,
-        OutcomeService,
+        GuidelineService,
         MessagesService,
         UserVerifiedGuard,
         RatingService,
