@@ -6,7 +6,7 @@
         <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
         <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
         <span *ngIf="learningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
-        <span *ngIf="learningObject.status === 'released'" matBadge="R" matBadgeOverlap="false" [matBadgeHidden]="learningObject.revision" matBadgeColor="warn"><i class="fas fa-eye"></i></span>
+        <span *ngIf="learningObject.status === 'released'" matBadge="R" matBadgeOverlap="false" [matBadgeHidden]="!learningObject.revision" matBadgeColor="warn" matBadgeSize="small"><i class="fas fa-eye"></i></span>
         <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
       </div>
     </div>
@@ -32,7 +32,10 @@
 <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="toggleContextMenu()">
   <div #contextMenu>
     <ul (activate)="toggleContextMenu($event)">
-      <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="learningObject.status !== 'released'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="learningObject.status === 'released' && !learningObject.revison"><i class="fal fa-plus"></i>Create Revision</li>
+      <li *ngIf="learningObject.status === 'released' && (learningObject.revision && learningObject.revision.status !== 'unreleased')"><i class="far fa-pencil"></i>Edit Revision</li>
+      <li *ngIf="learningObject.status === 'released' && (learningObject.revision && learningObject.revision.status === 'unreleased')"><i class="far fa-user">View Author Contact</i></li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>

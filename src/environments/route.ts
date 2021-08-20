@@ -129,6 +129,15 @@ export const USER_ROUTES = {
       username)}/learning-objects/${encodeURIComponent(
         learningObjectId)}/revisions/${encodeURIComponent(revisionId)}`;
   },
+  DELETE_LEARNING_OBJECT_REVISION(username, cuid, version) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${encodeURIComponent(
+      cuid
+    )}/version/${encodeURIComponent(
+      version
+    )}`;
+  },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username

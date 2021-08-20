@@ -59,9 +59,10 @@ export class LearningObjectListItemComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private http: HttpClient,
     private toaster: ToastrOvenService,
-  ) {}
+  ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
+    console.log(this.learningObject);
     if (changes.status) {
       this.statuses
         .getDescription(
