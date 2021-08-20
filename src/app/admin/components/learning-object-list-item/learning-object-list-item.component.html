@@ -35,7 +35,7 @@
       <li *ngIf="learningObject.status !== 'released'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li *ngIf="learningObject.status === 'released' && !learningObject.revison"><i class="fal fa-plus"></i>Create Revision</li>
       <li *ngIf="learningObject.status === 'released' && (learningObject.revision && learningObject.revision.status !== 'unreleased')"><i class="far fa-pencil"></i>Edit Revision</li>
-      <li *ngIf="learningObject.status === 'released' && (learningObject.revision && learningObject.revision.status === 'unreleased')"><i class="far fa-user">View Author Contact</i></li>
+      <li [routerLink]="['/users', learningObject.author.username]"><i class="far fa-user"></i>View Author Contact</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
