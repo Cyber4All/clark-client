@@ -17,7 +17,7 @@
 </div>
 
 <ng-template #resultsTemplate>
-  <virtual-scroller #searchResultsScroller [style.height]="'calcVirtualScrollerHeight()'" [items]="searchResults">
+  <virtual-scroller *ngIf="searchResults && searchResults.length > 0; else noResultsTemplate " #searchResultsScroller [style.height]="'calcVirtualScrollerHeight()'" [items]="searchResults">
     <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (activate)="addEvaluator(user)">
       <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
       {{ user.username }} - {{ user.name | titlecase }} from {{ user.organization | titlecase }}

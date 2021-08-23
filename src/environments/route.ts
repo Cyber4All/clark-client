@@ -98,8 +98,8 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/profile`;
   },
-  SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search?text=${encodeURIComponent(querystring.stringify(query))}`;
+  SEARCH_USERS(query: any) {
+    return `${environment.apiURL}/users/search?${querystring.stringify(query)}`;
   },
   // Deprecated
   VALIDATE_TOKEN(username) {
