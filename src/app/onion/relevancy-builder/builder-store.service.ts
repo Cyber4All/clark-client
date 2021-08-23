@@ -22,24 +22,8 @@ import { RelevancyService } from 'app/core/relevancy.service';
  * @enum {number}
  */
 export enum BUILDER_ACTIONS {
-  CREATE_OUTCOME,
-  DELETE_OUTCOME,
-  MUTATE_OUTCOME,
   MAP_STANDARD_OUTCOME,
   UNMAP_STANDARD_OUTCOME,
-  MUTATE_OBJECT,
-  ADD_MATERIALS,
-  ADD_FILE_META,
-  DELETE_MATERIALS,
-  ADD_CONTRIBUTOR,
-  REMOVE_CONTRIBUTOR,
-  ADD_URL,
-  UPDATE_URL,
-  REMOVE_URL,
-  UPDATE_MATERIAL_NOTES,
-  UPDATE_FILE_DESCRIPTION,
-  UPDATE_FOLDER_DESCRIPTION,
-  DELETE_FILES
 }
 
 export enum BUILDER_ERRORS {
@@ -241,21 +225,13 @@ export class BuilderStore {
       });
   }
 
+  /**
+   * Service call to retrieve all topics in our system
+   *
+   * @returns array of topics
+   */
   getTopics(): Promise<Topic[]> {
     return this.relevancyService.getTopics();
-  }
-
-  /**
-   * Creates and stores a new blank learning object
-   *
-   * @returns {LearningObject} new blank learning object
-   * @memberof BuilderStore
-   */
-  makeNew(): LearningObject {
-    this.titleService.setTitle('New Learning Object | CLARK');
-    this.learningObject = new LearningObject({ author: this.auth.user });
-    this.outcomes = new Map();
-    return this.learningObject;
   }
 
   /**
@@ -364,18 +340,6 @@ export class BuilderStore {
   ///////////////////////////
   //  SERVICE INTERACTION  //
   ///////////////////////////
-
-  /**
-   * Checks for submittable object, returns true if it's submittable and false otherwise
-   *@param {string} [collection]
-   * @memberof BuilderStore
-   */
-  public canSubmit(): boolean {
-    this.validator.validateLearningObject(this.learningObject, this.outcomes);
-    this.validator.submissionMode = true;
-
-    return this.validator.saveable && this.validator.submittable;
-  }
 
   /**
    * Handles saving a LearningObject

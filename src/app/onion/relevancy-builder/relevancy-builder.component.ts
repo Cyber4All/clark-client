@@ -157,9 +157,6 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
               }
             }
           });
-        } else {
-          // otherwise instruct store to initialize and store a blank learning object
-          this.store.makeNew();
         }
       });
 
