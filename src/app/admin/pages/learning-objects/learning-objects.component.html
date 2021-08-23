@@ -18,7 +18,7 @@
   
   <div #list class="list" main>  
     <div class="add_evaluators">
-      <button *ngIf="selected.size > 0" class="good_button" (activate)="toggleAddEvaluatorModal(true)">Add Evaluators<i id="eval" class="fal fa-user-plus"></i></button>
+      <button *ngIf="selected.size > 0" class="good_button" (activate)="toggleAddEvaluatorModal(true)">Assign Evaluators<i id="eval" class="fal fa-user-plus"></i></button>
     </div>
     <div #listInner>  
       <div class="list__body">  
@@ -88,6 +88,6 @@
 
 <clark-popup *ngIf="showAddEvaluator" (closed)="toggleAddEvaluatorModal(false)">
   <div class="modal-container" #popupInner>
-    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [highlightedLearningObjects]="selectedLearningObjects" [statusDescription]="statusDescription"></clark-add-evaluator>
+    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [highlightedLearningObjects]="selectedLearningObjects"></clark-add-evaluator>
   </div>
 </clark-popup>

@@ -37,7 +37,7 @@
       <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
-      <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Add Evaluator</li>
+      <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
     </ul>
@@ -54,7 +54,7 @@
 
 <clark-popup *ngIf="showAddEvaluator" (closed)="toggleAddEvaluatorModal(false)">
   <div class="modal-container" #popupInner>
-    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [highlightedLearningObjects]="[learningObject]" [statusDescription]="statusDescription"></clark-add-evaluator>
+    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [highlightedLearningObjects]="[learningObject]"></clark-add-evaluator>
   </div>
 </clark-popup>
 

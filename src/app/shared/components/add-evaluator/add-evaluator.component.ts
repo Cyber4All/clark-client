@@ -14,7 +14,6 @@ export class AddEvaluatorComponent implements OnInit {
   selectedEvaluators: User[];
 
   @Input() highlightedLearningObjects: LearningObject[];
-  @Input() statusDescription;
   @Output() close: EventEmitter<void> = new EventEmitter();
 
   constructor(private relevancyService: RelevancyService, private toaster: ToastrOvenService) { }
