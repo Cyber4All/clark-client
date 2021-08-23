@@ -35,6 +35,7 @@
       <li *ngIf="learningObject.status !== 'released'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li *ngIf="learningObject.status === 'released' && !learningObject.revison"><i class="fal fa-plus"></i>Create Revision</li>
       <li *ngIf="learningObject.status === 'released' && (learningObject.revision && learningObject.revision.status !== 'unreleased')"><i class="far fa-pencil"></i>Edit Revision</li>
+      <li (click)="toggleRevisionDelete(true)"><i class="far fa-trash-alt"></i>Delete Revision</li>
       <li [routerLink]="['/users', learningObject.author.username]"><i class="far fa-user"></i>View Author Contact</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
@@ -47,8 +48,10 @@
 <clark-popup *ngIf="showUnreleaseConfirm" (closed)="toggleUnreleaseConfirm(false)">
   <div class="modal-container center" #popupInner>
     <p>Are you sure you want to unrelease this learning object? This action will change the status to proofing.</p>
-    <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
-    <button (click)="closeUnreleaseModal(false)" class="button">No</button>
+    <div class="btn-group center">
+      <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
+      <button (click)="closeUnreleaseModal(false)" class="button good">No</button>
+    </div>
   </div>
 </clark-popup>
 
@@ -61,5 +64,15 @@
 <clark-popup *ngIf="showRelevancyDate" (closed)="toggleRelevancyDate(false)">
   <div class="modal-container" #popupInner>
     <clark-relevancy-date [learningObject]="learningObject" (close)="toggleRelevancyDate(false)"></clark-relevancy-date>
+  </div>
+</clark-popup>
+
+<clark-popup *ngIf="showDeleteRevisionConfirmation" (closed)="toggleRevisionDelete(false)">
+  <div class="modal-container center" #popupInner>
+    <p>Are you sure you want to delete the unreleased revision of this learning object?</p>
+    <div class="btn-group center">
+      <button (click)="deleteRevision()" class="button bad">Yes <i class="far fa-trash-alt"></i></button>
+      <button (click)="toggleRevisionDelete(false)" class="button neutral">Cancel</button>
+    </div>
   </div>
 </clark-popup>

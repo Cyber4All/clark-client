@@ -46,6 +46,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   showRelevancyDate: boolean;
 
+  showDeleteRevisionConfirmation: boolean;
   // flags
   meatballOpen = false;
 
@@ -164,6 +165,14 @@ export class LearningObjectListItemComponent implements OnChanges {
 
    toggleRelevancyDate(toggle: boolean) {
     this.showRelevancyDate = toggle;
+   }
+
+   /**
+    * Toggles the delete revision selection
+    */
+
+   toggleRevisionDelete(toggle: boolean) {
+     this.showDeleteRevisionConfirmation = toggle;
    }
 
 }
