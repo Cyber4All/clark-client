@@ -6,14 +6,11 @@ import {
   EventEmitter,
   Output,
   OnDestroy,
-  Input,
 } from '@angular/core';
 import { User } from '@entity';
 import { UserService } from 'app/core/user.service';
-import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { groupCollapsed } from 'console';
 
 @Component({
   selector: 'clark-user-dropdown',
@@ -87,15 +84,11 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
    */
   findUser(query: string) {
     if (query && query !== '') {
-      this.userService.searchUsers({ text: query }).then((results: User[]) => {
-        this.searchResults = results.map( (obj: User) => {
-          const groups = ['admin', 'editor', 'curator'];
-          for (let i = 0; i < groups.length; i++) {
-            if ( obj.accessGroups.includes(groups[i]) ) {
-              return obj;
-            }
-          }
-        });
+      this.userService.searchUsers({
+        text: query,
+        accessGroups: ['admin', 'curator', 'editor']
+      }).then( (results: User[]) => {
+        this.searchResults = results;
       });
       this.loading = false;
     }

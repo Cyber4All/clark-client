@@ -43,4 +43,5 @@ export interface UserQuery {
   currPage?: number;
   limit?: number;
   text?: string;
+  accessGroups?: string[];
 }

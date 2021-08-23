@@ -89,19 +89,6 @@ export class User {
     }
   }
 
-  _accessGroups: string[];
-  /**
-   * @property {string[]} accessGroups a users privilege groups
-   */
-  get accessGroups(): string[] {
-    return this._accessGroups;
-  }
-  set accessGroups(accessGroups: string[]) {
-    if (accessGroups && accessGroups.length) {
-      this._accessGroups = accessGroups;
-    }
-  }
-
   _organization: string;
   /**
    * @property {string} organization a user's associate organization
@@ -150,7 +137,6 @@ export class User {
     this._emailVerified = false;
     this._organization = '';
     this._bio = '';
-    this._accessGroups = [];
     this._createdAt = Date.now().toString();
     if (user) {
       this.copyUser(user);
@@ -178,7 +164,6 @@ export class User {
     this.bio = user.bio || this.bio;
     this._createdAt = user.createdAt || this.createdAt;
     this.cognitoIdentityId = user.cognitoIdentityId;
-    this.accessGroups = user.accessGroups;
   }
 
   /**
@@ -197,7 +182,6 @@ export class User {
       organization: this.organization,
       bio: this.bio,
       createdAt: this.createdAt,
-      accessGroups: this.accessGroups,
       cognitoIdentityId: this.cognitoIdentityId
     };
     return user;
