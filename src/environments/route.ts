@@ -550,6 +550,11 @@ export const RELEVANCY_ROUTES = {
       )}/learning-objects/${encodeURIComponent(
         id
       )}/relevancy-check`;
+  },
+
+  // Assigns multiple users to evaluate multiple learning objects
+  ASSIGN_EVALUATORS() {
+    return `${environment.apiURL}/learning-objects/evaluators`;
   }
 };
 

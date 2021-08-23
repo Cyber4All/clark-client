@@ -15,12 +15,16 @@
     [adminOrEditor]="isAdminOrEditor"
     [showStatus]="true"
   ></clark-admin-filter-search>
-
-  <div #list class="list" main>
-    <div #listInner>
-      <div class="list__body">
+  
+  <div #list class="list" main>  
+    <div class="add_evaluators">
+      <button *ngIf="selected.size > 0" class="good_button" (activate)="toggleAddEvaluatorModal(true)">Add Evaluators<i id="eval" class="fal fa-user-plus"></i></button>
+    </div>
+    <div #listInner>  
+      <div class="list__body">  
         <div *ngIf="learningObjects?.length || loading; else emptyTemplate">
           <div #headers class="body__column-headers">
+            <clark-checkbox role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
             <div>Status</div>
             <div>Name</div>
             <div>Author</div>
@@ -41,6 +45,8 @@
               *ngFor="let l of scroll.viewPortItems"
               [learningObject]="l"
               [status]="l.status"
+              [selected]="this.selected.get(l.id) !== undefined"
+              (select)="toggleSelect(l, $event, i)"
               (viewUser)="getUserLearningObjects($event)"
               (changeStatus)="openChangeStatusModal($event)"
             >
@@ -79,3 +85,9 @@
     You've reached the end of the list!
   </div>
 </ng-template>
+
+<clark-popup *ngIf="showAddEvaluator" (closed)="toggleAddEvaluatorModal(false)">
+  <div class="modal-container" #popupInner>
+    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [highlightedLearningObjects]="selectedLearningObjects" [statusDescription]="statusDescription"></clark-add-evaluator>
+  </div>
+</clark-popup>

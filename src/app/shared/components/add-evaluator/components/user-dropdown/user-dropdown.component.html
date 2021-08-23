@@ -1,0 +1,38 @@
+<div class="content-header"> New Evaluators </div>
+<div class="user-dropdown">
+  <div class="input-container">
+    <i class="fas fa-search"></i> 
+    <input type="text" aria-label="Find users by their name, username, or email address." class="user-dropdown__search-input" placeholder="Search for Evaluators" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
+  </div>
+  <ul *ngIf="showDropdown" class="user-dropdown__list">
+      <ng-container *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
+  </ul>
+
+  <div *ngIf="selectedEvaluators && selectedEvaluators.length" class="evaluator-details-container">
+      <div class="pill" *ngFor="let user of selectedEvaluators">
+        {{ user.name | titlecase }}
+        <button (click)="removeEvaluator(user)" class="pill-button"><i class="fas fa-times"></i></button>
+      </div>
+  </div>
+</div>
+
+<ng-template #resultsTemplate>
+  <virtual-scroller #searchResultsScroller [style.height]="'calcVirtualScrollerHeight()'" [items]="searchResults">
+    <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (activate)="addEvaluator(user)">
+      <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
+      {{ user.username }} - {{ user.name | titlecase }} from {{ user.organization | titlecase }}
+    </li>
+  </virtual-scroller>
+</ng-template>
+
+<ng-template #loadingTemplate>
+  <span class="user-dropdown__message">
+    <i class="far fa-spinner-third fa-spin"></i>
+  </span>
+</ng-template>
+
+<ng-template #noResultsTemplate>
+  <span class="user-dropdown__message">
+    No results!
+  </span>
+</ng-template>

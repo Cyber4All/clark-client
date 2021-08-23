@@ -5,6 +5,8 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
+  Input,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
@@ -62,12 +64,22 @@ export class LearningObjectsComponent
 
   topAdjustment: number;
 
+  showAddEvaluator: boolean;
+
+  @Input() showOptions: boolean;
+
+  // Selection variables
+  selected: Map<string, LearningObject> = new Map();
+  selectedLearningObjects: LearningObject[] = [];
+  allSelected = false;
+
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private collectionService: CollectionService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -270,6 +282,80 @@ export class LearningObjectsComponent
     this.learningObjects = [];
 
     this.getLearningObjects();
+  }
+
+  /**
+   * Selects all learning objects
+   */
+  selectAll() {
+    this.allSelected = !this.allSelected;
+    if (this.allSelected) {
+      this.selected = new Map(
+        // @ts-ignore
+        this.learningObjects.map((learningObject) => [learningObject.id, learningObject])
+      );
+      this.selectedLearningObjects = this.learningObjects;
+      this.cd.detectChanges();
+    } else {
+      this.selected = new Map();
+      this.selectedLearningObjects = [];
+    }
+  }
+
+   /**
+   * Decides based on the value whether to select or deselect the learning object
+   * @param l learning object to be selected
+   * @param value boolean, true if object is selected, false otherwise
+   */
+  toggleSelect(l: LearningObject, value: boolean ) {
+    if (value === true) {
+      this.selectLearningObject(l);
+    } else {
+      this.deselectLearningObject(l);
+    }
+  }
+
+    /**
+   * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+   * @param l Learning Object to be selected
+   */
+  selectLearningObject(l: LearningObject) {
+    this.selected.set(l.id, l );
+    this.selectedLearningObjects.push(l);
+    this.cd.detectChanges();
+
+    if (
+      this.selected.size === this.learningObjects.length &&
+      !this.allSelected
+    ) {
+      this.allSelected = true;
+    }
+  }
+
+  /**
+   * Fired on select of a Learning Object, takes the object and removes it from the list of selected Learning Objects
+   * @param l Learning Object to be deselected
+   */
+  deselectLearningObject(l: LearningObject) {
+    this.selected.delete(l.id);
+    const index = this.selectedLearningObjects.indexOf(l);
+    if (index !== -1) {
+      this.selectedLearningObjects.splice(index, 1);
+    }
+    this.cd.detectChanges();
+
+    if (this.selected.size < this.learningObjects.length && this.allSelected) {
+      this.allSelected = false;
+    }
+  }
+
+  /**
+   * Toggles the add evaluator modal from showing/hiding
+   *
+   * @param value True if showing, false otherwise
+   */
+  toggleAddEvaluatorModal(value: boolean) {
+    this.showAddEvaluator = value;
   }
 
   ngOnDestroy() {
