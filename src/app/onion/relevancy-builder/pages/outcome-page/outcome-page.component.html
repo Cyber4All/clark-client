@@ -25,7 +25,7 @@
       </div>
     </div>
     <div *ngIf="outcomes.size" right>
-      <clark-standard-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-standard-outcomes>
+      <clark-relevancy-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-relevancy-outcomes>
     </div>
   </onion-column-wrapper>
   

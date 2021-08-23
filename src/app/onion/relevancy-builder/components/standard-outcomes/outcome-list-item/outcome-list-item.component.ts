@@ -8,7 +8,7 @@ import { SuggestedOutcome } from '../standard-outcomes.component';
 })
 export class OutcomeListItemComponent implements OnInit {
 
-  @Input() outcome: SuggestedOutcome;
+  @Input() guideline: SuggestedOutcome;
   @Input() selected: boolean;
 
   @Output() toggleMap: EventEmitter<boolean> = new EventEmitter();

@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import {
   LearningObject,
   LearningOutcome,
-  StandardOutcome
+  Guideline
 } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
-import { CollectionService } from 'app/core/collection.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
@@ -239,51 +238,8 @@ export class BuilderStore {
       });
   }
 
-  /**
-   * Retrieves materials for learning object
-   *
-   * @returns void
-   * @memberof BuilderStore
-   */
-  fetchMaterials(): void {
-    this.learningObjectService
-      .getMaterials(this.learningObject.author.username, this.learningObject.id)
-      .then(materials => {
-        this.learningObject.materials = materials;
-        this.learningObjectEvent.next(this.learningObject);
-      })
-      .catch(e => {
-        this.handleServiceError(e, BUILDER_ERRORS.FETCH_OBJECT_MATERIALS);
-      });
-  }
-
   getTopics(): string[] {
     return ['I', 'am', 'a', 'genius'];
-  }
-
-  /**
-   * Retrieves the Learning Objects children
-   *
-   */
-  async getChildren(): Promise<LearningObject[]> {
-    if (this.learningObject.resourceUris !== undefined) {
-      const children = this.uriRetriever.getLearningObjectChildren(
-        {uri: this.learningObject.resourceUris.children }
-      );
-      return children.toPromise();
-    } else {
-      await this.fetch(this.learningObject.id);
-      return this.getChildren();
-    }
-  }
-
-  /**
-   * Sets the learning objects children after they have been reorderd
-   */
-  async setChildren(children: string[]) {
-    this.serviceInteraction$.next(true);
-    await this.learningObjectService.setChildren(this.learningObject.id, this.learningObject.author.username, children);
-    this.serviceInteraction$.next(false);
   }
 
   /**
@@ -328,12 +284,12 @@ export class BuilderStore {
       case BUILDER_ACTIONS.MAP_STANDARD_OUTCOME:
         return await this.mapStandardOutcomeMapping(
           data.id,
-          data.standardOutcome
+          data.guideline
         );
       case BUILDER_ACTIONS.UNMAP_STANDARD_OUTCOME:
         return await this.unmapStandardOutcomeMapping(
           data.id,
-          data.standardOutcome
+          data.guideline
         );
     }
   }
@@ -355,10 +311,10 @@ export class BuilderStore {
   ///////////////////////////////
   private mapStandardOutcomeMapping(
     id: string,
-    standardOutcome: StandardOutcome
+    guideline: Guideline
   ) {
     const outcome = this.outcomes.get(id);
-    outcome.mappings.push(standardOutcome);
+    outcome.mappings.push(guideline);
 
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
@@ -368,7 +324,7 @@ export class BuilderStore {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        mappings: outcome.mappings.map(x => x.id)
+        mappings: outcome.mappings.map(x => x.guidelineId)
       },
       true
     );
@@ -376,13 +332,13 @@ export class BuilderStore {
 
   private unmapStandardOutcomeMapping(
     id: string,
-    standardOutcome: LearningOutcome
+    standardOutcome: any
   ) {
     const outcome = this.outcomes.get(id);
     const mappedOutcomes = outcome.mappings;
 
     for (let i = 0, l = mappedOutcomes.length; i < l; i++) {
-      if (mappedOutcomes[i].id === standardOutcome.id) {
+      if (mappedOutcomes[i].guidelineId === standardOutcome.guidelineId) {
         outcome.mappings.splice(i, 1);
         break;
       }
@@ -396,7 +352,7 @@ export class BuilderStore {
         id:
           (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
             .serviceId || outcome.id,
-        mappings: mappedOutcomes.map(x => x.id)
+        mappings: mappedOutcomes.map(x => x.guidelineId)
       },
       true
     );

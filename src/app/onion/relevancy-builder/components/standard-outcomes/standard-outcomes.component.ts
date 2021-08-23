@@ -7,17 +7,19 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { LearningOutcome, StandardOutcome } from '@entity';
-import { OutcomeService } from 'app/core/outcome.service';
+import { LearningOutcome, Guideline } from '@entity';
+import { GuidelineService } from 'app/core/guideline.service';
 import { BuilderStore } from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';
+import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 
-export interface SuggestedOutcome extends StandardOutcome {
+export interface SuggestedOutcome extends SearchItemDocument {
   suggested?: boolean;
 }
+
 @Component({
-  selector: 'clark-standard-outcomes',
+  selector: 'clark-relevancy-outcomes',
   templateUrl: './standard-outcomes.component.html',
   styleUrls: ['./standard-outcomes.component.scss']
 })
@@ -28,7 +30,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
 
   @Output()
   toggleMapping: EventEmitter<{
-    standardOutcome: StandardOutcome;
+    standardOutcome: Guideline;
     value: boolean;
   }> = new EventEmitter();
 
@@ -50,22 +52,22 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   loading = undefined;
 
   constructor(
-    private outcomeService: OutcomeService,
+    private guidelineService: GuidelineService,
     private store: BuilderStore
   ) {
-    // handle searching
-    this.searchString$
-      .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
-      .subscribe(() => {
-        this.performSearch();
-      });
+   // handle searching
+   this.searchString$
+    .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
+    .subscribe(() => {
+      this.performSearch();
+    });
 
-    // handle suggesting
-    this.suggestString$
-      .pipe(takeUntil(this.componentDestroyed$), debounceTime(1000))
-      .subscribe((val: string) => {
-        this.performSuggest(val);
-      });
+  // handle suggesting
+  this.suggestString$
+    .pipe(takeUntil(this.componentDestroyed$), debounceTime(1000))
+    .subscribe((val: string) => {
+      this.performSuggest(val);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -98,7 +100,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
 
             // update the selected outcomes list
             if (outcome.mappings) {
-              this.selectedOutcomeIDs = outcome.mappings.map((x) => x.id);
+              this.selectedOutcomeIDs = outcome.mappings.map((x) => x.guidelineId);
             }
           } else {
             this.suggestions = [];
@@ -108,9 +110,9 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     }
   }
 
-  toggleStandardOutcome(standardOutcome: StandardOutcome, value: boolean) {
-    standardOutcome = new StandardOutcome(standardOutcome);
-    this.toggleMapping.emit({ standardOutcome, value });
+  toggleStandardOutcome(guideline: any, value: boolean) {
+    guideline = new Guideline(guideline);
+    this.toggleMapping.emit({ standardOutcome: guideline, value: value });
   }
 
   performSearch() {
@@ -120,22 +122,22 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     } else {
       // perform search
       this.loading = 'search';
-      this.outcomeService
-        .getOutcomes({
+      this.guidelineService
+        .getGuidelines({
           text: this.searchStringValue,
         })
-        .then((results) => {
+        .then((res) => {
           if (this.suggestions.length) {
             // if we have suggestions, tag any of the search results that are also suggestions
-            const suggestedIds: string[] = this.suggestions.map((o) => o.id);
-            this.searchResults = results.outcomes.map((o) => {
-              // @ts-ignore temporary non-saveable property indicating whether or not this outcome
+            const suggestedIds: string[] = this.suggestions.map((o) => o._id);
+            this.searchResults = res.results.map((searchItem) => {
+              // @ts-ignore temporary non-saveable property indicating whether or not this guideline
               // was BOTH suggested and retrieved from the search result
-              o.suggested = suggestedIds.includes(o.id);
-              return o;
+              searchItem.suggested = suggestedIds.includes(searchItem._id);
+              return searchItem;
             });
           } else {
-            this.searchResults = results.outcomes;
+            this.searchResults = res.results;
           }
 
           this.loading = undefined;
@@ -146,12 +148,12 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   performSuggest(val: string) {
     if (val && val !== '') {
       this.loading = 'suggest';
-      this.outcomeService
-        .suggestOutcomes(this.store.learningObjectEvent.getValue(), {
+      this.guidelineService
+        .getGuidelines({
           text: val,
         })
-        .then((results) => {
-          this.suggestions = results.map((o) => {
+        .then((res) => {
+          this.suggestions = res.results.map((o) => {
             // @ts-ignore temporary non-saveable property indicating whether or not this outcome
             // was BOTH suggested and retrieved from the search result
             o.suggested = true;
