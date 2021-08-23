@@ -4,6 +4,7 @@ import { RELEVANCY_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Topic } from '@entity';
 @Injectable({
   providedIn: 'root'
 })
@@ -46,6 +47,31 @@ export class RelevancyService {
         catchError(this.handleError)
       )
       .toPromise();
+  }
+
+  async getTopics(): Promise<Topic[]> {
+    return await new Promise((resolve, reject) => {
+      this.http
+        .get<Topic[]>(RELEVANCY_ROUTES.GET_TOPICS(),
+          {
+            headers: this.headers,
+            withCredentials: true,
+          }
+        )
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise()
+        .then(
+          (res: any) => {
+            resolve(res);
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
   }
 
   private handleError(error: HttpErrorResponse) {

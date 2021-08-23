@@ -6,23 +6,8 @@
 </div>
 <ng-template [ngIf]="topics && topics.length > 0" class="learning-object-topics">
   <div class="pills" >
-    <div *ngFor="let t of topics; let i = index" class="pill"> 
-      <span (activate)="toggleTopics(t)" [ngClass]="{'tagged': tagged}">{{ t }}</span>
-      <!-- <div class = "info">
-        <div class = "top-row">
-          <div class = "child-title" [tip]="c.name" tipPosition="top">{{c.name}}</div>
-        </div>
-        <div class = "bottom-row">
-        <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
-          <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
-        </div>
-      </div>
-      <div tabindex="0" attr.aria-label="Move {{ c.name }}" [ngStyle]="{display: editContent ? 'none' : 'block'}" class="hamburger-handle" cdkDragHandle>
-        <i class="fas fa-bars"></i>
-      </div>
-      <button attr.aria-label="Delete {{ c.name }}" [ngStyle]="{display: editContent ? 'block' : 'none'}" class="delete" (activate)="deleteButton(i)">
-        <i class="far fa-trash-alt"></i>
-      </button> -->
+    <div *ngFor="let t of topics; let i = index" class="pill" [ngClass]="{'pill-selected': taggedTopics.includes(t._id)}" (activate)="toggleTopics(t)"> 
+      <span>{{ t.name }}</span>
     </div>
   </div>
 </ng-template>

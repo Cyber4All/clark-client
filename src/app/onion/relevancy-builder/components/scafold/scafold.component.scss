@@ -13,13 +13,6 @@
     align-items: left;
     justify-content: left;
   }
-  .edit {
-    .text {
-      padding-right: 10px;
-      font-size: $small;
-      display: inline-block;
-    }
-  }
 }
 
 .learning-object-topics {
@@ -38,34 +31,20 @@
 .pill {
   color: $light-blue;
   border: 1px solid $light-blue;
-  padding: 3px 15px;
+  margin: 3px;
   border-radius: 2px;
   margin-right: 10px;
   margin-bottom: 10px;
-  flex-shrink: 0;
   box-sizing: border-box;
   font-size: $small;
   cursor: pointer;
-}
+  padding: 2px 5px;
 
-.topics-list {
-  min-height: 500px;
-  display: block;
-  background: white;
-  border-radius: 1px;
-  overflow: hidden;
-}
-
-.topics-box {
-  padding: 20px 10px;
-  border-bottom: solid 1px $light-grey;
-  color: $dark-grey;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  background: white;
+  &.pill-selected {
+    color: white;
+    background-color: $light-blue;
+  }
+  
 }
 
 .no-children {

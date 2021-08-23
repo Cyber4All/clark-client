@@ -550,7 +550,11 @@ export const RELEVANCY_ROUTES = {
       )}/learning-objects/${encodeURIComponent(
         id
       )}/relevancy-check`;
-  }
+  },
+  // Reterieves topics for tagging learning objects
+  GET_TOPICS() {
+    return `${environment.apiURL}/topics`;
+  },
 };
 
 export const STANDARD_GUIDELINE_ROUTES = {

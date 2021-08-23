@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   LearningObject,
   LearningOutcome,
-  Guideline
+  Guideline,
+  Topic
 } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -12,6 +13,7 @@ import { LearningObjectValidator } from './validators/learning-object.validator'
 import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { RelevancyService } from 'app/core/relevancy.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -106,6 +108,7 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
+    private relevancyService: RelevancyService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
@@ -238,8 +241,8 @@ export class BuilderStore {
       });
   }
 
-  getTopics(): string[] {
-    return ['I', 'am', 'a', 'genius'];
+  getTopics(): Promise<Topic[]> {
+    return this.relevancyService.getTopics();
   }
 
   /**

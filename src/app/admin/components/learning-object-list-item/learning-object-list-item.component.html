@@ -37,7 +37,7 @@
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
-      <li [routerLink]="['/onion/relevancy-builder', learningObject.id]"><i class="far fa-puzzle-piece"></i>Object Relevancy</li>
+      <li [routerLink]="['/onion/relevancy-builder', learningObject.id]"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
     </ul>
   </div>
 </clark-context-menu>

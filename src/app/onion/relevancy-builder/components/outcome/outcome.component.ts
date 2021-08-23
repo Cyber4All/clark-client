@@ -48,21 +48,10 @@ export class OutcomeComponent implements OnInit {
     value: boolean;
   }> = new EventEmitter();
 
-  showDeleteConfirm = false;
-
   outcomeLevels = Array.from(levels.values());
 
   // this value keeps track of the index of newly created outcomes, it will be incorrect when loading existing outcomes
   outcomeNumber = 1;
-
-  @Output()
-  selectedVerb: EventEmitter<string> = new EventEmitter();
-  @Output()
-  selectedLevel: EventEmitter<string> = new EventEmitter();
-  @Output()
-  textChanged: EventEmitter<string> = new EventEmitter();
-  @Output()
-  deleted: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -89,28 +78,6 @@ export class OutcomeComponent implements OnInit {
       // set overflow to hidden by default
       this.hiddenOverflow = true;
     }
-  }
-
-  emitVerb(val) {
-    if (val) {
-      this.selectedVerb.emit(val);
-    }
-  }
-
-  emitLevel(val) {
-    if (val) {
-      this.selectedLevel.emit(val);
-    }
-  }
-
-  emitText(val) {
-    if (val) {
-      this.textChanged.emit(val);
-    }
-  }
-
-  emitDeletion() {
-    this.deleted.emit();
   }
 
   removeMapping(standardOutcome: LearningOutcome) {
