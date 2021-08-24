@@ -52,7 +52,7 @@ export class AddEvaluatorComponent implements OnInit {
     } else {
       this.toaster.error(
         'Error',
-        'Atleast one learning object and evaluator must be selected for assignment.'
+        'At least one learning object and evaluator must be selected for assignment.'
       );
     }
   }
