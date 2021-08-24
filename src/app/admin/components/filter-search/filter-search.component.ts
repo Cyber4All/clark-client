@@ -14,6 +14,8 @@ import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { Topic } from '@entity';
+import { RelevancyService } from 'app/core/relevancy.service';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -22,23 +24,29 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 })
 export class FilterSearchComponent implements OnInit {
   collections: Collection[] = [];
+  topics: Topic[] = [];
   isCollectionRestricted = false;
   filtersModified$: Subject<void> = new Subject();
   filters: Set<string> = new Set();
+  filterTopics: Set<string> = new Set();
   statuses = Object.values(LearningObject.Status);
 
   private _selectedCollection: Collection;
+
+  private _selectedTopic: Topic;
 
   @Input() adminOrEditor: boolean;
   @Input() showStatus: boolean;
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
+  @Output() topicFilter = new EventEmitter<any[]>();
   @Output() relevancyCheck = new EventEmitter<{start: string, end: string}>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
   filterMenuDown = false;
   collectionMenuDown = false;
+  topicMenuDown = false;
 
   relevancyStart: Date;
   relevancyEnd: Date;
@@ -47,6 +55,7 @@ export class FilterSearchComponent implements OnInit {
 
   constructor(
     private collectionService: CollectionService,
+    private relevancyService: RelevancyService,
     private authService: AuthService,
     private toaster: ToastrOvenService
   ) {}
@@ -54,6 +63,7 @@ export class FilterSearchComponent implements OnInit {
   ngOnInit() {
     this.getCollections();
     this.findUserRestrictions();
+    this.getTopics();
 
     // add the 'all' option into the list of statuses
     this.statuses.splice(0, 0);
@@ -89,6 +99,15 @@ export class FilterSearchComponent implements OnInit {
       });
   }
 
+  private getTopics(): void {
+    this.relevancyService
+      .getTopics()
+      .then(topics => {
+        this.topics = Array.from(topics);
+        this.topics.push({name: 'all'});
+      });
+  }
+
   /**
    * Checks for user's authorization
    */
@@ -110,6 +129,12 @@ export class FilterSearchComponent implements OnInit {
     )[0];
   }
 
+  setSelectedTopic(name: string) {
+    this._selectedTopic = this.topics.filter(
+      x => x.name === name
+    )[0];
+  }
+
   /**
    * Return the currently selected collection
    *
@@ -119,6 +144,10 @@ export class FilterSearchComponent implements OnInit {
    */
   get selectedCollection(): Collection {
     return this._selectedCollection;
+  }
+
+  get selectedTopic(): Topic {
+    return this._selectedTopic;
   }
 
   /**
@@ -135,6 +164,14 @@ export class FilterSearchComponent implements OnInit {
    */
   toggleCollectionMenu (value?: boolean) {
     this.collectionMenuDown = value;
+  }
+
+  /**
+   * Hide or show the topic dropdown menu
+   * @param {boolean} [value] true if menu is open, false otherwise
+   */
+  toggleTopicMenu (value?: boolean) {
+    this.topicMenuDown = value;
   }
 
   /**
@@ -197,6 +234,21 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
+  toggleTopicFilter(filter: string) {
+    if (filter.toLowerCase() === 'all') {
+      this.clearTopicFilters();
+      this.toggleTopicMenu(undefined);
+      return;
+    }
+    if (this.filterTopics.has(filter)) {
+      this.filterTopics.delete(filter);
+    } else {
+      this.filterTopics.add(filter);
+    }
+    this.topicFilter.emit(Array.from(this.filters));
+
+  }
+
   /**
    * Remove all applied status filters
    */
@@ -213,6 +265,11 @@ export class FilterSearchComponent implements OnInit {
   clearCollectionFilters() {
     this.setSelectedCollection(undefined);
     this.collectionFilter.emit(undefined);
+  }
+
+  clearTopicFilters() {
+    this.filterTopics.clear();
+    this.topicFilter.emit(undefined);
   }
 
   /**
@@ -233,6 +290,7 @@ export class FilterSearchComponent implements OnInit {
     this.setSelectedCollection(undefined);
     this.clearRelevancyDateFilters();
     this.filters.clear();
+    this.filterTopics.clear();
     this.clearAll.emit();
   }
 

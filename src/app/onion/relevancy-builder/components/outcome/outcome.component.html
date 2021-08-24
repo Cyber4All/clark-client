@@ -1,14 +1,14 @@
 <div [@outcome]="noAnimation ? 'off' : (active ? 'open' : 'closed')" (@outcome.done)="noAnimation = false" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
     <div class="outcome-header">
       <div class="outcome-header__left">
-          {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
-          + outcomeNumber }}
+        <div class="outcome-level" *ngFor="let l of outcomeLevels">
+          <span *ngIf="l === 'remember and understand' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-cloud"></i> Remember & Understand</span>
+          <span *ngIf="l === 'apply and analyze' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-bolt"></i> Apply & Analyze</span>
+          <span *ngIf="l === 'evaluate and synthesize' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-balance-scale-right"> Evaluate & Synthesize</i></span>
+        </div>
+        {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
+        + outcomeNumber }}
       </div>
-    </div>
-    <div class="outcome-level" *ngFor="let l of outcomeLevels">
-      <span *ngIf="l === 'remember and understand' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-cloud"></i> Remember & Understand</span>
-      <span *ngIf="l === 'apply and analyze' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-bolt"></i> Apply & Analyze</span>
-      <span *ngIf="l === 'evaluate and synthesize' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-balance-scale-right"> Evaluate & Synthesize</i></span>
     </div>
     <div *ngIf="outcome.mappings?.length == 0" class="no-outcome-mappings">No Curricular Guidelines Mapped!</div>
     <div *ngIf="outcome.mappings?.length" class="outcome-mappings">

@@ -8,6 +8,42 @@
         >
         <span *ngIf="!startNextCheck">Filter By Relevancy Check Dates</span>
         </button>
+        <!--CONVERT TO VIRTUAL SCROLLER-->
+        <!--This renders the topics list correctly, the list is too long and goes off screen. Zoom screen out to use topics filter-->
+        <button 
+          #toggleTopicMenuElement
+          class="button neutral filters-button"
+          (activate)="toggleTopicMenu(true)"
+          [ngClass]="{ 'filters-button--down': topicMenuDown }"
+        >
+          <span class="filter-badge" *ngIf="filterTopics.size">{{ filterTopics.size }}</span>
+          Topics
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <clark-context-menu
+          *ngIf="topicMenuDown"
+          class="filter-topic"
+          [anchor]="toggleTopicMenuElement"
+          [offset]="{ top: 10, left: 10 }"
+          (close)="toggleTopicMenu()"
+        >
+          <div #contextMenu class="filter-topic__container">
+            <ul>
+              <li
+                *ngFor="let topic of topics"
+                [className]="topic.name"
+                (activate)="toggleTopicFilter(topic.name)"
+              >
+                <div
+                  *ngIf="filterTopics.has(topic.name)"
+                  class="indicator"
+                ></div>
+                {{ topic.name | titlecase }}
+              </li>
+            </ul>
+          </div>
+        </clark-context-menu>
+        <!--END VIRTUAL SCROLLER-->
         <button
           #toggleCollectionMenuElement
           class="button neutral filters-button"
@@ -74,7 +110,7 @@
         </clark-context-menu>
       </ng-container>
       <a
-        *ngIf="filters.size || selectedCollection"
+        *ngIf="filters.size || selectedCollection || filterTopics.size"
         (activate)="clearAllFilters()"
         class="filters-clear"
         >Clear filters</a

@@ -17,6 +17,7 @@ import { StandardOutcomesComponent } from './components/standard-outcomes/standa
 import { OutcomePageComponent } from './pages/outcome-page/outcome-page.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { OutcomeListItemComponent } from './components/standard-outcomes/outcome-list-item/outcome-list-item.component';
+import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { OutcomeListItemComponent } from './components/standard-outcomes/outcome
     ReactiveFormsModule,
     SharedModule,
     OnionSharedModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    CubeSharedModule
   ]
 })
 export class RelevancyBuilderModule { }

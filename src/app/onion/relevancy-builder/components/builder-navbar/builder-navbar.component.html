@@ -12,35 +12,10 @@
         [states]="states"
       ></clark-lo-status-indicator>
       <!-- learning object and new tab  preview go here -->
+      <clark-learning-object-component [learningObject]="learningObject"></clark-learning-object-component>
     </div>
     <div class="top__right">
       <a (activate)="historySnapshot.rewind('/admin/learning-objects')">Cancel</a>
-    </div>
-  </div>
-  <div class="builder-navbar-wrapper__bottom">
-    <div class="builder-navbar-wrapper__bottom-left-menu">
-      <!-- update routerLinkActive with class used to show that link is active -->
-      <!-- <ul>
-        <li>
-          <ng-container
-            aria-label="Learning Outcomes Link"
-            [ngTemplateOutlet]="navItemTemplate"
-            [ngTemplateOutletContext]="{
-              disabled: !canRoute('outcomes'),
-              link: 'mappings',
-              text: 'whats up dog'
-            }"
-          ></ng-container>
-        </li>
-      </ul> -->
-      <!-- <div class="builder-navbar-wrapper__saving-indicator">
-        <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator"
-          >to da moon .. .. .. 
-        </span>
-        <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator"
-          >Doge coin</span
-        >
-      </div> -->
     </div>
   </div>
 </div>

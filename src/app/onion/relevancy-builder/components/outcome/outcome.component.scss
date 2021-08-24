@@ -1,7 +1,7 @@
 @import '~_vars.scss';
 
 .outcome-component {
-  padding: 30px 25px;
+  padding: 30px 30px 65px 30px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -50,7 +50,7 @@
     font-size: $normal;
     color: $darker-grey;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     display: inline-block;
     align-items: center;
 
@@ -63,15 +63,11 @@
   }
 
   .no-outcome-mappings {
-    font-size: large;
+    color: $light-blue;
   }
 
   .outcome-mappings {
     width: 100%;
-
-    .outcome-header {
-      margin-bottom: 10px;
-    }
 
     .pills {
       display: flex;
