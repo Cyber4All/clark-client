@@ -77,6 +77,8 @@ export class BuilderStore {
 
   public serviceError$: Subject<BUILDER_ERRORS> = new Subject();
 
+  private selectedTopics: string[] = [];
+
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
@@ -194,6 +196,14 @@ export class BuilderStore {
    */
   getTopics(): Promise<Topic[]> {
     return this.relevancyService.getTopics();
+  }
+
+  /**
+   * Local store for a learning objects tagged topics
+   * @param arr array of topic ids
+   */
+  storeTopics(arr: string[]): void {
+    this.selectedTopics = arr;
   }
 
   /**

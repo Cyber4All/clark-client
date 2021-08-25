@@ -49,6 +49,7 @@ export class ScafoldComponent implements OnInit {
       this.tagged = true;
       this.taggedTopics.push(topic._id);
     }
+    this.store.storeTopics(this.taggedTopics);
   }
 
 }
