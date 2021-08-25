@@ -63,7 +63,6 @@ export class LearningObjectListItemComponent implements OnChanges {
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
-    console.log(this.learningObject);
     if (changes.status) {
       this.statuses
         .getDescription(
