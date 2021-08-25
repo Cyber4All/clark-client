@@ -11,11 +11,14 @@
         [status]="learningObject?.status"
         [states]="states"
       ></clark-lo-status-indicator>
-      <!-- learning object and new tab  preview go here -->
-      <clark-learning-object-component [learningObject]="learningObject"></clark-learning-object-component>
+      <a class="title" [routerLink]="['/details/', learningObject.author.username, learningObject.cuid]" target="_blank">
+        {{learningObject.name}}
+      </a>
+      <span>{{ learningObject.length | titlecase }} | {{ learningObject.author.name | titlecase }} | Updated {{ learningObject.date | date: 'mediumDate' }}</span>
     </div>
     <div class="top__right">
-      <a (activate)="historySnapshot.rewind('/admin/learning-objects')">Cancel</a>
+      <a class="save" (activate)="historySnapshot.rewind('/admin/learning-objects')">Save</a>
+      <a class="cancel" (activate)="historySnapshot.rewind('/admin/learning-objects')">Cancel</a>
     </div>
   </div>
 </div>

@@ -143,18 +143,11 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
           });
         } else if (id) {
           this.store.fetch(id).then(learningObject => {
-            if (learningObject.status === LearningObject.Status.RELEASED) {
-              this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
+            if (revision) {
+              this.learningObjectService.getLearningObjectRevision(
+                learningObject.author.username, learningObject.id, learningObject.version);
             } else {
-              // redirect user to dashboard if the object is in the working stage
-              if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
-                this.router.navigate(['onion/dashboard']);
-              } else if (revision) {
-                this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.version);
-              } else {
-                this.setBuilderMode(learningObject);
-              }
+              this.setBuilderMode(learningObject);
             }
           });
         }
@@ -216,42 +209,6 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
       case BUILDER_ERRORS.SERVICE_FAILURE:
         this.showServiceFailureModal = true;
         break;
-      case BUILDER_ERRORS.CREATE_OBJECT:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to create Learning Object',
-        );
-        break;
-      case BUILDER_ERRORS.CREATE_OUTCOME:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to create Learning Outcome',
-        );
-        break;
-      case BUILDER_ERRORS.DELETE_OUTCOME:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to delete Learning Outcome',
-        );
-        break;
-      case BUILDER_ERRORS.FETCH_OBJECT_MATERIALS:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to load materials',
-        );
-        break;
-      case BUILDER_ERRORS.SUBMIT_REVIEW:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to submit Learning Object for review',
-        );
-        break;
-      case BUILDER_ERRORS.UPDATE_FILE_DESCRIPTION:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to update file description',
-        );
-        break;
       case BUILDER_ERRORS.UPDATE_OBJECT:
         this.noteService.error(
           toasterTitle,
@@ -264,28 +221,8 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
           'Unable to update Learning Outcome',
         );
         break;
-      case BUILDER_ERRORS.ADD_FILE_META:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to add file(s)',
-        );
-        break;
       default:
         break;
-    }
-  }
-
-  /**
-   * Routes user to onion dashboard or admin dashboard depending on builder mode
-   *
-   * @memberof LearningObjectBuilderComponent
-   */
-  exitBuilder() {
-    this.showServiceFailureModal = false;
-    if (!this.adminMode) {
-      this.historySnapshot.rewind('/onion/dashboard');
-    } else {
-      this.historySnapshot.rewind('/home');
     }
   }
 

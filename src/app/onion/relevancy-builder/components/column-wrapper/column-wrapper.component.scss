@@ -9,7 +9,7 @@ $right-column: minmax(290px, 340px);
   grid-gap: 5px;
   margin: 0 25px;
   position: absolute;
-  top: 160px;
+  top: 110px;
 
   &.no-left {
     grid-template-columns: $middle-column $right-column;

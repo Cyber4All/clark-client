@@ -27,18 +27,9 @@ export enum BUILDER_ACTIONS {
 }
 
 export enum BUILDER_ERRORS {
-  CREATE_OBJECT,
-  DUPLICATE_OBJECT_NAME,
-  CREATE_OUTCOME,
   FETCH_OBJECT,
-  FETCH_OBJECT_MATERIALS,
-  UPDATE_FILE_DESCRIPTION,
   UPDATE_OBJECT,
   UPDATE_OUTCOME,
-  SUBMIT_REVIEW,
-  CANCEL_SUBMISSION,
-  DELETE_OUTCOME,
-  ADD_FILE_META,
   SERVICE_FAILURE
 }
 
@@ -53,9 +44,6 @@ export enum BUILDER_ERRORS {
 export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, Partial<LearningOutcome>> = new Map();
-
-  // keep track of outcomes that exist locally haven't been saved to service yet
-  private newOutcomes: Map<string, any> = new Map();
 
   // manages a cache of object data that needs to be saved (debounced)
   private objectCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
@@ -96,33 +84,7 @@ export class BuilderStore {
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
-  ) {
-    // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
-    this.objectCache$
-      .pipe(
-        debounceTime(650),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe(cache => {
-        if (cache !== undefined) {
-          // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
-          this.saveObject(cache);
-        }
-      });
-
-    // subscribe to our outcomeCache$ observable and initiate calls to save outcome after a debounce
-    this.outcomeCache$
-      .pipe(
-        debounceTime(650),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe(cache => {
-        if (cache !== undefined) {
-          // cache is undefined on initial subscription and immediately after a save request has been successfully initiated
-          this.saveOutcome(cache);
-        }
-      });
-  }
+  ) {}
 
   /**
    * Retrieve stored learning object
@@ -376,48 +338,12 @@ export class BuilderStore {
       // in this case we'll use the current data instead
       value = value || data;
 
-      if (!this.learningObject.id) {
-        this.createLearningObject(value);
-      } else {
-        // this is an existing object and we can save it (has a saveable name)
-        this.updateLearningObject(value);
-      }
+      this.updateLearningObject(value);
     }
 
     if (this.outcomeCache$.getValue()) {
       this.saveOutcome(this.outcomeCache$.getValue());
     }
-  }
-
-  /**
-   * Handles service interaction for creating a LearningObject
-   *
-   * @private
-   * @param {Partial<LearningObject>} object
-   * @memberof BuilderStore
-   */
-  private createLearningObject(object: Partial<LearningObject>) {
-    this.serviceInteraction$.next(true);
-    object.status = LearningObject.Status.UNRELEASED;
-    this.learningObjectService
-      .create(object, this.auth.username)
-      .then(learningObject => {
-        this.learningObject = learningObject;
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => {
-        this.serviceInteraction$.next(false);
-        if (e.status === 409) {
-          // tried to save an object with a name that already exists
-          this.validator.errors.saveErrors.set(
-            'name',
-            'A learning object with this name already exists! The title should be unique within your learning objects.'
-          );
-          this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
-        } else {
-          this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
-        }
-      });
   }
 
   /**
@@ -435,16 +361,7 @@ export class BuilderStore {
         this.serviceInteraction$.next(false);
       })
       .catch(e => {
-        if (e.status === 409) {
-          // tried to save an object with a name that already exists
-          this.validator.errors.saveErrors.set(
-            'name',
-            'A learning object with this name already exists! The title should be unique within your learning objects.'
-          );
-          this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
-        } else {
-          this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
-        }
+        this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
       });
   }
 
@@ -479,77 +396,11 @@ export class BuilderStore {
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 
-      if (this.newOutcomes.get(newValue.id)) {
-        // this is a new outcome that hasn't been saved, create it
-        this.createLearningOutcome(newValue);
-      } else {
-        // this is an existing outcome, modify it
-        this.updateLearningOutcome(newValue);
-      }
-
       if (this.objectCache$.getValue()) {
         this.saveObject(this.objectCache$.getValue());
       }
     }
   }
-
-  /**
-   * Handles service interaction for creating a LearningOutcome
-   *
-   * @private
-   * @param {LearningOutcome} newOutcome
-   * @memberof BuilderStore
-   */
-  private createLearningOutcome(newOutcome: LearningOutcome) {
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .addLearningOutcome(this.learningObject.id, newOutcome)
-      .then((serviceId: string) => {
-        this.serviceInteraction$.next(false);
-        // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
-        this.newOutcomes.delete(newOutcome.id);
-        // retrieve the outcome from the map keyed by it's temp ID, and then delete that entry;
-        const outcome: Partial<LearningOutcome> & {
-          serviceId?: string;
-        } = this.outcomes.get(newOutcome.id);
-        // store the temporary id in the outcome so that the page component know's which outcome to keep focused
-        outcome.serviceId = serviceId;
-        // re-enter outcome into map
-        this.outcomes.set(newOutcome.id, outcome);
-        this.outcomeEvent.next(this.outcomes);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME));
-  }
-
-  /**
-   * Handles service interaction for updating a LearningOutcome
-   *
-   * @private
-   * @param {Partial<LearningOutcome>} outcome
-   * @memberof BuilderStore
-   */
-  private updateLearningOutcome(outcome: Partial<LearningOutcome>) {
-    // deep copy the value to modify it before sending it to the service
-    const updateValue: Partial<LearningOutcome> & {
-      serviceId?: string;
-    } = Object.assign(outcome);
-    // if this item has a serviceId property, it was created during this session and thus it's ID property was generated here
-    // and doesn't correspond with it's id in the database. Replace the id property with the serviceId property before sending
-    if (updateValue.serviceId) {
-      updateValue.id = updateValue.serviceId;
-    }
-
-    // delete any lingering serviceId properties before sending to service
-    delete updateValue.serviceId;
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .saveOutcome(this.learningObject.id, updateValue as any)
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
-  }
-
 
   /**
    * Handles service interaction for adding a mapping to a LearningOutcome

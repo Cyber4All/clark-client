@@ -22,7 +22,19 @@
     a {
       font-size: $large;
       text-decoration: none;
-      color: $darker-grey;
+      
+      &.cancel {
+        color: $darker-grey;
+      }
+
+      &.save {
+        margin-right: 10px;
+        color: white;
+        background-color: $light-blue;
+        box-sizing: border-box;
+        padding: 3px 15px;
+        border-radius: 2px;
+      }
 
       .svg-inline--fa,
       .icon {
@@ -32,15 +44,12 @@
     
   }
 
-  clark-learning-object-component {
-    max-height: 90px;
-  }
-
   .top__left {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
+    max-height: 70px;
 
     & > *:not(:last-child) {
       margin-right: 15px;
@@ -96,6 +105,7 @@
         position: relative;
         flex-direction: row;
         align-items: center;
+
 
         .svg-inline--fa,
         .icon {
@@ -205,8 +215,4 @@
     margin-top: 100px;
   }
 
-}
-
-clark-generic-collection-logo {
-  margin-left: 15px;
 }
