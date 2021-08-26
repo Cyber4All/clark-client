@@ -15,8 +15,6 @@ export class ScafoldComponent implements OnInit {
 
   // array to obtain stored topics
   topics: Topic[];
-  // array to track tags for learning object
-  taggedTopics: string[] = [];
 
   // boolean to toggle tag styles
   tagged: boolean;
@@ -25,7 +23,7 @@ export class ScafoldComponent implements OnInit {
   loading: boolean;
 
   constructor(
-    private store: BuilderStore
+    public store: BuilderStore
   ) { }
 
   async ngOnInit() {
@@ -36,16 +34,17 @@ export class ScafoldComponent implements OnInit {
   }
 
   toggleTopics(topic: any) {
-    if (this.taggedTopics.includes(topic._id)) {
+    let tagged = this.store.topics;
+    if (tagged.includes(topic._id)) {
       this.tagged = false;
-      this.taggedTopics = this.taggedTopics.filter((t) => {
+      tagged = tagged.filter((t) => {
         return t !== topic._id;
       });
     } else {
       this.tagged = true;
-      this.taggedTopics.push(topic._id);
+      tagged.push(topic._id);
     }
-    this.store.storeTopics(this.taggedTopics);
+    this.store.storeTopics(tagged);
   }
 
 }

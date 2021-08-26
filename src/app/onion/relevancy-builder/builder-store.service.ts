@@ -42,11 +42,10 @@ export enum BUILDER_ERRORS {
 export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomes: LearningOutcome[];
+  private _topics: string[] = [];
 
   // fired when this service is destroyed
   private destroyed$: Subject<void> = new Subject();
-
-  private selectedTopics: string[] = [];
 
   constructor(
     private toaster: ToastrOvenService,
@@ -62,6 +61,10 @@ export class BuilderStore {
 
   get outcomes() {
     return this._outcomes;
+  }
+
+  get topics(): string[] {
+    return this._topics;
   }
 
   /**
@@ -82,10 +85,9 @@ export class BuilderStore {
           LearningObject.Status.REJECTED
         ].includes(this._learningObject.status);
       this._outcomes = this._learningObject.outcomes;
-      this.selectedTopics = this._learningObject.topics || [];
+      this._topics = this._learningObject.topics || [];
       // set the title of page to the learning object name
       this.titleService.setTitle(this._learningObject.name + ' | CLARK');
-      console.log('topics', this._learningObject);
       return this._learningObject;
     }).catch(e => {
       this.handleServiceError(e, BUILDER_ERRORS.FETCH_OBJECT);
@@ -107,7 +109,7 @@ export class BuilderStore {
    * @param arr array of topic ids
    */
   storeTopics(arr: string[]): void {
-    this.selectedTopics = arr;
+    this._topics = arr;
   }
 
   /**
@@ -139,7 +141,7 @@ export class BuilderStore {
   }
 
   async save() {
-    await this.relevancyService.updateObjectTopics(this._learningObject.author.username, this._learningObject.id, this.selectedTopics);
+    await this.relevancyService.updateObjectTopics(this._learningObject.author.username, this._learningObject.id, this._topics);
     for (let i = 0; i < this.outcomes.length; i++) {
       await this.relevancyService.updateLearningOutcomeMappings(
         this._learningObject.author.username,

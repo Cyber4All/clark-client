@@ -6,7 +6,7 @@
 </div>
 <ng-template [ngIf]="topics && topics.length > 0" class="learning-object-topics">
   <div class="pills" >
-    <div *ngFor="let t of topics; let i = index" class="pill" [ngClass]="{'pill-selected': taggedTopics.includes(t._id)}" (activate)="toggleTopics(t)"> 
+    <div *ngFor="let t of topics; let i = index" class="pill" [ngClass]="{'pill-selected': store.topics.includes(t._id)}" (activate)="toggleTopics(t)"> 
       <span>{{ t.name }}</span>
     </div>
   </div>
