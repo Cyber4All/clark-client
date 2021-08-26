@@ -16,7 +16,7 @@
         </clark-relevancy-outcome>
       </ng-container>
     </div>
-    <div *ngIf="store.outcomes.length" right>
+    <div *ngIf="store.outcomes.length && activeOutcome" right>
       <clark-relevancy-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-relevancy-outcomes>
     </div>
   </onion-column-wrapper>

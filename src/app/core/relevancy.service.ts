@@ -83,6 +83,7 @@ export class RelevancyService {
           {
             headers: this.headers,
             withCredentials: true,
+            responseType: 'text',
           }
         )
         .pipe(
@@ -92,7 +93,7 @@ export class RelevancyService {
         .toPromise()
         .then(
           (res: any) => resolve(res),
-          (err) => reject(err)
+          (err) => reject(err),
         );
     });
   }
@@ -105,6 +106,7 @@ export class RelevancyService {
           {
             headers: this.headers,
             withCredentials: true,
+            responseType: 'text',
           }
         )
         .pipe(
@@ -114,7 +116,7 @@ export class RelevancyService {
         .toPromise()
         .then(
           (res: any) => resolve(res),
-          (err) => reject(err)
+          (err) => reject(err),
         );
     });
   }

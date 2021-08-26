@@ -33,6 +33,12 @@ export class ScafoldComponent implements OnInit {
     this.loading = false;
   }
 
+  /**
+   * This toggles the list of selected topics on and off
+   * for a given learning object
+   *
+   * @param topic The topic toggling on/off
+   */
   toggleTopics(topic: any) {
     let tagged = this.store.topics;
     if (tagged.includes(topic._id)) {

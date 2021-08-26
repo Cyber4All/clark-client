@@ -140,15 +140,22 @@ export class BuilderStore {
     }
   }
 
+  /**
+   * This saves the mapped topics and outcome mappings to the database
+   */
   async save() {
-    await this.relevancyService.updateObjectTopics(this._learningObject.author.username, this._learningObject.id, this._topics);
-    for (let i = 0; i < this.outcomes.length; i++) {
-      await this.relevancyService.updateLearningOutcomeMappings(
-        this._learningObject.author.username,
-        this._learningObject.id,
-        this.outcomes[i].id,
-        this.outcomes[i].mappings.map(g => g.guidelineId)
-      );
+    try {
+      await this.relevancyService.updateObjectTopics(this._learningObject.author.username, this._learningObject.id, this._topics);
+      for (let i = 0; i < this.outcomes.length; i++) {
+        await this.relevancyService.updateLearningOutcomeMappings(
+          this._learningObject.author.username,
+          this._learningObject.id,
+          this.outcomes[i].id,
+          this.outcomes[i].mappings.map(g => g.guidelineId)
+        );
+      }
+    } catch (e) {
+      this.toaster.error('Error!', e.message || 'There was an error saving the topics and mappings, please try again later');
     }
   }
 
