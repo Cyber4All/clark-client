@@ -104,7 +104,7 @@ export class FilterSearchComponent implements OnInit {
       .getTopics()
       .then(topics => {
         this.topics = Array.from(topics);
-        this.topics.push({name: 'all'});
+        this.topics.push({ _id: 'all', name: 'all' });
       });
   }
 
@@ -245,7 +245,7 @@ export class FilterSearchComponent implements OnInit {
     } else {
       this.filterTopics.add(filter);
     }
-    this.topicFilter.emit(Array.from(this.filters));
+    this.topicFilter.emit(Array.from(this.filterTopics));
 
   }
 
