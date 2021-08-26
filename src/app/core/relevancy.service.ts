@@ -9,7 +9,6 @@ import { Topic } from '@entity';
   providedIn: 'root'
 })
 export class RelevancyService {
-  private user;
   private headers = new HttpHeaders();
 
   constructor(private http: HttpClient, private auth: AuthService) {
@@ -20,9 +19,6 @@ export class RelevancyService {
     * Sets the headers for the requests
     */
   setHeaders() {
-    // get new user from auth service
-    this.user = this.auth.user || undefined;
-
     // reset headers with new users auth token
     this.headers = new HttpHeaders();
   }
@@ -49,6 +45,11 @@ export class RelevancyService {
       .toPromise();
   }
 
+  /**
+   * This gets the list of object topics from the backend to display
+   *
+   * @returns A list of topics
+   */
   async getTopics(): Promise<Topic[]> {
     return await new Promise((resolve, reject) => {
       this.http
@@ -70,6 +71,50 @@ export class RelevancyService {
           (err) => {
             reject(err);
           }
+        );
+    });
+  }
+
+  async updateObjectTopics(username: string, id: string, topicIds: string[]): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      this.http
+        .patch(RELEVANCY_ROUTES.PATCH_OBJECT_TOPICS(username, id),
+          { topicIds },
+          {
+            headers: this.headers,
+            withCredentials: true,
+          }
+        )
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise()
+        .then(
+          (res: any) => resolve(res),
+          (err) => reject(err)
+        );
+    });
+  }
+
+  async updateLearningOutcomeMappings(username: string, objectId: string, outcomeId: string, guidelineIds: string[]): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      this.http
+        .patch(RELEVANCY_ROUTES.PATCH_OBJECT_OUTCOME_MAPPINGS(username, objectId, outcomeId),
+          { guidelines: guidelineIds },
+          {
+            headers: this.headers,
+            withCredentials: true,
+          }
+        )
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise()
+        .then(
+          (res: any) => resolve(res),
+          (err) => reject(err)
         );
     });
   }

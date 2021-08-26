@@ -259,6 +259,15 @@ export class LearningObject {
   set nextCheck(check: Date) {
     this._nextCheck = check;
   }
+
+  get topics(): string[] {
+    return this._topics;
+  }
+
+  set topics(topics) {
+    this._topics = topics;
+  }
+
   version = 0;
   /**
    * Creates an instance of LearningObject.
@@ -320,6 +329,7 @@ export class LearningObject {
     ratings: string,
   };
   private _nextCheck: Date;
+  private _topics: string[];
 
   private _revisionUri?: string;
 
@@ -655,6 +665,10 @@ export class LearningObject {
       this._nextCheck = object.nextCheck;
     }
 
+    if (object.topics) {
+      this._topics = object.topics;
+    }
+
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
     this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;
@@ -694,6 +708,7 @@ export class LearningObject {
       resourceUris: this.resourceUris,
       parents: this.parents,
       nextCheck: this.nextCheck,
+      topics: this.topics || [],
     };
     return object;
   }

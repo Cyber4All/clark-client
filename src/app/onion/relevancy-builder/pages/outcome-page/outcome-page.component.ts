@@ -5,7 +5,6 @@ import {
   BUILDER_ACTIONS as actions
 } from '../../builder-store.service';
 import { Subject } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -17,10 +16,7 @@ import { LearningObject } from '@entity';
   styleUrls: ['./outcome-page.component.scss']
 })
 export class OutcomePageComponent implements OnInit, OnDestroy {
-
-  private _outcomes: Map<string, LearningOutcome> = new Map();
   destroyed$: Subject<void> = new Subject();
-  learningObject: LearningObject;
 
   // flags
   activeOutcome: string;
@@ -31,71 +27,15 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private toaster: ToastrOvenService,
-    private store: BuilderStore,
+    public store: BuilderStore,
     private validator: LearningObjectValidator,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    // listen for outcome events and update component stores
-    this.store.learningObjectEvent
-    .pipe(
-      filter(learningObject => learningObject !== undefined),
-      takeUntil(this.destroyed$)
-    ).subscribe((payload: LearningObject) => {
-      this.learningObject = payload;
-    });
-    // subscribe to params from activated route
-    this.route.paramMap.pipe(takeUntil(this.destroyed$)).subscribe(params => {
-      this.setActiveOutcome(params.get('id'));
-    });
-
-    // listen for outcome events and update component store
-    this.store.outcomeEvent
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((payload: Map<string, LearningOutcome>) => {
-        if (payload) {
-          // reset our outcomes map
-          this.outcomes = payload;
-        }
-      });
-      this.validateNewOutcome();
-  }
-
-  /**
-   * Retrieve Map version of outcomes
-   *
-   * @memberof OutcomePageComponent
-   */
-  get outcomes() {
-    return this._outcomes;
-  }
-
-  /**
-   * Retrieve iterable-version of outcomes
-   *
-   * @readonly
-   * @memberof OutcomePageComponent
-   */
-  get iterableOutcomes() {
-    return Array.from(this._outcomes.values());
-  }
-
-  /**
-   * Set component stored outcomes map and create iterable array
-   *
-   * @memberof OutcomePageComponent
-   */
-  set outcomes(outcomes: Map<string, LearningOutcome>) {
-    this._outcomes = outcomes;
-    if (outcomes.size && !this.activeOutcome) {
-      this.activeOutcome = outcomes.values().next().value.id;
-    }
-  }
+  ngOnInit() { }
 
   setActiveOutcome(id: string) {
     if (id !== this.activeOutcome) {
-      this.store.sendOutcomeCache();
       this.activeOutcome = id;
     }
   }
@@ -104,26 +44,10 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     standardOutcome: Guideline;
     value: boolean;
   }) {
-    this.store.execute(
-      data.value
-        ? actions.MAP_STANDARD_OUTCOME
-        : actions.UNMAP_STANDARD_OUTCOME,
-      { id: this.activeOutcome, guideline: data.standardOutcome }
-    );
-  }
-
-  // This functions validates that an outcome is valid. if valid, enables the Add Outcome button
-  validateNewOutcome() {
-    const lastOutcome = this.iterableOutcomes[this.iterableOutcomes.length - 1];
-    if (lastOutcome === undefined) {
-      this.saveable = true;
-    } else {
-      if (lastOutcome.bloom !== '' && lastOutcome.text !== '' && lastOutcome.verb !== '') {
-        this.saveable = true;
-      } else {
-        this.saveable = false;
-      }
-    }
+    const { standardOutcome, value } = data;
+    value ?
+      this.store.addGuideline(this.activeOutcome, standardOutcome) :
+      this.store.removeGuideline(this.activeOutcome, standardOutcome.guidelineId);
   }
 
   ngOnDestroy() {

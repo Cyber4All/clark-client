@@ -1,8 +1,6 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
@@ -12,26 +10,13 @@ import { HistoryService, HistorySnapshot } from 'app/core/history.service';
   templateUrl: './builder-navbar.component.html',
   styleUrls: ['./builder-navbar.component.scss']
 })
-export class BuilderNavbarComponent implements OnDestroy {
-
-  isSaving: boolean;
-  showSubmission: boolean;
-  showSubmissionOptions: boolean;
-
-  learningObject: LearningObject;
+export class BuilderNavbarComponent implements OnInit {
   collection: Collection;
   // FIXME: This will need to set based on the data coming back once the service is in place
   revisedVersion = false;
 
   // map of state strings to icons and tooltips
   states: Map<string, { tip: string }>;
-
-  destroyed$: Subject<void> = new Subject();
-
-  redirectUrl: string;
-
-  @Input() adminMode = false;
-
   historySnapshot: HistorySnapshot;
 
   constructor(
@@ -40,27 +25,10 @@ export class BuilderNavbarComponent implements OnDestroy {
     public validator: LearningObjectValidator,
     public store: BuilderStore
   ) {
-    this.store.serviceInteraction$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(params => {
-        if (params) {
-          this.isSaving = true;
-        } else {
-          this.isSaving = false;
-        }
-      });
-
-    this.store.learningObjectEvent
-      .pipe(
-        filter(val => typeof val !== 'undefined'),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe(val => {
-        this.learningObject = val;
-        this.getCollection();
-      });
     this.historySnapshot = this.history.snapshot();
   }
+
+  ngOnInit(): void { }
 
   /**
    * Build the states map for the status tooltips and icons
@@ -113,22 +81,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     ]);
   }
 
-  /**
-   * Retrieves the full Collection object from the collection service from the selected abbreviated collection
-   *
-   * @memberof BuilderNavbarComponent
-   */
-  getCollection() {
-    this.collectionService
-      .getCollection(this.learningObject.collection)
-      .then(col => {
-        this.collection = col;
-        this.buildTooltip();
-      });
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.unsubscribe();
+  async save() {
+    this.store.save();
+    this.historySnapshot.rewind('/admin/learning-objects');
   }
 }

@@ -2,7 +2,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarService } from '../../core/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { Subject } from 'rxjs';
 import {
@@ -18,9 +18,6 @@ import {
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
-import { AuthService } from 'app/core/auth.service';
-import { LearningObject } from '@entity';
-import { LearningObjectService } from '../core/learning-object.service';
 import { HistorySnapshot, HistoryService } from 'app/core/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
@@ -111,15 +108,11 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:max-line-length
   constructor(
-    private store: BuilderStore,
+    public store: BuilderStore,
     private route: ActivatedRoute,
-    private router: Router,
     private nav: NavbarService,
-    private builderStore: BuilderStore,
     private validator: LearningObjectValidator,
     public noteService: ToastrOvenService,
-    private authService: AuthService,
-    private learningObjectService: LearningObjectService,
     private history: HistoryService
   ) { }
 
@@ -129,69 +122,15 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
     // listen for route change and grab name parameter if it's there
     this.route.paramMap
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(routeParams => {
+      .subscribe(async routeParams => {
         const id = routeParams.get('learningObjectId');
-        const revision = this.route.snapshot.queryParamMap.get('revisionId');
-        const authorUsername = this.route.snapshot.queryParamMap.get('author');
-
-        // if name parameter found, instruct store to fetch full learning object
-        if (revision !== undefined && id) {
-          this.isRevision = true;
-          this.store.isRevision = true;
-          this.store.fetch(id, revision, authorUsername).then(learningObject => {
-            this.setBuilderMode(learningObject);
-          });
-        } else if (id) {
-          this.store.fetch(id).then(learningObject => {
-            if (revision) {
-              this.learningObjectService.getLearningObjectRevision(
-                learningObject.author.username, learningObject.id, learningObject.version);
-            } else {
-              this.setBuilderMode(learningObject);
-            }
-          });
+        if (id) {
+          await this.store.fetch(id);
         }
       });
-
-    this.builderStore.serviceInteraction$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(val => {
-        if (val === true) {
-          clearTimeout(this.removeServiceIndicator);
-          this.serviceInteraction = true;
-          this.showServiceInteraction = true;
-        } else if (val === false) {
-          this.serviceInteraction = false;
-
-          this.removeServiceIndicator = setTimeout(() => {
-            this.showServiceInteraction = false;
-          }, 3000);
-        } else {
-          // If value is not explicitly true or false then an error occurred that will be handled by service error handler
-          this.showServiceInteraction = false;
-          this.serviceInteraction = false;
-        }
-      });
-
-    this.builderStore.serviceError$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(e => this.handleBuilderError(e));
 
     // hides clark nav bar from builder
     this.nav.hide();
-  }
-
-  /**
-   * Sets adminMode to true if user is admin or editor and is not the author
-   *
-   * @private
-   * @param {LearningObject} object
-   * @memberof LearningObjectBuilderComponent
-   */
-  private setBuilderMode(object: LearningObject): void {
-    this.adminMode = true;
-      // this.authService.isAdminOrEditor() &&
-      // object.author.username !== this.authService.username;
   }
 
   /**
@@ -237,14 +176,6 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
 
   getState(outlet: any) {
     return outlet.activatedRouteData.state;
-  }
-
-  /**
-   * Determines whether or not a Learning Object is in the Review Stage.
-   * @param object the Learning Object in question.
-   */
-  private isInReviewStage(object): boolean {
-    return object.status.includes('waiting') && object.status.includes('review') && object.status.includes('proofing');
   }
 
   ngOnDestroy() {

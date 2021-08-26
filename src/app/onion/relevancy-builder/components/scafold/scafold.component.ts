@@ -1,10 +1,9 @@
 import {
   Component,
   OnInit,
-  Input
 } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
-import { LearningObject, Topic } from '@entity';
+import { Topic } from '@entity';
 
 @Component({
   selector: 'clark-relevancy-scafold',
@@ -12,9 +11,6 @@ import { LearningObject, Topic } from '@entity';
   styleUrls: ['./scafold.component.scss']
 })
 export class ScafoldComponent implements OnInit {
-
-  @Input() learningObject: LearningObject;
-
   ariaLabel: string;
 
   // array to obtain stored topics

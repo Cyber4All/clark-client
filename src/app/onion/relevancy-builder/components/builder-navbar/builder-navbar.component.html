@@ -1,5 +1,5 @@
-<div class="builder-navbar-wrapper">
-    <div
+<div *ngIf="store && store.learningObject" class="builder-navbar-wrapper">
+  <div
     class="top"
     [ngStyle]="{
       'margin-top': revisedVersion ? '10px' : '0px',
@@ -8,16 +8,16 @@
   >
     <div class="top__left">
       <clark-lo-status-indicator
-        [status]="learningObject?.status"
+        [status]="store.learningObject.status"
         [states]="states"
       ></clark-lo-status-indicator>
-      <a class="title" [routerLink]="['/details/', learningObject.author.username, learningObject.cuid]" target="_blank">
-        {{learningObject.name}}
+      <a class="title" [routerLink]="['/details/', store.learningObject.author.username, store.learningObject.cuid]" target="_blank">
+        {{ store.learningObject.name }}
       </a>
-      <span>{{ learningObject.length | titlecase }} | {{ learningObject.author.name | titlecase }} | Updated {{ learningObject.date | date: 'mediumDate' }}</span>
+      <span>{{ store.learningObject.length | titlecase }} | {{ store.learningObject.author.name | titlecase }} | Updated {{ store.learningObject.date | date: 'mediumDate' }}</span>
     </div>
     <div class="top__right">
-      <a class="save" (activate)="historySnapshot.rewind('/admin/learning-objects')">Save</a>
+      <a class="save" (activate)="save()">Save</a>
       <a class="cancel" (activate)="historySnapshot.rewind('/admin/learning-objects')">Cancel</a>
     </div>
   </div>

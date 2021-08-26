@@ -33,12 +33,8 @@ import { LearningOutcomeValidator } from '../../validators/learning-outcome.vali
 export class OutcomeComponent implements OnInit {
   hiddenOverflow = true;
 
-  @Input()
-  outcome: LearningOutcome;
-  @Input()
-  totalOutcomes: number;
-  @Input()
-  active: boolean;
+  @Input() outcome: LearningOutcome;
+  @Input() active: boolean;
 
   noAnimation = true;
 
@@ -59,10 +55,7 @@ export class OutcomeComponent implements OnInit {
     public outcomeValidator: LearningOutcomeValidator
   ) {}
 
-  ngOnInit() {
-    // set the outcomeNumber to however many outcomes are currently in the outcomes array
-    this.outcomeNumber = this.totalOutcomes;
-  }
+  ngOnInit() {}
 
   /**
    * By default, the overflow should be set to hidden, but when

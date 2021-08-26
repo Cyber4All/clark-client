@@ -78,35 +78,6 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       if (this.activeOutcomeSubscription) {
         this.activeOutcomeSubscription.unsubscribe();
       }
-
-      // subscribe to the store service and filter out the activeOutcome
-      this.activeOutcomeSubscription = this.store.outcomeEvent
-        .pipe(
-          takeUntil(this.componentDestroyed$),
-          filter((x) => x && !!x.get(this.activeOutcome)),
-          map((x) => x.get(this.activeOutcome))
-        )
-        .subscribe((outcome: LearningOutcome) => {
-          // this outcome is the currently selected outcome, this function fires everytime the outcome's text changes
-          if (outcome.verb && outcome.verb !== '') {
-            // don't perform suggestions on an empty verb
-            const tempSuggestString = outcome.verb + ' ' + outcome.text;
-
-            // if the text has changed, requery for suggestions
-            if (this.suggestStringValue !== tempSuggestString) {
-              this.suggestStringValue = tempSuggestString;
-              this.suggestString$.next(this.suggestStringValue);
-            }
-
-            // update the selected outcomes list
-            if (outcome.mappings) {
-              this.selectedOutcomeIDs = outcome.mappings.map((x) => x.guidelineId);
-            }
-          } else {
-            this.suggestions = [];
-            this.suggestStringValue = '';
-          }
-        });
     }
   }
 
