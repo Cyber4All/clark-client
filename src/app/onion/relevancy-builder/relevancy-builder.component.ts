@@ -1,7 +1,7 @@
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarService } from '../../core/navbar.service';
-import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
+import { BuilderStore } from './builder-store.service';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subject } from 'rxjs';
@@ -131,38 +131,6 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
 
     // hides clark nav bar from builder
     this.nav.hide();
-  }
-
-  /**
-   * Handles builder errors by displaying error feedback to the user via toaster or modal if there is a service failure
-   *
-   * @private
-   * @param {BUILDER_ERRORS} error
-   * @memberof LearningObjectBuilderComponent
-   */
-  private handleBuilderError(error: BUILDER_ERRORS) {
-    const toasterTitle = 'Error!';
-    const toasterClass = 'bad';
-    const toasterIcon = 'far fa-times';
-    switch (error) {
-      case BUILDER_ERRORS.SERVICE_FAILURE:
-        this.showServiceFailureModal = true;
-        break;
-      case BUILDER_ERRORS.UPDATE_OBJECT:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to update Learning Object',
-        );
-        break;
-      case BUILDER_ERRORS.UPDATE_OUTCOME:
-        this.noteService.error(
-          toasterTitle,
-          'Unable to update Learning Outcome',
-        );
-        break;
-      default:
-        break;
-    }
   }
 
   get errorState(): boolean {

@@ -7,8 +7,7 @@ import { RelevancyBuilderComponent } from './relevancy-builder.component';
 const builder_routes: Routes = [
     { path: '', component: RelevancyBuilderComponent,
     children: [
-      { path: '', redirectTo: 'mappings', pathMatch: 'full' },
-      { path: 'mappings', component: OutcomePageComponent, data: { state: 'outcomes' } },
+      { path: '', component: OutcomePageComponent, data: { state: 'outcomes' }},
     ]
   }
 ];

@@ -7,29 +7,10 @@ import {
 } from '@entity';
 import { Subject } from 'rxjs';
 import { LearningObjectValidator } from './validators/learning-object.validator';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
 import { RelevancyService } from 'app/core/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-
-/**
- * Defines a list of actions the builder can take
- *
- * @export
- * @enum {number}
- */
-export enum BUILDER_ACTIONS {
-  MAP_STANDARD_OUTCOME,
-  UNMAP_STANDARD_OUTCOME,
-}
-
-export enum BUILDER_ERRORS {
-  FETCH_OBJECT,
-  UPDATE_OBJECT,
-  UPDATE_OUTCOME,
-  SERVICE_FAILURE
-}
 
 /**
  * A central storage repository for communication between learning object builder components.
@@ -90,7 +71,7 @@ export class BuilderStore {
       this.titleService.setTitle(this._learningObject.name + ' | CLARK');
       return this._learningObject;
     }).catch(e => {
-      this.handleServiceError(e, BUILDER_ERRORS.FETCH_OBJECT);
+      this.toaster.error('Error!', 'Could not retrieve learning object, please try again later.');
       return null;
     });
   }
@@ -157,21 +138,5 @@ export class BuilderStore {
     } catch (e) {
       this.toaster.error('Error!', e.message || 'There was an error saving the topics and mappings, please try again later');
     }
-  }
-
-  /**
-   * This functions handles service level errors by setting service error observable
-   * If the status code is a 500, then the service failure error is set
-   *
-   * @private
-   * @param {HttpErrorResponse} error
-   * @param {BUILDER_ERRORS} builderError
-   * @memberof BuilderStore
-   */
-  private handleServiceError(
-    error: HttpErrorResponse,
-    builderError: BUILDER_ERRORS
-  ) {
-    this.toaster.error('Error!', 'Could not save learning object, please try again later');
   }
 }
