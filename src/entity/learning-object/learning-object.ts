@@ -724,13 +724,13 @@ export namespace LearningObject {
   }
 
   export enum Status {
+    ALL = 'all',
     REJECTED = 'rejected',
     UNRELEASED = 'unreleased',
     WAITING = 'waiting',
     REVIEW = 'review',
     PROOFING = 'proofing',
     RELEASED = 'released',
-    ALL = 'all',
   }
 
   export enum Level {

@@ -103,8 +103,7 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyService
       .getTopics()
       .then(topics => {
-        this.topics = Array.from(topics);
-        this.topics.push({ _id: 'all', name: 'all' });
+        this.topics = [].concat([{_id: 'all', name: 'all'}], Array.from(topics));
       });
   }
 

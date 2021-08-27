@@ -27,7 +27,7 @@
           [offset]="{ top: 10, left: 10 }"
           (close)="toggleTopicMenu()"
         >
-          <div #contextMenu class="filter-topic__container">
+          <div #contextMenu id="contextMenu" class="filter-topic__container">
             <ul>
               <li
                 *ngFor="let topic of topics"
@@ -60,7 +60,7 @@
           [offset]="{ top: 10, left: 10 }"
           (close)="toggleCollectionMenu()"
         >
-          <div #contextMenu class="filter-collection__container">
+          <div #contextMenu id="contextMenu" class="filter-collection__container">
             <ul>
               <li
                 *ngFor="let collection of collections"
@@ -96,7 +96,7 @@
           [offset]="{ top: 10, left: 10 }"
           (close)="toggleFilterMenu(undefined)"
         >
-          <div #contextMenu class="filter-status__container">
+          <div #contextMenu id="contextMenu" class="filter-status__container">
             <ul>
               <li 
                 *ngFor="let status of statuses"
