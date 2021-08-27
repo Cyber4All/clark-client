@@ -6,7 +6,6 @@ import {
   Topic
 } from '@entity';
 import { Subject } from 'rxjs';
-import { LearningObjectValidator } from './validators/learning-object.validator';
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
 import { RelevancyService } from 'app/core/relevancy.service';
@@ -31,7 +30,6 @@ export class BuilderStore {
   constructor(
     private toaster: ToastrOvenService,
     private relevancyService: RelevancyService,
-    private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
   ) {}
@@ -58,13 +56,6 @@ export class BuilderStore {
   fetch(id: string): Promise<LearningObject> {
     return this.uriRetriever.getLearningObject({id}, ['outcomes']).toPromise().then(object => {
       this._learningObject = object;
-      // this learning object is submitted, ensure submission mode is on
-      this.validator.submissionMode =
-        this._learningObject.status &&
-        ![
-          LearningObject.Status.UNRELEASED,
-          LearningObject.Status.REJECTED
-        ].includes(this._learningObject.status);
       this._outcomes = this._learningObject.outcomes;
       this._topics = this._learningObject.topics || [];
       // set the title of page to the learning object name

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
-import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { Collection } from 'app/core/collection.service';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
 
@@ -20,7 +19,6 @@ export class BuilderNavbarComponent implements OnInit {
 
   constructor(
     private history: HistoryService,
-    public validator: LearningObjectValidator,
     public store: BuilderStore
   ) {
     this.historySnapshot = this.history.snapshot();

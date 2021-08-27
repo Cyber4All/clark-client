@@ -16,8 +16,6 @@ import {
   animateChild
 } from '@angular/animations';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { LearningObjectValidator } from './validators/learning-object.validator';
-import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { HistorySnapshot, HistoryService } from 'app/core/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
@@ -86,7 +84,7 @@ export const builderTransitions = trigger('builderTransition', [
     builderTransitions
   ],
   // these are provided here so that they'll be destroyed when navigating away
-  providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
+  providers: [BuilderStore]
 })
 export class RelevancyBuilderComponent implements OnInit, OnDestroy {
 
@@ -111,7 +109,6 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
     public store: BuilderStore,
     private route: ActivatedRoute,
     private nav: NavbarService,
-    private validator: LearningObjectValidator,
     public noteService: ToastrOvenService,
     private history: HistoryService
   ) { }
@@ -131,15 +128,6 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
 
     // hides clark nav bar from builder
     this.nav.hide();
-  }
-
-  get errorState(): boolean {
-    this.errorMessage = this.validator.nextError;
-
-    return (
-      !this.validator.saveable ||
-      (this.validator.submissionMode && !this.validator.submittable)
-    );
   }
 
   getState(outlet: any) {

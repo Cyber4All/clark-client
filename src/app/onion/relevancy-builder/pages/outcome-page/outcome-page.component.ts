@@ -1,14 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LearningOutcome, Guideline } from '@entity';
-import {
-  BuilderStore,
-  BUILDER_ACTIONS as actions
-} from '../../builder-store.service';
+import { Guideline } from '@entity';
+import { BuilderStore } from '../../builder-store.service';
 import { Subject } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { LearningObject } from '@entity';
 
 @Component({
   selector: 'clark-relevancy-outcome-page',
@@ -26,10 +19,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   saveable: boolean;
 
   constructor(
-    private toaster: ToastrOvenService,
     public store: BuilderStore,
-    private validator: LearningObjectValidator,
-    private route: ActivatedRoute
   ) {}
 
   ngOnInit() { }

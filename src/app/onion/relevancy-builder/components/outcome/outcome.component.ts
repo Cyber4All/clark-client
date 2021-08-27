@@ -15,8 +15,6 @@ import {
   animate,
   state
 } from '@angular/animations';
-import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { LearningOutcomeValidator } from '../../validators/learning-outcome.validator';
 
 @Component({
   selector: 'clark-relevancy-outcome',
@@ -48,12 +46,6 @@ export class OutcomeComponent implements OnInit {
 
   // this value keeps track of the index of newly created outcomes, it will be incorrect when loading existing outcomes
   outcomeNumber = 1;
-
-  constructor(
-    private cd: ChangeDetectorRef,
-    public validator: LearningObjectValidator,
-    public outcomeValidator: LearningOutcomeValidator
-  ) {}
 
   ngOnInit() {}
 
