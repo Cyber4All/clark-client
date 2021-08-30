@@ -8,6 +8,16 @@
     font-size: $small;
     cursor: pointer;
   }
+
+  &.select {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
 }
 
 .filters-button {

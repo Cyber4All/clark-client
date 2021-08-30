@@ -145,6 +145,9 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyMenuDown = value;
   }
 
+  /**
+   * Sets the relevancy date filters
+   */
   setDates() {
     let start = new Date().getTime().toString();
     let end;
@@ -155,6 +158,16 @@ export class FilterSearchComponent implements OnInit {
       end = this.relevancyEnd.getTime().toString();
     }
     this.relevancyCheck.emit({start, end});
+    this.toggleRelevancyMenu(false);
+  }
+
+  /**
+   * Clears the relevancy date filters
+   */
+  clearDates() {
+    this.relevancyStart = new Date();
+    this.relevancyEnd = undefined;
+    this.relevancyCheck.emit({ start: undefined, end: undefined });
     this.toggleRelevancyMenu(false);
   }
 
@@ -258,5 +271,25 @@ export class FilterSearchComponent implements OnInit {
       case 'rejected':
         return 'far fa-ban';
     }
+  }
+
+  /**
+   * Checks if a given date is today
+   *
+   * @param date The date to check
+   * @returns A boolean, true if today, false otherwise
+   */
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+  }
+
+  /**
+   * Gets wether a filter has been selected
+   */
+  get filterSelected() {
+    return this.relevancyEnd || !this.isToday(this.relevancyStart);
   }
 }

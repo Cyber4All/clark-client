@@ -62,7 +62,7 @@
     "@types/node": "^12.12.30",
     "@types/uuid": "^3.4.8",
     "babel-loader": "^8.0.6",
-    "canvas": "^2.6.1",
+    "canvas": "^2.8.0",
     "chrome-launcher": "^0.13.4",
     "codelyzer": "^5.1.2",
     "husky": "^4.3.0",
