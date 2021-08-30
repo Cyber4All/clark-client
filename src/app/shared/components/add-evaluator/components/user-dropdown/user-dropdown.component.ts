@@ -6,8 +6,9 @@ import {
   EventEmitter,
   Output,
   OnDestroy,
+  Input,
 } from '@angular/core';
-import { User } from '@entity';
+import { LearningObject, User } from '@entity';
 import { UserService } from 'app/core/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -18,27 +19,20 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
   styleUrls: ['./user-dropdown.component.scss']
 })
 export class UserDropdownComponent implements OnInit, OnDestroy {
-  // array of usernames representing all selected users
-  selectedEvaluators: User[] = [];
 
-  searchResults: User[] = [];
+  // Search Related Variables
+  selectedEvaluators: User[]; // Selected users to be assigned
+  searchResults: User[] = []; // Response of search
+  query: string; // Search query string
+  loading: boolean; // True when waiting for http response
+  userSearchInput$: Subject<string> = new Subject(); // Set after a search input event occurs
+  showDropdown: boolean; // True when results should be displayed
 
-  // search query string, modeled to the search
-  query: string;
-
+  destroyed$: Subject<void> = new Subject(); // Fired when component is destroyed
   differ: IterableDiffer<User>;
-  // fires every time an input event occurs on the search input element
-  userSearchInput$: Subject<string> = new Subject();
-  // fires when this component is destroyed
-  destroyed$: Subject<void> = new Subject();
-  // true if dropdown results should be shown, false if they should be hidden
-  showDropdown: boolean;
-  // true if the component is actively querying the services, false otherwise
-  loading: boolean;
 
-
-  // fired when an evaluator is selected
-  @Output() evaluators: EventEmitter<any> = new EventEmitter();
+  @Input() learningObject: LearningObject; // Learning object that is being assigned selectedEvaluators
+  @Output() evaluators: EventEmitter<any> = new EventEmitter(); // Evaluators selected
 
   constructor(
     private userService: UserService,
@@ -48,6 +42,15 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // TO_DO CHANGE TO A ROUTE THAT CAN SEARCH FOR A SPECIFIC USER VIA ID
+    this.userService.searchUsers({}).then( (users: User[]) => {
+      users.forEach( user => {
+        if (this.learningObject.assigned && this.learningObject.assigned.includes(user.id)) {
+          this.selectedEvaluators.push(user);
+        }
+      });
+    });
+
     // subscribe to the search input and fire search after debounce
     this.userSearchInput$
       .pipe(debounceTime(650), takeUntil(this.destroyed$))
@@ -88,7 +91,13 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
         text: query,
         accessGroups: 'admin,curator,editor'
       }).then( (results: User[]) => {
-        this.searchResults = results;
+        const filteredUsers = [];
+        results.forEach( user => {
+          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.id)) {
+            filteredUsers.push(user);
+          }
+        });
+        this.searchResults = filteredUsers;
       });
       this.loading = false;
     }

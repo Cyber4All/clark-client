@@ -1,7 +1,9 @@
 @import '~_vars.scss';
 
 .wrapper {
+  width: 600px;
   min-height: 300px;
+  cursor: default;
 
   .add-evaluator-banner{
     top: 0;
@@ -57,7 +59,7 @@
     color: $darker-grey;
   }
 
-  .user-dropdown {
+  .object-dropdown {
     margin-top: 1em;
   }
 

@@ -31,7 +31,6 @@ import {
   HighlightedLearningObjectComponent
 } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
-
 @NgModule({
   imports: [
     // angular modules

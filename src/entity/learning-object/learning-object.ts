@@ -260,6 +260,20 @@ export class LearningObject {
     this._nextCheck = check;
   }
   version = 0;
+
+  /**
+   * @property {assigned} assigned is the array of evaluators assigned to a learning object
+   */
+  get assigned(): string[] {
+    return this._assigned;
+  }
+  set assigned(assigned: string[]) {
+    if (assigned) {
+      this._assigned = assigned;
+    }
+  }
+
+
   /**
    * Creates an instance of LearningObject.
    * @param {Partial<LearningObject>} [object]
@@ -289,6 +303,7 @@ export class LearningObject {
     this._status = LearningObject.Status.UNRELEASED;
     this._metrics = { saves: 0, downloads: 0 };
     this._nextCheck = new Date();
+    this._assigned = [];
 
     if (object) {
       this.copyObject(object);
@@ -324,6 +339,8 @@ export class LearningObject {
   private _revisionUri?: string;
 
   private _constructed = false;
+
+  private _assigned: string[];
 
   /**
    * Checks if name is valid
@@ -654,6 +671,9 @@ export class LearningObject {
     if (object.nextCheck) {
       this._nextCheck = object.nextCheck;
     }
+    if (object.assigned) {
+      this._assigned = object.assigned;
+    }
 
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
@@ -694,6 +714,7 @@ export class LearningObject {
       resourceUris: this.resourceUris,
       parents: this.parents,
       nextCheck: this.nextCheck,
+      assigned: this.assigned,
     };
     return object;
   }

@@ -64,8 +64,6 @@ export class LearningObjectsComponent
 
   topAdjustment: number;
 
-  showAddEvaluator: boolean;
-
   @Input() showOptions: boolean;
 
   // Selection variables
@@ -347,15 +345,6 @@ export class LearningObjectsComponent
     if (this.selected.size < this.learningObjects.length && this.allSelected) {
       this.allSelected = false;
     }
-  }
-
-  /**
-   * Toggles the add evaluator modal from showing/hiding
-   *
-   * @param value True if showing, false otherwise
-   */
-  toggleAddEvaluatorModal(value: boolean) {
-    this.showAddEvaluator = value;
   }
 
   ngOnDestroy() {

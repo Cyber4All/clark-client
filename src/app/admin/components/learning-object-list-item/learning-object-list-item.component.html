@@ -54,7 +54,7 @@
 
 <clark-popup *ngIf="showAddEvaluator" (closed)="toggleAddEvaluatorModal(false)">
   <div class="modal-container" #popupInner>
-    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [highlightedLearningObjects]="[learningObject]"></clark-add-evaluator>
+    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [learningObject]="learningObject"></clark-add-evaluator>
   </div>
 </clark-popup>
 

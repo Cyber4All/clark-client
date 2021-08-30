@@ -1,19 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { User } from '@entity';
 import { RelevancyService } from 'app/core/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
+import { User } from 'entity/user/user';
 
 @Component({
-  selector: 'clark-add-evaluator',
+  selector: 'clark-admin-add-evaluator',
   templateUrl: './add-evaluator.component.html',
   styleUrls: ['./add-evaluator.component.scss']
 })
 export class AddEvaluatorComponent implements OnInit {
 
-  selectedEvaluators: User[];
+  selectedLearningObjects: LearningObject[];
 
-  @Input() learningObject: LearningObject;
+  @Input() user: User;
   @Output() close: EventEmitter<void> = new EventEmitter();
 
   constructor(
@@ -21,22 +21,22 @@ export class AddEvaluatorComponent implements OnInit {
       private toaster: ToastrOvenService,
     ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
-  setSelectedEvaluators(evaluators) {
-    if (evaluators) {
-      this.selectedEvaluators = evaluators;
+  setSelectedLearningObjects(learningObjects: LearningObject[]) {
+    if (learningObjects) {
+      this.selectedLearningObjects = learningObjects;
     }
   }
 
   async assignEvaluators() {
-    if (this.learningObject && this.checkEvaluatorsBody(this.selectedEvaluators)) {
-      const cuid = this.learningObject.cuid;
-      const assignerIds = this.selectedEvaluators.map( obj => obj.id );
+    if (this.user && this.checkEvaluatorsBody(this.selectedLearningObjects)) {
+      const cuids = this.selectedLearningObjects.map( obj => obj.cuid );
+      const assignerId = this.user.id;
 
       await this.relevancyService.assignEvaluators({
-        cuids: [cuid],
-        assignerIds: assignerIds
+        cuids: cuids,
+        assignerIds: [assignerId]
       })
       .then( () => {
         this.toaster.success(
@@ -62,4 +62,5 @@ export class AddEvaluatorComponent implements OnInit {
   private checkEvaluatorsBody(arg: any[]): boolean {
     return (arg && arg.length > 0);
   }
+
 }

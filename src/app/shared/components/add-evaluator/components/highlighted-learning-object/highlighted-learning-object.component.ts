@@ -8,7 +8,7 @@ import { LearningObject } from '@entity';
 })
 export class HighlightedLearningObjectComponent implements OnInit {
 
-  @Input() highlightedLearningObject: LearningObject;
+  @Input() learningObject: LearningObject;
   @Input() statusDescription;
 
   constructor() { }

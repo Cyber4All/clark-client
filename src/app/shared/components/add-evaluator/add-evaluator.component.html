@@ -5,13 +5,13 @@
     <p class="banner-sub">Assign evaluators to the following learning objects with the user drop down</p>
   </div>
 
-  <div class="content-header"> Learning Objects: {{highlightedLearningObjects.length}}</div>
-  <div class="card-container" *ngIf="highlightedLearningObjects && highlightedLearningObjects.length">
-    <clark-highlighted-learning-object *ngFor="let object of highlightedLearningObjects" [highlightedLearningObject]="object"></clark-highlighted-learning-object>
+  <div class="content-header">Learning Object</div>
+  <div class="card-container" *ngIf="learningObject">
+    <clark-highlighted-learning-object [learningObject]="learningObject"></clark-highlighted-learning-object>
   </div>
 
   <div class="user-dropdown">
-    <clark-user-dropdown (evaluators)="setSelectedEvaluators($event)"></clark-user-dropdown>
+    <clark-user-dropdown (evaluators)="setSelectedEvaluators($event)" [learningObject]="learningObject"></clark-user-dropdown>
   </div>
 
   <div class="btn-group center">
