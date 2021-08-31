@@ -38,7 +38,7 @@ export class UnreleaseService {
    * revision when it is necessary for the editorial process to continue.
    * @param username username of the author
    * @param cuid cuid of the learning object
-   * @returns 
+   * @returns
    */
   deleteRevision(username: string, cuid: string) {
     return this.http
