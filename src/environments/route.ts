@@ -58,8 +58,8 @@ export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
-  FETCH_USER(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}`;
+  FETCH_USER(user: string, q: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
   },
   CHECK_USER_EXISTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(

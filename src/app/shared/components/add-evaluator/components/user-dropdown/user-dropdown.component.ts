@@ -42,14 +42,14 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // TO_DO CHANGE TO A ROUTE THAT CAN SEARCH FOR A SPECIFIC USER VIA ID
-    this.userService.searchUsers({}).then( (users: User[]) => {
-      users.forEach( user => {
-        if (this.learningObject.assigned && this.learningObject.assigned.includes(user.id)) {
+    console.log(this.learningObject.assigned);
+    if (this.learningObject.assigned) {
+      this.learningObject.assigned.forEach(userId => {
+        this.userService.getUser(userId, 'userId').then( (user: User) => {
           this.selectedEvaluators.push(user);
-        }
+        });
       });
-    });
+    }
 
     // subscribe to the search input and fire search after debounce
     this.userSearchInput$

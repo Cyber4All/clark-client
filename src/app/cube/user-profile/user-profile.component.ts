@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   // Used to retrieve user object that contains a bio
   private getUser() {
-    this.userService.getUser(this.user.username).then(val => {
+    this.userService.getUser(this.user.username, 'username').then(val => {
       this.user = val;
     });
   }
