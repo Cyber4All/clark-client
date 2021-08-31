@@ -1,0 +1,13 @@
+<div>
+    <div>
+        <div class="header" (activate)="toggleCollapsed(!collapsed)">
+            <p>Section</p>
+            <span *ngIf="collapsed"><i class="fas fa-plus"></i></span>
+            <span *ngIf="!collapsed"><i class="fas fa-minus"></i></span>
+        </div>
+        <hr />
+    </div>
+    <div *ngIf="!collapsed">
+        This is not collapsed
+    </div>
+</div>
