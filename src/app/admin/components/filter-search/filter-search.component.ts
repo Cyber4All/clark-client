@@ -103,7 +103,8 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyService
       .getTopics()
       .then(topics => {
-        this.topics = [].concat([{_id: 'all', name: 'all'}], Array.from(topics));
+        this.topics = topics.sort(( a, b ) => ( a.name > b.name ) ? 1 : (( b.name > a.name ) ? -1 : 0) );
+        this.topics = [].concat([{_id: 'all', name: 'All'}], Array.from(topics));
       });
   }
 
@@ -125,12 +126,6 @@ export class FilterSearchComponent implements OnInit {
   setSelectedCollection(abvName: string) {
     this._selectedCollection = this.collections.filter(
       x => x.abvName === abvName
-    )[0];
-  }
-
-  setSelectedTopic(name: string) {
-    this._selectedTopic = this.topics.filter(
-      x => x.name === name
     )[0];
   }
 
@@ -281,7 +276,7 @@ export class FilterSearchComponent implements OnInit {
 
   clearTopicFilters() {
     this.filterTopics.clear();
-    this.topicFilter.emit(undefined);
+    this.topicFilter.emit([]);
   }
 
   /**

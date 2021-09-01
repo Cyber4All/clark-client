@@ -278,7 +278,7 @@ export class LearningObjectsComponent
    * @memberof LearningObjectsComponent
    */
   clearStatusAndCollectionFilters() {
-    this.query = { collection: undefined, status: undefined, currPage: 1 };
+    this.query = { collection: undefined, topics: undefined, status: undefined, currPage: 1 };
     this.learningObjects = [];
 
     this.getLearningObjects();
