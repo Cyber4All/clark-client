@@ -550,7 +550,17 @@ export const RELEVANCY_ROUTES = {
       )}/learning-objects/${encodeURIComponent(
         id
       )}/relevancy-check`;
-  }
+  },
+  // Reterieves topics for tagging learning objects
+  GET_TOPICS() {
+    return `${environment.apiURL}/topics`;
+  },
+  PATCH_OBJECT_TOPICS(username: string, id: string) {
+    return `${environment.apiURL}/users/${username}/learning-objects/${id}/topics`;
+  },
+  PATCH_OBJECT_OUTCOME_MAPPINGS(username: string, objectId: string, outcomeId: string) {
+    return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
+  },
 };
 
 export const STANDARD_GUIDELINE_ROUTES = {

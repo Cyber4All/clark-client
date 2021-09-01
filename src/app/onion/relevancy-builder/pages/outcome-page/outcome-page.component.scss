@@ -1,0 +1,60 @@
+@import '~_vars.scss';
+
+.main {
+  padding-bottom: 80px;
+  border-top: 1px solid $light-grey;
+  border-width: thin;
+}
+.title {
+  font-size: $large;
+  color: $darker-grey;
+  font-weight: 600;
+}
+
+.top {
+  padding: 20px;
+  margin: 20px;
+  .title {
+    float: left;
+  }
+}
+
+.add-button {
+  display: flex;
+  float: right;
+  padding: 20px;
+}
+
+.no-outcomes {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 30px;
+
+  .no-outcomes__title {
+    color: $darker-grey;
+    font-size: $larger;
+  }
+
+  .no-outcomes__description {
+    font-size: $normal;
+    color: $dark-grey;
+    max-width: 500px;
+    margin: auto;
+    margin-top: 5px;
+  }
+
+  .no-outcomes__error {
+    color: $error-red;
+    margin-top: 20px;
+  }
+
+  .svg-inline--fa,
+  .icon {
+    color: $light-blue;
+    font-size: $largest;
+    margin-bottom: 5px;
+  }
+}
