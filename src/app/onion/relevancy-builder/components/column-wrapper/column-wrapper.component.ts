@@ -51,7 +51,6 @@ export class ColumnWrapperComponent implements OnInit {
       document.body.style['overflow-x'] = 'auto';
     }
   }
-  
   get rightColumn(): boolean {
     return this.columns.indexOf('r') >= 0;
   }

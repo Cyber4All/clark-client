@@ -72,9 +72,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     this.store.active(this.activeOutcome);
 
     if (changes.activeOutcome && changes.activeOutcome.currentValue) {
-      
       this.searchString$.next('');
-
       const tempSuggestString = this.store.getOutcomeText();
 
       if (this.suggestStringValue !== tempSuggestString) {
