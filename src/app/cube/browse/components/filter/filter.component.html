@@ -1,63 +1,19 @@
-<div class="clark-filter" id="clark-filter" [ngClass]="{'vertical': display === 'vertical', 'horizontal': display === 'horizontal'}">
-  <div class="filter-section" id="filter-section" *ngFor="let f of filters">
-    <ng-container *ngIf="f.values || f.template">
-      <div class="filter-section-inner" id="filter-section-inner">
-        <div class="filter-section-name">{{ f.title }}</div>
-        <div *ngIf="f.canSearch" class="filter-section-search">
-          <!-- TODO search bar here -->
-        </div>
-        <ng-container *ngIf="f.type === 'custom'" [ngTemplateOutlet]="f.template"></ng-container>
-        <ng-container *ngIf="f.type !== 'custom'" [ngTemplateOutlet]="loadTemplate" [ngTemplateOutletContext]="{filter:f}"></ng-container>
-      </div>
-    </ng-container>
-  </div>
+<div>
+  <!-- Collection Filters -->
+  <clark-filter-section [info]="collectionFilter" (change)="registerChange()"></clark-filter-section>
+
+  <!-- Length Filters -->
+  <clark-filter-section [info]="lengthFilter" (change)="registerChange()"></clark-filter-section>
+
+  <!-- Topics Filters -->
+  <clark-filter-section [info]="topicFilter" (change)="registerChange()"></clark-filter-section>
+
+  <!-- Materials Filters -->
+  <clark-filter-section [info]="materialFilter" (change)="registerChange()"></clark-filter-section>
+
+  <!-- Level Filters -->
+  <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
+
+  <!-- Guidelines Filters -->
+  <!-- TODO: Implement standard guideline frameworks integration -->
 </div>
-
-<!-- TEMPLATES -->
-
-<!-- Load custom markup/components -->
-<ng-template #loadTemplate let-f="filter">
-  <ng-container [ngSwitch]="f.type">
-    <ng-container *ngSwitchCase="'select-many'">
-      <ng-container [ngTemplateOutlet]="selectMany" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
-    </ng-container>
-    <ng-container *ngSwitchCase="'select-one'">
-      <ng-container [ngTemplateOutlet]="selectOne" [ngTemplateOutletContext]="{name: f.name, filters: f.values}"></ng-container>
-    </ng-container>
-    <ng-container *ngSwitchCase="'dropdown-one'">
-      dropdown-one hasn't been implemented yet :0
-    </ng-container>
-  </ng-container>
-</ng-template>
-
-<!-- Select Many -->
-<ng-template #selectMany let-filters="filters" let-name="name">
-  <div class="filter-section-type select-many" id="filter-section-type">
-    <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of filters">
-      <span class="checkbox-grid" [tip]="f.toolTip ? f.toolTip : ''" [tipDisabled]="!f.toolTip" tipPosition="right">
-        <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.value ? f.value : f.name)" (checkboxUnchecked)="removeFilter(name, f.value ? f.value : f.name)"></clark-checkbox>
-        <span>{{ f.name }}</span>
-      </span>
-    </div>
-  </div>
-</ng-template>
-
-<!-- Select One -->
-<ng-template #selectOne let-filters="filters" let-name="name">
-  <div class="filter-section-type select-many" id="filter-section-type">
-    <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of filters">
-      <span class="checkbox-grid" [tip]="f.toolTip ? f.toolTip : ''" [tipDisabled]="!f.toolTip" tipPosition="right">
-        <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active ? true : false" (checkboxChecked)="addFilter(name, f.value ? f.value : f.name, true)" (checkboxUnchecked)="removeFilter(name, f.value ? f.value : f.name)"></clark-checkbox>
-        <span>{{ f.name }}</span>
-      </span>
-    </div>
-  </div>
-</ng-template>
-
-<!-- Dropdown One -->
-<ng-template #dropdownOne let-filters="filters" let-name="name">
-  <div class='filter-section-type dropdown-one'>
-    <!-- TODO implement dropdown one -->
-    dropdown-one hasn't been implemented yet :0
-  </div>
-</ng-template>

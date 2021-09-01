@@ -5,6 +5,7 @@ import { Guideline } from './guideline/guideline';
 import { LearningOutcome } from './learning-outcome/learning-outcome';
 import { SubmittableLearningOutcome } from './learning-outcome/submittable-learning-outcome';
 import { Collection } from './collection/collection';
+import { Topic } from './topic/topic';
 
 // Exports All Interfaces
 export {
@@ -15,4 +16,5 @@ export {
   SubmittableLearningOutcome,
   Guideline,
   Collection,
+  Topic,
 };

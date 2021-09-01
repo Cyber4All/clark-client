@@ -1,9 +1,51 @@
 @import '~_vars.scss';
 
 .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+    
+  p {
+    margin: 5px 0;
+  }
+}
+
+hr {
+  height: 1px;
+  background-color: $light-grey;
+  border: none;
+}
+
+.filter-wrapper {
+  padding: 10px 0;
+}
+
+.filter {
+  text-transform: capitalize;
+  font-size: $small;
+  display: inline;
+  flex-wrap: nowrap;
+
+  &.filter-checkbox {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+
+    clark-checkbox {
+      @include vert-center;
+      margin-right: 10px;
+    }
+  }
+
+  .checkbox-grid {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    align-items: start !important;
+
+    clark-checkbox {
+      align-self: start;
+      margin-top: 2px;
+    }
+  }
 }

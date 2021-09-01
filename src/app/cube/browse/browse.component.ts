@@ -3,21 +3,14 @@ import {takeUntil, debounceTime} from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { lengths } from '@cyber4all/clark-taxonomy';
-
 
 import {
   SuggestionService
  } from '../../onion/core/suggestion.service';
- import { FilterSection } from './components/filter/filter.component';
  import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs';
-import { AuthService } from '../../core/auth.service';
-import { CollectionService } from '../../core/collection.service';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
-import { ModalListElement, ModalService, Position } from '../../shared/modules/modals/modal.module';
 import { LearningObjectService } from '../learning-object.service';
-import { GuidelineService } from 'app/core/guideline.service';
 
 @Component({
   selector: 'cube-browse',
@@ -58,57 +51,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   pageCount: number;
   filtering = false;
-  filters: FilterSection[] = [
-    {
-      title: 'collection',
-      name: 'collection',
-      type: 'select-many',
-      canSearch: false,
-      values: []
-    },
-    {
-      title: 'length',
-      name: 'length',
-      type: 'select-many',
-      canSearch: false,
-      values: [
-        ...Array.from(lengths).map(l => ({
-          name: l,
-          toolTip: this.tooltipText[l.toLowerCase()]
-        }))
-      ]
-    },
-    {
-      title: 'level',
-      name: 'level',
-      type: 'select-many',
-      canSearch: false,
-      values: [
-        ...Object.values(LearningObject.Level).map(l => ({
-          name: l.toLowerCase(),
-          toolTip: this.tooltipText[l.toLowerCase()]
-        }))
-      ]
-    },
-    {
-      title: 'guidelines',
-      name: 'guidelines',
-      type: 'select-many',
-      canSearch: false,
-      values: []
-    },
-    {
-      title: 'type of materials',
-      name: 'fileTypes',
-      type: 'select-many',
-      canSearch: false,
-      values: [
-        {
-          name: 'video',
-        }
-      ]
-    }
-  ];
+  filters: any = {};
+
   searchDelaySubject: any;
 
   filterInput: Observable<string>;
@@ -134,12 +78,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     public learningObjectService: LearningObjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private modalService: ModalService,
     public mappingService: SuggestionService,
-    private auth: AuthService,
-    private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
-    private guidelineService: GuidelineService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -158,28 +98,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
     // whenever the queryParams change, map them to the query object and perform the search
     this.route.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(async params => {
-      /**
-        Will try to retrieve the outcome sources and collection sources, if it cannot retrieve
-        them it will pop the guidelines element in the array so that it does
-        not appear on the page at all and it will also remove the collections element in the array
-      */
-      try {
-        // fill outcomes array in filters
-        this.outcomeSources = await this.guidelineService.getSources().toPromise();
-        this.filters[3].values = this.outcomeSources.map(o => ({ name: o }));
-      } catch (err) {
-        // remove the guidelines section of the filters since we couldn't load guidelines
-        this.filters = this.filters.filter(f => f.name !== 'guidelines');
-      }
-
-      try {
-        // fill collections array in filters
-        const collections = await this.collectionService.getCollections();
-        this.filters[0].values = collections.map(c => ({ name: c.name, value: c.abvName}));
-      } catch (err) {
-        // remove the collection section of the filters since we couldn't load collections
-        this.filters = this.filters.filter(f => f.name !== 'collection');
-      }
       // makes query based and sends request to fetch learning objects
       this.makeQuery(params);
       this.fetchLearningObjects(this.query);
@@ -281,72 +199,23 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.performSearch();
   }
 
-  addFilter(key: string, value: string, clearFirst?: boolean) {
-    this.modifyFilter(key, value, true, clearFirst);
-    if (!this.filtersDownMobile) {
-      this.performSearch(true);
-    }
-  }
-
-  removeFilter(key: string, value: string) {
-    this.modifyFilter(key, value);
+  /**
+   * Registers the filters from the filter menu
+   *
+   * @param filters The filters emitted from the filter component
+   */
+  filter(filters: any) {
+    this.filters = filters;
     if (!this.filtersDownMobile) {
       this.performSearch(true);
     }
   }
 
   clearAllFilters(sendFilters: boolean = true) {
-    for (let i = 0, l = this.filters.length; i < l; i++) {
-      if (this.filters[i].values) {
-        for (let k = 0, j = this.filters[i].values.length; k < j; k++) {
-          this.filters[i].values[k].active = false;
-        }
-      }
-    }
+    // TODO: Implement clear filters
 
     if (sendFilters) {
       this.performSearch();
-    }
-  }
-
-
-
-  private modifyFilter(
-    key: string,
-    value: string,
-    active = false,
-    clearFirst?: boolean
-  ) {
-    for (let i = 0, l = this.filters.length; i < l; i++) {
-      if (this.filters[i].name === key) {
-        // found the correct filter category
-        if (this.filters[i].values) {
-          for (let k = 0, j = this.filters[i].values.length; k < j; k++) {
-            if (clearFirst && active) {
-              // for each iteration set to false if this is a select-one instance vs a select-many instance
-              this.filters[i].values[k].active = false;
-            }
-
-            if (
-              this.filters[i].values[k].name === value ||
-              this.filters[i].values[k].value === value
-            ) {
-              // found the correct filter
-              this.filters[i].values[k].active = active;
-
-              if (!clearFirst) {
-                // if we don't need to see every filter in this category, jsut return now
-                // for efficiency
-                return;
-              }
-            }
-          }
-
-          // if clearFirst is true, inner return won't be fired, this will prevent iterating
-          // accross unneccessary categories
-          return;
-        }
-      }
     }
   }
 
@@ -358,23 +227,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     if (delay) {
       this.searchDelaySubject.next();
     } else {
-      for (let i = 0, l = this.filters.length; i < l; i++) {
-        const category = this.filters[i];
-        let active;
-
-        if (category.values) {
-          active = category.values.filter(v => v.active);
-        } else {
-          // TODO implement adding non-value (custom component) filters
-          active = [];
-        }
-
-        if (active.length) {
-          // there are filters in this category
-          this.query[category.name] = active.map(v => v.value || v.name);
-        } else {
-          this.query[category.name] = [];
-        }
+      if (this.filters && this.filters !== {}) {
+        this.query = { ...this.filters };
       }
 
       // if we're adding a filter that isn't a page change, reset the currPage in query to 1
@@ -441,25 +295,15 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         const val = params[key];
         // this parameter is a query param, add it to the query object
         this.query[key] = val;
-
-        // add it to filter list to force checkbox
-        if (Array.isArray(val)) {
-          for (let k = 0, j = val.length; k < j; k++) {
-            this.modifyFilter(key, val[k], true);
-          }
-        } else {
-          this.modifyFilter(key, val, true);
-        }
       }
     }
   }
 
   async fetchLearningObjects(query: Query) {
     this.loading = true;
-    this.learningObjects = Array(20).fill(new LearningObject());
-    this.cd.detectChanges();
+    this.learningObjects = [];
     // Trim leading and trailing whitespace
-    query.text = query.text.trim();
+    query.text = query.text ? query.text.trim() : undefined;
     try {
       const {
         learningObjects,
