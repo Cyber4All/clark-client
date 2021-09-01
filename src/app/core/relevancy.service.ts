@@ -75,6 +75,12 @@ export class RelevancyService {
     });
   }
 
+  /**
+   *  This function updates the learning the object with the selected tagged topics
+   * @param username  username of learning object owner
+   * @param id  user id
+   * @param topicIds  id of Topic object
+   */
   async updateObjectTopics(username: string, id: string, topicIds: string[]): Promise<void> {
     return await new Promise((resolve, reject) => {
       this.http

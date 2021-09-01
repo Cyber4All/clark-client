@@ -39,7 +39,7 @@ export class FilterSearchComponent implements OnInit {
   @Input() showStatus: boolean;
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
-  @Output() topicFilter = new EventEmitter<any[]>();
+  @Output() topicFilter = new EventEmitter<string[]>();
   @Output() relevancyCheck = new EventEmitter<{start: string, end: string}>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
