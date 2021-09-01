@@ -230,6 +230,10 @@ $learning-object-width: 820px;
 // mobile styles
 @media (max-width: 750px) {
 
+  clark-filter {
+    width: 100%;
+  }
+
   .mobile-filters {
     display: inline-flex !important;
   }
