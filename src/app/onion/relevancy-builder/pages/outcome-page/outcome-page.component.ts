@@ -11,12 +11,8 @@ import { Subject } from 'rxjs';
 export class OutcomePageComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();
 
-  // flags
+  // ID of outcome being accessed
   activeOutcome: string;
-  // passed outcome id from query params
-  passedId: string;
-
-  saveable: boolean;
 
   constructor(
     public store: BuilderStore,
@@ -45,5 +41,4 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
   }
-
 }

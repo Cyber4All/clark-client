@@ -2,9 +2,7 @@ import {
   Component,
   OnInit,
   ElementRef,
-  AfterViewInit,
   ViewChild,
-  OnDestroy,
   Input
 } from '@angular/core';
 import { MessagesService } from 'app/core/messages.service';
@@ -53,12 +51,7 @@ export class ColumnWrapperComponent implements OnInit {
       document.body.style['overflow-x'] = 'auto';
     }
   }
-
-  AfterViewInit() {
-    // TODO check for right column and adjust mobile threshold here
-    // TODO collapse left panel on smaller screens
-  }
-
+  
   get rightColumn(): boolean {
     return this.columns.indexOf('r') >= 0;
   }

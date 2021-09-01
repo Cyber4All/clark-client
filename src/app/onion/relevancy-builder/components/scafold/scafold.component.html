@@ -5,10 +5,10 @@
   </div>
 </div>
 
-<ng-template [ngIf]="topics && topics.length > 0" class="learning-object-topics">
+<ng-template [ngIf]="topics && topics.length > 0" class="learning-object-topics scroll-wrapper">
   <div class="pills" >
-    <div *ngFor="let t of topics; let i = index" class="pill" [ngClass]="{'pill-selected': store.topics.includes(t._id)}" (activate)="toggleTopics(t)"> 
-      <span>{{ t.name }}</span>
+    <div *ngFor="let t of topics; let i = index" class="pill" role="button" [ngClass]="{'pill-selected': store.topics.includes(t._id)}" (activate)="toggleTopics(t)"> 
+      <span >{{ t.name }}</span>
     </div>
   </div>
 </ng-template>

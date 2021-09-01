@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { BuilderStore } from 'app/onion/relevancy-builder/builder-store.service';
 import { SuggestedOutcome } from '../standard-outcomes.component';
 
 @Component({
@@ -13,7 +14,9 @@ export class OutcomeListItemComponent implements OnInit {
 
   @Output() toggleMap: EventEmitter<boolean> = new EventEmitter();
 
-  constructor() { }
+  constructor(
+    public store: BuilderStore
+  ) { }
 
   ngOnInit(): void {
   }

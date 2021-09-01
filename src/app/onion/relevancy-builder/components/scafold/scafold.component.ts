@@ -11,7 +11,6 @@ import { Topic } from '@entity';
   styleUrls: ['./scafold.component.scss']
 })
 export class ScafoldComponent implements OnInit {
-  ariaLabel: string;
 
   // array to obtain stored topics
   topics: Topic[];
@@ -28,8 +27,9 @@ export class ScafoldComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
-    this.ariaLabel = 'Add and delete Topics';
-    this.topics = await this.store.getTopics();
+    this.store.getTopics().then(( topics ) => {
+      this.topics = topics.sort(( a, b ) => {return ( a.name > b.name ) ? 1 : (( b.name > a.name ) ? -1 : 0); });
+    });
     this.loading = false;
   }
 

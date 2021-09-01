@@ -9,7 +9,7 @@ $right-column: minmax(290px, 340px);
   grid-gap: 5px;
   margin: 0 25px;
   position: absolute;
-  top: 110px;
+  top: 120px;
 
   &.no-left {
     grid-template-columns: $middle-column $right-column;
@@ -37,21 +37,25 @@ $right-column: minmax(290px, 340px);
     background: transparent;
 
     &.main-column {
-      margin-top: 30px;
+      padding-bottom: 20px;
     }
 
     &.left-column {
-      margin-top: 30px;
+      padding-bottom: 20px;
     }
   }
 
   .scroll-wrapper {
+    padding: 0 5px;
     overflow: auto;
     transform: translateY(-30px);
-    padding: 0 20px;
 
     &.scroll-wrapper--left {
-      padding: 0;
+      margin-top: 30px;
+    }
+
+    &.scroll-wrapper--main {
+      margin-top: 30px;
     }
   }
 }

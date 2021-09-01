@@ -3,8 +3,7 @@ import {
   OnInit,
   EventEmitter,
   Input,
-  Output,
-  ChangeDetectorRef
+  Output
 } from '@angular/core';
 import { levels } from '@cyber4all/clark-taxonomy';
 import { LearningOutcome } from '@entity';

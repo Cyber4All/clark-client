@@ -2,14 +2,13 @@
   <div
     class="top"
     [ngStyle]="{
-      'margin-top': revisedVersion ? '10px' : '0px',
-      'margin-bottom': revisedVersion ? '20px' : '30px'
+      'margin-top': '0px',
+      'margin-bottom': '30px'
     }"
   >
     <div class="top__left">
       <clark-lo-status-indicator
         [status]="store.learningObject.status"
-        [states]="states"
       ></clark-lo-status-indicator>
       <a class="title" [routerLink]="['/details/', store.learningObject.author.username, store.learningObject.cuid]" target="_blank">
         {{ store.learningObject.name }}
@@ -17,9 +16,22 @@
       <span>{{ store.learningObject.length | titlecase }} | {{ store.learningObject.author.name | titlecase }} | Updated {{ store.learningObject.date | date: 'mediumDate' }}</span>
     </div>
     <div class="top__right">
-      <a class="save" (activate)="save()">Save</a>
-      <a class="cancel" (activate)="historySnapshot.rewind('/admin/learning-objects')">Cancel</a>
+      <div class="btn-group to-right">
+        <button class="button neutral" (activate)="attemptCancel()">Cancel</button>
+        <button class="button good" (activate)="save()">Save <i class="far fa-save"></i></button>
+      </div>
     </div>
   </div>
 </div>
+
+<clark-popup *ngIf="cancelConfirmationOpen" (closed)="cancelConfirmationOpen = false">
+  <div #popupInner>
+    <div class="modal-title bad">Are you sure?</div>
+    <div class="modal-text">Any new mapped outcomes and selected topic tags will not be saved to this learning object!</div>
+    <div class="btn-group center">
+      <button (activate)="historySnapshot.rewind('/admin/learning-objects'); cancelConfirmationOpen = false;" class="button bad">Discard Changes <i class="far fa-trash-alt"></i></button>
+      <button (activate)="cancelConfirmationOpen = false" class="button neutral">Nevermind <i class="far fa-ban"></i></button>
+    </div>
+  </div>
+</clark-popup>
 

@@ -10,11 +10,9 @@ import { HistoryService, HistorySnapshot } from 'app/core/history.service';
 })
 export class BuilderNavbarComponent implements OnInit {
   collection: Collection;
-  // FIXME: This will need to set based on the data coming back once the service is in place
-  revisedVersion = false;
 
-  // map of state strings to icons and tooltips
-  states: Map<string, { tip: string }>;
+  cancelConfirmationOpen = false;
+
   historySnapshot: HistorySnapshot;
 
   constructor(
@@ -25,6 +23,15 @@ export class BuilderNavbarComponent implements OnInit {
   }
 
   ngOnInit(): void { }
+
+  /**
+   * Function to toggle the confirm cancel popup
+   */
+  attemptCancel() {
+    if (!this.cancelConfirmationOpen) {
+      this.cancelConfirmationOpen = true;
+    }
+  }
 
   /**
    * Saves the data from the store and navigates back to the admin learning objects page

@@ -12,7 +12,7 @@ import { RelevancyService } from 'app/core/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 /**
- * A central storage repository for communication between learning object builder components.
+ * A central storage repository for communication between relevancy builder components.
  * Maintains a stateful, single-source store for all possible actions as well as handlers for accepting those actions.
  *
  * @export
@@ -23,6 +23,7 @@ export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomes: LearningOutcome[];
   private _topics: string[] = [];
+  private _activeOutcome: string;
 
   // fired when this service is destroyed
   private destroyed$: Subject<void> = new Subject();
@@ -44,6 +45,20 @@ export class BuilderStore {
 
   get topics(): string[] {
     return this._topics;
+  }
+
+  get activeGuidelines(): string[] {
+    const outcome = this._outcomes.find(o => o.id === this._activeOutcome);
+    return (outcome && outcome.mappings) ? outcome.mappings.map( obj => obj.guidelineId ) : [];
+  }
+
+  public active(id: string) {
+    this._activeOutcome = id;
+  }
+
+  public getOutcomeText() {
+    const outcome = this._outcomes.find(o => o.id === this._activeOutcome);
+    return outcome.verb + ' ' + outcome.text;
   }
 
   /**

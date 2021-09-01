@@ -7,7 +7,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { LearningOutcome, Guideline } from '@entity';
+import { Guideline } from '@entity';
 import { GuidelineService } from 'app/core/guideline.service';
 import { BuilderStore } from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
@@ -45,40 +45,47 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   suggestions: SuggestedOutcome[] = [];
   searchResults: SuggestedOutcome[] = [];
 
-  selectedOutcomeIDs: string[] = [];
-
-  activeOutcomeSubscription: Subscription;
-
   loading = undefined;
 
   constructor(
     private guidelineService: GuidelineService,
     private store: BuilderStore
   ) {
-   // handle searching
-   this.searchString$
-    .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
-    .subscribe(() => {
-      this.performSearch();
-    });
+      // handle searching
+      this.searchString$
+      .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
+      .subscribe(() => {
+        this.performSearch();
+      });
 
-  // handle suggesting
-  this.suggestString$
-    .pipe(takeUntil(this.componentDestroyed$), debounceTime(1000))
-    .subscribe((val: string) => {
-      this.performSuggest(val);
-    });
+    // handle suggesting
+    this.suggestString$
+      .pipe(takeUntil(this.componentDestroyed$), debounceTime(1000))
+      .subscribe((val: string) => {
+        this.performSuggest(val);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.loading = 'search';
+    // set the selected outcome in the store
+    this.store.active(this.activeOutcome);
+
     if (changes.activeOutcome && changes.activeOutcome.currentValue) {
+      
       this.searchString$.next('');
 
-      // if we have an open subscription to an outcome, close it
-      if (this.activeOutcomeSubscription) {
-        this.activeOutcomeSubscription.unsubscribe();
+      const tempSuggestString = this.store.getOutcomeText();
+
+      if (this.suggestStringValue !== tempSuggestString) {
+        this.suggestStringValue = tempSuggestString;
+        this.suggestString$.next(this.suggestStringValue);
+      } else {
+        this.suggestions = [];
+        this.suggestStringValue = '';
       }
     }
+    this.loading = undefined;
   }
 
   toggleStandardOutcome(guideline: any, value: boolean) {
