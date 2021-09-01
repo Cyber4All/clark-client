@@ -9,6 +9,9 @@
       {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
       + outcomeNumber }}
     </div>
+    <div class="outcome-header__right" *ngIf="!active">
+      <p role="text">Click to view mappings</p>
+    </div>
   </div>
   <div *ngIf="outcome.mappings?.length == 0" class="no-outcome-mappings">No Curricular Guidelines Mapped!</div>
   <div *ngIf="outcome.mappings?.length" class="outcome-mappings">

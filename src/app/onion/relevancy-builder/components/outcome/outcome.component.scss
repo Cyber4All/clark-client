@@ -51,14 +51,24 @@
     color: $darker-grey;
     font-weight: 600;
     margin-bottom: 20px;
-    display: inline-block;
+    display: flex;
     align-items: center;
+    position: relative;
 
     .outcome-header__left {
       text-overflow: ellipsis;
       white-space: nowrap;
       flex-grow: 0;
       overflow: hidden;
+    }
+    .outcome-header__right {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-grow: 0;
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      top: -15px;
     }
   }
 
