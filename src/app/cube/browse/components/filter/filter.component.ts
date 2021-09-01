@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 import { RelevancyService } from 'app/core/relevancy.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FilterSectionInfo } from '../filter-section/filter-section.component';
 
@@ -12,6 +12,7 @@ import { FilterSectionInfo } from '../filter-section/filter-section.component';
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit, OnDestroy {
+  @Input() clear: Observable<void>;
   @Output() changed: EventEmitter<any> = new EventEmitter();
 
   // The section filters
@@ -44,8 +45,37 @@ export class FilterComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(650), takeUntil(this.destroyed$))
       .subscribe(() => this.sendFilterChanges());
 
+    this.clear
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => this.clearFilters());
+
     // Update UI
     this.cd.detectChanges();
+  }
+
+  /**
+   * Clears all the filters (sets them as not active)
+   */
+  clearFilters() {
+    // Clear each category filter
+    this.clearFilterCategory(this.collectionFilter.filters);
+    this.clearFilterCategory(this.lengthFilter.filters);
+    this.clearFilterCategory(this.levelFilter.filters);
+    this.clearFilterCategory(this.materialFilter.filters);
+    this.clearFilterCategory(this.topicFilter.filters);
+
+    // Detect changes and resend the filter object
+    this.cd.detectChanges();
+    this.sendFilterChanges();
+  }
+
+  /**
+   * Sets each filter to inactive in a filter category
+   *
+   * @param filters The array of filters
+   */
+  private clearFilterCategory(filters: { active: boolean, name: string, value: string, tip?: string }[]) {
+    filters.forEach(filter => filter.active = false);
   }
 
   /**

@@ -56,6 +56,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   searchDelaySubject: any;
 
   filterInput: Observable<string>;
+  filterClearSubject$: Subject<void> = new Subject<void>();
 
   filtersDownMobile = false;
   windowWidth: number;
@@ -212,7 +213,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   clearAllFilters(sendFilters: boolean = true) {
-    // TODO: Implement clear filters
+    this.filterClearSubject$.next();
 
     if (sendFilters) {
       this.performSearch();
@@ -220,7 +221,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Executes a search by reading throuhg the query object and mapping it to query parameters and then re-navigating to the component
+   * Executes a search by reading through the query object and mapping it to query parameters and then re-navigating to the component
    * @param delay if true, triggers a debounced subject, which will call performSearch again with no delay
    */
   performSearch(delay: boolean = false) {

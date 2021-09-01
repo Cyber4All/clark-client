@@ -6,7 +6,7 @@
         {{ copy.FILTERS }}
         <div class="filters-clear-all" id="filters-clear-all" (activate)="clearAllFilters()">{{ copy.CLEARFILTERS }}</div>
       </div>
-      <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" (changed)="filter($event)"></clark-filter>
+      <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [clear]="filterClearSubject$.asObservable()" (changed)="filter($event)"></clark-filter>
 
       <div class="btn-group to-right">
           <button (activate)="applyFilters(); toggleFilters();" class="button good">Apply</button>
