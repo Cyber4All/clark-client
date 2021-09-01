@@ -206,7 +206,16 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * @param filters The filters emitted from the filter component
    */
   filter(filters: any) {
+    // Set filters and sets the ones that were removed so the performSearch function can
+    // correctly interface with sort and search
     this.filters = filters;
+    this.filters.removed = [];
+    ['collection', 'length', 'topics', 'fileTypes', 'level'].forEach(category => {
+      if (!this.filters[category]) {
+        this.filters.removed.push(category);
+      }
+    });
+
     if (!this.filtersDownMobile) {
       this.performSearch(true);
     }
@@ -228,8 +237,14 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     if (delay) {
       this.searchDelaySubject.next();
     } else {
-      if (this.filters && this.filters !== {}) {
-        this.query = { ...this.filters };
+      if (this.filters && Object.keys(this.filters).length > 0) {
+        // Remove the removed filter categories from the query object
+        (this.filters.removed as string[]).forEach(category => delete this.query[category]);
+        delete this.filters.removed;
+
+        // Append the filters without the removed option (not used in search) and resets filters
+        this.query = { ...this.query, ...this.filters };
+        this.filters = {};
       }
 
       // if we're adding a filter that isn't a page change, reset the currPage in query to 1
