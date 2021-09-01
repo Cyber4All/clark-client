@@ -104,6 +104,13 @@ export class RelevancyService {
     });
   }
 
+  /**
+   *  Function to update the learning object with new outcome mappings
+   * @param username username of learning object owner
+   * @param objectId learning objectId
+   * @param outcomeId outcomeId on learning object
+   * @param guidelineIds id of mapped guidelines
+   */
   async updateLearningOutcomeMappings(username: string, objectId: string, outcomeId: string, guidelineIds: string[]): Promise<void> {
     return await new Promise((resolve, reject) => {
       this.http
