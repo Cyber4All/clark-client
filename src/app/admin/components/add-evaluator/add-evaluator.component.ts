@@ -11,7 +11,8 @@ import { User } from 'entity/user/user';
 })
 export class AddEvaluatorComponent implements OnInit {
 
-  selectedLearningObjects: LearningObject[];
+  assignedLearningObjects: LearningObject[] = [];
+  removedLearningObjects: LearningObject[] = [];
 
   @Input() user: User;
   @Output() close: EventEmitter<void> = new EventEmitter();
@@ -23,15 +24,55 @@ export class AddEvaluatorComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  setSelectedLearningObjects(learningObjects: LearningObject[]) {
+  setSelectedLearningObjects(learningObjects: {
+    add: LearningObject[],
+    remove: LearningObject[]
+  }) {
     if (learningObjects) {
-      this.selectedLearningObjects = learningObjects;
+      this.assignedLearningObjects = learningObjects.add ? learningObjects.add : [];
+      this.removedLearningObjects = learningObjects.remove ? learningObjects.remove : [];
+    }
+  }
+
+  get canNotAssign(): boolean {
+    return (this.assignedLearningObjects.length == 0 && this.removedLearningObjects.length == 0);
+  }
+
+  async saveEvaluators() {
+    if (this.user) {
+      await this.removeEvaluators();
+      await this.assignEvaluators();
+    }
+  }
+
+  async removeEvaluators() {
+    if (this.checkEvaluatorsBody(this.removedLearningObjects)) {
+      const cuids = this.removedLearningObjects.map( obj => obj.cuid );
+      const assignerId = this.user.id;
+
+      await this.relevancyService.removeEvaluators({
+        cuids: cuids,
+        assignerIds: [assignerId]
+      })
+      .then( () => {
+        this.toaster.success(
+          'Success',
+          'The evaluators were removed.'
+        );
+        this.close.emit();
+      })
+      .catch( e => {
+        this.toaster.error(
+          'Error removing evaluators',
+          JSON.parse(e.error).message
+        );
+      });
     }
   }
 
   async assignEvaluators() {
-    if (this.user && this.checkEvaluatorsBody(this.selectedLearningObjects)) {
-      const cuids = this.selectedLearningObjects.map( obj => obj.cuid );
+    if (this.user && this.checkEvaluatorsBody(this.assignedLearningObjects)) {
+      const cuids = this.assignedLearningObjects.map( obj => obj.cuid );
       const assignerId = this.user.id;
 
       await this.relevancyService.assignEvaluators({
@@ -51,11 +92,6 @@ export class AddEvaluatorComponent implements OnInit {
           JSON.parse(e.error).message
         );
       });
-    } else {
-      this.toaster.error(
-        'Error',
-        'Atleast one learning object and evaluator must be selected for assignment.'
-      );
     }
   }
 

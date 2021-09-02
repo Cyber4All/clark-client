@@ -8,10 +8,10 @@
       <ng-container *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
   </ul>
 
-  <div *ngIf="selectedEvaluators && selectedEvaluators.length" class="evaluator-details-container">
-      <div class="pill" *ngFor="let user of selectedEvaluators">
+  <div *ngIf="assignedEvaluators && assignedEvaluators.length" class="evaluator-details-container">
+      <div class="pill" *ngFor="let user of assignedEvaluators">
         {{ user.name | titlecase }}
-        <button (click)="removeEvaluator(user)" class="pill-button"><i class="fas fa-times"></i></button>
+        <button aria-label="removes evaluator from selection" (click)="removeEvaluator(user)" class="pill-button"><i class="fas fa-times"></i></button>
       </div>
   </div>
 </div>

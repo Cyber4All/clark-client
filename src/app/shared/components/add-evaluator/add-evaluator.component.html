@@ -11,11 +11,11 @@
   </div>
 
   <div class="user-dropdown">
-    <clark-user-dropdown (evaluators)="setSelectedEvaluators($event)" [learningObject]="learningObject"></clark-user-dropdown>
+    <clark-user-dropdown (evaluators)="setEvaluators($event)" [learningObject]="learningObject"></clark-user-dropdown>
   </div>
 
   <div class="btn-group center">
-    <button class="button good" aria-label="Assign Evaluators" (activate)="assignEvaluators()">Assign Evaluators</button>
+    <button class="button good" aria-label="Assign Evaluators" [disabled]="canNotAssign" (activate)="saveEvaluators()">Assign Evaluators</button>
     <button class="button neutral" aria-label="Cancel" (activate)="close.emit()">Cancel</button>
   </div>
 

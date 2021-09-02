@@ -7,6 +7,7 @@ import {
   Output,
   OnDestroy,
   Input,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { UserService } from 'app/core/user.service';
@@ -21,7 +22,8 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 export class UserDropdownComponent implements OnInit, OnDestroy {
 
   // Search Related Variables
-  selectedEvaluators: User[]; // Selected users to be assigned
+  assignedEvaluators: User[] = []; // Selected users to be assigned (includes already assigned until assigned button is clicked)
+  removedEvaluators: User[] = []; // Selected evaluators for removal
   searchResults: User[] = []; // Response of search
   query: string; // Search query string
   loading: boolean; // True when waiting for http response
@@ -31,24 +33,25 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject(); // Fired when component is destroyed
   differ: IterableDiffer<User>;
 
-  @Input() learningObject: LearningObject; // Learning object that is being assigned selectedEvaluators
+  @Input() learningObject: LearningObject; // Learning object that is being assigned assignedEvaluators
   @Output() evaluators: EventEmitter<any> = new EventEmitter(); // Evaluators selected
 
   constructor(
     private userService: UserService,
-    private differs: IterableDiffers
+    private differs: IterableDiffers,
+    private cd: ChangeDetectorRef,
   ) {
     this.differ = this.differs.find([]).create(null);
   }
 
-  ngOnInit() {
-    console.log(this.learningObject.assigned);
+  async ngOnInit() {
     if (this.learningObject.assigned) {
-      this.learningObject.assigned.forEach(userId => {
-        this.userService.getUser(userId, 'userId').then( (user: User) => {
-          this.selectedEvaluators.push(user);
-        });
-      });
+      for (let i = 0; i < this.learningObject.assigned.length; i++) {
+        const userId = this.learningObject.assigned[i];
+        const user = await this.userService.getUser(userId, 'userId');
+        this.assignedEvaluators.push(user);
+      }
+      this.cd.detectChanges();
     }
 
     // subscribe to the search input and fire search after debounce
@@ -75,11 +78,6 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.unsubscribe();
-  }
-
   /**
    * Queries the UserService with query text and sets the searchResults variable
    *
@@ -89,11 +87,13 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
     if (query && query !== '') {
       this.userService.searchUsers({
         text: query,
-        accessGroups: 'admin,curator,editor'
+        accessGroups: 'admin,curator,editor,reviewer'
       }).then( (results: User[]) => {
+        const assignedEvaluatorsIds = this.assignedEvaluators.map(user => user.id);
         const filteredUsers = [];
         results.forEach( user => {
-          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.id)) {
+          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.id) 
+              && !assignedEvaluatorsIds.includes(user.id)) {
             filteredUsers.push(user);
           }
         });
@@ -116,20 +116,43 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
   }
 
   addEvaluator(user?: User) {
-    if (user && !this.selectedEvaluators.includes(user)) {
-      this.selectedEvaluators.push(user);
+    if (user && !this.assignedEvaluators.includes(user)) {
+      // Adds user to assigned evaluators array
+      this.assignedEvaluators.push(user);
+
+      // Removes user from removed evaluators array
+      const index = this.removedEvaluators.indexOf(user);
+      if ( index !== -1) {
+        this.removedEvaluators.splice(index, 1);
+      }
+
+      // Resets the search field
       this.clearSearch();
-      this.evaluators.emit(this.selectedEvaluators);
+
+      // Updates parent component
+      this.evaluators.emit({
+        "add": this.assignedEvaluators,
+        "remove": this.removedEvaluators
+      });
     }
   }
 
   removeEvaluator(user?: User) {
-    if (user) {
-      const index = this.selectedEvaluators.indexOf(user);
+    if (user && !this.removedEvaluators.includes(user)) {
+      // Adds removed user to removed evaluators array
+      this.removedEvaluators.push(user);
+
+      // Removes user from assigned evaluators array
+      const index = this.assignedEvaluators.indexOf(user);
       if ( index !== -1 ) {
-        this.selectedEvaluators.splice(index, 1);
-        this.evaluators.emit(this.selectedEvaluators);
+        this.assignedEvaluators.splice(index, 1);
       }
+
+      // Updates parent component
+      this.evaluators.emit({
+        "add": this.assignedEvaluators,
+        "remove": this.removedEvaluators
+      });
     }
   }
 
@@ -141,4 +164,8 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
     return height < 300 ? `${height}px` : '300px';
   }
 
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
 }

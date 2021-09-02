@@ -17,6 +17,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 import { Collection, CollectionService } from 'app/core/collection.service';
+import { SearchService } from 'app/admin/core/search.service';
 
 @Component({
   selector: 'clark-learning-objects',
@@ -78,6 +79,7 @@ export class LearningObjectsComponent
     private auth: AuthService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
@@ -85,6 +87,11 @@ export class LearningObjectsComponent
       this.listViewHeightOffset =
         this.listElement.nativeElement.getBoundingClientRect().top +
         this.headersElement.nativeElement.getBoundingClientRect().height;
+    });
+
+    this.searchService.needsChange$.subscribe( () => {
+      this.learningObjects = [];
+      this.getLearningObjects();
     });
 
     // query by a username if it's passed in
@@ -306,11 +313,7 @@ export class LearningObjectsComponent
    * @param value boolean, true if object is selected, false otherwise
    */
   toggleSelect(l: LearningObject, value: boolean ) {
-    if (value === true) {
-      this.selectLearningObject(l);
-    } else {
-      this.deselectLearningObject(l);
-    }
+    value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
   }
 
     /**
@@ -318,7 +321,7 @@ export class LearningObjectsComponent
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject) {
-    this.selected.set(l.id, l );
+    this.selected.set(l.id, l);
     this.selectedLearningObjects.push(l);
     this.cd.detectChanges();
 

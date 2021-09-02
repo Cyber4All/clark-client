@@ -20,7 +20,8 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 export class ObjectDropdownComponent implements OnInit, OnDestroy {
 
   // Search Related Variables
-  selectedObjects: LearningObject[] = []; // Selected objects to be assigned
+  assignedObjects: LearningObject[] = []; // Objects to be assigned to the evaluator
+  removedObjects: LearningObject[] = []; // Objects to be unassigned from the evaluator
   searchResults: LearningObject[] = []; // Response of search
   query: string; // Search query string
   loading: boolean; // True when waiting for http response
@@ -78,10 +79,12 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
       await this.learningObjectService
         .getLearningObjects({text: query})
         .then( (results: {learningObjects: LearningObject[], total: number}) => {
-          const selectedIds = this.selectedObjects.map(obj => obj.id);
+          const assignedIds = this.assignedObjects.map(obj => obj.id);
           const filteredObjects: LearningObject[] = [];
+
+          // Filters out already selected objects
           results.learningObjects.forEach( (obj: LearningObject) => {
-            if (!selectedIds.includes(obj.id)) {
+            if (!assignedIds.includes(obj.id) && (Array.isArray(obj.assigned) && !obj.assigned.includes(this.user.id))) {
               filteredObjects.push(obj);
             }
           });
@@ -104,20 +107,41 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   }
 
   addSelectedObject(object?: LearningObject) {
-    if (object && !this.selectedObjects.includes(object)) {
-      this.selectedObjects.push(object);
+    if (object && !this.assignedObjects.includes(object)) {
+      // Adds object to assignment array
+      this.assignedObjects.push(object);
+
+      // Remove object from removed array if exists
+      const index = this.removedObjects.indexOf(object);
+      if (index !== -1) {
+        this.removedObjects.splice(index, 1);
+      }
       this.clearSearch();
-      this.learningObjects.emit(this.selectedObjects);
+
+      // Emits to parent
+      this.learningObjects.emit({
+        'add': this.assignedObjects,
+        'remove': this.removedObjects
+      });
     }
   }
 
   removeSelectedObject(object?: LearningObject) {
-    if (object) {
-      const index = this.selectedObjects.indexOf(object);
+    if (object && !this.removedObjects.includes(object)) {
+      // Adds new removed object
+      this.removedObjects.push(object);
+
+      // Removes object from assignment array
+      const index = this.assignedObjects.indexOf(object);
       if ( index !== -1 ) {
-        this.selectedObjects.splice(index, 1);
-        this.learningObjects.emit(this.selectedObjects);
+        this.assignedObjects.splice(index, 1);
       }
+
+      // Emit change to parent
+      this.learningObjects.emit({
+        'add': this.assignedObjects,
+        'remove': this.removedObjects
+      });
     }
   }
 

@@ -555,6 +555,11 @@ export const RELEVANCY_ROUTES = {
   // Assigns multiple users to evaluate multiple learning objects
   ASSIGN_EVALUATORS() {
     return `http://localhost:5000/learning-objects/evaluators`;
+  },
+
+  // Removes multiple user from evaluating multiple learning objects
+  REMOVE_EVALUATORS() {
+    return `http://localhost:5000/learning-objects/evaluators`;
   }
 };
 

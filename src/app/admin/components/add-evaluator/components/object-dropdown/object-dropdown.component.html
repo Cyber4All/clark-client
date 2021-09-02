@@ -8,8 +8,8 @@
       <ng-container *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
   </ul>
 
-  <div *ngIf="selectedObjects && selectedObjects.length" class="object-details-container">
-      <div class="pill" *ngFor="let learningObject of selectedObjects">
+  <div *ngIf="assignedObjects && assignedObjects.length" class="object-details-container">
+      <div class="pill" *ngFor="let learningObject of assignedObjects">
         {{ (learningObject.name.length > 40) ? (learningObject.name | slice:0:40) + '...' : learningObject.name }}
         <button (click)="removeSelectedObject(learningObject)" class="pill-button"><i class="fas fa-times"></i></button>
       </div>

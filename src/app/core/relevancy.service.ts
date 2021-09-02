@@ -74,6 +74,26 @@ export class RelevancyService {
       .toPromise();
   }
 
+  async removeEvaluators(args: {
+    cuids: string[],
+    assignerIds: string[]
+  }): Promise<any> {
+    return this.http
+      .patch(RELEVANCY_ROUTES.REMOVE_EVALUATORS(),
+        args,
+        {
+          headers: this.headers,
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
