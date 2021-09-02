@@ -26,6 +26,7 @@ export interface Query {
   fileTypes?: string[];
   startNextCheck?: string;
   endNextCheck?: string;
+  topics?: string[];
 }
 
 export interface MappingQuery extends Query {

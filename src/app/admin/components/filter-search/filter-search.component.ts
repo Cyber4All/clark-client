@@ -14,6 +14,8 @@ import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { Topic } from '@entity';
+import { RelevancyService } from 'app/core/relevancy.service';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -22,23 +24,29 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 })
 export class FilterSearchComponent implements OnInit {
   collections: Collection[] = [];
+  topics: Topic[] = [];
   isCollectionRestricted = false;
   filtersModified$: Subject<void> = new Subject();
   filters: Set<string> = new Set();
+  filterTopics: Set<string> = new Set();
   statuses = Object.values(LearningObject.Status);
 
   private _selectedCollection: Collection;
+
+  private _selectedTopic: Topic;
 
   @Input() adminOrEditor: boolean;
   @Input() showStatus: boolean;
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
+  @Output() topicFilter = new EventEmitter<string[]>();
   @Output() relevancyCheck = new EventEmitter<{start: string, end: string}>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
   filterMenuDown = false;
   collectionMenuDown = false;
+  topicMenuDown = false;
 
   relevancyStart: Date;
   relevancyEnd: Date;
@@ -47,6 +55,7 @@ export class FilterSearchComponent implements OnInit {
 
   constructor(
     private collectionService: CollectionService,
+    private relevancyService: RelevancyService,
     private authService: AuthService,
     private toaster: ToastrOvenService
   ) {}
@@ -54,6 +63,7 @@ export class FilterSearchComponent implements OnInit {
   ngOnInit() {
     this.getCollections();
     this.findUserRestrictions();
+    this.getTopics();
 
     // add the 'all' option into the list of statuses
     this.statuses.splice(0, 0);
@@ -89,6 +99,15 @@ export class FilterSearchComponent implements OnInit {
       });
   }
 
+  private getTopics(): void {
+    this.relevancyService
+      .getTopics()
+      .then(topics => {
+        this.topics = topics.sort(( a, b ) => ( a.name > b.name ) ? 1 : (( b.name > a.name ) ? -1 : 0) );
+        this.topics = [].concat([{_id: 'all', name: 'All'}], Array.from(topics));
+      });
+  }
+
   /**
    * Checks for user's authorization
    */
@@ -121,6 +140,10 @@ export class FilterSearchComponent implements OnInit {
     return this._selectedCollection;
   }
 
+  get selectedTopic(): Topic {
+    return this._selectedTopic;
+  }
+
   /**
    * Hide or show the filter dropdown menu
    * @param {boolean} [value] true if menu is open, false otherwise
@@ -138,6 +161,14 @@ export class FilterSearchComponent implements OnInit {
   }
 
   /**
+   * Hide or show the topic dropdown menu
+   * @param {boolean} [value] true if menu is open, false otherwise
+   */
+  toggleTopicMenu (value?: boolean) {
+    this.topicMenuDown = value;
+  }
+
+  /**
    * Toggles the relevancy modal menu
    * @param value
    */
@@ -145,6 +176,9 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyMenuDown = value;
   }
 
+  /**
+   * Sets the relevancy date filters
+   */
   setDates() {
     let start = new Date().getTime().toString();
     let end;
@@ -155,6 +189,16 @@ export class FilterSearchComponent implements OnInit {
       end = this.relevancyEnd.getTime().toString();
     }
     this.relevancyCheck.emit({start, end});
+    this.toggleRelevancyMenu(false);
+  }
+
+  /**
+   * Clears the relevancy date filters
+   */
+  clearDates() {
+    this.relevancyStart = new Date();
+    this.relevancyEnd = undefined;
+    this.relevancyCheck.emit({ start: undefined, end: undefined });
     this.toggleRelevancyMenu(false);
   }
 
@@ -197,6 +241,21 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
+  toggleTopicFilter(filter: string) {
+    if (filter.toLowerCase() === 'all') {
+      this.clearTopicFilters();
+      this.toggleTopicMenu(undefined);
+      return;
+    }
+    if (this.filterTopics.has(filter)) {
+      this.filterTopics.delete(filter);
+    } else {
+      this.filterTopics.add(filter);
+    }
+    this.topicFilter.emit(Array.from(this.filterTopics));
+
+  }
+
   /**
    * Remove all applied status filters
    */
@@ -213,6 +272,11 @@ export class FilterSearchComponent implements OnInit {
   clearCollectionFilters() {
     this.setSelectedCollection(undefined);
     this.collectionFilter.emit(undefined);
+  }
+
+  clearTopicFilters() {
+    this.filterTopics.clear();
+    this.topicFilter.emit([]);
   }
 
   /**
@@ -233,6 +297,7 @@ export class FilterSearchComponent implements OnInit {
     this.setSelectedCollection(undefined);
     this.clearRelevancyDateFilters();
     this.filters.clear();
+    this.filterTopics.clear();
     this.clearAll.emit();
   }
 
@@ -258,5 +323,25 @@ export class FilterSearchComponent implements OnInit {
       case 'rejected':
         return 'far fa-ban';
     }
+  }
+
+  /**
+   * Checks if a given date is today
+   *
+   * @param date The date to check
+   * @returns A boolean, true if today, false otherwise
+   */
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+  }
+
+  /**
+   * Gets wether a filter has been selected
+   */
+  get filterSelected() {
+    return this.relevancyEnd || !this.isToday(this.relevancyStart);
   }
 }

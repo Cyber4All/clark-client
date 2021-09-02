@@ -39,7 +39,7 @@ export class AddEvaluatorComponent implements OnInit {
   }
 
   get canNotAssign(): boolean {
-    return (this.assignedEvaluators.length == 0 && this.removedEvaluators.length == 0);
+    return (this.assignedEvaluators.length === 0 && this.removedEvaluators.length === 0);
   }
 
   async saveEvaluators() {

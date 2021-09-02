@@ -560,7 +560,17 @@ export const RELEVANCY_ROUTES = {
   // Removes multiple user from evaluating multiple learning objects
   REMOVE_EVALUATORS() {
     return `http://localhost:5000/learning-objects/evaluators`;
-  }
+  },
+  // Reterieves topics for tagging learning objects
+  GET_TOPICS() {
+    return `${environment.apiURL}/topics`;
+  },
+  PATCH_OBJECT_TOPICS(username: string, id: string) {
+    return `${environment.apiURL}/users/${username}/learning-objects/${id}/topics`;
+  },
+  PATCH_OBJECT_OUTCOME_MAPPINGS(username: string, objectId: string, outcomeId: string) {
+    return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
+  },
 };
 
 export const STANDARD_GUIDELINE_ROUTES = {

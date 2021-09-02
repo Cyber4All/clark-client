@@ -278,12 +278,24 @@ export class LearningObjectsComponent
   }
 
   /**
+   * Updates the query topics value
+   *
+   * @param topics The array of topic names to filter by
+   */
+  getTopicsFilteredLearningObjects(topics: any[]) {
+    this.query = { topics, currPage: 1 };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
+
+  /**
    * Clear the filters of both collection and status and reset the Learning Objects query
    *
    * @memberof LearningObjectsComponent
    */
   clearStatusAndCollectionFilters() {
-    this.query = { collection: undefined, status: undefined, currPage: 1 };
+    this.query = { collection: undefined, topics: undefined, status: undefined, currPage: 1 };
     this.learningObjects = [];
 
     this.getLearningObjects();

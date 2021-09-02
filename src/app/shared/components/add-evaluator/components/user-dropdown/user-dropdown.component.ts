@@ -92,7 +92,7 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
         const assignedEvaluatorsIds = this.assignedEvaluators.map(user => user.id);
         const filteredUsers = [];
         results.forEach( user => {
-          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.id) 
+          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.id)
               && !assignedEvaluatorsIds.includes(user.id)) {
             filteredUsers.push(user);
           }
@@ -131,8 +131,8 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
 
       // Updates parent component
       this.evaluators.emit({
-        "add": this.assignedEvaluators,
-        "remove": this.removedEvaluators
+        'add': this.assignedEvaluators,
+        'remove': this.removedEvaluators
       });
     }
   }
@@ -150,8 +150,8 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
 
       // Updates parent component
       this.evaluators.emit({
-        "add": this.assignedEvaluators,
-        "remove": this.removedEvaluators
+        'add': this.assignedEvaluators,
+        'remove': this.removedEvaluators
       });
     }
   }

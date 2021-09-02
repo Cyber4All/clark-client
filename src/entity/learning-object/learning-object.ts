@@ -259,6 +259,15 @@ export class LearningObject {
   set nextCheck(check: Date) {
     this._nextCheck = check;
   }
+
+  get topics(): string[] {
+    return this._topics;
+  }
+
+  set topics(topics) {
+    this._topics = topics;
+  }
+
   version = 0;
 
   /**
@@ -335,6 +344,7 @@ export class LearningObject {
     ratings: string,
   };
   private _nextCheck: Date;
+  private _topics: string[];
 
   private _revisionUri?: string;
 
@@ -675,6 +685,10 @@ export class LearningObject {
       this._assigned = object.assigned;
     }
 
+    if (object.topics) {
+      this._topics = object.topics;
+    }
+
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
     this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;
@@ -715,6 +729,7 @@ export class LearningObject {
       parents: this.parents,
       nextCheck: this.nextCheck,
       assigned: this.assigned,
+      topics: this.topics || [],
     };
     return object;
   }
@@ -730,13 +745,13 @@ export namespace LearningObject {
   }
 
   export enum Status {
+    ALL = 'all',
     REJECTED = 'rejected',
     UNRELEASED = 'unreleased',
     WAITING = 'waiting',
     REVIEW = 'review',
     PROOFING = 'proofing',
     RELEASED = 'released',
-    ALL = 'all',
   }
 
   export enum Level {

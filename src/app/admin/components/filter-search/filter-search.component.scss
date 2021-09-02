@@ -8,6 +8,16 @@
     font-size: $small;
     cursor: pointer;
   }
+
+  &.select {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
 }
 
 .filters-button {
@@ -48,7 +58,8 @@
 }
 .addEvaluators,
 .filter-status__container,
-.filter-collection__container {
+.filter-collection__container,
+.filter-topic__container {
 
   li {
     position: relative;
@@ -185,4 +196,9 @@
     padding-top: 20px;
     padding-right: 20px;
   }
+}
+
+#contextMenu {
+  max-height: 350px;
+  overflow-y: auto;
 }

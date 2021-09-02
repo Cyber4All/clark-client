@@ -1,0 +1,79 @@
+@import '~_vars.scss';
+
+.standard-outcomes {
+  padding: 12px 10px;
+  position: relative;
+
+  .title {
+    font-size: $large;
+    color: $darker-grey;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .search-bar {
+    border-radius: 2px;
+    background: $light-grey;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+
+    input {
+      appearance: none;
+      background: transparent;
+      border: 0;
+      width: 100%;
+      padding: 6px 0;
+      outline: 0;
+    }
+
+    .svg-inline--fa,
+    .icon {
+      color: $dark-grey;
+    }
+  }
+
+  .title-bar {
+     background: $light-blue-gradient;
+     color: white;
+     width: 100%;
+     position: absolute;
+     padding: 3px;
+     text-align: center;
+     left: 0;
+     right: 0;
+     margin-top: 8px;
+     box-sizing: border-box;
+  }
+
+  .results {
+    margin-top: 35px;
+  }
+
+  virtual-scroller {
+    display: block;
+    width: 100%;
+
+    div {
+      padding: 8px 0;
+    }
+  }
+}
+
+.loading-template {
+  color: $dark-grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .svg-inline--fa,
+  .icon {
+    color: $light-blue;
+    font-size: $larger;
+    margin-bottom: 10px;
+  }
+}
