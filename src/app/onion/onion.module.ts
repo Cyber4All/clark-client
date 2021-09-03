@@ -14,6 +14,7 @@ import { ModalModule } from '../shared/modules/modals/modal.module';
 import { OnionComponent } from './onion.component';
 import { OnionSharedModule } from './shared/onion-shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { RelevancyBuilderModule } from './relevancy-builder/relevancy-builder.module';
 
 import { SidePanelContentModule } from './dashboard/components/side-panel-content/side-panel-content.module';
 import { EmailBannerComponent } from './components/email-banner/email-banner.component';
@@ -42,7 +43,8 @@ import { EmailBannerComponent } from './components/email-banner/email-banner.com
     OnionRoutingModule,
     VirtualScrollerModule,
     DashboardModule,
-    SidePanelContentModule
+    SidePanelContentModule,
+    RelevancyBuilderModule
   ],
   exports: [
     VirtualScrollerModule,

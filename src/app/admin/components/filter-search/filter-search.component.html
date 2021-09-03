@@ -8,6 +8,39 @@
         >
         <span *ngIf="!startNextCheck">Filter By Relevancy Check Dates</span>
         </button>
+        <button 
+          #toggleTopicMenuElement
+          class="button neutral filters-button"
+          (activate)="toggleTopicMenu(true)"
+          [ngClass]="{ 'filters-button--down': topicMenuDown }"
+        >
+          <span class="filter-badge" *ngIf="filterTopics.size">{{ filterTopics.size }}</span>
+          Topics
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <clark-context-menu
+          *ngIf="topicMenuDown"
+          class="filter-topic"
+          [anchor]="toggleTopicMenuElement"
+          [offset]="{ top: 10, left: 10 }"
+          (close)="toggleTopicMenu()"
+        >
+          <div #contextMenu id="contextMenu" class="filter-topic__container">
+            <ul>
+              <li
+                *ngFor="let topic of topics"
+                [className]="topic.name"
+                (activate)="toggleTopicFilter(topic.name)"
+              >
+                <div
+                  *ngIf="filterTopics.has(topic.name)"
+                  class="indicator"
+                ></div>
+                {{ topic.name | titlecase }}
+              </li>
+            </ul>
+          </div>
+        </clark-context-menu>
         <button
           #toggleCollectionMenuElement
           class="button neutral filters-button"
@@ -24,7 +57,7 @@
           [offset]="{ top: 10, left: 10 }"
           (close)="toggleCollectionMenu()"
         >
-          <div #contextMenu class="filter-collection__container">
+          <div #contextMenu id="contextMenu" class="filter-collection__container">
             <ul>
               <li
                 *ngFor="let collection of collections"
@@ -60,7 +93,7 @@
           [offset]="{ top: 10, left: 10 }"
           (close)="toggleFilterMenu(undefined)"
         >
-          <div #contextMenu class="filter-status__container">
+          <div #contextMenu id="contextMenu" class="filter-status__container">
             <ul>
               <li 
                 *ngFor="let status of statuses"
@@ -74,7 +107,7 @@
         </clark-context-menu>
       </ng-container>
       <a
-        *ngIf="filters.size || selectedCollection"
+        *ngIf="filters.size || selectedCollection || filterTopics.size"
         (activate)="clearAllFilters()"
         class="filters-clear"
         >Clear filters</a
