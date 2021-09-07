@@ -53,6 +53,18 @@ export class GuidelineService {
       });
   }
 
+  async getFrameworks(): Promise<FrameworkDocument[]> {
+    return this.http
+      .get<{total: number, results: FrameworkDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS({}))
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+        map((res) => {
+          return res.results.filter(framework => framework.name !== 'CAE CDE 2019');
+        })
+      ).toPromise();
+  }
+
   getSources(): Observable<string[]> {
     return this.sources;
   }
@@ -68,7 +80,8 @@ export class GuidelineService {
       levels: filter.levels !== [] ? filter.levels : undefined,
       page: filter.page !== '' ? filter.page : undefined,
       limit: filter.limit !== '' ? filter.limit : undefined,
-      type: filter.type !== '' ? filter.type : undefined
+      type: filter.type !== '' ? filter.type : undefined,
+      frameworks: filter.frameworks !== '' ? filter.frameworks : undefined,
     };
   }
 

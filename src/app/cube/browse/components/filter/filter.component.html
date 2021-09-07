@@ -15,5 +15,13 @@
   <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
 
   <!-- Guidelines Filters -->
-  <!-- TODO: Implement standard guideline frameworks integration -->
+  <clark-filter-section [info]="frameworkFilter" (change)="registerChange()">
+    <a (click)="openAdvancedSearch()">Advanced</a>
+  </clark-filter-section>
 </div>
+
+<clark-popup *ngIf="showAdvancedSearch" (closed)="searchByGuidelines()">
+  <div class="modal-container center" #popupInner>
+    <clark-guideline-filter></clark-guideline-filter>
+  </div>
+</clark-popup>

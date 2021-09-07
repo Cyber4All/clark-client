@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
+import { GuidelineService } from 'app/core/guideline.service';
 import { RelevancyService } from 'app/core/relevancy.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -21,14 +22,19 @@ export class FilterComponent implements OnInit, OnDestroy {
   topicFilter: FilterSectionInfo;
   materialFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
+  frameworkFilter: FilterSectionInfo;
 
   // Used to communicate filter changes
   filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
   destroyed$ = new Subject();
 
+  // Advanced search
+  showAdvancedSearch = false;
+
   constructor(
     private collectionService: CollectionService,
     private relevancyService: RelevancyService,
+    private guidelineService: GuidelineService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -39,6 +45,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     await this.getTopicFilters();
     this.getMaterialFilters();
     this.getLevelFilters();
+    await this.getFrameworkFilters();
 
     // Register filter changes
     this.filterChanged$
@@ -54,6 +61,23 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Opens the advanced search popup
+   */
+  openAdvancedSearch() {
+    this.showAdvancedSearch = true;
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Closes the advanced search popup and filters
+   * the results by the selected guidelines
+   */
+  searchByGuidelines() {
+    this.showAdvancedSearch = false;
+    this.cd.detectChanges();
+  }
+
+  /**
    * Clears all the filters (sets them as not active)
    */
   clearFilters() {
@@ -63,6 +87,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.clearFilterCategory(this.levelFilter.filters);
     this.clearFilterCategory(this.materialFilter.filters);
     this.clearFilterCategory(this.topicFilter.filters);
+    this.clearFilterCategory(this.frameworkFilter.filters);
 
     // Detect changes and resend the filter object
     this.cd.detectChanges();
@@ -90,6 +115,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.checkFilter('level', this.levelFilter.filters, query);
     this.checkFilter('fileTypes', this.materialFilter.filters, query);
     this.checkFilter('topics', this.topicFilter.filters, query);
+    this.checkFilter('guidelines', this.frameworkFilter.filters, query);
 
     // Emits changes
     this.changed.emit(query);
@@ -201,6 +227,21 @@ export class FilterComponent implements OnInit, OnDestroy {
       filters: Object.values(LearningObject.Level).map(level => ({
         name: level,
         value: level.toLowerCase(),
+        active: false,
+      })),
+    };
+  }
+
+  /**
+   * Gets the framework filters
+   */
+  async getFrameworkFilters() {
+    const frameworks = await this.guidelineService.getFrameworks();
+    this.frameworkFilter = {
+      section: 'Guidelines',
+      filters: frameworks.map(framework => ({
+        name: framework.name,
+        value: framework.name,
         active: false,
       })),
     };

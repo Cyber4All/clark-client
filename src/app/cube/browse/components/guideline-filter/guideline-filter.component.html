@@ -1,0 +1,54 @@
+<div class="wrapper">
+    <h2>Choose Specific Guidelines or Standards</h2>
+    <hr />
+    <div class="grid">
+        <!-- Frameworks -->
+        <div>
+            <h3>Frameworks</h3>
+            <hr />
+            <div class="filter-wrapper" *ngIf="frameworkFilter">
+                <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of frameworkFilter.filters">
+                    <span class="checkbox-grid" [tip]="f.tip ? f.tip : ''" [tipDisabled]="!f.tip" tipPosition="right">
+                        <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active" (checkboxChecked)="selectFrameworkOption(f.value)" (checkboxUnchecked)="deselectFrameworkOption(f.value)"></clark-checkbox>
+                        <span>{{ f.name }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Guidelines -->
+        <div class="guideline-flex">
+            <div>
+                <div class="input-wrapper">
+                    <label for="search"><i class="fas fa-search"></i></label>
+                    <input id="search" placeholder="Guidelines or Standards" (keyup)="searchChange$.next($event.target.value)" />
+                </div>
+                <div *ngIf="guidelines && guidelines.length > 0" class="guideline-sort">
+                    <span>{{ total }} Compatible Guidelines</span>
+                    <select>
+                        <option></option>
+                        <option>Select All</option>
+                        <option>Clear Selected</option>
+                    </select>
+                </div>
+                <ng-template [ngIf]="!guidelines || guidelines.length === 0" [ngIfElse]="guidelineTableTemplate">
+                    <div class="content center">
+                        <p>No results containing all of your filters were found.</p>
+                        <a>Filter by only frameworks instead?</a>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="right">
+                <button class="button good">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #guidelineTableTemplate>
+    <div>
+        <table>
+
+        </table>
+        Pagination...
+    </div>
+</ng-template>
