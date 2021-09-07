@@ -1,6 +1,6 @@
 <div [@outcome]="noAnimation ? 'off' : (active ? 'open' : 'closed')" (@outcome.done)="noAnimation = false" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
   <div class="outcome-header">
-    <div class="outcome-header__left">
+    <div class="outcome-header__left" [ngClass]="{ 'active': active }">
       <div class="outcome-level" *ngFor="let l of outcomeLevels">
         <span *ngIf="l === 'remember and understand' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-cloud"></i> Remember & Understand</span>
         <span *ngIf="l === 'apply and analyze' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-bolt"></i> Apply & Analyze</span>
