@@ -88,7 +88,7 @@ export class AddEvaluatorComponent implements OnInit {
       })
       .catch( e => {
         this.toaster.error(
-          'Error assigning evaluators',
+          'Error assigning evaluators, please try again later',
           JSON.parse(e.error).message
         );
       });

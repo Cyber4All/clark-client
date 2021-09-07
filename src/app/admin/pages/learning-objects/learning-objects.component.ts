@@ -352,7 +352,7 @@ export class LearningObjectsComponent
   deselectLearningObject(l: LearningObject) {
     this.selected.delete(l.id);
     const index = this.selectedLearningObjects.indexOf(l);
-    if (index !== -1) {
+    if (index > -1) {
       this.selectedLearningObjects.splice(index, 1);
     }
     this.cd.detectChanges();

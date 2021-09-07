@@ -144,7 +144,7 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
 
       // Removes user from assigned evaluators array
       const index = this.assignedEvaluators.indexOf(user);
-      if ( index !== -1 ) {
+      if ( index > -1 ) {
         this.assignedEvaluators.splice(index, 1);
       }
 
