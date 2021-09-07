@@ -1,5 +1,6 @@
 import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { User } from '@entity';
+import { PrivilegeService } from 'app/admin/core/privilege.service';
 import { UserService } from 'app/core/user.service';
 import { userCardAnimations } from './user-card.component.animations';
 
@@ -17,13 +18,19 @@ export class AdminUserCardComponent {
 
   @Output() navigateToUserObjects = new EventEmitter<string>();
   @Output() removeMember = new EventEmitter<string>();
+  showAddEvaluator = false;
+  showAddEvaluatorButton = false;
 
   loading = false;
   @Output() editPrivileges: EventEmitter<void> = new EventEmitter();
 
   showMiddle: boolean;
 
-  constructor(private userService: UserService, private cd: ChangeDetectorRef) {}
+  constructor(
+    private userService: UserService,
+    private cd: ChangeDetectorRef,
+    private privilegeService: PrivilegeService
+    ) {}
 
   /**
    * Toggle the menu items on the card hover value
@@ -31,8 +38,9 @@ export class AdminUserCardComponent {
    * @param {boolean} value true if the menu should display, false otherwise
    * @memberof AdminUserCardComponent
    */
-  toggleCardMenu(value: boolean) {
+  async toggleCardMenu(value: boolean) {
     this.showMiddle = value;
+    await this.canAddEvaluator();
     this.cd.detectChanges();
   }
 
@@ -74,5 +82,14 @@ export class AdminUserCardComponent {
    */
   removeReviewer() {
     this.removeMember.emit(this.user.id);
+  }
+
+  toggleAddEvaluator(show: boolean) {
+    this.showAddEvaluator = show;
+  }
+
+  async canAddEvaluator() {
+    const roles = await this.privilegeService.getCollectionRoles(this.user.id);
+    this.showAddEvaluatorButton = roles.length > 0;
   }
 }

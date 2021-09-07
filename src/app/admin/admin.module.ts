@@ -30,6 +30,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AddEvaluatorComponent } from './components/add-evaluator/add-evaluator.component';
+import { ObjectDropdownComponent } from './components/add-evaluator/components/object-dropdown/object-dropdown.component';
+import { SelectedUserComponent } from './components/add-evaluator/components/selected-user/selected-user.component';
+import { LearningObjectService } from 'app/cube/learning-object.service';
 
 @NgModule({
   declarations: [
@@ -52,6 +56,9 @@ import { MatInputModule } from '@angular/material/input';
     DraggableLearningObjectComponent,
     PaginationComponent,
     RelevancyDateComponent,
+    AddEvaluatorComponent,
+    ObjectDropdownComponent,
+    SelectedUserComponent,
   ],
   imports: [
     CoreModule.forRoot(),
@@ -66,5 +73,6 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule,
   ],
+  providers: [LearningObjectService]
 })
 export class AdminModule { }

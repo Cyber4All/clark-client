@@ -1,0 +1,23 @@
+<div class="wrapper">
+  
+  <div class="add-evaluator-banner">
+    <h3 class="banner-title">Assign Evaluators to Learning Object </h3>
+    <p class="banner-sub">Assign evaluators to the following learning objects with the user drop down</p>
+  </div>
+
+  <div class="content-header">Learning Object</div>
+  <div class="card-container" *ngIf="learningObject">
+    <clark-highlighted-learning-object [learningObject]="learningObject"></clark-highlighted-learning-object>
+  </div>
+
+  <div class="user-dropdown">
+    <clark-user-dropdown (evaluators)="setEvaluators($event)" [learningObject]="learningObject"></clark-user-dropdown>
+  </div>
+
+  <div class="btn-group center">
+    <button class="button good" aria-label="Assign Evaluators" [disabled]="canNotAssign" (activate)="saveEvaluators()">Assign Evaluators</button>
+    <button class="button neutral" aria-label="Cancel" (activate)="close.emit()">Cancel</button>
+  </div>
+
+</div>
+

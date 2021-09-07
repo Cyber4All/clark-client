@@ -152,7 +152,7 @@ export class User {
    */
   private copyUser(user: Partial<User>): void {
     if (user.id) {
-      this.id = user.id;
+      this._id = user.id;
     }
     this._username = user.username || this.username;
     this.name = user.name || this.name;

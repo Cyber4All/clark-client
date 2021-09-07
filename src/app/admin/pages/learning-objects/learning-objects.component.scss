@@ -7,7 +7,6 @@
   box-sizing: border-box;
   min-height: 500px;
   overflow: hidden;
-  margin-top: 40px;
 }
 
 .list__body {
@@ -15,7 +14,7 @@
   ::ng-deep .row-item {
     padding: 0 20px;
     display: grid;
-    grid-template-columns: 32px 2.5fr 100px 80px 120px 50px;
+    grid-template-columns: 0 32px 2.5fr 100px 80px 120px 50px;
     grid-gap: 0 50px;
     align-items: center;
   }
