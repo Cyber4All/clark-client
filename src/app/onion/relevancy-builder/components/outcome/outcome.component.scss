@@ -60,6 +60,10 @@
       white-space: nowrap;
       flex-grow: 0;
       overflow: hidden;
+
+      &.active {
+        white-space: normal;
+      }
     }
     .outcome-header__right {
       text-overflow: ellipsis;
