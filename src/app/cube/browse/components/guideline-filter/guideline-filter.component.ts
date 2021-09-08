@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { GuidelineService } from 'app/core/guideline.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
@@ -14,13 +14,15 @@ import { FilterSectionInfo } from '../filter-section/filter-section.component';
 export class GuidelineFilterComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject<void>();
 
+  @Output() changed: EventEmitter<string[]> = new EventEmitter();
+
   // Framework filter
   frameworkFilter: FilterSectionInfo;
   selectedFramework: FrameworkDocument;
 
   // Guidelines filter
   guidelines: SearchItemDocument[];
-  selectedGuidelines: string[] = [];
+  @Input() selectedGuidelines: string[] = [];
 
   // Guidelines search
   searchChange$: Subject<string> = new Subject<string>();
@@ -197,5 +199,12 @@ export class GuidelineFilterComponent implements OnInit, OnDestroy {
   isSelectedGuideline(guidelineId: string) {
     const index = this.selectedGuidelines.findIndex(id => id === guidelineId);
     return index >= 0;
+  }
+
+  /**
+   * Sends the changes to the selected guidelines
+   */
+  sendChanges() {
+    this.changed.next(this.selectedGuidelines);
   }
 }

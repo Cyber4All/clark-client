@@ -23,6 +23,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   materialFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
+  guidelineFilter: string [] = [];
 
   // Used to communicate filter changes
   filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
@@ -69,15 +70,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Closes the advanced search popup and filters
-   * the results by the selected guidelines
-   */
-  searchByGuidelines() {
-    this.showAdvancedSearch = false;
-    this.cd.detectChanges();
-  }
-
-  /**
    * Clears all the filters (sets them as not active)
    */
   clearFilters() {
@@ -88,6 +80,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.clearFilterCategory(this.materialFilter.filters);
     this.clearFilterCategory(this.topicFilter.filters);
     this.clearFilterCategory(this.frameworkFilter.filters);
+    this.guidelineFilter = [];
 
     // Detect changes and resend the filter object
     this.cd.detectChanges();
@@ -116,6 +109,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.checkFilter('fileTypes', this.materialFilter.filters, query);
     this.checkFilter('topics', this.topicFilter.filters, query);
     this.checkFilter('guidelines', this.frameworkFilter.filters, query);
+    if (this.guidelineFilter && this.guidelineFilter.length > 0) {
+      query['standardOutcomes'] = this.guidelineFilter;
+    }
 
     // Emits changes
     this.changed.emit(query);
@@ -245,6 +241,25 @@ export class FilterComponent implements OnInit, OnDestroy {
         active: false,
       })),
     };
+  }
+
+  /**
+   * Closes the advanced search popup
+   */
+  closeAdvancedSearch() {
+    this.showAdvancedSearch = false;
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Grabs the guideline ids from the event and set them in the filter
+   *
+   * @param guidelineIds The new guideline ids selected
+   */
+  filterGuidelines(guidelineIds: string[]) {
+    this.guidelineFilter = guidelineIds;
+    this.closeAdvancedSearch();
+    this.registerChange();
   }
 
   ngOnDestroy() {
