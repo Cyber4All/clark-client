@@ -32,11 +32,12 @@
                 <ng-template [ngIf]="!guidelines || guidelines.length === 0" [ngIfElse]="guidelineTableTemplate">
                     <div class="content-wrapper center">
                         <p>No results containing all of your filters were found.</p>
-                        <a>Filter by only frameworks instead?</a>
+                        <a (activate)="closePopup(true)">Filter by only frameworks instead?</a>
                     </div>
                 </ng-template>
             </div>
             <div class="right">
+                <button (activate)="closePopup(false)" class="button neutral">Cancel</button>
                 <button (activate)="sendChanges()" class="button good">Apply Filters</button>
             </div>
         </div>

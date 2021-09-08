@@ -14,6 +14,7 @@ import { FilterSectionInfo } from '../filter-section/filter-section.component';
 export class GuidelineFilterComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject<void>();
 
+  @Output() close: EventEmitter<void> = new EventEmitter();
   @Output() changed: EventEmitter<string[]> = new EventEmitter();
 
   // Framework filter
@@ -206,5 +207,21 @@ export class GuidelineFilterComponent implements OnInit, OnDestroy {
    */
   sendChanges() {
     this.changed.next(this.selectedGuidelines);
+  }
+
+  /**
+   * Closes the popup, clearing the selected guidelines if opting to
+   * filter by frameworks instead
+   *
+   * @param filterByFrameworks true if filtering by frameworks (instead
+   * of guidelines), false otherwise
+   */
+  closePopup(filterByFrameworks: boolean) {
+    if (filterByFrameworks) {
+      this.selectedGuidelines = [];
+      this.sendChanges();
+    } else {
+      this.close.next();
+    }
   }
 }

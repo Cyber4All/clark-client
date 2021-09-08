@@ -22,6 +22,6 @@
 
 <clark-popup *ngIf="showAdvancedSearch" (closed)="closeAdvancedSearch()">
   <div class="modal-container center" #popupInner>
-    <clark-guideline-filter [selectedGuidelines]="guidelineFilter.slice()" (changed)="filterGuidelines($event)"></clark-guideline-filter>
+    <clark-guideline-filter [selectedGuidelines]="guidelineFilter.slice()" (close)="closeAdvancedSearch()" (changed)="filterGuidelines($event)"></clark-guideline-filter>
   </div>
 </clark-popup>
